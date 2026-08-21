@@ -1,0 +1,215 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens.
+ *
+ * The palette is sampled directly from the printed cards so the site and the physical
+ * deck read as one product: vivid violet ground, gold display type, pink and cyan
+ * accents. Components must use these tokens, never raw hex values.
+ */
+@theme {
+  /* Deck violets, sampled from the card faces. */
+  --color-violet-deep: #2a0845;
+  --color-violet-900: #3d0a63;
+  --color-violet-800: #56108a;
+  --color-violet-700: #7016b4;
+  --color-violet-600: #9c21f8;
+  --color-violet-500: #b04dfa;
+  --color-violet-400: #cb6bf3;
+  --color-violet-300: #ddaaf7;
+  --color-violet-200: #ecd4fb;
+
+  /* Card gold — display type and frames. */
+  --color-gold-500: #ffd54a;
+  --color-gold-400: #ffe27a;
+  --color-gold-300: #fff0b3;
+
+  --color-pink-accent: #f280b3;
+  --color-cyan-accent: #4fc3f7;
+
+  /* Rarity colours, matching the Encounter Rate text on the cards. */
+  --color-rarity-common: #b8d8f0;
+  --color-rarity-uncommon: #ffd9a0;
+  --color-rarity-rare: #ffaec9;
+  --color-rarity-epic: #4fc3f7;
+
+  /* Stat pip colours, matching the printed icons. */
+  --color-stat-water: #5ec8e8;
+  --color-stat-sun: #ffd54a;
+  --color-stat-temp: #ff5a5a;
+
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-botanical: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --radius-card: 1rem;
+
+  --shadow-card: 0 6px 20px -6px rgb(0 0 0 / 0.55);
+  --shadow-card-lift: 0 14px 36px -10px rgb(0 0 0 / 0.65);
+  --shadow-glow: 0 0 0 2px var(--color-gold-500), 0 0 28px -4px var(--color-gold-500);
+}
+
+/*
+ * The deck's identity is a dark violet ground. There is no light variant: this is a
+ * single deliberate look rather than a theme-switching surface, so colours are painted
+ * explicitly instead of inheriting from the browser.
+ */
+:root {
+  color-scheme: dark;
+  --page-bg: var(--color-violet-deep);
+  --page-fg: var(--color-violet-200);
+}
+
+html {
+  background: var(--page-bg);
+}
+
+body {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -10%, var(--color-violet-800) 0%, transparent 60%),
+    var(--page-bg);
+  background-attachment: fixed;
+  color: var(--page-fg);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Room for the fixed bottom progress bar on the Herbdex. */
+  min-height: 100dvh;
+}
+
+/* Visible, high-contrast focus for keyboard users on every interactive element. */
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-gold-500);
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+
+@utility text-gold-plate {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-gold-300) 0%,
+    var(--color-gold-500) 55%,
+    #e0a91f 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility panel {
+  background: color-mix(in srgb, var(--color-violet-800) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-500) 45%, transparent);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(8px);
+}
+
+/* Screen-reader-only helper (Tailwind ships `sr-only`; this is the focusable variant). */
+@utility skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--color-gold-500);
+  color: var(--color-violet-deep);
+  font-weight: 700;
+  border-radius: 0.5rem;
+  transition: top 0.15s ease;
+
+  &:focus {
+    top: 0.5rem;
+  }
+}
+
+/* --- Discovery reveal ------------------------------------------------------- */
+
+@keyframes card-reveal {
+  0% {
+    transform: rotateY(90deg) scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(-16px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes sheen {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+
+.animate-card-reveal {
+  animation: card-reveal 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: center;
+}
+
+.animate-rise-in {
+  animation: rise-in 380ms ease-out both;
+}
+
+.animate-toast-in {
+  animation: toast-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, white 55%, transparent),
+    transparent
+  );
+  width: 40%;
+  animation: sheen 900ms ease-out 180ms both;
+  pointer-events: none;
+}
+
+/*
+ * Reduced motion: skip straight to the finished state. Every animation above is
+ * decorative — none of them carry information — so removing them loses nothing.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-sheen::after {
+    display: none;
+  }
+}

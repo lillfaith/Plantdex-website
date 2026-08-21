@@ -1,0 +1,24 @@
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+*.pem
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+.env
+.env*.local
+
+next-env.d.ts
+*.tsbuildinfo
+
+.vercel
+coverage/
+
+# Deck print masters are large binaries and are not kept in the web repo.
+# scripts/build_deck.py reads them from a local path passed on the command line.
+deck-source/
