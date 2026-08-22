@@ -1,7 +1,9 @@
 'use client';
 
+import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { ACHIEVEMENTS } from '@/lib/achievements';
+import { CountUp } from './CountUp';
 
 /**
  * Level, XP bar and collection progress.
@@ -11,6 +13,11 @@ import { ACHIEVEMENTS } from '@/lib/achievements';
  */
 export function ProgressHeader() {
   const { progress, discoveredCount, deckSize, state, ready } = useHerbdex();
+
+  // Animate the total from wherever it was, so returning from a discovery shows the
+  // number climbing rather than snapping. On first load previous === current, so it
+  // simply renders the value.
+  const previousXp = usePrevious(progress.xp);
 
   const pct = Math.round(progress.fraction * 100);
   const collectionPct = deckSize > 0 ? Math.round((discoveredCount / deckSize) * 100) : 0;
@@ -26,7 +33,7 @@ export function ProgressHeader() {
           Level {progress.level} — {progress.levelName}
         </p>
         <p className="text-sm font-semibold text-violet-200 tabular-nums">
-          {progress.xp.toLocaleString()}
+          <CountUp from={previousXp} to={progress.xp} durationMs={900} />
           {progress.nextLevelXp !== null && (
             <span className="text-violet-400"> / {progress.nextLevelXp.toLocaleString()}</span>
           )}{' '}

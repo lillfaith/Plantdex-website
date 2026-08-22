@@ -1,23 +1,21 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import type { DiscoveryResult, Herb } from '@/lib/types';
-import { getAchievement } from '@/lib/achievements';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { assetPath } from '@/lib/asset-path';
+import { DiscoveryCelebration } from './DiscoveryCelebration';
 
 /**
  * The "I Found This Plant" flow.
  *
- * Confirm → record → reveal → award XP → surface any new achievements, matching the
- * discovery sequence in AGENTS.md.
+ * Confirm → record → reveal → award XP → update progress → surface any new achievements,
+ * matching the discovery sequence in AGENTS.md.
  *
  * Native <dialog> is used for both steps so focus trapping, Escape-to-close and focus
  * restoration come from the platform rather than from hand-rolled key handling.
  */
 export function DiscoverPanel({ herb }: { herb: Herb }) {
-  const { isDiscovered, discover, state, ready } = useHerbdex();
+  const { isDiscovered, discover, state, ready, progress } = useHerbdex();
 
   const confirmRef = useRef<HTMLDialogElement>(null);
   const celebrateRef = useRef<HTMLDialogElement>(null);
@@ -52,14 +50,17 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
 
   if (!ready) {
     // Placeholder of the same height, so the layout does not jump once storage is read.
-    return <div className="min-h-11 rounded-full bg-violet-900/40" aria-hidden="true" />;
+    return <div className="min-h-12 rounded-full bg-violet-900/40" aria-hidden="true" />;
   }
 
   return (
     <>
       {discovered ? (
         <div className="panel flex items-center gap-3 p-4">
-          <span aria-hidden="true" className="text-2xl">
+          <span
+            aria-hidden="true"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-500/20 text-lg text-gold-300"
+          >
             ✓
           </span>
           <div>
@@ -82,9 +83,13 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
         <button
           type="button"
           onClick={() => confirmRef.current?.showModal()}
-          className="min-h-12 w-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-6 text-base font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.02] active:scale-[0.99] motion-reduce:hover:scale-100"
+          className="group relative min-h-12 w-full overflow-hidden rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-6 text-base font-bold text-violet-deep shadow-card transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
         >
-          I Found This Plant
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            <span aria-hidden="true">🌿</span>
+            I Found This Plant
+            <span className="text-sm font-extrabold opacity-70">+{herb.xp} XP</span>
+          </span>
         </button>
       )}
 
@@ -117,77 +122,26 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
           <button
             type="button"
             onClick={onConfirm}
-            className="min-h-11 rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
+            className="min-h-11 rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
           >
             Yes, I found it
           </button>
         </div>
       </dialog>
 
-      {/* Step 2 — reveal and rewards */}
+      {/* Step 2 — reveal, reward and updated progress */}
       <dialog
         ref={celebrateRef}
         aria-labelledby="celebrate-title"
-        className="panel m-auto w-[min(24rem,calc(100vw-2rem))] p-5 text-center text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+        className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
       >
         {result && (
-          <>
-            <p className="text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
-              New discovery
-            </p>
-            <h2
-              id="celebrate-title"
-              className="font-display mt-1 text-2xl font-bold text-gold-plate"
-            >
-              {herb.commonName}
-            </h2>
-
-            <div className="animate-sheen relative mx-auto mt-4 w-40 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift">
-              <Image
-                src={assetPath(herb.thumb)}
-                alt={`Plantdex card ${herb.cardNumber}: ${herb.commonName}`}
-                width={178}
-                height={288}
-                className="animate-card-reveal w-full"
-              />
-            </div>
-
-            <p
-              aria-live="polite"
-              className="animate-rise-in mt-4 text-xl font-bold text-gold-400"
-            >
-              +{result.xpAwarded} XP
-            </p>
-
-            {result.newAchievementIds.length > 0 && (
-              <ul className="mt-4 space-y-2">
-                {result.newAchievementIds.map((id) => {
-                  const achievement = getAchievement(id);
-                  if (!achievement) return null;
-                  return (
-                    <li
-                      key={id}
-                      className="animate-toast-in rounded-xl border border-gold-500/60 bg-gold-500/15 px-3 py-2 text-left"
-                    >
-                      <p className="text-sm font-bold text-gold-300">
-                        <span aria-hidden="true">{achievement.icon}</span> Achievement
-                        unlocked — {achievement.name}
-                      </p>
-                      <p className="text-xs text-violet-200">{achievement.description}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            <button
-              type="button"
-              onClick={() => closeDialog(celebrateRef)}
-              className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
-            >
-              Continue
-            </button>
-          </>
+          <DiscoveryCelebration
+            herb={herb}
+            result={result}
+            xpAfter={progress.xp}
+            onClose={() => closeDialog(celebrateRef)}
+          />
         )}
       </dialog>
     </>
