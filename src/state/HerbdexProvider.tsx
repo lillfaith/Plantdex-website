@@ -1,16 +1,10 @@
 'use client';
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useSyncExternalStore,
-} from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from 'react';
 import type { DiscoveryResult, Herb, HerbdexState } from '@/lib/types';
 import { createLocalStorageAdapter, type HerbdexStorage } from '@/lib/storage';
+import { createRemoteHerbdexStorage } from '@/lib/remote-herbdex-storage';
+import { useAuth } from './AuthProvider';
 import { progressFromState, type Progress } from '@/lib/progression';
 import { masteryTotals, stageFor, type MasteryStage } from '@/lib/mastery';
 import {
@@ -22,7 +16,7 @@ import {
   type ResearchWorld,
 } from '@/lib/research';
 import { clearBoard, refreshBoard, useResearchBoard } from '@/lib/research-board';
-import { useSightingCounts } from '@/lib/sightings';
+import { useSightingCounts } from '@/lib/sightings-store';
 import { DECK_SIZE } from '@/lib/deck';
 import { createHerbdexStore } from './herbdex-store';
 
@@ -64,8 +58,28 @@ export function HerbdexProvider({
   /** Injectable for tests; defaults to localStorage. */
   storage?: HerbdexStorage;
 }) {
-  // Lazy initializer so the store is built once and stays stable across renders.
-  const [store] = useState(() => createHerbdexStore(storage ?? createLocalStorageAdapter()));
+  const { user } = useAuth();
+  const userId = user?.id;
+
+  /*
+   * A fresh store per (storage prop, signed-in user id). Signing in or out swaps which
+   * adapter backs the collection, which is exactly the kind of change `useSyncExternalStore`
+   * expects to react to: a new `store.subscribe` reference makes React tear down the old
+   * subscription and hydrate the new one. `storage` stays the test-only escape hatch it
+   * always was — passing it opts out of the auth-based adapter choice entirely.
+   *
+   * Known limitation: on first paint, before Supabase's own session check resolves,
+   * `userId` reads as signed-out and this briefly mounts the local adapter even for
+   * someone who turns out to be signed in — it swaps to the remote adapter the moment
+   * `useAuth()` reports the real session. A short loading flash on load, not a data bug.
+   */
+  const store = useMemo(
+    () =>
+      createHerbdexStore(
+        storage ?? (userId ? createRemoteHerbdexStorage(userId) : createLocalStorageAdapter()),
+      ),
+    [storage, userId],
+  );
 
   const { state, ready } = useSyncExternalStore(
     store.subscribe,
@@ -87,30 +101,23 @@ export function HerbdexProvider({
   );
 
   /*
-   * Mastery is the one stage that depends on a *different* store, so it is reconciled
-   * here rather than awarded at a click. Sightings can be added from the journal, from a
-   * card page, or (in V0.3) from another device, and this runs after any of them without
-   * each of those sites having to remember to award anything.
+   * Mastery and Field Research completion both depend on state outside `state` itself
+   * (sighting counts, and — when signed in — a server that re-derives both from its own
+   * rows), so they are reconciled here rather than awarded at a click. Sightings can be
+   * added from the journal, from a card page, or from another signed-in device, and this
+   * runs after any of them without each of those sites having to remember to award
+   * anything.
    *
-   * Safe to run on every change: reconcileMastery returns the same state object — and the
-   * store writes nothing — unless a card genuinely just qualified, so this cannot loop.
-   */
-  useEffect(() => {
-    store.syncMastery(sightingCounts);
-  }, [store, state, sightingCounts]);
-
-  /*
-   * Field Research, same pattern and for the same reason.
-   *
-   * The board is topped up first so a task offered today can complete today. Both calls
-   * write only when something actually changed, which is what stops this from looping —
-   * and `localDateKey()` is read here, inside an effect, so the static export never bakes
-   * in a date and the server and first client render always agree.
+   * The board is topped up first so a task offered today can complete today.
+   * `store.reconcile` writes only when something actually changed (or, signed in, when
+   * the server says something did), which is what stops this from looping — and
+   * `localDateKey()` is read here, inside an effect, so the static export never bakes in a
+   * date and the server and first client render always agree.
    */
   useEffect(() => {
     if (!ready) return;
     refreshBoard(world, localDateKey());
-    store.syncResearch(world, [...STANDING_TASKS, ...dailyTasks]);
+    void store.reconcile(world, [...STANDING_TASKS, ...dailyTasks]);
   }, [store, ready, world, dailyTasks]);
 
   const discover = useCallback((herb: Herb) => store.discover(herb), [store]);

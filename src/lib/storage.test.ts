@@ -100,15 +100,15 @@ describe('parseState', () => {
 });
 
 describe('createMemoryAdapter', () => {
-  it('round-trips state and clears it', () => {
+  it('round-trips state and clears it', async () => {
     const adapter = createMemoryAdapter();
-    expect(adapter.load()).toEqual(emptyState());
+    await expect(adapter.load()).resolves.toEqual(emptyState());
 
     const state = { ...emptyState(), discoveries: { a: '2026-01-01T00:00:00.000Z' } };
     adapter.save(state);
-    expect(adapter.load()).toEqual(state);
+    await expect(adapter.load()).resolves.toEqual(state);
 
     adapter.clear();
-    expect(adapter.load()).toEqual(emptyState());
+    await expect(adapter.load()).resolves.toEqual(emptyState());
   });
 });

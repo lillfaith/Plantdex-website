@@ -145,6 +145,11 @@ function herbSorted(herbId: string): Sighting[] {
   return value;
 }
 
+/** A one-off snapshot for the local-progress import flow — not reactive, unlike the hooks below. */
+export function getAllSightings(): Sighting[] {
+  return [...read()];
+}
+
 export function useSightings(herbId?: string): Sighting[] {
   return useSyncExternalStore(
     subscribe,

@@ -6,9 +6,11 @@ This file only adds the mechanics of working in this codebase.
 
 ## Current stage
 
-**V0.2 complete**, plus three-stage card mastery and Field Research. The Herbdex prototype
-is functional against real deck data with local persistence. Not yet built: accounts
-(V0.3), commerce (V0.4), QR (V0.5).
+**V0.2 complete**, plus three-stage card mastery, Field Research, the sources/safety
+presentation work, contrast/polish, and **V0.3 accounts** (Supabase auth + server-persisted
+collections). The Herbdex works fully signed-out against local storage, or signed in with
+progress synced to Supabase — see "V0.3 accounts" below. Not yet built: commerce (V0.4), QR
+(V0.5).
 
 ## Commands
 
@@ -26,9 +28,9 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
 - **XP and level thresholds live only in `src/lib/progression.ts`.** Components must read
   `progressFromState()` / `progressFromXp()` and never contain a threshold literal.
 - **XP is derived, never stored.** Persisted state is only
-  `{discoveries, learned, mastered, achievements}`; XP is summed from those records. This
-  is what makes repeat-XP structurally impossible rather than merely guarded — do not add
-  an XP counter to stored state.
+  `{discoveries, learned, mastered, research, achievements}`; XP is summed from those
+  records. This is what makes repeat-XP structurally impossible rather than merely guarded
+  — do not add an XP counter to stored state, client-side or server-side.
 - **Every stage transition is idempotent.** `applyDiscovery()`, `applyLearned()` and
   `reconcileMastery()` each return the *same object* when there is nothing new to record.
   Covered by `src/lib/herbdex-reducer.test.ts` and `src/lib/mastery.test.ts`; keep those
@@ -128,12 +130,57 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   invent a date, name, size, price, preorder, waitlist or scarcity claim, and must never
   imply the current 45 cards are incomplete.
 
-## When adding a backend (V0.3)
+## V0.3 accounts
 
-`src/lib/storage.ts` is the seam. Read the comment block at the top of that file before
-writing any server code — it lists the four non-negotiables (session-derived user, DB-layer
-authorization, server-side XP recomputation, uniqueness constraint on discoveries).
+Backend is Supabase (Postgres + Auth + Storage, all behind Row Level Security), reached
+directly from the client SDK. The frontend is still a fully static export on GitHub Pages —
+no server we operate ourselves. See `supabase/README.md` for one-time project setup.
 
-The same four apply to `learned` and `mastered`: one row per (user, herb, stage), XP
-recomputed server-side from those rows, and mastery re-derived by the server from its own
-sighting records rather than trusted from the client.
+- **The reducer is the server too.** `src/lib/herbdex-reducer.ts`'s pure functions
+  (`applyDiscovery`, `applyLearned`, `reconcileMastery`, `reconcileResearch`,
+  `reconcileAchievements`) are imported unmodified by `supabase/functions/herbdex-action`,
+  copied there by `npm run sync:edge-shared` (see `scripts/sync-edge-shared.mjs`). Never
+  hand-edit anything under `supabase/functions/_shared/herbdex/` — it is generated, and a
+  hand-edit is silently overwritten and drifts from what it's supposed to mirror the next
+  time the script runs. Changing any pure module those files depend on
+  (`types.ts`, `herbdex-state.ts`, `deck.ts`, `achievements.ts`, `progression.ts`,
+  `mastery.ts`, `rng.ts`, `research.ts`, `herbdex-reducer.ts`) means re-running the sync
+  script and redeploying the function, or the two silently diverge.
+- **Only mastery and research completion are server-recomputed.** They're the one place a
+  client claim can't be taken on faith, because they depend on sighting counts a client
+  could otherwise just assert. Discoveries, learned and achievements-from-a-discovery are
+  plain RLS-scoped upserts straight from the client (`src/lib/remote-herbdex-storage.ts`) —
+  there's nothing to recompute there: the client already derived the transition with the
+  same pure reducer, and RLS plus each table's (user_id, entity_id) primary key are the
+  actual boundary either way, not which code path performed the write.
+- **Sightings are synced too, including photos**, because CLAUDE.md already required
+  mastery to be "re-derived by the server from its own sighting records" — that's only true
+  if the server can see them. `src/lib/remote-sightings.ts` is the Supabase-backed
+  counterpart to `src/lib/sightings.ts`; `src/lib/sightings-store.ts` is the facade that
+  picks one or the other based on auth state so call sites (`MySightings.tsx`,
+  `HerbdexProvider.tsx`) don't need to know which backend they're bound to. Photos go to
+  the private `sighting-photos` Storage bucket, path-scoped to `{user_id}/...` by RLS the
+  same way every table is.
+- **Sighting ids are `text`, not `uuid`.** The client always generates its own id
+  (`sighting_<timestamp>_<random>`, matching the local-storage format) so a sighting keeps
+  the same id when later imported into an account. A `uuid` column would reject every one
+  of those ids — this bit once already; don't reintroduce it.
+- **`HerbdexStorage.load()` is async** (`src/lib/storage.ts`) so one interface covers both
+  the local adapter (resolves immediately) and the remote one (a real network round trip).
+  Every mutating method on the store still requires `ready` first — before hydration
+  resolves there is nothing real to mutate, and acting on the placeholder empty state would
+  be silently discarded the instant hydration's own load resolves and replaces it wholesale.
+- **`HerbdexStore.reconcile()` replaces the old separate `syncMastery`/`syncResearch`.** One
+  call, because the edge function does both together in one round trip. When
+  `adapter.reconcile` exists (signed in) its answer is authoritative and the store reloads
+  from it rather than trusting a locally computed guess; otherwise (signed out) it runs the
+  same reducer locally, exactly as before accounts existed.
+- **Local-progress import is a one-time, explicit, additive merge**
+  (`src/lib/import-local-progress.ts`), offered once per account via
+  `ImportLocalProgressDialog` and never again after that (accepted or skipped). It imports
+  `mastered`/`research` timestamps directly rather than only re-deriving them from imported
+  sightings — deleting a sighting must not retroactively erase mastery earned locally before
+  an account existed, same as it never has for ordinary play.
+- **`supabase/functions/**` is excluded from this project's `tsconfig.json`/ESLint** — it's
+  Deno, a different runtime with different globals (`Deno.serve`, `npm:`/`https:` module
+  specifiers). Validate it with `deno check` (or by deploying it) instead.

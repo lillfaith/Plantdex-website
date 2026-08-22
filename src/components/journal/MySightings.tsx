@@ -2,14 +2,8 @@
 
 import { useCallback, useRef, useState } from 'react';
 import type { Herb } from '@/lib/types';
-import {
-  addSighting,
-  GROWTH_STAGE_LABEL,
-  GROWTH_STAGES,
-  removeSighting,
-  useSightings,
-  type GrowthStage,
-} from '@/lib/sightings';
+import { GROWTH_STAGE_LABEL, GROWTH_STAGES, type GrowthStage } from '@/lib/sightings';
+import { useSightingsStore } from '@/lib/sightings-store';
 import { SightingPhoto } from './SightingPhoto';
 
 /**
@@ -36,7 +30,7 @@ function formatDate(iso: string): string {
 }
 
 export function MySightings({ herb }: { herb: Herb }) {
-  const sightings = useSightings(herb.id);
+  const { sightings, addSighting, removeSighting } = useSightingsStore(herb.id);
   const formRef = useRef<HTMLDialogElement>(null);
 
   const [date, setDate] = useState(todayIso);
@@ -60,30 +54,20 @@ export function MySightings({ herb }: { herb: Herb }) {
     async (event: React.FormEvent) => {
       event.preventDefault();
       setSaving(true);
-      let photoId: string | undefined;
-      try {
-        if (photo) {
-          const { savePhoto } = await import('@/lib/photo-store');
-          photoId = await savePhoto(photo);
-        }
-      } catch {
-        // Losing the photo must not lose the note the player just wrote — save without it.
-        photoId = undefined;
-      }
-      addSighting({
+      await addSighting({
         herbId: herb.id,
         date,
         region: region.trim() || undefined,
         notes: notes.trim() || undefined,
         growthStage: growthStage || undefined,
         foundAgain: foundAgain || undefined,
-        photoId,
+        photo,
       });
       setSaving(false);
       formRef.current?.close();
       reset();
     },
-    [herb.id, date, region, notes, growthStage, foundAgain, photo, reset],
+    [herb.id, date, region, notes, growthStage, foundAgain, photo, reset, addSighting],
   );
 
   return (

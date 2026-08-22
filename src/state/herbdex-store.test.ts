@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createHerbdexStore } from './herbdex-store';
-import { createMemoryAdapter, emptyState } from '@/lib/storage';
+import { createMemoryAdapter, emptyState, type HerbdexStorage, type ReconcileOutcome } from '@/lib/storage';
 import { HERBS } from '@/lib/deck';
 import { xpForState } from '@/lib/progression';
+import { buildWorld, STANDING_TASKS } from '@/lib/research';
 import type { HerbdexState } from '@/lib/types';
 
 const herb = HERBS[0]!;
@@ -23,7 +24,7 @@ describe('createHerbdexStore', () => {
     expect(store.getServerSnapshot().state.discoveries).toEqual({});
   });
 
-  it('does not read storage until something subscribes', () => {
+  it('does not read storage until something subscribes', async () => {
     const adapter = createMemoryAdapter(seeded([herb.id]));
     const load = vi.spyOn(adapter, 'load');
     const store = createHerbdexStore(adapter);
@@ -31,37 +32,45 @@ describe('createHerbdexStore', () => {
     expect(store.getSnapshot().ready).toBe(false);
     expect(load).not.toHaveBeenCalled();
 
-    store.subscribe(() => {});
+    await new Promise<void>((resolve) => store.subscribe(resolve));
     expect(load).toHaveBeenCalledTimes(1);
     expect(store.getSnapshot().ready).toBe(true);
     expect(store.getSnapshot().state.discoveries[herb.id]).toBeTruthy();
   });
 
-  it('hydrates only once no matter how many subscribers attach', () => {
+  it('hydrates only once no matter how many subscribers attach', async () => {
     const adapter = createMemoryAdapter(seeded([herb.id]));
     const load = vi.spyOn(adapter, 'load');
     const store = createHerbdexStore(adapter);
 
+    const hydrated = new Promise<void>((resolve) => store.subscribe(resolve));
     store.subscribe(() => {});
     store.subscribe(() => {});
-    store.subscribe(() => {});
+    await hydrated;
     expect(load).toHaveBeenCalledTimes(1);
   });
 
-  it('notifies subscribers on hydration and on discovery', () => {
+  it('notifies subscribers on hydration and on discovery', async () => {
     const store = createHerbdexStore(createMemoryAdapter());
     const listener = vi.fn();
-    store.subscribe(listener);
+    await new Promise<void>((resolve) => {
+      store.subscribe(() => {
+        listener();
+        resolve();
+      });
+    });
 
     expect(listener).toHaveBeenCalledTimes(1); // hydration
     store.discover(herb);
     expect(listener).toHaveBeenCalledTimes(2); // discovery
   });
 
-  it('stops notifying after unsubscribe', () => {
+  it('stops notifying after unsubscribe', async () => {
     const store = createHerbdexStore(createMemoryAdapter());
     const listener = vi.fn();
-    const unsubscribe = store.subscribe(listener);
+    const unsubscribe = await new Promise<() => void>((resolve) => {
+      const unsub = store.subscribe(() => resolve(unsub));
+    });
     listener.mockClear();
 
     unsubscribe();
@@ -69,9 +78,9 @@ describe('createHerbdexStore', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
-  it('returns a new snapshot reference only when state actually changes', () => {
+  it('returns a new snapshot reference only when state actually changes', async () => {
     const store = createHerbdexStore(createMemoryAdapter());
-    store.subscribe(() => {});
+    await new Promise<void>((resolve) => store.subscribe(resolve));
 
     const before = store.getSnapshot();
     expect(store.getSnapshot()).toBe(before);
@@ -85,10 +94,10 @@ describe('createHerbdexStore', () => {
     expect(store.getSnapshot()).toBe(after);
   });
 
-  it('awards XP once and never again for the same herb', () => {
+  it('awards XP once and never again for the same herb', async () => {
     const adapter = createMemoryAdapter();
     const store = createHerbdexStore(adapter);
-    store.subscribe(() => {});
+    await new Promise<void>((resolve) => store.subscribe(resolve));
 
     const first = store.discover(herb);
     expect(first.awarded).toBe(true);
@@ -101,40 +110,113 @@ describe('createHerbdexStore', () => {
     }
 
     expect(xpForState(store.getSnapshot().state)).toBe(herb.xp);
-    expect(Object.keys(adapter.load().discoveries)).toHaveLength(1);
+    expect(Object.keys((await adapter.load()).discoveries)).toHaveLength(1);
   });
 
-  it('persists each new discovery through the adapter', () => {
+  it('persists each new discovery through the adapter', async () => {
     const adapter = createMemoryAdapter();
     const store = createHerbdexStore(adapter);
-    store.subscribe(() => {});
+    await new Promise<void>((resolve) => store.subscribe(resolve));
 
     store.discover(herb);
     store.discover(other);
-    expect(Object.keys(adapter.load().discoveries)).toHaveLength(2);
+    expect(Object.keys((await adapter.load()).discoveries)).toHaveLength(2);
   });
 
-  it('unlocks achievements retroactively when hydrating an older collection', () => {
+  it('unlocks achievements retroactively when hydrating an older collection', async () => {
     // A saved collection with discoveries but no recorded achievements.
     const adapter = createMemoryAdapter(seeded(HERBS.slice(0, 10).map((h) => h.id)));
     const store = createHerbdexStore(adapter);
-    store.subscribe(() => {});
+    await new Promise<void>((resolve) => store.subscribe(resolve));
 
     const { achievements } = store.getSnapshot().state;
     expect(achievements['first-find']).toBeTruthy();
     expect(achievements['forager-10']).toBeTruthy();
     // ...and writes the reconciliation back so it is not recomputed every visit.
-    expect(adapter.load().achievements['forager-10']).toBeTruthy();
+    expect((await adapter.load()).achievements['forager-10']).toBeTruthy();
   });
 
-  it('resets to an empty collection', () => {
+  it('resets to an empty collection', async () => {
     const adapter = createMemoryAdapter();
     const store = createHerbdexStore(adapter);
-    store.subscribe(() => {});
+    await new Promise<void>((resolve) => store.subscribe(resolve));
     store.discover(herb);
 
     store.reset();
     expect(store.getSnapshot().state.discoveries).toEqual({});
-    expect(adapter.load().discoveries).toEqual({});
+    expect((await adapter.load()).discoveries).toEqual({});
+  });
+
+  describe('reconcile', () => {
+    it('does nothing before hydration', async () => {
+      const store = createHerbdexStore(createMemoryAdapter());
+      const world = buildWorld(emptyState(), {});
+      await expect(store.reconcile(world, STANDING_TASKS)).resolves.toEqual({
+        masteredIds: [],
+        completedResearchIds: [],
+        newAchievementIds: [],
+      });
+    });
+
+    it('masters a card locally once learned and sighted again, with no adapter opinion', async () => {
+      const state = seeded([herb.id]);
+      state.learned[herb.id] = '2026-01-02T00:00:00.000Z';
+      const adapter = createMemoryAdapter(state);
+      const store = createHerbdexStore(adapter);
+      await new Promise<void>((resolve) => store.subscribe(resolve));
+
+      const world = buildWorld(store.getSnapshot().state, { [herb.id]: 1 });
+      const outcome = await store.reconcile(world, STANDING_TASKS);
+
+      expect(outcome.masteredIds).toEqual([herb.id]);
+      expect(store.getSnapshot().state.mastered[herb.id]).toBeTruthy();
+      expect((await adapter.load()).mastered[herb.id]).toBeTruthy();
+    });
+
+    it('returns the same empty outcome, and does not churn the snapshot, when nothing qualifies', async () => {
+      const adapter = createMemoryAdapter();
+      const store = createHerbdexStore(adapter);
+      await new Promise<void>((resolve) => store.subscribe(resolve));
+
+      const before = store.getSnapshot();
+      const world = buildWorld(before.state, {});
+      const outcome = await store.reconcile(world, STANDING_TASKS);
+
+      expect(outcome).toEqual({ masteredIds: [], completedResearchIds: [], newAchievementIds: [] });
+      expect(store.getSnapshot()).toBe(before);
+    });
+
+    it('defers to the adapter when it has a server opinion, and reloads the authoritative state', async () => {
+      const state = seeded([herb.id]);
+      const served: ReconcileOutcome = {
+        masteredIds: [herb.id],
+        completedResearchIds: [],
+        newAchievementIds: [],
+      };
+      const afterServerWrite: HerbdexState = {
+        ...state,
+        mastered: { [herb.id]: '2026-03-01T00:00:00.000Z' },
+      };
+      let loadCount = 0;
+      const adapter: HerbdexStorage = {
+        load: () => {
+          loadCount += 1;
+          return Promise.resolve(loadCount === 1 ? state : afterServerWrite);
+        },
+        save: () => {},
+        clear: () => {},
+        reconcile: vi.fn().mockResolvedValue(served),
+      };
+      const store = createHerbdexStore(adapter);
+      await new Promise<void>((resolve) => store.subscribe(resolve));
+
+      const world = buildWorld(store.getSnapshot().state, { [herb.id]: 1 });
+      const outcome = await store.reconcile(world, STANDING_TASKS);
+
+      expect(adapter.reconcile).toHaveBeenCalledWith(world, STANDING_TASKS);
+      expect(outcome).toBe(served);
+      // Reloaded from the adapter rather than guessed at locally.
+      expect(store.getSnapshot().state.mastered[herb.id]).toBe('2026-03-01T00:00:00.000Z');
+    });
   });
 });

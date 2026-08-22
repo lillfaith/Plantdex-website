@@ -1,100 +1,63 @@
 import type { HerbdexState } from './types';
+import { emptyState, parseState, STORAGE_VERSION } from './herbdex-state';
+import type { ResearchTask, ResearchWorld } from './research';
+
+export { emptyState, parseState, STORAGE_VERSION };
 
 /**
- * Persistence for Herbdex progress.
+ * Browser-only persistence for Herbdex progress.
  *
- * V0.2 stores progress in the browser only. The `HerbdexStorage` interface is the seam
- * that V0.3 replaces with a server-backed adapter.
+ * The pure schema and defaults live in `herbdex-state.ts` so they can also be imported by
+ * the Supabase edge function that recomputes mastery and research server-side (V0.3) —
+ * that file has no DOM types in it, unlike this one.
+ *
+ * `HerbdexStorage.load()` is async because V0.3 added a real signed-in adapter
+ * (`src/lib/remote-herbdex-storage.ts`) that reads from Supabase over the network.
+ * `createLocalStorageAdapter` below still reads synchronously under the hood; it just
+ * wraps the result in a resolved promise so both adapters share one interface.
  *
  * ┌────────────────────────────────────────────────────────────────────────────┐
- * │ V0.3 IMPLEMENTORS — READ THIS                                              │
+ * │ V0.3 SERVER ADAPTER — WHAT IT ACTUALLY ENFORCES                            │
  * │                                                                            │
- * │ The server adapter must:                                                   │
- * │  • derive the user from the authenticated session, NEVER from a userId     │
- * │    sent by the browser (AGENTS.md: "do not trust userId values supplied    │
- * │    by the browser without authorization");                                 │
- * │  • enforce row ownership in the database layer, not by filtering in        │
- * │    client code, so one user can never read another's collection;           │
- * │  • recompute XP server-side from its own discovery rows and ignore any XP  │
- * │    total the client reports;                                               │
- * │  • enforce one discovery row per (user, herb) with a uniqueness            │
- * │    constraint so a replayed request cannot award XP twice.                 │
+ * │ `remote-herbdex-storage.ts` writes discoveries/learned/achievements as     │
+ * │ direct RLS-scoped inserts (Postgres itself derives the user from the       │
+ * │ caller's session — see `supabase/migrations/0001_accounts.sql` — never     │
+ * │ from a userId in the request body). Mastery and research completion are    │
+ * │ the one place a client claim can't be taken on faith, because they depend  │
+ * │ on sighting counts a client could otherwise just assert; those two are     │
+ * │ recomputed by `supabase/functions/herbdex-action`, which imports the exact │
+ * │ same `reconcileMastery`/`reconcileResearch` from `herbdex-reducer.ts` that │
+ * │ governs local play. Every table has a uniqueness constraint on             │
+ * │ (user_id, entity_id) so a replayed request cannot award XP twice, and XP   │
+ * │ itself is never stored anywhere — it stays derived, now from Postgres      │
+ * │ rows fetched under RLS instead of a JSON blob.                             │
  * └────────────────────────────────────────────────────────────────────────────┘
  */
 
-export const STORAGE_VERSION = 3;
 export const STORAGE_KEY = 'plantdex.herbdex.v1';
 
+export interface ReconcileOutcome {
+  masteredIds: string[];
+  completedResearchIds: string[];
+  newAchievementIds: string[];
+}
+
 export interface HerbdexStorage {
-  load(): HerbdexState;
+  load(): Promise<HerbdexState>;
   save(state: HerbdexState): void;
   clear(): void;
-}
-
-export function emptyState(): HerbdexState {
-  return {
-    version: STORAGE_VERSION,
-    discoveries: {},
-    learned: {},
-    mastered: {},
-    research: {},
-    achievements: {},
-  };
-}
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/** Keep only string→string entries; drop anything malformed rather than throwing. */
-function sanitizeTimestamps(value: unknown): Record<string, string> {
-  if (!isPlainObject(value)) return {};
-  const out: Record<string, string> = {};
-  for (const [key, entry] of Object.entries(value)) {
-    if (typeof entry === 'string' && entry.length > 0) out[key] = entry;
-  }
-  return out;
-}
-
-/**
- * Coerce arbitrary parsed JSON into a valid state.
- *
- * Storage is attacker-adjacent (any script or the user can edit localStorage), and old
- * versions may linger, so nothing here trusts its input. Anything unrecognised degrades
- * to an empty collection instead of crashing the page.
- */
-/**
- * Every stored version this code can still read.
- *
- *   v1 → discoveries + achievements
- *   v2 → adds learned + mastered   (three-stage card mastery)
- *   v3 → adds research             (Field Research)
- *
- * Migrating is a single pass rather than one branch per version because EVERY schema
- * change so far has been purely ADDITIVE: each new version only introduced maps that
- * `sanitizeTimestamps` already turns into `{}` when absent. The moment a future version
- * renames, reshapes or drops a field, that stops being true — at which point this needs a
- * real per-version branch, not another entry in this array.
- */
-const MIGRATABLE_VERSIONS: readonly number[] = [1, 2, STORAGE_VERSION];
-
-export function parseState(raw: unknown): HerbdexState {
-  if (!isPlainObject(raw)) return emptyState();
-
-  // An unrecognised version — from the future, or nonsense — is unreadable rather than
-  // misinterpreted. Note what that means for anything NOT listed above: falling through
-  // here silently wipes a real collection, which is the worst possible failure mode for
-  // data someone spent a season building. Never bump STORAGE_VERSION without adding it.
-  if (!MIGRATABLE_VERSIONS.includes(raw.version as number)) return emptyState();
-
-  return {
-    version: STORAGE_VERSION,
-    discoveries: sanitizeTimestamps(raw.discoveries),
-    learned: sanitizeTimestamps(raw.learned),
-    mastered: sanitizeTimestamps(raw.mastered),
-    research: sanitizeTimestamps(raw.research),
-    achievements: sanitizeTimestamps(raw.achievements),
-  };
+  /**
+   * Server-verified mastery/research reconciliation. Returns `null` to mean "no server
+   * opinion — compute it locally," which is what the local-storage adapter always does by
+   * simply not implementing this method at all. The remote adapter implements it by
+   * calling the `herbdex-action` edge function, which is the one place mastery and
+   * research completion are re-derived from the caller's own rows rather than trusted
+   * from the client — see the block comment above.
+   */
+  reconcile?(
+    world: ResearchWorld,
+    activeTasks: readonly ResearchTask[],
+  ): Promise<ReconcileOutcome | null>;
 }
 
 let warned = false;
@@ -122,7 +85,7 @@ export function createLocalStorageAdapter(key: string = STORAGE_KEY): HerbdexSto
   }
 
   return {
-    load(): HerbdexState {
+    async load(): Promise<HerbdexState> {
       const store = backing();
       if (!store) return emptyState();
       try {
@@ -161,7 +124,7 @@ export function createLocalStorageAdapter(key: string = STORAGE_KEY): HerbdexSto
 export function createMemoryAdapter(initial: HerbdexState = emptyState()): HerbdexStorage {
   let state = initial;
   return {
-    load: () => state,
+    load: () => Promise.resolve(state),
     save: (next) => {
       state = next;
     },
