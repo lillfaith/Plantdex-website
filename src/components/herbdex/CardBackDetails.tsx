@@ -62,7 +62,9 @@ export function CardBackDetails({ herb }: { herb: Herb }) {
         <Section
           id="healing-heading"
           title={BACK_SECTION_LABEL.healingTraits}
-          note="As printed on the card. These describe traditional and historical use — they are not medical advice, and not claims that this plant treats any condition."
+          // The one place on this page that says it. It sits directly under the heading
+          // whose content it qualifies, which is where a caveat actually gets read.
+          note="Traditional and historical use, as printed. Not medical advice, and not a claim that this plant treats anything."
         >
           <Chips items={back.healingTraits} tone="gold" />
         </Section>
@@ -113,8 +115,7 @@ export function CardBackDetails({ herb }: { herb: Herb }) {
             Traditional preparation
           </h2>
           <p className="mt-1 mb-3 text-xs text-violet-400">
-            How the card says this plant has traditionally been used. Confirm identification
-            with reliable references and qualified expertise before preparing any wild plant.
+            How the card says it has traditionally been prepared.
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             {back.preparations.length > 0 && (

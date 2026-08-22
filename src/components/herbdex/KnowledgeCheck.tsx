@@ -184,9 +184,8 @@ export function KnowledgeCheck({
             <p className="mt-3 text-sm text-violet-200">
               {passed ? (
                 <>
-                  You got all {total} right. <strong className="text-gold-300">{herb.commonName}</strong>{' '}
-                  is now marked <strong className="text-gold-300">Learned</strong> in your Herbdex,
-                  and it has grown in your garden.
+                  All {total} right. <strong className="text-gold-300">{herb.commonName}</strong> is
+                  now <strong className="text-gold-300">Learned</strong>.
                 </>
               ) : (
                 <>
@@ -203,8 +202,7 @@ export function KnowledgeCheck({
             )}
 
             <p className="mt-3 text-xs text-violet-400">
-              Learning a card means you know what it says. It is not a statement that any plant
-              is safe to eat, drink, or apply.
+              Knowing a card is not a statement that a plant is safe to use.
             </p>
 
             <div className="mt-4 flex justify-end gap-2">

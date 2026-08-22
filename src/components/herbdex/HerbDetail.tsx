@@ -105,8 +105,8 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         Card mastered
       </h2>
       <p className="mt-2 text-sm text-violet-200">
-        You found <strong className="text-gold-300">{herb.commonName}</strong>, learned its card,
-        and found it again. It&apos;s flowering in your garden.
+        Found, learned, found again. <strong className="text-gold-300">{herb.commonName}</strong> is
+        flowering in your garden.
       </p>
       <p className="font-display mt-3 text-2xl font-extrabold text-gold-plate tabular-nums">
         +{XP_FOR_MASTERY} XP
@@ -162,8 +162,8 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           state is never ambiguous. */}
       {!discovered && revealed && (
         <p className="panel mb-4 p-3 text-xs text-violet-300">
-          <span aria-hidden="true">👁</span> You revealed this plant to read about it. It
-          still counts as undiscovered in your Herbdex until you find it outdoors.
+          <span aria-hidden="true">👁</span> Revealed for reading — still undiscovered until
+          you find it outdoors.
         </p>
       )}
 
@@ -249,11 +249,11 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           <SourcesSection herb={herb} />
         </div>
 
-        {/* Healing Traits and Traditional Preparation are both on this page, so the full
-            disclaimer stays visible here. Downgrading this to `brief` would be a safety
-            regression dressed as a design tweak. */}
-        <div className="mt-8 border-t border-violet-700/40 pt-6">
-          <SafetyNotice />
+        {/* Healing Traits and Traditional Preparation are both on this page, so this
+            carries the `standard` weight — named to the risk a plant page actually raises.
+            Downgrading it to `brief` would be a safety regression dressed as a tweak. */}
+        <div className="mt-8">
+          <SafetyNotice context="Traditional use is not evidence, and finding a plant is not identifying it. Never eat, drink or apply one you are not certain of." />
         </div>
       </>
     );

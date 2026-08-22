@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { SafetyNotice } from '@/components/SafetyNotice';
 
 export const metadata: Metadata = {
   title: 'Learn',
@@ -49,30 +50,11 @@ export default function LearnPage() {
         ))}
       </ul>
 
-      <aside className="panel mt-8 p-4">
-        <h2 className="text-xs font-bold tracking-wide text-gold-400 uppercase">
-          <span aria-hidden="true">⚠</span> Read this first
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          These guides describe methods in general — how a decoction is made, not what to
-          make one from. They are not instructions to use any particular plant, and a method
-          being described here does not mean it is appropriate for a given species. Several
-          plants in this deck have dangerous look-alikes.
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Confirm any identification with reliable references and qualified local expertise
-          before preparing a wild plant at all, and speak to a healthcare professional before
-          using any plant medicinally.
-        </p>
-        <p className="mt-3">
-          <Link
-            href="/safety"
-            className="text-xs font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-          >
-            Read full safety information →
-          </Link>
-        </p>
-      </aside>
+      {/* An index page: the warning belongs on the page that actually describes methods,
+          and /safety is listed above as a destination in its own right. */}
+      <div className="mt-8">
+        <SafetyNotice variant="brief" />
+      </div>
     </main>
   );
 }

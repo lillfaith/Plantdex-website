@@ -31,8 +31,7 @@ export default function HomePage() {
           Plantdex
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
-          The common wild plants growing around you, as a collectible deck. Learn what they
-          are, go find them, and build your Herbdex as you go.
+          The common wild plants growing around you, as a collectible deck.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -93,17 +92,17 @@ export default function HomePage() {
             {
               step: '1',
               title: 'Learn the card',
-              body: `Each of the ${DECK_SIZE} cards covers one common wild plant, with its botanical name, growing conditions and the season it is easiest to spot.`,
+              body: `One common wild plant per card — botanical name, growing conditions, best season.`,
             },
             {
               step: '2',
               title: 'Find it outside',
-              body: 'Take the deck into a garden, a park or a hedgerow and match what you see against the card.',
+              body: 'Take the deck to a garden, a park or a hedgerow and match what you see.',
             },
             {
               step: '3',
               title: 'Log the find',
-              body: 'Mark it found in your Herbdex to reveal the card, earn XP and work through the collection.',
+              body: 'Mark it found to unlock the card and build your collection.',
             },
           ].map((item) => (
             <li key={item.step} className="panel p-5">

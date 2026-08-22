@@ -37,9 +37,8 @@ export function JournalView() {
         <div className="panel mt-6 p-6 text-center">
           <p className="text-sm text-violet-200">Your journal is empty.</p>
           <p className="mt-2 text-sm text-violet-300">
-            Open a plant you&apos;ve discovered and add a sighting — the date, where you were,
-            a photo, what it looked like. Come back to the same patch later and log it again
-            to watch it change through the season.
+            Open a plant you&apos;ve found and log a sighting — date, place, photo, notes.
+            Return to the same patch to watch it change.
           </p>
           <Link
             href="/herbdex"

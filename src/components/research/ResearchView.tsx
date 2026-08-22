@@ -64,12 +64,7 @@ export function ResearchView() {
 
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">Field Research</h1>
       <p className="mt-1 text-sm text-violet-300">
-        Small reasons to take the deck outside.
-      </p>
-
-      <p className="mt-4 text-xs text-violet-400">
-        Nothing here expires. A task you have been offered stays until you finish it, and
-        skipping a week costs you nothing.
+        Small reasons to take the deck outside. Nothing here expires.
       </p>
 
       {!ready ? (
@@ -108,8 +103,8 @@ export function ResearchView() {
             </h2>
             <p className="mt-1 text-xs text-violet-400">
               {season
-                ? `All four stay open — ${SEASON_LABEL[season].toLowerCase()} is listed first because that is where the calendar is now.`
-                : 'All four stay open, whatever the calendar says.'}
+                ? `All four stay open — ${SEASON_LABEL[season].toLowerCase()} first.`
+                : 'All four stay open.'}
             </p>
             <ul className="mt-3 space-y-3">
               {orderedSeasonal.map((task) => (
@@ -122,9 +117,7 @@ export function ResearchView() {
             <h2 id="collections-heading" className="font-display text-xl font-bold text-gold-plate">
               Collection Challenges
             </h2>
-            <p className="mt-1 text-xs text-violet-400">
-              Groups of cards from the physical deck, built from what the cards themselves say.
-            </p>
+            <p className="mt-1 text-xs text-violet-400">Sets from the physical deck.</p>
             <ul className="mt-3 space-y-3">
               {collections.map((task) => (
                 <TaskCard key={task.id} progress={progressForTask(task, world)} />

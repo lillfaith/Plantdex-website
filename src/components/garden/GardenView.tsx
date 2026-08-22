@@ -107,24 +107,20 @@ export function GardenView() {
         )}
       </div>
 
+      {/* The three stages are already labelled under every sprite, so this says what the
+          labels cannot: what moves a plant along, and that waiting never does. */}
       <div className="panel mt-4 p-4">
         <h2 className="text-xs font-bold tracking-wide text-violet-300 uppercase">
           How plants grow
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Each plant here is one of your cards, and it grows through the same three stages the
-          card does. Finding a plant sows it as a{' '}
-          <strong className="text-gold-300">sprout</strong>. Learning its card makes it{' '}
-          <strong className="text-gold-300">grow</strong>. Finding the plant again, after you
-          have learned it, makes it <strong className="text-gold-300">flower</strong> — and
-          masters the card.
+          Find it — <strong className="text-gold-300">sprout</strong>. Learn its card —{' '}
+          <strong className="text-gold-300">growing</strong>. Find it again —{' '}
+          <strong className="text-gold-300">flowering</strong>.
         </p>
         <p className="mt-2 text-xs text-violet-400">
-          Nothing here grows just by waiting. There is no watering, no timer and no clock —
-          growth follows what you actually go and see.
-        </p>
-        <p className="mt-2 text-xs text-violet-400">
-          Your garden grows with every Plantdex collection you add to your Herbdex.
+          Nothing grows by waiting. No watering, no timers. Your garden grows with every
+          Plantdex collection.
         </p>
       </div>
     </main>

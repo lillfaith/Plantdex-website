@@ -48,15 +48,17 @@ export default function HerbdexPage() {
       </div>
 
       {/* The deck's own explanation of Encounter Rate, so the game term is not read as a
-          statement about how safe or potent a plant is. */}
-      <div className="panel mt-8 p-4">
-        <h2 className="text-xs font-bold tracking-wide text-violet-300 uppercase">
+          statement about how safe or potent a plant is. Behind a disclosure because it is
+          reference text: available to anyone who wonders, not occupying the page for
+          everyone who doesn't. The wording is the card's and must not be paraphrased. */}
+      <details className="panel mt-8 p-4">
+        <summary className="cursor-pointer text-xs font-bold tracking-wide text-violet-300 uppercase">
           About encounter rate
-        </h2>
-        <div className="mt-1.5">
+        </summary>
+        <div className="mt-2">
           <EncounterRateNote />
         </div>
-      </div>
+      </details>
 
       <div className="mt-8">
         <BeyondCollection />

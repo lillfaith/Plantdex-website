@@ -1,93 +1,112 @@
-# Candidate references — UNVERIFIED
+# Source candidates — awaiting verification
 
-**Nothing in this file is used by the site.** It is a research shortlist for a human to
-check. Only entries in `src/data/sources.json` with `"verified": true` are ever rendered,
-and moving something here into that file means someone has opened it and confirmed it
-supports the specific claim it is attached to.
+**Status of every entry in this file: UNVERIFIED.**
 
-## Why these are unverified
+Nothing here has been opened and read. These are search results recorded against the
+specific card claim they appear relevant to, so a human can work through them quickly.
 
-They were found with a web search from an environment whose egress proxy blocks the
-reference hosts themselves — `en.wikipedia.org`, `www.ncbi.nlm.nih.gov`,
-`powo.science.kew.org` and `plants.usda.gov` all refuse both `curl` and page fetches. So
-these titles and URLs come from search-engine results that could not be opened and read.
+## Why nothing here is verified
 
-That is exactly the situation the product brief warns about: *"Do NOT allow AI-generated
-citations that have not been verified."* Publishing them as citations would be asserting
-something unchecked, so they stay here until a human confirms them.
+The build environment blocks outbound HTTPS to every reference host. `WebSearch` works
+(it routes through the API); `WebFetch` returns `EGRESS_BLOCKED` for `plants.usda.gov`,
+`en.wikipedia.org`, `powo.science.kew.org`, `pubmed.ncbi.nlm.nih.gov` and
+`plants.ces.ncsu.edu` — tested, not assumed.
+
+So a search can tell me a source *exists and looks relevant*. It cannot tell me the source
+says what a card says. Marking these `verified: true` off a search snippet is exactly the
+"searches for something vaguely similar → attaches citation" failure the brief rules out,
+so none of them reach the website: `resolveRefs()` drops anything not in
+`src/data/sources.json` with `verified: true`, and that file still contains only the deck.
 
 ## How to verify one
 
-1. Open the URL and confirm it resolves and is about the right species.
-2. Confirm it actually supports the specific claim you want to attach it to — a
-   phytochemistry review supports a compound list, not a "healing trait".
-3. Record author/organisation, year, publication and the access date.
-4. Add it to `src/data/sources.json` with `"verified": true`.
-5. Attach it with a `SourceRef` on the herb's `sources`, or on `sectionSources` for a
-   single section.
+1. Open the URL and read the relevant part.
+2. Confirm it supports **the specific claim in the Claim column** — not the plant generally.
+3. Add the source to `src/data/sources.json` with `"verified": true`.
+4. Attach it in `scripts/build_deck.py` as a `claimSources` entry on that herb, then
+   re-run the deck build.
+5. If it does *not* support the claim, add a row to `docs/card-claim-review.md` instead.
 
-## What still needs sourcing
-
-The cards carry six kinds of content. They need different kinds of reference, and should
-not share one:
-
-| Card content | Appropriate reference |
-| --- | --- |
-| Scientific name | A taxonomic authority (Kew POWO, USDA PLANTS) |
-| Signature compounds | Phytochemistry literature for that species |
-| Healing traits | Ethnobotanical literature, described as *traditional use* |
-| Taste / aromatic profile | Ethnobotanical or culinary reference |
-| Preparations, usable parts | Ethnobotanical reference |
-
-A reference supporting traditional use must never be presented as evidence of efficacy.
+Claim categories follow `SOURCEABLE_SECTIONS` in `src/lib/types.ts`:
+`identification · habitat · facts · growing · traditionalUse · preparations · cautions`.
 
 ---
 
-## Shortlist
+## #01 Dandelion — *Taraxacum officinale*
 
-### Achillea millefolium — Yarrow (card #33)
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| Family Asteraceae | identification | https://plants.ces.ncsu.edu/plants/taraxacum-officinale/ | Univ. extension |
+| Family / accepted name | identification | https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1 | Botanical institution |
+| Native to Eurasia, introduced to N. America | habitat | https://plants.usda.gov/plant-profile/TAOFO | Government |
+| Taxonomic treatment | identification | http://www.efloras.org/florataxon.aspx?flora_id=1&taxon_id=220013281 | Flora of N. America |
+| Occurrence in lawns/turf | habitat | https://extension.umn.edu/weeds/dandelions | Univ. extension |
+| Traditional diuretic use | traditionalUse | *none recorded yet — needs a pharmacopoeial source* | — |
 
-- *Comparative Phytoprofiling of Achillea millefolium Morphotypes* — PMC11013869
-  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11013869/>
-- *Ethnobotany and phytochemistry of yarrow, Achillea millefolium, Compositae* —
-  Economic Botany <https://link.springer.com/article/10.1007/BF02858720>
-- *Antioxidant, Anti-Inflammatory, and Antibacterial Properties of an Achillea
-  millefolium L. Extract* — PMC9598488
-  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9598488/>
+Card claims still needing a candidate: compounds (Kaempferol, Taraxasterol, Quercetin,
+Inulin), preparations (roasted root), usable parts.
 
-Relevant to the card's `Achilleine` and `Azulene` entries. Search summaries described
-achilleine as an alkaloid and azulene/chamazulene as a sesquiterpene constituent, which is
-consistent with the card — but that consistency has not been confirmed against the papers.
+## #04 Ragweed — *Ambrosia artemisiifolia*
 
-### Taraxacum officinale — Dandelion (card #01)
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| Family Asteraceae; ragweed dermatitis in N. America | identification, cautions | https://pmc.ncbi.nlm.nih.gov/articles/PMC4861741/ | Peer-reviewed |
+| Contact allergy via sesquiterpene lactones | cautions | https://www.ncbi.nlm.nih.gov/pubmed/12492548 | Peer-reviewed |
+| Sesquiterpene lactone content by growth stage | facts | https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11314284/ | Peer-reviewed |
 
-- *Dandelion (Taraxacum Genus): A Review of Chemical Constituents and Pharmacological
-  Effects* — PMC10343869 <https://pmc.ncbi.nlm.nih.gov/articles/PMC10343869/>
-- *Bioactive Compounds from Vegetal Organs of Taraxacum Species* — PMC11764760
-  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11764760/>
-- *Taraxacum officinale and related species — an ethnopharmacological review*
-  <https://www.sciencedirect.com/science/article/abs/pii/S0378874115002263>
+⚠️ See `docs/card-claim-review.md` — this card lists topical preparations with no allergy caution.
 
-Relevant to `Kaempferol`, `Taraxasterol`, `Quercetin`, `Inulin`, and to the card's
-"Bitter" taste note.
+## #08 Stinging Nettle — *Urtica dioica*
 
-### Urtica dioica — Stinging Nettle (card #08)
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| Family Urticaceae | identification | https://plants.ces.ncsu.edu/plants/urtica-dioica/ | Univ. extension |
+| Stinging trichomes contain histamine, acetylcholine, serotonin | facts | https://pubmed.ncbi.nlm.nih.gov/27141606/ | Peer-reviewed |
+| Botanical characteristics, constituents | facts | https://link.springer.com/article/10.1007/s13659-023-00380-5 | Peer-reviewed |
+| Young leaves cooked as a potherb | preparations | https://www.britannica.com/plant/stinging-nettle | Reference (weaker — prefer an extension source) |
 
-- *Stinging Nettle (Urtica dioica L.): Nutritional Composition, Bioactive Compounds, and
-  Food Functional Properties* — PMC9413031
-  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9413031/>
-- *Antioxidant Activity of Urtica dioica* — PMC9774934
-  <https://pmc.ncbi.nlm.nih.gov/articles/PMC9774934/>
-- *Stinging Nettle (Urtica dioica) Roots: The Power Underground — A Review*
-  <https://www.mdpi.com/2223-7747/14/2/279>
+## #31 Elderberry — *Sambucus* spp.
 
-Relevant to `Chlorophyll`, `Histamine`, `Iron`, `Silica` and to the card's usable-parts
-list (leaf, stem, root, shoot).
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| Cyanogenic glycoside (sambunigrin) in leaves/stems/seeds | cautions | https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7961730/ | Peer-reviewed |
+| Cooking required; raw berries not to be eaten | cautions, preparations | https://extension.umn.edu/cottage-food-connection/elderberries-safe-way | Univ. extension |
+| Culinary handling, remove stems/leaves/unripe fruit | preparations | https://extension.psu.edu/elderberry-in-the-garden-and-the-kitchen | Univ. extension |
+| Glycoside levels by plant part and altitude | facts | https://pubmed.ncbi.nlm.nih.gov/27734518/ | Peer-reviewed |
+
+⚠️ See `docs/card-claim-review.md` — card lists "Cold soak" and berry/bark as usable, with no cooking requirement.
+
+## #32 St. John's Wort — *Hypericum perforatum*
+
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| CYP3A4 induction; interaction mechanism | cautions | https://pubmed.ncbi.nlm.nih.gov/11673747/ | Peer-reviewed |
+| Hyperforin as the driver of enzyme induction | cautions, facts | https://pubmed.ncbi.nlm.nih.gov/16477470/ | Peer-reviewed |
+| Clinical risks of co-administration | cautions | https://pubmed.ncbi.nlm.nih.gov/28885074/ | Peer-reviewed |
+| Interactions incl. oral contraceptives, ciclosporin, warfarin | cautions | https://pubmed.ncbi.nlm.nih.gov/15260917/ | Peer-reviewed |
+| General monograph | cautions, traditionalUse | https://www.ncbi.nlm.nih.gov/books/NBK557465/ | NCBI Bookshelf (StatPearls) |
+
+⚠️ See `docs/card-claim-review.md` — highest-priority flag in the deck.
+
+## #33 Yarrow — *Achillea millefolium*
+
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| Family Asteraceae; lacy, non-triangular leaves | identification | https://plants.ces.ncsu.edu/plants/achillea-millefolium/ | Univ. extension |
+| Accepted name and range | identification, habitat | https://plants.usda.gov/plant-profile/ACMI2 | Government |
+| Native range / N. American distribution | habitat | https://www.wildflower.org/plants/result.php?id_plant=acmi2 | Botanical institution |
+| Poison hemlock identification (the printed "poisonous lookalike") | cautions | https://extension.umn.edu/identify-invasive-species/poison-hemlock | Univ. extension |
+
+⚠️ See `docs/card-claim-review.md` — the printed warning does not name the lookalike.
 
 ---
 
-## Remaining 42 species
+## Not yet researched
 
-Not yet researched. The three above were done as a representative sample to establish the
-pattern and prove the shortlist is worth keeping separate from the shipped registry. The
-same treatment is needed for the rest before any of it can appear on the site.
+Cards #02–03, #05–07, #09–30, #34–45. The pattern above is the template: one row per
+claim, an authoritative candidate, and the section it belongs to.
+
+Source-quality order used when choosing candidates, per the brief: peer-reviewed →
+government database → university extension → botanical institution → pharmacopoeia →
+high-quality reference. SEO herbal blogs were excluded from every search by domain filter,
+not by judgement after the fact.

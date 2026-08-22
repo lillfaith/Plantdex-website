@@ -80,8 +80,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
 
       {stage === 'discovered' && (
         <p className="mt-4 mb-3 text-sm text-violet-200">
-          You&apos;ve found this plant. Read its card, then answer a few questions about what it
-          says to mark it <strong className="text-gold-300">Learned</strong>.
+          Read the card, then answer a few questions about it.
         </p>
       )}
 
@@ -96,13 +95,12 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
       {stage === 'learned' && (
         <div className="mt-4">
           <p className="text-sm text-violet-200">
-            You know this card. Go and find the plant again — log{' '}
-            {stillNeeded === 1 ? 'one more sighting' : `${stillNeeded} more sightings`} below to
-            master it.
+            Find it again and log{' '}
+            {stillNeeded === 1 ? 'the sighting' : `${stillNeeded} more sightings`} below.
           </p>
           <p className="mt-1.5 text-xs text-violet-400">
-            Worth <span className="font-semibold text-gold-300">+{XP_FOR_MASTERY} XP</span>. Mastery
-            is the one stage you cannot earn from the sofa.
+            <span className="font-semibold text-gold-300">+{XP_FOR_MASTERY} XP</span> — the one
+            stage you can&apos;t earn from the sofa.
           </p>
         </div>
       )}
@@ -118,11 +116,10 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
           <div>
             <p className="text-sm font-bold text-gold-300">Mastered</p>
             <p className="text-xs text-violet-300">
-              Found, learned, and found again
+              Found, learned, found again
               {masteredAt && (
                 <>
-                  {' '}
-                  — completed on{' '}
+                  {' — '}
                   <time dateTime={masteredAt}>
                     {new Date(masteredAt).toLocaleDateString(undefined, {
                       year: 'numeric',
@@ -132,16 +129,20 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
                   </time>
                 </>
               )}
-              . This plant is flowering in your garden.
+              .
             </p>
           </div>
         </div>
       )}
 
-      <p className="mt-4 text-xs text-violet-400">
-        Discovery is worth {herb.xp} XP, learning the card {XP_FOR_LEARNING}, mastering it{' '}
-        {XP_FOR_MASTERY}. Each is awarded once and can never be earned twice.
-      </p>
+      {/* The full ladder is worth showing once, at the start. Later stages already state
+          the one number still on offer, so repeating the table is noise. */}
+      {stage === 'discovered' && (
+        <p className="mt-4 text-xs text-violet-400 tabular-nums">
+          Find {herb.xp} · Learn {XP_FOR_LEARNING} · Master {XP_FOR_MASTERY} XP. Each awarded
+          once.
+        </p>
+      )}
     </section>
   );
 }

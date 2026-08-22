@@ -69,7 +69,6 @@ export function DiscoverPanel({
             <p className="text-sm font-bold text-gold-300">Discovered</p>
             {discoveredAt && (
               <p className="text-xs text-violet-300">
-                Added to your Herbdex on{' '}
                 <time dateTime={discoveredAt}>
                   {new Date(discoveredAt).toLocaleDateString(undefined, {
                     year: 'numeric',
@@ -106,13 +105,12 @@ export function DiscoverPanel({
           to your Herbdex?
         </h2>
         <p className="mt-2 text-sm text-violet-200">
-          Only confirm if you actually found this plant in the real world. This awards{' '}
-          <strong className="text-gold-300">{herb.xp} XP</strong> and can only be claimed
+          Only if you actually found it outdoors. <strong className="text-gold-300">{herb.xp} XP</strong>,
           once.
         </p>
         <p className="mt-2 text-xs text-violet-300">
-          Recording a find is not a confirmation that you identified it correctly, and never
-          makes a wild plant safe to eat, drink, or apply.
+          Logging a find isn&apos;t confirming an identification, and never makes a plant safe
+          to use.
         </p>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <button

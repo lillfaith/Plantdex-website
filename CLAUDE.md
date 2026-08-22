@@ -105,10 +105,18 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   any text colour that is not in the palette.
 - **`SafetyNotice` appears on the Herbdex and every herb page.** Do not remove it, and do
   not soften traditional-use wording into medical claims. It has two weights: `brief` for
-  pages that only list or track plants, `standard` (the full disclaimer) for any page where
-  ingestion, preparation, identification or medicinal traditions are discussed. Choosing
-  `brief` on such a page is a safety regression, not a design tweak. `/safety` carries the
-  long version and every notice links to it.
+  pages that only list or track plants, `standard` for any page where ingestion,
+  preparation, identification or medicinal traditions are discussed. Choosing `brief` on
+  such a page is a safety regression, not a design tweak.
+- **The full disclaimer lives in exactly one place — `/safety`.** It was previously repeated
+  in full on three pages, which is how a warning stops being read: by the third identical
+  block people scroll past it. `standard` now takes a `context` naming the risk *that page*
+  raises, which is shorter and far likelier to be read than a general disclaimer someone has
+  already skipped twice. Every notice links to the full text. A warning may only be
+  shortened by making it **more** specific, never less.
+- **Say each safety point once, where its content is.** "Traditional use is not evidence"
+  was appearing four times on a single herb page. It now sits under the Healing Traits
+  heading it qualifies, and nowhere else.
 - **The sources section states what is NOT sourced**, not just what is. Listing only
   existing citations lets a reader assume the rest are cited too — worse than looking thin
   for a product about plants people take outdoors. `sectionCitations()` returns both halves

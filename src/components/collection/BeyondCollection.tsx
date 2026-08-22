@@ -40,12 +40,8 @@ export function BeyondCollection() {
       </h2>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-violet-200">
-        {CURRENT_COLLECTION.shortName} is a complete {CURRENT_COLLECTION.size}-card deck —
-        this Herbdex fills up entirely without anything else.
-      </p>
-      <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-violet-300">
-        More Plantdex collections are planned. Future sets would expand this Herbdex with
-        new plants and new places to look for them.
+        A complete {CURRENT_COLLECTION.size}-card deck — this Herbdex fills up without
+        anything else. More collections are planned.
       </p>
 
       {/* Closes the loop for anyone who reads the line above and thinks "so when?".

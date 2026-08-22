@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { DISCLAIMER, herbsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
+import { herbsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { SEASONS, type Season } from '@/lib/types';
 
@@ -43,12 +43,9 @@ export default function SeasonsPage() {
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
           These are the seasons printed on the cards. Real timing shifts with region,
-          weather, elevation, microclimate and the individual plant — a species flowering in
-          June in one place may not do so until August an hour north, or may sit out a year
-          entirely. Treat this as a rough guide to when to start looking, never as a harvesting
-          schedule.
+          weather and elevation — a plant flowering in June here may not until August an
+          hour north. A guide to when to start looking, not a harvesting schedule.
         </p>
-        <p className="mt-2 text-xs text-violet-400">{DISCLAIMER.availability}</p>
       </aside>
 
       <div className="mt-8 space-y-8">
@@ -110,9 +107,8 @@ export default function SeasonsPage() {
       </div>
 
       <p className="mt-10 text-xs leading-relaxed text-violet-400">
-        Region selection and month-by-month phenology are not built yet. They need curated,
-        cited data per region — inventing it here would be guessing at something people
-        might act on outdoors.
+        Region and month-by-month timing need cited data per region. Guessing at it is
+        guessing at something people act on outdoors, so it waits.
       </p>
     </main>
   );

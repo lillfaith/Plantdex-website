@@ -106,8 +106,7 @@ export function MySightings({ herb }: { herb: Herb }) {
 
       {sightings.length === 0 ? (
         <p className="mt-3 text-sm text-violet-300">
-          No sightings yet. Each time you come across {herb.commonName}, log what you saw —
-          over time this becomes your own field guide to it.
+          No sightings yet. Log each time you come across {herb.commonName}.
         </p>
       ) : (
         <ol className="mt-4 space-y-4">

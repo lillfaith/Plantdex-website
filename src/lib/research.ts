@@ -149,8 +149,8 @@ function seasonalTask(season: Season): ResearchTask {
     title: `${label} Field Research`,
     description:
       supply === 1
-        ? `The deck carries a single ${label.toLowerCase()} card. Find it, learn it, and find it again.`
-        : `Work through the ${supply} cards the deck marks as best found in ${label.toLowerCase()}.`,
+        ? `One ${label.toLowerCase()} card in the deck. Find it, learn it, find it again.`
+        : `${supply} cards, best found in ${label.toLowerCase()}.`,
     herbIds: cards.map((herb) => herb.id),
     steps,
   };
@@ -177,8 +177,7 @@ function backyardTask(): ResearchTask {
     id: 'collection:backyard',
     kind: 'collection',
     title: 'Backyard Collection',
-    description:
-      'Five of the most findable plants in the deck. Most of these turn up in a lawn, a verge or a path edge without going anywhere special.',
+    description: 'Five plants that turn up in a lawn, a verge or a path edge.',
     herbIds: [...BACKYARD_IDS],
     // One step per card, so the challenge reads as the checklist it is and each row can
     // show that card's artwork.
@@ -199,8 +198,7 @@ function hardToFindTask(): ResearchTask {
     id: 'collection:hard-to-find',
     kind: 'collection',
     title: 'Hard to Find',
-    description:
-      'The other end of the deck. Encounter Rate is the deck’s own estimate of how often you will come across a plant — these are the ones it rates hardest.',
+    description: 'The cards the deck rates hardest to come across.',
     herbIds: herbsInDeckOrder()
       .filter((herb) => herb.rarity === 'Rare' || herb.rarity === 'Epic')
       .map((herb) => herb.id),
@@ -258,7 +256,7 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
     verb: 'Find',
     title: (herb) => `Find ${herb.commonName}`,
     description: (herb) =>
-      `Card ${cardRef(herb)} is still a silhouette in your Herbdex. The deck rates it ${herb.rarity} and best found in ${SEASON_LABEL[herb.season].toLowerCase()}.`,
+      `Card ${cardRef(herb)} · ${herb.rarity} · best found in ${SEASON_LABEL[herb.season].toLowerCase()}.`,
     stepLabel: (herb) => `Discover ${herb.commonName}`,
     satisfied: (herb, world) => Boolean(world.state.discoveries[herb.id]),
     available: () => true,
@@ -267,8 +265,7 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
     id: 'learn',
     verb: 'Study',
     title: (herb) => `Study ${herb.commonName}`,
-    description: (herb) =>
-      `You have card ${cardRef(herb)}. Read it, then pass its card check to mark it learned.`,
+    description: (herb) => `Read card ${cardRef(herb)}, then pass its check.`,
     stepLabel: (herb) => `Learn ${herb.commonName}’s card`,
     satisfied: (herb, world) => Boolean(world.state.learned[herb.id]),
     // Learning a card you have not found is not a challenge, it is a dead end.
@@ -278,8 +275,7 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
     id: 'revisit',
     verb: 'Revisit',
     title: (herb) => `Go back to ${herb.commonName}`,
-    description: (herb) =>
-      `You have found card ${cardRef(herb)} once. Find it again and log what you saw.`,
+    description: (herb) => `Find card ${cardRef(herb)} again and log what you saw.`,
     stepLabel: (herb) => `Log a sighting of ${herb.commonName}`,
     satisfied: (herb, world) => (world.sightingCounts[herb.id] ?? 0) > 0,
     available: (herb, world) => Boolean(world.state.discoveries[herb.id]),
@@ -288,8 +284,7 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
     id: 'master',
     verb: 'Master',
     title: (herb) => `Master ${herb.commonName}`,
-    description: (herb) =>
-      `Card ${cardRef(herb)} is learned. One more real sighting completes it.`,
+    description: (herb) => `Card ${cardRef(herb)} is learned. One more sighting completes it.`,
     stepLabel: (herb) => `Master ${herb.commonName}’s card`,
     satisfied: (herb, world) => Boolean(world.state.mastered[herb.id]),
     available: (herb, world) => Boolean(world.state.learned[herb.id]),

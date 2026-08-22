@@ -111,6 +111,26 @@ export const SOURCEABLE_SECTIONS = [
 ] as const;
 export type SourceableSection = (typeof SOURCEABLE_SECTIONS)[number];
 
+/**
+ * A single claim, and what supports it.
+ *
+ * The finest granularity the citation system offers, and the one that makes review
+ * possible: a reviewer can read `claim` and check whether the attached sources actually
+ * support *that sentence*, rather than being told ten sources support a whole page. The
+ * `claim` text is stored precisely so that check has something to check against.
+ *
+ * Internal structure — the UI groups these under their section rather than exposing the
+ * ids to readers.
+ */
+export interface ClaimSource {
+  /** Stable id within the herb, e.g. 'family' or 'habitat-range'. */
+  claimId: string;
+  section: SourceableSection;
+  /** The claim in the words the site or card states it. */
+  claim: string;
+  sources: SourceRef[];
+}
+
 export const SECTION_LABEL: Record<SourceableSection, string> = {
   identification: 'Identification',
   habitat: 'Habitat & range',
@@ -187,6 +207,8 @@ export interface Herb {
   sources?: SourceRef[];
   /** Provenance for individual sections. Absent sections cite the card only. */
   sectionSources?: Partial<Record<SourceableSection, SourceRef[]>>;
+  /** Provenance for individual claims — the finest granularity, and the reviewable one. */
+  claimSources?: ClaimSource[];
 }
 
 export interface Disclaimer {

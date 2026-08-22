@@ -8,25 +8,34 @@ import { DISCLAIMER } from '@/lib/deck';
  * medical advice, and misidentifying a wild plant has real consequences.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * LESS VISUAL DOMINANCE, NOT LESS SAFETY
+ * PROGRESSIVE DISCLOSURE
  *
- * The full disclaimer used to sit at the bottom of every page as the largest block of
- * text on it, which competed with the deck and — worse — trained people to scroll past
- * it. It now comes in two weights, and BOTH link to the full page at /safety:
+ * The deck's full 59-word disclaimer used to be repeated on three pages. Repetition is
+ * how a warning stops being read: by the third identical block people scroll past it, and
+ * it crowded out the deck while doing so. The full text now lives in exactly one place —
+ * /safety — and every page links there.
  *
- *   brief    — one line. For pages that only list or track plants.
- *   standard — the deck's disclaimer in full. For pages where ingestion, preparation,
- *              identification or medicinal traditions are actually discussed.
+ *   brief    — one line. Pages that only list or track plants.
+ *   standard — one line plus the risk that page actually raises. Pages where ingestion,
+ *              preparation, identification or medicinal traditions are discussed.
  *
- * Choosing `brief` on a page that discusses preparation is a safety regression, not a
- * design choice. When in doubt, use `standard`.
+ * `standard` is SHORTER than it used to be, not weaker: it names the specific hazard in
+ * front of the reader instead of restating a general disclaimer they have already seen.
+ * Choosing `brief` on a page that discusses preparation is still a safety regression.
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * The wording is the deck's own, transcribed verbatim from the Disclaimer card (#47) so
- * the physical product and the site say exactly the same thing. Edit it in
+ * The full wording is the deck's own, transcribed verbatim from the Disclaimer card (#47)
+ * so the physical product and the site say exactly the same thing. Edit it in
  * scripts/build_deck.py (DISCLAIMER), not here.
  */
-export function SafetyNotice({ variant = 'standard' }: { variant?: 'standard' | 'brief' }) {
+export function SafetyNotice({
+  variant = 'standard',
+  /** The risk this particular page raises. Shown only by `standard`. */
+  context = 'Never eat, drink or apply a wild plant on an uncertain identification.',
+}: {
+  variant?: 'standard' | 'brief';
+  context?: string;
+}) {
   if (variant === 'brief') {
     return (
       <aside
@@ -36,26 +45,28 @@ export function SafetyNotice({ variant = 'standard' }: { variant?: 'standard' | 
         <span id="safety-heading" className="font-bold tracking-wide text-gold-400 uppercase">
           <span aria-hidden="true">⚠</span> Herbal safety
         </span>
-        <span>
-          Educational use only. Always identify a plant properly before use — never from a
-          card or an app alone.
-        </span>
+        <span>For education only. Always verify identification before use.</span>
         <SafetyLink />
       </aside>
     );
   }
 
   return (
-    <aside aria-labelledby="safety-heading" className="mx-auto max-w-2xl">
+    <aside
+      aria-labelledby="safety-heading"
+      className="mx-auto max-w-2xl rounded-xl border border-gold-500/30 bg-gold-500/[0.06] p-4"
+    >
       <h2
         id="safety-heading"
         className="flex items-center gap-2 text-xs font-bold tracking-wide text-gold-400 uppercase"
       >
         <span aria-hidden="true">⚠</span> Herbal safety
       </h2>
-      <p className="mt-1.5 text-xs leading-relaxed text-violet-300">{DISCLAIMER.main}</p>
-      <p className="mt-1.5 text-xs leading-relaxed text-violet-400">{DISCLAIMER.availability}</p>
-      <p className="mt-2">
+      <p className="mt-1.5 text-sm leading-relaxed text-violet-200">{context}</p>
+      <p className="mt-2 text-xs text-violet-400">
+        For education only — not medical advice.
+      </p>
+      <p className="mt-1">
         <SafetyLink />
       </p>
     </aside>

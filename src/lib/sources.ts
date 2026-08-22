@@ -1,5 +1,5 @@
 import sourcesJson from '@/data/sources.json';
-import type { Source, SourceableSection, SourceRef } from './types';
+import type { ClaimSource, Source, SourceableSection, SourceRef } from './types';
 import { SECTION_LABEL, SOURCEABLE_SECTIONS } from './types';
 
 /**
@@ -84,6 +84,47 @@ export function sectionCitations(
   }
 
   return { cited, awaiting };
+}
+
+export interface ResolvedClaim {
+  claimId: string;
+  section: SourceableSection;
+  claim: string;
+  sources: ResolvedSource[];
+}
+
+/**
+ * Claim-level citations that actually resolve to verified sources.
+ *
+ * Same gate as everywhere else: a claim whose only references are unverified comes back
+ * with nothing, so it reads as uncited rather than as cited-by-something-unchecked.
+ */
+export function claimCitations(claims: ClaimSource[] | undefined): ResolvedClaim[] {
+  if (!claims?.length) return [];
+  const out: ResolvedClaim[] = [];
+  for (const entry of claims) {
+    const sources = resolveRefs(entry.sources);
+    if (sources.length === 0) continue;
+    out.push({ claimId: entry.claimId, section: entry.section, claim: entry.claim, sources });
+  }
+  return out;
+}
+
+/** How many distinct verified sources back this herb, at any granularity. */
+export function countSources(herb: {
+  sources?: SourceRef[];
+  sectionSources?: Partial<Record<SourceableSection, SourceRef[]>>;
+  claimSources?: ClaimSource[];
+}): number {
+  const ids = new Set<string>();
+  for (const { source } of resolveRefs(herb.sources)) ids.add(source.id);
+  for (const { sources } of sectionCitations(herb.sectionSources).cited) {
+    for (const { source } of sources) ids.add(source.id);
+  }
+  for (const { sources } of claimCitations(herb.claimSources)) {
+    for (const { source } of sources) ids.add(source.id);
+  }
+  return ids.size;
 }
 
 /** Human-readable one-line citation. Kept in one place so every reference looks the same. */

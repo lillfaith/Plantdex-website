@@ -33,7 +33,7 @@ const GUIDES: Guide[] = [
     icon: '🫖',
     title: 'Infusions',
     summary:
-      'Steeping soft plant material — leaves, flowers, delicate aerial parts — in water that has just boiled.',
+      'Soft parts — leaves, flowers — steeped in water that has just boiled.',
     steps: [
       'Bring water to the boil and take it off the heat.',
       'Pour it over the plant material in a vessel you can cover.',
@@ -133,21 +133,15 @@ export default function PreparationsPage() {
         How these preparations are made, in general terms.
       </p>
 
+      {/* One warning, naming this page's actual risk: that a method existing here reads
+          as permission to use it on something. The general disclaimer lives on /safety. */}
       <aside className="panel mt-5 border-stat-temp/50 p-4">
         <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
           <span aria-hidden="true">⚠</span> These are methods, not recipes
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          A method described here is <strong>not</strong> a statement that any plant in the
-          deck is suitable for it. Suitability is species-specific and sometimes
-          part-specific, and getting it wrong can cause real harm.
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Never prepare a wild plant on the strength of an identification you are not certain
-          of. Confirm with reliable botanical references and qualified local expertise, and
-          check with a healthcare professional before using any plant medicinally —
-          particularly if you are pregnant, nursing, taking medication, or preparing
-          something for a child.
+          A method appearing here is <strong>not</strong> a statement that any plant suits
+          it. Suitability is species-specific, and getting it wrong can cause real harm.
         </p>
       </aside>
 
@@ -174,14 +168,12 @@ export default function PreparationsPage() {
       </div>
 
       <p className="mt-8 text-xs leading-relaxed text-violet-400">
-        Plant-specific preparation instructions are deliberately absent. They will only
-        appear where curated, cited information supports them for that species — not
-        inferred from the fact that a method exists.
+        Plant-specific instructions are absent on purpose. They appear only where cited
+        information supports them for that species.
       </p>
 
-      {/* The most ingestion-adjacent page on the site, so it carries the full notice. */}
-      <div className="mt-8 border-t border-violet-700/40 pt-6">
-        <SafetyNotice />
+      <div className="mt-8">
+        <SafetyNotice context="Never prepare a wild plant on an identification you are not certain of — and check with a healthcare professional before using any plant medicinally." />
       </div>
     </main>
   );

@@ -108,11 +108,10 @@ export function ProgressHeader() {
             {CURRENT_COLLECTION.shortName} complete
           </p>
           <p className="mt-1 text-sm text-violet-200">
-            You discovered every plant in the original Plantdex deck — all{' '}
-            {deckSize} of them, in the real world.
+            All {deckSize} plants in the original deck, found in the real world.
           </p>
           <p className="mt-2 text-xs text-violet-400">
-            Your Herbdex may have more pages to fill someday.
+            More pages to fill someday.
           </p>
         </div>
       )}
@@ -140,8 +139,8 @@ export function ProgressHeader() {
         />
       </div>
       <p className="mt-1.5 text-xs text-violet-400">
-        {learnedCount} card{learnedCount === 1 ? '' : 's'} learned. A card is mastered once
-        you&apos;ve found it, learned it, and found it again.
+        {learnedCount} card{learnedCount === 1 ? '' : 's'} learned. Found → learned → found
+        again.
       </p>
 
       <h3 className="mt-4 text-xs font-bold tracking-wide text-violet-300 uppercase">

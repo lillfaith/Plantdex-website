@@ -32,7 +32,7 @@ export function ResearchTeaser() {
         <span className="block text-sm font-bold text-gold-plate">Field Research</span>
         <span className="block truncate text-xs text-violet-300">
           {!ready
-            ? 'Small reasons to take the deck outside'
+            ? 'Reasons to take the deck outside'
             : next
               ? `Next up: ${next.title}`
               : 'All caught up — new suggestions tomorrow'}

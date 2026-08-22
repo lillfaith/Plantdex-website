@@ -1,83 +1,78 @@
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
-import { formatCitation, resolveRefs, sectionCitations } from '@/lib/sources';
+import {
+  claimCitations,
+  countSources,
+  formatCitation,
+  resolveRefs,
+  sectionCitations,
+  type ResolvedSource,
+} from '@/lib/sources';
 
 /**
- * "Sources & Further Reading".
+ * "Sources (N)" — collapsed by default.
  *
- * Renders only references that resolve to a *verified* registry entry, so an unchecked
- * citation cannot borrow the credibility of a real one.
+ * A card page is a collectible object first. Citations belong to the person who asks
+ * "where did this come from?", not to everyone who opens the page, so this is a one-line
+ * summary that expands. The answer is always one tap away and never in the way.
  *
- * It also states what is NOT independently sourced. Listing only the citations that exist
- * would leave a reader to assume the rest are cited too — which, for a product about
- * plants people take outdoors, is a worse failure than looking thin. Right now that is
- * every section on every card: the deck is the source, and nothing has been added to it.
+ * Two rules it keeps from the citation system:
+ *  • Only VERIFIED sources render, at any granularity.
+ *  • It states what is NOT independently sourced. Listing only what is cited would let a
+ *    reader assume the rest is cited too, which for a product about plants people take
+ *    outdoors is a worse failure than looking thin.
  */
 export function SourcesSection({ herb }: { herb: Herb }) {
   const entryLevel = resolveRefs(herb.sources);
   const { cited, awaiting } = sectionCitations(herb.sectionSources);
+  const claims = claimCitations(herb.claimSources);
+  const total = countSources(herb);
 
-  if (entryLevel.length === 0 && cited.length === 0) return null;
+  if (total === 0) return null;
 
   return (
-    <section aria-labelledby="sources-heading" className="panel p-5">
-      <h2 id="sources-heading" className="text-sm font-bold tracking-wide text-gold-400 uppercase">
-        Sources &amp; further reading
-      </h2>
-      <p className="mt-1 mb-3 text-xs text-violet-400">
-        Where the information on this page comes from.
-      </p>
+    <details className="panel p-5">
+      <summary className="cursor-pointer text-sm font-bold tracking-wide text-gold-400 uppercase">
+        Sources ({total})
+      </summary>
 
       {entryLevel.length > 0 && (
-        <ul className="space-y-3">
-          {entryLevel.map(({ source, detail }) => (
-            <li key={source.id + (detail ?? '')} className="text-sm">
-              <p className="font-semibold text-violet-100">
-                {source.url ? (
-                  <a
-                    href={source.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-2 hover:text-gold-400"
-                  >
-                    {formatCitation(source)}
-                  </a>
-                ) : (
-                  formatCitation(source)
-                )}
-              </p>
-              {detail && <p className="text-xs text-violet-300">{detail}</p>}
-              {source.note && <p className="mt-0.5 text-xs text-violet-400">{source.note}</p>}
+        <ul className="mt-3 space-y-3">
+          {entryLevel.map((entry) => (
+            <li key={entry.source.id + (entry.detail ?? '')}>
+              <Citation entry={entry} />
             </li>
           ))}
         </ul>
       )}
 
-      {/* Per-section citations, once verified ones exist for a given card. */}
+      {/* Per-section, once verified sources exist for a given card. */}
       {cited.length > 0 && (
         <dl className="mt-4 space-y-2 border-t border-violet-700/50 pt-3">
           {cited.map(({ section, label, sources }) => (
-            <div key={section} className="text-sm">
+            <div key={section}>
               <dt className="text-xs font-bold tracking-wide text-violet-300 uppercase">
                 {label}
               </dt>
               <dd className="mt-0.5 space-y-1">
-                {sources.map(({ source, detail }) => (
-                  <p key={source.id + (detail ?? '')} className="text-xs text-violet-200">
-                    {source.url ? (
-                      <a
-                        href={source.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-2 hover:text-gold-400"
-                      >
-                        {formatCitation(source)}
-                      </a>
-                    ) : (
-                      formatCitation(source)
-                    )}
-                    {detail && <span className="text-violet-400"> — {detail}</span>}
-                  </p>
+                {sources.map((entry) => (
+                  <Citation key={entry.source.id + (entry.detail ?? '')} entry={entry} small />
+                ))}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      {/* Per-claim. The claim text is shown so a reader can see exactly what is supported. */}
+      {claims.length > 0 && (
+        <dl className="mt-4 space-y-2 border-t border-violet-700/50 pt-3">
+          {claims.map((claim) => (
+            <div key={claim.claimId}>
+              <dt className="text-xs text-violet-200">“{claim.claim}”</dt>
+              <dd className="mt-0.5 space-y-1">
+                {claim.sources.map((entry) => (
+                  <Citation key={entry.source.id + (entry.detail ?? '')} entry={entry} small />
                 ))}
               </dd>
             </div>
@@ -87,12 +82,10 @@ export function SourcesSection({ herb }: { herb: Herb }) {
 
       {awaiting.length > 0 && (
         <p className="mt-4 border-t border-violet-700/50 pt-3 text-xs leading-relaxed text-violet-400">
-          <span className="font-semibold text-violet-300">Awaiting independent sources:</span>{' '}
+          <span className="font-semibold text-violet-300">Awaiting sources:</span>{' '}
           {awaiting.length === 7
-            ? 'every section on this page is transcribed from the physical card and carries no independent reference yet.'
-            : `${awaiting.length} sections on this page are transcribed from the physical card and carry no independent reference yet.`}{' '}
-          References appear here only once a person has read them and confirmed they support
-          what they are attached to.{' '}
+            ? 'every section here is transcribed from the card, with no independent reference yet.'
+            : `${awaiting.length} sections here are transcribed from the card, with no independent reference yet.`}{' '}
           <Link
             href="/safety"
             className="font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
@@ -101,11 +94,31 @@ export function SourcesSection({ herb }: { herb: Herb }) {
           </Link>
         </p>
       )}
+    </details>
+  );
+}
 
-      <p className="mt-3 text-xs leading-relaxed text-violet-400">
-        Traditional and historical use describes how a plant has been used, not evidence
-        that it works. Where a plant has been studied, that research is cited separately.
-      </p>
-    </section>
+function Citation({ entry, small = false }: { entry: ResolvedSource; small?: boolean }) {
+  const { source, detail } = entry;
+  const text = formatCitation(source);
+  return (
+    <p className={small ? 'text-xs text-violet-200' : 'text-sm font-semibold text-violet-100'}>
+      {source.url ? (
+        <a
+          href={source.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 hover:text-gold-400"
+        >
+          {text}
+        </a>
+      ) : (
+        text
+      )}
+      {detail && <span className="text-violet-400"> — {detail}</span>}
+      {source.note && !small && (
+        <span className="mt-0.5 block text-xs font-normal text-violet-400">{source.note}</span>
+      )}
+    </p>
   );
 }
