@@ -44,11 +44,12 @@ jobs:
           GITHUB_PAGES: 'true'
         run: npm run build
 
+      # Pages must be switched on once by a repo admin:
+      #   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
+      # `enablement: true` is deliberately NOT set here: the Actions token is not allowed
+      # to create a Pages site, and asking it to only produces a confusing
+      # "Resource not accessible by integration" error instead of a clear one.
       - uses: actions/configure-pages@v5
-        with:
-          # Turns Pages on automatically where the token permits, so this does not need a
-          # manual visit to repo settings.
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
