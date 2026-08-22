@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { getAchievement } from '@/lib/achievements';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { assetPath } from '@/lib/asset-path';
 
 /**
  * The "I Found This Plant" flow.
@@ -143,7 +144,7 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
 
             <div className="animate-sheen relative mx-auto mt-4 w-40 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift">
               <Image
-                src={herb.thumb}
+                src={assetPath(herb.thumb)}
                 alt={`Plantdex card ${herb.cardNumber}: ${herb.commonName}`}
                 width={178}
                 height={288}

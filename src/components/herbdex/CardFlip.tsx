@@ -3,6 +3,7 @@
 import { useId, useState } from 'react';
 import Image from 'next/image';
 import type { Herb } from '@/lib/types';
+import { assetPath } from '@/lib/asset-path';
 
 /**
  * The physical card, front and back, with a flip toggle.
@@ -24,7 +25,7 @@ export function CardFlip({ herb }: { herb: Herb }) {
       >
         <div style={{ transform: showBack ? 'rotateY(180deg)' : undefined }}>
           <Image
-            src={showBack ? herb.backImage : herb.image}
+            src={assetPath(showBack ? herb.backImage : herb.image)}
             alt={
               showBack
                 ? `Back of Plantdex card ${herb.cardNumber}: ${herb.commonName}. The same information is listed in text below.`

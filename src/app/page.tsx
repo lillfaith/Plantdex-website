@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { DECK_SIZE, herbsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { assetPath } from '@/lib/asset-path';
 
 /**
  * Landing page.
@@ -62,7 +63,7 @@ export default function HomePage() {
                 className="block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
               >
                 <Image
-                  src={herb.thumb}
+                  src={assetPath(herb.thumb)}
                   alt={`Plantdex card ${herb.cardNumber}: ${herb.commonName} (${herb.scientificName})`}
                   width={178}
                   height={288}

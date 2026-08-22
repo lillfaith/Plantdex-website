@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
+import { assetPath } from '@/lib/asset-path';
 import { RarityBadge } from './RarityBadge';
 
 /**
@@ -36,7 +37,7 @@ export function HerbCard({
     >
       <div className="relative aspect-[356/576] bg-violet-900">
         <Image
-          src={herb.thumb}
+          src={assetPath(herb.thumb)}
           alt={
             discovered
               ? `Plantdex card ${number}: ${herb.commonName} (${herb.scientificName})`

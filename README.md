@@ -88,6 +88,29 @@ silently patched here.
 
 Accounts, checkout, QR scanning and AI identification are later roadmap stages (V0.3–V0.5).
 
+## Deploying
+
+The site is a static export, hosted on GitHub Pages:
+
+**https://lillfaith.github.io/Plantdex-website/**
+
+`.github/workflows/deploy.yml` rebuilds and redeploys on every push to the default
+branch. It runs lint, typecheck and the test suite first, so a broken commit does not
+reach the live site.
+
+To reproduce the deployed build locally:
+
+```bash
+GITHUB_PAGES=true npm run build   # writes out/
+npx serve out
+```
+
+`GITHUB_PAGES=true` switches on the `/Plantdex-website` base path that a GitHub Pages
+*project* site is served from. Note that Next does **not** apply `basePath` to
+`next/image` sources when `images.unoptimized` is set (which static export requires), so
+image paths go through `assetPath()` in `src/lib/asset-path.ts`. Use it for anything you
+reference out of `public/`, or it will 404 on the deployed site while working locally.
+
 ## Contributing
 
 Read [`AGENTS.md`](./AGENTS.md) (the product spec and its safety rules) and
