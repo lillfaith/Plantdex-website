@@ -60,6 +60,12 @@ CHECK_ZOOM = 356 / 233
 FULL_WIDTH = 800   # shipped card image
 THUMB_WIDTH = 400  # grid thumbnail
 
+# Each card front carries a pixel-art sprite of the plant in a small panel. My Garden uses
+# these rather than placeholder art, so the garden is made of the deck's own illustrations.
+# Coordinates are in the calibrated 356x576 space.
+SPRITE_BOX = (236, 346, 328, 438)
+SPRITE_SCALE = 3  # nearest-neighbour upscale keeps the pixels crisp
+
 STAT_ROWS = {"water": (345, 366), "sun": (376, 406), "temp": (414, 441)}
 SLOT_X0, SLOT_W, SLOT_N = 27, 30, 5
 MIN_HITS = 25  # icon-present threshold; measured hit counts are ~70-190 vs 0
@@ -315,6 +321,7 @@ def main() -> int:
     OUT_ART.mkdir(parents=True, exist_ok=True)
     (OUT_ART / "thumb").mkdir(parents=True, exist_ok=True)
     (OUT_ART / "back").mkdir(parents=True, exist_ok=True)
+    (OUT_ART / "sprite").mkdir(parents=True, exist_ok=True)
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
 
     herbs, seen_ids, problems = [], set(), []
@@ -359,6 +366,11 @@ def main() -> int:
             render(doc[0], FULL_WIDTH).save(OUT_ART / f"{herb_id}.webp", "WEBP", quality=84, method=6)
             render(doc[0], THUMB_WIDTH).save(OUT_ART / "thumb" / f"{herb_id}.webp", "WEBP", quality=80, method=6)
             render(doc[1], FULL_WIDTH).save(OUT_ART / "back" / f"{herb_id}.webp", "WEBP", quality=84, method=6)
+            sprite = check_img.crop(SPRITE_BOX)
+            sprite = sprite.resize(
+                (sprite.width * SPRITE_SCALE, sprite.height * SPRITE_SCALE), Image.NEAREST
+            )
+            sprite.save(OUT_ART / "sprite" / f"{herb_id}.webp", "WEBP", quality=90, method=6)
         doc.close()
 
         traits, compounds, taste, aromatic, preparations, parts = BACKS.get(
@@ -378,6 +390,13 @@ def main() -> int:
             "image": f"/cards/{herb_id}.webp",
             "thumb": f"/cards/thumb/{herb_id}.webp",
             "backImage": f"/cards/back/{herb_id}.webp",
+            "sprite": f"/cards/sprite/{herb_id}.webp",
+            # Provenance for everything above: it is transcribed from this physical card.
+            # Curated references are added to src/data/sources.json by hand and attached
+            # per section; nothing here is generated or guessed.
+            "sources": [
+                {"sourceId": "plantdex-deck", "detail": f"Card #{num:02d}, front and back"}
+            ],
             "back": {
                 "healingTraits": traits,
                 "compounds": compounds,

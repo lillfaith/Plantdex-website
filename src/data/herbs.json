@@ -65,6 +65,13 @@
       "image": "/cards/taraxacum-officinale.webp",
       "thumb": "/cards/thumb/taraxacum-officinale.webp",
       "backImage": "/cards/back/taraxacum-officinale.webp",
+      "sprite": "/cards/sprite/taraxacum-officinale.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #01, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Anti-inflam.",
@@ -123,6 +130,13 @@
       "image": "/cards/rumex-obtusifolius.webp",
       "thumb": "/cards/thumb/rumex-obtusifolius.webp",
       "backImage": "/cards/back/rumex-obtusifolius.webp",
+      "sprite": "/cards/sprite/rumex-obtusifolius.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #02, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Digestive support",
@@ -180,6 +194,13 @@
       "image": "/cards/solidago-canadensis.webp",
       "thumb": "/cards/thumb/solidago-canadensis.webp",
       "backImage": "/cards/back/solidago-canadensis.webp",
+      "sprite": "/cards/sprite/solidago-canadensis.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #03, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Urinary support",
@@ -233,6 +254,13 @@
       "image": "/cards/ambrosia-artemisiifolia.webp",
       "thumb": "/cards/thumb/ambrosia-artemisiifolia.webp",
       "backImage": "/cards/back/ambrosia-artemisiifolia.webp",
+      "sprite": "/cards/sprite/ambrosia-artemisiifolia.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #04, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Astringent",
@@ -289,6 +317,13 @@
       "image": "/cards/chenopodium-album.webp",
       "thumb": "/cards/thumb/chenopodium-album.webp",
       "backImage": "/cards/back/chenopodium-album.webp",
+      "sprite": "/cards/sprite/chenopodium-album.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #05, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Nutrient-rich",
@@ -346,6 +381,13 @@
       "image": "/cards/portulaca-oleracea.webp",
       "thumb": "/cards/thumb/portulaca-oleracea.webp",
       "backImage": "/cards/back/portulaca-oleracea.webp",
+      "sprite": "/cards/sprite/portulaca-oleracea.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #06, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Wound support",
@@ -402,6 +444,13 @@
       "image": "/cards/alliaria-petiolata.webp",
       "thumb": "/cards/thumb/alliaria-petiolata.webp",
       "backImage": "/cards/back/alliaria-petiolata.webp",
+      "sprite": "/cards/sprite/alliaria-petiolata.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #07, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antiseptic",
@@ -458,6 +507,13 @@
       "image": "/cards/urtica-dioica.webp",
       "thumb": "/cards/thumb/urtica-dioica.webp",
       "backImage": "/cards/back/urtica-dioica.webp",
+      "sprite": "/cards/sprite/urtica-dioica.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #08, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Anti-inflam.",
@@ -515,6 +571,13 @@
       "image": "/cards/oxalis-stricta.webp",
       "thumb": "/cards/thumb/oxalis-stricta.webp",
       "backImage": "/cards/back/oxalis-stricta.webp",
+      "sprite": "/cards/sprite/oxalis-stricta.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #09, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Vitamin-rich",
@@ -573,6 +636,13 @@
       "image": "/cards/trifolium-pratense.webp",
       "thumb": "/cards/thumb/trifolium-pratense.webp",
       "backImage": "/cards/back/trifolium-pratense.webp",
+      "sprite": "/cards/sprite/trifolium-pratense.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #10, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Hormone support",
@@ -629,6 +699,13 @@
       "image": "/cards/lamium-purpureum.webp",
       "thumb": "/cards/thumb/lamium-purpureum.webp",
       "backImage": "/cards/back/lamium-purpureum.webp",
+      "sprite": "/cards/sprite/lamium-purpureum.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #11, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Wound support",
@@ -687,6 +764,13 @@
       "image": "/cards/viola-sororia.webp",
       "thumb": "/cards/thumb/viola-sororia.webp",
       "backImage": "/cards/back/viola-sororia.webp",
+      "sprite": "/cards/sprite/viola-sororia.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #12, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Anti-inflam.",
@@ -744,6 +828,13 @@
       "image": "/cards/stellaria-media.webp",
       "thumb": "/cards/thumb/stellaria-media.webp",
       "backImage": "/cards/back/stellaria-media.webp",
+      "sprite": "/cards/sprite/stellaria-media.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #13, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Cooling",
@@ -801,6 +892,13 @@
       "image": "/cards/plantago-major.webp",
       "thumb": "/cards/thumb/plantago-major.webp",
       "backImage": "/cards/back/plantago-major.webp",
+      "sprite": "/cards/sprite/plantago-major.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #14, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Drawing",
@@ -856,6 +954,13 @@
       "image": "/cards/galium-aparine.webp",
       "thumb": "/cards/thumb/galium-aparine.webp",
       "backImage": "/cards/back/galium-aparine.webp",
+      "sprite": "/cards/sprite/galium-aparine.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #15, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Diuretic",
@@ -911,6 +1016,13 @@
       "image": "/cards/glechoma-hederacea.webp",
       "thumb": "/cards/thumb/glechoma-hederacea.webp",
       "backImage": "/cards/back/glechoma-hederacea.webp",
+      "sprite": "/cards/sprite/glechoma-hederacea.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #16, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Digestive support",
@@ -968,6 +1080,13 @@
       "image": "/cards/acer-spp.webp",
       "thumb": "/cards/thumb/acer-spp.webp",
       "backImage": "/cards/back/acer-spp.webp",
+      "sprite": "/cards/sprite/acer-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #17, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antioxidant",
@@ -1023,6 +1142,13 @@
       "image": "/cards/rubus-spp.webp",
       "thumb": "/cards/thumb/rubus-spp.webp",
       "backImage": "/cards/back/rubus-spp.webp",
+      "sprite": "/cards/sprite/rubus-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #18, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antioxidant",
@@ -1080,6 +1206,13 @@
       "image": "/cards/rumex-acetosella.webp",
       "thumb": "/cards/thumb/rumex-acetosella.webp",
       "backImage": "/cards/back/rumex-acetosella.webp",
+      "sprite": "/cards/sprite/rumex-acetosella.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #19, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Cooling",
@@ -1136,6 +1269,13 @@
       "image": "/cards/rhus-spp.webp",
       "thumb": "/cards/thumb/rhus-spp.webp",
       "backImage": "/cards/back/rhus-spp.webp",
+      "sprite": "/cards/sprite/rhus-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #20, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antimicrobial",
@@ -1191,6 +1331,13 @@
       "image": "/cards/cichorium-intybus.webp",
       "thumb": "/cards/thumb/cichorium-intybus.webp",
       "backImage": "/cards/back/cichorium-intybus.webp",
+      "sprite": "/cards/sprite/cichorium-intybus.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #21, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Digestive support",
@@ -1247,6 +1394,13 @@
       "image": "/cards/arctium-lappa.webp",
       "thumb": "/cards/thumb/arctium-lappa.webp",
       "backImage": "/cards/back/arctium-lappa.webp",
+      "sprite": "/cards/sprite/arctium-lappa.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #22, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Detoxifying",
@@ -1304,6 +1458,13 @@
       "image": "/cards/mentha-canadensis.webp",
       "thumb": "/cards/thumb/mentha-canadensis.webp",
       "backImage": "/cards/back/mentha-canadensis.webp",
+      "sprite": "/cards/sprite/mentha-canadensis.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #23, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Digestive support",
@@ -1360,6 +1521,13 @@
       "image": "/cards/nepeta-cataria.webp",
       "thumb": "/cards/thumb/nepeta-cataria.webp",
       "backImage": "/cards/back/nepeta-cataria.webp",
+      "sprite": "/cards/sprite/nepeta-cataria.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #24, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antimicrobial",
@@ -1416,6 +1584,13 @@
       "image": "/cards/capsella-bursa-pastoris.webp",
       "thumb": "/cards/thumb/capsella-bursa-pastoris.webp",
       "backImage": "/cards/back/capsella-bursa-pastoris.webp",
+      "sprite": "/cards/sprite/capsella-bursa-pastoris.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #25, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Circulatory",
@@ -1473,6 +1648,13 @@
       "image": "/cards/prunella-vulgaris.webp",
       "thumb": "/cards/thumb/prunella-vulgaris.webp",
       "backImage": "/cards/back/prunella-vulgaris.webp",
+      "sprite": "/cards/sprite/prunella-vulgaris.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #26, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Wound support",
@@ -1527,6 +1709,13 @@
       "image": "/cards/verbascum-thapsus.webp",
       "thumb": "/cards/thumb/verbascum-thapsus.webp",
       "backImage": "/cards/back/verbascum-thapsus.webp",
+      "sprite": "/cards/sprite/verbascum-thapsus.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #27, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Anti-inflam.",
@@ -1582,6 +1771,13 @@
       "image": "/cards/equisetum-arvense.webp",
       "thumb": "/cards/thumb/equisetum-arvense.webp",
       "backImage": "/cards/back/equisetum-arvense.webp",
+      "sprite": "/cards/sprite/equisetum-arvense.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #28, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Diuretic",
@@ -1635,6 +1831,13 @@
       "image": "/cards/allium-vineale.webp",
       "thumb": "/cards/thumb/allium-vineale.webp",
       "backImage": "/cards/back/allium-vineale.webp",
+      "sprite": "/cards/sprite/allium-vineale.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #29, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antimicrobial",
@@ -1691,6 +1894,13 @@
       "image": "/cards/fragaria-virginiana.webp",
       "thumb": "/cards/thumb/fragaria-virginiana.webp",
       "backImage": "/cards/back/fragaria-virginiana.webp",
+      "sprite": "/cards/sprite/fragaria-virginiana.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #30, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Digestive support",
@@ -1746,6 +1956,13 @@
       "image": "/cards/sambucus-spp.webp",
       "thumb": "/cards/thumb/sambucus-spp.webp",
       "backImage": "/cards/back/sambucus-spp.webp",
+      "sprite": "/cards/sprite/sambucus-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #31, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antimicrobial",
@@ -1801,6 +2018,13 @@
       "image": "/cards/hypericum-perforatum.webp",
       "thumb": "/cards/thumb/hypericum-perforatum.webp",
       "backImage": "/cards/back/hypericum-perforatum.webp",
+      "sprite": "/cards/sprite/hypericum-perforatum.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #32, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Wound aid",
@@ -1855,6 +2079,13 @@
       "image": "/cards/achillea-millefolium.webp",
       "thumb": "/cards/thumb/achillea-millefolium.webp",
       "backImage": "/cards/back/achillea-millefolium.webp",
+      "sprite": "/cards/sprite/achillea-millefolium.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #33, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Circulatory",
@@ -1913,6 +2144,13 @@
       "image": "/cards/impatiens-capensis.webp",
       "thumb": "/cards/thumb/impatiens-capensis.webp",
       "backImage": "/cards/back/impatiens-capensis.webp",
+      "sprite": "/cards/sprite/impatiens-capensis.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #34, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Skin care",
@@ -1969,6 +2207,13 @@
       "image": "/cards/melissa-officinalis.webp",
       "thumb": "/cards/thumb/melissa-officinalis.webp",
       "backImage": "/cards/back/melissa-officinalis.webp",
+      "sprite": "/cards/sprite/melissa-officinalis.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #35, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Calming",
@@ -2025,6 +2270,13 @@
       "image": "/cards/monarda-fistulosa.webp",
       "thumb": "/cards/thumb/monarda-fistulosa.webp",
       "backImage": "/cards/back/monarda-fistulosa.webp",
+      "sprite": "/cards/sprite/monarda-fistulosa.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #36, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Anti-inflam.",
@@ -2081,6 +2333,13 @@
       "image": "/cards/rosa-spp.webp",
       "thumb": "/cards/thumb/rosa-spp.webp",
       "backImage": "/cards/back/rosa-spp.webp",
+      "sprite": "/cards/sprite/rosa-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #37, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antioxidant",
@@ -2138,6 +2397,13 @@
       "image": "/cards/salix-spp.webp",
       "thumb": "/cards/thumb/salix-spp.webp",
       "backImage": "/cards/back/salix-spp.webp",
+      "sprite": "/cards/sprite/salix-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #38, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Pain-relief",
@@ -2193,6 +2459,13 @@
       "image": "/cards/geranium-maculatum.webp",
       "thumb": "/cards/thumb/geranium-maculatum.webp",
       "backImage": "/cards/back/geranium-maculatum.webp",
+      "sprite": "/cards/sprite/geranium-maculatum.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #39, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Digestive support",
@@ -2248,6 +2521,13 @@
       "image": "/cards/lonicera-japonica.webp",
       "thumb": "/cards/thumb/lonicera-japonica.webp",
       "backImage": "/cards/back/lonicera-japonica.webp",
+      "sprite": "/cards/sprite/lonicera-japonica.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #40, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Respiratory support",
@@ -2303,6 +2583,13 @@
       "image": "/cards/pinus-spp.webp",
       "thumb": "/cards/thumb/pinus-spp.webp",
       "backImage": "/cards/back/pinus-spp.webp",
+      "sprite": "/cards/sprite/pinus-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #41, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Expectorant",
@@ -2360,6 +2647,13 @@
       "image": "/cards/morus-spp.webp",
       "thumb": "/cards/thumb/morus-spp.webp",
       "backImage": "/cards/back/morus-spp.webp",
+      "sprite": "/cards/sprite/morus-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #42, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Antioxidant",
@@ -2416,6 +2710,13 @@
       "image": "/cards/passiflora-incarnata.webp",
       "thumb": "/cards/thumb/passiflora-incarnata.webp",
       "backImage": "/cards/back/passiflora-incarnata.webp",
+      "sprite": "/cards/sprite/passiflora-incarnata.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #43, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Calming",
@@ -2471,6 +2772,13 @@
       "image": "/cards/lactuca-serriola.webp",
       "thumb": "/cards/thumb/lactuca-serriola.webp",
       "backImage": "/cards/back/lactuca-serriola.webp",
+      "sprite": "/cards/sprite/lactuca-serriola.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #44, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Pain relief",
@@ -2523,6 +2831,13 @@
       "image": "/cards/quercus-spp.webp",
       "thumb": "/cards/thumb/quercus-spp.webp",
       "backImage": "/cards/back/quercus-spp.webp",
+      "sprite": "/cards/sprite/quercus-spp.webp",
+      "sources": [
+        {
+          "sourceId": "plantdex-deck",
+          "detail": "Card #45, front and back"
+        }
+      ],
       "back": {
         "healingTraits": [
           "Skin care",

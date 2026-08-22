@@ -13,6 +13,8 @@ import { CardFlip } from './CardFlip';
 import { CardBackDetails } from './CardBackDetails';
 import { LockedHerb } from './LockedHerb';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
+import { SourcesSection } from './SourcesSection';
+import { MySightings } from '../journal/MySightings';
 import { CardWarning, SafetyNotice } from '../SafetyNotice';
 
 /**
@@ -175,9 +177,20 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         <StatPips stats={herb.stats} />
       </section>
 
-      <div className="mt-4">
-        <CardBackDetails herb={herb} />
-      </div>
+        <div className="mt-4">
+          <CardBackDetails herb={herb} />
+        </div>
+
+        {/* Sightings are a record of finding a plant, so they only apply once it is found. */}
+        {discovered && (
+          <div className="mt-4">
+            <MySightings herb={herb} />
+          </div>
+        )}
+
+        <div className="mt-4">
+          <SourcesSection refs={herb.sources} />
+        </div>
 
         <div className="mt-8">
           <SafetyNotice />

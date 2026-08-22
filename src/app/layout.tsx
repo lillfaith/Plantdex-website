@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Outfit, Fraunces } from 'next/font/google';
 import { HerbdexProvider } from '@/state/HerbdexProvider';
+import { SiteNav } from '@/components/SiteNav';
 import './globals.css';
 
 const outfit = Outfit({
@@ -45,7 +46,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
-        <HerbdexProvider>{children}</HerbdexProvider>
+        <HerbdexProvider>
+          <SiteNav />
+          {/* Bottom padding clears the fixed mobile nav bar; it becomes a top bar at sm. */}
+          <div className="pb-20 sm:pb-0">{children}</div>
+        </HerbdexProvider>
       </body>
     </html>
   );

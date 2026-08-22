@@ -1,0 +1,124 @@
+{
+  "$comment": [
+    "Herbal terminology index. These are general definitions of preparation and property",
+    "terms — what the words mean, not what any particular plant does. Nothing here says a",
+    "plant treats anything, and nothing here should be edited into a claim.",
+    "",
+    "Terms marked \"appearsOnCards\": true are words that actually appear on the Plantdex",
+    "cards, so a reader meeting them on a plant page can look them up."
+  ],
+  "terms": [
+    {
+      "id": "astringent",
+      "term": "Astringent",
+      "short": "Causes tissue to contract or tighten, producing a drying, puckering sensation.",
+      "long": "An astringent substance makes soft tissue contract. In plants this is usually down to tannins, which bind proteins — the same effect behind the dry, puckered feeling of strong black tea or unripe fruit. It describes a sensory and chemical property, not a treatment.",
+      "related": ["tannins"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "infusion",
+      "term": "Infusion",
+      "short": "Steeping delicate plant material in water that has been boiled.",
+      "long": "Hot water is poured over leaves, flowers or other soft parts and left to steep, usually covered so aromatic compounds do not escape with the steam. Infusion suits material that gives up its constituents easily; tougher material is generally decocted instead.",
+      "related": ["decoction", "menstruum"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "decoction",
+      "term": "Decoction",
+      "short": "Simmering tough plant material in water to extract it.",
+      "long": "Roots, bark, seeds and other dense material are simmered — not merely steeped — often for twenty minutes or more. The sustained heat draws out constituents that a short infusion would leave behind.",
+      "related": ["infusion"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "tincture",
+      "term": "Tincture",
+      "short": "A liquid extract made with alcohol, or alcohol and water.",
+      "long": "Plant material is steeped in a solvent — typically alcohol — for an extended period, then strained. Alcohol extracts some constituents that water does not, and the result keeps far longer than a water preparation.",
+      "related": ["menstruum", "maceration"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "poultice",
+      "term": "Poultice",
+      "short": "Plant material applied directly to the skin, usually softened and warm.",
+      "long": "Fresh or rehydrated plant material is mashed or bruised and placed against the skin, often held with a cloth. A long-standing external preparation across many traditions.",
+      "related": ["salve"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "salve",
+      "term": "Salve",
+      "short": "A semi-solid preparation of infused oil thickened with wax.",
+      "long": "Plant material is infused into an oil, strained, then set with beeswax or a similar thickener so it holds its shape and stays where it is applied.",
+      "related": ["poultice", "herbal-oil"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "mucilage",
+      "term": "Mucilage",
+      "short": "A gel-like plant substance that becomes slippery in water.",
+      "long": "Mucilage is a polysaccharide that swells into a viscous gel on contact with water. Plants containing it feel slimy or silky when crushed wet — the quality behind the texture of okra or soaked flaxseed.",
+      "related": [],
+      "appearsOnCards": true
+    },
+    {
+      "id": "maceration",
+      "term": "Maceration",
+      "short": "Soaking plant material in a liquid at room temperature to extract it.",
+      "long": "Unlike decoction, maceration uses no heat: material is left in the solvent for hours to weeks. It is the usual method for tinctures and for constituents that heat would damage.",
+      "related": ["tincture", "menstruum"],
+      "appearsOnCards": false
+    },
+    {
+      "id": "menstruum",
+      "term": "Menstruum",
+      "short": "The solvent used to extract a plant — water, alcohol, oil, vinegar or glycerine.",
+      "long": "An old term still in common use. Which menstruum is chosen matters, because different solvents pull out different constituents from the same plant.",
+      "related": ["tincture", "maceration"],
+      "appearsOnCards": false
+    },
+    {
+      "id": "tannins",
+      "term": "Tannins",
+      "short": "Plant compounds that bind proteins, producing astringency.",
+      "long": "A broad group of polyphenols found across many plants. They are what make strong tea, oak bark and unripe fruit taste dry and puckering.",
+      "related": ["astringent"],
+      "appearsOnCards": true
+    },
+    {
+      "id": "herbal-oil",
+      "term": "Infused oil",
+      "short": "Plant material steeped in a carrier oil.",
+      "long": "Dried plant material is left in an oil so that oil-soluble constituents transfer into it, then strained out. Infused oils are used on their own or thickened into salves. Moisture left in the plant material is the usual cause of spoilage.",
+      "related": ["salve", "maceration"],
+      "appearsOnCards": false
+    },
+    {
+      "id": "expectorant",
+      "term": "Expectorant",
+      "short": "Describes something traditionally associated with loosening or bringing up mucus.",
+      "long": "A descriptive category used in herbal writing for plants traditionally associated with coughs and congestion. Naming the category is not a claim that any particular plant is effective.",
+      "related": [],
+      "appearsOnCards": true
+    },
+    {
+      "id": "diuretic",
+      "term": "Diuretic",
+      "short": "Describes something traditionally associated with increased urine production.",
+      "long": "A descriptive category long used in herbal writing. As with all such categories on the cards, it records a traditional association rather than a demonstrated effect.",
+      "related": [],
+      "appearsOnCards": true
+    },
+    {
+      "id": "demulcent",
+      "term": "Demulcent",
+      "short": "Describes a substance that forms a soothing film, usually because it is mucilaginous.",
+      "long": "Closely tied to mucilage: the gel coats and lubricates surfaces it touches. A textural description first and foremost.",
+      "related": ["mucilage"],
+      "appearsOnCards": false
+    }
+  ]
+}

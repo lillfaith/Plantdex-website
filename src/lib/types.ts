@@ -64,6 +64,58 @@ export interface HerbBack {
   usableParts: string[];
 }
 
+// --- Citations ---------------------------------------------------------------
+
+export type SourceKind = 'deck' | 'book' | 'journal' | 'database' | 'web';
+
+export interface Source {
+  id: string;
+  kind: SourceKind;
+  title: string;
+  author?: string;
+  organization?: string;
+  year?: number;
+  publication?: string;
+  url?: string;
+  /** ISO date the URL was last checked. */
+  accessed?: string;
+  /**
+   * True only when a human has opened this source and confirmed it supports what it is
+   * cited for. Unverified entries are never rendered — see src/lib/sources.ts.
+   */
+  verified: boolean;
+  note?: string;
+}
+
+/** A pointer from content to a registry source, optionally naming the exact place. */
+export interface SourceRef {
+  sourceId: string;
+  detail?: string;
+}
+
+// --- Per-part detail -----------------------------------------------------------
+// Structure for information that varies by plant part. Every field is optional and
+// absent unless a card or a curated, cited entry actually provides it — a species only
+// shows the tabs it genuinely has content for, and nothing is invented to fill a gap.
+
+export const HERB_PART_KEYS = ['leaf', 'flower', 'root', 'bark', 'seed', 'other'] as const;
+export type HerbPartKey = (typeof HERB_PART_KEYS)[number];
+
+export interface PartInfo {
+  traditionalUses?: string[];
+  historicalUses?: string[];
+  scent?: string[];
+  flavor?: string[];
+  nutrients?: string[];
+  dyeUses?: string[];
+  topicalTraditions?: string[];
+  repellentUses?: string[];
+  preparations?: string[];
+  sources?: SourceRef[];
+}
+
+export type HerbParts = Partial<Record<HerbPartKey, PartInfo>>;
+
 export interface Herb {
   /** Stable id derived from the scientific name — never the common name. */
   id: string;
@@ -79,9 +131,24 @@ export interface Herb {
   image: string;
   thumb: string;
   backImage: string;
+  /** Pixel-art sprite cropped from the card front, used by My Garden. */
+  sprite: string;
   back: HerbBack;
   /** A warning printed on the card itself (e.g. a poisonous lookalike). */
   warning?: string;
+
+  // --- Fields the cards do not carry -------------------------------------------
+  // Structure is in place so curated, cited content can be added later. Absent today
+  // rather than filled with plausible-sounding text; the UI omits what is missing.
+  habitat?: string;
+  identification?: string[];
+  facts?: string[];
+  parts?: HerbParts;
+
+  /** Provenance for this entry as a whole. */
+  sources?: SourceRef[];
+  /** Provenance for individual sections, keyed by section name. */
+  sectionSources?: Record<string, SourceRef[]>;
 }
 
 export interface Disclaimer {

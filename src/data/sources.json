@@ -1,0 +1,23 @@
+{
+  "$comment": [
+    "HAND-MAINTAINED source registry. Not generated — do not overwrite from a script.",
+    "",
+    "RULE: only entries with \"verified\": true are ever rendered on the site.",
+    "A source is verified when a human has opened it and confirmed it actually supports",
+    "the claim it is attached to. This flag exists specifically to stop unverified or",
+    "AI-suggested citations reaching readers, which AGENTS.md and the product brief forbid.",
+    "",
+    "Candidate references that have been found but NOT yet checked belong in",
+    "docs/source-candidates.md, never in this file."
+  ],
+  "sources": [
+    {
+      "id": "plantdex-deck",
+      "kind": "deck",
+      "title": "Plantdex herbalism card deck",
+      "organization": "Plantdex",
+      "verified": true,
+      "note": "Every plant field shown in this app is transcribed directly from the physical cards, including their own wording."
+    }
+  ]
+}
