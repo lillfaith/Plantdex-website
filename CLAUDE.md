@@ -95,7 +95,21 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   otherwise have been mounted inside. Both must also keep a *stable position* in the tree,
   or React recreates the `<dialog>` underneath itself.
 - **`SafetyNotice` appears on the Herbdex and every herb page.** Do not remove it, and do
-  not soften traditional-use wording into medical claims.
+  not soften traditional-use wording into medical claims. It has two weights: `brief` for
+  pages that only list or track plants, `standard` (the full disclaimer) for any page where
+  ingestion, preparation, identification or medicinal traditions are discussed. Choosing
+  `brief` on such a page is a safety regression, not a design tweak. `/safety` carries the
+  long version and every notice links to it.
+- **The sources section states what is NOT sourced**, not just what is. Listing only
+  existing citations lets a reader assume the rest are cited too — worse than looking thin
+  for a product about plants people take outdoors. `sectionCitations()` returns both halves
+  for exactly this reason.
+- **The deck is Collection 01, and nothing may claim a second collection exists.**
+  `src/lib/collection.ts` resolves membership rather than stamping it on generated data,
+  and `COLLECTIONS` holds exactly one entry until a second deck is really printed — pinned
+  by `collection.test.ts`. Foreshadowing copy may say more are *planned*; it may never
+  invent a date, name, size, price, preorder, waitlist or scarcity claim, and must never
+  imply the current 45 cards are incomplete.
 
 ## When adding a backend (V0.3)
 
