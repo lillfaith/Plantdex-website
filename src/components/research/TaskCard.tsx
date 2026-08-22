@@ -69,7 +69,12 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
             </span>
           </div>
 
-          <p className="mt-1 text-xs leading-relaxed text-violet-300">{task.description}</p>
+          {/* Descriptions are written for a task you have not done yet ("this card is
+              still a silhouette"), so a finished one would be stating something false.
+              The ticked steps and the completion date say everything needed instead. */}
+          {!done && (
+            <p className="mt-1 text-xs leading-relaxed text-violet-300">{task.description}</p>
+          )}
 
           <ul className="mt-3 space-y-1.5">
             {steps.map(({ step, current, target, done: stepDone }) => (
