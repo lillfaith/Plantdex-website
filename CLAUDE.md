@@ -43,6 +43,15 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   heading for traditional use, not a statement that a plant treats anything.
 - **A warning printed on a card (`herb.warning`) must render above the discovery CTA**,
   never collapsed behind an interaction.
+- **Reveal is not discovery.** `src/lib/reveals.ts` is a *separate* store with its own
+  storage key and never touches `HerbdexState`. Revealing shows a plant's entry for
+  reading; it awards no XP, does not count toward the collection, and leaves the card a
+  silhouette in the grid. Keep them separate — the V0.3 server owns discoveries and must
+  never learn about reveals.
+- **The discovery celebration must be owned by a component that survives the locked →
+  discovered swap** (currently `HerbDetail`). Rendering it inside `DiscoverPanel` unmounts
+  it at the exact moment it is needed, and it must keep a stable position in the tree or
+  React recreates the `<dialog>` underneath itself.
 - **`SafetyNotice` appears on the Herbdex and every herb page.** Do not remove it, and do
   not soften traditional-use wording into medical claims.
 

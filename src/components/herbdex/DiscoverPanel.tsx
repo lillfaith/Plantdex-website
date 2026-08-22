@@ -1,9 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { DiscoveryCelebration } from './DiscoveryCelebration';
 
 /**
  * The "I Found This Plant" flow.
@@ -11,15 +10,30 @@ import { DiscoveryCelebration } from './DiscoveryCelebration';
  * Confirm → record → reveal → award XP → update progress → surface any new achievements,
  * matching the discovery sequence in AGENTS.md.
  *
- * Native <dialog> is used for both steps so focus trapping, Escape-to-close and focus
- * restoration come from the platform rather than from hand-rolled key handling.
+ * Native <dialog> is used so focus trapping, Escape-to-close and focus restoration come
+ * from the platform rather than from hand-rolled key handling.
+ *
+ * The celebration deliberately lives in the PARENT, not here. Discovering flips this page
+ * from its locked view to its full view, which unmounts this component — so a dialog owned
+ * here would be destroyed the instant it was needed. The parent survives that swap.
  */
-export function DiscoverPanel({ herb }: { herb: Herb }) {
-  const { isDiscovered, discover, state, ready, progress } = useHerbdex();
+export function DiscoverPanel({
+  herb,
+  label = 'I Found This Plant',
+  spoilerFree = false,
+  onDiscovered,
+}: {
+  herb: Herb;
+  /** CTA wording. The locked page says "Log a Discovery"; the revealed page keeps the default. */
+  label?: string;
+  /** On an undiscovered page the confirm step must not leak the plant's name. */
+  spoilerFree?: boolean;
+  /** Called only for a genuine first discovery, so the parent can celebrate it. */
+  onDiscovered?: (result: DiscoveryResult) => void;
+}) {
+  const { isDiscovered, discover, state, ready } = useHerbdex();
 
   const confirmRef = useRef<HTMLDialogElement>(null);
-  const celebrateRef = useRef<HTMLDialogElement>(null);
-  const [result, setResult] = useState<DiscoveryResult | null>(null);
 
   const discovered = ready && isDiscovered(herb.id);
   const discoveredAt = state.discoveries[herb.id];
@@ -33,20 +47,8 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
     closeDialog(confirmRef);
     // Only celebrate a genuine first discovery. A replayed confirm awards nothing and
     // shows nothing, which is what makes double-tapping harmless rather than lucrative.
-    if (outcome.awarded) {
-      setResult(outcome);
-      celebrateRef.current?.showModal();
-    }
-  }, [discover, herb, closeDialog]);
-
-  // Keep React state in sync when the dialog is dismissed with Escape or a backdrop click.
-  useEffect(() => {
-    const node = celebrateRef.current;
-    if (!node) return;
-    const handleClose = () => setResult(null);
-    node.addEventListener('close', handleClose);
-    return () => node.removeEventListener('close', handleClose);
-  }, []);
+    if (outcome.awarded) onDiscovered?.(outcome);
+  }, [discover, herb, closeDialog, onDiscovered]);
 
   if (!ready) {
     // Placeholder of the same height, so the layout does not jump once storage is read.
@@ -87,20 +89,21 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
         >
           <span className="relative z-10 flex items-center justify-center gap-2">
             <span aria-hidden="true">🌿</span>
-            I Found This Plant
+            {label}
             <span className="text-sm font-extrabold opacity-70">+{herb.xp} XP</span>
           </span>
         </button>
       )}
 
-      {/* Step 1 — confirmation */}
+      {/* Confirmation */}
       <dialog
         ref={confirmRef}
         aria-labelledby="confirm-title"
         className="panel m-auto w-[min(26rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-violet-deep/80 backdrop:backdrop-blur-sm"
       >
         <h2 id="confirm-title" className="font-display text-lg font-bold text-gold-plate">
-          Add {herb.commonName} to your Herbdex?
+          Add {spoilerFree ? `card #${String(herb.cardNumber).padStart(2, '0')}` : herb.commonName}{' '}
+          to your Herbdex?
         </h2>
         <p className="mt-2 text-sm text-violet-200">
           Only confirm if you actually found this plant in the real world. This awards{' '}
@@ -129,21 +132,6 @@ export function DiscoverPanel({ herb }: { herb: Herb }) {
         </div>
       </dialog>
 
-      {/* Step 2 — reveal, reward and updated progress */}
-      <dialog
-        ref={celebrateRef}
-        aria-labelledby="celebrate-title"
-        className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
-      >
-        {result && (
-          <DiscoveryCelebration
-            herb={herb}
-            result={result}
-            xpAfter={progress.xp}
-            onClose={() => closeDialog(celebrateRef)}
-          />
-        )}
-      </dialog>
     </>
   );
 }
