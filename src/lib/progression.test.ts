@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   LEVELS,
   MAX_LEVEL,
-  MAX_XP,
+  MAX_COLLECTION_XP,
   XP_BY_RARITY,
   XP_FOR_LEARNING,
   XP_FOR_MASTERY,
@@ -58,7 +58,7 @@ describe('level ladder', () => {
   });
 
   it('keeps the top level reachable before a fully mastered deck', () => {
-    expect(LEVELS[LEVELS.length - 1]!.minXp).toBeLessThanOrEqual(MAX_XP);
+    expect(LEVELS[LEVELS.length - 1]!.minXp).toBeLessThanOrEqual(MAX_COLLECTION_XP);
   });
 
   /**
@@ -139,7 +139,7 @@ describe('xpForState across the three mastery stages', () => {
     expect(xpForState(state)).toBe(xpForState(state));
   });
 
-  it('caps out at MAX_XP when every card is fully mastered', () => {
+  it('caps out at MAX_COLLECTION_XP when every card is fully mastered', () => {
     const every = (): Record<string, string> =>
       Object.fromEntries(HERBS.map((entry) => [entry.id, at]));
     const complete = {
@@ -148,6 +148,6 @@ describe('xpForState across the three mastery stages', () => {
       learned: every(),
       mastered: every(),
     };
-    expect(xpForState(complete)).toBe(MAX_XP);
+    expect(xpForState(complete)).toBe(MAX_COLLECTION_XP);
   });
 });

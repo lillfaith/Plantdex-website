@@ -13,6 +13,15 @@ import type { DiscoveryResult, Herb, HerbdexState } from '@/lib/types';
 import { createLocalStorageAdapter, type HerbdexStorage } from '@/lib/storage';
 import { progressFromState, type Progress } from '@/lib/progression';
 import { masteryTotals, stageFor, type MasteryStage } from '@/lib/mastery';
+import {
+  buildWorld,
+  localDateKey,
+  researchTaskById,
+  STANDING_TASKS,
+  type ResearchTask,
+  type ResearchWorld,
+} from '@/lib/research';
+import { clearBoard, refreshBoard, useResearchBoard } from '@/lib/research-board';
 import { useSightingCounts } from '@/lib/sightings';
 import { DECK_SIZE } from '@/lib/deck';
 import { createHerbdexStore } from './herbdex-store';
@@ -33,6 +42,13 @@ interface HerbdexContextValue {
   stageOf: (herbId: string) => MasteryStage | null;
   /** How many sightings are logged for a species. Drives the mastery predicate. */
   sightingsFor: (herbId: string) => number;
+  /** The snapshot every research task measures itself against. */
+  world: ResearchWorld;
+  /** Today's open daily board, already resolved to tasks. */
+  dailyTasks: ResearchTask[];
+  /** Seasonal and collection challenges. Always available; none of them expire. */
+  standingTasks: readonly ResearchTask[];
+  completedResearchCount: number;
   discover: (herb: Herb) => DiscoveryResult;
   markLearned: (herb: Herb) => DiscoveryResult;
   reset: () => void;
@@ -58,6 +74,17 @@ export function HerbdexProvider({
   );
 
   const sightingCounts = useSightingCounts();
+  const boardIds = useResearchBoard();
+
+  const world = useMemo(() => buildWorld(state, sightingCounts), [state, sightingCounts]);
+
+  const dailyTasks = useMemo(
+    () =>
+      boardIds
+        .map((id) => researchTaskById(id))
+        .filter((task): task is ResearchTask => task !== undefined),
+    [boardIds],
+  );
 
   /*
    * Mastery is the one stage that depends on a *different* store, so it is reconciled
@@ -72,9 +99,28 @@ export function HerbdexProvider({
     store.syncMastery(sightingCounts);
   }, [store, state, sightingCounts]);
 
+  /*
+   * Field Research, same pattern and for the same reason.
+   *
+   * The board is topped up first so a task offered today can complete today. Both calls
+   * write only when something actually changed, which is what stops this from looping —
+   * and `localDateKey()` is read here, inside an effect, so the static export never bakes
+   * in a date and the server and first client render always agree.
+   */
+  useEffect(() => {
+    if (!ready) return;
+    refreshBoard(world, localDateKey());
+    store.syncResearch(world, [...STANDING_TASKS, ...dailyTasks]);
+  }, [store, ready, world, dailyTasks]);
+
   const discover = useCallback((herb: Herb) => store.discover(herb), [store]);
   const markLearned = useCallback((herb: Herb) => store.markLearned(herb), [store]);
-  const reset = useCallback(() => store.reset(), [store]);
+  const reset = useCallback(() => {
+    store.reset();
+    // The board is a separate store, so resetting progress has to clear it too — otherwise
+    // yesterday's tasks survive a reset and instantly re-complete.
+    clearBoard();
+  }, [store]);
 
   const value = useMemo<HerbdexContextValue>(() => {
     const totals = masteryTotals(state);
@@ -91,11 +137,19 @@ export function HerbdexProvider({
       isMastered: (herbId: string) => Boolean(state.mastered[herbId]),
       stageOf: (herbId: string) => stageFor(state, herbId),
       sightingsFor: (herbId: string) => sightingCounts[herbId] ?? 0,
+      world,
+      dailyTasks,
+      standingTasks: STANDING_TASKS,
+      // Counts only ids that resolve to real tasks — the same guard XP applies, so a
+      // stale id from a removed task is not counted as an achievement either.
+      completedResearchCount: Object.keys(state.research).filter((id) =>
+        Boolean(researchTaskById(id)),
+      ).length,
       discover,
       markLearned,
       reset,
     };
-  }, [state, ready, sightingCounts, discover, markLearned, reset]);
+  }, [state, ready, sightingCounts, world, dailyTasks, discover, markLearned, reset]);
 
   return <HerbdexContext.Provider value={value}>{children}</HerbdexContext.Provider>;
 }

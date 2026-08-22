@@ -35,6 +35,25 @@ export const XP_BY_RARITY: Record<Rarity, number> = {
 export const XP_FOR_LEARNING = 50;
 export const XP_FOR_MASTERY = 100;
 
+/**
+ * XP for completing a Field Research task, by kind.
+ *
+ * A table rather than a number on each task, so the reward scale stays comparable across
+ * the whole system and cannot drift task by task. `src/lib/research.ts` reads these and
+ * contains no XP literal of its own — same rule every component follows.
+ *
+ * Sized against the rest of the economy: a daily is worth a quarter of the cheapest
+ * discovery, because a daily is a nudge, not an achievement. A seasonal challenge asks for
+ * several real finds over months and is paid accordingly.
+ */
+export const RESEARCH_XP = {
+  daily: 25,
+  collection: 250,
+  seasonal: 500,
+} as const;
+
+export type ResearchKind = keyof typeof RESEARCH_XP;
+
 export interface LevelDefinition {
   level: number;
   name: string;
@@ -111,8 +130,35 @@ export function xpForState(state: HerbdexState): number {
   return (
     xpForDiscoveries(Object.keys(state.discoveries)) +
     countRealHerbs(state.learned) * XP_FOR_LEARNING +
-    countRealHerbs(state.mastered) * XP_FOR_MASTERY
+    countRealHerbs(state.mastered) * XP_FOR_MASTERY +
+    xpForResearch(state)
   );
+}
+
+/**
+ * The kind of research task an id refers to, read from its prefix.
+ *
+ * Task ids are namespaced by kind at construction (`daily:…`, `seasonal:…`,
+ * `collection:…`), so the reward is derivable from the id alone. That keeps this file free
+ * of any dependency on the task registry — which reads the XP table above, and would
+ * otherwise form an import cycle just to answer "how much is this worth".
+ *
+ * An unrecognised prefix is worth nothing. The guard that actually matters lives at the
+ * other end: `reconcileResearch` only ever records ids belonging to real, active tasks, so
+ * an id for a task that does not exist never gets written in the first place.
+ */
+export function researchKindFromId(id: string): ResearchKind | null {
+  const prefix = id.split(':')[0];
+  return prefix && prefix in RESEARCH_XP ? (prefix as ResearchKind) : null;
+}
+
+function xpForResearch(state: HerbdexState): number {
+  let total = 0;
+  for (const id of Object.keys(state.research)) {
+    const kind = researchKindFromId(id);
+    if (kind) total += RESEARCH_XP[kind];
+  }
+  return total;
 }
 
 export function levelFromXp(xp: number): LevelDefinition {
@@ -155,5 +201,13 @@ export function xpForHerb(herb: Herb): number {
   return herb.xp;
 }
 
-/** Highest XP obtainable — every card discovered, learned and mastered. */
-export const MAX_XP = MAX_DECK_XP + DECK_SIZE * (XP_FOR_LEARNING + XP_FOR_MASTERY);
+/**
+ * Highest XP obtainable from the collection alone — every card discovered, learned and
+ * mastered.
+ *
+ * This is no longer the maximum XP a player can hold: Field Research keeps paying out as
+ * long as there are tasks to do, so there is no ceiling any more. It is still the number
+ * the level ladder is anchored to, because the ladder should be climbable by collecting,
+ * without research being mandatory.
+ */
+export const MAX_COLLECTION_XP = MAX_DECK_XP + DECK_SIZE * (XP_FOR_LEARNING + XP_FOR_MASTERY);

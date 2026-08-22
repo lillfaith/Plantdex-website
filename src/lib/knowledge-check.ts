@@ -1,6 +1,7 @@
 import type { Herb } from './types';
 import { HERBS, RARITY_LABEL, SEASON_LABEL } from './deck';
 import { RARITIES, SEASONS } from './types';
+import { hash, seeded, shuffle } from './rng';
 
 /**
  * The card knowledge check — stage 2 of mastery.
@@ -31,36 +32,6 @@ export interface KnowledgeQuestion {
 }
 
 const OPTION_COUNT = 4;
-
-/** FNV-1a. Small, dependency-free, and stable across runs — unlike hashing by iteration order. */
-function hash(text: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < text.length; i += 1) {
-    h ^= text.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-
-/** mulberry32 — a seeded PRNG, so shuffles are reproducible. */
-function seeded(seed: number): () => number {
-  let a = seed;
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function shuffle<T>(items: readonly T[], rand: () => number): T[] {
-  const out = [...items];
-  for (let i = out.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rand() * (i + 1));
-    [out[i], out[j]] = [out[j]!, out[i]!];
-  }
-  return out;
-}
 
 /**
  * Build one multiple-choice question, shuffling the options deterministically.

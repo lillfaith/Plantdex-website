@@ -194,6 +194,15 @@ export interface HerbdexState {
    * revoked, even if the player later deletes the sighting that earned it.
    */
   mastered: Record<string, Timestamp>;
+  /**
+   * Field Research tasks the player has completed, keyed by task id.
+   *
+   * Recorded rather than derived, for the same reason as `mastered`: a task's *progress*
+   * is computed from current facts, but its completion is a thing that happened. A
+   * seasonal challenge finished in spring must not un-finish itself in summer, and a task
+   * completed by logging a sighting must survive that sighting being deleted.
+   */
+  research: Record<string, Timestamp>;
   achievements: Record<string, Timestamp>;
 }
 

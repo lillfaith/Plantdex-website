@@ -2,6 +2,7 @@ import type { DiscoveryResult, HerbdexState } from './types';
 import { getHerb } from './deck';
 import { newlyUnlocked } from './achievements';
 import { qualifiesForMastery } from './mastery';
+import { progressForTask, xpForTask, type ResearchTask, type ResearchWorld } from './research';
 import { XP_FOR_LEARNING, XP_FOR_MASTERY } from './progression';
 import { emptyState } from './storage';
 
@@ -17,6 +18,12 @@ export type HerbdexAction =
   | { type: 'discover'; herbId: string; at?: string }
   | { type: 'learn'; herbId: string; at?: string }
   | { type: 'syncMastery'; sightingCounts: Record<string, number>; at?: string }
+  | {
+      type: 'syncResearch';
+      world: ResearchWorld;
+      activeTasks: readonly ResearchTask[];
+      at?: string;
+    }
   | { type: 'reset' };
 
 export function herbdexReducer(state: HerbdexState, action: HerbdexAction): HerbdexState {
@@ -29,6 +36,8 @@ export function herbdexReducer(state: HerbdexState, action: HerbdexAction): Herb
       return applyLearned(state, action.herbId, action.at).state;
     case 'syncMastery':
       return reconcileMastery(state, action.sightingCounts, action.at).state;
+    case 'syncResearch':
+      return reconcileResearch(state, action.world, action.activeTasks, action.at).state;
     case 'reset':
       return emptyState();
     default:
@@ -149,6 +158,56 @@ export function reconcileMastery(
     xpAwarded: masteredIds.length * XP_FOR_MASTERY,
     newAchievementIds,
   };
+}
+
+export interface ResearchReconciliation {
+  state: HerbdexState;
+  /** Tasks that completed on this pass. Empty when nothing changed. */
+  completedIds: string[];
+  xpAwarded: number;
+  newAchievementIds: string[];
+}
+
+/**
+ * Record every active research task whose steps are now all met.
+ *
+ * Takes the ACTIVE tasks rather than the whole registry, because a daily is only earnable
+ * once it has been offered — otherwise every eligible daily in the deck would pay out the
+ * moment its condition happened to be true. Standing tasks (seasonal, collection) are
+ * always active; dailies are active only while on the board.
+ *
+ * Written as a reconciliation for the same reasons as `reconcileMastery`: progress depends
+ * on sightings, which live in another store and can change from several places, so the
+ * answer must be recomputable from current facts. Re-running is free — a task already
+ * recorded is skipped, so no timestamp is rewritten and no XP is paid twice — and the
+ * *same state object* comes back when nothing qualifies, so callers can skip the write.
+ */
+export function reconcileResearch(
+  state: HerbdexState,
+  world: ResearchWorld,
+  activeTasks: readonly ResearchTask[],
+  at: string = new Date().toISOString(),
+): ResearchReconciliation {
+  const completedIds: string[] = [];
+  let xpAwarded = 0;
+
+  for (const task of activeTasks) {
+    if (state.research[task.id]) continue;
+    if (!progressForTask(task, world).qualifies) continue;
+    completedIds.push(task.id);
+    xpAwarded += xpForTask(task);
+  }
+
+  if (completedIds.length === 0) {
+    return { state, completedIds, xpAwarded: 0, newAchievementIds: [] };
+  }
+
+  const research = { ...state.research };
+  for (const id of completedIds) research[id] = at;
+
+  const { state: next, newAchievementIds } = stampAchievements({ ...state, research }, at);
+
+  return { state: next, completedIds, xpAwarded, newAchievementIds };
 }
 
 /**

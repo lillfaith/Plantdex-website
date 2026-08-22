@@ -4,7 +4,9 @@ import {
   applyLearned,
   reconcileAchievements,
   reconcileMastery,
+  reconcileResearch,
 } from '@/lib/herbdex-reducer';
+import type { ResearchTask, ResearchWorld } from '@/lib/research';
 import { emptyState, type HerbdexStorage } from '@/lib/storage';
 
 /**
@@ -37,6 +39,11 @@ export interface HerbdexStore {
    * Returns the ids that were newly mastered so the caller can celebrate them.
    */
   syncMastery: (sightingCounts: Record<string, number>) => string[];
+  /**
+   * Record every active research task that now qualifies. Safe to call on every render —
+   * it writes nothing when nothing changed. Returns the ids that just completed.
+   */
+  syncResearch: (world: ResearchWorld, activeTasks: readonly ResearchTask[]) => string[];
   reset: () => void;
 }
 
@@ -115,6 +122,16 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
       if (outcome.masteredIds.length === 0) return [];
       commit(outcome.state);
       return outcome.masteredIds;
+    },
+
+    syncResearch(world, activeTasks) {
+      // Same guard as syncMastery: before hydration the snapshot is the empty state, and
+      // committing it would overwrite the player's stored collection with nothing.
+      if (!snapshot.ready) return [];
+      const outcome = reconcileResearch(snapshot.state, world, activeTasks);
+      if (outcome.completedIds.length === 0) return [];
+      commit(outcome.state);
+      return outcome.completedIds;
     },
 
     reset() {

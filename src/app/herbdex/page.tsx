@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { herbsInDeckOrder } from '@/lib/deck';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
+import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 
 export const metadata: Metadata = {
@@ -29,6 +30,10 @@ export default function HerbdexPage() {
 
       <div className="mt-5">
         <ProgressHeader />
+      </div>
+
+      <div className="mt-3">
+        <ResearchTeaser />
       </div>
 
       <div className="mt-6">

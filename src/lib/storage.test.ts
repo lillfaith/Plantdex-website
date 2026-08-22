@@ -13,9 +13,33 @@ describe('parseState', () => {
       discoveries: { 'urtica-dioica': '2026-01-01T00:00:00.000Z' },
       learned: { 'urtica-dioica': '2026-01-02T00:00:00.000Z' },
       mastered: { 'urtica-dioica': '2026-01-03T00:00:00.000Z' },
+      research: { 'collection:backyard': '2026-01-04T00:00:00.000Z' },
       achievements: { 'first-find': '2026-01-01T00:00:00.000Z' },
     };
     expect(parseState(state)).toEqual(state);
+  });
+
+  /**
+   * v2 predates Field Research. Same reasoning as the v1 case: a bare version bump would
+   * drop a real collection on the floor.
+   */
+  it('migrates a version 2 state and keeps the mastery it had earned', () => {
+    const v2 = {
+      version: 2,
+      discoveries: { 'urtica-dioica': '2026-01-01T00:00:00.000Z' },
+      learned: { 'urtica-dioica': '2026-01-02T00:00:00.000Z' },
+      mastered: { 'urtica-dioica': '2026-01-03T00:00:00.000Z' },
+      achievements: { 'first-find': '2026-01-01T00:00:00.000Z' },
+    };
+
+    const parsed = parseState(v2);
+
+    expect(parsed.version).toBe(STORAGE_VERSION);
+    expect(parsed.discoveries).toEqual(v2.discoveries);
+    expect(parsed.learned).toEqual(v2.learned);
+    expect(parsed.mastered).toEqual(v2.mastered);
+    expect(parsed.achievements).toEqual(v2.achievements);
+    expect(parsed.research).toEqual({});
   });
 
   /**

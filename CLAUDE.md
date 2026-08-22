@@ -6,8 +6,9 @@ This file only adds the mechanics of working in this codebase.
 
 ## Current stage
 
-**V0.2 complete.** The Herbdex prototype is functional against real deck data with local
-persistence. Not yet built: accounts (V0.3), commerce (V0.4), QR (V0.5).
+**V0.2 complete**, plus three-stage card mastery and Field Research. The Herbdex prototype
+is functional against real deck data with local persistence. Not yet built: accounts
+(V0.3), commerce (V0.4), QR (V0.5).
 
 ## Commands
 
@@ -41,14 +42,32 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   must never ask about identification, edibility or safety, where a wrong answer could
   matter outdoors. `src/lib/knowledge-check.test.ts` enforces both rules across all 45
   cards.
+- **Field Research derives progress and records completion** (`src/lib/research.ts`). A
+  step measures itself from the current world; no task stores a counter. Completion is
+  written down once and never revoked, so a challenge finished in spring does not un-finish
+  in summer and a task completed by logging a sighting survives that sighting's deletion.
+- **A research task may only group cards by something printed on them** — season, encounter
+  rate, card number. This is why there is no Pollinator Challenge despite AGENTS.md
+  suggesting one: the cards carry no pollinator data, so choosing the species would be
+  inventing botany. Pinned by `src/lib/research.test.ts`.
+- **No research task may be impossible.** The deck holds exactly one winter card, so every
+  target is sized against real deck supply. `research.test.ts` masters the whole deck and
+  asserts every standing task then reports itself complete.
+- **A daily only pays once it has been offered.** `reconcileResearch` takes the *active*
+  tasks, not the registry — otherwise every eligible daily would silently complete the
+  moment its condition happened to be true.
 - **The garden mirrors mastery; it is not a second progression system.** `src/lib/garden.ts`
   maps each mastery stage to exactly one growth stage and reads no clock at all, which is
   what structurally rules out the watering meters, timers and idle growth AGENTS.md forbids.
 - **Extend the level ladder upwards; never re-tune existing thresholds.** Raising one
   demotes players whose XP has not changed. Pinned by `src/lib/progression.test.ts`.
-- **Bump `STORAGE_VERSION` only together with a migration branch in `parseState()`.** An
-  unrecognised version degrades to an empty collection, so a bare bump silently wipes real
-  save data.
+- **Bump `STORAGE_VERSION` only together with adding it to `MIGRATABLE_VERSIONS` in
+  `parseState()`.** An unrecognised version degrades to an empty collection, so a bare bump
+  silently wipes real save data. The single-pass migration there is only valid while schema
+  changes stay purely additive; the first rename or reshape needs a real per-version branch.
+- **`HerbdexState` holds only what XP is derived from, plus achievements.** Reveals, field
+  sightings and the daily research board award nothing, so they live in their own stores
+  with their own keys — which is also what keeps the V0.3 server's surface small.
 - **Herb ids come from the scientific name, never the common name.**
 - **Achievements are keyed by stable `id`**, and predicates are pure functions of state so
   they can be re-evaluated from scratch (this is what makes retroactive unlocks work).

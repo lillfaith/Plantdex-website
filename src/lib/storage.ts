@@ -22,7 +22,7 @@ import type { HerbdexState } from './types';
  * └────────────────────────────────────────────────────────────────────────────┘
  */
 
-export const STORAGE_VERSION = 2;
+export const STORAGE_VERSION = 3;
 export const STORAGE_KEY = 'plantdex.herbdex.v1';
 
 export interface HerbdexStorage {
@@ -37,6 +37,7 @@ export function emptyState(): HerbdexState {
     discoveries: {},
     learned: {},
     mastered: {},
+    research: {},
     achievements: {},
   };
 }
@@ -62,31 +63,36 @@ function sanitizeTimestamps(value: unknown): Record<string, string> {
  * versions may linger, so nothing here trusts its input. Anything unrecognised degrades
  * to an empty collection instead of crashing the page.
  */
+/**
+ * Every stored version this code can still read.
+ *
+ *   v1 → discoveries + achievements
+ *   v2 → adds learned + mastered   (three-stage card mastery)
+ *   v3 → adds research             (Field Research)
+ *
+ * Migrating is a single pass rather than one branch per version because EVERY schema
+ * change so far has been purely ADDITIVE: each new version only introduced maps that
+ * `sanitizeTimestamps` already turns into `{}` when absent. The moment a future version
+ * renames, reshapes or drops a field, that stops being true — at which point this needs a
+ * real per-version branch, not another entry in this array.
+ */
+const MIGRATABLE_VERSIONS: readonly number[] = [1, 2, STORAGE_VERSION];
+
 export function parseState(raw: unknown): HerbdexState {
   if (!isPlainObject(raw)) return emptyState();
-  // Version 1 had no `learned` or `mastered`. Migrate it rather than discarding it:
-  // falling through to emptyState() here would silently wipe a real collection, which is
-  // the worst possible failure mode for data the player spent a season building.
-  if (raw.version === 1) {
-    return {
-      version: STORAGE_VERSION,
-      discoveries: sanitizeTimestamps(raw.discoveries),
-      learned: {},
-      mastered: {},
-      achievements: sanitizeTimestamps(raw.achievements),
-    };
-  }
 
-  if (raw.version !== STORAGE_VERSION) {
-    // A version from the future, or nonsense. Unreadable rather than misinterpreted.
-    return emptyState();
-  }
+  // An unrecognised version — from the future, or nonsense — is unreadable rather than
+  // misinterpreted. Note what that means for anything NOT listed above: falling through
+  // here silently wipes a real collection, which is the worst possible failure mode for
+  // data someone spent a season building. Never bump STORAGE_VERSION without adding it.
+  if (!MIGRATABLE_VERSIONS.includes(raw.version as number)) return emptyState();
 
   return {
     version: STORAGE_VERSION,
     discoveries: sanitizeTimestamps(raw.discoveries),
     learned: sanitizeTimestamps(raw.learned),
     mastered: sanitizeTimestamps(raw.mastered),
+    research: sanitizeTimestamps(raw.research),
     achievements: sanitizeTimestamps(raw.achievements),
   };
 }

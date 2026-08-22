@@ -27,6 +27,13 @@ function discoveredCount(state: HerbdexState): number {
   return Object.keys(state.discoveries).length;
 }
 
+function researchCount(
+  state: HerbdexState,
+  predicate: (taskId: string) => boolean = () => true,
+): number {
+  return Object.keys(state.research).filter(predicate).length;
+}
+
 function countWhere(state: HerbdexState, predicate: (rarity: string) => boolean): number {
   let n = 0;
   for (const id of Object.keys(state.discoveries)) {
@@ -78,6 +85,37 @@ export const ACHIEVEMENTS: readonly Achievement[] = [
     description: 'Discover every herb in the deck.',
     icon: '🏆',
     isUnlocked: (state) => discoveredCount(state) >= DECK_SIZE,
+  },
+  // Field Research badges. Deliberately achievements rather than a parallel "badge"
+  // system: they get stable ids, pure predicates and retroactive unlocking for free, and
+  // there is one place to look for everything a player has earned.
+  {
+    id: 'first-research',
+    name: 'Field Researcher',
+    description: 'Complete your first Field Research task.',
+    icon: '🔍',
+    isUnlocked: (state) => researchCount(state) >= 1,
+  },
+  {
+    id: 'research-10',
+    name: 'Dedicated Researcher',
+    description: 'Complete 10 Field Research tasks.',
+    icon: '🧭',
+    isUnlocked: (state) => researchCount(state) >= 10,
+  },
+  {
+    id: 'seasonal-sweep',
+    name: 'Four Seasons',
+    description: 'Complete the Field Research for every season.',
+    icon: '🍂',
+    isUnlocked: (state) => researchCount(state, (id) => id.startsWith('seasonal:')) >= 4,
+  },
+  {
+    id: 'backyard-collection',
+    name: 'Backyard Collection',
+    description: 'Complete the Backyard Collection challenge.',
+    icon: '🏡',
+    isUnlocked: (state) => Boolean(state.research['collection:backyard']),
   },
 ] as const;
 
