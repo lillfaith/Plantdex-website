@@ -63,18 +63,28 @@ after a deck revision is one command.
 The print package is not committed (large binaries). Point the script at a local copy:
 
 ```bash
-pip3 install pillow
-npm run build:deck -- --source /path/to/plantdex_claude
+pip3 install pillow pymupdf
+npm run build:deck -- --source /path/to/card-pdfs
 ```
+
+`--source` is a directory of two-page per-card PDFs (page 1 front, page 2 back), named so
+the card number is the trailing number in the filename.
 
 This rewrites `src/data/herbs.json` and `public/cards/`.
 
-## What is deliberately missing
+## Card content
 
-Card-back content — habitat, identification notes, preparation, cautions — is **not** in the
-app. It is printed on the card backs, which are not in the reference package, and inventing
-botanical or safety text is prohibited by [`AGENTS.md`](./AGENTS.md). Those sections will
-appear once the back content is supplied.
+Both faces of all 45 cards are transcribed. Fronts supply name, botanical name, encounter
+rate, season, use icons and the 1-5 growing-condition pips; backs supply Healing Traits,
+Signature Compounds, Taste and Aromatic Profile, Preparations and Usable Parts. Icon labels
+and the disclaimer come from the deck's own Icon Cheat Sheet and Disclaimer cards.
+
+Cards carrying a printed warning (currently only Yarrow's poisonous-lookalike note) surface
+it above the discovery button.
+
+Errors found on the printed cards are transcribed as-is and listed under `knownCardIssues`
+in the generated data, so they are visible to fix in a future print run rather than being
+silently patched here.
 
 Accounts, checkout, QR scanning and AI identification are later roadmap stages (V0.3–V0.5).
 

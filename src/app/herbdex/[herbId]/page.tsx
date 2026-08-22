@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getHerb, HERBS, SEASON_LABEL, USE_DESCRIPTION, USE_LABEL } from '@/lib/deck';
+import { getHerb, HERBS, SEASON_LABEL, USE_LABEL } from '@/lib/deck';
 import { StatPips } from '@/components/herbdex/StatPips';
 import { RarityBadge } from '@/components/herbdex/RarityBadge';
 import { DiscoverPanel } from '@/components/herbdex/DiscoverPanel';
-import { SafetyNotice } from '@/components/SafetyNotice';
+import { CardFlip } from '@/components/herbdex/CardFlip';
+import { CardBackDetails } from '@/components/herbdex/CardBackDetails';
+import { CardWarning, SafetyNotice } from '@/components/SafetyNotice';
 
 /** Every herb page is statically generated — 45 small, fast, indexable pages. */
 export function generateStaticParams() {
@@ -48,18 +49,11 @@ export default async function HerbPage({ params }: { params: Promise<{ herbId: s
       </nav>
 
       <div className="sm:flex sm:items-start sm:gap-6">
-        <div className="mx-auto w-56 shrink-0 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift sm:mx-0 sm:w-64">
-          <Image
-            src={herb.image}
-            alt={`Plantdex card ${number}: ${herb.commonName} (${herb.scientificName})`}
-            width={356}
-            height={576}
-            priority
-            className="w-full"
-          />
+        <div className="shrink-0">
+          <CardFlip herb={herb} />
         </div>
 
-        <div className="mt-5 sm:mt-0 sm:flex-1">
+        <div className="mt-6 sm:mt-0 sm:flex-1">
           <p className="text-xs font-bold text-violet-300 tabular-nums">Card {number}</p>
           <h1 className="font-display mt-1 text-3xl leading-tight font-extrabold text-gold-plate">
             {herb.commonName}
@@ -77,6 +71,24 @@ export default async function HerbPage({ params }: { params: Promise<{ herbId: s
               {herb.xp} XP
             </span>
           </div>
+
+          <ul className="mt-3 flex flex-wrap gap-1.5">
+            {herb.uses.map((use) => (
+              <li
+                key={use}
+                className="rounded-full border border-gold-500/45 bg-gold-500/12 px-2.5 py-1 text-xs font-semibold text-gold-300"
+              >
+                {USE_LABEL[use]}
+              </li>
+            ))}
+          </ul>
+
+          {/* A warning printed on the card itself sits above the discovery CTA, never below it. */}
+          {herb.warning && (
+            <div className="mt-4">
+              <CardWarning warning={herb.warning} />
+            </div>
+          )}
 
           <div className="mt-5">
             <DiscoverPanel herb={herb} />
@@ -97,32 +109,9 @@ export default async function HerbPage({ params }: { params: Promise<{ herbId: s
         <StatPips stats={herb.stats} />
       </section>
 
-      <section aria-labelledby="uses-heading" className="panel mt-4 p-5">
-        <h2 id="uses-heading" className="text-sm font-bold tracking-wide text-gold-400 uppercase">
-          Traditional uses
-        </h2>
-        <p className="mt-1 text-xs text-violet-400">
-          The icons printed on this card. These describe historical and folk use only — they
-          are not medical claims or instructions.
-        </p>
-        <ul className="mt-4 space-y-2">
-          {herb.uses.map((use) => (
-            <li key={use} className="flex gap-3">
-              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gold-500" aria-hidden="true" />
-              <div>
-                <p className="text-sm font-semibold text-violet-100">{USE_LABEL[use]}</p>
-                <p className="text-xs text-violet-300">{USE_DESCRIPTION[use]}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/*
-        Identification notes, habitat, range and preparation belong here. That content is
-        printed on the card BACKS, which are not in the reference package, so the section
-        is omitted entirely rather than filled with invented botany.
-      */}
+      <div className="mt-4">
+        <CardBackDetails herb={herb} />
+      </div>
 
       <div className="mt-8">
         <SafetyNotice />

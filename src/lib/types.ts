@@ -12,24 +12,25 @@ export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
 export type Season = (typeof SEASONS)[number];
 
 /**
- * Traditional-use categories, taken from the icons printed on each card face.
+ * The twelve icons printed on the card fronts.
  *
- * These are categories of *traditional and historical* use only. They are not medical
- * claims and must never be presented as treatment advice — see SafetyNotice.
+ * Keys and labels come from the deck's own "Icon Cheat Sheet" (card 46) — these are the
+ * deck's categories, not our invention. They describe traditional and historical use;
+ * they are not medical claims. See SafetyNotice.
  */
 export const USE_KEYS = [
-  'tea',
   'digestive',
-  'respiratory',
-  'kidney',
-  'skin',
+  'edible',
   'wound',
+  'energy',
+  'tea',
+  'lungs',
+  'topical',
+  'calm',
+  'bone',
   'heart',
   'immune',
-  'joint',
-  'calm',
-  'energy',
-  'edible',
+  'urinary',
 ] as const;
 export type UseKey = (typeof USE_KEYS)[number];
 
@@ -40,6 +41,27 @@ export interface HerbStats {
   sun: number;
   /** Number of thermometers printed on the card (1-5). */
   temperature: number;
+}
+
+/**
+ * Content printed on the back of the card, section for section.
+ *
+ * Reproduced verbatim. Where a card's own text contains an error it is transcribed as
+ * printed and recorded in `Deck.knownCardIssues` rather than quietly corrected.
+ */
+export interface HerbBack {
+  /** "HEALING TRAITS" — the deck's own heading. Traditional use, not medical claims. */
+  healingTraits: string[];
+  /** "SIGNATURE COMPOUNDS" */
+  compounds: string[];
+  /** "TASTE PROFILE" */
+  taste: string[];
+  /** "AROMATIC PROFILE" */
+  aromatic: string[];
+  /** "PREPARATIONS" */
+  preparations: string[];
+  /** "USABLE PARTS" */
+  usableParts: string[];
 }
 
 export interface Herb {
@@ -56,12 +78,28 @@ export interface Herb {
   stats: HerbStats;
   image: string;
   thumb: string;
+  backImage: string;
+  back: HerbBack;
+  /** A warning printed on the card itself (e.g. a poisonous lookalike). */
+  warning?: string;
+}
+
+export interface Disclaimer {
+  main: string;
+  availability: string;
+  encounterRate: string;
 }
 
 export interface Deck {
   deckName: string;
   deckSize: number;
   nonHerbCards: { cardNumber: number; title: string }[];
+  useLabels: Record<UseKey, string>;
+  seasonLabels: Record<Season, string>;
+  /** Verbatim text of the deck's own Disclaimer card (#47). */
+  disclaimer: Disclaimer;
+  /** Errors found on the printed cards, keyed by card number. Not shown to visitors. */
+  knownCardIssues: Record<string, string>;
   herbs: Herb[];
 }
 

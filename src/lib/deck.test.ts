@@ -66,11 +66,45 @@ describe('deck data', () => {
     }
   });
 
-  it('points at card art that actually exists', () => {
+  it('points at card art that actually exists, front and back', () => {
     for (const herb of HERBS) {
       expect(existsSync(join(PUBLIC_DIR, herb.image))).toBe(true);
       expect(existsSync(join(PUBLIC_DIR, herb.thumb))).toBe(true);
+      expect(existsSync(join(PUBLIC_DIR, herb.backImage))).toBe(true);
     }
+  });
+
+  it('carries the back-of-card content for every herb', () => {
+    for (const herb of HERBS) {
+      // Every card back has at least these three sections filled in.
+      expect(herb.back.healingTraits.length).toBeGreaterThan(0);
+      expect(herb.back.compounds.length).toBeGreaterThan(0);
+      expect(herb.back.usableParts.length).toBeGreaterThan(0);
+      for (const section of Object.values(herb.back)) {
+        for (const entry of section) {
+          expect(entry.trim().length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it('exposes the deck disclaimer and the icon legend', () => {
+    expect(DECK.disclaimer.main).toContain('educational purposes only');
+    expect(DECK.disclaimer.availability.length).toBeGreaterThan(0);
+    expect(DECK.disclaimer.encounterRate.length).toBeGreaterThan(0);
+    for (const key of USE_KEYS) {
+      expect(DECK.useLabels[key]).toBeTruthy();
+    }
+    for (const season of SEASONS) {
+      expect(DECK.seasonLabels[season]).toBeTruthy();
+    }
+  });
+
+  it('surfaces the printed lookalike warning on Yarrow only', () => {
+    const warned = HERBS.filter((herb) => herb.warning);
+    expect(warned).toHaveLength(1);
+    expect(warned[0]!.commonName).toBe('Yarrow');
+    expect(warned[0]!.warning).toContain('poisonous lookalike');
   });
 
   it('resolves every herb by id', () => {

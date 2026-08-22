@@ -15,7 +15,7 @@ persistence. Not yet built: accounts (V0.3), commerce (V0.4), QR (V0.5).
 npm run dev        # dev server
 npm run verify     # lint + typecheck + test + build — run before pushing
 npm test           # vitest
-npm run build:deck -- --source /path/to/plantdex_claude   # regenerate deck data + art
+npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art
 ```
 
 ## Architecture rules
@@ -34,8 +34,15 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   they can be re-evaluated from scratch (this is what makes retroactive unlocks work).
 - **Deck data is generated.** Edit the `DECK` table in `scripts/build_deck.py` and re-run;
   never hand-edit `src/data/herbs.json`.
-- **No invented botany.** Every herb field must come from the physical card. Content that
-  lives on the card backs is absent on purpose — leave it absent rather than guessing.
+- **No invented botany.** Every herb field must come from the physical card — fronts and
+  backs are both transcribed in `scripts/build_deck.py`. Where a card contains an error,
+  transcribe it faithfully and record it in `KNOWN_CARD_ISSUES`; never silently correct it.
+- **Icon labels and disclaimer text are the deck's own**, taken from the Icon Cheat Sheet
+  (card 46) and Disclaimer (card 47). Change them in the build script, not in components.
+- **"Healing Traits" must always render with its non-claim framing.** It is the deck's
+  heading for traditional use, not a statement that a plant treats anything.
+- **A warning printed on a card (`herb.warning`) must render above the discovery CTA**,
+  never collapsed behind an interaction.
 - **`SafetyNotice` appears on the Herbdex and every herb page.** Do not remove it, and do
   not soften traditional-use wording into medical claims.
 
