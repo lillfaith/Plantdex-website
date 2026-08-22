@@ -1,5 +1,5 @@
 import type { Herb, HerbdexState, Rarity } from './types';
-import { getHerb, MAX_DECK_XP } from './deck';
+import { DECK_SIZE, getHerb, MAX_DECK_XP } from './deck';
 
 /**
  * THE SINGLE SOURCE OF TRUTH FOR XP AND LEVELS.
@@ -22,6 +22,19 @@ export const XP_BY_RARITY: Record<Rarity, number> = {
   Epic: 500,
 };
 
+/**
+ * XP for the second and third stages of card mastery (see src/lib/mastery.ts).
+ *
+ * Deliberately much smaller than a discovery. Finding a plant in the real world is the
+ * thing this product is for; learning and mastering a card are worth rewarding, but they
+ * must never out-earn going outside, or the incentive points at the screen instead of at
+ * the field. A flat rate rather than a per-rarity one, because the effort is the same for
+ * every card — rarity describes how hard the plant is to *find*, which discovery already
+ * pays for.
+ */
+export const XP_FOR_LEARNING = 50;
+export const XP_FOR_MASTERY = 100;
+
 export interface LevelDefinition {
   level: number;
   name: string;
@@ -31,7 +44,13 @@ export interface LevelDefinition {
 
 /**
  * Level ladder. Add entries to extend — nothing else needs to change.
- * The top level is reachable just before a complete collection (deck total: 8,750 XP).
+ *
+ * Levels 1-8 span what discovery alone can earn (8,750 XP for a complete collection).
+ * Levels 9-11 were APPENDED, not re-tuned, when learning and mastery began awarding XP:
+ * raising an existing threshold would have demoted players whose XP had not changed,
+ * which is the one thing a progression system must never do to someone.
+ *
+ * The top level is reachable just short of a fully mastered deck (15,500 XP).
  */
 export const LEVELS: readonly LevelDefinition[] = [
   { level: 1, name: 'Seedling', minXp: 0 },
@@ -42,6 +61,9 @@ export const LEVELS: readonly LevelDefinition[] = [
   { level: 6, name: 'Field Botanist', minXp: 3600 },
   { level: 7, name: 'Master Herbalist', minXp: 5500 },
   { level: 8, name: 'Grand Herbalist', minXp: 8000 },
+  { level: 9, name: 'Herbarium Keeper', minXp: 10_000 },
+  { level: 10, name: 'Deck Sage', minXp: 12_500 },
+  { level: 11, name: 'Plantdex Grandmaster', minXp: 15_000 },
 ] as const;
 
 export const MAX_LEVEL = LEVELS[LEVELS.length - 1]!.level;
@@ -71,9 +93,26 @@ export function xpForDiscoveries(discoveredIds: Iterable<string>): number {
   return total;
 }
 
-/** Total XP for a persisted state. XP is always derived, never read from storage. */
+/** How many recorded ids belong to real deck cards. Tampered ids are worth nothing. */
+function countRealHerbs(record: Record<string, string>): number {
+  let n = 0;
+  for (const id of Object.keys(record)) if (getHerb(id)) n += 1;
+  return n;
+}
+
+/**
+ * Total XP for a persisted state. XP is always derived, never read from storage.
+ *
+ * All three mastery stages pay, and all three are summed from the same records the UI
+ * displays — so there is still no XP counter anywhere that a replayed action could
+ * increment twice. Re-running any award recomputes the identical total.
+ */
 export function xpForState(state: HerbdexState): number {
-  return xpForDiscoveries(Object.keys(state.discoveries));
+  return (
+    xpForDiscoveries(Object.keys(state.discoveries)) +
+    countRealHerbs(state.learned) * XP_FOR_LEARNING +
+    countRealHerbs(state.mastered) * XP_FOR_MASTERY
+  );
 }
 
 export function levelFromXp(xp: number): LevelDefinition {
@@ -116,5 +155,5 @@ export function xpForHerb(herb: Herb): number {
   return herb.xp;
 }
 
-/** Highest XP obtainable — a complete collection. */
-export const MAX_XP = MAX_DECK_XP;
+/** Highest XP obtainable — every card discovered, learned and mastered. */
+export const MAX_XP = MAX_DECK_XP + DECK_SIZE * (XP_FOR_LEARNING + XP_FOR_MASTERY);

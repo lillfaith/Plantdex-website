@@ -24,11 +24,31 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
 
 - **XP and level thresholds live only in `src/lib/progression.ts`.** Components must read
   `progressFromState()` / `progressFromXp()` and never contain a threshold literal.
-- **XP is derived, never stored.** Persisted state is only `{discoveries, achievements}`;
-  XP is summed from discovered herbs. This is what makes repeat-XP structurally
-  impossible rather than merely guarded — do not add an XP counter to stored state.
-- **Discovery is idempotent.** `applyDiscovery()` returns the *same object* if the herb is
-  already discovered. Covered by `src/lib/herbdex-reducer.test.ts`; keep those tests green.
+- **XP is derived, never stored.** Persisted state is only
+  `{discoveries, learned, mastered, achievements}`; XP is summed from those records. This
+  is what makes repeat-XP structurally impossible rather than merely guarded — do not add
+  an XP counter to stored state.
+- **Every stage transition is idempotent.** `applyDiscovery()`, `applyLearned()` and
+  `reconcileMastery()` each return the *same object* when there is nothing new to record.
+  Covered by `src/lib/herbdex-reducer.test.ts` and `src/lib/mastery.test.ts`; keep those
+  tests green.
+- **A card has three stages, and they only ever go forwards** (`src/lib/mastery.ts`):
+  discovered → learned → mastered. Discovery is never gated behind the other two —
+  AGENTS.md requires finding a plant to unlock its card immediately. Mastery is *recorded*
+  rather than recomputed, so deleting the sighting that earned it can never take it back.
+- **The knowledge check may only ask what a card prints.** `src/lib/knowledge-check.ts`
+  draws the answer from the card in hand and every distractor from other real cards. It
+  must never ask about identification, edibility or safety, where a wrong answer could
+  matter outdoors. `src/lib/knowledge-check.test.ts` enforces both rules across all 45
+  cards.
+- **The garden mirrors mastery; it is not a second progression system.** `src/lib/garden.ts`
+  maps each mastery stage to exactly one growth stage and reads no clock at all, which is
+  what structurally rules out the watering meters, timers and idle growth AGENTS.md forbids.
+- **Extend the level ladder upwards; never re-tune existing thresholds.** Raising one
+  demotes players whose XP has not changed. Pinned by `src/lib/progression.test.ts`.
+- **Bump `STORAGE_VERSION` only together with a migration branch in `parseState()`.** An
+  unrecognised version degrades to an empty collection, so a bare bump silently wipes real
+  save data.
 - **Herb ids come from the scientific name, never the common name.**
 - **Achievements are keyed by stable `id`**, and predicates are pure functions of state so
   they can be re-evaluated from scratch (this is what makes retroactive unlocks work).
@@ -48,10 +68,13 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   reading; it awards no XP, does not count toward the collection, and leaves the card a
   silhouette in the grid. Keep them separate — the V0.3 server owns discoveries and must
   never learn about reveals.
-- **The discovery celebration must be owned by a component that survives the locked →
-  discovered swap** (currently `HerbDetail`). Rendering it inside `DiscoverPanel` unmounts
-  it at the exact moment it is needed, and it must keep a stable position in the tree or
-  React recreates the `<dialog>` underneath itself.
+- **A `<dialog>` that reports the result of an action must outlive the state change that
+  action causes.** This has bitten twice. The discovery celebration lives in `HerbDetail`,
+  not `DiscoverPanel`, because discovering swaps the locked view for the full one.
+  `KnowledgeCheck` is rendered unconditionally by `MasteryTrack` and hides only its trigger
+  button, because passing the check advances the stage and re-renders the branch it would
+  otherwise have been mounted inside. Both must also keep a *stable position* in the tree,
+  or React recreates the `<dialog>` underneath itself.
 - **`SafetyNotice` appears on the Herbdex and every herb page.** Do not remove it, and do
   not soften traditional-use wording into medical claims.
 
@@ -60,3 +83,7 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
 `src/lib/storage.ts` is the seam. Read the comment block at the top of that file before
 writing any server code — it lists the four non-negotiables (session-derived user, DB-layer
 authorization, server-side XP recomputation, uniqueness constraint on discoveries).
+
+The same four apply to `learned` and `mastered`: one row per (user, herb, stage), XP
+recomputed server-side from those rows, and mastery re-derived by the server from its own
+sighting records rather than trusted from the client.

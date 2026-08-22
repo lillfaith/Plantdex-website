@@ -22,7 +22,7 @@ import type { HerbdexState } from './types';
  * └────────────────────────────────────────────────────────────────────────────┘
  */
 
-export const STORAGE_VERSION = 1;
+export const STORAGE_VERSION = 2;
 export const STORAGE_KEY = 'plantdex.herbdex.v1';
 
 export interface HerbdexStorage {
@@ -32,7 +32,13 @@ export interface HerbdexStorage {
 }
 
 export function emptyState(): HerbdexState {
-  return { version: STORAGE_VERSION, discoveries: {}, achievements: {} };
+  return {
+    version: STORAGE_VERSION,
+    discoveries: {},
+    learned: {},
+    mastered: {},
+    achievements: {},
+  };
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -58,14 +64,29 @@ function sanitizeTimestamps(value: unknown): Record<string, string> {
  */
 export function parseState(raw: unknown): HerbdexState {
   if (!isPlainObject(raw)) return emptyState();
+  // Version 1 had no `learned` or `mastered`. Migrate it rather than discarding it:
+  // falling through to emptyState() here would silently wipe a real collection, which is
+  // the worst possible failure mode for data the player spent a season building.
+  if (raw.version === 1) {
+    return {
+      version: STORAGE_VERSION,
+      discoveries: sanitizeTimestamps(raw.discoveries),
+      learned: {},
+      mastered: {},
+      achievements: sanitizeTimestamps(raw.achievements),
+    };
+  }
+
   if (raw.version !== STORAGE_VERSION) {
-    // Only one version exists so far. Future migrations branch here; until then an
-    // unknown version is treated as unreadable rather than silently misinterpreted.
+    // A version from the future, or nonsense. Unreadable rather than misinterpreted.
     return emptyState();
   }
+
   return {
     version: STORAGE_VERSION,
     discoveries: sanitizeTimestamps(raw.discoveries),
+    learned: sanitizeTimestamps(raw.learned),
+    mastered: sanitizeTimestamps(raw.mastered),
     achievements: sanitizeTimestamps(raw.achievements),
   };
 }

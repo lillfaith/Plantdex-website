@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { useSightingCounts } from '@/lib/sightings';
 import { buildGarden, nextStageHint, STAGE_LABEL, STAGE_SCALE } from '@/lib/garden';
 
 /**
@@ -15,11 +14,10 @@ import { buildGarden, nextStageHint, STAGE_LABEL, STAGE_SCALE } from '@/lib/gard
  * is visibly made of the same plants as the physical cards rather than stand-in clip art.
  */
 export function GardenView() {
-  const { state, ready } = useHerbdex();
-  const sightingCounts = useSightingCounts();
+  const { state, ready, masteredCount } = useHerbdex();
 
   const order = herbsInDeckOrder().map((herb) => herb.id);
-  const garden = ready ? buildGarden(state, sightingCounts, order) : [];
+  const garden = ready ? buildGarden(state, order) : [];
 
   return (
     <main id="main" className="mx-auto max-w-5xl px-4 py-8">
@@ -30,6 +28,9 @@ export function GardenView() {
 
       <p aria-live="polite" className="mt-4 text-xs font-semibold text-violet-200">
         {garden.length} of {DECK_SIZE} species planted
+        {masteredCount > 0 && (
+          <span className="text-violet-400"> · {masteredCount} flowering</span>
+        )}
       </p>
 
       {/* The bed: fuller as the collection grows. */}
@@ -64,7 +65,10 @@ export function GardenView() {
                     href={`/herbdex/${herb.id}`}
                     className="group flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-violet-800/50"
                   >
-                    {/* Sprites sit on a shared baseline so the bed reads as one planting. */}
+                    {/* Sprites sit on a shared baseline so the bed reads as one planting.
+                        Size is the growth language: a sprout is small and pale, a mastered
+                        plant is full size and lit. Both stages also say their name, so the
+                        difference is never carried by the visual alone. */}
                     <span className="flex h-20 w-full items-end justify-center">
                       <Image
                         src={assetPath(herb.sprite)}
@@ -73,13 +77,24 @@ export function GardenView() {
                         width={276}
                         height={276}
                         style={{ width: `${STAGE_SCALE[stage] * 100}%` }}
-                        className="max-h-20 origin-bottom object-contain transition-[width] duration-500 motion-reduce:transition-none"
+                        className={`max-h-20 origin-bottom object-contain transition-all duration-700 ease-out motion-reduce:transition-none ${
+                          stage === 'sprout'
+                            ? 'opacity-70 saturate-[0.7]'
+                            : stage === 'growing'
+                              ? 'opacity-90'
+                              : 'drop-shadow-[0_0_10px_rgba(240,193,90,0.45)]'
+                        }`}
                       />
                     </span>
                     <span className="mt-1 w-full truncate text-center text-[0.68rem] font-semibold text-violet-100">
                       {herb.commonName}
                     </span>
-                    <span className="text-center text-[0.6rem] text-violet-400">
+                    <span
+                      className={`text-center text-[0.6rem] ${
+                        stage === 'flowering' ? 'font-bold text-gold-300' : 'text-violet-400'
+                      }`}
+                    >
+                      {stage === 'flowering' ? '★ ' : ''}
                       {STAGE_LABEL[stage]}
                     </span>
                     {hint && <span className="sr-only">{hint}</span>}
@@ -96,12 +111,16 @@ export function GardenView() {
           How plants grow
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Discovering a plant sows it as a <strong className="text-gold-300">sprout</strong>.
-          It grows each time you log a sighting of it in your field journal — so a plant you
-          keep visiting through the season becomes the fullest thing in your garden.
+          Each plant here is one of your cards, and it grows through the same three stages the
+          card does. Finding a plant sows it as a{' '}
+          <strong className="text-gold-300">sprout</strong>. Learning its card makes it{' '}
+          <strong className="text-gold-300">grow</strong>. Finding the plant again, after you
+          have learned it, makes it <strong className="text-gold-300">flower</strong> — and
+          masters the card.
         </p>
         <p className="mt-2 text-xs text-violet-400">
-          Nothing here grows just by waiting. Growth follows what you actually go and see.
+          Nothing here grows just by waiting. There is no watering, no timer and no clock —
+          growth follows what you actually go and see.
         </p>
       </div>
     </main>

@@ -7,11 +7,12 @@ import { SEASON_LABEL } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { HerbCard } from './HerbCard';
 
-type StatusFilter = 'all' | 'discovered' | 'undiscovered';
+type StatusFilter = 'all' | 'discovered' | 'undiscovered' | 'mastered';
 
 const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'discovered', label: 'Discovered' },
+  { value: 'mastered', label: 'Mastered' },
   { value: 'undiscovered', label: 'Not found' },
 ];
 
@@ -46,7 +47,7 @@ function Chip({
  * name would otherwise reveal what is hiding behind an undiscovered slot.
  */
 export function HerbGrid({ herbs }: { herbs: Herb[] }) {
-  const { isDiscovered, ready } = useHerbdex();
+  const { isDiscovered, isMastered, stageOf, ready } = useHerbdex();
   const [status, setStatus] = useState<StatusFilter>('all');
   const [rarity, setRarity] = useState<Rarity | 'all'>('all');
   const [season, setSeason] = useState<Season | 'all'>('all');
@@ -59,6 +60,7 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
 
       if (status === 'discovered' && !discovered) return false;
       if (status === 'undiscovered' && discovered) return false;
+      if (status === 'mastered' && !(ready && isMastered(herb.id))) return false;
       if (rarity !== 'all' && herb.rarity !== rarity) return false;
       if (season !== 'all' && herb.season !== season) return false;
 
@@ -72,7 +74,7 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
       }
       return true;
     });
-  }, [herbs, status, rarity, season, query, isDiscovered, ready]);
+  }, [herbs, status, rarity, season, query, isDiscovered, isMastered, ready]);
 
   return (
     <div>
@@ -144,6 +146,7 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
               <HerbCard
                 herb={herb}
                 discovered={ready && isDiscovered(herb.id)}
+                stage={ready ? stageOf(herb.id) : null}
                 priority={index < 4}
               />
             </li>

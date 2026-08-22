@@ -4,33 +4,46 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
 import { assetPath } from '@/lib/asset-path';
+import { MASTERY_STAGE_LABEL, type MasteryStage } from '@/lib/mastery';
 import { RarityBadge } from './RarityBadge';
+
+/** The marker shown in the corner of a discovered card, one per mastery stage. */
+const STAGE_MARK: Record<MasteryStage, string> = {
+  discovered: '✓',
+  learned: '◆',
+  mastered: '★',
+};
 
 /**
  * A single slot in the Herbdex grid.
  *
- * Discovered: the real card face.
+ * Discovered: the real card face, with a corner marker for its mastery stage.
  * Undiscovered: the same art rendered as a silhouette, with the literal words
  * "Not discovered" — the state is never conveyed by the visual treatment alone
- * (AGENTS.md: essential information must not depend solely on colour).
+ * (AGENTS.md: essential information must not depend solely on colour). The stage marker
+ * follows the same rule: every marker carries its stage name in the accessible label.
  */
 export function HerbCard({
   herb,
   discovered,
+  stage = null,
   priority = false,
 }: {
   herb: Herb;
   discovered: boolean;
+  /** Mastery stage, or null while storage is still loading. */
+  stage?: MasteryStage | null;
   priority?: boolean;
 }) {
   const number = `#${String(herb.cardNumber).padStart(2, '0')}`;
+  const stageLabel = stage ? MASTERY_STAGE_LABEL[stage] : 'Discovered';
 
   return (
     <Link
       href={`/herbdex/${herb.id}`}
       aria-label={
         discovered
-          ? `${herb.commonName}, card ${number}, ${herb.rarity}. Discovered.`
+          ? `${herb.commonName}, card ${number}, ${herb.rarity}. ${stageLabel}.`
           : `Card ${number}. Not discovered.`
       }
       className="group relative block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
@@ -75,9 +88,15 @@ export function HerbCard({
         </span>
 
         {discovered && (
-          <span className="absolute top-1.5 right-1.5 rounded-full bg-violet-deep/80 px-1.5 py-0.5 text-[0.6rem] font-bold text-gold-400">
-            <span aria-hidden="true">✓</span>
-            <span className="sr-only">Discovered</span>
+          <span
+            className={`absolute top-1.5 right-1.5 rounded-full px-1.5 py-0.5 text-[0.6rem] font-bold ${
+              stage === 'mastered'
+                ? 'bg-gold-500 text-violet-deep'
+                : 'bg-violet-deep/80 text-gold-400'
+            }`}
+          >
+            <span aria-hidden="true">{STAGE_MARK[stage ?? 'discovered']}</span>
+            <span className="sr-only">{stageLabel}</span>
           </span>
         )}
       </div>

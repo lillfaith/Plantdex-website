@@ -1,5 +1,10 @@
 import type { DiscoveryResult, Herb, HerbdexState } from '@/lib/types';
-import { applyDiscovery, reconcileAchievements } from '@/lib/herbdex-reducer';
+import {
+  applyDiscovery,
+  applyLearned,
+  reconcileAchievements,
+  reconcileMastery,
+} from '@/lib/herbdex-reducer';
 import { emptyState, type HerbdexStorage } from '@/lib/storage';
 
 /**
@@ -24,6 +29,14 @@ export interface HerbdexStore {
   getSnapshot: () => HerbdexSnapshot;
   getServerSnapshot: () => HerbdexSnapshot;
   discover: (herb: Herb) => DiscoveryResult;
+  /** Stage 2: record that the card's knowledge check was passed. */
+  markLearned: (herb: Herb) => DiscoveryResult;
+  /**
+   * Stage 3: award mastery to every card that now qualifies, given current sighting
+   * counts. Safe to call on every render — it writes nothing when nothing changed.
+   * Returns the ids that were newly mastered so the caller can celebrate them.
+   */
+  syncMastery: (sightingCounts: Record<string, number>) => string[];
   reset: () => void;
 }
 
@@ -84,6 +97,24 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
       if (!outcome.result.awarded) return NO_DISCOVERY;
       commit(outcome.state);
       return outcome.result;
+    },
+
+    markLearned(herb) {
+      const outcome = applyLearned(snapshot.state, herb.id);
+      // Already learned, not yet discovered, or an unknown id: nothing is awarded.
+      if (!outcome.result.awarded) return NO_DISCOVERY;
+      commit(outcome.state);
+      return outcome.result;
+    },
+
+    syncMastery(sightingCounts) {
+      // Before hydration the snapshot is the empty state, and committing it would
+      // overwrite the player's stored collection with nothing.
+      if (!snapshot.ready) return [];
+      const outcome = reconcileMastery(snapshot.state, sightingCounts);
+      if (outcome.masteredIds.length === 0) return [];
+      commit(outcome.state);
+      return outcome.masteredIds;
     },
 
     reset() {

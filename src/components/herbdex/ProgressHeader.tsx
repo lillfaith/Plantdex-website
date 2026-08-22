@@ -12,7 +12,8 @@ import { CountUp } from './CountUp';
  * level thresholds of its own.
  */
 export function ProgressHeader() {
-  const { progress, discoveredCount, deckSize, state, ready } = useHerbdex();
+  const { progress, discoveredCount, learnedCount, masteredCount, deckSize, state, ready } =
+    useHerbdex();
 
   // Animate the total from wherever it was, so returning from a discovery shows the
   // number climbing rather than snapping. On first load previous === current, so it
@@ -20,7 +21,9 @@ export function ProgressHeader() {
   const previousXp = usePrevious(progress.xp);
 
   const pct = Math.round(progress.fraction * 100);
-  const collectionPct = deckSize > 0 ? Math.round((discoveredCount / deckSize) * 100) : 0;
+  const asPct = (count: number) => (deckSize > 0 ? Math.round((count / deckSize) * 100) : 0);
+  const collectionPct = asPct(discoveredCount);
+  const masteredPct = asPct(masteredCount);
 
   return (
     <section aria-labelledby="progress-heading" className="panel p-4 sm:p-5">
@@ -87,6 +90,33 @@ export function ProgressHeader() {
           style={{ width: `${collectionPct}%` }}
         />
       </div>
+
+      {/* Mastery is tracked separately from discovery, and stated as its own number: a
+          collection of 45 found cards and a collection of 45 mastered cards are very
+          different achievements, and one bar cannot say both. */}
+      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <p className="text-sm font-bold tracking-wide text-violet-200 uppercase">Cards mastered</p>
+        <p className="text-sm font-semibold text-violet-200 tabular-nums">
+          {masteredCount} <span className="text-violet-400">/ {deckSize}</span>
+        </p>
+      </div>
+      <div
+        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-900"
+        role="progressbar"
+        aria-valuenow={masteredPct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${masteredCount} of ${deckSize} cards mastered`}
+      >
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-gold-500 to-gold-300 transition-[width] duration-500 ease-out"
+          style={{ width: `${masteredPct}%` }}
+        />
+      </div>
+      <p className="mt-1.5 text-xs text-violet-400">
+        {learnedCount} card{learnedCount === 1 ? '' : 's'} learned. A card is mastered once
+        you&apos;ve found it, learned it, and found it again.
+      </p>
 
       <h3 className="mt-4 text-xs font-bold tracking-wide text-violet-300 uppercase">
         Achievements

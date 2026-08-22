@@ -1,6 +1,8 @@
 import type { DiscoveryResult, HerbdexState } from './types';
 import { getHerb } from './deck';
 import { newlyUnlocked } from './achievements';
+import { qualifiesForMastery } from './mastery';
+import { XP_FOR_LEARNING, XP_FOR_MASTERY } from './progression';
 import { emptyState } from './storage';
 
 /**
@@ -13,6 +15,8 @@ import { emptyState } from './storage';
 export type HerbdexAction =
   | { type: 'hydrate'; state: HerbdexState }
   | { type: 'discover'; herbId: string; at?: string }
+  | { type: 'learn'; herbId: string; at?: string }
+  | { type: 'syncMastery'; sightingCounts: Record<string, number>; at?: string }
   | { type: 'reset' };
 
 export function herbdexReducer(state: HerbdexState, action: HerbdexAction): HerbdexState {
@@ -21,6 +25,10 @@ export function herbdexReducer(state: HerbdexState, action: HerbdexAction): Herb
       return action.state;
     case 'discover':
       return applyDiscovery(state, action.herbId, action.at).state;
+    case 'learn':
+      return applyLearned(state, action.herbId, action.at).state;
+    case 'syncMastery':
+      return reconcileMastery(state, action.sightingCounts, action.at).state;
     case 'reset':
       return emptyState();
     default:
@@ -57,16 +65,107 @@ export function applyDiscovery(
     discoveries: { ...state.discoveries, [herbId]: at },
   };
 
-  // Re-evaluate the whole registry rather than toggling incrementally, so unlocks stay
-  // correct if achievements are added later.
-  const unlockedIds = newlyUnlocked(withDiscovery);
-  const achievements = { ...withDiscovery.achievements };
-  for (const id of unlockedIds) achievements[id] = at;
+  const { state: next, newAchievementIds } = stampAchievements(withDiscovery, at);
 
   return {
-    state: { ...withDiscovery, achievements },
-    result: { awarded: true, xpAwarded: herb.xp, newAchievementIds: unlockedIds },
+    state: next,
+    result: { awarded: true, xpAwarded: herb.xp, newAchievementIds },
   };
+}
+
+/**
+ * Record that the player passed a card's knowledge check — stage 2 of mastery.
+ *
+ * Idempotent on exactly the same terms as discovery: an already-learned card returns the
+ * same state object and awards nothing. Learning requires the card to have been
+ * discovered first; a card the player has not found is not theirs to study, and allowing
+ * it would let someone skip straight past the part of the product that happens outdoors.
+ */
+export function applyLearned(
+  state: HerbdexState,
+  herbId: string,
+  at: string = new Date().toISOString(),
+): { state: HerbdexState; result: DiscoveryResult } {
+  const noop: DiscoveryResult = { awarded: false, xpAwarded: 0, newAchievementIds: [] };
+
+  if (!getHerb(herbId)) return { state, result: noop };
+  if (!state.discoveries[herbId]) return { state, result: noop };
+  if (state.learned[herbId]) return { state, result: noop };
+
+  const withLearned: HerbdexState = {
+    ...state,
+    learned: { ...state.learned, [herbId]: at },
+  };
+
+  const { state: next, newAchievementIds } = stampAchievements(withLearned, at);
+
+  return {
+    state: next,
+    result: { awarded: true, xpAwarded: XP_FOR_LEARNING, newAchievementIds },
+  };
+}
+
+export interface MasteryReconciliation {
+  state: HerbdexState;
+  /** Cards that reached mastery on this pass. Empty when nothing changed. */
+  masteredIds: string[];
+  xpAwarded: number;
+  newAchievementIds: string[];
+}
+
+/**
+ * Award mastery to every card that now qualifies — stage 3.
+ *
+ * Written as a reconciliation rather than an event handler on purpose. Mastery depends on
+ * sightings, which live in their own store and can be added from several places (and, in
+ * V0.3, by another device). Recomputing the whole set from current facts means the answer
+ * is the same however the player got there, and re-running it is free: cards already
+ * mastered are skipped, so no timestamp is ever rewritten and no XP is ever awarded twice.
+ * Returns the *same state object* when nothing qualifies, so callers can skip the write.
+ */
+export function reconcileMastery(
+  state: HerbdexState,
+  sightingCounts: Record<string, number>,
+  at: string = new Date().toISOString(),
+): MasteryReconciliation {
+  const masteredIds: string[] = [];
+  for (const herbId of Object.keys(state.learned)) {
+    if (state.mastered[herbId]) continue;
+    if (qualifiesForMastery(state, herbId, sightingCounts[herbId] ?? 0)) masteredIds.push(herbId);
+  }
+
+  if (masteredIds.length === 0) {
+    return { state, masteredIds, xpAwarded: 0, newAchievementIds: [] };
+  }
+
+  const mastered = { ...state.mastered };
+  for (const herbId of masteredIds) mastered[herbId] = at;
+
+  const { state: next, newAchievementIds } = stampAchievements({ ...state, mastered }, at);
+
+  return {
+    state: next,
+    masteredIds,
+    xpAwarded: masteredIds.length * XP_FOR_MASTERY,
+    newAchievementIds,
+  };
+}
+
+/**
+ * Re-evaluate the whole achievement registry against a state and stamp anything newly
+ * earned. Evaluating everything rather than toggling incrementally is what keeps unlocks
+ * correct when achievements are added later.
+ */
+function stampAchievements(
+  state: HerbdexState,
+  at: string,
+): { state: HerbdexState; newAchievementIds: string[] } {
+  const newAchievementIds = newlyUnlocked(state);
+  if (newAchievementIds.length === 0) return { state, newAchievementIds };
+
+  const achievements = { ...state.achievements };
+  for (const id of newAchievementIds) achievements[id] = at;
+  return { state: { ...state, achievements }, newAchievementIds };
 }
 
 /**
@@ -76,11 +175,5 @@ export function applyDiscovery(
  * retroactively instead of requiring a new discovery to trigger evaluation.
  */
 export function reconcileAchievements(state: HerbdexState, at?: string): HerbdexState {
-  const unlockedIds = newlyUnlocked(state);
-  if (unlockedIds.length === 0) return state;
-
-  const stamp = at ?? new Date().toISOString();
-  const achievements = { ...state.achievements };
-  for (const id of unlockedIds) achievements[id] = stamp;
-  return { ...state, achievements };
+  return stampAchievements(state, at ?? new Date().toISOString()).state;
 }

@@ -2,11 +2,16 @@ import { describe, expect, it } from 'vitest';
 import {
   LEVELS,
   MAX_LEVEL,
+  MAX_XP,
   XP_BY_RARITY,
+  XP_FOR_LEARNING,
+  XP_FOR_MASTERY,
   levelFromXp,
   progressFromXp,
   xpForDiscoveries,
+  xpForState,
 } from './progression';
+import { emptyState } from './storage';
 import { HERBS, MAX_DECK_XP } from './deck';
 
 describe('level ladder', () => {
@@ -52,8 +57,20 @@ describe('level ladder', () => {
     expect(progress.xpIntoLevel).toBe(midpoint);
   });
 
-  it('keeps the top level reachable before a complete collection', () => {
-    expect(LEVELS[LEVELS.length - 1]!.minXp).toBeLessThanOrEqual(MAX_DECK_XP);
+  it('keeps the top level reachable before a fully mastered deck', () => {
+    expect(LEVELS[LEVELS.length - 1]!.minXp).toBeLessThanOrEqual(MAX_XP);
+  });
+
+  /**
+   * Levels 1-8 predate learning and mastery XP. Raising one of their thresholds would
+   * demote players whose XP had not changed, so they are pinned here on purpose: extend
+   * the ladder upwards, never re-tune it underneath someone.
+   */
+  it('leaves the original discovery-only ladder untouched', () => {
+    expect(LEVELS.slice(0, 8).map((entry) => entry.minXp)).toEqual([
+      0, 250, 600, 1200, 2200, 3600, 5500, 8000,
+    ]);
+    expect(LEVELS[7]!.minXp).toBeLessThanOrEqual(MAX_DECK_XP);
   });
 });
 
@@ -71,5 +88,66 @@ describe('xpForDiscoveries', () => {
     for (const herb of HERBS) {
       expect(herb.xp).toBe(XP_BY_RARITY[herb.rarity]);
     }
+  });
+});
+
+describe('xpForState across the three mastery stages', () => {
+  const herb = HERBS[0]!;
+  const at = '2026-01-01T00:00:00.000Z';
+
+  it('pays for discovery, learning and mastery, and only for real cards', () => {
+    expect(xpForState(emptyState())).toBe(0);
+
+    expect(xpForState({ ...emptyState(), discoveries: { [herb.id]: at } })).toBe(herb.xp);
+
+    expect(
+      xpForState({
+        ...emptyState(),
+        discoveries: { [herb.id]: at },
+        learned: { [herb.id]: at },
+      }),
+    ).toBe(herb.xp + XP_FOR_LEARNING);
+
+    expect(
+      xpForState({
+        ...emptyState(),
+        discoveries: { [herb.id]: at },
+        learned: { [herb.id]: at },
+        mastered: { [herb.id]: at },
+      }),
+    ).toBe(herb.xp + XP_FOR_LEARNING + XP_FOR_MASTERY);
+  });
+
+  it('ignores ids that are not in the deck at every stage', () => {
+    expect(
+      xpForState({
+        ...emptyState(),
+        discoveries: { ghost: at },
+        learned: { ghost: at },
+        mastered: { ghost: at },
+      }),
+    ).toBe(0);
+  });
+
+  it('keeps the derived total stable when the same state is scored twice', () => {
+    const state = {
+      ...emptyState(),
+      discoveries: { [herb.id]: at },
+      learned: { [herb.id]: at },
+      mastered: { [herb.id]: at },
+    };
+    expect(xpForState(state)).toBe(xpForState(state));
+  });
+
+  it('caps out at MAX_XP when every card is fully mastered', () => {
+    const every = (): Record<string, string> =>
+      Object.fromEntries(HERBS.map((entry) => [entry.id, at]));
+    const complete = {
+      ...emptyState(),
+      discoveries: every(),
+      learned: every(),
+      mastered: every(),
+    };
+    expect(xpForState(complete)).toBe(MAX_XP);
   });
 });

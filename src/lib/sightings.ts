@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 import { deletePhoto } from './photo-store';
 
 /**
@@ -153,10 +153,19 @@ export function useSightings(herbId?: string): Sighting[] {
   );
 }
 
-/** How many distinct species have at least one sighting. Used by My Garden. */
+/**
+ * Sightings logged per species, keyed by herb id. Drives card mastery and My Garden.
+ *
+ * Memoised against the list it is derived from: `useSightings` already returns a stable
+ * array reference, so these counts only become a new object when a sighting is actually
+ * added or removed. Anything that reacts to a change in them — the mastery reconciliation
+ * in HerbdexProvider — would otherwise re-run on every single render.
+ */
 export function useSightingCounts(): Record<string, number> {
   const all = useSightings();
-  const counts: Record<string, number> = {};
-  for (const sighting of all) counts[sighting.herbId] = (counts[sighting.herbId] ?? 0) + 1;
-  return counts;
+  return useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const sighting of all) counts[sighting.herbId] = (counts[sighting.herbId] ?? 0) + 1;
+    return counts;
+  }, [all]);
 }

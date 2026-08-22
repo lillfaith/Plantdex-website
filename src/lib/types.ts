@@ -182,7 +182,18 @@ export type Timestamp = string;
  */
 export interface HerbdexState {
   version: number;
+  /** Stage 1 — the player found this plant in the real world. */
   discoveries: Record<string, Timestamp>;
+  /** Stage 2 — the player passed this card's knowledge check. */
+  learned: Record<string, Timestamp>;
+  /**
+   * Stage 3 — recorded once the mastery predicate first holds.
+   *
+   * Stored rather than derived because mastery depends on sightings, which live in
+   * another store, and because mastery is an achievement: once earned it is never
+   * revoked, even if the player later deletes the sighting that earned it.
+   */
+  mastered: Record<string, Timestamp>;
   achievements: Record<string, Timestamp>;
 }
 

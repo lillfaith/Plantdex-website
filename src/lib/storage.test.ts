@@ -11,9 +11,35 @@ describe('parseState', () => {
     const state = {
       version: STORAGE_VERSION,
       discoveries: { 'urtica-dioica': '2026-01-01T00:00:00.000Z' },
+      learned: { 'urtica-dioica': '2026-01-02T00:00:00.000Z' },
+      mastered: { 'urtica-dioica': '2026-01-03T00:00:00.000Z' },
       achievements: { 'first-find': '2026-01-01T00:00:00.000Z' },
     };
     expect(parseState(state)).toEqual(state);
+  });
+
+  /**
+   * The migration that matters. Version 1 had no `learned` or `mastered`; falling through
+   * to emptyState() would silently wipe a collection someone spent a season building.
+   */
+  it('migrates a version 1 state instead of discarding the collection', () => {
+    const v1 = {
+      version: 1,
+      discoveries: {
+        'urtica-dioica': '2026-01-01T00:00:00.000Z',
+        'achillea-millefolium': '2026-02-01T00:00:00.000Z',
+      },
+      achievements: { 'first-find': '2026-01-01T00:00:00.000Z' },
+    };
+
+    const parsed = parseState(v1);
+
+    expect(parsed.version).toBe(STORAGE_VERSION);
+    expect(parsed.discoveries).toEqual(v1.discoveries);
+    expect(parsed.achievements).toEqual(v1.achievements);
+    // The two new stages start empty — a v1 player has learned and mastered nothing yet.
+    expect(parsed.learned).toEqual({});
+    expect(parsed.mastered).toEqual({});
   });
 
   it.each([

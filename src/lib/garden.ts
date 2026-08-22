@@ -1,68 +1,63 @@
 import type { HerbdexState } from './types';
+import { stageFor, type MasteryStage } from './mastery';
 
 /**
  * My Garden growth stages.
  *
- * Growth rewards *engagement*, never waiting — nothing here reads a clock, so a plant
- * cannot grow while the app is closed and there is nothing to farm by idling. Stages are
- * derived from what the player has actually done, which means the garden is always a
- * truthful picture of their collection and can never drift out of sync with it.
+ * The garden is a *visualisation of card mastery*, not a second progression system. Each
+ * plant's growth stage is exactly its card's mastery stage — so the garden can never drift
+ * out of sync with the Herbdex, and there is no separate ladder to grind:
  *
- * V1 deliberately uses only signals that already exist (discovery, sightings). The ladder
- * has room for reading an entry and passing a future quiz; adding those means adding a
- * signal to `GrowthSignals` and a rule here, and nothing else changes.
+ *   discovered → sprout      (you found it)
+ *   learned    → growing     (you know its card)
+ *   mastered   → flowering   (you found it again after learning it)
+ *
+ * Nothing here reads a clock. A plant cannot grow while the app is closed, there is
+ * nothing to farm by idling, and no timer to wait out — AGENTS.md rules out watering
+ * meters, energy systems and artificial waiting, and the way to guarantee that is to have
+ * no time input at all. Growth follows what the player actually did.
  */
 
-export const GROWTH_STAGES = ['seed', 'sprout', 'young', 'mature', 'flowering'] as const;
+export const GROWTH_STAGES = ['sprout', 'growing', 'flowering'] as const;
 export type GardenStage = (typeof GROWTH_STAGES)[number];
 
+/** Each mastery stage renders as exactly one growth stage. */
+const STAGE_BY_MASTERY: Record<MasteryStage, GardenStage> = {
+  discovered: 'sprout',
+  learned: 'growing',
+  mastered: 'flowering',
+};
+
 export const STAGE_LABEL: Record<GardenStage, string> = {
-  seed: 'Seed',
   sprout: 'Sprout',
-  young: 'Young plant',
-  mature: 'Mature plant',
+  growing: 'Growing',
   flowering: 'Flowering',
 };
 
 /** How much of the sprite is revealed at each stage — the visual reward. */
 export const STAGE_SCALE: Record<GardenStage, number> = {
-  seed: 0.4,
-  sprout: 0.55,
-  young: 0.7,
-  mature: 0.85,
+  sprout: 0.45,
+  growing: 0.72,
   flowering: 1,
 };
 
-export interface GrowthSignals {
-  discovered: boolean;
-  /** Number of field-journal sightings logged for this species. */
-  sightings: number;
-}
-
 /**
  * A species that has not been discovered is not in the garden at all — `null` rather than
- * a seed, so undiscovered plants never appear.
+ * a seed, so undiscovered plants never appear and the garden never hints at what is left.
  */
-export function stageFor(signals: GrowthSignals): GardenStage | null {
-  if (!signals.discovered) return null;
-  if (signals.sightings >= 4) return 'flowering';
-  if (signals.sightings >= 2) return 'mature';
-  if (signals.sightings >= 1) return 'young';
-  return 'sprout';
+export function stageForState(state: HerbdexState, herbId: string): GardenStage | null {
+  const mastery = stageFor(state, herbId);
+  return mastery ? STAGE_BY_MASTERY[mastery] : null;
 }
 
 /** What the player can do next to grow this plant. Drives the hint under each sprite. */
 export function nextStageHint(stage: GardenStage): string | null {
   switch (stage) {
     case 'sprout':
-      return 'Log a sighting to grow this plant';
-    case 'young':
-      return 'Log another sighting to grow it further';
-    case 'mature':
-      return 'Two more sightings to reach flowering';
+      return 'Learn its card to grow this plant';
+    case 'growing':
+      return 'Find it again and log the sighting to make it flower';
     case 'flowering':
-      return null;
-    default:
       return null;
   }
 }
@@ -72,17 +67,10 @@ export interface GardenEntry {
   stage: GardenStage;
 }
 
-export function buildGarden(
-  state: HerbdexState,
-  sightingCounts: Record<string, number>,
-  herbIds: string[],
-): GardenEntry[] {
+export function buildGarden(state: HerbdexState, herbIds: string[]): GardenEntry[] {
   const entries: GardenEntry[] = [];
   for (const herbId of herbIds) {
-    const stage = stageFor({
-      discovered: Boolean(state.discoveries[herbId]),
-      sightings: sightingCounts[herbId] ?? 0,
-    });
+    const stage = stageForState(state, herbId);
     if (stage) entries.push({ herbId, stage });
   }
   return entries;

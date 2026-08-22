@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { SEASON_LABEL, USE_LABEL } from '@/lib/deck';
+import { XP_FOR_MASTERY } from '@/lib/progression';
+import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { useRevealed } from '@/lib/reveals';
 import { StatPips } from './StatPips';
@@ -13,6 +15,7 @@ import { CardFlip } from './CardFlip';
 import { CardBackDetails } from './CardBackDetails';
 import { LockedHerb } from './LockedHerb';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
+import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
 import { CardWarning, SafetyNotice } from '../SafetyNotice';
@@ -28,7 +31,7 @@ import { CardWarning, SafetyNotice } from '../SafetyNotice';
  * the plant so the deck remains findable in search; the body is what stays hidden.
  */
 export function HerbDetail({ herb }: { herb: Herb }) {
-  const { isDiscovered, ready, progress } = useHerbdex();
+  const { isDiscovered, ready, progress, stageOf } = useHerbdex();
   const revealed = useRevealed(herb.id);
 
   /*
@@ -68,6 +71,51 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           onClose={() => celebrateRef.current?.close()}
         />
       )}
+    </dialog>
+  );
+
+  /*
+   * Mastery is not awarded by a button here — it is reconciled from sightings the moment
+   * they qualify (see HerbdexProvider). So the moment worth marking is the *transition*,
+   * which this watches for. `previousStage` is null on first render of a freshly loaded
+   * page, so arriving at an already-mastered card never fires a stale celebration.
+   */
+  const stage = ready ? stageOf(herb.id) : null;
+  const previousStage = usePrevious(stage);
+  const masteryRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (stage === 'mastered' && previousStage !== null && previousStage !== 'mastered') {
+      masteryRef.current?.showModal();
+    }
+  }, [stage, previousStage]);
+
+  const masteryDialog = (
+    <dialog
+      ref={masteryRef}
+      aria-labelledby="mastered-title"
+      className="panel m-auto max-h-[90dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-5 text-center text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+    >
+      <p aria-hidden="true" className="text-4xl text-gold-400 drop-shadow-[0_0_14px_rgba(240,193,90,0.5)]">
+        ★
+      </p>
+      <h2 id="mastered-title" className="font-display mt-2 text-xl font-extrabold text-gold-plate">
+        Card mastered
+      </h2>
+      <p className="mt-2 text-sm text-violet-200">
+        You found <strong className="text-gold-300">{herb.commonName}</strong>, learned its card,
+        and found it again. It&apos;s flowering in your garden.
+      </p>
+      <p className="font-display mt-3 text-2xl font-extrabold text-gold-plate tabular-nums">
+        +{XP_FOR_MASTERY} XP
+      </p>
+      <button
+        type="button"
+        onClick={() => masteryRef.current?.close()}
+        className="mt-4 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
+      >
+        Continue
+      </button>
     </dialog>
   );
 
@@ -164,6 +212,10 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         </div>
       </div>
 
+      {/* Mastery only exists for a card the player actually found; a revealed-only card
+          shows nothing here, because there is no stage to be at yet. */}
+      {discovered && <MasteryTrack herb={herb} />}
+
       <section aria-labelledby="conditions-heading" className="panel mt-8 p-5">
         <h2
           id="conditions-heading"
@@ -204,6 +256,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
       {breadcrumb}
       {body}
       {celebrationDialog}
+      {masteryDialog}
     </main>
   );
 }
