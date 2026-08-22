@@ -15,6 +15,7 @@ import { DiscoverPanel } from './DiscoverPanel';
 import { CardFlip } from './CardFlip';
 import { CardBackDetails } from './CardBackDetails';
 import { LockedHerb } from './LockedHerb';
+import { GrowthPlaceholder } from '../GrowthLoader';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
@@ -123,8 +124,8 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   const discovered = ready && isDiscovered(herb.id);
 
   const breadcrumb = (
-    <nav aria-label="Breadcrumb" className="mb-4">
-      <Link href="/herbdex" className="text-xs font-semibold text-violet-300 hover:text-gold-400">
+    <nav aria-label="Breadcrumb" className="mb-2">
+      <Link href="/herbdex" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
         ← My Herbdex
       </Link>
     </nav>
@@ -140,7 +141,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
   if (!ready) {
     body = (
-      <div className="mx-auto h-96 w-52 animate-pulse rounded-[var(--radius-card)] bg-violet-900/50" />
+      <GrowthPlaceholder className="mx-auto h-96 w-52" label="Loading your card" />
     );
   } else if (!discovered && !revealed) {
     body = (

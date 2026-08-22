@@ -112,7 +112,7 @@ export function HerbCard({
         {discovered ? (
           <RarityBadge rarity={herb.rarity} />
         ) : (
-          <span className="text-[0.62rem] text-violet-500">Find it to reveal</span>
+          <span className="text-[0.62rem] text-violet-400">Find it to reveal</span>
         )}
       </div>
     </Link>

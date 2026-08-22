@@ -251,7 +251,7 @@ export function MySightings({ herb }: { herb: Herb }) {
                 formRef.current?.close();
                 reset();
               }}
-              className="min-h-11 rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+              className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
             >
               Cancel
             </button>

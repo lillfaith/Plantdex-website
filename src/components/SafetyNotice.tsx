@@ -64,9 +64,11 @@ export function SafetyNotice({ variant = 'standard' }: { variant?: 'standard' | 
 
 function SafetyLink() {
   return (
+    // Given a real tap target rather than left as bare inline text: this is the route to
+    // the full safety information, and it is reached one-handed, outdoors, on a phone.
     <Link
       href="/safety"
-      className="text-xs font-semibold whitespace-nowrap text-gold-400 underline underline-offset-2 hover:text-gold-300"
+      className="inline-flex min-h-11 items-center rounded-lg text-xs font-semibold whitespace-nowrap text-gold-400 underline underline-offset-2 hover:text-gold-300"
     >
       Read full safety information →
     </Link>

@@ -47,7 +47,7 @@ export function ProgressHeader() {
       </div>
 
       <div
-        className="mt-2 h-3 overflow-hidden rounded-full bg-violet-900"
+        className="mt-2 h-3 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
@@ -80,7 +80,7 @@ export function ProgressHeader() {
         </p>
       </div>
       <div
-        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-900"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
         role="progressbar"
         aria-valuenow={collectionPct}
         aria-valuemin={0}
@@ -127,7 +127,7 @@ export function ProgressHeader() {
         </p>
       </div>
       <div
-        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-900"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
         role="progressbar"
         aria-valuenow={masteredPct}
         aria-valuemin={0}
@@ -157,7 +157,7 @@ export function ProgressHeader() {
                 className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${
                   unlocked
                     ? 'border-gold-500/60 bg-gold-500/15 text-gold-300'
-                    : 'border-violet-700 bg-violet-900/60 text-violet-500'
+                    : 'border-violet-700 bg-violet-900/60 text-violet-400'
                 }`}
               >
                 <span aria-hidden="true" className={unlocked ? '' : 'grayscale opacity-50'}>

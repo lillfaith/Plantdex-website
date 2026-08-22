@@ -81,7 +81,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
               <li key={step.id} className="flex items-center gap-2 text-xs">
                 <span
                   aria-hidden="true"
-                  className={stepDone ? 'text-gold-300' : 'text-violet-500'}
+                  className={stepDone ? 'text-gold-300' : 'text-violet-400'}
                 >
                   {stepDone ? '☑' : '☐'}
                 </span>
@@ -102,7 +102,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
 
           {steps.length > 1 && (
             <div
-              className="mt-3 h-1.5 overflow-hidden rounded-full bg-violet-900"
+              className="mt-3 h-1.5 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
               role="progressbar"
               aria-valuenow={pct}
               aria-valuemin={0}

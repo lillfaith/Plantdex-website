@@ -10,8 +10,8 @@ export function GlossaryView() {
 
   return (
     <main id="main" className="mx-auto max-w-3xl px-4 py-8">
-      <nav aria-label="Breadcrumb" className="mb-4">
-        <Link href="/learn" className="text-xs font-semibold text-violet-300 hover:text-gold-400">
+      <nav aria-label="Breadcrumb" className="mb-2">
+        <Link href="/learn" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
           ← Learn
         </Link>
       </nav>

@@ -8,6 +8,7 @@ import { RESEARCH_XP } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { SafetyNotice } from '../SafetyNotice';
 import { TaskCard } from './TaskCard';
+import { GrowthPlaceholder } from '../GrowthLoader';
 
 /**
  * Field Research.
@@ -55,8 +56,8 @@ export function ResearchView() {
 
   return (
     <main id="main" className="mx-auto max-w-4xl px-4 py-8">
-      <nav aria-label="Breadcrumb" className="mb-4">
-        <Link href="/herbdex" className="text-xs font-semibold text-violet-300 hover:text-gold-400">
+      <nav aria-label="Breadcrumb" className="mb-2">
+        <Link href="/herbdex" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
           ← My Herbdex
         </Link>
       </nav>
@@ -72,10 +73,8 @@ export function ResearchView() {
       </p>
 
       {!ready ? (
-        <div className="mt-6 space-y-3">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="h-28 animate-pulse rounded-[var(--radius-card)] bg-violet-900/50" />
-          ))}
+        <div className="mt-6">
+          <GrowthPlaceholder className="h-28" label="Loading your research" />
         </div>
       ) : (
         <>

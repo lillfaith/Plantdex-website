@@ -127,7 +127,7 @@ export function KnowledgeCheck({
 
                 let tone = 'border-violet-600 bg-violet-900/50 text-violet-100 hover:bg-violet-800';
                 if (revealed && isAnswer) {
-                  tone = 'border-gold-500 bg-gold-500/15 text-gold-200';
+                  tone = 'border-gold-500 bg-gold-500/15 text-gold-300';
                 } else if (revealed && isPicked) {
                   tone = 'border-pink-accent bg-pink-accent/15 text-violet-100';
                 } else if (revealed) {
@@ -163,7 +163,7 @@ export function KnowledgeCheck({
               <button
                 type="button"
                 onClick={() => dialogRef.current?.close()}
-                className="min-h-11 rounded-full border border-violet-600 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+                className="min-h-11 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800"
               >
                 Close
               </button>
@@ -212,7 +212,7 @@ export function KnowledgeCheck({
                 <button
                   type="button"
                   onClick={restart}
-                  className="min-h-11 rounded-full border border-violet-600 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+                  className="min-h-11 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800"
                 >
                   Try again
                 </button>

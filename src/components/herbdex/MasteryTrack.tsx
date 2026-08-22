@@ -58,7 +58,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
             >
               <span
                 aria-hidden="true"
-                className={`block text-base leading-none ${done ? 'text-gold-300' : 'text-violet-500'}`}
+                className={`block text-base leading-none ${done ? 'text-gold-300' : 'text-violet-400'}`}
               >
                 {done ? '✓' : '○'}
               </span>

@@ -130,7 +130,7 @@ export function DiscoveryCelebration({
             XP
           </p>
         </div>
-        <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-violet-900">
+        <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60">
           <div
             className="h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent transition-[width] duration-700 ease-out motion-reduce:transition-none"
             style={{ width: `${barPct}%` }}

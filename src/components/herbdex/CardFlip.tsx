@@ -44,7 +44,7 @@ export function CardFlip({ herb }: { herb: Herb }) {
         onClick={() => setShowBack((current) => !current)}
         aria-expanded={showBack}
         aria-controls={panelId}
-        className="mx-auto mt-3 flex min-h-11 items-center justify-center gap-2 rounded-full border border-violet-600 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800 sm:mx-0"
+        className="mx-auto mt-3 flex min-h-11 items-center justify-center gap-2 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800 sm:mx-0"
       >
         <span aria-hidden="true">⟲</span>
         {showBack ? 'Show card front' : 'Show card back'}

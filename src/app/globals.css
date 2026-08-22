@@ -6,6 +6,19 @@
  * The palette is sampled directly from the printed cards so the site and the physical
  * deck read as one product: vivid violet ground, gold display type, pink and cyan
  * accents. Components must use these tokens, never raw hex values.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * CONTRAST IS PART OF THE TOKEN, NOT A PER-COMPONENT DECISION
+ *
+ * Every shade used as TEXT is chosen to clear WCAG AA (4.5:1) against the real
+ * composited backgrounds it actually sits on — the page ground, the translucent
+ * `.panel`, and the `bg-violet-900/60` inputs. Those ratios are asserted from the
+ * rendered page, so a token that drifts fails the suite rather than shipping.
+ *
+ * If a shade is not bright enough for the text you are placing, move UP the ramp.
+ * Do not add a new colour: the palette is deliberately small, and every entry here
+ * comes from the printed cards.
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 @theme {
   /* Deck violets, sampled from the card faces. */
@@ -14,10 +27,16 @@
   --color-violet-800: #56108a;
   --color-violet-700: #7016b4;
   --color-violet-600: #9c21f8;
-  --color-violet-500: #b04dfa;
-  --color-violet-400: #cb6bf3;
+  /* 500 and 400 were darkened-for-mood originally and failed AA as body text. Raised
+     in lightness only — hue and saturation are unchanged, so the deck look is intact. */
+  --color-violet-500: #bf70fb;
+  --color-violet-400: #d484f5;
   --color-violet-300: #ddaaf7;
   --color-violet-200: #ecd4fb;
+  /* Brightest body text. Previously undefined, so 32 usages of `text-violet-100` were
+     silently falling through to Tailwind's stock violet — a blue-leaning lavender that
+     is not this deck's colour at all. */
+  --color-violet-100: #f6ebfd;
 
   /* Card gold — display type and frames. */
   --color-gold-500: #ffd54a;
@@ -225,6 +244,53 @@ body {
   pointer-events: none;
 }
 
+/* --- Growth loader ---------------------------------------------------------- */
+/*
+ * Seed → stem → leaf → leaf, looping. Each keyframe track ENDS on the grown state so
+ * that when reduced motion collapses the durations, what remains is a finished sprout
+ * rather than a bare stub.
+ */
+
+@keyframes growth-stem {
+  0% {
+    stroke-dashoffset: 17;
+  }
+  35%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes growth-leaf {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.growth-loader .growth-stem {
+  stroke-dasharray: 17;
+  animation: growth-stem 2000ms ease-in-out infinite;
+}
+
+.growth-loader .growth-leaf {
+  /* Leaves unfurl from where they meet the stem, not from the icon's centre. */
+  transform-origin: 12px 13px;
+  animation: growth-leaf 700ms cubic-bezier(0.22, 1, 0.36, 1) infinite alternate;
+}
+
+.growth-loader .growth-leaf-a {
+  animation-delay: 420ms;
+}
+
+.growth-loader .growth-leaf-b {
+  animation-delay: 700ms;
+}
+
 /*
  * Reduced motion: skip straight to the finished state. Every animation above is
  * decorative — none of them carry information — so removing them loses nothing.
@@ -246,5 +312,19 @@ body {
   /* The flip is decorative — land on the revealed face immediately. */
   .flip-card {
     transition-duration: 0.01ms !important;
+  }
+
+  /*
+   * The growth loader keeps its shape rather than being animated at all: the collapsed
+   * duration above would otherwise leave whichever frame it landed on. Pinning the end
+   * state makes it a still botanical mark that still reads as "waiting" via role=status.
+   */
+  .growth-loader .growth-stem {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .growth-loader .growth-leaf {
+    transform: scale(1) !important;
+    opacity: 1 !important;
   }
 }

@@ -6,6 +6,7 @@ import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { buildGarden, nextStageHint, STAGE_LABEL, STAGE_SCALE } from '@/lib/garden';
+import { GrowthPlaceholder } from '../GrowthLoader';
 
 /**
  * My Garden — every species the player has discovered, growing as they engage with it.
@@ -36,7 +37,7 @@ export function GardenView() {
       {/* The bed: fuller as the collection grows. */}
       <div className="panel mt-4 min-h-64 overflow-hidden p-4">
         {!ready ? (
-          <div className="h-48 animate-pulse rounded-xl bg-violet-900/50" />
+          <GrowthPlaceholder className="h-48" label="Loading your garden" />
         ) : garden.length === 0 ? (
           <div className="py-10 text-center">
             <p className="text-4xl" aria-hidden="true">

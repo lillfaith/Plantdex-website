@@ -94,6 +94,15 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   button, because passing the check advances the stage and re-renders the branch it would
   otherwise have been mounted inside. Both must also keep a *stable position* in the tree,
   or React recreates the `<dialog>` underneath itself.
+- **Contrast is a property of the token, not a per-component decision.** Every shade used
+  as text clears WCAG AA against the *composited* background it actually sits on, and the
+  browser suite measures that from the rendered page rather than from the stylesheet —
+  static maths under-reports, because a chip inside a `.panel` sits on panel-plus-tint. If
+  a shade is too dim for the text you are placing, move up the ramp; do not add a colour.
+  `violet-500` is the placeholder shade and is not for content.
+- **Every text colour must resolve to a deck token.** `text-violet-100` was undefined for
+  32 usages and silently fell through to Tailwind's stock violet; the suite now fails on
+  any text colour that is not in the palette.
 - **`SafetyNotice` appears on the Herbdex and every herb page.** Do not remove it, and do
   not soften traditional-use wording into medical claims. It has two weights: `brief` for
   pages that only list or track plants, `standard` (the full disclaimer) for any page where
