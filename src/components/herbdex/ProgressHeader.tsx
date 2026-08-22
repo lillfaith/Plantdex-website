@@ -3,6 +3,7 @@
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { ACHIEVEMENTS } from '@/lib/achievements';
+import { CURRENT_COLLECTION } from '@/lib/collection';
 import { CountUp } from './CountUp';
 
 /**
@@ -24,6 +25,7 @@ export function ProgressHeader() {
   const asPct = (count: number) => (deckSize > 0 ? Math.round((count / deckSize) * 100) : 0);
   const collectionPct = asPct(discoveredCount);
   const masteredPct = asPct(masteredCount);
+  const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
   return (
     <section aria-labelledby="progress-heading" className="panel p-4 sm:p-5">
@@ -90,6 +92,30 @@ export function ProgressHeader() {
           style={{ width: `${collectionPct}%` }}
         />
       </div>
+
+      {/*
+        The completion moment. It celebrates THIS collection as a finished thing — someone
+        who has found all 45 has completed the product they bought, and the copy says so
+        before it says anything else. The forward-looking line is one sentence, has no
+        CTA, and promises no date, because there is nothing real to link to yet.
+      */}
+      {collectionComplete && (
+        <div className="mt-3 rounded-xl border border-gold-500/60 bg-gold-500/[0.1] p-4 text-center">
+          <p aria-hidden="true" className="text-2xl">
+            🏆
+          </p>
+          <p className="font-display mt-1 text-base font-extrabold text-gold-plate">
+            {CURRENT_COLLECTION.shortName} complete
+          </p>
+          <p className="mt-1 text-sm text-violet-200">
+            You discovered every plant in the original Plantdex deck — all{' '}
+            {deckSize} of them, in the real world.
+          </p>
+          <p className="mt-2 text-xs text-violet-400">
+            Your Herbdex may have more pages to fill someday.
+          </p>
+        </div>
+      )}
 
       {/* Mastery is tracked separately from discovery, and stated as its own number: a
           collection of 45 found cards and a collection of 45 mastered cards are very

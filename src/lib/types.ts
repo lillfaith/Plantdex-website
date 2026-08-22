@@ -93,6 +93,34 @@ export interface SourceRef {
   detail?: string;
 }
 
+/**
+ * The parts of a plant entry a citation can be attached to.
+ *
+ * A closed list rather than free-form strings, so `sectionSources` has a real contract:
+ * a typo cannot silently create a section nothing renders, and the UI can state which
+ * sections are still awaiting an independent source without guessing at the set.
+ */
+export const SOURCEABLE_SECTIONS = [
+  'identification',
+  'habitat',
+  'facts',
+  'growing',
+  'traditionalUse',
+  'preparations',
+  'cautions',
+] as const;
+export type SourceableSection = (typeof SOURCEABLE_SECTIONS)[number];
+
+export const SECTION_LABEL: Record<SourceableSection, string> = {
+  identification: 'Identification',
+  habitat: 'Habitat & range',
+  facts: 'Botanical facts',
+  growing: 'Growing conditions',
+  traditionalUse: 'Traditional use',
+  preparations: 'Preparation',
+  cautions: 'Cautions',
+};
+
 // --- Per-part detail -----------------------------------------------------------
 // Structure for information that varies by plant part. Every field is optional and
 // absent unless a card or a curated, cited entry actually provides it — a species only
@@ -121,6 +149,16 @@ export interface Herb {
   id: string;
   /** Position in the physical deck, as printed (#01-#45). */
   cardNumber: number;
+  /**
+   * Which printed collection this card belongs to.
+   *
+   * Absent on Collection 01, whose cards predate the concept — `collectionOf()` in
+   * src/lib/collection.ts falls back to the current collection, so a future deck can
+   * declare itself without every existing card needing to be rewritten.
+   */
+  collectionId?: string;
+  /** Card number within its own collection. Absent means it equals `cardNumber`. */
+  cardNumberInCollection?: number;
   commonName: string;
   scientificName: string;
   rarity: Rarity;
@@ -147,8 +185,8 @@ export interface Herb {
 
   /** Provenance for this entry as a whole. */
   sources?: SourceRef[];
-  /** Provenance for individual sections, keyed by section name. */
-  sectionSources?: Record<string, SourceRef[]>;
+  /** Provenance for individual sections. Absent sections cite the card only. */
+  sectionSources?: Partial<Record<SourceableSection, SourceRef[]>>;
 }
 
 export interface Disclaimer {
@@ -159,6 +197,9 @@ export interface Disclaimer {
 
 export interface Deck {
   deckName: string;
+  /** Which printed collection this deck is. Optional for decks generated before collections. */
+  collectionId?: string;
+  collectionName?: string;
   deckSize: number;
   nonHerbCards: { cardNumber: number; title: string }[];
   useLabels: Record<UseKey, string>;

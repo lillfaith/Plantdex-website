@@ -5,6 +5,8 @@ import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
+import { BeyondCollection } from '@/components/collection/BeyondCollection';
+import { CURRENT_COLLECTION } from '@/lib/collection';
 
 export const metadata: Metadata = {
   title: 'My Herbdex',
@@ -26,6 +28,11 @@ export default function HerbdexPage() {
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Herbdex</h1>
       <p className="mt-1 text-sm text-violet-300">
         Found a plant in the wild? Open its card and log it.
+      </p>
+      {/* Collection identity, stated once. The deck is complete as it stands — this names
+          it rather than implying anything is missing from it. */}
+      <p className="mt-1.5 text-xs font-semibold tracking-wide text-violet-400 uppercase">
+        {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
       </p>
 
       <div className="mt-5">
@@ -51,8 +58,12 @@ export default function HerbdexPage() {
         </div>
       </div>
 
+      <div className="mt-8">
+        <BeyondCollection />
+      </div>
+
       <div className="mt-10">
-        <SafetyNotice />
+        <SafetyNotice variant="brief" />
       </div>
     </main>
   );

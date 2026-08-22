@@ -424,6 +424,12 @@ def main() -> int:
             "(see knownCardIssues)."
         ),
         "deckName": "Plantdex",
+        # The printed deck is Plantdex Collection 01. Emitted so a future second deck can
+        # be generated with its own id rather than the app assuming there is only ever one.
+        # src/lib/collection.ts falls back to Collection 01 when this is absent, so decks
+        # generated before this existed keep working unchanged.
+        "collectionId": "collection-01",
+        "collectionName": "Plantdex Collection 01",
         "deckSize": len(herbs),
         "nonHerbCards": [{"cardNumber": n, "title": t} for n, t in sorted(NON_HERB_CARDS.items())],
         "useLabels": USE_LABELS,

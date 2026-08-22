@@ -1,5 +1,6 @@
 import sourcesJson from '@/data/sources.json';
-import type { Source, SourceRef } from './types';
+import type { Source, SourceableSection, SourceRef } from './types';
+import { SECTION_LABEL, SOURCEABLE_SECTIONS } from './types';
 
 /**
  * The citation system.
@@ -49,6 +50,40 @@ export function resolveRefs(refs: SourceRef[] | undefined): ResolvedSource[] {
     out.push({ source, detail: ref.detail });
   }
   return out;
+}
+
+export interface SectionCitation {
+  section: SourceableSection;
+  label: string;
+  sources: ResolvedSource[];
+}
+
+/**
+ * Split a plant's sourceable sections into those that carry a verified independent
+ * reference and those that do not.
+ *
+ * The second list is the honest half and the reason this function returns both. Every
+ * section of every card is currently transcribed from the deck and nothing more, so
+ * showing only what IS cited would leave a reader to assume the rest is cited too. The
+ * brief asks for the architecture to exist and for uncited information to be *clearly*
+ * marked as awaiting verified sources — this is what the page needs to say that.
+ */
+export function sectionCitations(
+  sectionSources: Partial<Record<SourceableSection, SourceRef[]>> | undefined,
+): { cited: SectionCitation[]; awaiting: SourceableSection[] } {
+  const cited: SectionCitation[] = [];
+  const awaiting: SourceableSection[] = [];
+
+  for (const section of SOURCEABLE_SECTIONS) {
+    const sources = resolveRefs(sectionSources?.[section]);
+    if (sources.length > 0) {
+      cited.push({ section, label: SECTION_LABEL[section], sources });
+    } else {
+      awaiting.push(section);
+    }
+  }
+
+  return { cited, awaiting };
 }
 
 /** Human-readable one-line citation. Kept in one place so every reference looks the same. */

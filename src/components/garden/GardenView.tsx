@@ -122,6 +122,9 @@ export function GardenView() {
           Nothing here grows just by waiting. There is no watering, no timer and no clock —
           growth follows what you actually go and see.
         </p>
+        <p className="mt-2 text-xs text-violet-400">
+          Your garden grows with every Plantdex collection you add to your Herbdex.
+        </p>
       </div>
     </main>
   );

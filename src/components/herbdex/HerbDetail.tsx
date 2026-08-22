@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { SEASON_LABEL, USE_LABEL } from '@/lib/deck';
 import { XP_FOR_MASTERY } from '@/lib/progression';
+import { cardLabel } from '@/lib/collection';
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { useRevealed } from '@/lib/reveals';
@@ -120,7 +121,6 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   );
 
   const discovered = ready && isDiscovered(herb.id);
-  const number = `#${String(herb.cardNumber).padStart(2, '0')}`;
 
   const breadcrumb = (
     <nav aria-label="Breadcrumb" className="mb-4">
@@ -146,8 +146,10 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     body = (
       <>
         <LockedHerb herb={herb} onDiscovered={onDiscovered} />
+        {/* Nothing about traditional use is on screen yet — but a warning printed on the
+            card is, shown by LockedHerb above, which is the part that matters here. */}
         <div className="mt-10">
-          <SafetyNotice />
+          <SafetyNotice variant="brief" />
         </div>
       </>
     );
@@ -170,7 +172,9 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         </div>
 
         <div className="mt-6 sm:mt-0 sm:flex-1">
-          <p className="text-xs font-bold text-violet-300 tabular-nums">Card {number}</p>
+          {/* Collection · card number, so a card reads as part of a collectible set
+              rather than a loose number. */}
+          <p className="text-xs font-bold text-violet-300 tabular-nums">{cardLabel(herb)}</p>
           <h1 className="font-display mt-1 text-3xl leading-tight font-extrabold text-gold-plate">
             {herb.commonName}
           </h1>
@@ -241,10 +245,13 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         )}
 
         <div className="mt-4">
-          <SourcesSection refs={herb.sources} />
+          <SourcesSection herb={herb} />
         </div>
 
-        <div className="mt-8">
+        {/* Healing Traits and Traditional Preparation are both on this page, so the full
+            disclaimer stays visible here. Downgrading this to `brief` would be a safety
+            regression dressed as a design tweak. */}
+        <div className="mt-8 border-t border-violet-700/40 pt-6">
           <SafetyNotice />
         </div>
       </>

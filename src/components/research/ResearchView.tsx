@@ -141,7 +141,7 @@ export function ResearchView() {
       )}
 
       <div className="mt-10">
-        <SafetyNotice />
+        <SafetyNotice variant="brief" />
       </div>
     </main>
   );

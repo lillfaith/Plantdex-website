@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { GlossaryTermLink } from '@/components/learn/GlossaryTermLink';
+import { SafetyNotice } from '@/components/SafetyNotice';
 
 export const metadata: Metadata = {
   title: 'Preparation guides',
@@ -177,6 +178,11 @@ export default function PreparationsPage() {
         appear where curated, cited information supports them for that species — not
         inferred from the fact that a method exists.
       </p>
+
+      {/* The most ingestion-adjacent page on the site, so it carries the full notice. */}
+      <div className="mt-8 border-t border-violet-700/40 pt-6">
+        <SafetyNotice />
+      </div>
     </main>
   );
 }

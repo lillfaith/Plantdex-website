@@ -20,6 +20,12 @@ const SECTIONS = [
     title: 'Preparation guides',
     body: 'How traditional preparations are made, in general terms: teas and infusions, decoctions, infused oils and salves, and drying and storing plant material.',
   },
+  {
+    href: '/safety',
+    icon: '⚠',
+    title: 'Herbal safety',
+    body: 'The deck’s own disclaimer in full, how to treat identification, every warning printed in this deck, and where the plant information on this site comes from.',
+  },
 ];
 
 export default function LearnPage() {
@@ -57,6 +63,14 @@ export default function LearnPage() {
           Confirm any identification with reliable references and qualified local expertise
           before preparing a wild plant at all, and speak to a healthcare professional before
           using any plant medicinally.
+        </p>
+        <p className="mt-3">
+          <Link
+            href="/safety"
+            className="text-xs font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+          >
+            Read full safety information →
+          </Link>
         </p>
       </aside>
     </main>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { formatCitation, getSource, resolveRefs } from './sources';
+import { formatCitation, getSource, resolveRefs, sectionCitations } from './sources';
 import { HERBS } from './deck';
+import { SECTION_LABEL, SOURCEABLE_SECTIONS } from './types';
 
 describe('source registry', () => {
   it('exposes the deck as a verified source', () => {
@@ -58,6 +59,45 @@ describe('every herb carries provenance', () => {
       expect(resolved.length, `herb ${herb.id} has no verified source`).toBeGreaterThan(0);
       expect(resolved.some((r) => r.source.id === 'plantdex-deck')).toBe(true);
       expect(resolved[0]!.detail).toContain(String(herb.cardNumber).padStart(2, '0'));
+    }
+  });
+});
+
+describe('sectionCitations', () => {
+  it('reports every sourceable section as awaiting when none are cited', () => {
+    const { cited, awaiting } = sectionCitations(undefined);
+    expect(cited).toEqual([]);
+    expect(awaiting).toEqual([...SOURCEABLE_SECTIONS]);
+  });
+
+  it('separates cited sections from those still awaiting a source', () => {
+    const { cited, awaiting } = sectionCitations({
+      identification: [{ sourceId: 'plantdex-deck', detail: 'Card front' }],
+    });
+
+    expect(cited).toHaveLength(1);
+    expect(cited[0]!.section).toBe('identification');
+    expect(cited[0]!.label).toBe('Identification');
+    expect(cited[0]!.sources[0]!.detail).toBe('Card front');
+    expect(awaiting).not.toContain('identification');
+    expect(awaiting).toHaveLength(SOURCEABLE_SECTIONS.length - 1);
+  });
+
+  /**
+   * An unverified section source must not merely render without a link — it must leave
+   * the section counted as UNSOURCED, so the page still says so out loud.
+   */
+  it('counts a section cited only by an unverified source as still awaiting one', () => {
+    const { cited, awaiting } = sectionCitations({
+      cautions: [{ sourceId: 'not-in-the-registry' }],
+    });
+    expect(cited).toEqual([]);
+    expect(awaiting).toContain('cautions');
+  });
+
+  it('gives every sourceable section a human label', () => {
+    for (const section of SOURCEABLE_SECTIONS) {
+      expect(SECTION_LABEL[section]?.trim().length).toBeGreaterThan(0);
     }
   });
 });

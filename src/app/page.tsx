@@ -55,6 +55,12 @@ export default function HomePage() {
         >
           Cards from the deck
         </h2>
+        {/* One quiet line, well below the hero. The primary action on this page is still
+            getting the deck; this only says the world could get bigger. */}
+        <p className="mx-auto mt-2 max-w-lg text-center text-sm text-violet-400">
+          The first Plantdex collection begins with {DECK_SIZE} plants — with room for the
+          world to grow.
+        </p>
         <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {showcase.map((herb) => (
             <li key={herb.id}>
@@ -112,7 +118,7 @@ export default function HomePage() {
       </section>
 
       <div className="mt-14">
-        <SafetyNotice />
+        <SafetyNotice variant="brief" />
       </div>
     </main>
   );
