@@ -277,6 +277,22 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
   });
 
   describe('cross-user Row Level Security', () => {
+    // Every test below asserts Bob sees nothing. That is only meaningful if there is
+    // something to see: with an empty account they would all pass while proving nothing.
+    // This pins the precondition so the suite cannot quietly go vacuous.
+    it('has real rows of Alice to attack', async () => {
+      const { data, error } = await supabase!
+        .from('discoveries')
+        .select('herb_id')
+        .eq('user_id', alice.id);
+      expect(error).toBeNull();
+      expect(data?.length ?? 0).toBeGreaterThan(0);
+
+      const state = await createRemoteHerbdexStorage(alice.id).load();
+      expect(Object.keys(state.learned).length).toBeGreaterThan(0);
+      expect(xpForState(state)).toBeGreaterThan(0);
+    }, 30_000);
+
     it('cannot READ another user rows in any table', async () => {
       for (const [table] of TABLES) {
         const { data, error } = await bobClient.from(table).select('*').eq('user_id', alice.id);
