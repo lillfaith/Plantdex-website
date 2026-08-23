@@ -1,12 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '@/state/AuthProvider';
-import { SignInForm, SignUpForm } from '@/components/auth/AuthForms';
+import { ForgotPasswordForm, SignInForm, SignUpForm } from '@/components/auth/AuthForms';
 import { ImportLocalProgressDialog } from '@/components/auth/ImportLocalProgressDialog';
 import { SafetyNotice } from '@/components/SafetyNotice';
 
 export default function AccountPage() {
   const { ready, configured, user, signOut } = useAuth();
+  const [forgot, setForgot] = useState(false);
 
   return (
     <main id="main" className="mx-auto max-w-md px-4 py-8">
@@ -25,23 +27,33 @@ export default function AccountPage() {
         <div className="mt-6 space-y-8">
           <section className="panel p-5">
             <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
-              Sign in
+              {forgot ? 'Reset your password' : 'Sign in'}
             </h2>
-            <p className="mt-1 text-xs text-violet-400">
-              Your collection follows you to any device you sign in on.
-            </p>
+            {!forgot && (
+              <p className="mt-1 text-xs text-violet-400">
+                Your collection follows you to any device you sign in on.
+              </p>
+            )}
             <div className="mt-4">
-              <SignInForm />
+              {forgot ? (
+                <ForgotPasswordForm onCancel={() => setForgot(false)} />
+              ) : (
+                <SignInForm onForgotPassword={() => setForgot(true)} />
+              )}
             </div>
           </section>
-          <section className="panel p-5">
-            <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
-              Create an account
-            </h2>
-            <div className="mt-4">
-              <SignUpForm />
-            </div>
-          </section>
+          {/* Hidden while resetting: offering "create an account" to someone who just said
+              they already have one is how a player ends up with two. */}
+          {!forgot && (
+            <section className="panel p-5">
+              <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
+                Create an account
+              </h2>
+              <div className="mt-4">
+                <SignUpForm />
+              </div>
+            </section>
+          )}
         </div>
       )}
 
