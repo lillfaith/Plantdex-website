@@ -41,11 +41,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!supabase) return;
 
     let cancelled = false;
-    supabase.auth.getSession().then(({ data }) => {
-      if (cancelled) return;
-      setSession(data.session);
-      setReady(true);
-    });
+    // `.catch` matters as much as `.then` here: `ready` gates the entire account page and
+    // the AccountBadge, so a rejected session check (offline, DNS failure, Supabase down)
+    // would otherwise leave both stuck on "Loading…" forever. Failing to find a session is
+    // just "signed out", which the app already handles.
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (cancelled) return;
+        setSession(data.session);
+      })
+      .catch((error: unknown) => {
+        console.warn('[plantdex] could not check the current session', error);
+      })
+      .finally(() => {
+        if (!cancelled) setReady(true);
+      });
 
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next);

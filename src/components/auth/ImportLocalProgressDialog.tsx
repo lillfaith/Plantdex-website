@@ -19,10 +19,11 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
   const [status, setStatus] = useState<'checking' | 'offering' | 'importing' | 'done'>(
     'checking',
   );
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    if (hasImportBeenOffered()) return;
+    if (hasImportBeenOffered(userId)) return;
 
     hasLocalProgressToImport().then((has) => {
       if (cancelled) return;
@@ -30,19 +31,33 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
         setStatus('offering');
         ref.current?.showModal();
       } else {
-        markImportOffered();
+        markImportOffered(userId);
       }
     });
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [userId]);
 
   const onImport = useCallback(async () => {
     setStatus('importing');
-    await importLocalProgress(userId);
-    markImportOffered();
+    setError(null);
+    const outcome = await importLocalProgress(userId);
+
+    // Only close the offer once the import actually landed. A failed write that still
+    // marked itself "offered" would strand this device's progress: never deleted, but
+    // never reachable from the account either. Re-running is safe — every write is an
+    // additive, idempotent upsert — so leaving the dialog open is a real retry.
+    if (!outcome.ok) {
+      setError(
+        `Couldn't import ${outcome.failed.join(', ')}. Nothing on this device was changed — check your connection and try again.`,
+      );
+      setStatus('offering');
+      return;
+    }
+
+    markImportOffered(userId);
     setStatus('done');
     // The Herbdex store already hydrated from (empty) server rows before this import ran;
     // reloading is the simplest way to pick up what just got written without adding a
@@ -51,9 +66,12 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
   }, [userId]);
 
   const onSkip = useCallback(() => {
-    markImportOffered();
+    // Skipping still spends the offer — CLAUDE.md's contract is "offered once per account,
+    // accepted or skipped". Only a *failed* import leaves the offer open, because that is
+    // the app's error, not the player's decision.
+    markImportOffered(userId);
     ref.current?.close();
-  }, []);
+  }, [userId]);
 
   return (
     <dialog
@@ -69,6 +87,7 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
         them into this account so they follow you to any device you sign in on. Nothing on
         this device is deleted either way.
       </p>
+      {error && <p className="mt-3 text-sm text-stat-temp">{error}</p>}
       <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <button
           type="button"

@@ -74,28 +74,64 @@ alter table public.research_completions enable row level security;
 alter table public.unlocked_achievements enable row level security;
 alter table public.sightings enable row level security;
 
--- One owner-only policy per table, covering select/insert/delete. There is no update
--- policy anywhere: every row here is write-once. A player can delete their own sighting
--- (src/lib/sightings.ts already supports this locally) but that never un-earns mastery,
--- matching the existing "mastery is recorded, not recomputed" rule.
+-- Owner-only access, split into select/insert/delete with NO update policy anywhere:
+-- every row here is genuinely write-once. This is deliberately three policies per table
+-- rather than one `for all`, because `for all` silently INCLUDES update — under it a
+-- signed-in player could rewrite their own `mastered_at`/`discovered_at` timestamps, or
+-- rewrite a sighting's `herb_id` after the fact to reshape the very rows
+-- `supabase/functions/herbdex-action` re-derives mastery and research from. Splitting the
+-- policy is what makes the write-once contract real instead of merely stated.
+--
+-- Every upsert in the app passes `ignoreDuplicates: true`, which PostgREST emits as
+-- `insert ... on conflict do nothing` — that needs only the insert policy, never update,
+-- so re-recording a fact already stored stays a silent no-op rather than an error. Adding
+-- an update policy later would reopen exactly the hole described above; don't.
+--
+-- A player can delete their own sighting (src/lib/sightings.ts already supports this
+-- locally) but that never un-earns mastery, matching the existing "mastery is recorded,
+-- not recomputed" rule.
 
-create policy "own discoveries" on public.discoveries
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own discoveries read" on public.discoveries
+  for select using (auth.uid() = user_id);
+create policy "own discoveries insert" on public.discoveries
+  for insert with check (auth.uid() = user_id);
+create policy "own discoveries delete" on public.discoveries
+  for delete using (auth.uid() = user_id);
 
-create policy "own learned" on public.learned
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own learned read" on public.learned
+  for select using (auth.uid() = user_id);
+create policy "own learned insert" on public.learned
+  for insert with check (auth.uid() = user_id);
+create policy "own learned delete" on public.learned
+  for delete using (auth.uid() = user_id);
 
-create policy "own mastered" on public.mastered
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own mastered read" on public.mastered
+  for select using (auth.uid() = user_id);
+create policy "own mastered insert" on public.mastered
+  for insert with check (auth.uid() = user_id);
+create policy "own mastered delete" on public.mastered
+  for delete using (auth.uid() = user_id);
 
-create policy "own research completions" on public.research_completions
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own research completions read" on public.research_completions
+  for select using (auth.uid() = user_id);
+create policy "own research completions insert" on public.research_completions
+  for insert with check (auth.uid() = user_id);
+create policy "own research completions delete" on public.research_completions
+  for delete using (auth.uid() = user_id);
 
-create policy "own unlocked achievements" on public.unlocked_achievements
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own unlocked achievements read" on public.unlocked_achievements
+  for select using (auth.uid() = user_id);
+create policy "own unlocked achievements insert" on public.unlocked_achievements
+  for insert with check (auth.uid() = user_id);
+create policy "own unlocked achievements delete" on public.unlocked_achievements
+  for delete using (auth.uid() = user_id);
 
-create policy "own sightings" on public.sightings
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own sightings read" on public.sightings
+  for select using (auth.uid() = user_id);
+create policy "own sightings insert" on public.sightings
+  for insert with check (auth.uid() = user_id);
+create policy "own sightings delete" on public.sightings
+  for delete using (auth.uid() = user_id);
 
 -- Private bucket for sighting photos. Objects are stored at "{user_id}/{filename}"; the
 -- policy below restricts access to the folder matching the caller's own uid, mirroring the
