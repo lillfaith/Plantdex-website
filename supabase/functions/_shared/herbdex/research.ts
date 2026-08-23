@@ -1,8 +1,8 @@
-import type { Herb, HerbdexState, Rarity, Season } from './types';
-import { SEASONS } from './types';
-import { getHerb, HERBS, herbsInDeckOrder, SEASON_LABEL } from './deck';
-import { RESEARCH_XP, type ResearchKind } from './progression';
-import { hash, seeded, shuffle } from './rng';
+import type { Herb, HerbdexState, Rarity, Season } from './types.ts';
+import { SEASONS } from './types.ts';
+import { getHerb, HERBS, herbsInDeckOrder, SEASON_LABEL } from './deck.ts';
+import { RESEARCH_XP, type ResearchKind } from './progression.ts';
+import { hash, seeded, shuffle } from './rng.ts';
 
 /**
  * FIELD RESEARCH — small, concrete reasons to pick the deck up and go outside.

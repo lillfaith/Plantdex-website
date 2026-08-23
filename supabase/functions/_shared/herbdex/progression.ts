@@ -1,5 +1,5 @@
-import type { Herb, HerbdexState, Rarity } from './types';
-import { DECK_SIZE, getHerb, MAX_DECK_XP } from './deck';
+import type { Herb, HerbdexState, Rarity } from './types.ts';
+import { DECK_SIZE, getHerb, MAX_DECK_XP } from './deck.ts';
 
 /**
  * THE SINGLE SOURCE OF TRUTH FOR XP AND LEVELS.

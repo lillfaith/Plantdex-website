@@ -1,4 +1,4 @@
-import type { HerbdexState } from './types';
+import type { HerbdexState } from './types.ts';
 
 /**
  * The pure shape and defaults of Herbdex progress: no browser API, no React, no Deno-unsafe

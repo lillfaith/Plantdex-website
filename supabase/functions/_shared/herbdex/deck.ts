@@ -1,5 +1,5 @@
 import deckJson from './herbs.json' with { type: 'json' };
-import type { Deck, Herb, Rarity, Season, UseKey } from './types';
+import type { Deck, Herb, Rarity, Season, UseKey } from './types.ts';
 
 /**
  * The deck, loaded from generated data.

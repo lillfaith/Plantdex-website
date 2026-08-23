@@ -145,7 +145,18 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   time the script runs. Changing any pure module those files depend on
   (`types.ts`, `herbdex-state.ts`, `deck.ts`, `achievements.ts`, `progression.ts`,
   `mastery.ts`, `rng.ts`, `research.ts`, `herbdex-reducer.ts`) means re-running the sync
-  script and redeploying the function, or the two silently diverge.
+  script and redeploying the function, or the two silently diverge —
+  `src/lib/edge-shared.test.ts` fails the moment a generated file drifts from its source,
+  so a forgotten sync surfaces in `npm test` instead of in a rejected deploy.
+- **The sync script rewrites relative imports to carry an explicit `.ts`, and must keep
+  doing so.** `src/lib` compiles under `moduleResolution: bundler`, which permits
+  `from './deck'`; Deno has no extension guessing and rejects the whole bundle with
+  `Module not found ".../deck"`. A byte-for-byte copy therefore cannot deploy — this broke
+  `supabase functions deploy` once, with 20 bad specifiers across 8 modules and only the
+  first one reported. The rewrite belongs in `scripts/sync-edge-shared.mjs`, never in
+  `src/lib` (tsconfig does not set `allowImportingTsExtensions`) and never as a hand-edit
+  inside `_shared/`, which is regenerated. `edge-shared.test.ts` walks the whole graph from
+  the entrypoint and fails on any specifier that would not resolve under Deno.
 - **Only mastery and research completion are server-recomputed.** They're the one place a
   client claim can't be taken on faith, because they depend on sighting counts a client
   could otherwise just assert. Discoveries, learned and achievements-from-a-discovery are

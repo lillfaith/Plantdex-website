@@ -1,5 +1,5 @@
-import type { HerbdexState } from './types';
-import { DECK_SIZE, getHerb } from './deck';
+import type { HerbdexState } from './types.ts';
+import { DECK_SIZE, getHerb } from './deck.ts';
 
 /**
  * Achievement registry.
