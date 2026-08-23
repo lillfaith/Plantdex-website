@@ -3,6 +3,7 @@
 import type { Session, User } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase-client';
+import { passwordResetRedirectUrl } from '@/lib/auth-redirect';
 
 /**
  * Session/user context for V0.3 accounts, wrapping Supabase Auth.
@@ -25,6 +26,16 @@ interface AuthContextValue {
   signUp: (email: string, password: string) => Promise<AuthResult>;
   signIn: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
+  /** Email a recovery link. Resolves without error even when no such account exists. */
+  requestPasswordReset: (email: string) => Promise<AuthResult>;
+  /** Set a new password for the session a recovery link established. */
+  updatePassword: (password: string) => Promise<AuthResult>;
+  /**
+   * True once Supabase reports the current session came from a recovery link, so the
+   * reset page can tell "you may set a new password" apart from "this link was already
+   * used, or expired".
+   */
+  recovering: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -36,19 +47,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // unconfigured deployment never becomes "ready" via an effect, it just starts that way.
   const [ready, setReady] = useState(() => supabase === null);
   const [session, setSession] = useState<Session | null>(null);
+  const [recovering, setRecovering] = useState(false);
 
   useEffect(() => {
     if (!supabase) return;
 
     let cancelled = false;
-    supabase.auth.getSession().then(({ data }) => {
-      if (cancelled) return;
-      setSession(data.session);
-      setReady(true);
-    });
+    // `.catch` matters as much as `.then` here: `ready` gates the entire account page and
+    // the AccountBadge, so a rejected session check (offline, DNS failure, Supabase down)
+    // would otherwise leave both stuck on "Loading…" forever. Failing to find a session is
+    // just "signed out", which the app already handles.
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (cancelled) return;
+        setSession(data.session);
+      })
+      .catch((error: unknown) => {
+        console.warn('[plantdex] could not check the current session', error);
+      })
+      .finally(() => {
+        if (!cancelled) setReady(true);
+      });
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, next) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, next) => {
       setSession(next);
+      // Landing on the reset page with a recovery link in the URL fragment makes
+      // supabase-js exchange it for a session and emit this event. It is the only signal
+      // that distinguishes a genuine recovery from someone simply opening /account/reset,
+      // and it is emitted once — so it is latched here rather than read at render time.
+      if (event === 'PASSWORD_RECOVERY') setRecovering(true);
     });
 
     return () => {
@@ -75,10 +103,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
       async signOut() {
         if (!supabase) return;
+        setRecovering(false);
         await supabase.auth.signOut();
       },
+      async requestPasswordReset(email) {
+        if (!supabase) return { error: NOT_CONFIGURED };
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: passwordResetRedirectUrl(window.location.origin),
+        });
+        return { error: error?.message ?? null };
+      },
+      async updatePassword(password) {
+        if (!supabase) return { error: NOT_CONFIGURED };
+        const { error } = await supabase.auth.updateUser({ password });
+        // The recovery session has served its purpose; keeping the flag set would offer
+        // the "set a new password" form again on a page the player is now just visiting.
+        if (!error) setRecovering(false);
+        return { error: error?.message ?? null };
+      },
+      recovering,
     }),
-    [ready, session],
+    [ready, session, recovering],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

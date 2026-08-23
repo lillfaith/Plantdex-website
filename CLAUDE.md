@@ -145,7 +145,18 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   time the script runs. Changing any pure module those files depend on
   (`types.ts`, `herbdex-state.ts`, `deck.ts`, `achievements.ts`, `progression.ts`,
   `mastery.ts`, `rng.ts`, `research.ts`, `herbdex-reducer.ts`) means re-running the sync
-  script and redeploying the function, or the two silently diverge.
+  script and redeploying the function, or the two silently diverge —
+  `src/lib/edge-shared.test.ts` fails the moment a generated file drifts from its source,
+  so a forgotten sync surfaces in `npm test` instead of in a rejected deploy.
+- **The sync script rewrites relative imports to carry an explicit `.ts`, and must keep
+  doing so.** `src/lib` compiles under `moduleResolution: bundler`, which permits
+  `from './deck'`; Deno has no extension guessing and rejects the whole bundle with
+  `Module not found ".../deck"`. A byte-for-byte copy therefore cannot deploy — this broke
+  `supabase functions deploy` once, with 20 bad specifiers across 8 modules and only the
+  first one reported. The rewrite belongs in `scripts/sync-edge-shared.mjs`, never in
+  `src/lib` (tsconfig does not set `allowImportingTsExtensions`) and never as a hand-edit
+  inside `_shared/`, which is regenerated. `edge-shared.test.ts` walks the whole graph from
+  the entrypoint and fails on any specifier that would not resolve under Deno.
 - **Only mastery and research completion are server-recomputed.** They're the one place a
   client claim can't be taken on faith, because they depend on sighting counts a client
   could otherwise just assert. Discoveries, learned and achievements-from-a-discovery are
@@ -161,6 +172,22 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   `HerbdexProvider.tsx`) don't need to know which backend they're bound to. Photos go to
   the private `sighting-photos` Storage bucket, path-scoped to `{user_id}/...` by RLS the
   same way every table is.
+- **Every RLS policy is split into `select`/`insert`/`delete`, and there is no `update`
+  policy anywhere.** This is not a style choice: `for all` silently *includes* update, so
+  the original single-policy-per-table version let a signed-in player rewrite their own
+  `mastered_at`/`discovered_at`, or rewrite a sighting's `herb_id` after the fact — which
+  is exactly the data `herbdex-action` re-derives mastery and research from. Splitting the
+  policies is what makes the "write-once, recorded never revoked" contract real rather than
+  merely stated in a comment. Every upsert in the app passes `ignoreDuplicates: true`
+  (`insert ... on conflict do nothing`), which needs only the insert policy — so adding an
+  `update` policy would reopen the hole and buy nothing. Verified by
+  `e2e/supabase.e2e.test.ts`.
+- **Live verification is `npm run verify:supabase`** (`e2e/supabase.e2e.test.ts`, run
+  against a real project via `.env.local`). It is deliberately *not* part of `npm test` —
+  it needs credentials and writes real rows. It drives the real adapters
+  (`createRemoteHerbdexStorage`, `addRemoteSighting`) rather than reimplementing their
+  queries, and its cross-user half actively attacks the database as a second signed-in
+  user; those tests pass only when Postgres refuses.
 - **Sighting ids are `text`, not `uuid`.** The client always generates its own id
   (`sighting_<timestamp>_<random>`, matching the local-storage format) so a sighting keeps
   the same id when later imported into an account. A `uuid` column would reject every one
@@ -177,7 +204,13 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   same reducer locally, exactly as before accounts existed.
 - **Local-progress import is a one-time, explicit, additive merge**
   (`src/lib/import-local-progress.ts`), offered once per account via
-  `ImportLocalProgressDialog` and never again after that (accepted or skipped). It imports
+  `ImportLocalProgressDialog` and never again after that (accepted or skipped) — the
+  "offered" flag is keyed by user id, because one global key meant importing into the first
+  account on a shared device silently denied the offer to every account after it. A *failed*
+  import is the one case that does not spend the offer: `importLocalProgress` reports which
+  parts failed and the dialog stays open to retry, since marking it done after a failed
+  write would strand that device's progress — never deleted, but no longer reachable from
+  the account. It imports
   `mastered`/`research` timestamps directly rather than only re-deriving them from imported
   sightings — deleting a sighting must not retroactively erase mastery earned locally before
   an account existed, same as it never has for ordinary play.

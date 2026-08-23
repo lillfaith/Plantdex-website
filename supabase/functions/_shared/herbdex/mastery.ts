@@ -1,5 +1,5 @@
-import type { HerbdexState } from './types';
-import { getHerb } from './deck';
+import type { HerbdexState } from './types.ts';
+import { getHerb } from './deck.ts';
 
 /**
  * THE THREE-STAGE CARD MASTERY MODEL.

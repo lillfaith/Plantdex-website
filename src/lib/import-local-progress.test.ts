@@ -24,6 +24,9 @@ function fakeLocalStorage(): Storage {
   };
 }
 
+const ALICE = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+const BOB = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+
 describe('hasImportBeenOffered / markImportOffered', () => {
   beforeEach(() => {
     vi.stubGlobal('window', { localStorage: fakeLocalStorage() });
@@ -34,8 +37,32 @@ describe('hasImportBeenOffered / markImportOffered', () => {
   });
 
   it('is false until marked, then stays true', () => {
-    expect(hasImportBeenOffered()).toBe(false);
-    markImportOffered();
-    expect(hasImportBeenOffered()).toBe(true);
+    expect(hasImportBeenOffered(ALICE)).toBe(false);
+    markImportOffered(ALICE);
+    expect(hasImportBeenOffered(ALICE)).toBe(true);
+  });
+
+  // The flag used to be one global key, so importing into the first account on a shared
+  // device silently denied the offer to every account that signed in afterwards.
+  it('tracks each account separately', () => {
+    markImportOffered(ALICE);
+    expect(hasImportBeenOffered(ALICE)).toBe(true);
+    expect(hasImportBeenOffered(BOB)).toBe(false);
+
+    markImportOffered(BOB);
+    expect(hasImportBeenOffered(BOB)).toBe(true);
+    expect(hasImportBeenOffered(ALICE)).toBe(true);
+  });
+
+  // Fail closed: a browser that throws on storage access must not nag on every sign-in.
+  it('reports "already offered" when storage is unavailable', () => {
+    vi.stubGlobal('window', {
+      localStorage: {
+        getItem() {
+          throw new Error('storage disabled');
+        },
+      },
+    });
+    expect(hasImportBeenOffered(ALICE)).toBe(true);
   });
 });

@@ -1,10 +1,10 @@
-import type { DiscoveryResult, HerbdexState } from './types';
-import { getHerb } from './deck';
-import { newlyUnlocked } from './achievements';
-import { qualifiesForMastery } from './mastery';
-import { progressForTask, xpForTask, type ResearchTask, type ResearchWorld } from './research';
-import { XP_FOR_LEARNING, XP_FOR_MASTERY } from './progression';
-import { emptyState } from './herbdex-state';
+import type { DiscoveryResult, HerbdexState } from './types.ts';
+import { getHerb } from './deck.ts';
+import { newlyUnlocked } from './achievements.ts';
+import { qualifiesForMastery } from './mastery.ts';
+import { progressForTask, xpForTask, type ResearchTask, type ResearchWorld } from './research.ts';
+import { XP_FOR_LEARNING, XP_FOR_MASTERY } from './progression.ts';
+import { emptyState } from './herbdex-state.ts';
 
 /**
  * Pure state transitions for the Herbdex.
