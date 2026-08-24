@@ -110,34 +110,15 @@ CHEEKS_HIDDEN = [
     "       ",
 ]
 
-EYES_HIDDEN = [
-    "       ",
+# Level and unbothered. The only change across the whole loop is a slight set at the
+# corners once it has finished looking and is satisfied.
+MOUTH_LEVEL = [
+    "ooooo",
 ]
 
-# Peeking: only the lower halves of the eyes show under the brim. This is the frame the
-# whole gesture is for.
-EYES_PEEK = [
-    "       ",
-    "EE   EE",
-]
-
-# The mouth the eyes cannot carry: a small shy line at rest, a wavy one while hiding,
-# and a real smile once it has decided you are all right.
-MOUTH_SHY = [
-    " ooo ",
-]
-
-MOUTH_WAVY = [
-    "o o o",
-]
-
-MOUTH_SMILE = [
+MOUTH_SET = [
     "o   o",
     " ooo ",
-]
-
-MOUTH_HIDDEN = [
-    "     ",
 ]
 
 # Finely divided fronds - millefolium. Rendered as a spine with short teeth either side
@@ -183,7 +164,7 @@ STEM = [
 
 SPRITE = {
     "herbId": "achillea-millefolium",
-    "personality": "watchful",
+    "personality": "capable",
     "size": (32, 28),
     "frames": 14,
     "fps": 8,
@@ -221,12 +202,7 @@ SPRITE = {
             "name": "eyes",
             "origin": (13, 16),
             "rows": EYES_OPEN,
-            "variants": {
-                "blink": EYES_CLOSED,
-                "half": EYES_HALF,
-                "peek": EYES_PEEK,
-                "hidden": EYES_HIDDEN,
-            },
+            "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
         },
         {
             "name": "cheeks",
@@ -237,8 +213,8 @@ SPRITE = {
         {
             "name": "mouth",
             "origin": (14, 20),
-            "rows": MOUTH_SHY,
-            "variants": {"wavy": MOUTH_WAVY, "smile": MOUTH_SMILE, "hidden": MOUTH_HIDDEN},
+            "rows": MOUTH_LEVEL,
+            "variants": {"set": MOUTH_SET},
         },
     ],
     #
@@ -253,58 +229,64 @@ SPRITE = {
     # The hide is frames 4-7 and it is this sprite's trademark: the brim comes right
     # down over the face and only the lower halves of the eyes come back out. Frame 0 is
     # the rest pose reduced motion freezes on.
+    #
+    #  0    1     2     3     4     5     6     7     8     9    10    11   12   13
+    # rest TIP   scan> scan> HOLD  sweep sweep HOLD  level blink set   set  rest rest
+    #
+    # The scan is frames 1-7 and it is this sprite's trademark: the brim tips up like
+    # someone shading their eyes, then a long unhurried sweep right across to left with
+    # a real hold at each end. The holds are what make it read as watching rather than
+    # as swaying. Frame 0 is the rest pose reduced motion freezes on.
     "motion": {
-        # The brim drops two pixels to cover the face, and lifts again on the peek.
+        # The brim TIPS rather than dropping: it lifts on the leading side, the way a hat
+        # goes back off the brow to look at something far away.
         "umbel": {
-            "art": [None, "right", "left", "settle", "settle", "settle", None, None,
+            "art": [None, "right", "right", "right", "right", None, "left", "left",
                     None, None, None, None, None, None],
-            "dx": [0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
-            "dy": [0, 0, 0, 3, 6, 6, 4, 4, 1, 0, 0, 1, 1, 0],
+            "dx": [0, 1, 2, 3, 3, 0, -3, -3, 0, 0, 0, 0, 0, 0],
+            "dy": [0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "dots": {
-            "dx": [0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
-            "dy": [0, 0, 0, 3, 6, 6, 4, 4, 1, 0, 0, 1, 1, 0],
+            "dx": [0, 1, 2, 3, 3, 0, -3, -3, 0, 0, 0, 0, 0, 0],
+            "dy": [0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
-        # The body sinks with it - shoulders up around the ears, the whole shape getting
-        # smaller. `lean` keeps the sway a bend rather than a slide.
+        # The stem bends into the turn and holds it. `lean` shears rather than slides, so
+        # it reads as a plant turning to face something, not a sticker dragged sideways.
         "body": {
-            "art": [None, "right", "left", None, None, None, None, None, None, None,
-                    None, None, None, None],
-            "dx": [0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
-            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 0],
-            "lean": [0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
+            "art": [None, None, "right", "right", "right", None, "left", "left",
+                    None, None, None, None, None, None],
+            "dx": [0, 0, 1, 1, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0],
+            "lean": [0, 1, 1, 2, 2, 0, -2, -2, 0, 0, 0, 0, 0, 0],
         },
+        # Eyes travel further than the head - looking ahead of the turn, which is what
+        # makes it a scan rather than a swivel.
         "eyes": {
-            "art": [None, None, None, "half", "peek", "peek", "peek", "peek",
-                    "half", None, None, "half", "blink", None],
-            "dx": [0, 4, -4, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
-            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 0],
+            "art": [None, None, None, None, None, None, None, None, None, "blink",
+                    "half", None, None, None],
+            "dx": [0, 1, 4, 4, 4, 0, -4, -4, 0, 0, 0, 0, 0, 0],
         },
         "cheeks": {
-            "art": [None, None, None, None, "hidden", "hidden", "hidden", None, None, None,
-                    None, None, None, None],
-            "dx": [0, 4, -4, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
-            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 0],
+            "dx": [0, 1, 4, 4, 4, 0, -4, -4, 0, 0, 0, 0, 0, 0],
         },
-        # Shy line, wavy while hidden, then an actual smile once it has come back out.
+        # Level throughout, with a small set at the end: satisfied, not delighted.
         "mouth": {
-            "art": [None, None, None, "wavy", "hidden", "hidden", "wavy", "wavy",
-                    None, "smile", "smile", "smile", None, None],
-            "dx": [0, 4, -4, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0],
-            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 0],
+            "art": [None, None, None, None, None, None, None, None, None, None,
+                    "set", "set", "set", None],
+            "dx": [0, 1, 4, 4, 4, 0, -4, -4, 0, 0, 0, 0, 0, 0],
         },
-        # The fronds pull IN as it hides - arms drawn to the body - rather than lifting.
+        # The fronds counterbalance the turn, trailing behind it. They never pull in;
+        # this creature is not making itself small.
         "frondL": {
-            "art": [None, None, "up", None, None, None, None, None, "up", "up", None,
+            "art": [None, None, None, "up", "up", None, None, None, None, None, None,
                     None, None, None],
-            "dx": [0, 1, -1, 2, 3, 3, 3, 2, 1, 0, 0, 0, 0, 0],
-            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 0],
+            "dx": [0, 0, 1, 1, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         },
         "frondR": {
-            "art": [None, "up", None, None, None, None, None, None, "up", "up", None,
+            "art": [None, None, None, None, None, None, "up", "up", None, None, None,
                     None, None, None],
-            "dx": [0, 1, -1, -2, -3, -3, -3, -2, -1, 0, 0, 0, 0, 0],
-            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 0],
+            "dx": [0, 0, 1, 1, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0],
         },
     },
     "palette": PALETTE,

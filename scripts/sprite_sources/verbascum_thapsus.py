@@ -13,15 +13,17 @@ The wool is the other identifying trait and it does real work here: the palette 
 desaturated sage rather than the leaf greens the other species use, and the body carries
 a stipple of pale hairs. Mullein that is merely green is just a plant with a spike.
 
-PERSONALITY: sturdy, and so unbothered it falls asleep. Its trademark gesture is a
-DOZE - the spike droops, the eyes close, a Z drifts up, and then it wakes with a start,
-mouth open. Nothing else in the set sleeps.
+PERSONALITY: proud, and immovable with it. Its trademark gesture is THE RISE - it draws
+itself up to full height, the spike extending like a standard being raised, and holds
+there, unblinking, for a third of the loop. Nothing else in the set changes height.
 
-Originally: Where the dandelion springs and the
-yarrow breathes, this one HOLDS - a slow settle, a long steady look, and the spike
-swaying a beat behind the body like a mast. It never leaves the ground and it never
-hurries. 6fps, the slowest in the deck so far, because a low frame rate is itself a
-character note.
+An earlier pass had it dozing off, which was a misreading: mullein is woolly and slow,
+but slow is not sleepy. Turning "sturdy and confident" into "so unbothered it naps" threw
+away the bearing that makes the plant worth drawing. It holds its ground now.
+
+Where the dandelion springs and the yarrow scans, this one STANDS. It never leaves the
+ground and it never hurries. 6fps, the slowest in the set, because a low frame rate is
+itself a character note.
 
 SAFETY: a portrait, never an identification aid. Deliberately stylised, and it sits apart
 from the card's identification content, which stays the reference for anyone actually
@@ -45,7 +47,6 @@ PALETTE = {
     "E": (86, 58, 104, 255),     # eye
     "c": (236, 176, 172, 255),   # cheek
     "h": (222, 232, 200, 255),   # the pale hairs that make it look felted
-    "z": (255, 244, 214, 255),   # sleep marks - pale, or they vanish into the violet
 }
 
 SPIKE_W, SPIKE_H = 13, 17
@@ -63,6 +64,9 @@ def _spike(rx=4.4, ry=8.4, light=(-0.85, -0.65)):
 SPIKE = _spike()
 SPIKE_LEFT = _spike(light=(-0.35, -0.65))
 SPIKE_RIGHT = _spike(light=(-1.25, -0.65))
+# Extended: the standard raised. This is the trademark - the only part in the set that
+# grows, and it is the tallest thing in frame, so the travel reads from across a page.
+SPIKE_TALL = _spike(ry=10.2)
 
 BODY_W, BODY_H = 25, 13
 
@@ -119,49 +123,15 @@ CHEEKS = [
     "c      c",
 ]
 
-# Wide awake, for the one frame it is startled out of the nap.
-EYES_WIDE = [
-    "       ",
-    "oE   Eo",
-    "EE   EE",
-]
-
-# The mouth: a flat sturdy line at rest, an open yawn as it nods off, and a small
-# surprised o on the wake.
+# The mouth: a level line held throughout, lifting a little at the corners on the rise.
+# This creature does not grin - a small set to the mouth is the whole of its expression.
 MOUTH_FLAT = [
     "ooooo",
 ]
 
-MOUTH_YAWN = [
+MOUTH_SET = [
+    "o   o",
     " ooo ",
-    "oMMMo",
-    "oMMMo",
-    " ooo ",
-]
-
-MOUTH_OH = [
-    " oo ",
-    "oMMo",
-    " oo ",
-]
-
-# Sleep marks, drifting up and away as it nods off. The one piece of pure cartoon in the
-# set, and the clearest way to say "asleep" in a 32px portrait.
-ZEE_SMALL = [
-    "zz",
-    " z",
-    "zz",
-]
-
-ZEE_BIG = [
-    "zzz",
-    "  z",
-    " z ",
-    "zzz",
-]
-
-ZEE_NONE = [
-    " ",
 ]
 
 # Broad, thick, velvety blades - mullein leaves are the largest in the deck and nothing
@@ -210,7 +180,7 @@ BASE = [
 
 SPRITE = {
     "herbId": "verbascum-thapsus",
-    "personality": "sturdy",
+    "personality": "proud",
     "size": (32, 28),
     "frames": 14,
     "fps": 6,
@@ -234,7 +204,7 @@ SPRITE = {
             "name": "spike",
             "origin": (10, 4),
             "rows": SPIKE,
-            "variants": {"left": SPIKE_LEFT, "right": SPIKE_RIGHT},
+            "variants": {"left": SPIKE_LEFT, "right": SPIKE_RIGHT, "tall": SPIKE_TALL},
         },
         {
             "name": "body",
@@ -252,24 +222,14 @@ SPRITE = {
             "name": "eyes",
             "origin": (13, 18),
             "rows": EYES_OPEN,
-            "variants": {
-                "blink": EYES_CLOSED,
-                "half": EYES_HALF,
-                "wide": EYES_WIDE,
-            },
+            "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
         },
         {"name": "cheeks", "origin": (12, 22), "rows": CHEEKS},
         {
             "name": "mouth",
             "origin": (14, 23),
             "rows": MOUTH_FLAT,
-            "variants": {"yawn": MOUTH_YAWN, "oh": MOUTH_OH},
-        },
-        {
-            "name": "zee",
-            "origin": (23, 12),
-            "rows": ZEE_NONE,
-            "variants": {"small": ZEE_SMALL, "big": ZEE_BIG},
+            "variants": {"set": MOUTH_SET},
         },
     ],
     #
@@ -284,59 +244,63 @@ SPRITE = {
     # The nap is frames 3-7 and it is this sprite's trademark: the head nods, the eyes
     # close, a Z drifts up, and then it is startled awake. Nothing else in the set sleeps.
     # Frame 0 is the rest pose reduced motion freezes on: awake, level, eyes open.
+    #
+    #  0    1     2     3     4     5      6      7     8     9    10    11   12   13
+    # rest breath RISE  RISE  HOLD  HOLD   HOLD  HOLD settle look  look blink rest rest
+    #
+    # The rise is frames 2-7 and it is this sprite's trademark: it draws itself up and
+    # then simply STAYS there, unblinking, for a third of the loop. The hold is the
+    # gesture - a creature confident enough to stop moving. Frame 0 is the rest pose
+    # reduced motion freezes on.
     "motion": {
+        # The spike extends and stays extended. It never droops anywhere in this loop.
         "spike": {
-            "art": [None, None, None, None, None, None, None, None, None, None,
-                    "right", "right", None, None],
-            # The spike droops as it dozes and snaps upright on the wake - the clearest
-            # read on the whole sprite, because it is the tallest thing in the frame.
-            "dx": [0, 0, 1, 2, 3, 3, 3, 3, 0, 0, 1, 1, 0, 0],
-            "dy": [0, 0, 1, 2, 3, 3, 3, 3, -1, 0, 0, 0, 0, 0],
-            "lean": [0, 0, 1, 2, 3, 3, 3, 3, -1, 0, 1, 1, 0, 0],
+            "art": [None, None, "tall", "tall", "tall", "tall", "tall", "tall",
+                    None, "right", "left", None, None, None],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0],
+            "dy": [0, 1, -1, -2, -2, -2, -2, -2, 0, 0, 0, 0, 0, 0],
         },
+        # Chest out on the rise: the body widens and lifts, then holds without a tremor.
         "body": {
-            "art": ["in", "out", None, "in", "in", "in", "in", "in", "out", "out",
-                    "right", "right", "in", None],
-            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, -1, 0, 0, 0, 0, 0],
+            "art": ["in", "in", "out", "out", "out", "out", "out", "out", None,
+                    "right", "left", None, "in", None],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "hairs": {
-            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
+        # Heavy lids the whole way, and exactly one blink - late, brief, and the only
+        # moment the eyes are not looking straight at you.
         "eyes": {
-            "art": [None, None, "half", "blink", "blink", "blink", "blink", "blink",
-                    "wide", "half", None, None, None, None],
-            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0],
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, -1, 0, 0, 0, 0, 0],
+            "art": [None, "half", None, None, None, None, None, None, None, None,
+                    None, "blink", "half", None],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 3, -3, 0, 0, 0],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "cheeks": {
-            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0],
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 3, -3, 0, 0, 0],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "mouth": {
-            "art": [None, None, "yawn", "yawn", None, None, None, None, "oh", "oh",
+            "art": [None, None, "set", "set", "set", "set", "set", "set", None, None,
                     None, None, None, None],
-            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0],
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 3, -3, 0, 0, 0],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
-        # The Z appears once it is properly under, grows, drifts up and away, and is
-        # gone the instant it wakes.
-        "zee": {
-            "art": [None, None, None, None, "small", "small", "big", "big", None,
-                    None, None, None, None, None],
-            "dy": [0, 0, 0, 0, 0, -1, -2, -4, 0, 0, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0],
-        },
-        # The leaves sag as it sleeps. They are the heaviest things here and they show
-        # it - they never lift, they only droop further.
+        # The leaves lift and set, like shoulders squaring. They never sag in this loop.
         "leafL": {
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0],
-            "dx": [0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
+            "art": [None, None, "up", "up", "up", "up", "up", "up", None, None, None,
+                    None, None, None],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "leafR": {
-            "dy": [0, 0, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+            "art": [None, None, None, "up", "up", "up", "up", "up", None, None, None,
+                    None, None, None],
+            "dy": [0, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
         },
     },
     "palette": PALETTE,

@@ -6,7 +6,34 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "watchful"
+    "personality": "capable"
+  },
+  "arctium-lappa": {
+    "herbId": "arctium-lappa",
+    "src": "/cards/animated/arctium-lappa.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "eager"
+  },
+  "impatiens-capensis": {
+    "herbId": "impatiens-capensis",
+    "src": "/cards/animated/impatiens-capensis.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 12,
+    "personality": "jumpy"
+  },
+  "pinus-spp": {
+    "herbId": "pinus-spp",
+    "src": "/cards/animated/pinus-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 16,
+    "fps": 6,
+    "personality": "ancient"
   },
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
@@ -33,6 +60,6 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "sturdy"
+    "personality": "proud"
   }
 }
