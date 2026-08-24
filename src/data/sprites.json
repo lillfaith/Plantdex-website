@@ -4,17 +4,17 @@
     "src": "/cards/animated/achillea-millefolium.png",
     "frameWidth": 160,
     "frameHeight": 140,
-    "frames": 12,
+    "frames": 14,
     "fps": 8,
     "personality": "watchful"
   },
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
     "src": "/cards/animated/taraxacum-officinale.png",
-    "frameWidth": 160,
-    "frameHeight": 140,
-    "frames": 12,
-    "fps": 10,
+    "frameWidth": 220,
+    "frameHeight": 160,
+    "frames": 16,
+    "fps": 12,
     "personality": "energetic"
   },
   "urtica-dioica": {
@@ -22,7 +22,7 @@
     "src": "/cards/animated/urtica-dioica.png",
     "frameWidth": 160,
     "frameHeight": 140,
-    "frames": 12,
+    "frames": 14,
     "fps": 12,
     "personality": "alert"
   },
@@ -31,7 +31,7 @@
     "src": "/cards/animated/verbascum-thapsus.png",
     "frameWidth": 160,
     "frameHeight": 140,
-    "frames": 12,
+    "frames": 14,
     "fps": 6,
     "personality": "sturdy"
   }

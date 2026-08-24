@@ -61,7 +61,7 @@ SCALE = 5
 # property, so the count must resolve to a literal class - a sheet outside this set would
 # slide smoothly instead of snapping frame to frame, quietly losing the retro feel. Fail
 # the build rather than ship that.
-SUPPORTED_FRAME_COUNTS = (4, 6, 8, 10, 12)
+SUPPORTED_FRAME_COUNTS = (4, 6, 8, 10, 12, 14, 16, 18)
 
 
 def load_sources() -> dict[str, dict]:
@@ -133,7 +133,17 @@ def render_frame(sprite: dict, frame: int) -> list[list[str]]:
         # `art` names a variant per frame; None (or no track) means the default rows.
         art_track = motion.get("art")
         variant = art_track[frame % len(art_track)] if art_track else None
-        rows = part["variants"][variant] if variant else part["rows"]
+        if variant:
+            variants = part.get("variants", {})
+            if variant not in variants:
+                raise SystemExit(
+                    f"{sprite['herbId']}: part '{part['name']}' frame {frame} asks for "
+                    f"variant '{variant}', which it does not define "
+                    f"(has: {sorted(variants) or 'none'})"
+                )
+            rows = variants[variant]
+        else:
+            rows = part["rows"]
 
         draw_part(canvas, part, rows, dx, dy, lean, width, height)
 

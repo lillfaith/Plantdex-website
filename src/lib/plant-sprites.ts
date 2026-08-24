@@ -46,7 +46,7 @@ const SPRITES = manifest as Record<string, PlantSpriteEntry>;
  * list those classes cover, and `build_sprites.py` rejects anything outside it rather
  * than shipping a sheet that would slide smoothly instead of snapping frame to frame.
  */
-export const SUPPORTED_FRAME_COUNTS = [4, 6, 8, 10, 12] as const;
+export const SUPPORTED_FRAME_COUNTS = [4, 6, 8, 10, 12, 14, 16, 18] as const;
 
 export function spriteFor(
   herbId: string,

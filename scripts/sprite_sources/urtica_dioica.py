@@ -15,7 +15,11 @@ The stinging hairs are the other identifying trait, and they are the reason this
 gets a colour nothing else in the deck uses: a pale sting-white stipple along the leaf
 edges. It is also why the eyes are narrower than the others' - this one is watching you.
 
-PERSONALITY: alert and defensive, and the only sprite here that does not sway. It holds
+PERSONALITY: it gets ANGRY. Its trademark gesture is a snarl - brows down, mouth open
+on its sting-white teeth, bristled, lunging at you - then a slow return to a wary
+squint. Nothing else in the set has eyebrows or bares anything.
+
+Originally: alert and defensive, and the only sprite here that does not sway. It holds
 still, flicks - two frames, no easing - and holds again, with the leaves snapping up on
 the flick. Where the dandelion springs and the mullein settles, this one FLINCHES. 12fps
 so the snaps land hard, and long holds between them so the stillness reads as watching
@@ -78,6 +82,33 @@ EYES_CLOSED = [
 
 CHEEKS = [
     "c       c",
+]
+
+# Furious: the eyes shrink to hard points under the brows.
+EYES_ANGRY = [
+    "       ",
+    "E     E",
+]
+
+# The brows are the whole gesture. Slanted down toward the middle is a scowl; nothing
+# else in this set has them, and they are what turns "wary" into "angry".
+BROWS_NONE = [
+    " ",
+]
+
+BROWS_ANGRY = [
+    "o       o",
+    " oo   oo ",
+]
+
+# Mouth: a flat wary line, then an open jagged snarl. The teeth are the sting.
+MOUTH_FLAT = [
+    " ooo ",
+]
+
+MOUTH_SNARL = [
+    "ososo",
+    "ooooo",
 ]
 
 # The toothed ears. Deep triangular teeth on both edges, which is the trait that makes a
@@ -154,7 +185,7 @@ SPRITE = {
     "herbId": "urtica-dioica",
     "personality": "alert",
     "size": (32, 28),
-    "frames": 12,
+    "frames": 14,
     "fps": 12,
     # Back to front: stem, ears behind the head, guards in front of it, then the face.
     "parts": [
@@ -183,9 +214,25 @@ SPRITE = {
             "name": "eyes",
             "origin": (13, 15),
             "rows": EYES_OPEN,
-            "variants": {"blink": EYES_CLOSED, "narrow": EYES_NARROW},
+            "variants": {
+                "blink": EYES_CLOSED,
+                "narrow": EYES_NARROW,
+                "angry": EYES_ANGRY,
+            },
+        },
+        {
+            "name": "brows",
+            "origin": (12, 13),
+            "rows": BROWS_NONE,
+            "variants": {"angry": BROWS_ANGRY},
         },
         {"name": "cheeks", "origin": (12, 18), "rows": CHEEKS},
+        {
+            "name": "mouth",
+            "origin": (14, 18),
+            "rows": MOUTH_FLAT,
+            "variants": {"snarl": MOUTH_SNARL},
+        },
     ],
     #
     #  frame  0    1     2     3      4      5      6     7     8      9     10   11
@@ -193,40 +240,61 @@ SPRITE = {
     #
     # No easing anywhere: every move is a two-frame snap between holds. Easing is what
     # would make this one look calm, which is the opposite of the brief.
+    #
+    #  0    1     2      3      4      5      6      7     8     9    10   11   12   13
+    # watch watch NOTICE BROWS LUNGE! LUNGE! SNARL SNARL back  squint squint watch watch rest
+    #
+    # The anger is frames 2-7 and it is this sprite's trademark: brows down, mouth open,
+    # bristled, and lunging AT you. Nothing else in the set has eyebrows. Frame 0 is the
+    # rest pose reduced motion freezes on: level, wary, mouth shut.
     "motion": {
         "body": {
-            "art": [None, "bristle", "right", "right", None, None, None, "bristle",
-                    "left", "left", None, None],
-            "dx": [0, 0, 1, 1, 0, 1, 0, 0, -1, -1, 0, 1],
-            "dy": [0, -1, -2, -2, 0, 0, 0, -1, -2, -2, 0, 0],
+            "art": [None, None, "bristle", "bristle", "bristle", "bristle", "bristle",
+                    "bristle", None, None, None, None, None, None],
+            # Forward and DOWN on the lunge - a creature dropping its weight to spring,
+            # not hopping. The 1px jitter in the holds never resolves.
+            "dx": [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 1, 1, 0, -1, 0, 0, 0, 0, 0],
+        },
+        "brows": {
+            "art": [None, None, "angry", "angry", "angry", "angry", "angry", "angry",
+                    "angry", None, None, None, None, None],
+            "dx": [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 1, 1, 0, -1, 0, 0, 0, 0, 0],
         },
         "eyes": {
-            "dx": [0, 0, 4, 4, 0, 1, 0, 0, -4, -4, 0, 1],
-            "dy": [0, -1, -2, -2, 0, 0, 0, -1, -2, -2, 0, 0],
-            # Narrowed rather than blinked on the hold: a suspicious squint reads better
-            # on this species than a friendly blink would.
-            "art": [None, None, None, None, None, "narrow", "narrow", None, None,
-                    None, "blink", None],
+            "art": [None, "narrow", None, "angry", "angry", "angry", "angry", "angry",
+                    "narrow", "narrow", "narrow", None, "blink", None],
+            "dx": [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 1, 1, 0, -1, 0, 0, 0, 0, 0],
         },
         "cheeks": {
-            "dx": [0, 0, 4, 4, 0, 1, 0, 0, -4, -4, 0, 1],
-            "dy": [0, -1, -2, -2, 0, 0, 0, -1, -2, -2, 0, 0],
+            "dx": [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 1, 1, 0, -1, 0, 0, 0, 0, 0],
         },
-        # The ears snap up on the flick and drop straight back. Both together here, on
-        # purpose - a startle is the one moment a creature IS symmetrical.
+        "mouth": {
+            "art": [None, None, None, "snarl", "snarl", "snarl", "snarl", "snarl",
+                    None, None, None, None, None, None],
+            "dx": [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 1, 1, 0, -1, 0, 0, 0, 0, 0],
+        },
+        # The ears flatten BACK on the lunge rather than rising - a cat pinning its ears
+        # before it strikes. They only stand up again once the anger has passed.
         "earL": {
-            "art": [None, None, "up", "up", None, None, None, None, "up", "up", None, None],
-            "dy": [0, 0, -2, -2, 0, 0, 0, 0, -2, -2, 0, 0],
-            "dx": [0, 0, 1, 1, 0, 0, 0, 0, -1, -1, 0, 0],
+            "art": [None, None, "up", "up", None, None, None, None, "up", None, None,
+                    None, None, None],
+            "dy": [0, 0, -2, -2, 1, 2, 2, 1, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "earR": {
-            "art": [None, None, "up", "up", None, None, None, None, "up", "up", None, None],
-            "dy": [0, 0, -2, -2, 0, 0, 0, 0, -2, -2, 0, 0],
-            "dx": [0, 0, 1, 1, 0, 0, 0, 0, -1, -1, 0, 0],
+            "art": [None, None, "up", "up", None, None, None, None, "up", None, None,
+                    None, None, None],
+            "dy": [0, 0, -2, -2, 1, 2, 2, 1, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
         },
-        # The guards jab forward a frame after the ears rise - the plant bracing.
-        "guardL": {"dx": [0, 0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0]},
-        "guardR": {"dx": [0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0]},
+        # The guards thrust forward and stay out through the whole snarl.
+        "guardL": {"dx": [0, 0, -1, -1, -2, -2, -2, -2, -1, 0, 0, 0, 0, 0]},
+        "guardR": {"dx": [0, 0, 1, 1, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0]},
     },
     "palette": PALETTE,
 }

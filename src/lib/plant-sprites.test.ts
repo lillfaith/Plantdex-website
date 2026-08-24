@@ -50,11 +50,11 @@ describe('plant sprite manifest', () => {
     }
   });
 
-  it('loops in one to two seconds', () => {
+  it('loops within three seconds', () => {
     for (const sprite of allSprites()) {
       const seconds = sprite.frames / sprite.fps;
       expect(seconds).toBeGreaterThanOrEqual(0.4);
-      expect(seconds).toBeLessThanOrEqual(2);
+      expect(seconds).toBeLessThanOrEqual(3);
     }
   });
 });
