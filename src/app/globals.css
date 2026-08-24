@@ -295,6 +295,37 @@ body {
  * Reduced motion: skip straight to the finished state. Every animation above is
  * decorative — none of them carry information — so removing them loses nothing.
  */
+/* --- Animated plant portraits ---------------------------------------------------
+ * A sprite sheet is one horizontal row of frames, walked by moving the background.
+ * `steps()` makes each frame snap instead of sliding; `pixelated` keeps the authored
+ * pixels square with no blur or anti-aliasing at any size.
+ *
+ * `steps()` cannot read a custom property, so the frame count arrives as a class.
+ * `build_sprites.py` refuses to emit a sheet whose frame count has no class here.
+ */
+@keyframes plant-sprite-play {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: calc(-1 * var(--sprite-sheet-width)) 0;
+  }
+}
+
+.plant-sprite {
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  animation-name: plant-sprite-play;
+  animation-duration: var(--sprite-duration, 0.8s);
+  animation-iteration-count: infinite;
+}
+
+.plant-sprite-4 { animation-timing-function: steps(4); }
+.plant-sprite-6 { animation-timing-function: steps(6); }
+.plant-sprite-8 { animation-timing-function: steps(8); }
+.plant-sprite-10 { animation-timing-function: steps(10); }
+.plant-sprite-12 { animation-timing-function: steps(12); }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -307,6 +338,15 @@ body {
 
   .animate-sheen::after {
     display: none;
+  }
+
+  /* A sprite sheet steps through frames by moving its background, so collapsing the
+     duration to 0.01ms does not freeze it — it jumps to the end position, one whole
+     sheet to the left, and the portrait disappears entirely. Stop the animation and
+     hold frame 0, which every sprite authors as its complete resting pose. */
+  .plant-sprite {
+    animation: none !important;
+    background-position: 0 0 !important;
   }
 
   /* The flip is decorative — land on the revealed face immediately. */
