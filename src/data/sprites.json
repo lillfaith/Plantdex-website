@@ -8,6 +8,15 @@
     "fps": 8,
     "personality": "capable"
   },
+  "ambrosia-artemisiifolia": {
+    "herbId": "ambrosia-artemisiifolia",
+    "src": "/cards/animated/ambrosia-artemisiifolia.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 12,
+    "personality": "sheepish"
+  },
   "arctium-lappa": {
     "herbId": "arctium-lappa",
     "src": "/cards/animated/arctium-lappa.png",
@@ -61,6 +70,24 @@
     "frames": 14,
     "fps": 10,
     "personality": "generous"
+  },
+  "rumex-obtusifolius": {
+    "herbId": "rumex-obtusifolius",
+    "src": "/cards/animated/rumex-obtusifolius.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "steady"
+  },
+  "solidago-canadensis": {
+    "herbId": "solidago-canadensis",
+    "src": "/cards/animated/solidago-canadensis.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 6,
+    "personality": "grand"
   },
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
