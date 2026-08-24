@@ -8,6 +8,15 @@
     "fps": 8,
     "personality": "capable"
   },
+  "alliaria-petiolata": {
+    "herbId": "alliaria-petiolata",
+    "src": "/cards/animated/alliaria-petiolata.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "pleased"
+  },
   "ambrosia-artemisiifolia": {
     "herbId": "ambrosia-artemisiifolia",
     "src": "/cards/animated/ambrosia-artemisiifolia.png",
@@ -25,6 +34,15 @@
     "frames": 14,
     "fps": 10,
     "personality": "eager"
+  },
+  "chenopodium-album": {
+    "herbId": "chenopodium-album",
+    "src": "/cards/animated/chenopodium-album.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "unhurried"
   },
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
@@ -61,6 +79,15 @@
     "frames": 14,
     "fps": 10,
     "personality": "unbothered"
+  },
+  "portulaca-oleracea": {
+    "herbId": "portulaca-oleracea",
+    "src": "/cards/animated/portulaca-oleracea.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "smug"
   },
   "rubus-spp": {
     "herbId": "rubus-spp",
