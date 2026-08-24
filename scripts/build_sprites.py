@@ -37,6 +37,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 from PIL import Image
@@ -64,7 +65,14 @@ SUPPORTED_FRAME_COUNTS = (4, 6, 8, 10, 12)
 
 
 def load_sources() -> dict[str, dict]:
-    """Import every sprite module in `sprite_sources/`, keyed by herb id."""
+    """Import every sprite module in `sprite_sources/`, keyed by herb id.
+
+    The source directory goes on `sys.path` so a sprite can import shared helpers from
+    its neighbours - `_flowerhead.py` builds the lobed flower head several species need,
+    and files starting with `_` are helpers rather than sprites, so they are skipped here.
+    """
+    if str(SOURCE_DIR) not in sys.path:
+        sys.path.insert(0, str(SOURCE_DIR))
     sources: dict[str, dict] = {}
     for path in sorted(SOURCE_DIR.glob("*.py")):
         if path.name.startswith("_"):

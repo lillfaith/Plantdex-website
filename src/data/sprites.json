@@ -4,7 +4,7 @@
     "src": "/cards/animated/taraxacum-officinale.png",
     "frameWidth": 160,
     "frameHeight": 140,
-    "frames": 10,
+    "frames": 12,
     "fps": 10,
     "personality": "energetic"
   }
