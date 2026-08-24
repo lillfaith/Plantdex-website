@@ -1,4 +1,8 @@
-"""Builds a lobed flower head as a character grid. Shared by the flower species.
+"""Builds a lobed organ - flower head, umbel, spike or body - as a character grid.
+
+Shared by every species: `chars` maps the five shading roles onto whichever palette
+letters the caller uses, so the same curve renders a gold dandelion mane, a white yarrow
+umbel or a green nettle body. `lobes=0` gives a plain ellipse for bodies.
 
 Not a sprite: the leading underscore keeps `build_sprites.py` from loading it as one.
 
@@ -33,12 +37,18 @@ def flower_head(
     face_dy: float = 0.0,
     light: tuple[float, float] = (-0.85, -0.65),
     trim_tail: bool = True,
+    chars: str = "HMDSFo",
 ) -> list[str]:
     """One head pose as rows of palette characters.
 
     `face_dx`/`face_dy` slide the face within the head; `light` is the direction the
     highlight comes from. Turning a head means changing both.
+
+    `chars` is highlight, mid, deep, shadow, face, outline - the palette letters this
+    species uses for those five roles. `face_rx <= 0` draws no face at all, which is what
+    a crown, a spike or an umbel worn above a face wants.
     """
+    c_hi, c_mid, c_deep, c_shadow, c_face, c_line = chars
     fcx, fcy = cx + face_dx, cy + face_dy
 
     def in_head(x: float, y: float) -> bool:
@@ -49,6 +59,8 @@ def flower_head(
         return r <= 1 + amp * math.cos(lobes * math.atan2(dy, dx))
 
     def in_face(x: float, y: float) -> bool:
+        if face_rx <= 0 or face_ry <= 0:
+            return False
         return math.hypot((x - fcx) / face_rx, (y - fcy) / face_ry) <= 1
 
     grid = [[" "] * width for _ in range(height)]
@@ -70,29 +82,32 @@ def flower_head(
             # it meets mane. Outlining both sides of that seam costs 2px of a ring only
             # about 4px thick, and the mane breaks into a necklace of dashes.
             if cell == "M" and " " in neighbours(x, y):
-                out[y][x] = "o"
+                out[y][x] = c_line
             elif cell == "F" and "M" in neighbours(x, y):
-                out[y][x] = "o"
+                out[y][x] = c_line
 
     lx, ly = light
 
     def shade(x: int, y: int) -> str:
         level = -(lx * (x - cx) / rx + ly * (y - cy) / ry)
         if level > 0.72:
-            return "H"
+            return c_hi
         if level > -0.30:
-            return "M"
+            return c_mid
         if level > -0.72:
-            return "D"
-        return "S"
+            return c_deep
+        return c_shadow
 
     rows = [
-        "".join(shade(x, y) if out[y][x] == "M" else out[y][x] for x in range(width)).rstrip()
+        "".join(
+            shade(x, y) if out[y][x] == "M" else (c_face if out[y][x] == "F" else out[y][x])
+            for x in range(width)
+        ).rstrip()
         for y in range(height)
     ]
     rows = [r for r in rows if r.strip()]
     if trim_tail:
-        # The curve tapers to a gold spike at the bottom; a green stem part replaces it.
-        while rows and "M" not in rows[-1] and "H" not in rows[-1]:
+        # The curve tapers to a spike at the bottom; a stem part replaces it.
+        while rows and c_mid not in rows[-1] and c_hi not in rows[-1]:
             rows.pop()
     return rows
