@@ -27,6 +27,7 @@ from the card's identification content, which stays the reference for anyone act
 looking at a plant outdoors.
 """
 
+from _face import on_face
 from _flowerhead import flower_head
 
 # Authored at 32x28, the house size.
@@ -160,10 +161,11 @@ MOUTH_SMALL = [
 
 # Open, because something just went off next to its ear.
 MOUTH_OH = [
-    " oo ",
+    "oooo",
     "oFFo",
-    " oo ",
 ]
+
+FLOWER_AT = (7, 8)
 
 SPRITE = {
     "herbId": "impatiens-capensis",
@@ -177,7 +179,7 @@ SPRITE = {
         {"name": "hook", "origin": (11, 1), "rows": HOOK},
         {
             "name": "flower",
-            "origin": (7, 8),
+            "origin": FLOWER_AT,
             "rows": FLOWER,
             "variants": {
                 "left": FLOWER_LEFT,
@@ -198,14 +200,14 @@ SPRITE = {
         },
         {
             "name": "eyes",
-            "origin": (13, 15),
+            "origin": on_face(FLOWER_AT, FLOWER, EYES_OPEN, dy=2),
             "rows": EYES_OPEN,
             "variants": {"blink": EYES_CLOSED, "half": EYES_HALF, "shock": EYES_SHOCK},
         },
-        {"name": "cheeks", "origin": (13, 18), "rows": CHEEKS},
+        {"name": "cheeks", "origin": on_face(FLOWER_AT, FLOWER, CHEEKS, dy=4), "rows": CHEEKS},
         {
             "name": "mouth",
-            "origin": (15, 19),
+            "origin": on_face(FLOWER_AT, FLOWER, MOUTH_SMALL, dy=5),
             "rows": MOUTH_SMALL,
             "variants": {"oh": MOUTH_OH},
         },

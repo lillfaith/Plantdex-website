@@ -30,6 +30,7 @@ from the card's identification content, which stays the reference for anyone act
 looking at a plant outdoors.
 """
 
+from _face import on_face
 from _flowerhead import flower_head
 
 # Authored at 32x28, the house size.
@@ -95,10 +96,12 @@ BODY_IN = _body_breath(11.2, 6.2)
 
 # Stipple of pale hairs over the wool. Sparse and irregular on purpose - an even grid
 # reads as a pattern rather than as fuzz.
+# The felted hairs mullein is covered in. They keep to the OUTER edges of the body:
+# drawn across the middle they landed inside the face and put a hair through an eye.
 HAIRS = [
-    " h    h  h",
-    "h   h    h ",
-    "  h   h   h",
+    " h  h            h  h",
+    "h  h              h  h",
+    "  h                h",
 ]
 
 EYES_OPEN = [
@@ -178,6 +181,8 @@ BASE = [
     " ooo ",
 ]
 
+BODY_AT = (4, 14)
+
 SPRITE = {
     "herbId": "verbascum-thapsus",
     "personality": "proud",
@@ -208,7 +213,7 @@ SPRITE = {
         },
         {
             "name": "body",
-            "origin": (4, 14),
+            "origin": BODY_AT,
             "rows": BODY,
             "variants": {
                 "left": BODY_LEFT,
@@ -217,17 +222,17 @@ SPRITE = {
                 "in": BODY_IN,
             },
         },
-        {"name": "hairs", "origin": (7, 16), "rows": HAIRS},
+        {"name": "hairs", "origin": (5, 16), "rows": HAIRS},
         {
             "name": "eyes",
-            "origin": (13, 18),
+            "origin": on_face(BODY_AT, BODY, EYES_OPEN, dy=3),
             "rows": EYES_OPEN,
             "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
         },
-        {"name": "cheeks", "origin": (12, 22), "rows": CHEEKS},
+        {"name": "cheeks", "origin": on_face(BODY_AT, BODY, CHEEKS, dy=6), "rows": CHEEKS},
         {
             "name": "mouth",
-            "origin": (14, 23),
+            "origin": on_face(BODY_AT, BODY, MOUTH_FLAT, dy=5),
             "rows": MOUTH_FLAT,
             "variants": {"set": MOUTH_SET},
         },

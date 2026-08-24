@@ -26,6 +26,15 @@
     "fps": 12,
     "personality": "jumpy"
   },
+  "passiflora-incarnata": {
+    "herbId": "passiflora-incarnata",
+    "src": "/cards/animated/passiflora-incarnata.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 16,
+    "fps": 8,
+    "personality": "theatrical"
+  },
   "pinus-spp": {
     "herbId": "pinus-spp",
     "src": "/cards/animated/pinus-spp.png",
@@ -34,6 +43,24 @@
     "frames": 16,
     "fps": 6,
     "personality": "ancient"
+  },
+  "plantago-major": {
+    "herbId": "plantago-major",
+    "src": "/cards/animated/plantago-major.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "unbothered"
+  },
+  "rubus-spp": {
+    "herbId": "rubus-spp",
+    "src": "/cards/animated/rubus-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "generous"
   },
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",

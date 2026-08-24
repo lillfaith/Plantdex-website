@@ -252,20 +252,26 @@ SPRITE = {
         "eyes": {
             "art": [None, None, None, None, None, None, "hidden", None, None, None,
                     None, None, None, None, "blink", "half"],
-            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            # The grin is three rows deep where the small mouth is one, so it rides a
+            # pixel higher - otherwise its bottom lip hangs off the face into the mane.
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 0, -1, -1, 0, 0, 0, 0],
             "dx": [0, 0, 0, 0, 2, 4, 0, -4, -2, 0, 0, 0, 0, 3, 0, 0],
         },
         "cheeks": {
             "art": [None, None, None, None, None, None, "hidden", None, None, None,
                     None, None, None, None, None, None],
-            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            # The grin is three rows deep where the small mouth is one, so it rides a
+            # pixel higher - otherwise its bottom lip hangs off the face into the mane.
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 0, -1, -1, 0, 0, 0, 0],
             "dx": [0, 0, 0, 0, 2, 4, 0, -4, -2, 0, 0, 0, 0, 3, 0, 0],
         },
         # Open-mouthed on the landing: the payoff the whole jump is for.
         "mouth": {
             "art": [None, None, "hidden", "hidden", "hidden", "hidden", "hidden",
                     "hidden", "hidden", "grin", "grin", "grin", None, None, None, None],
-            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            # The grin is three rows deep where the small mouth is one, so it rides a
+            # pixel higher - otherwise its bottom lip hangs off the face into the mane.
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 0, -1, -1, 0, 0, 0, 0],
             "dx": [0, 0, 0, 0, 2, 4, 0, -4, -2, 0, 0, 0, 0, 3, 0, 0],
         },
         "body": {"dy": [0, 1, 0, -1, -1, -1, -1, -1, -1, 1, 1, 0, 0, 0, 0, 0]},
