@@ -184,3 +184,20 @@ FACE_PALETTE = {
     "W": (255, 255, 255, 255),   # eye glint
     "c": (238, 168, 172, 255),   # cheek
 }
+
+
+def face_shift(
+    base_rows: list[str], variant_rows: list[str], face_char: str = "F"
+) -> tuple[int, int]:
+    """How far the face moved between two poses of the same head, in whole pixels.
+
+    A turned head slides its face across itself, so the features have to travel the
+    head's own offset PLUS this. Guessing that second number is what makes eyes drift off
+    a face on exactly the frames a sprite turns to look at something, which is the one
+    moment a viewer is watching the eyes.
+    """
+    bx, by, bw, bh = face_box(base_rows, face_char)
+    vx, vy, vw, vh = face_box(variant_rows, face_char)
+    # Compare centres, not corners: a pose that also widens the face would otherwise
+    # report a shift it does not have.
+    return (vx + vw // 2) - (bx + bw // 2), (vy + vh // 2) - (by + bh // 2)

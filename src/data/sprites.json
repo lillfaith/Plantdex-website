@@ -44,6 +44,15 @@
     "fps": 8,
     "personality": "unhurried"
   },
+  "galium-aparine": {
+    "herbId": "galium-aparine",
+    "src": "/cards/animated/galium-aparine.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "overfamiliar"
+  },
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
     "src": "/cards/animated/impatiens-capensis.png",
@@ -134,6 +143,15 @@
     "fps": 6,
     "personality": "grand"
   },
+  "stellaria-media": {
+    "herbId": "stellaria-media",
+    "src": "/cards/animated/stellaria-media.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 12,
+    "personality": "delighted"
+  },
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
     "src": "/cards/animated/taraxacum-officinale.png",
@@ -169,5 +187,14 @@
     "frames": 14,
     "fps": 6,
     "personality": "proud"
+  },
+  "viola-sororia": {
+    "herbId": "viola-sororia",
+    "src": "/cards/animated/viola-sororia.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "bashful"
   }
 }
