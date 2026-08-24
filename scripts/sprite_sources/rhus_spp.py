@@ -97,7 +97,7 @@ FACE_DX = [0, 0, 0, 0, 0, 0, 0, 0, 0, TURN_R, TURN_R, 0, 0, 0]
 
 SPRITE = {
     "herbId": "rhus-spp",
-    "personality": "proud",
+    "personality": "ceremonial",
     "size": (32, 28),
     "frames": 14,
     "fps": 8,

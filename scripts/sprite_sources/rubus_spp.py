@@ -122,7 +122,7 @@ HEAD_AT = (5, 2)
 
 SPRITE = {
     "herbId": "rubus-spp",
-    "personality": "generous",
+    "personality": "conditional",
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

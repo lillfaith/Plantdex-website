@@ -19,6 +19,9 @@ npm run dev        # dev server
 npm run verify     # lint + typecheck + test + build — run before pushing
 npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art
+python3 scripts/build_sprites.py                   # regenerate the animated portraits
+python3 scripts/build_sprites.py --preview <herb-id> [--frame N]   # print a frame as text
+python3 scripts/audit_sprites.py [herb-id ...]     # check every face feature sits on its face
 ```
 
 ## Architecture rules
@@ -129,6 +132,42 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   by `collection.test.ts`. Foreshadowing copy may say more are *planned*; it may never
   invent a date, name, size, price, preorder, waitlist or scarcity claim, and must never
   imply the current 45 cards are incomplete.
+
+## Animated plant portraits
+
+Every one of the 45 cards has a creature portrait: a pixel-art sprite sheet built by
+`scripts/build_sprites.py` from an authored module per species in
+`scripts/sprite_sources/`. `public/cards/animated/*.png` and `src/data/sprites.json` are
+both generated — never hand-edit either, for the same reason `herbs.json` is off limits.
+
+- **A sprite is a creature, not an icon, and every species moves differently.** Each one
+  has a named trademark gesture that comes out of that plant's own botany — plantain gets
+  trodden on and springs back, wood sorrel folds its leaflets over its own face, mint
+  re-renders itself in ice, ragweed sneezes and then checks whether anybody saw. Two
+  sprites sharing a gesture is the failure this whole set was rebuilt once to avoid;
+  `plant-sprites.test.ts` guards the weakest available proxy for it, that no more than a
+  few species share a `personality` label.
+- **Part placement is MEASURED from the assembled art, never inferred from the parameters
+  that produced it.** This is the bug the set produced over and over: `flower_head` trims
+  empty rows, shading moves the face patch, and a squashed body does not move its face
+  the way its radii suggest. `_face.py` reads the finished rows (`face_box`, `on_face`,
+  `face_shift`) and every feature origin comes from it. `scripts/audit_sprites.py`
+  renders every frame of every sprite and fails on any feature pixel that landed on
+  something that is not its face — run it after touching any sprite.
+- **`_flowerhead.py` is for round organs only.** Pine and horsetail are hand-drawn
+  because a conifer and a jointed stem have no curve in them, and forcing either through
+  the shared generator produced a lumpy circle pretending to be a tree.
+- **Frame 0 is the resting pose**, because that is what `prefers-reduced-motion` freezes
+  on. It must read as a complete, dignified sprite on its own: an oak with its acorn
+  still on the twig, a mulberry with nothing yet spilled, a clover with three leaflets —
+  never a mid-gesture stub and never a state that would claim something untrue.
+- **Frame counts must be in `SUPPORTED_FRAME_COUNTS`**, because `steps()` cannot read a
+  CSS custom property, so the count has to resolve to a literal class in `globals.css`.
+  The build fails rather than shipping a sheet that would slide instead of snapping.
+- **A gesture may only illustrate what the card and the plant actually support.** Nothing
+  here may imply a medicinal effect: self-heal mends a notch in its OWN leaf, which is a
+  pun on a common name, and never anybody else's. No invented botany, same rule as the
+  deck data.
 
 ## V0.3 accounts
 

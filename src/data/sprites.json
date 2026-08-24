@@ -107,6 +107,15 @@
     "fps": 10,
     "personality": "overfamiliar"
   },
+  "geranium-maculatum": {
+    "herbId": "geranium-maculatum",
+    "src": "/cards/animated/geranium-maculatum.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "inquisitive"
+  },
   "glechoma-hederacea": {
     "herbId": "glechoma-hederacea",
     "src": "/cards/animated/glechoma-hederacea.png",
@@ -134,6 +143,15 @@
     "fps": 12,
     "personality": "jumpy"
   },
+  "lactuca-serriola": {
+    "herbId": "lactuca-serriola",
+    "src": "/cards/animated/lactuca-serriola.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "orienting"
+  },
   "lamium-purpureum": {
     "herbId": "lamium-purpureum",
     "src": "/cards/animated/lamium-purpureum.png",
@@ -142,6 +160,15 @@
     "frames": 14,
     "fps": 12,
     "personality": "all talk"
+  },
+  "lonicera-japonica": {
+    "herbId": "lonicera-japonica",
+    "src": "/cards/animated/lonicera-japonica.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "sweet-toothed"
   },
   "melissa-officinalis": {
     "herbId": "melissa-officinalis",
@@ -169,6 +196,15 @@
     "frames": 14,
     "fps": 10,
     "personality": "flamboyant"
+  },
+  "morus-spp": {
+    "herbId": "morus-spp",
+    "src": "/cards/animated/morus-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "unrepentant"
   },
   "nepeta-cataria": {
     "herbId": "nepeta-cataria",
@@ -233,6 +269,15 @@
     "fps": 8,
     "personality": "quietly capable"
   },
+  "quercus-spp": {
+    "herbId": "quercus-spp",
+    "src": "/cards/animated/quercus-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 16,
+    "fps": 6,
+    "personality": "patriarchal"
+  },
   "rhus-spp": {
     "herbId": "rhus-spp",
     "src": "/cards/animated/rhus-spp.png",
@@ -240,7 +285,16 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "proud"
+    "personality": "ceremonial"
+  },
+  "rosa-spp": {
+    "herbId": "rosa-spp",
+    "src": "/cards/animated/rosa-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "vain"
   },
   "rubus-spp": {
     "herbId": "rubus-spp",
@@ -249,7 +303,7 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "generous"
+    "personality": "conditional"
   },
   "rumex-acetosella": {
     "herbId": "rumex-acetosella",
@@ -268,6 +322,15 @@
     "frames": 14,
     "fps": 8,
     "personality": "steady"
+  },
+  "salix-spp": {
+    "herbId": "salix-spp",
+    "src": "/cards/animated/salix-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 6,
+    "personality": "consoling"
   },
   "sambucus-spp": {
     "herbId": "sambucus-spp",
