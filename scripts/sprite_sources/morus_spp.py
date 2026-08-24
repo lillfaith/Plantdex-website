@@ -35,7 +35,8 @@ PALETTE = {
     "u": (74, 42, 86, 255),      # berry deep
     "J": (128, 72, 140, 255),    # juice - brighter than the berry so a drop reads in air
     "j": (96, 54, 108, 255),     # the stain, which is duller than the juice that made it
-    "t": (148, 112, 82, 255),    # twig
+    "t": (148, 112, 82, 255),    # twig and trunk shade
+    "T": (184, 144, 106, 255),   # trunk light
 }
 
 HEAD_W, HEAD_H = 19, 15
@@ -106,32 +107,50 @@ STAIN_FULL = [
 ]
 
 # Mulberry's other oddity: lobed and unlobed leaves on the same tree, which is why one of
-# these has a notch cut out of it and the other does not.
+# these has a notch cut out of it and the other does not. Both are drawn with a stalk that
+# reaches back to the trunk, because a leaf floating beside a plant is not on the plant.
 LEAF_LOBED = [
     "  oo oo",
     " oGGoGGo",
     "oGGgggggo",
-    " oggddddo",
-    "  odnnno",
-    "   oooo",
+    " oggddddoo",
+    "  odnnnottt",
+    "   ooooooo",
 ]
 
 LEAF_PLAIN = [
-    " ooooo",
-    "oGGGGGo",
-    "oGgggggo",
-    "oggddddo",
-    " odnnno",
-    "  oooo",
+    "  ooooo",
+    " oGGGGGo",
+    " oGgggggo",
+    "ooggddddo",
+    "ttodnnno",
+    "ooooooo",
 ]
 
+# The fruiting twig. It grows out of the crown and ARCS DOWN, so the berry hanging off it
+# is plainly on this plant - which was the whole problem with the first version, where the
+# twig, the berry and both leaves each floated on their own.
 TWIG = [
-    "ottto",
-    " ottto",
-    "  otto",
+    "oo",
+    "otto",
+    " ootto",
+    "   ootto",
+    "     otto",
+    "      oto",
+    "      oto",
 ]
 
-HEAD_AT = (2, 5)
+# The trunk, joining the crown to the ground so the sprite is one object from top to
+# bottom.
+TRUNK = [
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    " ooo ",
+]
+
+HEAD_AT = (2, 4)
 
 SPRITE = {
     "herbId": "morus-spp",
@@ -140,13 +159,14 @@ SPRITE = {
     "frames": 14,
     "fps": 8,
     "parts": [
-        {"name": "twig", "origin": (17, 3), "rows": TWIG},
-        {"name": "stain", "origin": (23, 24), "rows": STAIN_NONE,
+        {"name": "trunk", "origin": (13, 19), "rows": TRUNK},
+        {"name": "twig", "origin": (16, 8), "rows": TWIG},
+        {"name": "stain", "origin": (20, 25), "rows": STAIN_NONE,
          "variants": {"small": STAIN_SMALL, "full": STAIN_FULL}},
-        {"name": "leafPlain", "origin": (22, 17), "rows": LEAF_PLAIN},
+        {"name": "leafPlain", "origin": (16, 17), "rows": LEAF_PLAIN},
         {
             "name": "berry",
-            "origin": (23, 8),
+            "origin": (21, 15),
             "rows": BERRY,
             "variants": {"heavy": BERRY_HEAVY},
         },
@@ -161,10 +181,10 @@ SPRITE = {
             # Purple. It has clearly already had some, which is why it is not sorry.
             extra_mouths={"stained": ["ojjjo", "ojjo"]},
         ),
-        {"name": "leafLobed", "origin": (0, 19), "rows": LEAF_LOBED},
+        {"name": "leafLobed", "origin": (0, 16), "rows": LEAF_LOBED},
         {
             "name": "drop",
-            "origin": (25, 14),
+            "origin": (23, 21),
             "rows": DROP_NONE,
             "variants": {"on": DROP, "long": DROP_LONG},
         },

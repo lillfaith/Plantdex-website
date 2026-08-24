@@ -152,13 +152,13 @@ SPRITE = {
         },
         {
             "name": "crown",
-            "origin": (12, 2),
+            "origin": (12, 5),
             "rows": CROWN_OPEN,
             "variants": {"shut": CROWN_SHUT},
         },
         {
             "name": "flower",
-            "origin": (24, 12),
+            "origin": (22, 12),
             "rows": FLOWER,
             "variants": {"shut": FLOWER_SHUT},
         },

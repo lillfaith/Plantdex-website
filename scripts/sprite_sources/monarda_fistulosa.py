@@ -109,7 +109,7 @@ SPRITE = {
     "fps": 10,
     "parts": [
         {"name": "stem", "origin": (14, 23), "rows": STEM},
-        {"name": "leafL", "origin": (0, 19), "rows": LEAF_L},
+        {"name": "leafL", "origin": (2, 19), "rows": LEAF_L},
         {"name": "leafR", "origin": (23, 19), "rows": LEAF_R},
         {
             "name": "crown",

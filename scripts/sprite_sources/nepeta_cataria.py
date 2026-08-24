@@ -132,7 +132,7 @@ SPRITE = {
         {"name": "stem", "origin": (14, 23), "rows": STEM},
         {"name": "spike", "origin": (13, 0), "rows": SPIKE},
         {"name": "leafL", "origin": (0, 19), "rows": LEAF_L},
-        {"name": "leafR", "origin": (23, 19), "rows": LEAF_R},
+        {"name": "leafR", "origin": (21, 19), "rows": LEAF_R},
         {
             "name": "head",
             "origin": HEAD_AT,

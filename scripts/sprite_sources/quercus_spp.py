@@ -23,6 +23,8 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
+import math
+
 from _face import FACE_PALETTE, feature_parts
 from _flowerhead import flower_head
 
@@ -44,11 +46,16 @@ HEAD_W, HEAD_H = 23, 17
 
 
 def _head(face_dx=0.0, light=(-0.85, -0.65)):
-    # Broad and many-lobed: an oak's crown is wider than it is tall and its leaves are
-    # round-lobed, so the same word does both jobs.
+    """The crown, cut into seven deep ROUNDED lobes.
+
+    An oak leaf's lobes are round-ended with smooth deep sinuses between them, which is
+    exactly the thing that tells it from a maple's points - so the crown is cut the same
+    way, and the whole tree carries its own leaf shape. Shallower and it was a lumpy
+    circle that could have been any tree in the deck.
+    """
     return flower_head(
-        HEAD_W, HEAD_H, 11.0, 8.0, 10.4, 7.6, 9, 0.15, 5.4, 4.4,
-        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+        HEAD_W, HEAD_H, 11.0, 8.0, 10.4, 7.6, 7, 0.26, 5.4, 4.4,
+        face_dx=face_dx, phase=-math.pi / 2, light=light, trim_tail=False, chars="GgdnFo",
     )
 
 
@@ -56,13 +63,21 @@ HEAD = _head()
 HEAD_LEFT = _head(face_dx=-1.6, light=(-0.35, -0.65))
 HEAD_RIGHT = _head(face_dx=1.6, light=(-1.25, -0.65))
 
-# The acorn: nut and cup, and the cup is what makes it an acorn rather than a nut.
+# The acorn, and it is deliberately the biggest single prop in the deck. This is the most
+# recognisable seed in the northern hemisphere and at five pixels across it was reading as
+# a bead; at nine it reads as an acorn from the other side of the room. The cup is
+# cross-hatched, which is the texture everybody has run a thumb over.
 ACORN = [
-    "oCCCo",
-    "oCCCo",
-    "oAAAo",
-    "oAaao",
-    " oao",
+    " ooooooo ",
+    "oCcCcCcCo",
+    "oCCcCcCCo",
+    "oCcCcCcCo",
+    "ooAAAAAoo",
+    " oAAAAAo",
+    " oAAAaao",
+    "  oAaao",
+    "   ooo",
+    "   oto",
 ]
 
 ACORN_NONE = [
@@ -97,24 +112,29 @@ SPROUT_NONE = [
 ]
 
 # The trunk. The widest in the deck by some way, because that is the difference between
-# an oak and everything else standing next to it.
+# an oak and everything else standing next to it - and it runs UP INTO the canopy rather
+# than stopping short of it, which is what was making the tree read as two objects.
 TRUNK = [
-    "otTTTto",
-    "otTTTto",
-    "otTTTto",
-    "ottTTto",
-    "otTTtto",
+    "otTTTTto",
+    "otTTTTto",
+    "otTTTTto",
+    "otTTTTto",
+    "ottTTTto",
+    "otTTTtto",
+    "otTTTTto",
+    "ottTTtto",
     "oottttoo",
 ]
 
-# One acorn-bearing twig, and the round-lobed leaf that names the shape.
+# The acorn-bearing twig, branching out of the crown and back down to the cup.
 TWIG = [
-    "ottto",
-    " otto",
-    "  oto",
+    "oott",
+    "  ootto",
+    "    ootto",
+    "      otto",
 ]
 
-HEAD_AT = (4, 2)
+HEAD_AT = (4, 0)
 
 SPRITE = {
     "herbId": "quercus-spp",
@@ -123,8 +143,8 @@ SPRITE = {
     "frames": 16,
     "fps": 6,
     "parts": [
-        {"name": "trunk", "origin": (12, 21), "rows": TRUNK},
-        {"name": "twig", "origin": (22, 15), "rows": TWIG},
+        {"name": "trunk", "origin": (12, 15), "rows": TRUNK},
+        {"name": "twig", "origin": (18, 13), "rows": TWIG},
         {
             "name": "head",
             "origin": HEAD_AT,
@@ -134,13 +154,13 @@ SPRITE = {
         *feature_parts(HEAD_AT, HEAD, eyes="beady", mouth="smile", eye_dy=1, mouth_dy=4),
         {
             "name": "acorn",
-            "origin": (24, 17),
+            "origin": (22, 16),
             "rows": ACORN,
             "variants": {"none": ACORN_NONE},
         },
         {
             "name": "sprout",
-            "origin": (24, 24),
+            "origin": (23, 24),
             "rows": SPROUT_NONE,
             "variants": {
                 "split": SPLIT,

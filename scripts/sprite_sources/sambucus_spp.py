@@ -118,11 +118,11 @@ SPRITE = {
     # The brim is drawn AFTER the head, because the whole gesture is it coming down over
     # the face. Behind the head it would merely be a white shape near a creature.
     "parts": [
-        {"name": "stem", "origin": (14, 23), "rows": STEM},
-        {"name": "berriesL", "origin": (2, 17), "rows": BERRIES_L},
-        {"name": "berriesR", "origin": (25, 17), "rows": BERRIES_R},
-        {"name": "frondL", "origin": (0, 21), "rows": FROND_L},
-        {"name": "frondR", "origin": (24, 21), "rows": FROND_R},
+        {"name": "stem", "origin": (14, 21), "rows": STEM},
+        {"name": "berriesL", "origin": (3, 15), "rows": BERRIES_L},
+        {"name": "berriesR", "origin": (23, 15), "rows": BERRIES_R},
+        {"name": "frondL", "origin": (0, 19), "rows": FROND_L},
+        {"name": "frondR", "origin": (22, 19), "rows": FROND_R},
         {
             "name": "head",
             "origin": HEAD_AT,

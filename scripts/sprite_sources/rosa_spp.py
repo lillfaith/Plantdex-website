@@ -116,9 +116,9 @@ SPRITE = {
     "frames": 14,
     "fps": 8,
     "parts": [
-        {"name": "cane", "origin": (14, 22), "rows": CANE},
-        {"name": "frondL", "origin": (0, 20), "rows": FROND_L},
-        {"name": "frondR", "origin": (23, 20), "rows": FROND_R},
+        {"name": "cane", "origin": (14, 19), "rows": CANE},
+        {"name": "frondL", "origin": (0, 16), "rows": FROND_L},
+        {"name": "frondR", "origin": (19, 18), "rows": FROND_R},
         {"name": "hip", "origin": (26, 12), "rows": HIP},
         {
             "name": "head",

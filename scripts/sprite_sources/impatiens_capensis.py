@@ -176,7 +176,7 @@ SPRITE = {
     # The hook first, then the flower hanging under it, then the pod alongside, then the
     # face. Seeds last, over everything, because they are in front of the plant.
     "parts": [
-        {"name": "hook", "origin": (11, 1), "rows": HOOK},
+        {"name": "hook", "origin": (11, 4), "rows": HOOK},
         {
             "name": "flower",
             "origin": FLOWER_AT,

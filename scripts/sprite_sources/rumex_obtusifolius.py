@@ -116,7 +116,7 @@ SPRITE = {
         {"name": "leafStill", "origin": (20, 17), "rows": LEAF_STILL},
         {
             "name": "leafOffer",
-            "origin": (2, 17),
+            "origin": (5, 17),
             "rows": LEAF_ROLLED,
             "variants": {"half": LEAF_HALF, "flat": LEAF_FLAT},
         },

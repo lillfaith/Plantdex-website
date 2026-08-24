@@ -39,6 +39,7 @@ PALETTE = {
     "r": (206, 68, 74, 255),     # berry mid
     "u": (156, 44, 56, 255),     # berry deep
     "S": (250, 232, 156, 255),   # the seeds sitting on the outside of a strawberry
+    "t": (128, 176, 104, 255),   # the stalks and runner
     "V": (250, 250, 244, 255),   # the five white petals
     "Y": (250, 220, 130, 255),   # flower centre
 }
@@ -114,10 +115,33 @@ FLOWER = [
     "oVoVo",
 ]
 
-# The runner every strawberry sends out sideways, with a small plantlet starting on it.
+# The runner every strawberry sends out sideways. It leaves the crown rather than lying
+# beside it - a runner that starts in mid-air is not a runner, it is a stick on the floor.
 RUNNER = [
-    "ooooooooo",
-    "ogggggggo",
+    "oo",
+    "ootoo",
+    "  ooooooo",
+    "    ogggggo",
+    "     ooooo",
+]
+
+# The stalks that carry the fruit and the flower back to the crown. Strawberries hold both
+# out on their own long stems, so these are structure rather than filler.
+FRUIT_STALK = [
+    "ooto",
+    "ooto",
+    " oto",
+    " oto",
+    "ooto",
+    "otoo",
+]
+
+FLOWER_STALK = [
+    "oto",
+    "oto",
+    "otoo",
+    "ootoo",
+    " ootoo",
 ]
 
 # The toothed leaflets either side.
@@ -152,11 +176,13 @@ SPRITE = {
     "frames": 14,
     "fps": 8,
     "parts": [
-        {"name": "runner", "origin": (18, 24), "rows": RUNNER},
-        {"name": "stem", "origin": (10, 21), "rows": STEM},
+        {"name": "stem", "origin": (10, 19), "rows": STEM},
+        {"name": "runner", "origin": (11, 21), "rows": RUNNER},
+        {"name": "fruitStalk", "origin": (18, 11), "rows": FRUIT_STALK},
+        {"name": "flowerStalk", "origin": (17, 7), "rows": FLOWER_STALK},
         {"name": "leafL", "origin": (0, 17), "rows": LEAF_L},
         {"name": "leafR", "origin": (16, 17), "rows": LEAF_R},
-        {"name": "flower", "origin": (23, 8), "rows": FLOWER},
+        {"name": "flower", "origin": (16, 4), "rows": FLOWER},
         {
             "name": "head",
             "origin": HEAD_AT,
@@ -171,7 +197,7 @@ SPRITE = {
         ),
         {
             "name": "berry",
-            "origin": (22, 14),
+            "origin": (20, 15),
             "rows": BERRY_GREEN,
             "variants": {
                 "white": BERRY_WHITE,
@@ -181,7 +207,7 @@ SPRITE = {
         },
         {
             "name": "seeds",
-            "origin": (23, 16),
+            "origin": (21, 17),
             "rows": SEEDS_NONE,
             "variants": {"on": SEEDS},
         },
@@ -232,7 +258,7 @@ SPRITE = {
             "dx": [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
             "dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
-        "flower": {"dy": [0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
+        "flower": {"dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0]},
         "leafL": {"dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0]},
         "leafR": {"dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0]},
     },

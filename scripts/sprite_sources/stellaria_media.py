@@ -52,22 +52,39 @@ HEAD_RIGHT = _head(face_dx=1.3, light=(-1.25, -0.65))
 HEAD_SHAKE = _head(ry=5.3)
 
 # The stars. Five notched petals reading as ten points, at the only size honest for a
-# five-millimetre flower: three pixels across.
+# five-millimetre flower: three pixels across - each on the long thin pedicel chickweed
+# really carries them on. The pedicel is not decoration: without it the flowers hung in
+# the air beside the plant instead of growing out of it.
 STAR_ON = [
     "oSo",
     "SSS",
     "oSo",
+    " o ",
+    " o ",
+    " o ",
+    " o ",
 ]
 
 STAR_DIM = [
     " s ",
     "s s",
     " s ",
+    " o ",
+    " o ",
+    " o ",
+    " o ",
 ]
 
-STAR_OFF = [
-    " ",
+# Even unlit, the pedicel stays: a stalk that vanished with its flower would leave a hole
+# in the plant every time a star blinked off.
+STAR_OFF_STALK = [
+    " o ",
+    " o ",
+    " o ",
+    " o ",
 ]
+
+STAR_OFF = STAR_OFF_STALK
 
 # Small opposite leaves in pairs down a line of stem, which is how chickweed grows.
 SPRIG_L = [
@@ -110,7 +127,7 @@ SPRITE = {
     "parts": [
         {"name": "stem", "origin": (15, 21), "rows": STEM},
         {"name": "hairline", "origin": (19, 17), "rows": HAIRLINE},
-        {"name": "sprigL", "origin": (6, 19), "rows": SPRIG_L},
+        {"name": "sprigL", "origin": (8, 19), "rows": SPRIG_L},
         {"name": "sprigR", "origin": (21, 19), "rows": SPRIG_R},
         {
             "name": "head",
@@ -129,15 +146,17 @@ SPRITE = {
         ),
         # Four stars at the corners of the sprite, each on its own schedule. Twinkling
         # them together would read as one light switching, not as a scattering of stars.
-        {"name": "starA", "origin": (4, 6), "rows": STAR_OFF,
+        # The unlit stalks start three rows lower, because that is where the pedicel
+        # begins once the flower above it is gone.
+        {"name": "starA", "origin": (7, 8), "rows": STAR_OFF,
          "variants": {"on": STAR_ON, "dim": STAR_DIM}},
-        {"name": "starB", "origin": (24, 8), "rows": STAR_OFF,
+        {"name": "starB", "origin": (22, 11), "rows": STAR_OFF,
          "variants": {"on": STAR_ON, "dim": STAR_DIM}},
-        {"name": "starC", "origin": (13, 4), "rows": STAR_OFF,
+        {"name": "starC", "origin": (14, 6), "rows": STAR_OFF,
          "variants": {"on": STAR_ON, "dim": STAR_DIM}},
         {"name": "starD", "origin": (25, 20), "rows": STAR_OFF,
          "variants": {"on": STAR_ON, "dim": STAR_DIM}},
-        {"name": "starE", "origin": (3, 17), "rows": STAR_OFF,
+        {"name": "starE", "origin": (7, 16), "rows": STAR_OFF,
          "variants": {"on": STAR_ON, "dim": STAR_DIM}},
     ],
     #

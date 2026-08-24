@@ -83,16 +83,26 @@ TIP = [
     " o ",
 ]
 
+# The flowering stalk. It is drawn AFTER the rosette and runs several rows down INTO it,
+# so it plainly grows out of the plant - drawn behind and stopping at the rosette's edge
+# it read as a separate stick standing in front of a bush, which is the one thing a
+# single-stemmed plant must not look like.
 STALK = [
-    "ogdo",
-    "ogdo",
-    "ogdo",
-    "ogdo",
-    "ogdo",
-    "ogdo",
-    "ogdo",
-    "ogdo",
-    "ogdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    " oGo ",
 ]
 
 HEAD_AT = (6, 15)
@@ -111,7 +121,6 @@ SPRITE = {
     "frames": 14,
     "fps": 10,
     "parts": [
-        {"name": "stalk", "origin": (14, 4), "rows": STALK},
         {"name": "tip", "origin": (14, 0), "rows": TIP},
         {
             "name": "purseA",
@@ -138,6 +147,7 @@ SPRITE = {
             "variants": {"left": HEAD_LEFT, "right": HEAD_RIGHT},
         },
         *feature_parts(HEAD_AT, HEAD, eyes="round", mouth="smile", eye_dy=1, mouth_dy=4),
+        {"name": "stalk", "origin": (13, 4), "rows": STALK},
     ],
     #
     #  0    1     2      3      4      5      6     7     8     9    10   11   12    13

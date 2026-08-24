@@ -114,7 +114,7 @@ SPRITE = {
     "parts": [
         {"name": "stem", "origin": (14, 20), "rows": STEM},
         {"name": "leafL", "origin": (1, 19), "rows": LEAF_L},
-        {"name": "leafR", "origin": (22, 19), "rows": LEAF_R},
+        {"name": "leafR", "origin": (20, 19), "rows": LEAF_R},
         {
             "name": "head",
             "origin": HEAD_AT,

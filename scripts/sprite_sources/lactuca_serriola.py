@@ -124,10 +124,10 @@ SPRITE = {
     "frames": 14,
     "fps": 10,
     "parts": [
-        {"name": "stem", "origin": (14, 22), "rows": STEM},
-        {"name": "bladeL", "origin": (1, 18), "rows": BLADE_L},
-        {"name": "bladeR", "origin": (25, 18), "rows": BLADE_R},
-        {"name": "flowers", "origin": (12, 0), "rows": FLOWERS},
+        {"name": "stem", "origin": (14, 20), "rows": STEM},
+        {"name": "bladeL", "origin": (6, 18), "rows": BLADE_L},
+        {"name": "bladeR", "origin": (19, 18), "rows": BLADE_R},
+        {"name": "flowers", "origin": (12, 3), "rows": FLOWERS},
         {
             "name": "marks",
             # Far enough out that the head never covers them however far it swings.

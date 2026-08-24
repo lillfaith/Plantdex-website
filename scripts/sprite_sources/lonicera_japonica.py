@@ -38,16 +38,21 @@ PALETTE = {
     "d": (68, 110, 64, 255),     # leaf deep
     "n": (46, 80, 48, 255),      # leaf shadow
     "t": (150, 118, 86, 255),    # the woody vine
+    "s": (250, 246, 214, 255),   # stamens - paler than the petals so they read against them
 }
 
 HEAD_W, HEAD_H = 19, 15
 
 
 def _head(face_dx=0.0, light=(-0.85, -0.65), chars="VvyuFo"):
-    # Long lobes, few of them: a honeysuckle flower is a tube split into a few long
-    # straps that curl right back, which is the shape people recognise from a distance.
+    """The flared LIP of the flower, which is what a honeysuckle actually shows you.
+
+    Wide and shallow rather than round, with five deep lobes - four fused into an upper
+    lip and one hanging below - because that two-lipped split is the shape you recognise
+    a honeysuckle by across a hedge. Drawn as a disc it was just another pale flower.
+    """
     return flower_head(
-        HEAD_W, HEAD_H, 9.0, 7.0, 8.4, 6.6, 5, 0.24, 5.0, 4.2,
+        HEAD_W, HEAD_H, 9.0, 7.0, 8.6, 5.8, 5, 0.30, 5.0, 4.0,
         face_dx=face_dx, light=light, trim_tail=False, chars=chars,
     )
 
@@ -60,24 +65,55 @@ HEAD_RIGHT = _head(face_dx=1.5, light=(-1.25, -0.65))
 # the flower it drinks from is the one that has gone gold.
 HEAD_GOLD = _head(chars="YyuuFo")
 
-# The second flower of the pair - honeysuckle carries them in twos - holding the nectar.
-# It is the prop, so it is drawn simply and stays out of the face's way.
+# The second flower of the pair. Honeysuckle carries them in TWOS from a single leaf
+# axil, which is half the identification, so this one is drawn as a full flower on its own
+# long tube rather than as a blob - and its tube reaches back to the same node the first
+# one grows from, which is what makes the pair a pair.
 TUBE = [
-    "  ooo",
-    " oVVvo",
-    "oVVvvuo",
-    " ovvuo",
-    "  ouo",
-    "  oto",
+    "   ooo",
+    "  oVVvo",
+    " oVVvvuo",
+    "  ovvuo",
+    "  ouuo",
+    "  otto",
+    "  otto",
+    " oott",
+    "oott",
 ]
 
 TUBE_GOLD = [
-    "  ooo",
-    " oYYyo",
-    "oYYyyuo",
-    " oyyuo",
-    "  ouo",
-    "  oto",
+    "   ooo",
+    "  oYYyo",
+    " oYYyyuo",
+    "  oyyuo",
+    "  ouuo",
+    "  otto",
+    "  otto",
+    " oott",
+    "oott",
+]
+
+# The long protruding stamens. This is the single most recognisable thing about a
+# honeysuckle flower and the first version simply did not have them - five fine filaments
+# curving out and up well beyond the petals, like whiskers.
+STAMENS = [
+    "s       s",
+    "s       s",
+    " s     s",
+    "  s   s",
+    "  os so",
+    "   ooo",
+]
+
+# The flower's own tube, running from the lip back down to the vine. Without it the lip
+# was a face floating beside a plant it was not attached to.
+THROAT = [
+    "ouuo",
+    "ouuo",
+    "otto",
+    "otto",
+    "ootto",
+    " oott",
 ]
 
 # The bead of nectar, swelling and then gone. It is four pixels at its largest, which is
@@ -95,31 +131,37 @@ BEAD_FULL = [
     "oN",
 ]
 
-# Opposite oval leaves down the woody vine.
+# Opposite oval leaves, clasping the vine - honeysuckle's are in pairs at every node, and
+# each is drawn with a short stalk that reaches the vine rather than hanging beside it.
 LEAF_L = [
     "  oooo",
     " oGGGgo",
     "oGgggddo",
-    " oggddno",
-    "  oooo",
+    " oggddnoo",
+    "  ooootto",
 ]
 
 LEAF_R = [
-    "oooo",
-    "ogGGGo",
-    "oddgggGo",
-    " onddggo",
     "  oooo",
+    " oGGGgo",
+    "oGgggddo",
+    "ooggddno",
+    "otooooo",
 ]
 
+# The twining vine, running the height of the frame. Everything here hangs off it.
 VINE = [
-    "ottto",
-    "oottto",
+    "  ottto",
+    "  ottto",
     " oottto",
-    "   ooo",
+    " ottto",
+    "ottto",
+    "ottto",
+    "ottt o",
+    "ottto",
 ]
 
-HEAD_AT = (2, 6)
+HEAD_AT = (1, 6)
 
 SPRITE = {
     "herbId": "lonicera-japonica",
@@ -128,12 +170,13 @@ SPRITE = {
     "frames": 14,
     "fps": 8,
     "parts": [
-        {"name": "vine", "origin": (12, 21), "rows": VINE},
-        {"name": "leafL", "origin": (0, 21), "rows": LEAF_L},
-        {"name": "leafR", "origin": (24, 21), "rows": LEAF_R},
+        {"name": "vine", "origin": (13, 19), "rows": VINE},
+        {"name": "leafL", "origin": (4, 22), "rows": LEAF_L},
+        {"name": "leafR", "origin": (19, 22), "rows": LEAF_R},
+        {"name": "throat", "origin": (11, 14), "rows": THROAT},
         {
             "name": "tube",
-            "origin": (22, 9),
+            "origin": (18, 8),
             "rows": TUBE,
             "variants": {"gold": TUBE_GOLD},
         },
@@ -143,13 +186,14 @@ SPRITE = {
             "rows": HEAD,
             "variants": {"left": HEAD_LEFT, "right": HEAD_RIGHT, "gold": HEAD_GOLD},
         },
+        {"name": "stamens", "origin": (8, 3), "rows": STAMENS},
         *feature_parts(
             HEAD_AT, HEAD, eyes="round", mouth="small", eye_dy=2, mouth_dy=5,
             extra_mouths={"sip": ["oo", "NN"], "content": ["o  o", " oo "]},
         ),
         {
             "name": "bead",
-            "origin": (25, 15),
+            "origin": (22, 12),
             "rows": BEAD_NONE,
             "variants": {"small": BEAD_SMALL, "full": BEAD_FULL},
         },
@@ -198,6 +242,16 @@ SPRITE = {
             "art": [None, None, "small", "full", "full", "full", "full", "full",
                     None, None, None, None, None, None],
             "dy": [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+        },
+        # The throat and stamens are part of the flower's own body, so they travel with
+        # the head exactly - a lip that leans while its own tube stays put would tear.
+        "throat": {
+            "dx": [0, 0, 0, 0, 1, 2, 3, 3, 1, 0, 0, 0, 0, 0],
+            "dy": [0, -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+        },
+        "stamens": {
+            "dx": [0, 0, 0, 0, 1, 2, 3, 3, 1, 0, 0, 0, 0, 0],
+            "dy": [0, -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
         },
         "leafL": {"lean": [0, 1, 1, 0, 0, -1, -1, 0, 0, 1, 0, 0, 0, 0]},
         "leafR": {"lean": [0, -1, -1, 0, 0, 1, 1, 0, 0, -1, 0, 0, 0, 0]},

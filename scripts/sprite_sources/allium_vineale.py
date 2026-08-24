@@ -127,8 +127,8 @@ SPRITE = {
     "fps": 10,
     "parts": [
         {"name": "stem", "origin": (14, 23), "rows": STEM},
-        {"name": "tubeL", "origin": (2, 15), "rows": TUBE_L},
-        {"name": "tubeR", "origin": (26, 15), "rows": TUBE_R},
+        {"name": "tubeL", "origin": (5, 15), "rows": TUBE_L},
+        {"name": "tubeR", "origin": (23, 15), "rows": TUBE_R},
         {
             "name": "sprouts",
             "origin": (10, 0),

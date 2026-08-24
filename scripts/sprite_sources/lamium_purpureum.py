@@ -157,7 +157,7 @@ SPRITE = {
         },
         {"name": "flowers", "origin": (11, 21), "rows": FLOWERS},
         {"name": "leafL", "origin": (2, 21), "rows": LEAF_L},
-        {"name": "leafR", "origin": (24, 21), "rows": LEAF_R},
+        {"name": "leafR", "origin": (21, 21), "rows": LEAF_R},
         *feature_parts(
             BODY_AT, BODY, eyes="round", mouth="smile", eye_dy=2, mouth_dy=5,
             # The nettle's own angry face, borrowed for exactly two frames.

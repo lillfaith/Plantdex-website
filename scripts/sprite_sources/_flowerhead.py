@@ -35,6 +35,7 @@ def flower_head(
     face_ry: float,
     face_dx: float = 0.0,
     face_dy: float = 0.0,
+    phase: float = 0.0,
     light: tuple[float, float] = (-0.85, -0.65),
     trim_tail: bool = True,
     chars: str = "HMDSFo",
@@ -47,6 +48,11 @@ def flower_head(
     `chars` is highlight, mid, deep, shadow, face, outline - the palette letters this
     species uses for those five roles. `face_rx <= 0` draws no face at all, which is what
     a crown, a spike or an umbel worn above a face wants.
+
+    `phase` rotates where the lobes fall, in radians. It exists for the maple: a leaf with
+    a lobe pointing straight UP reads as a maple leaf and the same shape rotated by half a
+    lobe reads as a blob, and that is a difference of one number rather than a hand-drawn
+    grid.
     """
     c_hi, c_mid, c_deep, c_shadow, c_face, c_line = chars
     fcx, fcy = cx + face_dx, cy + face_dy
@@ -56,7 +62,7 @@ def flower_head(
         r = math.hypot(dx, dy)
         if r == 0:
             return True
-        return r <= 1 + amp * math.cos(lobes * math.atan2(dy, dx))
+        return r <= 1 + amp * math.cos(lobes * (math.atan2(dy, dx) - phase))
 
     def in_face(x: float, y: float) -> bool:
         if face_rx <= 0 or face_ry <= 0:

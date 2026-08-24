@@ -134,7 +134,7 @@ SPRITE = {
     "parts": [
         {"name": "stem", "origin": (14, 22), "rows": STEM},
         {"name": "pair", "origin": (11, 20), "rows": PAIR},
-        {"name": "leafStill", "origin": (23, 18), "rows": LEAF_STILL},
+        {"name": "leafStill", "origin": (20, 18), "rows": LEAF_STILL},
         {
             "name": "head",
             "origin": HEAD_AT,
@@ -147,7 +147,7 @@ SPRITE = {
             # Drawn last, over the flower: the whole gesture is the leaf being held UP,
             # in front of the creature, between it and the light.
             "name": "leafUp",
-            "origin": (1, 18),
+            "origin": (4, 17),
             "rows": LEAF_PLAIN,
             "variants": {"lit": LEAF_BACKLIT, "holes": LEAF_PERFORATED},
         },

@@ -14,6 +14,17 @@ outline is fine and often deliberate, because a wide grin is meant to span the w
 face. A pixel on the body, on a leaf or on nothing at all is the bug, and that is what
 this reports.
 
+It also checks that FRAME 0 IS ONE CONNECTED PIECE. A creature assembled from parts that
+do not touch reads as a scatter of unrelated shapes rather than as an organism - a berry
+hanging in mid-air beside a leaf, a trunk standing apart from its own canopy. Twenty-five
+of the forty-five sprites had that fault and it is invisible while authoring, because the
+parts are declared in a list and the gaps between them only exist in the render. A flower
+or a fruit may sit anywhere it likes, as long as something connects it to the plant.
+
+Detached elements DURING a gesture are fine and often the point - flung seeds, a pollen
+cloud, a falling samara, a shed of snow. That is why this is a frame 0 rule: frame 0 is
+the resting pose, and at rest a plant is one plant.
+
 It is a development tool, not part of `npm run verify`: `plant-sprites.test.ts` guards
 the shipped manifest, and this guards the authoring.
 """
@@ -21,6 +32,7 @@ the shipped manifest, and this guards the authoring.
 from __future__ import annotations
 
 import sys
+from collections import deque
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -36,6 +48,41 @@ LOOSE = ("cheeks", "brows")
 LOOSE_TOLERANCE = 0.6
 
 
+def pieces(grid: list[list[str]]) -> list[int]:
+    """Sizes of the separate blobs in a frame, largest first.
+
+    Eight-connected, so a diagonal touch counts as joined - at this scale a stem meeting
+    a leaf corner-to-corner is a join to the eye, and demanding edge contact would fail
+    sprites that look perfectly solid.
+    """
+    height, width = len(grid), len(grid[0])
+    seen = [[False] * width for _ in range(height)]
+    sizes = []
+    for y in range(height):
+        for x in range(width):
+            if grid[y][x] == " " or seen[y][x]:
+                continue
+            queue = deque([(x, y)])
+            seen[y][x] = True
+            size = 0
+            while queue:
+                cx, cy = queue.popleft()
+                size += 1
+                for dx in (-1, 0, 1):
+                    for dy in (-1, 0, 1):
+                        nx, ny = cx + dx, cy + dy
+                        if (
+                            0 <= nx < width
+                            and 0 <= ny < height
+                            and not seen[ny][nx]
+                            and grid[ny][nx] != " "
+                        ):
+                            seen[ny][nx] = True
+                            queue.append((nx, ny))
+            sizes.append(size)
+    return sorted(sizes, reverse=True)
+
+
 def audit(sprite: dict) -> list[str]:
     problems: list[str] = []
     width, height = sprite["size"]
@@ -46,7 +93,14 @@ def audit(sprite: dict) -> list[str]:
     names = [p["name"] for p in sprite["parts"]]
     checked = [n for n in names if n in STRICT + LOOSE]
     if not checked:
-        return [f"{sprite['herbId']}: no face parts to check"]
+        return problems + [f"{sprite['herbId']}: no face parts to check"]
+
+    blobs = pieces(render_frame(sprite, 0))
+    if len(blobs) > 1:
+        problems.append(
+            f"{sprite['herbId']} frame 0: {len(blobs)} disconnected pieces "
+            f"({', '.join(str(b) for b in blobs)} px) - at rest a plant is one plant"
+        )
 
     for frame in range(sprite["frames"]):
         # What is UNDER a feature is whatever was drawn before it, not the whole sprite

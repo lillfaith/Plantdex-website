@@ -113,7 +113,7 @@ SPRITE = {
         {"name": "whorlA", "origin": (12, 12), "rows": WHORL},
         {"name": "whorlB", "origin": (18, 12), "rows": WHORL},
         {"name": "whorlC", "origin": (24, 12), "rows": WHORL},
-        {"name": "flowers", "origin": (16, 19), "rows": FLOWERS},
+        {"name": "flowers", "origin": (16, 16), "rows": FLOWERS},
         {
             "name": "head",
             "origin": HEAD_AT,

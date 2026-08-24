@@ -127,12 +127,12 @@ SPRITE = {
     "frames": 14,
     "fps": 10,
     "parts": [
-        {"name": "leaf", "origin": (23, 17), "rows": LEAF},
-        {"name": "caneL", "origin": (0, 20), "rows": CANE_L},
-        {"name": "caneR", "origin": (21, 20), "rows": CANE_R},
+        {"name": "leaf", "origin": (20, 17), "rows": LEAF},
+        {"name": "caneL", "origin": (0, 17), "rows": CANE_L},
+        {"name": "caneR", "origin": (18, 20), "rows": CANE_R},
         {
             "name": "thorns",
-            "origin": (2, 21),
+            "origin": (2, 18),
             "rows": THORNS_FLAT,
             "variants": {"up": THORNS_UP},
         },
@@ -150,7 +150,7 @@ SPRITE = {
         ),
         {
             "name": "berry",
-            "origin": (4, 22),
+            "origin": (4, 19),
             "rows": BERRY_NEAR,
             "variants": {"out": BERRY_OUT, "gone": BERRY_GONE},
         },

@@ -131,7 +131,7 @@ SPRITE = {
     "frames": 14,
     "fps": 8,
     "parts": [
-        {"name": "stem", "origin": (8, 22), "rows": STEM},
+        {"name": "stem", "origin": (8, 20), "rows": STEM},
         {
             "name": "runner",
             "origin": (11, 21),
@@ -152,7 +152,7 @@ SPRITE = {
             "rows": COPY_FACE_NONE,
             "variants": {"on": COPY_FACE, "blink": COPY_BLINK},
         },
-        {"name": "flowers", "origin": (3, 20), "rows": FLOWERS},
+        {"name": "flowers", "origin": (3, 18), "rows": FLOWERS},
         {
             "name": "head",
             "origin": HEAD_AT,

@@ -21,6 +21,8 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
+import math
+
 from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
 
@@ -30,21 +32,26 @@ PALETTE = {
     "g": (106, 158, 90, 255),    # leaf mid
     "d": (72, 116, 66, 255),     # leaf deep
     "n": (50, 84, 50, 255),      # leaf shadow
-    "R": (208, 132, 110, 255),   # the red of a maple's spring flowers and new samaras
     "S": (214, 186, 132, 255),   # samara wing
     "s": (170, 138, 96, 255),    # samara seed
-    "t": (146, 106, 74, 255),    # twig
+    "t": (146, 106, 74, 255),    # twig and petiole
+    "T": (180, 138, 100, 255),   # petiole light
 }
 
-HEAD_W, HEAD_H = 19, 17
+HEAD_W, HEAD_H = 21, 18
 
 
 def _head(face_dx=0.0, light=(-0.85, -0.65)):
-    # Five deep lobes: a maple leaf has five, and the depth of the cuts between them is
-    # the difference between a maple and any other broad leaf.
+    """The maple leaf, which is the whole point of this species.
+
+    Five lobes cut deep, with ONE OF THEM POINTING STRAIGHT UP - that is what `phase`
+    buys, and it is the entire difference between a maple leaf and a lumpy circle. The
+    amplitude is the highest in the deck bar the bee balm: shallower and the sinuses
+    close up into a plain round leaf, deeper and the lobes separate from each other.
+    """
     return flower_head(
-        HEAD_W, HEAD_H, 9.0, 8.0, 8.4, 7.6, 5, 0.20, 5.0, 4.2,
-        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+        HEAD_W, HEAD_H, 10.0, 8.5, 9.4, 8.2, 5, 0.38, 5.0, 4.2,
+        face_dx=face_dx, phase=-math.pi / 2, light=light, trim_tail=False, chars="GgdnFo",
     )
 
 
@@ -83,35 +90,52 @@ SAMARA_NONE = [
     " ",
 ]
 
-# The paired samaras still attached, hanging in their V. A maple carries them in twos.
+# The paired samaras still attached, hanging in their V. A maple carries them in twos, and
+# the V between the two wings is as recognisable as the leaf.
 PAIR = [
-    "oSo oSo",
-    "oSo oSo",
-    "osooosо".replace("о", "o"),
-    "  ooo",
+    " oo   oo ",
+    "oSSo oSSo",
+    "oSSSoSSSo",
+    " oSSoSSo",
+    "  ososo",
+    "   ooo",
 ]
 
 PAIR_ONE = [
-    "    oSo",
-    "    oSo",
-    "  oooso",
-    "  ooo",
+    "      oo ",
+    "     oSSo",
+    "   ooSSSo",
+    "   osSSo",
+    "   ooso",
+    "   ooo",
 ]
 
-# The twig they hang from, and a small spray of the red flowers maples open before their
-# leaves.
+# The petiole and the twig it joins. The petiole shows THROUGH the sinus between the two
+# lower lobes, which is exactly where a real leaf stalk enters - and it is what stops the
+# leaf floating above a stick it has no visible connection to.
+STALK = [
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    "otTto",
+    " ooo ",
+]
+
+# The side twig the samaras hang from, branching off the petiole.
 TWIG = [
-    "ottto",
-    "otoo",
-    "oto",
+    "ootto",
+    "  oottoo",
+    "     ootto",
+    "        oto",
 ]
 
-FLOWERS = [
-    "R R",
-    " R ",
-]
 
-HEAD_AT = (6, 6)
+HEAD_AT = (5, 1)
 TURN_L = face_shift(HEAD, HEAD_LEFT)[0]
 TURN_R = face_shift(HEAD, HEAD_RIGHT)[0]
 HEAD_DX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -126,14 +150,14 @@ SPRITE = {
     "frames": 14,
     "fps": 10,
     "parts": [
-        {"name": "twig", "origin": (21, 3), "rows": TWIG},
+        {"name": "stalk", "origin": (14, 13), "rows": STALK},
+        {"name": "twig", "origin": (16, 17), "rows": TWIG},
         {
             "name": "pair",
-            "origin": (22, 5),
+            "origin": (21, 20),
             "rows": PAIR,
             "variants": {"one": PAIR_ONE},
         },
-        {"name": "flowers", "origin": (4, 4), "rows": FLOWERS},
         {
             "name": "head",
             "origin": HEAD_AT,
@@ -143,7 +167,7 @@ SPRITE = {
         *feature_parts(HEAD_AT, HEAD, eyes="round", mouth="smile", eye_dy=1, mouth_dy=4),
         {
             "name": "samara",
-            "origin": (23, 9),
+            "origin": (24, 21),
             "rows": SAMARA_NONE,
             "variants": {"a": SAMARA_A, "b": SAMARA_B, "c": SAMARA_C, "d": SAMARA_D},
         },
@@ -187,11 +211,10 @@ SPRITE = {
         "samara": {
             "art": [None, None, "a", "b", "c", "d", "a", "b", "c", None, None, None,
                     None, None],
-            "dx": [0, 0, 0, 1, 1, 2, 2, 3, 4, 0, 0, 0, 0, 0],
-            "dy": [0, 0, 0, 2, 5, 7, 10, 13, 16, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0],
         },
         "twig": {"lean": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-        "flowers": {"dy": [0, -1, 0, 0, 0, -1, 0, 0, -1, 0, 0, 0, 0, 0]},
     },
     "palette": PALETTE,
 }
