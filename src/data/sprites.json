@@ -89,6 +89,15 @@
     "fps": 6,
     "personality": "prehistoric"
   },
+  "fragaria-virginiana": {
+    "herbId": "fragaria-virginiana",
+    "src": "/cards/animated/fragaria-virginiana.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "sweet"
+  },
   "galium-aparine": {
     "herbId": "galium-aparine",
     "src": "/cards/animated/galium-aparine.png",
@@ -106,6 +115,15 @@
     "frames": 14,
     "fps": 8,
     "personality": "companionable"
+  },
+  "hypericum-perforatum": {
+    "herbId": "hypericum-perforatum",
+    "src": "/cards/animated/hypericum-perforatum.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "sunlit"
   },
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
@@ -232,6 +250,15 @@
     "frames": 14,
     "fps": 8,
     "personality": "steady"
+  },
+  "sambucus-spp": {
+    "herbId": "sambucus-spp",
+    "src": "/cards/animated/sambucus-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 6,
+    "personality": "venerable"
   },
   "solidago-canadensis": {
     "herbId": "solidago-canadensis",

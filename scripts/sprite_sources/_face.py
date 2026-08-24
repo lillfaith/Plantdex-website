@@ -144,7 +144,12 @@ def feature_parts(
     """
     eye_set = {**EYES[eyes], **(extra_eyes or {})}
     mouth_set = {**MOUTHS[mouth], **(extra_mouths or {})}
-    cheek_art = ["c" + " " * (max(len(r) for r in eye_set["rows"]) + 2) + "c"]
+    # The blush is sized from the FACE, not from the eyes. Sized from the eyes it came
+    # out wider than the face on any species with big eyes, which put both dots in the
+    # leaf - and a blush is by definition the thing nearest the rim, so it has no margin
+    # to give away.
+    _, _, face_w, _ = face_box(head_rows)
+    cheek_art = ["c" + " " * max(2, face_w - 4) + "c"]
 
     parts = [
         {

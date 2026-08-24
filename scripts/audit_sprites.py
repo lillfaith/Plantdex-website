@@ -41,6 +41,8 @@ def audit(sprite: dict) -> list[str]:
     width, height = sprite["size"]
     face_char = sprite.get("faceChar", "F")
     outline_char = sprite.get("outlineChar", "o")
+    # A blush is part of the face, so a wide grin whose corner touches one is fine.
+    cheek_char = sprite.get("cheekChar", "c")
     names = [p["name"] for p in sprite["parts"]]
     checked = [n for n in names if n in STRICT + LOOSE]
     if not checked:
@@ -75,7 +77,7 @@ def audit(sprite: dict) -> list[str]:
                     total += 1
                     x, y = ox + rx + dx, oy + ry + dy
                     inside = 0 <= x < width and 0 <= y < height
-                    if not inside or under[y][x] not in (face_char, outline_char):
+                    if not inside or under[y][x] not in (face_char, outline_char, cheek_char):
                         off += 1
             limit = 0 if part["name"] in STRICT else int(total * LOOSE_TOLERANCE)
             if off > limit:
