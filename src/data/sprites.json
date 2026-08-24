@@ -143,6 +143,15 @@
     "fps": 12,
     "personality": "all talk"
   },
+  "melissa-officinalis": {
+    "herbId": "melissa-officinalis",
+    "src": "/cards/animated/melissa-officinalis.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 6,
+    "personality": "calm"
+  },
   "mentha-canadensis": {
     "herbId": "mentha-canadensis",
     "src": "/cards/animated/mentha-canadensis.png",
@@ -151,6 +160,15 @@
     "frames": 14,
     "fps": 10,
     "personality": "refreshing"
+  },
+  "monarda-fistulosa": {
+    "herbId": "monarda-fistulosa",
+    "src": "/cards/animated/monarda-fistulosa.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "flamboyant"
   },
   "nepeta-cataria": {
     "herbId": "nepeta-cataria",
