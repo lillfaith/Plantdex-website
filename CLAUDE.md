@@ -21,7 +21,8 @@ npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art
 python3 scripts/build_sprites.py                   # regenerate the animated portraits
 python3 scripts/build_sprites.py --preview <herb-id> [--frame N]   # print a frame as text
-python3 scripts/audit_sprites.py [herb-id ...]     # check every face feature sits on its face
+python3 scripts/audit_sprites.py                   # face placement, connectivity, stale builds
+python3 scripts/audit_sprites.py <herb-id> [...]   # just those sprites (skips the stale-build check)
 ```
 
 ## Architecture rules
@@ -168,6 +169,11 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   plant. Detached elements *during* a gesture are fine and often the point (flung seeds, a
   falling samara, shed snow), which is why the rule is frame 0 only: at rest a plant is
   one plant. `audit_sprites.py` flood-fills it.
+- **`--preview` renders without writing, so always run the plain build before committing.**
+  It is entirely possible to tweak a sprite, preview it, and commit the *previous* PNG —
+  which happened, and shipped a strawberry two pixels out of place. `npm run verify`
+  cannot catch it because it cannot run Python, so `audit_sprites.py` with no arguments
+  re-renders every sheet and reports any that were out of date.
 - **Every species owns a hue, and the deck spans the whole range.** Thirty-six species
   are foliage-dominant and once sat within 30° of each other — the same green at the same
   muted saturation. They are now spread from yellow-green to blue-green, and because

@@ -25,6 +25,12 @@ Detached elements DURING a gesture are fine and often the point - flung seeds, a
 cloud, a falling samara, a shed of snow. That is why this is a frame 0 rule: frame 0 is
 the resting pose, and at rest a plant is one plant.
 
+It also checks that the PNGs ON DISK match what the current sources would produce.
+`--preview` renders without writing, so it is entirely possible to tweak a sprite, look
+at it, and commit the previous build - which happened, and shipped a strawberry two
+pixels out of place. `npm run verify` cannot catch it because it cannot run Python, so
+the check lives here, where it runs every time a sprite is touched.
+
 It is a development tool, not part of `npm run verify`: `plant-sprites.test.ts` guards
 the shipped manifest, and this guards the authoring.
 """
@@ -143,10 +149,28 @@ def audit(sprite: dict) -> list[str]:
     return problems
 
 
+def stale(sources: dict) -> list[str]:
+    """Sprites whose built PNG no longer matches their source."""
+    from build_sprites import OUT_DIR, compile_sprite
+
+    problems = []
+    for herb_id, sprite in sorted(sources.items()):
+        path = OUT_DIR / f"{herb_id}.png"
+        before = path.read_bytes() if path.exists() else None
+        compile_sprite(sprite)
+        if path.read_bytes() != before:
+            problems.append(f"{herb_id}: the built sheet was out of date (rebuilt it)")
+    return problems
+
+
 def main() -> None:
     sources = load_sources()
     wanted = sys.argv[1:] or sorted(sources)
     failed = False
+    if not sys.argv[1:]:
+        for line in stale(sources):
+            print(line)
+            failed = True
     for herb_id in wanted:
         if herb_id not in sources:
             raise SystemExit(f"Unknown sprite: {herb_id}")
