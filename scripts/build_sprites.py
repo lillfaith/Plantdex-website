@@ -17,6 +17,11 @@ no resampling anywhere in this file - that is what keeps the edges crisp and the
 palette exact. Anti-aliasing would break the whole look, so nothing here is allowed
 to interpolate.
 
+A part may also carry named VARIANTS - alternate art selected per frame by its `art`
+track. That is how a sprite blinks: the eyes are their own part, and two frames of the
+loop draw the closed pair instead of the open one. Offsets alone cannot do that, and a
+blink is most of what separates a creature portrait from a decorated icon.
+
 Personality lives entirely in the per-species profile: how far the head bobs, how
 fast the leaves flutter, whether the body leans forward eagerly or holds itself
 upright. Adding species 2..45 is authoring a base sprite and a profile, not writing
@@ -71,6 +76,7 @@ def load_sources() -> dict[str, dict]:
 def draw_part(
     canvas: list[list[str]],
     part: dict,
+    rows: list[str],
     dx: int,
     dy: int,
     lean: int,
@@ -84,7 +90,6 @@ def draw_part(
     and because the shift is rounded to whole pixels at every row, no pixel is ever
     blended with its neighbour.
     """
-    rows = part["rows"]
     ox, oy = part["origin"]
     tall = max(1, len(rows) - 1)
 
@@ -111,7 +116,13 @@ def render_frame(sprite: dict, frame: int) -> list[list[str]]:
         dx = motion.get("dx", [0])[frame % len(motion.get("dx", [0]))]
         dy = motion.get("dy", [0])[frame % len(motion.get("dy", [0]))]
         lean = motion.get("lean", [0])[frame % len(motion.get("lean", [0]))]
-        draw_part(canvas, part, dx, dy, lean, width, height)
+
+        # `art` names a variant per frame; None (or no track) means the default rows.
+        art_track = motion.get("art")
+        variant = art_track[frame % len(art_track)] if art_track else None
+        rows = part["variants"][variant] if variant else part["rows"]
+
+        draw_part(canvas, part, rows, dx, dy, lean, width, height)
 
     return canvas
 

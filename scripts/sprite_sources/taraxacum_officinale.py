@@ -1,141 +1,170 @@
-"""Dandelion (Taraxacum officinale) - animated portrait sprite.
+"""Dandelion (Taraxacum officinale) - creature portrait sprite.
 
-SPECIES REFERENCE, NOT A COPY. The card's own pixel panel was measured for this:
-roughly 18% of it is a broad golden head and about 1% a narrow central stem, with no
-basal leaves at all. This redesign keeps that read - big gold head, slim stem - and
-adds the deeply toothed basal rosette the card omits, because those backward-pointing
-teeth are the plant's single most recognisable trait and the source of its name
-("dent de lion"). Adding them makes the species MORE identifiable, not less.
+THE DESIGN HOOK: dandelion is "dent de lion", lion's tooth. So the ray florets become a
+golden MANE around a face and the plant reads as a small sun-lion. That is a creature
+the species itself supplies rather than one bolted onto a flower, and every identifying
+trait does double duty: the mane IS the ray-floret head, the arms ARE the deeply toothed
+basal leaves, and the palette is the plant's own gold and green.
 
-The leaves double as the sprite's arms, which is where the personality lives: they
-lift and flutter without the plant ever becoming a little person.
+This replaced a first pass that stayed close to the card panel and came out a stiff
+botanical icon with motion. What fixed it: a head/body distinction, a face with eyes
+that blink, limbs, and - most of all - a LOBED silhouette. A circle reads as a blob at
+any size; the eleven petal points are what make it legible as a flower creature in a
+32px portrait.
 
-PERSONALITY: energetic and resilient. A springy two-beat bounce with a touch of
-overshoot, a head that tilts as though looking around, and leaves that flick up on the
-upbeat. Faster and bouncier than a mullein will be, which is the point of holding the
-motion in data rather than in code.
+The head silhouette and its shading are generated rather than hand-counted (see
+`scripts/gen_head.py` notes in the build script): a lobed polar curve carved with a face
+oval, then lit from the upper left by position. Hand-authoring 33-wide rows produced a
+vertical seam down the mane and a rectangular face, twice.
 
-SAFETY: this is a portrait, never an identification aid. It is deliberately stylised
-and lives apart from the card's identification content, which stays the reference for
-anyone actually looking at a plant outdoors.
+PERSONALITY: energetic and resilient - the weed that comes back through tarmac. A
+springy bounce with overshoot, arms that lag a beat behind the body, a curious head
+tilt, and a blink late in the loop so it reads as alive rather than mechanical.
+
+SAFETY: a portrait, never an identification aid. Deliberately stylised, and it sits
+apart from the card's identification content, which stays the reference for anyone
+actually looking at a plant outdoors.
 """
 
-# Authored at 32x36. Rows 0-2 are deliberately empty headroom so the bounce has
-# somewhere to go without the head clipping the top of the frame.
+# Authored at 44x32.
 PALETTE = {
-    # Outline: a deep plum rather than black, so the sprite sits in the deck's violet
-    # world instead of looking cut out and pasted on.
-    "o": (42, 18, 64, 255),
-    # Flower golds, light to dark.
-    "H": (255, 228, 130, 255),
-    "M": (255, 198, 30, 255),
-    "D": (224, 154, 22, 255),
-    "C": (168, 106, 12, 255),
-    # Foliage greens.
-    "G": (111, 191, 74, 255),
-    "g": (74, 145, 48, 255),
-    "d": (46, 99, 32, 255),
+    "o": (36, 16, 58, 255),      # outline, deep plum rather than black
+    "H": (255, 233, 160, 255),   # mane highlight
+    "M": (255, 201, 60, 255),    # mane mid
+    "D": (232, 153, 42, 255),    # mane deep
+    "S": (179, 106, 20, 255),    # mane shadow
+    "F": (255, 243, 201, 255),   # face
+    "E": (58, 26, 74, 255),      # eye
+    "W": (255, 255, 255, 255),   # eye glint
+    "c": (242, 143, 168, 255),   # cheek
+    "G": (127, 209, 84, 255),    # leaf light
+    "g": (79, 164, 54, 255),     # leaf mid
+    "d": (46, 107, 36, 255),     # leaf dark
 }
 
-# The golden head. A round pompom of ray florets - NOT a lens with a dark middle,
-# which the first pass produced and which read unmistakably as a giant eye. Two rules
-# keep it a flower: the silhouette stays circular rather than pointed at the sides, and
-# the deeper gold appears only as short radial dashes suggesting floret separations,
-# never as one central disc. The fringed crown is floret tips catching light.
 HEAD = [
-    "        HoHoHoH",
-    "      oHHHHHHHHo",
-    "    oHHHHHMMMMMHo",
-    "   oHHHHMMMMMMMMDo",
-    "  oHHHMMMMMMMMMMMDo",
-    " oHHHMMMMMMMMMMMMDo",
-    " oHHMMMMMMMMMMMMMDDo",
-    "oHHMMMMMMMMMMMMMMDDo",
-    "oHMMMMMMMMMMMMMMMDDo",
-    "oHMMMMMMMMMMMMMMDDDo",
-    "oHMMMMMMMMMMMMMDDDDo",
-    " oMMMMMMMMMMMMDDDDo",
-    " oMMMMMMMMMMDDDDDo",
-    "  oMMMMMMMDDDDDDo",
-    "   oDDMMMDDDDDDo",
-    "     oDDDDDDDo",
-    "       ogGGgo",
+    "              ooo",
+    "              oHo     ooo",
+    "              oHMo   oMMo",
+    "       ooo    oMMo  oMMMo",
+    "       oHHoo  oMMMooMMMo",
+    "        oHHHooMMMMMMMMMo    ooo",
+    "        oHHHMMoooooooMMMooooDDo",
+    "         oHMoooooooooooMMMMDDo",
+    "   ooooooHMoooFFFFFFFoooMMDDo",
+    "  ooHHHHHMooFFFFFFFFFFFooDDo",
+    "    ooHHMMooFFFFFFFFFFFooDDo",
+    "      oMMooFFFFFFFFFFFFFooDDoooo",
+    "       oMooFFFFFFFFFFFFFooDDDSSSo",
+    "      oMMooFFFFFFFFFFFFFooDDoooo",
+    "    ooMMMMooFFFFFFFFFFFooDDo",
+    "  ooMMMMMMooFFFFFFFFFFFooDSo",
+    "   ooooooMMoooFFFFFFFoooDSSSo",
+    "         oMMoooooooooooDSSSSSo",
+    "        oMMMMMoooooooDDSooooSSo",
+    "        oMMMooMDDDDDDDSo    ooo",
+    "       oMMoo  oDDDooDSSo",
+    "       ooo    oDDo  oSSSo",
+    "              oDDo   oSSo",
+    "              oDo     ooo",
+    "              ooo",
 ]
 
-# Short. A long bare stem turned the first pass into a lollipop; keeping the head close
-# to the rosette is what makes it read as one compact creature rather than a flower on
-# a stick.
-STEM = [
-    "ogGgo",
-    "ogGgo",
-    "ogGgo",
-    "ogGgo",
-    "ogGgo",
-    "ogGgo",
+# Eyes are their own part so the loop can blink. Offsets alone cannot swap art, and a
+# blink is most of what separates a creature portrait from a decorated icon.
+EYES_OPEN = [
+    " oo    oo ",
+    "oEEo  oEEo",
+    "oEWo  oEWo",
+    "oEEo  oEEo",
+    " oo    oo ",
 ]
 
-# The toothed basal rosette, and the sprite's arms. Diagonal blades sweeping up and
-# out, not flat bars - the flat version read as grass. Teeth notch the underside,
-# pointing back toward the base, which is the trait the plant is named for and the
-# thing the card's own panel leaves out.
-LEAF_L = [
-    "           oo",
-    "        oooGGo",
-    "      ooGGGGGo",
-    "    ooGGGGGGGo",
-    "  ooGGGGGGGGgo",
-    " oGGGGGGGGGGgo",
-    "oGGgggggggGGgo",
-    "oGdoggggggGGgo",
-    " oooddggggggo",
-    "    oodddddo",
+# Closed: a shallow arc rather than a straight bar - a bar reads as a scowl.
+EYES_CLOSED = [
+    "          ",
+    "          ",
+    "oEEo  oEEo",
+    " oo    oo ",
+    "          ",
 ]
 
-LEAF_R = [
-    "oo",
-    "oGGooo",
-    "oGGGGGoo",
-    "oGGGGGGGoo",
-    "ogGGGGGGGGoo",
-    "ogGGGGGGGGGGo",
-    "ogGGgggggggGGo",
-    "ogGGggggggodGo",
-    " oggggggddooo",
-    "  odddddoo",
+CHEEKS = [
+    "cc      cc",
+]
+
+# A short stem and root base showing BELOW the mane, so the head sits on something.
+BODY = [
+    " ogGgo ",
+    "odgGgdo",
+    "oddgddo",
+    " ooooo ",
+]
+
+# The deeply toothed basal leaves, doing duty as arms. Angled blades, not flat bars -
+# flat read as grass every time it was tried. Drawn AFTER the head so they overlap the
+# petals rather than hovering beside them with a gap of background between.
+ARM_L = [
+    "              oooo",
+    "        ooooooGGGGo",
+    "    ooooGGGGGGGGGGo",
+    "  ooGGGGGGGGGGGGGGo",
+    " oGGGgggggggggggGGo",
+    "oGdoggdoggggggggGGo",
+    " oo oo  oooooooooo",
+]
+
+ARM_R = [
+    "oooo",
+    "oGGGGoooooo",
+    "oGGGGGGGGGGoooo",
+    "oGGGGGGGGGGGGGGoo",
+    "oGGgggggggggggGGo",
+    "oGGggggggodggodGo",
+    " oooooooooo  oo oo",
 ]
 
 SPRITE = {
     "herbId": "taraxacum-officinale",
     "personality": "energetic",
-    "size": (32, 36),
-    "frames": 8,
+    "size": (44, 32),
+    "frames": 10,
     "fps": 10,
-    # Draw order is back to front: the rosette sits behind the stem, which sits behind
-    # the head, so the parts overlap into one plant rather than three floating pieces.
+    # Back to front: base, then the head, then arms overlapping it, then face details.
     "parts": [
-        {"name": "stem", "origin": (14, 19), "rows": STEM},
-        {"name": "leafL", "origin": (1, 21), "rows": LEAF_L},
-        {"name": "leafR", "origin": (18, 21), "rows": LEAF_R},
-        {"name": "head", "origin": (6, 3), "rows": HEAD},
+        {"name": "body", "origin": (19, 25), "rows": BODY},
+        {"name": "armL", "origin": (0, 16), "rows": ARM_L},
+        {"name": "armR", "origin": (26, 16), "rows": ARM_R},
+        {"name": "head", "origin": (5, 2), "rows": HEAD},
+        {
+            "name": "eyes",
+            "origin": (18, 13),
+            "rows": EYES_OPEN,
+            "variants": {"blink": EYES_CLOSED},
+        },
+        {"name": "cheeks", "origin": (17, 18), "rows": CHEEKS},
     ],
-    # One entry per part; each list is read per frame and wraps. Frame 0 is the rest
-    # pose every track returns to, which is what reduced motion freezes on.
+    # Frame 0 is the rest pose - what reduced motion freezes on - so it is eyes open and
+    # level, never mid-bounce and never mid-blink.
     "motion": {
-        # Springy: up fast, hang, settle with a small overshoot below the rest line.
         "head": {
-            "dy": [0, -1, -2, -2, -1, 0, 1, 0],
-            "dx": [0, 0, 1, 1, 0, -1, -1, 0],
+            "dy": [0, -1, -2, -2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 1, 0, 0, -1, -1, 0, 0],
         },
-        # The stem leans opposite to the head's drift, so the plant looks like it is
-        # carrying its own weight rather than sliding sideways in one piece.
-        "stem": {
-            "dy": [0, -1, -1, -1, -1, 0, 0, 0],
-            "lean": [0, 0, 1, 1, 0, -1, -1, 0],
+        # Face details ride the head exactly, or the features slide around on it.
+        "eyes": {
+            "dy": [0, -1, -2, -2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 1, 0, 0, -1, -1, 0, 0],
+            "art": [None, None, None, None, None, None, None, "blink", "blink", None],
         },
-        # Leaves flick up on the upbeat and drop a touch late, so the whole body does
-        # not move on the same beat - that lag is most of the sense of life.
-        "leafL": {"dy": [0, 0, -1, -1, -1, 0, 0, 0], "dx": [0, -1, -1, 0, 0, 0, 0, 0]},
-        "leafR": {"dy": [0, 0, -1, -1, -1, 0, 0, 0], "dx": [0, 1, 1, 0, 0, 0, 0, 0]},
+        "cheeks": {
+            "dy": [0, -1, -2, -2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 1, 0, 0, -1, -1, 0, 0],
+        },
+        "body": {"dy": [0, 0, -1, -1, -1, 0, 1, 0, 0, 0]},
+        # Arms lag the head by a frame, which is most of the sense of life.
+        "armL": {"dy": [0, 0, -1, -2, -1, 0, 0, 0, 0, 0], "dx": [0, -1, -1, 0, 0, 0, 0, 0, 0, 0]},
+        "armR": {"dy": [0, 0, -1, -2, -1, 0, 0, 0, 0, 0], "dx": [0, 1, 1, 0, 0, 0, 0, 0, 0, 0]},
     },
     "palette": PALETTE,
 }
