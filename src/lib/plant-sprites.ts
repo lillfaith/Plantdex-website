@@ -15,8 +15,11 @@ import type { GardenStage } from './garden';
  * site is already passing the stage through. Until then every stage resolves to the one
  * authored sprite, so a caller can pass it today and get sensible art.
  *
- * A herb with no authored sprite returns null, which is the normal case: 44 of the 45
- * cards have no portrait yet, and the page simply omits it rather than breaking.
+ * COVERAGE. All 45 cards now have an authored portrait, and `plant-sprites.test.ts`
+ * asserts that, so a herb added to the deck without one fails the suite rather than
+ * silently rendering a card with a hole in it. `spriteFor` still returns null for an
+ * unknown id — call sites mount the component unconditionally and an id that is not in
+ * the deck at all should not throw.
  */
 
 export interface PlantSpriteEntry {

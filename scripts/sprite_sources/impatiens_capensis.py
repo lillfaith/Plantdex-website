@@ -27,24 +27,25 @@ from the card's identification content, which stays the reference for anyone act
 looking at a plant outdoors.
 """
 
+from _face import on_face
 from _flowerhead import flower_head
 
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "O": (255, 198, 132, 255),   # flower highlight
-    "R": (247, 156, 78, 255),    # flower mid - the orange the card actually carries
-    "r": (206, 112, 54, 255),    # flower deep
-    "u": (158, 80, 44, 255),     # flower shadow
-    "p": (140, 62, 48, 255),     # the throat freckles jewelweed is spotted with
+    "O": (235, 197, 152, 255),   # flower highlight
+    "R": (225, 158, 100, 255),    # flower mid - the orange the card actually carries
+    "r": (215, 110, 45, 255),    # flower deep
+    "u": (170, 76, 32, 255),     # flower shadow
+    "p": (165, 44, 23, 255),     # the throat freckles jewelweed is spotted with
     "F": (255, 240, 224, 255),   # face
     "E": (86, 58, 104, 255),     # eye
     "W": (255, 255, 255, 255),   # eye glint
     "c": (244, 158, 158, 255),   # cheek
-    "G": (166, 216, 138, 255),   # stem light - jewelweed stems are famously translucent
-    "g": (118, 178, 100, 255),   # stem mid
-    "d": (78, 130, 74, 255),     # stem dark
-    "S": (250, 236, 168, 255),   # seeds
+    "G": (158, 230, 124, 255),   # stem light - jewelweed stems are famously translucent
+    "g": (111, 199, 79, 255),   # stem mid
+    "d": (75, 145, 59, 255),     # stem dark
+    "S": (249, 235, 169, 255),   # seeds
 }
 
 FLOWER_W, FLOWER_H = 19, 17
@@ -160,10 +161,11 @@ MOUTH_SMALL = [
 
 # Open, because something just went off next to its ear.
 MOUTH_OH = [
-    " oo ",
+    "oooo",
     "oFFo",
-    " oo ",
 ]
+
+FLOWER_AT = (7, 8)
 
 SPRITE = {
     "herbId": "impatiens-capensis",
@@ -174,10 +176,10 @@ SPRITE = {
     # The hook first, then the flower hanging under it, then the pod alongside, then the
     # face. Seeds last, over everything, because they are in front of the plant.
     "parts": [
-        {"name": "hook", "origin": (11, 1), "rows": HOOK},
+        {"name": "hook", "origin": (11, 4), "rows": HOOK},
         {
             "name": "flower",
-            "origin": (7, 8),
+            "origin": FLOWER_AT,
             "rows": FLOWER,
             "variants": {
                 "left": FLOWER_LEFT,
@@ -198,14 +200,14 @@ SPRITE = {
         },
         {
             "name": "eyes",
-            "origin": (13, 15),
+            "origin": on_face(FLOWER_AT, FLOWER, EYES_OPEN, dy=2),
             "rows": EYES_OPEN,
             "variants": {"blink": EYES_CLOSED, "half": EYES_HALF, "shock": EYES_SHOCK},
         },
-        {"name": "cheeks", "origin": (13, 18), "rows": CHEEKS},
+        {"name": "cheeks", "origin": on_face(FLOWER_AT, FLOWER, CHEEKS, dy=4), "rows": CHEEKS},
         {
             "name": "mouth",
-            "origin": (15, 19),
+            "origin": on_face(FLOWER_AT, FLOWER, MOUTH_SMALL, dy=5),
             "rows": MOUTH_SMALL,
             "variants": {"oh": MOUTH_OH},
         },

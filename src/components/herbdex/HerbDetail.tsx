@@ -179,8 +179,8 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           <p className="text-xs font-bold text-violet-300 tabular-nums">{cardLabel(herb)}</p>
 
           {/* The living portrait, sitting with the name so it is among the first things
-              read. Renders nothing for a species with no sprite yet, so the heading keeps
-              its position either way.
+              read. Every card in the deck has one; the component still renders nothing
+              for an unknown id, so the heading keeps its position either way.
 
               It is decoration, never an identification aid: the sprite is deliberately
               stylised, and the card art plus the identification section below remain the

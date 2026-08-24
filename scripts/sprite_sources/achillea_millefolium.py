@@ -34,15 +34,15 @@ from _flowerhead import flower_head
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
     "W": (255, 255, 255, 255),   # floret highlight, and the eye glint
-    "w": (240, 236, 246, 255),   # floret mid
-    "v": (206, 198, 222, 255),   # floret deep
-    "V": (166, 156, 190, 255),   # floret shadow
-    "y": (247, 216, 130, 255),   # floret eye, the yellow centre
-    "p": (236, 168, 186, 255),   # the trace of pink the card carries
-    "G": (150, 205, 120, 255),   # foliage light
-    "g": (108, 166, 92, 255),    # foliage mid
-    "d": (74, 122, 68, 255),     # foliage dark
-    "n": (52, 90, 52, 255),      # foliage shadow
+    "w": (239, 232, 250, 255),   # floret mid
+    "v": (201, 184, 236, 255),   # floret deep
+    "V": (132, 98, 212, 255),   # floret shadow
+    "y": (228, 198, 113, 255),   # floret eye, the yellow centre
+    "p": (232, 136, 161, 255),   # the trace of pink the card carries
+    "G": (94, 220, 70, 255),   # foliage light
+    "g": (58, 178, 44, 255),    # foliage mid
+    "d": (37, 123, 32, 255),     # foliage dark
+    "n": (36, 106, 36, 255),      # foliage shadow
     "F": (233, 244, 226, 255),   # face, a cool pale green
     "E": (86, 58, 104, 255),     # eye
     "c": (240, 168, 180, 255),   # cheek
