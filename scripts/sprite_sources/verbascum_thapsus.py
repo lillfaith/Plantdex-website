@@ -59,19 +59,30 @@ SPIKE = _spike()
 SPIKE_LEFT = _spike(light=(-0.35, -0.65))
 SPIKE_RIGHT = _spike(light=(-1.25, -0.65))
 
-BODY_W, BODY_H = 19, 15
+BODY_W, BODY_H = 25, 13
 
 
 def _body(face_dx=0.0, light=(-0.85, -0.65)):
     return flower_head(
-        BODY_W, BODY_H, 9.0, 7.0, 8.6, 6.6, 0, 0.0, 5.6, 4.6,
+        BODY_W, BODY_H, 12.0, 6.0, 11.6, 5.8, 0, 0.0, 5.4, 4.2,
         face_dx=face_dx, light=light, trim_tail=False, chars="Llkn" + "Fo",
+    )
+
+
+def _body_breath(rx, ry):
+    return flower_head(
+        BODY_W, BODY_H, 12.0, 6.0, rx, ry, 0, 0.0, 5.4, 4.2,
+        light=(-0.85, -0.65), trim_tail=False, chars="LlknFo",
     )
 
 
 BODY = _body()
 BODY_LEFT = _body(face_dx=-1.6, light=(-0.35, -0.65))
 BODY_RIGHT = _body(face_dx=1.6, light=(-1.25, -0.65))
+# One pixel wider and flatter, and one pixel narrower and taller. A slow breath is the
+# whole of this creature's idle - it does not bob, lean or hop anywhere in the loop.
+BODY_OUT = _body_breath(12.2, 5.5)
+BODY_IN = _body_breath(11.2, 6.2)
 
 # Stipple of pale hairs over the wool. Sparse and irregular on purpose - an even grid
 # reads as a pattern rather than as fuzz.
@@ -82,16 +93,19 @@ HAIRS = [
 ]
 
 EYES_OPEN = [
+    "o     o",
     "E     E",
     "E     E",
 ]
 
 EYES_HALF = [
     "o     o",
+    "o     o",
     "E     E",
 ]
 
 EYES_CLOSED = [
+    "       ",
     "       ",
     "E     E",
 ]
@@ -153,7 +167,7 @@ SPRITE = {
     # Back to front: base, leaves, spike behind the head, body, then face details. The
     # spike goes BEHIND the body so it reads as rising from within the rosette.
     "parts": [
-        {"name": "base", "origin": (14, 24), "rows": BASE},
+        {"name": "base", "origin": (14, 25), "rows": BASE},
         {
             "name": "leafL",
             "origin": (1, 17),
@@ -168,24 +182,29 @@ SPRITE = {
         },
         {
             "name": "spike",
-            "origin": (10, 2),
+            "origin": (10, 4),
             "rows": SPIKE,
             "variants": {"left": SPIKE_LEFT, "right": SPIKE_RIGHT},
         },
         {
             "name": "body",
-            "origin": (7, 12),
+            "origin": (4, 14),
             "rows": BODY,
-            "variants": {"left": BODY_LEFT, "right": BODY_RIGHT},
+            "variants": {
+                "left": BODY_LEFT,
+                "right": BODY_RIGHT,
+                "out": BODY_OUT,
+                "in": BODY_IN,
+            },
         },
-        {"name": "hairs", "origin": (9, 14), "rows": HAIRS},
+        {"name": "hairs", "origin": (7, 16), "rows": HAIRS},
         {
             "name": "eyes",
-            "origin": (13, 16),
+            "origin": (13, 18),
             "rows": EYES_OPEN,
             "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
         },
-        {"name": "cheeks", "origin": (12, 19), "rows": CHEEKS},
+        {"name": "cheeks", "origin": (12, 22), "rows": CHEEKS},
     ],
     #
     #  frame  0     1     2      3      4     5      6      7     8     9     10    11
@@ -202,10 +221,10 @@ SPRITE = {
             "lean": [0, 0, 0, 1, 2, 2, 0, -2, -2, 0, 0, 0],
         },
         "body": {
-            "art": [None, None, None, "right", "right", None, "left", "left", None,
-                    None, None, None],
+            "art": ["in", "out", "out", "right", "right", "out", "left", "left",
+                    "in", "in", None, None],
             "dx": [0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, 0],
-            "dy": [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         },
         "hairs": {
             "dx": [0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, 0],
