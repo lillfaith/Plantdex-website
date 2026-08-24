@@ -21,6 +21,7 @@ import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
 import { CardWarning, SafetyNotice } from '../SafetyNotice';
+import { PlantSprite } from '../PlantSprite';
 
 /**
  * A herb page, gated on discovery.
@@ -176,9 +177,25 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           {/* Collection · card number, so a card reads as part of a collectible set
               rather than a loose number. */}
           <p className="text-xs font-bold text-violet-300 tabular-nums">{cardLabel(herb)}</p>
-          <h1 className="font-display mt-1 text-3xl leading-tight font-extrabold text-gold-plate">
-            {herb.commonName}
-          </h1>
+
+          {/* The living portrait, sitting with the name so it is among the first things
+              read. Renders nothing for a species with no sprite yet, so the heading keeps
+              its position either way.
+
+              It is decoration, never an identification aid: the sprite is deliberately
+              stylised, and the card art plus the identification section below remain the
+              reference for anyone actually looking at a plant outdoors. */}
+          <div className="mt-1 flex items-center gap-3">
+            <PlantSprite
+              herbId={herb.id}
+              alt={`Pixel-art portrait of ${herb.commonName}`}
+              scale={0.5}
+              className="shrink-0"
+            />
+            <h1 className="font-display text-3xl leading-tight font-extrabold text-gold-plate">
+              {herb.commonName}
+            </h1>
+          </div>
           <p className="font-botanical mt-1 text-lg text-violet-200 italic">
             {herb.scientificName}
           </p>

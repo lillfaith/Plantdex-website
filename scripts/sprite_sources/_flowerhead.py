@@ -1,0 +1,98 @@
+"""Builds a lobed flower head as a character grid. Shared by the flower species.
+
+Not a sprite: the leading underscore keeps `build_sprites.py` from loading it as one.
+
+WHY THIS IS GENERATED. Hand-authoring 25-wide rows produced a rectangular face and a
+vertical seam down the mane, twice. A polar curve carved with a face oval and lit by
+position gets both right, and - the reason it earns its keep - it makes the pseudo-3D
+poses nearly free: a squash, a stretch or a head turned to one side is the same curve
+with different radii, a shifted face and a moved light, rather than four more grids to
+draw and keep in sync.
+
+WHAT MAKES A TURN READ AS 3D. Two things together, and neither works alone: the face
+slides across the head, AND the highlight slides the other way. Moving only the face
+looks like the eyes wandering on a flat disc; moving only the light looks like the sun
+moved. Together the head appears to rotate.
+"""
+
+import math
+
+
+def flower_head(
+    width: int,
+    height: int,
+    cx: float,
+    cy: float,
+    rx: float,
+    ry: float,
+    lobes: int,
+    amp: float,
+    face_rx: float,
+    face_ry: float,
+    face_dx: float = 0.0,
+    face_dy: float = 0.0,
+    light: tuple[float, float] = (-0.85, -0.65),
+    trim_tail: bool = True,
+) -> list[str]:
+    """One head pose as rows of palette characters.
+
+    `face_dx`/`face_dy` slide the face within the head; `light` is the direction the
+    highlight comes from. Turning a head means changing both.
+    """
+    fcx, fcy = cx + face_dx, cy + face_dy
+
+    def in_head(x: float, y: float) -> bool:
+        dx, dy = (x - cx) / rx, (y - cy) / ry
+        r = math.hypot(dx, dy)
+        if r == 0:
+            return True
+        return r <= 1 + amp * math.cos(lobes * math.atan2(dy, dx))
+
+    def in_face(x: float, y: float) -> bool:
+        return math.hypot((x - fcx) / face_rx, (y - fcy) / face_ry) <= 1
+
+    grid = [[" "] * width for _ in range(height)]
+    for y in range(height):
+        for x in range(width):
+            if in_head(x, y):
+                grid[y][x] = "F" if in_face(x, y) else "M"
+
+    def neighbours(x: int, y: int):
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            yield grid[ny][nx] if (0 <= nx < width and 0 <= ny < height) else " "
+
+    out = [row[:] for row in grid]
+    for y in range(height):
+        for x in range(width):
+            cell = grid[y][x]
+            # Outline the mane only where it meets empty space, and the face only where
+            # it meets mane. Outlining both sides of that seam costs 2px of a ring only
+            # about 4px thick, and the mane breaks into a necklace of dashes.
+            if cell == "M" and " " in neighbours(x, y):
+                out[y][x] = "o"
+            elif cell == "F" and "M" in neighbours(x, y):
+                out[y][x] = "o"
+
+    lx, ly = light
+
+    def shade(x: int, y: int) -> str:
+        level = -(lx * (x - cx) / rx + ly * (y - cy) / ry)
+        if level > 0.72:
+            return "H"
+        if level > -0.30:
+            return "M"
+        if level > -0.72:
+            return "D"
+        return "S"
+
+    rows = [
+        "".join(shade(x, y) if out[y][x] == "M" else out[y][x] for x in range(width)).rstrip()
+        for y in range(height)
+    ]
+    rows = [r for r in rows if r.strip()]
+    if trim_tail:
+        # The curve tapers to a gold spike at the bottom; a green stem part replaces it.
+        while rows and "M" not in rows[-1] and "H" not in rows[-1]:
+            rows.pop()
+    return rows
