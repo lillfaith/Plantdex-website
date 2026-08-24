@@ -53,6 +53,15 @@
     "fps": 8,
     "personality": "unhurried"
   },
+  "cichorium-intybus": {
+    "herbId": "cichorium-intybus",
+    "src": "/cards/animated/cichorium-intybus.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 16,
+    "fps": 8,
+    "personality": "early riser"
+  },
   "galium-aparine": {
     "herbId": "galium-aparine",
     "src": "/cards/animated/galium-aparine.png",
@@ -88,6 +97,15 @@
     "frames": 14,
     "fps": 12,
     "personality": "all talk"
+  },
+  "mentha-canadensis": {
+    "herbId": "mentha-canadensis",
+    "src": "/cards/animated/mentha-canadensis.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "refreshing"
   },
   "oxalis-stricta": {
     "herbId": "oxalis-stricta",
@@ -133,6 +151,15 @@
     "frames": 14,
     "fps": 8,
     "personality": "smug"
+  },
+  "rhus-spp": {
+    "herbId": "rhus-spp",
+    "src": "/cards/animated/rhus-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "proud"
   },
   "rubus-spp": {
     "herbId": "rubus-spp",
