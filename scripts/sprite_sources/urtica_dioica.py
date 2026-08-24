@@ -42,24 +42,27 @@ PALETTE = {
     "r": (168, 132, 96, 255),    # stem
 }
 
-BODY_W, BODY_H = 17, 16
+BODY_W, BODY_H = 19, 18
 
 
-def _body(face_dx=0.0, light=(-0.85, -0.65)):
+def _body(face_dx=0.0, light=(-0.85, -0.65), amp=0.16):
     return flower_head(
-        BODY_W, BODY_H, 8.0, 7.5, 7.4, 7.0, 0, 0.0, 5.4, 4.8,
-        face_dx=face_dx, light=light, trim_tail=False, chars="Ggdn" + "Fo",
+        BODY_W, BODY_H, 9.0, 8.5, 8.2, 8.0, 5, amp, 5.4, 4.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
     )
 
 
 BODY = _body()
 BODY_LEFT = _body(face_dx=-1.6, light=(-0.35, -0.65))
 BODY_RIGHT = _body(face_dx=1.6, light=(-1.25, -0.65))
+# Bristled: the same body with the lobes driven hard, so the silhouette spikes outward
+# on the flick. A cat's hackles, done with a polar curve.
+BODY_BRISTLE = _body(amp=0.30)
 
 # Narrow, level eyes rather than the round ones the others use - the difference between
 # a plant that is pleased to see you and one that is not.
 EYES_OPEN = [
-    "EE   EE",
+    "E     E",
     "EE   EE",
 ]
 
@@ -170,9 +173,9 @@ SPRITE = {
         },
         {
             "name": "body",
-            "origin": (8, 9),
+            "origin": (7, 8),
             "rows": BODY,
-            "variants": {"left": BODY_LEFT, "right": BODY_RIGHT},
+            "variants": {"left": BODY_LEFT, "right": BODY_RIGHT, "bristle": BODY_BRISTLE},
         },
         {"name": "guardL", "origin": (4, 19), "rows": GUARD_L},
         {"name": "guardR", "origin": (21, 19), "rows": GUARD_R},
@@ -192,22 +195,22 @@ SPRITE = {
     # would make this one look calm, which is the opposite of the brief.
     "motion": {
         "body": {
-            "art": [None, None, "right", "right", None, None, None, None, "left",
-                    "left", None, None],
-            "dx": [0, 0, 1, 1, 0, 0, 0, 0, -1, -1, 0, 0],
-            "dy": [0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0],
+            "art": [None, "bristle", "right", "right", None, None, None, "bristle",
+                    "left", "left", None, None],
+            "dx": [0, 0, 1, 1, 0, 1, 0, 0, -1, -1, 0, 1],
+            "dy": [0, -1, -2, -2, 0, 0, 0, -1, -2, -2, 0, 0],
         },
         "eyes": {
-            "dx": [0, 0, 4, 4, 0, 0, 0, 0, -4, -4, 0, 0],
-            "dy": [0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 4, 4, 0, 1, 0, 0, -4, -4, 0, 1],
+            "dy": [0, -1, -2, -2, 0, 0, 0, -1, -2, -2, 0, 0],
             # Narrowed rather than blinked on the hold: a suspicious squint reads better
             # on this species than a friendly blink would.
             "art": [None, None, None, None, None, "narrow", "narrow", None, None,
                     None, "blink", None],
         },
         "cheeks": {
-            "dx": [0, 0, 4, 4, 0, 0, 0, 0, -4, -4, 0, 0],
-            "dy": [0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 4, 4, 0, 1, 0, 0, -4, -4, 0, 1],
+            "dy": [0, -1, -2, -2, 0, 0, 0, -1, -2, -2, 0, 0],
         },
         # The ears snap up on the flick and drop straight back. Both together here, on
         # purpose - a startle is the one moment a creature IS symmetrical.

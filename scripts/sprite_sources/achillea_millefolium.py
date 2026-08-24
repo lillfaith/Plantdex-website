@@ -29,7 +29,7 @@ from _flowerhead import flower_head
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "W": (255, 255, 255, 255),   # floret highlight
+    "W": (255, 255, 255, 255),   # floret highlight, and the eye glint
     "w": (240, 236, 246, 255),   # floret mid
     "v": (206, 198, 222, 255),   # floret deep
     "V": (166, 156, 190, 255),   # floret shadow
@@ -62,12 +62,12 @@ UMBEL_TILT_R = _umbel(light=(-1.25, -0.65))
 # Squashed a touch for the settle at the bottom of the sway.
 UMBEL_SETTLE = _umbel(rx=10.3, ry=4.9)
 
-BODY_W, BODY_H = 17, 17
+BODY_W, BODY_H = 15, 19
 
 
 def _body(face_dx=0.0, light=(-0.85, -0.65)):
     return flower_head(
-        BODY_W, BODY_H, 8.0, 8.0, 7.4, 7.6, 0, 0.0, 5.4, 5.2,
+        BODY_W, BODY_H, 7.0, 9.0, 6.6, 8.8, 0, 0.0, 5.0, 5.6,
         face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
     )
 
@@ -83,19 +83,19 @@ FLORET_DOTS = [
 ]
 
 EYES_OPEN = [
-    "E   E",
-    "E   E",
+    "WE   WE",
+    "EE   EE",
 ]
 
 # A slow blink for a slow plant: half, closed, half.
 EYES_HALF = [
-    "o   o",
-    "E   E",
+    "oo   oo",
+    "EE   EE",
 ]
 
 EYES_CLOSED = [
-    "     ",
-    "E   E",
+    "       ",
+    "EE   EE",
 ]
 
 CHEEKS = [
@@ -168,24 +168,24 @@ SPRITE = {
         },
         {
             "name": "body",
-            "origin": (8, 11),
+            "origin": (9, 9),
             "rows": BODY,
             "variants": {"left": BODY_LEFT, "right": BODY_RIGHT},
         },
         {
             "name": "umbel",
-            "origin": (3, 4),
+            "origin": (3, 1),
             "rows": UMBEL,
             "variants": {"left": UMBEL_TILT_L, "right": UMBEL_TILT_R, "settle": UMBEL_SETTLE},
         },
-        {"name": "dots", "origin": (11, 9), "rows": FLORET_DOTS},
+        {"name": "dots", "origin": (11, 6), "rows": FLORET_DOTS},
         {
             "name": "eyes",
-            "origin": (14, 17),
+            "origin": (13, 16),
             "rows": EYES_OPEN,
             "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
         },
-        {"name": "cheeks", "origin": (13, 20), "rows": CHEEKS},
+        {"name": "cheeks", "origin": (13, 19), "rows": CHEEKS},
     ],
     #
     #  frame  0     1      2      3      4      5     6     7      8      9     10    11
@@ -193,32 +193,40 @@ SPRITE = {
     #
     # 8fps and no jump: this one breathes where the dandelion bounces.
     "motion": {
+        # The brim swings furthest because it is at the top of the lean, the way the
+        # head of a tall stem travels further than its middle.
         "umbel": {
-            "art": [None, "right", "right", None, "left", "left", None, "settle",
+            "art": [None, "right", "right", None, None, "left", "left", None,
                     None, None, None, None],
-            "dx": [0, 1, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0],
-            "dy": [0, 0, -1, -1, 0, -1, -1, 1, 0, 0, 0, 0],
+            "dx": [0, 2, 3, 2, 0, -2, -3, -2, 0, 0, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 1, 1, 0],
         },
+        # `lean` shears the body so it tips rather than slides - the difference between
+        # a stem bending and a sticker being dragged sideways.
         "body": {
-            "art": [None, None, "right", "right", None, "left", "left", None,
+            "art": [None, None, "right", "right", None, None, "left", "left",
                     None, None, None, None],
-            "dx": [0, 0, 1, 1, 0, -1, -1, 0, 0, 0, 0, 0],
-            "dy": [0, 0, 0, -1, 0, 0, -1, 1, 0, 0, 0, 0],
+            "dx": [0, 1, 1, 1, 0, -1, -1, -1, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+            "lean": [0, 1, 2, 1, 0, -1, -2, -1, 0, 0, 0, 0],
         },
         "dots": {
-            "dx": [0, 1, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0],
-            "dy": [0, 0, -1, -1, 0, -1, -1, 1, 0, 0, 0, 0],
+            "dx": [0, 2, 3, 2, 0, -2, -3, -2, 0, 0, 0, 0],
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 1, 1, 0],
         },
         # The face slides with the body's turn, on top of the body's own drift.
+        # The bow at frames 9-10 is the whole point of this loop: a dip of the head
+        # with the eyes closing on the way down. It is the one gesture that separates
+        # "swaying in a breeze" from "greeting you".
         "eyes": {
-            "dx": [0, 0, 3, 3, 0, -3, -3, 0, 0, 0, 0, 0],
-            "dy": [0, 0, 0, -1, 0, 0, -1, 1, 0, 0, 0, 0],
+            "dx": [0, 1, 4, 4, 0, -1, -4, -4, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0],
             "art": [None, None, None, None, None, None, None, None, "half", "blink",
                     "blink", "half"],
         },
         "cheeks": {
-            "dx": [0, 0, 3, 3, 0, -3, -3, 0, 0, 0, 0, 0],
-            "dy": [0, 0, 0, -1, 0, 0, -1, 1, 0, 0, 0, 0],
+            "dx": [0, 1, 4, 4, 0, -1, -4, -4, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0],
         },
         # The fronds trail the sway, and lift on the far side of it - a plant leaning
         # into a breeze rather than sliding sideways in one piece.
