@@ -41,6 +41,14 @@ XP/level derivation, garden state, and idempotency — then attacks the database
 second user, attempting cross-user reads, forged-`user_id` inserts, updates and deletes in
 every table plus the private photo bucket. Those tests pass only when Postgres refuses.
 
+If signup fails in the browser with **"String contains non ISO-8859-1 code point"**, the
+anon key baked into the deployment carries a character that cannot go in an HTTP header -
+almost always an en dash pasted where a hyphen belongs, or a zero-width space picked up on
+the way through a doc or a chat client. Re-copy the value as plain text into
+Settings -> Secrets and variables -> Actions -> Variables and redeploy.
+`src/lib/supabase-client.ts` reports the variable, the character and its position at
+startup, so the browser console will name it.
+
 Two project settings it depends on:
 
 - **Email confirmation must be off** for the test project (Authentication → Sign In /
