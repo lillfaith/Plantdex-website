@@ -47,9 +47,13 @@ def audit(sprite: dict) -> list[str]:
         return [f"{sprite['herbId']}: no face parts to check"]
 
     for frame in range(sprite["frames"]):
-        # Re-render with the checked parts removed, to see what is underneath them.
+        # What is UNDER a feature is whatever was drawn before it, not the whole sprite
+        # minus that feature. A wood sorrel folds its leaflets down over its own face,
+        # and judging the eyes against a canvas that already had the leaf on it reported
+        # a correctly seated face as broken.
+        order = [p["name"] for p in sprite["parts"]]
         below = {
-            name: render_frame({**sprite, "parts": [p for p in sprite["parts"] if p["name"] != name]}, frame)
+            name: render_frame({**sprite, "parts": sprite["parts"][: order.index(name)]}, frame)
             for name in checked
         }
         for part in sprite["parts"]:

@@ -53,6 +53,24 @@
     "fps": 12,
     "personality": "jumpy"
   },
+  "lamium-purpureum": {
+    "herbId": "lamium-purpureum",
+    "src": "/cards/animated/lamium-purpureum.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 12,
+    "personality": "all talk"
+  },
+  "oxalis-stricta": {
+    "herbId": "oxalis-stricta",
+    "src": "/cards/animated/oxalis-stricta.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "private"
+  },
   "passiflora-incarnata": {
     "herbId": "passiflora-incarnata",
     "src": "/cards/animated/passiflora-incarnata.png",
@@ -124,6 +142,15 @@
     "frames": 16,
     "fps": 12,
     "personality": "energetic"
+  },
+  "trifolium-pratense": {
+    "herbId": "trifolium-pratense",
+    "src": "/cards/animated/trifolium-pratense.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "hopeful"
   },
   "urtica-dioica": {
     "herbId": "urtica-dioica",
