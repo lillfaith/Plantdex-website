@@ -44,6 +44,15 @@
     "fps": 10,
     "personality": "eager"
   },
+  "capsella-bursa-pastoris": {
+    "herbId": "capsella-bursa-pastoris",
+    "src": "/cards/animated/capsella-bursa-pastoris.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "thrifty"
+  },
   "chenopodium-album": {
     "herbId": "chenopodium-album",
     "src": "/cards/animated/chenopodium-album.png",
@@ -107,6 +116,15 @@
     "fps": 10,
     "personality": "refreshing"
   },
+  "nepeta-cataria": {
+    "herbId": "nepeta-cataria",
+    "src": "/cards/animated/nepeta-cataria.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 16,
+    "fps": 12,
+    "personality": "giddy"
+  },
   "oxalis-stricta": {
     "herbId": "oxalis-stricta",
     "src": "/cards/animated/oxalis-stricta.png",
@@ -151,6 +169,15 @@
     "frames": 14,
     "fps": 8,
     "personality": "smug"
+  },
+  "prunella-vulgaris": {
+    "herbId": "prunella-vulgaris",
+    "src": "/cards/animated/prunella-vulgaris.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "quietly capable"
   },
   "rhus-spp": {
     "herbId": "rhus-spp",
