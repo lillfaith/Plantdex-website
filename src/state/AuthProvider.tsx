@@ -3,7 +3,10 @@
 import type { Session, User } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase-client';
-import { passwordResetRedirectUrl } from '@/lib/auth-redirect';
+import {
+  passwordResetRedirectUrl,
+  signupConfirmRedirectUrl,
+} from '@/lib/auth-redirect';
 
 /**
  * Session/user context for V0.3 accounts, wrapping Supabase Auth.
@@ -93,7 +96,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user: session?.user ?? null,
       async signUp(email, password) {
         if (!supabase) return { error: NOT_CONFIGURED };
-        const { error } = await supabase.auth.signUp({ email, password });
+        // `emailRedirectTo` matters only once "Confirm email" is on in the Supabase
+        // dashboard — which is exactly why it is easy to leave out. Without it the
+        // confirmation link falls back to whatever the dashboard's Site URL happens to
+        // be, so the deployment's base path lives in a setting nobody is looking at
+        // rather than in the code that already knows it.
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: signupConfirmRedirectUrl(window.location.origin) },
+        });
         return { error: error?.message ?? null };
       },
       async signIn(email, password) {

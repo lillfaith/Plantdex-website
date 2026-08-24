@@ -116,3 +116,30 @@ export function CardWarning({ warning }: { warning: string }) {
     </p>
   );
 }
+
+/**
+ * A printing error on the physical card, shown beside the transcription it explains.
+ *
+ * Deliberately NOT styled as a safety warning. `CardWarning` above is reserved for a
+ * hazard the card itself prints, and borrowing its colour for "this card has a typo"
+ * would spend the reader's alarm on the wrong thing — the next real warning is the one
+ * that would pay for it. This is a correction: quieter, and clearly about the card rather
+ * than about the plant.
+ *
+ * It has to exist because the deck is printed and the transcription is faithful by rule,
+ * so three cards show another plant's profile in good faith and nothing on screen said so.
+ */
+export function CardIssueNote({ issue }: { issue: string }) {
+  return (
+    <p
+      role="note"
+      className="flex items-start gap-2 rounded-xl border border-violet-600/70 bg-violet-900/60 px-3 py-2.5 text-sm text-violet-100"
+    >
+      <span aria-hidden="true">✎</span>
+      <span>
+        <span className="font-semibold">Printing error on this card. </span>
+        {issue} The entry below is transcribed exactly as the card reads.
+      </span>
+    </p>
+  );
+}

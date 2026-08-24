@@ -4,8 +4,13 @@ Website and companion app for the **Plantdex** herbalism card deck — a 45-card
 deck of common wild plants, plus a digital *Herbdex* for tracking the plants you find in
 real life.
 
-Current stage: **V0.2** — a working, mobile-first Herbdex prototype driven by the real deck
-data, with discovery, XP, levels and achievements persisted in the browser. No backend yet.
+Current stage: **V0.3** — a working, mobile-first Herbdex driven by the real deck data,
+with discovery, XP, levels, three-stage card mastery, Field Research and achievements. It
+runs fully signed-out against browser storage, or signed in with progress persisted to
+Supabase behind Row Level Security. Every one of the 45 cards has an animated pixel-art
+creature portrait.
+
+Not built yet: commerce (V0.4) and QR (V0.5).
 
 ## Getting started
 
@@ -40,10 +45,16 @@ src/
     progression.ts         *** the only place XP and level thresholds exist ***
     achievements.ts        Achievement registry, keyed by stable id
     herbdex-reducer.ts     Pure state transitions; idempotent discovery
-    storage.ts             Storage interface + localStorage adapter (the V0.3 seam)
+    storage.ts             Storage interface + localStorage adapter
+    remote-herbdex-storage.ts  Supabase adapter behind the same interface
+    supabase-client.ts     Browser client; null when accounts are unconfigured
   state/HerbdexProvider    React context wiring the above together
+  state/AuthProvider       Session, sign in/up/out, password recovery
   data/herbs.json          GENERATED — do not hand-edit
+  data/sprites.json        GENERATED — do not hand-edit
 scripts/build_deck.py      Generates herbs.json + public/cards from the print package
+scripts/build_sprites.py   Generates the 45 animated portraits
+supabase/                  Migrations, edge function, and setup notes
 ```
 
 ### Two design decisions worth knowing
@@ -83,10 +94,11 @@ Cards carrying a printed warning (currently only Yarrow's poisonous-lookalike no
 it above the discovery button.
 
 Errors found on the printed cards are transcribed as-is and listed under `knownCardIssues`
-in the generated data, so they are visible to fix in a future print run rather than being
-silently patched here.
+in the generated data rather than silently patched here. The deck is now printed, so the
+site is where they get corrected: `knownIssueFor()` in `src/lib/deck.ts` surfaces each one
+as a note on the affected herb page, beside the transcription it explains.
 
-Accounts, checkout, QR scanning and AI identification are later roadmap stages (V0.3–V0.5).
+Checkout, QR scanning and AI identification are later roadmap stages (V0.4 onwards).
 
 ## Deploying
 
