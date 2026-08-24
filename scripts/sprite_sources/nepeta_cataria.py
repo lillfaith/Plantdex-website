@@ -26,14 +26,14 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (176, 200, 156, 255),   # leaf highlight - catnip is grey-green and furred
-    "g": (134, 162, 120, 255),   # leaf mid
-    "d": (96, 122, 90, 255),     # leaf deep
-    "n": (68, 92, 68, 255),      # leaf shadow
-    "V": (238, 234, 246, 255),   # the pale hooded flowers
-    "v": (198, 190, 216, 255),   # flower shade
-    "S": (250, 236, 180, 255),   # the giddy sparks, and nothing else uses them
-    "t": (150, 172, 132, 255),   # square stem
+    "G": (209, 211, 186, 255),   # leaf highlight - catnip is grey-green and furred
+    "g": (169, 171, 151, 255),   # leaf mid
+    "d": (133, 138, 115, 255),     # leaf deep
+    "n": (104, 109, 91, 255),      # leaf shadow
+    "V": (238, 235, 245, 255),   # the pale hooded flowers
+    "v": (211, 207, 222, 255),   # flower shade
+    "S": (229, 224, 201, 255),   # the giddy sparks, and nothing else uses them
+    "t": (181, 182, 163, 255),   # square stem
 }
 
 HEAD_W, HEAD_H = 19, 17

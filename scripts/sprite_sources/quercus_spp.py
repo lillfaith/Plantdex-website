@@ -30,16 +30,16 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (140, 186, 108, 255),   # canopy highlight
-    "g": (98, 146, 84, 255),     # canopy mid
-    "d": (66, 108, 62, 255),     # canopy deep
-    "n": (44, 78, 48, 255),      # canopy shadow
-    "T": (168, 128, 92, 255),    # trunk light
-    "t": (122, 90, 64, 255),     # trunk dark
-    "A": (206, 162, 104, 255),   # acorn nut
-    "a": (158, 118, 72, 255),    # acorn shade
-    "C": (128, 94, 62, 255),     # acorn cup
-    "S": (170, 214, 130, 255),   # the sprout - brighter than the canopy, so it reads new
+    "G": (128, 207, 160, 255),   # canopy highlight
+    "g": (98, 172, 135, 255),     # canopy mid
+    "d": (73, 138, 109, 255),     # canopy deep
+    "n": (46, 76, 66, 255),      # canopy shadow
+    "T": (188, 148, 113, 255),    # trunk light
+    "t": (156, 109, 71, 255),     # trunk dark
+    "A": (230, 183, 121, 255),   # acorn nut
+    "a": (192, 139, 79, 255),    # acorn shade
+    "C": (165, 114, 66, 255),     # acorn cup
+    "S": (150, 235, 182, 255),   # the sprout - brighter than the canopy, so it reads new
 }
 
 HEAD_W, HEAD_H = 23, 17

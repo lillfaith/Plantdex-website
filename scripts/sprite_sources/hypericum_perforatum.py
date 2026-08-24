@@ -27,18 +27,18 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "Y": (255, 240, 168, 255),   # petal highlight
-    "y": (246, 210, 96, 255),    # petal mid
-    "u": (208, 166, 72, 255),    # petal deep
-    "U": (162, 126, 58, 255),    # petal shadow
-    "K": (72, 52, 60, 255),      # the black dots along the petal margins
-    "G": (150, 194, 118, 255),   # leaf highlight
-    "g": (106, 152, 90, 255),    # leaf mid
-    "d": (72, 112, 68, 255),     # leaf deep
-    "n": (50, 82, 52, 255),      # leaf shadow
-    "L": (238, 246, 202, 255),   # the lit leaf - backlit green, nearly white
-    "l": (204, 226, 158, 255),   # lit leaf mid
-    "P": (255, 252, 226, 255),   # a perforation with the light coming through it
+    "Y": (244, 233, 179, 255),   # petal highlight
+    "y": (235, 214, 148, 255),    # petal mid
+    "u": (225, 185, 96, 255),    # petal deep
+    "U": (208, 154, 53, 255),    # petal shadow
+    "K": (68, 56, 61, 255),      # the black dots along the petal margins
+    "G": (174, 215, 138, 255),   # leaf highlight
+    "g": (134, 177, 106, 255),    # leaf mid
+    "d": (98, 145, 76, 255),     # leaf deep
+    "n": (59, 80, 52, 255),      # leaf shadow
+    "L": (231, 247, 201, 255),   # the lit leaf - backlit green, nearly white
+    "l": (217, 243, 181, 255),   # lit leaf mid
+    "P": (251, 249, 230, 255),   # a perforation with the light coming through it
 }
 
 HEAD_W, HEAD_H = 19, 15

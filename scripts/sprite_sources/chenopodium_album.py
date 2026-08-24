@@ -24,13 +24,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (156, 194, 130, 255),   # leaf highlight - dusty, never fresh
-    "g": (114, 154, 100, 255),   # leaf mid
-    "d": (80, 114, 76, 255),     # leaf deep
-    "n": (58, 86, 58, 255),      # leaf shadow
-    "A": (238, 240, 226, 255),   # the mealy bloom - `album` itself
-    "a": (206, 212, 194, 255),   # bloom, thinner
-    "r": (170, 128, 104, 255),   # the red-streaked stem this plant is known for
+    "G": (165, 195, 129, 255),   # leaf highlight - dusty, never fresh
+    "g": (125, 159, 95, 255),   # leaf mid
+    "d": (91, 117, 73, 255),     # leaf deep
+    "n": (67, 89, 55, 255),      # leaf shadow
+    "A": (237, 241, 225, 255),   # the mealy bloom - `album` itself
+    "a": (206, 214, 192, 255),   # bloom, thinner
+    "r": (176, 126, 98, 255),   # the red-streaked stem this plant is known for
 }
 
 HEAD_W, HEAD_H = 19, 16

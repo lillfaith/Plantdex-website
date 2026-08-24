@@ -26,16 +26,16 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (150, 202, 120, 255),   # leaflet highlight
-    "g": (106, 160, 92, 255),    # leaflet mid
-    "d": (72, 118, 68, 255),     # leaflet deep
-    "n": (50, 88, 54, 255),      # leaflet shadow
-    "V": (236, 180, 200, 255),   # flower head highlight - rose, not magenta
-    "v": (204, 130, 162, 255),   # flower head mid
-    "u": (162, 92, 126, 255),    # flower head deep
-    "U": (120, 66, 96, 255),     # flower head shadow
-    "P": (230, 244, 222, 255),   # the pale chevron on every clover leaflet
-    "S": (252, 240, 176, 255),   # the sparkle on the lucky frame
+    "G": (97, 225, 139, 255),   # leaflet highlight
+    "g": (73, 179, 115, 255),    # leaflet mid
+    "d": (54, 132, 89, 255),     # leaflet deep
+    "n": (44, 94, 71, 255),      # leaflet shadow
+    "V": (248, 168, 196, 255),   # flower head highlight - rose, not magenta
+    "v": (224, 110, 159, 255),   # flower head mid
+    "u": (181, 73, 125, 255),    # flower head deep
+    "U": (135, 51, 98, 255),     # flower head shadow
+    "P": (219, 247, 228, 255),   # the pale chevron on every clover leaflet
+    "S": (249, 238, 179, 255),   # the sparkle on the lucky frame
 }
 
 HEAD_W, HEAD_H = 17, 15

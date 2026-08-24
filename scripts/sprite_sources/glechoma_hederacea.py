@@ -25,13 +25,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (156, 200, 128, 255),   # leaf highlight
-    "g": (110, 158, 96, 255),    # leaf mid
-    "d": (74, 116, 70, 255),     # leaf deep
-    "n": (52, 86, 54, 255),      # leaf shadow
-    "V": (186, 162, 226, 255),   # the hooded violet flowers
-    "v": (140, 116, 182, 255),   # flower shade
-    "r": (128, 168, 110, 255),   # runner
+    "G": (72, 220, 146, 255),   # leaf highlight
+    "g": (47, 171, 118, 255),    # leaf mid
+    "d": (32, 118, 87, 255),     # leaf deep
+    "n": (37, 101, 82, 255),      # leaf shadow
+    "V": (163, 123, 230, 255),   # the hooded violet flowers
+    "v": (110, 53, 209, 255),   # flower shade
+    "r": (52, 190, 126, 255),   # runner
 }
 
 HEAD_W, HEAD_H = 17, 15

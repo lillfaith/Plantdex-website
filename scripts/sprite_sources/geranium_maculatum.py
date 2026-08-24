@@ -33,19 +33,19 @@ from _flowerhead import flower_head
 PALETTE = {
     **FACE_PALETTE,
     "V": (238, 196, 246, 255),   # petal highlight - wild geranium is a lilac-pink
-    "v": (214, 150, 226, 255),   # petal mid
-    "q": (170, 100, 186, 255),   # petal deep
-    "Q": (124, 66, 140, 255),    # petal shadow
-    "L": (146, 74, 168, 255),    # the nectar guides - dark veins running out of the throat
+    "v": (232, 173, 243, 255),   # petal mid
+    "q": (191, 119, 208, 255),   # petal deep
+    "Q": (155, 68, 179, 255),    # petal shadow
+    "L": (171, 86, 197, 255),    # the nectar guides - dark veins running out of the throat
     "W": (255, 255, 255, 255),   # eye glint, and the pale throat
-    "G": (150, 196, 118, 255),   # leaf highlight
-    "g": (106, 152, 90, 255),    # leaf mid
-    "d": (72, 114, 68, 255),     # leaf deep
-    "n": (50, 84, 52, 255),      # leaf shadow
-    "K": (196, 172, 140, 255),   # the beak - dry, pale, and quite unlike the leaves
-    "k": (150, 126, 98, 255),    # beak shadow
-    "S": (238, 226, 190, 255),   # seeds, for the frame the beak springs
-    "t": (128, 168, 100, 255),   # the stalks
+    "G": (169, 217, 138, 255),   # leaf highlight
+    "g": (129, 177, 106, 255),    # leaf mid
+    "d": (94, 146, 77, 255),     # leaf deep
+    "n": (58, 82, 52, 255),      # leaf shadow
+    "K": (214, 192, 163, 255),   # the beak - dry, pale, and quite unlike the leaves
+    "k": (179, 147, 110, 255),    # beak shadow
+    "S": (245, 229, 183, 255),   # seeds, for the frame the beak springs
+    "t": (147, 187, 122, 255),   # the stalks
 }
 
 HEAD_W, HEAD_H = 21, 17

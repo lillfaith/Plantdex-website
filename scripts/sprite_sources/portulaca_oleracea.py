@@ -24,13 +24,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (172, 214, 138, 255),   # pad highlight - succulents are glossy, so this is bright
-    "g": (124, 178, 104, 255),   # pad mid
-    "d": (86, 132, 78, 255),     # pad deep
-    "n": (60, 98, 60, 255),      # pad shadow
-    "R": (206, 122, 110, 255),   # the red stem purslane is known by
-    "r": (158, 84, 78, 255),     # stem shadow
-    "Y": (250, 226, 140, 255),   # the small yellow flower
+    "G": (152, 224, 92, 255),   # pad highlight - succulents are glossy, so this is bright
+    "g": (103, 204, 43, 255),   # pad mid
+    "d": (69, 137, 37, 255),     # pad deep
+    "n": (44, 96, 26, 255),      # pad shadow
+    "R": (218, 82, 62, 255),   # the red stem purslane is known by
+    "r": (168, 43, 33, 255),     # stem shadow
+    "Y": (230, 207, 124, 255),   # the small yellow flower
 }
 
 HEAD_W, HEAD_H = 21, 17

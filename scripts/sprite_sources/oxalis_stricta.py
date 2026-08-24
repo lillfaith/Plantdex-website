@@ -26,13 +26,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (168, 216, 132, 255),   # leaflet highlight - wood sorrel is a fresh light green
-    "g": (120, 178, 100, 255),   # leaflet mid
-    "d": (82, 130, 76, 255),     # leaflet deep
-    "n": (58, 96, 58, 255),      # leaflet shadow
-    "Y": (250, 226, 132, 255),   # the small yellow flower
-    "y": (208, 176, 92, 255),    # flower shade
-    "t": (128, 172, 108, 255),   # leaf stalk
+    "G": (208, 236, 152, 255),   # leaflet highlight - wood sorrel is a fresh light green
+    "g": (166, 199, 120, 255),   # leaflet mid
+    "d": (125, 162, 85, 255),     # leaflet deep
+    "n": (96, 128, 67, 255),      # leaflet shadow
+    "Y": (244, 231, 179, 255),   # the small yellow flower
+    "y": (228, 196, 113, 255),    # flower shade
+    "t": (167, 191, 130, 255),   # leaf stalk
 }
 
 HEAD_W, HEAD_H = 17, 15

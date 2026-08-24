@@ -29,19 +29,19 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (152, 202, 122, 255),   # leaf highlight
-    "g": (108, 158, 92, 255),    # leaf mid
-    "d": (74, 116, 68, 255),     # leaf deep
-    "n": (52, 86, 52, 255),      # leaf shadow
+    "G": (141, 220, 69, 255),   # leaf highlight
+    "g": (97, 168, 46, 255),    # leaf mid
+    "d": (63, 116, 32, 255),     # leaf deep
+    "n": (57, 101, 37, 255),      # leaf shadow
     "W": (255, 255, 255, 255),   # eye glint, and the unripe berry's white
-    "w": (226, 232, 214, 255),   # unripe berry shade
-    "R": (238, 122, 118, 255),   # berry highlight
-    "r": (206, 68, 74, 255),     # berry mid
-    "u": (156, 44, 56, 255),     # berry deep
-    "S": (250, 232, 156, 255),   # the seeds sitting on the outside of a strawberry
-    "t": (128, 176, 104, 255),   # the stalks and runner
-    "V": (250, 250, 244, 255),   # the five white petals
-    "Y": (250, 220, 130, 255),   # flower centre
+    "w": (227, 242, 204, 255),   # unripe berry shade
+    "R": (225, 100, 96, 255),   # berry highlight
+    "r": (200, 38, 45, 255),     # berry mid
+    "u": (153, 12, 27, 255),     # berry deep
+    "S": (233, 214, 138, 255),   # the seeds sitting on the outside of a strawberry
+    "t": (116, 200, 45, 255),   # the stalks and runner
+    "V": (250, 252, 242, 255),   # the five white petals
+    "Y": (228, 200, 116, 255),   # flower centre
 }
 
 HEAD_W, HEAD_H = 19, 17

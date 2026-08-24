@@ -27,18 +27,18 @@ from _flowerhead import flower_head
 PALETTE = {
     **FACE_PALETTE,
     "W": (255, 255, 255, 255),   # eye glint, and the newly opened white flower
-    "V": (252, 250, 236, 255),   # petal highlight - opens white
-    "v": (238, 226, 190, 255),   # petal mid
-    "Y": (250, 220, 130, 255),   # petal aged to gold, which they all do on day two
-    "y": (216, 178, 92, 255),    # gold deep
-    "u": (168, 136, 76, 255),    # petal shadow
-    "N": (250, 240, 176, 255),   # the nectar bead
-    "G": (144, 190, 112, 255),   # leaf highlight
-    "g": (100, 148, 86, 255),    # leaf mid
-    "d": (68, 110, 64, 255),     # leaf deep
-    "n": (46, 80, 48, 255),      # leaf shadow
-    "t": (150, 118, 86, 255),    # the woody vine
-    "s": (250, 246, 214, 255),   # stamens - paler than the petals so they read against them
+    "V": (253, 251, 235, 255),   # petal highlight - opens white
+    "v": (249, 232, 179, 255),   # petal mid
+    "Y": (234, 212, 146, 255),   # petal aged to gold, which they all do on day two
+    "y": (223, 181, 85, 255),    # gold deep
+    "u": (193, 144, 51, 255),    # petal shadow
+    "N": (249, 239, 177, 255),   # the nectar bead
+    "G": (91, 211, 94, 255),   # leaf highlight
+    "g": (68, 166, 79, 255),    # leaf mid
+    "d": (50, 124, 63, 255),     # leaf deep
+    "n": (41, 85, 52, 255),      # leaf shadow
+    "t": (168, 118, 68, 255),    # the woody vine
+    "s": (252, 247, 212, 255),   # stamens - paler than the petals so they read against them
 }
 
 HEAD_W, HEAD_H = 19, 15

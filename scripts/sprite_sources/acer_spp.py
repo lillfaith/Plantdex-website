@@ -28,14 +28,14 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (150, 200, 118, 255),   # leaf highlight
-    "g": (106, 158, 90, 255),    # leaf mid
-    "d": (72, 116, 66, 255),     # leaf deep
-    "n": (50, 84, 50, 255),      # leaf shadow
-    "S": (214, 186, 132, 255),   # samara wing
-    "s": (170, 138, 96, 255),    # samara seed
-    "t": (146, 106, 74, 255),    # twig and petiole
-    "T": (180, 138, 100, 255),   # petiole light
+    "G": (95, 223, 119, 255),   # leaf highlight
+    "g": (71, 177, 98, 255),    # leaf mid
+    "d": (52, 130, 76, 255),     # leaf deep
+    "n": (45, 89, 61, 255),      # leaf shadow
+    "S": (229, 191, 117, 255),   # samara wing
+    "s": (190, 141, 76, 255),    # samara seed
+    "t": (166, 104, 54, 255),    # twig and petiole
+    "T": (202, 137, 78, 255),   # petiole light
 }
 
 HEAD_W, HEAD_H = 21, 18

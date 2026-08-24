@@ -25,19 +25,19 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (150, 204, 128, 255),   # leaf highlight
-    "g": (104, 162, 96, 255),    # leaf mid
-    "d": (68, 118, 72, 255),     # leaf deep
-    "n": (46, 86, 56, 255),      # leaf shadow
+    "G": (75, 221, 166, 255),   # leaf highlight
+    "g": (48, 175, 136, 255),    # leaf mid
+    "d": (32, 118, 100, 255),     # leaf deep
+    "n": (30, 102, 92, 255),      # leaf shadow
     # The ice set. Same four roles, shifted the whole way to blue-white - this is the
     # gesture, so the shift has to be unmistakable at a glance rather than a tint.
-    "I": (232, 246, 250, 255),   # frosted highlight
-    "i": (186, 218, 234, 255),   # frosted mid
-    "j": (140, 176, 204, 255),   # frosted deep
-    "J": (100, 132, 166, 255),   # frosted shadow
-    "V": (204, 186, 232, 255),   # the small pale flowers in the whorls
-    "K": (246, 252, 255, 255),   # frost sparks
-    "t": (128, 176, 112, 255),   # square stem
+    "I": (229, 248, 253, 255),   # frosted highlight
+    "i": (171, 223, 249, 255),   # frosted mid
+    "j": (86, 163, 223, 255),   # frosted deep
+    "J": (50, 113, 181, 255),   # frosted shadow
+    "V": (200, 169, 249, 255),   # the small pale flowers in the whorls
+    "K": (247, 252, 254, 255),   # frost sparks
+    "t": (51, 201, 147, 255),   # square stem
 }
 
 HEAD_W, HEAD_H = 19, 15

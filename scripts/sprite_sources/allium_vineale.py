@@ -27,15 +27,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (162, 204, 132, 255),   # leaf highlight
-    "g": (116, 162, 98, 255),    # leaf mid
-    "d": (78, 118, 70, 255),     # leaf deep
-    "n": (54, 88, 54, 255),      # leaf shadow
-    "B": (226, 214, 186, 255),   # bulbil highlight - papery, off-white
-    "b": (186, 170, 138, 255),   # bulbil mid
-    "u": (146, 128, 100, 255),   # bulbil deep
-    "U": (108, 94, 74, 255),     # bulbil shadow
-    "s": (140, 196, 118, 255),   # the sprouts, brighter than the leaves so hair reads
+    "G": (179, 221, 79, 255),   # leaf highlight
+    "g": (130, 176, 48, 255),    # leaf mid
+    "d": (84, 120, 33, 255),     # leaf deep
+    "n": (72, 104, 38, 255),      # leaf shadow
+    "B": (244, 221, 168, 255),   # bulbil highlight - papery, off-white
+    "b": (207, 165, 81, 255),   # bulbil mid
+    "u": (164, 118, 46, 255),   # bulbil deep
+    "U": (114, 80, 32, 255),     # bulbil shadow
+    "s": (162, 218, 60, 255),   # the sprouts, brighter than the leaves so hair reads
 }
 
 HEAD_W, HEAD_H = 17, 15

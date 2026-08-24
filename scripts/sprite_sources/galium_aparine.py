@@ -29,12 +29,12 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (158, 202, 124, 255),   # whorl highlight
-    "g": (112, 162, 96, 255),    # whorl mid
-    "d": (76, 120, 70, 255),     # whorl deep
-    "n": (52, 88, 54, 255),      # whorl shadow
-    "H": (226, 236, 208, 255),   # the hooked bristles, pale so the catch reads
-    "V": (240, 246, 232, 255),   # the tiny white flowers
+    "G": (189, 223, 103, 255),   # whorl highlight
+    "g": (142, 182, 76, 255),    # whorl mid
+    "d": (101, 135, 55, 255),     # whorl deep
+    "n": (70, 93, 47, 255),      # whorl shadow
+    "H": (235, 244, 200, 255),   # the hooked bristles, pale so the catch reads
+    "V": (244, 248, 230, 255),   # the tiny white flowers
 }
 
 HEAD_W, HEAD_H = 15, 14

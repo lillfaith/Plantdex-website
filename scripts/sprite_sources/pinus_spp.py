@@ -30,17 +30,17 @@ looking at a plant outdoors.
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "N": (96, 150, 118, 255),    # needle highlight
-    "n": (58, 108, 86, 255),     # needle mid
-    "m": (38, 76, 64, 255),      # needle deep
-    "M": (26, 54, 48, 255),      # needle shadow - the darkest colour in the deck
-    "T": (146, 106, 74, 255),    # trunk light
-    "t": (104, 74, 52, 255),     # trunk dark
+    "N": (127, 160, 149, 255),    # needle highlight
+    "n": (78, 129, 116, 255),     # needle mid
+    "m": (41, 73, 67, 255),      # needle deep
+    "M": (28, 52, 48, 255),      # needle shadow - the darkest colour in the deck
+    "T": (165, 127, 96, 255),    # trunk light
+    "t": (126, 94, 71, 255),     # trunk dark
     "F": (222, 236, 226, 255),   # face
     "E": (58, 44, 74, 255),      # eye
     "c": (206, 148, 148, 255),   # cheek - muted; nothing about this one is rosy
     "W": (255, 255, 255, 255),   # snow
-    "w": (222, 234, 246, 255),   # snow shadow
+    "w": (226, 234, 242, 255),   # snow shadow
 }
 
 # Layered boughs, drawn rather than generated. Each tier overhangs the one below, which

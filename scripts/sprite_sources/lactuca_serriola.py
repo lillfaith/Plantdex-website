@@ -26,15 +26,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (166, 198, 130, 255),   # leaf highlight - a grey-green, not a salad green
-    "g": (122, 158, 100, 255),   # leaf mid
-    "d": (86, 118, 76, 255),     # leaf deep
-    "n": (60, 88, 58, 255),      # leaf shadow
-    "S": (236, 244, 226, 255),   # the spines down the midrib, carried on the stem - drawn
+    "G": (192, 208, 161, 255),   # leaf highlight - a grey-green, not a salad green
+    "g": (152, 166, 132, 255),   # leaf mid
+    "d": (118, 134, 100, 255),     # leaf deep
+    "n": (72, 83, 63, 255),      # leaf shadow
+    "S": (237, 242, 228, 255),   # the spines down the midrib, carried on the stem - drawn
                                  # across the leaf as well they ended up through the face
-    "M": (250, 250, 244, 255),   # the milky sap `Lactuca` is named for
-    "Y": (248, 226, 132, 255),   # the small pale yellow flowers
-    "N": (222, 232, 214, 255),   # the bearing marks, which appear only while it swings
+    "M": (249, 250, 244, 255),   # the milky sap `Lactuca` is named for
+    "Y": (226, 220, 194, 255),   # the small pale yellow flowers
+    "N": (225, 230, 216, 255),   # the bearing marks, which appear only while it swings
 }
 
 HEAD_W, HEAD_H = 17, 17

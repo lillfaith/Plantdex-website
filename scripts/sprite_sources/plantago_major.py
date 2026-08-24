@@ -27,13 +27,13 @@ from _flowerhead import flower_head
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "G": (154, 206, 118, 255),   # leaf highlight
-    "g": (108, 166, 88, 255),    # leaf mid
-    "d": (72, 122, 66, 255),     # leaf deep
-    "n": (50, 88, 52, 255),      # leaf shadow
-    "v": (132, 188, 106, 255),   # the parallel ribs plantain is named for
-    "T": (222, 200, 140, 255),   # seed spike light
-    "t": (168, 142, 92, 255),    # seed spike dark
+    "G": (69, 220, 124, 255),   # leaf highlight
+    "g": (41, 177, 100, 255),    # leaf mid
+    "d": (30, 123, 76, 255),     # leaf deep
+    "n": (34, 104, 74, 255),      # leaf shadow
+    "v": (44, 215, 113, 255),   # the parallel ribs plantain is named for
+    "T": (226, 192, 101, 255),   # seed spike light
+    "t": (182, 134, 42, 255),    # seed spike dark
     "F": (238, 248, 226, 255),   # face
     "E": (86, 58, 104, 255),     # eye
     "W": (255, 255, 255, 255),   # eye glint

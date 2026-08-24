@@ -27,19 +27,19 @@ from _flowerhead import flower_head
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "B": (198, 154, 186, 255),   # burr highlight - the dusty mauve of a ripe head
-    "b": (156, 112, 148, 255),   # burr mid
-    "u": (116, 80, 112, 255),    # burr deep
-    "U": (86, 58, 84, 255),      # burr shadow
-    "k": (214, 178, 208, 255),   # hook tips, paler than the burr so they catch the eye
+    "B": (215, 178, 205, 255),   # burr highlight - the dusty mauve of a ripe head
+    "b": (184, 125, 173, 255),   # burr mid
+    "u": (153, 84, 145, 255),    # burr deep
+    "U": (94, 50, 91, 255),      # burr shadow
+    "k": (229, 199, 224, 255),   # hook tips, paler than the burr so they catch the eye
     "F": (246, 234, 244, 255),   # face
     "E": (86, 58, 104, 255),     # eye
     "W": (255, 255, 255, 255),   # eye glint
     "c": (238, 164, 184, 255),   # cheek
-    "G": (138, 190, 106, 255),   # leaf highlight
-    "g": (96, 150, 80, 255),     # leaf mid
-    "d": (64, 108, 60, 255),     # leaf deep
-    "n": (44, 78, 48, 255),      # leaf shadow
+    "G": (125, 212, 171, 255),   # leaf highlight
+    "g": (92, 179, 144, 255),     # leaf mid
+    "d": (70, 139, 116, 255),     # leaf deep
+    "n": (46, 76, 69, 255),      # leaf shadow
 }
 
 BURR_W, BURR_H = 23, 21

@@ -28,15 +28,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (150, 198, 122, 255),   # leaf highlight
-    "g": (106, 156, 92, 255),    # leaf mid
-    "d": (72, 114, 68, 255),     # leaf deep
-    "n": (50, 84, 52, 255),      # leaf shadow
-    "V": (198, 176, 232, 255),   # floret highlight
-    "v": (152, 126, 196, 255),   # floret mid
-    "q": (110, 88, 152, 255),    # floret deep
-    "Q": (78, 60, 110, 255),     # floret shadow
-    "S": (232, 244, 214, 255),   # the mend - a pale green flash, once, on one frame
+    "G": (101, 219, 158, 255),   # leaf highlight
+    "g": (72, 176, 130, 255),    # leaf mid
+    "d": (53, 129, 100, 255),     # leaf deep
+    "n": (45, 89, 75, 255),      # leaf shadow
+    "V": (195, 161, 247, 255),   # floret highlight
+    "v": (147, 107, 215, 255),   # floret mid
+    "q": (104, 70, 170, 255),    # floret deep
+    "Q": (74, 46, 124, 255),     # floret shadow
+    "S": (210, 249, 224, 255),   # the mend - a pale green flash, once, on one frame
 }
 
 HEAD_W, HEAD_H = 19, 15

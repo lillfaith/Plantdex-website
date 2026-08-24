@@ -26,17 +26,17 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (156, 202, 122, 255),   # leaf highlight
-    "g": (110, 158, 92, 255),    # leaf mid
-    "d": (74, 116, 68, 255),     # leaf deep
-    "n": (52, 86, 52, 255),      # leaf shadow
-    "B": (150, 96, 158, 255),    # berry highlight
-    "b": (110, 64, 122, 255),    # berry mid
+    "G": (142, 223, 142, 255),   # leaf highlight
+    "g": (111, 179, 116, 255),    # leaf mid
+    "d": (78, 147, 87, 255),     # leaf deep
+    "n": (54, 84, 60, 255),      # leaf shadow
+    "B": (172, 114, 181, 255),    # berry highlight
+    "b": (138, 71, 156, 255),    # berry mid
     "u": (74, 42, 86, 255),      # berry deep
-    "J": (128, 72, 140, 255),    # juice - brighter than the berry so a drop reads in air
-    "j": (96, 54, 108, 255),     # the stain, which is duller than the juice that made it
-    "t": (148, 112, 82, 255),    # twig and trunk shade
-    "T": (184, 144, 106, 255),   # trunk light
+    "J": (158, 77, 175, 255),    # juice - brighter than the berry so a drop reads in air
+    "j": (124, 60, 143, 255),     # the stain, which is duller than the juice that made it
+    "t": (175, 132, 95, 255),    # twig and trunk shade
+    "T": (205, 164, 126, 255),   # trunk light
 }
 
 HEAD_W, HEAD_H = 19, 15

@@ -26,16 +26,16 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "B": (138, 106, 168, 255),   # drupelet highlight
-    "b": (100, 70, 132, 255),    # drupelet mid
-    "u": (68, 46, 98, 255),      # drupelet deep
+    "B": (158, 127, 188, 255),   # drupelet highlight
+    "b": (120, 77, 166, 255),    # drupelet mid
+    "u": (67, 40, 104, 255),      # drupelet deep
     "U": (46, 32, 70, 255),      # drupelet shadow - the darkest note on the card
-    "R": (196, 132, 148, 255),   # a drupelet still ripening red
-    "T": (232, 214, 176, 255),   # thorn - pale, so the snap actually reads
-    "G": (140, 192, 108, 255),   # leaf light
-    "g": (98, 152, 84, 255),     # leaf mid
-    "d": (66, 110, 64, 255),     # leaf deep
-    "r": (162, 118, 84, 255),    # cane
+    "R": (215, 154, 169, 255),   # a drupelet still ripening red
+    "T": (242, 217, 166, 255),   # thorn - pale, so the snap actually reads
+    "G": (137, 214, 127, 255),   # leaf light
+    "g": (102, 178, 99, 255),     # leaf mid
+    "d": (74, 141, 77, 255),     # leaf deep
+    "r": (186, 138, 101, 255),    # cane
 }
 
 HEAD_W, HEAD_H = 21, 19

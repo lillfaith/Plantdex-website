@@ -25,15 +25,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (188, 216, 132, 255),   # leaf highlight - lemon balm is a yellow-green
-    "g": (142, 180, 104, 255),   # leaf mid
-    "d": (100, 136, 78, 255),    # leaf deep
-    "n": (72, 102, 60, 255),     # leaf shadow
-    "v": (166, 198, 116, 255),   # the sunken veining that makes the leaves look quilted
-    "V": (248, 250, 236, 255),   # the small white flowers
-    "B": (246, 216, 120, 255),   # the bee - Melissa's own namesake
-    "b": (86, 66, 62, 255),      # bee stripe
-    "S": (226, 240, 214, 255),   # the breath, and nothing else uses it
+    "G": (236, 222, 152, 255),   # leaf highlight - lemon balm is a yellow-green
+    "g": (200, 193, 124, 255),   # leaf mid
+    "d": (167, 164, 88, 255),    # leaf deep
+    "n": (133, 133, 70, 255),     # leaf shadow
+    "v": (219, 207, 136, 255),   # the sunken veining that makes the leaves look quilted
+    "V": (251, 247, 235, 255),   # the small white flowers
+    "B": (242, 224, 165, 255),   # the bee - Melissa's own namesake
+    "b": (92, 62, 56, 255),      # bee stripe
+    "S": (241, 239, 213, 255),   # the breath, and nothing else uses it
 }
 
 HEAD_W, HEAD_H = 19, 17

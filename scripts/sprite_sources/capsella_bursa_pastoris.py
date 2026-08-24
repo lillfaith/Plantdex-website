@@ -23,13 +23,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (156, 202, 124, 255),   # leaf highlight
-    "g": (112, 160, 94, 255),    # leaf mid
-    "d": (76, 118, 68, 255),     # leaf deep
-    "n": (52, 88, 52, 255),      # leaf shadow
-    "P": (188, 216, 148, 255),   # purse face - paler than the leaves, so they stand out
-    "p": (140, 174, 108, 255),   # purse shade
-    "V": (244, 248, 238, 255),   # the tiny white four-petalled flowers at the tip
+    "G": (206, 220, 70, 255),   # leaf highlight
+    "g": (152, 171, 47, 255),    # leaf mid
+    "d": (101, 118, 32, 255),     # leaf deep
+    "n": (85, 104, 36, 255),      # leaf shadow
+    "P": (225, 226, 102, 255),   # purse face - paler than the leaves, so they stand out
+    "p": (189, 197, 49, 255),   # purse shade
+    "V": (251, 251, 235, 255),   # the tiny white four-petalled flowers at the tip
 }
 
 HEAD_W, HEAD_H = 19, 15

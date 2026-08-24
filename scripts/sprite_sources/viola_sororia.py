@@ -26,15 +26,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "V": (206, 186, 240, 255),   # petal highlight
-    "v": (162, 136, 212, 255),   # petal mid
-    "q": (118, 96, 168, 255),    # petal deep
-    "Q": (84, 66, 124, 255),     # petal shadow
-    "Y": (250, 232, 150, 255),   # the pale throat every violet has
-    "G": (146, 198, 116, 255),   # leaf highlight
-    "g": (102, 156, 88, 255),    # leaf mid
-    "d": (68, 114, 66, 255),     # leaf deep
-    "n": (48, 84, 50, 255),      # leaf shadow
+    "V": (204, 177, 249, 255),   # petal highlight
+    "v": (135, 89, 223, 255),   # petal mid
+    "q": (87, 45, 183, 255),    # petal deep
+    "Q": (59, 29, 125, 255),     # petal shadow
+    "Y": (232, 214, 133, 255),   # the pale throat every violet has
+    "G": (60, 218, 95, 255),   # leaf highlight
+    "g": (44, 165, 79, 255),    # leaf mid
+    "d": (31, 113, 61, 255),     # leaf deep
+    "n": (33, 99, 60, 255),      # leaf shadow
 }
 
 HEAD_W, HEAD_H = 17, 15

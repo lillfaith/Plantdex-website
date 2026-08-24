@@ -27,14 +27,14 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (162, 208, 132, 255),   # leaf highlight
-    "g": (116, 166, 98, 255),    # leaf mid
-    "d": (78, 122, 72, 255),     # leaf deep
-    "n": (54, 90, 56, 255),      # leaf shadow
-    "V": (238, 246, 234, 255),   # the four small white petals
-    "v": (204, 216, 202, 255),   # petal shade
-    "S": (206, 224, 196, 255),   # the waft - pale green, so it reads as smell not steam
-    "s": (176, 200, 172, 255),   # waft, thinner
+    "G": (153, 228, 164, 255),   # leaf highlight
+    "g": (120, 185, 133, 255),    # leaf mid
+    "d": (81, 154, 101, 255),     # leaf deep
+    "n": (50, 94, 65, 255),      # leaf shadow
+    "V": (234, 246, 236, 255),   # the four small white petals
+    "v": (199, 219, 204, 255),   # petal shade
+    "S": (193, 227, 199, 255),   # the waft - pale green, so it reads as smell not steam
+    "s": (191, 221, 199, 255),   # waft, thinner
 }
 
 HEAD_W, HEAD_H = 19, 17

@@ -24,17 +24,17 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "R": (226, 112, 96, 255),    # drupe highlight
-    "r": (188, 70, 62, 255),     # drupe mid
-    "u": (140, 46, 46, 255),     # drupe deep
-    "U": (98, 34, 38, 255),      # drupe shadow
-    "B": (255, 176, 132, 255),   # the hotter red of the raised torch - this loop only
-    "b": (240, 122, 88, 255),    # torch mid
-    "G": (152, 196, 116, 255),   # leaf highlight
-    "g": (108, 152, 88, 255),    # leaf mid
-    "d": (74, 112, 66, 255),     # leaf deep
-    "n": (52, 82, 52, 255),      # leaf shadow
-    "t": (150, 108, 78, 255),    # the furred stem staghorn sumac is named for
+    "R": (219, 86, 67, 255),    # drupe highlight
+    "r": (180, 44, 34, 255),     # drupe mid
+    "u": (140, 11, 11, 255),     # drupe deep
+    "U": (118, 15, 21, 255),      # drupe shadow
+    "B": (230, 160, 122, 255),   # the hotter red of the raised torch - this loop only
+    "b": (220, 105, 72, 255),    # torch mid
+    "G": (194, 218, 59, 255),   # leaf highlight
+    "g": (136, 160, 44, 255),    # leaf mid
+    "d": (89, 112, 31, 255),     # leaf deep
+    "n": (76, 97, 37, 255),      # leaf shadow
+    "t": (158, 86, 35, 255),    # the furred stem staghorn sumac is named for
 }
 
 HEAD_W, HEAD_H = 19, 15

@@ -26,14 +26,14 @@ from _flowerhead import flower_head
 PALETTE = {
     **FACE_PALETTE,
     "B": (196, 216, 246, 255),   # ray petal highlight
-    "b": (146, 176, 226, 255),   # ray petal mid - the deck's only blue
-    "q": (104, 130, 186, 255),   # petal deep
-    "Q": (72, 94, 142, 255),     # petal shadow
-    "Y": (250, 232, 158, 255),   # the pale anthers at the centre
-    "G": (146, 190, 116, 255),   # leaf light
-    "g": (102, 148, 88, 255),    # leaf mid
-    "d": (68, 108, 66, 255),     # leaf deep
-    "n": (48, 80, 50, 255),      # leaf shadow
+    "b": (170, 197, 243, 255),   # ray petal mid - the deck's only blue
+    "q": (123, 150, 207, 255),   # petal deep
+    "Q": (77, 109, 178, 255),     # petal shadow
+    "Y": (242, 227, 166, 255),   # the pale anthers at the centre
+    "G": (136, 210, 155, 255),   # leaf light
+    "g": (102, 175, 126, 255),    # leaf mid
+    "d": (74, 141, 102, 255),     # leaf deep
+    "n": (50, 78, 63, 255),      # leaf shadow
 }
 
 HEAD_W, HEAD_H = 21, 17

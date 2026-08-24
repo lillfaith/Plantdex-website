@@ -161,6 +161,28 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   on. It must read as a complete, dignified sprite on its own: an oak with its acorn
   still on the twig, a mulberry with nothing yet spilled, a clover with three leaflets —
   never a mid-gesture stub and never a state that would claim something untrue.
+- **Frame 0 must be ONE CONNECTED PIECE.** Twenty-five sprites once had parts that
+  touched nothing — a berry in mid-air beside a leaf, a trunk standing apart from its own
+  canopy — and it is invisible while authoring, because parts are a list and the gaps only
+  exist in the render. Every fruit, flower and runner needs a stalk that reaches the
+  plant. Detached elements *during* a gesture are fine and often the point (flung seeds, a
+  falling samara, shed snow), which is why the rule is frame 0 only: at rest a plant is
+  one plant. `audit_sprites.py` flood-fills it.
+- **Every species owns a hue, and the deck spans the whole range.** Thirty-six species
+  are foliage-dominant and once sat within 30° of each other — the same green at the same
+  muted saturation. They are now spread from yellow-green to blue-green, and because
+  thirty-six species across that band land only ~3° apart, each also takes a saturation
+  and lightness bias from a repeating three-step pattern, so any two neighbours in hue
+  differ on another axis. Two constraints hold it in check: a species' leaves are never
+  within 34° of its own flower (a dandelion with yellow-green leaves under a gold mane is
+  one warm smudge), and midtone saturation is capped — a pastel highlight at 0.85 is
+  pleasant, the same number at half lightness is a neon sign. Species that are drab by
+  design stay relatively drab; ragweed being the plainest thing here is the reason
+  goldenrod gets blamed for its pollen.
+- **The five face colours in `FACE_PALETTE` are shared and stay shared.** They are what
+  makes 45 different plants read as one deck rather than 45 unrelated drawings, so a
+  recolour pass must never touch them. A species may deliberately author its own face or
+  eye shade; nothing may drift into one by accident.
 - **Frame counts must be in `SUPPORTED_FRAME_COUNTS`**, because `steps()` cannot read a
   CSS custom property, so the count has to resolve to a literal class in `globals.css`.
   The build fails rather than shipping a sheet that would slide instead of snapping.

@@ -26,13 +26,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (164, 206, 126, 255),   # leaf highlight
-    "g": (118, 164, 96, 255),    # leaf mid
-    "d": (80, 122, 70, 255),     # leaf deep
-    "n": (56, 90, 54, 255),      # leaf shadow
-    "R": (206, 122, 108, 255),   # the rust-red seed spray
-    "r": (162, 84, 78, 255),     # seed spray deep
-    "Y": (246, 224, 148, 255),   # the sour flash, which is the only yellow here
+    "G": (227, 223, 105, 255),   # leaf highlight
+    "g": (178, 183, 77, 255),    # leaf mid
+    "d": (128, 136, 56, 255),     # leaf deep
+    "n": (93, 102, 42, 255),      # leaf shadow
+    "R": (224, 109, 90, 255),   # the rust-red seed spray
+    "r": (185, 64, 55, 255),     # seed spray deep
+    "Y": (247, 224, 147, 255),   # the sour flash, which is the only yellow here
 }
 
 HEAD_W, HEAD_H = 17, 15

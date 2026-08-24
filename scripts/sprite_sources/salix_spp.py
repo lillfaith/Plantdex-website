@@ -26,15 +26,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (176, 202, 150, 255),   # leaf highlight - willow leaves are grey-green
-    "g": (132, 162, 114, 255),   # leaf mid
-    "d": (94, 122, 84, 255),     # leaf deep
-    "n": (66, 90, 64, 255),      # leaf shadow
-    "t": (140, 116, 92, 255),    # bark - the salicin one
-    "T": (176, 150, 122, 255),   # bark light
-    "D": (168, 208, 230, 255),   # the drop
+    "G": (193, 193, 123, 255),   # leaf highlight - willow leaves are grey-green
+    "g": (159, 163, 77, 255),   # leaf mid
+    "d": (110, 116, 54, 255),     # leaf deep
+    "n": (75, 83, 40, 255),      # leaf shadow
+    "t": (133, 98, 63, 255),    # bark - the salicin one
+    "T": (176, 133, 87, 255),   # bark light
+    "D": (155, 189, 208, 255),   # the drop
     "d2": (0, 0, 0, 0),          # unused placeholder, kept out of the art
-    "S": (232, 240, 226, 255),   # catkin - willow's spring pussy-willow
+    "S": (240, 241, 225, 255),   # catkin - willow's spring pussy-willow
 }
 del PALETTE["d2"]
 

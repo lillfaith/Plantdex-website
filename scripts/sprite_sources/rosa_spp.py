@@ -25,17 +25,17 @@ from _flowerhead import flower_head
 PALETTE = {
     **FACE_PALETTE,
     "V": (252, 216, 226, 255),   # petal highlight
-    "v": (240, 172, 196, 255),   # petal mid
-    "q": (206, 120, 156, 255),   # petal deep
-    "Q": (158, 82, 116, 255),    # petal shadow
-    "Y": (250, 222, 130, 255),   # the gold boss of stamens at the centre
-    "R": (212, 78, 78, 255),     # a hip, already forming
-    "G": (146, 190, 116, 255),   # leaf highlight
-    "g": (102, 148, 88, 255),    # leaf mid
-    "d": (70, 110, 66, 255),     # leaf deep
-    "n": (48, 80, 50, 255),      # leaf shadow
-    "T": (232, 214, 190, 255),   # thorns - drawn, never used
-    "t": (150, 112, 84, 255),    # cane
+    "v": (248, 164, 194, 255),   # petal mid
+    "q": (226, 100, 153, 255),   # petal deep
+    "Q": (179, 61, 114, 255),    # petal shadow
+    "Y": (234, 214, 146, 255),   # the gold boss of stamens at the centre
+    "R": (220, 70, 70, 255),     # a hip, already forming
+    "G": (123, 210, 96, 255),   # leaf highlight
+    "g": (84, 168, 68, 255),    # leaf mid
+    "d": (58, 125, 51, 255),     # leaf deep
+    "n": (44, 85, 43, 255),      # leaf shadow
+    "T": (244, 216, 178, 255),   # thorns - drawn, never used
+    "t": (168, 109, 66, 255),    # cane
 }
 
 HEAD_W, HEAD_H = 21, 17

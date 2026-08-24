@@ -39,17 +39,17 @@ from _flowerhead import flower_head
 # violet.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "H": (255, 236, 186, 255),   # mane highlight
-    "M": (247, 205, 106, 255),   # mane mid
-    "D": (219, 165, 84, 255),    # mane deep
-    "S": (178, 126, 66, 255),    # mane shadow
+    "H": (250, 234, 191, 255),   # mane highlight
+    "M": (230, 198, 123, 255),   # mane mid
+    "D": (222, 166, 81, 255),    # mane deep
+    "S": (205, 128, 39, 255),    # mane shadow
     "F": (255, 247, 224, 255),   # face
     "E": (86, 58, 104, 255),     # eye
     "W": (255, 255, 255, 255),   # eye glint
     "c": (240, 168, 180, 255),   # cheek
-    "G": (150, 205, 120, 255),   # leaf light
-    "g": (108, 166, 92, 255),    # leaf mid
-    "d": (74, 122, 68, 255),     # leaf dark
+    "G": (204, 225, 100, 255),   # leaf light
+    "g": (160, 186, 72, 255),    # leaf mid
+    "d": (113, 137, 53, 255),     # leaf dark
 }
 
 HEAD_W, HEAD_H = 27, 25

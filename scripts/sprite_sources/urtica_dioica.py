@@ -35,15 +35,15 @@ from _flowerhead import flower_head
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "G": (146, 200, 112, 255),   # leaf highlight
-    "g": (100, 158, 84, 255),    # leaf mid
-    "d": (68, 116, 64, 255),     # leaf deep
-    "n": (46, 82, 50, 255),      # leaf shadow
+    "G": (153, 222, 131, 255),   # leaf highlight
+    "g": (114, 183, 100, 255),    # leaf mid
+    "d": (81, 148, 73, 255),     # leaf deep
+    "n": (48, 80, 48, 255),      # leaf shadow
     "F": (226, 240, 214, 255),   # face
     "E": (86, 58, 104, 255),     # eye
     "c": (232, 168, 168, 255),   # cheek
-    "s": (238, 246, 226, 255),   # stinging hairs
-    "r": (168, 132, 96, 255),    # stem
+    "s": (232, 247, 225, 255),   # stinging hairs
+    "r": (188, 152, 117, 255),    # stem
 }
 
 BODY_W, BODY_H = 19, 18

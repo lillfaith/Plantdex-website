@@ -27,13 +27,13 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (150, 176, 122, 255),   # leaf highlight - grey-green, not fresh green
-    "g": (110, 138, 94, 255),    # leaf mid
-    "d": (78, 100, 70, 255),     # leaf deep
-    "n": (56, 74, 54, 255),      # leaf shadow
-    "K": (168, 176, 128, 255),   # the drab flower nubs
-    "P": (226, 226, 198, 255),   # pollen
-    "p": (198, 200, 168, 255),   # pollen, thinner
+    "G": (181, 178, 117, 255),   # leaf highlight - grey-green, not fresh green
+    "g": (140, 142, 90, 255),    # leaf mid
+    "d": (100, 103, 67, 255),     # leaf deep
+    "n": (73, 77, 51, 255),      # leaf shadow
+    "K": (180, 170, 124, 255),   # the drab flower nubs
+    "P": (227, 220, 197, 255),   # pollen
+    "p": (203, 194, 165, 255),   # pollen, thinner
 }
 
 HEAD_W, HEAD_H = 17, 16

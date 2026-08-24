@@ -28,15 +28,15 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "P": (214, 176, 220, 255),   # the purple flush over the top leaves
-    "p": (176, 132, 190, 255),   # flush mid
-    "q": (134, 96, 152, 255),    # flush deep
-    "Q": (96, 68, 114, 255),     # flush shadow
-    "G": (152, 200, 118, 255),   # leaf highlight - the lower leaves stay green
-    "g": (108, 158, 90, 255),    # leaf mid
-    "d": (72, 116, 66, 255),     # leaf deep
-    "n": (50, 84, 50, 255),      # leaf shadow
-    "M": (198, 112, 168, 255),   # the small hooded pink flowers
+    "P": (229, 194, 234, 255),   # the purple flush over the top leaves
+    "p": (195, 154, 208, 255),   # flush mid
+    "q": (157, 110, 179, 255),    # flush deep
+    "Q": (119, 77, 146, 255),     # flush shadow
+    "G": (205, 221, 138, 255),   # leaf highlight - the lower leaves stay green
+    "g": (161, 179, 110, 255),    # leaf mid
+    "d": (124, 147, 76, 255),     # leaf deep
+    "n": (70, 82, 52, 255),      # leaf shadow
+    "M": (220, 131, 189, 255),   # the small hooded pink flowers
 }
 
 BODY_W, BODY_H = 19, 18

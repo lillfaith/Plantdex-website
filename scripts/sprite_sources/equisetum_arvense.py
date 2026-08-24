@@ -24,12 +24,12 @@ from _face import FACE_PALETTE, feature_parts
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (146, 186, 138, 255),   # segment highlight - grey-green, ancient, not fresh
-    "g": (106, 146, 106, 255),   # segment mid
-    "d": (74, 108, 78, 255),     # segment deep
-    "n": (52, 78, 58, 255),      # segment shadow
-    "K": (188, 208, 176, 255),   # the pale sheath at every joint
-    "S": (216, 224, 190, 255),   # the spore cone, which is the only soft thing here
+    "G": (134, 190, 172, 255),   # segment highlight - grey-green, ancient, not fresh
+    "g": (101, 151, 139, 255),   # segment mid
+    "d": (71, 111, 103, 255),     # segment deep
+    "n": (50, 80, 76, 255),      # segment shadow
+    "K": (173, 211, 195, 255),   # the pale sheath at every joint
+    "S": (190, 224, 204, 255),   # the spore cone, which is the only soft thing here
 }
 
 # The head is hand-drawn, not generated. Every other species in this set is built from a

@@ -30,17 +30,17 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "P": (232, 196, 240, 255),   # petal highlight
-    "p": (200, 152, 216, 255),   # petal mid
-    "q": (158, 106, 180, 255),   # petal deep
-    "Q": (116, 74, 140, 255),    # petal shadow
-    "M": (226, 118, 190, 255),   # corona magenta - the card's own accent, used sparingly
-    "m": (168, 84, 148, 255),    # corona deep
-    "Y": (250, 228, 158, 255),   # anthers
-    "G": (146, 198, 116, 255),   # leaf light
-    "g": (102, 158, 88, 255),    # leaf mid
-    "d": (68, 116, 68, 255),     # leaf deep
-    "t": (128, 176, 108, 255),   # tendril
+    "P": (238, 186, 250, 255),   # petal highlight
+    "p": (196, 106, 227, 255),   # petal mid
+    "q": (159, 42, 208, 255),   # petal deep
+    "Q": (104, 33, 145, 255),    # petal shadow
+    "M": (223, 86, 177, 255),   # corona magenta - the card's own accent, used sparingly
+    "m": (180, 36, 146, 255),    # corona deep
+    "Y": (248, 227, 160, 255),   # anthers
+    "G": (60, 218, 79, 255),   # leaf light
+    "g": (43, 167, 67, 255),    # leaf mid
+    "d": (32, 116, 56, 255),     # leaf deep
+    "t": (48, 201, 71, 255),   # tendril
 }
 
 HEAD_W, HEAD_H = 21, 19

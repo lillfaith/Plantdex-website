@@ -27,12 +27,12 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "G": (166, 212, 130, 255),   # leaf highlight - chickweed is a soft light green
-    "g": (118, 172, 100, 255),   # leaf mid
-    "d": (80, 126, 74, 255),     # leaf deep
-    "n": (56, 92, 56, 255),      # leaf shadow
-    "S": (255, 255, 255, 255),   # star flower
-    "s": (222, 232, 216, 255),   # star flower, dimmer
+    "G": (169, 228, 114, 255),   # leaf highlight - chickweed is a soft light green
+    "g": (125, 192, 80, 255),   # leaf mid
+    "d": (87, 142, 58, 255),     # leaf deep
+    "n": (61, 105, 43, 255),      # leaf shadow
+    "S": (253, 252, 240, 255),   # star flower
+    "s": (223, 237, 211, 255),   # star flower, dimmer
 }
 
 HEAD_W, HEAD_H = 15, 13

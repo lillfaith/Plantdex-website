@@ -26,16 +26,16 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "V": (232, 196, 232, 255),   # floret highlight - wild bergamot is a soft lilac-pink
-    "v": (198, 148, 196, 255),   # floret mid
-    "q": (154, 104, 154, 255),   # floret deep
-    "Q": (112, 74, 114, 255),    # floret shadow
-    "R": (216, 130, 150, 255),   # the warmer pink at the tube mouths
-    "G": (148, 190, 116, 255),   # leaf highlight
-    "g": (104, 148, 88, 255),    # leaf mid
-    "d": (70, 110, 66, 255),     # leaf deep
-    "n": (48, 80, 50, 255),      # leaf shadow
-    "t": (128, 168, 104, 255),   # square stem
+    "V": (248, 180, 248, 255),   # floret highlight - wild bergamot is a soft lilac-pink
+    "v": (217, 93, 212, 255),   # floret mid
+    "q": (175, 48, 175, 255),   # floret deep
+    "Q": (115, 33, 120, 255),    # floret shadow
+    "R": (223, 87, 119, 255),   # the warmer pink at the tube mouths
+    "G": (61, 217, 54, 255),   # leaf highlight
+    "g": (43, 157, 47, 255),    # leaf mid
+    "d": (30, 110, 39, 255),     # leaf deep
+    "n": (34, 94, 44, 255),      # leaf shadow
+    "t": (53, 185, 51, 255),   # square stem
 }
 
 HEAD_W, HEAD_H = 17, 13

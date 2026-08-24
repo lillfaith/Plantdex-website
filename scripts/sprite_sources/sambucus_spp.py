@@ -25,18 +25,18 @@ from _flowerhead import flower_head
 
 PALETTE = {
     **FACE_PALETTE,
-    "V": (250, 250, 242, 255),   # umbel highlight - elderflower is properly white
-    "v": (222, 224, 208, 255),   # umbel mid
-    "q": (186, 190, 172, 255),   # umbel deep
-    "Q": (146, 152, 138, 255),   # umbel shadow
-    "B": (118, 96, 156, 255),    # berry highlight
-    "b": (84, 64, 118, 255),     # berry mid
-    "u": (56, 42, 84, 255),      # berry deep
-    "G": (146, 190, 116, 255),   # leaf highlight
-    "g": (102, 148, 88, 255),    # leaf mid
-    "d": (70, 110, 66, 255),     # leaf deep
-    "n": (48, 80, 50, 255),      # leaf shadow
-    "t": (150, 112, 82, 255),    # the hollow stem people make whistles out of
+    "V": (253, 247, 239, 255),   # umbel highlight - elderflower is properly white
+    "v": (238, 223, 194, 255),   # umbel mid
+    "q": (202, 179, 125, 255),   # umbel deep
+    "Q": (132, 164, 90, 255),   # umbel shadow
+    "B": (92, 47, 170, 255),    # berry highlight
+    "b": (62, 29, 118, 255),     # berry mid
+    "u": (51, 26, 100, 255),      # berry deep
+    "G": (217, 196, 54, 255),   # leaf highlight
+    "g": (157, 152, 43, 255),    # leaf mid
+    "d": (109, 110, 30, 255),     # leaf deep
+    "n": (89, 94, 34, 255),      # leaf shadow
+    "t": (157, 91, 39, 255),    # the hollow stem people make whistles out of
 }
 
 HEAD_W, HEAD_H = 19, 15

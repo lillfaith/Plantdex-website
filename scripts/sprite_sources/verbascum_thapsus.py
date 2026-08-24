@@ -36,18 +36,18 @@ from _flowerhead import flower_head
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
-    "Y": (255, 231, 148, 255),   # floret highlight
-    "M": (242, 202, 92, 255),    # floret mid
-    "D": (206, 158, 62, 255),    # floret deep
-    "S": (162, 118, 48, 255),    # floret shadow
-    "L": (196, 208, 168, 255),   # wool highlight
-    "l": (156, 174, 128, 255),   # wool mid
-    "k": (116, 134, 96, 255),    # wool deep
-    "n": (82, 98, 70, 255),      # wool shadow
+    "Y": (221, 212, 182, 255),   # floret highlight
+    "M": (199, 182, 135, 255),    # floret mid
+    "D": (178, 149, 90, 255),    # floret deep
+    "S": (143, 114, 67, 255),    # floret shadow
+    "L": (201, 212, 164, 255),   # wool highlight
+    "l": (164, 178, 124, 255),   # wool mid
+    "k": (124, 138, 92, 255),    # wool deep
+    "n": (89, 101, 67, 255),      # wool shadow
     "F": (238, 242, 222, 255),   # face
     "E": (86, 58, 104, 255),     # eye
     "c": (236, 176, 172, 255),   # cheek
-    "h": (222, 232, 200, 255),   # the pale hairs that make it look felted
+    "h": (224, 230, 202, 255),   # the pale hairs that make it look felted
 }
 
 SPIKE_W, SPIKE_H = 13, 17
