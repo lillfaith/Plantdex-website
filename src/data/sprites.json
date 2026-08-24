@@ -2,8 +2,8 @@
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
     "src": "/cards/animated/taraxacum-officinale.png",
-    "frameWidth": 176,
-    "frameHeight": 128,
+    "frameWidth": 160,
+    "frameHeight": 140,
     "frames": 10,
     "fps": 10,
     "personality": "energetic"

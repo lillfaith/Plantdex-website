@@ -46,10 +46,15 @@ SOURCE_DIR = Path(__file__).resolve().parent / "sprite_sources"
 OUT_DIR = ROOT / "public" / "cards" / "animated"
 MANIFEST = ROOT / "src" / "data" / "sprites.json"
 
-# Rendered scale. The sprite is authored at ~32x40 and shipped at 4x so it is legible
-# as a portrait without the browser ever resampling it: the PNG holds whole pixels and
-# `image-rendering: pixelated` handles any further scaling.
-SCALE = 4
+# Rendered scale. Sprites are authored at ~32x28 and shipped at 5x, so the PNG holds
+# whole pixels and `image-rendering: pixelated` handles any further scaling without the
+# browser ever resampling.
+#
+# 5x rather than 4x is what makes the art read as PIXEL art: dropping the authored grid
+# to three quarters of its old size only reduces the pixel COUNT. Raising the scale with
+# it keeps the portrait about the same size on the card while each authored pixel lands
+# a quarter larger, which is the part the eye reads as chunky.
+SCALE = 5
 
 # Frame counts globals.css has a `steps()` class for. `steps()` cannot read a CSS custom
 # property, so the count must resolve to a literal class - a sheet outside this set would
