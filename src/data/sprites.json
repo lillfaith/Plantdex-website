@@ -26,6 +26,15 @@
     "fps": 8,
     "personality": "pleased"
   },
+  "allium-vineale": {
+    "herbId": "allium-vineale",
+    "src": "/cards/animated/allium-vineale.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "startled"
+  },
   "ambrosia-artemisiifolia": {
     "herbId": "ambrosia-artemisiifolia",
     "src": "/cards/animated/ambrosia-artemisiifolia.png",
@@ -70,6 +79,15 @@
     "frames": 16,
     "fps": 8,
     "personality": "early riser"
+  },
+  "equisetum-arvense": {
+    "herbId": "equisetum-arvense",
+    "src": "/cards/animated/equisetum-arvense.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 6,
+    "personality": "prehistoric"
   },
   "galium-aparine": {
     "herbId": "galium-aparine",
