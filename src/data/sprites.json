@@ -1,4 +1,13 @@
 {
+  "acer-spp": {
+    "herbId": "acer-spp",
+    "src": "/cards/animated/acer-spp.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "generous"
+  },
   "achillea-millefolium": {
     "herbId": "achillea-millefolium",
     "src": "/cards/animated/achillea-millefolium.png",
@@ -52,6 +61,15 @@
     "frames": 14,
     "fps": 10,
     "personality": "overfamiliar"
+  },
+  "glechoma-hederacea": {
+    "herbId": "glechoma-hederacea",
+    "src": "/cards/animated/glechoma-hederacea.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "companionable"
   },
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
@@ -124,6 +142,15 @@
     "frames": 14,
     "fps": 10,
     "personality": "generous"
+  },
+  "rumex-acetosella": {
+    "herbId": "rumex-acetosella",
+    "src": "/cards/animated/rumex-acetosella.png",
+    "frameWidth": 160,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 10,
+    "personality": "sour"
   },
   "rumex-obtusifolius": {
     "herbId": "rumex-obtusifolius",
