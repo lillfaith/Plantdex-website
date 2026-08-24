@@ -6,6 +6,41 @@ Discrepancies and gaps found while researching sources for the printed cards.
 may be in or near production, so these are surfaced for a human decision rather than
 silently corrected — which is what the brief requires.
 
+---
+
+## ⏱ The deck is in production — what that changes
+
+Confirmed 2026-08-24: the run is on the press. That splits every item in this file into
+two different decisions, and only one of them is still open.
+
+**If the printer can still take a plate change**, #32 is the one worth spending it on. It
+is the only HIGH item here, and the only card that recommends internal preparations for a
+use case where the reader is disproportionately likely to already be taking an interacting
+medicine. The exact wording is drafted in its section below and fits #33's existing warning
+slot.
+
+**If the plates are closed**, the cards are final and the website becomes the only
+correction channel. Two things follow:
+
+1. **Structural errata are already handled.** `knownIssueFor()` in `src/lib/card-issues.ts`
+   now renders the recorded `KNOWN_CARD_ISSUES` entry on each affected herb page (#02,
+   #11, #24, #31, #38), so a reader of card #31 is told its back is sumac's rather than
+   being left to wonder. That needed no new claims — it only surfaces what the build
+   script already recorded.
+
+2. **#32's warning does NOT have a home yet, and must not be improvised into one.** It
+   cannot go in `herbs.json`: every field there is transcribed from the physical card by
+   rule, and inventing a printed warning that no card carries would break exactly the
+   guarantee that makes the transcription trustworthy. The correct home is the curated,
+   cited seam at `src/lib/types.ts:198` — which requires a **verified** source, and this
+   build environment blocks outbound HTTPS to every reference host. The candidates below
+   have been found by search and **not opened**.
+
+   So this is a human step, not a code step: verify one or more of the references, add it
+   to `src/data/sources.json` with `"verified": true`, and the note can then render with
+   provenance. Shipping the warning unsourced would be a medical claim with nothing behind
+   it, which is precisely what AGENTS.md's herbal-safety section forbids.
+
 **Every source below is UNVERIFIED**: the build environment blocks outbound HTTPS to all
 reference hosts, so these were found by search and not opened. Confirm before acting on
 any of them. See `docs/source-candidates.md`.

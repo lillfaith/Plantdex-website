@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
+import { knownIssueFor } from '@/lib/card-issues';
 import { SEASON_LABEL, USE_LABEL } from '@/lib/deck';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { cardLabel } from '@/lib/collection';
@@ -20,7 +21,7 @@ import { DiscoveryCelebration } from './DiscoveryCelebration';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
-import { CardWarning, SafetyNotice } from '../SafetyNotice';
+import { CardIssueNote, CardWarning, SafetyNotice } from '../SafetyNotice';
 import { PlantSprite } from '../PlantSprite';
 
 /**
@@ -36,6 +37,7 @@ import { PlantSprite } from '../PlantSprite';
 export function HerbDetail({ herb }: { herb: Herb }) {
   const { isDiscovered, ready, progress, stageOf } = useHerbdex();
   const revealed = useRevealed(herb.id);
+  const cardIssue = knownIssueFor(herb);
 
   /*
    * The celebration lives here rather than inside DiscoverPanel because discovering
@@ -225,6 +227,15 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           {herb.warning && (
             <div className="mt-4">
               <CardWarning warning={herb.warning} />
+            </div>
+          )}
+
+          {/* And below it, a correction where the printed card is known to be wrong —
+              quieter than the warning above, because it is about the card rather than
+              about the plant. */}
+          {cardIssue && (
+            <div className="mt-3">
+              <CardIssueNote issue={cardIssue} />
             </div>
           )}
 

@@ -16,8 +16,8 @@ import type { GardenStage } from '@/lib/garden';
  * which every sprite authors as a complete resting pose (see `globals.css`, and
  * `build_sprites.py` for why frame 0 carries that responsibility).
  *
- * It renders nothing when the herb has no authored sprite — currently 44 of 45 cards —
- * so pages can mount it unconditionally as portraits are drawn.
+ * All 45 cards have an authored portrait. It still renders nothing for an id with no
+ * sprite, so pages can mount it unconditionally without guarding.
  */
 export function PlantSprite({
   herbId,

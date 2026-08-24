@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { DECK, DECK_SIZE, HERBS, MAX_DECK_XP, USE_LABEL, getHerb } from './deck';
+import { KNOWN_CARD_ISSUES, knownIssueFor } from './card-issues';
 import { RARITIES, SEASONS, USE_KEYS } from './types';
 
 const PUBLIC_DIR = join(process.cwd(), 'public');
@@ -116,5 +117,32 @@ describe('deck data', () => {
 
   it('reports a max XP equal to the sum of the deck', () => {
     expect(MAX_DECK_XP).toBe(HERBS.reduce((sum, herb) => sum + herb.xp, 0));
+  });
+});
+
+describe('knownIssueFor', () => {
+  /**
+   * The deck is printed, so these five are permanent. Transcription is faithful by rule,
+   * which means three cards show ANOTHER plant's profile in good faith — the site is the
+   * only place that can now say so, and a note nobody renders corrects nothing.
+   */
+  it('reports the recorded printing error for an affected card', () => {
+    const elderberry = getHerb('sambucus-spp')!;
+    expect(elderberry.cardNumber).toBe(31);
+    expect(knownIssueFor(elderberry)).toMatch(/duplicates Sumac/i);
+  });
+
+  it('covers every card the build script recorded, and only those', () => {
+    const flagged = HERBS.filter((herb) => knownIssueFor(herb)).map((herb) => herb.cardNumber);
+    expect(flagged.sort((a, b) => a - b)).toEqual(
+      Object.keys(KNOWN_CARD_ISSUES)
+        .map(Number)
+        .sort((a, b) => a - b),
+    );
+  });
+
+  it('returns nothing for a card with no recorded error', () => {
+    // Dandelion is card #01 and is the card two of the errors are errors ABOUT.
+    expect(knownIssueFor(getHerb('taraxacum-officinale')!)).toBeUndefined();
   });
 });
