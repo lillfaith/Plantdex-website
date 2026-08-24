@@ -325,6 +325,9 @@ body {
 .plant-sprite-8 { animation-timing-function: steps(8); }
 .plant-sprite-10 { animation-timing-function: steps(10); }
 .plant-sprite-12 { animation-timing-function: steps(12); }
+.plant-sprite-14 { animation-timing-function: steps(14); }
+.plant-sprite-16 { animation-timing-function: steps(16); }
+.plant-sprite-18 { animation-timing-function: steps(18); }
 
 @media (prefers-reduced-motion: reduce) {
   *,

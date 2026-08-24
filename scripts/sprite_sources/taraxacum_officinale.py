@@ -74,6 +74,14 @@ HEAD_STRETCH = _pose(rx=RX - 0.7, ry=RY + 1.1, face_dy=-0.7)
 # Turns: face one way, highlight the other.
 HEAD_LEFT = _pose(face_dx=-1.8, light=(-0.35, -0.65))
 HEAD_RIGHT = _pose(face_dx=1.8, light=(-1.25, -0.65))
+# Three-quarter: the face is nearly at the rim and the light has swung right round.
+HEAD_FAR_LEFT = _pose(face_dx=-3.6, light=(0.35, -0.55))
+HEAD_FAR_RIGHT = _pose(face_dx=3.6, light=(-1.75, -0.55))
+# The back of the head - no face at all. This is the frame that turns a wobble into a
+# spin: without it the face merely slides to one side and slides back.
+HEAD_BACK = flower_head(
+    HEAD_W, HEAD_H, CX, CY, RX, RY, LOBES, AMP, 0, 0, light=(0.0, -0.9),
+)
 
 # Two-pixel eyes with a glint, three pixels apart. At a narrower face they merged into
 # one dark band, and single-pixel dots vanished against the cream - nine pixels of face
@@ -95,8 +103,34 @@ EYES_HALF = [
     "EE   EE",
 ]
 
+EYES_HIDDEN = [
+    "       ",
+]
+
 CHEEKS = [
     "c     c",
+]
+
+# The mouth carries the expression the eyes cannot: a small smile at rest, an open grin
+# on the landing, and nothing at all while the head is turned away.
+MOUTH_SMILE = [
+    "o   o",
+    " ooo ",
+]
+
+MOUTH_GRIN = [
+    "ooooo",
+    "oMMMo",
+    " ooo ",
+]
+
+MOUTH_HIDDEN = [
+    "     ",
+]
+
+# The blush goes with the face when the head turns away.
+CHEEKS_HIDDEN = [
+    "       ",
 ]
 
 # The head's own taper ends in gold; this green stem and base replaces it, so the flower
@@ -149,12 +183,12 @@ ARM_R_UP = [
 SPRITE = {
     "herbId": "taraxacum-officinale",
     "personality": "energetic",
-    "size": (32, 28),
-    "frames": 12,
-    "fps": 10,
+    "size": (44, 32),
+    "frames": 16,
+    "fps": 12,
     # Back to front: base, arms, head, then face details on top.
     "parts": [
-        {"name": "body", "origin": (14, 23), "rows": BODY},
+        {"name": "body", "origin": (19, 25), "rows": BODY},
         {
             "name": "armL",
             "origin": (1, 19),
@@ -176,54 +210,78 @@ SPRITE = {
                 "stretch": HEAD_STRETCH,
                 "left": HEAD_LEFT,
                 "right": HEAD_RIGHT,
+                "farLeft": HEAD_FAR_LEFT,
+                "farRight": HEAD_FAR_RIGHT,
+                "back": HEAD_BACK,
             },
         },
         {
             "name": "eyes",
-            "origin": (13, 15),
+            "origin": (13, 14),
             "rows": EYES_OPEN,
-            "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
+            "variants": {"blink": EYES_CLOSED, "half": EYES_HALF, "hidden": EYES_HIDDEN},
         },
-        {"name": "cheeks", "origin": (13, 18), "rows": CHEEKS},
+        {
+            "name": "cheeks",
+            "origin": (13, 17),
+            "rows": CHEEKS,
+            "variants": {"hidden": CHEEKS_HIDDEN},
+        },
+        {
+            "name": "mouth",
+            "origin": (15, 19),
+            "rows": MOUTH_SMILE,
+            "variants": {"grin": MOUTH_GRIN, "hidden": MOUTH_HIDDEN},
+        },
     ],
     #
-    #  frame   0     1      2       3     4      5      6     7      8     9    10    11
-    #        rest  crouch launch  peak  hang  look-R  fall  land  settle look-L blink  --
+    #  0     1      2      3      4     5      6      7     8     9    10    11    12   13   14  15
+    # rest crouch launch peak  SPIN> SPIN>> BACK  <SPIN <SPIN land  GRIN  grin settle look blink rest
     #
-    # Frame 0 is the rest pose reduced motion freezes on: neutral, level, eyes open.
+    # The spin is frames 4-8 and it is this sprite's trademark: nothing else in the set
+    # turns all the way round. Frame 0 is the rest pose reduced motion freezes on.
     "motion": {
         "head": {
-            "art": [None, "squash", "stretch", None, None, "right", None, "squash",
-                    None, "left", "left", None],
-            "dy": [0, 1, -2, -4, -4, -3, -1, 1, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 0, 1, 1, 1, 0, 0, -1, -1, 0],
+            "art": [None, "squash", "stretch", None, "right", "farRight", "back",
+                    "farLeft", "left", "squash", None, None, None, "right", None, None],
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
         },
-        # Face details ride the head. The extra dx on the turn frames is the face sliding
-        # across the head, on top of the whole head's own drift.
+        # The face rides round with the head and vanishes for the frames it is facing
+        # away. Hiding it is what makes the back of the head land as a back of a head.
         "eyes": {
-            "dy": [0, 1, -2, -4, -4, -3, -1, 1, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 0, 1, 3, 1, 0, 0, -3, -3, 0],
-            "art": [None, None, None, None, None, None, None, "half", None, None,
-                    "blink", "half"],
+            "art": [None, None, None, None, None, None, "hidden", None, None, None,
+                    None, None, None, None, "blink", "half"],
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 2, 4, 0, -4, -2, 0, 0, 0, 0, 3, 0, 0],
         },
         "cheeks": {
-            "dy": [0, 1, -2, -4, -4, -3, -1, 1, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 0, 1, 3, 1, 0, 0, -3, -3, 0],
+            "art": [None, None, None, None, None, None, "hidden", None, None, None,
+                    None, None, None, None, None, None],
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 2, 4, 0, -4, -2, 0, 0, 0, 0, 3, 0, 0],
         },
-        # The base compresses on the crouch and the landing, a frame behind the head.
-        "body": {"dy": [0, 1, 0, -1, -1, -1, 0, 1, 1, 0, 0, 0]},
-        # Asymmetric on purpose: the left arm leads the jump and the right trails, and
-        # they glance in different directions on the look frames. Both arms doing the
-        # same thing on the same frame is what makes a sprite look mechanical.
+        # Open-mouthed on the landing: the payoff the whole jump is for.
+        "mouth": {
+            "art": [None, None, "hidden", "hidden", "hidden", "hidden", "hidden",
+                    "hidden", "hidden", "grin", "grin", "grin", None, None, None, None],
+            "dy": [0, 1, -2, -4, -4, -4, -4, -4, -3, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 2, 4, 0, -4, -2, 0, 0, 0, 0, 3, 0, 0],
+        },
+        "body": {"dy": [0, 1, 0, -1, -1, -1, -1, -1, -1, 1, 1, 0, 0, 0, 0, 0]},
+        # Both arms fly up for the spin - it is the one moment this creature commits
+        # completely - then trail on the way down.
         "armL": {
-            "art": [None, None, "up", "up", "up", None, None, None, None, None, None, None],
-            "dy": [0, 1, -1, -3, -3, -2, 0, 1, 0, 0, 0, 0],
-            "dx": [0, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1, 0],
+            "art": [None, None, "up", "up", "up", "up", "up", "up", "up", None, None,
+                    None, None, None, None, None],
+            "dy": [0, 1, -1, -3, -3, -3, -3, -3, -2, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, -1, 0, 0],
         },
         "armR": {
-            "art": [None, None, None, "up", "up", "up", None, None, None, None, None, None],
-            "dy": [0, 1, 0, -2, -3, -3, -1, 1, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0],
+            "art": [None, None, None, "up", "up", "up", "up", "up", "up", None, None,
+                    None, None, None, None, None],
+            "dy": [0, 1, 0, -2, -3, -3, -3, -3, -2, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
         },
     },
     "palette": PALETTE,
