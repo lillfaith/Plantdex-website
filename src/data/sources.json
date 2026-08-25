@@ -8,7 +8,12 @@
     "AI-suggested citations reaching readers, which AGENTS.md and the product brief forbid.",
     "",
     "Candidate references that have been found but NOT yet checked belong in",
-    "docs/source-candidates.md, never in this file."
+    "docs/source-candidates.md, never in this file.",
+    "",
+    "Everything after the deck entry comes from the card-mapped source audit, whose",
+    "references were opened and checked by hand before being brought in here. Which card",
+    "cites which of them is src/lib/card-sources.ts; entries below are grouped in card",
+    "order so the two files read side by side."
   ],
   "sources": [
     {
@@ -18,6 +23,990 @@
       "organization": "Plantdex",
       "verified": true,
       "note": "Every plant field shown in this app is transcribed directly from the physical cards, including their own wording."
+    },
+    {
+      "id": "pmc-11764760",
+      "kind": "journal",
+      "title": "Taraxacum officinale review: phytochemistry and pharmacology",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11764760/",
+      "verified": true
+    },
+    {
+      "id": "pmc-10343869",
+      "kind": "journal",
+      "title": "Chemical constituents and pharmacological effects of Taraxacum",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10343869/",
+      "verified": true
+    },
+    {
+      "id": "pmc-11434673",
+      "kind": "journal",
+      "title": "Comprehensive review of Taraxaci Herba",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11434673/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-26384001",
+      "kind": "journal",
+      "title": "Genus Rumex: traditional uses, phytochemistry and pharmacology",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26384001/",
+      "verified": true
+    },
+    {
+      "id": "pmc-9203642",
+      "kind": "journal",
+      "title": "Rumex ethnobotanical, phytochemical and pharmacological review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9203642/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-30533432",
+      "kind": "journal",
+      "title": "Biochemical activity of Rumex obtusifolius",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30533432/",
+      "verified": true
+    },
+    {
+      "id": "pmc-11244460",
+      "kind": "journal",
+      "title": "Solidago canadensis phytochemistry and urological activity review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11244460/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-40284403",
+      "kind": "journal",
+      "title": "Solidago canadensis phytochemical/pharmacological study",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40284403/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-39795304",
+      "kind": "journal",
+      "title": "Phenolic profile of Solidago canadensis",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39795304/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-35083849",
+      "kind": "journal",
+      "title": "Flavonoids from Ambrosia artemisiifolia and anti-inflammatory activity",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35083849/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-36144651",
+      "kind": "journal",
+      "title": "Sesquiterpenoids from Ambrosia artemisiifolia",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36144651/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-33465625",
+      "kind": "journal",
+      "title": "Essential oil composition of Ambrosia artemisiifolia",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33465625/",
+      "verified": true
+    },
+    {
+      "id": "pmc-10343354",
+      "kind": "journal",
+      "title": "Nutrition and phytochemicals of Chenopodium album",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10343354/",
+      "verified": true
+    },
+    {
+      "id": "pmc-4486584",
+      "kind": "journal",
+      "title": "Chenopodium album nutritive value and biological properties",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4486584/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-9527345",
+      "kind": "journal",
+      "title": "Nutritional and toxic factors in wild edible plants",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9527345/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-28495602",
+      "kind": "journal",
+      "title": "Portulaca oleracea review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28495602/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-25692148",
+      "kind": "journal",
+      "title": "Purslane: a review of phytochemistry and pharmacology",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25692148/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-37739100",
+      "kind": "journal",
+      "title": "Updated Portulaca oleracea review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37739100/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-25308480",
+      "kind": "journal",
+      "title": "Glucosinolate-related glucosides in Alliaria petiolata",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25308480/",
+      "verified": true
+    },
+    {
+      "id": "pmc-4628127",
+      "kind": "journal",
+      "title": "Diversified glucosinolate metabolism in Alliaria petiolata",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4628127/",
+      "verified": true
+    },
+    {
+      "id": "pmc-11354652",
+      "kind": "journal",
+      "title": "Brassicaceae mustards: phytochemicals and pharmacological effects",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11354652/",
+      "verified": true
+    },
+    {
+      "id": "pmc-8894011",
+      "kind": "journal",
+      "title": "Urtica dioica phytochemistry/pharmacology review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8894011/",
+      "verified": true
+    },
+    {
+      "id": "pmc-10176313",
+      "kind": "journal",
+      "title": "Urtica dioica medicinal chemistry and clinical evidence",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10176313/",
+      "verified": true
+    },
+    {
+      "id": "nccih-bph-science-review",
+      "kind": "web",
+      "title": "NCCIH science review mentioning stinging nettle",
+      "organization": "National Center for Complementary and Integrative Health",
+      "url": "https://www.nccih.nih.gov/health/providers/digest/benign-prostatic-hyperplasia-and-complementary-and-integrative-approaches-science",
+      "verified": true
+    },
+    {
+      "id": "kew-mpns-oxalis-stricta",
+      "kind": "database",
+      "title": "Kew Medicinal Plant Names Services: Oxalis stricta",
+      "organization": "Royal Botanic Gardens, Kew",
+      "url": "https://mpns.science.kew.org/mpns-portal/plantDetail?dbs=wcsCmp&fuzzy=true&nameType=all&plantId=2394269&query=%E8%8D%89%E5%8F%A2",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34391377",
+      "kind": "journal",
+      "title": "Review on phyto-pharmacology of related Oxalis corniculata",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34391377/",
+      "verified": true
+    },
+    {
+      "id": "ouci-9gmm3z1e",
+      "kind": "journal",
+      "title": "Genus Oxalis phytochemistry review",
+      "organization": "Open Ukrainian Citation Index",
+      "url": "https://ouci.dntb.gov.ua/en/works/9GmM3z1e/",
+      "verified": true
+    },
+    {
+      "id": "nccih-red-clover",
+      "kind": "web",
+      "title": "NCCIH Red Clover fact sheet",
+      "organization": "National Center for Complementary and Integrative Health",
+      "url": "https://www.nccih.nih.gov/health/red-clover",
+      "verified": true
+    },
+    {
+      "id": "ncbi-bookshelf-nbk74871",
+      "kind": "book",
+      "title": "Systematic review of Trifolium pratense isoflavones",
+      "organization": "NCBI Bookshelf",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK74871/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-11528359",
+      "kind": "journal",
+      "title": "Red clover and menopause review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11528359/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-35866842",
+      "kind": "journal",
+      "title": "Genus Viola phytochemistry/pharmacology review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35866842/",
+      "verified": true
+    },
+    {
+      "id": "pmc-10630019",
+      "kind": "journal",
+      "title": "Systematic review of Viola phytochemistry and pharmacology",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10630019/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-28948657",
+      "kind": "journal",
+      "title": "Review of Viola odorata phytochemistry/pharmacology",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28948657/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-32548330",
+      "kind": "journal",
+      "title": "Stellaria media review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32548330/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-39620022",
+      "kind": "journal",
+      "title": "Stellaria media bioactivity and chemical profile",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39620022/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-37869918",
+      "kind": "journal",
+      "title": "Stellaria media phytochemical/gastroprotective study",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37869918/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-29629064",
+      "kind": "journal",
+      "title": "Plantago major narrative review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29629064/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-10904143",
+      "kind": "journal",
+      "title": "Plantago major traditional use, chemistry and biological activity review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10904143/",
+      "verified": true
+    },
+    {
+      "id": "pmc-12348216",
+      "kind": "journal",
+      "title": "Medicinal plants for skin disorders: Plantago section",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12348216/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-42075201",
+      "kind": "journal",
+      "title": "Galium aparine biochemical composition and bioactivity",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42075201/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-39044256",
+      "kind": "journal",
+      "title": "Galium aparine wound healing and phytochemical profile",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39044256/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-31775336",
+      "kind": "journal",
+      "title": "Galium aparine phytochemical profiles and immunomodulatory activity",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31775336/",
+      "verified": true
+    },
+    {
+      "id": "pmc-9033597",
+      "kind": "journal",
+      "title": "Glechomae Herba systematic review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9033597/",
+      "verified": true
+    },
+    {
+      "id": "thieme-a-2866-3799",
+      "kind": "journal",
+      "title": "Glechoma hederacea comprehensive review",
+      "organization": "Thieme",
+      "url": "https://doi.org/10.1055/a-2866-3799",
+      "verified": true
+    },
+    {
+      "id": "pubmed-12490241",
+      "kind": "journal",
+      "title": "Biological activity of Glechoma hederacea",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12490241/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34180070",
+      "kind": "journal",
+      "title": "Maple food chemistry and biological functions review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34180070/",
+      "verified": true
+    },
+    {
+      "id": "pmc-10469071",
+      "kind": "journal",
+      "title": "Maple syrup nutrition/pharmacology review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10469071/",
+      "verified": true
+    },
+    {
+      "id": "pmc-9603788",
+      "kind": "journal",
+      "title": "Maple chemical analysis, nutrition and health impacts",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9603788/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-22082199",
+      "kind": "journal",
+      "title": "Blackberry composition and health effects review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22082199/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34574260",
+      "kind": "journal",
+      "title": "Blackberry anthocyanin/ellagitannin metabolites",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34574260/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-26132562",
+      "kind": "journal",
+      "title": "Wild blackberry phenolic composition",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26132562/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-33430013",
+      "kind": "journal",
+      "title": "Rhus coriaria pharmacological and phytochemical review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33430013/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-32042964",
+      "kind": "journal",
+      "title": "Rhus coriaria phytochemistry/biological review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32042964/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-17909971",
+      "kind": "journal",
+      "title": "Review across Rhus species",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17909971/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-36781057",
+      "kind": "journal",
+      "title": "Arctium lappa systematic review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36781057/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34612502",
+      "kind": "journal",
+      "title": "Fructus Arctii overview",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34612502/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-29698388",
+      "kind": "journal",
+      "title": "Arctiin/arctigenin anti-inflammatory review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29698388/",
+      "verified": true
+    },
+    {
+      "id": "pmc-4171855",
+      "kind": "journal",
+      "title": "Mentha longifolia: pharmacological and therapeutic review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4171855/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-24100754",
+      "kind": "journal",
+      "title": "Peppermint oil for irritable bowel syndrome: systematic review and meta-analysis",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24100754/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-8805113",
+      "kind": "journal",
+      "title": "Peppermint oil in tension-type headache: randomized placebo-controlled study",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8805113/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-19041706",
+      "kind": "journal",
+      "title": "Catnip essential oil composition and GI/respiratory pharmacology",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19041706/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-17439017",
+      "kind": "journal",
+      "title": "Nepetalactone quantification in Nepeta cataria",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17439017/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-672466",
+      "kind": "journal",
+      "title": "Behavioral/toxicological study of catnip monoterpenes",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/672466/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-39771011",
+      "kind": "journal",
+      "title": "Capsella bursa-pastoris review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39771011/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-28590768",
+      "kind": "journal",
+      "title": "Capsella bursa-pastoris for postpartum hemorrhage: randomized clinical trial",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28590768/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-29641247",
+      "kind": "journal",
+      "title": "Capsella bursa-pastoris for heavy menstrual bleeding: randomized clinical trial",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29641247/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-30864498",
+      "kind": "journal",
+      "title": "Prunella vulgaris comprehensive review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30864498/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-33538676",
+      "kind": "journal",
+      "title": "Prunella vulgaris phytochemistry/traditional uses review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33538676/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-35814234",
+      "kind": "journal",
+      "title": "Prunella vulgaris pharmacology review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35814234/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-35088467",
+      "kind": "journal",
+      "title": "Health-promoting potential of Verbascum thapsus review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35088467/",
+      "verified": true
+    },
+    {
+      "id": "sciencedirect-s0102695x13701261",
+      "kind": "journal",
+      "title": "Common mullein pharmacological and chemical aspects",
+      "organization": "ScienceDirect",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0102695X13701261",
+      "verified": true
+    },
+    {
+      "id": "wiley-ptr-1653",
+      "kind": "journal",
+      "title": "Common mullein: recent advances in research",
+      "organization": "Wiley Online Library",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/ptr.1653",
+      "verified": true
+    },
+    {
+      "id": "pmc-7954623",
+      "kind": "journal",
+      "title": "Equisetum arvense narrative review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7954623/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-24723963",
+      "kind": "journal",
+      "title": "Randomized human trial of horsetail diuretic effect",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24723963/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-38615440",
+      "kind": "journal",
+      "title": "Silica content/application research",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38615440/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34420186",
+      "kind": "journal",
+      "title": "Allium species: chemical constituents and medicinal properties",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34420186/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-35170391",
+      "kind": "journal",
+      "title": "Allium vegetables review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35170391/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34567150",
+      "kind": "journal",
+      "title": "Onion (Allium cepa) pharmacological properties",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34567150/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-40648036",
+      "kind": "journal",
+      "title": "Fragaria genus phytochemistry and biological activities review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40648036/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-27775146",
+      "kind": "journal",
+      "title": "Wild Fragaria vesca fruits: bioactive phytochemicals",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27775146/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-24345049",
+      "kind": "journal",
+      "title": "Strawberry as a functional food: evidence-based review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24345049/",
+      "verified": true
+    },
+    {
+      "id": "pmc-7443157",
+      "kind": "journal",
+      "title": "Rapid review of elderberry in acute respiratory viral infections",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7443157/",
+      "verified": true
+    },
+    {
+      "id": "pmc-8026097",
+      "kind": "journal",
+      "title": "Systematic review of elderberry for viral respiratory illness",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8026097/",
+      "verified": true
+    },
+    {
+      "id": "pmc-13210375",
+      "kind": "journal",
+      "title": "Clinically evaluated plant-derived agents for respiratory infections",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13210375/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-36246064",
+      "kind": "journal",
+      "title": "Hypericum perforatum: traditional uses, clinical trials and interactions",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36246064/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-42302936",
+      "kind": "journal",
+      "title": "2026 modern evidence review of Hypericum perforatum",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42302936/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-38600756",
+      "kind": "journal",
+      "title": "Hypericum perforatum and wound healing review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38600756/",
+      "verified": true
+    },
+    {
+      "id": "pmc-9182061",
+      "kind": "journal",
+      "title": "Medicinal plants in wound healing: Achillea section",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9182061/",
+      "verified": true
+    },
+    {
+      "id": "pmc-6313439",
+      "kind": "journal",
+      "title": "Phytochemistry of Cherokee aromatic medicinal plants: yarrow",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6313439/",
+      "verified": true
+    },
+    {
+      "id": "pmc-12009018",
+      "kind": "journal",
+      "title": "Experimental and clinical studies on genus Achillea",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12009018/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-9249283",
+      "kind": "journal",
+      "title": "Randomized trial of jewelweed extract for poison ivy/oak dermatitis",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9249283/",
+      "verified": true
+    },
+    {
+      "id": "pmc-9659524",
+      "kind": "journal",
+      "title": "Systematic review of herbal medicines for contact dermatitis",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9659524/",
+      "verified": true
+    },
+    {
+      "id": "pmc-11896621",
+      "kind": "journal",
+      "title": "Dermatology review discussing jewelweed evidence",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11896621/",
+      "verified": true
+    },
+    {
+      "id": "pmc-12944213",
+      "kind": "journal",
+      "title": "Melissa officinalis integrative evidence review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12944213/",
+      "verified": true
+    },
+    {
+      "id": "pmc-8998931",
+      "kind": "journal",
+      "title": "Melissa officinalis composition/pharmacology review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8998931/",
+      "verified": true
+    },
+    {
+      "id": "pmc-11283336",
+      "kind": "journal",
+      "title": "Melissa officinalis health-promoting effects review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11283336/",
+      "verified": true
+    },
+    {
+      "id": "pmc-7659962",
+      "kind": "journal",
+      "title": "Essential oils from Monarda fistulosa: composition and biological activity",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7659962/",
+      "verified": true
+    },
+    {
+      "id": "pmc-8000036",
+      "kind": "journal",
+      "title": "Volatile phytochemistry of Monarda species",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8000036/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-41599385",
+      "kind": "journal",
+      "title": "Biological characterization of Monarda essential oils",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41599385/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-18384191",
+      "kind": "journal",
+      "title": "Systematic review of Rosa canina effect/efficacy",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18384191/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-31138475",
+      "kind": "journal",
+      "title": "Rose hip pharmacological ingredients systematic review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31138475/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-11933119",
+      "kind": "journal",
+      "title": "Rosa canina fruit antioxidant/polyphenolic study",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11933119/",
+      "verified": true
+    },
+    {
+      "id": "pmc-10873751",
+      "kind": "journal",
+      "title": "Geranium genus ethnomedicinal/phytochemical review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10873751/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-1417694",
+      "kind": "journal",
+      "title": "Pharmacologically active tannins review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1417694/",
+      "verified": true
+    },
+    {
+      "id": "pmc-6259616",
+      "kind": "journal",
+      "title": "Tannins of medicinal and food plants",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6259616/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-35026509",
+      "kind": "journal",
+      "title": "Genus Lonicera drug discovery/pharmacology review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35026509/",
+      "verified": true
+    },
+    {
+      "id": "pmc-4519546",
+      "kind": "journal",
+      "title": "Lonicerae Japonicae Flos pharmacology review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4519546/",
+      "verified": true
+    },
+    {
+      "id": "pmc-7127058",
+      "kind": "journal",
+      "title": "Lonicera japonica ethnopharmacology/phytochemistry review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7127058/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-31424365",
+      "kind": "journal",
+      "title": "Ethnobotany and pharmacology of Pinus species: review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31424365/",
+      "verified": true
+    },
+    {
+      "id": "pmc-8309100",
+      "kind": "journal",
+      "title": "Pinus species as sources of bioactive compounds: review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8309100/",
+      "verified": true
+    },
+    {
+      "id": "sciencedirect-003194229400885w",
+      "kind": "journal",
+      "title": "Volatile constituents of needles of five Pinus species",
+      "organization": "ScienceDirect",
+      "url": "https://www.sciencedirect.com/science/article/pii/003194229400885W",
+      "verified": true
+    },
+    {
+      "id": "pubmed-26850343",
+      "kind": "journal",
+      "title": "Morus alba phytochemistry/pharmacology/clinical trials review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26850343/",
+      "verified": true
+    },
+    {
+      "id": "pmc-9028580",
+      "kind": "journal",
+      "title": "Mulberry phytochemicals and pharmacological mechanisms review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9028580/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-34818743",
+      "kind": "journal",
+      "title": "Mulberry leaves phytochemistry/bioactivities review",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34818743/",
+      "verified": true
+    },
+    {
+      "id": "pmc-7766837",
+      "kind": "journal",
+      "title": "Passiflora incarnata in neuropsychiatric disorders: systematic review",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7766837/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-18499602",
+      "kind": "journal",
+      "title": "Passiflora incarnata reduces preoperative anxiety: randomized placebo-controlled study",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18499602/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-11679026",
+      "kind": "journal",
+      "title": "Passionflower for generalized anxiety: double-blind randomized controlled trial",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11679026/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-32235622",
+      "kind": "journal",
+      "title": "Sedative effects of Lactuca species latex including L. serriola",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32235622/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-16621374",
+      "kind": "journal",
+      "title": "Analgesic/sedative activity of lactucin and lactucopicrin",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16621374/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-23662127",
+      "kind": "journal",
+      "title": "Pharmacological effects of Lactuca serriola",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23662127/",
+      "verified": true
+    },
+    {
+      "id": "ema-quercus-cortex-assessment",
+      "kind": "web",
+      "title": "EMA assessment report on Quercus cortex",
+      "organization": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/documents/herbal-report/final-assessment-report-quercus-robur-l-quercus-petraea-matt-liebl-quercus-pubescens-willd-cortex_en.pdf",
+      "verified": true
+    },
+    {
+      "id": "ema-quercus-cortex-references",
+      "kind": "web",
+      "title": "EMA reference list for Quercus cortex",
+      "organization": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/documents/herbal-references/draft-list-references-assessment-quercus-robur-l-quercus-petreamatt-liebl-and-quercus-pubescens-willd-quercus-cortex-oak-bark_en.pdf",
+      "verified": true
+    },
+    {
+      "id": "pmc-3834722",
+      "kind": "journal",
+      "title": "Medicinal plants for inflammatory skin diseases (oak/tannin context)",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3834722/",
+      "verified": true
     }
   ]
 }

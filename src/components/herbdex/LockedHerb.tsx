@@ -5,8 +5,9 @@ import Image from 'next/image';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { assetPath } from '@/lib/asset-path';
 import { revealHerb } from '@/lib/reveals';
+import { siteCautionFor } from '@/lib/card-cautions';
 import { DiscoverPanel } from './DiscoverPanel';
-import { CardWarning } from '../SafetyNotice';
+import { CardWarning, SiteCaution } from '../SafetyNotice';
 
 /**
  * A herb the player has not discovered yet.
@@ -28,6 +29,7 @@ export function LockedHerb({
 }) {
   const confirmRef = useRef<HTMLDialogElement>(null);
   const number = `#${String(herb.cardNumber).padStart(2, '0')}`;
+  const siteCaution = siteCautionFor(herb);
 
   return (
     <div className="mx-auto max-w-sm text-center">
@@ -68,6 +70,16 @@ export function LockedHerb({
       {herb.warning && (
         <div className="mt-4 text-left">
           <CardWarning warning={herb.warning} />
+        </div>
+      )}
+
+      {/*
+        Same reasoning for a caution the site adds: the risk is real whether or not the
+        card prints it, and it names no plant, so showing it costs nothing of the reveal.
+      */}
+      {siteCaution && (
+        <div className="mt-4 text-left">
+          <SiteCaution caution={siteCaution} />
         </div>
       )}
 

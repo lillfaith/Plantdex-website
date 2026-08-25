@@ -118,6 +118,35 @@ export function CardWarning({ warning }: { warning: string }) {
 }
 
 /**
+ * A safety caution the site adds, for a risk the printed card does not carry.
+ *
+ * Given the SAME weight as `CardWarning` above, because the reader's exposure does not
+ * depend on which of the two happened to print it. What differs is the attribution: it says
+ * "Not printed on the card" first, so someone holding the deck is never left thinking their
+ * card carries a warning it does not — the same reason `CardIssueNote` exists.
+ *
+ * The bar for adding one is in `src/lib/card-cautions.ts`, and it is high: this is not a
+ * place for general herbal caveats, which /safety carries once.
+ */
+export function SiteCaution({ caution }: { caution: string }) {
+  return (
+    <p
+      role="note"
+      className="flex items-start gap-2 rounded-xl border border-stat-temp/70 bg-stat-temp/20 px-3 py-2.5 text-sm font-semibold text-violet-100"
+    >
+      <span aria-hidden="true">⚠</span>
+      <span>
+        <span className="sr-only">Warning: </span>
+        {caution}{' '}
+        <span className="font-normal text-violet-200">
+          Not printed on the card — added here from reviewed sources.
+        </span>
+      </span>
+    </p>
+  );
+}
+
+/**
  * A printing error on the physical card, shown beside the transcription it explains.
  *
  * Deliberately NOT styled as a safety warning. `CardWarning` above is reserved for a

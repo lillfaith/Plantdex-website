@@ -16,15 +16,21 @@ So a search can tell me a source *exists and looks relevant*. It cannot tell me 
 says what a card says. Marking these `verified: true` off a search snippet is exactly the
 "searches for something vaguely similar → attaches citation" failure the brief rules out,
 so none of them reach the website: `resolveRefs()` drops anything not in
-`src/data/sources.json` with `verified: true`, and that file still contains only the deck.
+`src/data/sources.json` with `verified: true`.
+
+That file now holds 123 references besides the deck, from the card-mapped source audit —
+those were opened and checked by a human before being brought in, which is the whole
+difference between that file and this one. Nothing here graduates into it on a search
+result.
 
 ## How to verify one
 
 1. Open the URL and read the relevant part.
 2. Confirm it supports **the specific claim in the Claim column** — not the plant generally.
 3. Add the source to `src/data/sources.json` with `"verified": true`.
-4. Attach it in `scripts/build_deck.py` as a `claimSources` entry on that herb, then
-   re-run the deck build.
+4. Attach it to the card in `src/lib/card-sources.ts` — plant-level references — or, for a
+   claim-level citation, as a `claimSources` entry in `scripts/build_deck.py` followed by a
+   deck rebuild. `herbs.json` is generated and is never hand-edited.
 5. If it does *not* support the claim, add a row to `docs/card-claim-review.md` instead.
 
 Claim categories follow `SOURCEABLE_SECTIONS` in `src/lib/types.ts`:
@@ -101,10 +107,37 @@ Inulin), preparations (roasted root), usable parts.
 
 ---
 
+## #38 Willow — *Salix* spp. — NAMED, BUT WITHOUT LINKS
+
+This card is the one the card-mapped audit got wrong: it mapped #38 to Cinquefoil
+(*Potentilla* spp.), a different family. The deck prints Willow, whose compounds are
+salicin, salicortin and tremulacin, so those three Potentilla references were **discarded
+rather than reassigned** — a citation attached to the wrong plant is worse than none.
+
+Three Willow references were named in their place, and the deck's owner confirmed they were
+opened. They are recorded here rather than in `src/data/sources.json` because a citation
+renders as a link and no URLs came with them:
+
+| Reference | Type |
+|---|---|
+| EMA herbal monograph — Willow Bark (*Salicis cortex*) | Regulatory monograph |
+| Meta-analysis (2023) — "Willow Bark (*Salix* spp.) Used for Pain Relief in Arthritis" | Peer-reviewed |
+| Systematic review — "Effectiveness of Willow Bark for Musculoskeletal Pain" | Peer-reviewed |
+
+To finish: add the URL for each to `src/data/sources.json` (`"verified": true`, since they
+were read) and list the three ids under `'38'` in `src/lib/card-sources.ts`, replacing that
+entry's `hold` with the audit's grade. The tests already require any card with references to
+carry exactly three, and require no two cards to share one.
+
+---
+
 ## Not yet researched
 
-Cards #02–03, #05–07, #09–30, #34–45. The pattern above is the template: one row per
-claim, an authoritative candidate, and the section it belongs to.
+Cards #02–03, #05–07, #09–30, #34–45 at CLAIM level. All 45 now carry plant-level
+references from the card-mapped audit except #11, #19, #21 and #38 (see
+`src/lib/card-sources.ts` for why each is held); what is missing here is the finer
+granularity — a source attached to one specific sentence. The pattern above is the template:
+one row per claim, an authoritative candidate, and the section it belongs to.
 
 Source-quality order used when choosing candidates, per the brief: peer-reviewed →
 government database → university extension → botanical institution → pharmacopoeia →
