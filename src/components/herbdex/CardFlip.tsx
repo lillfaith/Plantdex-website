@@ -4,38 +4,86 @@ import { useId, useState } from 'react';
 import Image from 'next/image';
 import type { Herb } from '@/lib/types';
 import { assetPath } from '@/lib/asset-path';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
- * The physical card, front and back, with a flip toggle.
+ * The physical card, turned over.
  *
- * A real button drives the flip rather than a hover effect, so it works on touch and
- * from the keyboard. The flip animation is decorative — the underlying images swap
- * regardless, so reduced-motion users lose nothing.
+ * WHAT WAS WRONG BEFORE, since the fix is entirely structural. This rendered ONE `<img>`
+ * whose `src` was swapped the instant the button was pressed, inside a container that then
+ * rotated 180°, with an inner element counter-rotating to keep the (already swapped) image
+ * upright. Three consequences, all visible:
+ *
+ *   1. The back appeared at 0°, not at 90°, so the "flip" was watching the back face turn
+ *      around rather than watching the front become the back.
+ *   2. No ancestor carried `perspective`, so `rotateY` degenerated into a horizontal
+ *      squash — the card got thin and fat again instead of turning through depth.
+ *   3. The counter-rotating child had no transition of its own, so it snapped while its
+ *      parent eased.
+ *
+ * It is now one object with two faces. Both are absolutely positioned in the same box; the
+ * back is pre-rotated 180° so its artwork lands upright; `backface-visibility: hidden` does
+ * the swap for us at exactly the edge-on moment. See the `flip-*` utilities in globals.css.
+ *
+ * SIZE. An invisible sizer image establishes the box, and both faces fill it. Card fronts
+ * and backs are both 800×1295, but relying on that would put a layout jump one asset
+ * revision away — the sizer means the container's height is decided once, by the front, and
+ * neither face can change it.
+ *
+ * STATE. `showBack` is a plain boolean and the animation is pure CSS, so a rapid tap simply
+ * retargets the transition from wherever the card currently is. There is no animation state
+ * machine to corrupt and no way to strand the card between faces; the button is also
+ * outside the rotating element, so it never moves while the card turns.
  */
 export function CardFlip({ herb }: { herb: Herb }) {
   const [showBack, setShowBack] = useState(false);
   const panelId = useId();
 
+  const frontAlt = `Front of Plantdex card ${herb.cardNumber}: ${herb.commonName} (${herb.scientificName})`;
+  const backAlt = `Back of Plantdex card ${herb.cardNumber}: ${herb.commonName}. The same information is listed in text below.`;
+
   return (
     <div>
-      <div
-        id={panelId}
-        className="relative mx-auto w-56 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift transition-transform duration-500 sm:mx-0 sm:w-64"
-        style={{ transform: showBack ? 'rotateY(180deg)' : undefined, transformStyle: 'preserve-3d' }}
-      >
-        <div style={{ transform: showBack ? 'rotateY(180deg)' : undefined }}>
+      <div className="flip-scene mx-auto w-56 sm:mx-0 sm:w-64">
+        <div
+          id={panelId}
+          className={`flip-card shadow-card-lift rounded-[var(--radius-card)] ${
+            showBack ? 'flip-card-revealed' : ''
+          }`}
+        >
+          {/* Establishes the box both faces fill. Never painted, never read. */}
           <Image
-            src={assetPath(showBack ? herb.backImage : herb.image)}
-            alt={
-              showBack
-                ? `Back of Plantdex card ${herb.cardNumber}: ${herb.commonName}. The same information is listed in text below.`
-                : `Front of Plantdex card ${herb.cardNumber}: ${herb.commonName} (${herb.scientificName})`
-            }
+            src={assetPath(herb.image)}
+            alt=""
+            aria-hidden="true"
             width={800}
             height={1295}
             priority
-            className="w-full"
+            className="invisible w-full"
           />
+
+          <div className="flip-face">
+            <Image
+              src={assetPath(herb.image)}
+              alt={frontAlt}
+              width={800}
+              height={1295}
+              priority
+              className="h-full w-full object-cover"
+            />
+            <span className="flip-shade flip-shade-front" aria-hidden="true" />
+          </div>
+
+          <div className="flip-face flip-face-back">
+            <Image
+              src={assetPath(herb.backImage)}
+              alt={backAlt}
+              width={800}
+              height={1295}
+              className="h-full w-full object-cover"
+            />
+            <span className="flip-shade flip-shade-back" aria-hidden="true" />
+          </div>
         </div>
       </div>
 
@@ -44,9 +92,9 @@ export function CardFlip({ herb }: { herb: Herb }) {
         onClick={() => setShowBack((current) => !current)}
         aria-expanded={showBack}
         aria-controls={panelId}
-        className="mx-auto mt-3 flex min-h-11 items-center justify-center gap-2 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800 sm:mx-0"
+        className="mx-auto mt-3 flex min-h-11 items-center justify-center gap-2 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-plum-600 sm:mx-0"
       >
-        <span aria-hidden="true">⟲</span>
+        <PlantdexIcon name="flip" className="text-base" />
         {showBack ? 'Show card front' : 'Show card back'}
       </button>
     </div>

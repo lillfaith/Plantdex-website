@@ -6,6 +6,7 @@ import { getHerb } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { xpForTask, type TaskProgress } from '@/lib/research';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * One Field Research task.
@@ -64,7 +65,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
                 done ? 'text-gold-300' : 'text-violet-300'
               }`}
             >
-              {done ? '✓ ' : '+'}
+              {done ? <PlantdexIcon name="check" className="mr-1 inline-block align-[-0.1em]" /> : '+'}
               {xpForTask(task)} XP
             </span>
           </div>
@@ -83,7 +84,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
                   aria-hidden="true"
                   className={stepDone ? 'text-gold-300' : 'text-violet-400'}
                 >
-                  {stepDone ? '☑' : '☐'}
+                  <PlantdexIcon name={stepDone ? 'check' : 'pending'} className="text-sm" />
                 </span>
                 <span className={stepDone ? 'text-violet-200 line-through' : 'text-violet-200'}>
                   {step.label}
@@ -102,7 +103,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
 
           {steps.length > 1 && (
             <div
-              className="mt-3 h-1.5 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
+              className="mt-3 h-1.5 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
               role="progressbar"
               aria-valuenow={pct}
               aria-valuemin={0}

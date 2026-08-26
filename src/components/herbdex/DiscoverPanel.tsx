@@ -3,6 +3,7 @@
 import { useCallback, useRef } from 'react';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * The "I Found This Plant" flow.
@@ -52,7 +53,7 @@ export function DiscoverPanel({
 
   if (!ready) {
     // Placeholder of the same height, so the layout does not jump once storage is read.
-    return <div className="min-h-12 rounded-full bg-violet-900/40" aria-hidden="true" />;
+    return <div className="min-h-12 rounded-full bg-plum-800/40" aria-hidden="true" />;
   }
 
   return (
@@ -63,7 +64,7 @@ export function DiscoverPanel({
             aria-hidden="true"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-500/20 text-lg text-gold-300"
           >
-            ✓
+            <PlantdexIcon name="discovered" />
           </span>
           <div>
             <p className="text-sm font-bold text-gold-300">Discovered</p>
@@ -87,7 +88,7 @@ export function DiscoverPanel({
           className="group relative min-h-12 w-full overflow-hidden rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-6 text-base font-bold text-violet-deep shadow-card transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
         >
           <span className="relative z-10 flex items-center justify-center gap-2">
-            <span aria-hidden="true">🌿</span>
+            <PlantdexIcon name="discovered" className="text-base" />
             {label}
             <span className="text-sm font-extrabold opacity-70">+{herb.xp} XP</span>
           </span>
@@ -98,7 +99,7 @@ export function DiscoverPanel({
       <dialog
         ref={confirmRef}
         aria-labelledby="confirm-title"
-        className="panel m-auto w-[min(26rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-violet-deep/80 backdrop:backdrop-blur-sm"
+        className="panel m-auto w-[min(26rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-plum-950/80 backdrop:backdrop-blur-sm"
       >
         <h2 id="confirm-title" className="font-display text-lg font-bold text-gold-plate">
           Add {spoilerFree ? `card #${String(herb.cardNumber).padStart(2, '0')}` : herb.commonName}{' '}
@@ -116,7 +117,7 @@ export function DiscoverPanel({
           <button
             type="button"
             onClick={() => closeDialog(confirmRef)}
-            className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+            className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
           >
             Cancel
           </button>

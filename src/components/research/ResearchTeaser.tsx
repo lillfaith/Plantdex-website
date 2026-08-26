@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { progressForTask } from '@/lib/research';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * The Field Research entry point, shown on the Herbdex page.
@@ -20,13 +21,13 @@ export function ResearchTeaser() {
   return (
     <Link
       href="/herbdex/research"
-      className="panel flex items-center gap-3 p-4 transition-colors hover:bg-violet-800/50"
+      className="panel flex items-center gap-3 p-4 transition-colors hover:bg-plum-600/50"
     >
       <span
         aria-hidden="true"
         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-lg text-gold-300"
       >
-        🔍
+        <PlantdexIcon name="research" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-bold text-gold-plate">Field Research</span>

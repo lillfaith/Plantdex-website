@@ -5,6 +5,8 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { ACHIEVEMENTS } from '@/lib/achievements';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 import { CountUp } from './CountUp';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
+import { achievementIcon } from '../icons/achievement-icons';
 
 /**
  * Level, XP bar and collection progress.
@@ -47,7 +49,7 @@ export function ProgressHeader() {
       </div>
 
       <div
-        className="mt-2 h-3 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
+        className="mt-2 h-3 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
@@ -80,7 +82,7 @@ export function ProgressHeader() {
         </p>
       </div>
       <div
-        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
         role="progressbar"
         aria-valuenow={collectionPct}
         aria-valuemin={0}
@@ -101,8 +103,9 @@ export function ProgressHeader() {
       */}
       {collectionComplete && (
         <div className="mt-3 rounded-xl border border-gold-500/60 bg-gold-500/[0.1] p-4 text-center">
-          <p aria-hidden="true" className="text-2xl">
-            🏆
+          {/* A laurel, not a cup: the deck rewards having looked, not having won. */}
+          <p aria-hidden="true" className="flex justify-center text-3xl text-gold-400">
+            <PlantdexIcon name="laurel" />
           </p>
           <p className="font-display mt-1 text-base font-extrabold text-gold-plate">
             {CURRENT_COLLECTION.shortName} complete
@@ -126,7 +129,7 @@ export function ProgressHeader() {
         </p>
       </div>
       <div
-        className="mt-2 h-2 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
         role="progressbar"
         aria-valuenow={masteredPct}
         aria-valuemin={0}
@@ -156,12 +159,13 @@ export function ProgressHeader() {
                 className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${
                   unlocked
                     ? 'border-gold-500/60 bg-gold-500/15 text-gold-300'
-                    : 'border-violet-700 bg-violet-900/60 text-violet-400'
+                    : 'border-violet-700 bg-plum-700/70 text-violet-400'
                 }`}
               >
-                <span aria-hidden="true" className={unlocked ? '' : 'grayscale opacity-50'}>
-                  {achievement.icon}
-                </span>
+                <PlantdexIcon
+                  name={achievementIcon(achievement.id)}
+                  className={`text-sm ${unlocked ? '' : 'opacity-45'}`}
+                />
                 {achievement.name}
                 <span className="sr-only">
                   {unlocked ? ' — unlocked' : ' — locked'}. {achievement.description}

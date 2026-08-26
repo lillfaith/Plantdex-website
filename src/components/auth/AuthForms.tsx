@@ -9,7 +9,7 @@ import { useAuth } from '@/state/AuthProvider';
  */
 
 const fieldClass =
-  'mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-violet-900/60 px-3 text-sm text-violet-100';
+  'mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-plum-700/70 px-3 text-sm text-violet-100';
 const submitClass =
   'min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400 disabled:opacity-60';
 

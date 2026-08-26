@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { herbsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { SEASONS, type Season } from '@/lib/types';
+import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
 
 export const metadata: Metadata = {
   title: 'Seasons',
@@ -11,11 +12,11 @@ export const metadata: Metadata = {
     'When the plants in the Plantdex deck are typically easiest to find, by season, as printed on the cards.',
 };
 
-const SEASON_ICON: Record<Season, string> = {
-  spring: '🌸',
-  summer: '☀️',
-  autumn: '🍁',
-  winter: '❄️',
+const SEASON_ICON: Record<Season, IconName> = {
+  spring: 'spring',
+  summer: 'summer',
+  autumn: 'autumn',
+  winter: 'winter',
 };
 
 /**
@@ -56,9 +57,10 @@ export default function SeasonsPage() {
               <div className="flex items-baseline gap-2">
                 <h2
                   id={`season-${season}`}
-                  className="font-display text-2xl font-bold text-gold-plate"
+                  className="font-display flex items-center gap-2.5 text-2xl font-bold text-gold-plate"
                 >
-                  <span aria-hidden="true">{SEASON_ICON[season]}</span> {SEASON_LABEL[season]}
+                  <PlantdexIcon name={SEASON_ICON[season]} className="shrink-0 text-xl text-violet-300" />
+                  {SEASON_LABEL[season]}
                 </h2>
                 <span className="text-xs text-violet-400">
                   {inSeason.length} {inSeason.length === 1 ? 'plant' : 'plants'}
@@ -75,7 +77,7 @@ export default function SeasonsPage() {
                     <li key={herb.id}>
                       <Link
                         href={`/herbdex/${herb.id}`}
-                        className="panel flex items-center gap-3 p-2.5 transition-colors hover:bg-violet-800/50"
+                        className="panel flex items-center gap-3 p-2.5 transition-colors hover:bg-plum-600/50"
                       >
                         <Image
                           src={assetPath(herb.sprite)}

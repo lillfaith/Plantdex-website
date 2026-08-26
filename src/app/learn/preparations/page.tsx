@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { GlossaryTermLink } from '@/components/learn/GlossaryTermLink';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
 
 export const metadata: Metadata = {
   title: 'Preparation guides',
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 
 interface Guide {
   id: string;
-  icon: string;
+  icon: IconName;
   title: string;
   summary: string;
   steps: string[];
@@ -30,7 +31,7 @@ interface Guide {
 const GUIDES: Guide[] = [
   {
     id: 'infusion',
-    icon: '🫖',
+    icon: 'infusion',
     title: 'Infusions',
     summary:
       'Soft parts — leaves, flowers — steeped in water that has just boiled.',
@@ -46,7 +47,7 @@ const GUIDES: Guide[] = [
   },
   {
     id: 'decoction',
-    icon: '🔥',
+    icon: 'decoction',
     title: 'Decoctions',
     summary:
       'Simmering dense material — roots, bark, seeds — for long enough to draw out what a short steep would leave behind.',
@@ -62,7 +63,7 @@ const GUIDES: Guide[] = [
   },
   {
     id: 'infused-oil',
-    icon: '🫙',
+    icon: 'tincture',
     title: 'Infused oils',
     summary:
       'Steeping plant material in a carrier oil so oil-soluble constituents transfer into it.',
@@ -78,7 +79,7 @@ const GUIDES: Guide[] = [
   },
   {
     id: 'salve',
-    icon: '🧴',
+    icon: 'salve',
     title: 'Salves',
     summary: 'An infused oil thickened with wax so it stays where it is put.',
     steps: [
@@ -90,7 +91,7 @@ const GUIDES: Guide[] = [
   },
   {
     id: 'drying',
-    icon: '🌾',
+    icon: 'drying',
     title: 'Drying plant material',
     summary: 'Removing moisture so material keeps rather than moulds.',
     steps: [
@@ -105,7 +106,7 @@ const GUIDES: Guide[] = [
   },
   {
     id: 'storing',
-    icon: '🏺',
+    icon: 'storage',
     title: 'Storing dried material',
     summary: 'Keeping dried material usable, and knowing when it is not.',
     steps: [
@@ -137,7 +138,7 @@ export default function PreparationsPage() {
           as permission to use it on something. The general disclaimer lives on /safety. */}
       <aside className="panel mt-5 border-stat-temp/50 p-4">
         <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
-          <span aria-hidden="true">⚠</span> These are methods, not recipes
+          <span aria-hidden="true"></span> These are methods, not recipes
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
           A method appearing here is <strong>not</strong> a statement that any plant suits
@@ -148,8 +149,12 @@ export default function PreparationsPage() {
       <div className="mt-8 space-y-5">
         {GUIDES.map((guide) => (
           <section key={guide.id} id={guide.id} aria-labelledby={`${guide.id}-heading`} className="panel p-5">
-            <h2 id={`${guide.id}-heading`} className="font-display text-xl font-bold text-gold-300">
-              <span aria-hidden="true">{guide.icon}</span> {guide.title}
+            <h2
+              id={`${guide.id}-heading`}
+              className="font-display flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xl font-bold text-gold-300"
+            >
+              <PlantdexIcon name={guide.icon} className="shrink-0 text-xl text-violet-300" />
+              {guide.title}
               <GlossaryTermLink word={guide.title.replace(/s$/, '')} />
             </h2>
             <p className="mt-1.5 text-sm leading-relaxed text-violet-200">{guide.summary}</p>

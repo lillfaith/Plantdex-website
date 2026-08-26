@@ -14,12 +14,19 @@ import { DECK_SIZE, getHerb } from './deck';
  * players retroactively unlock anything they already qualify for.
  */
 
+/**
+ * An achievement's rule, and nothing about how it looks.
+ *
+ * There used to be an `icon` field here holding an emoji. It has moved to
+ * `src/components/icons/achievement-icons.ts`, keyed by id: this module is copied verbatim
+ * into the Supabase edge function by `npm run sync:edge-shared`, and the server evaluates
+ * predicates — it has no use for a drawing, and shipping presentation into it means a
+ * redeploy every time the art changes.
+ */
 export interface Achievement {
   id: string;
   name: string;
   description: string;
-  /** Presentational only — never the identifier. */
-  icon: string;
   isUnlocked: (state: HerbdexState) => boolean;
 }
 
@@ -48,42 +55,36 @@ export const ACHIEVEMENTS: readonly Achievement[] = [
     id: 'first-find',
     name: 'First Find',
     description: 'Discover your first herb.',
-    icon: '🌱',
     isUnlocked: (state) => discoveredCount(state) >= 1,
   },
   {
     id: 'forager-10',
     name: 'Backyard Forager',
     description: 'Discover 10 herbs.',
-    icon: '🌿',
     isUnlocked: (state) => discoveredCount(state) >= 10,
   },
   {
     id: 'explorer-25',
     name: 'Field Explorer',
     description: 'Discover 25 herbs.',
-    icon: '🌼',
     isUnlocked: (state) => discoveredCount(state) >= 25,
   },
   {
     id: 'rare-finder',
     name: 'Rare Finder',
     description: 'Discover 5 Rare herbs.',
-    icon: '✨',
     isUnlocked: (state) => countWhere(state, (rarity) => rarity === 'Rare') >= 5,
   },
   {
     id: 'epic-finder',
     name: 'Epic Finder',
     description: 'Discover every Epic herb in the deck.',
-    icon: '💎',
     isUnlocked: (state) => countWhere(state, (rarity) => rarity === 'Epic') >= 3,
   },
   {
     id: 'complete-collection',
     name: 'Complete Collection',
     description: 'Discover every herb in the deck.',
-    icon: '🏆',
     isUnlocked: (state) => discoveredCount(state) >= DECK_SIZE,
   },
   // Field Research badges. Deliberately achievements rather than a parallel "badge"
@@ -93,28 +94,24 @@ export const ACHIEVEMENTS: readonly Achievement[] = [
     id: 'first-research',
     name: 'Field Researcher',
     description: 'Complete your first Field Research task.',
-    icon: '🔍',
     isUnlocked: (state) => researchCount(state) >= 1,
   },
   {
     id: 'research-10',
     name: 'Dedicated Researcher',
     description: 'Complete 10 Field Research tasks.',
-    icon: '🧭',
     isUnlocked: (state) => researchCount(state) >= 10,
   },
   {
     id: 'seasonal-sweep',
     name: 'Four Seasons',
     description: 'Complete the Field Research for every season.',
-    icon: '🍂',
     isUnlocked: (state) => researchCount(state, (id) => id.startsWith('seasonal:')) >= 4,
   },
   {
     id: 'backyard-collection',
     name: 'Backyard Collection',
     description: 'Complete the Backyard Collection challenge.',
-    icon: '🏡',
     isUnlocked: (state) => Boolean(state.research['collection:backyard']),
   },
 ] as const;

@@ -21,8 +21,47 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 @theme {
+  /*
+   * THE GROUND: a plum-black night, not a purple stage light.
+   *
+   * This used to be #2a0845 — hue 273 at 79% saturation, which is the same vivid violet as
+   * the card BORDERS. A ground that saturated competes with the thing standing on it: the
+   * printed cards had to fight the page to look like the brightest object on screen, and
+   * the overall read was "purple gaming site" rather than "botanical night".
+   *
+   * #211827 keeps the hue family (276) and drops saturation to 24%. Measured against every
+   * text token, contrast is unchanged to within half a percent — body text sits at 12.56:1
+   * here versus 12.61:1 before — so this costs nothing in legibility and buys the cards
+   * their own light back. The alternatives were compared too: #1D1922 reads charcoal rather
+   * than plum, and #2B2032 is light enough to soften the card frames.
+   *
+   * The ramp exists so surfaces can differ from each other without any of them becoming a
+   * grey SaaS panel: each step is the same plum, one notch lighter, and nothing in the UI
+   * uses a neutral grey at all.
+   */
+  --color-plum-950: #17101c;
+  --color-plum-900: #211827;
+  --color-plum-800: #2b2033;
+  --color-plum-700: #362941;
+  --color-plum-600: #43334f;
+
+  /*
+   * THE MYSTERY RAMP, sampled straight down the middle of the printed card BACKS
+   * (`public/cards/back/*.webp`) rather than invented. The physical deck already answers
+   * "what colour is an undiscovered card": pink at the top edge, pale lilac through the
+   * middle, periwinkle violet at the foot. A locked card on this site is that same object
+   * seen face-down, which is why it must not be another dark rectangle.
+   */
+  --color-mystery-pink: #f180b4;
+  --color-mystery-orchid: #e091d0;
+  --color-mystery-lilac: #f0cdfe;
+  --color-mystery-mauve: #f2b6f6;
+  --color-mystery-violet: #d18ad6;
+  --color-mystery-purple: #a26cd5;
+  --color-mystery-indigo: #8666e1;
+
   /* Deck violets, sampled from the card faces. */
-  --color-violet-deep: #2a0845;
+  --color-violet-deep: #211827;
   --color-violet-900: #3d0a63;
   --color-violet-800: #56108a;
   --color-violet-700: #7016b4;
@@ -83,8 +122,15 @@ html {
 }
 
 body {
+  /*
+   * Two washes rather than one. The old single violet-800 bloom was a stage light: bright,
+   * centred, and the first thing the eye landed on. These are atmosphere — a cool violet
+   * high up and a warmer plum low down, both far enough below the cards' own brightness
+   * that the page reads as depth rather than as a light source.
+   */
   background:
-    radial-gradient(ellipse 90% 55% at 50% -10%, var(--color-violet-800) 0%, transparent 60%),
+    radial-gradient(ellipse 120% 60% at 50% -15%, color-mix(in srgb, var(--color-violet-800) 42%, transparent) 0%, transparent 62%),
+    radial-gradient(ellipse 90% 45% at 50% 108%, color-mix(in srgb, var(--color-plum-700) 70%, transparent) 0%, transparent 60%),
     var(--page-bg);
   background-attachment: fixed;
   color: var(--page-fg);
@@ -114,11 +160,84 @@ body {
   color: transparent;
 }
 
+/*
+ * SURFACE HIERARCHY
+ *
+ * Four levels, each a step up the same plum ramp, so depth is visible without any surface
+ * becoming a hard-edged box. The border is a violet hairline rather than a grey stroke —
+ * it is the card frame's colour at low opacity, which is what ties a panel to the deck.
+ *
+ *   page      the plum ground itself
+ *   .panel    content sitting on it — the common case
+ *   .panel-raised  navigation and bars that float above content
+ *   .panel-modal   dialogs, which must read as nearer than everything behind them
+ */
 @utility panel {
-  background: color-mix(in srgb, var(--color-violet-800) 60%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-violet-500) 45%, transparent);
+  background: color-mix(in srgb, var(--color-plum-700) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-500) 30%, transparent);
   border-radius: var(--radius-card);
   backdrop-filter: blur(8px);
+}
+
+@utility panel-raised {
+  background: color-mix(in srgb, var(--color-plum-800) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-600) 22%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+@utility panel-modal {
+  background: color-mix(in srgb, var(--color-plum-700) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-500) 38%, transparent);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 24px 60px -18px rgb(0 0 0 / 0.7),
+    0 0 0 1px color-mix(in srgb, var(--color-violet-600) 12%, transparent);
+}
+
+/*
+ * THE LOCKED CARD.
+ *
+ * The gradient is the printed card back, sampled top to bottom. Angled slightly off
+ * vertical so a grid of them does not band into stripes, and finished with a soft light
+ * off the top-left so each one reads as an object catching light rather than a flat swatch.
+ */
+@utility card-mystery {
+  background-image:
+    radial-gradient(
+      ellipse 52% 26% at 30% 9%,
+      color-mix(in srgb, white 20%, transparent) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      172deg,
+      var(--color-mystery-pink) 0%,
+      var(--color-mystery-orchid) 14%,
+      var(--color-mystery-lilac) 30%,
+      var(--color-mystery-mauve) 46%,
+      var(--color-mystery-violet) 58%,
+      var(--color-mystery-purple) 74%,
+      var(--color-mystery-indigo) 90%,
+      color-mix(in srgb, var(--color-mystery-indigo) 74%, var(--color-plum-950)) 100%
+    );
+}
+
+/*
+ * The printed cards carry a fine paper tooth. At the size a grid thumbnail renders, a real
+ * texture image would be invisible and cost a request — this is two hairline gratings
+ * crossed at 90°, which survives downscaling and stops the gradient looking like plastic.
+ */
+@utility card-tooth {
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgb(0 0 0 / 0.05) 0 1px,
+      transparent 1px 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.05) 0 1px,
+      transparent 1px 3px
+    );
 }
 
 /* Screen-reader-only helper (Tailwind ships `sr-only`; this is the focusable variant). */
@@ -155,34 +274,96 @@ body {
   }
 }
 
-/* --- Card flip (silhouette -> real artwork) --------------------------------- */
+/* --- Card flip -------------------------------------------------------------
+ *
+ * ONE OBJECT WITH TWO FACES, not two images being swapped.
+ *
+ * What was here before rotated a container while swapping the `src` of a single <img> at
+ * the moment of the click. Everything wrong with that flip followed from it: the back
+ * appeared at 0° instead of past 90°, an inner counter-rotation cancelled the perspective,
+ * and with no `perspective` ancestor the card squashed horizontally rather than turning.
+ *
+ * The structure below is the physical one. Both faces occupy exactly the same box, stacked
+ * with `position: absolute`; the back is pre-rotated 180° so its artwork is upright once
+ * the card has turned; `backface-visibility: hidden` means the face pointing away is simply
+ * not drawn, so the swap happens at exactly 90° — the moment the card is edge-on — with
+ * nothing to see at the crossover.
+ *
+ * `perspective` lives on the SCENE, one level above the rotating element, which is what
+ * gives the near edge its swing towards the viewer. Putting it on the card itself would
+ * flatten the turn into a horizontal scale.
+ */
 
 @utility flip-scene {
-  perspective: 1200px;
+  /* Judged by eye against the printed deck: shorter reads like a fairground trick, longer
+     is a flat wipe. This is roughly a hand's distance from a card held up. */
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
 }
 
 @utility flip-card {
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 900ms cubic-bezier(0.2, 0.85, 0.3, 1);
+  /*
+   * 560ms sits inside the 450-650 window and matches the weight of a real card: an
+   * ease-out that never overshoots, because a card turned by hand settles, it does not
+   * bounce. `will-change` keeps the two faces on one compositor layer so the seam between
+   * them cannot shimmer mid-turn.
+   */
+  transition: transform 560ms cubic-bezier(0.22, 0.72, 0.24, 1);
+  will-change: transform;
 }
 
 @utility flip-card-revealed {
   transform: rotateY(180deg);
 }
 
-/* Both faces stack; backface-visibility hides whichever is turned away. */
+/*
+ * Both faces are absolutely positioned in the same box, so the container's height comes
+ * from an invisible sizer rather than from either face — that is what stops the layout
+ * jumping when the two card images differ by a pixel of aspect ratio.
+ */
 @utility flip-face {
+  position: absolute;
+  inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   overflow: hidden;
   border-radius: var(--radius-card);
+  /* Safari repaints a rotated backface as a hairline seam without this nudge onto its own
+     layer. Costs nothing; prevents a flash right at 90°. */
+  transform: translateZ(0);
 }
 
 @utility flip-face-back {
+  transform: rotateY(180deg) translateZ(0);
+}
+
+/*
+ * A card is not perfectly flat to the light as it turns. This darkens each face as it
+ * rotates away, which is the single cheapest thing that makes the turn read as an object
+ * rather than a texture on a plane.
+ */
+@utility flip-shade {
   position: absolute;
   inset: 0;
-  transform: rotateY(180deg);
+  border-radius: var(--radius-card);
+  pointer-events: none;
+  background: linear-gradient(100deg, rgb(0 0 0 / 0.42) 0%, rgb(0 0 0 / 0) 55%);
+  opacity: 0;
+  transition: opacity 560ms cubic-bezier(0.22, 0.72, 0.24, 1);
+}
+
+.flip-card-revealed .flip-shade-front {
+  opacity: 1;
+}
+
+.flip-shade-back {
+  opacity: 1;
+}
+
+.flip-card-revealed .flip-shade-back {
+  opacity: 0;
 }
 
 @keyframes rise-in {
@@ -318,6 +499,29 @@ body {
   animation-name: plant-sprite-play;
   animation-duration: var(--sprite-duration, 0.8s);
   animation-iteration-count: infinite;
+}
+
+/*
+ * A sprite held on its resting pose, used as the botanical shadow inside a locked card.
+ * Frame 0 is authored as a complete, dignified plant precisely so it can be used still —
+ * the same property `prefers-reduced-motion` relies on.
+ */
+.plant-sprite-frozen {
+  animation: none;
+  background-position: 0 0;
+}
+
+/*
+ * The silhouette itself: the plant reduced to a shadow on the card back. Dark enough that
+ * nothing identifying survives beyond the shape, soft enough that it reads as something
+ * seen THROUGH the card rather than printed on it.
+ */
+.plant-silhouette {
+  /* Not pure black: a plum-tinted shadow sits IN the card rather than on top of it. The
+     drop-shadow is what lifts it off the gradient — without it the shape reads as a stain. */
+  filter: brightness(0) saturate(0) blur(0.3px)
+    drop-shadow(0 2px 6px color-mix(in srgb, var(--color-plum-950) 45%, transparent));
+  opacity: 0.58;
 }
 
 .plant-sprite-4 { animation-timing-function: steps(4); }

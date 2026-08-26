@@ -18,7 +18,7 @@ export function AccountBadge() {
   return (
     <Link
       href="/account"
-      className="fixed top-2 right-2 z-40 flex h-9 min-w-9 items-center justify-center rounded-full border border-violet-600 bg-violet-deep/90 px-3 text-xs font-semibold text-violet-100 backdrop-blur hover:bg-violet-800/80 sm:top-3 sm:right-3"
+      className="fixed top-2 right-2 z-40 flex h-9 min-w-9 items-center justify-center rounded-full border border-violet-600 bg-plum-950/90 px-3 text-xs font-semibold text-violet-100 backdrop-blur hover:bg-plum-600/80 sm:top-3 sm:right-3"
     >
       {user ? (initial ?? 'Account') : 'Sign in'}
     </Link>

@@ -67,7 +67,7 @@ export default function ResetPasswordPage() {
           </p>
           <Link
             href="/account"
-            className="mt-4 inline-flex min-h-11 items-center rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+            className="mt-4 inline-flex min-h-11 items-center rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
           >
             Request a new one
           </Link>

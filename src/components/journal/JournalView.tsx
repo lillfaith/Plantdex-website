@@ -62,7 +62,7 @@ export function JournalView() {
                         aria-hidden="true"
                         width={276}
                         height={276}
-                        className="h-14 w-14 rounded-lg bg-violet-900/60 object-contain"
+                        className="h-14 w-14 rounded-lg bg-plum-700/70 object-contain"
                       />
                     </Link>
                   )}
@@ -94,7 +94,7 @@ export function JournalView() {
                         </span>
                       )}
                       {sighting.foundAgain && (
-                        <span className="rounded-full bg-violet-800 px-2 py-0.5 text-[0.62rem] font-semibold tracking-wide text-violet-200 uppercase">
+                        <span className="rounded-full bg-plum-600 px-2 py-0.5 text-[0.62rem] font-semibold tracking-wide text-violet-200 uppercase">
                           Found again
                         </span>
                       )}
