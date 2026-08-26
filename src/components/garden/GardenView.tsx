@@ -1,19 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
-import { assetPath } from '@/lib/asset-path';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { buildGarden, nextStageHint, STAGE_LABEL, STAGE_SCALE } from '@/lib/garden';
+import { buildGarden, nextStageHint, STAGE_LABEL } from '@/lib/garden';
+import { GrowthSprite } from './GrowthSprite';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * My Garden — every species the player has discovered, growing as they engage with it.
  *
- * The sprites are the deck's own pixel art, cropped from the card fronts, so the garden
- * is visibly made of the same plants as the physical cards rather than stand-in clip art.
+ * Each plant is drawn at the stage the player has grown it to, in art authored for THAT
+ * species at THAT stage — a dandelion's first toothed leaves, then its rosette, then the
+ * rosette in flower, while a pine goes seedling → sapling → small tiered tree. Growth art
+ * arrives one species at a time (see `docs/garden-sprites.md`); a species without it yet
+ * falls back to its creature portrait, which is what the Garden showed before.
+ *
+ * The stage is also written under every sprite, because AGENTS.md does not allow the
+ * artwork to be the only thing carrying it.
  */
 export function GardenView() {
   const { state, ready, masteredCount } = useHerbdex();
@@ -67,26 +72,12 @@ export function GardenView() {
                     href={`/herbdex/${herb.id}`}
                     className="group flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-plum-600/50"
                   >
-                    {/* Sprites sit on a shared baseline so the bed reads as one planting.
-                        Size is the growth language: a sprout is small and pale, a mastered
-                        plant is full size and lit. Both stages also say their name, so the
-                        difference is never carried by the visual alone. */}
+                    {/* Every sprite gets the same box and stands on its bottom edge, so a
+                        pine and a dandelion share one ground line and the bed reads as a
+                        planting rather than a row of stickers. Growth is carried by the
+                        DRAWING now, not by scaling one image up and down. */}
                     <span className="flex h-20 w-full items-end justify-center">
-                      <Image
-                        src={assetPath(herb.sprite)}
-                        alt=""
-                        aria-hidden="true"
-                        width={276}
-                        height={276}
-                        style={{ width: `${STAGE_SCALE[stage] * 100}%` }}
-                        className={`max-h-20 origin-bottom object-contain transition-all duration-700 ease-out motion-reduce:transition-none ${
-                          stage === 'sprout'
-                            ? 'opacity-70 saturate-[0.7]'
-                            : stage === 'growing'
-                              ? 'opacity-90'
-                              : 'drop-shadow-[0_0_10px_rgba(240,193,90,0.45)]'
-                        }`}
-                      />
+                      <GrowthSprite herb={herb} stage={stage} />
                     </span>
                     <span className="mt-1 w-full truncate text-center text-[0.68rem] font-semibold text-violet-100">
                       {herb.commonName}

@@ -22,3 +22,7 @@ coverage/
 # Deck print masters are large binaries and are not kept in the web repo.
 # scripts/build_deck.py reads them from a local path passed on the command line.
 deck-source/
+
+# Python bytecode from the sprite/deck build scripts.
+__pycache__/
+*.pyc

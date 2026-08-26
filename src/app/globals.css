@@ -501,6 +501,39 @@ body {
   animation-iteration-count: infinite;
 }
 
+/* --- Garden growth sprites --------------------------------------------------
+ *
+ * Species-specific growth art: three stages on one sheet, walked by
+ * `background-position`. Crisp at any size — the authored pixels stay square, and nothing
+ * is ever resampled, which is the whole reason this is pixel art rather than small images.
+ */
+.garden-sprite {
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  /* Bottom-anchored, so a tall pine and a low dandelion stand on the same ground line. */
+  background-position-y: bottom;
+}
+
+/*
+ * The ONE animation in the Garden, and only on a mature plant. Two degrees, four seconds,
+ * pivoting at the soil — a plant settling in a draught, not a plant waving. A seedling
+ * holds perfectly still, so the sway is also a signal: movement means finished.
+ */
+@keyframes garden-sway {
+  0%,
+  100% {
+    transform: rotate(-0.8deg);
+  }
+  50% {
+    transform: rotate(0.8deg);
+  }
+}
+
+.garden-sprite-sway {
+  transform-origin: 50% 100%;
+  animation: garden-sway 4200ms ease-in-out infinite;
+}
+
 /*
  * A sprite held on its resting pose, used as the botanical shadow inside a locked card.
  * Frame 0 is authored as a complete, dignified plant precisely so it can be used still —
@@ -554,6 +587,14 @@ body {
   .plant-sprite {
     animation: none !important;
     background-position: 0 0 !important;
+  }
+
+  /* The Garden sway is decorative and carries nothing; a still sprite is the finished
+     drawing, so stopping it loses nothing at all. `background-position` must NOT be reset
+     here the way the portraits' is — it is what selects the growth stage. */
+  .garden-sprite-sway {
+    animation: none !important;
+    transform: none !important;
   }
 
   /* The flip is decorative — land on the revealed face immediately. */

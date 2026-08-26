@@ -1,0 +1,62 @@
+{
+  "achillea-millefolium": {
+    "herbId": "achillea-millefolium",
+    "src": "/cards/garden/achillea-millefolium.png",
+    "frameWidth": 120,
+    "frameHeight": 120,
+    "stages": [
+      "sprout",
+      "growing",
+      "flowering"
+    ],
+    "note": "Upright stem, finely cut leaves, flat-topped cream corymb. Feathery from stage 1."
+  },
+  "pinus-spp": {
+    "herbId": "pinus-spp",
+    "src": "/cards/garden/pinus-spp.png",
+    "frameWidth": 120,
+    "frameHeight": 120,
+    "stages": [
+      "sprout",
+      "growing",
+      "flowering"
+    ],
+    "note": "Woody. Cotyledon whorl, then a stepped sapling, then a tiered young tree with a cone."
+  },
+  "rubus-spp": {
+    "herbId": "rubus-spp",
+    "src": "/cards/garden/rubus-spp.png",
+    "frameWidth": 120,
+    "frameHeight": 120,
+    "stages": [
+      "sprout",
+      "growing",
+      "flowering"
+    ],
+    "note": "Arching cane with prickles from stage 1. Black fruit only at the last stage."
+  },
+  "taraxacum-officinale": {
+    "herbId": "taraxacum-officinale",
+    "src": "/cards/garden/taraxacum-officinale.png",
+    "frameWidth": 120,
+    "frameHeight": 120,
+    "stages": [
+      "sprout",
+      "growing",
+      "flowering"
+    ],
+    "note": "Basal rosette; spreads before it rises. Leafless scape carries a solid gold head."
+  },
+  "viola-sororia": {
+    "herbId": "viola-sororia",
+    "src": "/cards/garden/viola-sororia.png",
+    "frameWidth": 120,
+    "frameHeight": 120,
+    "stages": [
+      "sprout",
+      "growing",
+      "flowering"
+    ],
+    "note": "Stemless clump. Heart leaves from stage 1; flowers held just above them at stage 3."
+  }
+}
