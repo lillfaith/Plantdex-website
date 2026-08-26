@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 import type { Herb } from '@/lib/types';
 import { GROWTH_STAGE_LABEL, GROWTH_STAGES, type GrowthStage } from '@/lib/sightings';
 import { useSightingsStore } from '@/lib/sightings-store';
+import { useAuth } from '@/state/AuthProvider';
 import { SightingPhoto } from './SightingPhoto';
 
 /**
@@ -31,6 +32,7 @@ function formatDate(iso: string): string {
 
 export function MySightings({ herb }: { herb: Herb }) {
   const { sightings, addSighting, removeSighting } = useSightingsStore(herb.id);
+  const { user } = useAuth();
   const formRef = useRef<HTMLDialogElement>(null);
 
   const [date, setDate] = useState(todayIso);
@@ -40,6 +42,9 @@ export function MySightings({ herb }: { herb: Herb }) {
   const [foundAgain, setFoundAgain] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
+  // A save that failed has to say so and leave the form filled in. Closing the dialog on a
+  // failed write is how a sighting appears to have been logged and then isn't.
+  const [error, setError] = useState<string | null>(null);
 
   const reset = useCallback(() => {
     setDate(todayIso());
@@ -54,15 +59,22 @@ export function MySightings({ herb }: { herb: Herb }) {
     async (event: React.FormEvent) => {
       event.preventDefault();
       setSaving(true);
-      await addSighting({
-        herbId: herb.id,
-        date,
-        region: region.trim() || undefined,
-        notes: notes.trim() || undefined,
-        growthStage: growthStage || undefined,
-        foundAgain: foundAgain || undefined,
-        photo,
-      });
+      setError(null);
+      try {
+        await addSighting({
+          herbId: herb.id,
+          date,
+          region: region.trim() || undefined,
+          notes: notes.trim() || undefined,
+          growthStage: growthStage || undefined,
+          foundAgain: foundAgain || undefined,
+          photo,
+        });
+      } catch (cause) {
+        setError(cause instanceof Error ? cause.message : 'Could not save this sighting.');
+        setSaving(false);
+        return;
+      }
       setSaving(false);
       formRef.current?.close();
       reset();
@@ -88,6 +100,14 @@ export function MySightings({ herb }: { herb: Herb }) {
         </button>
       </div>
 
+      {/* Also rendered inside the dialog, because a modal makes everything behind it
+          inert: this copy is what a failed DELETE has to land on. */}
+      {error && (
+        <p role="alert" className="mt-3 text-sm font-semibold text-stat-temp">
+          {error}
+        </p>
+      )}
+
       {sightings.length === 0 ? (
         <p className="mt-3 text-sm text-violet-300">
           No sightings yet. Log each time you come across {herb.commonName}.
@@ -107,7 +127,14 @@ export function MySightings({ herb }: { herb: Herb }) {
                 </p>
                 <button
                   type="button"
-                  onClick={() => void removeSighting(sighting.id)}
+                  onClick={() => {
+                    setError(null);
+                    void removeSighting(sighting.id).catch((cause: unknown) => {
+                      setError(
+                        cause instanceof Error ? cause.message : 'Could not delete this sighting.',
+                      );
+                    });
+                  }}
                   className="text-xs text-violet-400 underline underline-offset-2 hover:text-stat-temp"
                 >
                   Delete
@@ -143,9 +170,17 @@ export function MySightings({ herb }: { herb: Herb }) {
         <h2 id="sighting-form-title" className="font-display text-lg font-bold text-gold-plate">
           Log a sighting of {herb.commonName}
         </h2>
+        {/*
+          This used to read "it stays on this device and does not change your collection or
+          XP". V0.3 made both halves wrong for a signed-in player: sightings sync to their
+          account, and mastery — which is XP — is re-derived server-side from exactly these
+          rows. A promise the product no longer keeps is worse than no promise, so it now
+          says what is actually true of the person reading it.
+        */}
         <p className="mt-1 text-xs text-violet-400">
-          This is a personal note. It stays on this device and does not change your
-          collection or XP.
+          {user
+            ? 'A personal note, saved to your account. Logging one awards no XP by itself, though repeat sightings are what master a card.'
+            : 'A personal note. It stays on this device. Logging one awards no XP by itself, though repeat sightings are what master a card.'}
         </p>
 
         <form onSubmit={onSubmit} className="mt-4 space-y-4">
@@ -226,6 +261,12 @@ export function MySightings({ herb }: { herb: Herb }) {
               I&apos;ve returned to a patch I saw before
             </span>
           </label>
+
+          {error && (
+            <p role="alert" className="text-sm font-semibold text-stat-temp">
+              {error} Your notes are still here — try again.
+            </p>
+          )}
 
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <button

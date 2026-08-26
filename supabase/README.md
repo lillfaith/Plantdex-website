@@ -108,6 +108,19 @@ deploy` bundles with esbuild and does not type-check, so a type error rides alon
 `src/lib/edge-shared.test.ts` covers the other half — that the generated `_shared/` copies
 match their sources and that every import specifier would resolve under Deno.
 
+After deploying, check the CORS preflight, which nothing else can see:
+
+```bash
+curl -i -X OPTIONS "https://<project-ref>.supabase.co/functions/v1/herbdex-action" \
+  -H "Origin: https://example.com" -H "Access-Control-Request-Method: POST"
+```
+
+Expect **204** with an `access-control-allow-origin` header. A **401** means the deployed
+copy predates the CORS handling, and every browser call to it is being blocked before the
+request is even sent — while `npm run verify:supabase` still passes, because Node does not
+enforce CORS. Signed in, that failure is silent and total: `reconcile()` returns null and no
+mastery or Field Research is ever awarded.
+
 ## After changing anything in `src/lib/{types,herbdex-state,deck,achievements,progression,mastery,rng,research,herbdex-reducer}.ts`
 
 Re-run `npm run sync:edge-shared` and redeploy the function — the copies under

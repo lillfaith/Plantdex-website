@@ -85,6 +85,38 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
     emit();
   }
 
+  /**
+   * Read the stored collection, retrying a failed read rather than declaring the player
+   * has nothing.
+   *
+   * The local adapter cannot fail; the remote one can, and `ready` is what every screen
+   * gates its "you have found N of 45" on. Becoming ready with an empty state after a
+   * dropped request would tell a signed-in player their collection is gone — and worse,
+   * every later mutation would then be computed against that empty state. Staying
+   * un-ready is honest, and the retries make a transient failure self-heal.
+   */
+  const RETRY_DELAYS_MS = [1_000, 3_000, 8_000];
+
+  async function hydrate(attempt = 0): Promise<void> {
+    try {
+      const loaded = await adapter.load();
+      const reconciled = reconcileAchievements(loaded);
+      snapshot = { state: reconciled, ready: true };
+      adapter.save(reconciled);
+      emit();
+    } catch (error) {
+      const delay = RETRY_DELAYS_MS[attempt];
+      if (delay === undefined) {
+        // Out of retries. Still not ready, still not claiming an empty collection: the
+        // screens keep their loading state and a reload is the way back.
+        console.error('[plantdex] could not load your collection', error);
+        return;
+      }
+      console.warn(`[plantdex] loading your collection failed, retrying in ${delay}ms`, error);
+      setTimeout(() => void hydrate(attempt + 1), delay);
+    }
+  }
+
   return {
     subscribe(listener) {
       listeners.add(listener);
@@ -94,12 +126,7 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
       // since the player's last visit.
       if (!hydrating) {
         hydrating = true;
-        void adapter.load().then((loaded) => {
-          const reconciled = reconcileAchievements(loaded);
-          snapshot = { state: reconciled, ready: true };
-          adapter.save(reconciled);
-          emit();
-        });
+        void hydrate();
       }
 
       return () => {
@@ -141,10 +168,16 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
           outcome.masteredIds.length > 0 || outcome.completedResearchIds.length > 0;
         if (changed) {
           // The server just wrote the authoritative rows (real timestamps included) —
-          // reload rather than guess at them locally.
-          const reloaded = await adapter.load();
-          snapshot = { state: reloaded, ready: true };
-          emit();
+          // reload rather than guess at them locally. A failed reload keeps the snapshot
+          // it already has: the rows are written either way, so the only cost is that they
+          // appear on the next load instead of this one.
+          try {
+            const reloaded = await adapter.load();
+            snapshot = { state: reloaded, ready: true };
+            emit();
+          } catch (error) {
+            console.warn('[plantdex] could not reload after reconciling', error);
+          }
         }
         return outcome;
       }

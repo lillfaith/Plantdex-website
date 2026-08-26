@@ -55,14 +55,44 @@ function rowsToRecord(
   return out;
 }
 
+/**
+ * CORS, without which this function cannot be called from a browser at all.
+ *
+ * `supabase.functions.invoke` sends `Authorization`, `apikey` and a JSON content type, so
+ * the request is never "simple" — the browser sends an OPTIONS preflight first and refuses
+ * to make the real call unless that preflight answers with these headers. Without them the
+ * preflight fell through to the 401 below, the POST was never sent, and every signed-in
+ * player silently stopped earning mastery and Field Research: `reconcile()` returns null on
+ * error, and a signed-in client has no local fallback path to award them instead.
+ *
+ * It is invisible to `npm run verify:supabase`, which calls the function from Node, where
+ * nothing enforces CORS. Only a browser sees this.
+ *
+ * `*` rather than the Pages origin: the credentials here are the JWT and anon key carried
+ * in headers, never a cookie, so there is nothing for an origin allow-list to protect —
+ * a forged origin still has to present someone's token, and RLS still scopes every read to
+ * whoever that token belongs to. Pinning the origin would also break local development
+ * against the same project.
+ */
+const CORS_HEADERS: Record<string, string> = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Max-Age': '86400',
+};
+
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
   });
 }
 
 Deno.serve(async (req) => {
+  // Answered before the auth check on purpose: a preflight never carries credentials, so
+  // rejecting it for having no Authorization header rejects every browser call there is.
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS_HEADERS });
+
   const authHeader = req.headers.get('Authorization');
   if (!authHeader) return json({ error: 'Missing Authorization header' }, 401);
 
