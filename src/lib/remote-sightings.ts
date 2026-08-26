@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from 'react';
 import { supabase } from './supabase-client';
 import type { GrowthStage, NewSighting, Sighting } from './sightings';
+import { prepareImage } from './image-prepare';
 
 /**
  * The signed-in counterpart to `sightings.ts`. Same shape (`Sighting`, `NewSighting`), a
@@ -167,14 +168,19 @@ export async function addRemoteSighting(
   let photoPath: string | undefined;
 
   if (supabase && input.photoFile) {
-    const ext = input.photoFile.name.split('.').pop() || 'jpg';
-    const path = `${userId}/${id}.${ext}`;
+    // Prepared exactly as the signed-out path prepares it: a 1280px JPEG, EXIF and its GPS
+    // dropped in the re-encode. This used to upload the untouched original with an
+    // extension guessed from the filename, so a phone photo went to Storage at full size
+    // and a mislabelled file was stored under a type it was not.
+    const { blob, contentType, extension } = await prepareImage(input.photoFile);
+    const path = `${userId}/${id}.${extension}`;
     const { error } = await supabase.storage
       .from('sighting-photos')
-      .upload(path, input.photoFile, { contentType: input.photoFile.type || 'image/jpeg' });
+      .upload(path, blob, { contentType });
     // Losing the photo must not lose the note the player just wrote — log a sighting
     // without it rather than fail the whole submission.
-    if (!error) photoPath = path;
+    if (error) console.warn('[plantdex] photo upload failed; saving the sighting without it', error);
+    else photoPath = path;
   }
 
   const sighting: Sighting = {

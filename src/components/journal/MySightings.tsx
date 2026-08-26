@@ -6,6 +6,7 @@ import { GROWTH_STAGE_LABEL, GROWTH_STAGES, type GrowthStage } from '@/lib/sight
 import { useSightingsStore } from '@/lib/sightings-store';
 import { useAuth } from '@/state/AuthProvider';
 import { SightingPhoto } from './SightingPhoto';
+import { PhotoField } from './PhotoField';
 
 /**
  * "My Sightings" — a running field record for one species.
@@ -228,15 +229,7 @@ export function MySightings({ herb }: { herb: Herb }) {
             </select>
           </label>
 
-          <label className="block">
-            <span className="text-xs font-semibold text-violet-200">Photo (optional)</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
-              className="mt-1 block w-full text-xs text-violet-300 file:mr-3 file:min-h-10 file:rounded-full file:border-0 file:bg-violet-700 file:px-4 file:text-xs file:font-semibold file:text-violet-100"
-            />
-          </label>
+          <PhotoField file={photo} onChange={setPhoto} />
 
           <label className="block">
             <span className="text-xs font-semibold text-violet-200">Notes (optional)</span>
