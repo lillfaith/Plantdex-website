@@ -1,12 +1,13 @@
 import type { HerbStats } from '@/lib/types';
+import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 
 const MAX_PIPS = 5;
 
-const ROWS = [
-  { key: 'water', label: 'Water', symbol: '💧', color: 'bg-stat-water' },
-  { key: 'sun', label: 'Sun', symbol: '☀', color: 'bg-stat-sun' },
-  { key: 'temperature', label: 'Temperature', symbol: '🌡', color: 'bg-stat-temp' },
-] as const;
+const ROWS: { key: keyof HerbStats; label: string; icon: IconName; color: string }[] = [
+  { key: 'water', label: 'Water', icon: 'water', color: 'bg-stat-water' },
+  { key: 'sun', label: 'Sun', icon: 'sun', color: 'bg-stat-sun' },
+  { key: 'temperature', label: 'Temperature', icon: 'temperature', color: 'bg-stat-temp' },
+];
 
 /**
  * The 1-5 pip rows printed on each card face.
@@ -23,7 +24,7 @@ export function StatPips({ stats }: { stats: HerbStats }) {
         return (
           <div key={row.key} className="flex items-center gap-3">
             <dt className="flex w-32 shrink-0 items-center gap-1.5 text-xs font-medium text-violet-300">
-              <span aria-hidden="true">{row.symbol}</span>
+              <PlantdexIcon name={row.icon} className="text-sm" />
               {row.label}
             </dt>
             <dd className="flex items-center gap-2">

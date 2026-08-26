@@ -28,7 +28,7 @@ export function GlossaryView() {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search terms…"
-          className="min-h-11 w-full rounded-full border border-violet-700 bg-violet-900/60 px-4 text-sm text-violet-100 placeholder:text-violet-500"
+          className="min-h-11 w-full rounded-full border border-violet-700 bg-plum-700/70 px-4 text-sm text-violet-100 placeholder:text-violet-500"
         />
       </label>
 

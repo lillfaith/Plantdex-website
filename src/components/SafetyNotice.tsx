@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { DISCLAIMER } from '@/lib/deck';
+import { PlantdexIcon } from './icons/PlantdexIcon';
 
 /**
  * Herbal safety.
@@ -43,7 +44,7 @@ export function SafetyNotice({
         className="mx-auto flex max-w-2xl flex-wrap items-baseline justify-center gap-x-2 gap-y-1 text-center text-xs leading-relaxed text-violet-400"
       >
         <span id="safety-heading" className="font-bold tracking-wide text-gold-400 uppercase">
-          <span aria-hidden="true">⚠</span> Herbal safety
+          <PlantdexIcon name="safety" className="text-sm" /> Herbal safety
         </span>
         <span>For education only. Always verify identification before use.</span>
         <SafetyLink />
@@ -60,7 +61,7 @@ export function SafetyNotice({
         id="safety-heading"
         className="flex items-center gap-2 text-xs font-bold tracking-wide text-gold-400 uppercase"
       >
-        <span aria-hidden="true">⚠</span> Herbal safety
+        <PlantdexIcon name="safety" className="text-sm" /> Herbal safety
       </h2>
       <p className="mt-1.5 text-sm leading-relaxed text-violet-200">{context}</p>
       <p className="mt-2 text-xs text-violet-400">
@@ -108,7 +109,7 @@ export function CardWarning({ warning }: { warning: string }) {
       role="note"
       className="flex items-start gap-2 rounded-xl border border-stat-temp/70 bg-stat-temp/20 px-3 py-2.5 text-sm font-semibold text-violet-100"
     >
-      <span aria-hidden="true">⚠</span>
+      <PlantdexIcon name="safety" className="mt-0.5 shrink-0 text-base" />
       <span>
         <span className="sr-only">Warning: </span>
         {warning}
@@ -134,7 +135,7 @@ export function SiteCaution({ caution }: { caution: string }) {
       role="note"
       className="flex items-start gap-2 rounded-xl border border-stat-temp/70 bg-stat-temp/20 px-3 py-2.5 text-sm font-semibold text-violet-100"
     >
-      <span aria-hidden="true">⚠</span>
+      <PlantdexIcon name="safety" className="mt-0.5 shrink-0 text-base" />
       <span>
         <span className="sr-only">Warning: </span>
         {caution}{' '}
@@ -162,9 +163,9 @@ export function CardIssueNote({ issue }: { issue: string }) {
   return (
     <p
       role="note"
-      className="flex items-start gap-2 rounded-xl border border-violet-600/70 bg-violet-900/60 px-3 py-2.5 text-sm text-violet-100"
+      className="flex items-start gap-2 rounded-xl border border-violet-600/70 bg-plum-700/70 px-3 py-2.5 text-sm text-violet-100"
     >
-      <span aria-hidden="true">✎</span>
+      <PlantdexIcon name="errata" className="mt-0.5 shrink-0 text-base" />
       <span>
         <span className="font-semibold">Printing error on this card. </span>
         {issue} The entry below is transcribed exactly as the card reads.

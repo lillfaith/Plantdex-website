@@ -4,6 +4,7 @@ import type { Herb } from '@/lib/types';
 import { DISCLAIMER, HERBS } from '@/lib/deck';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { citedCardCount } from '@/lib/card-sources';
+import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 
 export const metadata: Metadata = {
   title: 'Herbal safety',
@@ -76,8 +77,9 @@ export default function SafetyPage() {
         </Link>
       </nav>
 
-      <h1 className="font-display text-3xl font-extrabold text-gold-plate">
-        <span aria-hidden="true">⚠</span> Herbal safety
+      <h1 className="font-display flex items-center gap-3 text-3xl font-extrabold text-gold-plate">
+        <PlantdexIcon name="safety" className="shrink-0 text-2xl text-gold-400" />
+        Herbal safety
       </h1>
       <p className="mt-1 text-sm text-violet-300">
         The full version of the notice you see around the site.
@@ -229,11 +231,9 @@ function WarningList({ items }: { items: { herb: Herb; text: string }[] }) {
         <li key={herb.id}>
           <Link
             href={`/herbdex/${herb.id}`}
-            className="panel flex items-start gap-3 p-4 transition-colors hover:bg-violet-800/50"
+            className="panel flex items-start gap-3 p-4 transition-colors hover:bg-plum-600/50"
           >
-            <span aria-hidden="true" className="shrink-0 text-stat-temp">
-              ⚠
-            </span>
+            <PlantdexIcon name="safety" className="mt-0.5 shrink-0 text-lg text-stat-temp" />
             <span>
               <span className="block text-sm font-bold text-violet-100">
                 {herb.commonName}{' '}

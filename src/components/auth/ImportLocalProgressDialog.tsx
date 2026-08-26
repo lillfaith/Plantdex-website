@@ -77,7 +77,7 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
     <dialog
       ref={ref}
       aria-labelledby="import-title"
-      className="panel m-auto w-[min(26rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+      className="panel m-auto w-[min(26rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
     >
       <h2 id="import-title" className="font-display text-lg font-bold text-gold-plate">
         Bring your progress with you?
@@ -93,7 +93,7 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
           type="button"
           onClick={onSkip}
           disabled={status === 'importing'}
-          className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800 disabled:opacity-60"
+          className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600 disabled:opacity-60"
         >
           Not now
         </button>

@@ -72,7 +72,7 @@ export function GrowthPlaceholder({
 }) {
   return (
     <div
-      className={`flex items-center justify-center rounded-[var(--radius-card)] border border-violet-700/50 bg-violet-900/40 ${className}`}
+      className={`flex items-center justify-center rounded-[var(--radius-card)] border border-violet-700/50 bg-plum-800/40 ${className}`}
     >
       <GrowthLoader label={label} />
     </div>

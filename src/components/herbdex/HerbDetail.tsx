@@ -24,6 +24,7 @@ import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
 import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
 import { PlantSprite } from '../PlantSprite';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * A herb page, gated on discovery.
@@ -68,7 +69,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     <dialog
       ref={celebrateRef}
       aria-labelledby="celebrate-title"
-      className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+      className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
     >
       {celebration && (
         <DiscoveryCelebration
@@ -101,10 +102,13 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     <dialog
       ref={masteryRef}
       aria-labelledby="mastered-title"
-      className="panel m-auto max-h-[90dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-5 text-center text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+      className="panel m-auto max-h-[90dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-5 text-center text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
     >
-      <p aria-hidden="true" className="text-4xl text-gold-400 drop-shadow-[0_0_14px_rgba(240,193,90,0.5)]">
-        ★
+      <p
+        aria-hidden="true"
+        className="flex justify-center text-4xl text-gold-400 drop-shadow-[0_0_14px_rgba(240,193,90,0.5)]"
+      >
+        <PlantdexIcon name="mastered" />
       </p>
       <h2 id="mastered-title" className="font-display mt-2 text-xl font-extrabold text-gold-plate">
         Card mastered
@@ -167,8 +171,8 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           state is never ambiguous. */}
       {!discovered && revealed && (
         <p className="panel mb-4 p-3 text-xs text-violet-300">
-          <span aria-hidden="true">👁</span> Revealed for reading — still undiscovered until
-          you find it outdoors.
+          <PlantdexIcon name="revealed" className="text-sm" /> Revealed for reading — still
+          undiscovered until you find it outdoors.
         </p>
       )}
 
@@ -206,10 +210,10 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <RarityBadge rarity={herb.rarity} />
-            <span className="inline-flex items-center rounded-full border border-violet-600 bg-violet-900/60 px-2 py-0.5 text-[0.68rem] font-bold tracking-wide text-violet-200 uppercase">
+            <span className="inline-flex items-center rounded-full border border-violet-600 bg-plum-700/70 px-2 py-0.5 text-[0.68rem] font-bold tracking-wide text-violet-200 uppercase">
               Best in {SEASON_LABEL[herb.season]}
             </span>
-            <span className="inline-flex items-center rounded-full border border-violet-600 bg-violet-900/60 px-2 py-0.5 text-[0.68rem] font-bold tracking-wide text-violet-200 uppercase">
+            <span className="inline-flex items-center rounded-full border border-violet-600 bg-plum-700/70 px-2 py-0.5 text-[0.68rem] font-bold tracking-wide text-violet-200 uppercase">
               {herb.xp} XP
             </span>
           </div>

@@ -31,7 +31,7 @@ export function GlossaryTermLink({ word }: { word: string }) {
       <dialog
         ref={dialogRef}
         aria-labelledby={titleId}
-        className="panel m-auto w-[min(24rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-violet-deep/80 backdrop:backdrop-blur-sm"
+        className="panel m-auto w-[min(24rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-plum-950/80 backdrop:backdrop-blur-sm"
       >
         <h2 id={titleId} className="font-display text-lg font-bold text-gold-plate">
           {term.term}

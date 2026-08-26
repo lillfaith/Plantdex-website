@@ -5,6 +5,7 @@ import type { Herb } from '@/lib/types';
 import { buildKnowledgeCheck, MIN_QUESTIONS } from '@/lib/knowledge-check';
 import { XP_FOR_LEARNING } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * The card check — the second stage of mastery.
@@ -106,7 +107,7 @@ export function KnowledgeCheck({
       <dialog
         ref={dialogRef}
         aria-labelledby="check-title"
-        className="panel m-auto max-h-[90dvh] w-[min(28rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+        className="panel m-auto max-h-[90dvh] w-[min(28rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
       >
         <h2 id="check-title" className="font-display text-lg font-bold text-gold-plate">
           {finished ? (passed ? 'Card learned' : 'Not quite yet') : `Card check — ${herb.commonName}`}
@@ -125,13 +126,13 @@ export function KnowledgeCheck({
                 const isPicked = optionIndex === picked;
                 const revealed = picked !== null;
 
-                let tone = 'border-violet-600 bg-violet-900/50 text-violet-100 hover:bg-violet-800';
+                let tone = 'border-violet-600 bg-plum-800/50 text-violet-100 hover:bg-plum-600';
                 if (revealed && isAnswer) {
                   tone = 'border-gold-500 bg-gold-500/15 text-gold-300';
                 } else if (revealed && isPicked) {
                   tone = 'border-pink-accent bg-pink-accent/15 text-violet-100';
                 } else if (revealed) {
-                  tone = 'border-violet-700 bg-violet-900/40 text-violet-400';
+                  tone = 'border-violet-700 bg-plum-800/40 text-violet-400';
                 }
 
                 return (
@@ -143,8 +144,8 @@ export function KnowledgeCheck({
                       className={`flex min-h-11 w-full items-center gap-2 rounded-xl border px-4 py-2 text-left text-sm font-semibold transition-colors disabled:cursor-default ${tone}`}
                     >
                       <span className="flex-1">{option}</span>
-                      {revealed && isAnswer && <span aria-hidden="true">✓</span>}
-                      {revealed && isPicked && !isAnswer && <span aria-hidden="true">✕</span>}
+                      {revealed && isAnswer && <PlantdexIcon name="check" />}
+                      {revealed && isPicked && !isAnswer && <PlantdexIcon name="cross" />}
                     </button>
                   </li>
                 );
@@ -163,7 +164,7 @@ export function KnowledgeCheck({
               <button
                 type="button"
                 onClick={() => dialogRef.current?.close()}
-                className="min-h-11 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+                className="min-h-11 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-plum-600"
               >
                 Close
               </button>
@@ -210,7 +211,7 @@ export function KnowledgeCheck({
                 <button
                   type="button"
                   onClick={restart}
-                  className="min-h-11 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+                  className="min-h-11 rounded-full border border-violet-500 px-4 text-sm font-semibold text-violet-200 hover:bg-plum-600"
                 >
                   Try again
                 </button>

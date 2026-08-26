@@ -1,13 +1,13 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import type { DiscoveryResult, Herb } from '@/lib/types';
-import { assetPath } from '@/lib/asset-path';
 import { revealHerb } from '@/lib/reveals';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { DiscoverPanel } from './DiscoverPanel';
 import { CardWarning, SiteCaution } from '../SafetyNotice';
+import { MysteryCard } from './MysteryCard';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * A herb the player has not discovered yet.
@@ -33,25 +33,18 @@ export function LockedHerb({
 
   return (
     <div className="mx-auto max-w-sm text-center">
-      <p className="text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
-        {number} — Undiscovered <span aria-hidden="true">🌿</span>
+      <p className="flex items-center justify-center gap-1.5 text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
+        <PlantdexIcon name="locked" className="text-sm" />
+        {number} — Undiscovered
       </p>
 
-      <div className="relative mx-auto mt-4 w-52 overflow-hidden rounded-[var(--radius-card)] shadow-card">
-        <Image
-          src={assetPath(herb.thumb)}
-          alt=""
-          aria-hidden="true"
-          width={400}
-          height={648}
-          priority
-          className="w-full scale-105 blur-[3.5px] brightness-[0.62] contrast-[1.05] saturate-0"
-        />
-        <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-violet-deep/95 via-violet-deep/40 to-transparent pb-4">
-          <span className="text-3xl text-violet-300/80" aria-hidden="true">
-            ?
-          </span>
-        </div>
+      {/*
+        The card, face down. Same treatment as the grid — the printed back's own pink to
+        periwinkle ramp, with the plant present only as a shadow. Larger here, so the
+        silhouette is worth looking at rather than merely worth noticing.
+      */}
+      <div className="relative mx-auto mt-4 aspect-[356/576] w-52 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift">
+        <MysteryCard herb={herb} size="detail" />
       </div>
 
       <h1 className="font-display mt-5 text-2xl font-bold text-violet-100">
@@ -101,7 +94,7 @@ export function LockedHerb({
       <dialog
         ref={confirmRef}
         aria-labelledby="reveal-title"
-        className="panel m-auto w-[min(24rem,calc(100vw-2rem))] p-5 text-left text-violet-100 backdrop:bg-violet-deep/80 backdrop:backdrop-blur-sm"
+        className="panel m-auto w-[min(24rem,calc(100vw-2rem))] p-5 text-left text-violet-100 backdrop:bg-plum-950/80 backdrop:backdrop-blur-sm"
       >
         <h2 id="reveal-title" className="font-display text-lg font-bold text-gold-plate">
           Reveal this plant?
@@ -114,7 +107,7 @@ export function LockedHerb({
           <button
             type="button"
             onClick={() => confirmRef.current?.close()}
-            className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+            className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
           >
             Cancel
           </button>

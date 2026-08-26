@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 
 /**
  * Primary navigation.
@@ -12,13 +13,13 @@ import { usePathname } from 'next/navigation';
  * wider screens it moves to the top.
  */
 
-const LINKS = [
-  { href: '/', label: 'Home', icon: '🏠' },
-  { href: '/herbdex', label: 'Herbdex', icon: '🌿' },
-  { href: '/garden', label: 'Garden', icon: '🌱' },
-  { href: '/journal', label: 'Journal', icon: '📓' },
-  { href: '/seasons', label: 'Seasons', icon: '🗓' },
-  { href: '/learn', label: 'Learn', icon: '📖' },
+const LINKS: { href: string; label: string; icon: IconName }[] = [
+  { href: '/', label: 'Home', icon: 'home' },
+  { href: '/herbdex', label: 'Herbdex', icon: 'herbdex' },
+  { href: '/garden', label: 'Garden', icon: 'garden' },
+  { href: '/journal', label: 'Journal', icon: 'journal' },
+  { href: '/seasons', label: 'Seasons', icon: 'seasons' },
+  { href: '/learn', label: 'Learn', icon: 'learn' },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -32,7 +33,7 @@ export function SiteNav() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-violet-700/60 bg-violet-deep/95 backdrop-blur sm:static sm:border-t-0 sm:border-b sm:bg-transparent"
+      className="panel-raised fixed inset-x-0 bottom-0 z-50 rounded-none border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)] sm:static sm:border-x-0 sm:border-t-0 sm:bg-transparent sm:backdrop-blur-none"
     >
       <ul className="mx-auto flex max-w-4xl items-stretch justify-between gap-0.5 px-1 py-1 sm:justify-start sm:gap-1 sm:px-4 sm:py-2">
         {LINKS.map((link) => {
@@ -42,15 +43,25 @@ export function SiteNav() {
               <Link
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
-                className={`flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-lg px-1 text-[0.62rem] font-semibold transition-colors sm:min-h-10 sm:flex-row sm:gap-1.5 sm:px-3 sm:text-sm ${
+                className={`relative flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[0.62rem] font-semibold transition-colors sm:min-h-10 sm:flex-row sm:gap-1.5 sm:px-3 sm:text-sm ${
                   active
-                    ? 'bg-violet-800/70 text-gold-300'
-                    : 'text-violet-300 hover:bg-violet-800/40 hover:text-violet-100'
+                    ? 'bg-plum-600/70 text-gold-300'
+                    : 'text-violet-300 hover:bg-plum-600/40 hover:text-violet-100'
                 }`}
               >
-                <span aria-hidden="true" className="text-base leading-none sm:text-sm">
-                  {link.icon}
-                </span>
+                {/*
+                  The active marker is a gold rule along the edge the bar is anchored to —
+                  under the label on a phone's bottom bar, above it on the desktop top bar.
+                  A tinted pill alone was doing the work before, and a tint is the first
+                  thing to disappear on a dim screen outdoors.
+                */}
+                {active && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-gold-500 sm:inset-x-2 sm:top-auto sm:bottom-0"
+                  />
+                )}
+                <PlantdexIcon name={link.icon} className="text-[1.35rem] leading-none sm:text-base" />
                 {link.label}
               </Link>
             </li>

@@ -6,6 +6,9 @@ import type { DiscoveryResult, Herb } from '@/lib/types';
 import { getAchievement } from '@/lib/achievements';
 import { progressFromXp } from '@/lib/progression';
 import { assetPath } from '@/lib/asset-path';
+import { MysteryCard } from './MysteryCard';
+import { achievementIcon } from '../icons/achievement-icons';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { CountUp } from './CountUp';
 
 /**
@@ -71,22 +74,23 @@ export function DiscoveryCelebration({
       </h2>
       <p className="font-botanical text-sm text-violet-300 italic">{herb.scientificName}</p>
 
-      {/* The card the player tapped, flipping from its locked silhouette to the real art. */}
+      {/*
+        The reveal, and the one place the deck's own object-ness has to be felt: the card
+        the player was looking at a second ago was face down, and it turns over to become
+        the printed card. Mystery back → real front, one object, ~560ms.
+
+        The faces are absolutely positioned, so an invisible sizer establishes the box —
+        the same structure as `CardFlip`, for the same reason.
+      */}
       <div className="flip-scene mx-auto mt-4 w-44">
         <div className={`flip-card ${revealed ? 'flip-card-revealed' : ''}`}>
-          <div className="flip-face">
-            <Image
-              src={assetPath(herb.thumb)}
-              alt=""
-              aria-hidden="true"
-              width={400}
-              height={648}
-              className="w-full scale-105 blur-[3.5px] brightness-[0.62] contrast-[1.05] saturate-0"
-            />
+          <div className="aspect-[356/576] w-full" />
+
+          <div className="flip-face shadow-card">
+            <MysteryCard herb={herb} />
+            <span className="flip-shade flip-shade-front" aria-hidden="true" />
           </div>
-          {/* No `relative` here: flip-face-back is already absolutely positioned, which
-              both stacks the faces and gives the sheen pseudo-element its containing
-              block. Adding `relative` would override it and stack the faces vertically. */}
+
           <div className="flip-face flip-face-back animate-sheen shadow-card-lift">
             <Image
               src={assetPath(herb.image)}
@@ -94,7 +98,7 @@ export function DiscoveryCelebration({
               width={800}
               height={1295}
               priority
-              className="w-full"
+              className="h-full w-full object-cover"
             />
           </div>
         </div>
@@ -130,7 +134,7 @@ export function DiscoveryCelebration({
             XP
           </p>
         </div>
-        <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-violet-deep/70 ring-1 ring-violet-700/60">
+        <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60">
           <div
             className="h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent transition-[width] duration-700 ease-out motion-reduce:transition-none"
             style={{ width: `${barPct}%` }}
@@ -138,7 +142,7 @@ export function DiscoveryCelebration({
         </div>
         {leveledUp && (
           <p className="animate-rise-in mt-2 text-xs font-bold text-gold-400">
-            <span aria-hidden="true">▲</span> Level up — you are now {after.levelName}
+            <PlantdexIcon name="sprout" className="text-xs" /> Level up — you are now {after.levelName}
           </p>
         )}
       </div>
@@ -154,7 +158,7 @@ export function DiscoveryCelebration({
                 className="animate-toast-in rounded-xl border border-gold-500/60 bg-gold-500/15 px-3 py-2 text-left"
               >
                 <p className="text-sm font-bold text-gold-300">
-                  <span aria-hidden="true">{achievement.icon}</span> Achievement unlocked —{' '}
+                  <PlantdexIcon name={achievementIcon(achievement.id)} className="text-sm" /> Achievement unlocked —{' '}
                   {achievement.name}
                 </p>
                 <p className="text-xs text-violet-200">{achievement.description}</p>

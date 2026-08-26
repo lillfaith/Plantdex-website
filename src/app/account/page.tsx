@@ -65,7 +65,7 @@ export default function AccountPage() {
             <button
               type="button"
               onClick={() => void signOut()}
-              className="mt-4 min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+              className="mt-4 min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
             >
               Sign out
             </button>

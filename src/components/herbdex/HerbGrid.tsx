@@ -30,7 +30,7 @@ function Chip({
       className={`min-h-11 rounded-full border px-3 text-xs font-semibold whitespace-nowrap transition-colors ${
         active
           ? 'border-gold-500 bg-gold-500/20 text-gold-300'
-          : 'border-violet-700 bg-violet-900/50 text-violet-300 hover:border-violet-500 hover:text-violet-100'
+          : 'border-violet-700 bg-plum-800/50 text-violet-300 hover:border-violet-500 hover:text-violet-100'
       }`}
       {...props}
     >
@@ -86,7 +86,7 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search discovered herbs or card number…"
-            className="min-h-11 w-full rounded-full border border-violet-700 bg-violet-900/60 px-4 text-sm text-violet-100 placeholder:text-violet-500"
+            className="min-h-11 w-full rounded-full border border-violet-700 bg-plum-700/70 px-4 text-sm text-violet-100 placeholder:text-violet-500"
           />
         </label>
 

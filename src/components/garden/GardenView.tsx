@@ -7,6 +7,7 @@ import { assetPath } from '@/lib/asset-path';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { buildGarden, nextStageHint, STAGE_LABEL, STAGE_SCALE } from '@/lib/garden';
 import { GrowthPlaceholder } from '../GrowthLoader';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
  * My Garden — every species the player has discovered, growing as they engage with it.
@@ -41,7 +42,7 @@ export function GardenView() {
         ) : garden.length === 0 ? (
           <div className="py-10 text-center">
             <p className="text-4xl" aria-hidden="true">
-              🌱
+              <PlantdexIcon name="garden" />
             </p>
             <p className="mt-3 text-sm text-violet-200">Your garden is empty ground.</p>
             <p className="mt-1 text-sm text-violet-300">
@@ -64,7 +65,7 @@ export function GardenView() {
                 <li key={herbId}>
                   <Link
                     href={`/herbdex/${herb.id}`}
-                    className="group flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-violet-800/50"
+                    className="group flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-plum-600/50"
                   >
                     {/* Sprites sit on a shared baseline so the bed reads as one planting.
                         Size is the growth language: a sprout is small and pale, a mastered
@@ -95,7 +96,6 @@ export function GardenView() {
                         stage === 'flowering' ? 'font-bold text-gold-300' : 'text-violet-400'
                       }`}
                     >
-                      {stage === 'flowering' ? '★ ' : ''}
                       {STAGE_LABEL[stage]}
                     </span>
                     {hint && <span className="sr-only">{hint}</span>}

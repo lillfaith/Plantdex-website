@@ -13,7 +13,7 @@ function Chips({ items, tone }: { items: string[]; tone: 'gold' | 'cyan' | 'viol
   const toneClass = {
     gold: 'border-gold-500/45 bg-gold-500/12 text-gold-300',
     cyan: 'border-cyan-accent/45 bg-cyan-accent/12 text-cyan-accent',
-    violet: 'border-violet-600 bg-violet-900/60 text-violet-200',
+    violet: 'border-violet-600 bg-plum-700/70 text-violet-200',
   }[tone];
 
   return (

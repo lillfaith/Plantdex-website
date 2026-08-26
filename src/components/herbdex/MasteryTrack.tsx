@@ -10,6 +10,7 @@ import {
 } from '@/lib/mastery';
 import { XP_FOR_LEARNING, XP_FOR_MASTERY } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { KnowledgeCheck } from './KnowledgeCheck';
 
 /**
@@ -53,14 +54,14 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
               className={`rounded-xl border p-2.5 text-center ${
                 done
                   ? 'border-gold-500/60 bg-gold-500/12'
-                  : 'border-violet-700 bg-violet-900/50'
+                  : 'border-violet-700 bg-plum-800/50'
               }`}
             >
               <span
                 aria-hidden="true"
                 className={`block text-base leading-none ${done ? 'text-gold-300' : 'text-violet-400'}`}
               >
-                {done ? '✓' : '○'}
+                <PlantdexIcon name={done ? 'check' : 'pending'} />
               </span>
               <span
                 className={`mt-1 block text-[0.68rem] font-bold tracking-wide uppercase ${
@@ -111,7 +112,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
             aria-hidden="true"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-500/20 text-lg text-gold-300"
           >
-            ★
+            <PlantdexIcon name="mastered" />
           </span>
           <div>
             <p className="text-sm font-bold text-gold-300">Mastered</p>

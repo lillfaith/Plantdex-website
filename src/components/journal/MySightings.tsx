@@ -120,7 +120,7 @@ export function MySightings({ herb }: { herb: Herb }) {
                 <p className="text-sm font-bold text-violet-100">
                   <time dateTime={sighting.date}>{formatDate(sighting.date)}</time>
                   {sighting.foundAgain && (
-                    <span className="ml-2 rounded-full bg-violet-800 px-2 py-0.5 text-[0.62rem] font-semibold tracking-wide text-violet-200 uppercase">
+                    <span className="ml-2 rounded-full bg-plum-600 px-2 py-0.5 text-[0.62rem] font-semibold tracking-wide text-violet-200 uppercase">
                       Found again
                     </span>
                   )}
@@ -165,7 +165,7 @@ export function MySightings({ herb }: { herb: Herb }) {
       <dialog
         ref={formRef}
         aria-labelledby="sighting-form-title"
-        className="panel m-auto max-h-[90dvh] w-[min(28rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-violet-deep/85 backdrop:backdrop-blur-sm"
+        className="panel m-auto max-h-[90dvh] w-[min(28rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
       >
         <h2 id="sighting-form-title" className="font-display text-lg font-bold text-gold-plate">
           Log a sighting of {herb.commonName}
@@ -192,7 +192,7 @@ export function MySightings({ herb }: { herb: Herb }) {
               max={todayIso()}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-violet-900/60 px-3 text-sm text-violet-100"
+              className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-plum-700/70 px-3 text-sm text-violet-100"
             />
           </label>
 
@@ -204,7 +204,7 @@ export function MySightings({ herb }: { herb: Herb }) {
               onChange={(e) => setRegion(e.target.value)}
               placeholder="e.g. North Georgia"
               maxLength={80}
-              className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-violet-900/60 px-3 text-sm text-violet-100 placeholder:text-violet-500"
+              className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-plum-700/70 px-3 text-sm text-violet-100 placeholder:text-violet-500"
             />
             <span className="mt-1 block text-[0.68rem] leading-relaxed text-violet-400">
               Keep it general. Please don&apos;t record exact spots for wild plants — precise
@@ -217,7 +217,7 @@ export function MySightings({ herb }: { herb: Herb }) {
             <select
               value={growthStage}
               onChange={(e) => setGrowthStage(e.target.value as GrowthStage | '')}
-              className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-violet-900/60 px-3 text-sm text-violet-100"
+              className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-plum-700/70 px-3 text-sm text-violet-100"
             >
               <option value="">Not recorded</option>
               {GROWTH_STAGES.map((stage) => (
@@ -246,7 +246,7 @@ export function MySightings({ herb }: { herb: Herb }) {
               rows={3}
               maxLength={1000}
               placeholder="Growing along the sunny edge of a field. Several plants flowering."
-              className="mt-1 w-full rounded-lg border border-violet-600 bg-violet-900/60 p-3 text-sm text-violet-100 placeholder:text-violet-500"
+              className="mt-1 w-full rounded-lg border border-violet-600 bg-plum-700/70 p-3 text-sm text-violet-100 placeholder:text-violet-500"
             />
           </label>
 
@@ -275,7 +275,7 @@ export function MySightings({ herb }: { herb: Herb }) {
                 formRef.current?.close();
                 reset();
               }}
-              className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-violet-800"
+              className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
             >
               Cancel
             </button>

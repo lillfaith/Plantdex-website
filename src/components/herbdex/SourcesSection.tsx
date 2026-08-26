@@ -44,7 +44,7 @@ export function SourcesSection({ herb }: { herb: Herb }) {
       <summary className="flex cursor-pointer flex-wrap items-center gap-2 text-sm font-bold tracking-wide text-gold-400 uppercase">
         Sources ({total})
         {evidence && (
-          <span className="rounded-full border border-violet-600 bg-violet-900/60 px-2 py-0.5 text-[0.68rem] tracking-wide text-violet-200">
+          <span className="rounded-full border border-violet-600 bg-plum-700/70 px-2 py-0.5 text-[0.68rem] tracking-wide text-violet-200">
             {evidence}
           </span>
         )}

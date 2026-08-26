@@ -52,7 +52,7 @@ export function SightingPhoto({ photoId, alt }: { photoId: string; alt: string }
   }, [photoId, isRemote]);
 
   if (!url) {
-    return <div className="aspect-[4/3] w-full animate-pulse rounded-lg bg-violet-900/60" />;
+    return <div className="aspect-[4/3] w-full animate-pulse rounded-lg bg-plum-700/70" />;
   }
 
   // eslint-disable-next-line @next/next/no-img-element -- blob:/signed URL; next/image cannot optimise either.
