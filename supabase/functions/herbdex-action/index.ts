@@ -148,7 +148,11 @@ Deno.serve(async (req) => {
   // Every write below is a no-op on conflict — the same (user_id, entity_id) uniqueness
   // that already governs discoveries — so a retried request (a flaky connection, a
   // duplicate click) can never double-write a row or double-pay XP for it.
-  const writes: Promise<unknown>[] = [];
+  // `PromiseLike`, not `Promise`: a PostgREST builder is a thenable that only issues its
+  // request when awaited. `Promise.all` takes thenables happily; typing this as `Promise`
+  // is what `deno check` rejects, and `deno check` is how this function is validated
+  // (the project's tsconfig excludes supabase/**, so nothing else would catch it).
+  const writes: PromiseLike<unknown>[] = [];
   for (const herbId of masteryOutcome.masteredIds) {
     writes.push(
       supabase
