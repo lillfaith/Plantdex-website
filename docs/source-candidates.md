@@ -18,7 +18,7 @@ says what a card says. Marking these `verified: true` off a search snippet is ex
 so none of them reach the website: `resolveRefs()` drops anything not in
 `src/data/sources.json` with `verified: true`.
 
-That file now holds 123 references besides the deck, from the card-mapped source audit —
+That file now holds 126 references besides the deck, from the card-mapped source audit —
 those were opened and checked by a human before being brought in, which is the whole
 difference between that file and this one. Nothing here graduates into it on a search
 result.
@@ -107,34 +107,28 @@ Inulin), preparations (roasted root), usable parts.
 
 ---
 
-## #38 Willow — *Salix* spp. — NAMED, BUT WITHOUT LINKS
+## #38 Willow — *Salix* spp. — RESOLVED
 
-This card is the one the card-mapped audit got wrong: it mapped #38 to Cinquefoil
-(*Potentilla* spp.), a different family. The deck prints Willow, whose compounds are
-salicin, salicortin and tremulacin, so those three Potentilla references were **discarded
-rather than reassigned** — a citation attached to the wrong plant is worse than none.
+Kept here as the record of what went wrong, because it is the failure the citation tests
+were written around.
 
-Three Willow references were named in their place, and the deck's owner confirmed they were
-opened. They are recorded here rather than in `src/data/sources.json` because a citation
-renders as a link and no URLs came with them:
+The card-mapped audit mapped #38 to Cinquefoil (*Potentilla* spp.), a different family. The
+deck prints Willow, whose compounds are salicin, salicortin and tremulacin, so those three
+Potentilla references were **discarded rather than reassigned** — a citation attached to the
+wrong plant is worse than none. Willow's own three arrived later, were confirmed opened, and
+now live in `src/data/sources.json` (`ema-salicis-cortex`, `pubmed-37895439`,
+`pubmed-19140170`) mapped to `'38'` in `src/lib/card-sources.ts`.
 
-| Reference | Type |
-|---|---|
-| EMA herbal monograph — Willow Bark (*Salicis cortex*) | Regulatory monograph |
-| Meta-analysis (2023) — "Willow Bark (*Salix* spp.) Used for Pain Relief in Arthritis" | Peer-reviewed |
-| Systematic review — "Effectiveness of Willow Bark for Musculoskeletal Pain" | Peer-reviewed |
-
-To finish: add the URL for each to `src/data/sources.json` (`"verified": true`, since they
-were read) and list the three ids under `'38'` in `src/lib/card-sources.ts`, replacing that
-entry's `hold` with the audit's grade. The tests already require any card with references to
-carry exactly three, and require no two cards to share one.
+The lasting guard is a test: no two cards may cite the same source id. A reference
+researched for one plant cannot be quietly reused on another, which is exactly how this
+would have gone unnoticed.
 
 ---
 
 ## Not yet researched
 
 Cards #02–03, #05–07, #09–30, #34–45 at CLAIM level. All 45 now carry plant-level
-references from the card-mapped audit except #11, #19, #21 and #38 (see
+references from the card-mapped audit except #11, #19 and #21 (see
 `src/lib/card-sources.ts` for why each is held); what is missing here is the finer
 granularity — a source attached to one specific sentence. The pattern above is the template:
 one row per claim, an authoritative candidate, and the section it belongs to.

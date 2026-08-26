@@ -21,16 +21,17 @@ import type { Herb, SourceRef } from './types';
  * — so keeping it out of the synced set costs no redeploy. `edge-shared.test.ts` caught
  * exactly this mistake when `card-issues.ts` was first written.
  *
- * FOUR CARDS CARRY NOTHING, DELIBERATELY.
+ * THREE CARDS CARRY NOTHING, DELIBERATELY.
  *   #11 Purple Dead Nettle — the printed back belongs to another plant (see
  *       `card-issues.ts`), so there is no claim on it worth sourcing until it is reprinted.
  *   #19 Sheep's Sorrel and #21 Chicory — held pending verification of the card backs.
- *   #38 Willow — the audit mapped #38 to Cinquefoil (*Potentilla*), which is not what the
- *       deck prints: card #38 is Willow (*Salix* spp.), and its own compounds are
- *       salicin/salicortin/tremulacin. Those three Potentilla references were DISCARDED
- *       rather than reassigned, because a citation attached to the wrong plant is worse
- *       than no citation. Willow references are named in `docs/source-candidates.md` and
- *       will attach once their URLs are in hand.
+ *
+ * AND #38 WILLOW IS WHY THE "no two cards share a source" TEST EXISTS. The audit mapped
+ * #38 to Cinquefoil (*Potentilla*), which is not what the deck prints: card #38 is Willow
+ * (*Salix* spp.), whose own compounds are salicin/salicortin/tremulacin. Those three
+ * Potentilla references were DISCARDED rather than reassigned — a citation attached to the
+ * wrong plant is worse than no citation — and Willow's own three, checked separately,
+ * took their place.
  *
  * A card with no entry here, or one whose evidence is `hold` or `exclude`, cites the deck
  * alone and shows no evidence label — silence, rather than a grade the audit declined to
@@ -495,13 +496,21 @@ export const CARD_SOURCES: Record<string, CardSources> = {
   },
   // #38 Willow
   '38': {
-    evidence: 'hold',
-    sourceIds: [],
+    evidence: 'strong',
+    sourceIds: [
+      'ema-salicis-cortex',
+      'pubmed-37895439',
+      'pubmed-19140170',
+    ],
     auditNote:
-      'The audit mapped card #38 to Cinquefoil (Potentilla spp.); the deck prints Willow ' +
-      '(Salix spp.), whose compounds are salicin/salicortin/tremulacin. Its three Potentilla ' +
-      'references were discarded rather than reassigned. Willow references are named in ' +
-      'docs/source-candidates.md and attach once their URLs are in hand.',
+      'Replaces the audit\'s original mapping, which was to Cinquefoil (Potentilla spp.) — a ' +
+      'different family from the Willow (Salix spp.) the deck actually prints. Those three ' +
+      'references were discarded rather than reassigned; these are Willow\'s own. EMA ' +
+      'recognises well-established use of certain willow-bark dry extracts for short-term ' +
+      'lower-back pain, and traditional use for minor joint pain and headache; a 2023 ' +
+      'meta-analysis found significant pain relief in arthritis, and a systematic review ' +
+      'found moderate evidence for ethanolic extract in low-back pain. Keep the claim to ' +
+      'willow BARK and its preparations, not to every part of every Salix species.',
   },
   // #39 Wild Geranium
   '39': {
