@@ -6,6 +6,7 @@ import type { DiscoveryResult, Herb } from '@/lib/types';
 import { knownIssueFor } from '@/lib/card-issues';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { SEASON_LABEL, USE_LABEL } from '@/lib/deck';
+import { GARDEN_STAGE_BY_MASTERY, type GardenStage } from '@/lib/garden';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { cardLabel } from '@/lib/collection';
 import { usePrevious } from '@/lib/use-previous';
@@ -132,6 +133,14 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
   const discovered = ready && isDiscovered(herb.id);
 
+  /*
+   * Which creature the portrait shows. `stage` above is the mastery stage this page
+   * already tracks, and `GARDEN_STAGE_BY_MASTERY` is the single mapping the Garden uses —
+   * read from there rather than restated here, so the card page and the Garden can never
+   * disagree about what a player has grown.
+   */
+  const portraitStage: GardenStage = stage ? GARDEN_STAGE_BY_MASTERY[stage] : 'flowering';
+
   const breadcrumb = (
     <nav aria-label="Breadcrumb" className="mb-2">
       <Link href="/herbdex" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
@@ -214,9 +223,16 @@ export function HerbDetail({ herb }: { herb: Herb }) {
                 {herb.scientificName}
               </p>
             </div>
+            {/*
+              And it shows the stage the player has actually reached, so the character on
+              their own card page grows up with their progress rather than always being
+              the finished adult. A card that is revealed but not discovered has no stage
+              at all, so it falls back to the adult — there is no progress to depict.
+            */}
             <PlantSprite
               herbId={herb.id}
               alt={`Pixel-art portrait of ${herb.commonName}`}
+              stage={portraitStage}
               scale={1}
               className="order-last shrink-0 drop-shadow-[0_4px_14px_rgba(23,16,28,0.55)]"
             />

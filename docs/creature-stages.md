@@ -1,0 +1,107 @@
+# Creature growth stages
+
+**Status: 4 of 45 species staged.** The other 41 show their single adult portrait at every
+stage, which is what the whole site did before this existed — so shipping this partial makes
+nothing worse than it was, and `spriteFor` resolves the fallback silently.
+
+Every card's animated portrait is a creature. Staging gives four of them a **sprout** and a
+**growing** version, so the character a player sees grows up with their own progress: on the
+card page, in the Garden, and anywhere else a portrait is drawn.
+
+## What a stage means
+
+**Botanically** — the plant's own life, not three sizes of one picture:
+
+| Stage | Mastery | What is drawn |
+|---|---|---|
+| `sprout` | discovered | Vegetative only. Leaves, and **no flower structure of any kind** — not a small one, not a pale one. A seedling has not made one, and drawing one anyway is inventing botany. |
+| `growing` | learned | **In bud.** The flower exists and is closed: tight, green or only just showing colour through the bracts. This is the stage that earns the sequence, because a bud is a different *organ* from an open flower. |
+| `flowering` | mastered | Open. The authored adult portrait, unchanged. |
+
+**As a character** — the same creature throughout. Its face never goes and its personality
+never changes; only its nerve and its strength. A younger stage performs the adult's own
+gesture with the follow-through taken out. Whatever a species does that nothing else in the
+set does — dandelion's full spin, clover's fourth leaflet — **stays with the open flower**,
+so mastery buys something a player can actually see.
+
+## Two things grow, and both are enforced
+
+- **Height.** 60% → 80% → 100% of the adult's drawn height, in even steps, measured from the
+  **ink** rather than the canvas (every stage shares one canvas, so the canvas says nothing).
+- **Frame rate.** 60% → 80% → 100% of the adult's fps. Speed is strength: a young plant moves
+  tentatively, a mature one with conviction, and that reads as the same creature growing
+  *into* itself rather than as three different animations.
+
+`build_sprites.py` fails the build on either — across 45 species this is exactly the sort of
+consistency that drifts one plant at a time and is invisible until two are side by side.
+
+## How a stage is authored
+
+A **recipe**, not a third drawing. Authoring 16-frame performances three times over for 45
+species is 135 character animations; that does not get finished, and half-finished is worse
+than none. A stage declares only what is *different*:
+
+```python
+"stages": {
+    "sprout": {
+        "frames": 8,
+        "fps": stage_fps(12, "sprout"),
+        "hide": ["armL", "armR"],          # parts it has not grown
+        "swap": {"head": ROSETTE, ...},    # organs that differ
+        "variants": {...},                 # poses for a swapped part
+        "origins": {**seat_young(AT, ROSETTE)},
+        "motion": {...},                   # its own calmer loop
+        "palette": BUD_PALETTE,            # colours only a bud needs
+    },
+}
+```
+
+Rules the build enforces rather than trusts:
+
+- **Feature origins are measured**, via `_stages.seat_young` → `_face.on_face`. `flower_head`
+  trims empty rows and shading moves the face patch, so the radii that produced a head do not
+  tell you where its face landed. A stage reseats the whole face onto a *different organ*,
+  which is precisely where a guessed origin puts an eye in a leaf.
+- **Changing `frames` requires declaring `motion`.** `render_frame` wraps tracks with `%`, so
+  a 6-frame stage would silently borrow frame 3 of the adult's 16-frame jump — plausible, and
+  wrong.
+- **A swapped part loses the adult's variants**, because they describe the open flower's
+  poses and no longer fit the rows underneath them.
+- `audit_sprites.py` renders every frame of every stage and fails on a feature pixel that
+  landed off its face, or a resting pose drawn in more than one piece.
+
+### The young face
+
+`_stages.YOUNG_EYES` is `EYES["round"]`, **not** `EYES["big"]`. Big eyes on a small head is
+the oldest shorthand for "young", but `big` needs 10px of face, and on a 15px seedling that
+leaves the organ as a rim of green around a face — four species drawn that way came out as
+four near-identical pale discs, which breaks the rule the deck rests on. Youth is carried by
+**proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
+frond that says which plant this is.
+
+## Staged — 4 species
+
+| Card | Species | Sprout | Growing |
+|---|---|---|---|
+| 01 | Dandelion | basal rosette, toothed from the start | one plump green bud on a hollow scape |
+| 10 | Red Clover | trifoliate leaves, pale chevron already on them | the head closed — a green-white knot, before any pink |
+| 33 | Yarrow | feathery basal rosette | the corymb formed and closed, flat-topped already |
+| 12 | Wild Violet | heart leaves; the face rides a leaf, since there is no flower | the bud **nodding** on its hooked stalk |
+
+Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
+poisonous lookalike, and featheriness is what separates it from hemlock.
+
+Violet is the awkward case worth knowing about — the adult wears its face **on the flower**,
+so a stage with no flower has to move the face onto the plant it does have.
+
+## Still to stage — 41 species
+
+Everything else in the deck. A species is staged by adding a `"stages"` key to its module in
+`scripts/sprite_sources/` and re-running `python3 scripts/build_sprites.py`; no component
+changes, because `spriteFor(herbId, stage)` already resolves whatever exists.
+
+```bash
+python3 scripts/build_sprites.py
+python3 scripts/build_sprites.py --preview taraxacum-officinale --stage sprout --frame 0
+python3 scripts/audit_sprites.py            # every species, every stage, every frame
+```

@@ -1,8 +1,24 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { DECK_SIZE, herbsInDeckOrder } from '@/lib/deck';
+import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { PlantSprite } from '@/components/PlantSprite';
 import { assetPath } from '@/lib/asset-path';
+
+/**
+ * The four species whose creatures lead the landing page.
+ *
+ * They are also the four with authored growth stages, which is not a coincidence: these
+ * are the characters the project is furthest along with, so they are the ones worth
+ * putting first. Kept as a named list rather than "the first four in deck order" so that
+ * adding a card can never silently change what the front page shows.
+ */
+const HERO_CREATURES = [
+  'taraxacum-officinale',
+  'trifolium-pratense',
+  'achillea-millefolium',
+  'viola-sororia',
+] as const;
 
 /**
  * Landing page.
@@ -33,6 +49,45 @@ export default function HomePage() {
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
           The common wild plants growing around you, as a collectible deck.
         </p>
+
+        {/*
+          The creatures, at full size and full growth.
+
+          These are the deck's own characters and they are the most distinctive thing the
+          project has, so they lead — a row of them animating is what a visitor should meet
+          first. Deliberately the FLOWERING stage of each: the front page is the invitation,
+          and a seedling would be advertising the least of what is here.
+
+          Four species with four different colours — gold, rose, cream, violet — chosen so
+          the row reads as a set rather than as four of the same plant. They wrap to two on
+          a phone rather than shrinking, because a pixel creature at half size is mush.
+        */}
+        <ul
+          aria-label="Plant characters from the deck"
+          className="mt-8 flex flex-wrap items-end justify-center gap-x-2 gap-y-4"
+        >
+          {HERO_CREATURES.map((herbId) => {
+            const herb = getHerb(herbId);
+            if (!herb) return null;
+            return (
+              <li key={herbId}>
+                <Link
+                  href={`/herbdex/${herb.id}`}
+                  className="flex flex-col items-center rounded-2xl px-2 py-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+                >
+                  <PlantSprite
+                    herbId={herb.id}
+                    alt={`Pixel-art character for ${herb.commonName}`}
+                    className="drop-shadow-[0_6px_16px_rgba(23,16,28,0.6)]"
+                  />
+                  <span className="mt-1 text-[0.7rem] font-semibold text-violet-300">
+                    {herb.commonName}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link

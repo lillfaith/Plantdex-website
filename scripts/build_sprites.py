@@ -68,6 +68,11 @@ SUPPORTED_FRAME_COUNTS = (4, 6, 8, 10, 12, 14, 16, 18)
 # every stage to that one portrait.
 DERIVED_STAGES = ("sprout", "growing")
 
+# How tall each stage stands as a fraction of the adult, and how far off it may be. Even
+# steps; `_stages.py` carries the reasoning and the frame-rate half of the same idea.
+STAGE_HEIGHT = {"sprout": 0.60, "growing": 0.80}
+HEIGHT_TOLERANCE = 0.06
+
 
 def apply_stage(sprite: dict, stage: str, recipe: dict) -> dict:
     """Derive an earlier-stage creature from the authored (flowering) one.
@@ -305,6 +310,56 @@ def preview(sprite: dict, frame: int = 0) -> None:
         print("".join("." if c == " " else c for c in row))
 
 
+def ink_height(sprite: dict) -> int:
+    """How tall the creature actually stands in frame 0, in authored pixels.
+
+    Measured from the drawn pixels, not from the canvas — every stage of a species shares
+    one canvas, so the canvas says nothing about how big the plant is. Frame 0 because
+    that is the resting pose, the one a still sprite shows and the one the eye compares.
+    """
+    grid = render_frame(sprite, 0)
+    rows = [y for y, row in enumerate(grid) if any(c != " " for c in row)]
+    return (max(rows) - min(rows) + 1) if rows else 0
+
+
+def check_growth(sprite: dict, staged: dict[str, dict]) -> None:
+    """A species' stages must get faster and taller, by even steps.
+
+    Both are how growth reads without a caption. Speed is strength: a seedling moves
+    tentatively and a mature plant moves with conviction, and that lands as the same
+    creature growing INTO itself rather than as three different animations. Height is the
+    plainer signal, and the steps are even because uneven ones read as an accident.
+
+    Checked here rather than trusted to authoring, because across forty-five species this
+    is exactly the sort of consistency that drifts one plant at a time and is invisible
+    until two of them are side by side in the Garden.
+    """
+    adult_h = ink_height(sprite)
+    order = [*DERIVED_STAGES, "flowering"]
+    speeds = {**{s: staged[s]["fps"] for s in staged}, "flowering": sprite["fps"]}
+
+    previous = None
+    for stage in order:
+        if stage not in speeds:
+            continue
+        if previous is not None and speeds[stage] <= speeds[previous]:
+            raise SystemExit(
+                f"{sprite['herbId']}: {stage} runs at {speeds[stage]}fps, no faster than "
+                f"{previous} at {speeds[previous]}fps — a plant speeds up as it grows"
+            )
+        previous = stage
+
+    for stage, staged_sprite in staged.items():
+        want = STAGE_HEIGHT[stage]
+        got = ink_height(staged_sprite) / adult_h if adult_h else 0
+        if abs(got - want) > HEIGHT_TOLERANCE:
+            raise SystemExit(
+                f"{sprite['herbId']} ({stage}): stands {got:.0%} of the adult's height, "
+                f"wanted {want:.0%} (±{HEIGHT_TOLERANCE:.0%}). Redraw the organ rather "
+                f"than scaling the art — resampling pixel art is what this avoids."
+            )
+
+
 def staged_sprites(sprite: dict) -> dict[str, dict]:
     """Every derived stage a species declares, keyed by stage name."""
     recipes = sprite.get("stages", {})
@@ -314,8 +369,11 @@ def staged_sprites(sprite: dict) -> dict[str, dict]:
             f"{sprite['herbId']}: unknown stage(s) {sorted(unknown)}; "
             f"derived stages are {DERIVED_STAGES} ('flowering' is the authored sprite)"
         )
-    return {stage: apply_stage(sprite, stage, recipes[stage])
-            for stage in DERIVED_STAGES if stage in recipes}
+    staged = {stage: apply_stage(sprite, stage, recipes[stage])
+              for stage in DERIVED_STAGES if stage in recipes}
+    if staged:
+        check_growth(sprite, staged)
+    return staged
 
 
 def main() -> None:

@@ -21,12 +21,20 @@ import { stageFor, type MasteryStage } from './mastery';
 export const GROWTH_STAGES = ['sprout', 'growing', 'flowering'] as const;
 export type GardenStage = (typeof GROWTH_STAGES)[number];
 
-/** Each mastery stage renders as exactly one growth stage. */
-const STAGE_BY_MASTERY: Record<MasteryStage, GardenStage> = {
+/**
+ * Each mastery stage renders as exactly one growth stage.
+ *
+ * Exported because the herb page shows the same creature at the same stage, and two copies
+ * of this mapping is how the Garden and the card page end up disagreeing about what a
+ * player has grown.
+ */
+export const GARDEN_STAGE_BY_MASTERY: Record<MasteryStage, GardenStage> = {
   discovered: 'sprout',
   learned: 'growing',
   mastered: 'flowering',
 };
+
+const STAGE_BY_MASTERY = GARDEN_STAGE_BY_MASTERY;
 
 export const STAGE_LABEL: Record<GardenStage, string> = {
   sprout: 'Sprout',

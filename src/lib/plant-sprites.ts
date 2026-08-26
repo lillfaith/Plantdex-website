@@ -65,6 +65,19 @@ export function hasSprite(herbId: string): boolean {
   return herbId in SPRITES;
 }
 
+/**
+ * Whether this species has art drawn for this particular stage.
+ *
+ * Call sites need it to avoid scaling a sprite twice. Staged art is authored at evenly
+ * stepped heights — 60%, 80%, 100% of the adult — so a caller that also shrinks a sprout
+ * by its own factor compounds the two and lands at a quarter size. A species with no
+ * staged art has no such difference to compound, and still needs an external scale if it
+ * is to show growth at all.
+ */
+export function hasStageArt(herbId: string, stage: GardenStage): boolean {
+  return Boolean(SPRITES[herbId]?.stages?.[stage]);
+}
+
 /** Every authored sprite, for tests and for tooling that needs the whole set. */
 export function allSprites(): PlantSpriteEntry[] {
   return Object.values(SPRITES);

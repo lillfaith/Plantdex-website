@@ -28,7 +28,9 @@ warning, and this sprite is deliberately stylised - the card art and the identif
 section remain the reference for anyone actually looking at a plant outdoors.
 """
 
+from _face import face_box, face_shift
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 # Authored at 32x28, the house size.
 PALETTE = {
@@ -162,9 +164,197 @@ STEM = [
     " ooo ",
 ]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME CAPABLE YARROW, YOUNGER. Its trademark is standing there, unbothered, while
+# everything about it sways — so the younger stages keep the level mouth and gain their
+# steadiness, rather than fidgeting.
+#
+# THE BOTANY DECIDES WHAT IS DRAWN:
+#
+#   sprout    a feathery basal rosette and NO flower. Yarrow spends its first season as
+#             exactly this, and "millefolium" — a thousand leaves — is the identifying
+#             trait, so the fronds are finely cut from the very first stage. That matters
+#             here more than anywhere: yarrow's printed card warns about a poisonous
+#             lookalike, and featheriness is what separates it from hemlock.
+#   growing   in bud: the corymb is formed and closed, a tight grey-green button cluster
+#             held on the same flat plane it will open on. Yarrow buds are famously
+#             tight, and the flat top is already the identifying silhouette.
+#   flowering the open cream corymb, unchanged.
+
+BUD_PALETTE = {
+    "K": (196, 214, 178, 255),   # bud highlight - grey-green, no cream yet
+    "k": (150, 172, 138, 255),   # bud mid
+    "j": (108, 130, 100, 255),   # bud deep
+    "J": (76, 94, 74, 255),      # bud shadow
+}
+
+# --- Sprout: the feathery rosette, no corymb --------------------------------
+YOUNG_BODY_W, YOUNG_BODY_H = 13, 13
+YOUNG_BODY_AT = (10, 13)
+
+
+def _young_body(rx=5.8, ry=6.0, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        YOUNG_BODY_W, YOUNG_BODY_H, 6.0, 6.2, rx, ry, 0, 0.0, 5.2, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_BODY = _young_body()
+YOUNG_BODY_LEFT = _young_body(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_BODY_RIGHT = _young_body(face_dx=1.2, light=(-1.25, -0.65))
+
+# Shorter fronds, cut just as finely. A yarrow seedling that was not feathery would be
+# drawing a different and more dangerous plant.
+SEED_FROND_L = [
+    "  o o o o",
+    " ododododo",
+    "oGGGGGGGGgo",
+    " ododododo",
+    "  o o o o",
+]
+SEED_FROND_R = [
+    "o o o o",
+    "ododododo",
+    "ogGGGGGGGGo",
+    "ododododo",
+    "o o o o",
+]
+SEED_STEM = [
+    "ogGgo",
+    "odgdo",
+    " ooo ",
+]
+
+# --- Growing: the corymb closed in bud --------------------------------------
+BUD_W, BUD_H = 19, 9
+
+
+def _bud_umbel(rx=7.4, ry=3.8, light=(-0.85, -0.65)):
+    # Fewer, tighter scallops than the open brim's eleven, and shallower: the florets have
+    # not separated. The flat top is kept, because that silhouette is the identification.
+    return flower_head(
+        BUD_W, BUD_H, 9.0, 4.0, rx, ry, 8, 0.12, 0, 0,
+        light=light, trim_tail=False, chars="KkjJFo",
+    )
+
+
+BUD_UMBEL = _bud_umbel()
+BUD_UMBEL_SETTLE = _bud_umbel(rx=7.8, ry=3.4)
+
+BUD_BODY_AT = (9, 13)
+
+
+def _bud_body(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 15, 7.0, 7.2, 6.4, 7.0, 0, 0.0, 5.2, 4.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_BODY = _bud_body()
+BUD_BODY_LEFT = _bud_body(face_dx=-1.4, light=(-0.35, -0.65))
+BUD_BODY_RIGHT = _bud_body(face_dx=1.4, light=(-1.25, -0.65))
+
+# No dots: a closed bud shows neither the yellow floret eye nor the trace of pink.
+DOTS_NONE = [" "]
+
+S_L_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_LEFT)
+S_R_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_RIGHT)
+G_L_DX, _ = face_shift(BUD_BODY, BUD_BODY_LEFT)
+G_R_DX, _ = face_shift(BUD_BODY, BUD_BODY_RIGHT)
+
+# Barely moves. That is the character, and at this size a slow look either way reads as
+# more composed than a bob would.
+S_BOB = [0, 0, 0, -1, -1, -1, 0, 0]
+S_BODY = [None, None, "left", "left", "right", "right", None, None]
+S_DX = [0, 0, S_L_DX, S_L_DX, S_R_DX, S_R_DX, 0, 0]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 0, -1, -1, -1, -1, 0, 0, 0, 0]
+G_BODY = [None, None, "left", "left", None, "right", "right", None, None, None]
+G_DX = [0, 0, G_L_DX, G_L_DX, 0, G_R_DX, G_R_DX, 0, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 SPRITE = {
     "herbId": "achillea-millefolium",
     "personality": "capable",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            # No corymb, so nothing for the floret dots to sit on either.
+            "hide": ["umbel", "dots", "cheeks"],
+            "swap": {
+                "body": YOUNG_BODY,
+                "frondL": SEED_FROND_L,
+                "frondR": SEED_FROND_R,
+                "stem": SEED_STEM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "body": {"left": YOUNG_BODY_LEFT, "right": YOUNG_BODY_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "body": YOUNG_BODY_AT,
+                "stem": (14, 25),
+                "frondL": (4, 21),
+                "frondR": (20, 21),
+                **seat_young(YOUNG_BODY_AT, YOUNG_BODY, cheeks=False, mouth_dy=4),
+            },
+            "motion": {
+                "body": {"dy": S_BOB, "art": S_BODY},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "frondL": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "frondR": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": BUD_PALETTE,
+            "swap": {
+                "umbel": BUD_UMBEL,
+                "dots": DOTS_NONE,
+                "body": BUD_BODY,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_BODY)[2]),
+            },
+            "variants": {
+                "umbel": {"settle": BUD_UMBEL_SETTLE},
+                "body": {"left": BUD_BODY_LEFT, "right": BUD_BODY_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "umbel": (7, 8),
+                "dots": (11, 8),
+                "body": BUD_BODY_AT,
+                "stem": (14, 24),
+                "frondL": (1, 20),
+                "frondR": (21, 20),
+                **seat_young(BUD_BODY_AT, BUD_BODY, mouth_dy=5),
+            },
+            "motion": {
+                "umbel": {"dy": G_BOB, "art": [None, None, None, None, "settle",
+                                               None, None, None, None, None]},
+                "dots": {"dy": G_BOB},
+                "body": {"dy": G_BOB, "art": G_BODY},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "frondL": {"dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, 0]},
+                "frondR": {"dy": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0]},
+                "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,

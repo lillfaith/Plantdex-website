@@ -15,7 +15,27 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "capable"
+    "personality": "capable",
+    "stages": {
+      "sprout": {
+        "herbId": "achillea-millefolium-sprout",
+        "src": "/cards/animated/achillea-millefolium-sprout.png",
+        "frameWidth": 160,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "capable"
+      },
+      "growing": {
+        "herbId": "achillea-millefolium-growing",
+        "src": "/cards/animated/achillea-millefolium-growing.png",
+        "frameWidth": 160,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "capable"
+      }
+    }
   },
   "alliaria-petiolata": {
     "herbId": "alliaria-petiolata",
@@ -383,7 +403,7 @@
         "frameWidth": 220,
         "frameHeight": 160,
         "frames": 10,
-        "fps": 9,
+        "fps": 10,
         "personality": "energetic"
       }
     }
@@ -395,7 +415,27 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "hopeful"
+    "personality": "hopeful",
+    "stages": {
+      "sprout": {
+        "herbId": "trifolium-pratense-sprout",
+        "src": "/cards/animated/trifolium-pratense-sprout.png",
+        "frameWidth": 160,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "hopeful"
+      },
+      "growing": {
+        "herbId": "trifolium-pratense-growing",
+        "src": "/cards/animated/trifolium-pratense-growing.png",
+        "frameWidth": 160,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "hopeful"
+      }
+    }
   },
   "urtica-dioica": {
     "herbId": "urtica-dioica",
@@ -422,6 +462,26 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "bashful"
+    "personality": "bashful",
+    "stages": {
+      "sprout": {
+        "herbId": "viola-sororia-sprout",
+        "src": "/cards/animated/viola-sororia-sprout.png",
+        "frameWidth": 160,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "bashful"
+      },
+      "growing": {
+        "herbId": "viola-sororia-growing",
+        "src": "/cards/animated/viola-sororia-growing.png",
+        "frameWidth": 160,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "bashful"
+      }
+    }
   }
 }

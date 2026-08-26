@@ -11,11 +11,12 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
 /**
  * My Garden — every species the player has discovered, growing as they engage with it.
  *
- * Each plant is drawn at the stage the player has grown it to, in art authored for THAT
- * species at THAT stage — a dandelion's first toothed leaves, then its rosette, then the
- * rosette in flower, while a pine goes seedling → sapling → small tiered tree. Growth art
- * arrives one species at a time (see `docs/garden-sprites.md`); a species without it yet
- * falls back to its creature portrait, which is what the Garden showed before.
+ * Each plant is its own CREATURE at the stage that player has grown it to: a shy green
+ * rosette while it is only discovered, a bud once its card is learned, the full character
+ * once it is mastered. The card page draws the same creature from the same lookup, so a
+ * player's dandelion is the same age in both places. Stages are authored one species at a
+ * time (see `docs/creature-stages.md`); a species without them yet shows its adult, which
+ * is what every portrait on the site did before staging existed.
  *
  * The stage is also written under every sprite, because AGENTS.md does not allow the
  * artwork to be the only thing carrying it.

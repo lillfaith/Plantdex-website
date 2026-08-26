@@ -1,35 +1,35 @@
-import Image from 'next/image';
-import { gardenSpriteFor, stageFrame } from '@/lib/garden-sprites';
-import { assetPath } from '@/lib/asset-path';
 import { STAGE_SCALE, type GardenStage } from '@/lib/garden';
 import type { Herb } from '@/lib/types';
+import { hasStageArt, spriteFor } from '@/lib/plant-sprites';
+import { PlantSprite } from '../PlantSprite';
 
 /**
- * One plant in the Garden, at the stage the player has grown it to.
+ * One plant in the Garden, as its own creature at the stage the player has grown it to.
  *
- * TWO PATHS, AND ONLY THE FIRST IS REAL GROWTH. A species with authored growth art gets its
- * own three-stage sequence — a dandelion's first toothed leaves, its rosette, then the
- * rosette in flower. A species without gets its creature portrait, held still and scaled by
- * stage: the same plant three sizes, which is honestly a placeholder for growth rather than
- * a depiction of it. Growth art is authored one species at a time, and
- * `docs/garden-sprites.md` names exactly which are still waiting.
+ * THE GARDEN AND THE HERBDEX SHOW THE SAME CHARACTER. A player's dandelion is a shy green
+ * rosette while it is only discovered, a bud once they have learned its card, and the full
+ * gold lion once they have mastered it — and that is true here, on the card page, and
+ * anywhere else a portrait appears, because all of them resolve through
+ * `spriteFor(herbId, stage)`.
  *
- * THE FALLBACK IS THE PREVIOUS BEHAVIOUR, UNCHANGED, and that is the point: shipping growth
- * art for five species must not make the other forty look worse than they did yesterday.
- * It is a crop of the printed card, so it carries the card's purple background baked in and
- * sits beside a transparent growth sprite like a sticker on the bed. That is ugly and it is
- * still the right fallback — the two alternatives are worse. A shared generic sprout would
- * make forty species identical, which is the exact failure this system was built to end;
- * and the animated portrait, though transparent, is a CREATURE with a face, which the
- * Garden's whole brief rules out. Ugly-but-honest beats wrong.
+ * PARTIAL BY DESIGN, AND SAFE. `spriteFor` returns a species' staged art when it exists and
+ * its single adult portrait when it does not, so a species whose stages are not drawn yet
+ * shows its own character rather than a placeholder — never a shared generic sprout, which
+ * would make forty species interchangeable. `docs/creature-stages.md` lists which are done.
  *
- * THE SHEET IS WALKED, NOT CROPPED. All three stages live in one image and the stage is a
- * `background-position` step. One request per species however many stages it has, and moving
- * between stages costs nothing.
+ * HELD ON FRAME 0 rather than animating. A bed of a dozen plants each running its own loop
+ * is noise; the card page is where a creature performs. Frame 0 is authored as a complete
+ * resting pose precisely so it can be used still.
  *
- * `background-size` is a PERCENTAGE, so the sprite scales with whatever box it is given: the
- * same asset works in today's small Garden tile and, later, at any size in a larger Garden
- * scene.
+ * SCALED ONLY WHEN THE ART IS NOT ALREADY STAGED. Staged art is drawn at evenly stepped
+ * heights — 60%, 80%, 100% of the adult — so applying `STAGE_SCALE` on top of it compounds
+ * the two and lands a sprout at a quarter size, with uneven gaps between the stages. A
+ * species with no staged art has no such difference to compound and still needs the scale
+ * to show any growth at all, so it keeps it.
+ *
+ * Sized by HEIGHT rather than width, against the frame's own aspect ratio. Every tile is a
+ * fixed height and the frames are not square, so sizing by width lets a tall sprite spill
+ * out of the row and over its own label.
  */
 export function GrowthSprite({
   herb,
@@ -40,46 +40,27 @@ export function GrowthSprite({
   stage: GardenStage;
   className?: string;
 }) {
-  const sprite = gardenSpriteFor(herb.id);
+  const sprite = spriteFor(herb.id, stage);
+  if (!sprite) return null;
 
-  if (!sprite) {
-    return (
-      <Image
-        src={assetPath(herb.sprite)}
-        alt=""
-        aria-hidden="true"
-        width={276}
-        height={276}
-        style={{ width: `${STAGE_SCALE[stage] * 100}%` }}
-        className={`max-h-20 origin-bottom object-contain transition-all duration-700 ease-out motion-reduce:transition-none ${
-          stage === 'sprout'
-            ? 'opacity-70 saturate-[0.7]'
-            : stage === 'growing'
-              ? 'opacity-90'
-              : 'drop-shadow-[0_0_10px_rgba(240,193,90,0.45)]'
-        } ${className}`}
-      />
-    );
-  }
-
-  const frame = stageFrame(stage);
-  const count = sprite.stages.length;
+  const scale = hasStageArt(herb.id, stage) ? 1 : STAGE_SCALE[stage];
 
   return (
+    // Decorative: GardenView writes the plant's name and its stage directly underneath,
+    // so announcing the picture as well would only repeat them.
     <span
       aria-hidden="true"
-      className={`garden-sprite block h-full w-full ${
-        // The one animation, and only on the last stage: a mature plant breathes, a
-        // seedling holds still. Restraint is the point — if everything sways, nothing
-        // reads as alive.
-        stage === 'flowering' ? 'garden-sprite-sway' : ''
-      } ${className}`}
-      style={{
-        backgroundImage: `url(${assetPath(sprite.src)})`,
-        // `count × 100%` puts exactly one stage in view; the frame slides the sheet.
-        backgroundSize: `${count * 100}% 100%`,
-        backgroundPosition: `${(frame / (count - 1)) * 100}% 0`,
-      }}
-    />
+      className={`flex h-full w-full items-end justify-center ${className}`}
+    >
+      <span
+        className="block"
+        style={{
+          height: `${scale * 100}%`,
+          aspectRatio: `${sprite.frameWidth} / ${sprite.frameHeight}`,
+        }}
+      >
+        <PlantSprite herbId={herb.id} alt="" stage={stage} frozen fit />
+      </span>
+    </span>
   );
 }
