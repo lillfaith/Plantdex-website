@@ -366,7 +366,27 @@
     "frameHeight": 160,
     "frames": 16,
     "fps": 12,
-    "personality": "energetic"
+    "personality": "energetic",
+    "stages": {
+      "sprout": {
+        "herbId": "taraxacum-officinale-sprout",
+        "src": "/cards/animated/taraxacum-officinale-sprout.png",
+        "frameWidth": 220,
+        "frameHeight": 160,
+        "frames": 8,
+        "fps": 7,
+        "personality": "energetic"
+      },
+      "growing": {
+        "herbId": "taraxacum-officinale-growing",
+        "src": "/cards/animated/taraxacum-officinale-growing.png",
+        "frameWidth": 220,
+        "frameHeight": 160,
+        "frames": 10,
+        "fps": 9,
+        "personality": "energetic"
+      }
+    }
   },
   "trifolium-pratense": {
     "herbId": "trifolium-pratense",

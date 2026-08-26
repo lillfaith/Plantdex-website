@@ -32,6 +32,7 @@ apart from the card's identification content, which stays the reference for anyo
 actually looking at a plant outdoors.
 """
 
+from _face import EYES, MOUTHS, face_shift, on_face
 from _flowerhead import flower_head
 
 # Authored at 32x28. Softened palette: desaturated golds, a plum outline rather than
@@ -180,9 +181,215 @@ ARM_R_UP = [
     "ooooooo oo",
 ]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME LION, YOUNGER AND SHYER. Not a smaller copy: the character has to survive the
+# scaling down, so what changes is nerve. The adult's trademark is that it commits — it
+# crouches, springs, spins all the way round and lands grinning. The seedling wants to do
+# that and doesn't dare, so it gets the same gesture with the commitment taken out: a
+# crouch that barely leaves the ground, and a peek to each side instead of a spin. Same
+# performance, no follow-through. That is what reads as shy rather than merely small.
+#
+# WHAT IT HAS NOT GROWN YET IS BOTANY, NOT STYLING. A dandelion's mane IS its open
+# ray-floret head and its arms ARE its basal leaves, so a seedling has a closed green bud
+# and no arms because that is what a dandelion seedling is. The face never goes, at any
+# stage — the whole point is that the player watches THEIR creature grow up.
+#
+# Baby proportions do the rest: `big` eyes on a head that is mostly face. It is the
+# oldest trick there is and it is the reason a 15-pixel bud reads as young rather than
+# just small.
+
+BUD_PALETTE = {
+    "B": (198, 222, 120, 255),   # bud highlight
+    "b": (152, 184, 86, 255),    # bud mid
+    "n": (112, 142, 60, 255),    # bud deep
+    "N": (82, 106, 46, 255),     # bud shadow
+}
+
+# --- Sprout: a closed green bud with a face in it ---------------------------
+# `lobes=5, amp=0.09` against the mane's `8, 0.20`: a bud is faintly ribbed by its
+# bracts, not shaggy. Taller than it is wide, which is the other half of reading as a bud.
+BUD_W, BUD_H = 17, 20
+BUD_AT = (13, 8)
+
+
+def _bud(rx=7.0, ry=9.2, face_dx=0.0, face_dy=0.4, light=(-0.85, -0.65)):
+    return flower_head(
+        BUD_W, BUD_H, 8.0, 9.6, rx, ry, 5, 0.09, 5.0, 4.4,
+        face_dx=face_dx, face_dy=face_dy, light=light, chars="BbnNFo",
+    )
+
+
+BUD = _bud()
+# Barely a crouch. The adult drops a whole pixel and widens; this widens by a fraction
+# and thinks better of it.
+BUD_SQUASH = _bud(rx=7.5, ry=8.6, face_dy=0.9)
+# The peek. Where the adult turns all the way through its own back, this only goes far
+# enough to look, and the light moves with it so the head still reads as turning.
+BUD_LEFT = _bud(face_dx=-1.5, light=(-0.30, -0.68))
+BUD_RIGHT = _bud(face_dx=1.5, light=(-1.35, -0.68))
+
+# --- Growing: the head half open, the first leaves out ----------------------
+# Gold ramp on bud radii — which is exactly what a dandelion looks like on the morning it
+# opens, and it puts the species' own colour on screen one stage before the full mane.
+BLOOM_W, BLOOM_H = 23, 22
+BLOOM_AT = (10, 6)
+
+
+def _half(rx=9.0, ry=9.4, face_dx=0.0, face_dy=0.3, light=(-0.85, -0.65)):
+    return flower_head(
+        BLOOM_W, BLOOM_H, 11.0, 10.6, rx, ry, 7, 0.15, 5.4, 4.8,
+        face_dx=face_dx, face_dy=face_dy, light=light,
+    )
+
+
+HALF = _half()
+HALF_SQUASH = _half(rx=9.7, ry=8.7, face_dy=1.0)
+HALF_STRETCH = _half(rx=8.5, ry=10.2, face_dy=-0.6)
+HALF_LEFT = _half(face_dx=-1.9, light=(-0.32, -0.66))
+HALF_RIGHT = _half(face_dx=1.9, light=(-1.34, -0.66))
+
+# A face that turns slides ACROSS its own head, so the features travel the head's offset
+# plus this. Measured from the finished rows rather than inferred from `face_dx`, because
+# the two are not the same number once the curve is carved and lit — that mismatch is how
+# eyes end up sitting in the mane.
+BUD_L_DX, _ = face_shift(BUD, BUD_LEFT)
+BUD_R_DX, _ = face_shift(BUD, BUD_RIGHT)
+HALF_L_DX, _ = face_shift(HALF, HALF_LEFT)
+HALF_R_DX, _ = face_shift(HALF, HALF_RIGHT)
+
+# Big eyes and a small mouth: young. `big` needs ten pixels of face to sit in, which is
+# why both young heads are mostly face.
+EYES_YOUNG = EYES["big"]
+MOUTH_YOUNG = MOUTHS["small"]
+
+# The first true leaves. Toothed already, because the teeth are the identifying trait and
+# a seedling has them — but a third of the adult blade, and held close in rather than
+# thrown wide.
+LEAF_L = [
+    "    ooo",
+    " oooGGGo",
+    "oGGGdgGo",
+    " ooooooo",
+]
+LEAF_R = [
+    "ooo    ",
+    "oGGGooo ",
+    "oGgdGGGo",
+    "ooooooo ",
+]
+
+
+def _seat(head_at, head_rows, hide_cheeks=False):
+    """Eyes, cheeks and mouth seated by MEASURING the head they sit on.
+
+    Never by arithmetic on the radii that produced it: `flower_head` trims empty rows and
+    the shading moves the face patch, so a head's parameters do not tell you where its
+    face ended up. This is the rule the whole `_face` module exists to enforce.
+    """
+    seats = {
+        "eyes": on_face(head_at, head_rows, EYES_YOUNG["rows"], dy=1),
+        "mouth": on_face(head_at, head_rows, MOUTH_YOUNG["rows"], dy=5),
+    }
+    if not hide_cheeks:
+        seats["cheeks"] = on_face(head_at, head_rows, CHEEKS_YOUNG, dy=4)
+    return seats
+
+
+CHEEKS_YOUNG = ["c    c"]
+
+#  0     1       2      3      4      5      6     7
+# rest  crouch  lift   peek<  peek>  settle blink rest
+#
+# The adult's loop in miniature and without the nerve: it gathers itself, rises a single
+# pixel, checks both ways to see whether anyone noticed, and settles. Frame 0 is the
+# resting pose reduced motion freezes on.
+SPROUT_BOB = [0, 1, -1, -1, -1, 0, 0, 0]
+SPROUT_HEAD = [None, "squash", None, "left", "right", None, None, None]
+SPROUT_FACE_DX = [0, 0, 0, BUD_L_DX, BUD_R_DX, 0, 0, 0]
+SPROUT_BLINK = [None, None, None, None, None, None, "blink", None]
+
+#  0     1       2      3     4      5      6      7      8     9
+# rest  crouch  launch peak  peak   land   grin   look<  look> rest
+#
+# A real hop now, and a grin on the landing — but still no spin. The spin is the adult's
+# trademark and it stays earned; this stage gets everything up to it.
+GROW_BOB = [0, 1, -2, -3, -3, 1, 0, 0, 0, 0]
+GROW_HEAD = [None, "squash", "stretch", None, None, "squash", None, "left", "right", None]
+GROW_FACE_DX = [0, 0, 0, 0, 0, 0, 0, HALF_L_DX, HALF_R_DX, 0]
+GROW_BLINK = [None, None, None, None, None, None, None, None, None, "blink"]
+GROW_MOUTH = [None, None, None, None, None, "open", "open", None, None, None]
+
+
 SPRITE = {
     "herbId": "taraxacum-officinale",
     "personality": "energetic",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": 7,
+            "palette": BUD_PALETTE,
+            # No leaves at all: a dandelion seedling is a bud on a stem, and the arms
+            # this creature would use ARE the basal leaves it has not grown.
+            "hide": ["armL", "armR", "cheeks"],
+            "swap": {
+                "head": BUD,
+                "eyes": EYES_YOUNG["rows"],
+                "mouth": MOUTH_YOUNG["rows"],
+            },
+            "variants": {
+                "head": {"squash": BUD_SQUASH, "left": BUD_LEFT, "right": BUD_RIGHT},
+                "eyes": {"blink": EYES_YOUNG["blink"]},
+            },
+            "origins": {"head": BUD_AT, "body": (19, 25), **_seat(BUD_AT, BUD, True)},
+            "motion": {
+                "head": {"dy": SPROUT_BOB, "art": SPROUT_HEAD},
+                "eyes": {"dy": SPROUT_BOB, "dx": SPROUT_FACE_DX, "art": SPROUT_BLINK},
+                "mouth": {"dy": SPROUT_BOB, "dx": SPROUT_FACE_DX},
+                "body": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": 9,
+            "swap": {
+                "head": HALF,
+                "eyes": EYES_YOUNG["rows"],
+                "cheeks": CHEEKS_YOUNG,
+                "mouth": MOUTH_YOUNG["rows"],
+                "armL": LEAF_L,
+                "armR": LEAF_R,
+            },
+            "variants": {
+                "head": {
+                    "squash": HALF_SQUASH,
+                    "stretch": HALF_STRETCH,
+                    "left": HALF_LEFT,
+                    "right": HALF_RIGHT,
+                },
+                "eyes": {"blink": EYES_YOUNG["blink"]},
+                "mouth": {"open": MOUTH_YOUNG["open"]},
+            },
+            "origins": {
+                "head": BLOOM_AT,
+                "body": (19, 25),
+                "armL": (12, 23),
+                "armR": (23, 23),
+                **_seat(BLOOM_AT, HALF),
+            },
+            "motion": {
+                "head": {"dy": GROW_BOB, "art": GROW_HEAD},
+                "eyes": {"dy": GROW_BOB, "dx": GROW_FACE_DX, "art": GROW_BLINK},
+                "cheeks": {"dy": GROW_BOB, "dx": GROW_FACE_DX},
+                "mouth": {"dy": GROW_BOB, "dx": GROW_FACE_DX, "art": GROW_MOUTH},
+                # The leaves lag the body, and asymmetrically — both arms doing the same
+                # thing on the same frame is what makes a sprite look mechanical.
+                "armL": {"dy": [0, 1, -1, -2, -2, 1, 0, 0, 0, 0]},
+                "armR": {"dy": [0, 1, 0, -2, -2, 1, 0, 0, 0, 0]},
+                "body": {"dy": [0, 1, 0, -1, -1, 1, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (44, 32),
     "frames": 16,
     "fps": 12,
