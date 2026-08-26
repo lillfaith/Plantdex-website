@@ -841,6 +841,30 @@
       "verified": true
     },
     {
+      "id": "ema-salicis-cortex",
+      "kind": "web",
+      "title": "Salicis cortex (willow bark) herbal monograph",
+      "organization": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/medicines/herbal/salicis-cortex",
+      "verified": true
+    },
+    {
+      "id": "pubmed-37895439",
+      "kind": "journal",
+      "title": "Willow bark (Salix spp.) used for pain relief in arthritis: a meta-analysis of randomized controlled trials",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37895439/",
+      "verified": true
+    },
+    {
+      "id": "pubmed-19140170",
+      "kind": "journal",
+      "title": "A systematic review on the effectiveness of willow bark for musculoskeletal pain",
+      "organization": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19140170/",
+      "verified": true
+    },
+    {
       "id": "pmc-10873751",
       "kind": "journal",
       "title": "Geranium genus ethnomedicinal/phytochemical review",

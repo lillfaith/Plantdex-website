@@ -200,10 +200,9 @@ export default function SafetyPage() {
             says otherwise.
           </p>
           <p className="text-violet-300">
-            The remaining plants cite only the deck. Two are held because their printed backs
-            are being checked, one is a card whose back belongs to another plant, and one is
-            awaiting references for the right species. They will appear here as that work is
-            done, not before.
+            The remaining three cite only the deck: two are held while their printed backs are
+            being checked, and one is a card whose back belongs to another plant entirely.
+            References will appear on them as that work is done, not before.
           </p>
         </div>
       </section>

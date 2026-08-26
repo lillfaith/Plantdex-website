@@ -81,14 +81,25 @@ describe('CARD_SOURCES', () => {
     }
   });
 
-  it('holds back exactly the four cards that are uncited by decision', () => {
+  it('holds back exactly the three cards that are uncited by decision', () => {
     const uncited = HERBS.filter((herb) => (CARD_SOURCES[String(herb.cardNumber)]?.sourceIds.length ?? 0) === 0)
       .map((herb) => herb.cardNumber)
       .sort((a, b) => a - b);
-    // #11 wrong printed back, #19 and #21 held pending verification, #38 mis-mapped by the
-    // audit to another genus entirely.
-    expect(uncited).toEqual([11, 19, 21, 38]);
+    // #11 wrong printed back; #19 and #21 held pending verification of theirs.
+    expect(uncited).toEqual([11, 19, 21]);
     expect(citedCardCount()).toBe(HERBS.length - uncited.length);
+  });
+
+  /**
+   * #38 is the card the audit got wrong, so it is pinned by name: Willow's references, not
+   * the Cinquefoil ones that were mapped to it and discarded.
+   */
+  it('cites Willow, not the Cinquefoil the audit mis-mapped to #38', () => {
+    const willow = BY_NUMBER.get(38)!;
+    expect(willow.scientificName).toContain('Salix');
+    const titles = CARD_SOURCES['38']!.sourceIds.map((id) => getSource(id)!.title.toLowerCase());
+    expect(titles.every((title) => title.includes('willow') || title.includes('salic'))).toBe(true);
+    expect(titles.some((title) => title.includes('potentilla'))).toBe(false);
   });
 });
 
@@ -133,7 +144,7 @@ describe('evidenceLabelFor', () => {
    * make.
    */
   it('says nothing about a card that carries no references', () => {
-    for (const number of [11, 19, 21, 38]) {
+    for (const number of [11, 19, 21]) {
       expect(evidenceLabelFor(BY_NUMBER.get(number)!), `card #${number}`).toBeNull();
     }
   });
