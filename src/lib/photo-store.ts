@@ -8,16 +8,15 @@
  * into it would blow the quota after two or three sightings and take the player's whole
  * collection down with it. IndexedDB stores Blobs and is measured in hundreds of MB.
  *
- * Images are downscaled before they are stored — a field note does not need a 12MP
- * original, and keeping them small keeps the journal quick to load on a phone.
+ * Downscaling lives in `image-prepare.ts` rather than here, because the signed-IN path
+ * needs exactly the same treatment and used to go without it — see that file.
  */
+
+import { prepareImage } from './image-prepare';
 
 const DB_NAME = 'plantdex-photos';
 const DB_VERSION = 1;
 const STORE = 'photos';
-
-const MAX_EDGE = 1280;
-const JPEG_QUALITY = 0.82;
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -31,33 +30,9 @@ function openDb(): Promise<IDBDatabase> {
   });
 }
 
-/** Downscale so the longest edge is at most MAX_EDGE, re-encoding as JPEG. */
-async function downscale(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
-  const width = Math.round(bitmap.width * scale);
-  const height = Math.round(bitmap.height * scale);
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext('2d');
-  if (!context) {
-    bitmap.close();
-    return file;
-  }
-  context.drawImage(bitmap, 0, 0, width, height);
-  bitmap.close();
-
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, 'image/jpeg', JPEG_QUALITY),
-  );
-  return blob ?? file;
-}
-
 export async function savePhoto(file: File): Promise<string> {
   const id = `photo_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-  const blob = await downscale(file);
+  const { blob } = await prepareImage(file);
   const db = await openDb();
   await new Promise<void>((resolve, reject) => {
     const tx = db.transaction(STORE, 'readwrite');
