@@ -1,0 +1,88 @@
+name: Deploy Supabase edge function
+
+# Deploying `herbdex-action` needs a Supabase access token, which does not belong on
+# anybody's laptop or in a chat window — so it lives in this repo's Actions secrets and the
+# deploy happens here. Run it from the Actions tab and pick a project.
+#
+# ONE-TIME SETUP: create a token at https://supabase.com/dashboard/account/tokens and add it
+# as a repository secret named SUPABASE_ACCESS_TOKEN (Settings → Secrets and variables →
+# Actions → Secrets). It is a real credential, unlike the anon key — a secret, not a
+# variable.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which Supabase project to deploy to
+        required: true
+        default: vgjehmwcpavflbfhbbrp
+        type: choice
+        options:
+          - vgjehmwcpavflbfhbbrp # test — where npm run verify:supabase runs
+          - vygiamigomwlvnwkryyl # production — real players
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Fail early if the token is missing
+        # Without this the CLI fails somewhere inside a login prompt, which reads as a
+        # broken workflow rather than a missing secret.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Create one at" \
+                 "https://supabase.com/dashboard/account/tokens and add it under" \
+                 "Settings -> Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Regenerate the shared reducer copies
+        # supabase/functions/_shared/herbdex/ is generated from src/lib. Deploying without
+        # this step ships whatever was last committed there, which is how the function and
+        # the app drift apart.
+        run: npm run sync:edge-shared
+
+      - name: Fail if the generated copies were out of date
+        # `edge-shared.test.ts` asserts the same thing, but this catches a commit that
+        # skipped the sync before it reaches a live project rather than after.
+        run: |
+          if ! git diff --quiet -- supabase/functions/_shared; then
+            echo "::error::supabase/functions/_shared was out of date. Run" \
+                 "'npm run sync:edge-shared' and commit the result."
+            git --no-pager diff --stat -- supabase/functions/_shared
+            exit 1
+          fi
+
+      - name: Deploy herbdex-action
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: npx --yes supabase@2 functions deploy herbdex-action --project-ref "${{ inputs.project_ref }}"
+
+      - name: Check the CORS preflight answers
+        # The failure this exists for is invisible everywhere else: with no OPTIONS handler
+        # the browser blocks every call before it is sent, while Node-based tests still
+        # pass because nothing enforces CORS there.
+        run: |
+          status=$(curl -s -o /dev/null -w '%{http_code}' -X OPTIONS \
+            "https://${{ inputs.project_ref }}.supabase.co/functions/v1/herbdex-action" \
+            -H 'Origin: https://example.com' \
+            -H 'Access-Control-Request-Method: POST')
+          echo "OPTIONS preflight -> $status"
+          if [ "$status" != "204" ]; then
+            echo "::error::Preflight answered $status, expected 204. Browsers will block" \
+                 "every call to this function."
+            exit 1
+          fi

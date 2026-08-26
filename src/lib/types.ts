@@ -228,7 +228,11 @@ export interface Deck {
   seasonLabels: Record<Season, string>;
   /** Verbatim text of the deck's own Disclaimer card (#47). */
   disclaimer: Disclaimer;
-  /** Errors found on the printed cards, keyed by card number. Not shown to visitors. */
+  /**
+   * Errors found on the printed cards, keyed by card number. Rendered on the affected
+   * plant's page by `src/lib/card-issues.ts` — the deck is printed, so the site is the
+   * only place a misprint can be corrected.
+   */
   knownCardIssues: Record<string, string>;
   herbs: Herb[];
 }

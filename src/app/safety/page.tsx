@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import type { Herb } from '@/lib/types';
 import { DISCLAIMER, HERBS } from '@/lib/deck';
+import { siteCautionFor } from '@/lib/card-cautions';
+import { citedCardCount } from '@/lib/card-sources';
 
 export const metadata: Metadata = {
   title: 'Herbal safety',
@@ -22,6 +25,15 @@ export const metadata: Metadata = {
  */
 
 const CARDS_WITH_WARNINGS = HERBS.filter((herb) => herb.warning);
+
+/**
+ * Plants where the SITE adds a caution the printed card does not carry.
+ *
+ * Listed separately from the printed warnings rather than folded in with them, because a
+ * reader holding the deck has to be able to tell which of the two they are looking at.
+ * The bar for adding one is in `src/lib/card-cautions.ts`.
+ */
+const CARDS_WITH_SITE_CAUTIONS = HERBS.filter((herb) => siteCautionFor(herb));
 
 /** General practice, deliberately species-agnostic. */
 const PRACTICE = [
@@ -120,29 +132,32 @@ export default function SafetyPage() {
             Each is shown on that plant’s page above anything else, and is never hidden
             behind a tap — including while the card is still undiscovered.
           </p>
-          <ul className="mt-4 space-y-2">
-            {CARDS_WITH_WARNINGS.map((herb) => (
-              <li key={herb.id}>
-                <Link
-                  href={`/herbdex/${herb.id}`}
-                  className="panel flex items-start gap-3 p-4 transition-colors hover:bg-violet-800/50"
-                >
-                  <span aria-hidden="true" className="shrink-0 text-stat-temp">
-                    ⚠
-                  </span>
-                  <span>
-                    <span className="block text-sm font-bold text-violet-100">
-                      {herb.commonName}{' '}
-                      <span className="font-normal text-violet-400 tabular-nums">
-                        · Card #{String(herb.cardNumber).padStart(2, '0')}
-                      </span>
-                    </span>
-                    <span className="block text-sm text-violet-200">{herb.warning}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <WarningList
+            items={CARDS_WITH_WARNINGS.map((herb) => ({ herb, text: herb.warning! }))}
+          />
+        </section>
+      )}
+
+      {CARDS_WITH_SITE_CAUTIONS.length > 0 && (
+        <section aria-labelledby="site-cautions-heading" className="mt-8">
+          <h2 id="site-cautions-heading" className="font-display text-xl font-bold text-gold-plate">
+            Cautions this site adds
+          </h2>
+          <p className="mt-1 text-sm text-violet-300">
+            {CARDS_WITH_SITE_CAUTIONS.length === 1
+              ? 'One plant carries a caution that its card does not print.'
+              : `${CARDS_WITH_SITE_CAUTIONS.length} plants carry a caution their cards do not print.`}{' '}
+            The deck is printed, so where a well-documented risk is missing from a card, the
+            site is the only place it can be said. Each is shown on that plant’s page at the
+            same weight as a printed warning, and labelled as added here so the card in your
+            hand is never misquoted.
+          </p>
+          <WarningList
+            items={CARDS_WITH_SITE_CAUTIONS.map((herb) => ({
+              herb,
+              text: siteCautionFor(herb)!,
+            }))}
+          />
         </section>
       )}
 
@@ -156,8 +171,8 @@ export default function SafetyPage() {
           <p>
             Every plant field on this site — traits, compounds, taste, preparations, usable
             parts, season, encounter rate — is transcribed directly from the physical card,
-            including the card’s own wording. Nothing has been added, expanded or
-            paraphrased from elsewhere.
+            including the card’s own wording. Nothing presented as the card’s own text has
+            been added, expanded or paraphrased.
           </p>
           <p>
             Where a card contains an error, it is transcribed as printed and recorded
@@ -165,15 +180,30 @@ export default function SafetyPage() {
             never disagree.
           </p>
           <p>
+            The site does add two things, and both say so where they appear: a note on the
+            cards with a known printing error, and — on the few plants where a
+            well-documented risk is missing from the card — a caution labelled as added
+            here. Anything the site adds is separate from the transcription, never mixed
+            into it.
+          </p>
+          <p>
             A citation only appears on this site once a person has opened the source and
             confirmed it supports what it is attached to. Unverified references are held
             outside the site entirely rather than shown with a caveat — a half-shown citation
             still borrows the credibility of a real one.
           </p>
+          <p>
+            {citedCardCount()} of the {HERBS.length} plants now carry independent references,
+            checked that way, under “Sources” on their page, along with a note on how strong
+            the evidence behind that card actually is. They cite the plant as a whole rather
+            than any one section, so a section of a card is still transcription unless it
+            says otherwise.
+          </p>
           <p className="text-violet-300">
-            This is why most sections currently cite only the deck: independent references
-            for them have not been checked yet. They will appear here as that work is done,
-            not before.
+            The remaining plants cite only the deck. Two are held because their printed backs
+            are being checked, one is a card whose back belongs to another plant, and one is
+            awaiting references for the right species. They will appear here as that work is
+            done, not before.
           </p>
         </div>
       </section>
@@ -183,5 +213,40 @@ export default function SafetyPage() {
         nothing on this site is a substitute for professional medical advice.
       </p>
     </main>
+  );
+}
+
+/**
+ * The list of plants carrying a warning, linked to their pages.
+ *
+ * Shared by the printed-warning and site-caution sections so the two read identically —
+ * what separates them is the heading and the sentence above, which is where the
+ * distinction actually matters.
+ */
+function WarningList({ items }: { items: { herb: Herb; text: string }[] }) {
+  return (
+    <ul className="mt-4 space-y-2">
+      {items.map(({ herb, text }) => (
+        <li key={herb.id}>
+          <Link
+            href={`/herbdex/${herb.id}`}
+            className="panel flex items-start gap-3 p-4 transition-colors hover:bg-violet-800/50"
+          >
+            <span aria-hidden="true" className="shrink-0 text-stat-temp">
+              ⚠
+            </span>
+            <span>
+              <span className="block text-sm font-bold text-violet-100">
+                {herb.commonName}{' '}
+                <span className="font-normal text-violet-400 tabular-nums">
+                  · Card #{String(herb.cardNumber).padStart(2, '0')}
+                </span>
+              </span>
+              <span className="block text-sm text-violet-200">{text}</span>
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

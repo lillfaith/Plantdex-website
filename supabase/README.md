@@ -4,6 +4,35 @@ This directory holds the V0.3 accounts backend: a Postgres schema (with Row Leve
 Security) and one edge function. See `CLAUDE.md`'s "When adding a backend (V0.3)" section
 for the design rationale.
 
+## Two projects, and which is which
+
+| | Project ref | Role |
+|---|---|---|
+| **Production** | `vygiamigomwlvnwkryyl` | Real players. Its anon key is the one in the repo's Actions **variables**, baked into the deployed export. |
+| **Test** | `vgjehmwcpavflbfhbbrp` | Where `npm run verify:supabase` runs. Its anon key belongs in the local `.env.local`. |
+
+They are separate because the live suite signs up real users, writes real rows and then
+attacks the database as a second user. None of that belongs in the database real players
+use, and the two settings below have to differ between them — which is only possible if
+they are two projects.
+
+|  | Production | Test |
+|---|---|---|
+| Confirm email (Authentication → Sign In / Providers → Email) | **on** | **off** |
+| Redirect allow-list | the GitHub Pages origin | `http://localhost:3000` |
+
+Confirm email **off** on the test project is not a convenience: with it on, `signUp` returns
+a user but no session, so the suite has nothing to sign in with and every later assertion is
+vacuous. On production it must be **on**, and the signup confirmation link then lands on
+`/account/` via `emailRedirectTo` (`src/lib/auth-redirect.ts`) — which means the exact URL
+`https://<pages-origin>/Plantdex-website/account/` has to be on that project's redirect
+allow-list, trailing slash included, or Supabase refuses the redirect.
+
+An anon key is public by design (RLS is the boundary), so both live in the clear. Keep them
+matched to their project all the same: a key from the other project fails with "This API key
+might also be owned by another Supabase project", which reads like a broken key rather than
+a mixed-up one.
+
 ## One-time setup
 
 1. Create a project at [supabase.com](https://supabase.com) and note its Project URL and
@@ -51,15 +80,46 @@ startup, so the browser console will name it.
 
 Two project settings it depends on:
 
-- **Email confirmation must be off** for the test project (Authentication → Sign In /
+- **Email confirmation must be off on the test project** (Authentication → Sign In /
   Providers → Email → "Confirm email"), or signup never issues a session and the suite
-  cannot sign in. Turn it back on before shipping to real players.
+  cannot sign in. It stays **on** for production — see the table at the top; this is the
+  main reason the two are separate projects rather than one.
 - **The `herbdex-action` function must be deployed**, or the mastery/research tests fail
   with a message saying so.
 
 The suite deletes every row it creates. It cannot delete the users it creates — that needs
 a service-role key, which it deliberately never holds — so test accounts accumulate; remove
 them from the dashboard periodically.
+
+## Checking the edge function without deploying it
+
+`supabase/functions/**` is excluded from this project's tsconfig and ESLint — it is Deno,
+with different globals and `npm:`/`https:` specifiers — so `npm run verify` cannot see it.
+Type-check it directly:
+
+```bash
+npx deno@2 check supabase/functions/herbdex-action/index.ts
+```
+
+`npx` rather than an installed Deno because `deno.land` is unreachable from some sandboxes
+while the npm registry is not. This catches what a deploy would not: `supabase functions
+deploy` bundles with esbuild and does not type-check, so a type error rides along silently.
+
+`src/lib/edge-shared.test.ts` covers the other half — that the generated `_shared/` copies
+match their sources and that every import specifier would resolve under Deno.
+
+After deploying, check the CORS preflight, which nothing else can see:
+
+```bash
+curl -i -X OPTIONS "https://<project-ref>.supabase.co/functions/v1/herbdex-action" \
+  -H "Origin: https://example.com" -H "Access-Control-Request-Method: POST"
+```
+
+Expect **204** with an `access-control-allow-origin` header. A **401** means the deployed
+copy predates the CORS handling, and every browser call to it is being blocked before the
+request is even sent — while `npm run verify:supabase` still passes, because Node does not
+enforce CORS. Signed in, that failure is silent and total: `reconcile()` returns null and no
+mastery or Field Research is ever awarded.
 
 ## After changing anything in `src/lib/{types,herbdex-state,deck,achievements,progression,mastery,rng,research,herbdex-reducer}.ts`
 

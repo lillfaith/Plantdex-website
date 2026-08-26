@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { knownIssueFor } from '@/lib/card-issues';
+import { siteCautionFor } from '@/lib/card-cautions';
 import { SEASON_LABEL, USE_LABEL } from '@/lib/deck';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { cardLabel } from '@/lib/collection';
@@ -21,7 +22,7 @@ import { DiscoveryCelebration } from './DiscoveryCelebration';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
-import { CardIssueNote, CardWarning, SafetyNotice } from '../SafetyNotice';
+import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
 import { PlantSprite } from '../PlantSprite';
 
 /**
@@ -38,6 +39,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   const { isDiscovered, ready, progress, stageOf } = useHerbdex();
   const revealed = useRevealed(herb.id);
   const cardIssue = knownIssueFor(herb);
+  const siteCaution = siteCautionFor(herb);
 
   /*
    * The celebration lives here rather than inside DiscoverPanel because discovering
@@ -227,6 +229,15 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           {herb.warning && (
             <div className="mt-4">
               <CardWarning warning={herb.warning} />
+            </div>
+          )}
+
+          {/* A caution the site adds sits in the same place and at the same weight: the
+              reader's exposure does not depend on which of the two printed it. It names
+              itself as site-added so the deck in their hand is never misquoted. */}
+          {siteCaution && (
+            <div className="mt-4">
+              <SiteCaution caution={siteCaution} />
             </div>
           )}
 

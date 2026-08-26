@@ -16,7 +16,8 @@ import type { GrowthStage, NewSighting, Sighting } from './sightings';
 
 let cache: Sighting[] | null = null;
 let loadedForUser: string | null = null;
-let loading: Promise<void> | null = null;
+/** Which user a load is currently in flight for, or null when none is. */
+let loadingForUser: string | null = null;
 const listeners = new Set<() => void>();
 
 function emit(): void {
@@ -66,24 +67,39 @@ async function load(userId: string): Promise<void> {
     return;
   }
   const { data, error } = await supabase.from('sightings').select('*').eq('user_id', userId);
-  cache =
-    error || !data
-      ? []
-      : (data as Record<string, unknown>[])
-          .map(rowToSighting)
-          .filter((s): s is Sighting => s !== null);
+  if (error || !data) {
+    // Do NOT cache an empty list here. "The request failed" and "you have logged nothing"
+    // look identical on screen, and the second one is a lie that makes a player think
+    // their journal is gone. Leaving `loadedForUser` unset keeps the list in its loading
+    // state and lets the next render retry, after the cooldown below.
+    console.warn('[plantdex] could not load sightings', error);
+    failedAt = Date.now();
+    return;
+  }
+  cache = (data as Record<string, unknown>[])
+    .map(rowToSighting)
+    .filter((s): s is Sighting => s !== null);
   loadedForUser = userId;
+  failedAt = 0;
   emit();
 }
 
+/** When the last load failed, so a retry does not fire on every single render. */
+let failedAt = 0;
+const RETRY_AFTER_MS = 5_000;
+
 function ensureLoaded(userId: string): void {
   if (loadedForUser === userId) return;
+  // A load already in flight for THIS user is enough. One in flight for a different user
+  // is not — that used to leave the newly signed-in account with no sightings until
+  // something else happened to trigger a reload.
+  if (loadingForUser === userId) return;
+  if (failedAt && Date.now() - failedAt < RETRY_AFTER_MS) return;
   if (loadedForUser !== null) cache = null; // a different account was cached in this tab
-  if (!loading) {
-    loading = load(userId).finally(() => {
-      loading = null;
-    });
-  }
+  loadingForUser = userId;
+  void load(userId).finally(() => {
+    loadingForUser = null;
+  });
 }
 
 const EMPTY: Sighting[] = [];
@@ -186,7 +202,15 @@ export async function addRemoteSighting(
       photo_path: photoPath ?? null,
       created_at: createdAt,
     });
-    if (error) console.warn('[plantdex] failed to save sighting', error);
+    // THROW rather than warn. This used to log to a console nobody has open and then add
+    // the sighting to the local cache anyway, so the journal showed an entry the server
+    // never received: it survived until the next reload and then vanished. Worse, mastery
+    // is re-derived server-side from these rows, so the player could watch a sighting
+    // count toward a card that would never actually master. A visible failure they can
+    // retry is the only honest option.
+    if (error) {
+      throw new Error(`Could not save this sighting: ${error.message}`);
+    }
   }
 
   cache = [...(loadedForUser === userId && cache ? cache : []), sighting];
@@ -196,13 +220,26 @@ export async function addRemoteSighting(
 }
 
 export async function removeRemoteSighting(userId: string, id: string): Promise<void> {
+  if (!supabase) {
+    cache = (cache ?? []).filter((s) => s.id !== id);
+    emit();
+    return;
+  }
+
+  // Delete first, then update the cache: an optimistic removal that failed put the row
+  // back on the next load with no explanation, which reads as the app undoing the player's
+  // action by itself.
   const existing = cache?.find((s) => s.id === id);
+  const { error } = await supabase.from('sightings').delete().eq('user_id', userId).eq('id', id);
+  if (error) {
+    throw new Error(`Could not delete this sighting: ${error.message}`);
+  }
+
   cache = (cache ?? []).filter((s) => s.id !== id);
   emit();
 
-  if (!supabase) return;
-  const { error } = await supabase.from('sightings').delete().eq('user_id', userId).eq('id', id);
-  if (error) console.warn('[plantdex] failed to delete sighting', error);
+  // The row is gone either way; a stranded photo is a tidiness problem, not a correctness
+  // one, so this stays a warning rather than an error thrown after a successful delete.
   if (existing?.photoId) {
     const { error: storageError } = await supabase.storage
       .from('sighting-photos')

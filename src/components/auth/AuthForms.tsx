@@ -17,7 +17,7 @@ export function SignUpForm() {
   const { signUp } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [status, setStatus] = useState<'idle' | 'saving' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'saving' | 'sent' | 'done'>('idle');
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
@@ -31,7 +31,10 @@ export function SignUpForm() {
         setStatus('idle');
         return;
       }
-      setStatus('sent');
+      // Which of these is right depends on the project's "Confirm email" setting, so it is
+      // read from the response rather than assumed. Saying "check your email" when no mail
+      // was sent leaves someone waiting for a message that will never arrive.
+      setStatus(result.needsConfirmation ? 'sent' : 'done');
     },
     [email, password, signUp],
   );
@@ -41,6 +44,16 @@ export function SignUpForm() {
       <p className="text-sm text-violet-200">
         Check <span className="font-semibold text-gold-300">{email}</span> to confirm your
         account, then sign in below.
+      </p>
+    );
+  }
+
+  if (status === 'done') {
+    // The account page swaps this whole form out the moment `onAuthStateChange` fires, so
+    // this is a brief acknowledgement rather than a screen anyone reads for long.
+    return (
+      <p className="text-sm text-violet-200">
+        Account created — signing you in…
       </p>
     );
   }

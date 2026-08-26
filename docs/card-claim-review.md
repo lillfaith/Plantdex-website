@@ -2,9 +2,14 @@
 
 Discrepancies and gaps found while researching sources for the printed cards.
 
-**Nothing here has been changed on a card, in `herbs.json`, or on the website.** The deck
-may be in or near production, so these are surfaced for a human decision rather than
-silently corrected — which is what the brief requires.
+**Nothing here has been changed on a card or in `herbs.json`.** The deck is in production,
+so these are surfaced for a human decision rather than silently corrected — which is what
+the brief requires.
+
+Two things have since changed *on the website*, both outside the transcription and both
+labelled as site-added where they appear: the recorded printing errors now render on the
+affected plant's page (`src/lib/card-issues.ts`), and #32 carries a site caution
+(`src/lib/card-cautions.ts`). Neither touches what a card is transcribed as saying.
 
 ---
 
@@ -28,22 +33,28 @@ correction channel. Two things follow:
    being left to wonder. That needed no new claims — it only surfaces what the build
    script already recorded.
 
-2. **#32's warning does NOT have a home yet, and must not be improvised into one.** It
-   cannot go in `herbs.json`: every field there is transcribed from the physical card by
-   rule, and inventing a printed warning that no card carries would break exactly the
-   guarantee that makes the transcription trustworthy. The correct home is the curated,
-   cited seam at `src/lib/types.ts:198` — which requires a **verified** source, and this
-   build environment blocks outbound HTTPS to every reference host. The candidates below
-   have been found by search and **not opened**.
+2. **#32's warning now has a home, and it is not `herbs.json`.** Every field there is
+   transcribed from the physical card by rule, and inventing a printed warning that no card
+   carries would break exactly the guarantee that makes the transcription trustworthy. It
+   went instead into `src/lib/card-cautions.ts`, the curated seam, and renders through
+   `SiteCaution` — the same weight as a printed warning, prefixed "Not printed on the card",
+   on both the discovered and the locked view. `/safety` lists it separately from the
+   printed warnings for the same reason.
 
-   So this is a human step, not a code step: verify one or more of the references, add it
-   to `src/data/sources.json` with `"verified": true`, and the note can then render with
-   provenance. Shipping the warning unsourced would be a medical claim with nothing behind
-   it, which is precisely what AGENTS.md's herbal-safety section forbids.
+   Wording shipped (chosen by the deck's owner, shorter than the draft below):
 
-**Every source below is UNVERIFIED**: the build environment blocks outbound HTTPS to all
-reference hosts, so these were found by search and not opened. Confirm before acting on
-any of them. See `docs/source-candidates.md`.
+   > Beware: interacts with many prescription medicines.
+
+   The card-mapped source audit independently graded #32's evidence `strong` and flagged the
+   interaction risk, and its three references now render on the plant's page. If the plates
+   are still open, the printed warning is still worth the plate change — the site caution is
+   the correction available to a printed deck, not a replacement for one.
+
+**Sources listed against individual entries below are UNVERIFIED** unless they also appear
+in `src/data/sources.json`: the build environment blocks outbound HTTPS to every reference
+host, so anything found here was found by search and not opened. Confirm before acting on
+one. See `docs/source-candidates.md`. Separately, the card-mapped audit's references *were*
+opened by hand before being brought in, which is why those render and these do not.
 
 Separate from this file: `knownCardIssues` in `scripts/build_deck.py` already records five
 *transcription-level* errors on the printed cards (duplicated backs on #11, #24 and #31; a
@@ -58,7 +69,8 @@ question.
 **Claim (card back):** Preparations "Tea · Tincture · Oil · Infusion". Healing traits
 "Wound aid · Menopause aid · Nervous system aid · Mood aid". **No printed warning.**
 
-**Status:** ⚠ Needs review — most significant safety gap found.
+**Status:** ⚠ Needs review — most significant safety gap found. **Site caution shipped**
+(`card-cautions.ts`); a printed warning remains open for the next print run.
 
 **Reason:** St John's Wort is one of the best-documented herb–drug interaction risks in
 common use. It induces CYP3A4 and P-glycoprotein, reducing plasma concentrations of a long
@@ -174,10 +186,65 @@ needed for safety; noted only if the field is ever standardised.
 
 ---
 
+---
+
+# From the card-mapped source audit
+
+All 45 cards were graded by a card-by-card audit whose references were opened and checked
+(they are in `src/data/sources.json`, mapped by `src/lib/card-sources.ts`). Four cards came
+back `revise` — meaning the audit found the card stating something its evidence does not
+carry. Each shows **Card needs review** on its page.
+
+The card text itself is NOT changed, here or anywhere. It is transcribed from a printed card
+that is in production; "correcting" it would mean the site and the deck disagree while
+claiming they do not. These are the entries a next print run should act on.
+
+## ⚠ Card #29, Field Garlic (*Allium vineale*) — a compound generalised across a genus
+
+**Claim (card back):** signature compounds include **Allicin**.
+
+**Reason:** quercetin and organosulfur compounds fit *Allium* broadly, but allicin is
+specifically associated with garlic (*A. sativum*), where alliin meets alliinase on
+crushing. Attributing it to wild onions generally overstates what has been measured. Note
+the audit worked from "Wild Onion (*Allium* spp.)"; the deck's card is the narrower
+*A. vineale*, which makes the species-level point sharper rather than weaker.
+
+**Suggested revision (next print run):** name the species the compound belongs to, or drop
+allicin and keep the sulfur compounds.
+
+## ⚠ Card #34, Jewelweed (*Impatiens capensis*) — an effect a trial did not find
+
+**Claim (card back):** itch relief / poison-ivy use.
+
+**Reason:** this is the audit's one *contradicted* claim rather than an unsupported one. A
+controlled trial of jewelweed extract against experimentally induced poison ivy/oak
+dermatitis found it **not effective**; later reviews of herbal treatments for contact
+dermatitis report the same. Traditional use is real and the card may say so as tradition —
+what it may not do is present relief as established.
+
+**Suggested revision (next print run):** frame as traditional use only.
+
+## ⚠ Card #09, Wood Sorrel (*Oxalis stricta*) — extrapolated from its relatives
+
+**Reason:** direct research on *O. stricta* is sparse. Vitamin C, oxalate content and edible
+use are supportable; digestive, appetite and diuretic claims lean on other *Oxalis* species.
+Two of its three references are genus-level for exactly that reason.
+
+**Suggested revision (next print run):** keep the claims that are species-specific, and mark
+the rest as traditional.
+
+## ⚠ Card #04, Ragweed (*Ambrosia artemisiifolia*) — see the MEDIUM entry above
+
+The audit reached the same verdict independently: fever, skin-care and digestive claims are
+not strongly justified, and the plant is a major allergen. The topical-preparation concern
+recorded above is the sharpest form of it.
+
+---
+
 ## Coverage
 
-Reviewed: #01, #04, #08, #31, #32, #33.
-Not yet reviewed: the remaining 39 cards.
+Reviewed in depth: #01, #04, #08, #31, #32, #33.
+Graded by the card-mapped audit: all 45, of which #04, #09, #29 and #34 are `revise`.
 
 Cards were prioritised by safety exposure — those recommending internal use, topical
 contact, or carrying a known interaction or toxicity risk — rather than by card order,

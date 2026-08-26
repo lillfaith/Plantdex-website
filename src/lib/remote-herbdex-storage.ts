@@ -35,7 +35,13 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
       .select(`${idColumn}, ${atColumn}`)
       .eq('user_id', userId);
     const out: Record<string, string> = {};
-    if (error || !data) return out;
+    // THROW rather than return {}. An empty record and a failed request are indistinguishable
+    // downstream, and the empty one is a lie with the worst possible reading: a signed-in
+    // player is shown a collection of zero. The store keeps its loading state instead and
+    // retries — nothing is written from an empty state, so nothing is lost either way, but
+    // "still loading" is true and "you have found nothing" is not.
+    if (error) throw new Error(`Could not load ${table}: ${error.message}`);
+    if (!data) return out;
     for (const row of data as unknown as Record<string, unknown>[]) {
       const id = row[idColumn];
       const at = row[atColumn];
@@ -44,23 +50,38 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
     return out;
   }
 
-  /** Insert only the ids in `record` that were not already in `previous`. */
+  /**
+   * Insert only the ids in `record` that were not already in `previous`, and report what is
+   * now genuinely known to be on the server.
+   *
+   * The return value is the point. `lastKnown` used to be set to the new state before the
+   * write was even attempted, so a failed upsert marked those ids as written: the next
+   * `save()` filtered them out as "already known" and never tried again. One dropped
+   * request and a discovery was gone until the player happened to re-discover it. Returning
+   * `previous` on failure leaves them unknown, so the very next save retries them — and
+   * because every write is `on conflict do nothing`, retrying costs nothing when the first
+   * attempt did land after all.
+   */
   async function upsertNew(
     table: string,
     idColumn: string,
     atColumn: string,
     record: Record<string, string>,
     previous: Record<string, string>,
-  ): Promise<void> {
-    if (!supabase) return;
+  ): Promise<Record<string, string>> {
+    if (!supabase) return previous;
     const rows = Object.entries(record)
       .filter(([id]) => !(id in previous))
       .map(([id, at]) => ({ user_id: userId, [idColumn]: id, [atColumn]: at }));
-    if (rows.length === 0) return;
+    if (rows.length === 0) return previous;
     const { error } = await supabase
       .from(table)
       .upsert(rows, { onConflict: `user_id,${idColumn}`, ignoreDuplicates: true });
-    if (error) console.warn(`[plantdex] failed to sync ${table}`, error);
+    if (error) {
+      console.warn(`[plantdex] failed to sync ${table}, will retry on the next save`, error);
+      return previous;
+    }
+    return record;
   }
 
   return {
@@ -87,19 +108,27 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
 
     save(state: HerbdexState): void {
       const previous = lastKnown;
-      lastKnown = state;
       // Fire-and-forget, the same contract `createLocalStorageAdapter.save` has. Only
       // discoveries/learned/achievements are ever set this way — mastered/research are
       // written exclusively by `reconcile()` below, which persists them itself.
-      void upsertNew('discoveries', 'herb_id', 'discovered_at', state.discoveries, previous.discoveries);
-      void upsertNew('learned', 'herb_id', 'learned_at', state.learned, previous.learned);
-      void upsertNew(
-        'unlocked_achievements',
-        'achievement_id',
-        'unlocked_at',
-        state.achievements,
-        previous.achievements,
-      );
+      //
+      // `lastKnown` is updated per table AFTER each write settles, and only to what
+      // actually landed, so a failure leaves those ids unwritten and the next save picks
+      // them up again.
+      void (async () => {
+        const [discoveries, learned, achievements] = await Promise.all([
+          upsertNew('discoveries', 'herb_id', 'discovered_at', state.discoveries, previous.discoveries),
+          upsertNew('learned', 'herb_id', 'learned_at', state.learned, previous.learned),
+          upsertNew(
+            'unlocked_achievements',
+            'achievement_id',
+            'unlocked_at',
+            state.achievements,
+            previous.achievements,
+          ),
+        ]);
+        lastKnown = { ...lastKnown, discoveries, learned, achievements };
+      })();
     },
 
     clear(): void {
