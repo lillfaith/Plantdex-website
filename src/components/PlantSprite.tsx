@@ -83,7 +83,8 @@ export function PlantSprite({
               // The sheet is `frames` wide; height auto-scales with it.
               backgroundSize: `${width * sprite.frames}px ${height}px`,
             }),
-        backgroundImage: `url(${assetPath(sprite.src)})`,
+        // `?v=` is the sheet's content hash — see `PlantSpriteEntry.version`.
+        backgroundImage: `url(${assetPath(sprite.src)}?v=${sprite.version})`,
         // Custom properties rather than literals so one keyframe serves every sprite.
         // `steps()` is the one thing that cannot read a variable, hence the class above.
         ['--sprite-sheet-width' as string]: `${width * sprite.frames}px`,

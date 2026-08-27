@@ -26,6 +26,14 @@ export interface PlantSpriteEntry {
   herbId: string;
   /** Site-root-relative path to the sheet; resolve through `assetPath()` before use. */
   src: string;
+  /**
+   * Short content hash of the sheet, appended to the URL as `?v=`.
+   *
+   * Sheets are regenerated in place — the filename never changes but the bytes do — and
+   * `public/` is not fingerprinted by Next, so without this a browser holding the old art
+   * keeps showing it after a deploy that redrew every portrait.
+   */
+  version: string;
   /** One frame's dimensions, already at the shipped scale. */
   frameWidth: number;
   frameHeight: number;

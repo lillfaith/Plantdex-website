@@ -35,6 +35,7 @@ mid-bounce stub. This mirrors the rule the loading sprout already follows.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
 import sys
@@ -307,9 +308,20 @@ def compile_sprite(sprite: dict) -> dict:
     out_path = OUT_DIR / f"{sprite['herbId']}.png"
     sheet.save(out_path, "PNG", optimize=True)
 
+    # A short content hash, appended to the URL by `PlantSprite` as `?v=`.
+    #
+    # These sheets are REGENERATED IN PLACE: the filename never changes, but the bytes do
+    # every time a sprite is redrawn. Without something in the URL that moves with the
+    # content, a browser that cached the old art keeps showing it, and the site looks
+    # unchanged after a deploy that changed every portrait — which is exactly what adding
+    # the frame gutter did. Fingerprinting the reference rather than the file keeps the
+    # path stable for `public/`, which Next does not hash.
+    version = hashlib.sha1(out_path.read_bytes()).hexdigest()[:8]
+
     return {
         "herbId": sprite["herbId"],
         "src": f"/cards/animated/{sprite['herbId']}.png",
+        "version": version,
         "frameWidth": cell * SCALE,
         "frameHeight": height * SCALE,
         "frames": frames,
