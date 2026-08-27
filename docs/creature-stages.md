@@ -1,12 +1,9 @@
 # Creature growth stages
 
-**Status: 40 of 45 species staged.** The other 5 show their single adult portrait at every
-stage, which is what the whole site did before this existed — so shipping this partial makes
-nothing worse than it was, and `spriteFor` resolves the fallback silently.
-
-Every card's animated portrait is a creature. Staging gives forty of them a **sprout** and a
-**growing** version, so the character a player sees grows up with their own progress: on the
-card page, in the Garden, and anywhere else a portrait is drawn.
+**Status: all 45 species staged.** Every card's animated portrait is a creature, and every
+one of them now has a **sprout** and a **growing** version as well as its adult, so the
+character a player sees grows up with their own progress: on the card page, in the Garden,
+and anywhere else a portrait is drawn.
 
 ## What a stage means
 
@@ -79,7 +76,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 40 species
+## The forty-five
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -123,6 +120,11 @@ frond that says which plant this is.
 | 37 | Wild Rose | face on a leaflet, thorns already grown, and no better side | the **bud**, wrapped in sepals; the whole preen, and a blink where the wink goes |
 | 38 | Willow | an **unveiled** face — a young willow does not weep | half a curtain, a silvery catkin bud, and a drop that hangs and never falls |
 | 40 | Honeysuckle | face on a leaf; no bead, nothing taken from anybody | paired **shut tubes**, no flare and no stamens — it leans, and finds nothing |
+| 41 | Pine | one whorl of needles and a dusting; one shiver clears it | two tiers and a real load — it shivers, and the snow only comes **half** off |
+| 42 | Mulberry | leaves, and a **clean mouth** — it has never had one | the fruiting twig, and a mulberry that is **green**: no drip, no stain |
+| 43 | Passion Flower | the three-lobed leaf and the tendril; the face rides the leaf | the **bud**, with somebody in it — it swells to the edge of opening and stops |
+| 44 | Prickly Lettuce | the **first-year rosette**, flat; a rosette cannot point | on edge and aligned: it finds the bearing, with one overshoot, not four |
+| 45 | Oak | the seedling **the adult's own loop makes**, split cup still at its foot | acorns formed and **green**, still seated in their cups, going nowhere |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -157,6 +159,34 @@ frames, and seedlings genuinely do fold too — just less. So the sprout tips ha
 frames and never covers the face, the growing stage holds half-folded for four with the crown
 leaflet shut on top, and only the adult disappears.
 
+**Four species have no flower to close, and each says so rather than inventing one.** Lamb's
+Quarters, Lemon Balm and Pine draw no bloom on their authored portraits — lamb's quarters'
+flowers are tiny green mealy knots, lemon balm's are small and white and nobody looks at
+them, and a pine has cones rather than flowers at all — so a middle stage built round a bud
+would end up looking *more* advanced than the adult, which is backwards. Their ladders run on
+the plant's own structure instead: leaf form for lamb's quarters (strap cotyledons, then the
+goosefoot), the arriving bee for lemon balm, and tiers for pine, which is literally how
+foresters age a conifer. Horsetail is the fourth and the neatest: it is not a flowering plant
+either, but its spore cone is genuinely tight and shut before it opens, so "in bud" means
+something exact there after all.
+
+**Fruit is the last thing every time.** Strawberry, Blackberry, Mulberry, Elderberry, Wild
+Rose, Maple and Oak all withhold it, and on three of those it is a safety rule rather than a
+stylistic one: raw elderberries are not safe, a bramble is the plant people most often eat
+straight off the cane, and a green cane wearing berries is a drawing that says *ready* a year
+early. The same rule read backwards catches Wild Geranium's beak, which is the *spent*
+flower — a seedling wearing a seed pod is exactly as wrong as one wearing a ripe berry.
+
+**Six species wear their face on the flower**, so a stage with no flower has to move it onto
+the plant they do have: Violet, St John's Wort, Wild Geranium, Blackberry, Jewelweed and
+Honeysuckle. In every case the leaf they land on is doing real identification work, which is
+why it was available.
+
+**And the deck closes on itself.** Oak's adult loop ends with an acorn on the ground, split
+open, with a shoot out of it — and that seedling is exactly what Oak's own sprout stage is.
+The last card's gesture produces the last card's first stage, which is not a device: it is
+what an oak does.
+
 Four organs are **hand-drawn** rather than generated, and the reason generalises:
 `flower_head` builds rounded, radial shapes, so anything that is neither comes out wrong.
 Yarrow's corymb is a *flat plate* of tight buttons and a high lobe count fragments it; a
@@ -165,20 +195,6 @@ Wort's perforate leaf and Wild Geranium's seven-lobe palmate are both shapes who
 point is that they are not a circle. A hand-drawn grid with a plain `F` patch works
 identically — `face_box` measures it the same way — so reach for one whenever the generator
 is being bent out of shape.
-
-## Still to stage — 5 species
-
-A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
-and re-running `python3 scripts/build_sprites.py`; no component changes, because
-`spriteFor(herbId, stage)` already resolves whatever exists.
-
-| Card | Species | Herb id |
-|---|---|---|
-| 41 | Pine | `pinus-spp` |
-| 42 | Mulberry | `morus-spp` |
-| 43 | Passion Flower | `passiflora-incarnata` |
-| 44 | Prickly Lettuce | `lactuca-serriola` |
-| 45 | Oak | `quercus-spp` |
 
 ```bash
 python3 scripts/build_sprites.py

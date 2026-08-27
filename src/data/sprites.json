@@ -519,7 +519,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "orienting"
+    "personality": "orienting",
+    "stages": {
+      "sprout": {
+        "herbId": "lactuca-serriola-sprout",
+        "src": "/cards/animated/lactuca-serriola-sprout.png",
+        "version": "c895d1d2",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "orienting"
+      },
+      "growing": {
+        "herbId": "lactuca-serriola-growing",
+        "src": "/cards/animated/lactuca-serriola-growing.png",
+        "version": "91a0894e",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "orienting"
+      }
+    }
   },
   "lamium-purpureum": {
     "herbId": "lamium-purpureum",
@@ -689,7 +711,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "unrepentant"
+    "personality": "unrepentant",
+    "stages": {
+      "sprout": {
+        "herbId": "morus-spp-sprout",
+        "src": "/cards/animated/morus-spp-sprout.png",
+        "version": "e74ac290",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "unrepentant"
+      },
+      "growing": {
+        "herbId": "morus-spp-growing",
+        "src": "/cards/animated/morus-spp-growing.png",
+        "version": "de802338",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "unrepentant"
+      }
+    }
   },
   "nepeta-cataria": {
     "herbId": "nepeta-cataria",
@@ -763,7 +807,29 @@
     "frameHeight": 140,
     "frames": 16,
     "fps": 8,
-    "personality": "theatrical"
+    "personality": "theatrical",
+    "stages": {
+      "sprout": {
+        "herbId": "passiflora-incarnata-sprout",
+        "src": "/cards/animated/passiflora-incarnata-sprout.png",
+        "version": "c9a194e0",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "theatrical"
+      },
+      "growing": {
+        "herbId": "passiflora-incarnata-growing",
+        "src": "/cards/animated/passiflora-incarnata-growing.png",
+        "version": "54f426e9",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "theatrical"
+      }
+    }
   },
   "pinus-spp": {
     "herbId": "pinus-spp",
@@ -773,7 +839,29 @@
     "frameHeight": 140,
     "frames": 16,
     "fps": 6,
-    "personality": "ancient"
+    "personality": "ancient",
+    "stages": {
+      "sprout": {
+        "herbId": "pinus-spp-sprout",
+        "src": "/cards/animated/pinus-spp-sprout.png",
+        "version": "9c47534b",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "ancient"
+      },
+      "growing": {
+        "herbId": "pinus-spp-growing",
+        "src": "/cards/animated/pinus-spp-growing.png",
+        "version": "b364c4fa",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "ancient"
+      }
+    }
   },
   "plantago-major": {
     "herbId": "plantago-major",
@@ -879,7 +967,29 @@
     "frameHeight": 140,
     "frames": 16,
     "fps": 6,
-    "personality": "patriarchal"
+    "personality": "patriarchal",
+    "stages": {
+      "sprout": {
+        "herbId": "quercus-spp-sprout",
+        "src": "/cards/animated/quercus-spp-sprout.png",
+        "version": "cf8a91d3",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "patriarchal"
+      },
+      "growing": {
+        "herbId": "quercus-spp-growing",
+        "src": "/cards/animated/quercus-spp-growing.png",
+        "version": "12eb9525",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "patriarchal"
+      }
+    }
   },
   "rhus-spp": {
     "herbId": "rhus-spp",

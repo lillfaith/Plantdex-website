@@ -27,6 +27,9 @@ from the card's identification content, which stays the reference for anyone act
 looking at a plant outdoors.
 """
 
+from _face import on_face
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
+
 # Authored at 32x28, the house size.
 PALETTE = {
     "o": (74, 48, 92, 255),      # outline
@@ -170,9 +173,250 @@ MOUTH_LEVEL = [
     "ooo",
 ]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# WHAT GROWS IS HOW MUCH SNOW IT CAN CARRY. Pine is the deck's only winter card and the
+# only sprite with weather, and the shake is the only evidence anything happened. A
+# seedling holds a dusting; a tree holds a load. So the ladder is the load and the shrug:
+#
+#   sprout    one whorl of needles on a leader, a dusting of snow, and one shiver that
+#             clears the lot. There is barely anything on it.
+#   growing   two tiers and a real load. It shivers, and the snow only comes HALF off —
+#             a young pine has not the mass to shed a whole winter in one go.
+#   flowering the full tree, the full load, three frames of shaking and the flakes
+#             coming down. Unchanged.
+#
+# NOT A FLOWERING PLANT, like horsetail, and unlike horsetail its cone is not drawn on
+# the authored portrait — so as with lamb's quarters and lemon balm, the middle stage
+# cannot be "in bud" and the ladder runs on the plant's own structure instead. For a
+# conifer that structure is TIERS: a pine grows one whorl of branches a year, which is
+# how foresters age one, so counting the tiers is literally counting the stage.
+#
+# HAND-DRAWN AT EVERY STAGE, for the same reason the adult is: a conifer has no curve in
+# it, and `flower_head` makes round organs. This is the one species in the set where the
+# shared generator is the wrong tool at all three sizes.
+
+# --- Sprout: one whorl, and a dusting ---------------------------------------
+TREE_YOUNG = [
+    "    o",
+    "   oNo",
+    "  oNnMo",
+    " ooNnmMoo",
+    "   oNnMo",
+    "  oNnnmMo",
+    "ooNnnmMMoo",
+    "   otTto",
+    "   otTto",
+]
+
+TREE_YOUNG_SHAKE = [
+    "   o",
+    "  oNo",
+    " oNnMo",
+    "ooNnmMoo",
+    "  oNnMo",
+    " oNnnmMo",
+    " ooNnnmMMoo",
+    "  otTto",
+    "  otTto",
+]
+
+# Two tiers. A pine puts out one whorl of branches a year, so this is a plant a year
+# older than the one above it and that is not a metaphor.
+TREE_MID = [
+    "      o",
+    "     oNo",
+    "    oNnMo",
+    "   ooNnmMoo",
+    "     oNnMo",
+    "    oNnnmMo",
+    "  ooNnnmMMoo",
+    "    oNnnmMo",
+    "   oNnnnmMMo",
+    "ooNnnnnmmMMMoo",
+    "     otTto",
+    "     otTto",
+    "    ooTtto",
+]
+
+TREE_MID_SHAKE = [
+    "     o",
+    "    oNo",
+    "   oNnMo",
+    "  ooNnmMoo",
+    "    oNnMo",
+    "   oNnnmMo",
+    " ooNnnmMMoo",
+    "   oNnnmMo",
+    "  oNnnnmMMo",
+    " ooNnnnnmmMMMoo",
+    "    otTto",
+    "    otTto",
+    "   ooTtto",
+]
+
+SNOW_YOUNG = [
+    "  WW   WW",
+    " Www   wW",
+]
+
+SNOW_YOUNG_HALF = [
+    "  WW    W",
+    "  w      ",
+]
+
+SNOW_MID = [
+    "   WW     WW",
+    "  Www     wW",
+    "  WW       WW",
+    " Www       wW",
+]
+
+SNOW_MID_HALF = [
+    "   WW     WW",
+    "   w       w",
+    "  WW       WW",
+    "  w         w",
+]
+
+# A wider face patch than the adult's. The young eyes need eight pixels of face to sit
+# in, and a pine's face is a rectangle cut out of the boughs, so the room has to come
+# from the width — the same answer horsetail needed for the same reason.
+FACE_YOUNG = [
+    "  ooooooo  ",
+    " oFFFFFFFo ",
+    "oFFFFFFFFFo",
+    "oFFFFFFFFFo",
+    " oFFFFFFFo ",
+    "  ooooooo  ",
+]
+
+FACE_MID = [
+    "  ooooooo  ",
+    " oFFFFFFFo ",
+    "oFFFFFFFFFo",
+    "oFFFFFFFFFo",
+    "oFFFFFFFFFo",
+    " oFFFFFFFo ",
+    "  ooooooo  ",
+]
+
+YOUNG_FACE_AT = (11, 17)
+MID_FACE_AT = (11, 16)
+
 SPRITE = {
     "herbId": "pinus-spp",
     "personality": "ancient",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            # No flakes: there is not enough snow on it for any to be worth drawing
+            # coming down.
+            "hide": ["flakes", "cheeks"],
+            "swap": {
+                "tree": TREE_YOUNG,
+                "face": FACE_YOUNG,
+                "snow": SNOW_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "tree": {"shake": TREE_YOUNG_SHAKE},
+                "snow": {"half": SNOW_YOUNG_HALF, "none": ["  "]},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "shut": YOUNG_EYES["shut"],
+                    "half": YOUNG_EYES["half"],
+                },
+            },
+            "origins": {
+                "tree": (12, 10),
+                "face": YOUNG_FACE_AT,
+                "snow": (13, 12),
+                **seat_young(
+                    YOUNG_FACE_AT, FACE_YOUNG, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # One shiver, and everything it was carrying is gone. That is not strength:
+            # it is that there was almost nothing there.
+            "motion": {
+                "tree": {
+                    "art": [None, None, None, "shake", None, None, None, None],
+                    "dx": [0, 0, 0, 1, -1, 0, 0, 0],
+                },
+                "snow": {
+                    "art": [None, None, None, "half", "none", "none", "none", "none"],
+                    "dx": [0, 0, 0, 1, -1, 0, 0, 0],
+                },
+                "face": {"dx": [0, 0, 0, 1, -1, 0, 0, 0]},
+                "eyes": {
+                    "art": [None, None, "shut", "shut", "half", None, "blink", None],
+                    "dx": [0, 0, 0, 1, -1, 0, 0, 0],
+                },
+                "mouth": {"dx": [0, 0, 0, 1, -1, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "hide": ["flakes", "cheeks"],
+            "swap": {
+                "tree": TREE_MID,
+                "face": FACE_MID,
+                "snow": SNOW_MID,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "tree": {"shake": TREE_MID_SHAKE},
+                "snow": {"half": SNOW_MID_HALF, "none": ["  "]},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "shut": YOUNG_EYES["shut"],
+                    "half": YOUNG_EYES["half"],
+                },
+            },
+            "origins": {
+                "tree": (10, 6),
+                "face": MID_FACE_AT,
+                "snow": (11, 8),
+                **seat_young(
+                    MID_FACE_AT, FACE_MID, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # Two shivers, and the snow only comes half off. It has grown enough to
+            # carry a real load and not enough to shed one.
+            "motion": {
+                "tree": {
+                    "art": [None, None, None, "shake", None, "shake", None, None,
+                            None, None],
+                    "dx": [0, 0, 0, 1, -1, 1, 0, 0, 0, 0],
+                    "dy": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "snow": {
+                    "art": [None, None, None, "half", "half", "half", "half", "half",
+                            "half", "half"],
+                    "dx": [0, 0, 0, 1, -1, 1, 0, 0, 0, 0],
+                    "dy": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "face": {
+                    "dx": [0, 0, 0, 1, -1, 1, 0, 0, 0, 0],
+                    "dy": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", "shut", "shut", "shut", "shut", "half",
+                            None, "blink", None],
+                    "dx": [0, 0, 0, 1, -1, 1, 0, 0, 0, 0],
+                    "dy": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, 0, 0, 1, -1, 1, 0, 0, 0, 0],
+                    "dy": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                },
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 16,
     "fps": 6,

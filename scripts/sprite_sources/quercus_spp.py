@@ -25,8 +25,9 @@ apart from the card's identification content, which stays the reference outdoors
 
 import math
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -136,9 +137,210 @@ TWIG = [
 
 HEAD_AT = (4, 0)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE DECK CLOSES ON ITSELF HERE. The adult's loop ends with an acorn on the ground, split
+# open, with a shoot out of it — and that seedling is exactly what this species' SPROUT
+# stage is. The last card's gesture produces the last card's first stage, which is not a
+# device: it is what an oak does, and it is the only place in this set where a creature's
+# trademark and a creature's beginning are the same object.
+#
+#   sprout    a seedling, with the split acorn cup still at its foot. That cup stays on
+#             for weeks in a real one, and it is the plainest way to say where this came
+#             from. It cannot drop an acorn; it has none. It looks up.
+#   growing   a young tree with acorns forming — GREEN, and still seated in their cups.
+#             A green acorn does not fall, so the twig holds it and the loop is a tree
+#             waiting, which for an oak is not a hardship.
+#   flowering the acorn released, the fall, the split, the shoot, and the tree looking at
+#             what it has started. Unchanged, and it is the deck's ending.
+#
+# ROUND LOBES AT EVERY STAGE. An oak leaf's lobes are round-ended with deep smooth
+# sinuses, which is the thing that tells it from a maple's points — so the crown is cut
+# that way at all three sizes, and the whole tree carries its own leaf shape from the
+# seedling on.
+
+ACORN_PALETTE = {
+    "K": (176, 206, 128, 255),   # unripe acorn highlight — green, and firmly attached
+    "k": (128, 162, 90, 255),    # unripe acorn mid
+}
+
+# --- Sprout: the seedling the adult's own loop makes ------------------------
+YOUNG_HEAD_AT = (10, 11)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 12, 8.0, 5.6, 7.8, 5.4, 5, 0.24, 5.4, 3.4,
+        face_dx=face_dx, phase=-math.pi / 2, light=light, trim_tail=False,
+        chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# A seedling's stem, and nothing like a trunk yet.
+TRUNK_THIN = [
+    "otTto",
+    "otTto",
+    " ooo ",
+]
+
+# The cup it came out of, still at the foot. This is not decoration: an oak seedling
+# carries the split shell for weeks, and it is the clearest thing a picture can say
+# about where a tree comes from.
+CUP = [
+    "oCoCo",
+    "oAoAo",
+    " ooo ",
+]
+
+# --- Growing: acorns, green and attached ------------------------------------
+MID_HEAD_AT = (7, 4)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        21, 16, 10.0, 7.6, 9.4, 7.2, 7, 0.26, 5.4, 4.2,
+        face_dx=face_dx, phase=-math.pi / 2, light=light, trim_tail=False,
+        chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.5, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.5, light=(-1.25, -0.65))
+
+# The same acorn, unripe: the cup is already cross-hatched, and what is sitting in it is
+# green and going nowhere.
+ACORN_GREEN = [
+    " ooooooo ",
+    "oCcCcCcCo",
+    "oCCcCcCCo",
+    "oCcCcCcCo",
+    "ooKKKKKoo",
+    " oKKKKKo",
+    " oKKKkko",
+    "  oKkko",
+    "   ooo",
+    "   oto",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "quercus-spp",
     "personality": "patriarchal",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            # No twig and no acorn. The `sprout` part becomes the split cup it came out
+            # of, which is the same object it was in the adult's loop, one moment later.
+            "hide": ["twig", "acorn", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "trunk": TRUNK_THIN,
+                "sprout": CUP,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                },
+                "mouth": {"grin": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "trunk": (16, 21),
+                "sprout": (15, 23),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # It looks up. That is the whole loop, and for the thing the deck's last
+            # gesture produces it is the right one.
+            "motion": {
+                "head": {
+                    "art": [None, None, "right", "right", None, "left", None, None],
+                    "dy": [0, -1, -1, -1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "wide", "wide", "wide", "wide", None, "blink", None],
+                    "dx": [0, 0, S_R_DX, S_R_DX, 0, S_L_DX, 0, 0],
+                    "dy": [0, -1, -1, -1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, None, "grin", "grin", "grin", None, None],
+                    "dx": [0, 0, S_R_DX, S_R_DX, 0, S_L_DX, 0, 0],
+                    "dy": [0, -1, -1, -1, 0, 0, 0, 0],
+                },
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "palette": ACORN_PALETTE,
+            # Nothing on the ground: nothing has fallen, because a green acorn is still
+            # seated in its cup and holds on.
+            "hide": ["sprout", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "acorn": ACORN_GREEN,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                },
+                "mouth": {"grin": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "twig": (17, 14),
+                "acorn": (21, 16),
+                "trunk": (12, 16),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # A tree waiting, which for an oak is not a hardship. The acorn stirs on the
+            # twig and stays exactly where it is.
+            "motion": {
+                "head": {
+                    "art": [None, None, None, None, "right", "right", None, "left",
+                            None, None],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", None, None, "wide", "wide", None, None,
+                            "blink", None],
+                    "dx": [0, 0, 0, 0, G_R_DX, G_R_DX, 0, G_L_DX, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, None, None, None, "grin", "grin", "grin", None,
+                            None],
+                    "dx": [0, 0, 0, 0, G_R_DX, G_R_DX, 0, G_L_DX, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0],
+                },
+                "acorn": {"dy": [0, 0, 0, 1, 1, 0, 0, 0, 0, 0]},
+                "twig": {"lean": [0, 0, 0, -1, -1, 0, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 16,
     "fps": 6,
