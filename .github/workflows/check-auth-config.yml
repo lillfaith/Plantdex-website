@@ -1,0 +1,57 @@
+name: Check Supabase auth config
+
+# Reads back a project's redirect allow list and Site URL, so "did the redirect URLs
+# actually land on production?" can be ANSWERED rather than assumed.
+#
+# Those two settings decide where a confirmation or password-reset link sends someone, and
+# they fail invisibly: signup appears to work, the email arrives, and the link drops the
+# player somewhere with no session. `/auth/v1/settings` — all the anon key can reach — does
+# not expose either field, so the dashboard and the Management API are the only readers.
+# This needs the same SUPABASE_ACCESS_TOKEN the function deploy already uses, which is why
+# it runs here rather than on anybody's laptop.
+#
+# `scripts/check_auth_config.py` prints two fields and discards the rest of the response
+# unread. That is deliberate: the config endpoint also returns SMTP credentials and
+# provider secrets, and a workflow log is readable by anyone with repo access.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which Supabase project to read
+        required: true
+        default: vygiamigomwlvnwkryyl
+        type: choice
+        options:
+          - vygiamigomwlvnwkryyl # production — real players
+          - vgjehmwcpavflbfhbbrp # test — where npm run verify:supabase runs
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Create one at" \
+                 "https://supabase.com/dashboard/account/tokens and add it under" \
+                 "Settings -> Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - name: Read the redirect allow list and Site URL
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          curl -sS --fail-with-body \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            "https://api.supabase.com/v1/projects/$PROJECT_REF/config/auth" \
+            | python3 scripts/check_auth_config.py "$PROJECT_REF"
