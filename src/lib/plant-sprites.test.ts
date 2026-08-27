@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -213,5 +214,40 @@ describe('the fitted sprite walk', () => {
     const block = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
     expect(block).toContain('.plant-sprite-fit {');
     expect(block).toContain('background-position-x: 0% !important;');
+  });
+});
+
+describe('cache-busting versions', () => {
+  const sheets = allSprites().flatMap((sprite) => [
+    { label: sprite.herbId, entry: sprite },
+    ...Object.entries(sprite.stages ?? {}).map(([stage, entry]) => ({
+      label: `${sprite.herbId} (${stage})`,
+      entry,
+    })),
+  ]);
+
+  it('stamps every sheet with the hash of its actual bytes', () => {
+    // THE FAILURE THIS CATCHES: a sprite redrawn and committed without re-running the
+    // build, so the manifest still carries the old version. Every visitor holding the
+    // previous art in cache then keeps it — the deploy succeeds and the site looks
+    // unchanged, which is the least debuggable shape a bug can have. Recomputing the hash
+    // here means a stale manifest fails `npm test` instead.
+    for (const { label, entry } of sheets) {
+      expect(entry.version, `${label} has no version`).toMatch(/^[0-9a-f]{8}$/);
+      const bytes = readFileSync(join(root, 'public', entry.src));
+      const actual = createHash('sha1').update(bytes).digest('hex').slice(0, 8);
+      expect(entry.version, `${label}: manifest version is stale`).toBe(actual);
+    }
+  });
+
+  it('gives different art different versions', () => {
+    // Two sheets sharing a version would mean identical bytes, which for a deck whose
+    // whole premise is that no two species look alike is a bug in itself.
+    const byVersion = new Map<string, string>();
+    for (const { label, entry } of sheets) {
+      const clash = byVersion.get(entry.version);
+      expect(clash, `${label} and ${clash} are byte-identical`).toBeUndefined();
+      byVersion.set(entry.version, label);
+    }
   });
 });

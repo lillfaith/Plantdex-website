@@ -2,6 +2,7 @@
   "acer-spp": {
     "herbId": "acer-spp",
     "src": "/cards/animated/acer-spp.png",
+    "version": "28ed8fd9",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -11,6 +12,7 @@
   "achillea-millefolium": {
     "herbId": "achillea-millefolium",
     "src": "/cards/animated/achillea-millefolium.png",
+    "version": "a8ecdbd3",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -20,6 +22,7 @@
       "sprout": {
         "herbId": "achillea-millefolium-sprout",
         "src": "/cards/animated/achillea-millefolium-sprout.png",
+        "version": "2cfd9eeb",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
@@ -29,6 +32,7 @@
       "growing": {
         "herbId": "achillea-millefolium-growing",
         "src": "/cards/animated/achillea-millefolium-growing.png",
+        "version": "5fbe3ddf",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
@@ -40,6 +44,7 @@
   "alliaria-petiolata": {
     "herbId": "alliaria-petiolata",
     "src": "/cards/animated/alliaria-petiolata.png",
+    "version": "72040406",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -49,6 +54,7 @@
   "allium-vineale": {
     "herbId": "allium-vineale",
     "src": "/cards/animated/allium-vineale.png",
+    "version": "e943bb6f",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -58,6 +64,7 @@
   "ambrosia-artemisiifolia": {
     "herbId": "ambrosia-artemisiifolia",
     "src": "/cards/animated/ambrosia-artemisiifolia.png",
+    "version": "4a7ad1f2",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -67,6 +74,7 @@
   "arctium-lappa": {
     "herbId": "arctium-lappa",
     "src": "/cards/animated/arctium-lappa.png",
+    "version": "222e1898",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -76,6 +84,7 @@
   "capsella-bursa-pastoris": {
     "herbId": "capsella-bursa-pastoris",
     "src": "/cards/animated/capsella-bursa-pastoris.png",
+    "version": "d0c3bbb9",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -85,6 +94,7 @@
   "chenopodium-album": {
     "herbId": "chenopodium-album",
     "src": "/cards/animated/chenopodium-album.png",
+    "version": "15ab2536",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -94,6 +104,7 @@
   "cichorium-intybus": {
     "herbId": "cichorium-intybus",
     "src": "/cards/animated/cichorium-intybus.png",
+    "version": "90561f22",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
@@ -103,6 +114,7 @@
   "equisetum-arvense": {
     "herbId": "equisetum-arvense",
     "src": "/cards/animated/equisetum-arvense.png",
+    "version": "8c86d0f8",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -112,6 +124,7 @@
   "fragaria-virginiana": {
     "herbId": "fragaria-virginiana",
     "src": "/cards/animated/fragaria-virginiana.png",
+    "version": "7a8b64de",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -121,6 +134,7 @@
   "galium-aparine": {
     "herbId": "galium-aparine",
     "src": "/cards/animated/galium-aparine.png",
+    "version": "57b00e8d",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -130,6 +144,7 @@
   "geranium-maculatum": {
     "herbId": "geranium-maculatum",
     "src": "/cards/animated/geranium-maculatum.png",
+    "version": "a4736486",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -139,6 +154,7 @@
   "glechoma-hederacea": {
     "herbId": "glechoma-hederacea",
     "src": "/cards/animated/glechoma-hederacea.png",
+    "version": "bf88988d",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -148,6 +164,7 @@
   "hypericum-perforatum": {
     "herbId": "hypericum-perforatum",
     "src": "/cards/animated/hypericum-perforatum.png",
+    "version": "dd747c79",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -157,6 +174,7 @@
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
     "src": "/cards/animated/impatiens-capensis.png",
+    "version": "839c324f",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -166,6 +184,7 @@
   "lactuca-serriola": {
     "herbId": "lactuca-serriola",
     "src": "/cards/animated/lactuca-serriola.png",
+    "version": "2b50bdc4",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -175,6 +194,7 @@
   "lamium-purpureum": {
     "herbId": "lamium-purpureum",
     "src": "/cards/animated/lamium-purpureum.png",
+    "version": "aea9f437",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -184,6 +204,7 @@
   "lonicera-japonica": {
     "herbId": "lonicera-japonica",
     "src": "/cards/animated/lonicera-japonica.png",
+    "version": "0206a8ef",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -193,6 +214,7 @@
   "melissa-officinalis": {
     "herbId": "melissa-officinalis",
     "src": "/cards/animated/melissa-officinalis.png",
+    "version": "d42ce4e8",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -202,6 +224,7 @@
   "mentha-canadensis": {
     "herbId": "mentha-canadensis",
     "src": "/cards/animated/mentha-canadensis.png",
+    "version": "b7b59e5a",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -211,6 +234,7 @@
   "monarda-fistulosa": {
     "herbId": "monarda-fistulosa",
     "src": "/cards/animated/monarda-fistulosa.png",
+    "version": "27b0f5fc",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -220,6 +244,7 @@
   "morus-spp": {
     "herbId": "morus-spp",
     "src": "/cards/animated/morus-spp.png",
+    "version": "1fdc58c5",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -229,6 +254,7 @@
   "nepeta-cataria": {
     "herbId": "nepeta-cataria",
     "src": "/cards/animated/nepeta-cataria.png",
+    "version": "1f3bffab",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
@@ -238,6 +264,7 @@
   "oxalis-stricta": {
     "herbId": "oxalis-stricta",
     "src": "/cards/animated/oxalis-stricta.png",
+    "version": "c4def14b",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -247,6 +274,7 @@
   "passiflora-incarnata": {
     "herbId": "passiflora-incarnata",
     "src": "/cards/animated/passiflora-incarnata.png",
+    "version": "2e5f57f5",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
@@ -256,6 +284,7 @@
   "pinus-spp": {
     "herbId": "pinus-spp",
     "src": "/cards/animated/pinus-spp.png",
+    "version": "2e8e609e",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
@@ -265,6 +294,7 @@
   "plantago-major": {
     "herbId": "plantago-major",
     "src": "/cards/animated/plantago-major.png",
+    "version": "75611e27",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -274,6 +304,7 @@
       "sprout": {
         "herbId": "plantago-major-sprout",
         "src": "/cards/animated/plantago-major-sprout.png",
+        "version": "8524ef2f",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
@@ -283,6 +314,7 @@
       "growing": {
         "herbId": "plantago-major-growing",
         "src": "/cards/animated/plantago-major-growing.png",
+        "version": "ae5c7d3f",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
@@ -294,6 +326,7 @@
   "portulaca-oleracea": {
     "herbId": "portulaca-oleracea",
     "src": "/cards/animated/portulaca-oleracea.png",
+    "version": "c3f28b19",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -303,6 +336,7 @@
   "prunella-vulgaris": {
     "herbId": "prunella-vulgaris",
     "src": "/cards/animated/prunella-vulgaris.png",
+    "version": "ba0739cf",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -312,6 +346,7 @@
   "quercus-spp": {
     "herbId": "quercus-spp",
     "src": "/cards/animated/quercus-spp.png",
+    "version": "e0ba0209",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
@@ -321,6 +356,7 @@
   "rhus-spp": {
     "herbId": "rhus-spp",
     "src": "/cards/animated/rhus-spp.png",
+    "version": "317a74e2",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -330,6 +366,7 @@
   "rosa-spp": {
     "herbId": "rosa-spp",
     "src": "/cards/animated/rosa-spp.png",
+    "version": "01eddcd2",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -339,6 +376,7 @@
   "rubus-spp": {
     "herbId": "rubus-spp",
     "src": "/cards/animated/rubus-spp.png",
+    "version": "057b9091",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -348,6 +386,7 @@
   "rumex-acetosella": {
     "herbId": "rumex-acetosella",
     "src": "/cards/animated/rumex-acetosella.png",
+    "version": "46db21f3",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -357,6 +396,7 @@
   "rumex-obtusifolius": {
     "herbId": "rumex-obtusifolius",
     "src": "/cards/animated/rumex-obtusifolius.png",
+    "version": "13863209",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -366,6 +406,7 @@
   "salix-spp": {
     "herbId": "salix-spp",
     "src": "/cards/animated/salix-spp.png",
+    "version": "f6171cbe",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -375,6 +416,7 @@
   "sambucus-spp": {
     "herbId": "sambucus-spp",
     "src": "/cards/animated/sambucus-spp.png",
+    "version": "99fe123c",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -384,6 +426,7 @@
   "solidago-canadensis": {
     "herbId": "solidago-canadensis",
     "src": "/cards/animated/solidago-canadensis.png",
+    "version": "3e545278",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -393,6 +436,7 @@
   "stellaria-media": {
     "herbId": "stellaria-media",
     "src": "/cards/animated/stellaria-media.png",
+    "version": "605db1ab",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -402,6 +446,7 @@
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
     "src": "/cards/animated/taraxacum-officinale.png",
+    "version": "7fdd21b5",
     "frameWidth": 230,
     "frameHeight": 160,
     "frames": 16,
@@ -411,6 +456,7 @@
       "sprout": {
         "herbId": "taraxacum-officinale-sprout",
         "src": "/cards/animated/taraxacum-officinale-sprout.png",
+        "version": "8a098675",
         "frameWidth": 230,
         "frameHeight": 160,
         "frames": 8,
@@ -420,6 +466,7 @@
       "growing": {
         "herbId": "taraxacum-officinale-growing",
         "src": "/cards/animated/taraxacum-officinale-growing.png",
+        "version": "7a43224e",
         "frameWidth": 230,
         "frameHeight": 160,
         "frames": 10,
@@ -431,6 +478,7 @@
   "trifolium-pratense": {
     "herbId": "trifolium-pratense",
     "src": "/cards/animated/trifolium-pratense.png",
+    "version": "7b8a81fa",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -440,6 +488,7 @@
       "sprout": {
         "herbId": "trifolium-pratense-sprout",
         "src": "/cards/animated/trifolium-pratense-sprout.png",
+        "version": "61202170",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
@@ -449,6 +498,7 @@
       "growing": {
         "herbId": "trifolium-pratense-growing",
         "src": "/cards/animated/trifolium-pratense-growing.png",
+        "version": "0a86990e",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
@@ -460,6 +510,7 @@
   "urtica-dioica": {
     "herbId": "urtica-dioica",
     "src": "/cards/animated/urtica-dioica.png",
+    "version": "1b10807b",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -469,6 +520,7 @@
   "verbascum-thapsus": {
     "herbId": "verbascum-thapsus",
     "src": "/cards/animated/verbascum-thapsus.png",
+    "version": "7ba33376",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -478,6 +530,7 @@
   "viola-sororia": {
     "herbId": "viola-sororia",
     "src": "/cards/animated/viola-sororia.png",
+    "version": "b65dbb63",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -487,6 +540,7 @@
       "sprout": {
         "herbId": "viola-sororia-sprout",
         "src": "/cards/animated/viola-sororia-sprout.png",
+        "version": "744282db",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
@@ -496,6 +550,7 @@
       "growing": {
         "herbId": "viola-sororia-growing",
         "src": "/cards/animated/viola-sororia-growing.png",
+        "version": "5a84be6e",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
