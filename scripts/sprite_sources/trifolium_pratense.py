@@ -21,7 +21,8 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_box, face_shift, feature_parts
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 from _flowerhead import flower_head
 
 PALETTE = {
@@ -44,7 +45,7 @@ CROWN_W, CROWN_H = 15, 11
 
 def _head(face_dx=0.0, light=(-0.85, -0.65)):
     return flower_head(
-        HEAD_W, HEAD_H, 8.0, 7.0, 7.6, 6.8, 5, 0.10, 4.8, 4.0,
+        HEAD_W, HEAD_H, 8.0, 7.0, 7.6, 6.8, 5, 0.10, 5.2, 4.0,
         face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
     )
 
@@ -120,9 +121,192 @@ STEM = [
 
 HEAD_AT = (7, 11)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME HOPEFUL CLOVER, YOUNGER. Its trademark is the fourth leaflet appearing and
+# vanishing again, and that stays with the open flower — mastery has to buy something the
+# player can actually see. A younger clover has three leaflets and keeps them.
+#
+# THE BOTANY DECIDES WHAT IS DRAWN:
+#
+#   sprout    trifoliate leaves and NO flower head at all. A clover seedling is leaves,
+#             and the pale chevron is on them from the start because that is the trait.
+#   growing   in bud: the head is there and closed — a tight GREEN-WHITE knot wrapped in
+#             its bracts, before any pink. Red clover earns its name at the last moment,
+#             which is exactly what makes this stage worth drawing.
+#   flowering the open rose-pink head, unchanged.
+
+BUD_PALETTE = {
+    "K": (206, 232, 186, 255),   # bud highlight - green-white, no pink yet
+    "k": (156, 196, 146, 255),   # bud mid
+    "j": (112, 152, 110, 255),   # bud deep
+    "J": (78, 110, 82, 255),     # bud shadow
+}
+
+# --- Sprout: leaves only ----------------------------------------------------
+YOUNG_HEAD_W, YOUNG_HEAD_H = 15, 13
+YOUNG_HEAD_AT = (9, 12)
+
+
+def _young_head(rx=7.0, ry=6.0, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        YOUNG_HEAD_W, YOUNG_HEAD_H, 7.0, 6.2, rx, ry, 5, 0.10, 5.2, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_SQUASH = _young_head(rx=7.4, ry=5.5)
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.2, light=(-1.25, -0.65))
+
+# Smaller leaflets, chevron already on them.
+SEED_LEAF_L = [
+    " ooo",
+    "oGPGo",
+    "oGgddo",
+    " oddo",
+]
+SEED_LEAF_R = [
+    "ooo ",
+    "oGPGo",
+    "odgGGo",
+    " oddo",
+]
+SEED_STEM = [
+    "ogGdo",
+    "odgdo",
+    " ooo ",
+]
+
+# --- Growing: the head closed in bud ----------------------------------------
+BUD_W, BUD_H = 13, 9
+
+
+def _bud_crown(light=(-0.85, -0.65)):
+    # Fewer, tighter lobes than the open head's twelve: a clover in bud is a knot, and
+    # the florets have not separated yet.
+    return flower_head(
+        BUD_W, BUD_H, 6.0, 4.2, 5.6, 3.8, 7, 0.09, 0, 0,
+        light=light, trim_tail=False, chars="KkjJFo",
+    )
+
+
+BUD_CROWN = _bud_crown()
+BUD_CROWN_LIT = _bud_crown(light=(-0.55, -0.95))
+
+BUD_HEAD_AT = (8, 12)
+
+
+def _bud_head(rx=7.4, ry=6.6, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 15, 8.0, 6.8, rx, ry, 5, 0.10, 5.2, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_HEAD = _bud_head()
+BUD_HEAD_SQUASH = _bud_head(rx=7.8, ry=6.0)
+BUD_HEAD_LEFT = _bud_head(face_dx=-1.3, light=(-0.35, -0.65))
+BUD_HEAD_RIGHT = _bud_head(face_dx=1.3, light=(-1.25, -0.65))
+
+SPROUT_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+SPROUT_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+BUD_L_DX, _ = face_shift(BUD_HEAD, BUD_HEAD_LEFT)
+BUD_R_DX, _ = face_shift(BUD_HEAD, BUD_HEAD_RIGHT)
+
+# A sway and a look, no more. The adult sways then produces a fourth leaflet; this has
+# nothing to produce yet, so it just looks about hopefully.
+S_BOB = [0, 0, -1, -1, -1, 0, 0, 0]
+S_HEAD = [None, "squash", None, "left", "right", None, None, None]
+S_DX = [0, 0, 0, SPROUT_L_DX, SPROUT_R_DX, 0, 0, 0]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 1, -1, -2, -2, -1, 0, 0, 0, 0]
+G_HEAD = [None, "squash", None, None, "left", "right", None, None, None, None]
+G_DX = [0, 0, 0, 0, BUD_L_DX, BUD_R_DX, 0, 0, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 SPRITE = {
     "herbId": "trifolium-pratense",
     "personality": "hopeful",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            # No flower head at all, and the lucky-leaf machinery goes with it: a seedling
+            # has nothing to be lucky with yet.
+            "hide": ["crown", "fourth", "sparkle", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafL": SEED_LEAF_L,
+                "leafR": SEED_LEAF_R,
+                "stem": SEED_STEM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"squash": YOUNG_HEAD_SQUASH, "left": YOUNG_HEAD_LEFT,
+                         "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "stem": (14, 24),
+                "leafL": (6, 21),
+                "leafR": (20, 21),
+                **seat_young(YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, mouth_dy=4),
+            },
+            "motion": {
+                "head": {"dy": S_BOB, "art": S_HEAD},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "leafL": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": BUD_PALETTE,
+            # The fourth leaflet is the adult's trademark and stays earned.
+            "hide": ["fourth", "sparkle"],
+            "swap": {
+                "crown": BUD_CROWN,
+                "head": BUD_HEAD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_HEAD)[2]),
+            },
+            "variants": {
+                "crown": {"lit": BUD_CROWN_LIT},
+                "head": {"squash": BUD_HEAD_SQUASH, "left": BUD_HEAD_LEFT,
+                         "right": BUD_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+                "mouth": {"open": YOUNG_MOUTH["open"]},
+            },
+            "origins": {
+                "crown": (9, 7),
+                "head": BUD_HEAD_AT,
+                "stem": (14, 24),
+                "leafL": (1, 20),
+                "leafR": (23, 20),
+                **seat_young(BUD_HEAD_AT, BUD_HEAD, mouth_dy=4),
+            },
+            "motion": {
+                "crown": {"dy": G_BOB},
+                "head": {"dy": G_BOB, "art": G_HEAD},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "leafL": {"dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0]},
+                "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

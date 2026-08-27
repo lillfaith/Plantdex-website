@@ -63,6 +63,125 @@ SCALE = 5
 # the build rather than ship that.
 SUPPORTED_FRAME_COUNTS = (4, 6, 8, 10, 12, 14, 16, 18)
 
+# A transparent margin, in authored pixels, on each side of every frame.
+#
+# A sheet is walked by moving the background, and when the element sizes itself to its
+# container that move is a PERCENTAGE — so the frame boundary lands wherever subpixel
+# rounding puts it, and a sliver of the neighbouring frame shows at the edge. It is
+# unmissable once seen: a stray petal beside a creature that has no petals there.
+#
+# One authored pixel of transparency each side means the rounding error reveals nothing
+# instead of the next frame. It costs two pixels of sheet width per frame and it makes
+# the percentage walk safe at any size, which is what lets a row of creatures scale down
+# to fit four across a phone.
+FRAME_GUTTER = 1
+
+# Growth stages, matching `src/lib/garden.ts`. `flowering` is not listed because it is not
+# derived: it IS the authored sprite, and a species that stages nothing still resolves
+# every stage to that one portrait.
+DERIVED_STAGES = ("sprout", "growing")
+
+# How tall each stage stands as a fraction of the adult, and how far off it may be. Even
+# steps; `_stages.py` carries the reasoning and the frame-rate half of the same idea.
+STAGE_HEIGHT = {"sprout": 0.60, "growing": 0.80}
+HEIGHT_TOLERANCE = 0.06
+
+
+def apply_stage(sprite: dict, stage: str, recipe: dict) -> dict:
+    """Derive an earlier-stage creature from the authored (flowering) one.
+
+    WHY A RECIPE RATHER THAN THREE DRAWINGS. A species' portrait is a whole performance -
+    sixteen frames, five head poses, arms that lag the body. Authoring that three times per
+    species is 135 character animations, which is not a thing that gets finished, and a
+    half-finished one is worse than none. A stage is instead a short declaration of what is
+    DIFFERENT about the creature when it is younger, applied to art that already exists.
+
+    WHAT MAKES A CREATURE READ AS YOUNGER, and why these are the knobs:
+
+      hide     Parts it has not grown yet. A dandelion's arms ARE its basal leaves, so a
+               seedling simply has none - which is botany, not stylisation.
+      swap     Rows to replace: a closed green bud where the open bloom goes, sleepier
+               eyes, a smaller mouth. This is where a stage earns its keep, because a
+               bud is a different ORGAN, not a smaller copy of a flower.
+      variants Poses for a swapped part, since the adult's no longer fit its new rows.
+      origins  Where a part sits, for when a shorter creature needs its face lower.
+      frames   A calmer loop. A seedling that performs the adult's whole jump is an adult
+               drawn small; breathing instead is what reads as young.
+      motion   The loop itself, when `frames` changes.
+      palette  Extra colours a bud needs and the open flower does not.
+
+    The face is deliberately NOT removable. The whole point of staging these sprites is
+    that the player's own creature grows up, so it has to stay recognisably itself at
+    every stage - same character, younger.
+    """
+    staged = dict(sprite)
+    staged["herbId"] = f"{sprite['herbId']}-{stage}"
+    staged["stageOf"] = sprite["herbId"]
+    staged["stage"] = stage
+
+    if "size" in recipe:
+        staged["size"] = recipe["size"]
+    if "fps" in recipe:
+        staged["fps"] = recipe["fps"]
+    if "palette" in recipe:
+        staged["palette"] = {**sprite["palette"], **recipe["palette"]}
+
+    hidden = set(recipe.get("hide", ()))
+    swaps = recipe.get("swap", {})
+    origins = recipe.get("origins", {})
+    variants = recipe.get("variants", {})
+
+    known = {part["name"] for part in sprite["parts"]}
+    for name in (*hidden, *swaps, *origins, *variants):
+        if name not in known:
+            raise SystemExit(
+                f"{sprite['herbId']} ({stage}): no part named '{name}' "
+                f"(has: {sorted(known)})"
+            )
+
+    parts = []
+    for part in sprite["parts"]:
+        if part["name"] in hidden:
+            continue
+        part = dict(part)
+        if part["name"] in swaps:
+            part["rows"] = swaps[part["name"]]
+            # A swapped part's variants describe the OPEN flower's poses and no longer
+            # match the rows underneath them. Dropping them here means a stage that keeps
+            # the adult's motion track fails loudly on the missing variant rather than
+            # rendering a bud wearing a bloom's highlight.
+            part["variants"] = {}
+        if part["name"] in variants:
+            part["variants"] = variants[part["name"]]
+        if part["name"] in origins:
+            part["origin"] = origins[part["name"]]
+        parts.append(part)
+    staged["parts"] = parts
+
+    if "frames" in recipe:
+        staged["frames"] = recipe["frames"]
+        # A shorter loop cannot reuse tracks indexed for the long one: `render_frame`
+        # wraps with `%`, so frame 3 of a 6-frame stage would silently pick up frame 3 of
+        # the adult's 16-frame jump. Require the stage to say how it moves.
+        if "motion" not in recipe:
+            raise SystemExit(
+                f"{sprite['herbId']} ({stage}): changing `frames` needs its own `motion`"
+            )
+    if "motion" in recipe:
+        staged["motion"] = recipe["motion"]
+
+    # Motion tracks naming a part this stage hid are dead weight, and usually mean the
+    # recipe was copied and half-edited.
+    live = {part["name"] for part in parts}
+    for name in staged["motion"]:
+        if name not in live:
+            raise SystemExit(
+                f"{sprite['herbId']} ({stage}): motion track for '{name}', which this "
+                f"stage does not draw"
+            )
+
+    return staged
+
 
 def load_sources() -> dict[str, dict]:
     """Import every sprite module in `sprite_sources/`, keyed by herb id.
@@ -161,7 +280,8 @@ def compile_sprite(sprite: dict) -> dict:
         )
     palette = {char: tuple(rgba) for char, rgba in sprite["palette"].items()}
 
-    sheet = Image.new("RGBA", (width * frames * SCALE, height * SCALE), (0, 0, 0, 0))
+    cell = width + 2 * FRAME_GUTTER
+    sheet = Image.new("RGBA", (cell * frames * SCALE, height * SCALE), (0, 0, 0, 0))
     pixels = sheet.load()
 
     for frame in range(frames):
@@ -177,7 +297,7 @@ def compile_sprite(sprite: dict) -> dict:
                 colour = palette[char]
                 # Draw the authored pixel as a solid SCALE x SCALE block. Nearest
                 # neighbour by construction - nothing is interpolated.
-                base_x = (frame * width + x) * SCALE
+                base_x = (frame * cell + FRAME_GUTTER + x) * SCALE
                 base_y = y * SCALE
                 for sy in range(SCALE):
                     for sx in range(SCALE):
@@ -190,7 +310,7 @@ def compile_sprite(sprite: dict) -> dict:
     return {
         "herbId": sprite["herbId"],
         "src": f"/cards/animated/{sprite['herbId']}.png",
-        "frameWidth": width * SCALE,
+        "frameWidth": cell * SCALE,
         "frameHeight": height * SCALE,
         "frames": frames,
         "fps": sprite["fps"],
@@ -204,10 +324,80 @@ def preview(sprite: dict, frame: int = 0) -> None:
         print("".join("." if c == " " else c for c in row))
 
 
+def ink_height(sprite: dict) -> int:
+    """How tall the creature actually stands in frame 0, in authored pixels.
+
+    Measured from the drawn pixels, not from the canvas — every stage of a species shares
+    one canvas, so the canvas says nothing about how big the plant is. Frame 0 because
+    that is the resting pose, the one a still sprite shows and the one the eye compares.
+    """
+    grid = render_frame(sprite, 0)
+    rows = [y for y, row in enumerate(grid) if any(c != " " for c in row)]
+    return (max(rows) - min(rows) + 1) if rows else 0
+
+
+def check_growth(sprite: dict, staged: dict[str, dict]) -> None:
+    """A species' stages must get faster and taller, by even steps.
+
+    Both are how growth reads without a caption. Speed is strength: a seedling moves
+    tentatively and a mature plant moves with conviction, and that lands as the same
+    creature growing INTO itself rather than as three different animations. Height is the
+    plainer signal, and the steps are even because uneven ones read as an accident.
+
+    Checked here rather than trusted to authoring, because across forty-five species this
+    is exactly the sort of consistency that drifts one plant at a time and is invisible
+    until two of them are side by side in the Garden.
+    """
+    adult_h = ink_height(sprite)
+    order = [*DERIVED_STAGES, "flowering"]
+    speeds = {**{s: staged[s]["fps"] for s in staged}, "flowering": sprite["fps"]}
+
+    previous = None
+    for stage in order:
+        if stage not in speeds:
+            continue
+        if previous is not None and speeds[stage] <= speeds[previous]:
+            raise SystemExit(
+                f"{sprite['herbId']}: {stage} runs at {speeds[stage]}fps, no faster than "
+                f"{previous} at {speeds[previous]}fps — a plant speeds up as it grows"
+            )
+        previous = stage
+
+    for stage, staged_sprite in staged.items():
+        want = STAGE_HEIGHT[stage]
+        got = ink_height(staged_sprite) / adult_h if adult_h else 0
+        if abs(got - want) > HEIGHT_TOLERANCE:
+            raise SystemExit(
+                f"{sprite['herbId']} ({stage}): stands {got:.0%} of the adult's height, "
+                f"wanted {want:.0%} (±{HEIGHT_TOLERANCE:.0%}). Redraw the organ rather "
+                f"than scaling the art — resampling pixel art is what this avoids."
+            )
+
+
+def staged_sprites(sprite: dict) -> dict[str, dict]:
+    """Every derived stage a species declares, keyed by stage name."""
+    recipes = sprite.get("stages", {})
+    unknown = set(recipes) - set(DERIVED_STAGES)
+    if unknown:
+        raise SystemExit(
+            f"{sprite['herbId']}: unknown stage(s) {sorted(unknown)}; "
+            f"derived stages are {DERIVED_STAGES} ('flowering' is the authored sprite)"
+        )
+    staged = {stage: apply_stage(sprite, stage, recipes[stage])
+              for stage in DERIVED_STAGES if stage in recipes}
+    if staged:
+        check_growth(sprite, staged)
+    return staged
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--preview", help="herb id to print as text instead of building")
     parser.add_argument("--frame", type=int, default=0)
+    parser.add_argument(
+        "--stage", choices=DERIVED_STAGES,
+        help="preview a derived stage instead of the authored sprite",
+    )
     args = parser.parse_args()
 
     sources = load_sources()
@@ -217,14 +407,34 @@ def main() -> None:
     if args.preview:
         if args.preview not in sources:
             raise SystemExit(f"Unknown sprite: {args.preview}")
-        preview(sources[args.preview], args.frame)
+        sprite = sources[args.preview]
+        if args.stage:
+            staged = staged_sprites(sprite)
+            if args.stage not in staged:
+                raise SystemExit(f"{args.preview} declares no '{args.stage}' stage")
+            sprite = staged[args.stage]
+        preview(sprite, args.frame)
         return
 
-    manifest = {herb_id: compile_sprite(s) for herb_id, s in sorted(sources.items())}
+    manifest = {}
+    staged_count = 0
+    for herb_id, sprite in sorted(sources.items()):
+        entry = compile_sprite(sprite)
+        stages = {}
+        for stage, staged in staged_sprites(sprite).items():
+            # Each stage is a sheet of its own, so nothing about the adult portrait
+            # changes and a species with no stage art keeps resolving every stage to it.
+            stages[stage] = compile_sprite(staged)
+            staged_count += 1
+        if stages:
+            entry["stages"] = stages
+        manifest[herb_id] = entry
+
     MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
-    print(f"Built {len(manifest)} sprite sheet(s) into {OUT_DIR}")
+    print(f"Built {len(manifest)} sprite sheet(s) (+{staged_count} stage) into {OUT_DIR}")
     for herb_id, entry in manifest.items():
-        print(f"  {herb_id}: {entry['frames']} frames @ {entry['fps']}fps")
+        extra = f"  + {', '.join(entry['stages'])}" if "stages" in entry else ""
+        print(f"  {herb_id}: {entry['frames']} frames @ {entry['fps']}fps{extra}")
 
 
 if __name__ == "__main__":

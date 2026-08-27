@@ -6,6 +6,7 @@ import type { DiscoveryResult, Herb } from '@/lib/types';
 import { knownIssueFor } from '@/lib/card-issues';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { SEASON_LABEL, USE_LABEL } from '@/lib/deck';
+import { GARDEN_STAGE_BY_MASTERY, type GardenStage } from '@/lib/garden';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { cardLabel } from '@/lib/collection';
 import { usePrevious } from '@/lib/use-previous';
@@ -132,6 +133,14 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
   const discovered = ready && isDiscovered(herb.id);
 
+  /*
+   * Which creature the portrait shows. `stage` above is the mastery stage this page
+   * already tracks, and `GARDEN_STAGE_BY_MASTERY` is the single mapping the Garden uses —
+   * read from there rather than restated here, so the card page and the Garden can never
+   * disagree about what a player has grown.
+   */
+  const portraitStage: GardenStage = stage ? GARDEN_STAGE_BY_MASTERY[stage] : 'flowering';
+
   const breadcrumb = (
     <nav aria-label="Breadcrumb" className="mb-2">
       <Link href="/herbdex" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
@@ -186,27 +195,48 @@ export function HerbDetail({ herb }: { herb: Herb }) {
               rather than a loose number. */}
           <p className="text-xs font-bold text-violet-300 tabular-nums">{cardLabel(herb)}</p>
 
-          {/* The living portrait, sitting with the name so it is among the first things
-              read. Every card in the deck has one; the component still renders nothing
-              for an unknown id, so the heading keeps its position either way.
+          {/*
+            The living portrait, and it is decoration rather than an identification aid:
+            deliberately stylised, with the card art and the identification section below
+            remaining the reference for anyone actually looking at a plant outdoors.
 
-              It is decoration, never an identification aid: the sprite is deliberately
-              stylised, and the card art plus the identification section below remain the
-              reference for anyone actually looking at a plant outdoors. */}
-          <div className="mt-1 flex items-center gap-3">
+            It sits to the RIGHT of the two names and is roughly twice the size
+            it was. It is the most characterful thing on the page and it was previously a
+            small mark tucked in front of the heading, where a 3xl gold title flattened it.
+
+            Names and portrait are one row that wraps as a unit: on a phone the sprite drops
+            under the names rather than squeezing them, so the scientific name never breaks
+            mid-word to make room. `order` puts it last visually while the heading stays
+            first in the document, because a heading should be the first thing announced.
+
+            The `min-w` is what makes that wrap actually happen. With `min-w-0` the names
+            block shrinks below the width of its own longest word instead, and a 3xl
+            "Dandelion" then overflows straight under the sprite — which is what it did on a
+            390px phone, reading "Dandelio".
+          */}
+          <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+            <div className="min-w-[13rem] flex-1">
+              <h1 className="font-display text-3xl leading-tight font-extrabold text-gold-plate">
+                {herb.commonName}
+              </h1>
+              <p className="font-botanical mt-1 text-lg text-violet-200 italic">
+                {herb.scientificName}
+              </p>
+            </div>
+            {/*
+              And it shows the stage the player has actually reached, so the character on
+              their own card page grows up with their progress rather than always being
+              the finished adult. A card that is revealed but not discovered has no stage
+              at all, so it falls back to the adult — there is no progress to depict.
+            */}
             <PlantSprite
               herbId={herb.id}
               alt={`Pixel-art portrait of ${herb.commonName}`}
-              scale={0.5}
-              className="shrink-0"
+              stage={portraitStage}
+              scale={1}
+              className="order-last shrink-0 drop-shadow-[0_4px_14px_rgba(23,16,28,0.55)]"
             />
-            <h1 className="font-display text-3xl leading-tight font-extrabold text-gold-plate">
-              {herb.commonName}
-            </h1>
           </div>
-          <p className="font-botanical mt-1 text-lg text-violet-200 italic">
-            {herb.scientificName}
-          </p>
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <RarityBadge rarity={herb.rarity} />

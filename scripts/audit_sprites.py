@@ -43,7 +43,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from build_sprites import load_sources, render_frame  # noqa: E402
+from build_sprites import load_sources, render_frame, staged_sprites  # noqa: E402
 
 # Parts that must sit inside the face patch. Cheeks and brows ride its edge by design -
 # a brow sits ON the rim - so they are held to a share rather than to every pixel.
@@ -163,8 +163,23 @@ def stale(sources: dict) -> list[str]:
     return problems
 
 
+def with_stages(sources: dict) -> dict:
+    """Every sprite to audit: the authored portraits plus each derived growth stage.
+
+    A stage reseats the whole face onto a different head — a bud instead of a bloom — so
+    it is exactly where a feature lands in the leaf, and auditing only the adult would
+    check the one head that was never in doubt. Staged sprites key by `<herbId>-<stage>`,
+    which is also the name of the sheet they build, so the stale check finds them too.
+    """
+    audited = dict(sources)
+    for sprite in sources.values():
+        for staged in staged_sprites(sprite).values():
+            audited[staged["herbId"]] = staged
+    return audited
+
+
 def main() -> None:
-    sources = load_sources()
+    sources = with_stages(load_sources())
     wanted = sys.argv[1:] or sorted(sources)
     failed = False
     if not sys.argv[1:]:

@@ -45,11 +45,10 @@ export function PlantSprite({
    * Fill the width of whatever contains it, keeping the frame's aspect ratio, instead of
    * rendering at a multiple of the authored pixel size.
    *
-   * Only valid with `frozen`. The play keyframe walks the sheet by a pixel distance held in
-   * `--sprite-sheet-width`, which cannot be expressed as a percentage — so a fitted sprite
-   * can only ever hold frame 0. That is exactly what the locked card needs, and it is why
-   * a locked card's silhouette scales with the card rather than overflowing it on a phone
-   * and swimming in space on a desktop.
+   * Works with or without `frozen`: the fitted sprite animates through
+   * `plant-sprite-play-fit`, which walks the sheet in percentages rather than pixels, so a
+   * responsive sprite is no longer forced to hold frame 0. That is what lets a row of
+   * creatures shrink to fit four across a phone and still perform.
    */
   fit?: boolean;
   className?: string;
@@ -59,21 +58,24 @@ export function PlantSprite({
 
   const width = sprite.frameWidth * scale;
   const height = sprite.frameHeight * scale;
-  const fitted = fit && frozen;
 
   return (
     <div
       role="img"
       aria-label={alt}
-      className={`plant-sprite plant-sprite-${sprite.frames}${frozen ? ' plant-sprite-frozen' : ''} ${className}`}
+      className={`plant-sprite plant-sprite-${sprite.frames}${fit ? ' plant-sprite-fit' : ''}${frozen ? ' plant-sprite-frozen' : ''} ${className}`}
       style={{
-        ...(fitted
+        ...(fit
           ? {
               width: '100%',
               aspectRatio: `${sprite.frameWidth} / ${sprite.frameHeight}`,
               // A percentage background-size measures against the element, so the sheet
               // scales with the box: `frames × 100%` puts exactly one frame in view.
               backgroundSize: `${sprite.frames * 100}% 100%`,
+              // How far the percentage walk travels. See `plant-sprite-play-fit`: 100% is
+              // the LAST frame rather than one past it, so the range has to overshoot by
+              // frames/(frames-1) for every step to land on a whole frame.
+              ['--sprite-travel' as string]: `${(sprite.frames / (sprite.frames - 1)) * 100}%`,
             }
           : {
               width,

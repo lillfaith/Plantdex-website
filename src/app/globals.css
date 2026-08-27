@@ -493,6 +493,29 @@ body {
   }
 }
 
+/*
+ * The same walk, in PERCENTAGES, for a sprite that has to size itself to its container.
+ *
+ * The keyframe above moves the sheet by a pixel distance, which means the element has to
+ * know its own size in pixels — so a sprite could either be responsive or animate, never
+ * both, and a fitted one was forced to hold frame 0. That is fine for a still silhouette
+ * and useless for a row of creatures that has to fit four across a phone.
+ *
+ * A percentage background-position is measured against (container - image), so with the
+ * sheet at `frames × 100%` wide, 0% is the first frame and 100% is the LAST — not one
+ * past it. Walking 0% → 100% in `steps(frames)` would therefore land between frames.
+ * `--sprite-travel` is 100 × frames / (frames - 1), so the final step lands exactly on
+ * 100% and every step before it on a whole frame.
+ */
+@keyframes plant-sprite-play-fit {
+  from {
+    background-position-x: 0%;
+  }
+  to {
+    background-position-x: var(--sprite-travel);
+  }
+}
+
 .plant-sprite {
   background-repeat: no-repeat;
   image-rendering: pixelated;
@@ -506,6 +529,17 @@ body {
  * Frame 0 is authored as a complete, dignified plant precisely so it can be used still —
  * the same property `prefers-reduced-motion` relies on.
  */
+/*
+ * The fitted walk, and it must come AFTER `.plant-sprite` above. Both are single-class
+ * selectors, so equal specificity means source order decides which `animation-name` wins —
+ * declared earlier, this loses to the pixel keyframe, which then animates with an unset
+ * `--sprite-sheet-width` and walks the sheet clean off the element. Two of four creatures
+ * simply vanished.
+ */
+.plant-sprite-fit {
+  animation-name: plant-sprite-play-fit;
+}
+
 .plant-sprite-frozen {
   animation: none;
   background-position: 0 0;
@@ -554,6 +588,15 @@ body {
   .plant-sprite {
     animation: none !important;
     background-position: 0 0 !important;
+  }
+
+  /* Same reasoning for the fitted walk, and it needs saying separately: its resting
+     position is 0% rather than 0px, and `background-position: 0 0` above would still
+     land it on frame 0 — but only because 0% and 0px coincide. Being explicit here means
+     a future change to either keyframe cannot quietly break the other. */
+  .plant-sprite-fit {
+    animation: none !important;
+    background-position-x: 0% !important;
   }
 
   /* The flip is decorative — land on the revealed face immediately. */
