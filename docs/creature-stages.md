@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 4 of 45 species staged.** The other 41 show their single adult portrait at every
+**Status: 5 of 45 species staged.** The other 40 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives four of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives five of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 4 species
+## Staged — 5 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -87,6 +87,7 @@ frond that says which plant this is.
 | 10 | Red Clover | trifoliate leaves, pale chevron already on them | the head closed — a green-white knot, before any pink |
 | 33 | Yarrow | feathery basal rosette | the corymb formed and closed, flat-topped already |
 | 12 | Wild Violet | heart leaves; the face rides a leaf, since there is no flower | the bud **nodding** on its hooked stalk |
+| 14 | Broad Leaf Plantain | a flat rosette of small ribbed leaves, no spike | the spikes up but short and **green** |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -94,7 +95,14 @@ poisonous lookalike, and featheriness is what separates it from hemlock.
 Violet is the awkward case worth knowing about — the adult wears its face **on the flower**,
 so a stage with no flower has to move the face onto the plant it does have.
 
-## Still to stage — 41 species
+Two organs are **hand-drawn** rather than generated, and the reason generalises: `flower_head`
+builds rounded, radial shapes, so anything that is neither comes out wrong. Yarrow's corymb
+is a *flat plate* of tight buttons and a high lobe count fragments it; a violet leaf is
+notched at its base and an ellipse has nowhere to put the notch. A hand-drawn grid with a
+plain `F` patch works identically — `face_box` measures it the same way — so reach for one
+whenever the generator is being bent out of shape.
+
+## Still to stage — 40 species
 
 Everything else in the deck. A species is staged by adding a `"stages"` key to its module in
 `scripts/sprite_sources/` and re-running `python3 scripts/build_sprites.py`; no component
