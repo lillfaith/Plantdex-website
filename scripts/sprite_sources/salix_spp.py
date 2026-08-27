@@ -21,8 +21,9 @@ SAFETY: a portrait, never an identification aid, and not a claim - the card's He
 Traits heading frames traditional use as tradition, and /safety carries the full text.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -116,9 +117,210 @@ CATKIN = [
 
 HEAD_AT = (6, 5)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# A YOUNG WILLOW DOES NOT WEEP. The pendulous habit develops with age — a sapling is a
+# whip of upright shoots, and the curtain that veils this creature's face is the last
+# thing it grows. That gives the ladder its shape, and it also gives the sprite the only
+# REVEAL in the set, run backwards: every other creature gains something you can see, and
+# this one gains something that covers it up.
+#
+#   sprout    an unveiled face. No curtain, no drop, no catkin. It is simply a cheerful
+#             young tree, and drawing it sad would be inventing a grief it has not got.
+#   growing   half a curtain, a catkin still a silvery BUD — the pussy-willow stage,
+#             before it opens — and a drop that gathers and hangs and does not fall.
+#   flowering the full curtain, the drop, and the kind smile afterwards. Unchanged: the
+#             smile is what makes the gesture consolation rather than sadness, and this
+#             is the plant people have gone TO.
+#
+# THE BARK IS THE POINT OF THE CARD — salicin, and the word aspirin comes from it — and
+# it is on every stage, because a willow whip has it as much as an old tree does. As
+# everywhere else in this deck, that is traditional use rather than a claim: the card's
+# Healing Traits heading frames it, and /safety carries the full text.
+
+# --- Sprout: unveiled -------------------------------------------------------
+YOUNG_HEAD_AT = (9, 14)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 12, 7.0, 5.6, 7.0, 5.4, 6, 0.12, 5.4, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+TRUNK_SHORT = [
+    "otTto",
+    "ottto",
+    " ooo ",
+]
+
+# --- Growing: half a curtain ------------------------------------------------
+MID_HEAD_AT = (8, 9)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 14, 8.0, 6.6, 7.8, 6.4, 6, 0.12, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+# Fewer strands and shorter ones. It veils the chin and no more, so the face is still
+# mostly in the open — which is the difference between a young willow and an old one.
+CURTAIN_SHORT = [
+    "ogogogogogo",
+    "ogogogogogo",
+    "oGogoGogoGo",
+    " gogogogog ",
+    " ogo ogo o ",
+    "  o   o    ",
+]
+
+CURTAIN_SHORT_SWAY = [
+    "gogogogogog",
+    "gogogogogog",
+    "GogoGogoGog",
+    "ogogogogogo",
+    " ogo ogo o ",
+    "  o   o    ",
+]
+
+# The pussy-willow stage: a silvery bud, before it lengthens into a catkin.
+CATKIN_BUD = [
+    "oSo",
+    "oSo",
+    " o ",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "salix-spp",
     "personality": "consoling",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            "hide": ["curtain", "drop", "catkin", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "trunk": TRUNK_SHORT,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"kind": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "trunk": (15, 24),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # It looks about, and it is pleased. Nothing here is sorry for anybody yet,
+            # and a sapling drawn grieving would be a grief invented for the picture.
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, None, "left", None, None, None],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "happy", "happy", None, None, "blink", None],
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, "kind", "kind", "kind", None, None, None],
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "curtain": CURTAIN_SHORT,
+                "catkin": CATKIN_BUD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "curtain": {"sway": CURTAIN_SHORT_SWAY},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "shut": YOUNG_EYES["shut"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"kind": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "curtain": (10, 16),
+                "catkin": (24, 13),
+                "drop": (13, 18),
+                "trunk": (14, 22),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # The drop gathers and hangs and stays hung. It never falls — the fall, and
+            # the smile that answers it, are what the last stage is for.
+            "motion": {
+                "curtain": {
+                    "art": [None, "sway", None, "sway", None, "sway", None, "sway",
+                            None, None],
+                    "dy": [0, 0, 0, 0, 0, 0, -1, -1, 0, 0],
+                },
+                "head": {
+                    "art": [None, None, None, None, None, None, "right", None, "left",
+                            None],
+                    "dy": [0, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", "shut", "shut", "shut", "half", None,
+                            "happy", None, "blink"],
+                    "dx": [0, 0, 0, 0, 0, 0, G_R_DX, 0, G_L_DX, 0],
+                    "dy": [0, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, None, None, None, None, "kind", "kind", "kind",
+                            None],
+                    "dx": [0, 0, 0, 0, 0, 0, G_R_DX, 0, G_L_DX, 0],
+                    "dy": [0, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+                },
+                "drop": {
+                    "art": [None, None, "gather", "hang", "hang", "hang", "hang", None,
+                            None, None],
+                    "dy": [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+                },
+                "catkin": {"dy": [0, 0, -1, 0, 0, 1, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 6,

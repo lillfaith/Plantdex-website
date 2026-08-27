@@ -20,6 +20,7 @@ apart from the card's identification content, which stays the reference outdoors
 
 from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -114,9 +115,171 @@ HEAD_DX = [0, 0, -1, 1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
 _SLIDE = {"left": TURN_L, "right": TURN_R}
 FACE_DX = [dx + _SLIDE.get(art, 0) for dx, art in zip(HEAD_DX, HEAD_ART)]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# A PURSE IS A FRUIT, and this deck does not draw fruit before the last stage. That rule
+# was written for the strawberry and the bramble, where getting ripeness wrong is
+# dangerous; here it costs the creature its entire gesture, which turns out to be the
+# funniest thing that could have happened to it:
+#
+#   sprout    the rosette, toothed and low. No stalk, no purses, no rattle — the thrifty
+#             one has not got anything yet.
+#   growing   the stalk is up with the flower head shut at the tip, and there is still
+#             NOTHING HANGING ON IT. It shakes the stalk. Nothing rattles. It counts them
+#             anyway, and there are none.
+#   flowering three purses, the wave travelling up the stalk, and the count. Unchanged.
+#
+# BOTANICALLY THIS IS THE ORDER. Shepherd's purse is a crucifer: the white four-petalled
+# flowers open at the growing tip and the heart-shaped pods form BELOW them as the stalk
+# elongates, so a plant with flowers and no pods is an ordinary stage of its life rather
+# than a plant that has been robbed. And the rosette does not get bigger between the last
+# two stages — the basal leaves start withering as it bolts — so the growth is all stalk,
+# which is exactly what shepherd's purse does.
+
+BUD_PALETTE = {
+    "K": (206, 216, 148, 255),   # bud highlight — green, before the four white petals
+    "k": (156, 174, 96, 255),    # bud mid
+}
+
+# --- The rosette, shared by both earlier stages ------------------------------
+#
+# One drawing for both, because the plant really does keep the same rosette and simply
+# grows a stalk out of the middle of it.
+YOUNG_HEAD_AT = (7, 11)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 16, 8.0, 7.6, 8.0, 7.4, 7, 0.19, 5.4, 4.2,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.4, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.4, light=(-1.25, -0.65))
+
+# The stalk, shorter, and the flower head shut on top of it.
+STALK_MID = [
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    "ogGdo",
+    " oGo ",
+]
+
+BUD_TIP = [
+    "oko",
+    "kKk",
+    "oko",
+    " o ",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "capsella-bursa-pastoris",
     "personality": "thrifty",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            "hide": ["tip", "stalk", "purseA", "purseB", "purseC", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # It looks up at where the stalk is going to be. That is the whole loop.
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, "left", "left", None, None, None],
+                    "dx": [0, 0, -1, 1, -1, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", None, None, None, None, "blink", None],
+                    "dx": [0, S_R_DX, -1, 1 + S_L_DX, -1 + S_L_DX, 0, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, S_R_DX, -1, 1 + S_L_DX, -1 + S_L_DX, 0, 0, 0],
+                },
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": BUD_PALETTE,
+            # The stalk exists. Nothing hangs on it.
+            "hide": ["purseA", "purseB", "purseC", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "stalk": STALK_MID,
+                "tip": BUD_TIP,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "stalk": (13, 6),
+                "tip": (14, 3),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # The shake is all there. The rattle is not. Frames 6-8 are it counting an
+            # empty stalk, which is the same beat the adult uses to count three.
+            "motion": {
+                "head": {
+                    "art": [None, "right", "left", "left", None, None, None, "right",
+                            None, None],
+                    "dx": [0, 0, -1, 1, -1, 1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", "wide", "wide", "wide", "wide", None, None,
+                            "blink", None],
+                    "dx": [0, S_R_DX, -1 + S_L_DX, 1 + S_L_DX, -1, 1, 0, S_R_DX, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, S_R_DX, -1 + S_L_DX, 1 + S_L_DX, -1, 1, 0, S_R_DX, 0, 0],
+                },
+                "stalk": {"lean": [0, 0, -2, 2, -2, 1, -1, 0, 0, 0]},
+                "tip": {"dx": [0, 0, -2, 2, -2, 1, -1, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

@@ -25,8 +25,9 @@ apart from the card's identification content, which stays the reference outdoors
 
 import math
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -141,9 +142,186 @@ TENDRIL = [
 
 HEAD_AT = (5, 4)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE BLOOM IS A TRANSFORMATION, and it is the only one in the deck. The corona breaks,
+# throws open a frame before the petals catch up, and the face arrives with it. Every
+# part of that needs a corona to throw, so the whole gesture belongs to the last stage:
+#
+#   sprout    the three-lobed leaf and the tendril — the two structures that say
+#             passionflower when there is no flower to look at. The face rides the leaf,
+#             since this creature's head IS the bloom.
+#   growing   the BUD, and this is the interesting one. The adult's bud is faceless: the
+#             whole reason the bloom lands is that nobody is home while it is shut. A
+#             stage cannot do that — the face is what makes the creature the same creature
+#             at every stage — so here the bud has one, and it SWELLS and shudders and
+#             does not open. Everything is in place. It cannot yet perform.
+#   flowering the split, the corona thrown open, the face arriving delighted. Unchanged.
+#
+# WHY THE CORONA IS NOT SIMPLY DRAWN SMALLER: it is a ring of filaments generated about
+# the flower's own centre, and it exists at all only because a flower has opened. A shut
+# bud with a small corona round it would be drawing the structure outside the thing it
+# comes out of.
+
+LEAF_PALETTE = {
+    "n": (36, 84, 48, 255),   # leaf shadow — this palette has three greens, not four
+}
+
+# --- Sprout: leaf and tendril -----------------------------------------------
+YOUNG_HEAD_AT = (9, 11)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    # Three deep lobes with one pointing up: a passionflower leaf, which is as
+    # recognisable as the bloom and available a great deal more of the year.
+    return flower_head(
+        16, 13, 7.5, 6.2, 7.4, 6.0, 3, 0.30, 5.4, 3.6,
+        face_dx=face_dx, phase=-math.pi / 2, light=light, trim_tail=False,
+        chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# --- Growing: the bud, with somebody in it ----------------------------------
+MID_HEAD_AT = (7, 7)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65), rx=7.2, ry=7.0):
+    # A tall green spindle. Shallow lobes, because a passionflower bud is smooth and
+    # ridged rather than petalled — the petals are inside it.
+    return flower_head(
+        17, 15, 8.0, 7.2, rx, ry, 5, 0.10, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+# Swollen, and swollen further. It gets all the way to the edge of opening and stops.
+MID_HEAD_SWELL = _mid_head(rx=7.6, ry=7.4)
+MID_HEAD_TIGHT = _mid_head(rx=6.9, ry=7.2)
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "passiflora-incarnata",
     "personality": "theatrical",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            "palette": LEAF_PALETTE,
+            "hide": ["corona", "anthers", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                },
+                "mouth": {"open": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leaf": (2, 18),
+                "tendril": (24, 17),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # The tendril curls and the leaf leans. Nothing here performs, because there
+            # is nothing here to perform with.
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, None, "left", None, None, None],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "half", "half", None, None, "blink", None],
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "tendril": {"dy": [0, -1, -1, 0, 0, 1, 0, 0]},
+                "leaf": {"lean": [0, 1, 1, 0, -1, -1, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": LEAF_PALETTE,
+            # No corona and no anthers: both are inside the bud, and drawing them outside
+            # it would be drawing the structure outside the thing it comes out of.
+            "hide": ["corona", "anthers", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {
+                    "left": MID_HEAD_LEFT,
+                    "right": MID_HEAD_RIGHT,
+                    "swell": MID_HEAD_SWELL,
+                    "tight": MID_HEAD_TIGHT,
+                },
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                    "shut": YOUNG_EYES["shut"],
+                },
+                "mouth": {"open": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "leaf": (1, 19),
+                "tendril": (22, 17),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # It swells to the very edge of opening, holds, shuts its eyes, and settles
+            # back. The entrance is entirely rehearsed and entirely unperformed, which is
+            # the most theatrical thing a bud could possibly do.
+            "motion": {
+                "head": {
+                    "art": [None, "tight", "swell", "swell", "swell", "tight", None,
+                            "right", None, None],
+                    "dy": [0, 1, -1, -1, -1, 0, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", "wide", "wide", "wide", "shut", "half", None,
+                            "blink", None],
+                    "dx": [0, 0, 0, 0, 0, 0, 0, G_R_DX, 0, 0],
+                    "dy": [0, 1, -1, -1, -1, 0, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, "open", "open", "open", None, None, None, None,
+                            None],
+                    "dx": [0, 0, 0, 0, 0, 0, 0, G_R_DX, 0, 0],
+                    "dy": [0, 1, -1, -1, -1, 0, 0, 0, 0, 0],
+                },
+                "tendril": {"dy": [0, 0, -1, -1, 0, 0, 1, 1, 0, 0]},
+                "leaf": {"lean": [0, 1, 1, 0, 0, -1, -1, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 16,
     "fps": 8,

@@ -23,6 +23,7 @@ apart from the card's identification content, which stays the reference outdoors
 
 from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -117,9 +118,206 @@ SWING = [0, 4, 5, -4, -5, -3, 2, 3, -1, 0, 0, 0, 0, 0]
 _SLIDE = {"left": TURN_L, "right": TURN_R}
 FACE_DX = [dx + _SLIDE.get(art, 0) for dx, art in zip(SWING, HEAD_ART)]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE COMPASS IS A PROPERTY OF THE STEM LEAVES, and that is the whole ladder. Prickly
+# lettuce is a winter annual: it spends its first season as a FLAT ROSETTE, and the
+# blades that twist at the base and line up north-south are the ones that come later, on
+# the stem. A rosette cannot point, and it is the most satisfying gate in this set
+# because it is not a rule imposed on the drawing — it is simply what the plant does.
+#
+#   sprout    the first-year rosette, leaves lying flat. It turns once, aimlessly, and
+#             stops. No bearing marks, because there is no bearing.
+#   growing   the stem up, the blades on edge and aligned. It swings and finds the
+#             bearing — with ONE overshoot, not the full damped series.
+#   flowering the full swing: overshoot, correction, smaller correction, rest. Each about
+#             half the one before it, which is what makes a needle read as settling.
+#             Unchanged.
+#
+# THE MILKY SAP is what `Lactuca` means and it runs from a cut stem at any age, so it
+# stays from the middle stage on — the sprout has no stem to cut. The spines down the
+# midrib are on the stem for the same reason.
+
+BUD_PALETTE = {
+    "K": (194, 206, 158, 255),   # bud highlight — green, before the pale yellow rays
+    "k": (146, 162, 112, 255),   # bud mid
+}
+
+# --- Sprout: the first-year rosette, flat -----------------------------------
+YOUNG_HEAD_AT = (8, 11)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    # WIDE, not tall — the opposite of the adult, and deliberately so. A first-year
+    # rosette lies flat against the ground; the vertical blade is the thing this stage
+    # has not got, and drawing it upright would be drawing the trick before the plant
+    # has it.
+    return flower_head(
+        17, 13, 8.0, 6.2, 8.0, 6.0, 8, 0.20, 5.4, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.4, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.4, light=(-1.25, -0.65))
+
+BLADE_L_YOUNG = [
+    "  ooo",
+    " oGGgo",
+    "oGgggdo",
+    "  ooo",
+]
+
+BLADE_R_YOUNG = [
+    "ooo",
+    "ogGGo",
+    "odgggGo",
+    " ooo",
+]
+
+# --- Growing: on edge, and pointing -----------------------------------------
+MID_HEAD_AT = (8, 10)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    # Tall again: the blades have twisted onto their edges, which is the whole species.
+    return flower_head(
+        15, 14, 7.0, 6.6, 6.2, 6.6, 6, 0.16, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.3, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# The flower heads shut: small green knots, no rays out.
+BUDS = [
+    "oKo oKo",
+    "okKo oko",
+    " o   o",
+]
+
+S_TURN_L = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)[0]
+S_TURN_R = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)[0]
+S_HEAD_ART = [None, "right", "right", None, "left", None, None, None]
+S_SWING = [0, 2, 2, 0, -2, 0, 0, 0]
+_S_SLIDE = {"left": S_TURN_L, "right": S_TURN_R}
+S_FACE_DX = [dx + _S_SLIDE.get(a, 0) for dx, a in zip(S_SWING, S_HEAD_ART)]
+
+G_TURN_L = face_shift(MID_HEAD, MID_HEAD_LEFT)[0]
+G_TURN_R = face_shift(MID_HEAD, MID_HEAD_RIGHT)[0]
+# One overshoot and one correction. The third and fourth swings are the adult's, and
+# they are what turns a swing into a needle finding north.
+G_HEAD_ART = [None, "right", "right", "left", "left", "right", None, None, None, None]
+G_SWING = [0, 4, 5, -3, -4, 2, 0, 0, 0, 0]
+_G_SLIDE = {"left": G_TURN_L, "right": G_TURN_R}
+G_FACE_DX = [dx + _G_SLIDE.get(a, 0) for dx, a in zip(G_SWING, G_HEAD_ART)]
+
 SPRITE = {
     "herbId": "lactuca-serriola",
     "personality": "orienting",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            # No stem, so no sap and no spines; no marks, because there is no bearing to
+            # read.
+            "hide": ["stem", "flowers", "marks", "sap", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "bladeL": BLADE_L_YOUNG,
+                "bladeR": BLADE_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                },
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "bladeL": (3, 19),
+                "bladeR": (21, 19),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # One turn, and it settles wherever it happens to stop. There is nothing to
+            # correct toward.
+            "motion": {
+                "head": {"art": S_HEAD_ART, "dx": S_SWING},
+                "eyes": {
+                    "art": [None, None, "half", None, None, None, "blink", None],
+                    "dx": S_FACE_DX,
+                },
+                "mouth": {"dx": S_FACE_DX},
+                "bladeL": {"dx": [dx // 2 for dx in S_SWING]},
+                "bladeR": {"dx": [dx // 2 for dx in S_SWING]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "flowers": BUDS,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                },
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "flowers": (12, 7),
+                "bladeL": (6, 18),
+                "bladeR": (19, 18),
+                "stem": (14, 20),
+                "marks": (2, 14),
+                "sap": (22, 21),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # A swing and one correction. It arrives at a bearing; it does not yet
+            # arrive at it the way a needle does.
+            "motion": {
+                "head": {"art": G_HEAD_ART, "dx": G_SWING},
+                "eyes": {
+                    "art": [None, "wide", "wide", "wide", None, None, None, None,
+                            "blink", None],
+                    "dx": G_FACE_DX,
+                },
+                "mouth": {"dx": G_FACE_DX},
+                "marks": {
+                    "art": [None, "on", "on", "on", "on", "on", None, None, None, None],
+                },
+                "sap": {
+                    "art": [None, None, None, None, None, None, None, "on", "on", None],
+                    "dy": [0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+                },
+                "flowers": {
+                    "dx": G_SWING,
+                    "lean": [0, -2, -2, 2, 2, -1, 0, 0, 0, 0],
+                },
+                "bladeL": {"dx": [dx // 2 for dx in G_SWING]},
+                "bladeR": {"dx": [dx // 2 for dx in G_SWING]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

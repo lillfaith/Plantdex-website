@@ -19,8 +19,9 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -109,9 +110,245 @@ STEM = [
 
 HEAD_AT = (7, 4)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE ONE SPECIES WHOSE MIDDLE STAGE IS NOT A BUD, and the reason is worth stating rather
+# than working around. Lamb's quarters flowers in dense knots of tiny green mealy florets
+# with no petals at all — inconspicuous enough that this card's portrait draws none. There
+# is therefore no flower to close, and inventing one for the middle stage would leave that
+# stage looking MORE advanced than the adult, which is backwards. So the ladder runs on
+# the trait the plant is named twice for instead: the leaf.
+#
+#   sprout    strap-shaped COTYLEDONS, which is what lamb's quarters actually germinates
+#             with — narrow, blunt, and nothing whatever like a goose's foot. So the
+#             sprout has no feet, and therefore cannot waddle: it rocks where it stands.
+#   growing   the goosefoot leaf arrives, small. It manages ONE step, not two.
+#   flowering the full waddle — two steps, two puffs of meal. Unchanged.
+#
+# THE MEAL STAYS AT EVERY STAGE. `album` is the mealy white bloom, it dusts new shoots
+# hardest of all, and it is the only chalk-white in the deck. A seedling without it would
+# be the one thing here that contradicts its own species name.
+
+# --- Sprout: cotyledons, and no feet to walk on -----------------------------
+YOUNG_HEAD_AT = (10, 13)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 12, 7.0, 6.0, 7.2, 5.8, 6, 0.14, 5.4, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+MEAL_YOUNG = [
+    " A  a  A",
+    "a  A  a",
+]
+
+# The seed leaves. Blunt straps, and the point of drawing them is that they have no toes:
+# this creature has nothing to walk on yet.
+COT_L = [
+    "oooooo",
+    "oGggddo",
+    " oooooo",
+]
+
+COT_R = [
+    "oooooo",
+    "oddggGo",
+    "oooooo",
+]
+
+# --- Growing: the goosefoot arrives -----------------------------------------
+MID_HEAD_AT = (8, 9)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 14, 8.0, 7.0, 8.0, 6.6, 6, 0.14, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+# Three toes, smaller. The outline is the leaf outline, which is why the feet were never
+# a costume in the first place.
+FOOT_MID = [
+    "oo oo oo",
+    "oGoGGoGo",
+    "oggggggo",
+    " oooooo",
+]
+
+FOOT_MID_UP = [
+    "oo oo oo",
+    "oGoGGoGo",
+    "oggggo",
+    " oooo",
+]
+
+LEAF_L_MID = [
+    "  oo",
+    " oGGo",
+    "oGgggo",
+    " oggdo",
+    "  ooo",
+]
+
+LEAF_R_MID = [
+    "oo",
+    "oGGo",
+    "ogggGo",
+    "oddggo",
+    "ooo",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
+S_ROCK_DX = [0, 1, 1, 0, -1, -1, 0, 0]
+S_ROCK_DY = [0, -1, 0, 0, -1, 0, 0, 0]
+
 SPRITE = {
     "herbId": "chenopodium-album",
     "personality": "unhurried",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            # No feet means no landings, so nothing to puff. The leaves are the
+            # cotyledons' job at this stage, so the stem pair goes too.
+            "hide": ["puff", "leafL", "leafR", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "meal": MEAL_YOUNG,
+                "footL": COT_L,
+                "footR": COT_R,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"], "happy": YOUNG_EYES["happy"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "meal": (13, 15),
+                "footL": (7, 24),
+                "footR": (19, 24),
+                "stem": (15, 22),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # It rocks side to side where it stands. The cotyledons never leave the
+            # ground, because a strap-shaped seed leaf is not a foot.
+            "motion": {
+                "head": {
+                    "dx": S_ROCK_DX,
+                    "dy": S_ROCK_DY,
+                    "art": [None, "right", "right", None, "left", "left", None, None],
+                },
+                "meal": {"dx": S_ROCK_DX, "dy": S_ROCK_DY},
+                "eyes": {
+                    "dx": [0, 1 + S_R_DX, 1 + S_R_DX, 0, -1 + S_L_DX, -1 + S_L_DX,
+                           0, 0],
+                    "dy": S_ROCK_DY,
+                    "art": [None, None, "happy", None, None, "happy", "blink", None],
+                },
+                "mouth": {
+                    "dx": [0, 1 + S_R_DX, 1 + S_R_DX, 0, -1 + S_L_DX, -1 + S_L_DX,
+                           0, 0],
+                    "dy": S_ROCK_DY,
+                },
+                "footL": {"dy": [0] * 8},
+                "footR": {"dy": [0] * 8},
+                "stem": {"lean": [0, 1, 1, 0, -1, -1, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "footL": FOOT_MID,
+                "footR": FOOT_MID,
+                "leafL": LEAF_L_MID,
+                "leafR": LEAF_R_MID,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "footL": {"up": FOOT_MID_UP},
+                "footR": {"up": FOOT_MID_UP},
+                "eyes": {"blink": YOUNG_EYES["blink"], "happy": YOUNG_EYES["happy"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "meal": (11, 11),
+                "leafL": (4, 17),
+                "leafR": (23, 17),
+                "footL": (6, 23),
+                "footR": (18, 23),
+                "stem": (14, 20),
+                "puff": (9, 25),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # ONE step. It lifts a foot, plants it, puffs once, and brings itself back.
+            # The second step — and the whole sideways journey — is the adult's.
+            "motion": {
+                "head": {
+                    "dx": [0, 1, 2, 2, 2, 1, 0, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+                    "art": [None, "right", "right", None, None, "left", None, None,
+                            None, None],
+                },
+                "meal": {
+                    "dx": [0, 1, 2, 2, 2, 1, 0, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "dx": [0, 1 + G_R_DX, 2 + G_R_DX, 2, 2, 1 + G_L_DX, 0, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+                    "art": [None, None, "happy", "happy", None, None, None, None,
+                            "blink", None],
+                },
+                "mouth": {
+                    "dx": [0, 1 + G_R_DX, 2 + G_R_DX, 2, 2, 1 + G_L_DX, 0, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "footL": {
+                    "art": [None, "up", "up", None, None, None, None, None, None, None],
+                    "dx": [0, 1, 2, 2, 2, 2, 1, 0, 0, 0],
+                    "dy": [0, -2, -1, 0, 0, 0, 0, 0, 0, 0],
+                },
+                "footR": {
+                    "dx": [0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
+                    "dy": [0] * 10,
+                },
+                "puff": {
+                    "art": [None, None, None, "left", None, None, None, None, None,
+                            None],
+                },
+                "leafL": {"dy": [0, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
+                "stem": {"lean": [0, 1, 1, 1, 0, -1, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,

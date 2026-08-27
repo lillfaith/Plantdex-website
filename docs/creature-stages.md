@@ -1,12 +1,9 @@
 # Creature growth stages
 
-**Status: 10 of 45 species staged.** The other 35 show their single adult portrait at every
-stage, which is what the whole site did before this existed — so shipping this partial makes
-nothing worse than it was, and `spriteFor` resolves the fallback silently.
-
-Every card's animated portrait is a creature. Staging gives ten of them a **sprout** and a
-**growing** version, so the character a player sees grows up with their own progress: on the
-card page, in the Garden, and anywhere else a portrait is drawn.
+**Status: all 45 species staged.** Every card's animated portrait is a creature, and every
+one of them now has a **sprout** and a **growing** version as well as its adult, so the
+character a player sees grows up with their own progress: on the card page, in the Garden,
+and anywhere else a portrait is drawn.
 
 ## What a stage means
 
@@ -79,7 +76,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 10 species
+## The forty-five
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -93,73 +90,111 @@ frond that says which plant this is.
 | 27 | Mullein | the **first-year rosette** — woolly, low, no spike at all | the spike up but short and grey-green, florets closed |
 | 30 | Wild Strawberry | trifoliate leaves and a runner, no flower, no fruit | the flower closed, green-white — never a reddening berry |
 | 32 | St John's Wort | leaves only; the face rides the **perforate** leaf | a narrow pointed bud, black dots already on the sepals |
+| 13 | Chickweed | sprigs on a hairy stem — the **hairline** field mark from the start | three green ovoid buds on the same long pedicels the stars ride |
+| 39 | Wild Geranium | the face rides the deeply cut **7-lobe palmate** leaf | the bud closed; **no beak**, because the cranesbill is the spent flower |
+| 11 | Purple Dead Nettle | the purple flush already on the upper leaves | whorls of closed green-purple buds in the leaf axils |
+| 21 | Chicory | the **first-year rosette**, toothed almost to the midrib | tight green spindles pressed close against the stem |
+| 09 | Wood Sorrel | three notched heart leaflets and nothing else | a closed spindle bud upright on its own pedicel |
+| 02 | Broadleaf Dock | the rosette, red midrib already on it, no seed stalk | the stalk up carrying **green** whorls, before any rust |
+| 03 | Goldenrod | a leafy shoot — no plume, and nothing gold | the panicle formed and still **green**, folding only halfway |
+| 04 | Ragweed | ferny dissected leaves; it itches, it cannot sneeze | the raceme up, nubs tight and green — it sneezes, nothing comes out |
+| 05 | Lamb's Quarters | strap **cotyledons**, so it has no feet and cannot waddle | the goosefoot arrives: one step, not two |
+| 06 | Purslane | two fat seed leaves; it swells barely and holds nothing | a real swell, one frame of holding it, one wobble |
+| 07 | Garlic Mustard | the **first-year rosette**; it smells of garlic already, and does not creep | the cloud spreads and it leans — but it comes all the way back |
+| 15 | Cleavers | one whorl, and it stays inside its own frame | two whorls, hooks out, reaching to the edge and stopping |
+| 16 | Ground Ivy | one kidney leaf; no runner, so no company | the **runner goes out and nothing stands up on it** |
+| 17 | Maple | one lobed leaf; a maple is years from fruiting | the keys paired and **green**, so it holds one out and cannot let go |
+| 18 | Blackberry | the **first-year cane**: leaves, thorns, and nothing to offer | it offers a closed **bud** instead of a berry, and snatches that back |
+| 19 | Sheep's Sorrel | arrowhead leaves, and **one** pucker instead of two | the spray up and still **green**, before the fruit rusts a hillside |
+| 20 | Sumac | pinnate fronds, and no torch to raise | the panicle up in the cone's place, **greenish-yellow**; it does not light |
+| 22 | Burdock | the **first-year rosette**: eager, and with no hooks at all | the burr **green**, hooks formed but soft, so nothing holds |
+| 23 | Wild Mint | **one** frame of frost — green again before it can shiver | three frames and one shiver; the whorls still green knots |
+| 24 | Catnip | it tips, and catches itself | all the way onto its **side**, and back — never onto its back |
+| 25 | Shepherd's Purse | the rosette; no stalk, no purses, nothing to rattle | the stalk up, the flower head shut — it shakes it, and **nothing rattles** |
+| 28 | Horsetail | **one** segment, so there is nothing to telescope | two segments, one hard click, and a short **shut** spore cone |
+| 29 | Field Garlic | tubular leaves and no scape — the startle with no cause | the umbel still inside its papery **spathe**, hair and all |
+| 31 | Elderberry | pinnate fronds and no hat, so the courtesy is a bare nod | the umbel **shut** and held up; it tips as far as a stiff hat goes |
+| 34 | Jewelweed | face on a **leaf**, no pod — it flinches at nothing at all | the flower in bud, green with orange showing; still nothing to go off |
+| 35 | Lemon Balm | a short breath, and **no bee** — it ends the loop the size it began | the bee arrives, hovers, and leaves; scent without nectar |
+| 36 | Bee Balm | lance leaves, no crown, and no audience either | the head **shut** — a knot of green bracts; it tosses it and cannot pose |
+| 37 | Wild Rose | face on a leaflet, thorns already grown, and no better side | the **bud**, wrapped in sepals; the whole preen, and a blink where the wink goes |
+| 38 | Willow | an **unveiled** face — a young willow does not weep | half a curtain, a silvery catkin bud, and a drop that hangs and never falls |
+| 40 | Honeysuckle | face on a leaf; no bead, nothing taken from anybody | paired **shut tubes**, no flare and no stamens — it leans, and finds nothing |
+| 41 | Pine | one whorl of needles and a dusting; one shiver clears it | two tiers and a real load — it shivers, and the snow only comes **half** off |
+| 42 | Mulberry | leaves, and a **clean mouth** — it has never had one | the fruiting twig, and a mulberry that is **green**: no drip, no stain |
+| 43 | Passion Flower | the three-lobed leaf and the tendril; the face rides the leaf | the **bud**, with somebody in it — it swells to the edge of opening and stops |
+| 44 | Prickly Lettuce | the **first-year rosette**, flat; a rosette cannot point | on edge and aligned: it finds the bearing, with one overshoot, not four |
+| 45 | Oak | the seedling **the adult's own loop makes**, split cup still at its foot | acorns formed and **green**, still seated in their cups, going nowhere |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
 
-Two species wear their face **on the flower**, so a stage with no flower has to move it onto
-the plant they do have. Violet's rides a heart leaf; St John's Wort's rides the *perforate*
-leaf, which is luckier than it sounds — the pinprick translucent glands are the trait the
-species is named for, so the seedling is arguably more on-species than the flower.
+Three species wear their face **on the flower**, so a stage with no flower has to move it
+onto the plant they do have. Violet's rides a heart leaf; St John's Wort's rides the
+*perforate* leaf, which is luckier than it sounds — the pinprick translucent glands are the
+trait the species is named for, so the seedling is arguably more on-species than the flower.
+Wild Geranium's rides its deeply cut palmate leaf, drawn smaller than the adult's: at the
+adult leaf's size the face simply swallowed the lobes, and the lobing is the identification.
 
 Mullein is the species that stages itself: it is a **biennial**, so year one genuinely is a
-woolly rosette and nothing else. Nettle is the opposite awkwardness — its flowers are
-inconspicuous green catkins in the leaf axils rather than a bloom, so its middle stage grows
-them where they actually grow instead of inventing a bud to fill the slot.
+woolly rosette and nothing else. Chicory is the second, and its rosette carries an extra
+burden — a first-year chicory is routinely mistaken for a dandelion, so the toothing is cut
+almost to the midrib from the start rather than softened into a generic seedling leaf.
+
+Nettle is the opposite awkwardness — its flowers are inconspicuous green catkins in the leaf
+axils rather than a bloom, so its middle stage grows them where they actually grow instead of
+inventing a bud to fill the slot. Purple Dead Nettle and Chickweed take the same treatment
+for the same reason: dead nettle's buds sit in axillary whorls, and chickweed's ride the same
+long pedicels its open stars do.
 
 Strawberry carries the one rule worth stating twice: **ripeness is the thing a picture of a
-plant can get dangerously wrong**, so no stage before the last carries reddening fruit.
+plant can get dangerously wrong**, so no stage before the last carries reddening fruit. Wild
+Geranium is the same rule pointed backwards in time: its beak — the cranesbill it is named
+for — is the *spent* flower, so it is hidden at **both** earlier stages. A seedling wearing a
+seed pod is exactly as wrong as a seedling wearing a ripe berry.
 
-Two organs are **hand-drawn** rather than generated, and the reason generalises: `flower_head`
-builds rounded, radial shapes, so anything that is neither comes out wrong. Yarrow's corymb
-is a *flat plate* of tight buttons and a high lobe count fragments it; a violet leaf is
-notched at its base and an ellipse has nowhere to put the notch. A hand-drawn grid with a
-plain `F` patch works identically — `face_box` measures it the same way — so reach for one
-whenever the generator is being bent out of shape.
+A gesture grows into itself rather than appearing from nowhere. Wood Sorrel is the clearest
+case: its trademark is folding its leaflets down over its own face and being *gone* for three
+frames, and seedlings genuinely do fold too — just less. So the sprout tips half over for two
+frames and never covers the face, the growing stage holds half-folded for four with the crown
+leaflet shut on top, and only the adult disappears.
 
-## Still to stage — 35 species
+**Four species have no flower to close, and each says so rather than inventing one.** Lamb's
+Quarters, Lemon Balm and Pine draw no bloom on their authored portraits — lamb's quarters'
+flowers are tiny green mealy knots, lemon balm's are small and white and nobody looks at
+them, and a pine has cones rather than flowers at all — so a middle stage built round a bud
+would end up looking *more* advanced than the adult, which is backwards. Their ladders run on
+the plant's own structure instead: leaf form for lamb's quarters (strap cotyledons, then the
+goosefoot), the arriving bee for lemon balm, and tiers for pine, which is literally how
+foresters age a conifer. Horsetail is the fourth and the neatest: it is not a flowering plant
+either, but its spore cone is genuinely tight and shut before it opens, so "in bud" means
+something exact there after all.
 
-A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
-and re-running `python3 scripts/build_sprites.py`; no component changes, because
-`spriteFor(herbId, stage)` already resolves whatever exists.
+**Fruit is the last thing every time.** Strawberry, Blackberry, Mulberry, Elderberry, Wild
+Rose, Maple and Oak all withhold it, and on three of those it is a safety rule rather than a
+stylistic one: raw elderberries are not safe, a bramble is the plant people most often eat
+straight off the cane, and a green cane wearing berries is a drawing that says *ready* a year
+early. The same rule read backwards catches Wild Geranium's beak, which is the *spent*
+flower — a seedling wearing a seed pod is exactly as wrong as one wearing a ripe berry.
 
-| Card | Species | Herb id |
-|---|---|---|
-| 02 | Broadleaf Dock | `rumex-obtusifolius` |
-| 03 | Goldenrod | `solidago-canadensis` |
-| 04 | Ragweed | `ambrosia-artemisiifolia` |
-| 05 | Lamb's Quarters | `chenopodium-album` |
-| 06 | Purslane | `portulaca-oleracea` |
-| 07 | Garlic Mustard | `alliaria-petiolata` |
-| 09 | Wood Sorrel | `oxalis-stricta` |
-| 11 | Purple Dead Nettle | `lamium-purpureum` |
-| 13 | Chickweed | `stellaria-media` |
-| 15 | Cleavers | `galium-aparine` |
-| 16 | Ground Ivy | `glechoma-hederacea` |
-| 17 | Maple | `acer-spp` |
-| 18 | Blackberry | `rubus-spp` |
-| 19 | Sheep's Sorrel | `rumex-acetosella` |
-| 20 | Sumac | `rhus-spp` |
-| 21 | Chicory | `cichorium-intybus` |
-| 22 | Burdock | `arctium-lappa` |
-| 23 | Wild Mint | `mentha-canadensis` |
-| 24 | Catnip | `nepeta-cataria` |
-| 25 | Shepherd's Purse | `capsella-bursa-pastoris` |
-| 28 | Horsetail | `equisetum-arvense` |
-| 29 | Field Garlic | `allium-vineale` |
-| 31 | Elderberry | `sambucus-spp` |
-| 34 | Jewelweed | `impatiens-capensis` |
-| 35 | Lemon Balm | `melissa-officinalis` |
-| 36 | Bee Balm | `monarda-fistulosa` |
-| 37 | Wild Rose | `rosa-spp` |
-| 38 | Willow | `salix-spp` |
-| 39 | Wild Geranium | `geranium-maculatum` |
-| 40 | Honeysuckle | `lonicera-japonica` |
-| 41 | Pine | `pinus-spp` |
-| 42 | Mulberry | `morus-spp` |
-| 43 | Passion Flower | `passiflora-incarnata` |
-| 44 | Prickly Lettuce | `lactuca-serriola` |
-| 45 | Oak | `quercus-spp` |
+**Six species wear their face on the flower**, so a stage with no flower has to move it onto
+the plant they do have: Violet, St John's Wort, Wild Geranium, Blackberry, Jewelweed and
+Honeysuckle. In every case the leaf they land on is doing real identification work, which is
+why it was available.
+
+**And the deck closes on itself.** Oak's adult loop ends with an acorn on the ground, split
+open, with a shoot out of it — and that seedling is exactly what Oak's own sprout stage is.
+The last card's gesture produces the last card's first stage, which is not a device: it is
+what an oak does.
+
+Four organs are **hand-drawn** rather than generated, and the reason generalises:
+`flower_head` builds rounded, radial shapes, so anything that is neither comes out wrong.
+Yarrow's corymb is a *flat plate* of tight buttons and a high lobe count fragments it; a
+violet leaf is notched at its base and an ellipse has nowhere to put the notch; St John's
+Wort's perforate leaf and Wild Geranium's seven-lobe palmate are both shapes whose whole
+point is that they are not a circle. A hand-drawn grid with a plain `F` patch works
+identically — `face_box` measures it the same way — so reach for one whenever the generator
+is being bent out of shape.
 
 ```bash
 python3 scripts/build_sprites.py

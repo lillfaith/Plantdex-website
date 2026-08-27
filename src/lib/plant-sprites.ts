@@ -10,10 +10,10 @@ import type { GardenStage } from './garden';
  *
  * STAGES. `stage` is deliberately typed as the garden's own `GardenStage` rather than a
  * new vocabulary, because the growth ladder already exists and already maps one mastery
- * stage to exactly one growth stage (`src/lib/garden.ts`). When per-stage art is drawn,
- * a manifest entry gains a `stages` map and only `spriteFor` below changes — every call
- * site is already passing the stage through. Until then every stage resolves to the one
- * authored sprite, so a caller can pass it today and get sensible art.
+ * stage to exactly one growth stage (`src/lib/garden.ts`). All 45 species now carry a
+ * `sprout` and a `growing` entry alongside their adult, so the creature a player sees
+ * grows up with their own progress — see `docs/creature-stages.md` for what each stage
+ * means botanically and `scripts/build_sprites.py` for how it is derived.
  *
  * COVERAGE. All 45 cards now have an authored portrait, and `plant-sprites.test.ts`
  * asserts that, so a herb added to the deck without one fails the suite rather than
@@ -42,9 +42,11 @@ export interface PlantSpriteEntry {
   /** Authored personality label, for documentation and tests rather than styling. */
   personality: string;
   /**
-   * Per-stage overrides. Absent today — one portrait serves every stage — but the
-   * lookup already honours it, so drawing a sprout variant is a build-script change
-   * and nothing else.
+   * Per-stage art. Present for every species in the deck; `plant-sprites.test.ts`
+   * enforces that, so a species added without stage art fails the suite rather than
+   * quietly showing its adult portrait at all three points of the ladder. Still
+   * optional in the type, because a new species reaches the site before its stage art
+   * does and rendering the adult beats rendering nothing.
    */
   stages?: Partial<Record<GardenStage, PlantSpriteEntry>>;
 }
@@ -65,7 +67,7 @@ export function spriteFor(
 ): PlantSpriteEntry | null {
   const entry = SPRITES[herbId];
   if (!entry) return null;
-  // Falls back to the single authored portrait until per-stage art exists.
+  // Falls back to the authored adult for a species whose stage art is not drawn yet.
   return entry.stages?.[stage] ?? entry;
 }
 
@@ -78,9 +80,10 @@ export function hasSprite(herbId: string): boolean {
  *
  * Call sites need it to avoid scaling a sprite twice. Staged art is authored at evenly
  * stepped heights — 60%, 80%, 100% of the adult — so a caller that also shrinks a sprout
- * by its own factor compounds the two and lands at a quarter size. A species with no
- * staged art has no such difference to compound, and still needs an external scale if it
- * is to show growth at all.
+ * by its own factor compounds the two and lands at a quarter size. Every species is
+ * staged today, so this returns true throughout; it stays for the same reason the
+ * `stages` field is optional, since a species whose art has not been drawn yet still
+ * needs an external scale if it is to show growth at all.
  */
 export function hasStageArt(herbId: string, stage: GardenStage): boolean {
   return Boolean(SPRITES[herbId]?.stages?.[stage]);

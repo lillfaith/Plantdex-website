@@ -26,6 +26,7 @@ apart from the card's identification content, which stays the reference outdoors
 
 from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -101,9 +102,223 @@ HEAD_DX = [0, 2, -1, -3, -4, -5, -5, 2, 3, 1, 0, 0, 0, 0]
 TURN = [0, TURN_R, TURN_L, TURN_L, TURN_L, TURN_L, TURN_L, 0, TURN_R, 0, 0, 0, 0, 0]
 FACE_DX = [head + turn for head, turn in zip(HEAD_DX, TURN)]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE REACH IS THE BODY, so the reach grows when the body does. Cleavers scrambles by
+# adding whorls, and a plant with one whorl behind it has nothing to telescope: this is
+# the only sprite in the deck whose gesture is limited by how much of it there IS.
+#
+#   sprout    one whorl and a short stem. It gathers, leans out barely, and stays inside
+#             its own frame — which is notable, because staying inside the frame is the
+#             one thing the adult never does.
+#   growing   two whorls and a longer stem, hooks out, and it reaches to the edge and
+#             stops there.
+#   flowering three whorls, out of frame entirely, and the snap back. Unchanged.
+#
+# THE WHORLS GAIN LEAVES AS THEY GO, which is real: a cleavers seedling's lower whorls
+# carry six narrow leaves and the upper ones carry eight, so the lobe count climbs with
+# the stage rather than the shape merely scaling.
+#
+# THE HOOKS ARRIVE WITH THE REACH, not with the plant. Cleavers is bristled from
+# germination — that is how a seedling clings at all — but the adult shows its hooks only
+# while it is reaching, and drawing them on a creature that is not reaching would make it
+# threatening instead of overfamiliar.
+
+BUD_PALETTE = {
+    "k": (176, 206, 128, 255),   # the flower buds — green knots, no white yet
+}
+
+# --- Sprout: one whorl, and it stays in frame -------------------------------
+YOUNG_HEAD_AT = (4, 13)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        14, 9, 6.5, 4.4, 6.6, 4.4, 6, 0.16, 5.4, 2.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.2, light=(-1.25, -0.65))
+
+WHORL_SMALL = [
+    " o o ",
+    "oGoGo",
+    "ogggo",
+    " o o ",
+]
+
+STEM_SHORT = [
+    "ogGgggggggo",
+    "odgddddddgo",
+]
+
+# --- Growing: two whorls, and the hooks come out ----------------------------
+MID_HEAD_AT = (3, 11)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 11, 7.0, 5.4, 7.0, 5.4, 7, 0.18, 5.4, 3.2,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.2, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.2, light=(-1.25, -0.65))
+
+WHORL_MID = [
+    " o o o",
+    "oGoGoGo",
+    "oggggdo",
+    " o o o",
+]
+
+STEM_MID = [
+    "ogGggggggggggggggo",
+    "odgdddddddddddddgo",
+]
+
+HOOKS_SMALL = [
+    "H  H  H",
+    " H  H  H",
+]
+
+BUDS = [
+    "k  k",
+    " k   k",
+]
+
+S_TURN_L = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)[0]
+S_TURN_R = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)[0]
+S_HEAD_DX = [0, 1, -1, -2, -2, -1, 0, 0]
+S_TURN = [0, S_TURN_R, S_TURN_L, S_TURN_L, S_TURN_L, 0, 0, 0]
+S_FACE_DX = [h + t for h, t in zip(S_HEAD_DX, S_TURN)]
+
+G_TURN_L = face_shift(MID_HEAD, MID_HEAD_LEFT)[0]
+G_TURN_R = face_shift(MID_HEAD, MID_HEAD_RIGHT)[0]
+G_HEAD_DX = [0, 1, -1, -2, -3, -3, 1, 1, 0, 0]
+G_TURN = [0, G_TURN_R, G_TURN_L, G_TURN_L, G_TURN_L, G_TURN_L, 0, G_TURN_R, 0, 0]
+G_FACE_DX = [h + t for h, t in zip(G_HEAD_DX, G_TURN)]
+
 SPRITE = {
     "herbId": "galium-aparine",
     "personality": "overfamiliar",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            # One whorl. No hooks, because it never reaches far enough to need them, and
+            # no flowers, because it has not made any.
+            "hide": ["whorlB", "whorlC", "flowers", "hooks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "whorlA": WHORL_SMALL,
+                "stem": STEM_SHORT,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"], "wide": YOUNG_EYES["wide"]},
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "whorlA": (18, 16),
+                "stem": (14, 17),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            "motion": {
+                "head": {
+                    "art": [None, "right", "left", "left", "left", None, None, None],
+                    "dx": S_HEAD_DX,
+                    "dy": [0, 0, 1, 1, 1, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "wide", "wide", "wide", None, "blink", None],
+                    "dx": S_FACE_DX,
+                    "dy": [0, 0, 1, 1, 1, 0, 0, 0],
+                },
+                "mouth": {"dx": S_FACE_DX, "dy": [0, 0, 1, 1, 1, 0, 0, 0]},
+                "whorlA": {"dx": [0, 1, 0, -1, -1, 0, 0, 0]},
+                "stem": {"dx": [0, 0, 0, -1, -1, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["whorlC"],
+            "swap": {
+                "head": MID_HEAD,
+                "whorlA": WHORL_MID,
+                "whorlB": WHORL_MID,
+                "stem": STEM_MID,
+                "flowers": BUDS,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+                "hooks": {"out": HOOKS_SMALL},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "whorlA": (16, 14),
+                "whorlB": (23, 14),
+                "stem": (13, 15),
+                "flowers": (19, 17),
+                "hooks": (11, 13),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # It reaches to the edge and stops. Leaving the frame is the last thing it
+            # learns, and it is the whole point of the adult.
+            "motion": {
+                "head": {
+                    "art": [None, "right", "left", "left", "left", "left", None,
+                            "right", None, None],
+                    "dx": G_HEAD_DX,
+                    "dy": [0, 0, 1, 2, 2, 2, 0, -1, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", "half", None,
+                            "blink", None],
+                    "dx": G_FACE_DX,
+                    "dy": [0, 0, 1, 2, 2, 2, 0, -1, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", None, None,
+                            None, None],
+                    "dx": G_FACE_DX,
+                    "dy": [0, 0, 1, 2, 2, 2, 0, -1, 0, 0],
+                },
+                "whorlA": {"dx": [0, 1, -1, -2, -3, -3, 1, 1, 0, 0]},
+                "whorlB": {"dx": [0, 1, 0, -1, -2, -2, 1, 0, 0, 0]},
+                "flowers": {"dx": [0, 1, 0, -1, -2, -2, 1, 0, 0, 0]},
+                "hooks": {
+                    "art": [None, None, "out", "out", "out", "out", None, None, None,
+                            None],
+                    "dx": [0, 0, -1, -2, -3, -3, 0, 0, 0, 0],
+                    "dy": [0, 0, 1, 2, 2, 2, 0, 0, 0, 0],
+                },
+                "stem": {"dx": [0, 0, 0, -1, -1, -1, 0, 1, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

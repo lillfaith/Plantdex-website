@@ -21,6 +21,7 @@ apart from the card's identification content, which stays the reference outdoors
 """
 
 from _face import FACE_PALETTE, feature_parts
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -105,9 +106,189 @@ HEAD_AT = (10, 11)
 # separates a ratchet from a stretch.
 LIFT = [0, 0, -5, -5, -10, -10, -10, -10, -10, -10, -5, 0, 0, 0]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE ONLY NON-FLOWERING PLANT IN THE DECK, so "in bud" has to mean something else here —
+# and it does, exactly. Horsetail reproduces by spores carried in a cone on a separate
+# pale fertile shoot, and that cone is tight and shut before it opens to shed. So the
+# three stages map onto the plant's own structures with nothing bent to fit:
+#
+#   sprout    ONE segment. There is nothing to telescope with, so it holds, and settles.
+#   growing   two segments — one hard step, which is the ratchet with a single click in
+#             it — and a short SHUT cone beside it.
+#   flowering three segments, two steps, and the cone open. Unchanged.
+#
+# Nothing eases at any stage. A plant reinforced with enough silica to scour a pot does
+# not ease, and the whole reason this sprite is hand-drawn rather than generated is that
+# a jointed stem has no curve in it anywhere.
+
+# --- Sprout: one segment ------------------------------------------------------
+#
+# Hand-drawn like the adult, for the same reason, and wider than it is tall so the face
+# still has room: the eyes need eight pixels of face and a horsetail's face is a
+# rectangle, so the width is where the room has to come from.
+HEAD_YOUNG = [
+    " ooooooooooo ",
+    "oKKKKKKKKKKKo",
+    "oGFFFFFFFFFGo",
+    "oGFFFFFFFFFGo",
+    "ogFFFFFFFFFgo",
+    "odFFFFFFFFFdo",
+    "onnnnnnnnnnno",
+    " ooooooooooo ",
+]
+
+HEAD_MID = [
+    " ooooooooooo ",
+    "oKKKKKKKKKKKo",
+    "oGGGGGGGGGGGo",
+    "oGFFFFFFFFFGo",
+    "oGFFFFFFFFFGo",
+    "ogFFFFFFFFFgo",
+    "odFFFFFFFFFdo",
+    "onnnnnnnnnnno",
+    " ooooooooooo ",
+]
+
+SEGMENT_YOUNG = [
+    "oKKKKKKKo",
+    "oGGgggddo",
+    "oKKKKKKKo",
+]
+
+WHORL_YOUNG = [
+    "o o   o o",
+    " o     o",
+]
+
+# The cone, shut and short. A spore cone is tight and pale before it opens, and this is
+# the state it spends most of its existence in.
+CONE_SHUT = [
+    " oSo ",
+    " oSo ",
+    " oKo ",
+    " ogo ",
+    " oKo ",
+    " ogo ",
+    " oo  ",
+]
+
+# One segment height for the young stack, in exact pixels. Three, because the young
+# segments are three rows: a ratchet that lands anywhere else is a stretch.
+G_LIFT = [0, 0, -3, -3, -3, -3, -3, -3, 0, 0]
+
+YOUNG_HEAD_AT = (10, 17)
+MID_HEAD_AT = (10, 13)
+
 SPRITE = {
     "herbId": "equisetum-arvense",
     "personality": "prehistoric",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            # One segment and one whorl. No cone: spores are the last thing it does.
+            "hide": ["segA", "segB", "whorlA", "whorlB", "cone"],
+            "swap": {
+                "head": HEAD_YOUNG,
+                "segC": SEGMENT_YOUNG,
+                "whorlC": WHORL_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "segC": (12, 24),
+                "whorlC": (11, 23),
+                **seat_young(
+                    YOUNG_HEAD_AT, HEAD_YOUNG, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # It holds. Nothing telescopes, because there is only one section, and a
+            # single segment stretching would be the one thing a jointed stem cannot do.
+            "motion": {
+                "head": {"dy": [0] * 8},
+                "eyes": {
+                    "art": [None, None, "wide", "wide", None, None, "blink", None],
+                    "dy": [0] * 8,
+                },
+                "mouth": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "hide": ["segA", "whorlA"],
+            "swap": {
+                "head": HEAD_MID,
+                "segB": SEGMENT_YOUNG,
+                "segC": SEGMENT_YOUNG,
+                "whorlB": WHORL_YOUNG,
+                "whorlC": WHORL_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "segB": {"none": SEGMENT_NONE},
+                "whorlB": {"none": WHORL_NONE},
+                # Not swapped: the default stays CONE_NONE so the resting frame is one
+                # connected plant, exactly as in the adult. The shoot appears mid-loop.
+                "cone": {"on": CONE_SHUT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "segB": (12, 21),
+                "segC": (12, 23),
+                "whorlB": (11, 20),
+                "whorlC": (11, 22),
+                "cone": (25, 14),
+                **seat_young(
+                    MID_HEAD_AT, HEAD_MID, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # One click. The head rises by exactly one young segment and stays there.
+            "motion": {
+                "head": {"dy": G_LIFT},
+                "eyes": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", None, None,
+                            "blink", None],
+                    "dy": G_LIFT,
+                },
+                "mouth": {
+                    "art": [None, None, None, None, "wide", "wide", None, None, None,
+                            None],
+                    "dy": G_LIFT,
+                },
+                "segB": {
+                    "art": ["none", "none", None, None, None, None, None, None,
+                            "none", "none"],
+                },
+                "whorlB": {
+                    "art": ["none", "none", None, None, None, None, None, None,
+                            "none", "none"],
+                },
+                "cone": {
+                    "art": [None, None, None, None, "on", "on", "on", "on", None,
+                            None],
+                    "dy": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                },
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 6,

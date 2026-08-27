@@ -16,8 +16,9 @@ import type { GardenStage } from '@/lib/garden';
  * which every sprite authors as a complete resting pose (see `globals.css`, and
  * `build_sprites.py` for why frame 0 carries that responsibility).
  *
- * All 45 cards have an authored portrait. It still renders nothing for an id with no
- * sprite, so pages can mount it unconditionally without guarding.
+ * All 45 cards have an authored portrait at all three growth stages. It still renders
+ * nothing for an id with no sprite, so pages can mount it unconditionally without
+ * guarding.
  */
 export function PlantSprite({
   herbId,
@@ -31,7 +32,7 @@ export function PlantSprite({
   herbId: string;
   /** Describes the plant, not the animation — screen readers gain nothing from "bouncing". */
   alt: string;
-  /** Growth stage. Accepted today, distinct art later — see `plant-sprites.ts`. */
+  /** Growth stage. Every species has its own art for each — see `plant-sprites.ts`. */
   stage?: GardenStage;
   /** Multiplier on the sheet's own size. Keep to whole or half steps to stay crisp. */
   scale?: number;

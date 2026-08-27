@@ -22,8 +22,9 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -120,9 +121,206 @@ STEM = [
 
 HEAD_AT = (8, 9)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE POLLEN IS THE POINT, so the pollen is gated on the flower. This is the one species
+# in the deck where the gesture carries a factual claim: ragweed causes the hay fever
+# goldenrod is blamed for, and this sprite's cloud is that claim drawn. A plant that has
+# not made its racemes yet sheds nothing, so neither earlier stage releases a grain —
+# `pollen` is hidden at both, and that is botany rather than restraint.
+#
+#   sprout    ferny dissected leaves and nothing above them. It itches. It cannot sneeze.
+#   growing   the raceme up, its nubs still tight and GREEN — the state before they dry
+#             to the drab tan this card's portrait wears. It winds up, it sneezes, and
+#             nothing comes out, which is both the gag and the correct answer.
+#   flowering the full sneeze, and the cloud that goes on travelling after it. Unchanged.
+#
+# The drabness is deliberate at every stage and is not a shortcut: ragweed's flowers being
+# too dull to notice is exactly why the wrong plant gets accused, so nothing here is
+# allowed to brighten as it grows except the leaves' own green.
+
+NUB_PALETTE = {
+    "K": (146, 162, 98, 255),   # nub highlight — green, before it dries to tan
+    "k": (104, 120, 72, 255),   # nub mid
+}
+
+# --- Sprout: ferny leaves, nothing above them -------------------------------
+YOUNG_HEAD_AT = (9, 13)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 13, 7.0, 6.2, 7.2, 6.2, 7, 0.13, 5.4, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# Still cut almost to the midrib. The raggedness is the only thing identifying a plant
+# this drab, so it is the last property that would ever be simplified away.
+LEAF_L_YOUNG = [
+    "  o o o",
+    " oGoGoGo",
+    "oGgGgGgo",
+    " ogdgdgo",
+    "  o o o",
+]
+
+LEAF_R_YOUNG = [
+    "o o o",
+    "oGoGoGo",
+    "ogGgGgGo",
+    "odgdgdo",
+    "o o o",
+]
+
+# --- Growing: the raceme up, still green ------------------------------------
+MID_HEAD_AT = (8, 12)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        16, 14, 7.5, 6.6, 7.6, 6.6, 7, 0.13, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+RACEME_TIGHT = [
+    " oko",
+    "okKo",
+    " oko",
+    "okKo",
+    " oo",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "ambrosia-artemisiifolia",
     "personality": "sheepish",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(12, "sprout"),
+            # No raceme, and therefore no pollen. The sprout is the one creature here
+            # that is genuinely innocent.
+            "hide": ["raceme", "pollen", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafL": LEAF_L_YOUNG,
+                "leafR": LEAF_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "shut": YOUNG_EYES["shut"],
+                },
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leafL": (3, 18),
+                "leafR": (21, 18),
+                "stem": (14, 24),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # An itch and a shrug. The wind-up has nowhere to go.
+            "motion": {
+                "head": {
+                    "dy": [0, -1, -1, 0, 0, 0, 0, 0],
+                    "dx": [0, 0, -1, 0, 0, 0, 0, 0],
+                    "art": [None, None, "left", None, "right", None, None, None],
+                },
+                "eyes": {
+                    "dy": [0, -1, -1, 0, 0, 0, 0, 0],
+                    "dx": [0, 0, S_L_DX, 0, S_R_DX, 0, 0, 0],
+                    "art": [None, "half", "shut", "half", None, None, "blink", None],
+                },
+                "mouth": {
+                    "dy": [0, -1, -1, 0, 0, 0, 0, 0],
+                    "dx": [0, 0, S_L_DX, 0, S_R_DX, 0, 0, 0],
+                },
+                "leafL": {"dx": [0, 0, 1, 1, 0, 0, 0, 0]},
+                "leafR": {"dx": [0, 0, -1, -1, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(12, "growing"),
+            "palette": NUB_PALETTE,
+            # The raceme exists; what it holds does not shed yet.
+            "hide": ["pollen", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "raceme": RACEME_TIGHT,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "shut": YOUNG_EYES["shut"],
+                    "wide": YOUNG_EYES["wide"],
+                },
+                "mouth": {"open": YOUNG_MOUTH["open"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "raceme": (14, 9),
+                "leafL": (2, 18),
+                "leafR": (22, 18),
+                "stem": (14, 24),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # The whole sneeze, and an empty frame where the cloud should be. Then it
+            # checks anyway, which is the most ragweed thing in the sprite.
+            "motion": {
+                "head": {
+                    "art": [None, None, None, None, None, None, None, "left", "right",
+                            None],
+                    "dx": [0, 0, -1, -2, 2, 2, 1, 0, 0, 0],
+                    "dy": [0, -1, -1, -1, 1, 1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, "half", "wide", "wide", "shut", "shut", "half",
+                            None, None, "blink"],
+                    "dx": [0, 0, -1, -2, 2, 2, 1, G_L_DX, G_R_DX, 0],
+                    "dy": [0, -1, -1, -1, 1, 1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, None, None, "open", "open", None, None, None,
+                            None],
+                    "dx": [0, 0, -1, -2, 2, 2, 1, G_L_DX, G_R_DX, 0],
+                    "dy": [0, -1, -1, -1, 1, 1, 0, 0, 0, 0],
+                },
+                "raceme": {
+                    "lean": [0, 0, 2, 3, -3, -2, 1, 0, 0, 0],
+                    "dy": [0, -1, -1, -1, 1, 1, 0, 0, 0, 0],
+                },
+                "leafL": {"dx": [0, 0, 1, 1, -1, -1, 0, 0, 0, 0]},
+                "leafR": {"dx": [0, 0, -1, -1, 1, 1, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 12,

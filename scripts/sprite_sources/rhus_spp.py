@@ -21,6 +21,7 @@ apart from the card's identification content, which stays the reference outdoors
 
 from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -95,9 +96,199 @@ TURN_L = face_shift(HEAD, HEAD_LEFT)[0]
 TURN_R = face_shift(HEAD, HEAD_RIGHT)[0]
 FACE_DX = [0, 0, 0, 0, 0, 0, 0, 0, 0, TURN_R, TURN_R, 0, 0, 0]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE LIGHT IS THE FRUIT. This sprite's trademark is raising the cone and having it
+# BRIGHTEN into two reds that appear nowhere else in the deck — and that red is ripe
+# drupes, which is also what sumac lemonade is made of. So the torch cannot light before
+# there is fruit to light it with:
+#
+#   sprout    the compound fronds and nothing above them. It has no torch, so it lifts
+#             its own face instead, which is as close as it gets.
+#   growing   the panicle is up, in the exact position the cone will occupy — and it is
+#             GREENISH-YELLOW, because that is what a sumac inflorescence is before it
+#             sets fruit. It raises it proudly. It does not light.
+#   flowering the cone, red, and the two hotter reds on the lift. Unchanged.
+#
+# The pinnate frond stays at every stage. A sumac leaf is many paired leaflets down a
+# rachis rather than a single blade, which is unlike almost everything else in this deck
+# and is the thing that identifies the plant when there is no cone to look at — which is
+# to say, at exactly the two stages that have no cone.
+
+PANICLE_PALETTE = {
+    "K": (228, 230, 142, 255),   # panicle highlight — greenish yellow, no red yet
+    "k": (188, 192, 102, 255),   # panicle mid
+    "j": (142, 150, 72, 255),    # panicle deep
+    "J": (104, 112, 56, 255),    # panicle shadow
+}
+
+# --- Sprout: fronds, and nothing to carry -----------------------------------
+YOUNG_HEAD_AT = (9, 12)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 14, 7.0, 6.6, 7.2, 6.4, 7, 0.13, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+FROND_L_YOUNG = [
+    " oo oo",
+    "oGGoGGo",
+    "oggggggo",
+    " oddddo",
+    " oo oo",
+]
+
+FROND_R_YOUNG = [
+    "oo oo",
+    "oGGoGGo",
+    "oggggggo",
+    "oddddo",
+    "oo oo",
+]
+
+# --- Growing: the panicle, before it is fruit -------------------------------
+MID_HEAD_AT = (7, 11)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 15, 8.0, 7.0, 7.6, 6.6, 7, 0.13, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+# Same upright shape, smaller, and no face — a panicle in the place the cone will be.
+PANICLE = flower_head(
+    9, 11, 4.0, 6.0, 3.8, 5.4, 9, 0.12, 0, 0,
+    light=(-0.85, -0.85), trim_tail=False, chars="KkjJFo",
+)
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "rhus-spp",
     "personality": "ceremonial",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            "hide": ["cone", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "frondL": FROND_L_YOUNG,
+                "frondR": FROND_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "frondL": (2, 18),
+                "frondR": (21, 18),
+                "stem": (14, 22),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # It gathers and lifts, and there is nothing over its head to lift. The
+            # ceremony is intact; the object is missing.
+            "motion": {
+                "head": {
+                    "dy": [0, 1, 0, -1, -1, -1, 0, 0],
+                    "art": [None, None, None, None, "right", None, None, None],
+                },
+                "eyes": {
+                    "dy": [0, 1, 0, -1, -1, -1, 0, 0],
+                    "dx": [0, 0, 0, 0, S_R_DX, 0, 0, 0],
+                    "art": [None, "half", None, "wide", "wide", None, "blink", None],
+                },
+                "mouth": {
+                    "dy": [0, 1, 0, -1, -1, -1, 0, 0],
+                    "dx": [0, 0, 0, 0, S_R_DX, 0, 0, 0],
+                },
+                "frondL": {"dx": [0, 0, 0, -1, -1, -1, 0, 0]},
+                "frondR": {"dx": [0, 0, 0, 1, 1, 1, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": PANICLE_PALETTE,
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "cone": PANICLE,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "cone": (12, 5),
+                "frondL": (1, 17),
+                "frondR": (20, 17),
+                "stem": (14, 22),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # The full raise, and no light at the top of it. Everything the adult does
+            # except the one thing the adult is FOR.
+            "motion": {
+                "cone": {"dy": [0, 1, -1, -3, -4, -4, -4, -2, 0, 0]},
+                "head": {
+                    "dy": [0, 1, 0, -1, -1, -1, -1, 0, 0, 0],
+                    "art": [None, None, None, None, None, None, None, "right", None,
+                            None],
+                },
+                "eyes": {
+                    "dy": [0, 1, 0, -1, -1, -1, -1, 0, 0, 0],
+                    "dx": [0, 0, 0, 0, 0, 0, 0, G_R_DX, 0, 0],
+                    "art": [None, "half", None, "wide", "wide", "wide", "wide", "happy",
+                            "blink", None],
+                },
+                "mouth": {
+                    "dy": [0, 1, 0, -1, -1, -1, -1, 0, 0, 0],
+                    "dx": [0, 0, 0, 0, 0, 0, 0, G_R_DX, 0, 0],
+                    "art": [None, None, None, "wide", "wide", "wide", "wide", None,
+                            None, None],
+                },
+                "frondL": {"dx": [0, 0, 0, -1, -1, -1, -1, 0, 0, 0]},
+                "frondR": {"dx": [0, 0, 0, 1, 1, 1, 1, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,

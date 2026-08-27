@@ -123,9 +123,16 @@ describe('growth stages', () => {
     })),
   );
 
-  it('has at least one species staged', () => {
-    // Every assertion below iterates the staged set, so an empty one passes them all.
+  it('stages every species in the deck, sprout and growing', () => {
+    // Every assertion below iterates the staged set, so an empty one passes them all —
+    // and now that the set is complete, this pins the completeness too. A species added
+    // to the deck without stage art fails here rather than silently showing its adult
+    // portrait at all three points of the ladder.
     expect(staged.length).toBeGreaterThan(0);
+    for (const sprite of allSprites()) {
+      expect(sprite.stages?.sprout, `${sprite.herbId}: no sprout stage`).toBeDefined();
+      expect(sprite.stages?.growing, `${sprite.herbId}: no growing stage`).toBeDefined();
+    }
   });
 
   it('ships the sheet each stage points at, and only for real stages', () => {
@@ -179,14 +186,18 @@ describe('growth stages', () => {
     }
   });
 
-  it('resolves a staged species to its stage art and an unstaged one to its adult', () => {
-    const withStages = allSprites().find((s) => s.stages?.sprout);
-    expect(withStages, 'no species has a sprout stage').toBeDefined();
-    expect(spriteFor(withStages!.herbId, 'sprout')!.src).toBe(withStages!.stages!.sprout!.src);
-
-    const without = allSprites().find((s) => !s.stages);
-    expect(without, 'every species is staged — update this test').toBeDefined();
-    expect(spriteFor(without!.herbId, 'sprout')!.src).toBe(without!.src);
+  it('resolves every species to its own art at every stage', () => {
+    // All 45 are staged, so there is no longer an unstaged species to exercise the
+    // `?? entry` fallback in `spriteFor` — it stays because a species added to the deck
+    // reaches the site before its stage art does, and rendering the adult beats
+    // rendering nothing. What can still be pinned is that no lookup falls through by
+    // accident: each stage must resolve to that stage's own sheet, not the adult's.
+    for (const sprite of allSprites()) {
+      expect(spriteFor(sprite.herbId, 'sprout')!.src).toBe(sprite.stages!.sprout!.src);
+      expect(spriteFor(sprite.herbId, 'growing')!.src).toBe(sprite.stages!.growing!.src);
+      expect(spriteFor(sprite.herbId, 'flowering')!.src).toBe(sprite.src);
+    }
+    expect(spriteFor('not-a-herb', 'sprout')).toBeNull();
   });
 });
 

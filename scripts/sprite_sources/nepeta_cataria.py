@@ -23,6 +23,7 @@ apart from the card's identification content, which stays the reference outdoors
 
 from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -122,9 +123,227 @@ _SHIFT = [face_shift(HEAD, _POSE[a]) if a else (0, 0) for a in ROLL_ART]
 FACE_DX = [dx + sx for dx, (sx, _) in zip(HEAD_DX, _SHIFT)]
 FACE_DY = [dy + sy for dy, (_, sy) in zip(HEAD_DY, _SHIFT)]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# DIGNITY IS LOST BY DEGREES. The nepetalactone is in a catnip seedling too — young
+# leaves are if anything the strongest — so every stage feels it. What grows is how far
+# over it goes:
+#
+#   sprout    it tips, and catches itself. One pose off level, and back.
+#   growing   it gets all the way onto its SIDE, hangs there, and rights itself.
+#   flowering right over onto its back, the kick, and the slightly embarrassed recovery.
+#             Unchanged — nine frames of a plant on its side is the deck's only real loss
+#             of composure and it is what the last stage is for.
+#
+# The roll is always carried by the FACE travelling round the head while the light stays
+# put, never by shearing the head: a lean moves each row by a different amount, so the
+# face stops being where `face_shift` measured it and the features come adrift. Every
+# stage's offsets are measured off its own poses for exactly that reason.
+#
+# The flower spike is a mint's spike of pale hooded flowers. In bud it is the same spike
+# in tight grey-green knots, which is also what tells catnip from the dead nettle it is
+# otherwise easy to confuse at a distance.
+
+BUD_PALETTE = {
+    "K": (196, 200, 172, 255),   # bud highlight — the grey-green of a furred calyx
+    "k": (150, 155, 130, 255),   # bud mid
+}
+
+# --- Sprout: it tips, and catches itself ------------------------------------
+YOUNG_HEAD_AT = (9, 10)
+
+
+def _young_head(face_dx=0.0, face_dy=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        16, 13, 7.5, 6.2, 7.4, 6.0, 7, 0.15, 5.4, 3.6,
+        face_dx=face_dx, face_dy=face_dy, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_TIP = _young_head(face_dx=1.6, face_dy=0.8, light=(-1.25, -0.35))
+
+LEAF_L_YOUNG = [
+    "  oooo",
+    " oGoGoo",
+    "oGGggggo",
+    "  oooo",
+]
+
+LEAF_R_YOUNG = [
+    "oooo",
+    "oGoGo",
+    "oggggGo",
+    " oooo",
+]
+
+# --- Growing: all the way onto its side -------------------------------------
+MID_HEAD_AT = (7, 9)
+
+
+def _mid_head(face_dx=0.0, face_dy=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        18, 15, 8.5, 7.2, 8.0, 7.0, 7, 0.15, 5.4, 4.0,
+        face_dx=face_dx, face_dy=face_dy, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_TIP = _mid_head(face_dx=1.8, face_dy=0.9, light=(-1.25, -0.35))
+MID_HEAD_SIDE = _mid_head(face_dx=3.0, face_dy=1.9, light=(-1.6, 0.2))
+MID_HEAD_BACK_UP = _mid_head(face_dx=-1.4, face_dy=1.0, light=(-0.2, -0.4))
+
+# The spike, shut. Same six-node column, no hoods open on any of them.
+SPIKE_BUD = [
+    " oKo ",
+    "okKko",
+    " oko ",
+    " oko ",
+    " oko ",
+]
+
+S_ROLL_ART = [None, None, "tip", "tip", "tip", None, None, None]
+S_HEAD_DX = [0, 0, 1, 2, 2, 0, 0, 0]
+S_HEAD_DY = [0, -1, 1, 2, 2, 0, 0, 0]
+_S_POSE = {"tip": YOUNG_HEAD_TIP}
+_S_SHIFT = [face_shift(YOUNG_HEAD, _S_POSE[a]) if a else (0, 0) for a in S_ROLL_ART]
+S_FACE_DX = [dx + sx for dx, (sx, _) in zip(S_HEAD_DX, _S_SHIFT)]
+S_FACE_DY = [dy + sy for dy, (_, sy) in zip(S_HEAD_DY, _S_SHIFT)]
+
+G_ROLL_ART = [None, None, "tip", "tip", "side", "side", "tip", "backUp", None, None]
+G_HEAD_DX = [0, 0, 1, 2, 3, 3, 2, -1, 0, 0]
+G_HEAD_DY = [0, -1, 1, 2, 3, 3, 2, 0, 0, 0]
+_G_POSE = {"tip": MID_HEAD_TIP, "side": MID_HEAD_SIDE, "backUp": MID_HEAD_BACK_UP}
+_G_SHIFT = [face_shift(MID_HEAD, _G_POSE[a]) if a else (0, 0) for a in G_ROLL_ART]
+G_FACE_DX = [dx + sx for dx, (sx, _) in zip(G_HEAD_DX, _G_SHIFT)]
+G_FACE_DY = [dy + sy for dy, (_, sy) in zip(G_HEAD_DY, _G_SHIFT)]
+
 SPRITE = {
     "herbId": "nepeta-cataria",
     "personality": "giddy",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(12, "sprout"),
+            # No spike, and no sparks: the delight has not got far enough to throw any.
+            "hide": ["spike", "sparks", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafL": LEAF_L_YOUNG,
+                "leafR": LEAF_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"tip": YOUNG_HEAD_TIP},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                    "spiral": YOUNG_EYES["shut"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leafL": (2, 19),
+                "leafR": (21, 19),
+                "stem": (15, 23),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            "motion": {
+                "head": {"art": S_ROLL_ART, "dx": S_HEAD_DX, "dy": S_HEAD_DY},
+                "eyes": {
+                    "art": [None, "wide", "wide", "spiral", "spiral", "half", "blink",
+                            None],
+                    "dx": S_FACE_DX,
+                    "dy": S_FACE_DY,
+                },
+                "mouth": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", None, None],
+                    "dx": S_FACE_DX,
+                    "dy": S_FACE_DY,
+                },
+                "leafL": {
+                    "dx": [0, 0, 1, 3, 3, 1, 0, 0],
+                    "dy": [0, 0, -1, -2, -1, 0, 0, 0],
+                },
+                "leafR": {
+                    "dx": [0, 0, 1, 2, 3, 1, 0, 0],
+                    "dy": [0, 0, 1, 2, 1, 0, 0, 0],
+                },
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(12, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "spike": SPIKE_BUD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {
+                    "tip": MID_HEAD_TIP,
+                    "side": MID_HEAD_SIDE,
+                    "backUp": MID_HEAD_BACK_UP,
+                },
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "wide": YOUNG_EYES["wide"],
+                    "half": YOUNG_EYES["half"],
+                    "spiral": YOUNG_EYES["shut"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "spike": (14, 5),
+                "leafL": (1, 19),
+                "leafR": (21, 19),
+                "stem": (14, 23),
+                "sparks": (3, 8),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            "motion": {
+                "head": {"art": G_ROLL_ART, "dx": G_HEAD_DX, "dy": G_HEAD_DY},
+                "eyes": {
+                    "art": [None, "wide", "wide", "spiral", "spiral", "spiral", "half",
+                            None, "blink", None],
+                    "dx": G_FACE_DX,
+                    "dy": G_FACE_DY,
+                },
+                "mouth": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", "wide", None,
+                            None, None],
+                    "dx": G_FACE_DX,
+                    "dy": G_FACE_DY,
+                },
+                "leafL": {
+                    "dx": [0, 0, 1, 3, 4, 4, 2, 0, 0, 0],
+                    "dy": [0, 0, -1, -2, -1, 1, -1, 0, 0, 0],
+                },
+                "leafR": {
+                    "dx": [0, 0, 1, 2, 4, 4, 2, 0, 0, 0],
+                    "dy": [0, 0, 1, 2, 1, -1, 1, 0, 0, 0],
+                },
+                "spike": {
+                    "lean": [0, 0, 2, 4, 6, 6, 3, -1, 0, 0],
+                    "dx": [0, 0, 1, 2, 3, 3, 2, -1, 0, 0],
+                },
+                "sparks": {
+                    "art": [None, None, None, None, "on", None, None, None, None, None],
+                },
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 16,
     "fps": 12,
