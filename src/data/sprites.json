@@ -109,7 +109,29 @@
     "frameHeight": 140,
     "frames": 16,
     "fps": 8,
-    "personality": "early riser"
+    "personality": "early riser",
+    "stages": {
+      "sprout": {
+        "herbId": "cichorium-intybus-sprout",
+        "src": "/cards/animated/cichorium-intybus-sprout.png",
+        "version": "8725aa09",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "early riser"
+      },
+      "growing": {
+        "herbId": "cichorium-intybus-growing",
+        "src": "/cards/animated/cichorium-intybus-growing.png",
+        "version": "fffe061b",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "early riser"
+      }
+    }
   },
   "equisetum-arvense": {
     "herbId": "equisetum-arvense",
@@ -171,7 +193,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "inquisitive"
+    "personality": "inquisitive",
+    "stages": {
+      "sprout": {
+        "herbId": "geranium-maculatum-sprout",
+        "src": "/cards/animated/geranium-maculatum-sprout.png",
+        "version": "a0f5c3f4",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "inquisitive"
+      },
+      "growing": {
+        "herbId": "geranium-maculatum-growing",
+        "src": "/cards/animated/geranium-maculatum-growing.png",
+        "version": "c570860e",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "inquisitive"
+      }
+    }
   },
   "glechoma-hederacea": {
     "herbId": "glechoma-hederacea",
@@ -243,7 +287,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
-    "personality": "all talk"
+    "personality": "all talk",
+    "stages": {
+      "sprout": {
+        "herbId": "lamium-purpureum-sprout",
+        "src": "/cards/animated/lamium-purpureum-sprout.png",
+        "version": "3d2f8aea",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 7,
+        "personality": "all talk"
+      },
+      "growing": {
+        "herbId": "lamium-purpureum-growing",
+        "src": "/cards/animated/lamium-purpureum-growing.png",
+        "version": "8ee28850",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 10,
+        "personality": "all talk"
+      }
+    }
   },
   "lonicera-japonica": {
     "herbId": "lonicera-japonica",
@@ -313,7 +379,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "private"
+    "personality": "private",
+    "stages": {
+      "sprout": {
+        "herbId": "oxalis-stricta-sprout",
+        "src": "/cards/animated/oxalis-stricta-sprout.png",
+        "version": "9f498fbf",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "private"
+      },
+      "growing": {
+        "herbId": "oxalis-stricta-growing",
+        "src": "/cards/animated/oxalis-stricta-growing.png",
+        "version": "e7f56c65",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "private"
+      }
+    }
   },
   "passiflora-incarnata": {
     "herbId": "passiflora-incarnata",
@@ -507,7 +595,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
-    "personality": "delighted"
+    "personality": "delighted",
+    "stages": {
+      "sprout": {
+        "herbId": "stellaria-media-sprout",
+        "src": "/cards/animated/stellaria-media-sprout.png",
+        "version": "b26decd4",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 7,
+        "personality": "delighted"
+      },
+      "growing": {
+        "herbId": "stellaria-media-growing",
+        "src": "/cards/animated/stellaria-media-growing.png",
+        "version": "4a338876",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 10,
+        "personality": "delighted"
+      }
+    }
   },
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",

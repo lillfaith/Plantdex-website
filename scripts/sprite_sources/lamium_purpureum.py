@@ -23,8 +23,9 @@ taken at its word is telling a dead nettle from a stinging one outdoors, where t
 identification content is the reference.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_box, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 PALETTE = {
     **FACE_PALETTE,
@@ -139,9 +140,209 @@ STEM = [
 
 BODY_AT = (7, 8)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME ALL-TALK DEAD NETTLE, YOUNGER. Its trademark is bristling like the nettle it is
+# named after and then not doing anything about it — the bluff is the whole joke — and a
+# seedling bluffs exactly as hard, just smaller.
+#
+# THE PURPLE FLUSH IS ON EVERY STAGE, and it has to be. A dead nettle's top leaves go
+# purple while its lower ones stay green, and that gradient is how anyone tells this from
+# an actual stinging nettle without touching it. A green seedling here would be drawing
+# the plant it is pretending to be.
+#
+#   sprout    the crowded purple-flushed top pair over green below, no flowers.
+#   growing   the flowers in bud: tight and green-pink, tucked in the leaf whorls where
+#             they open, rather than a paler version of the open hood.
+#   flowering the small hooded pink flowers, unchanged.
+
+BUD_PALETTE = {
+    "m": (168, 132, 156, 255),   # a bud, before the hood colours up
+}
+
+# --- Sprout: the flush already on ------------------------------------------
+YOUNG_BODY_W, YOUNG_BODY_H = 15, 12
+YOUNG_BODY_AT = (8, 15)
+
+
+def _young_body(rx=6.6, ry=5.2, face_dx=0.0, light=(-0.85, -0.65), amp=0.16):
+    return flower_head(
+        YOUNG_BODY_W, YOUNG_BODY_H, 7.0, 5.6, rx, ry, 7, amp, 5.2, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_BODY = _young_body()
+YOUNG_BODY_LEFT = _young_body(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_BODY_RIGHT = _young_body(face_dx=1.2, light=(-1.25, -0.65))
+YOUNG_BODY_BRISTLE = _young_body(amp=0.26)
+
+SEED_EAR_L = [
+    "   oP",
+    "  oPPo",
+    " oPPpqo",
+    "oPpqQQo",
+    " opqQo",
+    "  oQo",
+]
+SEED_EAR_R = [
+    "Po   ",
+    "oPPo ",
+    "oqpPPo",
+    "oQQqpPo",
+    " oQqpo",
+    "  oQo",
+]
+SEED_LEAF_L = [
+    " ooo",
+    "oGGGo",
+    "oggdo",
+    " ooo",
+]
+SEED_LEAF_R = [
+    "ooo",
+    "oGGGo",
+    "odggo",
+    "ooo",
+]
+SEED_STEM = [
+    "ogdo",
+    "ogdo",
+    " oo ",
+]
+
+# --- Growing: the flowers still in bud --------------------------------------
+BUD_FLOWERS = [
+    "omo   omo",
+    "omo   omo",
+    " o     o ",
+]
+
+BUD_BODY_AT = (7, 14)
+
+
+def _bud_body(rx=7.8, ry=6.6, face_dx=0.0, light=(-0.85, -0.65), amp=0.16):
+    return flower_head(
+        17, 15, 8.0, 7.0, rx, ry, 7, amp, 6.0, 4.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_BODY = _bud_body()
+BUD_BODY_LEFT = _bud_body(face_dx=-1.4, light=(-0.35, -0.65))
+BUD_BODY_RIGHT = _bud_body(face_dx=1.4, light=(-1.25, -0.65))
+BUD_BODY_BRISTLE = _bud_body(amp=0.26)
+
+S_L_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_LEFT)
+S_R_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_RIGHT)
+G_L_DX, _ = face_shift(BUD_BODY, BUD_BODY_LEFT)
+G_R_DX, _ = face_shift(BUD_BODY, BUD_BODY_RIGHT)
+
+# Puffs itself up, thinks better of it, looks away. Smaller than the adult's bluff and
+# exactly the same shape, which is the point.
+S_BOB = [0, 0, -1, -1, 0, 0, 0, 0]
+S_BODY = [None, "bristle", "bristle", None, "left", "right", None, None]
+S_DX = [0, 0, 0, 0, S_L_DX, S_R_DX, 0, 0]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 0, -1, -1, -1, 0, 0, 0, 0, 0]
+G_BODY = [None, "bristle", "bristle", "bristle", None, "left", "right", None, None, None]
+G_DX = [0, 0, 0, 0, 0, G_L_DX, G_R_DX, 0, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 SPRITE = {
     "herbId": "lamium-purpureum",
     "personality": "all talk",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(12, "sprout"),
+            "hide": ["flowers", "brows", "cheeks"],
+            "swap": {
+                "body": YOUNG_BODY,
+                "earL": SEED_EAR_L,
+                "earR": SEED_EAR_R,
+                "leafL": SEED_LEAF_L,
+                "leafR": SEED_LEAF_R,
+                "stem": SEED_STEM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "body": {
+                    "left": YOUNG_BODY_LEFT,
+                    "right": YOUNG_BODY_RIGHT,
+                    "bristle": YOUNG_BODY_BRISTLE,
+                },
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "body": YOUNG_BODY_AT,
+                "earL": (4, 15),
+                "earR": (20, 15),
+                "leafL": (5, 21),
+                "leafR": (21, 21),
+                "stem": (14, 23),
+                **seat_young(YOUNG_BODY_AT, YOUNG_BODY, cheeks=False, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "body": {"dy": S_BOB, "art": S_BODY},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "earL": {"dy": [0] * 8},
+                "earR": {"dy": [0] * 8},
+                "leafL": {"dy": [0] * 8},
+                "leafR": {"dy": [0] * 8},
+                "stem": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(12, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["brows"],
+            "swap": {
+                "body": BUD_BODY,
+                "flowers": BUD_FLOWERS,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_BODY)[2]),
+            },
+            "variants": {
+                "body": {
+                    "left": BUD_BODY_LEFT,
+                    "right": BUD_BODY_RIGHT,
+                    "bristle": BUD_BODY_BRISTLE,
+                },
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "body": BUD_BODY_AT,
+                "earL": (3, 12),
+                "earR": (20, 12),
+                # In the leaf whorls, clear of the face. The adult's origin put them across this
+                # stage's smaller head, so bud pixels were overwriting the eyes.
+                "flowers": (11, 24),
+                "leafL": (3, 20),
+                "leafR": (22, 20),
+                "stem": (14, 22),
+                **seat_young(BUD_BODY_AT, BUD_BODY, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "body": {"dy": G_BOB, "art": G_BODY},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "earL": {"dy": [0] * 10},
+                "earR": {"dy": [0] * 10},
+                "flowers": {"dy": [0] * 10},
+                "leafL": {"dy": [0] * 10},
+                "leafR": {"dy": [0] * 10},
+                "stem": {"dy": [0] * 10},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 12,

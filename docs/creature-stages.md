@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 10 of 45 species staged.** The other 35 show their single adult portrait at every
+**Status: 15 of 45 species staged.** The other 30 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives ten of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives fifteen of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 10 species
+## Staged — 15 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -93,31 +93,55 @@ frond that says which plant this is.
 | 27 | Mullein | the **first-year rosette** — woolly, low, no spike at all | the spike up but short and grey-green, florets closed |
 | 30 | Wild Strawberry | trifoliate leaves and a runner, no flower, no fruit | the flower closed, green-white — never a reddening berry |
 | 32 | St John's Wort | leaves only; the face rides the **perforate** leaf | a narrow pointed bud, black dots already on the sepals |
+| 13 | Chickweed | sprigs on a hairy stem — the **hairline** field mark from the start | three green ovoid buds on the same long pedicels the stars ride |
+| 39 | Wild Geranium | the face rides the deeply cut **7-lobe palmate** leaf | the bud closed; **no beak**, because the cranesbill is the spent flower |
+| 11 | Purple Dead Nettle | the purple flush already on the upper leaves | whorls of closed green-purple buds in the leaf axils |
+| 21 | Chicory | the **first-year rosette**, toothed almost to the midrib | tight green spindles pressed close against the stem |
+| 09 | Wood Sorrel | three notched heart leaflets and nothing else | a closed spindle bud upright on its own pedicel |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
 
-Two species wear their face **on the flower**, so a stage with no flower has to move it onto
-the plant they do have. Violet's rides a heart leaf; St John's Wort's rides the *perforate*
-leaf, which is luckier than it sounds — the pinprick translucent glands are the trait the
-species is named for, so the seedling is arguably more on-species than the flower.
+Three species wear their face **on the flower**, so a stage with no flower has to move it
+onto the plant they do have. Violet's rides a heart leaf; St John's Wort's rides the
+*perforate* leaf, which is luckier than it sounds — the pinprick translucent glands are the
+trait the species is named for, so the seedling is arguably more on-species than the flower.
+Wild Geranium's rides its deeply cut palmate leaf, drawn smaller than the adult's: at the
+adult leaf's size the face simply swallowed the lobes, and the lobing is the identification.
 
 Mullein is the species that stages itself: it is a **biennial**, so year one genuinely is a
-woolly rosette and nothing else. Nettle is the opposite awkwardness — its flowers are
-inconspicuous green catkins in the leaf axils rather than a bloom, so its middle stage grows
-them where they actually grow instead of inventing a bud to fill the slot.
+woolly rosette and nothing else. Chicory is the second, and its rosette carries an extra
+burden — a first-year chicory is routinely mistaken for a dandelion, so the toothing is cut
+almost to the midrib from the start rather than softened into a generic seedling leaf.
+
+Nettle is the opposite awkwardness — its flowers are inconspicuous green catkins in the leaf
+axils rather than a bloom, so its middle stage grows them where they actually grow instead of
+inventing a bud to fill the slot. Purple Dead Nettle and Chickweed take the same treatment
+for the same reason: dead nettle's buds sit in axillary whorls, and chickweed's ride the same
+long pedicels its open stars do.
 
 Strawberry carries the one rule worth stating twice: **ripeness is the thing a picture of a
-plant can get dangerously wrong**, so no stage before the last carries reddening fruit.
+plant can get dangerously wrong**, so no stage before the last carries reddening fruit. Wild
+Geranium is the same rule pointed backwards in time: its beak — the cranesbill it is named
+for — is the *spent* flower, so it is hidden at **both** earlier stages. A seedling wearing a
+seed pod is exactly as wrong as a seedling wearing a ripe berry.
 
-Two organs are **hand-drawn** rather than generated, and the reason generalises: `flower_head`
-builds rounded, radial shapes, so anything that is neither comes out wrong. Yarrow's corymb
-is a *flat plate* of tight buttons and a high lobe count fragments it; a violet leaf is
-notched at its base and an ellipse has nowhere to put the notch. A hand-drawn grid with a
-plain `F` patch works identically — `face_box` measures it the same way — so reach for one
-whenever the generator is being bent out of shape.
+A gesture grows into itself rather than appearing from nowhere. Wood Sorrel is the clearest
+case: its trademark is folding its leaflets down over its own face and being *gone* for three
+frames, and seedlings genuinely do fold too — just less. So the sprout tips half over for two
+frames and never covers the face, the growing stage holds half-folded for four with the crown
+leaflet shut on top, and only the adult disappears.
 
-## Still to stage — 35 species
+Four organs are **hand-drawn** rather than generated, and the reason generalises:
+`flower_head` builds rounded, radial shapes, so anything that is neither comes out wrong.
+Yarrow's corymb is a *flat plate* of tight buttons and a high lobe count fragments it; a
+violet leaf is notched at its base and an ellipse has nowhere to put the notch; St John's
+Wort's perforate leaf and Wild Geranium's seven-lobe palmate are both shapes whose whole
+point is that they are not a circle. A hand-drawn grid with a plain `F` patch works
+identically — `face_box` measures it the same way — so reach for one whenever the generator
+is being bent out of shape.
+
+## Still to stage — 30 species
 
 A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
 and re-running `python3 scripts/build_sprites.py`; no component changes, because
@@ -131,16 +155,12 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 | 05 | Lamb's Quarters | `chenopodium-album` |
 | 06 | Purslane | `portulaca-oleracea` |
 | 07 | Garlic Mustard | `alliaria-petiolata` |
-| 09 | Wood Sorrel | `oxalis-stricta` |
-| 11 | Purple Dead Nettle | `lamium-purpureum` |
-| 13 | Chickweed | `stellaria-media` |
 | 15 | Cleavers | `galium-aparine` |
 | 16 | Ground Ivy | `glechoma-hederacea` |
 | 17 | Maple | `acer-spp` |
 | 18 | Blackberry | `rubus-spp` |
 | 19 | Sheep's Sorrel | `rumex-acetosella` |
 | 20 | Sumac | `rhus-spp` |
-| 21 | Chicory | `cichorium-intybus` |
 | 22 | Burdock | `arctium-lappa` |
 | 23 | Wild Mint | `mentha-canadensis` |
 | 24 | Catnip | `nepeta-cataria` |
@@ -153,7 +173,6 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 | 36 | Bee Balm | `monarda-fistulosa` |
 | 37 | Wild Rose | `rosa-spp` |
 | 38 | Willow | `salix-spp` |
-| 39 | Wild Geranium | `geranium-maculatum` |
 | 40 | Honeysuckle | `lonicera-japonica` |
 | 41 | Pine | `pinus-spp` |
 | 42 | Mulberry | `morus-spp` |

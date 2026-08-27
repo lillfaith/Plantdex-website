@@ -20,8 +20,9 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_box, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 PALETTE = {
     **FACE_PALETTE,
@@ -105,9 +106,174 @@ STEM = [
 
 HEAD_AT = (5, 4)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME EARLY RISER, YOUNGER. Its trademark is waking up — chicory opens at dawn and
+# shuts by afternoon, which is why the adult's loop is a yawn and a stretch — and there is
+# nothing to open until there is a flower, so that stays with the last stage.
+#
+# CHICORY IS A BIENNIAL, like mullein, and spends its first year as a flat rosette of
+# deeply toothed leaves that looks so much like a dandelion's that the two are routinely
+# confused. So the sprout is that rosette, and the toothing is on it from the start.
+#
+#   sprout    the first-year rosette, no stem and no flower.
+#   growing   the buds up: chicory holds tight green SPINDLES pressed close against a
+#             tough stem, which is a shape nothing else in this deck has and is quite
+#             unlike the ragged blue wheel it opens into.
+#   flowering the sky-blue rays, unchanged.
+
+BUD_PALETTE = {
+    "K": (162, 200, 156, 255),   # spindle highlight — chicory's own grey-green
+    "k": (118, 160, 118, 255),   # spindle mid
+    "j": (84, 120, 90, 255),     # spindle deep
+    "J": (58, 84, 66, 255),      # spindle shadow
+}
+
+# --- Sprout: the first-year rosette -----------------------------------------
+YOUNG_HEAD_AT = (8, 14)
+
+
+def _young_head(rx=7.0, ry=5.2, face_dx=0.0, light=(-0.85, -0.65)):
+    # Toothed hard, like the adult's rays but in green: a chicory rosette leaf is cut
+    # almost to the midrib, and that is the whole reason it gets mistaken for dandelion.
+    return flower_head(
+        15, 12, 7.0, 5.6, rx, ry, 9, 0.24, 5.2, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.2, light=(-1.25, -0.65))
+
+SEED_LEAF_L = [
+    "  ooooo",
+    " oGGGGgo",
+    "oGgoggdno",
+    " oooddno",
+]
+SEED_LEAF_R = [
+    "ooooo  ",
+    "ogGGGGo",
+    "onddggogo",
+    " onddooo",
+]
+
+# --- Growing: the spindle buds ----------------------------------------------
+BUD_W, BUD_H = 13, 14
+BUD_AT = (10, 8)
+
+
+def _bud(rx=4.6, ry=6.4, face_dx=0.0, light=(-0.85, -0.65)):
+    # Narrow and upright, barely lobed. A chicory bud is a spindle held tight against the
+    # stem — the plant looks like a bare green switch until the morning it opens.
+    return flower_head(
+        BUD_W, BUD_H, 6.0, 7.0, rx, ry, 6, 0.10, 5.0, 3.4,
+        face_dx=face_dx, light=light, chars="KkjJFo",
+    )
+
+
+BUD = _bud()
+BUD_LEFT = _bud(face_dx=-1.1, light=(-0.32, -0.66))
+BUD_RIGHT = _bud(face_dx=1.1, light=(-1.34, -0.66))
+
+# A second spindle further down the stem, because chicory carries several at once and one
+# alone reads as a flower that failed rather than a plant coming into bloom.
+BUD_SIDE = [
+    " oo ",
+    "oKko",
+    "okjo",
+    "okjo",
+    " oJo",
+    " oo ",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(BUD, BUD_LEFT)
+G_R_DX, _ = face_shift(BUD, BUD_RIGHT)
+
+# Still waking, and with less to wake up for. The adult yawns and opens; these two only
+# get as far as the yawn.
+S_BOB = [0, 1, 0, -1, -1, 0, 0, 0]
+S_HEAD = [None, None, "left", None, "right", None, None, None]
+S_DX = [0, 0, S_L_DX, 0, S_R_DX, 0, 0, 0]
+S_EYES = [None, "shut", "shut", None, None, None, "blink", None]
+
+G_BOB = [0, 1, 0, -1, -1, -1, 0, 0, 0, 0]
+G_HEAD = [None, None, "left", "left", None, None, "right", None, None, None]
+G_DX = [0, 0, G_L_DX, G_L_DX, 0, 0, G_R_DX, 0, 0, 0]
+G_EYES = [None, "shut", "shut", None, None, None, None, None, "blink", None]
+
+
+
 SPRITE = {
     "herbId": "cichorium-intybus",
     "personality": "early riser",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            # A first-year rosette has no stem to speak of and nothing to hold anthers on.
+            "hide": ["anthers", "stem", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafL": SEED_LEAF_L,
+                "leafR": SEED_LEAF_R,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"], "shut": YOUNG_EYES["shut"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leafL": (3, 21),
+                "leafR": (21, 21),
+                **seat_young(YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "head": {"dy": S_BOB, "art": S_HEAD},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_EYES},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "leafL": {"dy": [0] * 8},
+                "leafR": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": BUD_PALETTE,
+            # No anthers: they are inside the spindle until the morning it opens.
+            "hide": ["anthers", "cheeks"],
+            "swap": {
+                "head": BUD,
+                "leafL": BUD_SIDE,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": BUD_LEFT, "right": BUD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"], "shut": YOUNG_EYES["shut"]},
+            },
+            "origins": {
+                "head": BUD_AT,
+                "leafL": (9, 18),
+                "leafR": (19, 19),
+                "stem": (14, 20),
+                **seat_young(BUD_AT, BUD, cheeks=False, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "head": {"dy": G_BOB, "art": G_HEAD},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_EYES},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "leafL": {"dy": [0] * 10},
+                "leafR": {"dy": [0] * 10},
+                "stem": {"dy": [0] * 10},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 16,
     "fps": 8,
