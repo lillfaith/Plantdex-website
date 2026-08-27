@@ -186,7 +186,7 @@
   "hypericum-perforatum": {
     "herbId": "hypericum-perforatum",
     "src": "/cards/animated/hypericum-perforatum.png",
-    "version": "dd747c79",
+    "version": "843587a4",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -196,7 +196,7 @@
       "sprout": {
         "herbId": "hypericum-perforatum-sprout",
         "src": "/cards/animated/hypericum-perforatum-sprout.png",
-        "version": "0af4c4d9",
+        "version": "2b5fc398",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
@@ -206,7 +206,7 @@
       "growing": {
         "herbId": "hypericum-perforatum-growing",
         "src": "/cards/animated/hypericum-perforatum-growing.png",
-        "version": "466576b6",
+        "version": "703c8615",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
