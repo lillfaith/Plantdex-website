@@ -21,8 +21,9 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -120,9 +121,225 @@ LEAF = [
 
 HEAD_AT = (5, 2)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE THORNS COME FIRST. Blackberry's canes are biennial: a first-year cane is vegetative
+# — leaves and prickles and nothing else — and only a second-year cane flowers and fruits.
+# So the plant genuinely spends a whole year holding up its half of the bargain and none
+# of yours, which is the most characterful piece of botany in this species and is what the
+# sprout is:
+#
+#   sprout    a first-year cane. Leaves, and thorns already fully armed. It has the SNAP
+#             and nothing to offer with it — the second half of the bargain, on its own.
+#   growing   the flower buds, tight and green-white. Now it has something to hold out,
+#             and it holds out a BUD, beams, and snatches it back exactly the same way.
+#   flowering the berry. Unchanged.
+#
+# NO FRUIT BEFORE THE LAST STAGE, and here that rule is doing real work rather than being
+# recited: this deck already treats ripeness as the thing a picture of a plant can get
+# dangerously wrong, and a bramble is the plant people most often eat straight off. A
+# green cane wearing berries would be a drawing that says "ready" a year early.
+#
+# THE FACE MOVES ONTO A LEAF for the sprout, the way violet's and St John's Wort's do,
+# because this creature's head IS the berry cluster and there is no cluster yet.
+
+LEAF_PALETTE = {
+    "n": (52, 104, 58, 255),   # leaf shadow — the adult's palette never needed one
+}
+
+BUD_PALETTE = {
+    "K": (232, 236, 214, 255),   # petal tip, only just showing past the sepals
+    "k": (178, 200, 152, 255),   # sepal highlight
+    "j": (124, 154, 104, 255),   # sepal mid
+    "J": (84, 110, 74, 255),     # sepal shadow
+}
+
+# --- Sprout: the first-year cane, all thorns ---------------------------------
+YOUNG_HEAD_AT = (8, 11)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    # A bramble leaflet: toothed hard all round, which is the outline people check when
+    # they are working out whether the tangle in front of them is worth reaching into.
+    return flower_head(
+        16, 12, 7.5, 5.6, 7.4, 5.6, 7, 0.20, 5.4, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# --- Growing: the flowers, still shut ----------------------------------------
+MID_HEAD_AT = (6, 7)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65), amp=0.11):
+    return flower_head(
+        19, 16, 9.0, 7.6, 8.4, 7.6, 10, amp, 5.4, 4.2,
+        face_dx=face_dx, light=light, trim_tail=False, chars="KkjJFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+MID_HEAD_TIGHT = _mid_head(amp=0.04)
+
+# What it holds out instead of a berry: one closed flower, green sepals with the white
+# barely showing. Same silhouette as the berry, so the reversal reads identically.
+BUD_NEAR = [
+    " oo ",
+    "okKo",
+    "ojJo",
+    " oo ",
+]
+
+BUD_OUT = [
+    " oo ",
+    "oKKo",
+    "okjo",
+    " oo ",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "rubus-spp",
     "personality": "conditional",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            "palette": LEAF_PALETTE,
+            # No berry, and no unripe drupelets either — there is no fruit here to be
+            # part-way to.
+            "hide": ["berry", "unripe", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "narrow": YOUNG_EYES["shut"],
+                    "wide": YOUNG_EYES["wide"],
+                },
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leaf": (21, 18),
+                "caneL": (0, 18),
+                "caneR": (18, 21),
+                "thorns": (2, 19),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # The snap, with no offer in front of it. Frames 0-2 are a plant standing
+            # there; on frame 3 every thorn is up, and it holds them up. There is nothing
+            # to take, and it would still rather you did not.
+            "motion": {
+                "head": {
+                    "dy": [0, 0, 0, -1, -1, 0, 0, 0],
+                    "art": [None, "right", None, "left", "left", None, None, None],
+                },
+                "eyes": {
+                    "dy": [0, 0, 0, -1, -1, 0, 0, 0],
+                    "dx": [0, S_R_DX, 0, S_L_DX, S_L_DX, 0, 0, 0],
+                    "art": [None, None, None, "narrow", "narrow", "narrow", "blink",
+                            None],
+                },
+                "mouth": {
+                    "dy": [0, 0, 0, -1, -1, 0, 0, 0],
+                    "dx": [0, S_R_DX, 0, S_L_DX, S_L_DX, 0, 0, 0],
+                },
+                "thorns": {
+                    "art": [None, None, None, "up", "up", "up", None, None],
+                    "dy": [0, 0, 0, -1, -1, -1, 0, 0],
+                },
+                "caneL": {"dx": [0, 0, 0, -1, -1, 0, 0, 0]},
+                "caneR": {"dx": [0, 0, 0, 1, 1, 0, 0, 0]},
+                "leaf": {"dy": [0, 0, -1, -1, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["unripe", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "berry": BUD_NEAR,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {
+                    "left": MID_HEAD_LEFT,
+                    "right": MID_HEAD_RIGHT,
+                    "tight": MID_HEAD_TIGHT,
+                },
+                "berry": {"out": BUD_OUT, "gone": ["  "]},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "narrow": YOUNG_EYES["shut"],
+                    "wide": YOUNG_EYES["wide"],
+                },
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "leaf": (20, 17),
+                "caneL": (0, 17),
+                "caneR": (18, 20),
+                "thorns": (2, 18),
+                "berry": (4, 19),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=2, mouth_dy=5
+                ),
+            },
+            # The whole bargain, played with a flower instead of a berry. It offers, it
+            # beams, the thorns go up and the bud is gone. The only thing missing is the
+            # thing you actually wanted.
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, None, None, "tight", "tight", None,
+                            None, None],
+                    "dx": [0, 1, 1, 2, 2, -1, -2, -1, 0, 0],
+                    "dy": [0, 0, 1, 1, 1, -1, -1, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "wide", "wide", "wide", "narrow", "narrow",
+                            "narrow", "blink", None],
+                    "dx": [0, 1 + G_R_DX, 1, 2, 2, -1, -2, -1, 0, 0],
+                    "dy": [0, 0, 1, 1, 1, -1, -1, 0, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, 1 + G_R_DX, 1, 2, 2, -1, -2, -1, 0, 0],
+                    "dy": [0, 0, 1, 1, 1, -1, -1, 0, 0, 0],
+                },
+                "berry": {
+                    "art": [None, None, "out", "out", "out", "gone", "gone", "gone",
+                            None, None],
+                    "dx": [0, 0, -1, -2, -2, 0, 0, 0, 0, 0],
+                    "dy": [0, 0, -1, -2, -2, 0, 0, 0, 0, 0],
+                },
+                "thorns": {
+                    "art": [None, None, None, None, None, "up", "up", "up", None, None],
+                    "dy": [0, 0, 0, 0, 0, -1, -1, -1, 0, 0],
+                },
+                "caneL": {"dx": [0, 0, -1, -1, -1, 0, 0, 0, 0, 0]},
+                "caneR": {"dx": [0, 0, 1, 1, 1, 0, 0, 0, 0, 0]},
+                "leaf": {"dy": [0, 0, 0, -1, -1, 0, 1, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

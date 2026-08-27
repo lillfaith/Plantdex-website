@@ -7,7 +7,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "generous"
+    "personality": "generous",
+    "stages": {
+      "sprout": {
+        "herbId": "acer-spp-sprout",
+        "src": "/cards/animated/acer-spp-sprout.png",
+        "version": "07cd95c0",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "generous"
+      },
+      "growing": {
+        "herbId": "acer-spp-growing",
+        "src": "/cards/animated/acer-spp-growing.png",
+        "version": "7bd09e57",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "generous"
+      }
+    }
   },
   "achillea-millefolium": {
     "herbId": "achillea-millefolium",
@@ -49,7 +71,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "pleased"
+    "personality": "pleased",
+    "stages": {
+      "sprout": {
+        "herbId": "alliaria-petiolata-sprout",
+        "src": "/cards/animated/alliaria-petiolata-sprout.png",
+        "version": "c04aca93",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "pleased"
+      },
+      "growing": {
+        "herbId": "alliaria-petiolata-growing",
+        "src": "/cards/animated/alliaria-petiolata-growing.png",
+        "version": "ad7c2521",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "pleased"
+      }
+    }
   },
   "allium-vineale": {
     "herbId": "allium-vineale",
@@ -227,7 +271,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "overfamiliar"
+    "personality": "overfamiliar",
+    "stages": {
+      "sprout": {
+        "herbId": "galium-aparine-sprout",
+        "src": "/cards/animated/galium-aparine-sprout.png",
+        "version": "bc91a4b3",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "overfamiliar"
+      },
+      "growing": {
+        "herbId": "galium-aparine-growing",
+        "src": "/cards/animated/galium-aparine-growing.png",
+        "version": "4ebd03d0",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "overfamiliar"
+      }
+    }
   },
   "geranium-maculatum": {
     "herbId": "geranium-maculatum",
@@ -269,7 +335,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "companionable"
+    "personality": "companionable",
+    "stages": {
+      "sprout": {
+        "herbId": "glechoma-hederacea-sprout",
+        "src": "/cards/animated/glechoma-hederacea-sprout.png",
+        "version": "c9870520",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "companionable"
+      },
+      "growing": {
+        "herbId": "glechoma-hederacea-growing",
+        "src": "/cards/animated/glechoma-hederacea-growing.png",
+        "version": "9b77283d",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "companionable"
+      }
+    }
   },
   "hypericum-perforatum": {
     "herbId": "hypericum-perforatum",
@@ -601,7 +689,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "conditional"
+    "personality": "conditional",
+    "stages": {
+      "sprout": {
+        "herbId": "rubus-spp-sprout",
+        "src": "/cards/animated/rubus-spp-sprout.png",
+        "version": "d1fcaeb9",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "conditional"
+      },
+      "growing": {
+        "herbId": "rubus-spp-growing",
+        "src": "/cards/animated/rubus-spp-growing.png",
+        "version": "ca9b980f",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "conditional"
+      }
+    }
   },
   "rumex-acetosella": {
     "herbId": "rumex-acetosella",

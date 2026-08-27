@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 20 of 45 species staged.** The other 25 show their single adult portrait at every
+**Status: 25 of 45 species staged.** The other 20 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives twenty of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives twenty-five of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 20 species
+## Staged — 25 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -103,6 +103,11 @@ frond that says which plant this is.
 | 04 | Ragweed | ferny dissected leaves; it itches, it cannot sneeze | the raceme up, nubs tight and green — it sneezes, nothing comes out |
 | 05 | Lamb's Quarters | strap **cotyledons**, so it has no feet and cannot waddle | the goosefoot arrives: one step, not two |
 | 06 | Purslane | two fat seed leaves; it swells barely and holds nothing | a real swell, one frame of holding it, one wobble |
+| 07 | Garlic Mustard | the **first-year rosette**; it smells of garlic already, and does not creep | the cloud spreads and it leans — but it comes all the way back |
+| 15 | Cleavers | one whorl, and it stays inside its own frame | two whorls, hooks out, reaching to the edge and stopping |
+| 16 | Ground Ivy | one kidney leaf; no runner, so no company | the **runner goes out and nothing stands up on it** |
+| 17 | Maple | one lobed leaf; a maple is years from fruiting | the keys paired and **green**, so it holds one out and cannot let go |
+| 18 | Blackberry | the **first-year cane**: leaves, thorns, and nothing to offer | it offers a closed **bud** instead of a berry, and snatches that back |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -146,7 +151,7 @@ point is that they are not a circle. A hand-drawn grid with a plain `F` patch wo
 identically — `face_box` measures it the same way — so reach for one whenever the generator
 is being bent out of shape.
 
-## Still to stage — 25 species
+## Still to stage — 20 species
 
 A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
 and re-running `python3 scripts/build_sprites.py`; no component changes, because
@@ -154,11 +159,6 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 
 | Card | Species | Herb id |
 |---|---|---|
-| 07 | Garlic Mustard | `alliaria-petiolata` |
-| 15 | Cleavers | `galium-aparine` |
-| 16 | Ground Ivy | `glechoma-hederacea` |
-| 17 | Maple | `acer-spp` |
-| 18 | Blackberry | `rubus-spp` |
 | 19 | Sheep's Sorrel | `rumex-acetosella` |
 | 20 | Sumac | `rhus-spp` |
 | 22 | Burdock | `arctium-lappa` |
