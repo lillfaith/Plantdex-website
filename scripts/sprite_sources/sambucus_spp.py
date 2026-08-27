@@ -20,8 +20,9 @@ and other plants resemble it. The card's identification and safety content are t
 reference, not a drawing.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -109,9 +110,211 @@ STEM = [
 
 HEAD_AT = (6, 9)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# NO BERRIES BEFORE THE LAST STAGE, and on this card that is a safety rule rather than a
+# stylistic one. Elder's raw berries are not safe to eat, its leaves and bark and stems
+# are not either, and other plants resemble it — this species' own docstring says a
+# drawing cannot do that work for you. A young elder wearing fruit would be a picture
+# saying "here it is" about the wrong thing at the wrong time.
+#
+#   sprout    the pinnate fronds and nothing above them. No hat, so the courtesy is a
+#             plain nod: the gesture with the prop taken away.
+#   growing   the umbel exists and is SHUT — a tight green-white knot held UP rather than
+#             out, which is exactly how an elder carries it before it opens. It tips as
+#             far as a stiff hat will go, and no further.
+#   flowering the white plate, the full tip, two frames of shade, and the berries
+#             swinging a beat behind. Unchanged.
+#
+# The compound frond is on every stage, because with no umbel to look at it is the only
+# thing saying which plant this is: elder's leaves are pinnate, several leaflets to a
+# stalk, which is unlike almost everything else in this deck.
+
+BUD_PALETTE = {
+    "K": (234, 240, 216, 255),   # bud umbel highlight — green-white, not yet white
+    "k": (196, 212, 160, 255),   # bud umbel mid
+    "j": (148, 170, 110, 255),   # bud umbel deep
+    "J": (106, 128, 78, 255),    # bud umbel shadow
+}
+
+# --- Sprout: fronds, and no hat ---------------------------------------------
+YOUNG_HEAD_AT = (8, 12)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        16, 14, 7.5, 6.6, 7.6, 6.4, 6, 0.11, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+FROND_L_YOUNG = [
+    " oo o",
+    "oGGoGo",
+    "oggggo",
+    " oo o",
+]
+
+FROND_R_YOUNG = [
+    "o oo",
+    "oGoGGo",
+    "oggggo",
+    "o oo",
+]
+
+# --- Growing: the umbel, shut -----------------------------------------------
+MID_HEAD_AT = (7, 13)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 14, 8.0, 6.6, 7.8, 6.4, 6, 0.11, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+
+def _bud_brim(ry=3.0):
+    # Narrower and deeper than the open plate: a shut elder umbel is a knot rather than a
+    # brim, and it is held up on the stem instead of out over the face.
+    return flower_head(
+        19, 7, 9.0, 3.2, 8.6, ry, 12, 0.14, 0, 0,
+        light=(-0.85, -0.9), trim_tail=False, chars="KkjJFo",
+    )
+
+
+BUD_BRIM = _bud_brim()
+BUD_BRIM_TIPPED = _bud_brim(ry=2.3)
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "sambucus-spp",
     "personality": "venerable",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            "hide": ["brim", "berriesL", "berriesR", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "frondL": FROND_L_YOUNG,
+                "frondR": FROND_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "shut": YOUNG_EYES["shut"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "frondL": (4, 20),
+                "frondR": (19, 20),
+                "stem": (14, 21),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # The courtesy, with nothing to take off. It lowers its own head instead,
+            # which is what anybody does who has forgotten their hat.
+            "motion": {
+                "head": {
+                    "dy": [0, 0, 1, 2, 2, 1, 0, 0],
+                    "art": [None, None, None, None, "right", None, None, None],
+                },
+                "eyes": {
+                    "dy": [0, 0, 1, 2, 2, 1, 0, 0],
+                    "dx": [0, 0, 0, 0, S_R_DX, 0, 0, 0],
+                    "art": [None, "half", "half", "shut", "shut", "half", "blink",
+                            None],
+                },
+                "mouth": {
+                    "dy": [0, 0, 1, 2, 2, 1, 0, 0],
+                    "dx": [0, 0, 0, 0, S_R_DX, 0, 0, 0],
+                },
+                "frondL": {"dy": [0, 0, 0, 1, 1, 0, 0, 0]},
+                "frondR": {"dy": [0, 0, 0, 1, 1, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "palette": BUD_PALETTE,
+            # Flowers before fruit. There is no elder anywhere that carries berries
+            # under an umbel that has not opened.
+            "hide": ["berriesL", "berriesR", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "brim": BUD_BRIM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "brim": {"tipped": BUD_BRIM_TIPPED},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "shut": YOUNG_EYES["shut"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "brim": (6, 7),
+                "frondL": (0, 19),
+                "frondR": (22, 19),
+                "stem": (14, 21),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # A stiff hat only goes so far. It comes down to the brow and stops there —
+            # the two frames of complete shade are the adult's, and they are what makes
+            # the adult's version a courtesy rather than a nod.
+            "motion": {
+                "brim": {
+                    "art": [None, None, "tipped", "tipped", "tipped", "tipped", None,
+                            None, None, None],
+                    "dy": [0, 0, 2, 4, 5, 4, 2, 0, 0, 0],
+                },
+                "head": {
+                    "dy": [0, 0, 1, 1, 2, 1, 0, 0, 0, 0],
+                    "art": [None, None, None, None, None, None, "right", None, None,
+                            None],
+                },
+                "eyes": {
+                    "dy": [0, 0, 1, 1, 2, 1, 0, 0, 0, 0],
+                    "dx": [0, 0, 0, 0, 0, 0, G_R_DX, 0, 0, 0],
+                    "art": [None, "half", "half", "shut", "shut", "half", None, None,
+                            "blink", None],
+                },
+                "mouth": {
+                    "dy": [0, 0, 1, 1, 2, 1, 0, 0, 0, 0],
+                    "dx": [0, 0, 0, 0, 0, 0, G_R_DX, 0, 0, 0],
+                },
+                "frondL": {"dy": [0, 0, 0, 1, 1, 1, 0, 0, 0, 0]},
+                "frondR": {"dy": [0, 0, 0, 1, 1, 1, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 6,

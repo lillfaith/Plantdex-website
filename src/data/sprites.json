@@ -103,7 +103,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "startled"
+    "personality": "startled",
+    "stages": {
+      "sprout": {
+        "herbId": "allium-vineale-sprout",
+        "src": "/cards/animated/allium-vineale-sprout.png",
+        "version": "08b6911e",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "startled"
+      },
+      "growing": {
+        "herbId": "allium-vineale-growing",
+        "src": "/cards/animated/allium-vineale-growing.png",
+        "version": "d159deca",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "startled"
+      }
+    }
   },
   "ambrosia-artemisiifolia": {
     "herbId": "ambrosia-artemisiifolia",
@@ -177,7 +199,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "thrifty"
+    "personality": "thrifty",
+    "stages": {
+      "sprout": {
+        "herbId": "capsella-bursa-pastoris-sprout",
+        "src": "/cards/animated/capsella-bursa-pastoris-sprout.png",
+        "version": "d324369d",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "thrifty"
+      },
+      "growing": {
+        "herbId": "capsella-bursa-pastoris-growing",
+        "src": "/cards/animated/capsella-bursa-pastoris-growing.png",
+        "version": "43ff6439",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "thrifty"
+      }
+    }
   },
   "chenopodium-album": {
     "herbId": "chenopodium-album",
@@ -251,7 +295,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "prehistoric"
+    "personality": "prehistoric",
+    "stages": {
+      "sprout": {
+        "herbId": "equisetum-arvense-sprout",
+        "src": "/cards/animated/equisetum-arvense-sprout.png",
+        "version": "5722ab0e",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "prehistoric"
+      },
+      "growing": {
+        "herbId": "equisetum-arvense-growing",
+        "src": "/cards/animated/equisetum-arvense-growing.png",
+        "version": "545691f5",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "prehistoric"
+      }
+    }
   },
   "fragaria-virginiana": {
     "herbId": "fragaria-virginiana",
@@ -421,7 +487,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
-    "personality": "jumpy"
+    "personality": "jumpy",
+    "stages": {
+      "sprout": {
+        "herbId": "impatiens-capensis-sprout",
+        "src": "/cards/animated/impatiens-capensis-sprout.png",
+        "version": "e65245a0",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 7,
+        "personality": "jumpy"
+      },
+      "growing": {
+        "herbId": "impatiens-capensis-growing",
+        "src": "/cards/animated/impatiens-capensis-growing.png",
+        "version": "06bc4227",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 10,
+        "personality": "jumpy"
+      }
+    }
   },
   "lactuca-serriola": {
     "herbId": "lactuca-serriola",
@@ -883,7 +971,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "venerable"
+    "personality": "venerable",
+    "stages": {
+      "sprout": {
+        "herbId": "sambucus-spp-sprout",
+        "src": "/cards/animated/sambucus-spp-sprout.png",
+        "version": "dfc07504",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "venerable"
+      },
+      "growing": {
+        "herbId": "sambucus-spp-growing",
+        "src": "/cards/animated/sambucus-spp-growing.png",
+        "version": "f3d7caf4",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "venerable"
+      }
+    }
   },
   "solidago-canadensis": {
     "herbId": "solidago-canadensis",

@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 30 of 45 species staged.** The other 15 show their single adult portrait at every
+**Status: 35 of 45 species staged.** The other 10 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives thirty of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives thirty-five of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 30 species
+## Staged — 35 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -113,6 +113,11 @@ frond that says which plant this is.
 | 22 | Burdock | the **first-year rosette**: eager, and with no hooks at all | the burr **green**, hooks formed but soft, so nothing holds |
 | 23 | Wild Mint | **one** frame of frost — green again before it can shiver | three frames and one shiver; the whorls still green knots |
 | 24 | Catnip | it tips, and catches itself | all the way onto its **side**, and back — never onto its back |
+| 25 | Shepherd's Purse | the rosette; no stalk, no purses, nothing to rattle | the stalk up, the flower head shut — it shakes it, and **nothing rattles** |
+| 28 | Horsetail | **one** segment, so there is nothing to telescope | two segments, one hard click, and a short **shut** spore cone |
+| 29 | Field Garlic | tubular leaves and no scape — the startle with no cause | the umbel still inside its papery **spathe**, hair and all |
+| 31 | Elderberry | pinnate fronds and no hat, so the courtesy is a bare nod | the umbel **shut** and held up; it tips as far as a stiff hat goes |
+| 34 | Jewelweed | face on a **leaf**, no pod — it flinches at nothing at all | the flower in bud, green with orange showing; still nothing to go off |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -156,7 +161,7 @@ point is that they are not a circle. A hand-drawn grid with a plain `F` patch wo
 identically — `face_box` measures it the same way — so reach for one whenever the generator
 is being bent out of shape.
 
-## Still to stage — 15 species
+## Still to stage — 10 species
 
 A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
 and re-running `python3 scripts/build_sprites.py`; no component changes, because
@@ -164,11 +169,6 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 
 | Card | Species | Herb id |
 |---|---|---|
-| 25 | Shepherd's Purse | `capsella-bursa-pastoris` |
-| 28 | Horsetail | `equisetum-arvense` |
-| 29 | Field Garlic | `allium-vineale` |
-| 31 | Elderberry | `sambucus-spp` |
-| 34 | Jewelweed | `impatiens-capensis` |
 | 35 | Lemon Balm | `melissa-officinalis` |
 | 36 | Bee Balm | `monarda-fistulosa` |
 | 37 | Wild Rose | `rosa-spp` |

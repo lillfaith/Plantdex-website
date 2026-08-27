@@ -22,8 +22,9 @@ that look like field garlic are dangerous, and the smell test the card describes
 something a drawing can do for you. The card's identification content is the reference.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -119,9 +120,198 @@ STEM = [
 
 HEAD_AT = (7, 10)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE HAIRCUT ARRIVES LAST, and the middle stage is the one most people have never
+# noticed. Field garlic's bulbil head does not simply appear: it comes up inside a
+# PAPERY SPATHE, a single long-beaked hood that sheathes the whole umbel and splits open
+# to release it. So the plant spends weeks looking like a green stem with a pale beak on
+# top, which is a completely different silhouette from the fright wig it becomes.
+#
+#   sprout    the hollow tubular leaves and nothing above them. No scape, no bulbils, no
+#             hair — the startled look with nothing yet to be startled by.
+#   growing   the scape up carrying the SPATHE, shut. It is aware there is something on
+#             its head. It does not yet know what.
+#   flowering the bulbils, and every one of them sprouting. Unchanged.
+#
+# SAFETY NOTE CARRIED FORWARD: this species' docstring already says a drawing cannot do
+# the smell test for you, and that matters more at the earlier stages rather than less —
+# a field garlic without its bulbil head is exactly when it looks most like the things it
+# is dangerous to confuse it with. Every stage of this sprite is a portrait, and the
+# card's identification content stays the reference outdoors.
+
+# --- Sprout: tubes, and nothing on top --------------------------------------
+YOUNG_HEAD_AT = (9, 13)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 13, 7.0, 6.0, 7.2, 6.0, 5, 0.10, 5.4, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+TUBE_L_YOUNG = [
+    "  oo",
+    " ogo",
+    "ogGo",
+    "oggo",
+    " odo",
+    " oo",
+]
+
+TUBE_R_YOUNG = [
+    "oo",
+    "ogo",
+    "oGgo",
+    "oggo",
+    "odo",
+    "oo",
+]
+
+# --- Growing: the spathe, shut ----------------------------------------------
+MID_HEAD_AT = (8, 12)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        16, 14, 7.5, 6.6, 7.4, 6.4, 5, 0.10, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+# The papery hood, with the long beak this genus is known for. Smooth, closed and pale:
+# nothing lumpy about it, which is the whole visual difference from what it opens into.
+SPATHE = [
+    "  o  ",
+    " oBo ",
+    " oBo ",
+    "oBBbo",
+    "oBbuo",
+    " ooo ",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "allium-vineale",
     "personality": "startled",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            "hide": ["bulbils", "sprouts", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "tubeL": TUBE_L_YOUNG,
+                "tubeR": TUBE_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "tubeL": (7, 17),
+                "tubeR": (21, 17),
+                "stem": (14, 23),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, None, "left", None, None, None],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, None, None, None, None, "blink", None],
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, 0, -1, -1, 0, 0, 0, 0],
+                },
+                "tubeL": {"lean": [0, 1, 1, 0, -1, 0, 0, 0]},
+                "tubeR": {"lean": [0, -1, -1, 0, 1, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            # The spathe is a smooth hood, so `sprouts` has nothing to come out of yet.
+            "hide": ["sprouts", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "bulbils": SPATHE,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"], "oh": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "bulbils": (13, 7),
+                "tubeL": (6, 16),
+                "tubeR": (22, 16),
+                "stem": (14, 23),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # It looks up, and up, at a thing it cannot see the top of. The gag is the
+            # same as the adult's — a creature reacting to its own head — with the hair
+            # still inside the hood.
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, None, None, None, "left", "right",
+                            None, None],
+                    "dy": [0, 0, -1, -1, -1, -1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", None, "happy",
+                            "blink", None],
+                    "dx": [0, G_R_DX, 0, 0, 0, 0, G_L_DX, G_R_DX, 0, 0],
+                    "dy": [0, 0, -1, -1, -1, -1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, "oh", "oh", "oh", None, None, None, None, None],
+                    "dx": [0, G_R_DX, 0, 0, 0, 0, G_L_DX, G_R_DX, 0, 0],
+                    "dy": [0, 0, -1, -1, -1, -1, 0, 0, 0, 0],
+                },
+                "bulbils": {"dy": [0, 0, -1, -1, -1, -1, 0, 0, 0, 0]},
+                "tubeL": {"lean": [0, 1, 1, 0, -1, -1, 0, 1, 0, 0]},
+                "tubeR": {"lean": [0, -1, -1, 0, 1, 1, 0, -1, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,
