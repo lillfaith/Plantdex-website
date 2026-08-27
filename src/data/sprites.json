@@ -2,7 +2,7 @@
   "acer-spp": {
     "herbId": "acer-spp",
     "src": "/cards/animated/acer-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -11,7 +11,7 @@
   "achillea-millefolium": {
     "herbId": "achillea-millefolium",
     "src": "/cards/animated/achillea-millefolium.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -20,7 +20,7 @@
       "sprout": {
         "herbId": "achillea-millefolium-sprout",
         "src": "/cards/animated/achillea-millefolium-sprout.png",
-        "frameWidth": 160,
+        "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
         "fps": 5,
@@ -29,7 +29,7 @@
       "growing": {
         "herbId": "achillea-millefolium-growing",
         "src": "/cards/animated/achillea-millefolium-growing.png",
-        "frameWidth": 160,
+        "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
         "fps": 6,
@@ -40,7 +40,7 @@
   "alliaria-petiolata": {
     "herbId": "alliaria-petiolata",
     "src": "/cards/animated/alliaria-petiolata.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -49,7 +49,7 @@
   "allium-vineale": {
     "herbId": "allium-vineale",
     "src": "/cards/animated/allium-vineale.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -58,7 +58,7 @@
   "ambrosia-artemisiifolia": {
     "herbId": "ambrosia-artemisiifolia",
     "src": "/cards/animated/ambrosia-artemisiifolia.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
@@ -67,7 +67,7 @@
   "arctium-lappa": {
     "herbId": "arctium-lappa",
     "src": "/cards/animated/arctium-lappa.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -76,7 +76,7 @@
   "capsella-bursa-pastoris": {
     "herbId": "capsella-bursa-pastoris",
     "src": "/cards/animated/capsella-bursa-pastoris.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -85,7 +85,7 @@
   "chenopodium-album": {
     "herbId": "chenopodium-album",
     "src": "/cards/animated/chenopodium-album.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -94,7 +94,7 @@
   "cichorium-intybus": {
     "herbId": "cichorium-intybus",
     "src": "/cards/animated/cichorium-intybus.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
     "fps": 8,
@@ -103,7 +103,7 @@
   "equisetum-arvense": {
     "herbId": "equisetum-arvense",
     "src": "/cards/animated/equisetum-arvense.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
@@ -112,7 +112,7 @@
   "fragaria-virginiana": {
     "herbId": "fragaria-virginiana",
     "src": "/cards/animated/fragaria-virginiana.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -121,7 +121,7 @@
   "galium-aparine": {
     "herbId": "galium-aparine",
     "src": "/cards/animated/galium-aparine.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -130,7 +130,7 @@
   "geranium-maculatum": {
     "herbId": "geranium-maculatum",
     "src": "/cards/animated/geranium-maculatum.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -139,7 +139,7 @@
   "glechoma-hederacea": {
     "herbId": "glechoma-hederacea",
     "src": "/cards/animated/glechoma-hederacea.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -148,7 +148,7 @@
   "hypericum-perforatum": {
     "herbId": "hypericum-perforatum",
     "src": "/cards/animated/hypericum-perforatum.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -157,7 +157,7 @@
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
     "src": "/cards/animated/impatiens-capensis.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
@@ -166,7 +166,7 @@
   "lactuca-serriola": {
     "herbId": "lactuca-serriola",
     "src": "/cards/animated/lactuca-serriola.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -175,7 +175,7 @@
   "lamium-purpureum": {
     "herbId": "lamium-purpureum",
     "src": "/cards/animated/lamium-purpureum.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
@@ -184,7 +184,7 @@
   "lonicera-japonica": {
     "herbId": "lonicera-japonica",
     "src": "/cards/animated/lonicera-japonica.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -193,7 +193,7 @@
   "melissa-officinalis": {
     "herbId": "melissa-officinalis",
     "src": "/cards/animated/melissa-officinalis.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
@@ -202,7 +202,7 @@
   "mentha-canadensis": {
     "herbId": "mentha-canadensis",
     "src": "/cards/animated/mentha-canadensis.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -211,7 +211,7 @@
   "monarda-fistulosa": {
     "herbId": "monarda-fistulosa",
     "src": "/cards/animated/monarda-fistulosa.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -220,7 +220,7 @@
   "morus-spp": {
     "herbId": "morus-spp",
     "src": "/cards/animated/morus-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -229,7 +229,7 @@
   "nepeta-cataria": {
     "herbId": "nepeta-cataria",
     "src": "/cards/animated/nepeta-cataria.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
     "fps": 12,
@@ -238,7 +238,7 @@
   "oxalis-stricta": {
     "herbId": "oxalis-stricta",
     "src": "/cards/animated/oxalis-stricta.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -247,7 +247,7 @@
   "passiflora-incarnata": {
     "herbId": "passiflora-incarnata",
     "src": "/cards/animated/passiflora-incarnata.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
     "fps": 8,
@@ -256,7 +256,7 @@
   "pinus-spp": {
     "herbId": "pinus-spp",
     "src": "/cards/animated/pinus-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
     "fps": 6,
@@ -265,7 +265,7 @@
   "plantago-major": {
     "herbId": "plantago-major",
     "src": "/cards/animated/plantago-major.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -274,7 +274,7 @@
   "portulaca-oleracea": {
     "herbId": "portulaca-oleracea",
     "src": "/cards/animated/portulaca-oleracea.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -283,7 +283,7 @@
   "prunella-vulgaris": {
     "herbId": "prunella-vulgaris",
     "src": "/cards/animated/prunella-vulgaris.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -292,7 +292,7 @@
   "quercus-spp": {
     "herbId": "quercus-spp",
     "src": "/cards/animated/quercus-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 16,
     "fps": 6,
@@ -301,7 +301,7 @@
   "rhus-spp": {
     "herbId": "rhus-spp",
     "src": "/cards/animated/rhus-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -310,7 +310,7 @@
   "rosa-spp": {
     "herbId": "rosa-spp",
     "src": "/cards/animated/rosa-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -319,7 +319,7 @@
   "rubus-spp": {
     "herbId": "rubus-spp",
     "src": "/cards/animated/rubus-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -328,7 +328,7 @@
   "rumex-acetosella": {
     "herbId": "rumex-acetosella",
     "src": "/cards/animated/rumex-acetosella.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -337,7 +337,7 @@
   "rumex-obtusifolius": {
     "herbId": "rumex-obtusifolius",
     "src": "/cards/animated/rumex-obtusifolius.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -346,7 +346,7 @@
   "salix-spp": {
     "herbId": "salix-spp",
     "src": "/cards/animated/salix-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
@@ -355,7 +355,7 @@
   "sambucus-spp": {
     "herbId": "sambucus-spp",
     "src": "/cards/animated/sambucus-spp.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
@@ -364,7 +364,7 @@
   "solidago-canadensis": {
     "herbId": "solidago-canadensis",
     "src": "/cards/animated/solidago-canadensis.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
@@ -373,7 +373,7 @@
   "stellaria-media": {
     "herbId": "stellaria-media",
     "src": "/cards/animated/stellaria-media.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
@@ -382,7 +382,7 @@
   "taraxacum-officinale": {
     "herbId": "taraxacum-officinale",
     "src": "/cards/animated/taraxacum-officinale.png",
-    "frameWidth": 220,
+    "frameWidth": 230,
     "frameHeight": 160,
     "frames": 16,
     "fps": 12,
@@ -391,7 +391,7 @@
       "sprout": {
         "herbId": "taraxacum-officinale-sprout",
         "src": "/cards/animated/taraxacum-officinale-sprout.png",
-        "frameWidth": 220,
+        "frameWidth": 230,
         "frameHeight": 160,
         "frames": 8,
         "fps": 7,
@@ -400,7 +400,7 @@
       "growing": {
         "herbId": "taraxacum-officinale-growing",
         "src": "/cards/animated/taraxacum-officinale-growing.png",
-        "frameWidth": 220,
+        "frameWidth": 230,
         "frameHeight": 160,
         "frames": 10,
         "fps": 10,
@@ -411,7 +411,7 @@
   "trifolium-pratense": {
     "herbId": "trifolium-pratense",
     "src": "/cards/animated/trifolium-pratense.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
@@ -420,7 +420,7 @@
       "sprout": {
         "herbId": "trifolium-pratense-sprout",
         "src": "/cards/animated/trifolium-pratense-sprout.png",
-        "frameWidth": 160,
+        "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
         "fps": 6,
@@ -429,7 +429,7 @@
       "growing": {
         "herbId": "trifolium-pratense-growing",
         "src": "/cards/animated/trifolium-pratense-growing.png",
-        "frameWidth": 160,
+        "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
         "fps": 8,
@@ -440,7 +440,7 @@
   "urtica-dioica": {
     "herbId": "urtica-dioica",
     "src": "/cards/animated/urtica-dioica.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
@@ -449,7 +449,7 @@
   "verbascum-thapsus": {
     "herbId": "verbascum-thapsus",
     "src": "/cards/animated/verbascum-thapsus.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
@@ -458,7 +458,7 @@
   "viola-sororia": {
     "herbId": "viola-sororia",
     "src": "/cards/animated/viola-sororia.png",
-    "frameWidth": 160,
+    "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
@@ -467,7 +467,7 @@
       "sprout": {
         "herbId": "viola-sororia-sprout",
         "src": "/cards/animated/viola-sororia-sprout.png",
-        "frameWidth": 160,
+        "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
         "fps": 5,
@@ -476,7 +476,7 @@
       "growing": {
         "herbId": "viola-sororia-growing",
         "src": "/cards/animated/viola-sororia-growing.png",
-        "frameWidth": 160,
+        "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
         "fps": 6,

@@ -63,6 +63,19 @@ SCALE = 5
 # the build rather than ship that.
 SUPPORTED_FRAME_COUNTS = (4, 6, 8, 10, 12, 14, 16, 18)
 
+# A transparent margin, in authored pixels, on each side of every frame.
+#
+# A sheet is walked by moving the background, and when the element sizes itself to its
+# container that move is a PERCENTAGE — so the frame boundary lands wherever subpixel
+# rounding puts it, and a sliver of the neighbouring frame shows at the edge. It is
+# unmissable once seen: a stray petal beside a creature that has no petals there.
+#
+# One authored pixel of transparency each side means the rounding error reveals nothing
+# instead of the next frame. It costs two pixels of sheet width per frame and it makes
+# the percentage walk safe at any size, which is what lets a row of creatures scale down
+# to fit four across a phone.
+FRAME_GUTTER = 1
+
 # Growth stages, matching `src/lib/garden.ts`. `flowering` is not listed because it is not
 # derived: it IS the authored sprite, and a species that stages nothing still resolves
 # every stage to that one portrait.
@@ -267,7 +280,8 @@ def compile_sprite(sprite: dict) -> dict:
         )
     palette = {char: tuple(rgba) for char, rgba in sprite["palette"].items()}
 
-    sheet = Image.new("RGBA", (width * frames * SCALE, height * SCALE), (0, 0, 0, 0))
+    cell = width + 2 * FRAME_GUTTER
+    sheet = Image.new("RGBA", (cell * frames * SCALE, height * SCALE), (0, 0, 0, 0))
     pixels = sheet.load()
 
     for frame in range(frames):
@@ -283,7 +297,7 @@ def compile_sprite(sprite: dict) -> dict:
                 colour = palette[char]
                 # Draw the authored pixel as a solid SCALE x SCALE block. Nearest
                 # neighbour by construction - nothing is interpolated.
-                base_x = (frame * width + x) * SCALE
+                base_x = (frame * cell + FRAME_GUTTER + x) * SCALE
                 base_y = y * SCALE
                 for sy in range(SCALE):
                     for sx in range(SCALE):
@@ -296,7 +310,7 @@ def compile_sprite(sprite: dict) -> dict:
     return {
         "herbId": sprite["herbId"],
         "src": f"/cards/animated/{sprite['herbId']}.png",
-        "frameWidth": width * SCALE,
+        "frameWidth": cell * SCALE,
         "frameHeight": height * SCALE,
         "frames": frames,
         "fps": sprite["fps"],

@@ -111,3 +111,107 @@ describe('the stylesheet backs the manifest', () => {
     expect(css).toContain('image-rendering: pixelated');
   });
 });
+
+describe('growth stages', () => {
+  const staged = allSprites().flatMap((sprite) =>
+    Object.entries(sprite.stages ?? {}).map(([stage, entry]) => ({
+      herbId: sprite.herbId,
+      stage,
+      entry,
+      adult: sprite,
+    })),
+  );
+
+  it('has at least one species staged', () => {
+    // Every assertion below iterates the staged set, so an empty one passes them all.
+    expect(staged.length).toBeGreaterThan(0);
+  });
+
+  it('ships the sheet each stage points at, and only for real stages', () => {
+    for (const { herbId, stage, entry } of staged) {
+      expect(GROWTH_STAGES, `${herbId}: unknown stage`).toContain(stage);
+      expect(
+        existsSync(join(root, 'public', entry.src)),
+        `${herbId} (${stage}): ${entry.src} is in the manifest but not in public/`,
+      ).toBe(true);
+    }
+  });
+
+  it('uses a frame count the stylesheet can step through', () => {
+    for (const { herbId, stage, entry } of staged) {
+      expect(SUPPORTED_FRAME_COUNTS, `${herbId} (${stage})`).toContain(entry.frames);
+    }
+  });
+
+  it('never has a single-frame stage', () => {
+    // `--sprite-travel` is frames / (frames - 1), so one frame divides by zero and the
+    // sprite disappears. SUPPORTED_FRAME_COUNTS rules it out today; this pins it.
+    for (const { herbId, stage, entry } of staged) {
+      expect(entry.frames, `${herbId} (${stage})`).toBeGreaterThan(1);
+    }
+  });
+
+  it('shares one canvas with the adult it grows into', () => {
+    // Stage art is drawn at evenly stepped heights INSIDE a shared frame. A stage with a
+    // different frame box would break that scale silently — the plant would appear to
+    // jump size for reasons unrelated to growth.
+    for (const { herbId, stage, entry, adult } of staged) {
+      expect(entry.frameWidth, `${herbId} (${stage}) width`).toBe(adult.frameWidth);
+      expect(entry.frameHeight, `${herbId} (${stage}) height`).toBe(adult.frameHeight);
+    }
+  });
+
+  it('speeds up as the plant grows', () => {
+    // Speed is how strength reads. `build_sprites.py` enforces this too; this catches a
+    // hand-edited manifest, which is the one path that skips the builder entirely.
+    for (const sprite of allSprites()) {
+      const stages = sprite.stages;
+      if (!stages) continue;
+      const rates = [stages.sprout?.fps, stages.growing?.fps, sprite.fps].filter(
+        (fps): fps is number => fps !== undefined,
+      );
+      for (let i = 1; i < rates.length; i += 1) {
+        expect(rates[i]!, `${sprite.herbId}: stage ${i} is not faster than the one before`)
+          .toBeGreaterThan(rates[i - 1]!);
+      }
+      expect(Math.min(...rates)).toBeGreaterThanOrEqual(4);
+    }
+  });
+
+  it('resolves a staged species to its stage art and an unstaged one to its adult', () => {
+    const withStages = allSprites().find((s) => s.stages?.sprout);
+    expect(withStages, 'no species has a sprout stage').toBeDefined();
+    expect(spriteFor(withStages!.herbId, 'sprout')!.src).toBe(withStages!.stages!.sprout!.src);
+
+    const without = allSprites().find((s) => !s.stages);
+    expect(without, 'every species is staged — update this test').toBeDefined();
+    expect(spriteFor(without!.herbId, 'sprout')!.src).toBe(without!.src);
+  });
+});
+
+describe('the fitted sprite walk', () => {
+  const css = readFileSync(join(root, 'src', 'app', 'globals.css'), 'utf8');
+
+  it('declares the percentage keyframe a container-sized sprite animates with', () => {
+    expect(css).toContain('@keyframes plant-sprite-play-fit');
+    expect(css).toContain('background-position-x: var(--sprite-travel)');
+  });
+
+  it('declares .plant-sprite-fit AFTER .plant-sprite', () => {
+    // Both are single-class selectors, so specificity ties and SOURCE ORDER decides which
+    // `animation-name` wins. Declared first, the fitted walk loses to the pixel keyframe,
+    // which then animates against an unset `--sprite-sheet-width` and walks the sheet
+    // clean off the element — two of the four landing-page creatures simply vanished.
+    const base = css.indexOf('\n.plant-sprite {');
+    const fit = css.indexOf('\n.plant-sprite-fit {');
+    expect(base, '.plant-sprite is missing').toBeGreaterThan(-1);
+    expect(fit, '.plant-sprite-fit is missing').toBeGreaterThan(-1);
+    expect(fit).toBeGreaterThan(base);
+  });
+
+  it('holds a fitted sprite on frame 0 under reduced motion', () => {
+    const block = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+    expect(block).toContain('.plant-sprite-fit {');
+    expect(block).toContain('background-position-x: 0% !important;');
+  });
+});

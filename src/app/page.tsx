@@ -59,28 +59,34 @@ export default function HomePage() {
           and a seedling would be advertising the least of what is here.
 
           Four species with four different colours — gold, rose, cream, violet — chosen so
-          the row reads as a set rather than as four of the same plant. They wrap to two on
-          a phone rather than shrinking, because a pixel creature at half size is mush.
+          the row reads as a set rather than as four of the same plant.
+
+          ONE ROW AT EVERY WIDTH, never wrapping. Wrapping was the first attempt and on a
+          390px phone it stacked them one per line: a full screen of creatures that pushed
+          the call to action below the fold and left the last one behind the bottom nav.
+          Each sits in an equal flex column and scales to it, which `PlantSprite`'s `fit`
+          now supports while still animating.
         */}
         <ul
           aria-label="Plant characters from the deck"
-          className="mt-8 flex flex-wrap items-end justify-center gap-x-2 gap-y-4"
+          className="mx-auto mt-8 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
         >
           {HERO_CREATURES.map((herbId) => {
             const herb = getHerb(herbId);
             if (!herb) return null;
             return (
-              <li key={herbId}>
+              <li key={herbId} className="min-w-0 flex-1">
                 <Link
                   href={`/herbdex/${herb.id}`}
-                  className="flex flex-col items-center rounded-2xl px-2 py-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+                  className="flex flex-col items-center rounded-2xl px-1 py-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
                 >
                   <PlantSprite
                     herbId={herb.id}
                     alt={`Pixel-art character for ${herb.commonName}`}
-                    className="drop-shadow-[0_6px_16px_rgba(23,16,28,0.6)]"
+                    fit
+                    className="w-full drop-shadow-[0_6px_16px_rgba(23,16,28,0.6)]"
                   />
-                  <span className="mt-1 text-[0.7rem] font-semibold text-violet-300">
+                  <span className="mt-1 truncate text-center text-[0.65rem] font-semibold text-violet-300 sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>
