@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 5 of 45 species staged.** The other 40 show their single adult portrait at every
+**Status: 10 of 45 species staged.** The other 35 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives five of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives ten of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 5 species
+## Staged — 10 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -88,12 +88,27 @@ frond that says which plant this is.
 | 33 | Yarrow | feathery basal rosette | the corymb formed and closed, flat-topped already |
 | 12 | Wild Violet | heart leaves; the face rides a leaf, since there is no flower | the bud **nodding** on its hooked stalk |
 | 14 | Broad Leaf Plantain | a flat rosette of small ribbed leaves, no spike | the spikes up but short and **green** |
+| 08 | Stinging Nettle | two leaves and a stem, stinging already | catkins forming in the leaf axils, short and tight |
+| 26 | Self-Heal | leaves only; the bitten notch already there | the club up and still **green**, before the hooded florets |
+| 27 | Mullein | the **first-year rosette** — woolly, low, no spike at all | the spike up but short and grey-green, florets closed |
+| 30 | Wild Strawberry | trifoliate leaves and a runner, no flower, no fruit | the flower closed, green-white — never a reddening berry |
+| 32 | St John's Wort | leaves only; the face rides the **perforate** leaf | a narrow pointed bud, black dots already on the sepals |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
 
-Violet is the awkward case worth knowing about — the adult wears its face **on the flower**,
-so a stage with no flower has to move the face onto the plant it does have.
+Two species wear their face **on the flower**, so a stage with no flower has to move it onto
+the plant they do have. Violet's rides a heart leaf; St John's Wort's rides the *perforate*
+leaf, which is luckier than it sounds — the pinprick translucent glands are the trait the
+species is named for, so the seedling is arguably more on-species than the flower.
+
+Mullein is the species that stages itself: it is a **biennial**, so year one genuinely is a
+woolly rosette and nothing else. Nettle is the opposite awkwardness — its flowers are
+inconspicuous green catkins in the leaf axils rather than a bloom, so its middle stage grows
+them where they actually grow instead of inventing a bud to fill the slot.
+
+Strawberry carries the one rule worth stating twice: **ripeness is the thing a picture of a
+plant can get dangerously wrong**, so no stage before the last carries reddening fruit.
 
 Two organs are **hand-drawn** rather than generated, and the reason generalises: `flower_head`
 builds rounded, radial shapes, so anything that is neither comes out wrong. Yarrow's corymb
@@ -102,11 +117,49 @@ notched at its base and an ellipse has nowhere to put the notch. A hand-drawn gr
 plain `F` patch works identically — `face_box` measures it the same way — so reach for one
 whenever the generator is being bent out of shape.
 
-## Still to stage — 40 species
+## Still to stage — 35 species
 
-Everything else in the deck. A species is staged by adding a `"stages"` key to its module in
-`scripts/sprite_sources/` and re-running `python3 scripts/build_sprites.py`; no component
-changes, because `spriteFor(herbId, stage)` already resolves whatever exists.
+A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
+and re-running `python3 scripts/build_sprites.py`; no component changes, because
+`spriteFor(herbId, stage)` already resolves whatever exists.
+
+| Card | Species | Herb id |
+|---|---|---|
+| 02 | Broadleaf Dock | `rumex-obtusifolius` |
+| 03 | Goldenrod | `solidago-canadensis` |
+| 04 | Ragweed | `ambrosia-artemisiifolia` |
+| 05 | Lamb's Quarters | `chenopodium-album` |
+| 06 | Purslane | `portulaca-oleracea` |
+| 07 | Garlic Mustard | `alliaria-petiolata` |
+| 09 | Wood Sorrel | `oxalis-stricta` |
+| 11 | Purple Dead Nettle | `lamium-purpureum` |
+| 13 | Chickweed | `stellaria-media` |
+| 15 | Cleavers | `galium-aparine` |
+| 16 | Ground Ivy | `glechoma-hederacea` |
+| 17 | Maple | `acer-spp` |
+| 18 | Blackberry | `rubus-spp` |
+| 19 | Sheep's Sorrel | `rumex-acetosella` |
+| 20 | Sumac | `rhus-spp` |
+| 21 | Chicory | `cichorium-intybus` |
+| 22 | Burdock | `arctium-lappa` |
+| 23 | Wild Mint | `mentha-canadensis` |
+| 24 | Catnip | `nepeta-cataria` |
+| 25 | Shepherd's Purse | `capsella-bursa-pastoris` |
+| 28 | Horsetail | `equisetum-arvense` |
+| 29 | Field Garlic | `allium-vineale` |
+| 31 | Elderberry | `sambucus-spp` |
+| 34 | Jewelweed | `impatiens-capensis` |
+| 35 | Lemon Balm | `melissa-officinalis` |
+| 36 | Bee Balm | `monarda-fistulosa` |
+| 37 | Wild Rose | `rosa-spp` |
+| 38 | Willow | `salix-spp` |
+| 39 | Wild Geranium | `geranium-maculatum` |
+| 40 | Honeysuckle | `lonicera-japonica` |
+| 41 | Pine | `pinus-spp` |
+| 42 | Mulberry | `morus-spp` |
+| 43 | Passion Flower | `passiflora-incarnata` |
+| 44 | Prickly Lettuce | `lactuca-serriola` |
+| 45 | Oak | `quercus-spp` |
 
 ```bash
 python3 scripts/build_sprites.py

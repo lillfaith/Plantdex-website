@@ -22,8 +22,9 @@ casual one - the card's safety content covers what matters and is the reference.
 drawing of a leaf against the light is a picture of a name, not advice.
 """
 
-from _face import FACE_PALETTE, face_shift, feature_parts
+from _face import FACE_PALETTE, face_box, face_shift, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 PALETTE = {
     **FACE_PALETTE,
@@ -120,6 +121,104 @@ STEM = [
 ]
 
 HEAD_AT = (6, 6)
+
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME SUNLIT ST JOHN'S WORT, YOUNGER — and this is the second species after violet
+# where the adult wears its FACE ON THE FLOWER, so a stage with no flower has to move the
+# face onto the plant it does have. Here that is easy and lucky: the identifying trait is
+# the PERFORATE LEAF, the pinprick translucent glands you only see by holding a leaf to
+# the light, and "perforatum" is literally the name. A seedling whose face rides a leaf
+# full of light is more on-species than the flower would have been.
+#
+#   sprout    leaves only, no flower. The face rides the backlit perforate leaf.
+#   growing   in bud. St John's Wort buds are narrow POINTED cones, green with the black
+#             marginal dots already on them — the dots are on the sepals before they are
+#             on the petals, so the trait survives the stage that has no petals.
+#   flowering the open yellow star, unchanged.
+#
+# Its trademark is lifting a leaf to the sun and letting the perforations light up. That
+# stays with the open flower: a seedling holds the leaf, and only the mature plant gets
+# the moment where the light comes through.
+
+BUD_PALETTE = {
+    "S": (168, 200, 128, 255),   # bud highlight — sepal green
+    "s": (124, 160, 96, 255),    # bud mid
+    "j": (88, 120, 70, 255),     # bud deep
+    "J": (60, 84, 52, 255),      # bud shadow
+}
+
+# --- Sprout: the face on a perforate leaf -----------------------------------
+#
+# HAND-DRAWN, for the same reason violet's is: a leaf is not a rounded organ, and this one
+# has to carry the perforations as well. The `F` patch is measured by `face_box` exactly
+# as a generated head would be.
+LEAF_HEAD_AT = (7, 14)
+
+LEAF_HEAD = [
+    "      ooooo      ",
+    "   oooLPLLPLooo  ",
+    "  oLLPLLLLLPLLo  ",
+    " oLPoFFFFFFFoPLo ",
+    "oLLoFFFFFFFFFoLLo",
+    "oLPoFFFFFFFFFoPLo",
+    "oLLoFFFFFFFFFoLLo",
+    " oLoooooooooooLo ",
+    "  ollPlllPllllo  ",
+    "   ollllllllo    ",
+    "     ooooooo     ",
+]
+
+SEED_PAIR = [
+    "ooo  ooo",
+    "oGgooGgo",
+    "oddooddo",
+]
+SEED_STEM = [
+    "ogdo",
+    "ogdo",
+    " oo ",
+]
+
+# --- Growing: the pointed bud -----------------------------------------------
+BUD_W, BUD_H = 15, 14
+BUD_AT = (9, 10)
+
+
+def _bud(rx=6.4, ry=6.8, face_dx=0.0, face_dy=0.6, light=(-0.85, -0.65)):
+    # Fewer lobes than the open star's five and a taller ellipse: a St John's Wort bud is
+    # a narrow pointed cone, which is quite unlike the flat star it becomes.
+    return flower_head(
+        BUD_W, BUD_H, 7.0, 7.2, rx, ry, 3, 0.14, 5.2, 3.2,
+        face_dx=face_dx, face_dy=face_dy, light=light, chars="SsjJFo",
+    )
+
+
+BUD = _bud()
+BUD_LEFT = _bud(face_dx=-1.2, light=(-0.32, -0.66))
+BUD_RIGHT = _bud(face_dx=1.2, light=(-1.34, -0.66))
+
+# The black marginal dots, already on the sepals. They are on the bud before they are on
+# the petals, which is why the trait survives a stage that has no petals to put them on.
+BUD_DOTS = [
+    "K     K",
+    " K   K",
+]
+
+G_L_DX, _ = face_shift(BUD, BUD_LEFT)
+G_R_DX, _ = face_shift(BUD, BUD_RIGHT)
+
+# It holds the leaf up and looks at it, and nothing lights. That is the whole loop at this
+# age: the gesture without the payoff.
+S_BOB = [0, 0, -1, -1, -1, -1, 0, 0]
+S_EYES = [None, "look_left", "look_left", None, None, "look_right", "blink", None]
+
+G_BOB = [0, 0, -1, -1, -1, -1, -1, 0, 0, 0]
+G_HEAD = [None, "left", "left", None, None, None, "right", "right", None, None]
+G_DX = [0, G_L_DX, G_L_DX, 0, 0, 0, G_R_DX, G_R_DX, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 TURN_L = face_shift(HEAD, HEAD_LEFT)[0]
 HEAD_ART = [None, None, "left", "left", "left", "left", "left", "left", "left",
             None, None, None, None, None]
@@ -128,6 +227,79 @@ FACE_DX = [TURN_L if art == "left" else 0 for art in HEAD_ART]
 SPRITE = {
     "herbId": "hypericum-perforatum",
     "personality": "sunlit",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            # No flower, so no petal dots. The lifted-leaf trick belongs to the adult, so
+            # the seedling keeps a plain second leaf and never lights anything.
+            "hide": ["dots", "leafUp", "cheeks"],
+            "swap": {
+                "head": LEAF_HEAD,
+                "pair": SEED_PAIR,
+                "stem": SEED_STEM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "look_left": YOUNG_EYES["look_left"],
+                    "look_right": YOUNG_EYES["look_right"],
+                },
+            },
+            "origins": {
+                "head": LEAF_HEAD_AT,
+                "pair": (12, 21),
+                "leafStill": (21, 20),
+                "stem": (14, 22),
+                **seat_young(LEAF_HEAD_AT, LEAF_HEAD, cheeks=False, eye_dy=1, mouth_dy=4),
+            },
+            "motion": {
+                "head": {"dy": S_BOB},
+                "eyes": {"dy": S_BOB, "art": S_EYES},
+                "mouth": {"dy": S_BOB},
+                "pair": {"dy": [0] * 8},
+                "leafStill": {"dy": [0] * 8},
+                "stem": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["leafUp"],
+            "swap": {
+                "head": BUD,
+                "dots": BUD_DOTS,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD)[2]),
+            },
+            "variants": {
+                "head": {"left": BUD_LEFT, "right": BUD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "head": BUD_AT,
+                "dots": (13, 12),
+                "pair": (11, 20),
+                "leafStill": (20, 18),
+                "stem": (14, 22),
+                **seat_young(BUD_AT, BUD, eye_dy=1, mouth_dy=4),
+            },
+            "motion": {
+                "head": {"dy": G_BOB, "art": G_HEAD},
+                "dots": {"dy": G_BOB},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "pair": {"dy": [0] * 10},
+                "leafStill": {"dy": [0] * 10},
+                "stem": {"dy": [0] * 10},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,

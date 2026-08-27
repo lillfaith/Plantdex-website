@@ -129,7 +129,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "sweet"
+    "personality": "sweet",
+    "stages": {
+      "sprout": {
+        "herbId": "fragaria-virginiana-sprout",
+        "src": "/cards/animated/fragaria-virginiana-sprout.png",
+        "version": "968b2a1c",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "sweet"
+      },
+      "growing": {
+        "herbId": "fragaria-virginiana-growing",
+        "src": "/cards/animated/fragaria-virginiana-growing.png",
+        "version": "ae7eeef2",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "sweet"
+      }
+    }
   },
   "galium-aparine": {
     "herbId": "galium-aparine",
@@ -169,7 +191,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "sunlit"
+    "personality": "sunlit",
+    "stages": {
+      "sprout": {
+        "herbId": "hypericum-perforatum-sprout",
+        "src": "/cards/animated/hypericum-perforatum-sprout.png",
+        "version": "0af4c4d9",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "sunlit"
+      },
+      "growing": {
+        "herbId": "hypericum-perforatum-growing",
+        "src": "/cards/animated/hypericum-perforatum-growing.png",
+        "version": "466576b6",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "sunlit"
+      }
+    }
   },
   "impatiens-capensis": {
     "herbId": "impatiens-capensis",
@@ -341,7 +385,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "quietly capable"
+    "personality": "quietly capable",
+    "stages": {
+      "sprout": {
+        "herbId": "prunella-vulgaris-sprout",
+        "src": "/cards/animated/prunella-vulgaris-sprout.png",
+        "version": "6cd9aa08",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "quietly capable"
+      },
+      "growing": {
+        "herbId": "prunella-vulgaris-growing",
+        "src": "/cards/animated/prunella-vulgaris-growing.png",
+        "version": "2aaaceb0",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "quietly capable"
+      }
+    }
   },
   "quercus-spp": {
     "herbId": "quercus-spp",
@@ -515,7 +581,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
-    "personality": "alert"
+    "personality": "alert",
+    "stages": {
+      "sprout": {
+        "herbId": "urtica-dioica-sprout",
+        "src": "/cards/animated/urtica-dioica-sprout.png",
+        "version": "180e734d",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 7,
+        "personality": "alert"
+      },
+      "growing": {
+        "herbId": "urtica-dioica-growing",
+        "src": "/cards/animated/urtica-dioica-growing.png",
+        "version": "42282857",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 10,
+        "personality": "alert"
+      }
+    }
   },
   "verbascum-thapsus": {
     "herbId": "verbascum-thapsus",
@@ -525,7 +613,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "proud"
+    "personality": "proud",
+    "stages": {
+      "sprout": {
+        "herbId": "verbascum-thapsus-sprout",
+        "src": "/cards/animated/verbascum-thapsus-sprout.png",
+        "version": "5f5bece5",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "proud"
+      },
+      "growing": {
+        "herbId": "verbascum-thapsus-growing",
+        "src": "/cards/animated/verbascum-thapsus-growing.png",
+        "version": "bfaa41c6",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "proud"
+      }
+    }
   },
   "viola-sororia": {
     "herbId": "viola-sororia",
