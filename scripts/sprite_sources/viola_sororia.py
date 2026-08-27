@@ -122,36 +122,41 @@ BUD_PALETTE = {
 }
 
 # --- Sprout: a heart leaf wearing the face ----------------------------------
-LEAF_HEAD_W, LEAF_HEAD_H = 15, 13
-LEAF_HEAD_AT = (8, 15)
+#
+# HAND-DRAWN rather than generated. `flower_head` makes rounded organs, and a violet leaf
+# is not round — it is broad at the shoulders, blunt at the tip and NOTCHED at the base
+# where its stalk joins. That notch is the whole identification, and a generated ellipse
+# has nowhere to put it. Drawn as a circle with a face in it, this stage read as a green
+# blob and said nothing about which plant it was.
+#
+# The face is a plain `F` patch inside the grid. `_face.face_box` measures it the same way
+# it measures a generated head, so seating the features is unchanged.
+LEAF_HEAD_AT = (6, 13)
 
+# Wider than the face needs, deliberately. The narrow version left the leaf as a thin
+# green rim and read as a face with a border rather than a face ON a leaf — the shoulders
+# and the notched base are the whole shape, so they have to have room.
+LEAF_HEAD = [
+    "      ooooooo      ",
+    "   oooGGGGGGGooo   ",
+    "  oGGGGGGGGGGGGGo  ",
+    " oGGoFFFFFFFFFoGGo ",
+    "oGGGoFFFFFFFFFoGGGo",
+    "oGGGoFFFFFFFFFoGGGo",
+    "oGGGoFFFFFFFFFoGGGo",
+    " oGGooooooooooooGo ",
+    "  ogggggggggggggo  ",
+    "   oddddddddddo    ",
+    "     odd o ddo     ",
+]
 
-def _leaf_head(rx=7.0, ry=6.2, face_dx=0.0, light=(-0.85, -0.65)):
-    # Three shallow lobes rather than the flower's five deep ones: a leaf, not a bloom.
-    return flower_head(
-        LEAF_HEAD_W, LEAF_HEAD_H, 7.0, 6.4, rx, ry, 3, 0.08, 5.2, 3.6,
-        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
-    )
-
-
-LEAF_HEAD = _leaf_head()
-LEAF_HEAD_LEFT = _leaf_head(face_dx=-1.2, light=(-0.35, -0.65))
-LEAF_HEAD_RIGHT = _leaf_head(face_dx=1.2, light=(-1.25, -0.65))
-
-# The notch a violet leaf carries where its stalk joins. Two pixels, and it is the
-# difference between "a violet leaf" and "a round green thing".
-NOTCH = ["ono"]
-
-# Notched at the base, broad at the shoulders, blunt at the tip: a violet leaf, and the
-# only thing at this stage that says which plant this is.
+# A violet is bashful, so it looks away rather than turning its whole head — the eyes do
+# the work, which also means the leaf never has to be redrawn three times.
 SEED_LEAF = [
     " ooo ooo ",
     "oGGGoGGGo",
-    "oGGGGGGGo",
-    "oGGgggGGo",
-    " oggdddo ",
+    " oGgggGo ",
     "  oddno  ",
-    "   ooo   ",
 ]
 SEED_STEM = [
     "odgo",
@@ -160,49 +165,46 @@ SEED_STEM = [
 ]
 
 # --- Growing: the bud, nodding ----------------------------------------------
-BUD_W, BUD_H = 13, 11
-BUD_AT = (10, 8)
+BUD_W, BUD_H = 15, 14
+BUD_AT = (9, 9)
 
 
-def _bud(rx=5.8, ry=5.0, face_dx=0.0, light=(-0.85, -0.65)):
+def _bud(rx=7.0, ry=6.6, face_dx=0.0, face_dy=0.6, light=(-0.85, -0.65)):
+    # Bigger than the first attempt, with a SMALLER face in it. That version gave the bud
+    # one row of green above the eyes, so it read as a tiny hat on a large pale head
+    # rather than as a face inside a bud.
     return flower_head(
-        BUD_W, BUD_H, 6.0, 5.4, rx, ry, 4, 0.10, 5.2, 3.2,
-        face_dx=face_dx, light=light, trim_tail=False, chars="KkjJFo",
+        BUD_W, BUD_H, 7.0, 7.0, rx, ry, 4, 0.10, 5.2, 3.2,
+        face_dx=face_dx, face_dy=face_dy, light=light, chars="KkjJFo",
     )
 
 
 BUD = _bud()
-BUD_LEFT = _bud(face_dx=-1.1, light=(-0.35, -0.65))
-BUD_RIGHT = _bud(face_dx=1.1, light=(-1.25, -0.65))
+BUD_LEFT = _bud(face_dx=-1.2, light=(-0.32, -0.66))
+BUD_RIGHT = _bud(face_dx=1.2, light=(-1.34, -0.66))
 
-# The hooked stalk a violet bud hangs from. The nod is the identification, so it is drawn
-# rather than implied: the stalk arches over and the bud hangs off its end.
+# The hooked stalk a violet bud hangs from, and the nod IS the identification — a violet
+# in bud hangs its head, and nothing else in the deck does that. So the hook is drawn
+# large enough to read: up, over, and back down onto the bud, rather than a vertical stem
+# with a two-pixel kink at the top that reads as a stick.
 CROOK = [
-    "  ooo",
-    " oodgo",
-    "odgo o",
-    "odgo",
-    "odgo",
-    "odgo",
-    "odgo",
-    "odgo",
-    " oo",
+    "     ooooo ",
+    "   oodggdo ",
+    "  odggoodo ",
+    "  odgo  oo ",
+    "  odgo     ",
+    "  odgo     ",
+    "   odgo    ",
+    "    oo     ",
 ]
 
-# Only the tip shows colour. Any more and it is an open flower.
-BUD_TIP_PALETTE = {"t": (150, 110, 214, 255)}
-
-S_L_DX, _ = face_shift(LEAF_HEAD, LEAF_HEAD_LEFT)
-S_R_DX, _ = face_shift(LEAF_HEAD, LEAF_HEAD_RIGHT)
 G_L_DX, _ = face_shift(BUD, BUD_LEFT)
 G_R_DX, _ = face_shift(BUD, BUD_RIGHT)
 
 # Half a duck. The adult vanishes behind its leaf entirely; this one only looks away and
 # comes back, because it has not learned the trick yet.
 S_BOB = [0, 0, -1, -1, -1, -1, 0, 0]
-S_HEAD = [None, "left", "left", None, None, "right", None, None]
-S_DX = [0, S_L_DX, S_L_DX, 0, 0, S_R_DX, 0, 0]
-S_BLINK = [None, None, None, None, None, None, "blink", None]
+S_EYES = [None, "look_left", "look_left", None, None, "look_right", "blink", None]
 
 G_BOB = [0, 0, -1, -1, -1, -1, -1, 0, 0, 0]
 G_HEAD = [None, "left", "left", None, None, None, "right", "right", None, None]
@@ -228,19 +230,22 @@ SPRITE = {
                 "mouth": YOUNG_MOUTH["rows"],
             },
             "variants": {
-                "head": {"left": LEAF_HEAD_LEFT, "right": LEAF_HEAD_RIGHT},
-                "eyes": {"blink": YOUNG_EYES["blink"]},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "look_left": YOUNG_EYES["look_left"],
+                    "look_right": YOUNG_EYES["look_right"],
+                },
             },
             "origins": {
                 "head": LEAF_HEAD_AT,
-                "stem": (13, 25),
-                "leaf": (16, 21),
-                **seat_young(LEAF_HEAD_AT, LEAF_HEAD, cheeks=False, mouth_dy=4),
+                "stem": (14, 22),
+                "leaf": (18, 20),
+                **seat_young(LEAF_HEAD_AT, LEAF_HEAD, cheeks=False, eye_dy=0, mouth_dy=3),
             },
             "motion": {
-                "head": {"dy": S_BOB, "art": S_HEAD},
-                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
-                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "head": {"dy": S_BOB},
+                "eyes": {"dy": S_BOB, "art": S_EYES},
+                "mouth": {"dy": S_BOB},
                 "leaf": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
                 "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
             },
@@ -248,7 +253,7 @@ SPRITE = {
         "growing": {
             "frames": 10,
             "fps": stage_fps(8, "growing"),
-            "palette": {**BUD_PALETTE, **BUD_TIP_PALETTE},
+            "palette": BUD_PALETTE,
             "hide": ["throat", "shield"],
             "swap": {
                 "head": BUD,
@@ -263,7 +268,7 @@ SPRITE = {
             },
             "origins": {
                 "head": BUD_AT,
-                "stem": (13, 15),
+                "stem": (13, 17),
                 "leaf": (17, 18),
                 **seat_young(BUD_AT, BUD, mouth_dy=4),
             },
