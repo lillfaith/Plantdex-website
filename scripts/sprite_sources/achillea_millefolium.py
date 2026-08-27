@@ -228,20 +228,35 @@ SEED_STEM = [
 ]
 
 # --- Growing: the corymb closed in bud --------------------------------------
-BUD_W, BUD_H = 19, 9
+# HAND-DRAWN, not generated. `flower_head` builds a radial star, and a corymb is the
+# opposite shape: a FLAT plate of many tight buttons, all at one height. Pushing the
+# generator's lobe count up to fake that split the head into detached fragments — a
+# rounded dome at low lobes reads as a hat rather than a bud, which is exactly what the
+# first attempt looked like.
+#
+# Four buttons on a shared base, flat across the top. The flat top is the identification
+# and it is already present in bud, which is the whole reason this stage is worth drawing.
+BUD_UMBEL = [
+    "  ooo ooo ooo ooo  ",
+    " oKKkoKKkoKKkoKKko ",
+    "okkjjokkjjokkjjokko",
+    "ojjjjjjjjjjjjjjjjjo",
+    "oJjjjjjjjjjjjjjjjJo",
+    " oJJJJJJJJJJJJJJJo ",
+    "   ooooJJJJJoooo   ",
+    "      ooooooo      ",
+]
 
-
-def _bud_umbel(rx=7.4, ry=3.8, light=(-0.85, -0.65)):
-    # Fewer, tighter scallops than the open brim's eleven, and shallower: the florets have
-    # not separated. The flat top is kept, because that silhouette is the identification.
-    return flower_head(
-        BUD_W, BUD_H, 9.0, 4.0, rx, ry, 8, 0.12, 0, 0,
-        light=light, trim_tail=False, chars="KkjJFo",
-    )
-
-
-BUD_UMBEL = _bud_umbel()
-BUD_UMBEL_SETTLE = _bud_umbel(rx=7.8, ry=3.4)
+# The same plate settling a pixel: the buttons compress, the base stays put.
+BUD_UMBEL_SETTLE = [
+    "  ooo ooo ooo ooo  ",
+    " oKKkoKKkoKKkoKKko ",
+    "okkjjokkjjokkjjokko",
+    "ojjjjjjjjjjjjjjjjjo",
+    " oJJJJJJJJJJJJJJJo ",
+    "   ooooJJJJJoooo   ",
+    "      ooooooo      ",
+]
 
 BUD_BODY_AT = (9, 13)
 
