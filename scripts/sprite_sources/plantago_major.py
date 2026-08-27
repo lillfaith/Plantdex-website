@@ -22,7 +22,9 @@ apart from the card's identification content, which stays the reference outdoors
 """
 
 from _face import on_face
+from _face import face_box
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 # Authored at 32x28, the house size.
 PALETTE = {
@@ -154,6 +156,114 @@ MOUTH_SET = [
 ]
 
 HEAD_AT = (6, 11)
+
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME UNBOTHERED PLANTAIN, YOUNGER. Its trademark is being trodden flat and springing
+# back without complaint, and that composure is EARNED — so the seedling flinches and
+# squeezes its eyes shut where the adult shrugs. Same event, no swagger yet.
+#
+# THE BOTANY DECIDES WHAT IS DRAWN:
+#
+#   sprout    a flat rosette of small ribbed leaves and NO spike. That is precisely what a
+#             plantain seedling is, and the parallel ribs are on it from the first leaf
+#             because without them this is a green oval rather than a plantain.
+#   growing   the spikes are up but SHORT and GREEN — a plantain spike is green long
+#             before the pale ring of stamens works its way up it, which is the single
+#             most recognisable thing the plant does.
+#   flowering the full seed spikes, unchanged.
+
+SPIKE_PALETTE = {
+    "S": (108, 186, 108, 255),   # green spike light — no seed colour yet
+    "s": (66, 132, 76, 255),     # green spike dark
+}
+
+# --- Sprout: the rosette alone ----------------------------------------------
+YOUNG_HEAD_AT = (8, 12)
+
+
+def _young_head(rx=7.0, ry=5.4, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 13, 7.0, 6.0, rx, ry, 6, 0.12, 5.2, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_SQUASHED = _young_head(rx=7.6, ry=4.2)
+
+# The first leaves, ribbed already.
+SEED_LEAF_L = [
+    "  oooooo",
+    " oGGvGGgo",
+    "oGgvggddo",
+    " oonnnnoo",
+]
+SEED_LEAF_R = [
+    "oooooo  ",
+    "ogGGvGGo",
+    "oddgvggo",
+    " oonnnoo",
+]
+
+# --- Growing: short green spikes --------------------------------------------
+SPIKE_GREEN = [
+    "oso",
+    "oSo",
+    "oso",
+    "oSo",
+    "oso",
+    "oSo",
+    "oso",
+]
+SPIKE_GREEN_SHORT = [
+    "oso",
+    "oSo",
+]
+
+BUD_HEAD_AT = (7, 13)
+
+
+def _bud_head(rx=8.2, ry=5.8, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 13, 8.0, 6.2, rx, ry, 6, 0.12, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_HEAD = _bud_head()
+BUD_HEAD_SQUASHED = _bud_head(rx=8.8, ry=4.6)
+
+BUD_LEAF_L = [
+    "   oooooooo",
+    " ooGGvGGvGgo",
+    "oGgvggvgggdo",
+    " oonnnnnnnoo",
+]
+BUD_LEAF_R = [
+    "oooooooo   ",
+    "ogGGvGGvGoo",
+    "oddgvggvggo",
+    " oonnnnnnoo",
+]
+
+#  0     1      2       3      4      5     6     7
+# rest  brace  FLAT    FLAT   up     up    blink rest
+#
+# It still gets stepped on — that is what a plantain is for — but a seedling has not
+# learned to find it funny yet, so it braces first and squeezes its eyes shut.
+S_BOB = [0, 1, 3, 3, 0, -1, 0, 0]
+S_HEAD = [None, None, "squashed", "squashed", None, None, None, None]
+S_EYES = [None, "squeeze", "squeeze", "squeeze", "squeeze", None, "blink", None]
+
+#  0     1      2      3      4      5     6     7     8     9
+# rest  brace  FLAT   FLAT   spring up    settle look blink rest
+G_BOB = [0, 1, 3, 3, -1, -1, 0, 0, 0, 0]
+G_HEAD = [None, None, "squashed", "squashed", None, None, None, None, None, None]
+G_EYES = [None, "squeeze", "squeeze", "squeeze", None, None, None, None, "blink", None]
+G_SPIKE = [None, "short", "short", "short", None, None, None, None, None, None]
+
+
 STOMP = [0, 0, 2, 2, 2, 0, -1, -1, 0, 0, 0, 0, 0, 0]
 # The head variants are built so the FACE lands in the same place whether the rosette is
 # squashed or sprung - measured with `face_box`, not assumed. So the features do not
@@ -166,6 +276,77 @@ WOBBLE = [0, 0, 0, 0, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0]
 SPRITE = {
     "herbId": "plantago-major",
     "personality": "unbothered",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            # No spike at all: a plantain seedling is a rosette, full stop.
+            "hide": ["spikeL", "spikeR", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafL": SEED_LEAF_L,
+                "leafR": SEED_LEAF_R,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"squashed": YOUNG_HEAD_SQUASHED},
+                "eyes": {"blink": YOUNG_EYES["blink"], "squeeze": EYES_SQUEEZE},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leafL": (3, 20),
+                "leafR": (21, 20),
+                **seat_young(YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, mouth_dy=4),
+            },
+            "motion": {
+                "head": {"dy": S_BOB, "art": S_HEAD},
+                "eyes": {"dy": S_BOB, "art": S_EYES},
+                "mouth": {"dy": S_BOB},
+                "leafL": {"dy": [0, 0, 1, 1, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 1, 1, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": SPIKE_PALETTE,
+            "swap": {
+                "spikeL": SPIKE_GREEN,
+                "spikeR": SPIKE_GREEN,
+                "head": BUD_HEAD,
+                "leafL": BUD_LEAF_L,
+                "leafR": BUD_LEAF_R,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_HEAD)[2]),
+            },
+            "variants": {
+                "spikeL": {"short": SPIKE_GREEN_SHORT},
+                "spikeR": {"short": SPIKE_GREEN_SHORT},
+                "head": {"squashed": BUD_HEAD_SQUASHED},
+                "eyes": {"blink": YOUNG_EYES["blink"], "squeeze": EYES_SQUEEZE},
+            },
+            "origins": {
+                "spikeL": (12, 7),
+                "spikeR": (17, 7),
+                "head": BUD_HEAD_AT,
+                "leafL": (1, 19),
+                "leafR": (21, 19),
+                **seat_young(BUD_HEAD_AT, BUD_HEAD, mouth_dy=4),
+            },
+            "motion": {
+                "spikeL": {"dy": G_BOB, "art": G_SPIKE},
+                "spikeR": {"dy": G_BOB, "art": G_SPIKE},
+                "head": {"dy": G_BOB, "art": G_HEAD},
+                "eyes": {"dy": G_BOB, "art": G_EYES},
+                "cheeks": {"dy": G_BOB},
+                "mouth": {"dy": G_BOB},
+                "leafL": {"dy": [0, 0, 1, 1, 0, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 1, 1, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,

@@ -269,7 +269,27 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "unbothered"
+    "personality": "unbothered",
+    "stages": {
+      "sprout": {
+        "herbId": "plantago-major-sprout",
+        "src": "/cards/animated/plantago-major-sprout.png",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "unbothered"
+      },
+      "growing": {
+        "herbId": "plantago-major-growing",
+        "src": "/cards/animated/plantago-major-growing.png",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "unbothered"
+      }
+    }
   },
   "portulaca-oleracea": {
     "herbId": "portulaca-oleracea",
