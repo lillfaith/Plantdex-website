@@ -26,3 +26,8 @@ deck-source/
 # Python bytecode from the sprite/deck build scripts.
 __pycache__/
 *.pyc
+
+# A generated review sheet: every creature at every stage, sprite sheets embedded as
+# data URIs so it opens with no server. Rebuild it rather than committing 700K of
+# base64 that goes stale the moment a sprite is redrawn.
+gallery.html
