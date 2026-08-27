@@ -561,7 +561,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "sweet-toothed"
+    "personality": "sweet-toothed",
+    "stages": {
+      "sprout": {
+        "herbId": "lonicera-japonica-sprout",
+        "src": "/cards/animated/lonicera-japonica-sprout.png",
+        "version": "e565aeed",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "sweet-toothed"
+      },
+      "growing": {
+        "herbId": "lonicera-japonica-growing",
+        "src": "/cards/animated/lonicera-japonica-growing.png",
+        "version": "15cf0e61",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "sweet-toothed"
+      }
+    }
   },
   "melissa-officinalis": {
     "herbId": "melissa-officinalis",
@@ -571,7 +593,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "calm"
+    "personality": "calm",
+    "stages": {
+      "sprout": {
+        "herbId": "melissa-officinalis-sprout",
+        "src": "/cards/animated/melissa-officinalis-sprout.png",
+        "version": "cfd04ccc",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "calm"
+      },
+      "growing": {
+        "herbId": "melissa-officinalis-growing",
+        "src": "/cards/animated/melissa-officinalis-growing.png",
+        "version": "6b8a4876",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "calm"
+      }
+    }
   },
   "mentha-canadensis": {
     "herbId": "mentha-canadensis",
@@ -613,7 +657,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "flamboyant"
+    "personality": "flamboyant",
+    "stages": {
+      "sprout": {
+        "herbId": "monarda-fistulosa-sprout",
+        "src": "/cards/animated/monarda-fistulosa-sprout.png",
+        "version": "5343becc",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "flamboyant"
+      },
+      "growing": {
+        "herbId": "monarda-fistulosa-growing",
+        "src": "/cards/animated/monarda-fistulosa-growing.png",
+        "version": "af975d43",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "flamboyant"
+      }
+    }
   },
   "morus-spp": {
     "herbId": "morus-spp",
@@ -855,7 +921,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "vain"
+    "personality": "vain",
+    "stages": {
+      "sprout": {
+        "herbId": "rosa-spp-sprout",
+        "src": "/cards/animated/rosa-spp-sprout.png",
+        "version": "287071c6",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "vain"
+      },
+      "growing": {
+        "herbId": "rosa-spp-growing",
+        "src": "/cards/animated/rosa-spp-growing.png",
+        "version": "1e5597f8",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "vain"
+      }
+    }
   },
   "rubus-spp": {
     "herbId": "rubus-spp",
@@ -961,7 +1049,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "consoling"
+    "personality": "consoling",
+    "stages": {
+      "sprout": {
+        "herbId": "salix-spp-sprout",
+        "src": "/cards/animated/salix-spp-sprout.png",
+        "version": "b337b383",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "consoling"
+      },
+      "growing": {
+        "herbId": "salix-spp-growing",
+        "src": "/cards/animated/salix-spp-growing.png",
+        "version": "9794b20b",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "consoling"
+      }
+    }
   },
   "sambucus-spp": {
     "herbId": "sambucus-spp",

@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 35 of 45 species staged.** The other 10 show their single adult portrait at every
+**Status: 40 of 45 species staged.** The other 5 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives thirty-five of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives forty of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 35 species
+## Staged — 40 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -118,6 +118,11 @@ frond that says which plant this is.
 | 29 | Field Garlic | tubular leaves and no scape — the startle with no cause | the umbel still inside its papery **spathe**, hair and all |
 | 31 | Elderberry | pinnate fronds and no hat, so the courtesy is a bare nod | the umbel **shut** and held up; it tips as far as a stiff hat goes |
 | 34 | Jewelweed | face on a **leaf**, no pod — it flinches at nothing at all | the flower in bud, green with orange showing; still nothing to go off |
+| 35 | Lemon Balm | a short breath, and **no bee** — it ends the loop the size it began | the bee arrives, hovers, and leaves; scent without nectar |
+| 36 | Bee Balm | lance leaves, no crown, and no audience either | the head **shut** — a knot of green bracts; it tosses it and cannot pose |
+| 37 | Wild Rose | face on a leaflet, thorns already grown, and no better side | the **bud**, wrapped in sepals; the whole preen, and a blink where the wink goes |
+| 38 | Willow | an **unveiled** face — a young willow does not weep | half a curtain, a silvery catkin bud, and a drop that hangs and never falls |
+| 40 | Honeysuckle | face on a leaf; no bead, nothing taken from anybody | paired **shut tubes**, no flare and no stamens — it leans, and finds nothing |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -161,7 +166,7 @@ point is that they are not a circle. A hand-drawn grid with a plain `F` patch wo
 identically — `face_box` measures it the same way — so reach for one whenever the generator
 is being bent out of shape.
 
-## Still to stage — 10 species
+## Still to stage — 5 species
 
 A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
 and re-running `python3 scripts/build_sprites.py`; no component changes, because
@@ -169,11 +174,6 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 
 | Card | Species | Herb id |
 |---|---|---|
-| 35 | Lemon Balm | `melissa-officinalis` |
-| 36 | Bee Balm | `monarda-fistulosa` |
-| 37 | Wild Rose | `rosa-spp` |
-| 38 | Willow | `salix-spp` |
-| 40 | Honeysuckle | `lonicera-japonica` |
 | 41 | Pine | `pinus-spp` |
 | 42 | Mulberry | `morus-spp` |
 | 43 | Passion Flower | `passiflora-incarnata` |

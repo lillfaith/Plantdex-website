@@ -21,8 +21,9 @@ honeysuckle BERRIES are not the flowers and are not safe, and other vines look s
 The card's identification and safety content are the reference.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -163,9 +164,212 @@ VINE = [
 
 HEAD_AT = (1, 6)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE NECTAR IS IN AN OPEN FLOWER, and nowhere else. The sip is the thing a PERSON does
+# with this plant — pinch the base, draw the style through, taste the drop — and it only
+# works on a flower that has opened. A bud holds nothing you can get at, which gates the
+# whole gesture without any help from a rule:
+#
+#   sprout    the vine and its paired leaves. The face moves onto a leaf, because this
+#             creature's head is the flared lip of a flower and there is not one. No bead,
+#             and nothing to take from anybody.
+#   growing   the paired flowers as slim shut TUBES — greenish-white, no flared lip, and
+#             none of the long protruding stamens, which only exist once the lip opens.
+#             It leans across to where the bead should be and finds nothing there.
+#   flowering the lip, the stamens, the bead, and the sip. Unchanged.
+#
+# THE PAIR SURVIVES EVERY STAGE. Honeysuckle carries its flowers in TWOS from a single
+# leaf axil, and that is half the identification — so the second tube is drawn at both
+# earlier stages too, reaching back to the same node.
+#
+# WHITE AGEING TO GOLD is the other half, and it is the one thing the earlier stages
+# genuinely cannot have: a flower has to open before it can age. So the gold belongs to
+# the last stage, along with the drink that depends on it — the adult sips from the tube
+# that has GONE gold, because that is the older flower and the one with nectar in it.
+#
+# SAFETY, unchanged and worth repeating at every stage: honeysuckle BERRIES are not the
+# flowers and are not safe, and other vines look similar. Nothing here draws a berry, and
+# the card's identification and safety content stay the reference.
+
+BUD_PALETTE = {
+    "K": (244, 246, 220, 255),   # bud highlight — greenish white, before it opens
+    "k": (200, 214, 158, 255),   # bud mid
+    "j": (150, 172, 110, 255),   # bud deep
+    "J": (108, 130, 80, 255),    # bud shadow
+}
+
+# --- Sprout: vine and leaves ------------------------------------------------
+YOUNG_HEAD_AT = (8, 13)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    # An oval leaf, clasping the vine. Honeysuckle's are opposite and entire, which is
+    # about all there is to go on before it flowers — hence the safety note above.
+    return flower_head(
+        16, 13, 7.5, 6.2, 7.4, 6.0, 6, 0.14, 5.4, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# --- Growing: two shut tubes ------------------------------------------------
+MID_HEAD_AT = (5, 8)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    # Narrow and closed: no flare, because the flare IS the opening. Round rather than
+    # two-lipped, since the two-lipped split only exists once the lip has parted.
+    return flower_head(
+        16, 12, 7.5, 5.8, 7.0, 5.6, 5, 0.10, 5.4, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="KkjJFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.3, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# The second flower of the pair, shut, on its own long tube back to the node.
+TUBE_BUD = [
+    "  oo",
+    " oKko",
+    " oKko",
+    " okjo",
+    " okjo",
+    " oJjo",
+    " otto",
+    " oott",
+    "oott",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "lonicera-japonica",
     "personality": "sweet-toothed",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            "hide": ["tube", "throat", "stamens", "bead", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"content": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "vine": (13, 19),
+                "leafL": (4, 22),
+                "leafR": (19, 22),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            "motion": {
+                "head": {
+                    "art": [None, "right", None, None, "left", None, None, None],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "wide", "wide", None, "happy", "blink", None],
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, None, None, None, "content", "content", None],
+                    "dx": [0, S_R_DX, 0, 0, S_L_DX, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 0, 0, 0],
+                },
+                "leafL": {"lean": [0, 1, 1, 0, -1, 0, 0, 0]},
+                "leafR": {"lean": [0, -1, -1, 0, 1, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": BUD_PALETTE,
+            # No stamens: they protrude from an open lip and there is no open lip. No
+            # bead: an unopened flower holds nothing anybody can reach.
+            "hide": ["stamens", "bead", "cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "tube": TUBE_BUD,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "wide": YOUNG_EYES["wide"],
+                    "happy": YOUNG_EYES["happy"],
+                },
+                "mouth": {"content": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "tube": (17, 10),
+                "throat": (11, 16),
+                "vine": (13, 19),
+                "leafL": (4, 22),
+                "leafR": (19, 22),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=3
+                ),
+            },
+            # It leans all the way across to where the bead belongs, and there is
+            # nothing on the end of it. Then it comes back and settles, which is a
+            # better joke than any face this small could pull.
+            "motion": {
+                "head": {
+                    "art": [None, "right", "right", "right", "right", "right", None,
+                            None, None, None],
+                    "dx": [0, 0, 0, 1, 2, 3, 1, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 1, 0, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, "wide", "wide", "wide", "wide", "half", None,
+                            "blink", None],
+                    "dx": [0, G_R_DX, G_R_DX, 1 + G_R_DX, 2 + G_R_DX, 3 + G_R_DX, 1,
+                           0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 1, 0, 0, 0, 0],
+                },
+                "mouth": {
+                    "art": [None, None, None, None, None, None, None, "content",
+                            "content", None],
+                    "dx": [0, G_R_DX, G_R_DX, 1 + G_R_DX, 2 + G_R_DX, 3 + G_R_DX, 1,
+                           0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 1, 0, 0, 0, 0],
+                },
+                "throat": {
+                    "dx": [0, 0, 0, 1, 2, 3, 1, 0, 0, 0],
+                    "dy": [0, -1, 0, 0, 0, 1, 0, 0, 0, 0],
+                },
+                "tube": {"dy": [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]},
+                "leafL": {"lean": [0, 1, 1, 0, 0, -1, -1, 0, 0, 0]},
+                "leafR": {"lean": [0, -1, -1, 0, 0, 1, 1, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,
