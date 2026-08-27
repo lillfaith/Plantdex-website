@@ -145,7 +145,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "eager"
+    "personality": "eager",
+    "stages": {
+      "sprout": {
+        "herbId": "arctium-lappa-sprout",
+        "src": "/cards/animated/arctium-lappa-sprout.png",
+        "version": "e6dfe266",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "eager"
+      },
+      "growing": {
+        "herbId": "arctium-lappa-growing",
+        "src": "/cards/animated/arctium-lappa-growing.png",
+        "version": "8331fa89",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "eager"
+      }
+    }
   },
   "capsella-bursa-pastoris": {
     "herbId": "capsella-bursa-pastoris",
@@ -471,7 +493,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "refreshing"
+    "personality": "refreshing",
+    "stages": {
+      "sprout": {
+        "herbId": "mentha-canadensis-sprout",
+        "src": "/cards/animated/mentha-canadensis-sprout.png",
+        "version": "aba3862a",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "refreshing"
+      },
+      "growing": {
+        "herbId": "mentha-canadensis-growing",
+        "src": "/cards/animated/mentha-canadensis-growing.png",
+        "version": "cdb65259",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "refreshing"
+      }
+    }
   },
   "monarda-fistulosa": {
     "herbId": "monarda-fistulosa",
@@ -501,7 +545,29 @@
     "frameHeight": 140,
     "frames": 16,
     "fps": 12,
-    "personality": "giddy"
+    "personality": "giddy",
+    "stages": {
+      "sprout": {
+        "herbId": "nepeta-cataria-sprout",
+        "src": "/cards/animated/nepeta-cataria-sprout.png",
+        "version": "bbeffec7",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 7,
+        "personality": "giddy"
+      },
+      "growing": {
+        "herbId": "nepeta-cataria-growing",
+        "src": "/cards/animated/nepeta-cataria-growing.png",
+        "version": "c73a8ff8",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 10,
+        "personality": "giddy"
+      }
+    }
   },
   "oxalis-stricta": {
     "herbId": "oxalis-stricta",
@@ -669,7 +735,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "ceremonial"
+    "personality": "ceremonial",
+    "stages": {
+      "sprout": {
+        "herbId": "rhus-spp-sprout",
+        "src": "/cards/animated/rhus-spp-sprout.png",
+        "version": "5bda6deb",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "ceremonial"
+      },
+      "growing": {
+        "herbId": "rhus-spp-growing",
+        "src": "/cards/animated/rhus-spp-growing.png",
+        "version": "5d2bba6b",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "ceremonial"
+      }
+    }
   },
   "rosa-spp": {
     "herbId": "rosa-spp",
@@ -721,7 +809,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 10,
-    "personality": "sour"
+    "personality": "sour",
+    "stages": {
+      "sprout": {
+        "herbId": "rumex-acetosella-sprout",
+        "src": "/cards/animated/rumex-acetosella-sprout.png",
+        "version": "393b9e1d",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 6,
+        "personality": "sour"
+      },
+      "growing": {
+        "herbId": "rumex-acetosella-growing",
+        "src": "/cards/animated/rumex-acetosella-growing.png",
+        "version": "d9f18d3d",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 8,
+        "personality": "sour"
+      }
+    }
   },
   "rumex-obtusifolius": {
     "herbId": "rumex-obtusifolius",

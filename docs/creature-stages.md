@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 25 of 45 species staged.** The other 20 show their single adult portrait at every
+**Status: 30 of 45 species staged.** The other 15 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives twenty-five of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives thirty of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 25 species
+## Staged — 30 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -108,6 +108,11 @@ frond that says which plant this is.
 | 16 | Ground Ivy | one kidney leaf; no runner, so no company | the **runner goes out and nothing stands up on it** |
 | 17 | Maple | one lobed leaf; a maple is years from fruiting | the keys paired and **green**, so it holds one out and cannot let go |
 | 18 | Blackberry | the **first-year cane**: leaves, thorns, and nothing to offer | it offers a closed **bud** instead of a berry, and snatches that back |
+| 19 | Sheep's Sorrel | arrowhead leaves, and **one** pucker instead of two | the spray up and still **green**, before the fruit rusts a hillside |
+| 20 | Sumac | pinnate fronds, and no torch to raise | the panicle up in the cone's place, **greenish-yellow**; it does not light |
+| 22 | Burdock | the **first-year rosette**: eager, and with no hooks at all | the burr **green**, hooks formed but soft, so nothing holds |
+| 23 | Wild Mint | **one** frame of frost — green again before it can shiver | three frames and one shiver; the whorls still green knots |
+| 24 | Catnip | it tips, and catches itself | all the way onto its **side**, and back — never onto its back |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -151,7 +156,7 @@ point is that they are not a circle. A hand-drawn grid with a plain `F` patch wo
 identically — `face_box` measures it the same way — so reach for one whenever the generator
 is being bent out of shape.
 
-## Still to stage — 20 species
+## Still to stage — 15 species
 
 A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
 and re-running `python3 scripts/build_sprites.py`; no component changes, because
@@ -159,11 +164,6 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 
 | Card | Species | Herb id |
 |---|---|---|
-| 19 | Sheep's Sorrel | `rumex-acetosella` |
-| 20 | Sumac | `rhus-spp` |
-| 22 | Burdock | `arctium-lappa` |
-| 23 | Wild Mint | `mentha-canadensis` |
-| 24 | Catnip | `nepeta-cataria` |
 | 25 | Shepherd's Purse | `capsella-bursa-pastoris` |
 | 28 | Horsetail | `equisetum-arvense` |
 | 29 | Field Garlic | `allium-vineale` |

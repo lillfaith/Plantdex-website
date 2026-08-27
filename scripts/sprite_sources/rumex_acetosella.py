@@ -23,6 +23,7 @@ apart from the card's identification content, which stays the reference outdoors
 
 from _face import FACE_PALETTE, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -110,9 +111,218 @@ HEAD_AT = (7, 11)
 # Two puckers, not one. Frames 2-4 and 8-10, with a recovery between them.
 SCRUNCH = [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# SOUR FROM THE START; STUPID ABOUT IT LATER. The oxalic acid is in a sheep's sorrel
+# seedling exactly as much as in a flowering one, so every stage tastes itself and every
+# stage regrets it. What grows is the willingness to do it again:
+#
+#   sprout    one pucker. It tastes itself, hates it, and stops.
+#   growing   one pucker, a longer recovery, and it looks back at the leaf it just bit —
+#             considering — and does not.
+#   flowering two puckers, the second a frame longer than the first, because it knew what
+#             was coming and went back anyway. Unchanged; the repeat is the joke.
+#
+# THE SPRAY TURNS RED LAST. Sheep's sorrel is famous for reddening a whole hillside, but
+# that colour is the seed setting: the panicle goes up green and slender first and only
+# rusts as the fruit ripens. So the middle stage carries the same spray in the colour it
+# actually starts in, and the red arrives with the last stage — which is also the honest
+# way round, because red-over-a-field is the thing people recognise.
+#
+# THE ARROWHEAD IS THE IDENTIFICATION, barbs flared backwards, and it is on the leaves
+# from the seedling on. It separates this from every other small dock, so it is never the
+# thing that gets simplified for the sake of a smaller drawing.
+
+SPRAY_PALETTE = {
+    "K": (186, 204, 118, 255),   # panicle highlight — green, before the fruit rusts
+    "k": (136, 158, 84, 255),    # panicle mid
+}
+
+# --- Sprout: arrowheads, and one pucker -------------------------------------
+YOUNG_HEAD_AT = (9, 13)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65), rx=7.2, ry=6.4):
+    return flower_head(
+        15, 14, 7.0, 6.6, rx, ry, 6, 0.12, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+YOUNG_HEAD_PUCKER = _young_head(rx=6.5, ry=5.9)
+
+ARROW_L_YOUNG = [
+    "   ooo",
+    "  oGGGo",
+    " oGGggo",
+    "oGgggdo",
+    "oo oddo",
+    "   ooo",
+]
+
+ARROW_R_YOUNG = [
+    "ooo",
+    "oGGGo",
+    "oggGGo",
+    "odgggo",
+    "oddo oo",
+    " ooo",
+]
+
+# --- Growing: the spray up, still green -------------------------------------
+MID_HEAD_AT = (8, 14)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65), rx=7.6, ry=6.8):
+    return flower_head(
+        16, 15, 7.5, 7.0, rx, ry, 6, 0.12, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+MID_HEAD_PUCKER = _mid_head(rx=6.9, ry=6.3)
+
+SPRAY_GREEN = [
+    "oko oko",
+    "okookKo",
+    " okKko",
+    "  oko",
+    "  oko",
+    "  oko",
+    "  oko",
+]
+
+S_SCRUNCH = [0, 0, 1, 1, 1, 0, 0, 0]
+G_SCRUNCH = [0, 0, 1, 1, 1, 0, 0, 0, 0, 0]
+
 SPRITE = {
     "herbId": "rumex-acetosella",
     "personality": "sour",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(10, "sprout"),
+            "hide": ["spray", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "arrowL": ARROW_L_YOUNG,
+                "arrowR": ARROW_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {
+                    "left": YOUNG_HEAD_LEFT,
+                    "right": YOUNG_HEAD_RIGHT,
+                    "pucker": YOUNG_HEAD_PUCKER,
+                },
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "pucker": YOUNG_EYES["shut"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "arrowL": (2, 18),
+                "arrowR": (23, 18),
+                "flash": (6, 15),
+                "stem": (14, 24),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            "motion": {
+                "head": {
+                    "art": [None, None, "pucker", "pucker", "pucker", None, None, None],
+                    "dy": S_SCRUNCH,
+                },
+                "eyes": {
+                    "art": [None, "half", "pucker", "pucker", "pucker", "half", "blink",
+                            None],
+                    "dy": S_SCRUNCH,
+                },
+                "mouth": {
+                    "art": [None, None, None, None, None, "wide", None, None],
+                    "dy": S_SCRUNCH,
+                },
+                "flash": {"art": [None, None, "on", None, None, None, None, None]},
+                "arrowL": {"dx": [0, 0, 1, 2, 2, 1, 0, 0], "dy": S_SCRUNCH},
+                "arrowR": {"dx": [0, 0, -1, -2, -2, -1, 0, 0], "dy": S_SCRUNCH},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(10, "growing"),
+            "palette": SPRAY_PALETTE,
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "spray": SPRAY_GREEN,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {
+                    "left": MID_HEAD_LEFT,
+                    "right": MID_HEAD_RIGHT,
+                    "pucker": MID_HEAD_PUCKER,
+                },
+                "eyes": {
+                    "blink": YOUNG_EYES["blink"],
+                    "half": YOUNG_EYES["half"],
+                    "pucker": YOUNG_EYES["shut"],
+                },
+                "mouth": {"wide": YOUNG_MOUTH["wide"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "spray": (13, 7),
+                "arrowL": (1, 18),
+                "arrowR": (24, 18),
+                "flash": (5, 16),
+                "stem": (14, 24),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=2, mouth_dy=4
+                ),
+            },
+            # One pucker, a long recovery, and then it LOOKS BACK at the leaf. Frames
+            # 7-8 are the consideration. It does not go back; that is next year.
+            "motion": {
+                "head": {
+                    "art": [None, None, "pucker", "pucker", "pucker", None, None,
+                            "left", "left", None],
+                    "dy": G_SCRUNCH,
+                },
+                "eyes": {
+                    "art": [None, "half", "pucker", "pucker", "pucker", "half", None,
+                            None, None, "blink"],
+                    "dy": G_SCRUNCH,
+                },
+                "mouth": {
+                    "art": [None, None, None, None, None, "wide", "wide", None, None,
+                            None],
+                    "dy": G_SCRUNCH,
+                },
+                "flash": {
+                    "art": [None, None, "on", None, None, None, None, None, None, None],
+                },
+                "arrowL": {"dx": [0, 0, 1, 2, 2, 1, 0, 0, 0, 0], "dy": G_SCRUNCH},
+                "arrowR": {"dx": [0, 0, -1, -2, -2, -1, 0, 0, 0, 0], "dy": G_SCRUNCH},
+                "spray": {
+                    "lean": [0, 0, 1, 1, 0, -1, 0, 0, 0, 0],
+                    "dy": G_SCRUNCH,
+                },
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 10,
