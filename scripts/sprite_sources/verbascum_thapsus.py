@@ -31,7 +31,9 @@ looking at a plant outdoors.
 """
 
 from _face import on_face
+from _face import face_box
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 # Authored at 32x28, the house size.
 PALETTE = {
@@ -183,9 +185,204 @@ BASE = [
 
 BODY_AT = (4, 14)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# MULLEIN IS THE TEXTBOOK CASE, because it is a BIENNIAL and does the staging itself: year
+# one is a woolly basal rosette and nothing else, year two throws the spike. So the sprout
+# does not hide the spike as a stylistic choice — the plant genuinely has not made one, and
+# anyone who has watched a mullein for two seasons will recognise the sequence.
+#
+#   sprout    the first-year rosette. Woolly, low, no spike at all.
+#   growing   the spike up but SHORT and green-grey, its florets still closed. A mullein
+#             spike is a column of tight buds long before the yellow works up it a few at
+#             a time, which is the other thing the plant is known for.
+#   flowering the full standard, unchanged.
+#
+# Its trademark is raising that standard — the only part in the set that GROWS, and the
+# tallest thing in frame. It stays with the open flower, so mastery is what buys the
+# height.
+
+BUD_PALETTE = {
+    "K": (186, 196, 158, 255),   # closed floret highlight — grey-green, no yellow yet
+    "j": (112, 124, 88, 255),    # closed floret deep
+    "J": (82, 92, 64, 255),      # closed floret shadow
+}
+
+# --- Sprout: the first-year rosette -----------------------------------------
+YOUNG_BODY_W, YOUNG_BODY_H = 19, 11
+YOUNG_BODY_AT = (7, 14)
+
+
+def _young_body(rx=8.6, ry=4.8, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        YOUNG_BODY_W, YOUNG_BODY_H, 9.0, 5.0, rx, ry, 0, 0.0, 5.2, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="LlknFo",
+    )
+
+
+YOUNG_BODY = _young_body()
+YOUNG_BODY_LEFT = _young_body(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_BODY_RIGHT = _young_body(face_dx=1.3, light=(-1.25, -0.65))
+
+# Woolly from the first leaf: the felted surface is the identification, and it is what
+# separates mullein from every other grey rosette.
+SEED_HAIRS = [
+    "h h h h h h h",
+    " h h h h h h ",
+]
+SEED_LEAF_L = [
+    "  oooooo",
+    " oLLlLLko",
+    "oLllkkkno",
+    " ookkknno",
+]
+# Taller than the adult's stub, and that is not decoration: a first-year rosette sits on
+# the ground, so its base has to REACH the body rather than hang below the leaves with a
+# blank row between. A detached three-pixel stub is invisible while authoring and obvious
+# in the render.
+SEED_BASE = [
+    "olklo",
+    "olklo",
+    "olklo",
+    "onkno",
+    " ooo ",
+]
+
+SEED_LEAF_R = [
+    "oooooo  ",
+    "okLLlLLo",
+    "onkkkllLo",
+    "onnkkkoo",
+]
+
+# --- Growing: the spike up, closed ------------------------------------------
+BUD_SPIKE_W, BUD_SPIKE_H = 11, 11
+
+
+def _bud_spike(rx=3.8, ry=5.2, light=(-0.85, -0.65)):
+    # The same hard lobing as the open spike — it is a stack of florets either way — but
+    # short, and in the closed grey-green rather than the yellow.
+    return flower_head(
+        BUD_SPIKE_W, BUD_SPIKE_H, 5.0, 5.4, rx, ry, 7, 0.34, 0, 0,
+        light=light, trim_tail=False, chars="KljJFo",
+    )
+
+
+BUD_SPIKE = _bud_spike()
+BUD_SPIKE_TALL = _bud_spike(ry=6.0)
+
+BUD_BODY_AT = (5, 15)
+
+
+def _bud_body(rx=10.4, ry=5.2, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        23, 12, 11.0, 5.6, rx, ry, 0, 0.0, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="LlknFo",
+    )
+
+
+BUD_BODY = _bud_body()
+BUD_BODY_LEFT = _bud_body(face_dx=-1.5, light=(-0.35, -0.65))
+BUD_BODY_RIGHT = _bud_body(face_dx=1.5, light=(-1.25, -0.65))
+
+BUD_HAIRS = [
+    "h h h h h h h h h",
+    " h h h h h h h h ",
+]
+
+# A slow breath, and slower still when young. Mullein does not bob, lean or hop at any
+# age — the whole creature is composure — so what changes with stage is only how much
+# of itself it has to be composed about.
+S_BOB = [0, 0, 0, -1, -1, -1, 0, 0]
+S_BODY = [None, "left", "left", None, None, "right", None, None]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 0, 0, -1, -1, -1, -1, 0, 0, 0]
+G_BODY = [None, "left", "left", None, None, None, "right", "right", None, None]
+G_SPIKE = [None, None, None, "tall", "tall", "tall", None, None, None, None]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 SPRITE = {
     "herbId": "verbascum-thapsus",
     "personality": "proud",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            # No spike: a first-year mullein has not made one, and that is the plant's
+            # own schedule rather than a decision about baby versions.
+            "hide": ["spike", "cheeks"],
+            "swap": {
+                "body": YOUNG_BODY,
+                "hairs": SEED_HAIRS,
+                "leafL": SEED_LEAF_L,
+                "leafR": SEED_LEAF_R,
+                "base": SEED_BASE,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "body": {"left": YOUNG_BODY_LEFT, "right": YOUNG_BODY_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "body": YOUNG_BODY_AT,
+                "hairs": (9, 16),
+                "base": (14, 23),
+                "leafL": (3, 22),
+                "leafR": (22, 22),
+                **seat_young(YOUNG_BODY_AT, YOUNG_BODY, cheeks=False, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "body": {"dy": S_BOB, "art": S_BODY},
+                "hairs": {"dy": S_BOB},
+                "eyes": {"dy": S_BOB, "art": S_BLINK},
+                "mouth": {"dy": S_BOB},
+                "leafL": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "base": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "palette": BUD_PALETTE,
+            "swap": {
+                "spike": BUD_SPIKE,
+                "body": BUD_BODY,
+                "hairs": BUD_HAIRS,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_BODY)[2]),
+            },
+            "variants": {
+                "spike": {"tall": BUD_SPIKE_TALL},
+                "body": {"left": BUD_BODY_LEFT, "right": BUD_BODY_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "spike": (11, 9),
+                "body": BUD_BODY_AT,
+                "hairs": (8, 17),
+                "base": (14, 25),
+                "leafL": (1, 19),
+                "leafR": (21, 19),
+                **seat_young(BUD_BODY_AT, BUD_BODY, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "spike": {"dy": G_BOB, "art": G_SPIKE},
+                "body": {"dy": G_BOB, "art": G_BODY},
+                "hairs": {"dy": G_BOB},
+                "eyes": {"dy": G_BOB, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB},
+                "mouth": {"dy": G_BOB},
+                "leafL": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+                "base": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 6,

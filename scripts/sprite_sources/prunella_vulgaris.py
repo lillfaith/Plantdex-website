@@ -23,8 +23,9 @@ plant heals anything. The card's Healing Traits heading and the disclaimer at /s
 are the reference; a pixel creature mending its own leaf is a pun on a name.
 """
 
-from _face import FACE_PALETTE, face_shift, feature_parts
+from _face import FACE_PALETTE, face_box, face_shift, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 PALETTE = {
     **FACE_PALETTE,
@@ -113,6 +114,124 @@ STEM = [
 ]
 
 HEAD_AT = (6, 12)
+
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME QUIETLY CAPABLE SELF-HEAL, YOUNGER. Its trademark is mending a notch in its OWN
+# leaf — a pun on the common name, never anybody else's leaf — and that stays with the open
+# flower. A seedling carries the same bitten margin and cannot do anything about it yet,
+# which is a better reason for the adult's trick to feel earned than any amount of size.
+#
+# THE BOTANY DECIDES WHAT IS DRAWN:
+#
+#   sprout    leaves only, no club. The bitten notch is already there.
+#   growing   the club up and still GREEN. A self-heal club is a tight green cone of
+#             bracts long before the hooded purple florets push out of it, so the middle
+#             stage is the plant's own colour rather than a paler version of the last one.
+#   flowering the purple club, unchanged.
+
+BUD_PALETTE = {
+    "K": (150, 206, 172, 255),   # closed club highlight — still leaf-green
+    "k": (104, 160, 128, 255),   # closed club mid
+    "j": (70, 116, 94, 255),     # closed club deep
+    "J": (48, 82, 68, 255),      # closed club shadow
+}
+
+# --- Sprout: leaves only ----------------------------------------------------
+YOUNG_HEAD_AT = (8, 13)
+
+
+def _young_head(rx=6.6, ry=5.0, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 11, 7.0, 5.2, rx, ry, 6, 0.12, 5.2, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.2, light=(-1.25, -0.65))
+
+# The notch is bitten out of the margin from the very first leaf: this is the one sprite
+# in the deck whose resting pose is of something that needs mending, and being too young
+# to mend it is the point.
+SEED_LEAF_TORN = [
+    " oooooo",
+    "oGGgo  o",
+    "oGggo  o",
+    " ondnnno",
+]
+SEED_LEAF_R = [
+    "oooooo ",
+    "ogGGGGo",
+    "oddgggo",
+    "onnnnno",
+]
+SEED_STEM = [
+    "odgo",
+    "odgo",
+    "odgo",
+    " oo ",
+]
+
+# --- Growing: the club up, still green --------------------------------------
+BUD_CLUB_W, BUD_CLUB_H = 13, 9
+
+
+def _bud_club():
+    return flower_head(
+        BUD_CLUB_W, BUD_CLUB_H, 6.0, 4.2, 5.6, 4.0, 8, 0.13, 0, 0,
+        light=(-0.85, -0.75), trim_tail=False, chars="KkjJFo",
+    )
+
+
+BUD_CLUB = _bud_club()
+
+BUD_HEAD_AT = (7, 13)
+
+
+def _bud_head(rx=7.6, ry=5.8, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 13, 8.0, 6.2, rx, ry, 6, 0.12, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_HEAD = _bud_head()
+BUD_HEAD_LEFT = _bud_head(face_dx=-1.4, light=(-0.35, -0.65))
+BUD_HEAD_RIGHT = _bud_head(face_dx=1.4, light=(-1.25, -0.65))
+
+BUD_LEAF_TORN = [
+    "  oooooooo",
+    " oGGGgo   o",
+    "oGGgggo   o",
+    " oondnnnnno",
+]
+BUD_LEAF_R = [
+    "oooooooo",
+    "ogGGGGGo",
+    "oddggggo",
+    "onnnnnno",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(BUD_HEAD, BUD_HEAD_LEFT)
+G_R_DX, _ = face_shift(BUD_HEAD, BUD_HEAD_RIGHT)
+
+# It looks at the notch, and then away. That is the whole loop at this age: aware of the
+# damage, not yet able to do anything about it.
+S_BOB = [0, 0, -1, -1, -1, 0, 0, 0]
+S_HEAD = [None, "left", "left", "left", None, "right", None, None]
+S_DX = [0, S_L_DX, S_L_DX, S_L_DX, 0, S_R_DX, 0, 0]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 0, -1, -1, -1, -1, 0, 0, 0, 0]
+G_HEAD = [None, "left", "left", None, None, None, "right", "right", None, None]
+G_DX = [0, G_L_DX, G_L_DX, 0, 0, 0, G_R_DX, G_R_DX, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 # It looks down at the notch while it mends it, so the features carry the head's offset
 # plus the measured distance the face slides inside a turned head.
 TURN_L = face_shift(HEAD, HEAD_LEFT)[0]
@@ -121,6 +240,77 @@ FACE_DX = [0, 0, TURN_L, TURN_L, TURN_L, TURN_L, 0, 0, 0, 0, 0, 0, 0, 0]
 SPRITE = {
     "herbId": "prunella-vulgaris",
     "personality": "quietly capable",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            # No club, and no mending: the trick belongs to the open flower.
+            "hide": ["club", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafTorn": SEED_LEAF_TORN,
+                "leafR": SEED_LEAF_R,
+                "stem": SEED_STEM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "stem": (14, 23),
+                "leafTorn": (3, 20),
+                "leafR": (20, 20),
+                **seat_young(YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "head": {"dy": S_BOB, "art": S_HEAD},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "leafTorn": {"dy": [0] * 8},
+                "leafR": {"dy": [0] * 8},
+                "stem": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": BUD_PALETTE,
+            "swap": {
+                "club": BUD_CLUB,
+                "head": BUD_HEAD,
+                "leafTorn": BUD_LEAF_TORN,
+                "leafR": BUD_LEAF_R,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_HEAD)[2]),
+            },
+            "variants": {
+                "head": {"left": BUD_HEAD_LEFT, "right": BUD_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "club": (9, 8),
+                "head": BUD_HEAD_AT,
+                "stem": (14, 23),
+                "leafTorn": (1, 20),
+                "leafR": (22, 20),
+                **seat_young(BUD_HEAD_AT, BUD_HEAD, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "club": {"dy": G_BOB},
+                "head": {"dy": G_BOB, "art": G_HEAD},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "leafTorn": {"dy": [0] * 10},
+                "leafR": {"dy": [0] * 10},
+                "stem": {"dy": [0] * 10},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,

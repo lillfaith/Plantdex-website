@@ -30,7 +30,9 @@ so, and this sprite is deliberately stylised - the card art and the identificati
 section remain the reference for anyone actually looking at a plant outdoors.
 """
 
+from _face import face_box, face_shift
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 # Authored at 32x28, the house size.
 PALETTE = {
@@ -181,9 +183,201 @@ STEM = [
     " oo ",
 ]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME ALERT NETTLE, YOUNGER — and the sting is there from the first leaf, because it
+# is. A nettle seedling stings exactly as much as an adult one does, so nothing here gets
+# softened: the hairs are on every stage, and the scowl only deepens.
+#
+# NETTLE IS THE AWKWARD FLOWERING CASE. Its flowers are not a bloom at all — they are
+# inconspicuous green CATKINS that dangle in the leaf axils, which is why the deck's own
+# adult portrait has no flower part to close up. So the middle stage grows them where they
+# actually grow: on the guard leaves, hanging from the joint. That is the plant's real
+# behaviour rather than a bud invented to fill the slot.
+#
+#   sprout    two leaves and a stem, stinging already, no catkins.
+#   growing   catkins forming in the axils, still short and tight.
+#   flowering the full plant, unchanged.
+
+# --- Sprout: two leaves, already stinging -----------------------------------
+YOUNG_BODY_W, YOUNG_BODY_H = 15, 11
+YOUNG_BODY_AT = (8, 15)
+
+
+def _young_body(rx=6.6, ry=5.0, face_dx=0.0, light=(-0.85, -0.65), amp=0.16):
+    return flower_head(
+        YOUNG_BODY_W, YOUNG_BODY_H, 7.0, 5.4, rx, ry, 7, amp, 5.2, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_BODY = _young_body()
+YOUNG_BODY_LEFT = _young_body(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_BODY_RIGHT = _young_body(face_dx=1.2, light=(-1.25, -0.65))
+# Bristling: the same body with the serrations pushed out. A young nettle that could not
+# bristle would be the one softening this species allows itself, so it can.
+YOUNG_BODY_BRISTLE = _young_body(amp=0.26)
+
+SEED_EAR_L = [
+    "  os",
+    " osGGdo",
+    "osGGgdno",
+    " ogdnno",
+    "  oo",
+]
+SEED_EAR_R = [
+    "so  ",
+    "odGGso",
+    "onndGGso",
+    " onndgo",
+    "  oo",
+]
+SEED_STEM = [
+    "oro",
+    "oro",
+    "ooo",
+]
+
+# --- Growing: catkins in the axils ------------------------------------------
+#
+# Short, tight and GREEN, hanging from the leaf joint. Nothing about a nettle's flowering
+# is showy and drawing it showy would be inventing a different plant.
+GUARD_L_CATKIN = [
+    "   oso",
+    " osGGdo",
+    "osGGgdno",
+    " ogdnno",
+    "  oodo",
+    "   odo",
+    "   oo",
+]
+GUARD_R_CATKIN = [
+    "oso",
+    "odGGso",
+    "onndGGso",
+    " onndgo",
+    " odoo",
+    " odo",
+    " oo",
+]
+
+BUD_BODY_AT = (7, 14)
+
+
+def _bud_body(rx=7.8, ry=6.6, face_dx=0.0, light=(-0.85, -0.65), amp=0.16):
+    return flower_head(
+        17, 15, 8.0, 7.0, rx, ry, 7, amp, 5.4, 4.0,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_BODY = _bud_body()
+BUD_BODY_LEFT = _bud_body(face_dx=-1.4, light=(-0.35, -0.65))
+BUD_BODY_RIGHT = _bud_body(face_dx=1.4, light=(-1.25, -0.65))
+BUD_BODY_BRISTLE = _bud_body(amp=0.26)
+
+S_L_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_LEFT)
+S_R_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_RIGHT)
+G_L_DX, _ = face_shift(BUD_BODY, BUD_BODY_LEFT)
+G_R_DX, _ = face_shift(BUD_BODY, BUD_BODY_RIGHT)
+
+# It watches, and bristles when something gets close. Faster than most stages in the deck
+# even when young, because being quick to react IS this creature.
+S_BOB = [0, 0, -1, -1, 0, 0, 0, 0]
+S_BODY = [None, "left", None, "bristle", "bristle", "right", None, None]
+S_DX = [0, S_L_DX, 0, 0, 0, S_R_DX, 0, 0]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 0, -1, -1, -1, 0, 0, 0, 0, 0]
+G_BODY = [None, "left", None, "bristle", "bristle", "bristle", "right", None, None, None]
+G_DX = [0, G_L_DX, 0, 0, 0, 0, G_R_DX, 0, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 SPRITE = {
     "herbId": "urtica-dioica",
     "personality": "alert",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(12, "sprout"),
+            # No catkins yet, and no lower guard leaves — a seedling is two leaves and a
+            # stem. The brows go with the smaller face; the scowl lives in the eyes.
+            "hide": ["guardL", "guardR", "brows", "cheeks"],
+            "swap": {
+                "body": YOUNG_BODY,
+                "earL": SEED_EAR_L,
+                "earR": SEED_EAR_R,
+                "stem": SEED_STEM,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "body": {
+                    "left": YOUNG_BODY_LEFT,
+                    "right": YOUNG_BODY_RIGHT,
+                    "bristle": YOUNG_BODY_BRISTLE,
+                },
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "body": YOUNG_BODY_AT,
+                "earL": (3, 16),
+                "earR": (21, 16),
+                "stem": (14, 23),
+                **seat_young(YOUNG_BODY_AT, YOUNG_BODY, cheeks=False, eye_dy=1, mouth_dy=3),
+            },
+            "motion": {
+                "body": {"dy": S_BOB, "art": S_BODY},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "earL": {"dy": [0] * 8},
+                "earR": {"dy": [0] * 8},
+                "stem": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(12, "growing"),
+            "hide": ["brows"],
+            "swap": {
+                "body": BUD_BODY,
+                "guardL": GUARD_L_CATKIN,
+                "guardR": GUARD_R_CATKIN,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_BODY)[2]),
+            },
+            "variants": {
+                "body": {
+                    "left": BUD_BODY_LEFT,
+                    "right": BUD_BODY_RIGHT,
+                    "bristle": BUD_BODY_BRISTLE,
+                },
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "body": BUD_BODY_AT,
+                "earL": (2, 13),
+                "earR": (20, 13),
+                "guardL": (4, 19),
+                "guardR": (21, 19),
+                "stem": (14, 23),
+                **seat_young(BUD_BODY_AT, BUD_BODY, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "body": {"dy": G_BOB, "art": G_BODY},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "earL": {"dy": [0] * 10},
+                "earR": {"dy": [0] * 10},
+                "guardL": {"dy": [0] * 10},
+                "guardR": {"dy": [0] * 10},
+                "stem": {"dy": [0] * 10},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 12,

@@ -124,8 +124,18 @@ def apply_stage(sprite: dict, stage: str, recipe: dict) -> dict:
         staged["size"] = recipe["size"]
     if "fps" in recipe:
         staged["fps"] = recipe["fps"]
-    if "palette" in recipe:
-        staged["palette"] = {**sprite["palette"], **recipe["palette"]}
+    # The shared face colours underneath everything, because a stage always reseats the
+    # shared young face onto its new organ — and a species whose adult never drew an eye
+    # glint has no `W` in its own palette, so the build died on a colour it never asked
+    # for. Species values are layered ON TOP, so a species that deliberately authors its
+    # own face or eye shade keeps it; only the ones it never declared are filled in.
+    from _face import FACE_PALETTE
+
+    staged["palette"] = {
+        **FACE_PALETTE,
+        **sprite["palette"],
+        **recipe.get("palette", {}),
+    }
 
     hidden = set(recipe.get("hide", ()))
     swaps = recipe.get("swap", {})

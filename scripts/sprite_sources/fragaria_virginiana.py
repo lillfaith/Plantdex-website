@@ -33,8 +33,9 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_box, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 PALETTE = {
     **FACE_PALETTE,
@@ -179,9 +180,177 @@ RUNNER = [
 
 HEAD_AT = (6, 7)
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE SAME SWEET STRAWBERRY, YOUNGER. Its trademark is offering the ripe berry, and that
+# stays with the last stage — a seedling has nothing to give yet, which is a better reason
+# for the offer to land than any change of expression.
+#
+# RIPENESS IS THE ONE THING A PICTURE OF THIS PLANT CAN GET DANGEROUSLY WRONG, so no
+# earlier stage carries reddening fruit. The sprout has none at all and the middle stage
+# has a closed white-green flower bud, which is what the plant is actually doing then.
+#
+#   sprout    trifoliate leaves and a runner, no flower and no fruit. A strawberry
+#             seedling spreads before it does anything else, which is why it takes over a
+#             bed — so the runner is on it from the first stage.
+#   growing   in bud: the flower closed, green with the white only just showing at the
+#             seams. Not a small berry, and not a pale one.
+#   flowering the open plant with its fruit, unchanged.
+
+BUD_PALETTE = {
+    "K": (216, 236, 198, 255),   # bud highlight — green-white sepals
+    "k": (168, 200, 146, 255),   # bud mid
+    "j": (118, 154, 104, 255),   # bud deep
+    "J": (82, 110, 76, 255),     # bud shadow
+}
+
+# --- Sprout: leaves and a runner --------------------------------------------
+YOUNG_HEAD_AT = (8, 15)
+
+
+def _young_head(rx=6.6, ry=5.0, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 11, 7.0, 5.2, rx, ry, 5, 0.12, 5.2, 3.4,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.2, light=(-1.25, -0.65))
+
+# Three leaflets, toothed, because that is what says strawberry before any fruit does.
+SEED_LEAVES = [
+    "  o o o o o  ",
+    " ooGoGoGoGoo ",
+    "oGGGGGGGGGGGo",
+    " oggdgddgdgo ",
+    "  ooooooooo  ",
+]
+
+# --- Growing: the flower in bud ---------------------------------------------
+BUD_FLOWER = [
+    " oo ",
+    "oKko",
+    "oKko",
+    "okjo",
+    " oJo",
+]
+
+BUD_HEAD_AT = (7, 11)
+
+
+def _bud_head(rx=7.6, ry=5.8, face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        17, 13, 8.0, 6.2, rx, ry, 5, 0.12, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+BUD_HEAD = _bud_head()
+BUD_HEAD_LEFT = _bud_head(face_dx=-1.4, light=(-0.35, -0.65))
+BUD_HEAD_RIGHT = _bud_head(face_dx=1.4, light=(-1.25, -0.65))
+
+BUD_LEAVES = [
+    "  o o o o o o  ",
+    " ooGoGoGoGoGoo ",
+    "oGGGGGGGGGGGGGo",
+    " oggdgddgddgdo ",
+    "  ooooooooooo  ",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(BUD_HEAD, BUD_HEAD_LEFT)
+G_R_DX, _ = face_shift(BUD_HEAD, BUD_HEAD_RIGHT)
+
+S_BOB = [0, 0, -1, -1, -1, 0, 0, 0]
+S_HEAD = [None, "left", "left", None, "right", None, None, None]
+S_DX = [0, S_L_DX, S_L_DX, 0, S_R_DX, 0, 0, 0]
+S_BLINK = [None, None, None, None, None, None, "blink", None]
+
+G_BOB = [0, 0, -1, -1, -1, -1, 0, 0, 0, 0]
+G_HEAD = [None, "left", "left", None, None, None, "right", "right", None, None]
+G_DX = [0, G_L_DX, G_L_DX, 0, 0, 0, G_R_DX, G_R_DX, 0, 0]
+G_BLINK = [None] * 8 + ["blink", None]
+
+
 SPRITE = {
     "herbId": "fragaria-virginiana",
     "personality": "sweet",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(8, "sprout"),
+            # No fruit of any colour, and no flower either.
+            "hide": ["berry", "young", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leaves": SEED_LEAVES,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leaves": (9, 11),
+                "stalkL": (5, 20),
+                "stalkR": (21, 20),
+                "runner": (13, 22),
+                **seat_young(YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "head": {"dy": S_BOB, "art": S_HEAD},
+                "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "mouth": {"dy": S_BOB, "dx": S_DX},
+                "leaves": {"dy": S_BOB},
+                "stalkL": {"dy": [0] * 8},
+                "stalkR": {"dy": [0] * 8},
+                "runner": {"dy": [0] * 8},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(8, "growing"),
+            "palette": BUD_PALETTE,
+            "hide": ["berry"],
+            "swap": {
+                "head": BUD_HEAD,
+                "leaves": BUD_LEAVES,
+                "young": BUD_FLOWER,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+                "cheeks": young_cheeks(face_box(BUD_HEAD)[2]),
+            },
+            "variants": {
+                "head": {"left": BUD_HEAD_LEFT, "right": BUD_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"]},
+            },
+            "origins": {
+                "head": BUD_HEAD_AT,
+                "leaves": (8, 6),
+                "stalkL": (4, 17),
+                "stalkR": (21, 17),
+                "runner": (13, 21),
+                "young": (24, 18),
+                **seat_young(BUD_HEAD_AT, BUD_HEAD, eye_dy=2, mouth_dy=5),
+            },
+            "motion": {
+                "head": {"dy": G_BOB, "art": G_HEAD},
+                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB, "dx": G_DX},
+                "mouth": {"dy": G_BOB, "dx": G_DX},
+                "leaves": {"dy": G_BOB},
+                "young": {"dy": [0] * 10},
+                "stalkL": {"dy": [0] * 10},
+                "stalkR": {"dy": [0] * 10},
+                "runner": {"dy": [0] * 10},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,
