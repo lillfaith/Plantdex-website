@@ -23,7 +23,7 @@ drawing of a leaf against the light is a picture of a name, not advice.
 """
 
 from _face import FACE_PALETTE, face_box, face_shift, face_shift, feature_parts
-from _flowerhead import flower_head
+from _flowerhead import flower_head, petal_ring
 from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
 PALETTE = {
@@ -40,30 +40,98 @@ PALETTE = {
     "L": (231, 247, 201, 255),   # the lit leaf - backlit green, nearly white
     "l": (217, 243, 181, 255),   # lit leaf mid
     "P": (251, 249, 230, 255),   # a perforation with the light coming through it
+    "A": (243, 181, 70, 255),    # anther — a shade deeper than the petals it sits on
+    "f": (253, 247, 219, 255),   # filament — near-white, so the burst reads against yellow
 }
 
-HEAD_W, HEAD_H = 19, 15
+HEAD_W, HEAD_H = 27, 23
+
+# The flower's geometry in one place, because three things are laid out from it: the
+# petals, the stamen corona and the black marginal dots. Typing any of them independently
+# is how a mark ends up floating beside the petal it belongs to.
+FLOWER_CX, FLOWER_CY = 13.0, 11.0
+FLOWER_RING = 8.4          # how far each petal centre sits from the middle
+PETAL_RX, PETAL_RY = 4.6, 4.2
+FACE_RX, FACE_RY = 5.8, 4.5
 
 
 def _head(face_dx=0.0, light=(-0.85, -0.65)):
-    # Five lobes: the five petals of a hypericum flower, held flat and slightly ragged.
-    return flower_head(
-        HEAD_W, HEAD_H, 9.0, 7.0, 8.4, 6.6, 5, 0.16, 5.0, 4.2,
-        face_dx=face_dx, light=light, trim_tail=False, chars="YyuUFo",
+    """The flower as FIVE SEPARATE PETALS, which is what it is.
+
+    This was one lobed disc from `flower_head`, and at every lobe depth it was wrong:
+    shallow it read as a rounded blob, deep it tore into detached fragments. A Hypericum
+    flower is five petals with daylight between them, so `petal_ring` lays each one down as
+    its own ellipse and lights it separately — shading the ring as a single object is what
+    made the far side uniformly dark and the whole thing read as a disc again.
+    """
+    return petal_ring(
+        HEAD_W, HEAD_H, FLOWER_CX, FLOWER_CY, FLOWER_RING,
+        PETAL_RX, PETAL_RY, 5, FACE_RX, FACE_RY,
+        face_dx=face_dx, light=light, chars="YyuUFo",
     )
 
 
 HEAD = _head()
-HEAD_LEFT = _head(face_dx=-1.5, light=(-0.35, -0.65))
-HEAD_RIGHT = _head(face_dx=1.5, light=(-1.25, -0.65))
+HEAD_LEFT = _head(face_dx=-1.4, light=(-0.35, -0.65))
+HEAD_RIGHT = _head(face_dx=1.4, light=(-1.25, -0.65))
 
-# The black dots round the petal margins, which with the perforations are the two things
-# that identify this plant and nothing else in the deck has either.
-DOTS = [
-    "K       K",
-    " K     K",
-    "  K   K",
-]
+
+def _ring_marks(radius_x, radius_y, count, mark, inner=None, inner_mark="f"):
+    """Marks laid on the flower's OWN geometry rather than typed in by hand.
+
+    Both the stamen burst and the black marginal dots are features of the petal ring, so
+    they are placed from the same centre and radii the petals use. Hand-placed marks on a
+    generated shape drift off it the moment the shape is re-proportioned — the mismatch
+    `_face` exists to prevent, one part over.
+
+    Returns the rows and stashes the offset the caller needs to seat them.
+    """
+    import math
+
+    cx, cy = FLOWER_CX, FLOWER_CY
+    marks: dict[tuple[int, int], str] = {}
+    for i in range(count):
+        angle = -math.pi / 2 + i * 2 * math.pi / count
+        if inner is not None:
+            marks.setdefault(
+                (round(cx + inner * radius_x * math.cos(angle)),
+                 round(cy + inner * radius_y * math.sin(angle))),
+                inner_mark,
+            )
+        marks[(round(cx + radius_x * math.cos(angle)),
+               round(cy + radius_y * math.sin(angle)))] = mark
+
+    left = min(x for x, _ in marks)
+    top = min(y for _, y in marks)
+    width = max(x for x, _ in marks) - left + 1
+    height = max(y for _, y in marks) - top + 1
+    grid = [[" "] * width for _ in range(height)]
+    for (x, y), ch in marks.items():
+        grid[y - top][x - left] = ch
+    return ["".join(row) for row in grid], (left, top)
+
+
+# THE STAMEN BURST, and it is the single most identifying thing about this flower — a
+# Hypericum throws a dense spray of stamens straight out of its centre, far enough that
+# the flower reads as fringed rather than flat. Without it, five yellow petals could be
+# any number of things in this deck.
+#
+# A CORONA, NOT A FAN. The first attempt splayed them wide across the top like a peacock's
+# tail; at this size the filaments landed a pixel apart on the petals and read as speckle,
+# and the outermost anthers floated clear of the flower altogether. A tight ring just
+# outside the face is what the eye actually reads as a burst, and every pixel of it sits on
+# a petal, so nothing detaches.
+# The inner ring sits just OUTSIDE the face, not inside it: filaments drawn within the
+# face oval land on the creature's cheek, and the stamens are drawn over the head.
+STAMENS, STAMENS_AT = _ring_marks(7.4, 6.4, 12, "A", inner=0.82)
+# Thrown a little further, for the frames the creature lifts its leaf and the flower opens
+# with the gesture rather than merely watching it.
+STAMENS_WIDE, _ = _ring_marks(8.2, 7.1, 12, "A", inner=0.78)
+
+# The black glandular dots along the petal margins — the other half of the identification.
+DOTS, DOTS_AT = _ring_marks(FLOWER_RING + 0.72 * PETAL_RX,
+                            FLOWER_RING + 0.72 * PETAL_RY, 5, "K")
+
 
 # The leaf, held up. Three states: ordinary, backlit, and backlit with every perforation
 # showing. The middle state matters - a leaf that lit its dots the same frame it lifted
@@ -120,7 +188,7 @@ STEM = [
     " oo ",
 ]
 
-HEAD_AT = (6, 6)
+HEAD_AT = (2, 1)
 
 # --- Growth stages -----------------------------------------------------------
 #
@@ -153,19 +221,24 @@ BUD_PALETTE = {
 # HAND-DRAWN, for the same reason violet's is: a leaf is not a rounded organ, and this one
 # has to carry the perforations as well. The `F` patch is measured by `face_box` exactly
 # as a generated head would be.
-LEAF_HEAD_AT = (7, 14)
+LEAF_HEAD_AT = (7, 11)
 
+# GREEN, with the perforations as pale pinpricks — not the backlit near-white the adult
+# uses for its trademark. Drawn in the lit palette this stage came out as a white blob:
+# the leaf lost its colour, the trait lost its contrast against it, and the seedling
+# stopped looking like a plant at all. The backlighting is a thing the mature creature
+# DOES; the perforations are a thing the leaf simply has.
 LEAF_HEAD = [
     "      ooooo      ",
-    "   oooLPLLPLooo  ",
-    "  oLLPLLLLLPLLo  ",
-    " oLPoFFFFFFFoPLo ",
-    "oLLoFFFFFFFFFoLLo",
-    "oLPoFFFFFFFFFoPLo",
-    "oLLoFFFFFFFFFoLLo",
-    " oLoooooooooooLo ",
-    "  ollPlllPllllo  ",
-    "   ollllllllo    ",
+    "   oooGPGGPGooo  ",
+    "  oGGPGGGGGPGGo  ",
+    " oGPoFFFFFFFoPGo ",
+    "oGGoFFFFFFFFFoGGo",
+    "oGPoFFFFFFFFFoPGo",
+    "oGGoFFFFFFFFFoGGo",
+    " oGoooooooooooGo ",
+    "  oggPgggPggggo  ",
+    "   oggdggddgo    ",
     "     ooooooo     ",
 ]
 
@@ -182,7 +255,7 @@ SEED_STEM = [
 
 # --- Growing: the pointed bud -----------------------------------------------
 BUD_W, BUD_H = 15, 14
-BUD_AT = (9, 10)
+BUD_AT = (9, 6)
 
 
 def _bud(rx=6.4, ry=6.8, face_dx=0.0, face_dy=0.6, light=(-0.85, -0.65)):
@@ -233,7 +306,9 @@ SPRITE = {
             "fps": stage_fps(8, "sprout"),
             # No flower, so no petal dots. The lifted-leaf trick belongs to the adult, so
             # the seedling keeps a plain second leaf and never lights anything.
-            "hide": ["dots", "leafUp", "cheeks"],
+            # The stamens go with the flower. A seedling with a burst of them floating
+            # above it is the shape of bug a new part introduces to every stage at once.
+            "hide": ["dots", "leafUp", "stamens", "cheeks"],
             "swap": {
                 "head": LEAF_HEAD,
                 "pair": SEED_PAIR,
@@ -268,7 +343,8 @@ SPRITE = {
             "frames": 10,
             "fps": stage_fps(8, "growing"),
             "palette": BUD_PALETTE,
-            "hide": ["leafUp"],
+            # A closed bud shows no stamens; they are inside it.
+            "hide": ["leafUp", "stamens"],
             "swap": {
                 "head": BUD,
                 "dots": BUD_DOTS,
@@ -282,7 +358,7 @@ SPRITE = {
             },
             "origins": {
                 "head": BUD_AT,
-                "dots": (13, 12),
+                "dots": (13, 8),
                 "pair": (11, 20),
                 "leafStill": (20, 18),
                 "stem": (14, 22),
@@ -313,8 +389,24 @@ SPRITE = {
             "rows": HEAD,
             "variants": {"left": HEAD_LEFT, "right": HEAD_RIGHT},
         },
-        {"name": "dots", "origin": (11, 7), "rows": DOTS},
-        *feature_parts(HEAD_AT, HEAD, eyes="round", mouth="smile", eye_dy=1, mouth_dy=4),
+        {
+            "name": "dots",
+            "origin": (HEAD_AT[0] + DOTS_AT[0], HEAD_AT[1] + DOTS_AT[1]),
+            "rows": DOTS,
+        },
+        {
+            # Over the petals, UNDER the face — so the burst appears to come from behind
+            # the creature's head the way it comes from behind the flower's centre.
+            "name": "stamens",
+            "origin": (HEAD_AT[0] + STAMENS_AT[0], HEAD_AT[1] + STAMENS_AT[1]),
+            "rows": STAMENS,
+            "variants": {"wide": STAMENS_WIDE},
+        },
+        # Seated on the face's WIDEST rows, not its top. The petal ring parts at the rim,
+        # so a turned pose carves a shorter face than the neutral one — and features
+        # placed a row from the top then hang off it the moment the turn shifts them
+        # sideways, which is the one frame a viewer is watching the eyes.
+        *feature_parts(HEAD_AT, HEAD, eyes="round", mouth="smile", eye_dy=2, mouth_dy=5),
         {
             # Drawn last, over the flower: the whole gesture is the leaf being held UP,
             # in front of the creature, between it and the light.
@@ -345,6 +437,12 @@ SPRITE = {
             "art": HEAD_ART,
             "dy": [0, 0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0],
         },
+        "stamens": {
+            "art": [None, None, None, "wide", "wide", "wide", "wide", "wide", "wide",
+                    None, None, None, None, None],
+            "dy": [0, 0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0],
+        },
+        "dots": {"dy": [0, 0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0]},
         "eyes": {
             "art": [None, None, "wide", "wide", "wide", "wide", "wide", "wide",
                     "happy", None, None, None, "blink", None],
