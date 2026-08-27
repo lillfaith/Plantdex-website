@@ -20,8 +20,9 @@ SAFETY: a portrait, never an identification aid. Deliberately stylised, and it s
 apart from the card's identification content, which stays the reference outdoors.
 """
 
-from _face import FACE_PALETTE, feature_parts
+from _face import FACE_PALETTE, face_shift, feature_parts
 from _flowerhead import flower_head
+from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps
 
 PALETTE = {
     **FACE_PALETTE,
@@ -120,9 +121,214 @@ HEAD_AT = (8, 11)
 # that reaches eight pixels - the plume genuinely folds over.
 BOW = [0, 0, 1, 3, 5, 7, 8, 8, 8, 6, 4, 2, 0, 0]
 
+# --- Growth stages -----------------------------------------------------------
+#
+# THE BOW IS THE PLUME, so the bow arrives when the plume does. A creature with nothing
+# above its head to fold over cannot bow; it can only nod, and pretending otherwise would
+# be animating a structure that is not drawn.
+#
+#   sprout    a leafy shoot. No plume at all — goldenrod spends its first season as
+#             narrow three-veined leaves up a stem, and there is nothing gold about it.
+#   growing   the panicle formed and still GREEN. This is the honest middle stage and it
+#             is easy to miss: a goldenrod plume is a tight green spray for weeks before
+#             it opens, and the plant is unrecognisable to most people in that state.
+#             It folds partway — as far as `mid` — and no further.
+#   flowering gold, and the full seven-frame bow. Unchanged.
+#
+# THE BLAME STAYS WITH THE FLOWER, which matters for this card in particular. Goldenrod
+# is accused of hay fever it does not cause, and the accusation happens when it is a
+# conspicuous gold plume beside an inconspicuous ragweed. A green goldenrod is nobody's
+# suspect, so the two earlier stages are drawn as what they are: an ordinary weed.
+
+PLUME_PALETTE = {
+    "K": (172, 208, 122, 255),   # green plume highlight
+    "k": (126, 168, 90, 255),    # green plume mid
+    "j": (88, 124, 68, 255),     # green plume deep
+}
+
+# --- Sprout: leaves up a stem, and no plume ---------------------------------
+YOUNG_HEAD_AT = (9, 12)
+
+
+def _young_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        15, 13, 7.0, 6.0, 7.2, 6.0, 6, 0.12, 5.4, 3.6,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+YOUNG_HEAD = _young_head()
+YOUNG_HEAD_LEFT = _young_head(face_dx=-1.3, light=(-0.35, -0.65))
+YOUNG_HEAD_RIGHT = _young_head(face_dx=1.3, light=(-1.25, -0.65))
+
+# Narrower than the adult's, and shorter. Goldenrod leaves are lance-shaped with three
+# veins running the length of them, which is the mark that survives being drawn small.
+LEAF_L_YOUNG = [
+    "   ooo",
+    " ooGGgo",
+    "oGGGgddo",
+    " oggdno",
+    "  oooo",
+]
+
+LEAF_R_YOUNG = [
+    "ooo",
+    "ogGGoo",
+    "oddgGGGo",
+    " onddgo",
+    "  oooo",
+]
+
+# --- Growing: the panicle, still green --------------------------------------
+MID_HEAD_AT = (8, 12)
+
+
+def _mid_head(face_dx=0.0, light=(-0.85, -0.65)):
+    return flower_head(
+        16, 14, 7.5, 6.4, 7.6, 6.4, 6, 0.12, 5.4, 3.8,
+        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+    )
+
+
+MID_HEAD = _mid_head()
+MID_HEAD_LEFT = _mid_head(face_dx=-1.4, light=(-0.35, -0.65))
+MID_HEAD_RIGHT = _mid_head(face_dx=1.4, light=(-1.25, -0.65))
+
+# Tighter than the gold one as well as shorter: the florets have not opened, so the spray
+# is a narrow closed spindle rather than a spreading plume.
+PLUME_GREEN = [
+    "    oko",
+    "   okKko",
+    "   okKko",
+    "  okKKKko",
+    "  okKKKko",
+    " okKKjKKko",
+    " okKjjjKko",
+    "  okjjjko",
+    "   okjko",
+]
+
+PLUME_GREEN_MID = [
+    "       ooo",
+    "     ookKko",
+    "   ookKKKko",
+    " ookKKjKKko",
+    "okKjjjjjKko",
+    " ookjjjjko",
+    "   ookjko",
+]
+
+S_L_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_LEFT)
+S_R_DX, _ = face_shift(YOUNG_HEAD, YOUNG_HEAD_RIGHT)
+G_L_DX, _ = face_shift(MID_HEAD, MID_HEAD_LEFT)
+G_R_DX, _ = face_shift(MID_HEAD, MID_HEAD_RIGHT)
+
 SPRITE = {
     "herbId": "solidago-canadensis",
     "personality": "grand",
+    "stages": {
+        "sprout": {
+            "frames": 8,
+            "fps": stage_fps(6, "sprout"),
+            "hide": ["plume", "cheeks"],
+            "swap": {
+                "head": YOUNG_HEAD,
+                "leafL": LEAF_L_YOUNG,
+                "leafR": LEAF_R_YOUNG,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": YOUNG_HEAD_LEFT, "right": YOUNG_HEAD_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"], "half": YOUNG_EYES["half"]},
+            },
+            "origins": {
+                "head": YOUNG_HEAD_AT,
+                "leafL": (2, 19),
+                "leafR": (21, 19),
+                "stem": (14, 24),
+                **seat_young(
+                    YOUNG_HEAD_AT, YOUNG_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # A nod, not a bow. It is the same movement with nothing on top of it.
+            "motion": {
+                "head": {
+                    "dy": [0, 0, 1, 1, 1, 0, 0, 0],
+                    "lean": [0, 0, -1, -1, -1, 0, 0, 0],
+                    "art": [None, None, "right", "right", None, "left", None, None],
+                },
+                "eyes": {
+                    "dy": [0, 0, 1, 1, 1, 0, 0, 0],
+                    "dx": [0, 0, S_R_DX, S_R_DX, 0, S_L_DX, 0, 0],
+                    "art": [None, None, None, "half", "half", None, "blink", None],
+                },
+                "mouth": {
+                    "dy": [0, 0, 1, 1, 1, 0, 0, 0],
+                    "dx": [0, 0, S_R_DX, S_R_DX, 0, S_L_DX, 0, 0],
+                },
+                "leafL": {"dy": [0, 0, 0, -1, -1, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, -1, -1, 0, 0, 0]},
+                "stem": {"lean": [0, 0, -1, -1, -1, 0, 0, 0]},
+            },
+        },
+        "growing": {
+            "frames": 10,
+            "fps": stage_fps(6, "growing"),
+            "palette": PLUME_PALETTE,
+            "hide": ["cheeks"],
+            "swap": {
+                "head": MID_HEAD,
+                "plume": PLUME_GREEN,
+                "eyes": YOUNG_EYES["rows"],
+                "mouth": YOUNG_MOUTH["rows"],
+            },
+            "variants": {
+                "head": {"left": MID_HEAD_LEFT, "right": MID_HEAD_RIGHT},
+                "plume": {"mid": PLUME_GREEN_MID},
+                "eyes": {"blink": YOUNG_EYES["blink"], "half": YOUNG_EYES["half"]},
+            },
+            "origins": {
+                "head": MID_HEAD_AT,
+                "plume": (11, 5),
+                "leafL": (1, 19),
+                "leafR": (21, 19),
+                "stem": (14, 24),
+                **seat_young(
+                    MID_HEAD_AT, MID_HEAD, cheeks=False, eye_dy=1, mouth_dy=4
+                ),
+            },
+            # Halfway over and back. Reaching `mid` and stopping is the whole point: the
+            # full fold to horizontal is what the last stage buys.
+            "motion": {
+                "plume": {
+                    "art": [None, None, "mid", "mid", "mid", "mid", "mid", None, None,
+                            None],
+                    "dx": [0, 0, -1, -2, -3, -3, -2, -1, 0, 0],
+                    "dy": [0, -1, 1, 2, 3, 3, 2, 1, 0, 0],
+                },
+                "head": {
+                    "art": [None, None, None, "right", "right", "right", "right", None,
+                            "left", None],
+                    "dy": [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+                    "lean": [0, 0, -1, -1, -2, -2, -1, 0, 0, 0],
+                },
+                "eyes": {
+                    "art": [None, None, None, None, "half", "half", "half", None,
+                            "blink", None],
+                    "dx": [0, 0, 0, G_R_DX, G_R_DX, G_R_DX, G_R_DX, 0, G_L_DX, 0],
+                    "dy": [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+                },
+                "mouth": {
+                    "dx": [0, 0, 0, G_R_DX, G_R_DX, G_R_DX, G_R_DX, 0, G_L_DX, 0],
+                    "dy": [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+                },
+                "leafL": {"dy": [0, 0, 0, -1, -1, -1, -1, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, -1, -1, -1, -1, 0, 0, 0]},
+                "stem": {"lean": [0, 0, 0, -1, -1, -1, 0, 0, 0, 0]},
+            },
+        },
+    },
     "size": (32, 28),
     "frames": 14,
     "fps": 6,

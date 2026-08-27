@@ -1,10 +1,10 @@
 # Creature growth stages
 
-**Status: 15 of 45 species staged.** The other 30 show their single adult portrait at every
+**Status: 20 of 45 species staged.** The other 25 show their single adult portrait at every
 stage, which is what the whole site did before this existed — so shipping this partial makes
 nothing worse than it was, and `spriteFor` resolves the fallback silently.
 
-Every card's animated portrait is a creature. Staging gives fifteen of them a **sprout** and a
+Every card's animated portrait is a creature. Staging gives twenty of them a **sprout** and a
 **growing** version, so the character a player sees grows up with their own progress: on the
 card page, in the Garden, and anywhere else a portrait is drawn.
 
@@ -79,7 +79,7 @@ four near-identical pale discs, which breaks the rule the deck rests on. Youth i
 **proportion** instead: a large head on a short plant. That leaves room for the leaf, bud or
 frond that says which plant this is.
 
-## Staged — 15 species
+## Staged — 20 species
 
 | Card | Species | Sprout | Growing |
 |---|---|---|---|
@@ -98,6 +98,11 @@ frond that says which plant this is.
 | 11 | Purple Dead Nettle | the purple flush already on the upper leaves | whorls of closed green-purple buds in the leaf axils |
 | 21 | Chicory | the **first-year rosette**, toothed almost to the midrib | tight green spindles pressed close against the stem |
 | 09 | Wood Sorrel | three notched heart leaflets and nothing else | a closed spindle bud upright on its own pedicel |
+| 02 | Broadleaf Dock | the rosette, red midrib already on it, no seed stalk | the stalk up carrying **green** whorls, before any rust |
+| 03 | Goldenrod | a leafy shoot — no plume, and nothing gold | the panicle formed and still **green**, folding only halfway |
+| 04 | Ragweed | ferny dissected leaves; it itches, it cannot sneeze | the raceme up, nubs tight and green — it sneezes, nothing comes out |
+| 05 | Lamb's Quarters | strap **cotyledons**, so it has no feet and cannot waddle | the goosefoot arrives: one step, not two |
+| 06 | Purslane | two fat seed leaves; it swells barely and holds nothing | a real swell, one frame of holding it, one wobble |
 
 Yarrow's fronds are finely cut at *every* stage deliberately: its printed card warns about a
 poisonous lookalike, and featheriness is what separates it from hemlock.
@@ -141,7 +146,7 @@ point is that they are not a circle. A hand-drawn grid with a plain `F` patch wo
 identically — `face_box` measures it the same way — so reach for one whenever the generator
 is being bent out of shape.
 
-## Still to stage — 30 species
+## Still to stage — 25 species
 
 A species is staged by adding a `"stages"` key to its module in `scripts/sprite_sources/`
 and re-running `python3 scripts/build_sprites.py`; no component changes, because
@@ -149,11 +154,6 @@ and re-running `python3 scripts/build_sprites.py`; no component changes, because
 
 | Card | Species | Herb id |
 |---|---|---|
-| 02 | Broadleaf Dock | `rumex-obtusifolius` |
-| 03 | Goldenrod | `solidago-canadensis` |
-| 04 | Ragweed | `ambrosia-artemisiifolia` |
-| 05 | Lamb's Quarters | `chenopodium-album` |
-| 06 | Purslane | `portulaca-oleracea` |
 | 07 | Garlic Mustard | `alliaria-petiolata` |
 | 15 | Cleavers | `galium-aparine` |
 | 16 | Ground Ivy | `glechoma-hederacea` |

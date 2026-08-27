@@ -69,7 +69,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 12,
-    "personality": "sheepish"
+    "personality": "sheepish",
+    "stages": {
+      "sprout": {
+        "herbId": "ambrosia-artemisiifolia-sprout",
+        "src": "/cards/animated/ambrosia-artemisiifolia-sprout.png",
+        "version": "0261a870",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 7,
+        "personality": "sheepish"
+      },
+      "growing": {
+        "herbId": "ambrosia-artemisiifolia-growing",
+        "src": "/cards/animated/ambrosia-artemisiifolia-growing.png",
+        "version": "c5852299",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 10,
+        "personality": "sheepish"
+      }
+    }
   },
   "arctium-lappa": {
     "herbId": "arctium-lappa",
@@ -99,7 +121,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "unhurried"
+    "personality": "unhurried",
+    "stages": {
+      "sprout": {
+        "herbId": "chenopodium-album-sprout",
+        "src": "/cards/animated/chenopodium-album-sprout.png",
+        "version": "2e2d6f3e",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "unhurried"
+      },
+      "growing": {
+        "herbId": "chenopodium-album-growing",
+        "src": "/cards/animated/chenopodium-album-growing.png",
+        "version": "f0abc661",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "unhurried"
+      }
+    }
   },
   "cichorium-intybus": {
     "herbId": "cichorium-intybus",
@@ -463,7 +507,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "smug"
+    "personality": "smug",
+    "stages": {
+      "sprout": {
+        "herbId": "portulaca-oleracea-sprout",
+        "src": "/cards/animated/portulaca-oleracea-sprout.png",
+        "version": "0011b45b",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "smug"
+      },
+      "growing": {
+        "herbId": "portulaca-oleracea-growing",
+        "src": "/cards/animated/portulaca-oleracea-growing.png",
+        "version": "d2dfc600",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "smug"
+      }
+    }
   },
   "prunella-vulgaris": {
     "herbId": "prunella-vulgaris",
@@ -555,7 +621,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
-    "personality": "steady"
+    "personality": "steady",
+    "stages": {
+      "sprout": {
+        "herbId": "rumex-obtusifolius-sprout",
+        "src": "/cards/animated/rumex-obtusifolius-sprout.png",
+        "version": "988af3d1",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "steady"
+      },
+      "growing": {
+        "herbId": "rumex-obtusifolius-growing",
+        "src": "/cards/animated/rumex-obtusifolius-growing.png",
+        "version": "1a7189db",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "steady"
+      }
+    }
   },
   "salix-spp": {
     "herbId": "salix-spp",
@@ -585,7 +673,29 @@
     "frameHeight": 140,
     "frames": 14,
     "fps": 6,
-    "personality": "grand"
+    "personality": "grand",
+    "stages": {
+      "sprout": {
+        "herbId": "solidago-canadensis-sprout",
+        "src": "/cards/animated/solidago-canadensis-sprout.png",
+        "version": "2807a1db",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "grand"
+      },
+      "growing": {
+        "herbId": "solidago-canadensis-growing",
+        "src": "/cards/animated/solidago-canadensis-growing.png",
+        "version": "6016f38a",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "grand"
+      }
+    }
   },
   "stellaria-media": {
     "herbId": "stellaria-media",
