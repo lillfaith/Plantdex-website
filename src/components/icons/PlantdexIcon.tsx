@@ -74,7 +74,16 @@ export type IconName =
   | 'laurel'
   | 'compass'
   | 'fallen-leaf'
-  | 'plot';
+  | 'plot'
+  // Plant parts, for the usable-parts grid on a card page. `sprout`, `leaves`, `flower`
+  // and `bloom` already cover the growing end; these are the parts a card actually names
+  // that had no mark of their own.
+  | 'root'
+  | 'stem'
+  | 'seed'
+  | 'fruit'
+  | 'bark'
+  | 'whole-plant';
 
 /**
  * Each entry is the inner markup of a 24×24 icon.
@@ -359,6 +368,52 @@ const ICONS: Record<IconName, React.ReactNode> = {
       <path d="M3.4 10.6 12 4l8.6 6.6" />
       <path d="M5.4 12.2v6.2a1.6 1.6 0 0 0 1.6 1.6h10a1.6 1.6 0 0 0 1.6-1.6v-6.2" />
       <path d="M12 20v-3.6M12 16.4c0-1.6-1.2-2.8-2.8-2.8 0 1.7 1.2 2.8 2.8 2.8Z" />
+    </>
+  ),
+  // — Plant parts ——————————————————————————————————————————————————————————————
+  // Drawn as the part in the ground or on the plant rather than as a plucked specimen: a
+  // card page is about a living plant, and a severed root reads as produce.
+  root: (
+    <>
+      <path d="M4.5 8.5h15" />
+      <path d="M12 8.5v3.2" />
+      <path d="M12 11.7c-1.6 1.4-2.3 3.4-2.1 6M12 11.7c1.6 1.4 2.3 3.4 2.1 6M12 11.7v8.1" />
+    </>
+  ),
+  stem: (
+    <>
+      <path d="M12 21V4.4" />
+      <path d="M12 12.4c-2.9 0-4.8-1.7-5.2-4.6 2.9-.4 4.8 1.1 5.2 4.6Z" />
+      <path d="M12 16.6c2.9 0 4.8-1.7 5.2-4.6-2.9-.4-4.8 1.1-5.2 4.6Z" />
+    </>
+  ),
+  seed: (
+    <>
+      <path d="M12 3.4c3 2.3 4.6 5 4.6 8.2S15 17.5 12 20.6c-3-3.1-4.6-5.8-4.6-9S9 5.7 12 3.4Z" />
+      <path d="M12 7.4v9" />
+    </>
+  ),
+  fruit: (
+    <>
+      <path d="M12 7.6c-3.1-1.4-6 .6-6 4.6 0 3.4 2.4 7 6 7s6-3.6 6-7c0-4-2.9-6-6-4.6Z" />
+      <path d="M12 7.6V4.2" />
+      <path d="M12 4.8c1.7-1.6 3.3-2 4.8-1.2-.5 1.8-2.1 2.6-4.8 2.4" />
+    </>
+  ),
+  bark: (
+    <>
+      <path d="M6.4 3.2v17.6M12 3.2v17.6M17.6 3.2v17.6" />
+      <path d="M6.4 8.4h5.6M12 13.6h5.6M6.4 17h5.6" />
+    </>
+  ),
+  // Everything at once: root, stem and crown, for a card whose usable part is the plant.
+  'whole-plant': (
+    <>
+      <path d="M12 21v-8.6" />
+      <path d="M12 21c-1.2 0-2-.9-2.4-2.6M12 21c1.2 0 2-.9 2.4-2.6" />
+      <path d="M12 12.4c-3.1 0-5-1.9-5.4-5.2 3.1-.4 5 1.3 5.4 5.2Z" />
+      <path d="M12 12.4c3.1 0 5-1.9 5.4-5.2-3.1-.4-5 1.3-5.4 5.2Z" />
+      <circle cx="12" cy="4.6" r="1.8" />
     </>
   ),
 };

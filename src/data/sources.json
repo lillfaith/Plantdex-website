@@ -13,7 +13,16 @@
     "Everything after the deck entry comes from the card-mapped source audit, whose",
     "references were opened and checked by hand before being brought in here. Which card",
     "cites which of them is src/lib/card-sources.ts; entries below are grouped in card",
-    "order so the two files read side by side."
+    "order so the two files read side by side.",
+    "",
+    "FIELD-NOTE SOURCES (ids below the card-audit block, cited by src/lib/card-field-notes.ts)",
+    "are university Extension, USDA Forest Service and UC IPM references located for the",
+    "identification / habitat / lookalike notes. They ship verified:false, so resolveRefs",
+    "drops them and NOTHING unverified reaches a reader: the network egress policy in the",
+    "environment they were added from blocks these hosts, so nobody has yet opened the page",
+    "and confirmed it supports the specific trait it is attached to. Open each URL, check it,",
+    "then flip the flag - that is the whole workflow, and it is the one step a machine must",
+    "not take on a human's behalf."
   ],
   "sources": [
     {
@@ -1031,6 +1040,166 @@
       "organization": "PubMed Central",
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3834722/",
       "verified": true
+    },
+    {
+      "id": "wisc-dandelion",
+      "kind": "web",
+      "title": "Dandelion, Taraxacum officinale",
+      "organization": "University of Wisconsin-Madison Division of Extension",
+      "url": "https://hort.extension.wisc.edu/articles/dandelion-taraxacum-officinale/",
+      "verified": false
+    },
+    {
+      "id": "umn-dandelions",
+      "kind": "web",
+      "title": "Dandelions",
+      "organization": "University of Minnesota Extension",
+      "url": "https://extension.umn.edu/weeds/dandelions",
+      "verified": false
+    },
+    {
+      "id": "umn-foraging-backyard-weeds",
+      "kind": "web",
+      "title": "Foraging at home: Can I eat the weeds in my backyard?",
+      "organization": "University of Minnesota Extension",
+      "url": "https://extension.umn.edu/yard-and-garden-news/can-i-eat-weeds-my-backyard",
+      "verified": false
+    },
+    {
+      "id": "psu-purslane",
+      "kind": "web",
+      "title": "Purslane",
+      "organization": "Penn State Extension",
+      "url": "https://extension.psu.edu/purslane",
+      "verified": false
+    },
+    {
+      "id": "wisc-spotted-spurge",
+      "kind": "web",
+      "title": "Spotted Spurge, Euphorbia maculata",
+      "organization": "University of Wisconsin-Madison Division of Extension",
+      "url": "https://hort.extension.wisc.edu/articles/spotted-spurge-chamaesyce-euphorbia-maculata/",
+      "verified": false
+    },
+    {
+      "id": "ucipm-spotted-spurge",
+      "kind": "web",
+      "title": "Spotted Spurge and Other Spurges",
+      "organization": "UC Statewide Integrated Pest Management Program",
+      "url": "https://ipm.ucanr.edu/home-and-landscape/spotted-spurge-and-other-spurges/",
+      "verified": false
+    },
+    {
+      "id": "psu-spectacular-sumacs",
+      "kind": "web",
+      "title": "Spectacular Sumacs",
+      "organization": "Penn State Extension",
+      "url": "https://extension.psu.edu/spectacular-sumacs",
+      "verified": false
+    },
+    {
+      "id": "fs-usda-rhus-typhina",
+      "kind": "web",
+      "title": "Staghorn Sumac (Rhus typhina)",
+      "organization": "USDA Forest Service",
+      "url": "https://www.fs.usda.gov/wildflowers/plant-of-the-week/rhus_typhina.shtml",
+      "verified": false
+    },
+    {
+      "id": "wisc-chicory",
+      "kind": "web",
+      "title": "Chicory, Cichorium intybus",
+      "organization": "University of Wisconsin-Madison Division of Extension",
+      "url": "https://hort.extension.wisc.edu/articles/chicory-cichorium-intybus/",
+      "verified": false
+    },
+    {
+      "id": "osu-meadow-deathcamas",
+      "kind": "web",
+      "title": "Meadow Deathcamas in the Pacific Northwest (PNW 104)",
+      "organization": "Oregon State University Extension Service",
+      "url": "https://extension.oregonstate.edu/catalog/pub/pnw-104-meadow-deathcamas-pacific-northwest",
+      "verified": false
+    },
+    {
+      "id": "usu-foothill-deathcamas",
+      "kind": "web",
+      "title": "Foothill Deathcamas",
+      "organization": "Utah State University Extension",
+      "url": "https://extension.usu.edu/rangeplants/forbsherbaceous/deathcamas",
+      "verified": false
+    },
+    {
+      "id": "psu-elderberry-garden-kitchen",
+      "kind": "web",
+      "title": "Elderberry in the Garden and the Kitchen",
+      "organization": "Penn State Extension",
+      "url": "https://extension.psu.edu/elderberry-in-the-garden-and-the-kitchen",
+      "verified": false
+    },
+    {
+      "id": "fs-usda-sambucus-nigra",
+      "kind": "web",
+      "title": "American Black Elderberry (Sambucus nigra L.)",
+      "organization": "USDA Forest Service",
+      "url": "https://www.fs.usda.gov/wildflowers/plant-of-the-week/sambucus_nigra_l.shtml",
+      "verified": false
+    },
+    {
+      "id": "psu-common-pokeweed",
+      "kind": "web",
+      "title": "Common Pokeweed Identification and Management",
+      "organization": "Penn State Extension",
+      "url": "https://extension.psu.edu/common-pokeweed-identification-and-management",
+      "verified": false
+    },
+    {
+      "id": "fs-usda-phytolacca-americana",
+      "kind": "web",
+      "title": "American Pokeweed (Phytolacca americana L.)",
+      "organization": "USDA Forest Service",
+      "url": "https://www.fs.usda.gov/wildflowers/plant-of-the-week/phytolacca_americana.shtml",
+      "verified": false
+    },
+    {
+      "id": "fs-usda-achillea-millefolium",
+      "kind": "web",
+      "title": "Common Yarrow (Achillea millefolium)",
+      "organization": "USDA Forest Service",
+      "url": "https://www.fs.usda.gov/wildflowers/plant-of-the-week/achillea_millefolium.shtml",
+      "verified": false
+    },
+    {
+      "id": "psu-poison-hemlock-id",
+      "kind": "web",
+      "title": "Poison Hemlock Identification",
+      "organization": "Penn State Extension",
+      "url": "https://extension.psu.edu/poison-hemlock-identification",
+      "verified": false
+    },
+    {
+      "id": "umn-poison-hemlock",
+      "kind": "web",
+      "title": "Poison hemlock",
+      "organization": "University of Minnesota Extension",
+      "url": "https://extension.umn.edu/identify-invasive-species/poison-hemlock",
+      "verified": false
+    },
+    {
+      "id": "wisc-pine-trees-101",
+      "kind": "web",
+      "title": "Pine Trees 101",
+      "organization": "University of Wisconsin-Madison Division of Extension",
+      "url": "https://hort.extension.wisc.edu/2024/11/26/pine-trees-101/",
+      "verified": false
+    },
+    {
+      "id": "psu-yew-toxicity",
+      "kind": "web",
+      "title": "Toxicity of Yew Wood and Roots",
+      "organization": "Penn State Extension",
+      "url": "https://extension.psu.edu/toxicity-of-yew-wood-and-roots",
+      "verified": false
     }
   ]
 }

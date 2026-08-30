@@ -159,6 +159,30 @@ export function SiteCaution({ caution }: { caution: string }) {
  * It has to exist because the deck is printed and the transcription is faithful by rule,
  * so three cards show another plant's profile in good faith and nothing on screen said so.
  */
+/**
+ * The risk attached to a lookalike pair.
+ *
+ * Same hazard weight as `CardWarning` and `SiteCaution` deliberately: a reader who
+ * mistakes elderberry for pokeweed is exposed exactly as much as one who ignores a
+ * printed warning, so it must not be softened into ordinary body text because it happens
+ * to sit inside an identification section. It says "Confusion risk" rather than "Warning"
+ * so the two are distinguishable when both appear on one page.
+ */
+export function LookalikeRisk({ risk }: { risk: string }) {
+  return (
+    <p
+      role="note"
+      className="mt-2 flex items-start gap-2 rounded-lg border border-stat-temp/70 bg-stat-temp/20 px-3 py-2 text-xs font-semibold text-violet-100"
+    >
+      <PlantdexIcon name="safety" className="mt-0.5 shrink-0 text-sm" />
+      <span>
+        <span className="sr-only">Confusion risk: </span>
+        {risk}
+      </span>
+    </p>
+  );
+}
+
 export function CardIssueNote({ issue }: { issue: string }) {
   return (
     <p

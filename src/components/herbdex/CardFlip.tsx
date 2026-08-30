@@ -35,7 +35,7 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
  * machine to corrupt and no way to strand the card between faces; the button is also
  * outside the rotating element, so it never moves while the card turns.
  */
-export function CardFlip({ herb }: { herb: Herb }) {
+export function CardFlip({ herb, size = 'default' }: { herb: Herb; size?: 'default' | 'hero' }) {
   const [showBack, setShowBack] = useState(false);
   const panelId = useId();
 
@@ -44,7 +44,13 @@ export function CardFlip({ herb }: { herb: Herb }) {
 
   return (
     <div>
-      <div className="flip-scene mx-auto w-56 sm:mx-0 sm:w-64">
+      <div
+        className={`flip-scene mx-auto sm:mx-0 ${
+          // The profile hero is the one place the printed card should dominate, so it gets
+          // its own width rather than the grid's.
+          size === 'hero' ? 'w-64 sm:w-72 lg:w-[21rem]' : 'w-56 sm:w-64'
+        }`}
+      >
         <div
           id={panelId}
           className={`flip-card shadow-card-lift rounded-[var(--radius-card)] ${
