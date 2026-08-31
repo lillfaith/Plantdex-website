@@ -61,10 +61,25 @@ export type NewSighting = Omit<Sighting, 'id' | 'createdAt'>;
 let cache: Sighting[] | null = null;
 const listeners = new Set<() => void>();
 
+/**
+ * Every field the journal will later DEREFERENCE, not just the ones that identify a record.
+ *
+ * `createdAt` is in this list because `byDateDesc` uses it as its tiebreak. Leaving it out
+ * meant a stored record missing that field passed the guard, reached the sort, and threw —
+ * and because the sort runs during render, that did not degrade the sightings list, it
+ * blanked the entire plant page. Storage is the one input this app does not control:
+ * legacy records, a hand-edited localStorage, or an import path that forgets a field all
+ * produce it. Anything added to `Sighting` and then dereferenced belongs here too.
+ */
 function isSighting(value: unknown): value is Sighting {
   if (typeof value !== 'object' || value === null) return false;
   const s = value as Record<string, unknown>;
-  return typeof s.id === 'string' && typeof s.herbId === 'string' && typeof s.date === 'string';
+  return (
+    typeof s.id === 'string' &&
+    typeof s.herbId === 'string' &&
+    typeof s.date === 'string' &&
+    typeof s.createdAt === 'string'
+  );
 }
 
 function read(): Sighting[] {
