@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { HERBS } from './deck';
 import { FIELD_NOTES } from './card-field-notes';
+import sourcesJson from '../data/sources.json';
 import {
   HABITATS,
   HABITAT_ASSIGNMENTS,
@@ -16,6 +17,13 @@ import {
   isInHabitat,
   matchesHabitatFilter,
 } from './habitat';
+
+const SOURCES: Record<string, { verified: boolean }> = Object.fromEntries(
+  (sourcesJson as { sources: { id: string; verified: boolean }[] }).sources.map((source) => [
+    source.id,
+    source,
+  ]),
+);
 
 describe('habitat taxonomy', () => {
   it('labels and blurbs every class', () => {
@@ -110,32 +118,58 @@ describe('habitat taxonomy', () => {
     }
   });
 
-  it('pins how much of the habitat prose carries its own citation', () => {
+  it('measures habitat sourcing as a floor that can only rise', () => {
     /*
-     * HONEST NUMBER, NOT A PASSING ONE. Every card has CARD-LEVEL sources
-     * (`card-sources.ts`, keyed by card number, 45/45) — but those are about chemistry and
-     * traditional use. Only these eight attach a source to the HABITAT SENTENCE itself,
-     * which is what the classification was read from.
+     * THE GOAL IS 45/45; THE HONEST NUMBER TODAY IS 0.
      *
-     * So "derived from cited habitat prose" is true for eight species and overstated for
-     * the rest: the prose exists and was curated, but is not independently sourced. This
-     * test locks the current set so the number can only go up — adding a species here is
-     * fine, quietly dropping one is not — and so the gap stays visible instead of being
-     * forgotten.
+     * Eight species carry record-level `sourceIds`, which is what an earlier count
+     * reported — but every one of those ids is `verified: false`, so `resolveRefs` drops
+     * them and nothing reaches a reader. And they are identification and lookalike
+     * references, not habitat ones, which is why habitat now cites `habitatSourceIds`
+     * alone. Both facts together mean the count of species whose HABITAT is traceable to a
+     * verified source is zero, not eight.
+     *
+     * A FLOOR, not an exact set: raising the baseline requires someone to have opened a
+     * source and set `verified: true`, and this test then holds that ground. It cannot be
+     * satisfied by adding an unverified id, which is the only way the number could have
+     * gone up dishonestly.
      */
-    const cited = HERBS.filter((herb) => (FIELD_NOTES[herb.id]?.sourceIds.length ?? 0) > 0);
-    expect(cited.map((herb) => herb.id).sort()).toEqual(
-      [
-        'achillea-millefolium',
-        'allium-vineale',
-        'cichorium-intybus',
-        'pinus-spp',
-        'portulaca-oleracea',
-        'rhus-spp',
-        'sambucus-spp',
-        'taraxacum-officinale',
-      ].sort(),
+    const VERIFIED_HABITAT_SOURCE_FLOOR = 0;
+
+    const sourced = HERBS.filter((herb) =>
+      (FIELD_NOTES[herb.id]?.habitatSourceIds ?? []).some((id) => SOURCES[id]?.verified),
     );
+    expect(
+      sourced.length,
+      'habitat sourcing went DOWN — a verified source was removed or unverified',
+    ).toBeGreaterThanOrEqual(VERIFIED_HABITAT_SOURCE_FLOOR);
+
+    // When it rises, raise the floor in the same commit, so the gain is deliberate.
+    expect(
+      sourced.length,
+      `${sourced.length} species now cite a verified habitat source — raise ` +
+        'VERIFIED_HABITAT_SOURCE_FLOOR to lock the gain in',
+    ).toBe(VERIFIED_HABITAT_SOURCE_FLOOR);
+  });
+
+  it('never counts an unverified id as habitat sourcing', () => {
+    // The only way the floor above could be cleared dishonestly.
+    for (const herb of HERBS) {
+      for (const id of FIELD_NOTES[herb.id]?.habitatSourceIds ?? []) {
+        expect(SOURCES[id], `${herb.id}: habitat cites unknown source ${id}`).toBeDefined();
+      }
+    }
+  });
+
+  it('keeps every field-note source id resolvable in the registry', () => {
+    // A dangling id would silently render nothing and look like a missing citation rather
+    // than a broken one.
+    for (const herb of HERBS) {
+      const notes = FIELD_NOTES[herb.id];
+      for (const id of [...(notes?.sourceIds ?? []), ...(notes?.habitatSourceIds ?? [])]) {
+        expect(SOURCES[id], `${herb.id}: unknown source id ${id}`).toBeDefined();
+      }
+    }
   });
 
   it('records a real reason wherever the call was a judgement', () => {

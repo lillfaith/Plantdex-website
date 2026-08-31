@@ -47,8 +47,35 @@ export interface FieldNotes {
    * scientific name is `spp.` — see `isGenusCard`.
    */
   genusTraitsNote?: string;
-  /** Ids in `src/data/sources.json`. Unverified ids are dropped by `resolveRefs`. */
+  /**
+   * Ids in `src/data/sources.json` supporting the IDENTIFICATION and LOOKALIKE content.
+   *
+   * Record-level, and mostly lookalike-safety references: the entries here cite death
+   * camas, poison hemlock, pokeweed, spotted spurge and yew — the dangerous confusions —
+   * because that is what the field notes most needed backing for.
+   *
+   * Unverified ids are dropped by `resolveRefs`, so nothing here renders until a person
+   * has opened it.
+   */
   sourceIds: string[];
+  /**
+   * Ids supporting the HABITAT sentence specifically. Separate from `sourceIds` on purpose.
+   *
+   * WHY THIS FIELD EXISTS. `fieldNoteSectionSources` used to attribute the whole
+   * `sourceIds` list to the habitat section as well as identification — so a source about
+   * how to tell field garlic from death camas would have been presented as support for
+   * where field garlic grows. It rendered nothing, because none of those ids is verified,
+   * so it was a latent wrong attribution rather than a live one — and it would have gone
+   * live the moment somebody verified a lookalike source.
+   *
+   * A habitat class drives a filter, an achievement and a research task, so where a plant
+   * grows is gameplay data and deserves its own citation rather than a borrowed one.
+   *
+   * EMPTY FOR ALL 45 TODAY. Not an oversight — no habitat source has been verified yet, and
+   * the intended end state is 45/45. `habitat.test.ts` records the count as a floor that
+   * can only rise, and cannot be cleared by adding an unverified id.
+   */
+  habitatSourceIds?: string[];
 }
 
 /**
@@ -1014,13 +1041,24 @@ export function fieldNoteSectionSources(
   herb: Herb,
 ): Partial<Record<SourceableSection, SourceRef[]>> {
   const notes = fieldNotesFor(herb);
-  if (!notes?.sourceIds.length) return {};
-  const refs: SourceRef[] = notes.sourceIds.map((sourceId) => ({
-    sourceId,
-    detail: 'Field notes added by Plantdex',
-  }));
+  if (!notes) return {};
   const out: Partial<Record<SourceableSection, SourceRef[]>> = {};
-  if (notes.identification?.length || notes.lookalikes?.length) out.identification = refs;
-  if (notes.habitat) out.habitat = refs;
+
+  const toRefs = (ids: string[]): SourceRef[] =>
+    ids.map((sourceId) => ({ sourceId, detail: 'Field notes added by Plantdex' }));
+
+  if (notes.sourceIds.length && (notes.identification?.length || notes.lookalikes?.length)) {
+    out.identification = toRefs(notes.sourceIds);
+  }
+  /*
+   * Habitat cites ONLY habitat sources. Reusing `sourceIds` here presented identification
+   * and lookalike references as support for where a plant grows. `sectionCitations`
+   * reports an unsourced section as awaiting one, which is the honest answer while
+   * `habitatSourceIds` is empty and far better than a citation that does not say what it
+   * is cited for.
+   */
+  if (notes.habitat && notes.habitatSourceIds?.length) {
+    out.habitat = toRefs(notes.habitatSourceIds);
+  }
   return out;
 }

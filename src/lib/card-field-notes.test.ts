@@ -212,14 +212,42 @@ describe('trait rows and the icons drawn beside them', () => {
 });
 
 describe('field-note citations', () => {
-  it('offers its sources to the sections the page actually renders', () => {
-    // The sources block reports `identification` and `habitat` as sourced or not. Before
-    // this, it never saw the field notes' own references at all.
+  it('offers identification sources to the identification section', () => {
     const dandelion = HERBS.find((herb) => herb.id === 'taraxacum-officinale')!;
     const sections = fieldNoteSectionSources(dandelion);
-    expect(Object.keys(sections).sort()).toEqual(['habitat', 'identification']);
     expect(sections.identification!.length).toBeGreaterThan(0);
     expect(sections.identification!.every((ref) => typeof ref.sourceId === 'string')).toBe(true);
+  });
+
+  it('never cites the habitat sentence with an identification source', () => {
+    /*
+     * THIS TEST REPLACES ONE THAT ASSERTED THE OPPOSITE. The old behaviour attributed the
+     * whole `sourceIds` list to habitat as well as identification — but those entries are
+     * lookalike-safety references (death camas, poison hemlock, pokeweed, spotted spurge,
+     * yew). Presenting a "how to tell field garlic from death camas" page as support for
+     * where field garlic grows is a citation that does not say what it is cited for.
+     *
+     * It rendered nothing either way, because none of those ids is verified — so this was
+     * a latent wrong attribution rather than a live one, and it would have gone live the
+     * moment somebody verified a lookalike source. Habitat now cites `habitatSourceIds`
+     * and nothing else.
+     */
+    for (const herb of HERBS) {
+      const notes = FIELD_NOTES[herb.id];
+      const sections = fieldNoteSectionSources(herb);
+      if (!sections.habitat) continue;
+      const cited = sections.habitat.map((ref) => ref.sourceId);
+      expect(cited, `${herb.id}: habitat cites an identification source`).toEqual(
+        notes?.habitatSourceIds ?? [],
+      );
+    }
+  });
+
+  it('reports habitat as awaiting a source while no habitat source is verified', () => {
+    // The honest state today: every habitat sentence is curated but not independently
+    // sourced, and the page says so rather than borrowing a citation.
+    const withHabitatRefs = HERBS.filter((herb) => fieldNoteSectionSources(herb).habitat);
+    expect(withHabitatRefs).toEqual([]);
   });
 
   it('offers nothing for a card whose notes cite nothing', () => {
