@@ -105,6 +105,38 @@ function Plate({
   );
 }
 
+/**
+ * A class's SHARED CORE, drawn ghosted so it can never be mistaken for a compound.
+ *
+ * Three things separate it from a real structure, and all three are deliberate: it is
+ * dimmer, it is captioned "Shared core", and its accessible name says "core skeleton
+ * shared by" rather than "skeletal formula of". A reader who only sees the picture still
+ * gets the right claim from the label under it.
+ */
+function Scaffold({ name, scaffold }: { name: string; scaffold: string }) {
+  const art = STRUCTURES[scaffold];
+  if (!art) return <PendingMark />;
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center">
+      <svg
+        viewBox={art.viewBox}
+        role="img"
+        aria-label={`Core skeleton shared by ${name}`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-full w-full opacity-55"
+      >
+        <title>{`Core skeleton shared by ${name}`}</title>
+        {art.art}
+      </svg>
+      <span className={`${MICRO_LABEL} mt-0.5 text-violet-400`}>Shared core</span>
+    </div>
+  );
+}
+
 function Structure({ name, structure }: { name: string; structure: string }) {
   const art = STRUCTURES[structure];
   if (!art) return <PendingMark />;
@@ -288,7 +320,14 @@ function CompoundPlate({ herb, printed }: { herb: Herb; printed: string }) {
     case 'chemical-class':
       return (
         <Plate {...shared}>
-          <ClassMotif />
+          {/* A core where the class genuinely has one; the abstract motif where it does
+              not — tannins and saponins share no single skeleton, so inventing one would
+              be the exact misstatement this whole layer exists to avoid. */}
+          {entry.scaffold ? (
+            <Scaffold name={printed} scaffold={entry.scaffold} />
+          ) : (
+            <ClassMotif />
+          )}
         </Plate>
       );
     case 'polymer':
@@ -315,7 +354,14 @@ function CompoundPlate({ herb, printed }: { herb: Herb; printed: string }) {
     case 'mineral-compound':
       return (
         <Plate {...shared}>
-          <FormulaTile formula={entry.formula ?? ''} />
+          {/* A mineral compound is ONE compound, so it may show its own structure. Silica
+              draws the SiO4 tetrahedron it is built from; the formula tile is the
+              fallback. Never an element tile either way. */}
+          {entry.structure ? (
+            <Structure name={printed} structure={entry.structure} />
+          ) : (
+            <FormulaTile formula={entry.formula ?? ''} />
+          )}
         </Plate>
       );
   }

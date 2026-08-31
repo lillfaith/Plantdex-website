@@ -19,6 +19,7 @@ npm run dev        # dev server
 npm run verify     # lint + typecheck + test + build — run before pushing
 npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art
+npm run build:structures                           # regenerate the skeletal formulas
 python3 scripts/build_sprites.py                   # regenerate the animated portraits
 python3 scripts/build_sprites.py --preview <herb-id> [--frame N]   # print a frame as text
 python3 scripts/audit_sprites.py                   # face placement, connectivity, stale builds
@@ -77,6 +78,23 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
 - **Herb ids come from the scientific name, never the common name.**
 - **Achievements are keyed by stable `id`**, and predicates are pure functions of state so
   they can be re-evaluated from scratch (this is what makes retroactive unlocks work).
+- **Skeletal formulas are generated too.** `src/components/chemistry/structures.tsx` comes
+  from `scripts/chemistry/build_structures.py`; edit that and re-run `npm run build:structures`,
+  never the `.tsx`. Geometry is COMPUTED from a bond-length lattice and never hand-placed, for
+  the same reason sprite parts are measured rather than inferred: a ring that is nearly regular
+  reads as decoration, and a substituent whose position was assumed rather than measured lands
+  on top of something. Two bugs here were exactly that — a hydroxyl placed 0.09 units from a
+  ring carbon, and a "core" whose four free vertices were ordered by SORTING THEM ON POSITION,
+  which put a double bond straight across the middle of a pyran ring on roughly twenty cards.
+  Ring atoms are walked, never sorted. Every new structure must be rendered and read back
+  before it ships; anything not both accurate and legible at plate size is dropped rather than
+  shipped, which is why rutin, taraxasterol and ellagic acid are deliberately absent.
+- **A `chemical-class` may carry a `scaffold`, never a `structure`**, and only when one
+  genuine skeleton defines the whole class (a catechin *is* a flavan-3-ol). Tannins, saponins,
+  alkaloids, glycosides, lignans and sesquiterpene lactones have no single skeleton and must
+  never get one — `compounds.test.ts` lists them explicitly. The scaffold renders ghosted and
+  captioned "Shared core", and its note must say in words that members differ; that caption is
+  what stops the drawing being read as "this is the compound".
 - **Deck data is generated.** Edit the `DECK` table in `scripts/build_deck.py` and re-run;
   never hand-edit `src/data/herbs.json`.
 - **No invented botany.** Every herb field must come from the physical card — fronts and

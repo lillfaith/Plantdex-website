@@ -34,6 +34,21 @@ export interface CompoundEntry {
   subtitle?: string;
   /** Key into `STRUCTURES`. Absent means no drawing — the plate stays pending. */
   structure?: string;
+  /**
+   * A CLASS's shared core skeleton — never a member of it.
+   *
+   * A flavonoid is DEFINED by its C6-C3-C6 core, so drawing that core is a true statement
+   * about every flavonoid; drawing one flavonoid and labelling it "Flavonoids" would be
+   * false. Kept as a field separate from `structure` on purpose: the rule that a
+   * chemical-class may never carry a `structure` stays exactly as written and keeps failing
+   * the build, and the renderer draws a scaffold ghosted and captioned "Shared core" so the
+   * two can never be read as the same claim.
+   *
+   * ONLY for classes with one genuine defining skeleton. Tannins (hydrolysable versus
+   * condensed), saponins (triterpenoid versus steroidal), alkaloids and glycosides have
+   * none and deliberately get no scaffold — that restraint is what makes the rest credible.
+   */
+  scaffold?: string;
   /** For mixtures and ambiguous names: what it is actually made of. */
   components?: string[];
   /** Element symbol and atomic number, for `mineral`. */
@@ -55,9 +70,10 @@ const molecule = (structure?: string, subtitle?: string): Omit<CompoundEntry, 'i
   ...(subtitle ? { subtitle } : {}),
 });
 
-const family = (note: string): Omit<CompoundEntry, 'id'> => ({
+const family = (note: string, scaffold?: string): Omit<CompoundEntry, 'id'> => ({
   kind: 'chemical-class',
   note,
+  ...(scaffold ? { scaffold } : {}),
 });
 
 const element = (symbol: string, atomicNumber: number): Omit<CompoundEntry, 'id'> => ({
@@ -96,11 +112,11 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   'chlorogenic acid': molecule('chlorogenic-acid', 'A phenolic acid'),
   'ellagic acid': molecule(undefined, 'A polyphenol'),
   'ursolic acid': molecule(undefined, 'A pentacyclic triterpenoid'),
-  allicin: molecule(undefined, 'An organosulfur compound'),
+  allicin: molecule('allicin', 'An organosulfur compound'),
   genistein: molecule('genistein', 'An isoflavone'),
   aucubin: molecule(undefined, 'An iridoid glycoside'),
   arctiin: molecule(undefined, 'A lignan glycoside'),
-  sinigrin: molecule(undefined, 'A glucosinolate'),
+  sinigrin: molecule('sinigrin', 'A glucosinolate'),
   hypericin: molecule(undefined, 'A naphthodianthrone'),
   hyperforin: molecule(undefined, 'A phloroglucinol derivative'),
   achilleine: molecule(undefined, 'An alkaloid named on the card'),
@@ -111,7 +127,7 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   // The card prints "Sallicin". It is transcribed as printed and recorded in
   // KNOWN_CARD_ISSUES; here it simply resolves to the compound the card means.
   sallicin: molecule('salicin', 'Salicin, a salicylate glycoside'),
-  salicin: molecule(undefined, 'A salicylate glycoside'),
+  salicin: molecule('salicin', 'A salicylate glycoside'),
   geraniin: molecule(undefined, 'An ellagitannin'),
   harmine: molecule('harmine', 'A beta-carboline alkaloid'),
   harmaline: molecule('harmaline', 'A beta-carboline alkaloid'),
@@ -119,24 +135,50 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   verbascoside: molecule(undefined, 'A phenylethanoid glycoside'),
   quebecol: molecule(undefined, 'A polyphenol first described in maple syrup'),
   sucrose: molecule(undefined, 'A disaccharide'),
-  lactucin: molecule(undefined, 'A sesquiterpene lactone'),
-  lactucopicrin: molecule(undefined, 'A sesquiterpene lactone'),
+  lactucin: molecule('lactucin', 'A guaianolide sesquiterpene lactone'),
+  // Lactucin esterified at C8 with 4-hydroxyphenylacetic acid: the same skeleton plus one
+  // arm, drawn from the same builder rather than borrowing lactucin's plate.
+  lactucopicrin: molecule('lactucopicrin', 'A guaianolide sesquiterpene lactone'),
 
   // ── Families, not molecules ─────────────────────────────────────────────────
-  flavonoids: family('A large family of plant polyphenols, not a single molecule.'),
+  flavonoids: family(
+    'The C6-C3-C6 core every flavonoid is built on. Individual compounds differ in how it is oxidised and hydroxylated.',
+    'flavonoid-core',
+  ),
   tannins: family('A group of plant polyphenols that bind proteins, not one compound.'),
   saponins: family('A group of glycosides that foam in water, not one compound.'),
-  anthocyanins: family('A group of pigment flavonoids, not one compound.'),
+  anthocyanins: family(
+    'The flavylium core every anthocyanin shares; individual pigments differ in their sugars and hydroxyls. The charge on its oxygen is why the colour shifts with acidity.',
+    'flavylium-core',
+  ),
   polyphenols: family('A very broad group of plant compounds, not one molecule.'),
   phenolics: family('A very broad group of plant compounds, not one molecule.'),
   'phenolic acid': family('A group of phenolic compounds, not one molecule.'),
-  coumarins: family('A group of benzopyrone compounds, not one molecule.'),
-  iridoids: family('A group of monoterpenoids, not one molecule.'),
-  catechins: family('A group of flavan-3-ols, not one molecule.'),
+  coumarins: family(
+    'The benzopyranone core every coumarin shares. Coumarin itself is the parent of the group.',
+    'coumarin-core',
+  ),
+  iridoids: family(
+    'The cyclopenta[c]pyran core every iridoid shares. Individual compounds differ around it.',
+    'iridoid-core',
+  ),
+  catechins: family(
+    'Every catechin is a flavan-3-ol — the name is the skeleton. Individual catechins differ '
+      + 'in how the two rings are hydroxylated.',
+    'catechin-core',
+  ),
   'sesquiterpene lactones': family('A group of terpenoid lactones, not one molecule.'),
   lactones: family('A structural class of cyclic esters, not one molecule.'),
-  anthraquinones: family('A group of quinone compounds, not one molecule.'),
-  glucosinolates: family('A group of sulfur-containing glycosides, not one molecule.'),
+  anthraquinones: family(
+    'The 9,10-anthraquinone core the group is named for. Individual compounds differ in what hangs off it.',
+    'anthraquinone-core',
+  ),
+  glucosinolates: family(
+    'Every glucosinolate is this thioglucoside and sulfonated oxime; individual '
+      + 'glucosinolates differ only in the side chain drawn here as R. Sinigrin is this core '
+      + 'with an allyl side chain.',
+    'glucosinolate-core',
+  ),
   isothiocyanates: family('A group of sulfur compounds, not one molecule.'),
   isoflavones: family('A group of flavonoids, not one molecule.'),
   glycosides: family('Any compound bound to a sugar — a structural class, not a molecule.'),
@@ -144,7 +186,11 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   lignans: family('A group of plant polyphenols, not one molecule.'),
   terpenes: family('A very large family of plant hydrocarbons, not one molecule.'),
   carotenoids: family('A group of pigment terpenoids, not one molecule.'),
-  betalains: family('A group of nitrogen-containing pigments, not one molecule.'),
+  betalains: family(
+    'Every betalain is betalamic acid joined through this aldehyde to an amine; individual '
+      + 'pigments differ in what it joins to, which is what makes some red and some yellow.',
+    'betalain-core',
+  ),
   'sulfur compounds': family('A grouping by element, not a single compound.'),
   'omega-3': family('A group of fatty acids defined by where a double bond sits.'),
   // Chlorophyll a and b are DIFFERENT molecules and the card does not say which.
@@ -191,7 +237,10 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
     kind: 'mineral-compound',
     subtitle: 'Silicon dioxide',
     formula: 'SiO2',
-    note: 'A compound of silicon and oxygen, not elemental silicon.',
+    // The SiO4 tetrahedron every silicate is built from — a structural depiction of a
+    // mineral compound, which is what silica is. Still never an element tile.
+    structure: 'silica-tetrahedron',
+    note: 'Built from SiO4 tetrahedra sharing their oxygens. A compound of silicon and oxygen, not elemental silicon.',
   },
 };
 
