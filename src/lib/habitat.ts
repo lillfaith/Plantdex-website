@@ -59,24 +59,46 @@ export const HABITAT_BLURB: Record<HabitatClass, string> = {
  * Both are disturbed ground; the difference is whether anybody tends it. A lawn is mown,
  * a bed is dug, an allotment is weeded — that is Garden. A roadside verge, a gravel lot
  * and a trampled footpath are disturbed by traffic rather than by care — that is Wayside.
- * A plant that thrives in both takes whichever the field-note prose names first as its
- * primary, and the other as secondary.
+ * A plant that thrives in both is filed by where a searcher should be sent first, which is
+ * not always what the prose names first — see the rule on `HabitatAssignment`.
  */
 export const HABITAT_DISAMBIGUATION =
   'Garden is tended ground; Wayside is untended disturbed ground.';
 
+/**
+ * WHAT PRIMARY MEANS.
+ *
+ * The habitat class that is both ECOLOGICALLY DEFENSIBLE and MOST USEFUL for telling a
+ * player where they are most characteristically likely to encounter or search for the
+ * plant in the real world.
+ *
+ * It explicitly does NOT mean "the first habitat phrase in the prose". That mechanical
+ * rule was the first version of this table, and it failed the same way three times: it
+ * promoted whichever setting the sentence happened to open with, even where the sentence's
+ * own summarizing clause pointed elsewhere. Self-heal went to Garden because "Lawns" came
+ * first, when a mown lawn is a subset of the meadow it belongs to; dandelion to Garden
+ * when the prose's one emphatic clause is "especially tolerant of compacted soils"; maypop
+ * to Woodland when the prose closes on "disturbed sunny areas".
+ *
+ * SECONDARY is the next genuinely important encounter environment — not merely the second
+ * class the prose mentions, and omitted entirely where naming one would be a guess.
+ *
+ * Both stay grounded in the cited prose. The rule changes how that prose is READ; it never
+ * licenses a habitat the prose does not support.
+ */
 export interface HabitatAssignment {
   primary: HabitatClass;
   /** Omitted when one class genuinely covers the species. Never equal to `primary`. */
   secondary?: HabitatClass;
   /**
-   * Set when the call is genuinely contestable, saying why in one line.
+   * Recorded wherever the call was a judgement rather than a reading.
    *
-   * Present on an entry means "a person should look at this before it is treated as
-   * settled" — `assignmentsUnderReview()` returns exactly these. Absent means the prose
-   * pointed one way clearly, not that the entry is beyond question.
+   * Names the alternative considered and why it lost, so the decision can be re-examined
+   * without reconstructing it. Present on every genus card — whose own prose says ecology
+   * varies by species, so any single class flattens something true — and on the species
+   * where two classes were both defensible.
    */
-  review?: string;
+  judgement?: string;
 }
 
 /**
@@ -92,26 +114,179 @@ export const HABITAT_DATA_STATUS: 'proposed' | 'confirmed' = 'proposed';
 /**
  * Primary and optional secondary habitat for every species in the deck.
  *
- * DERIVED, ONE SPECIES AT A TIME, FROM THE CITED HABITAT PROSE — not from memory. Where
- * that prose lists several settings the first-named wins the primary, because the field
- * notes were written most-characteristic-first.
+ * DERIVED, ONE SPECIES AT A TIME, FROM THE CITED HABITAT PROSE — not from memory, and read
+ * under the rule on `HabitatAssignment`: primary is where a player is most
+ * characteristically likely to meet the plant, not whichever setting the sentence opens
+ * with. Grouped by primary, deck order within each group.
  *
- * Two recurring reasons an entry carries `review`:
+ * Two recurring reasons an entry carries `judgement`:
  *
  *  • The card names a GENUS (`spp.`). The prose then says outright that ecology varies by
  *    species, and any single class flattens that — an oak can be a bottomland tree or a
- *    dry ridge tree. These are classified by where the genus is most often met, and every
- *    one is flagged.
- *  • Garden versus Wayside. See `HABITAT_DISAMBIGUATION`. For a weed that grows in both,
- *    the call is a judgement about which a reader should be sent to first.
+ *    dry ridge tree. These are filed by where the genus is most often met.
+ *  • Two classes were both defensible. The note records the loser and why.
+ *
+ * ONE DISTINCTION DOES A LOT OF WORK, so it is stated once here rather than in five notes:
+ * a LIGHT-DEMANDING SCRAMBLER cannot persist in shade, so for brambles and maypop the
+ * woodland interior is excluded outright and "woodland edge" is really the sunny margin —
+ * both are filed under Wayside. A TREE is different: a mulberry or a maple belongs to
+ * woodland ecologically even when the specimen you meet is standing on a verge.
  */
 export const HABITAT_ASSIGNMENTS: Record<string, HabitatAssignment> = {
-  // ── Garden: tended ground ───────────────────────────────────────────────────
-  'taraxacum-officinale': {
-    primary: 'garden',
+  // ── Woodland: shade, and the line where shade meets light ────────────────────
+  'alliaria-petiolata': {
+    primary: 'woodland',
     secondary: 'wayside',
-    review: 'Lawns are named first and are where most people meet it, but dandelion is equally the archetypal roadside weed. Wayside primary is defensible.',
+    judgement:
+      'Woodland edges and shaded woods lead, and unlike the light-demanding scramblers this one ' +
+      'genuinely occupies shade — it is the classic invasive of shaded woodland. Trails and ' +
+      'hedgerows give the Wayside secondary; floodplains were considered and lost to them.',
   },
+  'viola-sororia': { primary: 'woodland', secondary: 'garden' },
+  'galium-aparine': {
+    primary: 'woodland',
+    secondary: 'wayside',
+    judgement:
+      'Genuinely spans four classes. Woodlands and thickets lead, and cleavers characteristically ' +
+      'scrambles through hedgerow and woodland-edge vegetation rather than standing in open ' +
+      'ground. Fence rows give the Wayside secondary.',
+  },
+  'acer-spp': {
+    primary: 'woodland',
+    secondary: 'garden',
+    judgement:
+      'Genus card; the prose says habitat varies substantially. Woodland is unambiguous for a ' +
+      'forest tree. Garden secondary stands in for the explicitly named \"urban landscapes\", which ' +
+      'is how most people meet a maple; floodplains lost the secondary to it.',
+  },
+  'rosa-spp': {
+    primary: 'woodland',
+    secondary: 'meadow',
+    judgement:
+      'Genus card, explicitly \"depending on species\". Thickets and forest edges lead and are ' +
+      'where a wild rose characteristically grows as a shrub. Fields take the secondary over ' +
+      'roadsides because the prose names them first among the open habitats; dunes and stream ' +
+      'margins fit no secondary and are not represented.',
+  },
+  'geranium-maculatum': { primary: 'woodland' },
+  'lonicera-japonica': { primary: 'woodland', secondary: 'wayside' },
+  'pinus-spp': {
+    primary: 'woodland',
+    judgement:
+      'Genus card; the prose says \"highly variable\" and names ridges, dry uplands, sandy soils, ' +
+      'wetlands and cultivated landscapes. Woodland is the only safe primary for a forest conifer, ' +
+      'and NO SECONDARY IS HONEST — choosing one would rank settings the prose leaves unranked.',
+  },
+  'morus-spp': {
+    primary: 'woodland',
+    secondary: 'wayside',
+    judgement:
+      'Genus card, and the closest call among the trees: the prose closes on \"readily naturalise\" ' +
+      'and names roadsides, fence lines and urban areas, so Wayside primary was seriously ' +
+      'considered. It was rejected because a mulberry is a TREE and belongs to woodland ' +
+      'ecologically even when the specimen you meet is standing on a verge — the distinction that ' +
+      'separates it from the brambles above. Wayside takes the secondary and carries the ' +
+      'naturalised habit.',
+  },
+  'quercus-spp': {
+    primary: 'woodland',
+    judgement:
+      'Genus card; the prose says \"extremely diverse\" and names bottomlands, dry uplands, ' +
+      'wetlands and urban landscapes. Woodland is the only safe primary and NO SECONDARY IS HONEST.',
+  },
+
+  // ── Meadow: open, sunny, undug ───────────────────────────────────────────────
+  'rumex-obtusifolius': { primary: 'meadow', secondary: 'wayside' },
+  'solidago-canadensis': { primary: 'meadow', secondary: 'wayside' },
+  'trifolium-pratense': { primary: 'meadow', secondary: 'wayside' },
+  'rumex-acetosella': { primary: 'meadow', secondary: 'wayside' },
+  'prunella-vulgaris': {
+    primary: 'meadow',
+    secondary: 'garden',
+    judgement:
+      'Prose opens on lawns, but a mown lawn is a subset of the moist open grassland self-heal ' +
+      'actually belongs to, and \"meadows\" and \"moist open ground\" both appear in the same ' +
+      'sentence. Garden keeps the secondary: a lawn is a real and very common encounter.',
+  },
+  'allium-vineale': {
+    primary: 'meadow',
+    secondary: 'garden',
+    judgement:
+      'Genus-level prose (\"varies by species\") naming lawns, meadows, open woods and fields. ' +
+      'Meadow leads because Allium vineale is a pasture and field weed — the common name is Field ' +
+      'Garlic — and a lawn is the mown version of the same grassland. Garden secondary.',
+  },
+  'fragaria-virginiana': { primary: 'meadow', secondary: 'woodland' },
+  'hypericum-perforatum': { primary: 'meadow', secondary: 'wayside' },
+  'achillea-millefolium': { primary: 'meadow', secondary: 'wayside' },
+  'monarda-fistulosa': { primary: 'meadow', secondary: 'woodland' },
+
+  // ── Wetland: ground that stays wet ───────────────────────────────────────────
+  'urtica-dioica': {
+    primary: 'wetland',
+    secondary: 'woodland',
+    judgement:
+      'The prose is organised by one clause — \"moist nutrient-rich soil:\" — and everything after ' +
+      'it is an example of that. Its first two examples are streambanks and floodplains. Woodland ' +
+      'openings is explicitly named and pairs coherently. Wayside (farms, fence lines) stays ' +
+      'defensible and is the alternative if this is revisited.',
+  },
+  'mentha-canadensis': { primary: 'wetland', secondary: 'meadow' },
+  'equisetum-arvense': { primary: 'wetland', secondary: 'wayside' },
+  'sambucus-spp': {
+    primary: 'wetland',
+    secondary: 'woodland',
+    judgement:
+      'Genus card. Streambanks, wet thickets and ditches dominate the prose, and damp ground is ' +
+      'the most useful thing to tell a searcher looking for elder. Woodland margins are named and ' +
+      'take the secondary.',
+  },
+  'impatiens-capensis': { primary: 'wetland', secondary: 'woodland' },
+  'salix-spp': { primary: 'wetland' },
+
+  // ── Wayside: untended disturbed ground ───────────────────────────────────────
+  'taraxacum-officinale': {
+    primary: 'wayside',
+    secondary: 'garden',
+    judgement:
+      'Lawns are named first, but the prose\'s one emphatic clause is \"especially tolerant of ' +
+      'compacted soils\" — a wayside signature, not a garden one — and \"paths, roadsides\" follow ' +
+      'immediately. Garden takes the secondary because a lawn is where many people first notice it.',
+  },
+  'ambrosia-artemisiifolia': { primary: 'wayside', secondary: 'garden' },
+  'plantago-major': { primary: 'wayside', secondary: 'garden' },
+  'rubus-spp': {
+    primary: 'wayside',
+    secondary: 'woodland',
+    judgement:
+      'Genus card. The prose closes on \"disturbed sunny ground\" and names fence rows and ' +
+      'roadsides; a bramble is light-demanding, so the woodland interior is excluded and ' +
+      '\"woodland edge\" here is really the sunny margin. Meadow was considered and rejected: ' +
+      'brambles occupy edges and disturbed ground, not open sward.',
+  },
+  'rhus-spp': {
+    primary: 'wayside',
+    secondary: 'woodland',
+    judgement:
+      'Genus card. The prose leads with \"dry open places\" and names roadsides and disturbed ' +
+      'slopes; sumac is light-demanding and roadside colonies are the characteristic encounter. ' +
+      'Woodland edges give the secondary.',
+  },
+  'cichorium-intybus': { primary: 'wayside', secondary: 'meadow' },
+  'arctium-lappa': { primary: 'wayside', secondary: 'meadow' },
+  'verbascum-thapsus': { primary: 'wayside', secondary: 'meadow' },
+  'passiflora-incarnata': {
+    primary: 'wayside',
+    secondary: 'woodland',
+    judgement:
+      'Open woods lead the prose, but it closes on \"disturbed sunny areas\" and names fields, ' +
+      'roadsides and fence lines. Maypop is a sun-loving vine that scrambles on fence rows, so a ' +
+      'player should check margins and verges rather than woodland interior. Woodland stays ' +
+      'secondary because open woods and woodland edges are genuinely named.',
+  },
+  'lactuca-serriola': { primary: 'wayside', secondary: 'meadow' },
+
+  // ── Garden: tended ground ────────────────────────────────────────────────────
   'chenopodium-album': { primary: 'garden', secondary: 'wayside' },
   'portulaca-oleracea': { primary: 'garden', secondary: 'wayside' },
   'oxalis-stricta': { primary: 'garden', secondary: 'wayside' },
@@ -120,106 +295,7 @@ export const HABITAT_ASSIGNMENTS: Record<string, HabitatAssignment> = {
   'glechoma-hederacea': { primary: 'garden', secondary: 'woodland' },
   'nepeta-cataria': { primary: 'garden', secondary: 'wayside' },
   'capsella-bursa-pastoris': { primary: 'garden', secondary: 'wayside' },
-  'prunella-vulgaris': {
-    primary: 'garden',
-    secondary: 'meadow',
-    review: 'Prose leads with lawns, but self-heal is a meadow plant that tolerates mowing. Meadow primary is arguably the more honest ecology.',
-  },
-  'allium-vineale': {
-    primary: 'garden',
-    secondary: 'meadow',
-    review: 'The card names a species but the prose covers wild North American Allium generally and says habitat varies. Lawns lead the list; open woods are also named.',
-  },
   'melissa-officinalis': { primary: 'garden', secondary: 'wayside' },
-
-  // ── Woodland: shade, and the edge of it ─────────────────────────────────────
-  'alliaria-petiolata': {
-    primary: 'woodland',
-    secondary: 'wayside',
-    review: 'Woodland edges lead, but trails, hedgerows and floodplains are all named — a case could be made for Wayside or Wetland secondary.',
-  },
-  'viola-sororia': { primary: 'woodland', secondary: 'garden' },
-  'galium-aparine': {
-    primary: 'woodland',
-    secondary: 'wayside',
-    review: 'The prose names woodlands, thickets, fence rows, floodplains AND meadows. Cleavers genuinely spans four of the five classes; woodland-edge scrambling is the most characteristic.',
-  },
-  'acer-spp': {
-    primary: 'woodland',
-    secondary: 'garden',
-    review: 'Genus card. Prose says habitat varies substantially by species — floodplain maples and street maples are both common. Garden secondary stands in for "urban landscapes".',
-  },
-  'rubus-spp': {
-    primary: 'woodland',
-    secondary: 'wayside',
-    review: 'Genus card. Woodland-edge bramble is the classic picture, but fields, clearings and roadsides are all named and Meadow is defensible.',
-  },
-  'rosa-spp': {
-    primary: 'woodland',
-    secondary: 'meadow',
-    review: 'Genus card, explicitly "depending on species". Thickets and forest edges lead; dunes and stream margins are also named and fit no secondary well.',
-  },
-  'geranium-maculatum': { primary: 'woodland' },
-  'lonicera-japonica': { primary: 'woodland', secondary: 'wayside' },
-  'pinus-spp': {
-    primary: 'woodland',
-    secondary: undefined,
-    review: 'Genus card, prose says "highly variable" and names ridges, dry uplands, sandy soils, wetlands and cultivated landscapes. No secondary is honest; Woodland is the only safe primary.',
-  },
-  'morus-spp': {
-    primary: 'woodland',
-    secondary: 'wayside',
-    review: 'Genus card. Woodland edges lead, but roadsides, fence lines and urban areas are where most people actually meet a mulberry.',
-  },
-  'passiflora-incarnata': {
-    primary: 'woodland',
-    secondary: 'wayside',
-    review: 'Open woods and woodland edges lead the prose, but maypop is very often a fence-row and field-edge vine. Wayside primary is defensible.',
-  },
-  'quercus-spp': {
-    primary: 'woodland',
-    secondary: undefined,
-    review: 'Genus card, prose says "extremely diverse" and names bottomlands, dry uplands, wetlands and urban landscapes. No secondary is honest.',
-  },
-
-  // ── Meadow: open, sunny, undug ──────────────────────────────────────────────
-  'rumex-obtusifolius': { primary: 'meadow', secondary: 'wayside' },
-  'solidago-canadensis': { primary: 'meadow', secondary: 'wayside' },
-  'trifolium-pratense': { primary: 'meadow', secondary: 'wayside' },
-  'rumex-acetosella': { primary: 'meadow', secondary: 'wayside' },
-  'fragaria-virginiana': { primary: 'meadow', secondary: 'woodland' },
-  'hypericum-perforatum': { primary: 'meadow', secondary: 'wayside' },
-  'achillea-millefolium': { primary: 'meadow', secondary: 'wayside' },
-  'monarda-fistulosa': { primary: 'meadow', secondary: 'woodland' },
-
-  // ── Wetland: ground that stays wet ──────────────────────────────────────────
-  'urtica-dioica': {
-    primary: 'wetland',
-    secondary: 'woodland',
-    review: 'Prose leads "moist nutrient-rich soil: streambanks… floodplains", which is Wetland. But nettle is just as strongly a farmyard and fence-line plant, so Wayside primary is defensible.',
-  },
-  'mentha-canadensis': { primary: 'wetland', secondary: 'meadow' },
-  'equisetum-arvense': { primary: 'wetland', secondary: 'wayside' },
-  'sambucus-spp': {
-    primary: 'wetland',
-    secondary: 'woodland',
-    review: 'Genus card. Streambanks and wet thickets lead, but elderberry is also a straightforward woodland-margin shrub.',
-  },
-  'impatiens-capensis': { primary: 'wetland', secondary: 'woodland' },
-  'salix-spp': { primary: 'wetland' },
-
-  // ── Wayside: untended disturbed ground ──────────────────────────────────────
-  'ambrosia-artemisiifolia': { primary: 'wayside', secondary: 'garden' },
-  'plantago-major': { primary: 'wayside', secondary: 'garden' },
-  'rhus-spp': {
-    primary: 'wayside',
-    secondary: 'woodland',
-    review: 'Genus card. Roadside sumac colonies are how most people meet it, but the prose leads with "dry open places" and names woodland edges and old fields.',
-  },
-  'cichorium-intybus': { primary: 'wayside', secondary: 'meadow' },
-  'arctium-lappa': { primary: 'wayside', secondary: 'meadow' },
-  'verbascum-thapsus': { primary: 'wayside', secondary: 'meadow' },
-  'lactuca-serriola': { primary: 'wayside', secondary: 'meadow' },
 };
 
 export function habitatOf(herbId: string): HabitatAssignment | undefined {
@@ -271,16 +347,16 @@ export function habitatProseFor(herbId: string): string | undefined {
   return FIELD_NOTES[herbId]?.habitat;
 }
 
-/** Every assignment a person still needs to look at, in deck order. */
-export function assignmentsUnderReview(): {
+/** Every assignment that rested on a judgement rather than a plain reading, in deck order. */
+export function judgementCalls(): {
   herbId: string;
   assignment: HabitatAssignment;
-  review: string;
+  judgement: string;
 }[] {
   return HERBS.flatMap((herb) => {
     const assignment = HABITAT_ASSIGNMENTS[herb.id];
-    return assignment?.review
-      ? [{ herbId: herb.id, assignment, review: assignment.review }]
+    return assignment?.judgement
+      ? [{ herbId: herb.id, assignment, judgement: assignment.judgement }]
       : [];
   });
 }

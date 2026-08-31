@@ -8,7 +8,7 @@ import {
   HABITAT_BLURB,
   HABITAT_DATA_STATUS,
   HABITAT_LABEL,
-  assignmentsUnderReview,
+  judgementCalls,
   habitatCounts,
   habitatProseFor,
   habitatsOf,
@@ -108,13 +108,17 @@ describe('habitat taxonomy', () => {
     }
   });
 
-  it('gives every flagged assignment a real reason', () => {
-    const flagged = assignmentsUnderReview();
+  it('records a real reason wherever the call was a judgement', () => {
+    const flagged = judgementCalls();
     expect(flagged.length).toBeGreaterThan(0);
-    for (const { herbId, review } of flagged) {
-      expect(review.length, `${herbId}: review note too thin`).toBeGreaterThan(30);
+    for (const { herbId, judgement } of flagged) {
+      expect(judgement.length, `${herbId}: judgement note too thin`).toBeGreaterThan(80);
+      // A rationale has to name what it decided against, or it is only an assertion.
+      expect(judgement, `${herbId}: names no alternative`).toMatch(
+        /lead|rather than|instead|secondary|rejected|considered|alternative|only safe|excluded|lost to|over /i,
+      );
     }
-    // Flagged entries are in deck order, so a review list reads like the deck.
+    // Judgement calls come back in deck order, so the list reads like the deck.
     const order = HERBS.map((herb) => herb.id);
     const positions = flagged.map((entry) => order.indexOf(entry.herbId));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
