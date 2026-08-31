@@ -71,7 +71,7 @@ export function HerbCard({
           <>
             <MysteryCard herb={herb} />
             <div className="absolute inset-x-0 bottom-0 flex justify-center pb-8">
-              <span className="text-[0.58rem] leading-tight font-bold tracking-[0.14em] text-plum-950/75 uppercase">
+              <span className="text-[0.72rem] leading-tight font-bold tracking-[0.14em] text-plum-950/75 uppercase">
                 Not discovered
               </span>
             </div>
@@ -79,14 +79,14 @@ export function HerbCard({
         )}
 
         {discovered && (
-          <span className="absolute top-1.5 left-1.5 rounded-md bg-plum-950/75 px-1.5 py-0.5 text-[0.6rem] font-bold text-gold-400 tabular-nums">
+          <span className="absolute top-1.5 left-1.5 rounded-md bg-plum-950/75 px-1.5 py-0.5 text-[0.72rem] font-bold text-gold-400 tabular-nums">
             {number}
           </span>
         )}
 
         {discovered && (
           <span
-            className={`absolute top-1.5 right-1.5 rounded-full px-1.5 py-0.5 text-[0.6rem] font-bold ${
+            className={`absolute top-1.5 right-1.5 rounded-full px-1.5 py-0.5 text-[0.72rem] font-bold ${
               stage === 'mastered'
                 ? 'bg-gold-500 text-violet-deep'
                 : 'bg-plum-950/80 text-gold-400'
@@ -109,7 +109,7 @@ export function HerbCard({
         {discovered ? (
           <RarityBadge rarity={herb.rarity} />
         ) : (
-          <span className="text-[0.62rem] text-violet-400">Find it to reveal</span>
+          <span className="text-[0.72rem] text-violet-400">Find it to reveal</span>
         )}
       </div>
     </Link>

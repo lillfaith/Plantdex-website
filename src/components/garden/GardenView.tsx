@@ -80,11 +80,11 @@ export function GardenView() {
                     <span className="flex h-20 w-full items-end justify-center">
                       <GrowthSprite herb={herb} stage={stage} />
                     </span>
-                    <span className="mt-1 w-full truncate text-center text-[0.68rem] font-semibold text-violet-100">
+                    <span className="mt-1 w-full truncate text-center text-xs font-semibold text-violet-100">
                       {herb.commonName}
                     </span>
                     <span
-                      className={`text-center text-[0.6rem] ${
+                      className={`text-center text-[0.72rem] ${
                         stage === 'flowering' ? 'font-bold text-gold-300' : 'text-violet-400'
                       }`}
                     >

@@ -132,7 +132,7 @@ export function MySightings({ herb }: { herb: Herb }) {
                 <p className="text-sm font-bold text-violet-100">
                   <time dateTime={sighting.date}>{formatDate(sighting.date)}</time>
                   {sighting.foundAgain && (
-                    <span className="ml-2 rounded-full bg-plum-600 px-2 py-0.5 text-[0.62rem] font-semibold tracking-wide text-violet-200 uppercase">
+                    <span className="ml-2 rounded-full bg-plum-600 px-2 py-0.5 text-[0.72rem] font-semibold tracking-wide text-violet-200 uppercase">
                       Found again
                     </span>
                   )}
@@ -154,7 +154,7 @@ export function MySightings({ herb }: { herb: Herb }) {
               </div>
               {sighting.region && <p className="text-xs text-violet-300">{sighting.region}</p>}
               {sighting.growthStage && (
-                <p className="mt-1 inline-block rounded-full border border-violet-600 px-2 py-0.5 text-[0.65rem] font-semibold text-violet-200">
+                <p className="mt-1 inline-block rounded-full border border-violet-600 px-2 py-0.5 text-[0.72rem] font-semibold text-violet-200">
                   {GROWTH_STAGE_LABEL[sighting.growthStage]}
                 </p>
               )}
@@ -218,7 +218,7 @@ export function MySightings({ herb }: { herb: Herb }) {
               maxLength={80}
               className="mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-plum-700/70 px-3 text-sm text-violet-100 placeholder:text-violet-500"
             />
-            <span className="mt-1 block text-[0.68rem] leading-relaxed text-violet-400">
+            <span className="mt-1 block text-xs leading-relaxed text-violet-400">
               Keep it general. Please don&apos;t record exact spots for wild plants — precise
               locations are how patches get stripped.
             </span>

@@ -43,7 +43,7 @@ export function SiteNav() {
               <Link
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
-                className={`relative flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[0.62rem] font-semibold transition-colors sm:min-h-10 sm:flex-row sm:gap-1.5 sm:px-3 sm:text-sm ${
+                className={`relative flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[0.72rem] font-semibold transition-colors sm:min-h-10 sm:flex-row sm:gap-1.5 sm:px-3 sm:text-sm ${
                   active
                     ? 'bg-plum-600/70 text-gold-300'
                     : 'text-violet-300 hover:bg-plum-600/40 hover:text-violet-100'

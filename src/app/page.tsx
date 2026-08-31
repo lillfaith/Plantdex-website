@@ -86,7 +86,7 @@ export default function HomePage() {
                     fit
                     className="w-full drop-shadow-[0_6px_16px_rgba(23,16,28,0.6)]"
                   />
-                  <span className="mt-1 truncate text-center text-[0.65rem] font-semibold text-violet-300 sm:text-xs">
+                  <span className="mt-1 truncate text-center text-[0.72rem] font-semibold text-violet-300 sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>

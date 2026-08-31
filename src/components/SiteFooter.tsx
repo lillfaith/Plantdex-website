@@ -18,22 +18,32 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-violet-800/60 px-4 pt-8 pb-24 sm:pb-10">
       <div className="mx-auto flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <nav aria-label="Site information">
-          <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          {/* `min-h-11` on each link, matching the 44px target every other control on the
+              site uses. Without it these were 18px tall — the text height — which is a miss
+              waiting to happen on a phone. `-my-2` keeps the row visually compact while the
+              hit box stays full size. */}
+          <ul className="-my-2 flex flex-wrap items-center gap-x-5 text-sm">
             <li>
               <Link
                 href="/safety"
-                className="font-semibold text-violet-200 underline underline-offset-2 hover:text-gold-400"
+                className="inline-flex min-h-11 items-center font-semibold text-violet-200 underline underline-offset-2 hover:text-gold-400"
               >
                 Herbal safety
               </Link>
             </li>
             <li>
-              <Link href="/privacy" className="text-violet-300 hover:text-gold-400">
+              <Link
+                href="/privacy"
+                className="inline-flex min-h-11 items-center text-violet-300 hover:text-gold-400"
+              >
                 Privacy
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="text-violet-300 hover:text-gold-400">
+              <Link
+                href="/terms"
+                className="inline-flex min-h-11 items-center text-violet-300 hover:text-gold-400"
+              >
                 Terms
               </Link>
             </li>

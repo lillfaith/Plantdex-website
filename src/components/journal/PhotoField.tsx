@@ -163,7 +163,7 @@ export function PhotoField({
                 <span className="font-normal text-violet-400"> · {formatBytes(file.size)}</span>
               )}
             </span>
-            <span className="text-[0.68rem] text-violet-400">
+            <span className="text-xs text-violet-400">
               Drop another to replace it
             </span>
           </>
@@ -176,7 +176,7 @@ export function PhotoField({
             <span className="text-sm font-semibold text-violet-200">
               {dragging ? 'Drop it here' : 'Drag a photo here, or browse'}
             </span>
-            <span className="text-[0.68rem] leading-relaxed text-violet-400">
+            <span className="text-xs leading-relaxed text-violet-400">
               {ACCEPTED_LABEL}. You can paste one too.
             </span>
           </>
@@ -207,7 +207,7 @@ export function PhotoField({
         </p>
       )}
 
-      <p className="mt-1 text-[0.68rem] leading-relaxed text-violet-400">
+      <p className="mt-1 text-xs leading-relaxed text-violet-400">
         Photos are resized before they are saved, which also strips the location data a
         phone camera writes into them.
       </p>

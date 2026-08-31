@@ -47,7 +47,7 @@ export function GlossaryView() {
               <dt className="flex flex-wrap items-baseline gap-2">
                 <span className="font-display text-lg font-bold text-gold-300">{term.term}</span>
                 {term.appearsOnCards && (
-                  <span className="rounded-full border border-violet-600 px-2 py-0.5 text-[0.6rem] font-semibold tracking-wide text-violet-300 uppercase">
+                  <span className="rounded-full border border-violet-600 px-2 py-0.5 text-[0.72rem] font-semibold tracking-wide text-violet-300 uppercase">
                     On the cards
                   </span>
                 )}

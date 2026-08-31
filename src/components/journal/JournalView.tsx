@@ -89,12 +89,12 @@ export function JournalView() {
                     )}
                     <div className="mt-1 flex flex-wrap gap-1.5">
                       {sighting.growthStage && (
-                        <span className="rounded-full border border-violet-600 px-2 py-0.5 text-[0.62rem] font-semibold text-violet-200">
+                        <span className="rounded-full border border-violet-600 px-2 py-0.5 text-[0.72rem] font-semibold text-violet-200">
                           {GROWTH_STAGE_LABEL[sighting.growthStage]}
                         </span>
                       )}
                       {sighting.foundAgain && (
-                        <span className="rounded-full bg-plum-600 px-2 py-0.5 text-[0.62rem] font-semibold tracking-wide text-violet-200 uppercase">
+                        <span className="rounded-full bg-plum-600 px-2 py-0.5 text-[0.72rem] font-semibold tracking-wide text-violet-200 uppercase">
                           Found again
                         </span>
                       )}

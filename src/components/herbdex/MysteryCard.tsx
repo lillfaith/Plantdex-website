@@ -79,7 +79,7 @@ export function MysteryCard({
         <PlantdexIcon name="locked" className={detail ? 'text-lg' : 'text-[0.8rem]'} />
         <span
           className={`font-bold tracking-[0.18em] tabular-nums ${
-            detail ? 'text-sm' : 'text-[0.6rem]'
+            detail ? 'text-sm' : 'text-[0.72rem]'
           }`}
         >
           {number}

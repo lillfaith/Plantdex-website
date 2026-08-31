@@ -95,7 +95,7 @@ export default function SeasonsPage() {
                             {herb.scientificName}
                           </span>
                         </span>
-                        <span className="shrink-0 text-[0.6rem] font-bold text-violet-400 tabular-nums">
+                        <span className="shrink-0 text-[0.72rem] font-bold text-violet-400 tabular-nums">
                           #{String(herb.cardNumber).padStart(2, '0')}
                         </span>
                       </Link>

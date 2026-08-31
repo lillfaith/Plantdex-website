@@ -90,7 +90,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
                   {step.label}
                 </span>
                 {target > 1 && (
-                  <span className="ml-auto shrink-0 text-[0.68rem] text-violet-400 tabular-nums">
+                  <span className="ml-auto shrink-0 text-xs text-violet-400 tabular-nums">
                     {current} / {target}
                   </span>
                 )}
@@ -120,7 +120,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
           )}
 
           {done && completedAt && (
-            <p className="mt-2 text-[0.68rem] text-gold-300">
+            <p className="mt-2 text-xs text-gold-300">
               Completed{' '}
               <time dateTime={completedAt}>
                 {new Date(completedAt).toLocaleDateString(undefined, {
@@ -160,7 +160,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
             );
           })}
           {task.herbIds.length > cards.length && (
-            <li className="self-center text-[0.68rem] text-violet-400">
+            <li className="self-center text-xs text-violet-400">
               +{task.herbIds.length - cards.length} more
             </li>
           )}
