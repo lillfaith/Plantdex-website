@@ -195,6 +195,126 @@ body {
 }
 
 /*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THREE PANEL FAMILIES
+ *
+ * The page had one surface doing every job, so a safety notice, a mastery track and a list
+ * of compounds all carried identical weight. These say what KIND of thing a panel holds,
+ * and the whole neon budget is spent here rather than sprinkled:
+ *
+ *   .game-panel     progression, XP, rarity, sightings — the collectible layer. This is
+ *                   the ONLY family that blooms.
+ *   .field-panel    identification, habitat, parts, preparations — botanical field notes,
+ *                   restrained, a thin container rather than a card.
+ *   .science-panel  compounds, sources, safety — the flattest and most readable thing on
+ *                   the page, deliberately the least decorated.
+ *
+ * WHY SAFETY IS THE FLAT ONE. A warning that glows like an achievement reads as a reward,
+ * and this deck is used to decide what to put in your mouth. Credibility here is worth
+ * more than decoration, so the science family gets none.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@utility game-panel {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-violet-800) 16%, transparent) 0%,
+      transparent 42%
+    ),
+    color-mix(in srgb, var(--color-plum-800) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-600) 55%, transparent);
+  border-radius: var(--radius-card);
+  /* The bloom sits outside AND faintly inside, so the edge reads as lit rather than
+     outlined. Kept low: the printed card must stay the brightest object on the page. */
+  box-shadow:
+    0 0 10px color-mix(in srgb, var(--color-violet-600) 20%, transparent),
+    inset 0 0 20px color-mix(in srgb, var(--color-violet-600) 6%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* The gold variant, for a panel whose state is EARNED rather than merely interactive. */
+@utility game-panel-earned {
+  border-color: color-mix(in srgb, var(--color-gold-500) 45%, transparent);
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--color-gold-500) 16%, transparent),
+    inset 0 0 20px color-mix(in srgb, var(--color-gold-500) 5%, transparent);
+}
+
+@utility field-panel {
+  background: color-mix(in srgb, var(--color-plum-800) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-700) 60%, transparent);
+  border-radius: var(--radius-card);
+}
+
+@utility science-panel {
+  background: color-mix(in srgb, var(--color-plum-900) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-700) 45%, transparent);
+  border-radius: var(--radius-card);
+  /* No bloom, no gradient, no blur. This is the readable one. */
+}
+
+/*
+ * A clipped top-right corner, so a game panel is recognisable by SHAPE and not only by
+ * glow — which is what keeps this from being "the same card with a filter on it". Kept
+ * shallow: Plantdex is botanical, and a hard chamfer reads as a sci-fi HUD.
+ */
+@utility game-clip {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+}
+
+/*
+ * NEON, AS A REWARD SIGNAL RATHER THAN A TEXTURE.
+ *
+ * Applied to a node that is complete, a control that is active, a chip that is earned —
+ * never to a container of prose.
+ */
+@utility bloom-gold {
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--color-gold-500) 55%, transparent),
+    0 0 18px color-mix(in srgb, var(--color-gold-500) 22%, transparent);
+}
+
+@utility bloom-violet {
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--color-violet-500) 45%, transparent),
+    0 0 18px color-mix(in srgb, var(--color-violet-500) 18%, transparent);
+}
+
+/* Text that should read as lit rather than merely coloured. Used on XP figures only. */
+@utility glow-gold {
+  text-shadow: 0 0 14px color-mix(in srgb, var(--color-gold-500) 45%, transparent);
+}
+
+/*
+ * The hero's aura. A plant-specific hue is passed in as `--aura`, so a species tints its
+ * own light rather than every card sitting in the same purple spotlight.
+ */
+/*
+ * A slight lean toward the pointer, on pointer devices only.
+ *
+ * Gated behind `hover: hover` so it never fires on a phone, where there is no hover state
+ * and a stuck transform would just look broken. It sits on a WRAPPER rather than on
+ * `.flip-card`, which already owns a 3D transform of its own for the card flip.
+ */
+@utility card-tilt {
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-tilt:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-4deg) translateY(-4px);
+  }
+}
+
+@utility card-aura {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--aura, var(--color-violet-700)) 55%, transparent),
+    transparent 72%
+  );
+}
+
+/*
  * THE LOCKED CARD.
  *
  * The gradient is the printed card back, sampled top to bottom. Angled slightly off
@@ -567,7 +687,77 @@ body {
 .plant-sprite-16 { animation-timing-function: steps(16); }
 .plant-sprite-18 { animation-timing-function: steps(18); }
 
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE REWARD BEAT
+ *
+ * Fires ONCE when a stage is reached, and lasts under a second. Deliberately short and
+ * quiet: this is a field guide people use outdoors, and a long celebratory animation on a
+ * page that also carries safety information cheapens both.
+ *
+ * Everything here animates `transform` and `opacity` only, so it composites on the GPU and
+ * cannot cause layout work mid-scroll. All of it is switched off under reduced motion by
+ * the global rule below, which collapses durations — plus the explicit rules there for the
+ * two cases where collapsing alone leaves something in a wrong end state.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@keyframes node-earned {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+@keyframes xp-rise {
+  0% { opacity: 0; transform: translateY(6px); }
+  22% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 1; transform: translateY(-4px); }
+  100% { opacity: 0; transform: translateY(-12px); }
+}
+
+/* The current stage, breathing. Slow and low-contrast so it reads as "you are here"
+   rather than as something demanding a tap. */
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.18); }
+}
+
+@keyframes pip-fill {
+  0% { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.node-earned { animation: node-earned 900ms cubic-bezier(0.22, 1, 0.36, 1) 1; }
+.xp-rise { animation: xp-rise 1100ms ease-out 1 forwards; }
+.node-pulse { animation: node-pulse 2600ms ease-in-out infinite; }
+.pip-fill { animation: pip-fill 320ms ease-out 1 backwards; }
+
+/* The line that fills as stages complete. Width is a custom property so the same element
+   serves every stage count without a class per fraction. */
+.path-fill {
+  width: var(--fill, 0%);
+  transition: width 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /*
+   * Two of the new animations end somewhere useless if the duration is merely collapsed:
+   * `xp-rise` is `forwards`, so it would freeze at opacity 0 and the XP figure would never
+   * appear at all; `node-pulse` would stop at whatever opacity the first frame names. Both
+   * are pinned to their resting state instead of being sped up.
+   */
+  .xp-rise,
+  .node-pulse,
+  .node-earned,
+  .pip-fill {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .path-fill {
+    transition: none !important;
+  }
+
   *,
   *::before,
   *::after {

@@ -6,6 +6,7 @@ import {
   IDENTIFICATION_CAVEAT,
 } from '@/lib/card-field-notes';
 import { Panel } from '../ui/Panel';
+import { ProvenanceChip } from '../game/Provenance';
 import { EYEBROW, MICRO_LABEL, NOTE, READING, ACCENTS } from '../ui/accents';
 import { SectionHeader } from '../ui/SectionHeader';
 import { LookalikeRisk } from '../SafetyNotice';
@@ -25,15 +26,14 @@ import { iconForTrait } from '@/lib/trait-icons';
  */
 
 /**
- * The eyebrow every field-note section carries.
+ * Provenance is now a chip rather than a full-width uppercase line above every section.
  *
- * Card-derived sections say "From the card". These must say the opposite just as plainly,
- * for the same reason `SiteCaution` leads with "Not printed on the card": a reader who
- * believes a lookalike discriminator came off their own deck weighs it differently from
- * one who knows the site added it. "Field notes" alone distinguished them typographically
- * and told the reader nothing.
+ * The DISTINCTION is unchanged and still load-bearing — a reader who believes a lookalike
+ * discriminator came off their own deck weighs it differently from one who knows the site
+ * added it. What changed is the weight: `ProvenanceChip` says the same thing in a fraction
+ * of the height and carries an info control with the longer explanation, which is a better
+ * trade than three shouted lines nobody finishes reading.
  */
-const FIELD_NOTE_EYEBROW = 'Added by Plantdex — not on the card';
 
 /** The quiet notice for a card whose own scientific name is `spp.` — never an error banner. */
 function GenusNotice({ herb }: { herb: Herb }) {
@@ -53,12 +53,12 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
   if (!notes?.identification?.length) return null;
 
   return (
-    <Panel frame="plate" pad="lg" accent="lilac" aria-labelledby="identification-heading">
+    <Panel family="field" pad="lg" accent="lilac" aria-labelledby="identification-heading">
       <SectionHeader
         id="identification-heading"
-        eyebrow={FIELD_NOTE_EYEBROW}
         accent="lilac"
-        title="How to recognise it"
+        title="Field identification"
+        right={<ProvenanceChip source="plantdex" />}
         size="lg"
         note={IDENTIFICATION_CAVEAT}
       />
@@ -78,11 +78,16 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
           const icon = iconForTrait(trait);
           return (
             <div key={trait} className="flex items-start gap-2.5">
-              {icon ? (
-                <PlantdexIcon name={icon} className="mt-0.5 shrink-0 text-base text-violet-300" />
-              ) : (
-                <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-violet-400" />
-              )}
+              {/* A scan marker, then the part icon where one genuinely helps. The diamond
+                  is the same mark on every row, so the section reads as a checklist being
+                  worked through rather than a list of unrelated facts. */}
+              <span
+                aria-hidden="true"
+                className="mt-0.5 flex shrink-0 items-center gap-1.5 text-mystery-lilac"
+              >
+                <span className="text-[0.72rem] leading-none">◈</span>
+                {icon && <PlantdexIcon name={icon} className="text-base text-violet-300" />}
+              </span>
               <div>
                 <dt className={`${MICRO_LABEL} text-gold-400`}>
                   {trait}
@@ -106,9 +111,9 @@ export function LookalikeSection({ herb }: { herb: Herb }) {
     <section aria-labelledby="lookalikes-heading">
       <SectionHeader
         id="lookalikes-heading"
-        eyebrow={FIELD_NOTE_EYEBROW}
         accent="pink"
         title="Commonly confused with"
+        right={<ProvenanceChip source="plantdex" />}
         size="lg"
       />
       <ul className="grid gap-3 sm:grid-cols-2">
@@ -144,13 +149,13 @@ export function HabitatSection({ herb }: { herb: Herb }) {
   if (!notes?.habitat) return null;
 
   return (
-    <Panel frame="card" pad="md" accent="orchid" aria-labelledby="habitat-heading" className="max-w-3xl">
+    <Panel family="field" pad="md" accent="orchid" aria-labelledby="habitat-heading" className="max-w-3xl">
       <SectionHeader
         id="habitat-heading"
-        eyebrow={FIELD_NOTE_EYEBROW}
         accent="orchid"
         title="Where it grows"
         icon="plot"
+        right={<ProvenanceChip source="plantdex" />}
       />
       <p className={`${READING} leading-relaxed text-violet-200`}>{notes.habitat}</p>
     </Panel>

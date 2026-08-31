@@ -5,6 +5,7 @@ import { Panel } from '../ui/Panel';
 import { SectionHeader } from '../ui/SectionHeader';
 import { Chip, ChipRow } from '../ui/Chip';
 import { InfoTile } from '../ui/InfoTile';
+import { ProvenanceChip } from '../game/Provenance';
 import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
@@ -72,10 +73,10 @@ export function UsablePartsSection({ herb }: { herb: Herb }) {
     <section aria-labelledby="parts-heading">
       <SectionHeader
         id="parts-heading"
-        eyebrow="From the card"
         title={BACK_SECTION_LABEL.usableParts}
         accent="mauve"
         size="lg"
+        right={<ProvenanceChip source="card" />}
         note="The parts the card names as usable."
       />
       <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
@@ -100,7 +101,6 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
     <section aria-labelledby="prep-heading">
       <SectionHeader
         id="prep-heading"
-        eyebrow="From the card"
         title={BACK_SECTION_LABEL.preparations}
         accent="violet"
         size="lg"
@@ -142,7 +142,6 @@ export function HealingTraitsSection({ herb }: { herb: Herb }) {
     <Panel frame="bare" as="section" aria-labelledby="healing-heading">
       <SectionHeader
         id="healing-heading"
-        eyebrow="From the card"
         title={BACK_SECTION_LABEL.healingTraits}
         accent="gold"
         size="lg"
@@ -167,10 +166,9 @@ export function TasteAromaSection({ herb }: { herb: Herb }) {
   const { taste, aromatic } = herb.back;
   if (!taste.length && !aromatic.length) return null;
   return (
-    <Panel frame="card" pad="md" accent="blossom" aria-labelledby="profile-heading">
+    <Panel family="field" pad="md" accent="blossom" aria-labelledby="profile-heading">
       <SectionHeader
         id="profile-heading"
-        eyebrow="From the card"
         accent="blossom"
         title="Taste &amp; aroma"
       />

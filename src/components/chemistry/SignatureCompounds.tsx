@@ -76,15 +76,31 @@ function Plate({
   links?: CompoundLink[];
 }) {
   return (
-    <li className="flex flex-col rounded-card border border-violet-700/60 bg-plum-900/60 p-3">
-      <div className="flex h-28 items-center justify-center text-violet-300 sm:h-32">
+    <li className="science-panel overflow-hidden">
+      {/*
+        One compound per disclosure. The structure, name and class are always visible — the
+        expensive part is the explanatory copy and the "also on this card" links, and those
+        are what fold away. Nothing is removed from the page; the vertical cost is.
+      */}
+      <details className="group/c">
+        <summary className="min-h-11 cursor-pointer list-none p-3">
+      <div className="flex h-24 items-center justify-center text-violet-300 sm:h-28">
         {children}
       </div>
       <p className={`mt-2 ${MICRO_LABEL} ${ACCENTS.indigo.label}`}>{eyebrow}</p>
       <p className={`mt-0.5 ${READING} leading-tight font-bold text-violet-100`}>{title}</p>
       {subtitle && <p className={`mt-0.5 ${NOTE} text-violet-300`}>{subtitle}</p>}
-      {caption && <p className={`mt-1.5 ${NOTE} leading-snug text-violet-400`}>{caption}</p>}
-      <Connections links={links} />
+          {(caption || links.length > 0) && (
+            <p className={`mt-2 ${MICRO_LABEL} ${ACCENTS.indigo.label} group-open/c:hidden`}>
+              <span aria-hidden="true">+</span> Details
+            </p>
+          )}
+        </summary>
+        <div className="px-3 pb-3">
+          {caption && <p className={`${NOTE} leading-snug text-violet-400`}>{caption}</p>}
+          <Connections links={links} />
+        </div>
+      </details>
     </li>
   );
 }

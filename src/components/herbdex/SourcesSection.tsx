@@ -11,7 +11,6 @@ import {
   type ResolvedSource,
 } from '@/lib/sources';
 import { SOURCEABLE_SECTIONS } from '@/lib/types';
-import { ACCENTS } from '../ui/accents';
 
 /**
  * "Sources (N)" — collapsed by default.
@@ -47,7 +46,7 @@ export function SourcesSection({ herb }: { herb: Herb }) {
   if (total === 0) return null;
 
   return (
-    <details className={`panel p-5 ${ACCENTS.purple.border} ${ACCENTS.purple.wash}`}>
+    <details className="science-panel p-5">
       <summary className="flex min-h-11 cursor-pointer flex-wrap items-center gap-2 text-sm font-bold tracking-wide text-gold-400 uppercase">
         Sources ({total})
         {evidence && (

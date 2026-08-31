@@ -84,20 +84,26 @@ export function MySightings({ herb }: { herb: Herb }) {
   );
 
   return (
-    <section aria-labelledby="sightings-heading" className="panel p-5">
+    // The field log. A game panel, because a record of what you have found IS progression —
+    // unlike the botanical sections around it, which stay flat.
+    <section aria-labelledby="sightings-heading" className="game-panel game-clip p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2
           id="sightings-heading"
-          className="text-sm font-bold tracking-wide text-gold-400 uppercase"
+          className="flex items-baseline gap-2 text-[0.72rem] font-bold tracking-[0.1em] text-gold-400 uppercase"
         >
-          My sightings
+          Field log
+          {/* The count is the collectible part: it only ever goes up by going outside. */}
+          <span className="text-sm font-extrabold text-gold-300 tabular-nums">
+            {sightings.length}
+          </span>
         </h2>
         <button
           type="button"
           onClick={() => formRef.current?.showModal()}
-          className="min-h-11 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 hover:bg-gold-500/25"
+          className="min-h-11 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 transition-colors hover:bg-gold-500/30 hover:text-gold-200"
         >
-          + Add a sighting
+          + Log sighting
         </button>
       </div>
 
@@ -110,13 +116,18 @@ export function MySightings({ herb }: { herb: Herb }) {
       )}
 
       {sightings.length === 0 ? (
-        <p className="mt-3 text-sm text-violet-300">
-          No sightings yet. Log each time you come across {herb.commonName}.
-        </p>
+        <div className="mt-4 rounded-xl border border-dashed border-violet-700 px-4 py-6 text-center">
+          <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-400 uppercase">
+            No sightings recorded
+          </p>
+          <p className="mt-1.5 text-sm text-violet-300">
+            Find {herb.commonName} in the wild to expand your field log.
+          </p>
+        </div>
       ) : (
         <ol className="mt-4 space-y-4">
           {sightings.map((sighting) => (
-            <li key={sighting.id} className="border-l-2 border-violet-600 pl-3">
+            <li key={sighting.id} className="border-l-2 border-gold-500/50 pl-3">
               <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                 <p className="text-sm font-bold text-violet-100">
                   <time dateTime={sighting.date}>{formatDate(sighting.date)}</time>

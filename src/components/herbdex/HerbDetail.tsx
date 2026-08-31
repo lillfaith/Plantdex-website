@@ -5,16 +5,12 @@ import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { knownIssueFor } from '@/lib/card-issues';
 import { siteCautionFor } from '@/lib/card-cautions';
-import { USE_LABEL } from '@/lib/deck';
 import { GARDEN_STAGE_BY_MASTERY, type GardenStage } from '@/lib/garden';
 import { XP_FOR_MASTERY } from '@/lib/progression';
-import { cardLabel } from '@/lib/collection';
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { useRevealed } from '@/lib/reveals';
-import { RarityBadge } from './RarityBadge';
 import { DiscoverPanel } from './DiscoverPanel';
-import { CardFlip } from './CardFlip';
 import {
   HealingTraitsSection,
   PreparationsSection,
@@ -35,10 +31,8 @@ import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
 import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
-import { PlantSprite } from '../PlantSprite';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
-import { Chip } from '../ui/Chip';
-import { MICRO_LABEL } from '../ui/accents';
+import { SpeciesHero } from '../game/SpeciesHero';
 
 /**
  * A herb page, gated on discovery.
@@ -202,123 +196,39 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         </p>
       )}
 
-      {/*
-        THE HERO. Roughly 40 % card / 60 % identity on a wide screen, stacking on a phone.
-        The printed card is the brightest object on the page and gets a plinth to sit on —
-        a soft violet bloom behind it, tuned below the card's own luminance so it lights the
-        art rather than competing with it.
-      */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-10">
-        <div className="relative shrink-0 justify-self-center lg:justify-self-start">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 -z-10 scale-125 rounded-full bg-[radial-gradient(closest-side,color-mix(in_srgb,var(--color-violet-700)_55%,transparent),transparent)] blur-2xl"
-          />
-          <div className="drop-shadow-[0_14px_36px_rgba(23,16,28,0.65)]">
-            <CardFlip herb={herb} size="hero" />
-          </div>
+      <SpeciesHero
+        herb={herb}
+        progress={progress}
+        stage={stage}
+        portraitStage={portraitStage}
+        discovered={discovered}
+      />
+
+      {/* Warnings sit directly under the hero and above everything else, exactly as before:
+          a printed warning must never be reached by scrolling past a game panel. */}
+      {(herb.warning || siteCaution || cardIssue) && (
+        <div className="mt-6 space-y-3">
+          {herb.warning && <CardWarning warning={herb.warning} />}
+          {siteCaution && <SiteCaution caution={siteCaution} />}
+          {cardIssue && <CardIssueNote issue={cardIssue} />}
         </div>
+      )}
 
-        <div className="min-w-0">
-          {/* Collection · card number, so a card reads as part of a collectible set
-              rather than a loose number. */}
-          <p className={`${MICRO_LABEL} text-violet-300 tabular-nums`}>{cardLabel(herb)}</p>
+      <div className="mt-6">
+        <DiscoverPanel herb={herb} onDiscovered={onDiscovered} />
+      </div>
 
-          {/*
-            The living portrait, and it is decoration rather than an identification aid:
-            deliberately stylised, with the card art and the identification section below
-            remaining the reference for anyone actually looking at a plant outdoors.
+      <div className="mt-6">
+        <FieldDataStrip herb={herb} />
+      </div>
 
-            Names and portrait are one row that wraps as a unit: on a phone the sprite drops
-            under the names rather than squeezing them, so the scientific name never breaks
-            mid-word to make room. `order` puts it last visually while the heading stays
-            first in the document, because a heading should be the first thing announced.
-
-            The `min-w` is what makes that wrap actually happen. With `min-w-0` the names
-            block shrinks below the width of its own longest word instead, and a 3xl
-            "Dandelion" then overflows straight under the sprite — which is what it did on a
-            390px phone, reading "Dandelio".
-          */}
-          <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-            <div className="min-w-[13rem] flex-1">
-              <h1 className="font-display text-3xl leading-tight font-extrabold text-gold-plate sm:text-4xl">
-                {herb.commonName}
-              </h1>
-              <p className="font-botanical mt-1 text-lg text-violet-200 italic">
-                {herb.scientificName}
-              </p>
-            </div>
-            {/*
-              And it shows the stage the player has actually reached, so the character on
-              their own card page grows up with their progress rather than always being
-              the finished adult. A card that is revealed but not discovered has no stage
-              at all, so it falls back to the adult — there is no progress to depict.
-            */}
-            <PlantSprite
-              herbId={herb.id}
-              alt={`Pixel-art portrait of ${herb.commonName}`}
-              stage={portraitStage}
-              scale={1}
-              className="order-last shrink-0 drop-shadow-[0_4px_14px_rgba(23,16,28,0.55)]"
-            />
-          </div>
-
-          {/* One specimen label under the names. Season and XP used to sit here too, but
-              they are stated in the card-data block below and a hero should not say the
-              same fact twice. */}
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-violet-700/50 py-2.5">
-            <RarityBadge rarity={herb.rarity} />
-          </div>
-
-          <ul className="mt-4 flex flex-wrap gap-1.5">
-            {herb.uses.map((use) => (
-              <li key={use}>
-                {/* Uses keep gold: they are the card's own headline categories, and this
-                    is now one of the few gold things on the page rather than one of many. */}
-                <Chip tone="gold">{USE_LABEL[use]}</Chip>
-              </li>
-            ))}
-          </ul>
-
-          {/* A warning printed on the card sits above the discovery CTA, never below it. */}
-          {herb.warning && (
-            <div className="mt-4">
-              <CardWarning warning={herb.warning} />
-            </div>
-          )}
-
-          {/* A caution the site adds sits in the same place and at the same weight: the
-              reader's exposure does not depend on which of the two printed it. It names
-              itself as site-added so the deck in their hand is never misquoted. */}
-          {siteCaution && (
-            <div className="mt-4">
-              <SiteCaution caution={siteCaution} />
-            </div>
-          )}
-
-          {/* And below it, a correction where the printed card is known to be wrong —
-              quieter than the warning above, because it is about the card rather than
-              about the plant. */}
-          {cardIssue && (
-            <div className="mt-3">
-              <CardIssueNote issue={cardIssue} />
-            </div>
-          )}
-
-          <div className="mt-5">
-            <DiscoverPanel herb={herb} onDiscovered={onDiscovered} />
-          </div>
-
-          <div className="mt-4">
-            <FieldDataStrip herb={herb} />
-          </div>
-        </div>
+      <div className="mt-6">
       </div>
 
       {/* Mastery only exists for a card the player actually found; a revealed-only card
           shows nothing here, because there is no stage to be at yet. */}
       {discovered && (
-        <div className="mt-8">
+        <div className="mt-6">
           <MasteryTrack herb={herb} />
         </div>
       )}
