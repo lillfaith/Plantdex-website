@@ -18,6 +18,9 @@ import {
 import { clearBoard, refreshBoard, useResearchBoard } from '@/lib/research-board';
 import { useSightingCounts } from '@/lib/sightings-store';
 import { DECK_SIZE } from '@/lib/deck';
+import { track } from '@/lib/analytics';
+import { researchKindFromId } from '@/lib/progression';
+import { habitatOf } from '@/lib/habitat';
 import { createHerbdexStore } from './herbdex-store';
 
 interface HerbdexContextValue {
@@ -117,11 +120,52 @@ export function HerbdexProvider({
   useEffect(() => {
     if (!ready) return;
     refreshBoard(world, localDateKey());
-    void store.reconcile(world, [...STANDING_TASKS, ...dailyTasks]);
+    void store.reconcile(world, [...STANDING_TASKS, ...dailyTasks]).then((outcome) => {
+      /*
+       * Research completes by reconciliation rather than by a click, so this is the only
+       * place it can be observed. Only the KIND travels — daily, collection or seasonal —
+       * because which specific task somebody finished is not a launch question, and the id
+       * would name the card in a daily.
+       */
+      for (const taskId of outcome.completedResearchIds) {
+        const kind = researchKindFromId(taskId);
+        if (kind) track('research_completed', { task_kind: kind });
+      }
+    });
   }, [store, ready, world, dailyTasks]);
 
-  const discover = useCallback((herb: Herb) => store.discover(herb), [store]);
-  const markLearned = useCallback((herb: Herb) => store.markLearned(herb), [store]);
+  /*
+   * ANALYTICS HANGS OFF THE PROVIDER, not off buttons.
+   *
+   * Every discovery in the app goes through this one function, so measuring here catches
+   * the locked page, the revealed page and any future entry point without each of them
+   * having to remember. It also means a component can never send a discovery event for a
+   * discovery that did not actually happen: `awarded` is false on a repeat, and a repeat
+   * pays nothing.
+   */
+  const discover = useCallback(
+    (herb: Herb) => {
+      const result = store.discover(herb);
+      if (result.awarded) {
+        track('discovery_logged', {
+          card_number: herb.cardNumber,
+          habitat: habitatOf(herb.id)?.primary ?? 'unknown',
+          // First-ever discovery is the activation moment, and the only one worth a flag.
+          is_first: Object.keys(store.getSnapshot().state.discoveries).length === 1,
+        });
+      }
+      return result;
+    },
+    [store],
+  );
+  const markLearned = useCallback(
+    (herb: Herb) => {
+      const result = store.markLearned(herb);
+      if (result.awarded) track('knowledge_check_passed', { card_number: herb.cardNumber });
+      return result;
+    },
+    [store],
+  );
   const reset = useCallback(() => {
     store.reset();
     // The board is a separate store, so resetting progress has to clear it too — otherwise

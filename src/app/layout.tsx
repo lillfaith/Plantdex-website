@@ -4,6 +4,7 @@ import { HerbdexProvider } from '@/state/HerbdexProvider';
 import { AuthProvider } from '@/state/AuthProvider';
 import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
+import { PlausibleScript } from '@/components/analytics/PlausibleScript';
 import { AccountBadge } from '@/components/auth/AccountBadge';
 import './globals.css';
 
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <SiteFooter />
           </HerbdexProvider>
         </AuthProvider>
+        <PlausibleScript />
       </body>
     </html>
   );

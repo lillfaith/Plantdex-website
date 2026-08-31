@@ -16,6 +16,7 @@ import {
   type SectionMeasure,
 } from '@/lib/profile-sections';
 import { useRevealed } from '@/lib/reveals';
+import { track } from '@/lib/analytics';
 import { DiscoverPanel } from './DiscoverPanel';
 import {
   HealingTraitsSection,
@@ -89,6 +90,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   const { isDiscovered, ready, progress, stageOf } = useHerbdex();
   const revealed = useRevealed(herb.id);
   const cardIssue = knownIssueFor(herb);
+
   const siteCaution = siteCautionFor(herb);
 
   /*
@@ -184,6 +186,21 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   );
 
   const discovered = ready && isDiscovered(herb.id);
+  /*
+   * One view event per card, once storage has resolved.
+   *
+   * Gated on `ready` because the state before hydration is a placeholder, and reporting
+   * every card as locked would make the split meaningless. The effect depends on the state
+   * it reports, so a card discovered while open counts once as locked and once as
+   * discovered — which is the truthful record of what was actually on screen.
+   */
+  useEffect(() => {
+    if (!ready) return;
+    track('plant_viewed', {
+      card_number: herb.cardNumber,
+      state: discovered ? 'discovered' : revealed ? 'revealed' : 'locked',
+    });
+  }, [ready, herb.cardNumber, discovered, revealed]);
 
   /*
    * Which creature the portrait shows. `stage` above is the mastery stage this page

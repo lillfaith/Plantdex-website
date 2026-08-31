@@ -20,10 +20,15 @@ export const metadata: Metadata = {
  *   • Photos — src/lib/photo-store.ts (IndexedDB) and src/lib/remote-sightings.ts (bucket)
  *   • Auth calls — src/state/AuthProvider.tsx
  *   • No cookies — `document.cookie` appears nowhere in src/
- *   • No third-party runtime requests — fonts are self-hosted by next/font at build time;
- *     the built bundle contains no analytics or tag-manager host
+ *   • Analytics — src/lib/analytics.ts (the complete event list and the forbidden-key list),
+ *     src/components/analytics/PlausibleScript.tsx (the only third-party script in the app)
+ *   • Fonts are self-hosted by next/font at build time, so no font provider is contacted
  *
  * Anything that could not be established that way is an <OwnerGap>, not a sentence.
+ *
+ * `legal.test.ts` fails the build if the application gains a cookie, or if its analytics
+ * provider stops matching the one this page names. The point of that test is that this page
+ * cannot quietly go stale: the sentences below are load-bearing, not decoration.
  */
 export default function PrivacyPage() {
   return (
@@ -133,14 +138,14 @@ export default function PrivacyPage() {
                 'The site sets none at all. Your signed-in session is kept in your browser’s local storage, not a cookie.',
             },
             {
-              term: 'No analytics or tracking',
+              term: 'No advertising or session recording',
               detail:
-                'There is no analytics provider, no tag manager, no advertising pixel and no session recorder in the application today. If that changes, this page changes first.',
+                'No tag manager, no advertising pixel, no session recorder, no heatmap and no mouse tracking. Nothing watches what you do on a page; see “Measurement” below for the small amount that is counted.',
             },
             {
-              term: 'No third-party requests',
+              term: 'Almost no third-party requests',
               detail:
-                'Loading a page contacts no one but our own host. Even the fonts are served from our own site rather than fetched from a font provider.',
+                'Loading a page contacts our own host, the analytics script described below, and — only once you sign in — Supabase. Even the fonts are served from our own site rather than fetched from a font provider.',
             },
             {
               term: 'No selling or sharing',
@@ -160,6 +165,65 @@ export default function PrivacyPage() {
         </p>
       </LegalSection>
 
+      <LegalSection id="measurement" heading="Measurement">
+        <p>
+          We count how the site is used, so we can tell which parts of it work. That counting
+          is done by <strong className="text-violet-100">Plausible Analytics</strong>, which is
+          the only third-party script the site loads.
+        </p>
+        <p>
+          Plausible <strong className="text-violet-100">sets no cookies and stores no
+          identifier</strong> on your device. That is why you have never been asked to accept
+          cookies here: there are none to accept. It is also why nothing below can be tied back
+          to you, or to your previous visits.
+        </p>
+        <p>What is counted:</p>
+        <LegalTable
+          rows={[
+            {
+              term: 'Page views',
+              detail:
+                'Which page was opened, plus the coarse information any web request carries anyway — a rough country, a browser, a device type, and which site linked here.',
+            },
+            {
+              term: 'A short list of actions',
+              detail:
+                'Opening the Herbdex or the garden; viewing, revealing, discovering or mastering a card; passing a knowledge check; finishing a Field Research task; starting or completing a sign-up; signing in; and importing local progress into an account.',
+            },
+            {
+              term: 'The detail attached to those actions',
+              detail:
+                'A card number, a habitat name, a research task type, and yes/no flags such as whether a discovery was your first. Nothing else may be attached — the list of properties is fixed in the code and a test fails the build if a forbidden one is added.',
+            },
+          ]}
+        />
+        <p>What is deliberately never sent:</p>
+        <LegalTable
+          rows={[
+            {
+              term: 'Nothing that identifies you',
+              detail:
+                'No email address, no account id, no session id, no persistent identifier of any kind. A signed-in visitor and a signed-out one are indistinguishable in the analytics.',
+            },
+            {
+              term: 'Nothing you wrote or photographed',
+              detail:
+                'Sighting notes, region text and photographs are never sent to the analytics service, in whole or in part.',
+            },
+            {
+              term: 'No location',
+              detail:
+                'No coordinates, and nothing derived from your device location — the site never asks for it in the first place.',
+            },
+          ]}
+        />
+        <p className="text-sm text-violet-300">
+          Measurement is switched on by a single build-time setting. When it is off, the script
+          is not loaded and nothing is sent at all — which is the state of any local copy of the
+          site and of any fork.
+        </p>
+      </LegalSection>
+
       <LegalSection id="processors" heading="Who else is involved">
         <p>
           <strong className="text-violet-100">Supabase</strong> provides the database,
@@ -172,7 +236,11 @@ export default function PrivacyPage() {
           files. Like any web host it necessarily sees the network requests that fetch those
           files.
         </p>
-        <p>Signed out, only the second of these is involved.</p>
+        <p>
+          <strong className="text-violet-100">Plausible Analytics</strong> receives the counts
+          described above, and nothing else.
+        </p>
+        <p>Signed out, only the last two of these are involved.</p>
       </LegalSection>
 
       <LegalSection id="access" heading="Who can see your data">

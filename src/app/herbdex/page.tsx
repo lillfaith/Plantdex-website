@@ -7,6 +7,7 @@ import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
 import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
+import { TrackView } from '@/components/analytics/TrackView';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function HerbdexPage() {
 
   return (
     <main id="main" className="mx-auto max-w-6xl px-4 py-8">
+      <TrackView event="herbdex_opened" />
       <nav aria-label="Breadcrumb" className="mb-2">
         <Link href="/" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
           ← Plantdex

@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { useAuth } from '@/state/AuthProvider';
+import { track } from '@/lib/analytics';
 
 /**
  * Sign in / sign up. Two small forms rather than one with a mode toggle, so each can state
@@ -25,6 +26,7 @@ export function SignUpForm() {
       event.preventDefault();
       setStatus('saving');
       setError(null);
+      track('signup_started');
       const result = await signUp(email, password);
       if (result.error) {
         setError(result.error);
@@ -34,6 +36,9 @@ export function SignUpForm() {
       // Which of these is right depends on the project's "Confirm email" setting, so it is
       // read from the response rather than assumed. Saying "check your email" when no mail
       // was sent leaves someone waiting for a message that will never arrive.
+      // Completed means the account exists — whether or not a confirmation mail is still
+      // pending. Firing this on form submit instead would count every failed attempt.
+      track('signup_completed');
       setStatus(result.needsConfirmation ? 'sent' : 'done');
     },
     [email, password, signUp],
@@ -106,6 +111,7 @@ export function SignInForm({ onForgotPassword }: { onForgotPassword: () => void 
       const result = await signIn(email, password);
       setSaving(false);
       if (result.error) setError(result.error);
+      else track('login_completed');
     },
     [email, password, signIn],
   );

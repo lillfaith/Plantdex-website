@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { GardenView } from '@/components/garden/GardenView';
+import { TrackView } from '@/components/analytics/TrackView';
 
 export const metadata: Metadata = {
   title: 'My Garden',
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function GardenPage() {
-  return <GardenView />;
+  return (
+    <>
+      <TrackView event="garden_opened" />
+      <GardenView />
+    </>
+  );
 }

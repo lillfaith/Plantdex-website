@@ -1,5 +1,7 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { ANALYTICS_PROVIDER, EVENT_NAMES, UNEMITTED_EVENTS } from './analytics';
 import {
   LEGAL_REVIEWED,
   LEGAL_STATUS,
@@ -12,6 +14,14 @@ const PRIVACY = 'src/app/privacy/page.tsx';
 const TERMS = 'src/app/terms/page.tsx';
 const PAGES = [PRIVACY, TERMS];
 const read = (path: string) => readFileSync(path, 'utf8');
+
+/** Every file under a directory, so a new provider cannot hide in a folder nobody listed. */
+function readdirRecursive(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(dir, entry.name);
+    return entry.isDirectory() ? readdirRecursive(path) : [path];
+  });
+}
 
 /** Every `<OwnerGap id="..." />` used across the legal pages. */
 function gapsUsed(): { path: string; id: string }[] {
@@ -94,25 +104,78 @@ describe('legal pages', () => {
     }
   });
 
-  it('claims no analytics, cookies or tracking while none exist', () => {
-    /*
-     * The privacy page states as fact that there are no cookies, no analytics and no
-     * third-party requests. That is true of this build — and it is exactly the kind of claim
-     * that silently becomes false the day a provider is added. This fails first if it does.
-     */
+  it('sets no cookie, so the page may keep saying so', () => {
     const appSource = [
       'src/app/layout.tsx',
       'src/lib/supabase-client.ts',
       'src/state/AuthProvider.tsx',
+      'src/components/analytics/PlausibleScript.tsx',
+      'src/lib/analytics.ts',
     ]
       .map(read)
       .join('\n');
+    // The absence of a consent banner rests on this. A cookie means a banner and a rewritten
+    // privacy page, in the same change.
     expect(appSource, 'a cookie is now set — update the privacy page').not.toMatch(
       /document\.cookie/,
     );
-    expect(appSource, 'an analytics provider was added — update the privacy page').not.toMatch(
-      /gtag|googletagmanager|plausible\.io|posthog|mixpanel|segment\.com|amplitude/i,
+  });
+
+  it('keeps the analytics disclosure in step with the analytics that exist', () => {
+    /*
+     * THIS GUARD USED TO SAY "no analytics provider exists". It now says something stronger
+     * and longer-lived: whatever measurement the app performs, the privacy page describes
+     * *that* measurement and no other.
+     *
+     * The failure mode it exists for is not adding analytics — that is a deliberate act. It
+     * is adding a second provider, or swapping the first, and leaving a page that still
+     * describes the old one. A policy is only worth anything while it is current.
+     */
+    /*
+     * Comments are stripped first. Without that, the requirement "the page names the
+     * provider" is satisfiable by the file's own header comment — which it was, until this
+     * test was checked against a page whose visible prose had been renamed. A reader sees
+     * the JSX, not the docblock.
+     */
+    const privacy = read(PRIVACY).replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+
+    // 1. The page names the provider the code actually loads.
+    expect(privacy, `privacy page does not name ${ANALYTICS_PROVIDER}`).toContain(
+      ANALYTICS_PROVIDER,
     );
+    expect(read('src/components/analytics/PlausibleScript.tsx')).toContain('plausible.io');
+
+    // 2. No SECOND provider has appeared anywhere in the app.
+    const appSource = readdirRecursive('src')
+      .filter((path) => /\.tsx?$/.test(path) && !path.endsWith('.test.ts'))
+      .map(read)
+      .join('\n');
+    expect(appSource, 'a second analytics provider was added — update the privacy page').not.toMatch(
+      /gtag|googletagmanager|posthog|mixpanel|segment\.com|amplitude|hotjar|fullstory|clarity\.ms/i,
+    );
+
+    // 3. The page no longer makes the two claims that adding analytics falsified. Both were
+    //    literally on this page before, and both would now be untrue.
+    expect(privacy, 'privacy page still claims there is no analytics provider').not.toMatch(
+      /There is no analytics provider/i,
+    );
+    expect(privacy, 'privacy page still claims no page contacts a third party').not.toMatch(
+      /Loading a page contacts no one but our own host/i,
+    );
+
+    // 4. Every event the app can send is described. Not the names — the page is prose — but
+    //    the count is the thing that silently grows, so the page has to state the promise that
+    //    bounds it: nothing beyond the fixed list may be attached.
+    const emittable = EVENT_NAMES.filter((name) => !UNEMITTED_EVENTS[name]);
+    expect(emittable.length, 'events exist but none are described').toBeGreaterThan(0);
+    expect(privacy, 'privacy page does not promise a fixed property list').toMatch(
+      /fixed in the code/i,
+    );
+
+    // 5. And the three refusals that make the measurement acceptable at all.
+    for (const promise of [/no email address/i, /never sent to the analytics service/i, /No coordinates/i]) {
+      expect(privacy, `privacy page dropped the promise ${promise}`).toMatch(promise);
+    }
   });
 
   it('points at the safety page rather than replacing it', () => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { track } from '@/lib/analytics';
 import {
   hasImportBeenOffered,
   hasLocalProgressToImport,
@@ -57,6 +58,9 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
       return;
     }
 
+    // Recorded only on a successful import, and only as a yes/no — whether the offer is
+    // used at all is the product question; how much anyone had is not.
+    track('progress_imported', { had_progress: true });
     markImportOffered(userId);
     setStatus('done');
     // The Herbdex store already hydrated from (empty) server rows before this import ran;

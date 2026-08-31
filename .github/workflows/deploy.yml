@@ -46,10 +46,16 @@ jobs:
         # secrets, in Settings -> Secrets and variables -> Actions -> Variables. Left unset,
         # the build still succeeds and accounts simply report as "not configured" (see
         # src/app/account/page.tsx) rather than failing.
+        #
+        # NEXT_PUBLIC_PLAUSIBLE_DOMAIN is the site name registered with Plausible, and is the
+        # single switch for analytics: unset, no script is loaded and no event is sent (see
+        # src/lib/analytics.ts). It is a variable rather than a secret for the same reason as
+        # the Supabase pair — it is a public identifier that ships in the HTML.
         env:
           GITHUB_PAGES: 'true'
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.NEXT_PUBLIC_PLAUSIBLE_DOMAIN }}
         run: npm run build
 
       # Pages must be switched on once by a repo admin:

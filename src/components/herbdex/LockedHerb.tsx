@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { revealHerb } from '@/lib/reveals';
+import { track } from '@/lib/analytics';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { DiscoverPanel } from './DiscoverPanel';
 import { CardWarning, SiteCaution } from '../SafetyNotice';
@@ -115,6 +116,7 @@ export function LockedHerb({
             type="button"
             onClick={() => {
               revealHerb(herb.id);
+              track('card_revealed', { card_number: herb.cardNumber });
               confirmRef.current?.close();
             }}
             className="min-h-11 rounded-full bg-violet-600 px-5 text-sm font-bold text-violet-100 hover:bg-violet-500"

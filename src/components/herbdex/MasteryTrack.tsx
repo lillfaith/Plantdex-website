@@ -12,6 +12,7 @@ import {
 } from '@/lib/mastery';
 import { XP_FOR_LEARNING, XP_FOR_MASTERY } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { track } from '@/lib/analytics';
 import { Panel } from '../ui/Panel';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { KnowledgeCheck } from './KnowledgeCheck';
@@ -58,7 +59,12 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
   const [justEarned, setJustEarned] = useState<MasteryStage | null>(null);
   if (stage !== seen) {
     setSeen(stage);
-    if (seen !== null && stage !== null) setJustEarned(stage);
+    if (seen !== null && stage !== null) {
+      setJustEarned(stage);
+      // Only the final stage is an analytics event; the earlier two are already measured
+      // where they are caused (discovery and the knowledge check).
+      if (stage === 'mastered') track('card_mastered', { card_number: herb.cardNumber });
+    }
   }
   useEffect(() => {
     if (!justEarned) return;
