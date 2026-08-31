@@ -2,6 +2,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { HERBS } from './deck';
+import { FIELD_NOTES } from './card-field-notes';
 import {
   HABITATS,
   HABITAT_ASSIGNMENTS,
@@ -10,10 +11,10 @@ import {
   HABITAT_LABEL,
   judgementCalls,
   habitatCounts,
-  habitatProseFor,
   habitatsOf,
   herbIdsInHabitat,
   isInHabitat,
+  matchesHabitatFilter,
 } from './habitat';
 
 describe('habitat taxonomy', () => {
@@ -102,10 +103,39 @@ describe('habitat taxonomy', () => {
 
   it('derives every assignment from habitat prose that actually exists', () => {
     // The classification is a reading OF the cited prose. A species with no prose would
-    // mean the class came from somewhere unsourced.
+    // mean the class came from somewhere unsourced. Read directly from the field notes
+    // rather than through habitat.ts, which deliberately does not import them.
     for (const herb of HERBS) {
-      expect(habitatProseFor(herb.id), `${herb.id} has no cited habitat prose`).toBeTruthy();
+      expect(FIELD_NOTES[herb.id]?.habitat, `${herb.id} has no cited habitat prose`).toBeTruthy();
     }
+  });
+
+  it('pins how much of the habitat prose carries its own citation', () => {
+    /*
+     * HONEST NUMBER, NOT A PASSING ONE. Every card has CARD-LEVEL sources
+     * (`card-sources.ts`, keyed by card number, 45/45) — but those are about chemistry and
+     * traditional use. Only these eight attach a source to the HABITAT SENTENCE itself,
+     * which is what the classification was read from.
+     *
+     * So "derived from cited habitat prose" is true for eight species and overstated for
+     * the rest: the prose exists and was curated, but is not independently sourced. This
+     * test locks the current set so the number can only go up — adding a species here is
+     * fine, quietly dropping one is not — and so the gap stays visible instead of being
+     * forgotten.
+     */
+    const cited = HERBS.filter((herb) => (FIELD_NOTES[herb.id]?.sourceIds.length ?? 0) > 0);
+    expect(cited.map((herb) => herb.id).sort()).toEqual(
+      [
+        'achillea-millefolium',
+        'allium-vineale',
+        'cichorium-intybus',
+        'pinus-spp',
+        'portulaca-oleracea',
+        'rhus-spp',
+        'sambucus-spp',
+        'taraxacum-officinale',
+      ].sort(),
+    );
   });
 
   it('records a real reason wherever the call was a judgement', () => {
@@ -156,5 +186,40 @@ describe('proposed habitat data stays out of the UI', () => {
       'habitat assignments are still marked "proposed" — review them and set ' +
         'HABITAT_DATA_STATUS to "confirmed" before rendering them',
     ).toEqual([]);
+  });
+});
+
+describe('habitat filtering', () => {
+  it('partitions the deck: every card under exactly one filter', () => {
+    /*
+     * The property that makes the filter honest. Because it matches PRIMARY only, the five
+     * filters are a partition — counts sum to the deck and no card appears twice. Matching
+     * secondaries would break both, and would put 29 of 45 cards behind "Wayside".
+     */
+    for (const herb of HERBS) {
+      const matches = HABITATS.filter((habitat) => matchesHabitatFilter(herb.id, habitat));
+      expect(matches, `${herb.id} matches ${matches.length} filters`).toHaveLength(1);
+    }
+    const total = HABITATS.reduce(
+      (n, habitat) => n + HERBS.filter((herb) => matchesHabitatFilter(herb.id, habitat)).length,
+      0,
+    );
+    expect(total).toBe(HERBS.length);
+  });
+
+  it('never matches on a secondary habitat', () => {
+    const withSecondary = HERBS.filter((herb) => HABITAT_ASSIGNMENTS[herb.id]?.secondary);
+    expect(withSecondary.length).toBeGreaterThan(0);
+    for (const herb of withSecondary) {
+      const secondary = HABITAT_ASSIGNMENTS[herb.id]!.secondary!;
+      expect(matchesHabitatFilter(herb.id, secondary), `${herb.id}`).toBe(false);
+      expect(isInHabitat(herb.id, secondary), `${herb.id}`).toBe(true);
+    }
+  });
+
+  it('returns no cards for an unknown herb id', () => {
+    for (const habitat of HABITATS) {
+      expect(matchesHabitatFilter('not-a-herb', habitat)).toBe(false);
+    }
   });
 });

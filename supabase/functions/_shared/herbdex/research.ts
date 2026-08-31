@@ -1,6 +1,7 @@
 import type { Herb, HerbdexState, Rarity, Season } from './types.ts';
 import { SEASONS } from './types.ts';
 import { getHerb, HERBS, herbsInDeckOrder, SEASON_LABEL } from './deck.ts';
+import { HABITATS, HABITAT_LABEL, habitatOf, type HabitatClass } from './habitat.ts';
 import { RESEARCH_XP, type ResearchKind } from './progression.ts';
 import { hash, seeded, shuffle } from './rng.ts';
 
@@ -93,6 +94,9 @@ function countMatching(
 
 const inSeason = (season: Season) => (herb: Herb) => herb.season === season;
 const ofRarity = (rarity: Rarity) => (herb: Herb) => herb.rarity === rarity;
+/** Primary habitat only, matching the collection filter and the card's own chip. */
+const ofHabitat = (habitat: HabitatClass) => (herb: Herb) =>
+  habitatOf(herb.id)?.primary === habitat;
 
 /** How many cards in the physical deck could ever satisfy a predicate. */
 export function deckSupply(predicate: (herb: Herb) => boolean): number {
@@ -219,11 +223,55 @@ function hardToFindTask(): ResearchTask {
   };
 }
 
+/**
+ * One standing challenge per habitat class.
+ *
+ * SIZED AGAINST REAL SUPPLY, like the seasonal tasks, and for the same reason: a target the
+ * deck cannot meet reads as the app being broken. Wetland holds only six primaries against
+ * Woodland's ten, so every target is clamped to what actually exists.
+ *
+ * WHY NOT SIMPLY "FIND ONE". A `collection` task pays 250 XP — more than discovering a
+ * Common herb — so a single-find task would pay two and a half times the thing it asks for,
+ * five times over. The "first species from each habitat" beat is already covered, correctly
+ * and for free, by the six habitat ACHIEVEMENTS. This is the longer challenge behind them,
+ * and its first step still progresses on that very first find.
+ */
+function habitatTask(habitat: HabitatClass): ResearchTask {
+  const cards = herbsInDeckOrder().filter(ofHabitat(habitat));
+  const supply = cards.length;
+  const label = HABITAT_LABEL[habitat];
+  const discoverTarget = Math.min(3, supply);
+  const learnTarget = Math.min(1, supply);
+
+  return {
+    id: `collection:habitat-${habitat}`,
+    kind: 'collection',
+    title: `${label} Survey`,
+    description: `Get to know the plants of one kind of ground.`,
+    herbIds: cards.map((herb) => herb.id),
+    steps: [
+      {
+        id: 'discover',
+        label: `Discover ${discoverTarget} ${label} ${discoverTarget === 1 ? 'plant' : 'plants'}`,
+        target: discoverTarget,
+        measure: (world) => countMatching(world.state.discoveries, ofHabitat(habitat)),
+      },
+      {
+        id: 'learn',
+        label: `Learn ${learnTarget} ${label} card`,
+        target: learnTarget,
+        measure: (world) => countMatching(world.state.learned, ofHabitat(habitat)),
+      },
+    ],
+  };
+}
+
 /** Every long-running task. Always available — none of these expire. */
 export const STANDING_TASKS: readonly ResearchTask[] = [
   ...SEASONS.map(seasonalTask),
   backyardTask(),
   hardToFindTask(),
+  ...HABITATS.map(habitatTask),
 ];
 
 // --- Daily research ---------------------------------------------------------------

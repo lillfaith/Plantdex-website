@@ -1,5 +1,6 @@
 import type { HerbdexState } from './types.ts';
 import { DECK_SIZE, getHerb } from './deck.ts';
+import { HABITATS, habitatOf, type HabitatClass } from './habitat.ts';
 
 /**
  * Achievement registry.
@@ -48,6 +49,26 @@ function countWhere(state: HerbdexState, predicate: (rarity: string) => boolean)
     if (herb && predicate(herb.rarity)) n += 1;
   }
   return n;
+}
+
+/**
+ * How many discovered species have a given PRIMARY habitat.
+ *
+ * Primary only, matching the filter and the chip. A "first Woodland species" that could be
+ * satisfied by a wayside plant whose secondary happens to be Woodland would not mean what
+ * it says.
+ */
+function discoveredInHabitat(state: HerbdexState, habitat: HabitatClass): number {
+  let n = 0;
+  for (const id of Object.keys(state.discoveries)) {
+    if (habitatOf(id)?.primary === habitat) n += 1;
+  }
+  return n;
+}
+
+/** Habitats where the player has discovered at least one species, by primary. */
+function habitatsDiscovered(state: HerbdexState): number {
+  return HABITATS.filter((habitat) => discoveredInHabitat(state, habitat) > 0).length;
 }
 
 export const ACHIEVEMENTS: readonly Achievement[] = [
@@ -113,6 +134,53 @@ export const ACHIEVEMENTS: readonly Achievement[] = [
     name: 'Backyard Collection',
     description: 'Complete the Backyard Collection challenge.',
     isUnlocked: (state) => Boolean(state.research['collection:backyard']),
+  },
+
+  /*
+   * HABITAT ACHIEVEMENTS.
+   *
+   * One per class for the first find, plus one for covering all five. Deliberately a SMALL
+   * first set: five classes could carry dozens of tiers, and a wall of habitat badges would
+   * drown the nine that already exist rather than add to them.
+   *
+   * Pure predicates over discoveries like every achievement here, so they re-evaluate from
+   * scratch and unlock retroactively for players who found the species before these existed.
+   */
+  {
+    id: 'habitat-woodland',
+    name: 'Into the Woods',
+    description: 'Discover your first Woodland species.',
+    isUnlocked: (state) => discoveredInHabitat(state, 'woodland') >= 1,
+  },
+  {
+    id: 'habitat-meadow',
+    name: 'Open Ground',
+    description: 'Discover your first Meadow species.',
+    isUnlocked: (state) => discoveredInHabitat(state, 'meadow') >= 1,
+  },
+  {
+    id: 'habitat-wetland',
+    name: 'Wet Feet',
+    description: 'Discover your first Wetland species.',
+    isUnlocked: (state) => discoveredInHabitat(state, 'wetland') >= 1,
+  },
+  {
+    id: 'habitat-wayside',
+    name: 'Roadside Botanist',
+    description: 'Discover your first Wayside species.',
+    isUnlocked: (state) => discoveredInHabitat(state, 'wayside') >= 1,
+  },
+  {
+    id: 'habitat-garden',
+    name: 'Close to Home',
+    description: 'Discover your first Garden species.',
+    isUnlocked: (state) => discoveredInHabitat(state, 'garden') >= 1,
+  },
+  {
+    id: 'habitat-sweep',
+    name: 'Five Grounds',
+    description: 'Discover at least one species from every habitat.',
+    isUnlocked: (state) => habitatsDiscovered(state) === HABITATS.length,
   },
 ] as const;
 

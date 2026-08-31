@@ -91,6 +91,24 @@
   --color-rarity-rare: #ffaec9;
   --color-rarity-epic: #4fc3f7;
 
+  /*
+   * Habitat class colours.
+   *
+   * SITE-AUTHORED, unlike the rarity ramp above, which reproduces ink printed on the
+   * cards — no card prints a habitat. They sit on the light half of the deck palette so
+   * they clear AA on plum at chip weight, and they are never the only signal: every chip
+   * spells the class out beside the swatch.
+   *
+   * Chosen to be distinguishable rather than literal. A green woodland and a blue wetland
+   * are obvious enough to be useful; a brown wayside and a green meadow next to each other
+   * would not be, so wayside takes the warm sand end and meadow the gold.
+   */
+  --color-habitat-woodland: #8fd6a8;
+  --color-habitat-meadow: #ffd9a0;
+  --color-habitat-wetland: #8ec9ee;
+  --color-habitat-wayside: #f0b48a;
+  --color-habitat-garden: #f2b6f6;
+
   /* Stat pip colours, matching the printed icons. */
   --color-stat-water: #5ec8e8;
   --color-stat-sun: #ffd54a;

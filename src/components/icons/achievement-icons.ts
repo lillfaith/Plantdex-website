@@ -26,6 +26,14 @@ const ACHIEVEMENT_ICONS: Record<string, IconName> = {
   'research-10': 'compass',
   'seasonal-sweep': 'fallen-leaf',
   'backyard-collection': 'plot',
+  // The habitat set wears its own class mark, so a badge and the chip on the card are
+  // recognisably the same thing.
+  'habitat-woodland': 'woodland',
+  'habitat-meadow': 'meadow',
+  'habitat-wetland': 'wetland',
+  'habitat-wayside': 'wayside',
+  'habitat-garden': 'garden-habitat',
+  'habitat-sweep': 'compass',
 };
 
 /**

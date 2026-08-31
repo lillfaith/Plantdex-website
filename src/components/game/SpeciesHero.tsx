@@ -8,6 +8,7 @@ import { cardLabel } from '@/lib/collection';
 import { USE_LABEL } from '@/lib/deck';
 import { CardFlip } from '../herbdex/CardFlip';
 import { PlantSprite } from '../PlantSprite';
+import { HabitatChips } from './HabitatChip';
 import { RarityMeter } from './RarityMeter';
 import { XpBar } from './XpBar';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -75,6 +76,13 @@ export function SpeciesHero({
         <p className="font-botanical mt-1 text-lg text-violet-200 italic">
           {herb.scientificName}
         </p>
+
+        {/*
+          Habitat sits with the identity, not with the game state: it answers "what kind of
+          ground is this plant" alongside the name, and the detailed cited sentence still
+          lives in "Where it grows" further down the page.
+        */}
+        <HabitatChips herbId={herb.id} className="mt-3" />
 
         <div className="mt-4 flex items-center gap-2">
           <div className="flex min-w-0 flex-wrap items-center gap-2">

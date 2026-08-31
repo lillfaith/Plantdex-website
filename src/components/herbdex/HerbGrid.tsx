@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { Herb, Rarity, Season } from '@/lib/types';
 import { RARITIES, SEASONS } from '@/lib/types';
+import { HABITATS, HABITAT_LABEL, matchesHabitatFilter, type HabitatClass } from '@/lib/habitat';
 import { SEASON_LABEL } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { HerbCard } from './HerbCard';
@@ -51,6 +52,7 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
   const [status, setStatus] = useState<StatusFilter>('all');
   const [rarity, setRarity] = useState<Rarity | 'all'>('all');
   const [season, setSeason] = useState<Season | 'all'>('all');
+  const [habitat, setHabitat] = useState<HabitatClass | 'all'>('all');
   const [query, setQuery] = useState('');
 
   const visible = useMemo(() => {
@@ -63,6 +65,14 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
       if (status === 'mastered' && !(ready && isMastered(herb.id))) return false;
       if (rarity !== 'all' && herb.rarity !== rarity) return false;
       if (season !== 'all' && herb.season !== season) return false;
+      /*
+       * PRIMARY HABITAT ONLY. Matching secondaries too would put 29 of 45 cards behind
+       * "Wayside", because most of a backyard deck is also a roadside plant — a filter
+       * returning two-thirds of the deck has told the player nothing. Primary-only makes
+       * the five filters a partition: every card appears under exactly one, and the filter
+       * means the same thing as the chip on the card.
+       */
+      if (habitat !== 'all' && !matchesHabitatFilter(herb.id, habitat)) return false;
 
       if (needle) {
         // Undiscovered herbs are searchable only by card number, so search cannot be
@@ -74,7 +84,7 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
       }
       return true;
     });
-  }, [herbs, status, rarity, season, query, isDiscovered, isMastered, ready]);
+  }, [herbs, status, rarity, season, habitat, query, isDiscovered, isMastered, ready]);
 
   return (
     <div>
@@ -125,6 +135,24 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
             {SEASONS.map((value) => (
               <Chip key={value} active={season === value} onClick={() => setSeason(value)}>
                 {SEASON_LABEL[value]}
+              </Chip>
+            ))}
+          </div>
+        </div>
+
+        {/*
+          Habitat filters on PRIMARY only — see the predicate above. The label says "grows
+          in" rather than naming a place, because a class is a kind of ground, not a
+          location.
+        */}
+        <div className="-mx-4 overflow-x-auto px-4 pb-1">
+          <div className="flex gap-2" role="group" aria-label="Filter by habitat">
+            <Chip active={habitat === 'all'} onClick={() => setHabitat('all')}>
+              Any habitat
+            </Chip>
+            {HABITATS.map((value) => (
+              <Chip key={value} active={habitat === value} onClick={() => setHabitat(value)}>
+                {HABITAT_LABEL[value]}
               </Chip>
             ))}
           </div>

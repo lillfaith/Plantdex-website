@@ -1,4 +1,4 @@
-import { HERBS } from './deck';
+import { HERBS } from './deck.ts';
 
 /**
  * HABITAT CLASSES.

@@ -32,6 +32,7 @@ export const PURE_MODULES = [
   'types.ts',
   'herbdex-state.ts',
   'deck.ts',
+  'habitat.ts',
   'achievements.ts',
   'progression.ts',
   'mastery.ts',

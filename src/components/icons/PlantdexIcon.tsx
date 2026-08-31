@@ -35,6 +35,12 @@ export type IconName =
   | 'journal'
   | 'seasons'
   | 'learn'
+  // Habitat classes
+  | 'woodland'
+  | 'meadow'
+  | 'wetland'
+  | 'wayside'
+  | 'garden-habitat'
   // States and marks
   | 'research'
   | 'safety'
@@ -311,6 +317,50 @@ const ICONS: Record<IconName, React.ReactNode> = {
   // — Achievements ——————————————————————————————————————————————————————————
   // Each is a stage of a plant's life or a mark of the search, so the achievement shelf
   // reads as one growing thing rather than a shelf of trophies.
+  /*
+   * THE FIVE HABITAT CLASSES.
+   *
+   * Each is the SHAPE OF THE GROUND rather than a plant that grows on it: a canopy line, a
+   * horizon of grass heads, a waterline, a verge beside a path, a tended row. A plant
+   * inside each would have been the obvious drawing and the wrong one — every one of these
+   * sits next to a species that is itself a plant, and two plants side by side read as one
+   * smudge at 16px. Ground reads at any size, and it is what the class actually names.
+   */
+  woodland: (
+    <>
+      <path d="M12 21v-4.2" />
+      <path d="M12 2.8 6.2 11h11.6Z" />
+      <path d="M12 8.2 7.6 16.8h8.8Z" />
+    </>
+  ),
+  meadow: (
+    <>
+      <path d="M3 20.4h18" />
+      <path d="M7 20.4V11m0 0c-1.6-1.2-2.2-2.8-1.8-4.8 1.9.4 3 1.7 3.4 3.8" />
+      <path d="M13.4 20.4V8.4m0 0c-.4-2 .3-3.6 2-4.8 1.1 1.7 1 3.4-.4 5" />
+    </>
+  ),
+  wetland: (
+    <>
+      <path d="M3 17.2c1.8-1.4 3.6-1.4 5.4 0s3.6 1.4 5.4 0 3.6-1.4 5.4 0" />
+      <path d="M3 20.6c1.8-1.4 3.6-1.4 5.4 0s3.6 1.4 5.4 0 3.6-1.4 5.4 0" />
+      <path d="M9 13.6V5.2M13.8 13.6V7" />
+    </>
+  ),
+  wayside: (
+    <>
+      <path d="M8.6 21 12 3.4" />
+      <path d="M15.8 21 19 3.4" />
+      <path d="M4 8.6h2.6M3.2 13.4h2.8M2.6 18.2h2.8" />
+    </>
+  ),
+  'garden-habitat': (
+    <>
+      <path d="M3.4 19.8h17.2" />
+      <path d="M3.4 19.8V9.4h17.2v10.4" />
+      <path d="M8.2 19.8v-6M12 19.8v-6M15.8 19.8v-6" />
+    </>
+  ),
   sprout: (
     <>
       <path d="M12 21v-6.4" />
