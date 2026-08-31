@@ -628,4 +628,186 @@ export const STRUCTURES: Record<string, StructureArt> = {
       </>
     ),
   },
+  'harmine': {
+    viewBox: '-79.7 -58.4 199.5 93.5',
+    art: (
+      <>
+      <path d="M22.0 0.0L11.0 -19.1" />
+      <path d="M11.0 -19.1L-11.0 -19.1" />
+      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-9.9 -12.4L-15.6 -2.4" />
+      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 19.1L11.0 19.1" />
+      <path d="M-5.8 14.7L5.8 14.7" />
+      <path d="M11.0 19.1L22.0 0.0" />
+      <path d="M22.0 0.0L11.0 -19.1" />
+      <path d="M15.6 -2.4L9.9 -12.4" />
+      <path d="M11.0 -19.1L18.8 -27.7" />
+      <path d="M35.2 -31.2L45.8 -26.5" />
+      <path d="M45.8 -26.5L43.5 -4.6" />
+      <path d="M43.5 -4.6L22.0 -0.0" />
+      <path d="M43.5 -4.6L22.0 -0.0" />
+      <path d="M43.5 -4.6L61.3 8.4" />
+      <path d="M61.3 8.4L74.3 2.6" />
+      <path d="M82.2 -8.3L83.7 -22.5" />
+      <path d="M83.7 -22.5L65.9 -35.4" />
+      <path d="M65.9 -35.4L45.8 -26.5" />
+      <path d="M65.9 -35.4L45.8 -26.5" />
+      <path d="M43.5 -4.6L61.3 8.4" />
+      <path d="M50.3 -5.0L59.6 1.8" />
+      <path d="M82.2 -8.3L83.7 -22.5" />
+      <path d="M77.7 -11.4L78.9 -18.7" />
+      <path d="M83.7 -22.5L103.8 -31.4" />
+      <path d="M-22.0 -0.0L-36.2 -0.0" />
+      <path d="M-51.0 3.5L-63.7 9.8" />
+      <text x="25.7" y="-35.4" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HN</text>
+      <text x="81.4" y="-0.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      </>
+    ),
+  },
+  'harmaline': {
+    viewBox: '-79.7 -58.4 199.5 93.5',
+    art: (
+      <>
+      <path d="M22.0 0.0L11.0 -19.1" />
+      <path d="M11.0 -19.1L-11.0 -19.1" />
+      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-9.9 -12.4L-15.6 -2.4" />
+      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 19.1L11.0 19.1" />
+      <path d="M-5.8 14.7L5.8 14.7" />
+      <path d="M11.0 19.1L22.0 0.0" />
+      <path d="M22.0 0.0L11.0 -19.1" />
+      <path d="M15.6 -2.4L9.9 -12.4" />
+      <path d="M11.0 -19.1L18.8 -27.7" />
+      <path d="M35.2 -31.2L45.8 -26.5" />
+      <path d="M45.8 -26.5L43.5 -4.6" />
+      <path d="M43.5 -4.6L22.0 -0.0" />
+      <path d="M43.5 -4.6L22.0 -0.0" />
+      <path d="M43.5 -4.6L61.3 8.4" />
+      <path d="M61.3 8.4L74.3 2.6" />
+      <path d="M82.2 -8.3L83.7 -22.5" />
+      <path d="M83.7 -22.5L65.9 -35.4" />
+      <path d="M65.9 -35.4L45.8 -26.5" />
+      <path d="M65.9 -35.4L45.8 -26.5" />
+      <path d="M61.3 8.4L74.3 2.6" />
+      <path d="M63.4 2.6L70.0 -0.8" />
+      <path d="M83.7 -22.5L103.8 -31.4" />
+      <path d="M-22.0 -0.0L-36.2 -0.0" />
+      <path d="M-51.0 3.5L-63.7 9.8" />
+      <text x="25.7" y="-35.4" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HN</text>
+      <text x="81.4" y="-0.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      </>
+    ),
+  },
+  'azulene': {
+    viewBox: '-63.7 -71.2 97.5 102.3',
+    art: (
+      <>
+      <path d="M0.0 -18.7L-17.8 -5.8" />
+      <path d="M-17.8 -5.8L-11.0 15.1" />
+      <path d="M-11.0 15.1L11.0 15.1" />
+      <path d="M11.0 15.1L17.8 -5.8" />
+      <path d="M17.8 -5.8L0.0 -18.7" />
+      <path d="M-17.8 -5.8L-39.0 -11.6" />
+      <path d="M-39.0 -11.6L-47.7 -31.9" />
+      <path d="M-47.7 -31.9L-37.2 -51.2" />
+      <path d="M-37.2 -51.2L-15.6 -55.2" />
+      <path d="M-15.6 -55.2L1.0 -40.7" />
+      <path d="M1.0 -40.7L0.0 -18.7" />
+      <path d="M1.0 -40.7L0.0 -18.7" />
+      <path d="M-17.8 -5.8L-11.0 15.1" />
+      <path d="M-12.2 -1.8L-8.9 8.6" />
+      <path d="M11.0 15.1L17.8 -5.8" />
+      <path d="M8.9 8.6L12.2 -1.8" />
+      <path d="M-17.8 -5.8L-39.0 -11.6" />
+      <path d="M-21.4 -11.5L-33.0 -14.6" />
+      <path d="M-47.7 -31.9L-37.2 -51.2" />
+      <path d="M-41.3 -34.1L-35.6 -44.7" />
+      <path d="M-15.6 -55.2L1.0 -40.7" />
+      <path d="M-14.8 -48.5L-5.7 -40.6" />
+      </>
+    ),
+  },
+  'salicin': {
+    viewBox: '-38.0 -83.1 183.0 152.2',
+    art: (
+      <>
+      <path d="M22.0 0.0L11.0 -19.1" />
+      <path d="M15.6 -2.4L9.9 -12.4" />
+      <path d="M11.0 -19.1L-11.0 -19.1" />
+      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-9.9 -12.4L-15.6 -2.4" />
+      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 19.1L11.0 19.1" />
+      <path d="M-5.8 14.7L5.8 14.7" />
+      <path d="M11.0 19.1L22.0 0.0" />
+      <path d="M11.0 -19.1L22.0 -38.1" />
+      <path d="M22.0 -38.1L22.0 -49.7" />
+      <path d="M22.0 0.0L36.2 0.0" />
+      <path d="M49.5 5.5L55.0 11.0" />
+      <path d="M99.0 11.0L88.0 -8.1" />
+      <path d="M88.0 -8.1L66.0 -8.1" />
+      <path d="M66.0 -8.1L55.0 11.0" />
+      <path d="M55.0 11.0L62.1 23.3" />
+      <path d="M73.8 30.1L88.0 30.1" />
+      <path d="M88.0 30.1L99.0 11.0" />
+      <path d="M88.0 30.1L93.8 40.1" />
+      <path d="M99.0 11.0L110.6 11.0" />
+      <path d="M88.0 -8.1L93.8 -18.1" />
+      <text x="22.0" y="-60.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="44.0" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="66.0" y="30.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="99.0" y="49.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="121.0" y="11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="99.0" y="-27.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      </>
+    ),
+  },
+  'chlorogenic-acid': {
+    viewBox: '-68.0 -61.1 275.3 122.2',
+    art: (
+      <>
+      <path d="M22.0 0.0L11.0 -19.1" />
+      <path d="M15.6 -2.4L9.9 -12.4" />
+      <path d="M11.0 -19.1L-11.0 -19.1" />
+      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-9.9 -12.4L-15.6 -2.4" />
+      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 19.1L11.0 19.1" />
+      <path d="M-5.8 14.7L5.8 14.7" />
+      <path d="M11.0 19.1L22.0 0.0" />
+      <path d="M-11.0 -19.1L-16.8 -29.1" />
+      <path d="M-22.0 -0.0L-33.6 -0.0" />
+      <path d="M22.0 0.0L41.1 -11.0" />
+      <path d="M41.1 -11.0L60.1 0.0" />
+      <path d="M39.4 -8.1L58.4 2.9" />
+      <path d="M60.1 0.0L79.2 -11.0" />
+      <path d="M79.2 -11.0L79.2 -25.2" />
+      <path d="M82.6 -11.0L82.6 -25.2" />
+      <path d="M79.2 -11.0L91.5 -3.9" />
+      <path d="M105.0 -3.9L117.3 -11.0" />
+      <path d="M161.3 -11.0L150.3 -30.1" />
+      <path d="M150.3 -30.1L128.3 -30.1" />
+      <path d="M128.3 -30.1L117.3 -11.0" />
+      <path d="M117.3 -11.0L128.3 8.1" />
+      <path d="M128.3 8.1L150.3 8.1" />
+      <path d="M150.3 8.1L161.3 -11.0" />
+      <path d="M161.3 -11.0L172.9 -11.0" />
+      <path d="M150.3 8.1L150.3 30.1" />
+      <path d="M150.3 30.1L162.6 37.2" />
+      <path d="M148.6 33.0L160.9 40.1" />
+      <path d="M150.3 30.1L140.2 35.9" />
+      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="79.2" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="98.2" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="183.3" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="169.3" y="41.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="131.2" y="41.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HO</text>
+      </>
+    ),
+  },
 };
