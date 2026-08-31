@@ -8,7 +8,8 @@ import {
 import { Panel } from '../ui/Panel';
 import { SectionHeader } from '../ui/SectionHeader';
 import { LookalikeRisk } from '../SafetyNotice';
-import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
+import { iconForTrait } from '@/lib/trait-icons';
 
 /**
  * Identification, lookalikes and habitat — the three site-added field-note sections.
@@ -23,24 +24,15 @@ import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
  */
 
 /**
- * A trait row gets an icon only where one genuinely helps place the character on the
- * plant, and the same icon is reused for the same body part across all 45 species. It is
- * decorative in every case: the trait label beside it says the same thing in words.
- * Matching is on the trait LABEL, which is why the labels in `card-field-notes.ts` are
- * short and physical rather than prose.
+ * The eyebrow every field-note section carries.
+ *
+ * Card-derived sections say "From the card". These must say the opposite just as plainly,
+ * for the same reason `SiteCaution` leads with "Not printed on the card": a reader who
+ * believes a lookalike discriminator came off their own deck weighs it differently from
+ * one who knows the site added it. "Field notes" alone distinguished them typographically
+ * and told the reader nothing.
  */
-const TRAIT_ICONS: { match: RegExp; icon: IconName }[] = [
-  { match: /leaf|leaves|leaflet|rosette|foliage|frond/i, icon: 'leaves' },
-  { match: /flower|bloom|petal|head|umbel|catkin|corona/i, icon: 'flower' },
-  { match: /fruit|berr|acorn|hip|samara|seed|pod|capsule|bur|cone/i, icon: 'fruit' },
-  { match: /stem|stalk|cane|twig|node|runner|vine|shoot/i, icon: 'stem' },
-  { match: /root|bulb|rhizome/i, icon: 'root' },
-  { match: /bark|woody|tree|shrub/i, icon: 'bark' },
-];
-
-function iconForTrait(trait: string): IconName | undefined {
-  return TRAIT_ICONS.find((entry) => entry.match.test(trait))?.icon;
-}
+const FIELD_NOTE_EYEBROW = 'Added by Plantdex — not on the card';
 
 /** The quiet notice for a card whose own scientific name is `spp.` — never an error banner. */
 function GenusNotice({ herb }: { herb: Herb }) {
@@ -63,11 +55,17 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
     <Panel frame="plate" pad="lg" aria-labelledby="identification-heading">
       <SectionHeader
         id="identification-heading"
-        eyebrow="Field notes"
+        eyebrow={FIELD_NOTE_EYEBROW}
         title="How to recognise it"
         size="lg"
         note={IDENTIFICATION_CAVEAT}
       />
+      {/* Provenance, stated once where the field notes begin. The caveat above is about
+          safety and stays exactly as it is; this is about where the words came from. */}
+      <p className="-mt-1 mb-1 text-xs text-violet-300">
+        These notes are not printed on your card. They were added here from the sources
+        listed at the foot of this page.
+      </p>
       {/*
         Two columns of trait rows rather than one long list: at reading measure the details
         are short enough that a single column leaves half the plate empty, which is what
@@ -106,7 +104,7 @@ export function LookalikeSection({ herb }: { herb: Herb }) {
     <section aria-labelledby="lookalikes-heading">
       <SectionHeader
         id="lookalikes-heading"
-        eyebrow="Field notes"
+        eyebrow={FIELD_NOTE_EYEBROW}
         title="Commonly confused with"
         size="lg"
       />
@@ -146,7 +144,7 @@ export function HabitatSection({ herb }: { herb: Herb }) {
     <Panel frame="card" pad="md" aria-labelledby="habitat-heading" className="max-w-3xl">
       <SectionHeader
         id="habitat-heading"
-        eyebrow="Field notes"
+        eyebrow={FIELD_NOTE_EYEBROW}
         title="Where it grows"
         icon="plot"
       />

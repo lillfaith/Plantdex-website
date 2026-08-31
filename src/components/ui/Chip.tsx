@@ -1,8 +1,12 @@
 import type { ReactNode } from 'react';
-import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 
 /**
  * The one chip on the profile page.
+ *
+ * NOT THE ONLY `Chip` IN THIS CODEBASE. `HerbGrid.tsx` has a local one of its own — an
+ * interactive filter toggle taking `active`/`onClick`. This one is a static label. Reaching
+ * for the wrong one is a compile error rather than a silent bug, but they are different
+ * components and the Herbdex index is deliberately out of scope for this pass.
  *
  * TONE IS MEANING, NOT DECORATION. `gold` is reserved for earned state and display
  * emphasis — it is deliberately NOT the default, because a page whose every chip is gold
@@ -18,25 +22,12 @@ const TONE: Record<ChipTone, string> = {
   cyan: 'border-cyan-accent/40 bg-cyan-accent/10 text-cyan-accent',
 };
 
-export function Chip({
-  tone = 'plain',
-  icon,
-  children,
-  after,
-}: {
-  tone?: ChipTone;
-  icon?: IconName;
-  children: ReactNode;
-  /** Trailing slot — the glossary "?" lives here rather than inside the label text. */
-  after?: ReactNode;
-}) {
+export function Chip({ tone = 'plain', children }: { tone?: ChipTone; children: ReactNode }) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${TONE[tone]}`}
     >
-      {icon && <PlantdexIcon name={icon} className="shrink-0 text-sm opacity-80" />}
       {children}
-      {after}
     </span>
   );
 }

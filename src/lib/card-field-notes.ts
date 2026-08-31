@@ -1,4 +1,4 @@
-import type { Herb } from './types';
+import type { Herb, SourceableSection, SourceRef } from './types';
 
 /**
  * Field notes the SITE adds: what a plant looks like, where it grows, and what it gets
@@ -995,4 +995,32 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
 
 export function fieldNotesFor(herb: Herb): FieldNotes | null {
   return FIELD_NOTES[herb.id] ?? null;
+}
+
+/**
+ * The field notes' own sources, in the shape `sectionCitations` and `countSources` already
+ * take, so a plant page cites them through the existing citation path rather than a second
+ * one beside it.
+ *
+ * WHY THIS MATTERS EVEN THOUGH NOTHING RENDERS TODAY. `SOURCEABLE_SECTIONS` already
+ * contains `identification` and `habitat`, so the sources block was reporting both as "not
+ * separately sourced yet" while this layer was carrying sources for exactly them. That is
+ * true right now only because every field-note source is `verified: false` and `resolveRefs`
+ * drops it. Routing them through here means the page tells the truth today AND keeps
+ * telling it the moment somebody opens a source and flips the flag — with no second edit,
+ * which is the edit that would have been forgotten.
+ */
+export function fieldNoteSectionSources(
+  herb: Herb,
+): Partial<Record<SourceableSection, SourceRef[]>> {
+  const notes = fieldNotesFor(herb);
+  if (!notes?.sourceIds.length) return {};
+  const refs: SourceRef[] = notes.sourceIds.map((sourceId) => ({
+    sourceId,
+    detail: 'Field notes added by Plantdex',
+  }));
+  const out: Partial<Record<SourceableSection, SourceRef[]>> = {};
+  if (notes.identification?.length || notes.lookalikes?.length) out.identification = refs;
+  if (notes.habitat) out.habitat = refs;
+  return out;
 }

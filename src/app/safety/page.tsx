@@ -182,11 +182,13 @@ export default function SafetyPage() {
             never disagree.
           </p>
           <p>
-            The site does add two things, and both say so where they appear: a note on the
-            cards with a known printing error, and — on the few plants where a
-            well-documented risk is missing from the card — a caution labelled as added
-            here. Anything the site adds is separate from the transcription, never mixed
-            into it.
+            The site does add three things, and each says so where it appears: a note on
+            the cards with a known printing error; on the few plants where a
+            well-documented risk is missing from the card, a caution labelled as added
+            here; and on every plant, field notes on how to recognise it, where it grows
+            and what it is commonly confused with — none of which any card prints. Anything
+            the site adds is separate from the transcription, never mixed into it, and
+            carries its own sources rather than borrowing the card&rsquo;s.
           </p>
           <p>
             A citation only appears on this site once a person has opened the source and

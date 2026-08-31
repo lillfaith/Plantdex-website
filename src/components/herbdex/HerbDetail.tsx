@@ -81,7 +81,11 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   const celebrationDialog = (
     <dialog
       ref={celebrateRef}
-      aria-labelledby="celebrate-title"
+      // `aria-label`, not `aria-labelledby`. The heading this used to point at lives inside
+      // DiscoveryCelebration, which only mounts once there is a celebration to show — so on
+      // every one of the 45 pages the reference dangled at nothing while the dialog sat
+      // closed. A static label cannot dangle.
+      aria-label={`${herb.commonName} discovered`}
       className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
     >
       {celebration && (

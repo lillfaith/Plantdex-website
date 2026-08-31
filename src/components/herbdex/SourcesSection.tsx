@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
 import { citationsFor, evidenceLabelFor } from '@/lib/card-sources';
+import { fieldNoteSectionSources } from '@/lib/card-field-notes';
 import {
   claimCitations,
   countSources,
@@ -33,9 +34,14 @@ export function SourcesSection({ herb }: { herb: Herb }) {
   const provenance = entryLevel.filter((entry) => entry.source.kind === 'deck');
   const references = entryLevel.filter((entry) => entry.source.kind !== 'deck');
   const evidence = evidenceLabelFor(herb);
-  const { cited, awaiting } = sectionCitations(herb.sectionSources);
+  // The identification and habitat sections on this page are site-added field notes with
+  // their own references, so they are merged into the section map the citation system
+  // already walks. The herb's own `sectionSources` wins where both exist: card-derived
+  // sourcing is the stronger claim.
+  const sectionSources = { ...fieldNoteSectionSources(herb), ...herb.sectionSources };
+  const { cited, awaiting } = sectionCitations(sectionSources);
   const claims = claimCitations(herb.claimSources);
-  const total = countSources({ ...herb, sources: citationsFor(herb) });
+  const total = countSources({ ...herb, sources: citationsFor(herb), sectionSources });
 
   if (total === 0) return null;
 
