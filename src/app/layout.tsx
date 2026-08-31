@@ -3,6 +3,7 @@ import { Outfit, Fraunces } from 'next/font/google';
 import { HerbdexProvider } from '@/state/HerbdexProvider';
 import { AuthProvider } from '@/state/AuthProvider';
 import { SiteNav } from '@/components/SiteNav';
+import { SiteFooter } from '@/components/SiteFooter';
 import { AccountBadge } from '@/components/auth/AccountBadge';
 import './globals.css';
 
@@ -52,8 +53,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <HerbdexProvider>
             <SiteNav />
             <AccountBadge />
-            {/* Bottom padding clears the fixed mobile nav bar; it becomes a top bar at sm. */}
-            <div className="pb-20 sm:pb-0">{children}</div>
+            {/* Bottom padding clears the fixed mobile nav bar; it becomes a top bar at sm.
+                The footer carries its own clearance, so it sits outside this wrapper. */}
+            <div>{children}</div>
+            <SiteFooter />
           </HerbdexProvider>
         </AuthProvider>
       </body>

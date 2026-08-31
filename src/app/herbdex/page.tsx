@@ -6,6 +6,7 @@ import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
+import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
 export const metadata: Metadata = {
@@ -35,7 +36,11 @@ export default function HerbdexPage() {
         {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
       </p>
 
+      {/* Above the progress header, because it is about that progress — and inline in the
+          page flow rather than a modal, so it never interrupts anyone. It renders nothing
+          until a signed-out player has enough collection to be worth protecting. */}
       <div className="mt-5">
+        <LocalProgressNotice />
         <ProgressHeader />
       </div>
 
