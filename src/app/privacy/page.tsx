@@ -274,31 +274,36 @@ export default function PrivacyPage() {
               term: 'Delete your account',
               detail: (
                 <>
-                  <strong className="text-violet-100">Not yet available in the app.</strong>{' '}
-                  Deleting an account currently has to be done by us on request, at{' '}
-                  <OwnerGap id="contact-email" />. Doing so removes every row described above.
-                  Stored photographs have to be removed separately, and are not covered by that
-                  automatic deletion.
+                  On the account page, under &ldquo;Your data&rdquo;. It removes every row
+                  described above, <strong className="text-violet-100">every photograph you
+                  have uploaded</strong>, and the account and email address themselves. It is
+                  immediate and permanent: we keep no copy and cannot restore any of it, so you
+                  are asked to type the word DELETE first.
                 </>
               ),
             },
             {
-              term: 'Export your data',
+              term: 'Download your data',
               detail:
-                'Not yet available in the app. A copy can be provided on request until it is.',
+                'On the same page. It produces a single JSON file containing your collection, research, achievements, every sighting and every photograph — signed out, it exports what this browser holds instead. If a very long journal of photographs exceeds what a browser can assemble into one file, the file lists by name which photographs were left out and why; nothing is dropped silently.',
             },
           ]}
         />
         <p className="text-sm text-violet-300">
-          Both gaps are stated plainly because they are real. They are on the list to build, and
-          this page will change when they exist rather than before.
+          XP and level are not in the export, because they are not stored anywhere: they are
+          recalculated from the records above every time they are shown.
         </p>
       </LegalSection>
 
       <LegalSection id="retention" heading="How long it is kept">
         <p>
-          Your data stays until you or we delete it. A specific retention period after account
-          closure is <OwnerGap id="retention" />.
+          Your data stays until you delete it. Deleting your account removes it immediately —
+          the rows and the photographs both, in that order, and the account itself last, so a
+          failure part-way through can never leave photographs behind with no owner.
+        </p>
+        <p>
+          Whether anything is retained in backups after that, and for how long, is{' '}
+          <OwnerGap id="retention" />.
         </p>
       </LegalSection>
 

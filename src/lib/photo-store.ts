@@ -45,6 +45,28 @@ export async function savePhoto(file: File): Promise<string> {
 }
 
 /**
+ * The stored blob itself, or null if it is gone.
+ *
+ * Separate from `getPhotoUrl` because "Download my data" needs the bytes, not a URL that
+ * has to be revoked afterwards — and an object URL cannot be read back into a file.
+ */
+export async function getPhotoBlob(id: string): Promise<Blob | null> {
+  try {
+    const db = await openDb();
+    const blob = await new Promise<Blob | undefined>((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readonly');
+      const request = tx.objectStore(STORE).get(id);
+      request.onsuccess = () => resolve(request.result as Blob | undefined);
+      request.onerror = () => reject(request.error);
+    });
+    db.close();
+    return blob ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Returns an object URL for a stored photo, or null if it is gone.
  * Callers must revokeObjectURL when done, or the blob stays pinned in memory.
  */
@@ -76,5 +98,27 @@ export async function deletePhoto(id: string): Promise<void> {
     db.close();
   } catch {
     // A stranded blob is harmless; never let cleanup break deleting a sighting.
+  }
+}
+
+/**
+ * Empties the photo store.
+ *
+ * Used when an account is deleted and when a signed-out player clears this device: local
+ * storage holds the sightings, but the pictures are here, and leaving them behind would
+ * mean "delete everything" quietly kept the photographs.
+ */
+export async function clearAllPhotos(): Promise<void> {
+  try {
+    const db = await openDb();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).clear();
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  } catch {
+    // Nothing to clear, or storage is blocked.
   }
 }

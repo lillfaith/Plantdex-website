@@ -93,7 +93,7 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
   {
     id: 'retention',
     label: 'How long data is kept after an account is closed',
-    why: 'The database cascades every row when a user is deleted, but nothing states a period, and Storage objects are not covered by that cascade.',
+    why: 'Deleting an account now erases every row and every photograph immediately, so the app-level answer is "nothing is kept". What survives in the provider\'s own backups, and for how long, is a question about the Supabase plan rather than about this code.',
     kind: 'operational',
     blocking: false,
   },

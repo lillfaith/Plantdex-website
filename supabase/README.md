@@ -44,16 +44,28 @@ a mixed-up one.
 4. In Supabase's dashboard, under Authentication → URL Configuration, set the Site URL to
    your GitHub Pages origin and add it plus `http://localhost:3000` to the redirect
    allow-list. Enable the Email provider.
-5. Deploy the edge function — **run the sync script first**, since
+5. Deploy the edge functions — **run the sync script first**, since
    `supabase/functions/_shared/herbdex/` is generated, not hand-edited:
    ```bash
    npm run sync:edge-shared
    supabase functions deploy herbdex-action
+   supabase functions deploy delete-account
    ```
+   `delete-account` needs `SUPABASE_SERVICE_ROLE_KEY` in its environment. Supabase injects
+   it into every function automatically, so there is nothing to configure — and nothing to
+   paste anywhere, which is the point: that key bypasses every RLS policy in the project and
+   must never appear in `.env.local`, in the repo, or in any GitHub variable. It is the one
+   credential in this system that is not safe to publish.
+
+   Without this function deployed, "Delete my account" reports a failure and deletes
+   nothing. That is the intended behaviour — a partial deletion would be worse — but it
+   means the two must ship together.
 6. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` as GitHub repo
    **variables** (Settings → Secrets and variables → Actions → Variables) so
    `.github/workflows/deploy.yml` can bake them into the static export, and to a local
-   `.env.local` for `npm run dev` (copy `.env.example`).
+   `.env.local` for `npm run dev` (copy `.env.example`). Add
+   `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` there too if you want analytics; left unset, no script
+   loads and no event is sent.
 
 ## Verifying it actually works
 
@@ -87,9 +99,14 @@ Two project settings it depends on:
 - **The `herbdex-action` function must be deployed**, or the mastery/research tests fail
   with a message saying so.
 
-The suite deletes every row it creates. It cannot delete the users it creates — that needs
-a service-role key, which it deliberately never holds — so test accounts accumulate; remove
-them from the dashboard periodically.
+The suite deletes every row it creates. Most of the users it creates survive — the suite
+holds no service-role key of its own — so test accounts accumulate; remove them from the
+dashboard periodically. The exception is the `account deletion` group, which creates two
+throwaway users and destroys them through the real `delete-account` function, which is
+exactly what those tests are checking.
+
+- **The `delete-account` function must be deployed too**, or that group fails immediately
+  with a message saying so, rather than three unreadable Response dumps.
 
 ## Checking the edge function without deploying it
 

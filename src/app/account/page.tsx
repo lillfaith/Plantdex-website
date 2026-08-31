@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { ForgotPasswordForm, SignInForm, SignUpForm } from '@/components/auth/AuthForms';
 import { ImportLocalProgressDialog } from '@/components/auth/ImportLocalProgressDialog';
+import { AccountDataSection } from '@/components/auth/AccountDataSection';
 import { SafetyNotice } from '@/components/SafetyNotice';
 
 export default function AccountPage() {
@@ -73,6 +74,20 @@ export default function AccountPage() {
           {/* Rendered unconditionally so it keeps a stable position in the tree — it only
               actually opens once its own effect decides local progress should be offered. */}
           <ImportLocalProgressDialog userId={user.id} />
+        </div>
+      )}
+
+      {/*
+        Outside every branch on purpose. The export is offered signed out as well as signed
+        in, because a signed-out collection lives only in this browser and is gone for good
+        the moment site data is cleared — which is exactly the person who most needs a copy.
+        Keeping it here also gives the delete dialog inside it a stable position in the tree,
+        which matters: deleting an account signs the player out, and a dialog nested in the
+        signed-in branch would be unmounted by its own success.
+      */}
+      {(!configured || ready) && (
+        <div className="mt-6">
+          <AccountDataSection userId={user?.id} email={user?.email ?? undefined} />
         </div>
       )}
 

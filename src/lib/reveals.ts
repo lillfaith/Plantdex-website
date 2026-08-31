@@ -20,7 +20,9 @@ import { useSyncExternalStore } from 'react';
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-const STORAGE_KEY = 'plantdex.reveals.v1';
+/** Exported so "Download my data" reads the same key the store writes. */
+export const REVEALS_STORAGE_KEY = 'plantdex.reveals.v1';
+const STORAGE_KEY = REVEALS_STORAGE_KEY;
 
 let cache: Set<string> | null = null;
 const listeners = new Set<() => void>();

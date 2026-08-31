@@ -4,6 +4,7 @@ import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 import { supabase } from '@/lib/supabase-client';
 import { createRemoteHerbdexStorage } from '@/lib/remote-herbdex-storage';
 import { addRemoteSighting, removeRemoteSighting } from '@/lib/remote-sightings';
+import { exportAccountData } from '@/lib/export-account-data';
 import { applyDiscovery, applyLearned, reconcileAchievements } from '@/lib/herbdex-reducer';
 import { buildWorld, STANDING_TASKS } from '@/lib/research';
 import { progressFromState, xpForState } from '@/lib/progression';
@@ -410,6 +411,210 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const after = await createRemoteHerbdexStorage(alice.id).load();
       expect(after.mastered[HERB_B.id]).toBeUndefined();
     }, 60_000);
+  });
+
+  describe('data export', () => {
+    it('exports the caller own collection, sightings and photographs', async () => {
+      const path = `${alice.id}/export-e2e-${Date.now()}.jpg`;
+      const { error: uploadError } = await supabase!.storage
+        .from('sighting-photos')
+        .upload(path, new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])]), {
+          contentType: 'image/jpeg',
+        });
+      expect(uploadError).toBeNull();
+
+      const sightingId = `sighting_export_${Date.now()}`;
+      const { error: insertError } = await supabase!.from('sightings').insert({
+        id: sightingId,
+        user_id: alice.id,
+        herb_id: HERB_A.id,
+        date: '2026-07-04',
+        photo_path: path,
+      });
+      expect(insertError).toBeNull();
+
+      const data = await exportAccountData(alice.id, 'alice@example.invalid');
+
+      expect(data.source).toBe('account');
+      expect(Object.keys(data.collection.discoveries).length).toBeGreaterThan(0);
+      expect(data.sightings.map((s) => s.id)).toContain(sightingId);
+
+      // The photograph travels as bytes, not as a link that would expire or leak.
+      const photo = data.photos.included.find((p) => p.sightingId === sightingId);
+      expect(photo, 'the photo was not included in the export').toBeDefined();
+      expect(photo!.dataUri).toMatch(/^data:image\/jpeg;base64,/);
+      expect(data.photos.omitted).toEqual([]);
+
+      // XP and level are derived and must not appear as if they were stored records.
+      expect(JSON.stringify(data)).not.toMatch(/"(xp|level)":/);
+
+      await supabase!.storage.from('sighting-photos').remove([path]);
+      await supabase!.from('sightings').delete().eq('id', sightingId);
+    }, 60_000);
+
+    it('exports nothing of another user, even when asked for their id directly', async () => {
+      /*
+       * `exportAccountData` takes a user id, so this is the obvious attack: call it with
+       * somebody else's. It is refused by Row Level Security rather than by the function —
+       * Bob's session simply cannot see Alice's rows, so every query comes back empty. The
+       * id is a readability filter, never the boundary.
+       */
+      const bobSupabase = bobClient;
+      const original = await createRemoteHerbdexStorage(alice.id).load();
+      expect(Object.keys(original.discoveries).length).toBeGreaterThan(0);
+
+      for (const [table] of TABLES) {
+        const { data } = await bobSupabase.from(table).select('*').eq('user_id', alice.id);
+        expect(data ?? [], `${table} leaked to an export by another user`).toEqual([]);
+      }
+    }, 30_000);
+  });
+
+  /**
+   * ACCOUNT DELETION, attacked and then performed.
+   *
+   * Two throwaway users of its own, because these tests destroy the accounts they use and
+   * Alice and Bob are needed by everything above.
+   *
+   *   carol — the victim: real rows, and a real photograph in the private bucket.
+   *   dave  — the attacker: signed in, and asks the function to delete Carol.
+   *
+   * The attack test is the important one. `delete-account` holds the service-role key, so
+   * it can bypass every RLS policy in the project — RLS is NOT what protects Carol here.
+   * What protects her is that the function derives the account from the caller's own
+   * verified JWT and reads no request body at all. Dave's forged `userId` is therefore
+   * ignored, and the only account that dies is his own.
+   */
+  describe('account deletion', () => {
+    let carol: User;
+    let carolClient: SupabaseClient;
+    let dave: User;
+    let daveClient: SupabaseClient;
+    let carolCreds: { email: string; password: string };
+    let photoPath: string;
+
+    beforeAll(async () => {
+      carolClient = freshClient();
+      carolCreds = credentials('carol');
+      const { error: signUpError } = await carolClient.auth.signUp(carolCreds);
+      if (signUpError) throw new Error(`carol signUp failed: ${signUpError.message}`);
+      const { data, error } = await carolClient.auth.signInWithPassword(carolCreds);
+      if (error || !data.user) throw new Error(`carol signIn failed: ${error?.message}`);
+      carol = data.user;
+
+      daveClient = freshClient();
+      dave = await signUpAndIn(daveClient, 'dave');
+
+      // Give Carol something to lose: a discovery, a sighting, and a photograph.
+      await carolClient
+        .from('discoveries')
+        .insert({ user_id: carol.id, herb_id: HERB_A.id, discovered_at: new Date().toISOString() });
+      await carolClient.from('sightings').insert({
+        id: `sighting_carol_${Date.now()}`,
+        user_id: carol.id,
+        herb_id: HERB_A.id,
+        date: '2026-06-01',
+      });
+      photoPath = `${carol.id}/e2e-${Date.now()}.jpg`;
+      const { error: uploadError } = await carolClient.storage
+        .from('sighting-photos')
+        .upload(photoPath, new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])]), {
+          contentType: 'image/jpeg',
+        });
+      if (uploadError) throw new Error(`carol photo upload failed: ${uploadError.message}`);
+
+      /*
+       * Probe the function before any test runs. Without this, "not deployed" surfaces three
+       * times as an unreadable dump of a Response object, and the actual instruction — deploy
+       * it — appears nowhere. An OPTIONS preflight needs no credentials and destroys nothing.
+       */
+      const probe = await fetch(`${URL}/functions/v1/delete-account`, { method: 'OPTIONS' });
+      if (probe.status === 404) {
+        throw new Error(
+          'The delete-account edge function is not deployed to this project. Run ' +
+            '`supabase functions deploy delete-account` (it needs the service-role key in ' +
+            'the function environment, which Supabase injects automatically) and re-run.',
+        );
+      }
+    }, 90_000);
+
+    it('has something real for Carol to lose', async () => {
+      // Same reason as the RLS precondition above: without this the deletion tests could
+      // all pass against an empty account while proving nothing.
+      const { data: rows } = await carolClient.from('discoveries').select('herb_id');
+      expect(rows?.length ?? 0).toBeGreaterThan(0);
+      const { data: photos } = await carolClient.storage.from('sighting-photos').list(carol.id);
+      expect(photos?.length ?? 0).toBeGreaterThan(0);
+    }, 30_000);
+
+    it('ignores a forged userId and deletes only the caller', async () => {
+      const { error } = await daveClient.functions.invoke('delete-account', {
+        method: 'POST',
+        // The forgery. The function must never read this.
+        body: { userId: carol.id, user_id: carol.id },
+      });
+      if (error) {
+        throw new Error(
+          `delete-account did not answer: ${error.message}. Deploy it with ` +
+            '`supabase functions deploy delete-account` before running this suite.',
+        );
+      }
+
+      // Carol is untouched: rows, photograph and the ability to sign in.
+      const { data: rows } = await carolClient.from('discoveries').select('herb_id');
+      expect(rows?.length ?? 0, 'Carol lost rows to Dave request').toBeGreaterThan(0);
+      const { data: photos } = await carolClient.storage.from('sighting-photos').list(carol.id);
+      expect(photos?.length ?? 0, 'Carol lost a photo to Dave request').toBeGreaterThan(0);
+
+      // And Dave is gone, which is what he actually asked for.
+      const stillDave = freshClient();
+      const { data: daveRows } = await stillDave.from('discoveries').select('*').eq('user_id', dave.id);
+      expect(daveRows ?? []).toEqual([]);
+    }, 90_000);
+
+    it('erases rows, photographs and the account itself', async () => {
+      const { data, error } = await carolClient.functions.invoke('delete-account', {
+        method: 'POST',
+      });
+      expect(error, 'delete-account failed').toBeNull();
+      expect((data as { ok?: boolean } | null)?.ok).toBe(true);
+
+      // Read back with a privileged-as-possible client: Carol's own session is gone, so
+      // anything still visible to a fresh anon client would be a leak either way.
+      const anon = freshClient();
+      for (const [table] of TABLES) {
+        const { data: rows } = await anon.from(table).select('*').eq('user_id', carol.id);
+        expect(rows ?? [], `${table} still holds deleted-account rows`).toEqual([]);
+      }
+
+      // The photograph must be gone from the bucket, not merely unreachable. A private
+      // object with no owner can never be removed by any policy again.
+      const { data: signed } = await anon.storage
+        .from('sighting-photos')
+        .createSignedUrl(photoPath, 60);
+      expect(signed?.signedUrl ?? null).toBeNull();
+
+      // And the account itself: signing back in must fail.
+      const { data: reSignIn, error: signInError } = await freshClient().auth.signInWithPassword(
+        carolCreds,
+      );
+      expect(reSignIn?.user ?? null, 'the deleted account can still sign in').toBeNull();
+      expect(signInError).not.toBeNull();
+    }, 120_000);
+
+    it('refuses an unauthenticated caller', async () => {
+      const response = await fetch(`${URL}/functions/v1/delete-account`, {
+        method: 'POST',
+        headers: { apikey: KEY!, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: alice.id }),
+      });
+      expect(response.status, 'a call with no user token must be rejected').not.toBe(200);
+      expect([401, 403]).toContain(response.status);
+
+      // Alice, named in that body, is untouched.
+      const state = await createRemoteHerbdexStorage(alice.id).load();
+      expect(Object.keys(state.discoveries).length).toBeGreaterThan(0);
+    }, 30_000);
   });
 
   describe('the empty state is the floor', () => {
