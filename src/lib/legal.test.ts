@@ -12,7 +12,16 @@ import {
 
 const PRIVACY = 'src/app/privacy/page.tsx';
 const TERMS = 'src/app/terms/page.tsx';
-const PAGES = [PRIVACY, TERMS];
+/*
+ * The commerce pages are held to exactly the same standard as the originals: every gap
+ * registered, no unregistered placeholder, the draft banner, a link to /safety. They are the
+ * likeliest place for an invented "ships in 3-5 days" to appear, so they are in PAGES from
+ * the day they were created rather than added after somebody notices.
+ */
+const TERMS_OF_SALE = 'src/app/terms-of-sale/page.tsx';
+const SHIPPING = 'src/app/shipping/page.tsx';
+const RETURNS = 'src/app/returns/page.tsx';
+const PAGES = [PRIVACY, TERMS, TERMS_OF_SALE, SHIPPING, RETURNS];
 const read = (path: string) => readFileSync(path, 'utf8');
 
 /** Every file under a directory, so a new provider cannot hide in a folder nobody listed. */
@@ -163,14 +172,25 @@ describe('legal pages', () => {
       /Loading a page contacts no one but our own host/i,
     );
 
-    // 4. Every event the app can send is described. Not the names — the page is prose — but
-    //    the count is the thing that silently grows, so the page has to state the promise that
-    //    bounds it: nothing beyond the fixed list may be attached.
+    /*
+     * 4. The page's central analytics promise, checked in BOTH directions.
+     *
+     * The page says each counted action "carries no attached data whatsoever". That is only
+     * true while `track()` takes one parameter, so this asserts the prose and the signature
+     * together — a page saying it, and code that could not do otherwise. Adding a properties
+     * argument back would fail here as well as in `analytics.test.ts`, which is the point:
+     * the sentence a reader trusts and the code that honours it cannot drift apart.
+     */
     const emittable = EVENT_NAMES.filter((name) => !UNEMITTED_EVENTS[name]);
     expect(emittable.length, 'events exist but none are described').toBeGreaterThan(0);
-    expect(privacy, 'privacy page does not promise a fixed property list').toMatch(
-      /fixed in the code/i,
+    expect(privacy, 'privacy page dropped the "nothing is attached" promise').toMatch(
+      /carries no attached data/i,
     );
+    const signature = read('src/lib/analytics.ts').match(/export function track\(([^)]*)\)/);
+    expect(
+      signature![1]!.split(',').length,
+      'track() gained a parameter — the privacy page now overpromises',
+    ).toBe(1);
 
     // 5. And the three refusals that make the measurement acceptable at all.
     for (const promise of [/no email address/i, /never sent to the analytics service/i, /No coordinates/i]) {

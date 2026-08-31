@@ -8,6 +8,7 @@ import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
 import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
 import { TrackView } from '@/components/analytics/TrackView';
+import { DeckCta } from '@/components/shop/DeckCta';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
 export const metadata: Metadata = {
@@ -69,6 +70,10 @@ export default function HerbdexPage() {
 
       <div className="mt-8">
         <BeyondCollection />
+      </div>
+
+      <div className="mt-10">
+        <DeckCta placement="herbdex" />
       </div>
 
       <div className="mt-10">

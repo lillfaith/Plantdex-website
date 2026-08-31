@@ -4,10 +4,15 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   ANALYTICS_PROVIDER,
   EVENT_NAMES,
-  FORBIDDEN_PROP_KEYS,
+  PLAUSIBLE_GOALS,
+  REQUIRED_PLAN,
   UNEMITTED_EVENTS,
   analyticsDomain,
+  deckCtaEvent,
+  discoveryEvent,
   isAnalyticsConfigured,
+  plantViewedEvent,
+  researchEvent,
   track,
   type EventName,
 } from './analytics';
@@ -23,52 +28,94 @@ function sourceFiles(dir = 'src'): string[] {
   });
 }
 
-/** The body of `export interface EventProps { ... }`, as written. */
-function eventPropsBlock(): string {
-  const match = SOURCE.match(/export interface EventProps \{([\s\S]*?)\n\}/);
-  expect(match, 'EventProps interface not found — this test parses it').not.toBeNull();
-  return match![1]!;
+/**
+ * The name builders, paired with every name each one can produce.
+ *
+ * Composed names never appear as literals at a call site — `track(researchEvent(kind))` is
+ * the whole point — so the "is this event actually sent" check has to know that calling the
+ * builder counts as sending all of its names.
+ */
+const BUILDERS = [
+  {
+    fn: 'plantViewedEvent',
+    names: (['locked', 'revealed', 'discovered'] as const).map(plantViewedEvent),
+  },
+  { fn: 'discoveryEvent', names: [discoveryEvent(true), discoveryEvent(false)] },
+  {
+    fn: 'researchEvent',
+    names: (['daily', 'collection', 'seasonal'] as const).map(researchEvent),
+  },
+  {
+    fn: 'deckCtaEvent',
+    names: (['home', 'herbdex', 'plant', 'footer'] as const).map(deckCtaEvent),
+  },
+];
+
+/** Source of every file that may call `track()` — analytics.ts itself deliberately excluded. */
+function callSites(): string {
+  return sourceFiles()
+    .filter((path) => path !== join('src', 'lib', 'analytics.ts'))
+    .map((path) => readFileSync(path, 'utf8'))
+    .join('\n');
 }
 
 describe('analytics schema', () => {
-  it('lists exactly the events it declares', () => {
+  it('carries no custom property at all, because the plan would not show one', () => {
     /*
-     * `EVENT_NAMES` is a hand-written array of a type's keys, which is the classic place for
-     * the two to drift. Parsing the interface is the only way to catch a key added to the
-     * type and not to the list — the compiler is happy either way.
+     * THE TEST THAT MATTERS, and it now guards two things at once.
+     *
+     * PRIVACY. `track()` takes an event name and nothing else, so there is no parameter an
+     * email, a user id, a note or a coordinate could ride in on. That is a stronger promise
+     * than the forbidden-key list this replaced: a list can only fail the build after
+     * somebody has already written the line, whereas a one-parameter function makes the
+     * line impossible to write.
+     *
+     * PLAN COMPATIBILITY. Plausible's custom properties are Business-tier. On Starter a
+     * `props` payload is accepted by the API and then never displayed — data leaves the
+     * browser and the breakdown simply is not there. Sending none is what makes the Starter
+     * plan correct rather than merely affordable.
      */
-    const declared = [...eventPropsBlock().matchAll(/^ {2}([a-z_]+):/gm)].map((m) => m[1]!);
-    expect(declared.sort()).toEqual([...EVENT_NAMES].sort());
+    const signature = SOURCE.match(/export function track\(([^)]*)\)/);
+    expect(signature, 'track() signature not found — this test reads it').not.toBeNull();
+    expect(signature![1]!.split(',')).toHaveLength(1);
+
+    // And the provider is handed the name alone.
+    expect(SOURCE).toMatch(/plausibleQueue\(\)\(event\)/);
+    expect(SOURCE).not.toMatch(/props:/);
   });
 
-  it('sends no personally identifying property, ever', () => {
+  it('passes no second argument from any call site', () => {
     /*
-     * THE TEST THAT MATTERS. Every property on every event has to be a small enumerable
-     * value. An analytics payload is exactly where a user id gets attached "just for
-     * debugging", and the person it identifies never finds out.
+     * The signature is the boundary, but a cast could widen it — `TrackView` used to contain
+     * exactly such a cast. So the calls themselves are read.
      */
-    const block = eventPropsBlock();
-    for (const key of FORBIDDEN_PROP_KEYS) {
-      expect(
-        block,
-        `EventProps carries a forbidden property "${key}" — analytics may not identify anyone`,
-      ).not.toMatch(new RegExp(`\\b${key}\\s*[?]?\\s*:`));
+    for (const path of sourceFiles()) {
+      // Comments stripped first. Prose that merely mentions `track()` is not a call site,
+      // and a guard that its own explanation can trip is a guard nobody keeps — the same
+      // mistake the id="plausible" check made before it.
+      const source = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+      for (const call of source.matchAll(/\btrack\(([^;]*?)\);/g)) {
+        const args = call[1]!;
+        // Commas inside a builder call are its own arguments, not track's.
+        const outer = args.replace(/\([^()]*\)/g, '');
+        expect(outer, `${path}: track() is being passed more than an event name`).not.toContain(
+          ',',
+        );
+      }
     }
   });
 
-  it('sends no personally identifying property from any call site either', () => {
+  it('builds only names it declares', () => {
     /*
-     * The schema is the boundary, but a call site could pass a wider object through a cast —
-     * `TrackView` contains one such cast by necessity. So the calls are read as well.
+     * A builder composes its name from a template literal, so a drifted suffix would produce
+     * an event that is not in EVENT_NAMES — and therefore a goal that can never be created
+     * in the dashboard and a chart that stays empty forever.
      */
-    for (const path of sourceFiles()) {
-      const source = readFileSync(path, 'utf8');
-      for (const call of source.matchAll(/track[^\n]*\([\s\S]{0,400}?\n\s*\}\)|track\([^)\n]*\)/g)) {
-        for (const key of FORBIDDEN_PROP_KEYS) {
-          expect(call[0], `${path}: a track() call passes "${key}"`).not.toMatch(
-            new RegExp(`\\b${key}\\s*:`),
-          );
-        }
+    for (const builder of BUILDERS) {
+      for (const name of builder.names) {
+        expect(EVENT_NAMES, `${builder.fn}() produces "${name}", which is not declared`).toContain(
+          name,
+        );
       }
     }
   });
@@ -79,16 +126,15 @@ describe('analytics schema', () => {
      * the corpus every name trivially matches its own declaration, and the guard silently
      * passes for an event nothing sends. It did exactly that until it was checked.
      */
-    const calls = sourceFiles()
-      .filter((path) => path !== join('src', 'lib', 'analytics.ts'))
-      .map((path) => readFileSync(path, 'utf8'))
-      .join('\n');
+    const calls = callSites();
     for (const name of EVENT_NAMES) {
-      // Either a `track('name'` call, or a `<TrackView event="name" />` island.
-      const emitted = calls.includes(`'${name}'`) || calls.includes(`"${name}"`);
+      const literal = calls.includes(`'${name}'`) || calls.includes(`"${name}"`);
+      const viaBuilder = BUILDERS.some(
+        (builder) => builder.names.includes(name) && calls.includes(`${builder.fn}(`),
+      );
       const excused = UNEMITTED_EVENTS[name];
       expect(
-        emitted || Boolean(excused),
+        literal || viaBuilder || Boolean(excused),
         `"${name}" is declared but sent nowhere — wire it or list it in UNEMITTED_EVENTS`,
       ).toBe(true);
       if (excused) expect(excused.length, `${name}: give a real reason`).toBeGreaterThan(20);
@@ -101,6 +147,20 @@ describe('analytics schema', () => {
         name as EventName,
       );
     }
+  });
+
+  it('publishes the goal list the dashboard has to be configured with', () => {
+    /*
+     * A custom event that has not been created as a goal in Plausible records nothing
+     * visible. PLAUSIBLE_GOALS is what the owner works from, so it must be every event
+     * except the automatic one — never a hand-kept subset that quietly falls behind.
+     */
+    expect(PLAUSIBLE_GOALS).toEqual(EVENT_NAMES.filter((name) => name !== 'pageview'));
+    expect(PLAUSIBLE_GOALS).not.toContain('pageview' as EventName);
+  });
+
+  it('names the plan it depends on', () => {
+    expect(REQUIRED_PLAN).toBe('Starter');
   });
 });
 
@@ -138,13 +198,12 @@ describe('track()', () => {
     expect(analyticsDomain()).toBeNull();
   });
 
-  it('sends the event and its properties once configured', () => {
+  it('sends the bare event name once configured', () => {
     process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
     const { calls } = withWindow();
-    track('plant_viewed', { card_number: 7, state: 'discovered' });
-    expect(calls).toEqual([
-      ['plant_viewed', { props: { card_number: 7, state: 'discovered' } }],
-    ]);
+    track(plantViewedEvent('discovered'));
+    // One argument reaching the provider, and it is the name. Nothing rides alongside.
+    expect(calls).toEqual([['plant_viewed_discovered', undefined]]);
   });
 
   it('queues events fired before the provider script has loaded', () => {
@@ -157,13 +216,10 @@ describe('track()', () => {
     process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
     (globalThis as { window?: unknown }).window = {}; // no provider, as on first paint
     track('herbdex_opened');
-    track('plant_viewed', { card_number: 3, state: 'locked' });
+    track(plantViewedEvent('locked'));
     const queue = (globalThis as { window?: { plausible?: { q?: unknown[] } } }).window!.plausible!
       .q;
-    expect(queue).toEqual([
-      ['herbdex_opened', undefined],
-      ['plant_viewed', { props: { card_number: 3, state: 'locked' } }],
-    ]);
+    expect(queue).toEqual([['herbdex_opened'], ['plant_viewed_locked']]);
   });
 
   it('leaves a real provider in place rather than shadowing it', () => {
@@ -189,10 +245,10 @@ describe('track()', () => {
      */
     process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
     (globalThis as { window?: unknown }).window = { plausible: { nodeName: 'SCRIPT' } };
-    track('card_mastered', { card_number: 12 });
+    track('card_mastered');
     const value = (globalThis as { window?: { plausible?: { q?: unknown[] } } }).window!.plausible!;
     expect(typeof value).toBe('function');
-    expect(value.q).toEqual([['card_mastered', { props: { card_number: 12 } }]]);
+    expect(value.q).toEqual([['card_mastered']]);
   });
 
   it('never throws, whatever the provider does', () => {

@@ -51,11 +51,19 @@ jobs:
         # single switch for analytics: unset, no script is loaded and no event is sent (see
         # src/lib/analytics.ts). It is a variable rather than a secret for the same reason as
         # the Supabase pair — it is a public identifier that ships in the HTML.
+        #
+        # The two commerce values are the Stripe Payment Link and the price string to print.
+        # Both must be set for /shop to offer a buy button; with either missing the page says
+        # the deck is not on sale rather than inventing a price. A Payment Link is a shareable
+        # URL carrying no secret — a Stripe API KEY must never be added here, and none is
+        # needed, which is the whole reason Payment Links were chosen.
         env:
           GITHUB_PAGES: 'true'
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.NEXT_PUBLIC_PLAUSIBLE_DOMAIN }}
+          NEXT_PUBLIC_STRIPE_PAYMENT_LINK: ${{ vars.NEXT_PUBLIC_STRIPE_PAYMENT_LINK }}
+          NEXT_PUBLIC_DECK_PRICE: ${{ vars.NEXT_PUBLIC_DECK_PRICE }}
         run: npm run build
 
       # Pages must be switched on once by a repo admin:

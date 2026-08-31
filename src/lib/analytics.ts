@@ -4,72 +4,117 @@
  * One typed `track()` call, one provider behind it, and a hard rule about what may travel.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * WHAT MAY NEVER BE SENT
+ * NOTHING BUT AN EVENT NAME IS EVER SENT.
  *
- * No email, no user id, no session id, no sighting notes, no photographs, no region text,
- * no coordinates, no card names typed by a player. Every property below is a small
- * enumerable value — a card number, a habitat class, a placement — chosen because it
- * answers a launch question and because it identifies nobody.
+ * `track()` takes an event name and nothing else. There is no second parameter, so there is
+ * no place an email, a user id, a session id, a note, a photograph, a region string or a
+ * coordinate could be attached — not by a careless component, not by a future edit. This
+ * used to be a typed property object policed by a forbidden-key test; it is now a property
+ * of the function signature, which is a much stronger guarantee than a test, because a test
+ * can only fail after somebody has written the thing it forbids.
  *
- * This is not a convention. `EventProps` types each event's properties exactly, so a
- * component cannot attach a stray field, and `analytics.test.ts` fails the build if a
- * forbidden key ever appears in the schema.
+ * The names below are a fixed, enumerable list. Each one answers a launch question and
+ * identifies nobody.
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * WHY A WRAPPER RATHER THAN CALLING THE PROVIDER DIRECTLY. Three reasons, all practical:
- * components stay free of provider APIs so swapping one is this file and nothing else;
- * events are spell-checked by the compiler instead of being loose strings; and the whole
- * thing degrades to a no-op when unconfigured, which is what keeps local development, the
- * test suite and any fork from sending traffic to somebody's dashboard.
+ * WHY NO PROPERTIES — THE PLAN CONSTRAINT, AND WHY IT COSTS NOTHING.
+ *
+ * Plausible's custom properties are a Business-plan feature. On the Starter plan a `props`
+ * payload is accepted by the API and then simply never shown, which is the worst possible
+ * failure: the data leaves the browser, the dashboard looks fine, and the breakdown you
+ * built the event for is not there. So the schema does not send properties at all.
+ *
+ * The dimensions that were properties are recovered two ways:
+ *
+ *   • FROM THE PAGE PATH, free, for anything identifying a plant. Every plant profile is
+ *     its own URL (`/herbdex/[herbId]`), so Plausible's ordinary page report already breaks
+ *     every plant event down by species — and therefore by card number, and therefore by
+ *     habitat, since each card has exactly one primary habitat. `card_number` and `habitat`
+ *     as properties were duplicating a breakdown the free half of the product already gives.
+ *
+ *   • FROM THE EVENT NAME, for the few dimensions the page cannot imply: whether a
+ *     discovery was a first, which kind of research task completed, which CTA was clicked,
+ *     and how much of a plant the viewer had unlocked. These are small closed sets, so they
+ *     become distinct goal names rather than a property on one name.
+ *
+ * The net loss going from Business to Starter is nil for this app. See `docs/analytics.md`.
+ *
+ * WHY A WRAPPER RATHER THAN CALLING THE PROVIDER DIRECTLY. Components stay free of provider
+ * APIs so swapping one is this file and nothing else; events are spell-checked by the
+ * compiler instead of being loose strings; and the whole thing degrades to a no-op when
+ * unconfigured, which is what keeps local development, the test suite and any fork from
+ * sending traffic to somebody's dashboard.
  */
 
 /** The provider, named so the privacy page and the sync test can both refer to it. */
 export const ANALYTICS_PROVIDER = 'Plausible';
 
 /**
+ * The cheapest plan this schema works correctly on.
+ *
+ * Named here rather than in a comment so the plan decision is greppable from the code that
+ * depends on it. If a future event needs a property, this constant is what has to change
+ * first, and `analytics.test.ts` is what will make that change deliberate.
+ */
+export const REQUIRED_PLAN = 'Starter';
+
+/**
  * Every event the app may send. Adding one here is the only way to send one.
  *
- * `pageview` is Plausible's own reserved name and is emitted automatically by its script on
+ * `pageview` is Plausible's own reserved name, emitted automatically by its script on
  * navigation; it is listed for completeness and never sent by hand.
  */
-export interface EventProps {
-  pageview: never;
-  herbdex_opened: undefined;
-  plant_viewed: { card_number: number; state: 'locked' | 'revealed' | 'discovered' };
-  card_revealed: { card_number: number };
-  discovery_logged: { card_number: number; habitat: string; is_first: boolean };
-  knowledge_check_passed: { card_number: number };
-  card_mastered: { card_number: number };
-  research_completed: { task_kind: 'daily' | 'collection' | 'seasonal' };
-  garden_opened: undefined;
-  signup_started: undefined;
-  signup_completed: undefined;
-  login_completed: undefined;
-  progress_imported: { had_progress: boolean };
-  deck_cta_clicked: { placement: string };
-  checkout_started: { placement: string };
-}
-
-export type EventName = keyof EventProps;
-
-/** The full list, for tests and for documentation that cannot drift from the code. */
-export const EVENT_NAMES: readonly EventName[] = [
+export const EVENT_NAMES = [
   'pageview',
+
+  // Section usage.
   'herbdex_opened',
-  'plant_viewed',
+  'garden_opened',
+
+  // Plant profiles. The species comes from the URL; the name carries only how much of that
+  // plant the viewer had already unlocked, which the URL cannot say.
+  'plant_viewed_locked',
+  'plant_viewed_revealed',
+  'plant_viewed_discovered',
+
+  // Collection activity. `_first` separates a plant found for the first time from a repeat
+  // sighting of one already collected — the difference between growth and habit.
   'card_revealed',
   'discovery_logged',
+  'discovery_logged_first',
   'knowledge_check_passed',
   'card_mastered',
-  'research_completed',
-  'garden_opened',
+
+  // Field Research. The kind is in the name because a task completes on whatever page the
+  // player happened to be on, so the path cannot imply it.
+  'research_completed_daily',
+  'research_completed_collection',
+  'research_completed_seasonal',
+
+  // Accounts.
   'signup_started',
   'signup_completed',
   'login_completed',
   'progress_imported',
-  'deck_cta_clicked',
+
+  // Commerce. Placement is in the name because that is the entire question a CTA asks.
+  'deck_cta_home',
+  'deck_cta_herbdex',
+  'deck_cta_plant',
+  'deck_cta_footer',
   'checkout_started',
-];
+] as const;
+
+export type EventName = (typeof EVENT_NAMES)[number];
+
+/**
+ * The goals to create in Plausible's dashboard, which is every event except the automatic
+ * one. Exported because a custom event that has not been configured as a goal records
+ * nothing visible, and a hand-kept copy of this list in a wiki would be wrong within a month.
+ */
+export const PLAUSIBLE_GOALS: readonly EventName[] = EVENT_NAMES.filter(
+  (name) => name !== 'pageview',
+);
 
 /**
  * Events that are declared above but emitted nowhere yet, each with the reason.
@@ -81,36 +126,34 @@ export const EVENT_NAMES: readonly EventName[] = [
  */
 export const UNEMITTED_EVENTS: Readonly<Partial<Record<EventName, string>>> = {
   pageview: "Plausible's own script sends this on navigation; calling it by hand would double-count.",
-  deck_cta_clicked: 'There is no shop, so there is no CTA to click. Wired when commerce ships.',
-  checkout_started: 'There is no checkout. Wired when commerce ships.',
 };
 
-/**
- * Property keys that must never appear on any event, checked by test.
+/* ── Name builders ──────────────────────────────────────────────────────────────
  *
- * The list is the point: it is easier to add a field than to notice one was added, and an
- * analytics payload is exactly the place a user id gets attached "just for debugging".
+ * Each returns an `EventName`, so a typo is a compile error rather than a goal that never
+ * appears in the dashboard. They exist so call sites read as one idea ("this discovery was
+ * a first") instead of a string concatenation.
  */
-export const FORBIDDEN_PROP_KEYS: readonly string[] = [
-  'email',
-  'user_id',
-  'userId',
-  'uid',
-  'session_id',
-  'sessionId',
-  'notes',
-  'photo',
-  'photo_path',
-  'region',
-  'latitude',
-  'longitude',
-  'lat',
-  'lng',
-  'ip',
-  'name',
-  'common_name',
-  'herb_id',
-];
+
+export type PlantViewState = 'locked' | 'revealed' | 'discovered';
+export type ResearchKind = 'daily' | 'collection' | 'seasonal';
+export type CtaPlacement = 'home' | 'herbdex' | 'plant' | 'footer';
+
+export function plantViewedEvent(state: PlantViewState): EventName {
+  return `plant_viewed_${state}`;
+}
+
+export function discoveryEvent(isFirst: boolean): EventName {
+  return isFirst ? 'discovery_logged_first' : 'discovery_logged';
+}
+
+export function researchEvent(kind: ResearchKind): EventName {
+  return `research_completed_${kind}`;
+}
+
+export function deckCtaEvent(placement: CtaPlacement): EventName {
+  return `deck_cta_${placement}`;
+}
 
 /**
  * The site being measured, e.g. `plantdex.example`.
@@ -128,7 +171,7 @@ export function isAnalyticsConfigured(): boolean {
 }
 
 interface PlausibleFn {
-  (event: string, options?: { props?: Record<string, string | number | boolean> }): void;
+  (event: string): void;
   q?: unknown[];
 }
 
@@ -170,19 +213,14 @@ function plausibleQueue(): PlausibleFn {
 /**
  * Record something that happened.
  *
- * Deliberately fire-and-forget and deliberately unable to throw: an analytics failure must
- * never break a discovery.
+ * The signature is the privacy guarantee: one name from a fixed list, and no second
+ * parameter to carry anything else. Deliberately fire-and-forget and deliberately unable to
+ * throw — an analytics failure must never break a discovery.
  */
-export function track<E extends EventName>(
-  event: E,
-  ...[props]: EventProps[E] extends undefined ? [] : [EventProps[E]]
-): void {
+export function track(event: EventName): void {
   if (typeof window === 'undefined' || !isAnalyticsConfigured()) return;
   try {
-    plausibleQueue()(
-      event,
-      props ? { props: props as Record<string, string | number | boolean> } : undefined,
-    );
+    plausibleQueue()(event);
   } catch {
     // Never let measurement break the thing being measured.
   }

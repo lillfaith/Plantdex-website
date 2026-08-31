@@ -18,9 +18,8 @@ import {
 import { clearBoard, refreshBoard, useResearchBoard } from '@/lib/research-board';
 import { useSightingCounts } from '@/lib/sightings-store';
 import { DECK_SIZE } from '@/lib/deck';
-import { track } from '@/lib/analytics';
+import { discoveryEvent, researchEvent, track } from '@/lib/analytics';
 import { researchKindFromId } from '@/lib/progression';
-import { habitatOf } from '@/lib/habitat';
 import { createHerbdexStore } from './herbdex-store';
 
 interface HerbdexContextValue {
@@ -129,7 +128,7 @@ export function HerbdexProvider({
        */
       for (const taskId of outcome.completedResearchIds) {
         const kind = researchKindFromId(taskId);
-        if (kind) track('research_completed', { task_kind: kind });
+        if (kind) track(researchEvent(kind));
       }
     });
   }, [store, ready, world, dailyTasks]);
@@ -147,12 +146,9 @@ export function HerbdexProvider({
     (herb: Herb) => {
       const result = store.discover(herb);
       if (result.awarded) {
-        track('discovery_logged', {
-          card_number: herb.cardNumber,
-          habitat: habitatOf(herb.id)?.primary ?? 'unknown',
-          // First-ever discovery is the activation moment, and the only one worth a flag.
-          is_first: Object.keys(store.getSnapshot().state.discoveries).length === 1,
-        });
+        // First-ever discovery is the activation moment, and the only split worth a
+        // separate goal. Which plant it was comes from the page the discovery happened on.
+        track(discoveryEvent(Object.keys(store.getSnapshot().state.discoveries).length === 1));
       }
       return result;
     },
@@ -161,7 +157,7 @@ export function HerbdexProvider({
   const markLearned = useCallback(
     (herb: Herb) => {
       const result = store.markLearned(herb);
-      if (result.awarded) track('knowledge_check_passed', { card_number: herb.cardNumber });
+      if (result.awarded) track('knowledge_check_passed');
       return result;
     },
     [store],

@@ -20,7 +20,8 @@ export const metadata: Metadata = {
  *   • Photos — src/lib/photo-store.ts (IndexedDB) and src/lib/remote-sightings.ts (bucket)
  *   • Auth calls — src/state/AuthProvider.tsx
  *   • No cookies — `document.cookie` appears nowhere in src/
- *   • Analytics — src/lib/analytics.ts (the complete event list and the forbidden-key list),
+ *   • Analytics — src/lib/analytics.ts (the complete event list, and a `track()` that takes
+ *     an event name and no second parameter, which is what makes "nothing attached" true),
  *     src/components/analytics/PlausibleScript.tsx (the only third-party script in the app)
  *   • Fonts are self-hosted by next/font at build time, so no font provider is contacted
  *
@@ -191,9 +192,9 @@ export default function PrivacyPage() {
                 'Opening the Herbdex or the garden; viewing, revealing, discovering or mastering a card; passing a knowledge check; finishing a Field Research task; starting or completing a sign-up; signing in; and importing local progress into an account.',
             },
             {
-              term: 'The detail attached to those actions',
+              term: 'Nothing attached to them',
               detail:
-                'A card number, a habitat name, a research task type, and yes/no flags such as whether a discovery was your first. Nothing else may be attached — the list of properties is fixed in the code and a test fails the build if a forbidden one is added.',
+                'Each action is counted by name and carries no attached data whatsoever. The function that records them accepts an event name and nothing else, so there is no field an address, an identifier or anything you typed could travel in — not by mistake and not by a later edit. A test fails the build if that ever stops being true.',
             },
           ]}
         />
@@ -204,6 +205,11 @@ export default function PrivacyPage() {
               term: 'Nothing that identifies you',
               detail:
                 'No email address, no account id, no session id, no persistent identifier of any kind. A signed-in visitor and a signed-out one are indistinguishable in the analytics.',
+            },
+            {
+              term: 'Nothing about which plant',
+              detail:
+                'The actions above are counted as bare totals. Where a page view already records which plant page was open, that is the ordinary page address — the same thing every web server sees — and not a record of what you personally collected.',
             },
             {
               term: 'Nothing you wrote or photographed',
@@ -240,7 +246,34 @@ export default function PrivacyPage() {
           <strong className="text-violet-100">Plausible Analytics</strong> receives the counts
           described above, and nothing else.
         </p>
-        <p>Signed out, only the last two of these are involved.</p>
+        <p>
+          <strong className="text-violet-100">Stripe</strong> handles payment if you buy the
+          printed deck. They receive your name, delivery address, email and payment details
+          directly — none of it passes through this site. Stripe is contacted only when you
+          click through to checkout; browsing Plantdex, including the shop page, contacts them
+          not at all.
+        </p>
+        <p>Signed out and not buying anything, only GitHub Pages and Plausible are involved.</p>
+      </LegalSection>
+
+      <LegalSection id="orders" heading="If you buy a deck">
+        <p>
+          Checkout happens on Stripe&rsquo;s own pages, not on this site. Your card number never
+          reaches Plantdex — there is no payment form here, no Stripe script on these pages and
+          no key that could collect one. What we receive from Stripe afterwards is what is
+          needed to pack and post an order.
+        </p>
+        <p>
+          An order is <strong className="text-violet-100">not connected to a Plantdex
+          account</strong>. Buying a deck does not create one, does not unlock anything, and
+          leaves no trace in your collection — Stripe holds the order, this site holds the
+          collection, and nothing joins the two. That is also why deleting your account has no
+          effect on an order, and why a refund has no effect on your collection.
+        </p>
+        <p className="text-sm text-violet-300">
+          Stripe&rsquo;s own privacy terms cover what they do with payment data, which is
+          outside what this repository can describe.
+        </p>
       </LegalSection>
 
       <LegalSection id="access" heading="Who can see your data">

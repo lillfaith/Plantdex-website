@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { DeckCta } from '@/components/shop/DeckCta';
 import { PlantSprite } from '@/components/PlantSprite';
 import { assetPath } from '@/lib/asset-path';
 
@@ -176,6 +177,10 @@ export default function HomePage() {
           ))}
         </ol>
       </section>
+
+      <div className="mt-14">
+        <DeckCta placement="home" />
+      </div>
 
       <div className="mt-14">
         <SafetyNotice variant="brief" />

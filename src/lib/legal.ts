@@ -104,11 +104,38 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     kind: 'legal',
     blocking: true,
   },
+  /*
+   * COMMERCE. These are marked non-blocking because they gate SELLING, not publishing the
+   * privacy and terms pages — /shop renders an honest "not on sale yet" state without them,
+   * so the site is publishable while they are outstanding. They are all blocking for a
+   * launch, which is a different question from whether the policies can go up.
+   */
   {
     id: 'commerce-terms',
-    label: 'Deck price, shipping destinations, delivery times and returns policy',
-    why: 'The Terms describe a site that does not sell anything yet. Commerce clauses are deliberately absent rather than drafted in advance.',
+    label: 'Deck price and currency',
+    why: 'A price is an offer. Stripe holds the real one on the Payment Link, and the page prints whatever NEXT_PUBLIC_DECK_PRICE is set to — so the two have to be set together, by the owner, from a landed cost that is known.',
     kind: 'business',
+    blocking: false,
+  },
+  {
+    id: 'shipping-policy',
+    label: 'Countries shipped to, dispatch time, delivery estimate and postage cost',
+    why: 'Every one of these is a promise to a buyer and none of them can be derived from this repository. A plausible "ships in 3-5 days" is a fabricated shipping claim, which AGENTS.md prohibits outright.',
+    kind: 'business',
+    blocking: false,
+  },
+  {
+    id: 'returns-policy',
+    label: 'Return window, condition required, and who pays return postage',
+    why: 'Consumers in the UK and EU have statutory cancellation rights that a policy may extend but never reduce, so the wording is a legal decision rather than a preference. It also depends on where the seller is established.',
+    kind: 'legal',
+    blocking: false,
+  },
+  {
+    id: 'tax-registration',
+    label: 'Where the business is registered to collect sales tax or VAT',
+    why: 'Stripe Tax can calculate and monitor thresholds, but calculating tax is not the same as being registered to collect it. Collecting in a jurisdiction where the business is not registered is a compliance problem, not a settings toggle.',
+    kind: 'operational',
     blocking: false,
   },
 ];

@@ -116,7 +116,7 @@ export function LockedHerb({
             type="button"
             onClick={() => {
               revealHerb(herb.id);
-              track('card_revealed', { card_number: herb.cardNumber });
+              track('card_revealed');
               confirmRef.current?.close();
             }}
             className="min-h-11 rounded-full bg-violet-600 px-5 text-sm font-bold text-violet-100 hover:bg-violet-500"

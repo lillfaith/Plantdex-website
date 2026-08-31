@@ -60,7 +60,7 @@ export function ImportLocalProgressDialog({ userId }: { userId: string }) {
 
     // Recorded only on a successful import, and only as a yes/no — whether the offer is
     // used at all is the product question; how much anyone had is not.
-    track('progress_imported', { had_progress: true });
+    track('progress_imported');
     markImportOffered(userId);
     setStatus('done');
     // The Herbdex store already hydrated from (empty) server rows before this import ran;

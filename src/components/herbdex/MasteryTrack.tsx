@@ -63,7 +63,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
       setJustEarned(stage);
       // Only the final stage is an analytics event; the earlier two are already measured
       // where they are caused (discovery and the knowledge check).
-      if (stage === 'mastered') track('card_mastered', { card_number: herb.cardNumber });
+      if (stage === 'mastered') track('card_mastered');
     }
   }
   useEffect(() => {

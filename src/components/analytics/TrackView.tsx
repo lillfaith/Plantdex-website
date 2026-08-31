@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { track, type EventName, type EventProps } from '@/lib/analytics';
+import { track, type EventName } from '@/lib/analytics';
 
 /**
  * Fires one event when a page is opened.
@@ -12,19 +12,12 @@ import { track, type EventName, type EventProps } from '@/lib/analytics';
  * browser and give up static prerendering, which is a large cost for a small number.
  *
  * Fires ONCE per mount, in an effect, because that is the correct place for a side effect
- * that talks to an external system. It is deliberately not memoised on the props: these
- * pages pass a constant event name, and a route change remounts the island anyway.
+ * that talks to an external system. A route change remounts the island, which is what makes
+ * one mount mean one view.
  */
-export function TrackView<E extends EventName>({
-  event,
-  ...rest
-}: { event: E } & (EventProps[E] extends undefined ? { props?: never } : { props: EventProps[E] })) {
-  const props = (rest as { props?: EventProps[E] }).props;
+export function TrackView({ event }: { event: EventName }) {
   useEffect(() => {
-    // The cast is contained here rather than pushed onto every caller: `track` is precisely
-    // typed at its own call sites, and this generic wrapper is the one place the two
-    // signatures have to be reconciled.
-    (track as (name: E, props?: EventProps[E]) => void)(event, props);
-  }, [event, props]);
+    track(event);
+  }, [event]);
   return null;
 }

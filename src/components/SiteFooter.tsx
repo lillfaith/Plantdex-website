@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CURRENT_COLLECTION } from '@/lib/collection';
+import { DeckCta } from '@/components/shop/DeckCta';
 
 /**
  * The site footer, which exists mainly so the legal and safety pages are reachable.
@@ -46,6 +47,19 @@ export function SiteFooter() {
               >
                 Terms
               </Link>
+            </li>
+            <li>
+              <Link
+                href="/returns"
+                className="inline-flex min-h-11 items-center text-violet-300 hover:text-gold-400"
+              >
+                Returns
+              </Link>
+            </li>
+            {/* Last, and the only gold thing here. Safety still leads the row: a buy link
+                may sit in a footer, but never ahead of the link that matters outdoors. */}
+            <li>
+              <DeckCta placement="footer" />
             </li>
           </ul>
         </nav>

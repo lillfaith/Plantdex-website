@@ -16,7 +16,7 @@ import {
   type SectionMeasure,
 } from '@/lib/profile-sections';
 import { useRevealed } from '@/lib/reveals';
-import { track } from '@/lib/analytics';
+import { plantViewedEvent, track } from '@/lib/analytics';
 import { DiscoverPanel } from './DiscoverPanel';
 import {
   HealingTraitsSection,
@@ -36,6 +36,7 @@ import { GrowthPlaceholder } from '../GrowthLoader';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
+import { DeckCta } from '../shop/DeckCta';
 import { MySightings } from '../journal/MySightings';
 import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -196,11 +197,10 @@ export function HerbDetail({ herb }: { herb: Herb }) {
    */
   useEffect(() => {
     if (!ready) return;
-    track('plant_viewed', {
-      card_number: herb.cardNumber,
-      state: discovered ? 'discovered' : revealed ? 'revealed' : 'locked',
-    });
-  }, [ready, herb.cardNumber, discovered, revealed]);
+    track(plantViewedEvent(discovered ? 'discovered' : revealed ? 'revealed' : 'locked'));
+    // The species is not sent: this page IS `/herbdex/<id>`, so Plausible's page report
+    // already breaks these counts down by plant.
+  }, [ready, discovered, revealed]);
 
   /*
    * Which creature the portrait shows. `stage` above is the mastery stage this page
@@ -300,6 +300,13 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           ),
         )}
       </div>
+
+        {/* The deck CTA sits ABOVE the safety notice, never below it. A plant page's last
+            word has to be the caution, not a sales prompt — pushing the notice up to make
+            room for a button is the same regression as downgrading its weight. */}
+        <div className="mt-12">
+          <DeckCta placement="plant" />
+        </div>
 
         {/* Healing Traits and Traditional Preparation are both on this page, so this
             carries the `standard` weight — named to the risk a plant page actually raises.
