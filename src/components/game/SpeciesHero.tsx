@@ -104,7 +104,7 @@ export function SpeciesHero({
           {/* `fit` sets width:100% inline, which beats any width class on the sprite
               itself — so the SIZE lives on this wrapper. Without it the companion rendered
               358px wide on a 390px screen and read as a banner rather than a creature. */}
-          <div className="ml-auto w-14 shrink-0 drop-shadow-[0_4px_16px_rgba(23,16,28,0.6)] sm:w-20">
+          <div className="ml-auto w-28 shrink-0 drop-shadow-[0_6px_20px_rgba(23,16,28,0.65)] sm:w-40">
             <PlantSprite
               herbId={herb.id}
               alt={`Pixel-art portrait of ${herb.commonName}`}
