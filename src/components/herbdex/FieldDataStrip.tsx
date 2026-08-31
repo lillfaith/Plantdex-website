@@ -4,6 +4,7 @@ import { StatPips } from './StatPips';
 import { Panel } from '../ui/Panel';
 import { SectionHeader } from '../ui/SectionHeader';
 import { InfoTile } from '../ui/InfoTile';
+import { MICRO_LABEL } from '../ui/accents';
 
 /**
  * Season, encounter rate, XP and growing conditions — the card's own reference data.
@@ -34,7 +35,7 @@ export function FieldDataStrip({ herb }: { herb: Herb }) {
         </InfoTile>
       </div>
       <div className="mt-2.5 rounded-xl border border-violet-700/60 bg-plum-800/45 p-3">
-        <p className="mb-2 text-[0.62rem] font-bold tracking-[0.14em] text-violet-300 uppercase">
+        <p className={`mb-2 ${MICRO_LABEL} text-violet-300`}>
           Growing conditions
         </p>
         <StatPips stats={herb.stats} />

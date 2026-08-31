@@ -95,7 +95,7 @@ export function MySightings({ herb }: { herb: Herb }) {
         <button
           type="button"
           onClick={() => formRef.current?.showModal()}
-          className="min-h-10 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 hover:bg-gold-500/25"
+          className="min-h-11 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 hover:bg-gold-500/25"
         >
           + Add a sighting
         </button>

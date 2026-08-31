@@ -2,8 +2,10 @@ import type { Herb } from '@/lib/types';
 import { compoundFor, sortForPlate, type CompoundEntry } from '@/lib/compounds';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
 import { STRUCTURES } from './structures';
-import { Panel } from '../ui/Panel';
-import { SectionHeader } from '../ui/SectionHeader';
+import { Disclosure } from '../ui/Disclosure';
+import { Chip, ChipRow } from '../ui/Chip';
+import { ACCENTS, MICRO_LABEL, NOTE, READING } from '../ui/accents';
+import { linksFor, type CompoundLink } from '@/lib/compound-links';
 
 /**
  * The Signature Compounds plate — the widest and most distinctive band on a plant page.
@@ -17,30 +19,72 @@ import { SectionHeader } from '../ui/SectionHeader';
  * molecule's skeleton to stand in. That is enforced by `compounds.test.ts`, not by care.
  */
 
+/** The section accent each linked term borrows, so a link points visibly at its band. */
+const FIELD_TONE = {
+  taste: ACCENTS.blossom,
+  aromatic: ACCENTS.blossom,
+  healingTraits: ACCENTS.gold,
+} as const;
+
+const FIELD_LABEL = {
+  taste: 'Taste',
+  aromatic: 'Aroma',
+  healingTraits: 'Trait',
+} as const;
+
+/**
+ * What this compound accounts for elsewhere on the SAME card.
+ *
+ * `linksFor` has already refused anything the card does not print, so everything here is
+ * the card's own wording — the plate is joining two of its statements, not adding a third.
+ */
+function Connections({ links }: { links: CompoundLink[] }) {
+  if (!links.length) return null;
+  return (
+    <div className="mt-3 border-t border-violet-700/40 pt-2.5">
+      <p className={`${MICRO_LABEL} text-violet-400`}>Also on this card</p>
+      <ul className="mt-1.5 space-y-1.5">
+        {links.map((link) => (
+          <li key={`${link.field}:${link.term}`}>
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-semibold ${FIELD_TONE[link.field].border} ${FIELD_TONE[link.field].label}`}
+            >
+              <span className="opacity-70">{FIELD_LABEL[link.field]}</span>
+              {link.term}
+            </span>
+            <p className={`mt-1 ${NOTE} leading-snug text-violet-300`}>{link.because}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Plate({
   title,
   subtitle,
   eyebrow,
   children,
   caption,
+  links = [],
 }: {
   title: string;
   subtitle?: string;
   eyebrow: string;
   children: React.ReactNode;
   caption?: string;
+  links?: CompoundLink[];
 }) {
   return (
     <li className="flex flex-col rounded-card border border-violet-700/60 bg-plum-900/60 p-3">
       <div className="flex h-28 items-center justify-center text-violet-300 sm:h-32">
         {children}
       </div>
-      <p className="mt-2 text-[0.58rem] font-bold tracking-[0.16em] text-violet-400 uppercase">
-        {eyebrow}
-      </p>
-      <p className="mt-0.5 text-sm leading-tight font-bold text-violet-100">{title}</p>
-      {subtitle && <p className="mt-0.5 text-xs text-violet-300">{subtitle}</p>}
-      {caption && <p className="mt-1.5 text-[0.68rem] leading-snug text-violet-400">{caption}</p>}
+      <p className={`mt-2 ${MICRO_LABEL} ${ACCENTS.indigo.label}`}>{eyebrow}</p>
+      <p className={`mt-0.5 ${READING} leading-tight font-bold text-violet-100`}>{title}</p>
+      {subtitle && <p className={`mt-0.5 ${NOTE} text-violet-300`}>{subtitle}</p>}
+      {caption && <p className={`mt-1.5 ${NOTE} leading-snug text-violet-400`}>{caption}</p>}
+      <Connections links={links} />
     </li>
   );
 }
@@ -152,11 +196,11 @@ function PolymerMotif() {
 function ElementTile({ symbol, number }: { symbol: string; number: number }) {
   return (
     <div className="flex h-24 w-24 flex-col justify-between rounded-lg border border-violet-600 bg-violet-800/30 p-2">
-      <span className="text-[0.6rem] font-semibold text-violet-300 tabular-nums">{number}</span>
+      <span className={`${MICRO_LABEL} text-violet-300 tabular-nums`}>{number}</span>
       <span className="font-display text-center text-3xl font-extrabold text-violet-100">
         {symbol}
       </span>
-      <span aria-hidden="true" className="text-[0.6rem]">
+      <span aria-hidden="true" className={MICRO_LABEL}>
         &nbsp;
       </span>
     </div>
@@ -192,8 +236,9 @@ const EYEBROW: Record<CompoundEntry['kind'], string> = {
   'mineral-compound': 'Mineral compound',
 };
 
-function CompoundPlate({ printed }: { printed: string }) {
+function CompoundPlate({ herb, printed }: { herb: Herb; printed: string }) {
   const entry = compoundFor(printed);
+  const links = linksFor(herb, printed);
 
   // A compound the table does not know still renders as itself, named exactly as printed —
   // it just gets no claim about what kind of thing it is.
@@ -210,6 +255,7 @@ function CompoundPlate({ printed }: { printed: string }) {
     subtitle: entry.subtitle,
     eyebrow: EYEBROW[entry.kind],
     caption: entry.note,
+    links,
   };
 
   switch (entry.kind) {
@@ -263,20 +309,41 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
   const compounds = herb.back.compounds;
   if (!compounds.length) return null;
 
+  const order = sortForPlate(compounds);
+
   return (
-    <Panel frame="plate" pad="lg" aria-labelledby="compounds-heading">
-      <SectionHeader
-        id="compounds-heading"
-        eyebrow="From the card"
-        title={BACK_SECTION_LABEL.compounds}
-        size="lg"
-        note="Constituents named on the card. Naming a compound is not a claim about what it does."
-      />
-      <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {sortForPlate(compounds).map((printed) => (
-          <CompoundPlate key={printed} printed={printed} />
+    <Disclosure
+      id="compounds-heading"
+      eyebrow="From the card"
+      accent="indigo"
+      summary={BACK_SECTION_LABEL.compounds}
+      aside={
+        <span className={`${MICRO_LABEL} text-violet-400 tabular-nums`}>
+          {compounds.length} named
+        </span>
+      }
+      // Collapsed, but not hidden: the names are on screen either way, so folding this
+      // section costs a reader nothing but the structures.
+      preview={
+        <ChipRow>
+          {order.map((printed) => (
+            <li key={printed}>
+              <Chip tone="plain">{printed}</Chip>
+            </li>
+          ))}
+        </ChipRow>
+      }
+    >
+      <p className={`max-w-prose ${NOTE} text-violet-300`}>
+        Constituents named on the card. Naming a compound is not a claim about what it does.
+      </p>
+      {/* `items-start` so a plate with four connections does not stretch its whole row;
+          the compounds differ a lot in how much they have to say. */}
+      <ul className="mt-4 grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {order.map((printed) => (
+          <CompoundPlate key={printed} herb={herb} printed={printed} />
         ))}
       </ul>
-    </Panel>
+    </Disclosure>
   );
 }

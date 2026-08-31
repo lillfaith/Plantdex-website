@@ -6,6 +6,7 @@ import {
   IDENTIFICATION_CAVEAT,
 } from '@/lib/card-field-notes';
 import { Panel } from '../ui/Panel';
+import { EYEBROW, MICRO_LABEL, NOTE, READING, ACCENTS } from '../ui/accents';
 import { SectionHeader } from '../ui/SectionHeader';
 import { LookalikeRisk } from '../SafetyNotice';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -40,7 +41,7 @@ function GenusNotice({ herb }: { herb: Herb }) {
   const text = isGenusCard(herb) ? GENUS_CARD_NOTICE : notes?.genusTraitsNote;
   if (!text) return null;
   return (
-    <p className="mt-3 flex items-start gap-2 rounded-lg border border-violet-700/70 bg-plum-800/50 px-3 py-2 text-xs text-violet-200">
+    <p className={`mt-3 flex items-start gap-2 rounded-lg border border-violet-700/70 bg-plum-800/50 px-3 py-2 ${NOTE} text-violet-200`}>
       <PlantdexIcon name="compass" className="mt-0.5 shrink-0 text-sm text-violet-300" />
       <span>{text}</span>
     </p>
@@ -52,17 +53,18 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
   if (!notes?.identification?.length) return null;
 
   return (
-    <Panel frame="plate" pad="lg" aria-labelledby="identification-heading">
+    <Panel frame="plate" pad="lg" accent="lilac" aria-labelledby="identification-heading">
       <SectionHeader
         id="identification-heading"
         eyebrow={FIELD_NOTE_EYEBROW}
+        accent="lilac"
         title="How to recognise it"
         size="lg"
         note={IDENTIFICATION_CAVEAT}
       />
       {/* Provenance, stated once where the field notes begin. The caveat above is about
           safety and stays exactly as it is; this is about where the words came from. */}
-      <p className="-mt-1 mb-1 text-xs text-violet-300">
+      <p className={`-mt-1 mb-1 ${NOTE} text-violet-300`}>
         These notes are not printed on your card. They were added here from the sources
         listed at the foot of this page.
       </p>
@@ -82,10 +84,10 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
                 <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-violet-400" />
               )}
               <div>
-                <dt className="text-[0.68rem] font-bold tracking-[0.1em] text-gold-400 uppercase">
+                <dt className={`${MICRO_LABEL} text-gold-400`}>
                   {trait}
                 </dt>
-                <dd className="mt-0.5 text-sm leading-relaxed text-violet-200">{detail}</dd>
+                <dd className={`mt-0.5 ${READING} leading-relaxed text-violet-200`}>{detail}</dd>
               </div>
             </div>
           );
@@ -105,6 +107,7 @@ export function LookalikeSection({ herb }: { herb: Herb }) {
       <SectionHeader
         id="lookalikes-heading"
         eyebrow={FIELD_NOTE_EYEBROW}
+        accent="pink"
         title="Commonly confused with"
         size="lg"
       />
@@ -112,21 +115,21 @@ export function LookalikeSection({ herb }: { herb: Herb }) {
         {notes.lookalikes.map((look) => (
           <li
             key={look.commonName}
-            className="rounded-card border border-violet-700/60 bg-plum-800/45 p-4"
+            className="rounded-card border border-mystery-pink/25 bg-mystery-pink/[0.04] p-4"
           >
-            <p className="text-[0.62rem] font-bold tracking-[0.14em] text-violet-300 uppercase">
+            <p className={`${EYEBROW} ${ACCENTS.pink.label}`}>
               Lookalike
             </p>
-            <p className="mt-1 text-sm font-bold text-violet-100">{look.commonName}</p>
+            <p className={`mt-1 ${READING} font-bold text-violet-100`}>{look.commonName}</p>
             {look.scientificName && (
-              <p className="font-botanical text-sm text-violet-300 italic">
+              <p className={`font-botanical ${READING} text-violet-300 italic`}>
                 {look.scientificName}
               </p>
             )}
-            <p className="mt-3 text-[0.62rem] font-bold tracking-[0.14em] text-gold-400 uppercase">
+            <p className={`mt-3 ${MICRO_LABEL} text-gold-400`}>
               How to tell them apart
             </p>
-            <p className="mt-1 text-sm leading-relaxed text-violet-200">{look.distinguishBy}</p>
+            <p className={`mt-1 ${READING} leading-relaxed text-violet-200`}>{look.distinguishBy}</p>
             {/* Full hazard weight — never softened because it sits inside an ID section. */}
             {look.risk && <LookalikeRisk risk={look.risk} />}
           </li>
@@ -141,14 +144,15 @@ export function HabitatSection({ herb }: { herb: Herb }) {
   if (!notes?.habitat) return null;
 
   return (
-    <Panel frame="card" pad="md" aria-labelledby="habitat-heading" className="max-w-3xl">
+    <Panel frame="card" pad="md" accent="orchid" aria-labelledby="habitat-heading" className="max-w-3xl">
       <SectionHeader
         id="habitat-heading"
         eyebrow={FIELD_NOTE_EYEBROW}
+        accent="orchid"
         title="Where it grows"
         icon="plot"
       />
-      <p className="text-sm leading-relaxed text-violet-200">{notes.habitat}</p>
+      <p className={`${READING} leading-relaxed text-violet-200`}>{notes.habitat}</p>
     </Panel>
   );
 }

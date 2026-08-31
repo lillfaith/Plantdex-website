@@ -23,7 +23,13 @@ export function GlossaryTermLink({ word }: { word: string }) {
         type="button"
         onClick={() => dialogRef.current?.showModal()}
         aria-label={`What does ${term.term} mean?`}
-        className="ml-1 inline-flex h-4 w-4 items-center justify-center rounded-full border border-violet-500 align-middle text-[0.6rem] font-bold text-violet-300 hover:border-gold-500 hover:text-gold-400"
+        /*
+         * The mark is 20px with its glyph at the page's type floor, and the TAP TARGET is 44px. Padding plus an equal
+         * negative margin grows the hit box without moving anything on screen — this
+         * affordance now sits beside chips all over a plant page, and a 16px target on a
+         * phone is a miss waiting to happen.
+         */
+        className="relative ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-violet-500 align-middle text-[0.72rem] font-bold text-violet-300 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:border-gold-500 hover:text-gold-400"
       >
         <span aria-hidden="true">?</span>
       </button>

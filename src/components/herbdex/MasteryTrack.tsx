@@ -64,7 +64,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
                 <PlantdexIcon name={done ? 'check' : 'pending'} />
               </span>
               <span
-                className={`mt-1 block text-[0.68rem] font-bold tracking-wide uppercase ${
+                className={`mt-1 block text-xs font-bold tracking-wide uppercase ${
                   done ? 'text-gold-300' : 'text-violet-400'
                 }`}
               >

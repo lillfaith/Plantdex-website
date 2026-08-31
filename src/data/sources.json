@@ -22,7 +22,14 @@
     "environment they were added from blocks these hosts, so nobody has yet opened the page",
     "and confirmed it supports the specific trait it is attached to. Open each URL, check it,",
     "then flip the flag - that is the whole workflow, and it is the one step a machine must",
-    "not take on a human's behalf."
+    "not take on a human's behalf.",
+    "",
+    "COMPOUND-LINK SOURCES (cited by src/lib/compound-links.ts) back the sensory and",
+    "physical statements joining a compound to the card's own taste, aroma and definitional",
+    "traits - tannins precipitating salivary proteins, menthol opening TRPM8. Same standing",
+    "as the field-note sources: verified:false until a person opens them, so they do not",
+    "render. The statements themselves are chemistry and stand on their own; the citation is",
+    "what is waiting."
   ],
   "sources": [
     {
@@ -1199,6 +1206,38 @@
       "title": "Toxicity of Yew Wood and Roots",
       "organization": "Penn State Extension",
       "url": "https://extension.psu.edu/toxicity-of-yew-wood-and-roots",
+      "verified": false
+    },
+    {
+      "id": "pmc-4982662",
+      "kind": "journal",
+      "title": "Chemical Affinity between Tannin Size and Salivary Protein Binding Abilities: Implications for Wine Astringency",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4982662/",
+      "verified": false
+    },
+    {
+      "id": "pmc-10969767",
+      "kind": "journal",
+      "title": "Possible Role of High-Molecular-Weight Salivary Proteins in Astringency Development",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10969767/",
+      "verified": false
+    },
+    {
+      "id": "pmc-9585572",
+      "kind": "journal",
+      "title": "Role of Yeast Mannoproteins in the Interaction between Salivary Proteins and Flavan-3-ols",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9585572/",
+      "verified": false
+    },
+    {
+      "id": "pmc-11296349",
+      "kind": "journal",
+      "title": "Mechanisms of sensory adaptation and inhibition of the cold and menthol receptor TRPM8",
+      "organization": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11296349/",
       "verified": false
     }
   ]

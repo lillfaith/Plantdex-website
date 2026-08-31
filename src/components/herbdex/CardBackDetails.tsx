@@ -5,6 +5,7 @@ import { Panel } from '../ui/Panel';
 import { SectionHeader } from '../ui/SectionHeader';
 import { Chip, ChipRow } from '../ui/Chip';
 import { InfoTile } from '../ui/InfoTile';
+import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 
@@ -73,6 +74,7 @@ export function UsablePartsSection({ herb }: { herb: Herb }) {
         id="parts-heading"
         eyebrow="From the card"
         title={BACK_SECTION_LABEL.usableParts}
+        accent="mauve"
         size="lg"
         note="The parts the card names as usable."
       />
@@ -100,10 +102,11 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
         id="prep-heading"
         eyebrow="From the card"
         title={BACK_SECTION_LABEL.preparations}
+        accent="violet"
         size="lg"
         note="How the card says it has traditionally been prepared."
       />
-      <ul className="divide-y divide-violet-700/45 rounded-card border border-violet-700/50 bg-plum-800/35">
+      <ul className="divide-y divide-mystery-violet/20 rounded-card border border-mystery-violet/25 bg-mystery-violet/[0.04]">
         {preparations.map((prep) => {
           const entry = PREPARATION_GUIDE.find((candidate) => candidate.match.test(prep));
           return (
@@ -113,13 +116,13 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
               ) : (
                 <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" />
               )}
-              <span className="flex-1 text-sm font-semibold text-violet-100">
+              <span className={`flex-1 ${READING} font-semibold text-violet-100`}>
                 <Term>{prep}</Term>
               </span>
               {entry?.guide && (
                 <Link
                   href={`/learn/preparations#${entry.guide}`}
-                  className="text-xs font-semibold text-violet-300 underline underline-offset-2 hover:text-gold-400"
+                  className={`inline-flex min-h-11 items-center px-1 ${NOTE} font-semibold text-violet-300 underline underline-offset-2 hover:text-gold-400`}
                 >
                   Guide
                 </Link>
@@ -141,6 +144,7 @@ export function HealingTraitsSection({ herb }: { herb: Herb }) {
         id="healing-heading"
         eyebrow="From the card"
         title={BACK_SECTION_LABEL.healingTraits}
+        accent="gold"
         size="lg"
         // The one place on this page that says it, directly under the heading it qualifies,
         // which is where a caveat actually gets read.
@@ -163,8 +167,13 @@ export function TasteAromaSection({ herb }: { herb: Herb }) {
   const { taste, aromatic } = herb.back;
   if (!taste.length && !aromatic.length) return null;
   return (
-    <Panel frame="card" pad="md" aria-labelledby="profile-heading">
-      <SectionHeader id="profile-heading" eyebrow="From the card" title="Taste &amp; aroma" />
+    <Panel frame="card" pad="md" accent="blossom" aria-labelledby="profile-heading">
+      <SectionHeader
+        id="profile-heading"
+        eyebrow="From the card"
+        accent="blossom"
+        title="Taste &amp; aroma"
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         {[
           { key: 'taste', items: taste, label: BACK_SECTION_LABEL.taste },
@@ -173,7 +182,7 @@ export function TasteAromaSection({ herb }: { herb: Herb }) {
           .filter((column) => column.items.length > 0)
           .map((column) => (
             <div key={column.key}>
-              <h3 className="mb-2 text-[0.62rem] font-bold tracking-[0.14em] text-violet-300 uppercase">
+              <h3 className={`mb-2 ${MICRO_LABEL} text-violet-300`}>
                 {column.label}
               </h3>
               <ChipRow>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { ACCENTS, type AccentName } from './accents';
 
 /**
  * The profile page's surface primitive.
@@ -36,6 +37,7 @@ export function Panel({
   frame = 'card',
   pad = 'md',
   as: Tag = 'section',
+  accent,
   className = '',
   children,
   ...rest
@@ -43,12 +45,18 @@ export function Panel({
   frame?: PanelFrame;
   pad?: 'none' | 'sm' | 'md' | 'lg';
   as?: 'section' | 'div' | 'aside';
+  /** Gives the surface this section's identity: a hairline border and a faint wash. */
+  accent?: AccentName;
   className?: string;
   children: ReactNode;
 } & React.HTMLAttributes<HTMLElement>) {
   const pads = frame === 'bare' ? PAD.none : PAD[pad];
+  // The accent's border overrides the frame's own, so the two cannot fight; the wash sits
+  // far below the printed card's brightness, which stays the page's brightest object.
+  const tone = accent && accent !== 'neutral' ? ACCENTS[accent] : null;
+  const tint = tone ? `${tone.border} ${tone.wash}` : '';
   return (
-    <Tag className={`${FRAME[frame]} ${pads} ${className}`.trim()} {...rest}>
+    <Tag className={`${FRAME[frame]} ${pads} ${tint} ${className}`.replace(/\s+/g, ' ').trim()} {...rest}>
       {children}
     </Tag>
   );

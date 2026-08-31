@@ -38,6 +38,7 @@ import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../Safety
 import { PlantSprite } from '../PlantSprite';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { Chip } from '../ui/Chip';
+import { MICRO_LABEL } from '../ui/accents';
 
 /**
  * A herb page, gated on discovery.
@@ -221,7 +222,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         <div className="min-w-0">
           {/* Collection · card number, so a card reads as part of a collectible set
               rather than a loose number. */}
-          <p className="text-xs font-bold text-violet-300 tabular-nums">{cardLabel(herb)}</p>
+          <p className={`${MICRO_LABEL} text-violet-300 tabular-nums`}>{cardLabel(herb)}</p>
 
           {/*
             The living portrait, and it is decoration rather than an identification aid:

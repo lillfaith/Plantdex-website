@@ -14,7 +14,7 @@ const RARITY_CLASS: Record<Rarity, string> = {
 export function RarityBadge({ rarity, className = '' }: { rarity: Rarity; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[0.68rem] font-bold tracking-wide uppercase ${RARITY_CLASS[rarity]} ${className}`}
+      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-bold tracking-wide uppercase ${RARITY_CLASS[rarity]} ${className}`}
     >
       <span className="sr-only">Encounter rate: </span>
       {rarity}

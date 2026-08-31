@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
+import { MICRO_LABEL, READING } from './accents';
 
 /**
  * A small labelled fact: an icon, what it is, and what it says.
@@ -33,13 +34,11 @@ export function InfoTile({
         />
       )}
       <p
-        className={`text-[0.62rem] font-bold tracking-[0.12em] text-violet-300 uppercase ${
-          icon ? 'mt-1.5' : ''
-        }`}
+        className={`${MICRO_LABEL} text-violet-300 ${icon ? 'mt-1.5' : ''}`}
       >
         {label}
       </p>
-      {children && <div className="mt-1 text-sm font-semibold text-violet-100">{children}</div>}
+      {children && <div className={`mt-1 ${READING} font-semibold text-violet-100`}>{children}</div>}
     </div>
   );
 }
