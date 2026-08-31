@@ -142,9 +142,20 @@ export const SECTION_LABEL: Record<SourceableSection, string> = {
 };
 
 // --- Per-part detail -----------------------------------------------------------
-// Structure for information that varies by plant part. Every field is optional and
-// absent unless a card or a curated, cited entry actually provides it — a species only
-// shows the tabs it genuinely has content for, and nothing is invented to fill a gap.
+//
+// ROADMAP TYPES, DELIBERATELY UNUSED. Nothing reads `HerbParts`, `PartInfo` or
+// `HERB_PART_KEYS` yet, and no species carries `parts` data. They are kept rather than
+// deleted because the plant-part database is a planned feature, and this shape is the
+// agreed one — a leaf's traditions, scent, nutrients and cautions differ from a root's,
+// so the eventual data cannot hang off the flat `HerbBack` the cards provide.
+//
+// The distinction that matters: this is UNBUILT, not half-built. An audit reading the
+// types alone would reasonably conclude the feature was started; it has not been. When it
+// is built, content must arrive the same way the field notes did — curated and cited, one
+// species at a time — never generated to fill the shape.
+//
+// Every field is optional and absent unless a card or a curated, cited entry actually
+// provides it, so a species only shows the parts it genuinely has content for.
 
 export const HERB_PART_KEYS = ['leaf', 'flower', 'root', 'bark', 'seed', 'other'] as const;
 export type HerbPartKey = (typeof HERB_PART_KEYS)[number];
@@ -198,6 +209,17 @@ export interface Herb {
   // --- Fields the cards do not carry -------------------------------------------
   // Structure is in place so curated, cited content can be added later. Absent today
   // rather than filled with plausible-sounding text; the UI omits what is missing.
+  /*
+   * All four are empty on all 45 cards, because no card prints them.
+   *
+   * `habitat` and `identification` are SUPERSEDED, not pending: that content now lives
+   * in `card-field-notes.ts`, where it is curated and cited per species, and the habitat
+   * CLASSIFICATION derived from it lives in `habitat.ts`. These fields remain only so a
+   * future deck that does print them has somewhere to land. Read the field notes, not
+   * these — `fieldNotesFor(herb)` is the accessor.
+   *
+   * `facts` and `parts` are genuinely pending; see the roadmap note above.
+   */
   habitat?: string;
   identification?: string[];
   facts?: string[];

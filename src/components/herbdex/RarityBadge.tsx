@@ -1,3 +1,4 @@
+import { RARITY_LABEL } from '@/lib/deck';
 import type { Rarity } from '@/lib/types';
 
 const RARITY_CLASS: Record<Rarity, string> = {
@@ -10,6 +11,11 @@ const RARITY_CLASS: Record<Rarity, string> = {
 /**
  * "Encounter Rate" badge, echoing the wording printed on the cards.
  * Rarity is always spelled out in text — never signalled by colour alone.
+ *
+ * The text comes from `RARITY_LABEL`, not from the key. Printing the key worked only
+ * while every tier's label happened to equal its identifier; the moment one diverged this
+ * badge and the meter on the plant page would have shown a card two different encounter
+ * rates. Both now read the same table. `rarity-display.test.ts` keeps it that way.
  */
 export function RarityBadge({ rarity, className = '' }: { rarity: Rarity; className?: string }) {
   return (
@@ -17,7 +23,7 @@ export function RarityBadge({ rarity, className = '' }: { rarity: Rarity; classN
       className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-bold tracking-wide uppercase ${RARITY_CLASS[rarity]} ${className}`}
     >
       <span className="sr-only">Encounter rate: </span>
-      {rarity}
+      {RARITY_LABEL[rarity]}
     </span>
   );
 }

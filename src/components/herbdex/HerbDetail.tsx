@@ -9,6 +9,12 @@ import { GARDEN_STAGE_BY_MASTERY, type GardenStage } from '@/lib/garden';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import {
+  rowKey,
+  sectionRows,
+  type ProfileSectionId,
+  type SectionMeasure,
+} from '@/lib/profile-sections';
 import { useRevealed } from '@/lib/reveals';
 import { DiscoverPanel } from './DiscoverPanel';
 import {
@@ -33,6 +39,41 @@ import { MySightings } from '../journal/MySightings';
 import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { SpeciesHero } from '../game/SpeciesHero';
+
+/**
+ * How each measure is drawn.
+ *
+ * `split` is deliberately the same grid cell as `wide` here: Usable Parts and Preparations
+ * are two consecutive `split` sections, and CSS grid pairs them at the container level
+ * below rather than each wrapping itself.
+ */
+const MEASURE_CLASS: Record<SectionMeasure, string> = {
+  wide: '',
+  reading: 'max-w-2xl',
+  narrow: 'max-w-xl',
+  // `split` bands are laid out by their shared grid row, not by their own wrapper.
+  split: '',
+};
+
+/**
+ * How each band is drawn. Keyed by `ProfileSectionId`, so TypeScript fails the build if a
+ * section is added to the order with nothing to render it — a stronger guarantee than a
+ * test, and the reason there is no runtime fallback here.
+ */
+const SECTION_RENDERERS: Record<ProfileSectionId, (herb: Herb) => React.ReactNode> = {
+  identification: (herb) => <IdentificationSection herb={herb} />,
+  lookalikes: (herb) => <LookalikeSection herb={herb} />,
+  compounds: (herb) => <SignatureCompounds herb={herb} />,
+  healing: (herb) => <HealingTraitsSection herb={herb} />,
+  parts: (herb) => <UsablePartsSection herb={herb} />,
+  preparations: (herb) => <PreparationsSection herb={herb} />,
+  habitat: (herb) => <HabitatSection herb={herb} />,
+  'field-data': (herb) => <FieldDataStrip herb={herb} />,
+  taste: (herb) => <TasteAromaSection herb={herb} />,
+  sightings: (herb) => <MySightings herb={herb} />,
+  mastery: (herb) => <MasteryTrack herb={herb} />,
+  sources: (herb) => <SourcesSection herb={herb} />,
+};
 
 /**
  * A herb page, gated on discovery.
@@ -218,61 +259,29 @@ export function HerbDetail({ herb }: { herb: Herb }) {
         <DiscoverPanel herb={herb} onDiscovered={onDiscovered} />
       </div>
 
-      <div className="mt-6">
-        <FieldDataStrip herb={herb} />
-      </div>
-
-      <div className="mt-6">
-      </div>
-
-      {/* Mastery only exists for a card the player actually found; a revealed-only card
-          shows nothing here, because there is no stage to be at yet. */}
-      {discovered && (
-        <div className="mt-6">
-          <MasteryTrack herb={herb} />
-        </div>
-      )}
-
       {/*
-        THE BANDS BELOW. Each chooses its own measure inside the 6xl canvas, and that
-        variation is where the rhythm comes from — the page this replaced was eight
-        identical full-width rectangles, which is why nothing on it read as more important
-        than anything else. Vertical spacing varies with it: a band that starts a new idea
-        gets more air than one continuing the last.
+        THE ORDERED BANDS. Order, measure and gating come from `PROFILE_SECTIONS`; this
+        file owns only how each band is drawn. Every band is keyed by its stable id, so
+        React reconciles by identity — moving a section in the config re-orders it without
+        remounting it, which is what keeps the knowledge-check dialog inside `mastery`
+        alive across a stage change.
+
+        Neither <dialog> is in this list. Both sit below, at fixed positions.
       */}
       <div className="mt-12 space-y-12">
-        <IdentificationSection herb={herb} />
-
-        {/* Immediately after identification: a discriminating character is only useful
-            beside the thing it discriminates from. */}
-        <LookalikeSection herb={herb} />
-
-        <HabitatSection herb={herb} />
-
-        {/* Working with the plant: what you can use, and how it has been prepared. */}
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-          <UsablePartsSection herb={herb} />
-          <PreparationsSection herb={herb} />
-        </div>
-
-        {/* Reading measure, deliberately narrow and deliberately surrounded by space. */}
-        <div className="max-w-2xl">
-          <HealingTraitsSection herb={herb} />
-        </div>
-
-        {/* The widest thing on the page. */}
-        <SignatureCompounds herb={herb} />
-
-        <div className="max-w-3xl">
-          <TasteAromaSection herb={herb} />
-        </div>
-
-        {/* Sightings are a record of finding a plant, so they only apply once it is found. */}
-        {discovered && <MySightings herb={herb} />}
-
-        <div className="max-w-3xl">
-          <SourcesSection herb={herb} />
-        </div>
+        {sectionRows(discovered).map((row) =>
+          row.kind === 'split' ? (
+            <div key={rowKey(row)} className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+              {row.sections.map((section) => (
+                <div key={section.id}>{SECTION_RENDERERS[section.id](herb)}</div>
+              ))}
+            </div>
+          ) : (
+            <div key={rowKey(row)} className={MEASURE_CLASS[row.sections[0].measure]}>
+              {SECTION_RENDERERS[row.sections[0].id](herb)}
+            </div>
+          ),
+        )}
       </div>
 
         {/* Healing Traits and Traditional Preparation are both on this page, so this
