@@ -85,18 +85,19 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   tyramine: molecule('tyramine', 'A biogenic amine'),
 
   // ── Molecules whose drawing is not shipped yet ──────────────────────────────
-  // Named and captioned honestly; the plate simply carries no structure.
+  // Named and captioned honestly; the plate simply carries no structure, and the reader
+  // cannot tell which these are.
   rutin: molecule(undefined, 'Quercetin bound to the disaccharide rutinose'),
   taraxasterol: molecule(undefined, 'A pentacyclic triterpene'),
-  resveratrol: molecule(undefined, 'A stilbenoid'),
-  lawsone: molecule(undefined, 'A naphthoquinone'),
-  emodin: molecule(undefined, 'An anthraquinone'),
-  'rosmarinic acid': molecule(undefined, 'A phenolic acid'),
+  resveratrol: molecule('resveratrol', 'A stilbenoid'),
+  lawsone: molecule('lawsone', 'A naphthoquinone'),
+  emodin: molecule('emodin', 'An anthraquinone'),
+  'rosmarinic acid': molecule('rosmarinic-acid', 'A phenolic acid'),
   'chlorogenic acid': molecule(undefined, 'A phenolic acid'),
   'ellagic acid': molecule(undefined, 'A polyphenol'),
   'ursolic acid': molecule(undefined, 'A pentacyclic triterpenoid'),
   allicin: molecule(undefined, 'An organosulfur compound'),
-  genistein: molecule(undefined, 'An isoflavone'),
+  genistein: molecule('genistein', 'An isoflavone'),
   aucubin: molecule(undefined, 'An iridoid glycoside'),
   arctiin: molecule(undefined, 'A lignan glycoside'),
   sinigrin: molecule(undefined, 'A glucosinolate'),
@@ -104,7 +105,7 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   hyperforin: molecule(undefined, 'A phloroglucinol derivative'),
   achilleine: molecule(undefined, 'An alkaloid named on the card'),
   azulene: molecule(undefined, 'A bicyclic hydrocarbon'),
-  citronellal: molecule(undefined, 'A monoterpene aldehyde'),
+  citronellal: molecule('citronellal', 'A monoterpene aldehyde'),
   salicortin: molecule(undefined, 'A salicylate glycoside'),
   tremulacin: molecule(undefined, 'A salicylate glycoside'),
   // The card prints "Sallicin". It is transcribed as printed and recorded in
