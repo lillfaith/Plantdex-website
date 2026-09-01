@@ -89,6 +89,23 @@ export const INCLUDED: readonly string[] = [
   'Free use of the digital Plantdex — no account required, and nothing to enter',
 ];
 
+/**
+ * The cards shown as product photography, in order.
+ *
+ * Here rather than inline in the page so a test can assert they all still resolve. They are
+ * hard-coded ids pointing at generated deck data: if a species is ever renamed, `getHerb`
+ * quietly returns undefined, a card vanishes from the product page and nobody notices — or,
+ * if all three go, static generation crashes on an empty array. `shop.test.ts` fails first.
+ *
+ * Chosen for contrast: a yellow composite, a white umbel and a tree, so the strip shows the
+ * deck's range rather than three variations on a dandelion.
+ */
+export const SHOWCASE_HERB_IDS = [
+  'taraxacum-officinale',
+  'achillea-millefolium',
+  'quercus-spp',
+] as const;
+
 export const NOT_INCLUDED: readonly string[] = [
   'No subscription, and no part of the digital Plantdex is behind a paywall',
   'No app to install — the Plantdex is a website',

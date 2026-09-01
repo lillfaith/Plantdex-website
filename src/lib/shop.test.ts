@@ -1,13 +1,14 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { DECK_SIZE } from './deck';
+import { DECK_SIZE, getHerb } from './deck';
 import {
   DECK_CARD_COUNT,
   INCLUDED,
   NOT_INCLUDED,
   PHYSICAL_CARD_COUNT,
   REFERENCE_CARD_COUNT,
+  SHOWCASE_HERB_IDS,
   displayPrice,
   isShopConfigured,
   paymentLink,
@@ -119,6 +120,26 @@ describe('what the product page claims', () => {
     // 47-card deck would be an inventory claim that is simply wrong.
     expect(REFERENCE_CARD_COUNT).toBe(2);
     expect(PHYSICAL_CARD_COUNT).toBe(47);
+  });
+
+  it('shows product photography that actually exists', () => {
+    /*
+     * The showcase is hard-coded ids pointing at GENERATED deck data. Rename a species in
+     * scripts/build_deck.py and getHerb() quietly returns undefined: a card disappears from
+     * the product page with no error, or — if all three go — static generation crashes on an
+     * empty array. Neither shows up in a build log as anything recognisable.
+     *
+     * The image files are checked too, because a card can exist in herbs.json while its
+     * artwork does not, and a broken <img> on the page selling the artwork is its own kind
+     * of bad.
+     */
+    expect(SHOWCASE_HERB_IDS.length).toBeGreaterThan(0);
+    for (const id of SHOWCASE_HERB_IDS) {
+      const herb = getHerb(id);
+      expect(herb, `showcase id "${id}" is not in the deck any more`).toBeDefined();
+      expect(existsSync(`public/cards/${id}.webp`), `missing front art for ${id}`).toBe(true);
+      expect(existsSync(`public/cards/back/${id}.webp`), `missing back art for ${id}`).toBe(true);
+    }
   });
 
   it('promises nothing about the digital side that is not true', () => {

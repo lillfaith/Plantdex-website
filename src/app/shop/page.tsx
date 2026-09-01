@@ -11,6 +11,7 @@ import {
   INCLUDED,
   NOT_INCLUDED,
   PHYSICAL_CARD_COUNT,
+  SHOWCASE_HERB_IDS,
   displayPrice,
   isShopConfigured,
   paymentLink,
@@ -41,12 +42,12 @@ export default function ShopPage() {
   const price = displayPrice();
   const configured = isShopConfigured();
 
-  // Three real cards, front and back, as the product photography. Chosen for contrast:
-  // a yellow composite, a white umbel and a tree — so the strip shows the deck's range
-  // rather than three variations on a dandelion.
-  const showcase = ['taraxacum-officinale', 'achillea-millefolium', 'quercus-spp']
-    .map((id) => getHerb(id))
-    .filter((herb): herb is NonNullable<typeof herb> => Boolean(herb));
+  // The ids live in shop.ts so a test can assert they still resolve — see SHOWCASE_HERB_IDS.
+  const showcase = SHOWCASE_HERB_IDS.map((id) => getHerb(id)).filter(
+    (herb): herb is NonNullable<typeof herb> => Boolean(herb),
+  );
+  // The back shown is the first card's own back, so the two always describe the same species.
+  const backCard = showcase[0];
 
   return (
     <main id="main" className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
@@ -88,10 +89,11 @@ export default function ShopPage() {
             </li>
           ))}
         </ul>
+        {backCard && (
         <figure className="mt-4">
           <Image
-            src={assetPath(`/cards/back/${showcase[0]!.id}.webp`)}
-            alt={`The back of the ${showcase[0]!.commonName} card, showing its written entry`}
+            src={assetPath(`/cards/back/${backCard.id}.webp`)}
+            alt={`The back of the ${backCard.commonName} card, showing its written entry`}
             width={420}
             height={620}
             className="mx-auto w-1/2 max-w-[220px] rounded-xl border border-violet-800/60"
@@ -100,6 +102,7 @@ export default function ShopPage() {
             Every card is printed both sides — the back carries the written entry.
           </figcaption>
         </figure>
+        )}
       </section>
 
       {/* ── Physical ↔ digital ───────────────────────────────────────────────── */}
