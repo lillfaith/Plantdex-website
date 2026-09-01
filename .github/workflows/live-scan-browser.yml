@@ -1,0 +1,65 @@
+name: Scan the live site in a real browser
+
+# The path a player actually takes, executed for real: open the deployed /scan/ page in
+# Chromium, hand it a photograph, and report what the panel says.
+#
+# Every other Plant ID check uses curl. Curl sends no preflight, runs no JavaScript and
+# renders nothing, so the whole browser half — prepareImage, functions.invoke, response
+# parsing, rendering — has never been exercised by CI. That is the half a "nothing happens"
+# report points at.
+#
+# It spends one identification from the project's daily allowance.
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: Deployed site to drive
+        required: true
+        default: https://lillfaith.github.io/Plantdex-website
+        type: string
+      herb_id:
+        description: Which card's photograph to submit
+        required: true
+        default: taraxacum-officinale
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  drive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+
+      - name: Build the photograph
+        env:
+          HERB_ID: ${{ inputs.herb_id }}
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet --disable-pip-version-check pillow
+          # Same crop as the curl verification: the card fronts embed real species
+          # photographs, so the subject is genuine and no fixture needs committing.
+          python3 -c "import os;from PIL import Image;p='public/cards/'+os.environ['HERB_ID']+'.webp';im=Image.open(p).convert('RGB');w,h=im.size;im.crop((int(w*.12),int(h*.11),int(w*.88),int(h*.50))).resize((900,int(900*(h*.39)/(w*.76)))).save('photo.jpg',quality=88)"
+
+      - name: Drive the scan screen
+        env:
+          SITE_URL: ${{ inputs.site_url }}
+        run: node scripts/live_scan_browser.mjs "$SITE_URL" photo.jpg
+
+      - name: Keep the screenshot either way
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-scan
+          path: live-scan.png
+          if-no-files-found: warn
