@@ -48,7 +48,7 @@ export default function HomePage() {
           Plantdex
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
-          The common wild medicinal plants growing around you, as a collectible deck.
+          Common wild medicinal plants around you, as a collectible deck.
         </p>
 
         {/*
