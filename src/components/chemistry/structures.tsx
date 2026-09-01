@@ -43,7 +43,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-38.1 -22.0L-59.2 -28.3" />
       <path d="M-38.1 -22.0L-44.4 -0.9" />
       <path d="M19.1 11.0L38.1 22.0" />
-      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -63,7 +63,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-38.1 -22.0L-59.2 -28.3" />
       <path d="M-38.1 -22.0L-44.4 -0.9" />
       <path d="M19.1 11.0L38.1 22.0" />
-      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -104,7 +104,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-38.1 -22.0L-38.1 -44.1" />
       <path d="M-38.1 -22.0L-57.2 -10.9" />
       <path d="M19.1 11.0L38.1 22.0" />
-      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -126,7 +126,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M19.1 11.0L38.1 22.0" />
       <path d="M38.1 22.0L38.1 44.1" />
       <path d="M38.1 22.0L57.2 10.9" />
-      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -150,11 +150,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -44.0L12.4 -51.1" />
       <path d="M1.7 -41.1L14.1 -48.2" />
       <path d="M0.0 -44.0L-10.1 -49.8" />
-      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-0.0" y="44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="19.1" y="-55.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-19.1" y="-55.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HO</text>
+      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-0.0" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="19.1" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-19.1" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HO</text>
       </>
     ),
   },
@@ -175,8 +175,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-0.0 22.0L-0.0 44.0" />
       <path d="M-0.0 44.0L-18.9 55.3" />
       <path d="M-18.9 55.3L-27.4 50.2" />
-      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-37.7" y="44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH2</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-37.7" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH2</text>
       </>
     ),
   },
@@ -191,10 +191,10 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L29.1 -12.4" />
       <path d="M24.9 1.7L32.1 -10.7" />
       <path d="M22.0 0.0L27.8 10.1" />
-      <text x="-11.0" y="-19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-11.0" y="19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="33.0" y="-19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="33.0" y="19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-11.0" y="-19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-11.0" y="19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="33.0" y="-19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="33.0" y="19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -212,10 +212,10 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M38.3 0.0L38.3 14.2" />
       <path d="M34.9 0.0L34.9 14.2" />
       <path d="M38.3 0.0L48.4 -5.8" />
-      <text x="-19.1" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-38.3" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HO</text>
-      <text x="38.3" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="57.4" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-19.1" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-38.3" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HO</text>
+      <text x="38.3" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="57.4" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -229,8 +229,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M9.0 5.2L19.1 11.0" />
       <path d="M19.1 11.0L38.3 0.0" />
       <path d="M38.3 0.0L48.4 5.8" />
-      <text x="0.0" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N+</text>
-      <text x="57.4" y="11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="0.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N+</text>
+      <text x="57.4" y="11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -248,9 +248,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -18.7L0.0 -40.7" />
       <path d="M0.0 -40.7L18.9 -52.0" />
       <path d="M18.9 -52.0L27.4 -46.9" />
-      <text x="-17.8" y="-5.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
-      <text x="11.0" y="15.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH</text>
-      <text x="37.7" y="-40.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH2</text>
+      <text x="-17.8" y="-5.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
+      <text x="11.0" y="15.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH</text>
+      <text x="37.7" y="-40.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH2</text>
       </>
     ),
   },
@@ -273,12 +273,12 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M38.7 -12.6L48.8 -18.4" />
       <path d="M38.7 -12.6L38.7 -34.6" />
       <path d="M38.7 -34.6L28.6 -40.4" />
-      <text x="0.0" y="-18.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-38.7" y="-12.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-18.5" y="35.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="18.5" y="35.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="57.9" y="-23.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="19.6" y="-45.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HO</text>
+      <text x="0.0" y="-18.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-38.7" y="-12.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-18.5" y="35.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="18.5" y="35.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="57.9" y="-23.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="19.6" y="-45.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HO</text>
       </>
     ),
   },
@@ -300,13 +300,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M44.4 41.1L44.4 55.3" />
       <path d="M41.0 41.1L41.0 55.3" />
       <path d="M44.4 41.1L53.5 37.4" />
-      <text x="-17.8" y="-5.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH</text>
-      <text x="17.8" y="-5.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HN</text>
-      <text x="0.0" y="-40.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-23.9" y="32.9" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="23.9" y="32.9" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH</text>
-      <text x="44.4" y="63.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="64.8" y="32.9" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH2</text>
+      <text x="-17.8" y="-5.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH</text>
+      <text x="17.8" y="-5.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HN</text>
+      <text x="0.0" y="-40.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-23.9" y="32.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="23.9" y="32.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH</text>
+      <text x="44.4" y="63.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="64.8" y="32.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH2</text>
       </>
     ),
   },
@@ -348,13 +348,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-57.2 -77.0L-76.2 -88.0" />
       <path d="M-95.3 -77.0L-105.3 -82.8" />
       <path d="M-95.3 -55.0L-105.3 -49.2" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="19.1" y="-55.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-114.3" y="-88.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-114.3" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="19.1" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-114.3" y="-88.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-114.3" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -395,12 +395,12 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-61.5 -60.2L-61.5 -71.8" />
       <path d="M-57.2 -77.0L-76.2 -88.0" />
       <path d="M-95.3 -77.0L-105.3 -82.8" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="19.1" y="-55.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-114.3" y="-88.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="19.1" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-114.3" y="-88.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -440,11 +440,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M52.8 -60.2L52.8 -71.8" />
       <path d="M57.2 -77.0L38.1 -88.0" />
       <path d="M57.2 -77.0L67.2 -82.8" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="76.2" y="-88.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="76.2" y="-88.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -464,7 +464,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M1.7 -2.9L-10.6 -10.0" />
       <path d="M38.1 0.0L38.1 22.0" />
       <path d="M114.3 0.0L114.3 22.0" />
-      <text x="-19.1" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="-19.1" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -494,9 +494,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M11.0 -57.2L-11.0 -57.2" />
       <path d="M5.8 -52.8L-5.8 -52.8" />
       <path d="M11.0 -57.2L16.8 -67.2" />
-      <text x="44.0" y="-38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-44.0" y="-38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="22.0" y="-76.2" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="44.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-44.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="22.0" y="-76.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -529,9 +529,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M123.2 -11.0L134.8 -11.0" />
       <path d="M-11.0 -19.1L-16.8 -29.1" />
       <path d="M-11.0 19.1L-16.8 29.1" />
-      <text x="145.2" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-22.0" y="38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="145.2" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -571,11 +571,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-19.1 11.0L-29.1 16.8" />
       <path d="M76.2 -22.0L76.2 -33.6" />
       <path d="M95.3 11.0L114.3 22.0" />
-      <text x="38.1" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="38.1" y="44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="76.2" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="38.1" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="38.1" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="76.2" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -619,14 +619,14 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M169.3 41.1L180.3 22.0" />
       <path d="M169.3 41.1L175.1 51.1" />
       <path d="M180.3 22.0L191.9 22.0" />
-      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="79.2" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="98.2" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="136.3" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="98.2" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HO</text>
-      <text x="180.3" y="60.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="202.3" y="22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="79.2" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="98.2" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="136.3" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="98.2" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HO</text>
+      <text x="180.3" y="60.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="202.3" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -662,9 +662,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M83.7 -22.5L103.8 -31.4" />
       <path d="M-22.0 -0.0L-36.2 -0.0" />
       <path d="M-51.0 3.5L-63.7 9.8" />
-      <text x="25.7" y="-35.4" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HN</text>
-      <text x="81.4" y="-0.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="25.7" y="-35.4" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HN</text>
+      <text x="81.4" y="-0.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -698,9 +698,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M83.7 -22.5L103.8 -31.4" />
       <path d="M-22.0 -0.0L-36.2 -0.0" />
       <path d="M-51.0 3.5L-63.7 9.8" />
-      <text x="25.7" y="-35.4" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HN</text>
-      <text x="81.4" y="-0.6" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="25.7" y="-35.4" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HN</text>
+      <text x="81.4" y="-0.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -761,13 +761,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M88.0 -8.1L93.8 -18.1" />
       <path d="M66.0 -8.1L60.2 -18.1" />
       <path d="M49.5 5.5L55.0 11.0" />
-      <text x="22.0" y="-60.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="44.0" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="66.0" y="30.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="88.0" y="68.2" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="121.0" y="11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="99.0" y="-27.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="55.0" y="-27.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="22.0" y="-60.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="66.0" y="30.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="88.0" y="68.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="121.0" y="11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="99.0" y="-27.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="55.0" y="-27.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -805,13 +805,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M150.3 30.1L162.6 37.2" />
       <path d="M148.6 33.0L160.9 40.1" />
       <path d="M150.3 30.1L140.2 35.9" />
-      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="79.2" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="98.2" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="183.3" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="169.3" y="41.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="131.2" y="41.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">HO</text>
+      <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="79.2" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="98.2" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="183.3" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="169.3" y="41.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="131.2" y="41.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HO</text>
       </>
     ),
   },
@@ -829,9 +829,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M93.6 -8.1L112.6 2.9" />
       <path d="M38.1 -7.8L38.1 -14.2" />
       <path d="M41.5 -7.8L41.5 -14.2" />
-      <text x="38.1" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">S</text>
-      <text x="57.2" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">S</text>
-      <text x="38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="38.1" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
+      <text x="57.2" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
+      <text x="38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -866,7 +866,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-57.2 -55.0L-57.2 -77.0" />
       <path d="M-61.5 -60.2L-61.5 -71.8" />
       <path d="M-57.2 -77.0L-76.2 -88.0" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -893,8 +893,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-36.4 -46.9L-48.7 -54.0" />
       <path d="M-19.1 -55.0L-0.0 -44.0" />
       <path d="M-16.7 -48.6L-6.7 -42.9" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-57.2" y="-55.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-57.2" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -915,7 +915,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-35.4 25.7L-19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
-      <text x="0.0" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="0.0" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -951,8 +951,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M41.5 -22.0L41.5 -36.2" />
       <path d="M38.1 22.0L38.1 36.2" />
       <path d="M34.7 22.0L34.7 36.2" />
-      <text x="38.1" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="38.1" y="44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="38.1" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="38.1" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -987,7 +987,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-57.2 -55.0L-57.2 -77.0" />
       <path d="M-61.5 -60.2L-61.5 -71.8" />
       <path d="M-57.2 -77.0L-76.2 -88.0" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O+</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O+</text>
       </>
     ),
   },
@@ -999,11 +999,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-9.0 5.2L-14.1 8.2" />
       <path d="M9.0 5.2L14.1 8.2" />
       <path d="M5.1 -3.4L4.2 -2.8" />
-      <text x="0.0" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">Si</text>
-      <text x="0.0" y="-24.2" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-20.9" y="12.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="20.9" y="12.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="9.2" y="-6.2" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="0.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">Si</text>
+      <text x="0.0" y="-24.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-20.9" y="12.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="20.9" y="12.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="9.2" y="-6.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -1037,18 +1037,18 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M116.3 -18.1L121.9 -14.9" />
       <path d="M114.6 -15.2L120.2 -11.9" />
       <path d="M109.6 -14.2L109.6 -10.4" />
-      <text x="11.0" y="-19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-11.0" y="-57.2" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-22.0" y="38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="22.0" y="38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="52.1" y="11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">S</text>
-      <text x="71.3" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
-      <text x="90.4" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="109.6" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">S</text>
-      <text x="128.7" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="128.7" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="109.6" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O-</text>
+      <text x="11.0" y="-19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-11.0" y="-57.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="52.1" y="11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
+      <text x="71.3" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
+      <text x="90.4" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="109.6" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
+      <text x="128.7" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="128.7" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="109.6" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O-</text>
       </>
     ),
   },
@@ -1085,11 +1085,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-46.6 7.6L-57.9 26.5" />
       <path d="M-57.9 26.5L-52.3 36.6" />
       <path d="M24.7 5.6L36.0 8.2" />
-      <text x="-17.8" y="43.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-40.7" y="-49.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-0.0" y="78.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-47.2" y="45.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="46.2" y="10.5" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-17.8" y="43.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-40.7" y="-49.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-0.0" y="78.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-47.2" y="45.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="46.2" y="10.5" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -1141,13 +1141,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M56.4 -62.9L56.4 -74.4" />
       <path d="M60.7 -79.7L41.7 -90.7" />
       <path d="M41.7 -90.7L41.7 -102.3" />
-      <text x="-17.8" y="43.8" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-40.7" y="-49.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-0.0" y="78.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-47.2" y="45.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="46.2" y="10.5" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="82.6" y="-0.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="41.7" y="-112.7" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-17.8" y="43.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-40.7" y="-49.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-0.0" y="78.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-47.2" y="45.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="46.2" y="10.5" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="82.6" y="-0.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="41.7" y="-112.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -1176,12 +1176,12 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-0.0 44.0L-19.1 55.0" />
       <path d="M-19.1 55.0L-31.4 62.0" />
       <path d="M-20.8 52.0L-33.1 59.1" />
-      <text x="0.0" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">NH</text>
-      <text x="-57.2" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-38.1" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="38.1" y="-44.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="57.2" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-38.1" y="65.9" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
+      <text x="0.0" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH</text>
+      <text x="-57.2" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-38.1" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="38.1" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="57.2" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-38.1" y="65.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -1215,8 +1215,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-57.2 -55.0L-57.2 -77.0" />
       <path d="M-61.5 -60.2L-61.5 -71.8" />
       <path d="M-57.2 -77.0L-76.2 -88.0" />
-      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
+      <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-19.1" y="-77.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -1247,19 +1247,19 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M116.3 -18.1L121.9 -14.9" />
       <path d="M114.6 -15.2L120.2 -11.9" />
       <path d="M109.6 -14.2L109.6 -10.4" />
-      <text x="11.0" y="-19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="-11.0" y="-57.2" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="-22.0" y="38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="22.0" y="38.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">OH</text>
-      <text x="52.1" y="11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">S</text>
-      <text x="82.3" y="19.1" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">R</text>
-      <text x="71.3" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">N</text>
-      <text x="90.4" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="109.6" y="-22.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">S</text>
-      <text x="128.7" y="-33.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="128.7" y="-11.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O</text>
-      <text x="109.6" y="0.0" fill="currentColor" stroke="none" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="central">O-</text>
+      <text x="11.0" y="-19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-11.0" y="-57.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="52.1" y="11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
+      <text x="82.3" y="19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">R</text>
+      <text x="71.3" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
+      <text x="90.4" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="109.6" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
+      <text x="128.7" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="128.7" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="109.6" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O-</text>
       </>
     ),
   },

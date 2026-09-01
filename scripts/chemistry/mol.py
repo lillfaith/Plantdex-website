@@ -246,9 +246,14 @@ def render(mol, pad=16, font=11):
                 lines.append(
                     f'<path d="M{pa[0]+ox:.1f} {pa[1]+oy:.1f}L{pb[0]+ox:.1f} {pb[1]+oy:.1f}" />')
     for x, y, t in mol.labels:
+        # camelCase, because the output is JSX and not SVG. React passes the hyphenated
+        # forms through to the DOM — measured, so the drawings were never actually wrong —
+        # but warns four times per label, which put eight console errors on every plant page
+        # with a structure on it. Noise at that volume is not cosmetic: it is where a real
+        # error goes to hide.
         lines.append(
             f'<text x="{x:.1f}" y="{y:.1f}" fill="currentColor" stroke="none" '
-            f'font-size="{font}" font-weight="600" text-anchor="middle" '
-            f'dominant-baseline="central">{t}</text>')
+            f'fontSize="{font}" fontWeight="600" textAnchor="middle" '
+            f'dominantBaseline="central">{t}</text>')
     vb = f'{x0:.1f} {y0:.1f} {x1-x0:.1f} {y1-y0:.1f}'
     return vb, '\n      '.join(lines)
