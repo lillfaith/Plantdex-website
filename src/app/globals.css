@@ -826,3 +826,102 @@ body {
     opacity: 1 !important;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * THE FIELD SCANNER — pixel trim for /scan.
+ *
+ * The identification screen is the one place in this app that behaves like a device: you
+ * point it at something and it answers. So it gets an arcade treatment the rest of the site
+ * does not — a viewfinder reticle, a chunky key, a segmented readout.
+ *
+ * NO NEW COLOUR. Hot pink is `mystery-pink`, sampled off the printed card backs; the golds
+ * are the deck's own. Where a shade is darkened for a shadow it is `color-mix`ed down from
+ * the token rather than typed in as a new hex, the same way `.panel` derives its surfaces.
+ *
+ * DECORATION THAT MEANS SOMETHING. Gold marks a candidate you can log; hot pink marks one
+ * you cannot — a related species, offered for reading and refused for recording. The trim
+ * carries the distinction the matcher already makes, so it is doing work rather than
+ * sitting there looking busy.
+ *
+ * WHAT IT MUST NOT TOUCH. Every text shade stays on the ramp it was contrast-checked on:
+ * this is borders, shadows and background art only. And it adds no vertical height worth
+ * the name, because the answer region has to keep clearing the fold on a 390x720 phone.
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+/*
+ * A viewfinder's four corner brackets, in pixels rather than curves.
+ *
+ * Drawn on ::before rather than as a background on the element itself, because `.panel`
+ * sets the `background` SHORTHAND — a utility that set only `background-image` would win or
+ * lose depending on sheet order, which is the kind of thing that looks fine locally and
+ * disappears in a production build.
+ */
+@utility scanner-frame {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0.5rem;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--color-mystery-pink) 0 0), linear-gradient(var(--color-mystery-pink) 0 0),
+      linear-gradient(var(--color-mystery-pink) 0 0), linear-gradient(var(--color-mystery-pink) 0 0),
+      linear-gradient(var(--color-mystery-pink) 0 0), linear-gradient(var(--color-mystery-pink) 0 0),
+      linear-gradient(var(--color-mystery-pink) 0 0), linear-gradient(var(--color-mystery-pink) 0 0);
+    background-repeat: no-repeat;
+    background-size:
+      18px 4px, 4px 18px, 18px 4px, 4px 18px,
+      18px 4px, 4px 18px, 18px 4px, 4px 18px;
+    background-position:
+      left top, left top,
+      right top, right top,
+      left bottom, left bottom,
+      right bottom, right bottom;
+    opacity: 0.9;
+  }
+}
+
+/* A row of hot-pink squares. Hard stops, so every edge stays square at any zoom. */
+@utility pixel-rule {
+  height: 4px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-mystery-pink) 0 4px,
+    transparent 4px 8px
+  );
+}
+
+/*
+ * A key you press rather than a link you click: a hard, un-blurred offset that collapses on
+ * :active so the button physically travels. The shadow colour is the gold token mixed down
+ * into the plum ground, never a new value.
+ */
+@utility arcade-key {
+  box-shadow: 0 4px 0 0 color-mix(in srgb, var(--color-gold-500) 45%, var(--color-plum-950));
+  transform: translateY(0);
+
+  &:active {
+    box-shadow: 0 1px 0 0 color-mix(in srgb, var(--color-gold-500) 45%, var(--color-plum-950));
+    transform: translateY(3px);
+  }
+}
+
+/*
+ * A segmented readout for the provider's score — pips, not a smooth bar, because a smooth
+ * bar reads as a measurement and this is a guess. `--fill` is set inline from the score.
+ *
+ * It never stands alone: the percentage and the band word stay beside it, and the caution
+ * above it is unconditional. A full meter says the provider is confident, and nothing more
+ * than that.
+ */
+@utility pixel-meter {
+  height: 0.5rem;
+  background-image: linear-gradient(
+    90deg,
+    var(--meter-colour, var(--color-gold-500)) 0 var(--fill, 0%),
+    color-mix(in srgb, var(--color-violet-500) 28%, transparent) var(--fill, 0%) 100%
+  );
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px);
+}

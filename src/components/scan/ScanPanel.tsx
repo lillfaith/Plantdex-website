@@ -107,10 +107,17 @@ export function ScanPanel() {
 
   return (
     <div className="space-y-5">
-      <section className="panel p-5">
+      {/*
+        The capture panel is the one thing on this site that behaves like a device, so it is
+        dressed as one: a hot-pink pixel reticle at its four corners and a gold key you press.
+        Trim only — the frame is a pseudo-element and the rule is 3px tall, because the answer
+        below still has to clear the fold on a 390x720 phone.
+      */}
+      <section className="panel scanner-frame p-5">
         <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
           Identify a plant
         </h2>
+        <div aria-hidden="true" className="pixel-rule mt-2 w-24" />
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
           Photograph a leaf, a flower or the whole plant. The clearer and closer the shot, the
           better the suggestion.
@@ -127,7 +134,7 @@ export function ScanPanel() {
         />
         <label
           htmlFor="scan-photo"
-          className="mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold text-plum-900 transition hover:bg-gold-300 sm:w-auto"
+          className="arcade-key mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 sm:w-auto"
         >
           {busy ? 'Identifying…' : 'Take or choose a photo'}
         </label>
@@ -210,6 +217,7 @@ export function ScanPanel() {
                 <h3 className="font-display text-lg font-bold text-gold-plate">
                   {result.outcome === 'matched' ? 'Possible matches' : 'Not sure about this one'}
                 </h3>
+                <div aria-hidden="true" className="pixel-rule mt-2 w-16" />
                 <p className="mt-2 text-sm leading-relaxed text-violet-200">
                   {result.outcome === 'matched'
                     ? 'Check the card before you confirm. You are the one recording the find.'
@@ -223,7 +231,19 @@ export function ScanPanel() {
                     const band = confidenceBand(candidate.score);
                     const already = ready && isDiscovered(herb.id);
                     return (
-                      <li key={candidate.scientificName} className="rounded-xl border border-violet-800/70 p-3">
+                      <li
+                        key={candidate.scientificName}
+                        /*
+                         * Gold edge: this one can be logged. Hot pink: it cannot — a related species
+                         * the matcher deliberately refuses. The colour repeats what the sentence below
+                         * already says, for anyone scanning the list rather than reading it.
+                         */
+                        className={`rounded-xl border-y border-r border-l-4 p-3 ${
+                          candidate.match.confirmable
+                            ? 'border-y-gold-500/25 border-r-gold-500/25 border-l-gold-500'
+                            : 'border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink'
+                        }`}
+                      >
                         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                           <Link
                             href={`/herbdex/${herb.id}`}
@@ -231,7 +251,19 @@ export function ScanPanel() {
                           >
                             {herb.commonName}
                           </Link>
-                          <span className="text-xs tabular-nums text-violet-400">
+                          <span className="flex items-center gap-2 text-xs tabular-nums text-violet-300">
+                            <span
+                              aria-hidden="true"
+                              className="pixel-meter w-14 shrink-0 rounded-[2px]"
+                              style={
+                                {
+                                  '--fill': `${Math.round(candidate.score * 100)}%`,
+                                  '--meter-colour': candidate.match.confirmable
+                                    ? 'var(--color-gold-500)'
+                                    : 'var(--color-mystery-pink)',
+                                } as React.CSSProperties
+                              }
+                            />
                             {Math.round(candidate.score * 100)}% &middot; {band}
                           </span>
                         </div>
@@ -267,7 +299,7 @@ export function ScanPanel() {
                               track('scan_confirmed');
                               setConfirmed(herb.id);
                             }}
-                            className="mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
+                            className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
                           >
                             Yes, I found {herb.commonName}
                           </button>
@@ -280,9 +312,14 @@ export function ScanPanel() {
             )}
 
             {typeof result.remaining === 'number' && (
-              <p className="mt-4 text-xs text-violet-400">
-                {result.remaining} identification{result.remaining === 1 ? '' : 's'} left today
-                {result.signedIn ? '' : ' — signing in raises the limit'}.
+              <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-violet-300">
+                <span aria-hidden="true" className="inline-block h-2 w-2 shrink-0 bg-gold-500" />
+                <span>
+                  <span className="font-bold tabular-nums text-gold-300">
+                    {result.remaining} identification{result.remaining === 1 ? '' : 's'}
+                  </span>{' '}
+                  left today{result.signedIn ? '' : ' — signing in raises the limit'}.
+                </span>
               </p>
             )}
           </section>
