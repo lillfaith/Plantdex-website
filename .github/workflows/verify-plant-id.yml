@@ -46,11 +46,14 @@ jobs:
         # The card fronts embed actual photographs of each species, so one of them is a
         # genuine test subject rather than a synthetic image. Cropped to the photo panel so
         # the card's typography and border are not what the provider is asked to identify.
-        # ImageMagick ships on ubuntu-latest; no fixture needs committing.
+        # No fixture needs committing.
+        #
+        # Pillow rather than ImageMagick: `convert` is not on current runners — ImageMagick 7
+        # dropped the alias — and this failed on exactly that the first time it ran.
         run: |
           set -euo pipefail
-          convert public/cards/taraxacum-officinale.webp \
-            -crop 70%x38%+120+130 +repage -resize 900x -quality 88 /tmp/subject.jpg
+          python3 -m pip install --quiet --disable-pip-version-check pillow
+          python3 -c "from PIL import Image; im=Image.open('public/cards/taraxacum-officinale.webp').convert('RGB'); w,h=im.size; im.crop((int(w*.12),int(h*.11),int(w*.88),int(h*.50))).resize((900,int(900*(h*.39)/(w*.76)))).save('/tmp/subject.jpg',quality=88); print('subject', im.size, '->', '/tmp/subject.jpg')"
           ls -l /tmp/subject.jpg
           file /tmp/subject.jpg
 
