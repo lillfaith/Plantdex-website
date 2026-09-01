@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { ANALYTICS_PROVIDER, EVENT_NAMES, UNEMITTED_EVENTS } from './analytics';
@@ -196,6 +196,46 @@ describe('legal pages', () => {
     for (const promise of [/no email address/i, /never sent to the analytics service/i, /No coordinates/i]) {
       expect(privacy, `privacy page dropped the promise ${promise}`).toMatch(promise);
     }
+  });
+
+  it('keeps the commerce disclosure in step with the commerce that exists', () => {
+    /*
+     * THE SAME FAILURE, THIRD TIME OF ASKING.
+     *
+     * /privacy once said "there is no analytics provider" after Plausible shipped. /terms then
+     * said "there is no shop, no checkout and no payment processing anywhere in the
+     * application" after /shop shipped. Both were true when written and both became false in a
+     * commit that had no reason to touch them — which is exactly the failure mode a legal page
+     * has, because nobody re-reads one while building a feature.
+     *
+     * So the existence of the route is checked against the prose that denies it.
+     */
+    const shopExists = existsSync('src/app/shop/page.tsx');
+    expect(shopExists, 'this test assumes /shop — update it if the shop was removed').toBe(true);
+
+    const terms = read(TERMS).replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+    for (const denial of [
+      /Nothing is sold through this site/i,
+      /no shop, no checkout/i,
+      /there is no shop/i,
+      /nothing for sale/i,
+    ]) {
+      expect(terms, `Terms still denies the shop that exists: ${denial}`).not.toMatch(denial);
+    }
+
+    // And it points at the document that actually governs a sale, rather than promising to
+    // grow one later — the sale terms live on their own page.
+    expect(terms, 'Terms does not link to the terms of sale').toContain('/terms-of-sale');
+
+    /*
+     * The shop must never claim a price the code cannot produce. Both env vars gate it, so a
+     * hard-coded figure in the JSX would be a price nobody set — the commerce equivalent of an
+     * invented delivery estimate.
+     */
+    const shop = read('src/app/shop/page.tsx').replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+    expect(shop, '/shop hard-codes a price instead of reading displayPrice()').not.toMatch(
+      /[$£€]\s?\d+[.,]\d{2}/,
+    );
   });
 
   it('points at the safety page rather than replacing it', () => {

@@ -24,11 +24,11 @@ const HERO_CREATURES = [
 /**
  * Landing page.
  *
- * Deliberately NOT the full Phase 1 storefront yet. Real pricing, product photography,
- * shipping terms and a return policy do not exist for this project yet, and AGENTS.md is
- * explicit that the site must contain no placeholder text and no fabricated shipping or
- * inventory claims. So this page introduces the deck honestly and routes to the Herbdex;
- * the commerce build lands in V0.4 once the owner supplies those details.
+ * Deliberately NOT a storefront, even now that /shop exists. The front page introduces the
+ * deck and routes into the Herbdex; selling happens on its own page, reached by one restrained
+ * CTA below the explainer. AGENTS.md forbids placeholder text and fabricated shipping or
+ * inventory claims, which is why nothing here quotes a price or a delivery time — /shop reads
+ * both from configuration and says the deck is not on sale when they are unset.
  */
 export default function HomePage() {
   // A few real cards as a preview strip.

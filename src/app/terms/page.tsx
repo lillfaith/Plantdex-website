@@ -9,13 +9,18 @@ export const metadata: Metadata = {
 };
 
 /**
- * Describes the site AS IT IS, which today means a free, static, educational companion to a
- * printed deck, with optional accounts and nothing for sale.
+ * Describes the site AS IT IS: a free, static, educational companion to a printed deck, with
+ * optional accounts and — since the shop was built — a link out to a Stripe-hosted checkout.
  *
- * COMMERCE CLAUSES ARE DELIBERATELY ABSENT. There is no shop, no checkout and no payment
- * provider in the application, so drafting terms of sale now would describe a transaction
- * that cannot happen — and would be the first thing to go stale when the real provider is
- * chosen. The section below says so plainly instead.
+ * TERMS OF USE AND TERMS OF SALE ARE SEPARATE DOCUMENTS. This page governs using a free
+ * website; /terms-of-sale governs buying a physical object. Merging them would bury the sale
+ * terms inside a document most readers meet long before they consider buying anything.
+ *
+ * THIS SECTION HAS ALREADY GONE STALE ONCE. It used to say "there is no shop, no checkout and
+ * no payment processing anywhere in the application", which stopped being true the moment
+ * /shop shipped — the same way the privacy page's "no analytics" sentences stopped being true
+ * when Plausible landed. `legal.test.ts` now fails the build if a /shop route exists while
+ * this page still denies it, so the next person cannot repeat it.
  */
 export default function TermsPage() {
   return (
@@ -166,13 +171,41 @@ export default function TermsPage() {
 
       <LegalSection id="shop" heading="Buying the deck">
         <p>
-          <strong className="text-violet-100">Nothing is sold through this site today.</strong>{' '}
-          There is no shop, no checkout and no payment processing anywhere in the application.
+          Using Plantdex costs nothing and always has. The whole collection, garden, journal
+          and research system are free, signed in or out, and no part of them is behind a
+          paywall &mdash; buying the printed deck unlocks nothing here, because nothing here is
+          locked.
         </p>
         <p>
-          When the printed deck can be bought here, terms of sale &mdash; price, shipping,
-          delivery, cancellation and returns &mdash; will be added to this page before the first
-          order, not after. Those details are <OwnerGap id="commerce-terms" />.
+          The printed deck is sold through{' '}
+          <Link href="/shop" className="underline underline-offset-2 hover:text-gold-400">
+            our shop page
+          </Link>
+          , and buying it is governed by a separate document:{' '}
+          <Link
+            href="/terms-of-sale"
+            className="underline underline-offset-2 hover:text-gold-400"
+          >
+            terms of sale
+          </Link>
+          , with{' '}
+          <Link href="/shipping" className="underline underline-offset-2 hover:text-gold-400">
+            shipping
+          </Link>{' '}
+          and{' '}
+          <Link href="/returns" className="underline underline-offset-2 hover:text-gold-400">
+            returns
+          </Link>{' '}
+          alongside it. Those terms cover the goods; this page covers the website.
+        </p>
+        <p>
+          Payment is taken by Stripe on their own pages. This site never receives or stores card
+          details, and an order is not connected to a Plantdex account &mdash; buying a deck does
+          not create one.
+        </p>
+        <p className="text-sm text-violet-300">
+          The price itself is <OwnerGap id="commerce-terms" />, and until it is set the shop
+          page says the deck is not on sale rather than showing a figure nobody has decided.
         </p>
       </LegalSection>
 

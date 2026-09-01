@@ -9,7 +9,8 @@ This file only adds the mechanics of working in this codebase.
 **V0.2 complete**, plus three-stage card mastery, Field Research, the sources/safety
 presentation work, contrast/polish, and **V0.3 accounts** (Supabase auth + server-persisted
 collections). The Herbdex works fully signed-out against local storage, or signed in with
-progress synced to Supabase — see "V0.3 accounts" below. Not yet built: commerce (V0.4), QR
+progress synced to Supabase — see "V0.3 accounts" below, and **V0.4 commerce** (a Stripe
+Payment Link behind `/shop`, see "V0.4 commerce" below). Not yet built: QR
 (V0.5).
 
 ## Commands
@@ -302,3 +303,82 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
 - **`supabase/functions/**` is excluded from this project's `tsconfig.json`/ESLint** — it's
   Deno, a different runtime with different globals (`Deno.serve`, `npm:`/`https:` module
   specifiers). Validate it with `deno check` (or by deploying it) instead.
+
+## Analytics, deletion and export
+
+- **`track()` takes an event name and has no second parameter.** That is the privacy
+  guarantee, not the forbidden-key list it replaced: a list can only fail the build *after*
+  somebody has written the line that attaches a user id, whereas a one-parameter function
+  makes the line impossible to write. Do not add a props argument. `analytics.test.ts` reads
+  the signature and fails if it grows one.
+- **It is also the plan decision.** Plausible's custom properties are Business-tier; below
+  that a `props` payload is accepted by the API and then never displayed — the data leaves
+  the browser and the breakdown silently is not there. Nothing is lost by sending none: every
+  plant profile is its own URL, so the ordinary page report already splits plant events by
+  species (and therefore by card number and habitat). Dimensions the path cannot imply live
+  in the event name instead. See `docs/analytics.md`.
+- **Every custom event must exist as a GOAL in the Plausible dashboard**, or it records
+  nothing visible. `PLAUSIBLE_GOALS` is the list to work from, and a test keeps it equal to
+  every event but `pageview`.
+- **Analytics hangs off the provider, not off buttons.** Discovery is measured in
+  `HerbdexProvider` because every entry point goes through one function and `awarded` is
+  false on a repeat — so a component cannot report a discovery that did not happen.
+- **`checkout_started` fires on `pointerdown` as well as `click`.** It is the only outbound
+  navigation in the app; the four `deck_cta_*` links are client-side route changes that never
+  unload the page. Fired only on click, the beacon races the unload and the most important
+  number in the funnel is lost some of the time. Deliberately not `preventDefault` plus a
+  callback: a blocked script would then strand a buyer on the product page.
+- **Two analytics bugs were silent, and both are pinned by regression tests.** The queue shim
+  must live in `track()` and not in a `<Script>` — a mount effect runs before an
+  `afterInteractive` script, so `herbdex_opened` and `garden_opened` recorded zero. And the
+  tag's id must not be `plausible`: an element's `id` becomes a property of `window`, so
+  `window.plausible` was an HTMLScriptElement and every call threw into the catch.
+- **The privacy page and the analytics code are checked against each other in both
+  directions** (`legal.test.ts`). The page promises each action "carries no attached data";
+  the test asserts that sentence *and* the one-parameter signature. Neither can drift alone.
+- **Account deletion order is photos → rows → auth user → local state, and must stay that
+  way.** Nothing in Postgres connects `storage.objects` to `auth.users`, and the delete
+  policy compares `auth.uid()` to the folder name — so deleting the user first leaves
+  photographs permanently unreachable. Rows are deleted explicitly rather than left to the
+  cascade, so a failed `deleteUser` leaves an emptied account a retry can finish.
+- **The delete function reads no request body.** Identity comes from `auth.getUser()` under
+  the caller's own token; the service-role client that follows bypasses RLS, so RLS is *not*
+  the boundary here and a forged `userId` must have nothing to attach to.
+- **Local data is cleared only after the server confirms.** A failure leaves the dialog open
+  and says plainly that nothing was deleted — never strand a device's progress on a failed
+  delete, same rule as the import dialog.
+- **The export throws rather than returning a partial file.** Somebody who exports and then
+  deletes has one copy; a truncated file presented as complete is worse than a failed one.
+  XP and level are absent because they are derived — printing them would put a number in a
+  document people read as a copy of the database.
+
+## V0.4 commerce
+
+A Stripe Payment Link behind `/shop`. The site stays a static export; there is no commerce
+backend and no order state anywhere in this repository.
+
+- **No Stripe key of any kind belongs in this repo**, secret or publishable — a Payment Link
+  needs neither, and that is the whole reason it was chosen over a custom integration. No
+  Stripe.js either: the buyer types their card on Stripe's origin, and loading a script here
+  would change the entire PCI position. `shop.test.ts` fails the build on both.
+- **The Payment Link is regex-validated to a Stripe host.** This value is the destination of
+  the loudest button on the site, so a mistyped or tampered repo variable must turn the
+  button *off* rather than send buyers somewhere else with a card in hand.
+- **Price, shipping, delivery times and returns are owner inputs, never defaults.** Both
+  `NEXT_PUBLIC_STRIPE_PAYMENT_LINK` and `NEXT_PUBLIC_DECK_PRICE` must be set or `/shop`
+  renders an honest "not on sale yet" state. Tests refuse a hard-coded price, an invented
+  delivery estimate and any scarcity or stock claim — AGENTS.md prohibits fabricated
+  shipping and inventory claims outright, and a launch page is exactly where they appear.
+- **`/shop/thanks` prints no order data.** The page is static with no Stripe secret, so
+  anything read from `session_id` would be unverified — a confirmation anyone could forge by
+  editing a query string. It confirms the event, points at Stripe's receipt as the record,
+  and claims no delivery date.
+- **A CTA never displaces a safety notice.** Four placements, one per page, each *above* the
+  notice. Pushing the caution down to make room is the same regression as downgrading its
+  weight. The plant CTA renders only on a discovered card — a locked page's job is the
+  discovery loop.
+- **Terms of Use and Terms of Sale are separate pages**, because one governs a free website
+  and the other governs buying a physical object. `/terms` once claimed "there is no shop, no
+  checkout and no payment processing anywhere in the application", which stopped being true
+  the moment `/shop` shipped — exactly as the privacy page's "no analytics" sentences did.
+  `legal.test.ts` now fails if a `/shop` route exists while `/terms` denies it.
