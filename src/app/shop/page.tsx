@@ -126,13 +126,14 @@ export default function ShopPage() {
           mastered.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-violet-300">
-          The digital Plantdex is <strong className="text-violet-100">free and open to
-          everyone</strong>, with or without the cards, with or without an account. Buying the
-          deck unlocks nothing here, because nothing here is locked.{' '}
+          Plantdex is free to use, and it stays free whether or not you own the cards &mdash;
+          this is a world to explore, not a paywall to get past. What the deck adds is the
+          thing a website cannot: {DECK_CARD_COUNT} printed cards in your pocket, no signal
+          required, in the hedgerow where you actually need them.{' '}
           <Link href="/herbdex" className="underline underline-offset-2 hover:text-gold-400">
-            Try it first
+            Explore the Herbdex
           </Link>{' '}
-          — it costs nothing to find out whether you like it.
+          to see what the cards connect to.
         </p>
       </section>
 

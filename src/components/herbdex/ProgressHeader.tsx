@@ -29,6 +29,12 @@ export function ProgressHeader() {
   const masteredPct = asPct(masteredCount);
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
+  // Counted once here rather than inside the map, so the summary and the chips can never
+  // disagree about how many are unlocked.
+  const unlockedCount = ready
+    ? ACHIEVEMENTS.filter((achievement) => Boolean(state.achievements[achievement.id])).length
+    : 0;
+
   return (
     <section aria-labelledby="progress-heading" className="panel p-4 sm:p-5">
       <h2 id="progress-heading" className="sr-only">
@@ -146,9 +152,25 @@ export function ProgressHeader() {
         again.
       </p>
 
-      <h3 className="mt-4 text-xs font-bold tracking-wide text-violet-300 uppercase">
-        Achievements
-      </h3>
+      {/*
+        COLLAPSED UNTIL SOMETHING IS UNLOCKED.
+
+        Fifteen achievements render as fifteen chips, and on a 390px screen that is roughly
+        600px of identical locked pills sitting between a brand-new player and the first
+        plant they came to see — the collection grid did not start until ~1900px down. A
+        zero-state that leads with a wall of things you have not done reads as a dashboard,
+        not a collectible game.
+
+        `<details>` rather than state so it works before hydration, and it opens itself as
+        soon as there is one thing worth showing: progress is what earns the space.
+      */}
+      <details className="mt-4" open={unlockedCount > 0}>
+        <summary className="flex cursor-pointer items-center justify-between gap-2 text-xs font-bold tracking-wide text-violet-300 uppercase">
+          <span>Achievements</span>
+          <span className={unlockedCount > 0 ? 'text-gold-400' : 'text-violet-400'}>
+            {unlockedCount} / {ACHIEVEMENTS.length}
+          </span>
+        </summary>
       <ul className="mt-2 flex flex-wrap gap-2">
         {ACHIEVEMENTS.map((achievement) => {
           const unlocked = ready && Boolean(state.achievements[achievement.id]);
@@ -175,6 +197,7 @@ export function ProgressHeader() {
           );
         })}
       </ul>
+      </details>
     </section>
   );
 }

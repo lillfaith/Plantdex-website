@@ -86,7 +86,7 @@ export const INCLUDED: readonly string[] = [
   `${DECK_CARD_COUNT} illustrated species cards, each printed front and back`,
   'An icon cheat sheet card explaining every symbol on a card face',
   'A disclaimer card carrying the deck’s safety wording',
-  'Free use of the digital Plantdex — no account required, and nothing to enter',
+  'A companion world online — log what you find, grow a garden, track a collection',
 ];
 
 /**
@@ -107,6 +107,6 @@ export const SHOWCASE_HERB_IDS = [
 ] as const;
 
 export const NOT_INCLUDED: readonly string[] = [
-  'No subscription, and no part of the digital Plantdex is behind a paywall',
+  'No subscription — Plantdex online is free to everyone, cards or no cards',
   'No app to install — the Plantdex is a website',
 ];

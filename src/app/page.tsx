@@ -41,8 +41,11 @@ export default function HomePage() {
   return (
     <main id="main" className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
       <section className="text-center">
+        {/* Species count, not card count: the printed deck is 47 cards because it also
+            carries an icon guide and a disclaimer. /shop states both; saying "45-card deck"
+            here and "47 in all" there is the kind of small inconsistency a buyer notices. */}
         <p className="text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
-          A {DECK_SIZE}-card illustrated deck
+          {DECK_SIZE} illustrated species
         </p>
         <h1 className="font-display mt-3 text-4xl leading-tight font-extrabold text-gold-plate sm:text-6xl">
           Plantdex

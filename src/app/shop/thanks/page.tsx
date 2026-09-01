@@ -70,8 +70,9 @@ export default function ShopThanksPage() {
               3
             </span>
             <span>
-              <strong className="text-violet-100">Nothing to set up.</strong> There is nothing
-              in the box to type in here — the digital Plantdex is already open to you, and always was.
+              <strong className="text-violet-100">Nothing to set up.</strong> There is no code
+              in the box, because there is nothing to unlock — take the cards outside, and log
+              what you find here.
             </span>
           </li>
         </ol>

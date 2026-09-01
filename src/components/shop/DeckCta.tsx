@@ -24,12 +24,15 @@ import { deckCtaEvent, track, type CtaPlacement } from '@/lib/analytics';
  */
 
 const COPY: Record<CtaPlacement, { label: string; line: string }> = {
-  home: { label: 'Get the deck', line: 'The physical cards this Plantdex was built from.' },
+  home: {
+    label: 'Get the deck',
+    line: 'The collectible field companion this world is built around.',
+  },
   herbdex: {
     label: 'Get the deck',
-    line: 'Every card here is printed, illustrated and pocket-sized.',
+    line: 'Take the collection outside — printed, illustrated, pocket-sized.',
   },
-  plant: { label: 'Get the deck', line: 'This card, and the rest of the collection, in print.' },
+  plant: { label: 'Get the deck', line: 'This card, in your hand, where the plant is.' },
   footer: { label: 'Get the deck', line: '' },
 };
 

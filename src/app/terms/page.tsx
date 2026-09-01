@@ -171,10 +171,10 @@ export default function TermsPage() {
 
       <LegalSection id="shop" heading="Buying the deck">
         <p>
-          Using Plantdex costs nothing and always has. The whole collection, garden, journal
-          and research system are free, signed in or out, and no part of them is behind a
-          paywall &mdash; buying the printed deck unlocks nothing here, because nothing here is
-          locked.
+          Using Plantdex is free, signed in or out: the collection, garden, journal and
+          research system are not behind a paywall. Buying the printed deck is a separate
+          thing entirely &mdash; it is a physical object you take outdoors, not a key to
+          anything on this site.
         </p>
         <p>
           The printed deck is sold through{' '}

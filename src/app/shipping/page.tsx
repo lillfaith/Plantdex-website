@@ -100,12 +100,12 @@ export default function ShippingPage() {
 
       <LegalSection id="what" heading="What arrives">
         <p>
-          One boxed deck of {PHYSICAL_CARD_COUNT} cards. There is nothing to activate and no
-          code inside &mdash; the{' '}
+          One boxed deck of {PHYSICAL_CARD_COUNT} cards, ready to take outside. There is no
+          code in the box, because there is nothing to unlock &mdash; log what you find in the{' '}
           <Link href="/herbdex" className="underline underline-offset-2 hover:text-gold-400">
-            digital Plantdex
+            Herbdex
           </Link>{' '}
-          is free and already open to you.
+          whenever you get back.
         </p>
       </LegalSection>
 

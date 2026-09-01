@@ -87,6 +87,9 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
       family="game"
       clip
       pad="md"
+      // The scroll target for the discovery celebration's "Learn this card" button. Named
+      // here rather than in the celebration so the anchor lives with the thing it names.
+      id="card-mastery"
       aria-labelledby="mastery-heading"
       className={reached === MASTERY_STAGES.length ? 'game-panel-earned' : ''}
     >

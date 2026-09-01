@@ -168,12 +168,41 @@ export function DiscoveryCelebration({
         </ul>
       )}
 
+      {/*
+        THE NEXT STEP, NOT JUST A DISMISS.
+
+        Discovering is stage 1 of 3, and the control that advances to stage 2 — "Take the
+        card check" — sits about 83% of the way down a long profile page. So the celebration
+        used to end the loop rather than continue it: congratulations, then a closed dialog
+        and no visible next action.
+
+        This closes the dialog and scrolls the mastery track into view. Deliberately a
+        SCROLL and not an "open the check for me": the check is its own <dialog>, and opening
+        one from inside another that is mid-close is exactly the kind of coupling that has
+        already broken twice here. Reading the card before answering questions about it is
+        also the intended order.
+      */}
+      <button
+        type="button"
+        onClick={() => {
+          onClose();
+          // After the dialog has actually closed, or the scroll happens under a modal.
+          requestAnimationFrame(() => {
+            document
+              .getElementById('card-mastery')
+              ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }}
+        className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
+      >
+        Learn this card &rarr;
+      </button>
       <button
         type="button"
         onClick={onClose}
-        className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
+        className="mt-2 min-h-11 w-full rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 transition-colors hover:bg-plum-600"
       >
-        Continue
+        Keep looking around
       </button>
     </div>
   );
