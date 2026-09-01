@@ -52,6 +52,31 @@ export default function HerbdexPage() {
         <ResearchTeaser />
       </div>
 
+      {/* ABOVE THE GRID, BECAUSE THE GRID IS THE WRONG ANSWER TO "WHAT IS THIS PLANT?".
+          Someone standing in front of something they cannot name is not going to scroll 45
+          silhouettes looking for it, and this entry point spent its first release below the
+          fold where only a person who already knew it existed would find it. It sits after
+          progress rather than before, so the page still opens on the collection. */}
+      <div className="mt-3">
+        <Link
+          href="/scan"
+          className="panel flex items-center gap-3 p-4 transition-colors hover:bg-plum-600/50"
+        >
+          <span
+            aria-hidden="true"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-lg text-gold-300"
+          >
+            <PlantdexIcon name="revealed" />
+          </span>
+          <span className="min-w-0">
+            <span className="block font-bold text-violet-100">Identify a plant</span>
+            <span className="block text-xs text-violet-300">
+              Photograph something growing and see which cards it might be
+            </span>
+          </span>
+        </Link>
+      </div>
+
       <div className="mt-6">
         <HerbGrid herbs={herbs} />
       </div>
@@ -71,26 +96,6 @@ export default function HerbdexPage() {
 
       <div className="mt-8">
         <BeyondCollection />
-      </div>
-
-      <div className="mt-8">
-        <Link
-          href="/scan"
-          className="panel flex items-center gap-3 p-4 transition-colors hover:bg-plum-600/50"
-        >
-          <span
-            aria-hidden="true"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-lg text-gold-300"
-          >
-            <PlantdexIcon name="revealed" />
-          </span>
-          <span className="min-w-0">
-            <span className="block font-bold text-violet-100">Identify a plant</span>
-            <span className="block text-xs text-violet-300">
-              Photograph something growing and see which cards it might be
-            </span>
-          </span>
-        </Link>
       </div>
 
       <div className="mt-10">

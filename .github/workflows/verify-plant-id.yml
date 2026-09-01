@@ -28,6 +28,11 @@ on:
         required: true
         default: taraxacum-officinale,urtica-dioica,achillea-millefolium,plantago-major,trifolium-pratense,quercus-spp
         type: string
+      site_url:
+        description: Deployed site to check the player-facing path against (blank to skip)
+        required: false
+        default: https://lillfaith.github.io/Plantdex-website
+        type: string
 
 permissions:
   contents: read
@@ -46,6 +51,16 @@ jobs:
             echo "::error::SUPABASE_ACCESS_TOKEN is not set."
             exit 1
           fi
+
+      - name: Check the live site can reach this project
+        # THE GAP EVERY OTHER CHECK LEAVES. A green function proves nothing about the
+        # browser: the client only reaches it if the Pages build was handed
+        # NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY as repo VARIABLES.
+        # Unset, the build still succeeds and every player is told Plant ID "is not
+        # available here yet" — invisible from the repo, invisible from CI, visible only in
+        # the served bundle. So this reads the served bundle.
+        if: inputs.site_url != ''
+        run: python3 scripts/check_live_scan.py "${{ inputs.site_url }}" "${{ inputs.project_ref }}"
 
       - name: Identify each species and report what the provider calls it
         # ONE CALL PER CARD. Testing a single species is how the dandelion synonym gap got
