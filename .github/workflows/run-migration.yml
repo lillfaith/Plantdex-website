@@ -1,0 +1,116 @@
+name: Run a Supabase migration
+
+# Applies one file from supabase/migrations/ to a project.
+#
+# WHY THIS EXISTS. Migrations are SQL that has to reach the database, and the Supabase CLI's
+# usual route (`supabase db push`) wants either a direct Postgres connection or a linked
+# project with its database password. Neither belongs on a laptop, and neither is available
+# from a sandboxed session. The Management API's query endpoint needs only the access token
+# this repo already holds for deploying functions, so migrations run here for exactly the
+# same reason function deploys do.
+#
+# WHAT BOUNDS IT. The SQL is not an input. Only a FILE NAME is, and it must name a file that
+# is already committed under supabase/migrations/ — so whatever runs has been through review
+# and is in the repository's history. A workflow that accepted arbitrary SQL as a text input
+# would be a remote shell on the database wearing a form.
+#
+# Migrations here must be safe to run twice: every statement in 0002_scans.sql uses
+# `create ... if not exists` or `create or replace`, because the only honest assumption about
+# a manually dispatched workflow is that somebody will eventually run it twice.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which Supabase project to migrate
+        required: true
+        default: vgjehmwcpavflbfhbbrp
+        type: choice
+        options:
+          - vgjehmwcpavflbfhbbrp # test — run here first, always
+          - vygiamigomwlvnwkryyl # production — real players
+      migration:
+        description: File name under supabase/migrations/ (e.g. 0002_scans.sql)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Create one at" \
+                 "https://supabase.com/dashboard/account/tokens and add it under" \
+                 "Settings -> Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - name: Apply the migration
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          set -euo pipefail
+
+          # A file name, not a path: no directory traversal, and nothing outside the
+          # migrations directory can be reached.
+          case "$MIGRATION" in
+            */*|..*) echo "::error::Give a file name, not a path."; exit 1 ;;
+          esac
+          FILE="supabase/migrations/$MIGRATION"
+          if [ ! -f "$FILE" ]; then
+            echo "::error::$FILE is not in this repository. Available:"
+            ls supabase/migrations/
+            exit 1
+          fi
+
+          echo "Applying $FILE to $PROJECT_REF"
+
+          # The SQL is passed as JSON built by python rather than by shell quoting: migrations
+          # contain quotes, dollar-quoted function bodies and newlines, all of which a
+          # hand-built payload mangles silently. One-liner, not a heredoc — a heredoc inside a
+          # YAML block scalar loses its terminator to the dedent.
+          python3 -c "import json,sys;print(json.dumps({'query':open(sys.argv[1]).read()}))" \
+            "$FILE" > /tmp/payload.json
+
+          code=$(curl -sS -o /tmp/response.json -w '%{http_code}' \
+            -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data @/tmp/payload.json)
+
+          echo "HTTP $code"
+          # The response can echo row data, so print it only on failure and only the head of
+          # it — a workflow log is readable by anyone with repo access.
+          if [ "$code" != "200" ] && [ "$code" != "201" ]; then
+            echo "::error::Migration failed."
+            head -c 2000 /tmp/response.json
+            exit 1
+          fi
+          echo "Migration applied."
+
+      - name: Confirm the objects exist
+        # Proof rather than assumption: a 200 from the query endpoint means the statement ran,
+        # not that the objects are there — a migration full of `if not exists` returns 200
+        # having done nothing at all.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          SQL="select table_name from information_schema.tables where table_schema='public' order by table_name"
+          python3 -c "import json,sys;print(json.dumps({'query':sys.argv[1]}))" "$SQL" > /tmp/q.json
+          echo "Tables in public:"
+          curl -sS -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" --data @/tmp/q.json
+          echo

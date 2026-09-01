@@ -4,11 +4,12 @@ name: Deploy Supabase edge function
 # anybody's laptop or in a chat window — so it lives in this repo's Actions secrets and the
 # deploy happens here. Run it from the Actions tab and pick a project and a function.
 #
-# TWO FUNCTIONS NOW. `herbdex-action` recomputes mastery and research server-side;
+# THREE FUNCTIONS NOW. `herbdex-action` recomputes mastery and research server-side;
 # `delete-account` erases an account, and until it is deployed the Delete button on
-# /account reports a failure and deletes nothing. Deploy BOTH to any project where people
-# have accounts — a live account whose deletion path is missing is the one state this
-# workflow exists to prevent.
+# /account reports a failure and deletes nothing. `identify-plant` runs Plant ID, and needs
+# PLANTNET_API_KEY set as a project secret before it can do anything. Deploy ALL to any
+# project where people have accounts — a live account whose deletion path is missing is the
+# one state this workflow exists to prevent.
 #
 # ONE-TIME SETUP: create a token at https://supabase.com/dashboard/account/tokens and add it
 # as a repository secret named SUPABASE_ACCESS_TOKEN (Settings → Secrets and variables →
@@ -28,12 +29,13 @@ on:
       function:
         description: Which function to deploy
         required: true
-        default: both
+        default: all
         type: choice
         options:
-          - both
+          - all
           - herbdex-action
           - delete-account
+          - identify-plant
 
 permissions:
   contents: read
@@ -88,8 +90,8 @@ jobs:
           PROJECT_REF: ${{ inputs.project_ref }}
         run: |
           set -euo pipefail
-          if [ "$CHOICE" = "both" ]; then
-            FUNCTIONS="herbdex-action delete-account"
+          if [ "$CHOICE" = "all" ]; then
+            FUNCTIONS="herbdex-action delete-account identify-plant"
           else
             FUNCTIONS="$CHOICE"
           fi
@@ -112,8 +114,8 @@ jobs:
           PROJECT_REF: ${{ inputs.project_ref }}
         run: |
           set -euo pipefail
-          if [ "$CHOICE" = "both" ]; then
-            FUNCTIONS="herbdex-action delete-account"
+          if [ "$CHOICE" = "all" ]; then
+            FUNCTIONS="herbdex-action delete-account identify-plant"
           else
             FUNCTIONS="$CHOICE"
           fi
