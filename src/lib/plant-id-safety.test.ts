@@ -200,3 +200,42 @@ describe('scan data is deleted and exported like everything else', () => {
     expect(sql).not.toMatch(/create policy[^\n]*scan_quota/i);
   });
 });
+
+/*
+ * CAN A PLAYER FIND IT AT ALL?
+ *
+ * Plant ID shipped reachable from exactly one place: a panel near the bottom of the Herbdex,
+ * under the collection footer. Moved above the grid it was still beneath the progress cluster
+ * — measured at y=563 on a 390x720 phone against a bottom-nav floor of y=662, so a strip of
+ * it cleared the bar and nothing else did. The report both times was "I can't find the
+ * button", which is indistinguishable from the feature not existing.
+ *
+ * A working feature nobody can reach is a broken feature. These pin the entry points; the
+ * live browser check measures that they are actually above the fold, which is the half a
+ * source-reading test cannot see.
+ */
+describe('Plant ID is reachable', () => {
+  const HOME = 'src/app/page.tsx';
+  const HERBDEX = 'src/app/herbdex/page.tsx';
+  const source = (path: string) => readFileSync(path, 'utf8');
+
+  it('is linked from the front page and from the Herbdex', () => {
+    for (const page of [HOME, HERBDEX]) {
+      expect(source(page), `${page} must offer a way into Plant ID`).toContain('href="/scan"');
+    }
+  });
+
+  it('offers it on the Herbdex before the collection grid', () => {
+    // Ordering is the whole point: below the grid is where it spent two releases being
+    // invisible. A player who cannot name the plant in front of them is not going to scroll
+    // 45 silhouettes to find the thing that would tell them.
+    const herbdex = source(HERBDEX);
+    expect(herbdex.indexOf('href="/scan"')).toBeLessThan(herbdex.indexOf('<HerbGrid'));
+  });
+
+  it('names the action in words a person would look for', () => {
+    for (const page of [HOME, HERBDEX]) {
+      expect(source(page)).toContain('Identify a plant');
+    }
+  });
+});

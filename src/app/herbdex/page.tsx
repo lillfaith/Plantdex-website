@@ -40,24 +40,21 @@ export default function HerbdexPage() {
         {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
       </p>
 
-      {/* Above the progress header, because it is about that progress — and inline in the
-          page flow rather than a modal, so it never interrupts anyone. It renders nothing
-          until a signed-out player has enough collection to be worth protecting. */}
+      {/*
+        FIRST THING AFTER THE TITLE, BECAUSE IT ANSWERS THE TITLE.
+
+        The subtitle above says "Found a plant in the wild?" — and until now the only reply
+        to that was a grid of 45 silhouettes to hunt through. This entry point has moved
+        twice: it shipped below the collection footer, then above the grid but under the
+        progress cluster, where it measured y=563 on a 390x720 phone against a nav floor of
+        662. Visible, technically; a strip at the very bottom of the screen, in practice, and
+        the report was still "I cannot find it".
+
+        Progress and research now follow it. Reading how far along you are is something you
+        do sitting down; naming the plant in front of you is not, and the page opens on the
+        one you cannot postpone.
+      */}
       <div className="mt-5">
-        <LocalProgressNotice />
-        <ProgressHeader />
-      </div>
-
-      <div className="mt-3">
-        <ResearchTeaser />
-      </div>
-
-      {/* ABOVE THE GRID, BECAUSE THE GRID IS THE WRONG ANSWER TO "WHAT IS THIS PLANT?".
-          Someone standing in front of something they cannot name is not going to scroll 45
-          silhouettes looking for it, and this entry point spent its first release below the
-          fold where only a person who already knew it existed would find it. It sits after
-          progress rather than before, so the page still opens on the collection. */}
-      <div className="mt-3">
         <Link
           href="/scan"
           className="panel flex items-center gap-3 p-4 transition-colors hover:bg-plum-600/50"
@@ -75,6 +72,18 @@ export default function HerbdexPage() {
             </span>
           </span>
         </Link>
+      </div>
+
+      {/* Above the progress header, because it is about that progress — and inline in the
+          page flow rather than a modal, so it never interrupts anyone. It renders nothing
+          until a signed-out player has enough collection to be worth protecting. */}
+      <div className="mt-5">
+        <LocalProgressNotice />
+        <ProgressHeader />
+      </div>
+
+      <div className="mt-3">
+        <ResearchTeaser />
       </div>
 
       <div className="mt-6">

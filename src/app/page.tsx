@@ -99,12 +99,31 @@ export default function HomePage() {
           })}
         </ul>
 
+        {/*
+          TWO WAYS IN, BECAUSE THERE ARE TWO PEOPLE HERE.
+
+          "Explore the Herbdex" is for somebody at a table with the deck. "Identify a plant"
+          is for somebody standing in front of something they cannot name, which is the whole
+          reason this is a field guide and not a website. That second person had no route in
+          from the front page at all, and the one entry point that existed sat near the bottom
+          of the Herbdex — measured at y=563 on a 390x720 phone with the nav floor at 662, so
+          barely a strip of it cleared the bar.
+
+          The Herbdex keeps the primary gradient: the collection is still what this is. Scan
+          is an outlined peer rather than a third-tier link.
+        */}
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/herbdex"
             className="flex min-h-12 w-full max-w-xs items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-8 text-base font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:w-auto"
           >
             Explore the Herbdex
+          </Link>
+          <Link
+            href="/scan"
+            className="flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-full border border-gold-500/70 bg-plum-800/60 px-8 text-base font-bold text-gold-300 transition-colors hover:bg-plum-700 sm:w-auto"
+          >
+            Identify a plant
           </Link>
         </div>
         <p className="mt-3 text-xs text-violet-400">
