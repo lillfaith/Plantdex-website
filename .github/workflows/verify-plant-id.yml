@@ -60,7 +60,13 @@ jobs:
         # available here yet" — invisible from the repo, invisible from CI, visible only in
         # the served bundle. So this reads the served bundle.
         if: inputs.site_url != ''
-        run: python3 scripts/check_live_scan.py "${{ inputs.site_url }}" "${{ inputs.project_ref }}"
+        # Through env rather than interpolated into the command: a dispatch input spliced
+        # straight into a shell line is a command-injection shape, and it costs nothing to
+        # not write one.
+        env:
+          SITE_URL: ${{ inputs.site_url }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: python3 scripts/check_live_scan.py "$SITE_URL" "$PROJECT_REF"
 
       - name: Identify each species and report what the provider calls it
         # ONE CALL PER CARD. Testing a single species is how the dandelion synonym gap got
