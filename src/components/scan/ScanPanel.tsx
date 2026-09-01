@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -35,6 +35,28 @@ export function ScanPanel() {
   const [problem, setProblem] = useState<string | null>(null);
   const [rateLimited, setRateLimited] = useState<{ signedIn: boolean } | null>(null);
   const [confirmed, setConfirmed] = useState<string | null>(null);
+
+  const answerRef = useRef<HTMLDivElement>(null);
+
+  /*
+   * Bring the answer to the player rather than trusting them to go and find it.
+   *
+   * Only when it is not already fully on screen, so a desktop layout where everything fits
+   * does not jump for no reason. `block: 'start'` puts the caution at the top of the viewport
+   * with the result under it. The fixed bottom nav is why this is measured against the
+   * viewport rather than assumed: a region can end inside `innerHeight` and still be hidden.
+   */
+  useEffect(() => {
+    if (!result && !problem) return;
+    const node = answerRef.current;
+    if (!node) return;
+    const rect = node.getBoundingClientRect();
+    if (rect.top >= 0 && rect.bottom <= window.innerHeight) return;
+    node.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  }, [result, problem]);
 
   const run = useCallback(
     async (file: File) => {
@@ -115,139 +137,157 @@ export function ScanPanel() {
         </p>
       </section>
 
-      {/* Unconditional, and above every result. Never gated on a score. */}
-      <ScanCaution />
+      {/*
+        THE ANSWER REGION, AND WHY IT IS ONE ELEMENT.
 
-      {problem && (
-        <section className="panel p-5">
-          <p className="text-sm text-violet-100">{problem}</p>
-          {rateLimited && !rateLimited.signedIn && (
-            <p className="mt-2 text-sm text-violet-300">
-              <Link
-                href="/account"
-                className="font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-              >
-                Create a free account
-              </Link>{' '}
-              for a higher daily limit. Everything else here works without one.
-            </p>
-          )}
-        </section>
-      )}
+        A scan on a phone rendered its answer BELOW THE FOLD. Measured at 390x720 — an
+        ordinary iPhone viewport once Safari's chrome is subtracted — the result heading
+        landed at y=717 while the fixed bottom nav starts at y=662, so it was off the screen
+        and behind the nav at once. The player tapped, watched the button say "Identifying…"
+        and then reset, and saw nothing at all: the answer had arrived perfectly correctly,
+        sixty pixels past where anybody was looking. Every path rendered. None was visible.
 
-      {result && (
-        <section className="panel p-5" aria-live="polite">
-          {result.outcome === 'noMatch' ? (
-            <>
-              <h3 className="font-display text-lg font-bold text-gold-plate">
-                Not one of the 45 cards
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-violet-200">
-                {result.candidates.length > 0
-                  ? 'We recognised the plant, but it is not in this collection. Plantdex covers 45 common wild species — most plants you photograph will not be among them.'
-                  : 'Nothing was recognised in that photograph. A closer shot of a single leaf or flower usually works better.'}
+        Scrolling to the RESULT would have been the wrong fix. The caution sits above the
+        answer deliberately, and a scroll that brought the answer on screen without it would
+        quietly strip the safety framing off the exact moment it exists for. So the caution
+        and the answer are ONE region, and it is the region that comes into view — caution at
+        the top of the screen, answer beneath it, the composition this screen was designed as.
+      */}
+      <div ref={answerRef} className="scroll-mt-4 space-y-5">
+        {/* Unconditional, and above every result. Never gated on a score. */}
+        <ScanCaution />
+
+        {problem && (
+          <section className="panel p-5">
+            <p className="text-sm text-violet-100">{problem}</p>
+            {rateLimited && !rateLimited.signedIn && (
+              <p className="mt-2 text-sm text-violet-300">
+                <Link
+                  href="/account"
+                  className="font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+                >
+                  Create a free account
+                </Link>{' '}
+                for a higher daily limit. Everything else here works without one.
               </p>
-              {result.candidates.length > 0 && (
-                <ul className="mt-3 space-y-1 text-sm text-violet-300">
-                  {result.candidates.slice(0, 3).map((candidate) => (
-                    <li key={candidate.scientificName} className="flex justify-between gap-3">
-                      <span className="italic">{candidate.scientificName}</span>
-                      <span className="tabular-nums text-violet-400">
-                        {Math.round(candidate.score * 100)}%
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <Link
-                href="/herbdex"
-                className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-              >
-                Browse the collection instead &rarr;
-              </Link>
-            </>
-          ) : (
-            <>
-              <h3 className="font-display text-lg font-bold text-gold-plate">
-                {result.outcome === 'matched' ? 'Possible matches' : 'Not sure about this one'}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-violet-200">
-                {result.outcome === 'matched'
-                  ? 'Check the card before you confirm. You are the one recording the find.'
-                  : 'Nothing scored well enough to suggest. These are the closest, in order — open a card and compare it yourself.'}
-              </p>
+            )}
+          </section>
+        )}
 
-              <ul className="mt-4 space-y-3">
-                {result.candidates.map((candidate) => {
-                  const herb = candidate.match.herbId ? getHerb(candidate.match.herbId) : null;
-                  if (!herb) return null;
-                  const band = confidenceBand(candidate.score);
-                  const already = ready && isDiscovered(herb.id);
-                  return (
-                    <li key={candidate.scientificName} className="rounded-xl border border-violet-800/70 p-3">
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                        <Link
-                          href={`/herbdex/${herb.id}`}
-                          className="font-bold text-violet-100 underline underline-offset-2 hover:text-gold-400"
-                        >
-                          {herb.commonName}
-                        </Link>
-                        <span className="text-xs tabular-nums text-violet-400">
-                          {Math.round(candidate.score * 100)}% &middot; {band}
+        {result && (
+          <section className="panel p-5" aria-live="polite">
+            {result.outcome === 'noMatch' ? (
+              <>
+                <h3 className="font-display text-lg font-bold text-gold-plate">
+                  Not one of the 45 cards
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-violet-200">
+                  {result.candidates.length > 0
+                    ? 'We recognised the plant, but it is not in this collection. Plantdex covers 45 common wild species — most plants you photograph will not be among them.'
+                    : 'Nothing was recognised in that photograph. A closer shot of a single leaf or flower usually works better.'}
+                </p>
+                {result.candidates.length > 0 && (
+                  <ul className="mt-3 space-y-1 text-sm text-violet-300">
+                    {result.candidates.slice(0, 3).map((candidate) => (
+                      <li key={candidate.scientificName} className="flex justify-between gap-3">
+                        <span className="italic">{candidate.scientificName}</span>
+                        <span className="tabular-nums text-violet-400">
+                          {Math.round(candidate.score * 100)}%
                         </span>
-                      </div>
-                      <p className="mt-0.5 text-xs italic text-violet-400">
-                        {candidate.scientificName}
-                      </p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <Link
+                  href="/herbdex"
+                  className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+                >
+                  Browse the collection instead &rarr;
+                </Link>
+              </>
+            ) : (
+              <>
+                <h3 className="font-display text-lg font-bold text-gold-plate">
+                  {result.outcome === 'matched' ? 'Possible matches' : 'Not sure about this one'}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-violet-200">
+                  {result.outcome === 'matched'
+                    ? 'Check the card before you confirm. You are the one recording the find.'
+                    : 'Nothing scored well enough to suggest. These are the closest, in order — open a card and compare it yourself.'}
+                </p>
 
-                      {/* A card-printed warning belongs BEFORE the confirm button, not after it. */}
-                      {herb.warning && (
-                        <p className="mt-2 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-2 text-xs leading-relaxed text-violet-100">
-                          <span className="font-bold text-pink-accent">Card warning: </span>
-                          {herb.warning}
+                <ul className="mt-4 space-y-3">
+                  {result.candidates.map((candidate) => {
+                    const herb = candidate.match.herbId ? getHerb(candidate.match.herbId) : null;
+                    if (!herb) return null;
+                    const band = confidenceBand(candidate.score);
+                    const already = ready && isDiscovered(herb.id);
+                    return (
+                      <li key={candidate.scientificName} className="rounded-xl border border-violet-800/70 p-3">
+                        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                          <Link
+                            href={`/herbdex/${herb.id}`}
+                            className="font-bold text-violet-100 underline underline-offset-2 hover:text-gold-400"
+                          >
+                            {herb.commonName}
+                          </Link>
+                          <span className="text-xs tabular-nums text-violet-400">
+                            {Math.round(candidate.score * 100)}% &middot; {band}
+                          </span>
+                        </div>
+                        <p className="mt-0.5 text-xs italic text-violet-400">
+                          {candidate.scientificName}
                         </p>
-                      )}
 
-                      {candidate.match.kind === 'sameGenus' ? (
-                        <p className="mt-2 text-xs leading-relaxed text-violet-300">
-                          Related to this card, but a different species &mdash; so it cannot be
-                          logged as {herb.commonName}.
-                        </p>
-                      ) : already ? (
-                        <p className="mt-2 text-xs font-semibold text-gold-300">
-                          Already in your collection.
-                        </p>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            // The player's decision, and the only thing that awards anything.
-                            // `discover` is the same call the plant page makes, so a repeat
-                            // awards nothing — idempotency is the reducer's, not ours.
-                            discover(herb);
-                            track('scan_confirmed');
-                            setConfirmed(herb.id);
-                          }}
-                          className="mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
-                        >
-                          Yes, I found {herb.commonName}
-                        </button>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </>
-          )}
+                        {/* A card-printed warning belongs BEFORE the confirm button, not after it. */}
+                        {herb.warning && (
+                          <p className="mt-2 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-2 text-xs leading-relaxed text-violet-100">
+                            <span className="font-bold text-pink-accent">Card warning: </span>
+                            {herb.warning}
+                          </p>
+                        )}
 
-          {typeof result.remaining === 'number' && (
-            <p className="mt-4 text-xs text-violet-400">
-              {result.remaining} identification{result.remaining === 1 ? '' : 's'} left today
-              {result.signedIn ? '' : ' — signing in raises the limit'}.
-            </p>
-          )}
-        </section>
-      )}
+                        {candidate.match.kind === 'sameGenus' ? (
+                          <p className="mt-2 text-xs leading-relaxed text-violet-300">
+                            Related to this card, but a different species &mdash; so it cannot be
+                            logged as {herb.commonName}.
+                          </p>
+                        ) : already ? (
+                          <p className="mt-2 text-xs font-semibold text-gold-300">
+                            Already in your collection.
+                          </p>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              // The player's decision, and the only thing that awards anything.
+                              // `discover` is the same call the plant page makes, so a repeat
+                              // awards nothing — idempotency is the reducer's, not ours.
+                              discover(herb);
+                              track('scan_confirmed');
+                              setConfirmed(herb.id);
+                            }}
+                            className="mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
+                          >
+                            Yes, I found {herb.commonName}
+                          </button>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+
+            {typeof result.remaining === 'number' && (
+              <p className="mt-4 text-xs text-violet-400">
+                {result.remaining} identification{result.remaining === 1 ? '' : 's'} left today
+                {result.signedIn ? '' : ' — signing in raises the limit'}.
+              </p>
+            )}
+          </section>
+        )}
+      </div>
 
       {confirmed && (
         <section className="panel p-5" aria-live="polite">
