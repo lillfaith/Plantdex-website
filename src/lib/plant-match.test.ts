@@ -126,6 +126,49 @@ describe('names a real provider actually returned', () => {
       match: matchScientificName(scientificName),
     }));
 
+  /*
+   * A LIVE SURVEY, PINNED. Verbatim responses from identifying a photograph of each of these
+   * five cards against the real provider. Kept as data rather than prose because the whole
+   * lesson of the dandelion bug is that invented names prove nothing — four of these five
+   * come back as the exact binomial the card prints, and the fifth does not, and no amount
+   * of reasoning would have told me which.
+   */
+  const LIVE_SURVEY: Record<string, [string, number][]> = {
+    'urtica-dioica': [
+      ['Urtica dioica', 0.925],
+      ['Urtica membranacea', 0.004],
+      ['Urtica urens', 0.002],
+    ],
+    'achillea-millefolium': [
+      ['Achillea millefolium', 0.432],
+      ['Achillea nobilis', 0.192],
+      ['Achillea odorata', 0.113],
+    ],
+    'plantago-major': [
+      ['Plantago major', 0.795],
+      ['Plantago rugelii', 0.056],
+      ['Plantago asiatica', 0.007],
+    ],
+    'trifolium-pratense': [
+      ['Trifolium pratense', 0.775],
+      ['Trifolium medium', 0.127],
+      ['Trifolium alpestre', 0.015],
+    ],
+  };
+
+  it('resolves every surveyed species to its own card', () => {
+    for (const [herbId, results] of Object.entries(LIVE_SURVEY)) {
+      const candidates = results.map(([scientificName, score]) => ({
+        scientificName,
+        score,
+        match: matchScientificName(scientificName),
+      }));
+      expect(outcomeFor(candidates), herbId).toBe('matched');
+      expect(candidates[0]!.match.herbId, herbId).toBe(herbId);
+      expect(candidates[0]!.match.confirmable, herbId).toBe(true);
+    }
+  });
+
   it('identifies a photographed dandelion as the Dandelion card', () => {
     const top = matchScientificName('Taraxacum campylodes');
     expect(top.herbId, 'the accepted name POWO gives for the common dandelion').toBe(
