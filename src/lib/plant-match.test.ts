@@ -97,6 +97,69 @@ describe('matchScientificName', () => {
   });
 });
 
+describe('names a real provider actually returned', () => {
+  /*
+   * THE REGRESSION THAT SHIPPED, AND THE REASON THIS BLOCK EXISTS.
+   *
+   * These five names, with these scores, are the verbatim response from a live
+   * identification of a photograph of a dandelion. Not one is the string the card prints.
+   * Before the synonym table every one resolved to `sameGenus`, so the whole set was
+   * unconfirmable and the player was told "not one of the 45 cards" for the commonest plant
+   * in the deck.
+   *
+   * Every other test in this file passed throughout, because they all tested names I had
+   * imagined rather than names the provider emits. Real output is the only thing that would
+   * have caught it, so real output is what is pinned here.
+   */
+  const DANDELION_RESPONSE: [string, number][] = [
+    ['Taraxacum campylodes', 0.454],
+    ['Taraxacum sect. Taraxacum', 0.221],
+    ['Taraxacum pubescens', 0.023],
+    ['Taraxacum erythrospermum', 0.020],
+    ['Taraxacum mattmarkense', 0.017],
+  ];
+
+  const asCandidates = () =>
+    DANDELION_RESPONSE.map(([scientificName, score]) => ({
+      scientificName,
+      score,
+      match: matchScientificName(scientificName),
+    }));
+
+  it('identifies a photographed dandelion as the Dandelion card', () => {
+    const top = matchScientificName('Taraxacum campylodes');
+    expect(top.herbId, 'the accepted name POWO gives for the common dandelion').toBe(
+      'taraxacum-officinale',
+    );
+    expect(top.confirmable, 'a synonym is the same plant, so it must be confirmable').toBe(true);
+    expect(outcomeFor(asCandidates())).toBe('matched');
+  });
+
+  it('handles the section name the provider returns for the aggregate', () => {
+    const section = matchScientificName('Taraxacum sect. Taraxacum');
+    expect(section.herbId).toBe('taraxacum-officinale');
+    expect(section.confirmable).toBe(true);
+  });
+
+  it('still refuses the genuinely different species in the same response', () => {
+    // The fix must not become "any Taraxacum is a Dandelion". These two are distinct
+    // species, they were in the same result set, and they stay unconfirmable.
+    for (const name of ['Taraxacum erythrospermum', 'Taraxacum mattmarkense']) {
+      const match = matchScientificName(name);
+      expect(match.kind, name).toBe('sameGenus');
+      expect(match.confirmable, `${name} must not be loggable as a Dandelion`).toBe(false);
+    }
+  });
+
+  it('keeps "spp." meaning the genus, not a group within it', () => {
+    // The first attempt at parsing section names broke this: "Quercus spp." started
+    // normalising to "quercus spp" and stopped matching its own card.
+    expect(normalizeName('Quercus spp.')).toBe('quercus');
+    expect(matchScientificName('Quercus spp.').herbId).toBe('quercus-spp');
+    expect(matchScientificName('Quercus robur').herbId).toBe('quercus-spp');
+  });
+});
+
 describe('outcomeFor', () => {
   it('reports a match when something confirmable clears the bar', () => {
     expect(outcomeFor([candidate('Urtica dioica', 0.91)])).toBe('matched');

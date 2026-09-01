@@ -46,6 +46,44 @@ export interface PlantMatch {
 const NO_MATCH: PlantMatch = { kind: 'none', confirmable: false };
 
 /**
+ * NAMES THAT MEAN A DECK CARD, SPELT DIFFERENTLY.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THIS EXISTS BECAUSE THE FEATURE FAILED ON ITS MOST OBVIOUS CASE.
+ *
+ * A live call with a photograph of a dandelion came back with, in order:
+ *
+ *     Taraxacum campylodes        0.454
+ *     Taraxacum sect. Taraxacum   0.221
+ *     Taraxacum pubescens         0.023
+ *
+ * Not one of them is the string the card prints. Every one resolved to `sameGenus` —
+ * correctly, by the rule below — so the whole result set was unconfirmable and the player
+ * was told "not one of the 45 cards" for the single commonest plant in the deck.
+ *
+ * The unit tests all passed, because they tested names I had imagined rather than names the
+ * provider actually emits. Only the live call found it.
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * EVERY ENTRY IS A CHECKED NOMENCLATURAL FACT, NOT A GUESS. A synonym here says "these two
+ * names denote the same plant", which is exactly the kind of claim AGENTS.md forbids
+ * inventing. Each carries its source. When a provider name is a genuinely DIFFERENT species
+ * it does not belong here — Taraxacum erythrospermum is a distinct species and stays
+ * unconfirmable, which is the whole point of keeping the two ideas apart.
+ */
+const ACCEPTED_NAME_SYNONYMS: Record<string, string> = {
+  // POWO treats Taraxacum campylodes G.E.Haglund as a synonym of T. officinale.
+  // https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:252973-1
+  'taraxacum campylodes': 'taraxacum-officinale',
+  // The section containing the common dandelion; PlantNet returns it for aggregate matches.
+  // https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1
+  'taraxacum sect': 'taraxacum-officinale',
+  // Older basionym and a long-used synonym, both for the same plant.
+  'leontodon taraxacum': 'taraxacum-officinale',
+  'taraxacum vulgare': 'taraxacum-officinale',
+};
+
+/**
  * A scientific name reduced to `Genus species`, lowercased.
  *
  * Providers return names carrying authorship ("Taraxacum officinale F.H.Wigg."), infraspecific
@@ -67,10 +105,27 @@ export function normalizeName(raw: string): string {
   // The first word after the genus that reads as an epithet — lowercase letters, possibly
   // hyphenated. Skips rank markers and authorship, which are capitalised or punctuated.
   const epithet = words.slice(1).find((word) => /^[a-z][a-z-]+$/.test(word) && !RANKS.has(word));
-  return epithet ? `${genus.toLowerCase()} ${epithet}` : genus.toLowerCase();
+  if (epithet) return `${genus.toLowerCase()} ${epithet}`;
+  /*
+   * No epithet. An infrageneric name like "Taraxacum sect. Taraxacum" keeps its rank word so
+   * the synonym table can address it — collapsing it to the bare genus would make it
+   * indistinguishable from the genus card "Quercus spp.", which means something different.
+   */
+  const group = words.slice(1).find((word) => INFRAGENERIC.has(word.replace(/\.$/, '')));
+  return group ? `${genus.toLowerCase()} ${group.replace(/\.$/, '')}` : genus.toLowerCase();
 }
 
 const RANKS = new Set(['subsp', 'ssp', 'var', 'subvar', 'f', 'forma', 'cv', 'sp', 'spp', 'agg']);
+
+/**
+ * Ranks that name a GROUP INSIDE a genus, and so mean something narrower than the genus.
+ *
+ * `spp.` and `sp.` are deliberately absent: they mean "the genus, species unspecified",
+ * which is exactly what a "Quercus spp." card is, so they must collapse to the bare genus.
+ * `sect.` does not — "Taraxacum sect. Taraxacum" is one section among several and is
+ * addressed by name in the synonym table.
+ */
+const INFRAGENERIC = new Set(['sect', 'subg', 'subgen', 'ser', 'subsect']);
 
 /** `Taraxacum officinale` -> `taraxacum`. */
 export function genusOf(raw: string): string {
@@ -107,6 +162,10 @@ export function matchScientificName(scientificName: string): PlantMatch {
 
   const exact = BY_BINOMIAL.get(name);
   if (exact) return { kind: 'exact', herbId: exact, confirmable: true };
+
+  // A different name for the same plant is the same plant: `exact`, and confirmable.
+  const synonym = ACCEPTED_NAME_SYNONYMS[name];
+  if (synonym) return { kind: 'exact', herbId: synonym, confirmable: true };
 
   const genus = genusOf(scientificName);
 

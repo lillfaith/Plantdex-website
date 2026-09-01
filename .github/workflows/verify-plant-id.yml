@@ -23,6 +23,11 @@ on:
         options:
           - vygiamigomwlvnwkryyl # production — real players
           - vgjehmwcpavflbfhbbrp # test
+      herb_ids:
+        description: Comma-separated card ids to photograph and identify
+        required: true
+        default: taraxacum-officinale,urtica-dioica,achillea-millefolium,plantago-major,trifolium-pratense,quercus-spp
+        type: string
 
 permissions:
   contents: read
@@ -42,67 +47,48 @@ jobs:
             exit 1
           fi
 
-      - name: Build a real plant photograph to send
-        # The card fronts embed actual photographs of each species, so one of them is a
-        # genuine test subject rather than a synthetic image. Cropped to the photo panel so
-        # the card's typography and border are not what the provider is asked to identify.
-        # No fixture needs committing.
-        #
-        # Pillow rather than ImageMagick: `convert` is not on current runners — ImageMagick 7
-        # dropped the alias — and this failed on exactly that the first time it ran.
-        run: |
-          set -euo pipefail
-          python3 -m pip install --quiet --disable-pip-version-check pillow
-          python3 -c "from PIL import Image; im=Image.open('public/cards/taraxacum-officinale.webp').convert('RGB'); w,h=im.size; im.crop((int(w*.12),int(h*.11),int(w*.88),int(h*.50))).resize((900,int(900*(h*.39)/(w*.76)))).save('/tmp/subject.jpg',quality=88); print('subject', im.size, '->', '/tmp/subject.jpg')"
-          ls -l /tmp/subject.jpg
-          file /tmp/subject.jpg
-
-      - name: Identify it
+      - name: Identify each species and report what the provider calls it
+        # ONE CALL PER CARD. Testing a single species is how the dandelion synonym gap got
+        # through: the provider's accepted name differed from the card's, every candidate
+        # resolved to "related species", and the commonest plant in the deck reported "not
+        # in this collection". The only way to know which other cards have that problem is
+        # to ask the provider what it calls them.
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           PROJECT_REF: ${{ inputs.project_ref }}
+          HERB_IDS: ${{ inputs.herb_ids }}
         run: |
           set -euo pipefail
+          python3 -m pip install --quiet --disable-pip-version-check pillow
 
-          # The anon key is public — it ships in the site's own JavaScript — but there is no
-          # reason to print it, so it goes straight into a variable and is masked as well.
           ANON=$(curl -sS "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys" \
             -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
             | python3 -c "import json,sys; print(next(k['api_key'] for k in json.load(sys.stdin) if k['name']=='anon'))")
           echo "::add-mask::$ANON"
           if [ -z "$ANON" ]; then echo "::error::Could not read the anon key."; exit 1; fi
 
-          code=$(curl -sS -o /tmp/out.json -w '%{http_code}' --max-time 90 \
-            -X POST "https://$PROJECT_REF.supabase.co/functions/v1/identify-plant" \
-            -H "apikey: $ANON" -H "Authorization: Bearer $ANON" \
-            -F "image=@/tmp/subject.jpg")
+          fail=0
+          for id in $(echo "$HERB_IDS" | tr ',' ' '); do
+            src="public/cards/$id.webp"
+            if [ ! -f "$src" ]; then echo "::warning::no card art for $id"; continue; fi
 
-          echo "HTTP $code"
-          echo "Response:"
-          # Safe to print: names, scores and counters only — the function returns nothing
-          # about the caller and nothing about the provider key.
-          python3 -m json.tool < /tmp/out.json || cat /tmp/out.json
-          echo
+            # The card fronts embed real species photographs; crop to the photo panel so the
+            # provider is not asked to identify the card's typography.
+            python3 -c "from PIL import Image;im=Image.open('$src').convert('RGB');w,h=im.size;im.crop((int(w*.12),int(h*.11),int(w*.88),int(h*.50))).resize((900,int(900*(h*.39)/(w*.76)))).save('/tmp/s.jpg',quality=88)"
 
-          # A 429 is a PASS for the purposes of this check: it proves the function ran, the
-          # key was accepted and the quota logic fired. Only unconfigured or a provider
-          # failure is a real problem.
-          if grep -q '"code":"unconfigured"' /tmp/out.json; then
-            echo "::error::PLANTNET_API_KEY is not set on $PROJECT_REF. Set it with:"
-            echo "::error::  supabase secrets set PLANTNET_API_KEY=... --project-ref $PROJECT_REF"
-            exit 1
-          fi
-          if [ "$code" = "502" ]; then
-            echo "::error::The provider could not be reached, or rejected the key."
-            exit 1
-          fi
-          if [ "$code" != "200" ] && [ "$code" != "429" ]; then
-            echo "::error::Unexpected status $code."
-            exit 1
-          fi
+            code=$(curl -sS -o /tmp/out.json -w '%{http_code}' --max-time 90 \
+              -X POST "https://$PROJECT_REF.supabase.co/functions/v1/identify-plant" \
+              -H "apikey: $ANON" -H "Authorization: Bearer $ANON" -F "image=@/tmp/s.jpg")
 
-          if [ "$code" = "200" ]; then
-            # One-liner, not a heredoc: a heredoc inside a YAML block scalar loses its
-            # terminator to the dedent. Already fixed once in run-migration.yml.
-            python3 -c "import json;d=json.load(open('/tmp/out.json'));c=d.get('candidates',[]);print(f'candidates: {len(c)}');[print(f\"  {x['scientificName']:<40} {x['score']:.3f}\") for x in c];raise SystemExit('no candidates and no providerFoundNothing flag') if not c and not d.get('providerFoundNothing') else print('Plant ID is answering.')"
-          fi
+            echo "──────────────────────────────────────────────"
+            echo "$id  ->  HTTP $code"
+            if grep -q '"code":"unconfigured"' /tmp/out.json; then
+              echo "::error::PLANTNET_API_KEY is not set on $PROJECT_REF."
+              exit 1
+            fi
+            if [ "$code" = "429" ]; then echo "  rate limited — quota reached, stopping"; break; fi
+            if [ "$code" != "200" ]; then echo "::warning::unexpected status"; cat /tmp/out.json; fail=1; continue; fi
+            python3 -c "import json;d=json.load(open('/tmp/out.json'));c=d.get('candidates',[]);print(f'  candidates: {len(c)}');[print(f\"    {x['scientificName']:<38} {x['score']:.3f}\") for x in c];print('  remaining today:', d.get('remaining'))"
+          done
+          echo "──────────────────────────────────────────────"
+          exit $fail
