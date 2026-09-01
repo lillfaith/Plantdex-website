@@ -19,9 +19,9 @@ describe('profile section order', () => {
     // with the reason for each move sitting next to it in PROFILE_SECTIONS.
     expect(order).toEqual([
       'identification',
-      'lookalikes',
       'compounds',
       'healing',
+      'lookalikes',
       'parts',
       'preparations',
       'habitat',
@@ -46,6 +46,36 @@ describe('profile section order', () => {
 
   it('keeps identification before everything it discriminates', () => {
     expect(at('identification')).toBeLessThan(at('lookalikes'));
+  });
+
+  it('keeps lookalikes above everything about using the plant', () => {
+    /*
+     * THE INVARIANT THAT REPLACED "lookalikes is second".
+     *
+     * Compounds and Healing Traits moved above Lookalikes, which is safe for one specific
+     * reason: the acute hazards are not in this section. A card-printed `herb.warning` and
+     * any site caution render ABOVE the whole section stack in HerbDetail, before any of
+     * this order applies. What Lookalikes carries is confusion avoidance.
+     *
+     * Confusion avoidance has to come before PREPARATION, though — reading how a plant is
+     * traditionally made into a tea before reading what it can be mistaken for is the real
+     * failure mode, and it is the one this pins. Chemistry above it costs nothing; a
+     * preparation above it would.
+     */
+    for (const useSection of ['parts', 'preparations', 'taste'] as const) {
+      expect(
+        at('lookalikes'),
+        `lookalikes must stay above ${useSection} — never read how to use a plant before what it is confused with`,
+      ).toBeLessThan(at(useSection));
+    }
+  });
+
+  it('leads with the two sections the page exists for', () => {
+    // Identification first, then chemistry and traditional use. If either sinks below
+    // lookalikes again the page goes back to opening with two long list sections.
+    expect(at('identification')).toBe(0);
+    expect(at('compounds')).toBe(1);
+    expect(at('healing')).toBe(2);
   });
 
   it('puts Signature Compounds in the top half, above traditional use', () => {

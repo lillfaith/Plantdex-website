@@ -114,10 +114,11 @@ export default function ShopPage() {
           How the deck and this site fit together
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-violet-200">
-          This website <strong className="text-violet-100">is</strong> the deck, in another
-          form. Every one of the {DECK_CARD_COUNT} species pages is transcribed from the
-          physical card of the same number, and where a card contains an error the site
-          reproduces it faithfully and says so rather than quietly correcting it.
+          <strong className="text-violet-100">The deck is your field companion; Plantdex is
+          the world it connects to.</strong> Every one of the {DECK_CARD_COUNT} species pages
+          is transcribed from the physical card of the same number, and where a card contains
+          an error the site reproduces it faithfully and says so rather than quietly
+          correcting it.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-violet-200">
           The cards are what you carry. The site is what you keep: find a plant outdoors, log

@@ -71,9 +71,16 @@ export interface ProfileSection {
 /**
  * The order, top to bottom.
  *
- * The shape of it: recognise the plant, understand what is in it, learn what it has been
- * used for and how, then where and when to find it, then your own record of it, then the
- * provenance for all of it.
+ * The shape of it: recognise the plant, understand what is in it and what it has been used
+ * for, check what it could be confused with, learn how it has been prepared, then where and
+ * when to find it, then your own record of it, then the provenance for all of it.
+ *
+ * WHY LOOKALIKES IS NOT SECOND. It was, and Signature Compounds and Healing Traits — the two
+ * sections the page exists for — were pushed below a long list of discriminating characters
+ * and off the first screen. The acute safety content is not in Lookalikes: a card-printed
+ * warning and any site caution render above the ENTIRE section stack, so this order never
+ * puts a use before a hazard. Lookalikes still sits above everything about using the plant,
+ * which is the constraint that actually matters and is pinned by a test.
  *
  * A band renders nothing when it has no content — `HerbDetail`'s section components each
  * return null on empty data — so this order never manufactures an empty heading to satisfy
@@ -87,25 +94,25 @@ export const PROFILE_SECTIONS: readonly ProfileSection[] = [
     rationale: 'Recognising the plant comes before anything you might do with it.',
   },
   {
-    id: 'lookalikes',
-    measure: 'wide',
-    requires: 'always',
-    rationale:
-      'Immediately after identification: a discriminating character is only useful beside the thing it discriminates from.',
-  },
-  {
     id: 'compounds',
     measure: 'wide',
     requires: 'always',
     rationale:
-      'MOVED UP from eighth of thirteen. It is the most distinctive and most credibility-carrying section on the page — 43 of 45 cards now show real skeletal formulas — and it explains what the traditional-use sections below are about. Burying it under three lists of card text wasted it.',
+      'Second, above Lookalikes. It is the most distinctive and most credibility-carrying section on the page — 43 of 45 cards show real skeletal formulas — and it explains what the traditional-use sections are about. It has now moved up twice: from eighth of thirteen, then above Lookalikes, because a reader who has just identified the plant is asking what is IN it.',
   },
   {
     id: 'healing',
     measure: 'reading',
     requires: 'always',
     rationale:
-      'Traditional use, directly after the chemistry it is sometimes attributed to — and carrying the non-claim framing that belongs under this heading and nowhere else.',
+      'Directly after the chemistry it is sometimes attributed to, and carrying the non-claim framing that belongs under this heading and nowhere else. Above Lookalikes for the same reason Compounds is: these two are what the page is for, and they were sitting below a long discriminating-characters list that pushed them off the first screen.',
+  },
+  {
+    id: 'lookalikes',
+    measure: 'wide',
+    requires: 'always',
+    rationale:
+      'Below Compounds and Healing Traits, but still above every section about USING the plant — Usable Parts, Preparations and Taste all sit under it, and that is the ordering that matters. It is safe to move down two places because the acute hazards do not live here: a card-printed warning and any site caution render ABOVE the whole section stack in HerbDetail, before this or anything else. What this section carries is confusion avoidance, which belongs before preparation rather than before chemistry.',
   },
   {
     id: 'parts',
