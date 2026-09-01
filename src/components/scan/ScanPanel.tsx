@@ -1,0 +1,274 @@
+'use client';
+
+import { useCallback, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/state/AuthProvider';
+import { useHerbdex } from '@/state/HerbdexProvider';
+import { getHerb } from '@/lib/deck';
+import { confidenceBand } from '@/lib/plant-match';
+import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
+import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
+import { track } from '@/lib/analytics';
+import { ScanCaution } from './ScanCaution';
+
+/**
+ * PLANT ID V1 — the scan screen.
+ *
+ * Three outcomes, all designed rather than one designed and two handled:
+ *
+ *   matched    Something confirmable scored well. Candidates listed, best first, and STILL
+ *              requiring a tap — the scan proposes, the player decides.
+ *   uncertain  Nothing cleared the bar. The same list with nothing preferred, said plainly.
+ *   noMatch    Nothing mapped to a card. This is the COMMON case — 45 species out of a world
+ *              of them — so it is a real screen with somewhere to go next, not an error.
+ *
+ * Confirming calls the ordinary `discover()`, which is what keeps repeats idempotent: it is
+ * the same reducer every other entry point uses, and a plant already found awards nothing.
+ */
+export function ScanPanel() {
+  const { user } = useAuth();
+  const { discover, isDiscovered, ready } = useHerbdex();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [rateLimited, setRateLimited] = useState<{ signedIn: boolean } | null>(null);
+  const [confirmed, setConfirmed] = useState<string | null>(null);
+
+  const run = useCallback(
+    async (file: File) => {
+      setBusy(true);
+      setProblem(null);
+      setRateLimited(null);
+      setResult(null);
+      setConfirmed(null);
+      track('scan_started');
+
+      const answer = await identifyPlant(file);
+
+      if (isScanFailure(answer)) {
+        if (answer.kind === 'rateLimited') setRateLimited({ signedIn: answer.signedIn });
+        setProblem(answer.message);
+        setBusy(false);
+        return;
+      }
+
+      setResult(answer);
+      // Bare outcome counts. No species and no score travel — "how often does a scan find
+      // nothing" is the question that decides whether the deck should grow, and it needs
+      // neither. Consistent with the property-free schema.
+      track(
+        answer.outcome === 'matched'
+          ? 'scan_matched'
+          : answer.outcome === 'uncertain'
+            ? 'scan_uncertain'
+            : 'scan_no_match',
+      );
+      // History is account data; signed out there is nowhere to keep it, and saying so is
+      // better than silently discarding it. A failed write never costs the player the answer.
+      if (user) void recordScan(user.id, answer);
+      setBusy(false);
+    },
+    [user],
+  );
+
+  const onPick = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      // Reset first, or picking the same file twice never fires a change event.
+      event.target.value = '';
+      if (file) void run(file);
+    },
+    [run],
+  );
+
+  return (
+    <div className="space-y-5">
+      <section className="panel p-5">
+        <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
+          Identify a plant
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-violet-200">
+          Photograph a leaf, a flower or the whole plant. The clearer and closer the shot, the
+          better the suggestion.
+        </p>
+
+        <input
+          ref={inputRef}
+          type="file"
+          accept={ACCEPT_ATTRIBUTE}
+          capture="environment"
+          onChange={onPick}
+          className="sr-only"
+          id="scan-photo"
+        />
+        <label
+          htmlFor="scan-photo"
+          className="mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold text-plum-900 transition hover:bg-gold-300 sm:w-auto"
+        >
+          {busy ? 'Identifying…' : 'Take or choose a photo'}
+        </label>
+        <p className="mt-2 text-xs text-violet-400">
+          {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it
+          leaves your device.
+        </p>
+      </section>
+
+      {/* Unconditional, and above every result. Never gated on a score. */}
+      <ScanCaution />
+
+      {problem && (
+        <section className="panel p-5">
+          <p className="text-sm text-violet-100">{problem}</p>
+          {rateLimited && !rateLimited.signedIn && (
+            <p className="mt-2 text-sm text-violet-300">
+              <Link
+                href="/account"
+                className="font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+              >
+                Create a free account
+              </Link>{' '}
+              for a higher daily limit. Everything else here works without one.
+            </p>
+          )}
+        </section>
+      )}
+
+      {result && (
+        <section className="panel p-5" aria-live="polite">
+          {result.outcome === 'noMatch' ? (
+            <>
+              <h3 className="font-display text-lg font-bold text-gold-plate">
+                Not one of the 45 cards
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-violet-200">
+                {result.candidates.length > 0
+                  ? 'We recognised the plant, but it is not in this collection. Plantdex covers 45 common wild species — most plants you photograph will not be among them.'
+                  : 'Nothing was recognised in that photograph. A closer shot of a single leaf or flower usually works better.'}
+              </p>
+              {result.candidates.length > 0 && (
+                <ul className="mt-3 space-y-1 text-sm text-violet-300">
+                  {result.candidates.slice(0, 3).map((candidate) => (
+                    <li key={candidate.scientificName} className="flex justify-between gap-3">
+                      <span className="italic">{candidate.scientificName}</span>
+                      <span className="tabular-nums text-violet-400">
+                        {Math.round(candidate.score * 100)}%
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link
+                href="/herbdex"
+                className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+              >
+                Browse the collection instead &rarr;
+              </Link>
+            </>
+          ) : (
+            <>
+              <h3 className="font-display text-lg font-bold text-gold-plate">
+                {result.outcome === 'matched' ? 'Possible matches' : 'Not sure about this one'}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-violet-200">
+                {result.outcome === 'matched'
+                  ? 'Check the card before you confirm. You are the one recording the find.'
+                  : 'Nothing scored well enough to suggest. These are the closest, in order — open a card and compare it yourself.'}
+              </p>
+
+              <ul className="mt-4 space-y-3">
+                {result.candidates.map((candidate) => {
+                  const herb = candidate.match.herbId ? getHerb(candidate.match.herbId) : null;
+                  if (!herb) return null;
+                  const band = confidenceBand(candidate.score);
+                  const already = ready && isDiscovered(herb.id);
+                  return (
+                    <li key={candidate.scientificName} className="rounded-xl border border-violet-800/70 p-3">
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                        <Link
+                          href={`/herbdex/${herb.id}`}
+                          className="font-bold text-violet-100 underline underline-offset-2 hover:text-gold-400"
+                        >
+                          {herb.commonName}
+                        </Link>
+                        <span className="text-xs tabular-nums text-violet-400">
+                          {Math.round(candidate.score * 100)}% &middot; {band}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-xs italic text-violet-400">
+                        {candidate.scientificName}
+                      </p>
+
+                      {/* A card-printed warning belongs BEFORE the confirm button, not after it. */}
+                      {herb.warning && (
+                        <p className="mt-2 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-2 text-xs leading-relaxed text-violet-100">
+                          <span className="font-bold text-pink-accent">Card warning: </span>
+                          {herb.warning}
+                        </p>
+                      )}
+
+                      {candidate.match.kind === 'sameGenus' ? (
+                        <p className="mt-2 text-xs leading-relaxed text-violet-300">
+                          Related to this card, but a different species &mdash; so it cannot be
+                          logged as {herb.commonName}.
+                        </p>
+                      ) : already ? (
+                        <p className="mt-2 text-xs font-semibold text-gold-300">
+                          Already in your collection.
+                        </p>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // The player's decision, and the only thing that awards anything.
+                            // `discover` is the same call the plant page makes, so a repeat
+                            // awards nothing — idempotency is the reducer's, not ours.
+                            discover(herb);
+                            track('scan_confirmed');
+                            setConfirmed(herb.id);
+                          }}
+                          className="mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
+                        >
+                          Yes, I found {herb.commonName}
+                        </button>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          )}
+
+          {typeof result.remaining === 'number' && (
+            <p className="mt-4 text-xs text-violet-400">
+              {result.remaining} identification{result.remaining === 1 ? '' : 's'} left today
+              {result.signedIn ? '' : ' — signing in raises the limit'}.
+            </p>
+          )}
+        </section>
+      )}
+
+      {confirmed && (
+        <section className="panel p-5" aria-live="polite">
+          <p className="text-sm font-semibold text-gold-300">
+            Added to your collection.
+          </p>
+          <Link
+            href={`/herbdex/${confirmed}`}
+            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-violet-100 underline underline-offset-2 hover:text-gold-400"
+          >
+            Open the card &rarr;
+          </Link>
+        </section>
+      )}
+
+      {!user && (
+        <p className="text-xs leading-relaxed text-violet-400">
+          You can scan without an account. Signed in, you get a higher daily limit and your
+          scan history is kept &mdash; signed out, nothing is saved anywhere.
+        </p>
+      )}
+    </div>
+  );
+}

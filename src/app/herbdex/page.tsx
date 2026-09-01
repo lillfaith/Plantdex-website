@@ -8,6 +8,7 @@ import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
 import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
 import { TrackView } from '@/components/analytics/TrackView';
+import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { DeckCta } from '@/components/shop/DeckCta';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
@@ -70,6 +71,26 @@ export default function HerbdexPage() {
 
       <div className="mt-8">
         <BeyondCollection />
+      </div>
+
+      <div className="mt-8">
+        <Link
+          href="/scan"
+          className="panel flex items-center gap-3 p-4 transition-colors hover:bg-plum-600/50"
+        >
+          <span
+            aria-hidden="true"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-lg text-gold-300"
+          >
+            <PlantdexIcon name="revealed" />
+          </span>
+          <span className="min-w-0">
+            <span className="block font-bold text-violet-100">Identify a plant</span>
+            <span className="block text-xs text-violet-300">
+              Photograph something growing and see which cards it might be
+            </span>
+          </span>
+        </Link>
       </div>
 
       <div className="mt-10">

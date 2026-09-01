@@ -6,11 +6,15 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
- * The Field Research entry point, shown on the Herbdex page.
+ * The Field Research entry point. Shown on the Herbdex index, in the Garden, and on a
+ * discovered plant profile.
  *
- * Field Research deliberately does not get a seventh slot in the primary nav — at 390px
- * that bar is already six items wide. It belongs next to the Herbdex anyway: it exists to
- * send you back to the deck, so this is where you find it.
+ * Field Research deliberately does not get a seventh slot in the primary nav, and that is
+ * measured rather than assumed: seven items overflow the bar at 360px, which is a live
+ * phone width. So it is placed instead at the three points where a player asks "what next" —
+ * looking at the collection, looking at the garden, and having just advanced a card. Before
+ * that it existed on the Herbdex index alone, and a player who never scrolled it never found
+ * Field Research at all.
  */
 export function ResearchTeaser() {
   const { ready, world, dailyTasks } = useHerbdex();

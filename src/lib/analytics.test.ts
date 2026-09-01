@@ -96,8 +96,10 @@ describe('analytics schema', () => {
       const source = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
       for (const call of source.matchAll(/\btrack\(([^;]*?)\);/g)) {
         const args = call[1]!;
-        // Commas inside a builder call are its own arguments, not track's.
-        const outer = args.replace(/\([^()]*\)/g, '');
+        // Commas inside a builder call are its own arguments, not track's. A TRAILING comma
+        // is formatting — prettier adds one to any multi-line call — and is not an argument
+        // either, so it is stripped before the check rather than counted as one.
+        const outer = args.replace(/\([^()]*\)/g, '').replace(/,\s*$/, '');
         expect(outer, `${path}: track() is being passed more than an event name`).not.toContain(
           ',',
         );

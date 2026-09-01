@@ -55,6 +55,9 @@ const PHOTO_BUCKET = 'sighting-photos';
 /** Every table that holds player data, all keyed by `user_id`. */
 const USER_TABLES = [
   'sightings',
+  // Added with Plant ID. A scan row holds a photo path and what somebody photographed;
+  // leaving it behind would make "we keep no copy" false.
+  'scans',
   'discoveries',
   'learned',
   'mastered',

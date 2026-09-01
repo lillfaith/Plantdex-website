@@ -53,6 +53,8 @@ export interface AccountExport {
   collection: HerbdexState;
   reveals: string[];
   sightings: Sighting[];
+  /** Plant ID history. Absent from a device export — scanning requires the server. */
+  scans: Record<string, unknown>[];
   photos: {
     included: ExportedPhoto[];
     omitted: { sightingId: string; reference: string; reason: string }[];
@@ -194,6 +196,8 @@ export async function exportLocalData(): Promise<AccountExport> {
     collection: readLocalCollection(),
     reveals: readLocalReveals(),
     sightings,
+    // Scanning is a server feature, so a signed-out device has no scan history to export.
+    scans: [],
     photos: await collectPhotos(sightings, (reference) => getPhotoBlob(reference)),
   };
 }
@@ -209,7 +213,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
   if (!supabase) throw new Error('Accounts are not configured on this deployment.');
   const client = supabase;
 
-  const [discoveries, learned, mastered, research, achievements, sightingRows] =
+  const [discoveries, learned, mastered, research, achievements, sightingRows, scanRows] =
     await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
       client.from('learned').select('herb_id, learned_at').eq('user_id', userId),
@@ -224,6 +228,11 @@ export async function exportAccountData(userId: string, email?: string): Promise
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false }),
+      client
+        .from('scans')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false }),
     ]);
 
   for (const [name, result] of Object.entries({
@@ -233,6 +242,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     research,
     achievements,
     sightings: sightingRows,
+    scans: scanRows,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
     // their account afterwards would believe they had kept a copy.
@@ -291,6 +301,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     // discovery"), so an account export genuinely has none to give.
     reveals: [],
     sightings,
+    scans: (scanRows.data ?? []) as Record<string, unknown>[],
     photos: await collectPhotos(sightings, async (path) => {
       const { data, error } = await client.storage.from('sighting-photos').download(path);
       if (error) return null;

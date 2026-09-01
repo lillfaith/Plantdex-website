@@ -97,6 +97,15 @@ export const EVENT_NAMES = [
   'login_completed',
   'progress_imported',
 
+  // Plant ID. The outcome is in the name because "how often does a scan find nothing" is
+  // the question that decides whether the deck should grow — and no species travels, which
+  // would be both a property (Business tier) and more than a count needs.
+  'scan_started',
+  'scan_matched',
+  'scan_uncertain',
+  'scan_no_match',
+  'scan_confirmed',
+
   // Commerce. Placement is in the name because that is the entire question a CTA asks.
   'deck_cta_home',
   'deck_cta_herbdex',

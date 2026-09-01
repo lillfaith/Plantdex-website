@@ -37,6 +37,8 @@ import { DiscoveryCelebration } from './DiscoveryCelebration';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { DeckCta } from '../shop/DeckCta';
+import { LocalProgressNotice } from '../auth/LocalProgressNotice';
+import { ResearchTeaser } from '../research/ResearchTeaser';
 import { MySightings } from '../journal/MySightings';
 import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -300,6 +302,26 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           ),
         )}
       </div>
+
+        {/*
+          The other route into Field Research. Deep in a plant profile there was previously
+          no way back to it — the only entry point was a teaser on the Herbdex index — and
+          this is the page where a player has just advanced a card and is deciding what to do
+          with the next one.
+        */}
+        <div className="mt-8 max-w-3xl">
+          <ResearchTeaser />
+        </div>
+
+        {/*
+          The account nudge, on the page where progress is actually made rather than only on
+          the Herbdex index. It gates itself entirely — signed out, accounts configured, three
+          or more discoveries, not previously dismissed — so this is a placement, not a second
+          set of rules. It is NOT a wall: everything on this page works without it.
+        */}
+        <div className="mt-10 max-w-3xl">
+          <LocalProgressNotice />
+        </div>
 
         {/* The deck CTA sits ABOVE the safety notice, never below it. A plant page's last
             word has to be the caution, not a sales prompt — pushing the notice up to make

@@ -247,6 +247,10 @@ export default function PrivacyPage() {
           described above, and nothing else.
         </p>
         <p>
+          <strong className="text-violet-100">PlantNet</strong> identifies plants from
+          photographs you choose to submit, and receives nothing else.
+        </p>
+        <p>
           <strong className="text-violet-100">Stripe</strong> handles payment if you buy the
           printed deck. They receive your name, delivery address, email and payment details
           directly — none of it passes through this site. Stripe is contacted only when you
@@ -254,6 +258,42 @@ export default function PrivacyPage() {
           not at all.
         </p>
         <p>Signed out and not buying anything, only GitHub Pages and Plausible are involved.</p>
+      </LegalSection>
+
+      <LegalSection id="plant-id" heading="If you identify a plant from a photo">
+        <p>
+          Plant identification sends your photograph to{' '}
+          <strong className="text-violet-100">PlantNet</strong>, an identification service, and
+          shows you what came back. It happens only when you choose to identify something.
+        </p>
+        <LegalTable
+          rows={[
+            {
+              term: 'The photograph, resized and stripped',
+              detail:
+                'Before it leaves your device it is re-encoded to 1280px, which drops its EXIF metadata — including any GPS coordinates your camera recorded. The original file is never sent.',
+            },
+            {
+              term: 'Nothing that identifies you',
+              detail:
+                'No account id, no email and no name is sent to the identification service. It receives an image and returns names; it is not told whose image it is.',
+            },
+            {
+              term: 'A daily count, so one device cannot use up the allowance',
+              detail:
+                'Signed in, the counter is keyed to your account. Signed out, it is keyed to a one-way hash of your network address combined with a secret and the current date — that value cannot be turned back into an address, cannot be linked to yesterday, and is deleted within days. The address itself is never stored.',
+            },
+            {
+              term: 'Your scan history, only if you have an account',
+              detail:
+                'What you photographed, what was suggested and what you confirmed. You can delete any of it, it is in your data export, and it is erased with your account. Signed out, no history is kept anywhere.',
+            },
+          ]}
+        />
+        <p className="text-sm text-violet-300">
+          An identification is a suggestion from an image. It is never a statement that a plant
+          is safe to eat, drink or apply.
+        </p>
       </LegalSection>
 
       <LegalSection id="orders" heading="If you buy a deck">
