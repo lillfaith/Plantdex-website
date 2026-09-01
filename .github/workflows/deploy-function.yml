@@ -1,8 +1,14 @@
 name: Deploy Supabase edge function
 
-# Deploying `herbdex-action` needs a Supabase access token, which does not belong on
+# Deploying an edge function needs a Supabase access token, which does not belong on
 # anybody's laptop or in a chat window — so it lives in this repo's Actions secrets and the
-# deploy happens here. Run it from the Actions tab and pick a project.
+# deploy happens here. Run it from the Actions tab and pick a project and a function.
+#
+# TWO FUNCTIONS NOW. `herbdex-action` recomputes mastery and research server-side;
+# `delete-account` erases an account, and until it is deployed the Delete button on
+# /account reports a failure and deletes nothing. Deploy BOTH to any project where people
+# have accounts — a live account whose deletion path is missing is the one state this
+# workflow exists to prevent.
 #
 # ONE-TIME SETUP: create a token at https://supabase.com/dashboard/account/tokens and add it
 # as a repository secret named SUPABASE_ACCESS_TOKEN (Settings → Secrets and variables →
@@ -19,6 +25,15 @@ on:
         options:
           - vgjehmwcpavflbfhbbrp # test — where npm run verify:supabase runs
           - vygiamigomwlvnwkryyl # production — real players
+      function:
+        description: Which function to deploy
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - herbdex-action
+          - delete-account
 
 permissions:
   contents: read
@@ -66,23 +81,53 @@ jobs:
             exit 1
           fi
 
-      - name: Deploy herbdex-action
+      - name: Deploy
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: npx --yes supabase@2 functions deploy herbdex-action --project-ref "${{ inputs.project_ref }}"
+          CHOICE: ${{ inputs.function }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          if [ "$CHOICE" = "both" ]; then
+            FUNCTIONS="herbdex-action delete-account"
+          else
+            FUNCTIONS="$CHOICE"
+          fi
+          for fn in $FUNCTIONS; do
+            echo "::group::Deploying $fn"
+            npx --yes supabase@2 functions deploy "$fn" --project-ref "$PROJECT_REF"
+            echo "::endgroup::"
+          done
 
       - name: Check the CORS preflight answers
         # The failure this exists for is invisible everywhere else: with no OPTIONS handler
         # the browser blocks every call before it is sent, while Node-based tests still
         # pass because nothing enforces CORS there.
+        #
+        # Checked for every function deployed, not just the first: delete-account is called
+        # from the browser exactly like herbdex-action is, and a missing preflight there
+        # would make the Delete button fail in a way no test in this repo can see.
+        env:
+          CHOICE: ${{ inputs.function }}
+          PROJECT_REF: ${{ inputs.project_ref }}
         run: |
-          status=$(curl -s -o /dev/null -w '%{http_code}' -X OPTIONS \
-            "https://${{ inputs.project_ref }}.supabase.co/functions/v1/herbdex-action" \
-            -H 'Origin: https://example.com' \
-            -H 'Access-Control-Request-Method: POST')
-          echo "OPTIONS preflight -> $status"
-          if [ "$status" != "204" ]; then
-            echo "::error::Preflight answered $status, expected 204. Browsers will block" \
-                 "every call to this function."
-            exit 1
+          set -euo pipefail
+          if [ "$CHOICE" = "both" ]; then
+            FUNCTIONS="herbdex-action delete-account"
+          else
+            FUNCTIONS="$CHOICE"
           fi
+          failed=0
+          for fn in $FUNCTIONS; do
+            status=$(curl -s -o /dev/null -w '%{http_code}' -X OPTIONS \
+              "https://$PROJECT_REF.supabase.co/functions/v1/$fn" \
+              -H 'Origin: https://example.com' \
+              -H 'Access-Control-Request-Method: POST')
+            echo "$fn: OPTIONS preflight -> $status"
+            if [ "$status" != "204" ]; then
+              echo "::error::$fn preflight answered $status, expected 204. Browsers will" \
+                   "block every call to this function."
+              failed=1
+            fi
+          done
+          exit $failed
