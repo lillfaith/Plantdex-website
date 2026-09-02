@@ -1,0 +1,40 @@
+name: Check the live site
+
+# Fetches the DEPLOYED pages and asserts what they contain.
+#
+# The deploy workflow proves a build succeeded and an artifact was uploaded. It cannot prove
+# that /profile is reachable, or that the stylesheet Pages is serving is the one this build
+# produced — and a stale stylesheet renders a correct page unstyled while every status code
+# stays 200. That is the gap this closes.
+#
+# It runs here because the sandbox this repo is developed in cannot reach github.io: the
+# proxy refuses the tunnel outright, so a live check is not something that can be run from
+# a session and reported honestly. Read-only, no secrets, safe to run any time.
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: Base URL of the deployed site
+        required: true
+        default: https://lillfaith.github.io/Plantdex-website
+        type: string
+  # After every Pages deploy, so a broken publish is reported rather than waiting to be
+  # noticed. `completed` fires for failures too; the job skips those.
+  workflow_run:
+    workflows: ['Deploy to GitHub Pages']
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch every route and check what it contains
+        env:
+          SITE_URL: ${{ inputs.site_url || 'https://lillfaith.github.io/Plantdex-website' }}
+        run: python3 scripts/check_live_site.py
