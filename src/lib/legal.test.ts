@@ -198,6 +198,43 @@ describe('legal pages', () => {
     }
   });
 
+  it('sends people to the page that actually holds the delete button', () => {
+    /*
+     * THE SAME FAILURE, FIFTH TIME OF ASKING — and the most consequential yet.
+     *
+     * /privacy tells people WHERE to delete their account. When identity and data moved from
+     * /account to /profile, that sentence became a set of directions to a page that no longer
+     * has the button. Wrong prose about a shop is embarrassing; wrong prose about the only
+     * irreversible control in the app is somebody concluding they cannot delete their data.
+     *
+     * So the page must name the profile, and must not still name the account page, and there
+     * must be exactly one component in the codebase that renders the control.
+     */
+    const privacy = read(PRIVACY).replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+    expect(privacy, 'privacy still sends people to the account page to delete').not.toMatch(
+      /On the account page, under/i,
+    );
+    expect(privacy, 'privacy does not say where deletion lives').toMatch(
+      /On your profile page, under/i,
+    );
+  });
+
+  it('gives account deletion exactly one home', () => {
+    /*
+     * An irreversible action offered in two places is one somebody meets twice and trusts
+     * less each time — and two copies drift, so one of them ends up being the stale warning.
+     * `AccountDataSection` owns both the export and the delete, so counting its callers
+     * counts the homes.
+     */
+    const callers = readdirRecursive('src')
+      .filter((path) => /\.tsx$/.test(path) && !/\.test\.tsx?$/.test(path))
+      .filter((path) =>
+        readFileSync(path, 'utf8').includes("from '@/components/auth/AccountDataSection'"),
+      );
+    expect(callers, 'account deletion must be offered in exactly one place').toHaveLength(1);
+    expect(callers[0]).toMatch(/ProfileView\.tsx$/);
+  });
+
   it('keeps the privacy disclosure in step with the profile that exists', () => {
     /*
      * THE SAME FAILURE, FOURTH TIME OF ASKING.

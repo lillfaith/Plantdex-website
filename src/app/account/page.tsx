@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { ForgotPasswordForm, SignInForm, SignUpForm } from '@/components/auth/AuthForms';
 import { ImportLocalProgressDialog } from '@/components/auth/ImportLocalProgressDialog';
-import { AccountDataSection } from '@/components/auth/AccountDataSection';
 import { SafetyNotice } from '@/components/SafetyNotice';
 
 export default function AccountPage() {
-  const { ready, configured, user, signOut } = useAuth();
+  const { ready, configured, user } = useAuth();
   const [forgot, setForgot] = useState(false);
 
   return (
@@ -81,34 +80,32 @@ export default function AccountPage() {
 
       {configured && ready && user && (
         <div className="mt-6 space-y-4">
+          {/*
+            THIS PAGE IS THE DOOR, NOT THE DESTINATION.
+
+            Identity, "your data" and account deletion all live on the profile now. They were
+            MOVED rather than copied: deletion is irreversible, and an irreversible action
+            offered in two places is one somebody meets twice and trusts less each time. So
+            once you are through, this page's job is to point at the profile and get out of
+            the way.
+          */}
           <section className="panel p-5">
             <p className="text-xs font-semibold text-violet-400">Signed in as</p>
-            <p className="mt-1 text-sm font-bold text-violet-100">{user.email}</p>
-            <button
-              type="button"
-              onClick={() => void signOut()}
-              className="mt-4 min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
+            <p className="mt-1 truncate text-sm font-bold text-violet-100">{user.email}</p>
+            <Link
+              href="/profile"
+              className="mt-4 inline-flex min-h-11 items-center rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
             >
-              Sign out
-            </button>
+              Your profile, data and sign out &rarr;
+            </Link>
           </section>
           {/* Rendered unconditionally so it keeps a stable position in the tree — it only
-              actually opens once its own effect decides local progress should be offered. */}
-          <ImportLocalProgressDialog userId={user.id} />
-        </div>
-      )}
+              actually opens once its own effect decides local progress should be offered.
 
-      {/*
-        Outside every branch on purpose. The export is offered signed out as well as signed
-        in, because a signed-out collection lives only in this browser and is gone for good
-        the moment site data is cleared — which is exactly the person who most needs a copy.
-        Keeping it here also gives the delete dialog inside it a stable position in the tree,
-        which matters: deleting an account signs the player out, and a dialog nested in the
-        signed-in branch would be unmounted by its own success.
-      */}
-      {(!configured || ready) && (
-        <div className="mt-6">
-          <AccountDataSection userId={user?.id} email={user?.email ?? undefined} />
+              IT STAYS HERE, NOT ON THE PROFILE. Its effect fires on `userId`, and a player
+              who has just signed in lands on THIS page — so this is the only place the
+              local-progress offer reliably gets a chance to appear. */}
+          <ImportLocalProgressDialog userId={user.id} />
         </div>
       )}
 

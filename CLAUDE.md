@@ -396,8 +396,23 @@ followers, comments, leaderboards or feed.
   applied to one plant.
 - **`/profile` carries no `SafetyNotice` and no `DeckCta`.** It discusses no ingestion,
   preparation, identification or medicinal tradition, and a notice repeated onto a page that
-  raises no such risk is how the notices on pages that *do* stop being read. The four CTA
-  placements stay a fixed, tested set.
+  raises no such risk is how the notices on pages that *do* stop being read. That holds after
+  the account blocks moved in: an email address and a delete button raise none of those
+  either. The four CTA placements stay a fixed, tested set.
+- **The profile owns the account; `/account` is only the sign-in door.** Identity ("signed in
+  as" + sign out) and `AccountDataSection` (download + delete) live at the foot of `/profile`
+  and *nowhere else* — `legal.test.ts` fails if `AccountDataSection` gains a second caller.
+  An irreversible action offered in two places is one somebody meets twice and trusts less
+  each time, and two copies drift until one is the stale warning. `/account` keeps the auth
+  forms and `ImportLocalProgressDialog`, which must stay there: its effect fires on `userId`
+  and a player who has just signed in lands on that page, so it is the only place the
+  local-progress offer reliably appears. `/privacy` names where deletion lives, and
+  `legal.test.ts` fails if it still points at the account page.
+- **The sitewide badge is the avatar, resolved through `resolveProfile`.** It cannot show a
+  plant that was never discovered or a frame that was never earned, because it inherits the
+  page's own validation rather than repeating it, and it falls back to the email initial
+  rather than ever rendering an empty circle. Its sprite is `frozen`: the badge is on every
+  page, and frame 0 is authored as a complete resting pose precisely so it can be held.
 - **Signing in seeds the account profile from the device; it never overwrites and never
   clears.** A signed-in save writes the account only, so on a shared device signing in does
   not repaint the signed-out identity — the same reasoning that keys the collection import

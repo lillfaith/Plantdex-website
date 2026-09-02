@@ -354,7 +354,7 @@ export default function PrivacyPage() {
               term: 'Delete your account',
               detail: (
                 <>
-                  On the account page, under &ldquo;Your data&rdquo;. It removes every row
+                  On your profile page, under &ldquo;Your data&rdquo;. It removes every row
                   described above, <strong className="text-violet-100">every photograph you
                   have uploaded</strong>, and the account and email address themselves. It is
                   immediate and permanent: we keep no copy and cannot restore any of it, so you

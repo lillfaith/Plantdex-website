@@ -30,19 +30,38 @@ export function ProfileAvatar({
   frame,
   stage = 'flowering',
   size = 'lg',
+  frozen = false,
 }: {
   herbId: string | null;
   herbName?: string;
   frame: FieldFrame;
   stage?: GardenStage;
-  /** `lg` is the identity banner; `sm` is a picker swatch. */
-  size?: 'sm' | 'lg';
+  /**
+   * `lg` is the identity banner, `sm` a picker swatch, `xs` the sitewide badge.
+   *
+   * A small avatar can look oddly empty, and the cause is usually the PLANT rather than the
+   * sizing: the sprite is drawn at `stageForState`, so a discovered-but-unmastered species
+   * is a seedling and a seedling is small on purpose. Growing it to fill the frame would
+   * have the badge claim a maturity the collection has not earned.
+   */
+  size?: 'xs' | 'sm' | 'lg';
+  /**
+   * Hold frame 0 instead of playing.
+   *
+   * The sitewide badge uses this. Frame 0 is authored as a complete resting pose for every
+   * sprite — the same guarantee `prefers-reduced-motion` leans on — so a frozen avatar is a
+   * portrait rather than a paused animation. A creature idling in the corner of every page
+   * in the app is ambient motion nobody asked for.
+   */
+  frozen?: boolean;
 }) {
   // 80px on a phone, 112px from `sm:` up. The mobile size is smaller than the desktop one
   // because the hero has to keep the name, title, both meters and the signature card above
   // the fold at 390px — see ProfileHero.
-  const box = size === 'lg' ? 'h-20 w-20 sm:h-28 sm:w-28' : 'h-14 w-14';
-  const radius = size === 'lg' ? 'rounded-[1.4rem]' : 'rounded-xl';
+  const box =
+    size === 'lg' ? 'h-20 w-20 sm:h-28 sm:w-28' : size === 'sm' ? 'h-14 w-14' : 'h-9 w-9';
+  const radius =
+    size === 'lg' ? 'rounded-[1.4rem]' : size === 'sm' ? 'rounded-xl' : 'rounded-full';
 
   return (
     <span className={`relative inline-flex shrink-0 ${box}`}>
@@ -61,13 +80,14 @@ export function ProfileAvatar({
             alt={herbName ?? 'Your chosen plant'}
             stage={stage}
             fit
+            frozen={frozen}
             className="w-[86%]"
           />
         ) : (
           <PlantdexIcon
             name="sprout"
             aria-hidden="true"
-            className="text-2xl text-violet-400 opacity-70"
+            className={`text-violet-400 opacity-70 ${size === 'xs' ? 'text-sm' : 'text-2xl'}`}
           />
         )}
       </span>
