@@ -1,0 +1,30 @@
+name: Check plant name synonyms
+
+# Asks GBIF whether a name the provider returned is a synonym of the species a deck card
+# prints. Read-only, spends nothing, touches no Supabase project.
+#
+# It runs here because every nomenclatural authority — POWO, GBIF, World Flora Online — is
+# blocked from the sandbox this repo is edited in. The alternative is adding synonym mappings
+# from memory, which is how "Taraxacum campylodes" would have been a guess instead of a
+# checked fact.
+on:
+  workflow_dispatch:
+    inputs:
+      pairs:
+        description: 'Semicolon-separated "Queried name=Expected accepted name" pairs'
+        required: true
+        default: Viola papilionacea=Viola sororia; Viola riviniana=Viola sororia; Mentha arvensis=Mentha canadensis
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ask GBIF
+        env:
+          PAIRS: ${{ inputs.pairs }}
+        run: python3 scripts/check_synonyms.py
