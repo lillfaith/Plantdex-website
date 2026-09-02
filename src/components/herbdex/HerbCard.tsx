@@ -134,10 +134,18 @@ export function HerbCard({
           >
             {discovered ? herb.commonName : '???'}
           </p>
+          {/*
+            QUIET, NOT ABSENT. This line used to be a filled pill under every one of the 45
+            cards, which made the grid read as a table of tiers rather than a wall of card
+            art. The tier still has to be PRINTED — it is what keeps the rarity aura a
+            reinforcement instead of the only place rarity lives — so what came off is the
+            pill, not the word. Both states share the weight and size so the tiles keep a
+            uniform height.
+          */}
           {discovered ? (
-            <RarityBadge rarity={herb.rarity} />
+            <RarityBadge rarity={herb.rarity} tone="quiet" />
           ) : (
-            <span className="text-[0.72rem] text-violet-400">Find it to reveal</span>
+            <span className="text-[0.72rem] font-semibold text-violet-400">Find it to reveal</span>
           )}
         </div>
       </Link>
