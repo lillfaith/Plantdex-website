@@ -18,14 +18,14 @@ describe('profile section order', () => {
     // A snapshot in code rather than a file, so a reorder shows up as a reviewable diff
     // with the reason for each move sitting next to it in PROFILE_SECTIONS.
     expect(order).toEqual([
-      'identification',
-      'compounds',
       'healing',
+      'compounds',
+      'field-data',
+      'identification',
       'lookalikes',
       'parts',
       'preparations',
       'habitat',
-      'field-data',
       'taste',
       'sightings',
       'mastery',
@@ -70,21 +70,56 @@ describe('profile section order', () => {
     }
   });
 
-  it('leads with the two sections the page exists for', () => {
-    // Identification first, then chemistry and traditional use. If either sinks below
-    // lookalikes again the page goes back to opening with two long list sections.
-    expect(at('identification')).toBe(0);
+  it('opens with the sandwich the owner asked for', () => {
+    /*
+     * Traditional use, chemistry, the card's own data, then how to recognise it. This
+     * REPLACED an assertion that read identification=0, compounds=1, healing=2, and the
+     * change of mind is the point of writing it down: the earlier arrangement led with
+     * chemistry deliberately, and a later reader finding both rationales in
+     * PROFILE_SECTIONS should be able to tell which one is live.
+     */
+    expect(at('healing')).toBe(0);
     expect(at('compounds')).toBe(1);
-    expect(at('healing')).toBe(2);
+    expect(at('field-data')).toBe(2);
+    expect(at('identification')).toBe(3);
   });
 
-  it('puts Signature Compounds in the top half, above traditional use', () => {
-    // The move this restructure existed for. Compounds explains what the traditional-use
-    // sections are about, so it may not sink back below them.
-    expect(at('compounds')).toBeLessThan(at('healing'));
+  it('keeps Signature Compounds in the top half and above preparation', () => {
+    /*
+     * What survived the reorder. Compounds no longer sits above Healing Traits — that was
+     * the old stance and it was reversed on purpose — but it must still land in the top
+     * half and above everything about preparing or tasting the plant, so the chemistry is
+     * read before any instruction that depends on it.
+     */
     expect(at('compounds')).toBeLessThan(at('preparations'));
     expect(at('compounds')).toBeLessThan(at('taste'));
     expect(at('compounds')).toBeLessThan(order.length / 2);
+  });
+
+  it('still never puts a use before its hazard framing', () => {
+    /*
+     * Healing Traits leading the page does not weaken this, because the property never came
+     * from the order: `HerbDetail` renders a card-printed warning and the SafetyNotice ABOVE
+     * the whole section stack, and this asserts that the component still does so rather than
+     * trusting the arrangement below it.
+     */
+    const detail = readFileSync('src/components/herbdex/HerbDetail.tsx', 'utf8');
+    /*
+     * The RENDERED elements, not the identifiers. Written as `indexOf('SafetyNotice')` this
+     * matched the import on line 43 and so asserted only that imports precede usage — true
+     * of every file ever written. And a marker that is absent returns -1, which is less than
+     * any index, so each one is required to exist before it is compared.
+     */
+    const at = (marker: string) => {
+      const index = detail.indexOf(marker);
+      expect(index, `${marker} is not in HerbDetail at all`).toBeGreaterThan(-1);
+      return index;
+    };
+    const stack = at('sectionRows(discovered).map');
+    expect(at('<CardWarning'), 'the card warning must render before the bands').toBeLessThan(stack);
+    expect(at('<SafetyNotice'), 'the safety notice must render before the bands').toBeLessThan(
+      stack,
+    );
   });
 
   it('puts player progression after the botany', () => {

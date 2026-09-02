@@ -32,14 +32,14 @@
 
 /** Ids are stable: they key React nodes and are what the ordering test asserts against. */
 export const PROFILE_SECTION_IDS = [
+  'healing',
+  'compounds',
+  'field-data',
   'identification',
   'lookalikes',
-  'compounds',
-  'healing',
   'parts',
   'preparations',
   'habitat',
-  'field-data',
   'taste',
   'sightings',
   'mastery',
@@ -71,16 +71,21 @@ export interface ProfileSection {
 /**
  * The order, top to bottom.
  *
- * The shape of it: recognise the plant, understand what is in it and what it has been used
- * for, check what it could be confused with, learn how it has been prepared, then where and
- * when to find it, then your own record of it, then the provenance for all of it.
+ * THE FIRST FOUR ARE A DELIBERATE SANDWICH, set by the owner: what the plant has
+ * traditionally been for, what is in it, what the card prints about it, then how to
+ * recognise it. Everything else keeps the relative order it had.
  *
- * WHY LOOKALIKES IS NOT SECOND. It was, and Signature Compounds and Healing Traits — the two
- * sections the page exists for — were pushed below a long list of discriminating characters
- * and off the first screen. The acute safety content is not in Lookalikes: a card-printed
- * warning and any site caution render above the ENTIRE section stack, so this order never
- * puts a use before a hazard. Lookalikes still sits above everything about using the plant,
- * which is the constraint that actually matters and is pinned by a test.
+ * That puts Healing Traits above Signature Compounds, reversing an earlier decision to lead
+ * with chemistry, and puts Identification fourth rather than first. Recorded plainly because
+ * the reasoning for the old arrangement is still in the entries below and a later reader
+ * should not have to guess which one is current.
+ *
+ * IT STILL NEVER PUTS A USE BEFORE A HAZARD. That property does not come from this list at
+ * all: a card-printed warning and the site's safety notice render ABOVE the entire section
+ * stack in `HerbDetail`, before the first band whatever the first band is. Healing Traits
+ * also carries its own non-claim framing under its own heading. And Lookalikes still sits
+ * above everything about USING the plant — Usable Parts, Preparations, Taste — which is the
+ * ordering constraint that carries weight, and it is pinned by a test.
  *
  * A band renders nothing when it has no content — `HerbDetail`'s section components each
  * return null on empty data — so this order never manufactures an empty heading to satisfy
@@ -88,24 +93,32 @@ export interface ProfileSection {
  */
 export const PROFILE_SECTIONS: readonly ProfileSection[] = [
   {
-    id: 'identification',
-    measure: 'wide',
+    id: 'healing',
+    measure: 'reading',
     requires: 'always',
-    rationale: 'Recognising the plant comes before anything you might do with it.',
+    rationale:
+      'First, by the owner\'s decision. It carries the non-claim framing that belongs under this heading and nowhere else, and it needs that framing more than ever leading the page — this is the deck\'s wording for traditional use, never a statement that a plant treats anything. Nothing acute is displaced by it: the card warning and the safety notice both render above the whole stack.',
   },
   {
     id: 'compounds',
     measure: 'wide',
     requires: 'always',
     rationale:
-      'Second, above Lookalikes. It is the most distinctive and most credibility-carrying section on the page — 43 of 45 cards show real skeletal formulas — and it explains what the traditional-use sections are about. It has now moved up twice: from eighth of thirteen, then above Lookalikes, because a reader who has just identified the plant is asking what is IN it.',
+      'Second, directly under the traditional uses it is sometimes credited with — which is the most useful place for it to be, since a reader who has just read what a plant was used for is owed the chemistry immediately rather than three sections later. The most credibility-carrying section on the page: 43 of 45 cards show real skeletal formulas.',
   },
   {
-    id: 'healing',
-    measure: 'reading',
+    id: 'field-data',
+    measure: 'wide',
     requires: 'always',
     rationale:
-      'Directly after the chemistry it is sometimes attributed to, and carrying the non-claim framing that belongs under this heading and nowhere else. Above Lookalikes for the same reason Compounds is: these two are what the page is for, and they were sitting below a long discriminating-characters list that pushed them off the first screen.',
+      'Third. It used to sit directly under Habitat so the card-printed figures and the habitat prose read as one answer to "where and when"; that pairing is broken by this order, and Habitat now follows further down on its own. The trade was made deliberately: the card\'s own printed data — season, encounter rate, growing conditions — is what a player is holding in their hand, so it belongs in the opening group.',
+  },
+  {
+    id: 'identification',
+    measure: 'wide',
+    requires: 'always',
+    rationale:
+      'Fourth, closing the opening group. It led the page until the owner asked for the traditional-use / chemistry / card-data sandwich above it. Still above Lookalikes, so the plant is described before the things it is confused with, and still above every section about using it.',
   },
   {
     id: 'lookalikes',
@@ -131,13 +144,6 @@ export const PROFILE_SECTIONS: readonly ProfileSection[] = [
     measure: 'wide',
     requires: 'always',
     rationale: 'Where to look, once you know what you are looking for and why you want it.',
-  },
-  {
-    id: 'field-data',
-    measure: 'wide',
-    requires: 'always',
-    rationale:
-      'Season, encounter rate and growing conditions — the card-printed counterpart to the habitat prose above, so the two read as one answer to "where and when".',
   },
   {
     id: 'taste',

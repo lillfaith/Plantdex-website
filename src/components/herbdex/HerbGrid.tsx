@@ -136,9 +136,16 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
             </span>
           </summary>
 
+          {/*
+            WRAPPED, NOT SCROLLED. Each of these four rows used to be its own horizontal
+            scroller, which on a phone meant four independent scroll positions, a chip
+            sheared in half at the right edge ("Way…" for Wayside) and a scrollbar track
+            drawn across the panel. At 44px pills there was no room to do anything else; at
+            30px there is, so they wrap and every option is simply visible.
+          */}
           <div className="mt-2 space-y-2">
-        <div className="-mx-4 overflow-x-auto px-4 pb-1">
-          <div className="flex gap-2" role="group" aria-label="Filter by discovery status">
+        <div>
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by discovery status">
             {STATUS_OPTIONS.map((option) => (
               <Chip
                 key={option.value}
@@ -151,8 +158,8 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
           </div>
         </div>
 
-        <div className="-mx-4 overflow-x-auto px-4 pb-1">
-          <div className="flex gap-2" role="group" aria-label="Filter by encounter rate">
+        <div>
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by encounter rate">
             <Chip active={rarity === 'all'} onClick={() => setRarity('all')}>
               Any rate
             </Chip>
@@ -164,8 +171,8 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
           </div>
         </div>
 
-        <div className="-mx-4 overflow-x-auto px-4 pb-1">
-          <div className="flex gap-2" role="group" aria-label="Filter by season">
+        <div>
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by season">
             <Chip active={season === 'all'} onClick={() => setSeason('all')}>
               Any season
             </Chip>
@@ -182,8 +189,8 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
           in" rather than naming a place, because a class is a kind of ground, not a
           location.
         */}
-        <div className="-mx-4 overflow-x-auto px-4 pb-1">
-          <div className="flex gap-2" role="group" aria-label="Filter by habitat">
+        <div>
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by habitat">
             <Chip active={habitat === 'all'} onClick={() => setHabitat('all')}>
               Any habitat
             </Chip>
