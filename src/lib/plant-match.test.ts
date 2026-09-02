@@ -165,13 +165,26 @@ describe('outcomeFor', () => {
     expect(outcomeFor([candidate('Urtica dioica', 0.91)])).toBe('matched');
   });
 
-  it('reports uncertain rather than pretending, when scores are low', () => {
+  it('reports uncertain when a card is in the list but is not the leading answer', () => {
     /*
-     * Uncertain is a first-class state, not a degraded match. A ranked list with nothing
-     * highlighted is the honest rendering of "the provider is guessing".
+     * Uncertain is a first-class state, not a degraded match — but it now means something
+     * narrower and more useful than it did. It USED to mean "no candidate cleared 0.35",
+     * which put a species' own photographs on both sides of an invented line: real dock
+     * pictures scored 0.303 and 0.616 for the same plant. It now means the identifier's best
+     * guess is NOT a card you can log, though one is further down the list.
      */
+    const cardIsSecond = [
+      candidate('Viola riviniana', 0.243), // a real species, not in the deck
+      candidate('Viola sororia', 0.149), // the card, ranked below it
+    ];
+    expect(outcomeFor(cardIsSecond)).toBe('uncertain');
+  });
+
+  it('reports a match on a low score when the card IS the leading answer', () => {
+    // The dock case. A provider's absolute score falls as a genus gets bigger, because the
+    // confidence divides among congeners; rank does not have that problem.
     expect(outcomeFor([candidate('Urtica dioica', 0.12), candidate('Quercus robur', 0.08)])).toBe(
-      'uncertain',
+      'matched',
     );
   });
 

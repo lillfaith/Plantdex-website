@@ -156,13 +156,95 @@ describe('every card, against the live provider', () => {
       counts[outcomeFor(candidates)] += 1;
     }
     /*
+     * 38/7 under the rank rule, not 33/12. The change is the rule, not the provider: an
+     * outcome is now decided by whether the identifier's LEADING answer is a loggable card,
+     * rather than by whether some card cleared an absolute 0.35. The seven that stay
+     * uncertain are the ones where a congener came top — Mentha arvensis over M. canadensis,
+     * Viola riviniana over V. sororia, and so on — which is exactly what uncertain should
+     * mean.
+     *
      * relatedOnly is 0 here and that is a claim, not a blank: every one of the 45 card-art
-     * photographs put the card's OWN species somewhere in the provider's five, so none of
-     * them fell through to "a relative, but not this one". Field photographs do — a violet
-     * came back as five Viola species with no V. sororia among them, which is the report
-     * that made the outcome exist. Studio art is the easy case; this number moving is how
-     * that difference would show up here.
+     * photographs put the card's OWN species somewhere in the provider's five. Field
+     * photographs do fall through — a violet came back as five Viola species with no
+     * V. sororia among them, which is the report that made the outcome exist. Studio art is
+     * the easy case; this number moving is how that difference would show up here.
      */
-    expect(counts).toEqual({ matched: 33, uncertain: 12, relatedOnly: 0, noMatch: 0 });
+    expect(counts).toEqual({ matched: 38, uncertain: 7, relatedOnly: 0, noMatch: 0 });
+  });
+});
+
+describe('five real photographs of broad-leaved dock', () => {
+  /*
+   * "I'm having a lot of issue with Broadleaf Dock and it not identifying multiple pictures."
+   *
+   * Five genuine photographs from Wikimedia Commons, by different photographers, put through
+   * the live function. Rumex obtusifolius came top in every one — the identifier was never
+   * failing. Two of the five scored 0.303 and 0.341, under the invented 0.35 threshold, so
+   * they were headed "Not sure about this one" above the words "nothing scored well enough
+   * to suggest", while the Broadleaf Dock card sat underneath with a confirm button on it.
+   * That is what the report turned out to be.
+   *
+   * It also shows why an absolute threshold was the wrong instrument: one species' own
+   * photographs span 0.303 to 0.616, and 0.35 cut that distribution nearly in half.
+   */
+  const DOCK_PHOTOGRAPHS: Record<string, [string, number][]> = {
+    '20180205-1': [
+      ['Rumex obtusifolius', 0.481], ['Rumex pulcher', 0.081], ['Rumex patientia', 0.074],
+      ['Rumex × acutus', 0.061], ['Rumex nepalensis', 0.044],
+    ],
+    '20180205-3': [
+      ['Rumex obtusifolius', 0.616], ['Rumex pulcher', 0.161], ['Rumex patientia', 0.026],
+      ['Rumex × acutus', 0.021], ['Rumex nepalensis', 0.018],
+    ],
+    '20180205-5': [
+      ['Rumex obtusifolius', 0.303], ['Rumex cristatus', 0.176], ['Rumex hydrolapathum', 0.129],
+      ['Rumex nepalensis', 0.061], ['Rumex japonicus', 0.061],
+    ],
+    '20180216-1': [
+      ['Rumex obtusifolius', 0.438], ['Rumex × acutus', 0.12], ['Rumex alpinus', 0.037],
+      ['Rumex patientia', 0.032], ['Dipsacus pilosus', 0.032],
+    ],
+    '20180216-2': [
+      ['Rumex obtusifolius', 0.341], ['Rumex × acutus', 0.079], ['Rumex alpinus', 0.057],
+      ['Senecio smithii', 0.03], ['Rumex cristatus', 0.027],
+    ],
+  };
+
+  const asCandidates = (rows: [string, number][]) =>
+    rows.map(([scientificName, score]) => ({
+      scientificName,
+      score,
+      match: matchScientificName(scientificName),
+    }));
+
+  it('offers the Broadleaf Dock card on every one of them', () => {
+    for (const [label, rows] of Object.entries(DOCK_PHOTOGRAPHS)) {
+      const top = asCandidates(rows)[0];
+      expect(top, label).toBeDefined();
+      expect(top?.match.herbId, label).toBe('rumex-obtusifolius');
+      expect(top?.match.confirmable, `${label} must be loggable`).toBe(true);
+    }
+  });
+
+  it('reports every one as a match, including the two under the old threshold', () => {
+    for (const [label, rows] of Object.entries(DOCK_PHOTOGRAPHS)) {
+      expect(outcomeFor(asCandidates(rows)), label).toBe('matched');
+    }
+  });
+
+  it('does not make the other Rumex species loggable to achieve it', () => {
+    // The fix is about rank, not about relaxing what counts as the same plant.
+    for (const other of ['Rumex pulcher', 'Rumex patientia', 'Rumex crispus', 'Rumex × acutus']) {
+      expect(matchScientificName(other).confirmable, other).toBe(false);
+    }
+  });
+
+  it('names both Rumex cards rather than picking one by deck order', () => {
+    // The deck prints two: Broadleaf Dock (#2) and Sheep's Sorrel (#19). Rumex acetosa is
+    // the near relative of the SECOND, and used to be offered the first.
+    expect(matchScientificName('Rumex acetosa').relatedHerbIds).toEqual([
+      'rumex-obtusifolius',
+      'rumex-acetosella',
+    ]);
   });
 });

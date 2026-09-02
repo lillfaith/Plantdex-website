@@ -41,6 +41,17 @@ export interface PlantMatch {
    * than this plant. That distinction is the point of the type.
    */
   confirmable: boolean;
+  /**
+   * EVERY deck card in this genus, for `sameGenus` only.
+   *
+   * `herbId` alone was `SPECIES_BY_GENUS.get(genus)[0]` — the first card in DECK ORDER — and
+   * the deck holds two Rumex species. So `Rumex acetosa`, which is the close relative of the
+   * Sheep's Sorrel card, was offered Broadleaf Dock, and every other Rumex was too: a coin
+   * flip that always landed the same way. Naming one card confidently is only honest when
+   * there is one to name, so the caller gets the whole list and can say "two cards" when
+   * there are two.
+   */
+  relatedHerbIds?: string[];
 }
 
 const NO_MATCH: PlantMatch = { kind: 'none', confirmable: false };
@@ -185,8 +196,15 @@ export function matchScientificName(scientificName: string): PlantMatch {
 
   // A different species in a genus the deck covers. Related, and worth showing so the player
   // can see why it came up — but never confirmable as that card.
-  const related = SPECIES_BY_GENUS.get(genus)?.[0];
-  if (related) return { kind: 'sameGenus', herbId: related, confirmable: false };
+  const related = SPECIES_BY_GENUS.get(genus);
+  if (related?.length) {
+    return {
+      kind: 'sameGenus',
+      herbId: related[0],
+      relatedHerbIds: related,
+      confirmable: false,
+    };
+  }
 
   return NO_MATCH;
 }
@@ -239,8 +257,27 @@ export type ScanOutcome = 'matched' | 'uncertain' | 'relatedOnly' | 'noMatch';
  */
 export function outcomeFor(candidates: readonly ScanCandidate[]): ScanOutcome {
   const confirmable = candidates.filter((candidate) => candidate.match.confirmable);
-  if (confirmable.length > 0) {
-    return confirmable.some((candidate) => candidate.score >= 0.35) ? 'matched' : 'uncertain';
+  if (confirmable.length === 0) {
+    return candidates.some((candidate) => candidate.match.herbId) ? 'relatedOnly' : 'noMatch';
   }
-  return candidates.some((candidate) => candidate.match.herbId) ? 'relatedOnly' : 'noMatch';
+  /*
+   * RANK, NOT AN ABSOLUTE SCORE.
+   *
+   * This used to read `score >= 0.35`, a threshold I invented. Five real photographs of
+   * broad-leaved dock put Rumex obtusifolius top every time, at 0.616, 0.481, 0.438, 0.341
+   * and 0.303 — so that number cut a single species' own distribution almost in half, and
+   * two of the five were headed "Not sure about this one" over the words "nothing scored
+   * well enough to suggest", while the deck's own card sat underneath with a confirm button.
+   * That is what "it will not identify dock" turned out to mean.
+   *
+   * A provider's absolute score is not comparable between species anyway: it falls as the
+   * genus gets bigger, because the confidence is divided among congeners. Twenty Rumex
+   * species means a lower number for the same quality of photograph. What IS comparable is
+   * rank — whether the identifier's leading answer is a card you can log.
+   *
+   * So `matched` means the top-ranked candidate is that card, and `uncertain` means one is
+   * in the list but the identifier's best guess is something else. Neither changes what may
+   * be logged; both show the score and the band; the caution above them is unconditional.
+   */
+  return candidates[0]?.match.confirmable ? 'matched' : 'uncertain';
 }

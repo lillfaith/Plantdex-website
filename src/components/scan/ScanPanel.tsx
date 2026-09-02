@@ -217,21 +217,34 @@ export function ScanPanel() {
                 {result.outcome === 'relatedOnly' &&
                   (() => {
                     const near = result.candidates.find((candidate) => candidate.match.herbId);
-                    const herb = near?.match.herbId ? getHerb(near.match.herbId) : null;
-                    if (!herb) return null;
+                    // Every card in the genus. The deck holds two Rumex species, and naming
+                    // one of them confidently was a coin flip that always landed the same way.
+                    const ids = near?.match.relatedHerbIds ?? (near?.match.herbId ? [near.match.herbId] : []);
+                    const herbs = ids.map(getHerb).filter((herb) => herb !== undefined);
+                    if (herbs.length === 0) return null;
                     return (
-                      <Link
-                        href={`/herbdex/${herb.id}`}
-                        className="mt-3 block rounded-xl border-y border-r border-l-4 border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink p-3 transition-colors hover:bg-plum-600/40"
-                      >
-                        <span className="block font-bold text-violet-100">{herb.commonName}</span>
-                        <span className="block text-xs italic text-violet-400">
-                          {herb.scientificName}
-                        </span>
-                        <span className="mt-1 block text-xs text-violet-300">
-                          The deck&rsquo;s card for this group &mdash; open it and compare
-                        </span>
-                      </Link>
+                      <ul className="mt-3 space-y-2">
+                        {herbs.map((herb) => (
+                          <li key={herb.id}>
+                            <Link
+                              href={`/herbdex/${herb.id}`}
+                              className="block rounded-xl border-y border-r border-l-4 border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink p-3 transition-colors hover:bg-plum-600/40"
+                            >
+                              <span className="block font-bold text-violet-100">
+                                {herb.commonName}
+                              </span>
+                              <span className="block text-xs italic text-violet-400">
+                                {herb.scientificName}
+                              </span>
+                            </Link>
+                          </li>
+                        ))}
+                        <li className="text-xs text-violet-300">
+                          {herbs.length === 1
+                            ? 'The deck\u2019s card for this group \u2014 open it and compare'
+                            : `The deck\u2019s ${herbs.length} cards for this group \u2014 open them and compare`}
+                        </li>
+                      </ul>
                     );
                   })()}
                 {result.candidates.length > 0 && (
@@ -269,7 +282,7 @@ export function ScanPanel() {
                 <p className="mt-2 text-sm leading-relaxed text-violet-200">
                   {result.outcome === 'matched'
                     ? 'Check the card before you confirm. You are the one recording the find.'
-                    : 'Nothing scored well enough to suggest. These are the closest, in order — open a card and compare it yourself.'}
+                    : "The identifier's best guess is not a card in this deck, but one below is. Open it and compare before you confirm anything."}
                 </p>
 
                 <ul className="mt-4 space-y-3">
@@ -329,8 +342,9 @@ export function ScanPanel() {
 
                         {candidate.match.kind === 'sameGenus' ? (
                           <p className="mt-2 text-xs leading-relaxed text-violet-300">
-                            Related to this card, but a different species &mdash; so it cannot be
-                            logged as {herb.commonName}.
+                            {(candidate.match.relatedHerbIds?.length ?? 1) > 1
+                              ? `Related to the deck\u2019s ${candidate.match.relatedHerbIds?.length} cards in this group, but a different species \u2014 so it cannot be logged as any of them.`
+                              : `Related to this card, but a different species \u2014 so it cannot be logged as ${herb.commonName}.`}
                           </p>
                         ) : already ? (
                           <p className="mt-2 text-xs font-semibold text-gold-300">
