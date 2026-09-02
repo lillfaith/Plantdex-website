@@ -1,33 +1,41 @@
+import Link from 'next/link';
 import { getHerb } from '@/lib/deck';
 import type { ProfileStats } from '@/lib/profile-stats';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 import { RarityBadge } from '../herbdex/RarityBadge';
-import { Panel } from '../ui/Panel';
-import { SectionHeader } from '../ui/SectionHeader';
 import { MICRO_LABEL } from '../ui/accents';
 
 /**
- * The field record: six figures, none of them stored.
+ * The field record: five figures, none of them stored.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * SUNKEN TILES, NOT BORDERED CARDS. The first version was six outlined boxes inside an
+ * outlined panel — rectangles inside rectangles, which is most of why the page read as
+ * repetitive. `.sunken` is darker than the panel it sits in with a hairline of light along
+ * its top edge, so a tile reads as a recess rather than as another card, and needs no
+ * outline at all.
+ *
+ * COLOUR IS AN ACCENT, NEVER A SURFACE. Each stat owns a hue, and it appears in exactly two
+ * places: the meter fill and the icon. A tile tinted with its own colour would set six
+ * competing surfaces against the panel and against each other; the meters carry it fine.
+ *
+ * COMPLETION IS NOT HERE. It moved to the hero's ring. Printing it a third time — bar, ring,
+ * tile — is how a number stops being read.
+ * ─────────────────────────────────────────────────────────────────────────────
  *
  * Every value arrives already derived by `profileStats()` from the discovery, learned,
- * mastered, research and achievement records — there is no cached count anywhere behind
- * this, on the client or on the server, for the same reason XP has never been stored.
- *
- * NOT A TABLE. Each figure gets an icon, a large numeral and, where a denominator genuinely
- * exists, a meter — so the section reads at a glance rather than being parsed. Field
- * Research deliberately has no meter: tasks keep coming, so there is no total to be a
- * fraction of, and drawing one would invent a finish line.
+ * mastered, research and achievement records. There is no cached count behind any of it.
  */
 
 interface Tile {
   label: string;
   icon: IconName;
   value: number;
-  /** Absent where there is genuinely no total — see above. */
+  /** Absent where there is genuinely no total — Field Research keeps producing tasks. */
   total?: number;
-  /** Whole Tailwind classes for the meter fill. */
+  /** Whole Tailwind classes. The stat's colour lives here and on its icon, nowhere else. */
   fill: string;
-  suffix?: string;
+  tint: string;
 }
 
 export function FieldRecord({ stats }: { stats: ProfileStats }) {
@@ -40,6 +48,7 @@ export function FieldRecord({ stats }: { stats: ProfileStats }) {
       value: stats.discovered,
       total: stats.deckSize,
       fill: 'bg-cyan-accent',
+      tint: 'text-cyan-accent',
     },
     {
       label: 'Learned',
@@ -47,6 +56,7 @@ export function FieldRecord({ stats }: { stats: ProfileStats }) {
       value: stats.learned,
       total: stats.deckSize,
       fill: 'bg-mystery-lilac',
+      tint: 'text-mystery-lilac',
     },
     {
       label: 'Mastered',
@@ -54,6 +64,7 @@ export function FieldRecord({ stats }: { stats: ProfileStats }) {
       value: stats.mastered,
       total: stats.deckSize,
       fill: 'bg-gold-500',
+      tint: 'text-gold-400',
     },
     {
       label: 'Achievements',
@@ -61,73 +72,61 @@ export function FieldRecord({ stats }: { stats: ProfileStats }) {
       value: stats.achievementsEarned,
       total: stats.achievementsTotal,
       fill: 'bg-mystery-pink',
+      tint: 'text-mystery-pink',
     },
     {
       label: 'Field Research',
       icon: 'research',
       value: stats.researchCompleted,
       fill: 'bg-mystery-orchid',
-    },
-    {
-      label: 'Collection',
-      icon: 'herbdex',
-      value: stats.completionPct,
-      total: 100,
-      suffix: '%',
-      fill: 'bg-pink-accent',
+      tint: 'text-mystery-orchid',
     },
   ];
 
   return (
-    <Panel aria-labelledby="profile-record" pad="md">
-      <SectionHeader
+    <section aria-labelledby="profile-record" className="panel p-4 sm:p-5">
+      <h2
         id="profile-record"
-        eyebrow="Field record"
-        title="What you have done"
-        accent="violet"
-        icon="journal"
-        right={
-          rarest ? (
-            <span className="flex items-center gap-2">
-              <span className={`${MICRO_LABEL} text-violet-400`}>Rarest held</span>
-              <RarityBadge rarity={rarest.rarity} />
-            </span>
-          ) : undefined
-        }
-      />
+        className="font-display text-lg font-extrabold text-gold-plate sm:text-xl"
+      >
+        Field record
+      </h2>
 
-      <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-        {tiles.map((tile) => {
+      <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+        {tiles.map((tile, index) => {
           const pct = tile.total ? Math.round((tile.value / tile.total) * 100) : 0;
+          // Five tiles into a two-column grid leaves an odd one out; the last spans the row
+          // rather than sitting beside a hole.
+          const span = index === tiles.length - 1 ? 'col-span-2 sm:col-span-1' : '';
           return (
-            <li
-              key={tile.label}
-              className="rounded-2xl border border-violet-700/60 bg-plum-800/60 p-3"
-            >
+            <li key={tile.label} className={`sunken p-3 ${span}`}>
               <p className={`${MICRO_LABEL} flex items-center gap-1.5 text-violet-300`}>
-                <PlantdexIcon name={tile.icon} className="text-sm text-violet-400" aria-hidden="true" />
+                <PlantdexIcon name={tile.icon} className={`text-sm ${tile.tint}`} aria-hidden="true" />
                 {tile.label}
               </p>
-              <p className="mt-1 text-2xl leading-none font-extrabold text-gold-plate tabular-nums">
+              <p className="mt-1.5 text-3xl leading-none font-extrabold text-violet-100 tabular-nums sm:text-4xl">
                 {tile.value.toLocaleString()}
-                {tile.suffix}
-                {tile.total !== undefined && tile.suffix === undefined && (
-                  <span className="ml-1 text-sm font-semibold text-violet-400">
+                {tile.total !== undefined && (
+                  <span className="ml-1 align-baseline text-sm font-bold text-violet-400">
                     / {tile.total}
                   </span>
                 )}
               </p>
-              {tile.total !== undefined && (
+              {tile.total !== undefined ? (
                 <div
-                  className="mt-2 h-1.5 overflow-hidden rounded-full bg-plum-950/70"
+                  className="mt-2 h-1.5 overflow-hidden rounded-full bg-plum-950"
                   role="progressbar"
                   aria-valuenow={pct}
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-label={`${tile.label}: ${tile.value} of ${tile.total}`}
                 >
-                  <div className={`h-full rounded-full ${tile.fill}`} style={{ width: `${pct}%` }} />
+                  <div className={`path-fill h-full rounded-full ${tile.fill}`} style={{ '--fill': `${pct}%` } as React.CSSProperties} />
                 </div>
+              ) : (
+                // No meter, deliberately: research tasks keep coming, so there is no total to
+                // be a fraction of and a bar here would invent a finish line.
+                <p className="mt-2 text-xs text-violet-400">tasks completed</p>
               )}
             </li>
           );
@@ -135,10 +134,14 @@ export function FieldRecord({ stats }: { stats: ProfileStats }) {
       </ul>
 
       {rarest && (
-        <p className="mt-3 text-xs text-violet-400">
-          Rarest card in your collection: <span className="text-violet-200">{rarest.commonName}</span>.
+        <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-violet-300">
+          <span className={`${MICRO_LABEL} text-violet-400`}>Rarest held</span>
+          <Link href={`/herbdex/${rarest.id}`} className="tap-44 font-bold text-violet-100 hover:text-gold-300">
+            {rarest.commonName}
+          </Link>
+          <RarityBadge rarity={rarest.rarity} />
         </p>
       )}
-    </Panel>
+    </section>
   );
 }

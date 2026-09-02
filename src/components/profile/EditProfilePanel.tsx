@@ -129,7 +129,7 @@ export function EditProfilePanel({
   );
 
   return (
-    <details className="panel group p-4">
+    <details className="field-panel group p-4 sm:p-5">
       <summary className="cursor-pointer list-none">
         <span className="flex min-h-11 items-center justify-between gap-2">
           <span className="flex items-center gap-1.5">

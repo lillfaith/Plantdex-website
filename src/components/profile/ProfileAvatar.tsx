@@ -38,8 +38,10 @@ export function ProfileAvatar({
   /** `lg` is the identity banner; `sm` is a picker swatch. */
   size?: 'sm' | 'lg';
 }) {
-  const box =
-    size === 'lg' ? 'h-24 w-24 sm:h-28 sm:w-28' : 'h-14 w-14';
+  // 80px on a phone, 112px from `sm:` up. The mobile size is smaller than the desktop one
+  // because the hero has to keep the name, title, both meters and the signature card above
+  // the fold at 390px — see ProfileHero.
+  const box = size === 'lg' ? 'h-20 w-20 sm:h-28 sm:w-28' : 'h-14 w-14';
   const radius = size === 'lg' ? 'rounded-[1.4rem]' : 'rounded-xl';
 
   return (

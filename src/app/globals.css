@@ -993,3 +993,198 @@ body {
     transform: translateY(-50%);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * THE PROFILE PAGE.
+ *
+ * Everything below is ADDITIVE and used only by `src/components/profile/**`. No utility
+ * above is redefined, so every other page renders exactly as it did — which is checked by
+ * diffing the built HTML of /herbdex, /garden, /journal and a plant page before and after.
+ *
+ * WHY THE PROFILE NEEDED ITS OWN SURFACES. It shipped as nine consecutive `.panel`
+ * rectangles: same background, same hairline border, same small uppercase heading. Which is
+ * the same failure the plant page had before the three panel families were introduced —
+ * nothing read as more important than anything else. The families fixed that page by saying
+ * what KIND of thing a panel holds. The profile needs the other axis: how DEEP a surface
+ * sits. `.sunken` is the missing step below `.panel`, and it is what lets a stat tile read
+ * as a recess in a card rather than as another card.
+ *
+ * THE NEON BUDGET IS UNCHANGED. `game-panel` is still the only family that blooms and the
+ * profile spends it once, on the hero. Nothing here adds a second glowing container; the
+ * washes below are all far under the printed card's brightness.
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+/*
+ * A recess, not a card. Darker than the panel it sits in, with a hairline of light along the
+ * top edge so it reads as cut INTO the surface rather than laid on top of it.
+ *
+ * No border. That is the point: the profile's repetition came from bordered rectangles
+ * inside bordered rectangles, and a stat tile does not need an outline to be a tile when it
+ * is already darker than everything around it.
+ */
+@utility sunken {
+  background: color-mix(in srgb, var(--color-plum-950) 55%, transparent);
+  border-radius: 0.9rem;
+  box-shadow: inset 0 1px 0 0 color-mix(in srgb, var(--color-violet-500) 12%, transparent);
+}
+
+/*
+ * The hero's own tint, keyed to the featured card's rarity through `--accent`.
+ *
+ * A CORNER WASH, NOT A REPAINT. It is deliberately weak and confined to the top-right, so an
+ * Epic player's hero is visibly theirs while a Common player's hero is still the same violet
+ * and gold page. Letting rarity own the whole surface would give two players what look like
+ * two different products.
+ */
+@utility hero-wash {
+  background-image: radial-gradient(
+    ellipse 70% 90% at 100% 0%,
+    color-mix(in srgb, var(--accent, var(--color-violet-600)) 12%, transparent) 0%,
+    transparent 68%
+  );
+}
+
+/*
+ * The garden's ground line: pixel dashes over a soft horizon.
+ *
+ * IT HAS TO LOOK DELIBERATE AT ONE PLANT. The soil, the horizon and the spacing are the
+ * composition; sprites populate it. A brand-new player with a single sprout therefore sees
+ * a bed waiting to be planted rather than a broken row — which is why the ground is drawn
+ * by the container and never by the plants.
+ */
+@utility soil-line {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-habitat-woodland) 55%, transparent) 0 5px,
+      transparent 5px 9px
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--color-habitat-woodland) 10%, transparent) 100%
+    );
+  background-repeat: repeat-x, repeat-x;
+  background-size:
+    100% 3px,
+    100% 100%;
+  background-position:
+    0 0,
+    0 0;
+}
+
+/*
+ * A vertical version of `pixel-rule`, for the activity feed's timeline.
+ *
+ * Separate rather than a rotation, because rotating a 4px-tall element to serve as a rail
+ * would need a transform and a width/height swap on something that has to sit in normal
+ * flow beside the rows it connects.
+ */
+@utility pixel-rail {
+  width: 3px;
+  background-image: repeating-linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-violet-500) 45%, transparent) 0 5px,
+    transparent 5px 10px
+  );
+}
+
+/*
+ * A trophy's frame: a gold inner ring with the achievement's own shade outside it, so a
+ * medallion says WHICH achievement by colour and THAT it is earned by gold — the same
+ * division `AchievementShelf` uses for its pills.
+ *
+ * Two rings as two box-shadow layers rather than a border, so the medal's size does not
+ * change with the ring and a row of them cannot shift by a pixel between states.
+ */
+@utility trophy-medal {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-gold-500) 60%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--color-plum-950) 90%, transparent),
+    0 0 14px color-mix(in srgb, var(--color-gold-500) 22%, transparent);
+}
+
+/*
+ * THE ONE AMBIENT LOOP ON THE PAGE.
+ *
+ * Three 2px pixels drifting around the sidekick. Deliberately slow and dim: it is the only
+ * thing on the profile that moves without being touched, and a page carrying this much
+ * information cannot afford anything that pulls the eye while you read. Transform and
+ * opacity only, so it composites on the GPU and never causes layout work mid-scroll.
+ */
+@keyframes sparkle-drift {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  25% {
+    opacity: 0.55;
+    transform: translate3d(2px, -5px, 0) scale(1);
+  }
+  60% {
+    opacity: 0.3;
+    transform: translate3d(-2px, -11px, 0) scale(0.85);
+  }
+  85% {
+    opacity: 0;
+    transform: translate3d(1px, -15px, 0) scale(0.6);
+  }
+}
+
+.sparkle {
+  animation: sparkle-drift 5200ms ease-in-out infinite;
+}
+
+/*
+ * The completion ring. `--dash` is the circumference and `--fill` the portion drawn, both
+ * set inline from the same derived percentage the bars use, so the ring cannot disagree
+ * with the number printed beside it.
+ *
+ * The stroke animates from empty ONCE on mount, matching `.path-fill`'s behaviour on the
+ * bars — the page fills in when you arrive, and never again while you sit on it.
+ */
+.progress-ring-value {
+  stroke-dasharray: var(--dash);
+  stroke-dashoffset: calc(var(--dash) - (var(--dash) * var(--fill)));
+  transition: stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * A card or row that lifts toward the pointer. Pointer devices only, like `card-tilt`:
+ * on a phone there is no hover state and a stuck transform just looks broken.
+ */
+@utility lift {
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-lift);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * The global rule further up collapses durations, which is enough for everything that
+   * animates to an end state. These two do not: the sparkle loop would freeze at whatever
+   * opacity it collapsed to, and the ring would jump rather than settle. Stop one outright
+   * and let the other paint its final value immediately.
+   */
+  .sparkle {
+    animation: none;
+    opacity: 0;
+  }
+
+  .progress-ring-value {
+    transition: none;
+  }
+
+  .lift:hover {
+    transform: none;
+  }
+}

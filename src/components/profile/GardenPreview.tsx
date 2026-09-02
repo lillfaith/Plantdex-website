@@ -1,85 +1,122 @@
 import Link from 'next/link';
 import { getHerb } from '@/lib/deck';
+import { GARDEN_PREVIEW_COUNT } from '@/lib/profile-stats';
 import { STAGE_LABEL, type GardenEntry } from '@/lib/garden';
 import { PlantSprite } from '../PlantSprite';
-import { Panel } from '../ui/Panel';
-import { SectionHeader } from '../ui/SectionHeader';
+import { EYEBROW } from '../ui/accents';
 
 /**
- * A glimpse of the garden, not the garden.
+ * A glimpse of the garden — a small diorama rather than a row of icons.
  *
- * Five plants at most, most-grown first — so the strip shows a player's best work and stays
- * one row on a phone. Everything else stays at `/garden`, which is the page built for it;
- * duplicating the whole scene here would give the profile a second, worse garden to keep in
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE BED IS DRAWN BY THE CONTAINER, NEVER BY THE PLANTS. Five evenly spaced positions on a
+ * continuous soil line, always — a player with one plant sees a bed with one plant in it,
+ * which is a garden at the start. Letting the sprites define the row instead would give that
+ * player a single creature floating beside four gaps, which is a broken component. This is
+ * the whole reason `soil-line` lives on the strip and the empty positions still take up
+ * their space.
+ *
+ * THE SPRITES BREAK THE PANEL. They stand above the strip's top edge, which is the one place
+ * on this page where content is allowed out of its rectangle — a plant that fits neatly
+ * inside a box is a picture of a plant, and this section is supposed to be the charming one.
+ * The section therefore must not clip, and `ProfileView` leaves the clearance above it.
+ *
+ * NOT THE GARDEN. Five at most, most-grown first. Everything else stays at `/garden`, which
+ * is the page built for it; a second, worse garden here would be one more thing to keep in
  * step with the real one.
+ * ─────────────────────────────────────────────────────────────────────────────
  *
- * Stages come from `buildGarden()`, so these sprites are the same art at the same growth
- * stage the Garden itself would draw. There is no separate progression behind this strip.
+ * Stages come from `buildGarden()`, so these are the same sprites at the same growth stages
+ * the Garden itself would draw. There is no separate progression behind this strip.
  */
 export function GardenPreview({ entries }: { entries: GardenEntry[] }) {
-  return (
-    <Panel aria-labelledby="profile-garden" pad="md">
-      <SectionHeader
-        id="profile-garden"
-        eyebrow="Garden"
-        title="Growing right now"
-        accent="orchid"
-        icon="garden"
-        right={
-          <Link
-            href="/garden"
-            className="inline-flex min-h-11 items-center text-xs font-bold text-gold-400 hover:text-gold-300"
-          >
-            Visit My Garden &rarr;
-          </Link>
-        }
-      />
+  // Always the same number of beds. `undefined` is an empty one, and it still holds its place.
+  const beds: (GardenEntry | undefined)[] = Array.from(
+    { length: GARDEN_PREVIEW_COUNT },
+    (_, index) => entries[index],
+  );
 
-      {entries.length === 0 ? (
-        <p className="text-sm text-violet-300">
-          Your garden fills as you find plants. Nothing is planted yet.
-        </p>
-      ) : (
-        <ul className="flex items-end justify-between gap-1.5">
-          {entries.map((entry) => {
-            const herb = getHerb(entry.herbId);
-            if (!herb) return null;
+  return (
+    <section aria-labelledby="profile-garden" className="panel px-4 pt-4 pb-3 sm:px-5">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 id="profile-garden" className={`${EYEBROW} text-mystery-orchid`}>
+          Growing right now
+        </h2>
+        <Link
+          href="/garden"
+          className="tap-44 text-xs font-bold text-gold-400 hover:text-gold-300"
+        >
+          Visit My Garden &rarr;
+        </Link>
+      </div>
+
+      {/*
+        THE BED ONLY GETS ITS FULL HEIGHT ONCE SOMETHING GROWS IN IT.
+        At zero plants an 80px band above the soil is just a void, and it reads as a broken
+        component rather than as an empty garden — which is the one thing this section was
+        told not to do. With a single plant the full band is right: one sprite standing in a
+        long bed is a garden at the start. So the height follows the content and the soil
+        does not.
+      */}
+      {entries.length > 0 && (
+        <ul className="mt-5 flex items-end justify-between gap-1 sm:gap-3">
+          {beds.map((entry, index) => {
+            const herb = entry ? getHerb(entry.herbId) : undefined;
             return (
-              <li key={entry.herbId} className="min-w-0 flex-1 text-center">
-                <Link href={`/herbdex/${herb.id}`} className="group block">
-                  {/*
-                    THE SPRITE IS CAPPED IN WIDTH, NOT JUST GIVEN A ROW HEIGHT. `fit` fills
-                    the container's WIDTH and takes its height from the sheet's 170x140
-                    frame — so in a wide desktop cell an 84%-width sprite came out 107px tall
-                    inside a 64px row and climbed straight over the section heading. The row
-                    is 80px and the sprite tops out at 80px wide, which is 66px tall.
-                  */}
-                  <span className="relative mx-auto flex h-20 w-full items-end justify-center">
-                    {/* Soil line, so the row reads as a bed rather than five floating icons. */}
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-x-1 bottom-0 z-0 h-1.5 rounded-full bg-violet-700/45"
-                    />
+              <li key={entry?.herbId ?? `bed-${index}`} className="min-w-0 flex-1">
+                <span className="flex h-20 items-end justify-center sm:h-24">
+                  {herb && entry ? (
                     <PlantSprite
                       herbId={herb.id}
                       alt={herb.commonName}
                       stage={entry.stage}
                       fit
-                      className="relative z-10 w-full max-w-20"
+                      className="w-full max-w-20 sm:max-w-24"
                     />
-                  </span>
-                  <span className="mt-1.5 block truncate text-[0.72rem] font-semibold text-violet-300 group-hover:text-gold-300">
-                    {herb.commonName}
-                  </span>
-                  <span className="block truncate text-[0.72rem] text-violet-400">
-                    {STAGE_LABEL[entry.stage]}
-                  </span>
-                </Link>
+                  ) : (
+                    // An empty bed is not a placeholder sprite — it is soil. Nothing is drawn.
+                    <span aria-hidden="true" className="block h-px w-full" />
+                  )}
+                </span>
               </li>
             );
           })}
         </ul>
       )}
-    </Panel>
+
+      {entries.length === 0 && (
+        <p className="mt-3 text-sm text-violet-300">
+          Your garden fills as you find plants. The beds are ready.
+        </p>
+      )}
+
+      {/* The ground, drawn once across the whole strip and bled to the section's edges so
+          the bed reads as continuous rather than as five separate tiles. */}
+      <span aria-hidden="true" className="soil-line -mx-4 mt-0.5 block h-2.5 sm:-mx-5" />
+
+      {/* Labels only under the beds that hold something. An "Empty bed" caption under a
+          patch of soil labels the absence of a thing, which is noise. */}
+      {entries.length > 0 && (
+        <ul className="mt-1.5 flex justify-between gap-1 sm:gap-3">
+          {beds.map((entry, index) => {
+            const herb = entry ? getHerb(entry.herbId) : undefined;
+            return (
+              <li key={entry?.herbId ?? `label-${index}`} className="min-w-0 flex-1 text-center">
+                {herb && entry && (
+                  <Link href={`/herbdex/${herb.id}`} className="tap-44 group block">
+                    <span className="block truncate text-[0.72rem] font-bold text-violet-200 group-hover:text-gold-300">
+                      {herb.commonName}
+                    </span>
+                    <span className="block truncate text-[0.72rem] text-violet-400">
+                      {STAGE_LABEL[entry.stage]}
+                    </span>
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </section>
   );
 }
