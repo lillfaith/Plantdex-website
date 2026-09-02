@@ -215,6 +215,16 @@ export interface ScanCandidate {
   commonName?: string;
   /** Provider score, 0–1. */
   score: number;
+  /**
+   * Taxonomy identifiers the provider attached, when it did.
+   *
+   * Passed through untouched and used for nothing here — matching is by name, through the
+   * normaliser above, exactly as it was. They exist so a Seed Shelf entry can be recognised
+   * later against a source of truth rather than by string comparison, and they are optional
+   * because a provider that stops sending them must not break a scan.
+   */
+  gbifId?: string;
+  powoId?: string;
   match: PlantMatch;
 }
 

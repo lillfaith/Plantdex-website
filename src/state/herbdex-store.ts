@@ -37,7 +37,17 @@ export interface HerbdexStore {
   subscribe: (listener: () => void) => () => void;
   getSnapshot: () => HerbdexSnapshot;
   getServerSnapshot: () => HerbdexSnapshot;
-  discover: (herb: Herb) => DiscoveryResult;
+  /**
+   * Record a discovery.
+   *
+   * `at` exists for one caller: a Seed Shelf packet whose species has since become a card.
+   * That plant was found on the date the shelf recorded, sometimes months before the card
+   * existed, and stamping it with today would quietly rewrite the player's own history. Every
+   * other entry point omits it and gets the current time, and the reducer's idempotency is
+   * unchanged either way — a second call with a different date still awards nothing, because
+   * the first timestamp is the one that stays.
+   */
+  discover: (herb: Herb, at?: string) => DiscoveryResult;
   /** Stage 2: record that the card's knowledge check was passed. */
   markLearned: (herb: Herb) => DiscoveryResult;
   /**
@@ -137,12 +147,12 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
     getSnapshot: () => snapshot,
     getServerSnapshot: () => emptySnapshot,
 
-    discover(herb) {
+    discover(herb, at) {
       // Before hydration resolves there is nothing real to mutate: acting on the
       // placeholder empty state would be silently overwritten the instant hydration's own
       // load resolves and replaces the snapshot wholesale.
       if (!snapshot.ready) return NO_DISCOVERY;
-      const outcome = applyDiscovery(snapshot.state, herb.id);
+      const outcome = applyDiscovery(snapshot.state, herb.id, at);
       // Already discovered, or an unknown id: nothing is written and nothing is awarded.
       if (!outcome.result.awarded) return NO_DISCOVERY;
       commit(outcome.state);

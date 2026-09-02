@@ -115,6 +115,27 @@ export function GardenView() {
           Plantdex collection.
         </p>
       </div>
+
+      {/*
+        The Garden's sibling, and the reason it belongs here rather than in the nav: this bed
+        holds the 45 species that HAVE cards, and the obvious next question — "what about
+        everything else I found?" — is asked standing in front of it. Six destinations
+        already crowd a 390px bottom bar.
+      */}
+      <Link
+        href="/seed-shelf"
+        className="mt-4 flex min-h-14 items-center justify-between gap-3 rounded-xl border border-violet-700/60 bg-plum-800/50 p-4 transition-colors hover:border-violet-600 hover:bg-plum-600/40"
+      >
+        <span>
+          <span className="block text-sm font-bold text-violet-100">Your Seed Shelf</span>
+          <span className="block text-xs text-violet-300">
+            Plants you&apos;ve found that aren&apos;t cards yet, kept as seed packets
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-gold-400">
+          &rarr;
+        </span>
+      </Link>
     </main>
   );
 }

@@ -7,7 +7,7 @@ This file only adds the mechanics of working in this codebase.
 ## Current stage
 
 **V0.2 complete**, plus three-stage card mastery, Field Research, the sources/safety
-presentation work, contrast/polish, and **V0.3 accounts** (Supabase auth + server-persisted
+presentation work, contrast/polish, the **Seed Shelf** (see below), and **V0.3 accounts** (Supabase auth + server-persisted
 collections). The Herbdex works fully signed-out against local storage, or signed in with
 progress synced to Supabase — see "V0.3 accounts" below, **V0.4 commerce** (a Stripe
 Payment Link behind `/shop`, see "V0.4 commerce" below), and the **player profile** at
@@ -322,6 +322,62 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
 - **`supabase/functions/**` is excluded from this project's `tsconfig.json`/ESLint** — it's
   Deno, a different runtime with different globals (`Deno.serve`, `npm:`/`https:` module
   specifiers). Validate it with `deno check` (or by deploying it) instead.
+
+## The Seed Shelf
+
+Species a player identifies that have no Plantdex card. `/seed-shelf` is a wooden shelf of
+procedurally generated seed packets, offered from a scan that found a real plant the deck
+does not carry — the state that used to be a dead end.
+
+- **A packet is not a card, and the code cannot confuse them.** Shelf rows live in their own
+  store with their own key and the shelf modules import neither `herbdex-reducer` nor
+  `progression` — pinned by `seed-shelf.test.ts`. XP is summed over `HerbdexState`
+  (`progression.ts`), so a store the reducer cannot see is a store that structurally cannot
+  pay. Saving to the shelf awards nothing, and the page says so where somebody reads it.
+- **Rows are write-once; the shelf is derived.** One row per SAVE, not per species
+  (`0004_seed_shelf.sql`), folded into one entry per species by `mergeFinds`. So there is no
+  `encounters` counter to replay, no first-found date a later write could move, and no
+  `promoted` flag — which is why this table needs no update policy and `profiles` stays the
+  single deliberate exception (`profile-schema.test.ts` enforces that).
+- **"Grown into a card" is derived from the collection**, not stored: an entry has grown when
+  the deck has a card for its species and that card is in `discoveries`. Claiming therefore
+  writes a discovery through the ordinary idempotent `discover()` and touches the shelf not
+  at all — no duplicate award is possible, because it is the same call every other entry
+  point makes.
+- **Identity is taxonomic, never a common name.** Entries key on `normalizeName()`, the
+  matcher's own normalised binomial, and `cardFor()` promotes only on `confirmable` — `exact`
+  and `genusCard`. `sameGenus` is a relative, and a packet that sprouted into it would write
+  something untrue into a collection. Synonyms come from `plant-match.ts`'s checked table;
+  nothing here invents one.
+- **The future-collection mechanism is four lines and needs no migration.** The shelf stores
+  scientific names and the matcher maps scientific names onto cards, so a card printed
+  tomorrow makes every shelf holding that species sprout the next time it is read.
+- **`discover()` takes an optional `at` for exactly one caller.** A claimed packet is stamped
+  with the date the plant was FOUND, months before the card existed; stamping it with today
+  would rewrite the player's own history. Every other call omits it.
+- **Packets are generated, never authored.** `seed-packet.ts` computes a recipe from the
+  species key with the existing seeded RNG (`rng.ts`) — four silhouettes, eleven pixel
+  motifs, and a palette drawn entirely from deck tokens. Determinism is the whole design:
+  the same species produces the same packet on any device for any player, which is what makes
+  two shelves agree without a shared registry to consult, and it is why the generator may
+  never read a clock or `Math.random()` (`seed-packet.test.ts` fails on either). The recipe is
+  also STORED with the first find, so raising `PACKET_VERSION` later cannot redraw a packet
+  somebody has been looking at.
+- **A packet leans on the plant's own name where the name says something** — Trifolium gets a
+  clover, "Yellow woodsorrel" gets a gold band — and is otherwise an arbitrary deterministic
+  draw. That is reading a name, not inventing botany, and no packet claims to depict a
+  specimen.
+- **Nothing on the shelf is a confirmed identification.** It records what an identifier
+  suggested from a photograph, carries the same uncertainty the scan did, and says nothing
+  about edibility or safety.
+- **The shelf works signed out** (localStorage, same rows as the server holds) and is carried
+  into an account by the existing local-progress import. `seed-shelf-store.ts` is the facade
+  that picks a backend; a component that reaches past it fails `seed-shelf.test.ts`, the same
+  rule `sightings-store.test.ts` enforces after `/journal` once read the wrong store.
+- **A board holds exactly as many packets as the grid has columns.** A board is one plank
+  drawn under one row, so a longer slice wraps and the plank lands under the second row with
+  the first floating above nothing. Three across at every width; the shelf takes a fixed
+  maximum width instead, which is also how a real shelf behaves.
 
 ## Analytics, deletion and export
 

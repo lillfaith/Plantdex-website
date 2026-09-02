@@ -115,7 +115,13 @@ export async function identifyPlant(file: File): Promise<ScanResult | ScanFailur
   }
 
   const raw = (data ?? {}) as {
-    candidates?: { scientificName: string; commonName?: string; score: number }[];
+    candidates?: {
+      scientificName: string;
+      commonName?: string;
+      score: number;
+      gbifId?: string;
+      powoId?: string;
+    }[];
     remaining?: number;
     limit?: number;
     signedIn?: boolean;

@@ -108,6 +108,12 @@ export const EVENT_NAMES = [
   'scan_related',
   'scan_confirmed',
 
+  // Seed Shelf. Two counts, both about whether the shelf is doing its job: how often a plant
+  // the deck cannot hold is kept anyway, and how often one of those later becomes a card.
+  // No species and no score travel, exactly as above.
+  'seed_shelf_saved',
+  'seed_shelf_sprouted',
+
   // Commerce. Placement is in the name because that is the entire question a CTA asks.
   'deck_cta_home',
   'deck_cta_herbdex',

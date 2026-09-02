@@ -109,6 +109,25 @@
   --color-habitat-wayside: #f0b48a;
   --color-habitat-garden: #f2b6f6;
 
+  /*
+   * THE SEED SHELF'S WOOD.
+   *
+   * The one warm family in a cold palette, and it is here because the Seed Shelf is
+   * furniture rather than interface: packets stand on a real board. The hue sits at 22°,
+   * far enough from the plum ground (276°) to read as wood and close enough in saturation
+   * — 24-32%, the same restraint the ground itself follows — that it never becomes the
+   * brightest thing on the page. `habitat-wayside` is the pale end of the same family
+   * already, so the shelf and the wayside chips are visibly related rather than merely
+   * both brown.
+   *
+   * Decoration only: no text is ever set on these, and the labels under the packets sit on
+   * the page ground like every other label on the site.
+   */
+  --color-wood-700: #402a22;
+  --color-wood-600: #543728;
+  --color-wood-500: #6d4833;
+  --color-wood-400: #8a5c41;
+
   /* Stat pip colours, matching the printed icons. */
   --color-stat-water: #5ec8e8;
   --color-stat-sun: #ffd54a;
@@ -1052,6 +1071,42 @@ body {
  * a bed waiting to be planted rather than a broken row — which is why the ground is drawn
  * by the container and never by the plants.
  */
+/*
+ * THE SHELF ITSELF.
+ *
+ * A board with a lit top edge, a grain, and a shadow under it — the three things that make a
+ * flat rectangle read as a plank rather than as a brown div. Drawn by the container for the
+ * same reason `soil-line` is: a shelf with one packet on it must still look like a shelf, so
+ * the furniture cannot be made out of the things standing on it.
+ */
+@utility shelf-board {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-wood-700) 60%, transparent) 0 2px,
+      transparent 2px 9px
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-wood-400) 0 2px,
+      var(--color-wood-500) 2px 45%,
+      var(--color-wood-600) 45% 100%
+    );
+  box-shadow:
+    0 7px 14px -7px rgb(0 0 0 / 0.8),
+    inset 0 -2px 0 0 color-mix(in srgb, var(--color-wood-700) 80%, transparent);
+}
+
+/* The upright the boards are fixed to, at each end of the shelf. */
+@utility shelf-upright {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-wood-600) 0 2px,
+    var(--color-wood-500) 2px 60%,
+    var(--color-wood-700) 60% 100%
+  );
+}
+
 @utility soil-line {
   background-image:
     repeating-linear-gradient(

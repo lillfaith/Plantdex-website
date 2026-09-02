@@ -61,7 +61,7 @@ export default function PrivacyPage() {
             {
               term: 'Local storage',
               detail:
-                'Which plants you have discovered, learned and mastered; Field Research completions and achievements; your sightings; which cards you have revealed for reading; the current research board; and your profile settings — a display name you choose, and which plants, frame, title and achievements you have picked for it.',
+                'Which plants you have discovered, learned and mastered; Field Research completions and achievements; your sightings; which cards you have revealed for reading; the current research board; your Seed Shelf — species you identified that have no card yet, with the dates you found them; and your profile settings — a display name you choose, and which plants, frame, title and achievements you have picked for it.',
             },
             {
               term: 'IndexedDB',
@@ -108,6 +108,11 @@ export default function PrivacyPage() {
               term: 'Sighting photographs',
               detail:
                 'Stored in a private bucket, in a folder belonging to your account. They are not public, and are not readable by other signed-in users.',
+            },
+            {
+              term: 'Your Seed Shelf',
+              detail:
+                'One row per save: the scientific name an identifier suggested, its common name and taxonomy ids where the provider gave them, the date, the score, and a reference to the scan it came from. A shelf entry records a plant you photographed that has no Plantdex card. It is not a discovery, earns nothing, and says nothing about whether a plant is safe.',
             },
             {
               term: 'Profile settings',

@@ -1,6 +1,8 @@
 import { supabase } from './supabase-client';
 import { createLocalStorageAdapter } from './storage';
 import { getAllSightings } from './sightings';
+import { getLocalFinds } from './local-seed-shelf';
+import { findToRow } from './remote-seed-shelf';
 import type { HerbdexState } from './types';
 
 /**
@@ -52,7 +54,11 @@ export function markImportOffered(userId: string): void {
 export async function hasLocalProgressToImport(): Promise<boolean> {
   const state = await createLocalStorageAdapter().load();
   if (Object.keys(state.discoveries).length > 0) return true;
-  return getAllSightings().length > 0;
+  if (getAllSightings().length > 0) return true;
+  // A shelf on its own is worth the offer: somebody can scan a dozen plants the deck does
+  // not carry before they ever discover a card, and that is exactly the person whose finds
+  // would otherwise be stranded on one device.
+  return getLocalFinds().length > 0;
 }
 
 /** Resolves false when the write failed, so the caller can keep the offer open. */
@@ -130,6 +136,27 @@ async function importSightings(userId: string): Promise<boolean> {
 }
 
 /**
+ * The device's Seed Shelf, row for row.
+ *
+ * `ignoreDuplicates` on the find's own id, so re-running the import writes nothing twice —
+ * and because the shelf is derived by grouping finds, a duplicate would have been visible as
+ * an inflated encounter count rather than as a second packet.
+ */
+async function importSeedShelf(userId: string): Promise<boolean> {
+  if (!supabase) return false;
+  const finds = getLocalFinds();
+  if (finds.length === 0) return true;
+  const { error } = await supabase
+    .from('seed_shelf')
+    .upsert(finds.map((find) => findToRow(userId, find)), {
+      onConflict: 'id',
+      ignoreDuplicates: true,
+    });
+  if (error) console.warn('[plantdex] import failed for the seed shelf', error);
+  return !error;
+}
+
+/**
  * Whether every part of the import landed. A partial import is reported as a failure so
  * `ImportLocalProgressDialog` can keep the offer open and let the player retry: the import
  * is additive and idempotent, so retrying re-writes only what is genuinely missing. Marking
@@ -162,6 +189,7 @@ export async function importLocalProgress(userId: string): Promise<ImportOutcome
       ),
     ],
     ['sightings', importSightings(userId)],
+    ['seed shelf', importSeedShelf(userId)],
   ];
 
   const results = await Promise.all(parts.map(([, promise]) => promise));

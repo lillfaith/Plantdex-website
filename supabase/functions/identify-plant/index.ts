@@ -93,6 +93,22 @@ interface ProviderResult {
     scientificName?: string;
     commonNames?: string[];
   };
+  /*
+   * Taxonomy backbone ids, when the provider attaches them. Passed through for the Seed
+   * Shelf, which keeps species the deck has no card for and wants a canonical handle on them
+   * rather than a name it would later have to match by string. Nothing in the app MATCHES on
+   * these — `plant-match.ts` still works by normalised name — so a provider that stops
+   * sending them costs a stored identifier, not a broken scan.
+   */
+  gbif?: { id?: string | number };
+  powo?: { id?: string | number };
+}
+
+/** Provider ids arrive as strings or numbers depending on the field. Store text or nothing. */
+function taxonId(value: unknown): string | undefined {
+  if (typeof value === 'string' && value.trim()) return value.trim();
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  return undefined;
 }
 
 Deno.serve(async (req: Request) => {
@@ -227,6 +243,8 @@ Deno.serve(async (req: Request) => {
       result.species?.scientificNameWithoutAuthor ?? result.species?.scientificName ?? '',
     commonName: result.species?.commonNames?.[0],
     score: typeof result.score === 'number' ? Math.max(0, Math.min(1, result.score)) : 0,
+    gbifId: taxonId(result.gbif?.id),
+    powoId: taxonId(result.powo?.id),
   }));
 
   return json({

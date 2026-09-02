@@ -66,6 +66,9 @@ const USER_TABLES = [
   // Added with the player profile. It holds only chosen settings, but a display name and a
   // set of favourite plants is still this person's data and must go with the account.
   'profiles',
+  // Added with the Seed Shelf. Species somebody photographed, with the dates they found
+  // them — a record of where a person has been looking, and unmistakably theirs.
+  'seed_shelf',
 ] as const;
 
 const CORS_HEADERS: Record<string, string> = {

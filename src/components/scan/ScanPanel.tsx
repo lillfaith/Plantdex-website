@@ -10,6 +10,7 @@ import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { ScanCaution } from './ScanCaution';
+import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
 
 /**
  * PLANT ID V1 — the scan screen.
@@ -43,6 +44,9 @@ export function ScanPanel() {
   const [problem, setProblem] = useState<string | null>(null);
   const [rateLimited, setRateLimited] = useState<{ signedIn: boolean } | null>(null);
   const [confirmed, setConfirmed] = useState<string | null>(null);
+  // The history row this result was written to, so a Seed Shelf save can point back at the
+  // scan it came from. Null signed out, where there is no history to point at.
+  const [scanId, setScanId] = useState<string | null>(null);
 
   const answerRef = useRef<HTMLDivElement>(null);
 
@@ -73,6 +77,7 @@ export function ScanPanel() {
       setRateLimited(null);
       setResult(null);
       setConfirmed(null);
+      setScanId(null);
       track('scan_started');
 
       const answer = await identifyPlant(file);
@@ -99,7 +104,7 @@ export function ScanPanel() {
       );
       // History is account data; signed out there is nowhere to keep it, and saying so is
       // better than silently discarding it. A failed write never costs the player the answer.
-      if (user) void recordScan(user.id, answer);
+      if (user) void recordScan(user.id, answer).then(setScanId);
       setBusy(false);
     },
     [user],
@@ -259,6 +264,18 @@ export function ScanPanel() {
                     ))}
                   </ul>
                 )}
+                {/*
+                  THE DEAD END, REMOVED.
+                  
+                  Both of these outcomes mean the same thing about the species in the
+                  photograph: the deck has no card for it. That used to be the end of the
+                  screen. The shelf is offered on both — including `relatedOnly`, where the
+                  deck's card is for a RELATIVE and this species is still uncarded — and it
+                  is offered under the card links rather than above them, because reading the
+                  related card is the better next step when there is one.
+                */}
+                <SaveToSeedShelf candidates={result.candidates} scanId={scanId ?? undefined} />
+
                 {/*
                   Only on a real no-match. On `relatedOnly` the card is already offered
                   above, so "browse the collection instead" would be pointing away from the

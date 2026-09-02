@@ -3,6 +3,9 @@ import { rowToProfile } from './remote-player-profile';
 import { STORAGE_KEY } from './storage';
 import { emptyState, parseState } from './herbdex-state';
 import { getAllSightings, type Sighting } from './sightings';
+import { getLocalFinds } from './local-seed-shelf';
+import { rowToFind } from './remote-seed-shelf';
+import { mergeFinds, type SeedShelfEntry, type SeedShelfFind } from './seed-shelf';
 import { REVEALS_STORAGE_KEY } from './reveals';
 import {
   PLAYER_PROFILE_STORAGE_KEY,
@@ -68,6 +71,16 @@ export interface AccountExport {
   sightings: Sighting[];
   /** Plant ID history. Absent from a device export — scanning requires the server. */
   scans: Record<string, unknown>[];
+  /**
+   * The Seed Shelf: species found that have no Plantdex card.
+   *
+   * Both halves, because they answer different questions. `seedShelfFinds` is the stored
+   * rows — one per save, which is what the database actually holds — and `seedShelf` is the
+   * same rows folded into one entry per species, which is what the player saw. Neither is a
+   * discovery and neither carries XP; a packet is a record of something photographed.
+   */
+  seedShelf: SeedShelfEntry[];
+  seedShelfFinds: SeedShelfFind[];
   photos: {
     included: ExportedPhoto[];
     omitted: { sightingId: string; reference: string; reason: string }[];
@@ -221,6 +234,9 @@ export async function exportLocalData(): Promise<AccountExport> {
     sightings,
     // Scanning is a server feature, so a signed-out device has no scan history to export.
     scans: [],
+    // The shelf, however, is kept on the device when signed out — so it is here.
+    seedShelf: mergeFinds(getLocalFinds()),
+    seedShelfFinds: getLocalFinds(),
     photos: await collectPhotos(sightings, (reference) => getPhotoBlob(reference)),
   };
 }
@@ -244,6 +260,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     achievements,
     sightingRows,
     scanRows,
+    seedShelfRows,
     profileRow,
   ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
@@ -264,6 +281,11 @@ export async function exportAccountData(userId: string, email?: string): Promise
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false }),
+      client
+        .from('seed_shelf')
+        .select('*')
+        .eq('user_id', userId)
+        .order('found_at', { ascending: false }),
       // `maybeSingle`: a player who has never opened their profile has no row, and that is
       // the ordinary case rather than an error.
       client.from('profiles').select('*').eq('user_id', userId).maybeSingle(),
@@ -277,6 +299,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     achievements,
     sightings: sightingRows,
     scans: scanRows,
+    'seed shelf': seedShelfRows,
     profile: profileRow,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
@@ -321,6 +344,10 @@ export async function exportAccountData(userId: string, email?: string): Promise
     createdAt: String(row.created_at),
   }));
 
+  const seedShelfFinds = ((seedShelfRows.data ?? []) as Record<string, unknown>[])
+    .map(rowToFind)
+    .filter((find): find is SeedShelfFind => find !== null);
+
   return {
     format: 'plantdex-export',
     formatVersion: EXPORT_FORMAT_VERSION,
@@ -338,6 +365,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
     reveals: [],
     sightings,
     scans: (scanRows.data ?? []) as Record<string, unknown>[],
+    seedShelf: mergeFinds(seedShelfFinds),
+    seedShelfFinds,
     photos: await collectPhotos(sightings, async (path) => {
       const { data, error } = await client.storage.from('sighting-photos').download(path);
       if (error) return null;

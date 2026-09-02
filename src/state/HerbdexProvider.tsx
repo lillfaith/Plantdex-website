@@ -45,7 +45,8 @@ interface HerbdexContextValue {
   /** Seasonal and collection challenges. Always available; none of them expire. */
   standingTasks: readonly ResearchTask[];
   completedResearchCount: number;
-  discover: (herb: Herb) => DiscoveryResult;
+  /** `at` is for a Seed Shelf claim, which keeps the date the plant was actually found. */
+  discover: (herb: Herb, at?: string) => DiscoveryResult;
   markLearned: (herb: Herb) => DiscoveryResult;
   reset: () => void;
 }
@@ -143,8 +144,8 @@ export function HerbdexProvider({
    * pays nothing.
    */
   const discover = useCallback(
-    (herb: Herb) => {
-      const result = store.discover(herb);
+    (herb: Herb, at?: string) => {
+      const result = store.discover(herb, at);
       if (result.awarded) {
         // First-ever discovery is the activation moment, and the only split worth a
         // separate goal. Which plant it was comes from the page the discovery happened on.
