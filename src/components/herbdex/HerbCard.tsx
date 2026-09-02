@@ -126,7 +126,7 @@ export function HerbCard({
           )}
         </div>
 
-        <div className="space-y-1 bg-plum-800/90 px-2 py-2">
+        <div className="space-y-0.5 bg-plum-800/90 px-2 pt-1.5 pb-2">
           <p
             className={`truncate text-xs font-bold ${
               discovered ? 'text-violet-100' : 'text-violet-400'
@@ -145,7 +145,9 @@ export function HerbCard({
           {discovered ? (
             <RarityBadge rarity={herb.rarity} tone="quiet" />
           ) : (
-            <span className="text-[0.72rem] font-semibold text-violet-400">Find it to reveal</span>
+            <span className="block text-[0.72rem] leading-none font-semibold text-violet-400">
+              Find it to reveal
+            </span>
           )}
         </div>
       </Link>

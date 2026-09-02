@@ -68,12 +68,28 @@ export function RarityBadge({
          * `type-floor.test.ts` exists to hold. Weight and colour intensity are the levers
          * that were left, and dimming is checked against AA rather than assumed: the
          * composited contrast of all four tiers is measured on the rendered grid.
+         *
+         * `leading-none` because the caption inherits a 1.5 ratio otherwise, which gave
+         * 11.5px text a 17.3px line box — six pixels of nothing under every one of the 45
+         * cards. A caption does not need leading; it has no second line to clear.
          */
-        `text-[0.72rem] font-medium ${RARITY_TEXT[rarity]}`
+        `text-[0.72rem] leading-none font-medium ${RARITY_TEXT[rarity]}`
       : `rounded-full border px-2 py-0.5 text-xs font-bold tracking-wide uppercase ${RARITY_CLASS[rarity]}`;
 
+  /*
+   * `flex`, NOT `inline-flex`, WHEN QUIET — and that is worth six pixels.
+   *
+   * An inline box sits on a line box whose height comes from the PARENT's strut, so
+   * `leading-none` on the caption itself bought almost nothing: the caption shrank to 11.5px
+   * and went on sitting in a 24px line the parent's inherited 1.5 ratio had already opened.
+   * Going block-level takes the strut out of it entirely. Safe here because the quiet tone
+   * is only ever alone on its line; the badge tone stays inline, where it sits beside other
+   * chips and must flow with them.
+   */
+  const layout = tone === 'quiet' ? 'flex' : 'inline-flex';
+
   return (
-    <span className={`inline-flex items-center ${dress} ${className}`}>
+    <span className={`${layout} items-center ${dress} ${className}`}>
       <span className="sr-only">Encounter rate: </span>
       {RARITY_LABEL[rarity]}
     </span>
