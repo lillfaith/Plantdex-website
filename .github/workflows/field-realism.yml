@@ -1,0 +1,61 @@
+name: Identify real photographs
+
+# Puts several genuine photographs of one species through the deployed identifier and prints
+# what the provider called each of them.
+#
+# The 45-card survey used studio card art, and card art is not evidence about field
+# photographs — that gap is exactly where "a violet reports as not one of the 45 cards" and
+# "broadleaf dock will not identify" both came from. This closes it with real pictures taken
+# by different people in different light.
+#
+# Costs one identification per image. The anonymous allowance is 5 a day per IP and a runner
+# gets a fresh one each job, so the default batch is deliberately small.
+on:
+  workflow_dispatch:
+    inputs:
+      category:
+        description: Wikimedia Commons category, without the "Category:" prefix
+        required: true
+        default: Rumex obtusifolius
+        type: string
+      limit:
+        description: How many photographs to try (the anonymous cap is 5)
+        required: true
+        default: '4'
+        type: string
+      project_ref:
+        description: Which Supabase project to call
+        required: true
+        default: vygiamigomwlvnwkryyl
+        type: choice
+        options:
+          - vygiamigomwlvnwkryyl # production
+          - vgjehmwcpavflbfhbbrp # test
+
+permissions:
+  contents: read
+
+jobs:
+  identify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the anon key, masked
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          ANON=$(curl -sS "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            | python3 -c "import json,sys; print(next(k['api_key'] for k in json.load(sys.stdin) if k['name']=='anon'))")
+          echo "::add-mask::$ANON"
+          echo "ANON_KEY=$ANON" >> "$GITHUB_ENV"
+
+      - name: Identify each photograph
+        env:
+          CATEGORY: ${{ inputs.category }}
+          LIMIT: ${{ inputs.limit }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: python3 scripts/identify_web_images.py
