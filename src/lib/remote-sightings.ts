@@ -147,6 +147,35 @@ export function useRemoteSightingCounts(userId: string | undefined): Record<stri
   return counts;
 }
 
+/**
+ * Where a freshly written row goes in the tab's cache.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ONE NEW ROW IS NOT A JOURNAL. This used to unconditionally set the cache to
+ * `[...(cache ?? []), sighting]` and mark it loaded for the user — so when the journal's
+ * own load had not landed (still in flight, or failed and inside its retry cooldown),
+ * logging a sighting declared a one-entry cache authoritative. The player's other
+ * sightings vanished from the field log and the journal, `loadedForUser` now matched so
+ * `ensureLoaded` never fetched again, and only a full page reload brought them back.
+ * Nothing was lost server-side, which is exactly what made it unreadable: the rows were
+ * all still there and the app insisted there was one.
+ *
+ * So a row is folded in only when there is a real, complete list of this user's sightings
+ * to fold it into. Otherwise the cache is left unloaded and the pending load — which
+ * happens after the insert, and therefore includes it — is what fills the journal in.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export function foldSighting(
+  current: { cache: readonly Sighting[] | null; loadedForUser: string | null },
+  userId: string,
+  sighting: Sighting,
+): { cache: Sighting[] | null; loadedForUser: string | null } {
+  if (current.loadedForUser === userId && current.cache) {
+    return { cache: [...current.cache, sighting], loadedForUser: userId };
+  }
+  return { cache: null, loadedForUser: null };
+}
+
 function newSightingId(): string {
   return `sighting_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
@@ -219,8 +248,12 @@ export async function addRemoteSighting(
     }
   }
 
-  cache = [...(loadedForUser === userId && cache ? cache : []), sighting];
-  loadedForUser = userId;
+  const folded = foldSighting({ cache, loadedForUser }, userId, sighting);
+  cache = folded.cache;
+  loadedForUser = folded.loadedForUser;
+  // A load that failed is holding a cooldown this row has just invalidated: the journal is
+  // now demonstrably out of date, and the very next render should go and get it.
+  if (folded.loadedForUser === null) failedAt = 0;
   emit();
   return sighting;
 }

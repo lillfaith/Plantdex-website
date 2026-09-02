@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getHerb } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
-import { GROWTH_STAGE_LABEL, useSightings } from '@/lib/sightings';
+import { GROWTH_STAGE_LABEL } from '@/lib/sightings';
+import { useSightingsStore } from '@/lib/sightings-store';
 import { SightingPhoto } from './SightingPhoto';
 
 /**
@@ -12,6 +13,13 @@ import { SightingPhoto } from './SightingPhoto';
  *
  * Entries are added from a plant's own page — this is the reading view, so it stays a
  * timeline rather than a second place to create things.
+ *
+ * IT READS THROUGH THE FACADE, NOT `sightings.ts`. This page used to call the local store
+ * directly, so a signed-in player saw an empty journal here while the same account's
+ * sightings were listed on every plant page — and on a device that had been played signed
+ * out, it showed THAT collection to whoever was signed in. `sightings-store.ts` is the one
+ * place allowed to decide which backend a signed-in player is reading; see
+ * `sightings-store.test.ts`, which fails if a component reaches past it again.
  */
 function formatDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
@@ -24,7 +32,7 @@ function formatDate(iso: string): string {
 }
 
 export function JournalView() {
-  const sightings = useSightings();
+  const { sightings } = useSightingsStore();
 
   return (
     <main id="main" className="mx-auto max-w-3xl px-4 py-8">
