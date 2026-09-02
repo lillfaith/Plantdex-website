@@ -146,7 +146,7 @@ describe('every card, against the live provider', () => {
      * the honest thing to say when the provider spread its confidence across four congeners.
      * Pinned so a scoring change has to be deliberate.
      */
-    const counts = { matched: 0, uncertain: 0, noMatch: 0 };
+    const counts = { matched: 0, uncertain: 0, relatedOnly: 0, noMatch: 0 };
     for (const results of Object.values(LIVE_SURVEY)) {
       const candidates = results.map(([scientificName, score]) => ({
         scientificName,
@@ -155,6 +155,14 @@ describe('every card, against the live provider', () => {
       }));
       counts[outcomeFor(candidates)] += 1;
     }
-    expect(counts).toEqual({ matched: 33, uncertain: 12, noMatch: 0 });
+    /*
+     * relatedOnly is 0 here and that is a claim, not a blank: every one of the 45 card-art
+     * photographs put the card's OWN species somewhere in the provider's five, so none of
+     * them fell through to "a relative, but not this one". Field photographs do — a violet
+     * came back as five Viola species with no V. sororia among them, which is the report
+     * that made the outcome exist. Studio art is the easy case; this number moving is how
+     * that difference would show up here.
+     */
+    expect(counts).toEqual({ matched: 33, uncertain: 12, relatedOnly: 0, noMatch: 0 });
   });
 });

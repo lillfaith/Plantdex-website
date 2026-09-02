@@ -175,11 +175,41 @@ describe('outcomeFor', () => {
     );
   });
 
-  it('reports no match when nothing maps to a confirmable card', () => {
-    // Including when a same-genus relative scores highly — related is not the same plant.
+  it('reports no match only when the deck really has nothing like it', () => {
     expect(outcomeFor([candidate('Monstera deliciosa', 0.99)])).toBe('noMatch');
-    expect(outcomeFor([candidate('Taraxacum erythrospermum', 0.97)])).toBe('noMatch');
     expect(outcomeFor([])).toBe('noMatch');
+  });
+
+  it('accepts the one Viola name GBIF verified, and no other', () => {
+    /*
+     * Ten Viola/congener names went to GBIF's backbone. Exactly one came back a synonym of
+     * a deck species: Viola papilionacea Pursh -> Viola sororia Willd. The other nine,
+     * V. riviniana and V. odorata among them, are accepted species of their own and stay
+     * unloggable. Pinned so the line between "same plant, older name" and "different plant,
+     * same genus" cannot be blurred by a later convenience.
+     */
+    expect(matchScientificName('Viola papilionacea').herbId).toBe('viola-sororia');
+    expect(matchScientificName('Viola papilionacea').confirmable).toBe(true);
+
+    for (const other of ['Viola riviniana', 'Viola odorata', 'Viola canina', 'Viola septentrionalis']) {
+      const match = matchScientificName(other);
+      expect(match.kind, other).toBe('sameGenus');
+      expect(match.confirmable, `${other} is its own species and must not be loggable`).toBe(false);
+    }
+  });
+
+  it('reports a related card when the deck covers the genus but not the species', () => {
+    /*
+     * THIS ASSERTION USED TO READ `noMatch`, AND THAT WAS THE BUG.
+     *
+     * A high-scoring Taraxacum erythrospermum is not a Dandelion and must never be
+     * loggable as one — that part was right and has not changed. But the deck plainly
+     * contains a dandelion card, and answering "not one of the 45 cards" said otherwise.
+     * Refusing to record a different species and denying the collection holds anything
+     * similar are two claims, and only the first one is true.
+     */
+    expect(outcomeFor([candidate('Taraxacum erythrospermum', 0.97)])).toBe('relatedOnly');
+    expect(matchScientificName('Taraxacum erythrospermum').confirmable).toBe(false);
   });
 });
 
@@ -191,5 +221,55 @@ describe('confidenceBand', () => {
     // There is no 'certain' band, and there must not be one: the provider is guessing from
     // pixels, and a label that says otherwise would be the single most dangerous word here.
     expect(['strong', 'moderate', 'weak']).toContain(confidenceBand(1));
+  });
+});
+
+describe('a genus the deck covers, a species it does not', () => {
+  /*
+   * THE VIOLET REPORT.
+   *
+   * A violet photographed in the field returned five Viola species and not one of them was
+   * the `Viola sororia` the Wild Violet card prints. Every candidate resolved to that card
+   * as `sameGenus`, nothing was confirmable, and the player was told "not one of the 45
+   * cards" — while `matchScientificName` was handing back `viola-sororia` for all five.
+   *
+   * The deck HAS a violet. Refusing to log a different species is right; claiming the
+   * collection contains nothing like it is simply false, and those are two different
+   * statements that were being made with one word.
+   */
+  const FIELD_VIOLET: [string, number][] = [
+    ['Viola riviniana', 0.31],
+    ['Viola odorata', 0.18],
+    ['Viola canina', 0.09],
+    ['Viola tricolor', 0.04],
+  ];
+
+  const candidates = () =>
+    FIELD_VIOLET.map(([scientificName, score]) => ({
+      scientificName,
+      score,
+      match: matchScientificName(scientificName),
+    }));
+
+  it('reports a related card rather than an empty collection', () => {
+    expect(outcomeFor(candidates())).toBe('relatedOnly');
+  });
+
+  it('still refuses to let any of them be logged', () => {
+    // The whole reason `relatedOnly` is not `matched`: these are other species.
+    for (const candidate of candidates()) {
+      expect(candidate.match.confirmable, candidate.scientificName).toBe(false);
+    }
+  });
+
+  it('still says noMatch when the deck really has nothing', () => {
+    // The distinction is only worth having if the other half survives.
+    const strangers = ['Monstera deliciosa', 'Ginkgo biloba'].map((scientificName) => ({
+      scientificName,
+      score: 0.9,
+      match: matchScientificName(scientificName),
+    }));
+    expect(outcomeFor(strangers)).toBe('noMatch');
+    expect(outcomeFor([])).toBe('noMatch');
   });
 });

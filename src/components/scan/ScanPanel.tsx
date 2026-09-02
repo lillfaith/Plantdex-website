@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { getHerb } from '@/lib/deck';
-import { confidenceBand } from '@/lib/plant-match';
+import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
@@ -25,6 +25,14 @@ import { ScanCaution } from './ScanCaution';
  * Confirming calls the ordinary `discover()`, which is what keeps repeats idempotent: it is
  * the same reducer every other entry point uses, and a plant already found awards nothing.
  */
+/** The genus the candidates share, so the heading can name what was actually found. */
+function relatedGenus(candidates: readonly ScanCandidate[]): string {
+  const named = candidates.find((candidate) => candidate.match.herbId);
+  return named
+    ? genusOf(named.scientificName).replace(/^./, (letter) => letter.toUpperCase())
+    : 'plant';
+}
+
 export function ScanPanel() {
   const { user } = useAuth();
   const { discover, isDiscovered, ready } = useHerbdex();
@@ -85,7 +93,9 @@ export function ScanPanel() {
           ? 'scan_matched'
           : answer.outcome === 'uncertain'
             ? 'scan_uncertain'
-            : 'scan_no_match',
+            : answer.outcome === 'relatedOnly'
+              ? 'scan_related'
+              : 'scan_no_match',
       );
       // History is account data; signed out there is nowhere to keep it, and saying so is
       // better than silently discarding it. A failed write never costs the player the answer.
@@ -183,16 +193,47 @@ export function ScanPanel() {
 
         {result && (
           <section className="panel p-5" aria-live="polite">
-            {result.outcome === 'noMatch' ? (
+            {result.outcome === 'noMatch' || result.outcome === 'relatedOnly' ? (
               <>
                 <h3 className="font-display text-lg font-bold text-gold-plate">
-                  Not one of the 45 cards
+                  {result.outcome === 'relatedOnly'
+                    ? `A ${relatedGenus(result.candidates)}, but not the one on the card`
+                    : 'Not one of the 45 cards'}
                 </h3>
+                <div aria-hidden="true" className="pixel-rule mt-2 w-16" />
                 <p className="mt-2 text-sm leading-relaxed text-violet-200">
-                  {result.candidates.length > 0
-                    ? 'We recognised the plant, but it is not in this collection. Plantdex covers 45 common wild species — most plants you photograph will not be among them.'
-                    : 'Nothing was recognised in that photograph. A closer shot of a single leaf or flower usually works better.'}
+                  {result.outcome === 'relatedOnly'
+                    ? 'The deck has a card for this group of plants, but it names a different species — so this cannot be logged as that card. Open it and compare for yourself.'
+                    : result.candidates.length > 0
+                      ? 'We recognised the plant, but it is not in this collection. Plantdex covers 45 common wild species — most plants you photograph will not be among them.'
+                      : 'Nothing was recognised in that photograph. A closer shot of a single leaf or flower usually works better.'}
                 </p>
+
+                {/*
+                  The card the matcher was holding all along. Offered for READING, with no
+                  confirm button anywhere near it: a related species is still not this
+                  species, and that refusal is the point of the distinction, not a bug in it.
+                */}
+                {result.outcome === 'relatedOnly' &&
+                  (() => {
+                    const near = result.candidates.find((candidate) => candidate.match.herbId);
+                    const herb = near?.match.herbId ? getHerb(near.match.herbId) : null;
+                    if (!herb) return null;
+                    return (
+                      <Link
+                        href={`/herbdex/${herb.id}`}
+                        className="mt-3 block rounded-xl border-y border-r border-l-4 border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink p-3 transition-colors hover:bg-plum-600/40"
+                      >
+                        <span className="block font-bold text-violet-100">{herb.commonName}</span>
+                        <span className="block text-xs italic text-violet-400">
+                          {herb.scientificName}
+                        </span>
+                        <span className="mt-1 block text-xs text-violet-300">
+                          The deck&rsquo;s card for this group &mdash; open it and compare
+                        </span>
+                      </Link>
+                    );
+                  })()}
                 {result.candidates.length > 0 && (
                   <ul className="mt-3 space-y-1 text-sm text-violet-300">
                     {result.candidates.slice(0, 3).map((candidate) => (
@@ -205,12 +246,19 @@ export function ScanPanel() {
                     ))}
                   </ul>
                 )}
-                <Link
-                  href="/herbdex"
-                  className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-                >
-                  Browse the collection instead &rarr;
-                </Link>
+                {/*
+                  Only on a real no-match. On `relatedOnly` the card is already offered
+                  above, so "browse the collection instead" would be pointing away from the
+                  very thing the player was just handed.
+                */}
+                {result.outcome === 'noMatch' && (
+                  <Link
+                    href="/herbdex"
+                    className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+                  >
+                    Browse the collection instead &rarr;
+                  </Link>
+                )}
               </>
             ) : (
               <>

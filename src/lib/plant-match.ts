@@ -81,6 +81,17 @@ const ACCEPTED_NAME_SYNONYMS: Record<string, string> = {
   // Older basionym and a long-used synonym, both for the same plant.
   'leontodon taraxacum': 'taraxacum-officinale',
   'taraxacum vulgare': 'taraxacum-officinale',
+  /*
+   * GBIF backbone: Viola papilionacea Pursh is a SYNONYM whose accepted name is
+   * Viola sororia Willd. (matchType EXACT, confidence 98). Checked against the API from a
+   * runner rather than recalled — see scripts/check_synonyms.py and the "Check plant name
+   * synonyms" workflow, which prints the verdict in its log.
+   *
+   * The same run REFUSED Viola riviniana, V. odorata, V. canina and V. septentrionalis:
+   * GBIF reports each as an accepted species in its own right, so none of them is here.
+   * That is the point of asking rather than pattern-matching on "it is also a violet".
+   */
+  'viola papilionacea': 'viola-sororia',
 };
 
 /**
@@ -210,11 +221,26 @@ export function confidenceBand(score: number): ConfidenceBand {
  * `uncertain` is a first-class outcome, not a degraded `matched`: when nothing clears the
  * bar, presenting a ranked list with no highlighted answer is the honest rendering.
  */
-export type ScanOutcome = 'matched' | 'uncertain' | 'noMatch';
+export type ScanOutcome = 'matched' | 'uncertain' | 'relatedOnly' | 'noMatch';
 
+/*
+ * `relatedOnly` EXISTS BECAUSE THE OLD ANSWER WAS FALSE.
+ *
+ * A violet photographed in the field came back as five Viola species, none of them the
+ * `Viola sororia` the Wild Violet card prints. Every one resolved to `sameGenus`, nothing
+ * was confirmable, and the player was told "not one of the 45 cards" — while this very
+ * function was holding `viola-sororia` for all five of them. The deck HAS a violet. Saying
+ * it does not is not a conservative answer, it is a wrong one.
+ *
+ * So the two ideas are separated. `noMatch` means the deck has nothing like this.
+ * `relatedOnly` means the deck has a card for this genus but not for this species: worth
+ * showing, worth reading, and still NOT loggable — which is the same refusal as before,
+ * just no longer dressed up as ignorance.
+ */
 export function outcomeFor(candidates: readonly ScanCandidate[]): ScanOutcome {
   const confirmable = candidates.filter((candidate) => candidate.match.confirmable);
-  if (confirmable.length === 0) return 'noMatch';
-  if (confirmable.some((candidate) => candidate.score >= 0.35)) return 'matched';
-  return 'uncertain';
+  if (confirmable.length > 0) {
+    return confirmable.some((candidate) => candidate.score >= 0.35) ? 'matched' : 'uncertain';
+  }
+  return candidates.some((candidate) => candidate.match.herbId) ? 'relatedOnly' : 'noMatch';
 }

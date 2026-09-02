@@ -104,6 +104,7 @@ export const EVENT_NAMES = [
   'scan_matched',
   'scan_uncertain',
   'scan_no_match',
+  'scan_related',
   'scan_confirmed',
 
   // Commerce. Placement is in the name because that is the entire question a CTA asks.
