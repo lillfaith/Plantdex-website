@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 import { assetPath } from '@/lib/asset-path';
 import { spriteFor } from '@/lib/plant-sprites';
 import type { GardenStage } from '@/lib/garden';
@@ -28,6 +30,7 @@ export function PlantSprite({
   frozen = false,
   fit = false,
   className = '',
+  style,
 }: {
   herbId: string;
   /** Describes the plant, not the animation — screen readers gain nothing from "bouncing". */
@@ -53,6 +56,15 @@ export function PlantSprite({
    */
   fit?: boolean;
   className?: string;
+  /**
+   * Extra style, merged over the sizing this component computes.
+   *
+   * The avatar badge uses it to carry a `transform` that frames the plant rather than its
+   * canvas (see `contentFit`). Deliberately merged LAST and deliberately not a `transform`
+   * prop of its own: the geometry belongs to the caller that knows what frame the sprite is
+   * going into, and this component stays a renderer.
+   */
+  style?: CSSProperties;
 }) {
   const sprite = spriteFor(herbId, stage);
   if (!sprite) return null;
@@ -90,6 +102,7 @@ export function PlantSprite({
         // `steps()` is the one thing that cannot read a variable, hence the class above.
         ['--sprite-sheet-width' as string]: `${width * sprite.frames}px`,
         ['--sprite-duration' as string]: `${sprite.frames / sprite.fps}s`,
+        ...style,
       }}
     />
   );

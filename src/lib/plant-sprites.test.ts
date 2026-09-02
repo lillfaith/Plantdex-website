@@ -3,7 +3,15 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { allSprites, hasSprite, spriteFor, SUPPORTED_FRAME_COUNTS } from './plant-sprites';
+import type { PlantSpriteEntry } from './plant-sprites';
+import {
+  allSprites,
+  contentFit,
+  FRAME_FILL,
+  hasSprite,
+  spriteFor,
+  SUPPORTED_FRAME_COUNTS,
+} from './plant-sprites';
 import { GROWTH_STAGES } from './garden';
 import { HERBS, isHerbId } from './deck';
 
@@ -260,5 +268,160 @@ describe('cache-busting versions', () => {
       expect(clash, `${label} and ${clash} are byte-identical`).toBeUndefined();
       byVersion.set(entry.version, label);
     }
+  });
+});
+
+describe('the measured content box', () => {
+  // Both halves of the manifest: the adult portraits and every staged sheet, since the
+  // badge shows whichever stage the collection has earned.
+  const entries = allSprites().flatMap((sprite) => [
+    { label: sprite.herbId, entry: sprite },
+    ...GROWTH_STAGES.filter((stage) => sprite.stages?.[stage]).map((stage) => ({
+      label: `${sprite.herbId} (${stage})`,
+      entry: sprite.stages![stage]!,
+    })),
+  ]);
+
+  it('measures every sheet, adult and staged', () => {
+    // Without this, a sprite built before the field existed silently falls back to the
+    // unfitted rendering and is the one plant in the deck that looks wrong in the badge.
+    for (const { label, entry } of entries) {
+      const box = entry.content;
+      expect(box, `${label} carries no content box`).toBeDefined();
+      expect(box!.right, `${label}: empty ink box`).toBeGreaterThan(box!.left);
+      expect(box!.bottom, `${label}: empty ink box`).toBeGreaterThan(box!.top);
+      expect(box!.left).toBeGreaterThanOrEqual(0);
+      expect(box!.top).toBeGreaterThanOrEqual(0);
+      expect(box!.right).toBeLessThanOrEqual(1);
+      expect(box!.bottom).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('grows as the plant does, on one shared ground line', () => {
+    // The reason the badge needed fitting at all, stated as a fact about the art: stages
+    // share a canvas and a ground line, and only the top of the ink moves. If that ever
+    // stopped being true the fit would be re-centring against an assumption.
+    for (const sprite of allSprites()) {
+      const sprout = sprite.stages?.sprout?.content;
+      const growing = sprite.stages?.growing?.content;
+      const adult = sprite.content;
+      if (!sprout || !growing || !adult) continue;
+      const height = (box: { top: number; bottom: number }) => box.bottom - box.top;
+      expect(height(sprout), `${sprite.herbId}: sprout is not shorter than growing`).toBeLessThan(
+        height(growing),
+      );
+      expect(height(growing), `${sprite.herbId}: growing is not shorter than adult`).toBeLessThan(
+        height(adult),
+      );
+    }
+  });
+});
+
+describe('contentFit', () => {
+  const FILL = FRAME_FILL;
+  const entries = allSprites().flatMap((sprite) =>
+    [undefined, ...GROWTH_STAGES].map((stage) => ({
+      label: `${sprite.herbId} (${stage ?? 'adult'})`,
+      entry: stage ? spriteFor(sprite.herbId, stage)! : sprite,
+    })),
+  );
+
+  it('never lets a plant outgrow the frame it is being fitted to', () => {
+    // THE FAILURE THIS CATCHES, and the reason the scale is measured per sprite rather
+    // than being one constant per stage: sprouts run from a third to nine tenths of the
+    // frame's width, so a factor sized for the median crops the widest of them. The cap
+    // has to hold in BOTH dimensions — a short, wide plant is limited by width and a
+    // narrow, tall one by height.
+    for (const { label, entry } of entries) {
+      const box = entry.content!;
+      const fit = contentFit(entry, FILL);
+      const inkWidth = (box.right - box.left) * fit.scale;
+      const inkHeight =
+        ((box.bottom - box.top) * fit.scale * entry.frameHeight) / entry.frameWidth;
+      expect(inkWidth, `${label} is drawn wider than the frame allows`).toBeLessThanOrEqual(
+        FILL + 1e-9,
+      );
+      expect(inkHeight, `${label} is drawn taller than the frame allows`).toBeLessThanOrEqual(
+        FILL + 1e-9,
+      );
+      // And it fills one of the two, or the plant is smaller than it needed to be.
+      expect(Math.max(inkWidth, inkHeight), `${label} is fitted too small`).toBeCloseTo(FILL, 6);
+    }
+  });
+
+  it('puts the plant in the middle of the frame', () => {
+    // A sprout's ink sits low on its canvas, against the shared ground line. Scaling
+    // alone would enlarge a plant that is still hugging the bottom of the badge.
+    for (const { label, entry } of entries) {
+      const box = entry.content!;
+      const fit = contentFit(entry, FILL);
+      // Where the ink's centre lands, as a fraction of the frame: the sprite is centred,
+      // scaled about its own centre, then translated by the returned percentages.
+      const centredX =
+        0.5 + fit.scale * (box.left + (box.right - box.left) / 2 - 0.5) + fit.translateX / 100;
+      const centredY =
+        0.5 + fit.scale * (box.top + (box.bottom - box.top) / 2 - 0.5) + fit.translateY / 100;
+      expect(centredX, `${label} is not horizontally centred`).toBeCloseTo(0.5, 6);
+      expect(centredY, `${label} is not vertically centred`).toBeCloseTo(0.5, 6);
+    }
+  });
+
+  it('gives a seedling the same room in the badge as the adult it grows into', () => {
+    // THE PROBLEM THIS SOLVES. Unfitted, the badge drew the CANVAS at a flat share of the
+    // frame, so how much plant you saw depended on how much of its canvas that stage
+    // happened to use — and stages deliberately use different amounts. A seedling came out
+    // around half the plant an adult did, in a 36px circle, which reads as a broken avatar
+    // rather than as a young plant.
+    //
+    // Fitted, every stage of every species reaches the same share of the badge, so the
+    // badge shows the stage the collection actually earned at a size that can be read.
+    // The plant's larger dimension, as a share of the frame's width.
+    const shown = (entry: PlantSpriteEntry, scale: number) => {
+      const box = entry.content!;
+      const aspect = entry.frameWidth / entry.frameHeight;
+      return Math.max(
+        (box.right - box.left) * scale,
+        ((box.bottom - box.top) * scale) / aspect,
+      );
+    };
+
+    const gaps: number[] = [];
+    for (const sprite of allSprites()) {
+      const sprout = spriteFor(sprite.herbId, 'sprout')!;
+      expect(
+        shown(sprout, contentFit(sprout).scale),
+        `${sprite.herbId}: sprout is not fitted to the same share as its adult`,
+      ).toBeCloseTo(shown(sprite, contentFit(sprite).scale), 6);
+      // How tall the plant was drawn, unfitted, relative to its own adult. Height is the
+      // dimension that collapses: stages share a ground line, so a young plant is a short
+      // one, and at the flat share that shortness went straight into the badge.
+      const height = (entry: PlantSpriteEntry) => entry.content!.bottom - entry.content!.top;
+      gaps.push(height(sprout) / height(sprite));
+    }
+
+    // Not one species escaped it, which is why this is a fit rather than a nudge.
+    for (const gap of gaps) expect(gap).toBeLessThan(0.7);
+  });
+
+  it('is what the sitewide badge renders with', () => {
+    // The fit is worth nothing sitting in this file. `xs` is the badge; the larger
+    // avatars deliberately keep the authored composition, ground line and all, so the
+    // flat share has to survive alongside it rather than be replaced by it.
+    const source = readFileSync(
+      join(root, 'src', 'components', 'profile', 'ProfileAvatar.tsx'),
+      'utf8',
+    );
+    expect(source, 'the badge no longer fits the plant to its frame').toMatch(
+      /size === 'xs' \? contentFit\(/,
+    );
+    expect(source, 'the larger avatars lost their flat sprite width').toMatch(/w-\[\d+%\]/);
+  });
+
+  it('leaves a sprite alone when nothing was measured', () => {
+    // A manifest built before the field existed, and the null a caller passes for "no
+    // plant chosen". Neither may produce a NaN transform.
+    expect(contentFit(null)).toEqual({ scale: 1, translateX: 0, translateY: 0 });
+    const unmeasured = { ...allSprites()[0]!, content: undefined };
+    expect(contentFit(unmeasured)).toEqual({ scale: 1, translateX: 0, translateY: 0 });
   });
 });

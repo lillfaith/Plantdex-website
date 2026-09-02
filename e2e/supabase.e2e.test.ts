@@ -738,7 +738,15 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
      * fails if somebody ever writes the update policy with only one half.
      */
     it('cannot be handed to another user by updating its own user_id', async () => {
-      await saveRemoteProfile(bob.id, { ...emptyProfile(), displayName: 'Bob' });
+      // Bob's own row, written through BOB'S client rather than through
+      // `saveRemoteProfile`. The adapter is bound to the app's singleton, which this suite
+      // signs in as Alice — so asking it to write a row owned by Bob is itself the forged
+      // insert the previous test already proves the database refuses. This one needs a row
+      // to exist before it can try to reassign it.
+      const { error: seeded } = await bobClient
+        .from('profiles')
+        .upsert({ user_id: bob.id, display_name: 'Bob' }, { onConflict: 'user_id' });
+      expect(seeded, 'Bob could not write his own profile').toBeNull();
 
       const { error } = await bobClient
         .from('profiles')

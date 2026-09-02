@@ -279,6 +279,37 @@ def render_frame(sprite: dict, frame: int) -> list[list[str]]:
 
     return canvas
 
+def content_box(sheet: Image.Image, frame_width: int, frame_height: int) -> dict:
+    """Where frame 0's ink actually sits, as fractions of the frame.
+
+    MEASURED FROM THE ASSEMBLED ART, never inferred from the parts that produced it -
+    the same rule `_face.py` follows for feature placement, and for the same reason: a
+    part list says what was drawn, not where it ended up once gutters, shading and a
+    squashed body had their say.
+
+    It exists because a frame is a FIXED canvas and a plant is not: every stage is drawn
+    on the same 170x140 cell against a shared ground line, so a sprout uses a little under
+    half the height and an adult four fifths of it. Anything that renders a sprite inside a
+    small fixed frame - the sitewide avatar badge - needs the ink box to fill that frame
+    with the plant rather than with the empty sky above a seedling.
+
+    Frame 0 only, because frame 0 is the resting pose and the one place that holds still.
+    A gesture may legitimately fling a seed clear of the canvas; sizing a portrait around
+    that would shrink the plant to make room for a frame nobody is looking at.
+    """
+    box = sheet.crop((0, 0, frame_width, frame_height)).getbbox()
+    if box is None:
+        # An entirely empty frame 0 cannot happen - `audit_sprites.py` flood-fills it -
+        # but a measurement that returns None here would silently become a NaN scale.
+        return {"left": 0.0, "top": 0.0, "right": 1.0, "bottom": 1.0}
+    left, top, right, bottom = box
+    return {
+        "left": round(left / frame_width, 4),
+        "top": round(top / frame_height, 4),
+        "right": round(right / frame_width, 4),
+        "bottom": round(bottom / frame_height, 4),
+    }
+
 
 def compile_sprite(sprite: dict) -> dict:
     """Render every frame into one horizontal sheet and return its manifest entry."""
@@ -337,6 +368,7 @@ def compile_sprite(sprite: dict) -> dict:
         "frames": frames,
         "fps": sprite["fps"],
         "personality": sprite["personality"],
+        "content": content_box(sheet, cell * SCALE, height * SCALE),
     }
 
 

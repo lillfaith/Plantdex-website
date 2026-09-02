@@ -37,13 +37,34 @@ the shipped manifest, and this guards the authoring.
 
 from __future__ import annotations
 
+import json
+import re
 import sys
 from collections import deque
 from pathlib import Path
 
+from PIL import Image
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from build_sprites import load_sources, render_frame, staged_sprites  # noqa: E402
+from build_sprites import (  # noqa: E402
+    MANIFEST,
+    OUT_DIR,
+    load_sources,
+    render_frame,
+    staged_sprites,
+)
+
+ROOT = Path(__file__).resolve().parent.parent
+
+# The built manifest, for each sheet's authored frame size. Read once: the badge check
+# walks every sprite and every stage.
+MANIFEST_DATA: dict = {}
+if MANIFEST.exists():
+    for _herb_id, _entry in json.loads(MANIFEST.read_text()).items():
+        MANIFEST_DATA[_herb_id] = _entry
+        for _stage, _staged in (_entry.get("stages") or {}).items():
+            MANIFEST_DATA[_staged["herbId"]] = _staged
 
 # Parts that must sit inside the face patch. Cheeks and brows ride its edge by design -
 # a brow sits ON the rim - so they are held to a share rather than to every pixel.
@@ -151,7 +172,7 @@ def audit(sprite: dict) -> list[str]:
 
 def stale(sources: dict) -> list[str]:
     """Sprites whose built PNG no longer matches their source."""
-    from build_sprites import OUT_DIR, compile_sprite
+    from build_sprites import compile_sprite
 
     problems = []
     for herb_id, sprite in sorted(sources.items()):
@@ -161,6 +182,80 @@ def stale(sources: dict) -> list[str]:
         if path.read_bytes() != before:
             problems.append(f"{herb_id}: the built sheet was out of date (rebuilt it)")
     return problems
+
+def badge_fit(sources: dict) -> list[str]:
+    """Sprites the sitewide avatar badge would have to crop.
+
+    The badge is a 36px CIRCLE, and `contentFit` in `src/lib/plant-sprites.ts` scales each
+    sprite so the plant - not the canvas it was drawn on - fills it. That is what stops a
+    seedling being twelve pixels of green in the corner of every page, and it is only safe
+    while the share it fills, `FRAME_FILL`, is one the circle can actually hold. 0.74 was
+    chosen because at that value not one of the 135 sheets loses a pixel; a plant redrawn
+    wider or a fill raised without re-measuring would start quietly cropping leaves, and
+    nothing in `npm run verify` can see it because the cropping happens in a browser.
+
+    So this re-measures the claim against the art, at the tightest of the avatar frames.
+    """
+    fill = frame_fill()
+    inner = 32.0  # the badge's padding box inside its thickest (2px) frame border
+    sample = 4  # supersample, so a clipped pixel is not a rounding artefact
+    problems = []
+    for herb_id in sorted(sources):
+        path = OUT_DIR / f"{herb_id}.png"
+        if not path.exists():
+            continue
+        sheet = Image.open(path).convert("RGBA")
+        manifest = MANIFEST_DATA.get(herb_id)
+        frame_w, frame_h = (
+            (manifest["frameWidth"], manifest["frameHeight"])
+            if manifest
+            else (sheet.width, sheet.height)
+        )
+        frame = sheet.crop((0, 0, frame_w, frame_h))
+        box = frame.getbbox()
+        if box is None:
+            continue
+        left, top, right, bottom = (
+            box[0] / frame_w,
+            box[1] / frame_h,
+            box[2] / frame_w,
+            box[3] / frame_h,
+        )
+        width, height = right - left, bottom - top
+        aspect = frame_w / frame_h
+        scale = min(fill / width, fill * aspect / height)
+
+        drawn_w = max(1, round(inner * scale * sample))
+        drawn_h = max(1, round(inner / aspect * scale * sample))
+        drawn = frame.resize((drawn_w, drawn_h), Image.NEAREST)
+        alpha = drawn.split()[3].load()
+        # The fit centres the ink box on the circle's centre, so that is where to measure
+        # the radius from.
+        centre_x = (left + width / 2) * drawn_w
+        centre_y = (top + height / 2) * drawn_h
+        radius = inner * sample / 2
+        clipped = 0
+        for y in range(drawn_h):
+            for x in range(drawn_w):
+                if alpha[x, y] < 8:
+                    continue
+                if (x + 0.5 - centre_x) ** 2 + (y + 0.5 - centre_y) ** 2 > radius**2:
+                    clipped += 1
+        if clipped:
+            problems.append(
+                f"{herb_id}: the avatar badge would crop it "
+                f"({clipped / sample**2:.1f}px outside the circle at fill {fill})"
+            )
+    return problems
+
+
+def frame_fill() -> float:
+    """`FRAME_FILL` as the app actually defines it, so this cannot audit a stale number."""
+    source = (ROOT / "src" / "lib" / "plant-sprites.ts").read_text()
+    match = re.search(r"export const FRAME_FILL = ([0-9.]+);", source)
+    if not match:
+        raise SystemExit("plant-sprites.ts no longer exports FRAME_FILL")
+    return float(match.group(1))
 
 
 def with_stages(sources: dict) -> dict:
@@ -184,6 +279,10 @@ def main() -> None:
     failed = False
     if not sys.argv[1:]:
         for line in stale(sources):
+            print(line)
+            failed = True
+        # After the stale check, so this measures the sheets as they will ship.
+        for line in badge_fit(sources):
             print(line)
             failed = True
     for herb_id in wanted:

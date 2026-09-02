@@ -1,4 +1,5 @@
 import { PlantSprite } from '../PlantSprite';
+import { contentFit, spriteFor } from '@/lib/plant-sprites';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import type { FieldFrame } from '@/lib/field-frames';
 import type { GardenStage } from '@/lib/garden';
@@ -39,10 +40,13 @@ export function ProfileAvatar({
   /**
    * `lg` is the identity banner, `sm` a picker swatch, `xs` the sitewide badge.
    *
-   * A small avatar can look oddly empty, and the cause is usually the PLANT rather than the
-   * sizing: the sprite is drawn at `stageForState`, so a discovered-but-unmastered species
-   * is a seedling and a seedling is small on purpose. Growing it to fill the frame would
-   * have the badge claim a maturity the collection has not earned.
+   * `xs` FRAMES THE PLANT RATHER THAN THE CANVAS. Every stage is drawn on one canvas
+   * against a shared ground line, so a seedling occupies under half of it and, at 36px,
+   * came out as about twelve pixels of plant floating low in a thirty-six pixel circle.
+   * `contentFit` scales and re-centres what was actually drawn — the sprite, the stage and
+   * the art are untouched, so the badge still shows exactly the growth stage the collection
+   * has earned; it is simply framed as a portrait. The larger sizes have room to spare and
+   * keep the authored composition, ground line and all.
    */
   size?: 'xs' | 'sm' | 'lg';
   /**
@@ -63,6 +67,11 @@ export function ProfileAvatar({
   const radius =
     size === 'lg' ? 'rounded-[1.4rem]' : size === 'sm' ? 'rounded-xl' : 'rounded-full';
 
+  // Measured from the sheet, per sprite and per stage — see `contentFit`. Resolving the
+  // sprite here rather than inside PlantSprite keeps that component a renderer: it takes a
+  // class and a transform and knows nothing about why they were chosen.
+  const fit = size === 'xs' ? contentFit(herbId ? spriteFor(herbId, stage) : null) : null;
+
   return (
     <span className={`relative inline-flex shrink-0 ${box}`}>
       {frame.bloom && (
@@ -81,7 +90,14 @@ export function ProfileAvatar({
             stage={stage}
             fit
             frozen={frozen}
-            className="w-[86%]"
+            className={fit ? 'w-full' : 'w-[86%]'}
+            style={
+              fit
+                ? {
+                    transform: `translate(${fit.translateX.toFixed(2)}%, ${fit.translateY.toFixed(2)}%) scale(${fit.scale.toFixed(3)})`,
+                  }
+                : undefined
+            }
           />
         ) : (
           <PlantdexIcon

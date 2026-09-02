@@ -22,6 +22,17 @@ import type { GardenStage } from './garden';
  * the deck at all should not throw.
  */
 
+/**
+ * Where frame 0's ink sits inside the frame, as fractions of the frame's own width and
+ * height. Measured from the assembled sheet by `build_sprites.py`, never authored.
+ */
+export interface SpriteContentBox {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
 export interface PlantSpriteEntry {
   herbId: string;
   /** Site-root-relative path to the sheet; resolve through `assetPath()` before use. */
@@ -41,6 +52,11 @@ export interface PlantSpriteEntry {
   fps: number;
   /** Authored personality label, for documentation and tests rather than styling. */
   personality: string;
+  /**
+   * The resting pose's ink box. Optional in the type for the same reason `stages` is:
+   * a manifest built before this field existed should render, not throw.
+   */
+  content?: SpriteContentBox;
   /**
    * Per-stage art. Present for every species in the deck; `plant-sprites.test.ts`
    * enforces that, so a species added without stage art fails the suite rather than
@@ -87,6 +103,82 @@ export function hasSprite(herbId: string): boolean {
  */
 export function hasStageArt(herbId: string, stage: GardenStage): boolean {
   return Boolean(SPRITES[herbId]?.stages?.[stage]);
+}
+
+/** How to scale and shift a fitted sprite so its plant, not its canvas, fills the frame. */
+export interface SpriteContentFit {
+  /** Multiplier on the sprite's own box. */
+  scale: number;
+  /** Translation as a percentage of the sprite's own (unscaled) width and height. */
+  translateX: number;
+  translateY: number;
+}
+
+/**
+ * The share of a square frame a fitted plant may occupy.
+ *
+ * MEASURED, not chosen by eye: the badge's frame is a circle, so a plant sized to the
+ * frame's full width would lose its corners to the curve. 0.74 is the largest value at
+ * which not one of the deck's 135 sheets — 45 species times three growth stages — loses a
+ * single pixel to that circle, at the tightest of the frame borders. 0.78 costs four
+ * sprites a whisker, 0.82 costs twelve.
+ *
+ * `scripts/audit_sprites.py` re-measures that claim against the actual art, so a sprite
+ * redrawn wider than the badge can hold fails the audit rather than shipping cropped.
+ */
+export const FRAME_FILL = 0.74;
+
+/** A sprite drawn exactly as authored: no scale, no shift. */
+const UNCHANGED: SpriteContentFit = { scale: 1, translateX: 0, translateY: 0 };
+
+/**
+ * Fit a sprite's PLANT to a square frame, rather than its canvas.
+ *
+ * Every stage of every species is drawn on the same canvas against a shared ground line,
+ * so what changes as a plant grows is how much of the canvas it uses: a sprout's ink is
+ * about 46% of the frame's height, an adult's about 82%. Rendered straight into a 36px
+ * badge that means a seedling is roughly twelve pixels of plant inside a thirty-six pixel
+ * circle — unreadable, and it reads as a sizing bug rather than as a young plant.
+ *
+ * This scales the plant up to the frame and re-centres it WITHOUT touching the art or the
+ * stage: the badge still shows whichever sprite `stageForState` chose, and a sprout still
+ * looks like a sprout — it is simply drawn at portrait size, the way a passport photograph
+ * frames a face rather than a body.
+ *
+ * The scale is capped by BOTH dimensions and measured PER SPRITE, which is the whole
+ * reason the manifest carries a box rather than this file carrying a per-stage constant:
+ * a stage constant sized for the median sprout crops the widest one, and the deck's
+ * sprouts range from 32% to 91% of the frame's width.
+ *
+ * `fill` is the share of the frame the ink box may occupy — see `FRAME_FILL`.
+ */
+export function contentFit(
+  sprite: PlantSpriteEntry | null,
+  fill = FRAME_FILL,
+): SpriteContentFit {
+  const box = sprite?.content;
+  if (!sprite || !box) return UNCHANGED;
+
+  const width = box.right - box.left;
+  const height = box.bottom - box.top;
+  if (!(width > 0) || !(height > 0)) return UNCHANGED;
+
+  // The frame is wider than it is tall, and the sprite is sized by its width, so a
+  // height budget spends `aspect` times as much of that width.
+  const aspect = sprite.frameWidth / sprite.frameHeight;
+  const scale = Math.min(fill / width, (fill * aspect) / height);
+
+  // Centre of the ink, as a fraction of the frame. The sprite is centred in the frame
+  // already, so the shift is whatever the ink's own centre is away from the middle —
+  // scaled, because the transform scales about the sprite's centre before translating.
+  const centreX = box.left + width / 2;
+  const centreY = box.top + height / 2;
+
+  return {
+    scale,
+    translateX: (0.5 - centreX) * scale * 100,
+    translateY: (0.5 - centreY) * scale * 100,
+  };
 }
 
 /** Every authored sprite, for tests and for tooling that needs the whole set. */

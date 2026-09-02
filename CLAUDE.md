@@ -209,6 +209,12 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   makes 45 different plants read as one deck rather than 45 unrelated drawings, so a
   recolour pass must never touch them. A species may deliberately author its own face or
   eye shade; nothing may drift into one by accident.
+- **The manifest carries each sheet's frame-0 ink box, measured from the assembled art.**
+  Same rule as `_face.py`: a part list says what was drawn, not where it ended up once
+  gutters and shading had their say. It is what lets a fixed-size frame — the avatar badge —
+  size itself to the plant rather than to the empty sky above a seedling. Frame 0 only,
+  because a gesture may legitimately fling a seed off the canvas and sizing a portrait around
+  that would shrink the plant to make room for a frame nobody is looking at.
 - **Frame counts must be in `SUPPORTED_FRAME_COUNTS`**, because `steps()` cannot read a
   CSS custom property, so the count has to resolve to a literal class in `globals.css`.
   The build fails rather than shipping a sheet that would slide instead of snapping.
@@ -275,8 +281,14 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   (0003) is the one such table and holds no value anything is derived from;
   `profile-schema.test.ts` fails if a second table grants an update, or if that one loses
   its `with check`. Verified live by `e2e/supabase.e2e.test.ts`.
-- **Live verification is `npm run verify:supabase`** (`e2e/supabase.e2e.test.ts`, run
-  against a real project via `.env.local`). It is deliberately *not* part of `npm test` —
+- **Live verification is `npm run verify:supabase`, and it now passes green against the test
+  project** — 37 tests, including the cross-user attacks. Its first real run found one bug,
+  and it was in the suite: the `with check` test seeded Bob's profile row through
+  `saveRemoteProfile`, which is bound to the app's singleton client — signed in as Alice — so
+  the database refused it exactly as it should. A fixture that needs another user's row must
+  write it through that user's own client. Anything a test asserts about RLS is only as true
+  as the identity it wrote with. It lives in `e2e/supabase.e2e.test.ts`, runs against a real
+  project via `.env.local`, and is deliberately *not* part of `npm test` —
   it needs credentials and writes real rows. It drives the real adapters
   (`createRemoteHerbdexStorage`, `addRemoteSighting`) rather than reimplementing their
   queries, and its cross-user half actively attacks the database as a second signed-in
@@ -413,6 +425,21 @@ followers, comments, leaderboards or feed.
   page's own validation rather than repeating it, and it falls back to the email initial
   rather than ever rendering an empty circle. Its sprite is `frozen`: the badge is on every
   page, and frame 0 is authored as a complete resting pose precisely so it can be held.
+- **The badge frames the PLANT, not the canvas it was drawn on.** Every stage is drawn on one
+  fixed cell against a shared ground line, so a seedling uses under half of it and an adult
+  four fifths — which at 36px meant a sprout was about twelve pixels of green floating low in
+  the circle, reading as a broken avatar rather than as a young plant. `contentFit`
+  (`plant-sprites.ts`) scales and re-centres each sprite by the ink box `build_sprites.py`
+  measured for it, so every stage of every species reaches the same share of the badge. It
+  changes nothing else: the badge still shows whichever sprite `stageForState` chose, so the
+  avatar grows sprout → growing → flowering with the card it was set to, and there is
+  deliberately no per-stage avatar to pick. The larger avatars keep the authored composition,
+  ground line and all — they have the room.
+- **`FRAME_FILL` is measured, not chosen by eye.** 0.74 is the largest share at which not one
+  of the 135 sheets loses a pixel to the badge's circle; 0.82 costs twelve of them a leaf
+  tip. `audit_sprites.py` re-measures that against the real art — `npm run verify` cannot,
+  since the cropping only happens in a browser — so a plant redrawn wider, or a fill raised
+  without re-measuring, fails the audit instead of shipping cropped.
 - **Signing in seeds the account profile from the device; it never overwrites and never
   clears.** A signed-in save writes the account only, so on a shared device signing in does
   not repaint the signed-out identity — the same reasoning that keys the collection import
