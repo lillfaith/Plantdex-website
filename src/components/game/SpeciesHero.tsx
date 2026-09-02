@@ -1,12 +1,13 @@
 'use client';
 
-import type { Herb, Rarity } from '@/lib/types';
+import type {Herb } from '@/lib/types';
 import type { Progress } from '@/lib/progression';
 import type { MasteryStage } from '@/lib/mastery';
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import { cardLabel } from '@/lib/collection';
 import { USE_LABEL } from '@/lib/deck';
 import { CardFlip } from '../herbdex/CardFlip';
+import { RarityAura } from './RarityAura';
 import { PlantSprite } from '../PlantSprite';
 import { HabitatChips } from './HabitatChip';
 import { RarityMeter } from './RarityMeter';
@@ -28,13 +29,6 @@ import type { GardenStage } from '@/lib/garden';
  * be a decorative claim about a plant rather than a readout of its encounter rate.
  */
 
-const AURA: Record<Rarity, string> = {
-  Common: 'var(--color-violet-700)',
-  Uncommon: 'var(--color-rarity-uncommon)',
-  Rare: 'var(--color-rarity-rare)',
-  Epic: 'var(--color-rarity-epic)',
-};
-
 export function SpeciesHero({
   herb,
   progress,
@@ -52,11 +46,13 @@ export function SpeciesHero({
     <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-10">
       <div className="justify-self-center lg:justify-self-start">
         <div className="relative">
-          <div
-            aria-hidden="true"
-            className="card-aura pointer-events-none absolute inset-0 -z-10 scale-[1.45] blur-2xl"
-            style={{ ['--aura' as string]: AURA[herb.rarity] }}
-          />
+          {/*
+            The hero keeps its own reach — scale-[1.45] on one big card, not the grid's
+            step — but the COLOUR now comes from the shared map, so the halo and the rarity
+            text on the same screen can no longer disagree. Common was violet here and
+            rarity-common everywhere else.
+          */}
+          <RarityAura rarity={herb.rarity} className="scale-[1.45] blur-2xl opacity-100" />
           <div className="card-tilt drop-shadow-[0_18px_44px_rgba(23,16,28,0.7)]">
             <CardFlip herb={herb} size="hero" />
           </div>

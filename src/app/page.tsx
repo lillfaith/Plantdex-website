@@ -4,6 +4,7 @@ import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
 import { PlantSprite } from '@/components/PlantSprite';
+import { RarityAura } from '@/components/game/RarityAura';
 import { assetPath } from '@/lib/asset-path';
 
 /**
@@ -146,7 +147,8 @@ export default function HomePage() {
         </p>
         <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {showcase.map((herb) => (
-            <li key={herb.id}>
+            <li key={herb.id} className="relative">
+              <RarityAura rarity={herb.rarity} />
               <Link
                 href={`/herbdex/${herb.id}`}
                 className="block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
