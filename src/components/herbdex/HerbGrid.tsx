@@ -28,7 +28,12 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`min-h-11 rounded-full border px-3 text-xs font-semibold whitespace-nowrap transition-colors ${
+      /*
+        Drawn at 30px, targeted at 44px. Four rows of 44px pills were about a third of a
+        phone screen before the collection began; shrinking the pill without shrinking the
+        thumb area is the whole trick, and `tap-44` is where it lives.
+      */
+      className={`tap-44 h-[1.875rem] rounded-full border px-3 text-[0.72rem] font-semibold whitespace-nowrap transition-colors ${
         active
           ? 'border-gold-500 bg-gold-500/20 text-gold-300'
           : 'border-violet-700 bg-plum-800/50 text-violet-300 hover:border-violet-500 hover:text-violet-100'
@@ -86,6 +91,15 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
     });
   }, [herbs, status, rarity, season, habitat, query, isDiscovered, isMastered, ready]);
 
+  // Named, not counted: "2 active" tells a player something is on without telling them
+  // what, which is the same problem as hiding it.
+  const activeFilters = [
+    status !== 'all' ? STATUS_OPTIONS.find((option) => option.value === status)?.label : null,
+    rarity !== 'all' ? rarity : null,
+    season !== 'all' ? SEASON_LABEL[season] : null,
+    habitat !== 'all' ? HABITAT_LABEL[habitat] : null,
+  ].filter((label): label is string => Boolean(label));
+
   return (
     <div>
       <div className="space-y-3">
@@ -100,6 +114,29 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
           />
         </label>
 
+        <details className="group">
+          <summary className="tap-44 flex cursor-pointer list-none items-center justify-between gap-2 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
+            <span className="flex items-center gap-1.5">
+              <span
+                aria-hidden="true"
+                className="text-base leading-none transition-transform group-open:rotate-90 motion-reduce:transition-none"
+              >
+                &rsaquo;
+              </span>
+              Filters
+            </span>
+            {/*
+              A folded control that shows only the word "Filters" hides its own state: a
+              player who narrowed to Winter yesterday comes back to a short grid and no
+              visible reason for it. The active ones are named here, so folding costs the
+              rows and not the answer.
+            */}
+            <span className={activeFilters.length > 0 ? 'text-gold-400' : 'text-violet-400'}>
+              {activeFilters.length > 0 ? activeFilters.join(' · ') : 'None'}
+            </span>
+          </summary>
+
+          <div className="mt-2 space-y-2">
         <div className="-mx-4 overflow-x-auto px-4 pb-1">
           <div className="flex gap-2" role="group" aria-label="Filter by discovery status">
             {STATUS_OPTIONS.map((option) => (
@@ -157,6 +194,8 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
             ))}
           </div>
         </div>
+          </div>
+        </details>
       </div>
 
       <p aria-live="polite" className="mt-4 text-xs text-violet-400">

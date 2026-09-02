@@ -758,6 +758,16 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   /*
+   * The rail stops dead rather than being removed. Freezing it keeps the shelf's shape and
+   * the achievements that happen to be on screen; deleting the animation would leave the
+   * track parked at translateX(0), which is the same thing but by accident. The expanded
+   * list underneath is the complete set either way.
+   */
+  .achievement-rail {
+    animation: none !important;
+  }
+
+  /*
    * Two of the new animations end somewhere useless if the duration is merely collapsed:
    * `xp-rise` is `forwards`, so it would freeze at opacity 0 and the XP figure would never
    * appear at all; `node-pulse` would stop at whatever opacity the first frame names. Both
@@ -924,4 +934,62 @@ body {
   );
   -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px);
   mask-image: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * THE ACHIEVEMENT RAIL.
+ *
+ * Nineteen achievements is a wall of pills on a phone, and most of them are things you
+ * have not done yet. Collapsed, they become a slow rail that carries both states past —
+ * earned and unearned together, so the shelf reads as a set with gaps in it rather than a
+ * list of failures.
+ *
+ * The track holds the SAME children twice and travels exactly -50%, which is what makes the
+ * loop seamless: at the end of the run the second copy sits precisely where the first one
+ * started. Any other distance shows a seam.
+ * ───────────────────────────────────────────────────────────────────────────── */
+@keyframes achievement-rail {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility achievement-rail {
+  animation: achievement-rail 60s linear infinite;
+  /* Pausing on hover and on keyboard focus: a moving target is unreadable and unclickable,
+     and the rail carries real names rather than decoration. */
+  &:hover,
+  &:focus-within {
+    animation-play-state: paused;
+  }
+}
+
+/* A fade at both ends, so items enter and leave rather than being chopped off by the edge. */
+@utility rail-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+}
+
+/*
+ * A 44px hit area on a chip that is drawn smaller than 44px.
+ *
+ * The filter rows were four bands of 44px pills — a third of a phone screen before the
+ * collection started. Shrinking the pill is only safe if the TARGET does not shrink with
+ * it, so the visual height comes down and an invisible overlay keeps the thumb area the
+ * size it was. CLAUDE.md's rule, applied to a chip instead of a link.
+ */
+@utility tap-44 {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: 2.75rem;
+    transform: translateY(-50%);
+  }
 }

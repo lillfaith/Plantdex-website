@@ -2,11 +2,10 @@
 
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { ACHIEVEMENTS } from '@/lib/achievements';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 import { CountUp } from './CountUp';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
-import { achievementIcon } from '../icons/achievement-icons';
+import { AchievementShelf } from './AchievementShelf';
 
 /**
  * Level, XP bar and collection progress.
@@ -28,12 +27,6 @@ export function ProgressHeader() {
   const collectionPct = asPct(discoveredCount);
   const masteredPct = asPct(masteredCount);
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
-
-  // Counted once here rather than inside the map, so the summary and the chips can never
-  // disagree about how many are unlocked.
-  const unlockedCount = ready
-    ? ACHIEVEMENTS.filter((achievement) => Boolean(state.achievements[achievement.id])).length
-    : 0;
 
   return (
     <section aria-labelledby="progress-heading" className="panel p-4 sm:p-5">
@@ -152,52 +145,7 @@ export function ProgressHeader() {
         again.
       </p>
 
-      {/*
-        COLLAPSED UNTIL SOMETHING IS UNLOCKED.
-
-        Fifteen achievements render as fifteen chips, and on a 390px screen that is roughly
-        600px of identical locked pills sitting between a brand-new player and the first
-        plant they came to see — the collection grid did not start until ~1900px down. A
-        zero-state that leads with a wall of things you have not done reads as a dashboard,
-        not a collectible game.
-
-        `<details>` rather than state so it works before hydration, and it opens itself as
-        soon as there is one thing worth showing: progress is what earns the space.
-      */}
-      <details className="mt-4" open={unlockedCount > 0}>
-        <summary className="flex cursor-pointer items-center justify-between gap-2 text-xs font-bold tracking-wide text-violet-300 uppercase">
-          <span>Achievements</span>
-          <span className={unlockedCount > 0 ? 'text-gold-400' : 'text-violet-400'}>
-            {unlockedCount} / {ACHIEVEMENTS.length}
-          </span>
-        </summary>
-      <ul className="mt-2 flex flex-wrap gap-2">
-        {ACHIEVEMENTS.map((achievement) => {
-          const unlocked = ready && Boolean(state.achievements[achievement.id]);
-          return (
-            <li key={achievement.id}>
-              <span
-                title={`${achievement.name} — ${achievement.description}`}
-                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${
-                  unlocked
-                    ? 'border-gold-500/60 bg-gold-500/15 text-gold-300'
-                    : 'border-violet-700 bg-plum-700/70 text-violet-400'
-                }`}
-              >
-                <PlantdexIcon
-                  name={achievementIcon(achievement.id)}
-                  className={`text-sm ${unlocked ? '' : 'opacity-45'}`}
-                />
-                {achievement.name}
-                <span className="sr-only">
-                  {unlocked ? ' — unlocked' : ' — locked'}. {achievement.description}
-                </span>
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-      </details>
+      <AchievementShelf unlocked={state.achievements} ready={ready} />
     </section>
   );
 }
