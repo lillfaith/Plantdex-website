@@ -145,7 +145,7 @@ export function HerbCard({
           {discovered ? (
             <RarityBadge rarity={herb.rarity} tone="quiet" />
           ) : (
-            <span className="block text-[0.72rem] leading-none font-semibold text-violet-400">
+            <span className="block text-[0.72rem] leading-none font-medium text-violet-400">
               Find it to reveal
             </span>
           )}
