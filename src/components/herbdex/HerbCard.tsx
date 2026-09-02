@@ -56,7 +56,27 @@ export function HerbCard({
       }
       className="group relative block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
     >
-      <div className="relative aspect-[356/576] bg-plum-800">
+      {/*
+        THE NEON IS A REWARD, SO ONLY A FOUND CARD LIGHTS UP. `violet-600` is the deck's
+        bright purple and it stays rare: a silhouette you have not earned stays a silhouette,
+        and the lit edge is what tells the two apart at a glance.
+
+        AN OUTLINE, after two things that looked right and painted nothing. `ring-*` on the
+        link composes into `box-shadow`, the property `shadow-card` already owns there; an
+        arbitrary inset `shadow-[...]` on this frame did not resolve either. Both left the
+        classes sitting in the DOM with a fully transparent shadow computed — visible only
+        by reading the computed style, never by reading the markup.
+
+        `outline` takes part in no composition at all. A negative offset tucks it inside the
+        clipped corners, and it costs no layout, so nothing shifts on hover.
+      */}
+      <div
+        className={`relative aspect-[356/576] bg-plum-800 ${
+          discovered
+            ? 'group-hover:[outline:2px_solid_var(--color-violet-600)] group-hover:[outline-offset:-2px] group-focus-visible:[outline:2px_solid_var(--color-violet-600)] group-focus-visible:[outline-offset:-2px]'
+            : ''
+        }`}
+      >
         {discovered ? (
           <Image
             src={assetPath(herb.thumb)}

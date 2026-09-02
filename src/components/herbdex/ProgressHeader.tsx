@@ -28,8 +28,14 @@ export function ProgressHeader() {
   const masteredPct = asPct(masteredCount);
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
+  /*
+   * `game-panel` is the deck's neon surface — a violet-600 edge at 55% with a 10px bloom —
+   * written for exactly this panel and then used in one other place instead. Its own comment
+   * sets the limit this respects: "kept low: the printed card must stay the brightest object
+   * on the page". One panel, not every panel.
+   */
   return (
-    <section aria-labelledby="progress-heading" className="panel p-4 sm:p-5">
+    <section aria-labelledby="progress-heading" className="game-panel p-4 sm:p-5">
       <h2 id="progress-heading" className="sr-only">
         Your progress
       </h2>
@@ -48,7 +54,7 @@ export function ProgressHeader() {
       </div>
 
       <div
-        className="mt-2 h-3 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
+        className="mt-2 h-3 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-600/45"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
@@ -81,7 +87,7 @@ export function ProgressHeader() {
         </p>
       </div>
       <div
-        className="mt-2 h-2 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-600/45"
         role="progressbar"
         aria-valuenow={collectionPct}
         aria-valuemin={0}
@@ -128,7 +134,7 @@ export function ProgressHeader() {
         </p>
       </div>
       <div
-        className="mt-2 h-2 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-600/45"
         role="progressbar"
         aria-valuenow={masteredPct}
         aria-valuemin={0}
