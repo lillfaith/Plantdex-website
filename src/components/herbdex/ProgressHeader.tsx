@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { CURRENT_COLLECTION } from '@/lib/collection';
@@ -150,6 +151,24 @@ export function ProgressHeader() {
         {learnedCount} card{learnedCount === 1 ? '' : 's'} learned. Found → learned → found
         again.
       </p>
+
+      {/*
+        The way into the profile, placed in the progress cluster because that is what the
+        profile is made of — level, collection and habitats, gathered into one card. Not a
+        seventh slot in the nav: six destinations already crowd a 390px bottom bar.
+      */}
+      <Link
+        href="/profile"
+        className="mt-4 flex min-h-11 items-center justify-between gap-2 rounded-xl border border-violet-700/60 bg-plum-800/50 px-3 text-xs font-bold text-violet-200 transition-colors hover:border-violet-600 hover:text-gold-300"
+      >
+        <span className="flex items-center gap-1.5">
+          <PlantdexIcon name="laurel" className="text-sm text-gold-400" aria-hidden="true" />
+          Your field naturalist card
+        </span>
+        <span aria-hidden="true" className="text-gold-400">
+          &rarr;
+        </span>
+      </Link>
 
       <AchievementShelf unlocked={state.achievements} ready={ready} />
     </section>

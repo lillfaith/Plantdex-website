@@ -9,9 +9,11 @@
 --                anyone but the service role.
 --
 -- RLS FOLLOWS THE SAME RULE AS 0001: select / insert / delete are separate policies and
--- there is NO UPDATE POLICY ANYWHERE. `for all` silently includes update, which would let a
--- player rewrite what a scan said after the fact — the same hole 0001 was split to close. A
--- scan is a record of something that happened, not a mutable row.
+-- there is NO UPDATE POLICY ON EITHER TABLE HERE. `for all` silently includes update, which
+-- would let a player rewrite what a scan said after the fact — the same hole 0001 was split
+-- to close. A scan is a record of something that happened, not a mutable row. (0003's
+-- `profiles` is the deliberate exception: preferences, editable by design, with nothing
+-- derived from them. A history table is never that exception.)
 
 create table if not exists public.scans (
   -- text, not uuid: the client generates its own id in the same format as sightings

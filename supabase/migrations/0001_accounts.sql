@@ -74,8 +74,10 @@ alter table public.research_completions enable row level security;
 alter table public.unlocked_achievements enable row level security;
 alter table public.sightings enable row level security;
 
--- Owner-only access, split into select/insert/delete with NO update policy anywhere:
--- every row here is genuinely write-once. This is deliberately three policies per table
+-- Owner-only access, split into select/insert/delete with NO update policy ON ANY OF THESE
+-- TABLES: every row here is genuinely write-once. (The rule is about progression and
+-- history, not about updates as such — 0003's `profiles` holds editable preferences that
+-- nothing is derived from, and does have an owner-scoped update policy. Nothing below may.) This is deliberately three policies per table
 -- rather than one `for all`, because `for all` silently INCLUDES update — under it a
 -- signed-in player could rewrite their own `mastered_at`/`discovered_at` timestamps, or
 -- rewrite a sighting's `herb_id` after the fact to reshape the very rows

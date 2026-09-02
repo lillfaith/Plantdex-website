@@ -16,7 +16,7 @@ export const metadata: Metadata = {
  *
  *   • Tables and columns — supabase/migrations/0001_accounts.sql
  *   • Row Level Security, and the absence of any update policy — same file
- *   • Local storage keys — src/lib/{storage,sightings,reveals,research-board}.ts
+ *   • Local storage keys — src/lib/{storage,sightings,reveals,research-board,player-profile}.ts
  *   • Photos — src/lib/photo-store.ts (IndexedDB) and src/lib/remote-sightings.ts (bucket)
  *   • Auth calls — src/state/AuthProvider.tsx
  *   • No cookies — `document.cookie` appears nowhere in src/
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
             {
               term: 'Local storage',
               detail:
-                'Which plants you have discovered, learned and mastered; Field Research completions and achievements; your sightings; which cards you have revealed for reading; and the current research board.',
+                'Which plants you have discovered, learned and mastered; Field Research completions and achievements; your sightings; which cards you have revealed for reading; the current research board; and your profile settings — a display name you choose, and which plants, frame, title and achievements you have picked for it.',
             },
             {
               term: 'IndexedDB',
@@ -81,8 +81,10 @@ export default function PrivacyPage() {
         <p>
           An account exists so your collection follows you between devices. Creating one asks
           for an <strong className="text-violet-100">email address and a password</strong>, and
-          nothing else. There is no username, display name, avatar, date of birth or profile of
-          any kind, because the application has no such fields.
+          nothing else. There is no username and no date of birth, because the application has
+          no such fields. You may give yourself a display name and pick an avatar on your
+          profile, but both are optional, neither is asked for at sign-up, and your profile is
+          visible only to you — there are no public profiles, followers or leaderboards here.
         </p>
         <p>Signed in, these things are stored on our behalf by Supabase:</p>
         <LegalTable
@@ -106,6 +108,11 @@ export default function PrivacyPage() {
               term: 'Sighting photographs',
               detail:
                 'Stored in a private bucket, in a folder belonging to your account. They are not public, and are not readable by other signed-in users.',
+            },
+            {
+              term: 'Profile settings',
+              detail:
+                'Only the choices you make: an optional display name, and the ids of the plants, frame, title and achievements you have picked. It holds no level, XP or counts — those are recalculated from the rows above, the same as everywhere else.',
             },
           ]}
         />
@@ -189,7 +196,7 @@ export default function PrivacyPage() {
             {
               term: 'A short list of actions',
               detail:
-                'Opening the Herbdex or the garden; viewing, revealing, discovering or mastering a card; passing a knowledge check; finishing a Field Research task; starting or completing a sign-up; signing in; and importing local progress into an account.',
+                'Opening the Herbdex, the garden or your profile; viewing, revealing, discovering or mastering a card; passing a knowledge check; finishing a Field Research task; starting or completing a sign-up; signing in; and importing local progress into an account.',
             },
             {
               term: 'Nothing attached to them',

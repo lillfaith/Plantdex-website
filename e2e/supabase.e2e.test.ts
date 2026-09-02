@@ -5,6 +5,8 @@ import { supabase } from '@/lib/supabase-client';
 import { createRemoteHerbdexStorage } from '@/lib/remote-herbdex-storage';
 import { addRemoteSighting, removeRemoteSighting } from '@/lib/remote-sightings';
 import { exportAccountData } from '@/lib/export-account-data';
+import { rowToProfile, saveRemoteProfile } from '@/lib/remote-player-profile';
+import { emptyProfile, resolveProfile } from '@/lib/player-profile';
 import { applyDiscovery, applyLearned, reconcileAchievements } from '@/lib/herbdex-reducer';
 import { buildWorld, STANDING_TASKS } from '@/lib/research';
 import { progressFromState, xpForState } from '@/lib/progression';
@@ -107,10 +109,12 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
     // which this suite deliberately never holds.
     if (supabase && alice) {
       for (const [table] of TABLES) await supabase.from(table).delete().eq('user_id', alice.id);
+      await supabase.from('profiles').delete().eq('user_id', alice.id);
       await supabase.auth.signOut();
     }
     if (bobClient && bob) {
       for (const [table] of TABLES) await bobClient.from(table).delete().eq('user_id', bob.id);
+      await bobClient.from('profiles').delete().eq('user_id', bob.id);
       await bobClient.auth.signOut();
     }
   }, 60_000);
@@ -615,6 +619,150 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const state = await createRemoteHerbdexStorage(alice.id).load();
       expect(Object.keys(state.discoveries).length).toBeGreaterThan(0);
     }, 30_000);
+  });
+
+
+  /*
+   * THE PLAYER PROFILE — the one table in the schema with an `update` policy.
+   *
+   * That exception is argued in `supabase/migrations/0003_profiles.sql`: a settings row is
+   * meant to be edited and nothing is derived from it. What makes it SAFE rather than merely
+   * convenient is the `with check` half of the policy, and the only way to know that half is
+   * really there is to attack it — so the last two tests below are a second signed-in user
+   * trying to take a profile over, in both directions. They pass only when Postgres refuses.
+   */
+  describe('the player profile', () => {
+    const aliceProfile = {
+      ...emptyProfile(),
+      displayName: 'Alice of the Wayside',
+      avatarHerbId: HERB_A.id,
+      sidekickHerbId: HERB_A.id,
+      featuredHerbId: HERB_B.id,
+      avatarFrameId: 'field-notes',
+      titleId: 'seedling-scholar',
+      pinnedAchievementIds: ['first-find'],
+    };
+
+    it('saves and reads back through the real adapter', async () => {
+      await saveRemoteProfile(alice.id, aliceProfile);
+
+      const { data, error } = await supabase!
+        .from('profiles')
+        .select('*')
+        .eq('user_id', alice.id)
+        .maybeSingle();
+      expect(error).toBeNull();
+      expect(rowToProfile(data as Record<string, unknown> | null)).toEqual(aliceProfile);
+    }, 30_000);
+
+    it('updates in place rather than accumulating rows', async () => {
+      await saveRemoteProfile(alice.id, { ...aliceProfile, displayName: 'Alice Renamed' });
+      const { data } = await supabase!.from('profiles').select('*').eq('user_id', alice.id);
+      expect(data?.length, 'a second row means the upsert is inserting, not updating').toBe(1);
+      expect(rowToProfile(data![0] as Record<string, unknown>).displayName).toBe('Alice Renamed');
+      await saveRemoteProfile(alice.id, aliceProfile);
+    }, 30_000);
+
+    it('stores no progression column', async () => {
+      for (const column of ['xp', 'level', 'discovered_count', 'completion']) {
+        const { error } = await supabase!.from('profiles').select(column).limit(1);
+        expect(error, `profiles must have no ${column} column`).not.toBeNull();
+      }
+    }, 30_000);
+
+    it('is still resolved against the live collection, not trusted as stored', async () => {
+      // A featured card Alice has NOT discovered is dropped on read even though the row
+      // holds it — the guard that stops the page rendering a locked card as earned.
+      const undiscovered = HERBS.find((herb) => herb.id !== HERB_A.id && herb.id !== HERB_B.id)!;
+      await saveRemoteProfile(alice.id, { ...aliceProfile, featuredHerbId: undiscovered.id });
+
+      const state = await createRemoteHerbdexStorage(alice.id).load();
+      const { data } = await supabase!
+        .from('profiles')
+        .select('*')
+        .eq('user_id', alice.id)
+        .maybeSingle();
+      const resolved = resolveProfile(rowToProfile(data as Record<string, unknown>), state);
+
+      expect(state.discoveries[undiscovered.id]).toBeUndefined();
+      expect(resolved.featuredHerbId).toBeNull();
+      await saveRemoteProfile(alice.id, aliceProfile);
+    }, 30_000);
+
+    it('cannot be READ by another user, filtered or not', async () => {
+      const { data: filtered } = await bobClient
+        .from('profiles')
+        .select('*')
+        .eq('user_id', alice.id);
+      expect(filtered, 'a profile must not leak to another user').toEqual([]);
+
+      const { data: all } = await bobClient.from('profiles').select('*');
+      const foreign = (all ?? []).filter((row) => (row as { user_id?: string }).user_id !== bob.id);
+      expect(foreign, 'an unfiltered select must return only Bob own row').toEqual([]);
+    }, 30_000);
+
+    it('cannot be INSERTED on behalf of another user', async () => {
+      const { error } = await bobClient
+        .from('profiles')
+        .insert({ user_id: alice.id, display_name: 'forged by bob' });
+      expect(error, 'a forged user_id must be rejected').not.toBeNull();
+    }, 30_000);
+
+    /*
+     * THE `using` HALF. Bob may not update a row that is not his.
+     */
+    it('cannot be UPDATED or DELETED by another user', async () => {
+      await bobClient
+        .from('profiles')
+        .update({ display_name: 'taken over by bob' })
+        .eq('user_id', alice.id);
+      await bobClient.from('profiles').delete().eq('user_id', alice.id);
+
+      const { data } = await supabase!
+        .from('profiles')
+        .select('*')
+        .eq('user_id', alice.id)
+        .maybeSingle();
+      expect(data, 'Alice profile was deleted by another user').not.toBeNull();
+      expect(rowToProfile(data as Record<string, unknown>).displayName).toBe(
+        aliceProfile.displayName,
+      );
+    }, 30_000);
+
+    /*
+     * THE `with check` HALF, AND THE REASON THIS TABLE'S EXCEPTION IS SAFE.
+     *
+     * `using (auth.uid() = user_id)` alone says which rows Bob may update — not what they
+     * may BECOME. Without `with check`, Bob could update HIS OWN row and set `user_id` to
+     * Alice's, handing his profile to her account or overwriting hers. This is the test that
+     * fails if somebody ever writes the update policy with only one half.
+     */
+    it('cannot be handed to another user by updating its own user_id', async () => {
+      await saveRemoteProfile(bob.id, { ...emptyProfile(), displayName: 'Bob' });
+
+      const { error } = await bobClient
+        .from('profiles')
+        .update({ user_id: alice.id })
+        .eq('user_id', bob.id);
+      expect(error, 'reassigning user_id must be refused by the with check clause').not.toBeNull();
+
+      const { data: alices } = await supabase!
+        .from('profiles')
+        .select('*')
+        .eq('user_id', alice.id)
+        .maybeSingle();
+      expect(rowToProfile(alices as Record<string, unknown>).displayName).toBe(
+        aliceProfile.displayName,
+      );
+    }, 30_000);
+
+    it('is included in the export and removed with the account', async () => {
+      const exported = await exportAccountData(alice.id, aliceCreds.email);
+      expect(exported.profile.displayName).toBe(aliceProfile.displayName);
+      // XP and level stay absent from the export for the same reason they are absent from
+      // the table: they are derived, not stored.
+      expect(JSON.stringify(exported.profile)).not.toMatch(/"(xp|level)"/);
+    }, 60_000);
   });
 
   describe('the empty state is the floor', () => {

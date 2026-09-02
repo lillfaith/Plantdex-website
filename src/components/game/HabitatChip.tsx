@@ -18,7 +18,7 @@ import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
  * two should not read as equals. A species with no secondary simply shows one chip.
  */
 
-const HABITAT_ICON: Record<HabitatClass, IconName> = {
+export const HABITAT_ICON: Record<HabitatClass, IconName> = {
   woodland: 'woodland',
   meadow: 'meadow',
   wetland: 'wetland',
@@ -32,7 +32,7 @@ const HABITAT_ICON: Record<HabitatClass, IconName> = {
  * Colour is never the only signal — the label is always spelled out beside it — so these
  * only have to be distinguishable, not decodable.
  */
-const HABITAT_TONE: Record<HabitatClass, string> = {
+export const HABITAT_TONE: Record<HabitatClass, string> = {
   woodland: 'text-habitat-woodland border-habitat-woodland/45 bg-habitat-woodland/10',
   meadow: 'text-habitat-meadow border-habitat-meadow/45 bg-habitat-meadow/10',
   wetland: 'text-habitat-wetland border-habitat-wetland/45 bg-habitat-wetland/10',

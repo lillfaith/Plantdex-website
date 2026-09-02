@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { ForgotPasswordForm, SignInForm, SignUpForm } from '@/components/auth/AuthForms';
 import { ImportLocalProgressDialog } from '@/components/auth/ImportLocalProgressDialog';
@@ -14,6 +15,26 @@ export default function AccountPage() {
   return (
     <main id="main" className="mx-auto max-w-md px-4 py-8">
       <h1 className="font-display text-2xl font-bold text-gold-plate">Account</h1>
+
+      {/*
+        Reached from here as well as from the Herbdex, because "my profile" is the thing
+        people look for on an account page — and it works signed out too, so it sits outside
+        every branch below.
+      */}
+      <Link
+        href="/profile"
+        className="panel mt-4 flex min-h-14 items-center justify-between gap-3 p-4 transition-colors hover:bg-plum-600/50"
+      >
+        <span>
+          <span className="block text-sm font-bold text-violet-100">Your profile</span>
+          <span className="block text-xs text-violet-300">
+            Level, collection, habitats and the plants that travel with you
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-gold-400">
+          &rarr;
+        </span>
+      </Link>
 
       {!configured && (
         <p className="mt-4 text-sm text-violet-300">

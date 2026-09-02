@@ -9,9 +9,9 @@ This file only adds the mechanics of working in this codebase.
 **V0.2 complete**, plus three-stage card mastery, Field Research, the sources/safety
 presentation work, contrast/polish, and **V0.3 accounts** (Supabase auth + server-persisted
 collections). The Herbdex works fully signed-out against local storage, or signed in with
-progress synced to Supabase — see "V0.3 accounts" below, and **V0.4 commerce** (a Stripe
-Payment Link behind `/shop`, see "V0.4 commerce" below). Not yet built: QR
-(V0.5).
+progress synced to Supabase — see "V0.3 accounts" below, **V0.4 commerce** (a Stripe
+Payment Link behind `/shop`, see "V0.4 commerce" below), and the **player profile** at
+`/profile` (see "Player profile"). Not yet built: QR (V0.5).
 
 ## Commands
 
@@ -74,8 +74,9 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   silently wipes real save data. The single-pass migration there is only valid while schema
   changes stay purely additive; the first rename or reshape needs a real per-version branch.
 - **`HerbdexState` holds only what XP is derived from, plus achievements.** Reveals, field
-  sightings and the daily research board award nothing, so they live in their own stores
-  with their own keys — which is also what keeps the V0.3 server's surface small.
+  sightings, the daily research board and the player profile award nothing, so they live in
+  their own stores with their own keys — which is also what keeps the V0.3 server's surface
+  small.
 - **Herb ids come from the scientific name, never the common name.**
 - **Achievements are keyed by stable `id`**, and predicates are pure functions of state so
   they can be re-evaluated from scratch (this is what makes retroactive unlocks work).
@@ -258,16 +259,22 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   `HerbdexProvider.tsx`) don't need to know which backend they're bound to. Photos go to
   the private `sighting-photos` Storage bucket, path-scoped to `{user_id}/...` by RLS the
   same way every table is.
-- **Every RLS policy is split into `select`/`insert`/`delete`, and there is no `update`
-  policy anywhere.** This is not a style choice: `for all` silently *includes* update, so
-  the original single-policy-per-table version let a signed-in player rewrite their own
-  `mastered_at`/`discovered_at`, or rewrite a sighting's `herb_id` after the fact — which
-  is exactly the data `herbdex-action` re-derives mastery and research from. Splitting the
-  policies is what makes the "write-once, recorded never revoked" contract real rather than
-  merely stated in a comment. Every upsert in the app passes `ignoreDuplicates: true`
-  (`insert ... on conflict do nothing`), which needs only the insert policy — so adding an
-  `update` policy would reopen the hole and buy nothing. Verified by
-  `e2e/supabase.e2e.test.ts`.
+- **No `update` policy on any progression or history table**, and every policy on one is
+  split into `select`/`insert`/`delete`. This is not a style choice: `for all` silently
+  *includes* update, so the original single-policy-per-table version let a signed-in player
+  rewrite their own `mastered_at`/`discovered_at`, or rewrite a sighting's `herb_id` after
+  the fact — which is exactly the data `herbdex-action` re-derives mastery and research
+  from. Splitting the policies is what makes the "write-once, recorded never revoked"
+  contract real rather than merely stated in a comment. Every upsert in the app passes
+  `ignoreDuplicates: true` (`insert ... on conflict do nothing`), which needs only the
+  insert policy — so adding an `update` policy to `discoveries`, `learned`, `mastered`,
+  `research_completions`, `unlocked_achievements`, `sightings` or `scans` would reopen the
+  hole and buy nothing. **A mutable preference table may explicitly allow owner-scoped
+  updates**, with `using` *and* `with check` both pinned to `auth.uid()` — the `with check`
+  half is what stops an owner reassigning the row's `user_id` to somebody else. `profiles`
+  (0003) is the one such table and holds no value anything is derived from;
+  `profile-schema.test.ts` fails if a second table grants an update, or if that one loses
+  its `with check`. Verified live by `e2e/supabase.e2e.test.ts`.
 - **Live verification is `npm run verify:supabase`** (`e2e/supabase.e2e.test.ts`, run
   against a real project via `.env.local`). It is deliberately *not* part of `npm test` —
   it needs credentials and writes real rows. It drives the real adapters
@@ -351,6 +358,58 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   deletes has one copy; a truncated file presented as complete is worse than a failed one.
   XP and level are absent because they are derived — printing them would put a number in a
   document people read as a copy of the database.
+
+## Player profile
+
+`/profile` is the collectible identity page — a field-naturalist card assembled from records
+the game already holds, plus seven chosen settings. Owner-only: no public profiles,
+followers, comments, leaderboards or feed.
+
+- **The profile row holds only choices, and no numbers.** Seven fields: a display name and
+  six ids (`src/lib/player-profile.ts`). Level, XP, counts, completion, achievements earned,
+  habitat standings, recent finds and the garden strip are all derived on read by
+  `profile-stats.ts`, exactly as XP always has been — a cached progression column here would
+  be a number a client could assert, and there is deliberately none to assert.
+  `profile-schema.test.ts` reads the migration's column list and fails if one appears.
+- **Selections are validated on read, not on write.** `resolveProfile()` drops any avatar,
+  sidekick, featured card, frame, title or pinned achievement the current collection does
+  not support, and falls back rather than erroring. The row is client-written under RLS, so
+  a player could name a plant they have not discovered; that is cosmetic, private and pays
+  no XP, so it does not warrant server recomputation — but the page must never *render* a
+  locked sprite as earned, and read-time validation is also what makes a stale id from an
+  older build degrade quietly instead of breaking a page somebody is reading.
+- **Frames and titles are pure predicates of `HerbdexState`** (`field-frames.ts`,
+  `field-titles.ts`, sharing `cosmetics.ts`), like achievements — so unlock state is never
+  stored and a cosmetic added later unlocks retroactively. Each carries a `condition`
+  sentence, which is what the cabinet prints; restating a threshold in the UI would let it
+  promise one thing while the code checked another. `field-frames.ts` reuses the
+  achievements' own predicates rather than repeating their numbers.
+- **Habitat Specialist privileges no habitat.** Five species sharing any one primary habitat
+  earns it, and the qualifying habitat is resolved at render time for the label. Its
+  tie-break is deterministic (highest count, then `HABITATS` order) because discoveries are
+  an object — "whichever came first" would change between a reload, a sync and the server.
+  Every "best" or "most recent" in `profile-stats.ts` ends in the same kind of fixed
+  tie-break for the same reason.
+- **The sidekick is not a pet.** Its sprite is drawn at `stageForState()`, the same
+  mastery→growth mapping the Garden uses, so it grows only by that card being learned and
+  mastered. No clock, no feeding, no timers, no state of its own — `garden.ts`'s rule
+  applied to one plant.
+- **`/profile` carries no `SafetyNotice` and no `DeckCta`.** It discusses no ingestion,
+  preparation, identification or medicinal tradition, and a notice repeated onto a page that
+  raises no such risk is how the notices on pages that *do* stop being read. The four CTA
+  placements stay a fixed, tested set.
+- **Signing in seeds the account profile from the device; it never overwrites and never
+  clears.** A signed-in save writes the account only, so on a shared device signing in does
+  not repaint the signed-out identity — the same reasoning that keys the collection import
+  offer per user id.
+- **The privacy page and the profile are checked against each other.** `/privacy` used to
+  say the application had "no username, display name, avatar … or profile of any kind";
+  `legal.test.ts` now fails if that denial returns while `/profile` exists, and if the page
+  stops disclosing what the profile stores. Same guard shape as `/shop` ↔ `/terms`.
+- **Export and deletion must name the same set.** `account-security.test.ts` compares the
+  tables `export-account-data.ts` reads against `USER_TABLES` in the delete function in both
+  directions, and checks the browser keys too — a table added to one and forgotten in the
+  other is how a "deleted" account keeps a row.
 
 ## V0.4 commerce
 

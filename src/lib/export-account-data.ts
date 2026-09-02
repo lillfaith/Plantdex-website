@@ -1,8 +1,15 @@
 import { supabase } from './supabase-client';
+import { rowToProfile } from './remote-player-profile';
 import { STORAGE_KEY } from './storage';
 import { emptyState, parseState } from './herbdex-state';
 import { getAllSightings, type Sighting } from './sightings';
 import { REVEALS_STORAGE_KEY } from './reveals';
+import {
+  PLAYER_PROFILE_STORAGE_KEY,
+  emptyProfile,
+  parseProfile,
+  type StoredProfile,
+} from './player-profile';
 import type { HerbdexState } from './types';
 
 /**
@@ -51,6 +58,12 @@ export interface AccountExport {
   email?: string;
   notes: string[];
   collection: HerbdexState;
+  /**
+   * The seven chosen profile settings. Deliberately the CHOICES only — level, XP, counts and
+   * completion are absent for the same reason they are absent from `collection`: they are
+   * derived on read and are not stored anywhere, so there is no stored value to export.
+   */
+  profile: StoredProfile;
   reveals: string[];
   sightings: Sighting[];
   /** Plant ID history. Absent from a device export — scanning requires the server. */
@@ -113,6 +126,15 @@ function readLocalCollection(): HerbdexState {
     return parseState(window.localStorage.getItem(STORAGE_KEY));
   } catch {
     return emptyState();
+  }
+}
+
+function readLocalProfile(): StoredProfile {
+  try {
+    const raw = window.localStorage.getItem(PLAYER_PROFILE_STORAGE_KEY);
+    return raw ? parseProfile(JSON.parse(raw)) : emptyProfile();
+  } catch {
+    return emptyProfile();
   }
 }
 
@@ -194,6 +216,7 @@ export async function exportLocalData(): Promise<AccountExport> {
       'This export came from this browser’s own storage. Nothing here has ever been sent to a server.',
     ],
     collection: readLocalCollection(),
+    profile: readLocalProfile(),
     reveals: readLocalReveals(),
     sightings,
     // Scanning is a server feature, so a signed-out device has no scan history to export.
@@ -213,8 +236,16 @@ export async function exportAccountData(userId: string, email?: string): Promise
   if (!supabase) throw new Error('Accounts are not configured on this deployment.');
   const client = supabase;
 
-  const [discoveries, learned, mastered, research, achievements, sightingRows, scanRows] =
-    await Promise.all([
+  const [
+    discoveries,
+    learned,
+    mastered,
+    research,
+    achievements,
+    sightingRows,
+    scanRows,
+    profileRow,
+  ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
       client.from('learned').select('herb_id, learned_at').eq('user_id', userId),
       client.from('mastered').select('herb_id, mastered_at').eq('user_id', userId),
@@ -233,6 +264,9 @@ export async function exportAccountData(userId: string, email?: string): Promise
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false }),
+      // `maybeSingle`: a player who has never opened their profile has no row, and that is
+      // the ordinary case rather than an error.
+      client.from('profiles').select('*').eq('user_id', userId).maybeSingle(),
     ]);
 
   for (const [name, result] of Object.entries({
@@ -243,6 +277,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     achievements,
     sightings: sightingRows,
     scans: scanRows,
+    profile: profileRow,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
     // their account afterwards would believe they had kept a copy.
@@ -297,6 +332,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
       'Reveals and the daily research board are not part of an account. They live only in the browser you used, so they are not in this file.',
     ],
     collection,
+    profile: rowToProfile(profileRow.data as Record<string, unknown> | null),
     // Reveals are deliberately never sent to the server (CLAUDE.md: "Reveal is not
     // discovery"), so an account export genuinely has none to give.
     reveals: [],

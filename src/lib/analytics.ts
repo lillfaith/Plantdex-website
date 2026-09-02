@@ -70,6 +70,7 @@ export const EVENT_NAMES = [
   // Section usage.
   'herbdex_opened',
   'garden_opened',
+  'profile_opened',
 
   // Plant profiles. The species comes from the URL; the name carries only how much of that
   // plant the viewer had already unlocked, which the URL cannot say.

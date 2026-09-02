@@ -63,6 +63,9 @@ const USER_TABLES = [
   'mastered',
   'research_completions',
   'unlocked_achievements',
+  // Added with the player profile. It holds only chosen settings, but a display name and a
+  // set of favourite plants is still this person's data and must go with the account.
+  'profiles',
 ] as const;
 
 const CORS_HEADERS: Record<string, string> = {

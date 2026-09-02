@@ -1,6 +1,7 @@
 import { supabase } from './supabase-client';
 import { STORAGE_KEY } from './storage';
 import { REVEALS_STORAGE_KEY } from './reveals';
+import { PLAYER_PROFILE_STORAGE_KEY } from './player-profile';
 
 /**
  * CLOSING AN ACCOUNT, from the browser's side.
@@ -37,6 +38,7 @@ export interface DeleteAccountResult {
 const LOCAL_KEYS = [
   STORAGE_KEY,
   REVEALS_STORAGE_KEY,
+  PLAYER_PROFILE_STORAGE_KEY,
   'plantdex.sightings.v1',
   'plantdex.research-board.v1',
 ];

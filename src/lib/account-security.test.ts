@@ -166,3 +166,55 @@ describe('the export reads only the caller own data', () => {
     expect(source).toMatch(/reason: /);
   });
 });
+
+/*
+ * SYMMETRY BETWEEN EXPORT AND DELETION.
+ *
+ * These two lists are the whole promise of "download everything" and "delete everything",
+ * and they are kept in two different files in two different runtimes. A table added to one
+ * and forgotten in the other is exactly how a "deleted" account keeps a row, or how an
+ * export quietly omits something somebody was relying on before deleting. The same applies
+ * to the browser keys: the signed-out export and `clearLocalData` must name the same set.
+ */
+describe('what is exported and what is deleted are the same set', () => {
+  const exportSource = readFileSync('src/lib/export-account-data.ts', 'utf8');
+  const deleteSource = readFileSync(DELETE_FN, 'utf8');
+
+  const exportedTables = new Set(
+    [...exportSource.matchAll(/\.from\('(\w+)'\)/g)].map(([, table]) => table!),
+  );
+  const deletedTables = new Set(
+    (/const USER_TABLES = \[([\s\S]*?)\] as const;/.exec(deleteSource)?.[1] ?? '')
+      .split('\n')
+      .map((line) => /^\s*'(\w+)',/.exec(line)?.[1])
+      .filter((name): name is string => Boolean(name)),
+  );
+
+  it('parsed both lists — an empty set would pass every check below', () => {
+    expect(exportedTables.size).toBeGreaterThanOrEqual(7);
+    expect(deletedTables.size).toBeGreaterThanOrEqual(7);
+  });
+
+  it('deletes every table the export can read', () => {
+    for (const table of exportedTables) {
+      // Storage buckets are removed separately, before any row — see the ordering argument
+      // in the delete function.
+      if (table === 'sighting-photos') continue;
+      expect([...deletedTables], `${table} is exported but never deleted`).toContain(table);
+    }
+  });
+
+  it('exports every table the deletion removes', () => {
+    for (const table of deletedTables) {
+      expect([...exportedTables], `${table} is deleted but never exported`).toContain(table);
+    }
+  });
+
+  it('clears every browser key the device export reads', () => {
+    const keys = readFileSync('src/lib/delete-account.ts', 'utf8');
+    for (const key of ['STORAGE_KEY', 'REVEALS_STORAGE_KEY', 'PLAYER_PROFILE_STORAGE_KEY']) {
+      expect(keys, `${key} is not cleared on deletion`).toContain(key);
+    }
+    expect(exportSource).toContain('PLAYER_PROFILE_STORAGE_KEY');
+  });
+});

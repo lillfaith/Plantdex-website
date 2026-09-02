@@ -198,6 +198,41 @@ describe('legal pages', () => {
     }
   });
 
+  it('keeps the privacy disclosure in step with the profile that exists', () => {
+    /*
+     * THE SAME FAILURE, FOURTH TIME OF ASKING.
+     *
+     * /privacy said "There is no username, display name, avatar, date of birth or profile of
+     * any kind, because the application has no such fields." True when written, and false the
+     * moment /profile shipped — in a commit with no reason to open a legal page. So the
+     * existence of the route is checked against the prose that denies it, and against the
+     * disclosure that must now be there.
+     */
+    const profileExists = existsSync('src/app/profile/page.tsx');
+    expect(profileExists, 'this test assumes /profile — update it if the profile was removed').toBe(
+      true,
+    );
+
+    const privacy = read(PRIVACY).replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+    for (const denial of [
+      /no username, display name, avatar/i,
+      /no display name/i,
+      /profile of\s+any kind/i,
+      /has no such fields\.\s*<\/p>/i,
+    ]) {
+      expect(privacy, `Privacy still denies the profile that exists: ${denial}`).not.toMatch(denial);
+    }
+
+    // And it says what the profile actually stores, including the thing that makes it safe:
+    // choices only, no derived progression, and owner-only.
+    expect(privacy, 'privacy page does not disclose profile settings').toMatch(
+      /Profile settings/i,
+    );
+    expect(privacy, 'privacy page does not say the profile is private').toMatch(
+      /visible only to you/i,
+    );
+  });
+
   it('keeps the commerce disclosure in step with the commerce that exists', () => {
     /*
      * THE SAME FAILURE, THIRD TIME OF ASKING.
