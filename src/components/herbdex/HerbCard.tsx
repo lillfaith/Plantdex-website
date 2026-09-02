@@ -62,7 +62,7 @@ export function HerbCard({
             ? `${herb.commonName}, card ${number}, ${herb.rarity}. ${stageLabel}.`
             : `Card ${number}. Not discovered.`
         }
-        className="group relative block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
+        className="group relative z-10 block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
       >
         {/*
           THE NEON IS A REWARD, SO ONLY A FOUND CARD LIGHTS UP. `violet-600` is the deck's

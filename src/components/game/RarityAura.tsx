@@ -1,48 +1,69 @@
-import { RARITY_AURA_COLOUR, RARITY_AURA_STRENGTH } from '@/lib/rarity-aura';
+import {
+  CONCEALED_AURA_COLOUR,
+  concealedAuraLayers,
+  RARITY_AURA_COLOUR,
+  RARITY_AURA_LAYERS,
+  type AuraSize,
+} from '@/lib/rarity-aura';
 import type { Rarity } from '@/lib/types';
 
 /**
- * The rarity glow, as one element.
+ * The rarity glow panel that sits behind a card.
  *
- * Nothing new is drawn here: `card-aura` is the existing utility — a radial gradient that
- * fades out at 72% — and this only supplies its `--aura` colour and a strength. The plant
- * page already did exactly that inline; this is that code with the map lifted out so the
- * grid, the showcase and the hero cannot drift apart.
+ * Each layer is a blurred rounded rectangle a little larger than the card, tinted with the
+ * rarity token via `color-mix` — the same way `.panel` and `game-panel` derive their own
+ * surfaces, so no new colour enters the system. A higher tier stacks two: a wide soft bloom
+ * with a tighter, brighter core inside it, which is what gives the effect depth rather than
+ * just more brightness.
  *
- * BEHIND, AND INERT. `-z-10` puts it under the card, `pointer-events-none` keeps it out of
- * the way of the link it sits behind, and `aria-hidden` keeps it out of the accessibility
- * tree — the tier it represents is already spelled out in text on the card itself.
+ * BEHIND, AND INERT. `z-0` with the card raised to `z-10` above it, `pointer-events-none`
+ * so it never intercepts the link it sits behind, and `aria-hidden` so it stays out of the
+ * accessibility tree — the tier is already spelled out in text on the card itself.
  *
- * THE PARENT MUST BE `relative` AND MUST NOT CLIP. A card's own root has `overflow-hidden`
- * to round its artwork, so an aura placed inside one is invisible: it is drawn entirely in
- * the region that gets clipped away. It belongs in a wrapper around the card, never in it.
+ * IT IS NOT `-z-10`, AND THAT WAS THE BUG. A negative z-index paints an element behind the
+ * background of its stacking context — and `body` carries the plum ground plus two radial
+ * gradients, so every layer was being drawn UNDERNEATH the page itself. Alpha at 0.85 and
+ * a 40px blur still sampled as rgb(33,23,39) against a rgb(23,16,28) ground: present in the
+ * DOM, correct in computed style, and painted where nobody could see it. The card is lifted
+ * to `z-10` instead, so the aura sits between the page and the card rather than below both.
+ *
+ * IT CANNOT HAZE THE CARD FACE. The layers are strictly behind an opaque card, so no part
+ * of the artwork or its text is ever drawn through them. The glow is only ever visible in
+ * the margin around the card.
+ *
+ * THE PARENT MUST BE `relative` AND MUST NOT CLIP. A card's own root carries
+ * `overflow-hidden` to round its artwork, so an aura placed inside one is invisible — it is
+ * drawn entirely in the region that gets clipped away, which is the whole margin it needs.
+ * It belongs in a wrapper around the card, never inside it.
  */
 export function RarityAura({
   rarity,
+  size = 'grid',
   concealed = false,
   className = '',
 }: {
   rarity: Rarity;
-  /**
-   * The card's tier is not known to the player yet.
-   *
-   * THIS IS NOT A STYLE CHOICE, IT IS THE SAME SECRET THE BADGE KEEPS. An undiscovered card
-   * in the grid shows "Find it to reveal" WHERE ITS ENCOUNTER RATE WOULD GO — the tier is
-   * deliberately withheld until you find the plant. Tinting its halo by rarity would hand
-   * that back: four colours, four tiers, and anyone could read off which silhouettes are
-   * worth chasing. So a concealed card glows the page's own violet at the gentlest strength
-   * — it still reads as a collectible, and it still tells you nothing.
-   */
+  /** Which tuning to use. Reach and blur do not scale with the card on their own. */
+  size?: AuraSize;
+  /** The card's tier is not known to the player yet — see CONCEALED_AURA_COLOUR. */
   concealed?: boolean;
   className?: string;
 }) {
-  const strength = concealed ? RARITY_AURA_STRENGTH.Common : RARITY_AURA_STRENGTH[rarity];
-  const colour = concealed ? 'var(--color-violet-700)' : RARITY_AURA_COLOUR[rarity];
+  const layers = concealed ? concealedAuraLayers(size) : RARITY_AURA_LAYERS[size][rarity];
+  const colour = concealed ? CONCEALED_AURA_COLOUR : RARITY_AURA_COLOUR[rarity];
+
   return (
-    <div
-      aria-hidden="true"
-      className={`card-aura pointer-events-none absolute inset-0 -z-10 ${strength} ${className}`}
-      style={{ ['--aura' as string]: colour }}
-    />
+    <>
+      {layers.map((layer) => (
+        <div
+          key={layer.className}
+          aria-hidden="true"
+          className={`pointer-events-none absolute z-0 ${layer.className} ${className}`}
+          style={{
+            background: `color-mix(in srgb, ${colour} ${layer.alpha}%, transparent)`,
+          }}
+        />
+      ))}
+    </>
   );
 }

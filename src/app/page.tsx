@@ -151,7 +151,7 @@ export default function HomePage() {
               <RarityAura rarity={herb.rarity} />
               <Link
                 href={`/herbdex/${herb.id}`}
-                className="block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+                className="relative z-10 block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
               >
                 <Image
                   src={assetPath(herb.thumb)}

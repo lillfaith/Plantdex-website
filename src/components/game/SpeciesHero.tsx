@@ -52,8 +52,8 @@ export function SpeciesHero({
             text on the same screen can no longer disagree. Common was violet here and
             rarity-common everywhere else.
           */}
-          <RarityAura rarity={herb.rarity} className="scale-[1.45] blur-2xl opacity-100" />
-          <div className="card-tilt drop-shadow-[0_18px_44px_rgba(23,16,28,0.7)]">
+          <RarityAura rarity={herb.rarity} size="hero" />
+          <div className="card-tilt relative z-10 drop-shadow-[0_18px_44px_rgba(23,16,28,0.7)]">
             <CardFlip herb={herb} size="hero" />
           </div>
         </div>
