@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import type { Herb } from '@/lib/types';
 import { GROWTH_STAGE_LABEL, GROWTH_STAGES, type GrowthStage } from '@/lib/sightings';
+import { localDateKey } from '@/lib/research';
 import { useSightingsStore } from '@/lib/sightings-store';
 import { useAuth } from '@/state/AuthProvider';
 import { SightingPhoto } from './SightingPhoto';
@@ -16,8 +17,21 @@ import { PhotoField } from './PhotoField';
  * same patch change across a season.
  */
 
+/**
+ * Today, WHERE THE PLAYER IS.
+ *
+ * This used to be `new Date().toISOString().slice(0, 10)`, which is today in UTC — and the
+ * two are different for most of the world for several hours a day. West of UTC an evening
+ * find pre-filled TOMORROW's date and the `max` below happily accepted it; east of UTC,
+ * between local midnight and UTC midnight, both were YESTERDAY, so a player could not
+ * select today at all: the picker refused the only date they wanted.
+ *
+ * `formatDate` immediately below has always parsed these strings as local "so a date never
+ * displays as the previous day" — this is the other half of that same rule, and
+ * `localDateKey` is the app's one implementation of it.
+ */
 function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localDateKey();
 }
 
 function formatDate(iso: string): string {
