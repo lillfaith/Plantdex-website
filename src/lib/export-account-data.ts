@@ -77,7 +77,11 @@ export interface AccountExport {
    * Both halves, because they answer different questions. `seedShelfFinds` is the stored
    * rows — one per save, which is what the database actually holds — and `seedShelf` is the
    * same rows folded into one entry per species, which is what the player saw. Neither is a
-   * discovery and neither carries XP; a packet is a record of something photographed.
+   * discovery and neither carries XP; an entry is a record of something photographed.
+   *
+   * THE PACKET ARTWORK IS NOT PERSONAL DATA AND IS NOT EXPORTED AS SUCH. It belongs to the
+   * species, is shared by everybody who has found that plant, and is generated from the
+   * species' own name — see `species_packets` and the note below.
    */
   seedShelf: SeedShelfEntry[];
   seedShelfFinds: SeedShelfFind[];
@@ -91,6 +95,7 @@ const NOTES = [
   'This file is everything Plantdex holds for this account or device. It is not a backup format: importing it is not supported.',
   'XP and level are deliberately absent. They are recalculated from the records below every time they are shown and are never stored, so there is no stored value to export.',
   'Dates are ISO 8601, in UTC.',
+  'Seed Shelf packet artwork is not included. It is generated from the species name and is shared by every player who has found that plant, so it is not data about you — your finds, with their dates, are listed in full.',
 ];
 
 /**

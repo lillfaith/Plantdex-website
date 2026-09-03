@@ -61,6 +61,28 @@ describe('what may go on the shelf', () => {
     expect(isShelfEligible('Bellis perennis')).toBe(true);
   });
 
+  it('accepts a close relative of a card, because it is a different species', () => {
+    /*
+     * THE SHELF IS A BROAD ARCHIVE, THE DECK IS CURATED, and this is where the two meet.
+     *
+     * The deck prints Capsella bursa-pastoris. If an identifier names Capsella rubella —
+     * the pink shepherd's-purse, a genuinely different species — there is no confirmable
+     * card for THAT plant, so the player keeps it. Nothing here may refuse a species for
+     * being similar to something already drawn; that preference belongs to what we choose
+     * to showcase, never to what somebody is allowed to remember finding.
+     */
+    for (const relative of [
+      'Capsella rubella',
+      'Urtica urens',
+      'Rumex acetosa',
+      'Mentha arvensis',
+      'Oxalis corniculata',
+      'Plantago lanceolata',
+    ]) {
+      expect(isShelfEligible(relative), `${relative} was refused`).toBe(true);
+    }
+  });
+
   it('refuses a bare genus, which names no species', () => {
     // A shelf of genera would collide with future cards in ways nothing could resolve.
     expect(isShelfEligible('Bellis')).toBe(false);
@@ -231,15 +253,15 @@ describe('reading stored rows back', () => {
     expect(parsed?.speciesKey).toBe(normalizeName('Bellis perennis L.'));
   });
 
-  it('regenerates a packet whose stored recipe is unreadable', () => {
-    // A stored recipe is a pin, never the only copy: the name is the seed, so a corrupted
-    // or future-shaped recipe costs nothing.
+  it('regenerates a preview whose stored recipe is unreadable', () => {
+    // A stored preview is a convenience, never the only copy: the name is the seed, and the
+    // canonical registry outranks both.
     const parsed = parseFind({
       scientificName: 'Bellis perennis',
       foundAt: '2026-04-01T09:00:00.000Z',
       packet: { shape: 'not-a-shape' },
     });
-    expect(parsed?.packet.shape).toBeTruthy();
+    expect(parsed?.packet?.shape).toBeTruthy();
   });
 
   it('drops a confidence outside 0–1', () => {

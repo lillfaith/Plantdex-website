@@ -39,6 +39,13 @@ export const PURE_MODULES = [
   'rng.ts',
   'research.ts',
   'herbdex-reducer.ts',
+  // Added with the Seed Shelf. The `seed-packet` function must mint a species' canonical
+  // packet with the EXACT generator the app previews with, and must apply the exact
+  // eligibility rule the client applies — otherwise the server could mint a packet for a
+  // species that has a card, or draw a different bag from the one the player was shown.
+  'plant-match.ts',
+  'seed-packet.ts',
+  'seed-shelf.ts',
 ];
 
 /** Specifiers that already carry an extension Deno understands are left alone. */

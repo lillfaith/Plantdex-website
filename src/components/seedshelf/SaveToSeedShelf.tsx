@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSeedShelf } from '@/lib/seed-shelf-store';
 import { isShelfEligible } from '@/lib/seed-shelf';
-import { packetRecipe } from '@/lib/seed-packet';
+import { loadCanonicalPackets, previewPacket, useCanonicalPackets } from '@/lib/species-packets';
 import { normalizeName, type ScanCandidate } from '@/lib/plant-match';
 import { track } from '@/lib/analytics';
 import { SeedPacket } from './SeedPacket';
@@ -55,6 +55,17 @@ export function SaveToSeedShelf({
     [candidate, entries],
   );
 
+  /*
+   * Read the canonical packet for the species being offered, if Plantdex already has one.
+   *
+   * A READ, never a write: arriving at this screen must not introduce a species to the
+   * registry. Minting happens on the explicit save, in `addRemoteFind`.
+   */
+  const registryVersion = useCanonicalPackets();
+  useEffect(() => {
+    if (candidate) void loadCanonicalPackets([normalizeName(candidate.scientificName)]);
+  }, [candidate]);
+
   const onSave = useCallback(async () => {
     if (!candidate) return;
     setSaving(true);
@@ -79,11 +90,17 @@ export function SaveToSeedShelf({
 
   if (!candidate) return null;
 
-  // The same seed the shelf will use, so the packet somebody is shown before saving is the
-  // packet they get. Deriving it from the raw name here and the normalised one there would
-  // quietly draw two different bags for one plant.
-  const recipe = packetRecipe({
-    speciesKey: normalizeName(candidate.scientificName),
+  /*
+   * What this species' packet actually looks like.
+   *
+   * The canonical one if Plantdex has already met the species — which is the honest preview,
+   * because that is the bag the shelf will show — and otherwise the generator's answer, which
+   * is exactly what the server will mint from the same name.
+   */
+  // `registryVersion` is read so the preview re-renders the moment the canonical packet
+  // arrives; `previewPacket` itself reads the cache the version counts.
+  void registryVersion;
+  const recipe = previewPacket({
     scientificName: candidate.scientificName,
     commonName: candidate.commonName,
   });

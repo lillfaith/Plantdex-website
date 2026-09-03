@@ -8,6 +8,7 @@ import {
   type NewSeedShelfFind,
   type SeedShelfFind,
 } from './seed-shelf';
+import { ensureCanonicalPackets } from './species-packets';
 
 /**
  * The signed-in Seed Shelf: Supabase instead of localStorage.
@@ -53,7 +54,9 @@ export function rowToFind(row: Record<string, unknown>): SeedShelfFind | null {
     confidence: typeof row.confidence === 'number' ? row.confidence : undefined,
     scanId: row.scan_id ?? undefined,
     photoPath: row.photo_path ?? undefined,
-    packet: row.packet ?? undefined,
+    // No packet: the artwork belongs to the species, not to this row. `species-packets.ts`
+    // reads the canonical one. `parseFind` derives a preview so the shape stays complete
+    // while the registry is still loading.
   });
 }
 
@@ -70,7 +73,8 @@ export function findToRow(userId: string, find: SeedShelfFind): Record<string, u
     confidence: find.confidence ?? null,
     scan_id: find.scanId ?? null,
     photo_path: find.photoPath ?? null,
-    packet: find.packet,
+    // Deliberately no `packet`: the column does not exist (migration 0004), because a packet
+    // is a property of the species and lives once in `species_packets`.
   };
 }
 
@@ -136,6 +140,23 @@ export async function addRemoteFind(
   if (supabase) {
     const { error } = await supabase.from('seed_shelf').insert(findToRow(userId, find));
     if (error) throw new Error(`Could not save this to your Seed Shelf: ${error.message}`);
+
+    /*
+     * Introduce the species to Plantdex if nobody has yet.
+     *
+     * AFTER the player's own row is safely written, and never blocking it: the canonical
+     * packet is shared furniture, and failing to mint it must not cost somebody their find.
+     * A miss simply means the shelf draws the locally derived preview until the next read,
+     * and the registry is filled in by this player's next save or by anybody else's.
+     */
+    await ensureCanonicalPackets([
+      {
+        scientificName: find.scientificName,
+        commonName: find.commonName,
+        gbifId: find.gbifId,
+        powoId: find.powoId,
+      },
+    ]);
   }
 
   if (loadedForUser === userId && cache) {

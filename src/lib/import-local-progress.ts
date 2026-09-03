@@ -3,6 +3,7 @@ import { createLocalStorageAdapter } from './storage';
 import { getAllSightings } from './sightings';
 import { getLocalFinds } from './local-seed-shelf';
 import { findToRow } from './remote-seed-shelf';
+import { ensureCanonicalPackets } from './species-packets';
 import type { HerbdexState } from './types';
 
 /**
@@ -152,8 +153,33 @@ async function importSeedShelf(userId: string): Promise<boolean> {
       onConflict: 'id',
       ignoreDuplicates: true,
     });
-  if (error) console.warn('[plantdex] import failed for the seed shelf', error);
-  return !error;
+  if (error) {
+    console.warn('[plantdex] import failed for the seed shelf', error);
+    return false;
+  }
+
+  /*
+   * Introduce anything Plantdex has never seen to the canonical registry.
+   *
+   * This is where a signed-out shelf stops being local: the packets that device derived for
+   * itself are superseded by the canonical ones, which for a species minted under the same
+   * generator version are identical, and for one minted earlier are the artwork everybody
+   * else already sees. One call for the whole shelf; species already registered are left
+   * exactly as they are.
+   *
+   * A failure here does not fail the import. The rows — the player's actual finds, with
+   * their dates — are already safely across, and the registry fills in on the next save.
+   */
+  const bySpecies = new Map(finds.map((find) => [find.speciesKey, find]));
+  await ensureCanonicalPackets(
+    [...bySpecies.values()].map((find) => ({
+      scientificName: find.scientificName,
+      commonName: find.commonName,
+      gbifId: find.gbifId,
+      powoId: find.powoId,
+    })),
+  );
+  return true;
 }
 
 /**

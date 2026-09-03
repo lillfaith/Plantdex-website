@@ -1,10 +1,15 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { addLocalFind, removeLocalSpecies, useLocalFinds } from './local-seed-shelf';
 import { addRemoteFind, removeRemoteSpecies, useRemoteFinds } from './remote-seed-shelf';
 import { mergeFinds, type NewSeedShelfFind, type SeedShelfEntry } from './seed-shelf';
+import {
+  canonicalPacketFor,
+  loadCanonicalPackets,
+  useCanonicalPackets,
+} from './species-packets';
 
 /**
  * Picks the local or the Supabase-backed shelf based on auth state, so no component learns
@@ -30,7 +35,27 @@ export function useSeedShelf(): SeedShelfStore {
   const remote = useRemoteFinds(user?.id);
   const finds = user ? remote : local;
 
-  const entries = useMemo(() => mergeFinds(finds), [finds]);
+  /*
+   * THE CANONICAL PACKETS FOR WHATEVER IS ON THIS SHELF.
+   *
+   * Read in one query for the whole shelf rather than one per packet, and only for species
+   * this tab has not already read. `registryVersion` is what re-renders the shelf when they
+   * arrive: until then every entry draws the preview derived from its own name, which is the
+   * same artwork unless the generator has moved on since the species was first minted.
+   */
+  const speciesKeys = useMemo(() => finds.map((find) => find.speciesKey), [finds]);
+  const registryVersion = useCanonicalPackets();
+  useEffect(() => {
+    void loadCanonicalPackets(speciesKeys);
+  }, [speciesKeys]);
+
+  const entries = useMemo(
+    () => mergeFinds(finds, canonicalPacketFor),
+    // `registryVersion` is not read inside — it is the signal that `canonicalPacketFor` now
+    // answers differently, which a Map cannot express as a changed reference.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [finds, registryVersion],
+  );
 
   const save = useCallback(
     async (input: NewSeedShelfFind): Promise<SeedShelfEntry | null> => {
@@ -40,7 +65,9 @@ export function useSeedShelf(): SeedShelfStore {
       // own re-render is what the page renders from; this is for the caller that wants to
       // say something about what it just saved.
       return (
-        mergeFinds([...finds, find]).find((entry) => entry.speciesKey === find.speciesKey) ?? null
+        mergeFinds([...finds, find], canonicalPacketFor).find(
+          (entry) => entry.speciesKey === find.speciesKey,
+        ) ?? null
       );
     },
     [user, finds],

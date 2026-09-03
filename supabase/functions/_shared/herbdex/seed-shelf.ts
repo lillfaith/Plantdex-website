@@ -1,7 +1,7 @@
-import { getHerb } from './deck';
-import { matchScientificName, normalizeName } from './plant-match';
-import { packetRecipe, parseRecipe, type PacketRecipe } from './seed-packet';
-import type { HerbdexState } from './types';
+import { getHerb } from './deck.ts';
+import { matchScientificName, normalizeName } from './plant-match.ts';
+import { packetRecipe, parseRecipe, type PacketRecipe } from './seed-packet.ts';
+import type { HerbdexState } from './types.ts';
 
 /**
  * THE SEED SHELF — real plants a player has found that the deck does not cover yet.

@@ -41,14 +41,13 @@ create table if not exists public.seed_shelf (
   -- The scan this came from, and the photograph it kept, both scoped to this user exactly as
   -- a scan row is. Null when the scan was anonymous or no photo was stored.
   scan_id text,
-  photo_path text,
+  photo_path text
 
-  -- The generated packet artwork, pinned at the moment of saving.
-  --
-  -- Derivable from `species_key` alone — that determinism is what makes two players' shelves
-  -- agree about a species without a shared registry — but stored so a later change to the
-  -- generator cannot redraw a packet somebody has already been looking at.
-  packet jsonb
+  -- NO PACKET COLUMN. The artwork is a property of the SPECIES, not of one player's find:
+  -- it lives once in `public.species_packets` (0005), which every shelf reads. Storing a
+  -- copy per row is what made two users able to hold different packets for one plant after
+  -- a generator change — the first to save it kept version 1 while the next was handed a
+  -- freshly generated version 2.
 );
 
 create index if not exists seed_shelf_user_species_idx

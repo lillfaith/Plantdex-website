@@ -30,7 +30,18 @@ import {
 
 const root = join(import.meta.dirname, '..', '..');
 const sharedDir = join(root, 'supabase', 'functions', '_shared', 'herbdex');
-const entrypoint = join(root, 'supabase', 'functions', 'herbdex-action', 'index.ts');
+/**
+ * Every hand-written function that imports the shared copies.
+ *
+ * More than one since the Seed Shelf: `seed-packet` mints a species' canonical artwork with
+ * the same generator the app previews with, so it pulls in `seed-packet.ts`, `seed-shelf.ts`
+ * and `plant-match.ts`. Walking only the first entrypoint would leave those three unchecked
+ * — and unreachable-from-anywhere is exactly the state a forgotten sync leaves them in.
+ */
+const entrypoints = [
+  join(root, 'supabase', 'functions', 'herbdex-action', 'index.ts'),
+  join(root, 'supabase', 'functions', 'seed-packet', 'index.ts'),
+];
 
 /** Every relative specifier in a module, from `import`/`export ... from` and side effects. */
 function relativeImports(source: string): string[] {
@@ -72,9 +83,9 @@ describe('generated edge-function modules', () => {
   // edge lands on a file that actually exists. Deno is not installable in every environment
   // this repo is worked on from, so this stands in for `deno check` on the resolution half,
   // which is the half that broke the deploy.
-  it('resolves every module in the graph from the entrypoint', () => {
+  it('resolves every module in the graph from every entrypoint', () => {
     const seen = new Set<string>();
-    const queue = [entrypoint];
+    const queue = [...entrypoints];
 
     while (queue.length > 0) {
       const file = queue.pop()!;
@@ -91,16 +102,18 @@ describe('generated edge-function modules', () => {
       }
     }
 
-    // Every pure module is reachable from the entrypoint, so a missing copy fails here too.
+    // Every pure module is reachable from some entrypoint, so a missing copy fails here too.
     for (const name of PURE_MODULES) {
-      expect(seen, `${name} is not reachable from the entrypoint`).toContain(
+      expect(seen, `${name} is not reachable from any entrypoint`).toContain(
         join(sharedDir, name),
       );
     }
   });
 
-  it('holds the hand-written entrypoint to the same rule', () => {
-    for (const specifier of relativeImports(readFileSync(entrypoint, 'utf8'))) {
+  it('holds the hand-written entrypoints to the same rule', () => {
+    for (const specifier of entrypoints.flatMap((file) =>
+      relativeImports(readFileSync(file, 'utf8')),
+    )) {
       expect(specifier, `index.ts imports "${specifier}" without an extension`).toMatch(
         /\.(ts|json)$/,
       );
