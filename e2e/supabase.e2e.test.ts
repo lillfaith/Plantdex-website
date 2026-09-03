@@ -372,45 +372,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
     let firstSeenAt: string;
 
     beforeAll(async () => {
-      /*
-       * Preflight, so a project that is not fully set up says so once instead of failing
-       * twenty assertions with the real cause buried in each. Tables, function and secret are
-       * three separate deploys and any of them can be missing.
-       */
-      if (!ATTESTATION_SECRET) {
-        throw new Error(
-          'SPECIES_ATTESTATION_SECRET is not set locally. Creating canon needs a signed ' +
-            'candidate, so this suite must hold the same secret the test project signs with: ' +
-            'set it as a function secret on the project (identify-plant and seed-packet) and ' +
-            'put the same value in .env.local. Never a production secret.',
-        );
-      }
-
-      for (const [table, migration] of [
-        ['seed_shelf', '0004_seed_shelf.sql'],
-        ['species_packets', '0005_species_packets.sql'],
-      ] as const) {
-        const { error } = await freshClient().from(table).select('*').limit(1);
-        if (error?.code === 'PGRST205') {
-          throw new Error(
-            `public.${table} does not exist in this project. Run the "Run a Supabase ` +
-              `migration" workflow with migration: ${migration} against this project ref, ` +
-              'then re-run this suite.',
-          );
-        }
-      }
-
-      // Same probe as the deletion block: "not deployed" must read as an instruction, not as
-      // four unrelated assertion failures.
-      const probe = await fetch(`${URL}/functions/v1/seed-packet`, { method: 'OPTIONS' });
-      if (probe.status === 404) {
-        throw new Error(
-          'The seed-packet edge function is not deployed to this project. Run the ' +
-            '"Deploy Supabase edge function" workflow (function: seed-packet) and re-run. ' +
-            'Without it no species can ever be minted, because no client holds an insert ' +
-            'on species_packets by design.',
-        );
-      }
+      // Environment preflight is the suite's own, at the top — see the outer beforeAll.
       __resetCanonicalCache();
     }, 60_000);
 
