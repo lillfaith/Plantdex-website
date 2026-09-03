@@ -1,7 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { isShelfEligible } from '../_shared/herbdex/seed-shelf.ts';
 import { packetRecipe, PACKET_VERSION } from '../_shared/herbdex/seed-packet.ts';
-import { mintablePacketInput, type CanonicalIdentity } from '../_shared/herbdex/species-identity.ts';
+import {
+  canonicalIdentity,
+  mintablePacketInput,
+  type CanonicalIdentity,
+} from '../_shared/herbdex/species-identity.ts';
 import {
   ATTESTATION_SECRET_ENV,
   mintDecision,

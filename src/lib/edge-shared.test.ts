@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -163,5 +163,84 @@ describe('addExplicitExtensions', () => {
     ]) {
       expect(addExplicitExtensions(line)).toBe(line);
     }
+  });
+});
+
+/**
+ * EVERY SHARED EXPORT AN EDGE FUNCTION USES MUST ACTUALLY BE IMPORTED.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE BUG THIS EXISTS FOR, and it reached a live deployment. `seed-packet` called
+ * `canonicalIdentity(entry)` while its import block named only `mintablePacketInput`. In
+ * Deno that is a ReferenceError on the first request that reaches the line — the module
+ * still boots, so OPTIONS answered 204 and the function looked deployed, and every POST
+ * carrying a species came back as a bare `500 Internal Server Error` with no clue in it.
+ *
+ * Nothing in this repo could see it. `supabase/functions/**` is excluded from tsconfig and
+ * ESLint because it is Deno, `deno check` needs a runtime this sandbox cannot install, and
+ * the unit test that "covered" the call asserted the SOURCE TEXT contained
+ * `canonicalIdentity(entry)` — which a missing import does not change.
+ *
+ * So this reads the shared modules' real exports and the function's real import list, and
+ * compares them against what the function's code actually references.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+describe('edge functions import what they use', () => {
+  /** Every name exported from the shared copies. */
+  function sharedExports(): Set<string> {
+    const names = new Set<string>();
+    for (const file of readdirSync(sharedDir)) {
+      if (!file.endsWith('.ts')) continue;
+      const source = readFileSync(join(sharedDir, file), 'utf8');
+      for (const match of source.matchAll(
+        /^export\s+(?:async\s+)?(?:function|const|let|class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/gm,
+      )) {
+        names.add(match[1]!);
+      }
+    }
+    return names;
+  }
+
+  /** Source with comments and string literals removed, so a mention in prose is not a use. */
+  function code(source: string): string {
+    return source
+      .replace(/\/\*[\s\S]*?\*\//g, ' ')
+      .replace(/\/\/[^\n]*/g, ' ')
+      .replace(/`(?:\\[\s\S]|[^\\`])*`/g, '``')
+      .replace(/'(?:\\.|[^\\'])*'/g, "''")
+      .replace(/"(?:\\.|[^\\"])*"/g, '""');
+  }
+
+  /** Names bound by this file's import statements, including `type X` and `X as Y`. */
+  function importedNames(source: string): Set<string> {
+    const names = new Set<string>();
+    for (const block of source.matchAll(/import\s*(?:type\s*)?\{([^}]*)\}\s*from/g)) {
+      for (const entry of block[1]!.split(',')) {
+        const cleaned = entry.replace(/\btype\b/, '').trim();
+        if (!cleaned) continue;
+        const alias = /\bas\s+([A-Za-z_$][\w$]*)/.exec(cleaned);
+        names.add(alias ? alias[1]! : cleaned.split(/\s+/)[0]!);
+      }
+    }
+    for (const def of source.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,|from)/g)) {
+      names.add(def[1]!);
+    }
+    return names;
+  }
+
+  it.each(entrypoints)('%s references only names it imports', (entrypoint) => {
+    const source = readFileSync(entrypoint, 'utf8');
+    const body = code(source);
+    const imported = importedNames(source);
+
+    const missing = [...sharedExports()].filter(
+      (name) => !imported.has(name) && new RegExp(`\\b${name}\\b`).test(body),
+    );
+
+    expect(
+      missing,
+      `${entrypoint} uses shared export(s) it never imports: ${missing.join(', ')}. ` +
+        'In Deno that is a ReferenceError at request time, not a build error.',
+    ).toEqual([]);
   });
 });
