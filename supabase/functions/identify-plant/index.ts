@@ -242,15 +242,44 @@ Deno.serve(async (req: Request) => {
   }
 
   // ── The provider ─────────────────────────────────────────────────────────
-  const providerForm = new FormData();
-  providerForm.append('images', image, 'scan.jpg');
-  providerForm.append('organs', typeof form.get('organ') === 'string' ? String(form.get('organ')) : 'auto');
+  /*
+   * THE MULTIPART BODY IS BUILT BY HAND, AND IT HAS TO BE.
+   *
+   * Handing `fetch` a FormData lets the runtime choose the framing, and above a few kilobytes
+   * it streams the body with `Transfer-Encoding: chunked` instead of a `Content-Length`. The
+   * provider's nginx front end answers a chunked upload with its own HTML 500 — so every
+   * photograph a player would actually take failed, while a 5KB thumbnail of the SAME image
+   * succeeded and identified the plant correctly. A sharp cliff between 5KB and 9KB, far too
+   * small to be a size limit (that is a 413), and invisible in any test that used a small
+   * fixture.
+   *
+   * Assembling the body into one Uint8Array gives it a definite length, so the request goes
+   * out buffered. This is not a workaround for a provider outage — the provider is up and
+   * answering; it is a fix to what we were sending it.
+   */
+  const boundary = `----plantdex${crypto.randomUUID().replace(/-/g, '')}`;
+  const organ = typeof form.get('organ') === 'string' ? String(form.get('organ')) : 'auto';
+  const imageBytes = new Uint8Array(await image.arrayBuffer());
+  const encoder = new TextEncoder();
+  const head = encoder.encode(
+    `--${boundary}\r\n` +
+      `Content-Disposition: form-data; name="organs"\r\n\r\n${organ}\r\n` +
+      `--${boundary}\r\n` +
+      `Content-Disposition: form-data; name="images"; filename="scan.jpg"\r\n` +
+      `Content-Type: image/jpeg\r\n\r\n`,
+  );
+  const tail = encoder.encode(`\r\n--${boundary}--\r\n`);
+  const providerBody = new Uint8Array(head.length + imageBytes.length + tail.length);
+  providerBody.set(head, 0);
+  providerBody.set(imageBytes, head.length);
+  providerBody.set(tail, head.length + imageBytes.length);
 
   let payload: { results?: ProviderResult[] };
   try {
     const response = await fetch(`${PROVIDER_URL}?api-key=${encodeURIComponent(PROVIDER_KEY)}`, {
       method: 'POST',
-      body: providerForm,
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
+      body: providerBody,
     });
     if (response.status === 404) {
       // PlantNet answers 404 when it recognises nothing at all. That is a real result, not
