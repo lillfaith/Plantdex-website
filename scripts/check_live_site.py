@@ -35,6 +35,24 @@ ROUTES: list[tuple[str, list[str]]] = [
     ("/herbdex/", ["My Herbdex", "Identify a plant"]),
     ("/garden/", ["My Garden"]),
     ("/journal/", ["Journal"]),
+    # The Seed Shelf shipped after this list was written, and its absence here is exactly
+    # the gap this file exists to close: run 5 passed green on the deploy that introduced
+    # the feature, without ever fetching it.
+    #
+    # NEITHER MARKER IS THE HEADING. "Seed Shelf" is in the nav of every page in the app —
+    # it matches on /garden/ too, so it would pass against a shelf that never rendered.
+    # These two are the page's own prose, and both are zero elsewhere in the build: the
+    # description, and the sentence that says a packet is a species with no card. Checked
+    # against the real `out/` rather than assumed. Apostrophes are avoided deliberately —
+    # the neighbouring "don't fill the collection" arrives as `don&#x27;t`, and a marker
+    # that has to spell the entity is one that breaks the day the copy is retyped.
+    (
+        "/seed-shelf/",
+        [
+            "Plants you have identified that are not Plantdex cards yet",
+            "a real species you photographed that has no card yet",
+        ],
+    ),
     ("/account/", ["Your profile"]),
     ("/privacy/", ["Profile settings", "visible only to you"]),
     ("/safety/", ["safety"]),
