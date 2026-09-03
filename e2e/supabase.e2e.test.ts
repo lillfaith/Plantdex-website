@@ -4,6 +4,16 @@ import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 import { supabase } from '@/lib/supabase-client';
 import { createRemoteHerbdexStorage } from '@/lib/remote-herbdex-storage';
 import { addRemoteSighting, removeRemoteSighting } from '@/lib/remote-sightings';
+import { addRemoteFind, removeRemoteSpecies } from '@/lib/remote-seed-shelf';
+import {
+  __resetCanonicalCache,
+  ensureCanonicalPackets,
+  loadCanonicalPackets,
+  canonicalRecordFor,
+} from '@/lib/species-packets';
+import { isShelfEligible, mergeFinds, newFind } from '@/lib/seed-shelf';
+import { packetRecipe, PACKET_VERSION } from '@/lib/seed-packet';
+import { normalizeName } from '@/lib/plant-match';
 import { exportAccountData } from '@/lib/export-account-data';
 import { rowToProfile, saveRemoteProfile } from '@/lib/remote-player-profile';
 import { emptyProfile, resolveProfile } from '@/lib/player-profile';
@@ -42,6 +52,12 @@ const TABLES = [
   ['research_completions', 'task_id'],
   ['unlocked_achievements', 'achievement_id'],
   ['sightings', 'id'],
+  // The Seed Shelf is private history like every other row here, so it rides the same
+  // cross-user attacks, the same signed-out invisibility check and the same deletion
+  // readback rather than getting a weaker set of its own. The canonical packet registry is
+  // deliberately NOT in this list: it is global, public to read, and must survive a
+  // deletion — it has its own describe block below.
+  ['seed_shelf', 'id'],
 ] as const;
 
 /** Two real cards from the deck, so nothing here invents an id the app would reject. */
@@ -281,6 +297,316 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
     }, 30_000);
   });
 
+  /*
+   * THE SEED SHELF AND THE CANONICAL PACKET REGISTRY.
+   *
+   * ───────────────────────────────────────────────────────────────────────────
+   * TWO TABLES WITH OPPOSITE POSTURES, AND THAT IS THE WHOLE DESIGN.
+   *
+   *   `seed_shelf`      — private history. Who found what, when, at what confidence, from
+   *                       which scan and photograph. RLS-scoped, write-once, deleted with
+   *                       the account. It rides in TABLES above, so every cross-user attack
+   *                       and the signed-out invisibility check already cover it.
+   *
+   *   `species_packets` — the canonical artwork for a species. Global, public to read,
+   *                       written ONLY by the `seed-packet` function under the service role,
+   *                       never overwritten, and never deleted with anybody's account.
+   *
+   * These tests are placed BEFORE the cross-user block on purpose: they are what puts a real
+   * `seed_shelf` row in Alice's account, so the attacks below have something to fail against
+   * rather than passing vacuously against an empty table.
+   * ───────────────────────────────────────────────────────────────────────────
+   */
+  describe('the Seed Shelf and the canonical packet registry', () => {
+    /*
+     * A real species the deck has no card for. Stable rather than randomised: the registry
+     * is global and has no delete policy for anyone, so a random name per run would leave a
+     * permanent row behind every time this suite is run. One species, one row, forever.
+     *
+     * No gbif/powo ids are asserted as VALUES here — this environment cannot reach GBIF to
+     * check one, and writing a plausible-looking identifier into a live registry is exactly
+     * the kind of invented data the rest of this repo refuses. The columns are checked for
+     * existence instead; the real ids arrive from `identify-plant`.
+     */
+    const SPECIES = { scientificName: 'Bellis perennis', commonName: 'Common daisy' };
+    const SPECIES_KEY = normalizeName(SPECIES.scientificName);
+    /** Closely related to a card the deck DOES carry (Capsella bursa-pastoris). */
+    const RELATIVE = { scientificName: 'Capsella rubella' };
+    /** A species the deck carries outright. Must never enter the registry. */
+    const ON_A_CARD = 'Oxalis stricta';
+
+    /** The complete column set of a registry row. Anything else is a leak. */
+    const REGISTRY_COLUMNS = [
+      'species_key',
+      'scientific_name',
+      'common_name',
+      'gbif_id',
+      'powo_id',
+      'packet',
+      'packet_version',
+      'first_seen_at',
+    ];
+
+    let firstSeenAt: string;
+
+    beforeAll(async () => {
+      // Same probe as the deletion block: "not deployed" must read as an instruction, not as
+      // four unrelated assertion failures.
+      const probe = await fetch(`${URL}/functions/v1/seed-packet`, { method: 'OPTIONS' });
+      if (probe.status === 404) {
+        throw new Error(
+          'The seed-packet edge function is not deployed to this project. Run the ' +
+            '"Deploy Supabase edge function" workflow (function: seed-packet) and re-run. ' +
+            'Without it no species can ever be minted, because no client holds an insert ' +
+            'on species_packets by design.',
+        );
+      }
+      __resetCanonicalCache();
+    }, 60_000);
+
+    afterAll(async () => {
+      // Alice's shelf rows go with the TABLES sweep in the outer afterAll; Bob's do too.
+      // The registry rows are deliberately left standing: nothing in this project can
+      // delete them, which is the property under test.
+      await removeRemoteSpecies(alice.id, SPECIES_KEY).catch(() => {});
+    }, 30_000);
+
+    it('mints the species the first time anybody saves it', async () => {
+      // The REAL adapter, exactly as the browser calls it: it inserts Alice's private row
+      // and then asks the function to introduce the species to Plantdex.
+      const find = await addRemoteFind(alice.id, {
+        scientificName: SPECIES.scientificName,
+        commonName: SPECIES.commonName,
+        confidence: 0.91,
+        scanId: `scan_e2e_${Date.now()}`,
+      });
+      expect(find, 'the shelf refused a species with no card').not.toBeNull();
+      expect(find!.speciesKey).toBe(SPECIES_KEY);
+
+      // Read the registry back with a SIGNED-OUT client. The row is public by design, and
+      // reading it as nobody is the honest way to prove that.
+      const anon = freshClient();
+      const { data, error } = await anon
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', SPECIES_KEY);
+      expect(error, 'the registry is not readable').toBeNull();
+      expect(data?.length, 'the species was not minted').toBe(1);
+
+      const row = data![0] as Record<string, unknown>;
+      expect(row.scientific_name).toBe(SPECIES.scientificName);
+      expect(row.packet_version).toBe(PACKET_VERSION);
+      expect(row.packet).toEqual(packetRecipe({ speciesKey: SPECIES_KEY }));
+      expect(typeof row.first_seen_at).toBe('string');
+      firstSeenAt = row.first_seen_at as string;
+    }, 90_000);
+
+    it('holds a species, and nothing about the person who found it', async () => {
+      /*
+       * THE LIVE VERSION OF THE SCHEMA TEST. `species-registry.test.ts` reads the migration
+       * text; this reads what the database actually returns to an anonymous client. A column
+       * added later without touching 0005 — or a view that widened — fails here.
+       */
+      const anon = freshClient();
+      const { data } = await anon.from('species_packets').select('*').eq('species_key', SPECIES_KEY);
+      const keys = Object.keys((data ?? [])[0] ?? {}).sort();
+      expect(keys, 'the registry row exposes an unexpected column').toEqual(
+        [...REGISTRY_COLUMNS].sort(),
+      );
+    }, 30_000);
+
+    it('keeps the finder private while the packet is public', async () => {
+      // The two halves in one assertion: the same anonymous client that can read the
+      // artwork cannot see a single thing about who found it.
+      const anon = freshClient();
+      const { data: packets } = await anon.from('species_packets').select('*').eq('species_key', SPECIES_KEY);
+      expect(packets?.length).toBe(1);
+      const { data: shelf } = await anon.from('seed_shelf').select('*');
+      expect(shelf ?? [], 'the private shelf leaked to a signed-out client').toEqual([]);
+    }, 30_000);
+
+    it('hands a second player the same packet rather than minting a second one', async () => {
+      /*
+       * Bob writes through HIS OWN client, never through the adapter — that is bound to the
+       * app's singleton, which this suite signs in as Alice. This is the fixture lesson the
+       * profile block already paid for once.
+       */
+      const bobsFind = newFind({ scientificName: SPECIES.scientificName, confidence: 0.4 })!;
+      const { error: inserted } = await bobClient.from('seed_shelf').insert({
+        id: bobsFind.id,
+        user_id: bob.id,
+        species_key: bobsFind.speciesKey,
+        scientific_name: bobsFind.scientificName,
+        found_at: bobsFind.foundAt,
+        confidence: 0.4,
+      });
+      expect(inserted, 'Bob could not save his own find').toBeNull();
+
+      const { data, error } = await bobClient.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: SPECIES.scientificName }] },
+      });
+      expect(error).toBeNull();
+      const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? []).find(
+        (row) => row.species_key === SPECIES_KEY,
+      );
+      expect(returned, 'the function returned no packet for a species it already knows').toBeTruthy();
+
+      // Same artwork, same date — Bob was handed Alice's row, not a fresh one.
+      expect(returned!.first_seen_at).toBe(firstSeenAt);
+
+      const anon = freshClient();
+      const { data: all } = await anon.from('species_packets').select('*').eq('species_key', SPECIES_KEY);
+      expect(all?.length, 'a second packet exists for one species').toBe(1);
+    }, 90_000);
+
+    it('never redraws a packet on a later mint', async () => {
+      /*
+       * THE POINT OF THE REGISTRY, live. Asking again must be a no-op: `on conflict do
+       * nothing`, and no update anywhere in the function. If a future generator change could
+       * reach a minted species, this is where it would show.
+       */
+      const before = (
+        await freshClient().from('species_packets').select('*').eq('species_key', SPECIES_KEY)
+      ).data![0] as Record<string, unknown>;
+
+      await ensureCanonicalPackets([{ scientificName: SPECIES.scientificName }]);
+
+      const after = (
+        await freshClient().from('species_packets').select('*').eq('species_key', SPECIES_KEY)
+      ).data![0] as Record<string, unknown>;
+      expect(after).toEqual(before);
+      expect(after.first_seen_at).toBe(firstSeenAt);
+    }, 60_000);
+
+    it('is what the shelf actually draws', async () => {
+      // End to end, through the modules the page uses: read the registry, fold the finds,
+      // and the entry reports it is showing the canonical packet.
+      __resetCanonicalCache();
+      await loadCanonicalPackets([SPECIES_KEY]);
+      const record = canonicalRecordFor(SPECIES_KEY);
+      expect(record, 'the client could not read the canonical packet').toBeTruthy();
+
+      const find = newFind({ scientificName: SPECIES.scientificName })!;
+      const entry = mergeFinds([find], (key) => canonicalRecordFor(key)?.packet)[0]!;
+      expect(entry.canonicalPacket).toBe(true);
+      expect(entry.packet).toEqual(record!.packet);
+    }, 60_000);
+
+    it('lets no client write the registry — insert, update or delete', async () => {
+      /*
+       * NOBODY GAINS A CROSS-USER WRITE SURFACE. There is no insert, update or delete policy
+       * on this table for any role, so a signed-in player cannot mint a species they never
+       * found, redraw one somebody else is looking at, or remove one.
+       *
+       * Insert comes back as an explicit RLS error. Update and delete come back CLEAN with
+       * zero rows affected — which is why this test reads the row back rather than trusting
+       * the absence of an error.
+       */
+      const before = (
+        await freshClient().from('species_packets').select('*').eq('species_key', SPECIES_KEY)
+      ).data![0] as Record<string, unknown>;
+
+      for (const [who, client] of [
+        ['Alice', supabase!],
+        ['Bob', bobClient],
+        ['a signed-out visitor', freshClient()],
+      ] as const) {
+        const { error: insertError } = await client.from('species_packets').insert({
+          species_key: 'forged bybob',
+          scientific_name: 'Forged bybob',
+          packet: packetRecipe({ speciesKey: 'forged bybob' }),
+          packet_version: PACKET_VERSION,
+        });
+        expect(insertError, `${who} was allowed to mint a packet`).not.toBeNull();
+
+        await client
+          .from('species_packets')
+          .update({ scientific_name: `rewritten by ${who}` })
+          .eq('species_key', SPECIES_KEY);
+        await client.from('species_packets').delete().eq('species_key', SPECIES_KEY);
+      }
+
+      const after = (
+        await freshClient().from('species_packets').select('*').eq('species_key', SPECIES_KEY)
+      ).data?.[0] as Record<string, unknown> | undefined;
+      expect(after, 'the canonical packet was deleted by a client').toBeTruthy();
+      expect(after).toEqual(before);
+
+      const { data: forged } = await freshClient()
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', 'forged bybob');
+      expect(forged ?? [], 'a forged packet reached the registry').toEqual([]);
+    }, 90_000);
+
+    it('refuses to mint a species the deck already has a card for', async () => {
+      // The server re-checks eligibility, so a hand-made request cannot file a card species
+      // as a packet. That plant is a discovery.
+      expect(isShelfEligible(ON_A_CARD)).toBe(false);
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: ON_A_CARD }] },
+      });
+      expect((data as { packets?: unknown[] }).packets ?? []).toEqual([]);
+
+      const { data: rows } = await freshClient()
+        .from('species_packets')
+        .select('species_key')
+        .eq('species_key', normalizeName(ON_A_CARD));
+      expect(rows ?? [], 'a card species was minted as a seed packet').toEqual([]);
+    }, 60_000);
+
+    it('allows a species that is merely RELATED to one on a card', async () => {
+      /*
+       * The content rule, live. The deck carries Capsella bursa-pastoris; Capsella rubella is
+       * a different species and belongs on the shelf. Eligibility is "the deck has no
+       * confirmable card for THIS species", never "nothing like it exists".
+       */
+      const relativeKey = normalizeName(RELATIVE.scientificName);
+      await ensureCanonicalPackets([RELATIVE]);
+      const { data } = await freshClient()
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', relativeKey);
+      expect(data?.length, 'a relative of a card species was blocked from the shelf').toBe(1);
+      expect(data![0].packet).toEqual(packetRecipe({ speciesKey: relativeKey }));
+    }, 60_000);
+
+    it('refuses an unauthenticated caller', async () => {
+      // Not because the identity is stored — there is no column for it — but because an
+      // anonymous write path into a global table is the thing this design avoids.
+      const response = await fetch(`${URL}/functions/v1/seed-packet`, {
+        method: 'POST',
+        headers: { apikey: KEY!, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ species: [{ scientificName: 'Bellis sylvestris' }] }),
+      });
+      expect([401, 403]).toContain(response.status);
+
+      const { data } = await freshClient()
+        .from('species_packets')
+        .select('species_key')
+        .eq('species_key', 'bellis sylvestris');
+      expect(data ?? [], 'an anonymous caller minted a species').toEqual([]);
+    }, 60_000);
+
+    it('gives each player their own found date over one shared packet', async () => {
+      /*
+       * The split, stated as data: two shelf rows for one species, each with its own
+       * `found_at` and confidence, and one registry row both of them draw.
+       */
+      const { data: aliceRows } = await supabase!
+        .from('seed_shelf')
+        .select('*')
+        .eq('species_key', SPECIES_KEY);
+      expect(aliceRows?.length ?? 0).toBeGreaterThan(0);
+      expect((aliceRows![0] as { confidence: number }).confidence).toBeCloseTo(0.91, 5);
+
+      const { data: bobRows } = await bobClient.from('seed_shelf').select('*').eq('species_key', SPECIES_KEY);
+      expect(bobRows?.length ?? 0).toBeGreaterThan(0);
+      expect((bobRows![0] as { confidence: number }).confidence).toBeCloseTo(0.4, 5);
+      expect((bobRows![0] as { user_id: string }).user_id).toBe(bob.id);
+    }, 60_000);
+  });
+
   describe('cross-user Row Level Security', () => {
     // Every test below asserts Bob sees nothing. That is only meaningful if there is
     // something to see: with an empty account they would all pass while proving nothing.
@@ -296,6 +622,11 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const state = await createRemoteHerbdexStorage(alice.id).load();
       expect(Object.keys(state.learned).length).toBeGreaterThan(0);
       expect(xpForState(state)).toBeGreaterThan(0);
+
+      // And a Seed Shelf row, written by the block above. Without one, every seed_shelf
+      // attack below would pass against an empty table.
+      const { data: shelf } = await supabase!.from('seed_shelf').select('id').eq('user_id', alice.id);
+      expect(shelf?.length ?? 0, 'Alice has no shelf row to attack').toBeGreaterThan(0);
     }, 30_000);
 
     it('cannot READ another user rows in any table', async () => {
@@ -328,6 +659,13 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
           user_id: alice.id,
           herb_id: HERB_A.id,
           date: '2026-01-01',
+        },
+        seed_shelf: {
+          id: `sighting_forged_shelf_${Date.now()}`,
+          user_id: alice.id,
+          species_key: 'forged bybob',
+          scientific_name: 'Forged bybob',
+          found_at: new Date().toISOString(),
         },
       };
       for (const [table] of TABLES) {
@@ -519,6 +857,22 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         herb_id: HERB_A.id,
         date: '2026-06-01',
       });
+      /*
+       * And a Seed Shelf find, whose species Carol is the first to introduce. Deletion has to
+       * take her row and leave the species standing — those are opposite outcomes for two
+       * rows written by the same action, which is exactly the pair worth testing.
+       */
+      await carolClient.from('seed_shelf').insert({
+        id: `sighting_carol_shelf_${Date.now()}`,
+        user_id: carol.id,
+        species_key: 'trifolium repens',
+        scientific_name: 'Trifolium repens',
+        found_at: new Date().toISOString(),
+      });
+      await carolClient.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: 'Trifolium repens' }] },
+      });
+
       photoPath = `${carol.id}/e2e-${Date.now()}.jpg`;
       const { error: uploadError } = await carolClient.storage
         .from('sighting-photos')
@@ -549,6 +903,13 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       expect(rows?.length ?? 0).toBeGreaterThan(0);
       const { data: photos } = await carolClient.storage.from('sighting-photos').list(carol.id);
       expect(photos?.length ?? 0).toBeGreaterThan(0);
+      const { data: shelf } = await carolClient.from('seed_shelf').select('id');
+      expect(shelf?.length ?? 0, 'Carol has no shelf row to lose').toBeGreaterThan(0);
+      const { data: minted } = await freshClient()
+        .from('species_packets')
+        .select('species_key')
+        .eq('species_key', 'trifolium repens');
+      expect(minted?.length ?? 0, 'Carol species was never minted').toBe(1);
     }, 30_000);
 
     it('ignores a forged userId and deletes only the caller', async () => {
@@ -604,6 +965,23 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       );
       expect(reSignIn?.user ?? null, 'the deleted account can still sign in').toBeNull();
       expect(signInError).not.toBeNull();
+
+      /*
+       * AND THE CANONICAL PACKET SURVIVES HER.
+       *
+       * Carol introduced this species to Plantdex. The packet is not hers — it is on every
+       * shelf holding that plant, and deleting it with her account would take the artwork off
+       * all of them. Unlike the rows above, this one is genuinely readable by an anonymous
+       * client, so the assertion is real rather than inherited from RLS.
+       */
+      const { data: stillMinted } = await anon
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', 'trifolium repens');
+      expect(
+        stillMinted?.length,
+        'deleting an account erased the shared packet registry',
+      ).toBe(1);
     }, 120_000);
 
     it('refuses an unauthenticated caller', async () => {

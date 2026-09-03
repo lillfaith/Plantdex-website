@@ -357,21 +357,63 @@ does not carry — the state that used to be a dead end.
   would rewrite the player's own history. Every other call omits it.
 - **Packets are generated, never authored.** `seed-packet.ts` computes a recipe from the
   species key with the existing seeded RNG (`rng.ts`) — four silhouettes, eleven pixel
-  motifs, and a palette drawn entirely from deck tokens. Determinism is the whole design:
-  the same species produces the same packet on any device for any player, which is what makes
-  two shelves agree without a shared registry to consult, and it is why the generator may
-  never read a clock or `Math.random()` (`seed-packet.test.ts` fails on either). The recipe is
-  also STORED with the first find, so raising `PACKET_VERSION` later cannot redraw a packet
-  somebody has been looking at.
+  motifs, and a palette drawn entirely from deck tokens. The generator may never read a clock
+  or `Math.random()` (`seed-packet.test.ts` fails on either), so the same species draws the
+  same bag on any device before anything is stored.
+- **A species' packet is MINTED ONCE, GLOBALLY, and is never redrawn.** Determinism alone was
+  the first design and it is not enough: it holds only until the generator changes, and then
+  the player who saved a species under `PACKET_VERSION` 1 keeps that artwork while everybody
+  who saves the SAME species afterwards is handed a version 2 — two shelves, one plant, two
+  different bags, and nothing able to notice. So the first time Plantdex meets a species its
+  recipe is written into `public.species_packets` (`0005_species_packets.sql`), keyed by
+  `species_key`, and every shelf reads that row. The generator is now how a packet is
+  CREATED, not what keeps the world consistent afterwards. Precedence lives in one place —
+  `resolvePacket()` in `seed-shelf.ts` — and an entry says which it is showing
+  (`canonicalPacket`). `species-registry.test.ts` pins both halves.
+- **The registry is global and public to read, and holds nothing about a person.** Eight
+  columns: the species, its ids, the packet, the version that made it, and `first_seen_at` —
+  which records that *Plantdex* met the species on a date and names nobody. No user id, scan,
+  photograph, location, confidence or discovery date has anywhere to go. That is what makes a
+  `for select using (true)` policy safe, and it is why each player's own first-found date,
+  confidence, scan and photo stay in their private `seed_shelf` row.
+- **No client may write the registry, and the only writer is `supabase/functions/seed-packet`.**
+  That table has no insert, update or delete policy for any role — a client insert on a global
+  table is a cross-user write surface, and one player could otherwise mint a packet for a
+  species nobody has found or race to define the artwork everybody else then sees. The function
+  requires a signed-in caller (a gate, not a stored identity), re-checks `isShelfEligible`
+  server-side, **generates the packet itself and never accepts one from the request**, and
+  inserts with `on conflict do nothing` so two simultaneous first sightings both read the one
+  row that won. It issues no update anywhere, which is what makes a later generator change
+  unable to reach a species anybody has already saved.
+- **Account deletion takes the shelf and leaves the registry.** `seed_shelf` is in
+  `USER_TABLES`; `species_packets` deliberately is not. A canonical packet is not the property
+  of whoever saved the species first, and deleting it with their account would take the
+  artwork off every other shelf holding that plant. Pinned in both directions by
+  `species-registry.test.ts` and verified live in `e2e/supabase.e2e.test.ts`.
+- **Signed out, a shelf shows a locally derived PREVIEW, and says so in the type.**
+  `SeedShelfFind.packet` is optional and is only ever a preview; a signed-out device cannot
+  mint, because the registry has no anonymous write path. Nothing is lost: the canonical row
+  is created when that player signs in and imports, or by whoever saves the species next, and
+  the preview is the same artwork unless the generator has moved on since minting.
 - **A packet leans on the plant's own name where the name says something** — Trifolium gets a
   clover, "Yellow woodsorrel" gets a gold band — and is otherwise an arbitrary deterministic
   draw. That is reading a name, not inventing botany, and no packet claims to depict a
   specimen.
+- **Any valid species-level plant with no card is eligible, including a close relative of one
+  that has a card.** The deck carries *Capsella bursa-pastoris*; *Capsella rubella* is a
+  different species and belongs on the shelf. `isShelfEligible` asks only "does the deck have a
+  *confirmable* card for THIS species", never "does something like it exist" — the Seed Shelf is
+  a broad botanical archive and the deck is curated collectible content, and the variety
+  preference that shapes the deck applies to what we proactively curate and showcase, never as
+  a restriction on what a player may shelve. Do not change the matcher, the genus-card rules or
+  the collection structure to enforce a content preference, and do not pre-generate packets for
+  species nobody has found.
 - **Nothing on the shelf is a confirmed identification.** It records what an identifier
   suggested from a photograph, carries the same uncertainty the scan did, and says nothing
   about edibility or safety.
 - **The shelf works signed out** (localStorage, same rows as the server holds) and is carried
-  into an account by the existing local-progress import. `seed-shelf-store.ts` is the facade
+  into an account by the existing local-progress import, which also asks the registry to mint
+  whatever species it brought — a minting failure never fails the import. `seed-shelf-store.ts` is the facade
   that picks a backend; a component that reaches past it fails `seed-shelf.test.ts`, the same
   rule `sightings-store.test.ts` enforces after `/journal` once read the wrong store.
 - **A board holds exactly as many packets as the grid has columns.** A board is one plank
