@@ -588,6 +588,167 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       expect(data ?? [], 'an anonymous caller minted a species').toEqual([]);
     }, 60_000);
 
+    /*
+     * ─────────────────────────────────────────────────────────────────────────
+     * CAN AN AUTHENTICATED PLAYER POISON THE PERMANENT CANON?
+     *
+     * Every row here is global, public and IMMUTABLE — nothing in the application can edit
+     * or delete one. "Signed in" is not authority to name a species in that canon, so these
+     * are the handcrafted request bodies somebody would actually send, fired at the live
+     * function as a real signed-in user.
+     *
+     * `species-identity.test.ts` proves the validator refuses them. This proves the DEPLOYED
+     * function calls it, and that the table refuses them a second time if it ever does not.
+     * ─────────────────────────────────────────────────────────────────────────
+     */
+    it('refuses malformed and forged species identity', async () => {
+      const attacks: { label: string; body: Record<string, unknown>; key: string }[] = [
+        {
+          label: 'a non-binomial name',
+          body: { scientificName: 'Notaplant' },
+          key: 'notaplant',
+        },
+        {
+          label: 'markup inside a name',
+          body: { scientificName: 'Bellis <script>alert(1)</script>' },
+          key: 'bellis <script>alert(1)</script>',
+        },
+        {
+          label: 'SQL inside a name',
+          body: { scientificName: "Robert'); drop table species_packets;--" },
+          key: "robert'); drop table species_packets;--",
+        },
+        {
+          label: 'digits in the genus',
+          body: { scientificName: 'Zzz9 abcdef' },
+          key: 'zzz9 abcdef',
+        },
+        {
+          label: 'a Cyrillic homoglyph of a real genus',
+          body: { scientificName: '\u0412ellis perennis' },
+          key: '\u0432ellis perennis',
+        },
+      ];
+
+      for (const attack of attacks) {
+        const { data, error } = await supabase!.functions.invoke('seed-packet', {
+          body: { species: [attack.body] },
+        });
+        expect(error, `${attack.label} made the function fail`).toBeNull();
+        expect(
+          (data as { packets?: unknown[] }).packets ?? [],
+          `${attack.label} was minted`,
+        ).toEqual([]);
+
+        const { data: rows } = await freshClient()
+          .from('species_packets')
+          .select('species_key')
+          .eq('species_key', attack.key);
+        expect(rows ?? [], `${attack.label} reached the registry`).toEqual([]);
+      }
+    }, 120_000);
+
+    it('ignores a forged species_key and keys the row by the name it rebuilt', async () => {
+      /*
+       * The attack: claim to be one species while keying as another, so the row everybody
+       * reads for the deck's Quercus is really somebody else's packet. The key is not an
+       * input — it is derived from the rebuilt name — so there is nothing to disagree with.
+       */
+      const forgedKey = 'quercus alba';
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: {
+          species: [
+            {
+              scientificName: 'Bellis perennis',
+              speciesKey: forgedKey,
+              species_key: forgedKey,
+              packet: { version: 99, shape: 'notched', motif: 'cone' },
+              packet_version: 99,
+              first_seen_at: '1999-01-01T00:00:00.000Z',
+            },
+          ],
+        },
+      });
+      const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
+      expect(returned?.species_key).toBe(SPECIES_KEY);
+
+      const { data: forged } = await freshClient()
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', forgedKey);
+      expect(forged ?? [], 'a forged species_key reached the registry').toEqual([]);
+
+      // And none of the other forged fields landed either: the row is the one already minted.
+      const { data: real } = await freshClient()
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', SPECIES_KEY);
+      expect((real![0] as { packet_version: number }).packet_version).toBe(PACKET_VERSION);
+      expect((real![0] as { first_seen_at: string }).first_seen_at).toBe(firstSeenAt);
+    }, 90_000);
+
+    it('drops a malformed taxonomy identifier instead of storing it', async () => {
+      /*
+       * A NEW species carrying junk ids: the plant is real and is kept, the identifiers are
+       * not written. Dropping the field rather than the species is deliberate — a bad
+       * identifier is no reason to lose a real plant from the canon.
+       */
+      const name = 'Trifolium repens';
+      const key = normalizeName(name);
+      await supabase!.functions.invoke('seed-packet', {
+        body: {
+          species: [
+            { scientificName: name, gbifId: 'not-an-id; drop table', powoId: '<script>' },
+          ],
+        },
+      });
+      const { data } = await freshClient().from('species_packets').select('*').eq('species_key', key);
+      expect(data?.length, 'a real species was lost over a bad identifier').toBe(1);
+      const row = data![0] as Record<string, unknown>;
+      expect(row.gbif_id, 'a malformed gbif id was stored').toBeNull();
+      expect(row.powo_id, 'a malformed powo id was stored').toBeNull();
+    }, 90_000);
+
+    it('cannot steer the permanent artwork with a chosen common name', async () => {
+      /*
+       * THE HOLE THIS CLOSES, LIVE. `packetRecipe` reads descriptive words out of the names
+       * it is handed, and the mint used to be handed the caller's common name — so the first
+       * player to find a species could pick the bag everybody else would ever see for it.
+       *
+       * The mint now seeds from the species key and the rebuilt binomial only, so the packet
+       * this returns must equal what anyone can recompute from the key alone.
+       */
+      const name = 'Veronica persica';
+      const key = normalizeName(name);
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: {
+          species: [{ scientificName: name, commonName: 'White star heart clover gold' }],
+        },
+      });
+      const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
+      expect(returned, 'a real species was refused').toBeTruthy();
+      expect(
+        returned!.packet,
+        'a caller-chosen common name changed the canonical artwork',
+      ).toEqual(packetRecipe({ speciesKey: key }));
+      // The nickname itself is still stored for display — it just reaches nothing derived.
+      expect(returned!.common_name).toBe('White star heart clover gold');
+    }, 90_000);
+
+    it('refuses a hostile common name without losing the species', async () => {
+      const name = 'Veronica persica';
+      const key = normalizeName(name);
+      await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: name, commonName: '<b>pwned</b>' }] },
+      });
+      // Already minted above, so this asserts the stronger property: a later request with a
+      // hostile field cannot change what is there. Nothing here is ever updated.
+      const { data } = await freshClient().from('species_packets').select('*').eq('species_key', key);
+      expect((data![0] as { common_name: string }).common_name).toBe(
+        'White star heart clover gold',
+      );
+    }, 90_000);
+
     it('gives each player their own found date over one shared packet', async () => {
       /*
        * The split, stated as data: two shelf rows for one species, each with its own
@@ -865,12 +1026,12 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       await carolClient.from('seed_shelf').insert({
         id: `sighting_carol_shelf_${Date.now()}`,
         user_id: carol.id,
-        species_key: 'trifolium repens',
-        scientific_name: 'Trifolium repens',
+        species_key: 'geranium robertianum',
+        scientific_name: 'Geranium robertianum',
         found_at: new Date().toISOString(),
       });
       await carolClient.functions.invoke('seed-packet', {
-        body: { species: [{ scientificName: 'Trifolium repens' }] },
+        body: { species: [{ scientificName: 'Geranium robertianum' }] },
       });
 
       photoPath = `${carol.id}/e2e-${Date.now()}.jpg`;
@@ -908,7 +1069,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const { data: minted } = await freshClient()
         .from('species_packets')
         .select('species_key')
-        .eq('species_key', 'trifolium repens');
+        .eq('species_key', 'geranium robertianum');
       expect(minted?.length ?? 0, 'Carol species was never minted').toBe(1);
     }, 30_000);
 
@@ -977,7 +1138,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const { data: stillMinted } = await anon
         .from('species_packets')
         .select('*')
-        .eq('species_key', 'trifolium repens');
+        .eq('species_key', 'geranium robertianum');
       expect(
         stillMinted?.length,
         'deleting an account erased the shared packet registry',

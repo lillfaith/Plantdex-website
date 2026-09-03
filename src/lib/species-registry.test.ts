@@ -134,21 +134,24 @@ describe('the minting function', () => {
     expect(fn).toMatch(/401/);
   });
 
-  it('generates the packet itself and never accepts one', () => {
+  it('generates the packet itself, and from nothing a caller phrased', () => {
     /*
-     * A client-supplied recipe would let one player choose the artwork every other player
-     * sees for that species. The generator runs here, seeded by the species key.
+     * A client-supplied recipe would obviously let one player choose the artwork every other
+     * player sees. So would a client-supplied COMMON NAME, because the generator reads
+     * descriptive words out of the names it is handed — which is the hole
+     * `mintablePacketInput` closes. Details in `species-identity.test.ts`.
      */
-    expect(fn).toContain('packet: packetRecipe({');
+    expect(fn).toContain('packet: packetRecipe(mintablePacketInput(entry))');
     expect(fn, 'the function reads a packet from the request').not.toMatch(
       /packet:\s*(?:entry|body|request)\./,
     );
   });
 
-  it('re-checks eligibility server-side', () => {
-    // The same rule the UI applies, so a hand-made request cannot mint a species the deck
-    // already has a confirmable card for.
-    expect(fn).toContain('isShelfEligible(scientificName)');
+  it('re-checks eligibility server-side, against the name it rebuilt', () => {
+    // The same rule the UI applies — and applied to the CANONICAL name, since checking the
+    // raw string would answer a different question than the one the row records.
+    expect(fn).toContain('isShelfEligible(identity.scientificName)');
+    expect(fn).toContain('const identity = canonicalIdentity(entry);');
   });
 
   it('never overwrites a packet that already exists', () => {

@@ -1,7 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { normalizeName } from '../_shared/herbdex/plant-match.ts';
 import { isShelfEligible } from '../_shared/herbdex/seed-shelf.ts';
 import { packetRecipe, PACKET_VERSION } from '../_shared/herbdex/seed-packet.ts';
+import {
+  canonicalIdentity,
+  mintablePacketInput,
+  type CanonicalIdentity,
+} from '../_shared/herbdex/species-identity.ts';
 
 /**
  * seed-packet — mints a species' CANONICAL Seed Shelf packet, once, for everybody.
@@ -25,10 +29,20 @@ import { packetRecipe, PACKET_VERSION } from '../_shared/herbdex/seed-packet.ts'
  * table at all, so no amount of extra JSON in the request can put one there — the insert
  * below names its columns.
  *
- * THE PACKET IS GENERATED HERE, NEVER ACCEPTED FROM THE CLIENT. A caller-supplied recipe
- * would let one player choose the artwork every other player sees. The generator is the
- * shared, deterministic one (`_shared/herbdex/seed-packet.ts`, synced verbatim from
- * `src/lib`), so what the client previewed and what this mints are the same bag.
+ * THE PACKET IS GENERATED HERE, NEVER ACCEPTED FROM THE CLIENT — AND NEVER FROM WORDS THE
+ * CLIENT CHOSE. A caller-supplied recipe would obviously let one player pick the artwork
+ * everybody else sees, but so would a caller-supplied COMMON NAME, because `packetRecipe`
+ * reads descriptive words out of the names it is handed. The mint is therefore seeded by the
+ * species key and the rebuilt binomial only (`mintablePacketInput`), both of which are
+ * derived here from validated Latin. Anybody can recompute a canonical packet from its
+ * species key and check it.
+ *
+ * THE IDENTITY IS REBUILT, NOT SANITISED. `canonicalIdentity` discards whatever it was sent
+ * and reconstructs `Genus epithet` from parts it has validated, derives the species key from
+ * that (so a forged key has nothing to disagree with), and drops any common name or taxonomy
+ * id that is not shaped like the real thing. What it CANNOT check is that the species exists
+ * and that the ids belong to it — that needs the upstream backbone, and the pairing is the
+ * one thing here still taken on trust. `docs/registry-trust.md` states the boundary.
  *
  * ELIGIBILITY IS RE-CHECKED HERE. `isShelfEligible` is the same function the UI uses, so a
  * species the deck already has a confirmable card for cannot be minted into the registry by
@@ -66,13 +80,6 @@ interface SpeciesRequest {
   commonName?: unknown;
   gbifId?: unknown;
   powoId?: unknown;
-}
-
-/** Trimmed, length-capped text, or null. Keeps a hostile body from writing an essay. */
-function text(value: unknown, max: number): string | null {
-  if (typeof value !== 'string') return null;
-  const trimmed = value.trim();
-  return trimmed ? trimmed.slice(0, max) : null;
 }
 
 Deno.serve(async (req: Request) => {
@@ -115,19 +122,16 @@ Deno.serve(async (req: Request) => {
    * for, exactly as the client does — the server re-checking is what makes it a rule rather
    * than a UI convention.
    */
-  const wanted = new Map<string, { key: string; scientificName: string; commonName: string | null; gbifId: string | null; powoId: string | null }>();
+  const wanted = new Map<string, CanonicalIdentity>();
   for (const entry of requested) {
-    const scientificName = text(entry.scientificName, 200);
-    if (!scientificName || !isShelfEligible(scientificName)) continue;
-    const key = normalizeName(scientificName);
-    if (!key || wanted.has(key)) continue;
-    wanted.set(key, {
-      key,
-      scientificName,
-      commonName: text(entry.commonName, 200),
-      gbifId: text(entry.gbifId, 64),
-      powoId: text(entry.powoId, 64),
-    });
+    // Validate FIRST, then check eligibility against the rebuilt name — checking the raw
+    // string would let "Oxalis stricta <junk>" answer a different question than the one the
+    // registry is about to record.
+    const identity = canonicalIdentity(entry);
+    if (!identity) continue;
+    if (!isShelfEligible(identity.scientificName)) continue;
+    if (wanted.has(identity.speciesKey)) continue;
+    wanted.set(identity.speciesKey, identity);
   }
   if (wanted.size === 0) return json({ packets: [] });
 
@@ -153,17 +157,17 @@ Deno.serve(async (req: Request) => {
     .map((key) => {
       const entry = wanted.get(key)!;
       return {
-        species_key: key,
+        species_key: entry.speciesKey,
         scientific_name: entry.scientificName,
         common_name: entry.commonName,
         gbif_id: entry.gbifId,
         powo_id: entry.powoId,
-        // Generated here, from the species key alone. Never read from the request.
-        packet: packetRecipe({
-          speciesKey: key,
-          scientificName: entry.scientificName,
-          commonName: entry.commonName ?? undefined,
-        }),
+        /*
+         * Seeded by the species key and the rebuilt binomial, and by NOTHING the caller
+         * phrased. The common name above is stored for display and deliberately does not
+         * reach this call — see `mintablePacketInput`.
+         */
+        packet: packetRecipe(mintablePacketInput(entry)),
         packet_version: PACKET_VERSION,
       };
     });

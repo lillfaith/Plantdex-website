@@ -46,6 +46,10 @@ export const PURE_MODULES = [
   'plant-match.ts',
   'seed-packet.ts',
   'seed-shelf.ts',
+  // The registry's input validator. It must be the SAME code on both sides: the client
+  // previews a packet with `mintablePacketInput` and the server mints with it, so a copy
+  // that drifted would draw one bag and store another.
+  'species-identity.ts',
 ];
 
 /** Specifiers that already carry an extension Deno understands are left alone. */

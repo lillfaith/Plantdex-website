@@ -26,27 +26,56 @@
 -- about anybody: "this species entered the world on this date". It names no user, and the
 -- private shelf row keeps its owner's own first-found date separately.
 
+-- ─────────────────────────────────────────────────────────────────────────────
+-- THE CHECK CONSTRAINTS ARE PART OF THE SECURITY MODEL, NOT TIDINESS.
+--
+-- These rows are IMMUTABLE: written once, never updated, readable by everybody, and not
+-- removable by anything inside the application. A bad row here is permanent and shared,
+-- which is a completely different risk from a bad row in somebody's private shelf.
+--
+-- `species-identity.ts` validates every field before the function writes it. These
+-- constraints say the same things again in the database, so that the guarantee survives a
+-- future code path that forgets to call the validator — the shape of the canon is enforced
+-- by the thing that stores it, not only by the thing that happens to be writing today.
+--
+-- WHAT THEY CANNOT ENFORCE: that the species exists, and that a GBIF or POWO id really
+-- belongs to the species it is stored beside. Both need the upstream taxonomy backbone.
+-- See `docs/registry-trust.md` for exactly where that line sits.
+-- ─────────────────────────────────────────────────────────────────────────────
 create table if not exists public.species_packets (
   -- The normalised binomial ("bellis perennis") that `plant-match.ts` produces. PRIMARY KEY,
   -- which is what makes two simultaneous first sightings safe: both callers insert, one wins
   -- the conflict, and both then read the same winning row. There is no path that creates two
   -- competing packets for one species.
-  species_key text primary key check (species_key <> '' and species_key like '% %'),
+  --
+  -- The pattern is the shape of a normalised binomial and nothing else: two lowercase ASCII
+  -- Latin words. It refuses a bare genus, digits, punctuation, markup and — the one worth
+  -- naming — homoglyphs, since a Cyrillic "а" would otherwise mint a second invisible row
+  -- for a species that already has one.
+  species_key text primary key
+    check (species_key ~ '^[a-z][a-z-]{2,29} [a-z][a-z-]{1,29}$'),
 
-  -- As the identification provider spelt it the first time, for display. Never used for
-  -- matching — the key above is the identity.
-  scientific_name text not null,
-  common_name text,
+  -- The same name, capitalised: rebuilt by `canonicalBinomial` from validated parts rather
+  -- than copied from the request, so authorship and any trailing text never land here.
+  scientific_name text not null
+    check (scientific_name ~ '^[A-Z][a-z]{2,29} [a-z][a-z-]{1,29}$'),
 
-  -- Taxonomy backbone identifiers, when the provider supplied them. Useful for recognising
-  -- this species later against a source of truth rather than by string comparison.
-  gbif_id text,
-  powo_id text,
+  -- Display only, and deliberately kept away from the packet generator: it is arbitrary text
+  -- a caller chose, and the artwork must not depend on words one player picked.
+  common_name text check (common_name is null or common_name ~ '^[A-Za-z][A-Za-z ''-]{0,59}$'),
+
+  -- Taxonomy backbone identifiers, when the provider supplied them. GBIF keys are integers;
+  -- IPNI/POWO ids are `<number>-<number>`, optionally carrying the LSID prefix. Shape is all
+  -- that can be checked here — whether the id names THIS species cannot be.
+  gbif_id text check (gbif_id is null or gbif_id ~ '^[0-9]{1,12}$'),
+  powo_id text check (
+    powo_id is null or powo_id ~ '^(urn:lsid:ipni\.org:names:)?[0-9]{1,10}-[0-9]{1,3}$'
+  ),
 
   -- The artwork itself, and the generator version that produced it. Written once and never
   -- updated: there is no update policy here, and nothing in the app issues one.
   packet jsonb not null,
-  packet_version integer not null,
+  packet_version integer not null check (packet_version > 0),
 
   first_seen_at timestamptz not null default now()
 );

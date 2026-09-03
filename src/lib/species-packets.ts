@@ -4,6 +4,7 @@ import { useSyncExternalStore } from 'react';
 import { supabase } from './supabase-client';
 import { normalizeName } from './plant-match';
 import { packetRecipe, parseRecipe, type PacketRecipe } from './seed-packet';
+import { mintablePacketInput } from './species-identity';
 
 /**
  * THE CANONICAL SEED PACKET REGISTRY, client side.
@@ -199,11 +200,9 @@ export function previewPacket(input: SpeciesRequest): PacketRecipe {
   const speciesKey = normalizeName(input.scientificName);
   return (
     canonicalPacketFor(speciesKey) ??
-    packetRecipe({
-      speciesKey,
-      scientificName: input.scientificName,
-      commonName: input.commonName,
-    })
+    // `mintablePacketInput` and nothing else: the server refuses to let a common name reach
+    // the generator, so a preview that fed it one would show a bag the registry never mints.
+    packetRecipe(mintablePacketInput({ speciesKey, scientificName: input.scientificName }))
   );
 }
 

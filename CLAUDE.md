@@ -376,6 +376,27 @@ does not carry — the state that used to be a dead end.
   photograph, location, confidence or discovery date has anywhere to go. That is what makes a
   `for select using (true)` policy safe, and it is why each player's own first-found date,
   confidence, scan and photo stay in their private `seed_shelf` row.
+- **"Signed in" is not authority to name a species in the canon.** These rows are global,
+  public and immutable, so `species-identity.ts` REBUILDS the identity from validated parts
+  rather than sanitising what it was sent: `canonicalBinomial` reconstructs `Genus epithet`
+  in ASCII Latin (a Cyrillic homoglyph would otherwise mint a second invisible row for a
+  species that already has one), the species key is derived from that and is never an input,
+  and a malformed `gbif_id`/`powo_id`/`common_name` is dropped rather than costing a real
+  plant its row. Every rule is repeated as a CHECK constraint in `0005`, so a future code
+  path that forgets the validator still cannot write a malformed canon. What none of it can
+  prove is that the species EXISTS or that an identifier belongs to it —
+  `identify-plant` returns PlantNet's answer to the browser and persists nothing, so the
+  pairing is trusted from an authenticated client. `docs/registry-trust.md` states that
+  boundary and names the two ways to close it; `species-identity.test.ts` pins it.
+- **The mint may not read a word the caller chose.** `packetRecipe` draws motifs and bands
+  from the names it is handed, and the function was handing it the caller's COMMON NAME —
+  arbitrary free text — so whoever found a species first could pick the permanent artwork
+  everybody else would ever see by calling it "White star heart clover". Server-side
+  generation was necessary and not sufficient. The mint now seeds through
+  `mintablePacketInput` (species key + rebuilt binomial), which makes a canonical packet
+  recomputable by anyone from its key — the property that makes an immutable public row
+  auditable rather than merely fixed. Every local preview calls the same helper, or signing
+  in would silently change the bag.
 - **No client may write the registry, and the only writer is `supabase/functions/seed-packet`.**
   That table has no insert, update or delete policy for any role — a client insert on a global
   table is a cross-user write surface, and one player could otherwise mint a packet for a
@@ -395,9 +416,10 @@ does not carry — the state that used to be a dead end.
   mint, because the registry has no anonymous write path. Nothing is lost: the canonical row
   is created when that player signs in and imports, or by whoever saves the species next, and
   the preview is the same artwork unless the generator has moved on since minting.
-- **A packet leans on the plant's own name where the name says something** — Trifolium gets a
-  clover, "Yellow woodsorrel" gets a gold band — and is otherwise an arbitrary deterministic
-  draw. That is reading a name, not inventing botany, and no packet claims to depict a
+- **A packet leans on the plant's own SCIENTIFIC name where the name says something** —
+  Trifolium gets a clover, *purpureum* bands the bag purple — and is otherwise an arbitrary
+  deterministic draw. Common names used to feed the lexicon too and deliberately no longer
+  do; see the mint rule above. That is reading a name, not inventing botany, and no packet claims to depict a
   specimen.
 - **Any valid species-level plant with no card is eligible, including a close relative of one
   that has a card.** The deck carries *Capsella bursa-pastoris*; *Capsella rubella* is a

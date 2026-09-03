@@ -1,6 +1,7 @@
 import { getHerb } from './deck';
 import { matchScientificName, normalizeName } from './plant-match';
 import { packetRecipe, parseRecipe, type PacketRecipe } from './seed-packet';
+import { mintablePacketInput } from './species-identity';
 import type { HerbdexState } from './types';
 
 /**
@@ -169,12 +170,10 @@ export function newFind(
     confidence: input.confidence,
     scanId: input.scanId,
     photoPath: input.photoPath,
-    // The device's preview. Ignored entirely once a canonical packet is in hand.
-    packet: packetRecipe({
-      speciesKey,
-      scientificName: input.scientificName,
-      commonName: input.commonName,
-    }),
+    // The device's preview. Ignored entirely once a canonical packet is in hand — and drawn
+    // from exactly what the server is allowed to mint from, so signing in does not silently
+    // change the bag. See `mintablePacketInput`.
+    packet: packetRecipe(mintablePacketInput({ speciesKey, scientificName: input.scientificName })),
   };
 }
 
@@ -207,7 +206,7 @@ export function parseFind(value: unknown): SeedShelfFind | null {
     // generates one, and the canonical record outranks both.
     packet:
       parseRecipe(row.packet) ??
-      packetRecipe({ speciesKey, scientificName, commonName: text('commonName') }),
+      packetRecipe(mintablePacketInput({ speciesKey, scientificName })),
   };
 }
 
@@ -284,11 +283,12 @@ function resolvePacket(
   return {
     packet:
       first.packet ??
-      packetRecipe({
-        speciesKey: first.speciesKey,
-        scientificName: first.scientificName,
-        commonName: first.commonName,
-      }),
+      packetRecipe(
+        mintablePacketInput({
+          speciesKey: first.speciesKey,
+          scientificName: first.scientificName,
+        }),
+      ),
     canonicalPacket: false,
   };
 }
