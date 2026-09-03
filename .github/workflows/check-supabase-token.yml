@@ -1,0 +1,165 @@
+name: Check the Supabase token
+
+# Answers one question and changes nothing: does SUPABASE_ACCESS_TOKEN carry the three
+# scopes the migration and deploy workflows actually need, on both projects?
+#
+# WHY IT IS ITS OWN WORKFLOW. Before this existed the only way to find out was to run a
+# migration or a deploy and read the 403 — which made the cheapest credential check in the
+# repo also one of the two most consequential actions in it. A rotation should not have to be
+# tested against production.
+#
+# WHAT IT PROVES, endpoint by endpoint, because a scope list is only as good as the calls it
+# was derived from:
+#   Projects       read   GET  /v1/projects                      — both workflows' preflights
+#   Edge Functions read   GET  /v1/projects/{ref}/functions       — the CLI's FIRST call in
+#                                                                   `functions deploy`, and the
+#                                                                   one that answered
+#                                                                   "unexpected list functions
+#                                                                   status 403"
+#   Database       write  POST /v1/projects/{ref}/database/query  — how every migration is
+#                                                                   applied
+#
+# THE WRITE PROBE IS DELIBERATELY AN ERROR. A `select` passes under a read-only Database scope
+# and so tells us nothing about the one that matters, so the probe issues real DDL — inside a
+# `do` block that raises, which makes the whole thing ONE statement that aborts itself.
+# Postgres rolls a failed statement back entirely, so the table cannot outlive the check even
+# if the connection dies mid-way, and the step then goes and confirms that rather than
+# assuming it. A 403 means the scope is missing; the raised message coming back means the
+# write reached Postgres and was refused by our own exception rather than by the API.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which project to check
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - vgjehmwcpavflbfhbbrp # test
+          - vygiamigomwlvnwkryyl # production
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Add it under Settings ->" \
+                 "Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - name: Check every scope on every requested project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          CHOICE: ${{ inputs.project_ref }}
+        run: |
+          set -uo pipefail
+          API=https://api.supabase.com/v1
+          AUTH="Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
+          failed=0
+
+          if [ "$CHOICE" = "both" ]; then
+            REFS="vgjehmwcpavflbfhbbrp vygiamigomwlvnwkryyl"
+          else
+            REFS="$CHOICE"
+          fi
+
+          # ── Projects: read ─────────────────────────────────────────────────────────────
+          code=$(curl -sS -o /tmp/projects.json -w '%{http_code}' "$API/projects" -H "$AUTH")
+          if [ "$code" = "401" ]; then
+            echo "::error::Projects read: HTTP 401 — the token is expired, revoked or" \
+                 "malformed. That is not a scope problem; replace the secret."
+            exit 1
+          fi
+          if [ "$code" != "200" ]; then
+            echo "::error::Projects read: HTTP $code, expected 200. The token is missing" \
+                 "the account-level 'Projects: Read' scope, which BOTH other workflows'" \
+                 "preflights depend on."
+            exit 1
+          fi
+          echo "projects read ....................... ok"
+
+          for ref in $REFS; do
+            echo "::group::$ref"
+
+            # ── Resource access. Separate from capability, and the distinction that cost a
+            #    production rollout: full capabilities on a token scoped to one project 403s
+            #    on the other with a message about privileges. The list is never printed —
+            #    other project refs are none of a workflow log's business.
+            if grep -q "\"$ref\"" /tmp/projects.json; then
+              echo "resource access ................... ok"
+            else
+              echo "::error::$ref is NOT in this token's resource access, so every call" \
+                   "about it will answer 403 whatever its capabilities say. Edit the token" \
+                   "and add this project."
+              failed=1
+              echo "::endgroup::"
+              continue
+            fi
+
+            # ── Edge Functions: read ────────────────────────────────────────────────────
+            code=$(curl -sS -o /dev/null -w '%{http_code}' "$API/projects/$ref/functions" \
+              -H "$AUTH")
+            if [ "$code" = "200" ]; then
+              echo "edge functions read ............... ok"
+            else
+              echo "::error::$ref edge functions read: HTTP $code, expected 200. Add" \
+                   "'Edge Functions: Read & Write' — deploy-function.yml LISTS before it" \
+                   "deploys, so without this every deploy fails on its first function."
+              failed=1
+            fi
+
+            # ── Database: write. One statement, and it aborts itself. See the header. ────
+            SQL="do \$probe\$ begin create table public._plantdex_token_write_probe(id int); raise exception 'plantdex-write-probe-reached-postgres'; end \$probe\$;"
+            python3 -c "import json,sys;print(json.dumps({'query':sys.argv[1]}))" "$SQL" \
+              > /tmp/probe.json
+            code=$(curl -sS -o /tmp/probe-response.json -w '%{http_code}' \
+              -X POST "$API/projects/$ref/database/query" \
+              -H "$AUTH" -H "Content-Type: application/json" --data @/tmp/probe.json)
+            if grep -q 'plantdex-write-probe-reached-postgres' /tmp/probe-response.json; then
+              echo "database write .................... ok (HTTP $code, rolled back)"
+            elif [ "$code" = "403" ]; then
+              echo "::error::$ref database write: HTTP 403. Add 'Database: Read & Write' —" \
+                   "run-migration.yml applies every migration through this endpoint."
+              failed=1
+            else
+              echo "::error::$ref database write: HTTP $code and the probe's own exception" \
+                   "did not come back, so the write did not reach Postgres."
+              head -c 500 /tmp/probe-response.json
+              failed=1
+            fi
+
+            # ── And confirm the probe left nothing behind rather than trusting that it
+            #    could not. Cheap, and the whole design rests on it.
+            LEFT="select count(*)::int as leftover from information_schema.tables where table_schema='public' and table_name='_plantdex_token_write_probe'"
+            python3 -c "import json,sys;print(json.dumps({'query':sys.argv[1]}))" "$LEFT" \
+              > /tmp/leftover.json
+            curl -sS -o /tmp/leftover-response.json \
+              -X POST "$API/projects/$ref/database/query" \
+              -H "$AUTH" -H "Content-Type: application/json" --data @/tmp/leftover.json
+            if grep -q '"leftover":0' /tmp/leftover-response.json; then
+              echo "probe left nothing behind ......... ok"
+            else
+              echo "::error::$ref: the write probe's table still exists. Drop" \
+                   "public._plantdex_token_write_probe by hand, and do not run this again" \
+                   "until the probe is fixed."
+              head -c 500 /tmp/leftover-response.json
+              failed=1
+            fi
+
+            echo "::endgroup::"
+          done
+
+          if [ "$failed" != "0" ]; then
+            echo "::error::The token is not sufficient. Nothing was changed."
+            exit 1
+          fi
+          echo "Token carries every scope the migration and deploy workflows need."
