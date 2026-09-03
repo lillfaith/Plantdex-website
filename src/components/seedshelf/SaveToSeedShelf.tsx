@@ -78,6 +78,9 @@ export function SaveToSeedShelf({
         powoId: candidate.powoId,
         confidence: candidate.score,
         scanId,
+        // The scan's signed candidate, relayed untouched. This component cannot read it and
+        // has no reason to — `seed-packet` is the only thing that can.
+        attestation: candidate.attestation,
       });
       track('seed_shelf_saved');
       setSaved(true);

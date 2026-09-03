@@ -13,6 +13,15 @@ name: Deploy Supabase edge function
 # species is ever minted. Deploy ALL to any project where people have accounts — a live
 # account whose deletion path is missing is the one state this workflow exists to prevent.
 #
+# SPECIES_ATTESTATION_SECRET IS REQUIRED BY TWO OF THEM, AND MUST BE THE SAME VALUE.
+# `identify-plant` signs each candidate identity with it; `seed-packet` verifies before
+# creating a canonical row. Set it once as a project secret
+# (`supabase secrets set SPECIES_ATTESTATION_SECRET=...`, any long random string) and both
+# functions read it. It is deliberately NOT the service-role key — it should be rotatable
+# without touching database access. Unset, scanning still works and no new species can ever
+# be minted; MISMATCHED between the two, every legitimate scan is refused as a bad
+# signature, which is the failure worth watching for after a rotation.
+#
 # ONE-TIME SETUP: create a token at https://supabase.com/dashboard/account/tokens and add it
 # as a repository secret named SUPABASE_ACCESS_TOKEN (Settings → Secrets and variables →
 # Actions → Secrets). It is a real credential, unlike the anon key — a secret, not a

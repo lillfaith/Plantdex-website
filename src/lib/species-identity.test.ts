@@ -124,24 +124,34 @@ describe('taxonomy identifiers are shape-checked, and that is all shape can do',
     expect(of('abc').scientificName).toBe('Bellis perennis');
   });
 
-  it('CANNOT tell whether a well-formed identifier belongs to this species', () => {
+  it('accepts any well-formed identifier — VALIDATION alone cannot judge the pairing', () => {
     /*
-     * THE RESIDUAL TRUST, stated as a test so it cannot be quietly forgotten. Both of these
-     * are accepted, and both may be wrong: nothing server-side witnesses the pairing, because
-     * `identify-plant` returns PlantNet's answer to the browser and persists nothing.
-     * `docs/registry-trust.md` says so in words and names the two ways to close it.
+     * This module checks shape and nothing else, and both of these pass. What stops an
+     * identifier being moved from one species to another is not here: it is the SIGNATURE
+     * (`species-attestation.ts`), which binds the ids to the name PlantNet returned them
+     * with. The two mechanisms answer different questions and this test marks the seam.
      */
     expect(of('1').gbifId).toBe('1');
     expect(of('999999999').gbifId).toBe('999999999');
   });
 
-  it('says so in the documented boundary', () => {
+  it('states the resulting trust model in the documented boundary', () => {
+    /*
+     * The honest claim after signed candidates, kept in one place and pinned here so it
+     * cannot quietly become a stronger one. Plantdex trusts what identify-plant received; it
+     * does not prove biology and does not reconcile external taxonomies.
+     */
     const doc = readFileSync(
       join(import.meta.dirname, '..', '..', 'docs', 'registry-trust.md'),
       'utf8',
     );
-    expect(doc).toMatch(/pairing/i);
-    expect(doc).toMatch(/persists nothing/i);
+    expect(doc).toMatch(/trusts what `identify-plant` received from PlantNet/i);
+    // The claim wraps across a blockquote line, so the marker is part of the gap.
+    expect(doc).toMatch(/does not independently[\s>]+prove biological truth/i);
+    expect(doc).toMatch(/reconcile external taxonomies/i);
+    // And the mechanism that makes the pairing binding rather than asserted.
+    expect(doc).toMatch(/HMAC-SHA-256/);
+    expect(doc).toMatch(/creates canon; it does not read it/i);
   });
 });
 
@@ -241,9 +251,15 @@ describe('the minting function uses all of it', () => {
   );
 
   it('validates before it checks eligibility', () => {
-    // Checking the raw string would answer a different question than the one the row records.
-    expect(fn).toContain('const identity = canonicalIdentity(entry);');
-    expect(fn).toContain('isShelfEligible(identity.scientificName)');
+    /*
+     * The order moved into `mintDecision` when signed candidates arrived, so this asserts the
+     * function DELEGATES to it rather than restating the sequence inline — a second copy of
+     * the order is exactly how the two would drift. `species-attestation.test.ts` proves the
+     * order itself, against the same function the deployed code calls.
+     */
+    expect(fn).toContain('await mintDecision({');
+    expect(fn).toContain('eligible: isShelfEligible');
+    expect(fn).toContain('canonicalIdentity(entry)');
   });
 
   it('writes only derived values', () => {

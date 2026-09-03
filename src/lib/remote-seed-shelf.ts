@@ -155,6 +155,9 @@ export async function addRemoteFind(
         commonName: find.commonName,
         gbifId: find.gbifId,
         powoId: find.powoId,
+        // The scan's signed candidate. Without it the registry will reuse an existing row but
+        // will not create a new one — which is the whole point, not a failure mode.
+        attestation: find.attestation,
       },
     ]);
   }

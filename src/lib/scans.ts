@@ -121,6 +121,8 @@ export async function identifyPlant(file: File): Promise<ScanResult | ScanFailur
       score: number;
       gbifId?: string;
       powoId?: string;
+      /** The signed candidate, when the deployment has an attestation secret set. */
+      attestation?: string;
     }[];
     remaining?: number;
     limit?: number;

@@ -225,6 +225,13 @@ export interface ScanCandidate {
    */
   gbifId?: string;
   powoId?: string;
+  /**
+   * The signed candidate `identify-plant` issued for this identity, when the deployment has
+   * an attestation secret. OPAQUE HERE and used for nothing in this module — matching is by
+   * name exactly as it always was. It is relayed to `seed-packet`, which is the only thing
+   * that can read it, and which will not create a new canonical row without one.
+   */
+  attestation?: string;
   match: PlantMatch;
 }
 

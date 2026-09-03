@@ -41,6 +41,10 @@ const sharedDir = join(root, 'supabase', 'functions', '_shared', 'herbdex');
 const entrypoints = [
   join(root, 'supabase', 'functions', 'herbdex-action', 'index.ts'),
   join(root, 'supabase', 'functions', 'seed-packet', 'index.ts'),
+  // identify-plant joined the list when it started issuing signed candidates: it now imports
+  // the same validator and signer that seed-packet verifies with, and a drifted copy of
+  // either would reject every legitimate scan.
+  join(root, 'supabase', 'functions', 'identify-plant', 'index.ts'),
 ];
 
 /** Every relative specifier in a module, from `import`/`export ... from` and side effects. */

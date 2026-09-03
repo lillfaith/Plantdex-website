@@ -148,10 +148,11 @@ describe('the minting function', () => {
   });
 
   it('re-checks eligibility server-side, against the name it rebuilt', () => {
-    // The same rule the UI applies — and applied to the CANONICAL name, since checking the
-    // raw string would answer a different question than the one the row records.
-    expect(fn).toContain('isShelfEligible(identity.scientificName)');
-    expect(fn).toContain('const identity = canonicalIdentity(entry);');
+    // The same rule the UI applies, handed to `mintDecision`, which applies it to the
+    // CANONICAL name — checking the raw string would answer a different question than the one
+    // the row records. A deck species stays ineligible however well attested it arrives.
+    expect(fn).toContain('eligible: isShelfEligible');
+    expect(fn).toContain('canonicalIdentity(entry)');
   });
 
   it('never overwrites a packet that already exists', () => {

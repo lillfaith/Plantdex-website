@@ -376,6 +376,25 @@ does not carry — the state that used to be a dead end.
   photograph, location, confidence or discovery date has anywhere to go. That is what makes a
   `for select using (true)` policy safe, and it is why each player's own first-found date,
   confidence, scan and photo stay in their private `seed_shelf` row.
+- **A canonical row may only be created from a SIGNED candidate.** Validation makes the canon's
+  shape unforgeable and can never establish correspondence — a well-formed fictional species,
+  or a real one wearing another species' GBIF id, passes every check a validator can make. So
+  `identify-plant`, the one component that has seen PlantNet's own answer, issues an
+  HMAC-SHA-256 attestation over `(canonical name, gbif_id, powo_id)` under a dedicated
+  `SPECIES_ATTESTATION_SECRET` — never the service-role key — and `seed-packet` verifies it
+  through `crypto.subtle.verify` before inserting. The browser relays an opaque token and
+  cannot edit what it says. Both checks are required: the signature proves this deployment
+  issued the payload, the field comparison proves the payload describes *the species being
+  minted*, and without the second, yesterday's daisy token would authorise anything. The whole
+  decision lives in `mintDecision()` so the function and `species-attestation.test.ts` exercise
+  the same code.
+- **The attestation creates canon; it does not read it.** A species already in the registry is
+  returned to anyone who asks, with no token, valid or otherwise. That one rule is why replay
+  is a no-op (the second presentation mints nothing) and therefore why there is **no nonce, no
+  used-token table and no new persistence** — and why the TTL can be 90 days. A short TTL would
+  break the real flow: a signed-out player shelves a plant and signs in weeks later, and the
+  IMPORT is what mints it, so the token is stored on the local find and carried across. Unset
+  secret fails closed — scanning still works, no new species mints, reuse is unaffected.
 - **"Signed in" is not authority to name a species in the canon.** These rows are global,
   public and immutable, so `species-identity.ts` REBUILDS the identity from validated parts
   rather than sanitising what it was sent: `canonicalBinomial` reconstructs `Genus epithet`

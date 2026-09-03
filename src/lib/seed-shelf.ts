@@ -77,6 +77,18 @@ export interface SeedShelfFind {
    * which is what signing in and importing arranges.
    */
   packet?: PacketRecipe;
+  /**
+   * THE SIGNED CANDIDATE FROM THE SCAN THAT FOUND THIS PLANT.
+   *
+   * Kept on the find rather than in the database, and for one reason: a signed-out player
+   * shelves a species on their device and may sign in days later, and the IMPORT is what
+   * mints it. Without the token riding along in local storage, every signed-out find would
+   * arrive at the registry unable to prove where its identity came from.
+   *
+   * It names nobody, asserts only what PlantNet said, and is discarded the moment
+   * `seed-packet` has verified it — there is no column for it anywhere.
+   */
+  attestation?: string;
 }
 
 /** What a save needs. Everything else is derived or defaulted. */
@@ -88,6 +100,8 @@ export interface NewSeedShelfFind {
   confidence?: number;
   scanId?: string;
   photoPath?: string;
+  /** The signed candidate from the scan, relayed to the registry. See `attestation` below. */
+  attestation?: string;
 }
 
 /** One species on the shelf: every find of it, folded together. Derived, never stored. */
@@ -170,6 +184,7 @@ export function newFind(
     confidence: input.confidence,
     scanId: input.scanId,
     photoPath: input.photoPath,
+    attestation: input.attestation,
     // The device's preview. Ignored entirely once a canonical packet is in hand — and drawn
     // from exactly what the server is allowed to mint from, so signing in does not silently
     // change the bag. See `mintablePacketInput`.
@@ -202,6 +217,7 @@ export function parseFind(value: unknown): SeedShelfFind | null {
       typeof confidence === 'number' && confidence >= 0 && confidence <= 1 ? confidence : undefined,
     scanId: text('scanId'),
     photoPath: text('photoPath'),
+    attestation: text('attestation'),
     // A stored preview that no longer parses is not a broken entry — the name still
     // generates one, and the canonical record outranks both.
     packet:

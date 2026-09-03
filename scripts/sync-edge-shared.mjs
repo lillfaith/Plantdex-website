@@ -50,6 +50,9 @@ export const PURE_MODULES = [
   // previews a packet with `mintablePacketInput` and the server mints with it, so a copy
   // that drifted would draw one bag and store another.
   'species-identity.ts',
+  // The signed-candidate scheme. `identify-plant` signs and `seed-packet` verifies, so both
+  // sides must run byte-identical code — a drifted copy would reject every legitimate scan.
+  'species-attestation.ts',
 ];
 
 /** Specifiers that already carry an extension Deno understands are left alone. */

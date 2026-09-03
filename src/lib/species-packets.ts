@@ -52,6 +52,12 @@ export interface SpeciesRequest {
   commonName?: string;
   gbifId?: string;
   powoId?: string;
+  /**
+   * The signed candidate from the scan that produced this identity. Required to CREATE a
+   * canonical row and irrelevant to reusing one, so a shelf full of species other people have
+   * already found works without a single token.
+   */
+  attestation?: string;
 }
 
 const cache = new Map<string, CanonicalPacket>();

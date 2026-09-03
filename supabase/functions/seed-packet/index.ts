@@ -1,11 +1,12 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { isShelfEligible } from '../_shared/herbdex/seed-shelf.ts';
 import { packetRecipe, PACKET_VERSION } from '../_shared/herbdex/seed-packet.ts';
+import { mintablePacketInput, type CanonicalIdentity } from '../_shared/herbdex/species-identity.ts';
 import {
-  canonicalIdentity,
-  mintablePacketInput,
-  type CanonicalIdentity,
-} from '../_shared/herbdex/species-identity.ts';
+  ATTESTATION_SECRET_ENV,
+  mintDecision,
+  type CandidateRequest,
+} from '../_shared/herbdex/species-attestation.ts';
 
 /**
  * seed-packet — mints a species' CANONICAL Seed Shelf packet, once, for everybody.
@@ -40,9 +41,19 @@ import {
  * THE IDENTITY IS REBUILT, NOT SANITISED. `canonicalIdentity` discards whatever it was sent
  * and reconstructs `Genus epithet` from parts it has validated, derives the species key from
  * that (so a forged key has nothing to disagree with), and drops any common name or taxonomy
- * id that is not shaped like the real thing. What it CANNOT check is that the species exists
- * and that the ids belong to it — that needs the upstream backbone, and the pairing is the
- * one thing here still taken on trust. `docs/registry-trust.md` states the boundary.
+ * id that is not shaped like the real thing.
+ *
+ * AND THE IDENTITY MUST BE ATTESTED BEFORE IT CAN CREATE CANON. Shape alone could never
+ * establish correspondence: a well-formed fictional species, or a real species wearing
+ * another species' GBIF id, passes every check a validator can make. So a NEW row requires a
+ * signature from `identify-plant`, which is the one place that has seen PlantNet's answer.
+ * The client relays the token and cannot edit what it says — altering the name or either
+ * identifier invalidates it (`species-attestation.ts`).
+ *
+ * READING AND REUSING CANON NEEDS NO ATTESTATION. The signature authorises CREATION only, so
+ * a species somebody else has already found is available to every shelf, including one whose
+ * own token has long since expired. That is also what makes replay a no-op: presenting a
+ * valid token twice mints nothing the second time.
  *
  * ELIGIBILITY IS RE-CHECKED HERE. `isShelfEligible` is the same function the UI uses, so a
  * species the deck already has a confirmable card for cannot be minted into the registry by
@@ -57,6 +68,18 @@ import {
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+/**
+ * The attestation signing secret — the SAME dedicated secret `identify-plant` signs with, and
+ * deliberately not the service-role key above.
+ *
+ * Unset, `mintDecision` refuses every new species with `unconfigured` and nothing is minted.
+ * That is the intended failure: a missing secret must never silently return the registry to
+ * accepting whatever an authenticated client asserts. Reuse of species already in the canon
+ * keeps working, so an unconfigured deployment degrades to "no new species" rather than to
+ * "no Seed Shelf".
+ */
+const ATTESTATION_SECRET = Deno.env.get(ATTESTATION_SECRET_ENV) ?? '';
 
 /** One request may introduce this many species. A shelf import is the big case. */
 const MAX_SPECIES = 100;
@@ -73,13 +96,6 @@ function json(body: unknown, status = 200): Response {
     status,
     headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
   });
-}
-
-interface SpeciesRequest {
-  scientificName?: unknown;
-  commonName?: unknown;
-  gbifId?: unknown;
-  powoId?: unknown;
 }
 
 Deno.serve(async (req: Request) => {
@@ -105,7 +121,7 @@ Deno.serve(async (req: Request) => {
     return json({ error: 'You must be signed in to add a species to the Seed Shelf.' }, 401);
   }
 
-  let body: { species?: SpeciesRequest[] };
+  let body: { species?: CandidateRequest[] };
   try {
     body = await req.json();
   } catch {
@@ -113,7 +129,7 @@ Deno.serve(async (req: Request) => {
   }
 
   const requested = Array.isArray(body.species) ? body.species.slice(0, MAX_SPECIES) : [];
-  if (requested.length === 0) return json({ packets: [] });
+  if (requested.length === 0) return json({ packets: [], refused: [] });
 
   /*
    * Normalise, filter and de-duplicate before touching the database.
@@ -122,18 +138,18 @@ Deno.serve(async (req: Request) => {
    * for, exactly as the client does — the server re-checking is what makes it a rule rather
    * than a UI convention.
    */
-  const wanted = new Map<string, CanonicalIdentity>();
+  /*
+   * Canonicalise and de-duplicate before touching the database, so one round trip answers for
+   * the whole request. The decision itself comes later, once we know what already exists —
+   * because an existing species needs no attestation at all.
+   */
+  const wanted = new Map<string, CandidateRequest>();
   for (const entry of requested) {
-    // Validate FIRST, then check eligibility against the rebuilt name — checking the raw
-    // string would let "Oxalis stricta <junk>" answer a different question than the one the
-    // registry is about to record.
     const identity = canonicalIdentity(entry);
-    if (!identity) continue;
-    if (!isShelfEligible(identity.scientificName)) continue;
-    if (wanted.has(identity.speciesKey)) continue;
-    wanted.set(identity.speciesKey, identity);
+    if (!identity || wanted.has(identity.speciesKey)) continue;
+    wanted.set(identity.speciesKey, entry);
   }
-  if (wanted.size === 0) return json({ packets: [] });
+  if (wanted.size === 0) return json({ packets: [], refused: [] });
 
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
@@ -142,7 +158,7 @@ Deno.serve(async (req: Request) => {
   const keys = [...wanted.keys()];
 
   // What already exists is left completely alone — this is the rule that makes a generator
-  // change unable to redraw a packet anybody has seen.
+  // change unable to redraw a packet anybody has seen, and the reason reuse asks for nothing.
   const { data: existing, error: readError } = await admin
     .from('species_packets')
     .select('species_key')
@@ -152,10 +168,28 @@ Deno.serve(async (req: Request) => {
   }
   const known = new Set((existing ?? []).map((row: { species_key: string }) => row.species_key));
 
-  const rows = keys
-    .filter((key) => !known.has(key))
-    .map((key) => {
-      const entry = wanted.get(key)!;
+  /*
+   * The whole rule lives in `mintDecision` — validate, then eligibility, then reuse if the
+   * species is already canon, and only then require an attestation. Calling it here rather
+   * than restating the order means the unit tests exercise this exact decision.
+   */
+  const toMint: CanonicalIdentity[] = [];
+  const refused: { speciesKey: string | null; reason: string }[] = [];
+  for (const key of keys) {
+    const decision = await mintDecision({
+      candidate: wanted.get(key)!,
+      exists: known.has(key),
+      eligible: isShelfEligible,
+      secret: ATTESTATION_SECRET,
+    });
+    if (decision.action === 'mint') toMint.push(decision.identity);
+    else if (decision.action === 'refuse') {
+      refused.push({ speciesKey: decision.speciesKey, reason: decision.reason });
+    }
+  }
+
+  const rows = toMint
+    .map((entry) => {
       return {
         species_key: entry.speciesKey,
         scientific_name: entry.scientificName,
@@ -192,5 +226,10 @@ Deno.serve(async (req: Request) => {
     return json({ error: `Could not read the packet registry: ${finalError.message}` }, 500);
   }
 
-  return json({ packets: packets ?? [] });
+  /*
+   * Every requested species that DOES have a row comes back, attested or not — reuse is not
+   * gated. `refused` names what did not make it and why, so a client can tell "nobody has
+   * found this yet and your scan token has expired" from "that plant has a card".
+   */
+  return json({ packets: packets ?? [], refused });
 });

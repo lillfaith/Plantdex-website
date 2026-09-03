@@ -1,4 +1,9 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import { canonicalIdentity } from '../_shared/herbdex/species-identity.ts';
+import {
+  ATTESTATION_SECRET_ENV,
+  attestIdentity,
+} from '../_shared/herbdex/species-attestation.ts';
 
 /**
  * PLANT ID V1 — the identification call, server side.
@@ -28,6 +33,23 @@ const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 /** PlantNet. Set with `supabase secrets set PLANTNET_API_KEY=...` — never in the repo. */
 const PROVIDER_KEY = Deno.env.get('PLANTNET_API_KEY') ?? '';
 const PROVIDER_URL = 'https://my-api.plantnet.org/v2/identify/all';
+
+/**
+ * THE SPECIES ATTESTATION SECRET — a dedicated secret, never the service-role key.
+ *
+ * This function is the one place in Plantdex that has seen PlantNet's own answer, so it is
+ * the only place that can honestly say "the provider named this species with these taxonomy
+ * ids". It signs that statement here; `seed-packet` verifies it before creating a permanent
+ * canonical row. Without the signature, a signed-in player could hand `seed-packet` a
+ * well-formed fictional species, or a real species wearing another species' GBIF id.
+ *
+ * UNSET, SCANNING STILL WORKS AND MINTING DOES NOT. Identification is the anonymous front
+ * door of this app and must not break because a secret is missing — so candidates simply come
+ * back without attestations, and `seed-packet` refuses to create new canon until the secret
+ * is set on BOTH functions. Failing closed there is the point: a missing secret must not
+ * silently reopen the hole this exists to close.
+ */
+const ATTESTATION_SECRET = Deno.env.get(ATTESTATION_SECRET_ENV) ?? '';
 
 /**
  * Rotates the anonymous bucket hash daily. Any non-empty secret works; if it is unset the
@@ -247,8 +269,34 @@ Deno.serve(async (req: Request) => {
     powoId: taxonId(result.powo?.id),
   }));
 
+  /*
+   * ATTEST WHAT THE PROVIDER ACTUALLY SAID.
+   *
+   * The token is issued over the CANONICAL identity rather than over PlantNet's raw spelling,
+   * because that is what `seed-packet` will compare against: the client may relay
+   * "Bellis perennis L." and the server rebuilds "Bellis perennis" on both sides, so the two
+   * agree about a name that differs only in authorship. A candidate that does not canonicalise
+   * gets no token — it could never have been minted anyway.
+   *
+   * Attestations are issued to ANONYMOUS callers too. A signed-out player scans, shelves the
+   * plant on their device, and signs in days later; the import is what mints it, and it needs
+   * the token that scan produced. Withholding it from anonymous scans would quietly make
+   * every signed-out find unmintable.
+   */
+  const attested = await Promise.all(
+    candidates.map(async (candidate) => {
+      if (!ATTESTATION_SECRET) return candidate;
+      const identity = canonicalIdentity(candidate);
+      if (!identity) return candidate;
+      return {
+        ...candidate,
+        attestation: await attestIdentity(identity, ATTESTATION_SECRET),
+      };
+    }),
+  );
+
   return json({
-    candidates: candidates.filter((candidate) => candidate.scientificName),
+    candidates: attested.filter((candidate) => candidate.scientificName),
     remaining: Math.max(0, limit - (count as number)),
     limit,
     signedIn: Boolean(userId),

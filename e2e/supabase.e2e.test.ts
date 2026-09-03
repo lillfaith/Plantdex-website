@@ -12,6 +12,8 @@ import {
   canonicalRecordFor,
 } from '@/lib/species-packets';
 import { isShelfEligible, mergeFinds, newFind } from '@/lib/seed-shelf';
+import { canonicalIdentity } from '@/lib/species-identity';
+import { attestIdentity, ATTESTATION_TTL_MS } from '@/lib/species-attestation';
 import { packetRecipe, PACKET_VERSION } from '@/lib/seed-packet';
 import { normalizeName } from '@/lib/plant-match';
 import { exportAccountData } from '@/lib/export-account-data';
@@ -43,6 +45,26 @@ import type { HerbdexState } from '@/lib/types';
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+/*
+ * THE ATTESTATION SECRET, so this suite can stand in for `identify-plant`.
+ *
+ * Creating canon requires a signed candidate, and the only honest way to test that against a
+ * live deployment is to hold the same secret the deployment signs with and issue real tokens.
+ * It must be the TEST project's secret and it belongs in `.env.local`, which is gitignored —
+ * never a production secret, and never committed.
+ *
+ * A real scan would also produce one, and that is the only way to see genuine GBIF/POWO ids
+ * flow; it costs PlantNet quota and a photograph, so it is not what this suite does.
+ */
+const ATTESTATION_SECRET = process.env.SPECIES_ATTESTATION_SECRET ?? '';
+
+/** A signed candidate for a species, exactly as `identify-plant` would issue one. */
+async function attest(scientificName: string, gbifId?: string, powoId?: string, at?: number) {
+  const identity = canonicalIdentity({ scientificName, gbifId, powoId });
+  if (!identity) throw new Error(`${scientificName} is not a canonical identity`);
+  return attestIdentity(identity, ATTESTATION_SECRET, at);
+}
 const configured = Boolean(URL && KEY && supabase);
 
 const TABLES = [
@@ -351,10 +373,19 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
 
     beforeAll(async () => {
       /*
-       * Preflight, so a project that has not been migrated says so once instead of failing
-       * twenty assertions with PostgREST's "could not find the table" buried in each. Both
-       * tables and the function are separate deploys, and any of the three can be missing.
+       * Preflight, so a project that is not fully set up says so once instead of failing
+       * twenty assertions with the real cause buried in each. Tables, function and secret are
+       * three separate deploys and any of them can be missing.
        */
+      if (!ATTESTATION_SECRET) {
+        throw new Error(
+          'SPECIES_ATTESTATION_SECRET is not set locally. Creating canon needs a signed ' +
+            'candidate, so this suite must hold the same secret the test project signs with: ' +
+            'set it as a function secret on the project (identify-plant and seed-packet) and ' +
+            'put the same value in .env.local. Never a production secret.',
+        );
+      }
+
       for (const [table, migration] of [
         ['seed_shelf', '0004_seed_shelf.sql'],
         ['species_packets', '0005_species_packets.sql'],
@@ -398,6 +429,8 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         commonName: SPECIES.commonName,
         confidence: 0.91,
         scanId: `scan_e2e_${Date.now()}`,
+        // The signed candidate her scan would have carried. Creating canon needs one.
+        attestation: await attest(SPECIES.scientificName),
       });
       expect(find, 'the shelf refused a species with no card').not.toBeNull();
       expect(find!.speciesKey).toBe(SPECIES_KEY);
@@ -461,6 +494,8 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       });
       expect(inserted, 'Bob could not save his own find').toBeNull();
 
+      // Deliberately UNSIGNED. Reuse needs no attestation — that is the rule that keeps a
+      // shelf working when its own scan token has long expired.
       const { data, error } = await bobClient.functions.invoke('seed-packet', {
         body: { species: [{ scientificName: SPECIES.scientificName }] },
       });
@@ -488,6 +523,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         await freshClient().from('species_packets').select('*').eq('species_key', SPECIES_KEY)
       ).data![0] as Record<string, unknown>;
 
+      // Unsigned again: the species exists, so this is a reuse and asks for nothing.
       await ensureCanonicalPackets([{ scientificName: SPECIES.scientificName }]);
 
       const after = (
@@ -562,8 +598,12 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       // The server re-checks eligibility, so a hand-made request cannot file a card species
       // as a packet. That plant is a discovery.
       expect(isShelfEligible(ON_A_CARD)).toBe(false);
+      // Attested, and still refused. Eligibility is a content rule; the signature is an
+      // authenticity one, and neither overrides the other.
       const { data } = await supabase!.functions.invoke('seed-packet', {
-        body: { species: [{ scientificName: ON_A_CARD }] },
+        body: {
+          species: [{ scientificName: ON_A_CARD, attestation: await attest(ON_A_CARD) }],
+        },
       });
       expect((data as { packets?: unknown[] }).packets ?? []).toEqual([]);
 
@@ -581,7 +621,9 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
        * confirmable card for THIS species", never "nothing like it exists".
        */
       const relativeKey = normalizeName(RELATIVE.scientificName);
-      await ensureCanonicalPackets([RELATIVE]);
+      await ensureCanonicalPackets([
+        { ...RELATIVE, attestation: await attest(RELATIVE.scientificName) },
+      ]);
       const { data } = await freshClient()
         .from('species_packets')
         .select('*')
@@ -679,6 +721,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
           species: [
             {
               scientificName: 'Bellis perennis',
+              attestation: await attest('Bellis perennis'),
               speciesKey: forgedKey,
               species_key: forgedKey,
               packet: { version: 99, shape: 'notched', motif: 'cone' },
@@ -717,7 +760,14 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       await supabase!.functions.invoke('seed-packet', {
         body: {
           species: [
-            { scientificName: name, gbifId: 'not-an-id; drop table', powoId: '<script>' },
+            {
+              scientificName: name,
+              gbifId: 'not-an-id; drop table',
+              powoId: '<script>',
+              // Signed over the identity AFTER canonicalisation, which is what identify-plant
+              // signs — so the junk ids are already gone from what the signature covers.
+              attestation: await attest(name),
+            },
           ],
         },
       });
@@ -741,7 +791,13 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const key = normalizeName(name);
       const { data } = await supabase!.functions.invoke('seed-packet', {
         body: {
-          species: [{ scientificName: name, commonName: 'White star heart clover gold' }],
+          species: [
+            {
+              scientificName: name,
+              commonName: 'White star heart clover gold',
+              attestation: await attest(name),
+            },
+          ],
         },
       });
       const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
@@ -758,7 +814,11 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const name = 'Veronica persica';
       const key = normalizeName(name);
       await supabase!.functions.invoke('seed-packet', {
-        body: { species: [{ scientificName: name, commonName: '<b>pwned</b>' }] },
+        body: {
+          species: [
+            { scientificName: name, commonName: '<b>pwned</b>', attestation: await attest(name) },
+          ],
+        },
       });
       // Already minted above, so this asserts the stronger property: a later request with a
       // hostile field cannot change what is there. Nothing here is ever updated.
@@ -767,6 +827,152 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         'White star heart clover gold',
       );
     }, 90_000);
+
+    /*
+     * ─────────────────────────────────────────────────────────────────────────
+     * THE SIGNED-CANDIDATE BOUNDARY, AGAINST THE DEPLOYED FUNCTION.
+     *
+     * `species-attestation.test.ts` proves the decision logic. These prove the live function
+     * runs it, holds the same secret this suite signs with, and refuses everything below with
+     * a real HTTP round trip rather than in a unit test's imagination.
+     * ─────────────────────────────────────────────────────────────────────────
+     */
+    it('refuses to create canon for a well-formed FICTIONAL species', async () => {
+      /*
+       * THE ATTACK THE WHOLE MECHANISM EXISTS FOR. `Bellis fictus` is shaped exactly like a
+       * real binomial and passes every validator in the project. Unsigned, it must not enter
+       * a permanent public row.
+       */
+      const invented = 'Bellis fictus';
+      const key = normalizeName(invented);
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: invented }] },
+      });
+      expect((data as { packets?: unknown[] }).packets ?? []).toEqual([]);
+      expect((data as { refused?: { reason: string }[] }).refused ?? []).toContainEqual({
+        speciesKey: key,
+        reason: 'missing',
+      });
+
+      const { data: rows } = await freshClient()
+        .from('species_packets')
+        .select('species_key')
+        .eq('species_key', key);
+      expect(rows ?? [], 'an invented species entered the canon').toEqual([]);
+    }, 90_000);
+
+    it('refuses a token whose signed fields were edited', async () => {
+      /*
+       * The client may CARRY the attestation and may not edit what it says. Each of these is
+       * a genuine token from this deployment, presented beside a request that changed one of
+       * the three fields it binds.
+       */
+      const token = await attest('Veronica agrestis', '3172358', '111111-1');
+      const tampered: { label: string; body: Record<string, unknown> }[] = [
+        {
+          label: 'a different species',
+          body: { scientificName: 'Veronica polita', gbifId: '3172358', powoId: '111111-1' },
+        },
+        {
+          label: "another species' GBIF id",
+          body: { scientificName: 'Veronica agrestis', gbifId: '9999999', powoId: '111111-1' },
+        },
+        {
+          label: "another species' POWO id",
+          body: { scientificName: 'Veronica agrestis', gbifId: '3172358', powoId: '222222-2' },
+        },
+        {
+          label: 'an identifier removed',
+          body: { scientificName: 'Veronica agrestis', gbifId: '3172358' },
+        },
+      ];
+
+      for (const attack of tampered) {
+        const { data } = await supabase!.functions.invoke('seed-packet', {
+          body: { species: [{ ...attack.body, attestation: token }] },
+        });
+        expect(
+          (data as { packets?: unknown[] }).packets ?? [],
+          `${attack.label} was minted`,
+        ).toEqual([]);
+        expect(
+          (data as { refused?: { reason: string }[] }).refused?.[0]?.reason,
+          `${attack.label} was not refused as a mismatch`,
+        ).toBe('mismatch');
+      }
+
+      // Nothing from any of them reached the table.
+      for (const key of ['veronica polita', 'veronica agrestis']) {
+        const { data: rows } = await freshClient()
+          .from('species_packets')
+          .select('species_key')
+          .eq('species_key', key);
+        expect(rows ?? [], `${key} was minted by a tampered token`).toEqual([]);
+      }
+    }, 120_000);
+
+    it('refuses a signature from another deployment', async () => {
+      // Proof the live function actually checks the signature against ITS secret, rather
+      // than accepting any well-formed token.
+      const identity = canonicalIdentity({ scientificName: 'Veronica polita' })!;
+      const foreign = await attestIdentity(identity, 'not-this-deployments-secret');
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: 'Veronica polita', attestation: foreign }] },
+      });
+      expect((data as { packets?: unknown[] }).packets ?? []).toEqual([]);
+      expect((data as { refused?: { reason: string }[] }).refused?.[0]?.reason).toBe(
+        'badSignature',
+      );
+    }, 90_000);
+
+    it('refuses an expired candidate for a species nobody has found yet', async () => {
+      const name = 'Veronica polita';
+      const stale = await attest(name, undefined, undefined, Date.now() - ATTESTATION_TTL_MS - 60_000);
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: name, attestation: stale }] },
+      });
+      expect((data as { packets?: unknown[] }).packets ?? []).toEqual([]);
+      expect((data as { refused?: { reason: string }[] }).refused?.[0]?.reason).toBe('expired');
+    }, 90_000);
+
+    it('still REUSES an existing species with an expired candidate', async () => {
+      /*
+       * The rule that keeps a long-dormant shelf working, live: the signature is required to
+       * create canon, not to read it. Bellis perennis was minted at the top of this block; a
+       * token months out of date must still return its packet.
+       */
+      const stale = await attest(
+        SPECIES.scientificName,
+        undefined,
+        undefined,
+        Date.now() - ATTESTATION_TTL_MS - 60_000,
+      );
+      const { data } = await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: SPECIES.scientificName, attestation: stale }] },
+      });
+      const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
+      expect(returned?.species_key, 'an expired token could not reuse existing canon').toBe(
+        SPECIES_KEY,
+      );
+      expect(returned!.first_seen_at).toBe(firstSeenAt);
+    }, 90_000);
+
+    it('treats a replayed valid candidate as a reuse, not a second mint', async () => {
+      // Why there is no nonce and no used-token table: replay buys nothing.
+      const token = await attest(SPECIES.scientificName);
+      for (let attempt = 0; attempt < 2; attempt += 1) {
+        const { data } = await supabase!.functions.invoke('seed-packet', {
+          body: { species: [{ scientificName: SPECIES.scientificName, attestation: token }] },
+        });
+        const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
+        expect(returned!.first_seen_at).toBe(firstSeenAt);
+      }
+      const { data: all } = await freshClient()
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', SPECIES_KEY);
+      expect(all?.length, 'a replay created a second row').toBe(1);
+    }, 120_000);
 
     it('gives each player their own found date over one shared packet', async () => {
       /*
@@ -1050,7 +1256,17 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         found_at: new Date().toISOString(),
       });
       await carolClient.functions.invoke('seed-packet', {
-        body: { species: [{ scientificName: 'Geranium robertianum' }] },
+        body: {
+          species: [
+            {
+              scientificName: 'Geranium robertianum',
+              attestation: await attestIdentity(
+                canonicalIdentity({ scientificName: 'Geranium robertianum' })!,
+                process.env.SPECIES_ATTESTATION_SECRET ?? '',
+              ),
+            },
+          ],
+        },
       });
 
       photoPath = `${carol.id}/e2e-${Date.now()}.jpg`;

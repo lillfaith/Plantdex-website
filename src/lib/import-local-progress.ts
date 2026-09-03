@@ -170,13 +170,27 @@ async function importSeedShelf(userId: string): Promise<boolean> {
    * A failure here does not fail the import. The rows — the player's actual finds, with
    * their dates — are already safely across, and the registry fills in on the next save.
    */
-  const bySpecies = new Map(finds.map((find) => [find.speciesKey, find]));
+  /*
+   * The token from each find's own scan rides along. THIS is why the attestation is stored on
+   * the local find rather than only held in memory: a signed-out player scans a plant, shelves
+   * it, and signs in days or weeks later, and this import is the moment that species gets a
+   * chance to enter the canon. Preferring the earliest find per species keeps the token that
+   * actually accompanied the first sighting.
+   */
+  const bySpecies = new Map<string, (typeof finds)[number]>();
+  for (const find of finds) {
+    const held = bySpecies.get(find.speciesKey);
+    if (!held || find.foundAt < held.foundAt || (!held.attestation && find.attestation)) {
+      bySpecies.set(find.speciesKey, find);
+    }
+  }
   await ensureCanonicalPackets(
     [...bySpecies.values()].map((find) => ({
       scientificName: find.scientificName,
       commonName: find.commonName,
       gbifId: find.gbifId,
       powoId: find.powoId,
+      attestation: find.attestation,
     })),
   );
   return true;
