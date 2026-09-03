@@ -93,48 +93,186 @@ alter table public.sightings enable row level security;
 -- locally) but that never un-earns mastery, matching the existing "mastery is recorded,
 -- not recomputed" rule.
 
-create policy "own discoveries read" on public.discoveries
-  for select using (auth.uid() = user_id);
-create policy "own discoveries insert" on public.discoveries
-  for insert with check (auth.uid() = user_id);
-create policy "own discoveries delete" on public.discoveries
-  for delete using (auth.uid() = user_id);
-
-create policy "own learned read" on public.learned
-  for select using (auth.uid() = user_id);
-create policy "own learned insert" on public.learned
-  for insert with check (auth.uid() = user_id);
-create policy "own learned delete" on public.learned
-  for delete using (auth.uid() = user_id);
-
-create policy "own mastered read" on public.mastered
-  for select using (auth.uid() = user_id);
-create policy "own mastered insert" on public.mastered
-  for insert with check (auth.uid() = user_id);
-create policy "own mastered delete" on public.mastered
-  for delete using (auth.uid() = user_id);
-
-create policy "own research completions read" on public.research_completions
-  for select using (auth.uid() = user_id);
-create policy "own research completions insert" on public.research_completions
-  for insert with check (auth.uid() = user_id);
-create policy "own research completions delete" on public.research_completions
-  for delete using (auth.uid() = user_id);
-
-create policy "own unlocked achievements read" on public.unlocked_achievements
-  for select using (auth.uid() = user_id);
-create policy "own unlocked achievements insert" on public.unlocked_achievements
-  for insert with check (auth.uid() = user_id);
-create policy "own unlocked achievements delete" on public.unlocked_achievements
-  for delete using (auth.uid() = user_id);
-
-create policy "own sightings read" on public.sightings
-  for select using (auth.uid() = user_id);
-create policy "own sightings insert" on public.sightings
-  for insert with check (auth.uid() = user_id);
-create policy "own sightings delete" on public.sightings
-  for delete using (auth.uid() = user_id);
-
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'discoveries' and policyname = 'own discoveries read'
+  ) then
+    create policy "own discoveries read" on public.discoveries
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'discoveries' and policyname = 'own discoveries insert'
+  ) then
+    create policy "own discoveries insert" on public.discoveries
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'discoveries' and policyname = 'own discoveries delete'
+  ) then
+    create policy "own discoveries delete" on public.discoveries
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'learned' and policyname = 'own learned read'
+  ) then
+    create policy "own learned read" on public.learned
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'learned' and policyname = 'own learned insert'
+  ) then
+    create policy "own learned insert" on public.learned
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'learned' and policyname = 'own learned delete'
+  ) then
+    create policy "own learned delete" on public.learned
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'mastered' and policyname = 'own mastered read'
+  ) then
+    create policy "own mastered read" on public.mastered
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'mastered' and policyname = 'own mastered insert'
+  ) then
+    create policy "own mastered insert" on public.mastered
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'mastered' and policyname = 'own mastered delete'
+  ) then
+    create policy "own mastered delete" on public.mastered
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'research_completions' and policyname = 'own research completions read'
+  ) then
+    create policy "own research completions read" on public.research_completions
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'research_completions' and policyname = 'own research completions insert'
+  ) then
+    create policy "own research completions insert" on public.research_completions
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'research_completions' and policyname = 'own research completions delete'
+  ) then
+    create policy "own research completions delete" on public.research_completions
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'unlocked_achievements' and policyname = 'own unlocked achievements read'
+  ) then
+    create policy "own unlocked achievements read" on public.unlocked_achievements
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'unlocked_achievements' and policyname = 'own unlocked achievements insert'
+  ) then
+    create policy "own unlocked achievements insert" on public.unlocked_achievements
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'unlocked_achievements' and policyname = 'own unlocked achievements delete'
+  ) then
+    create policy "own unlocked achievements delete" on public.unlocked_achievements
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'sightings' and policyname = 'own sightings read'
+  ) then
+    create policy "own sightings read" on public.sightings
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'sightings' and policyname = 'own sightings insert'
+  ) then
+    create policy "own sightings insert" on public.sightings
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'sightings' and policyname = 'own sightings delete'
+  ) then
+    create policy "own sightings delete" on public.sightings
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
 -- Private bucket for sighting photos. Objects are stored at "{user_id}/{filename}"; the
 -- policy below restricts access to the folder matching the caller's own uid, mirroring the
 -- table policies above.
@@ -142,20 +280,42 @@ insert into storage.buckets (id, name, public)
 values ('sighting-photos', 'sighting-photos', false)
 on conflict (id) do nothing;
 
-create policy "own sighting photos read" on storage.objects
-  for select using (
-    bucket_id = 'sighting-photos'
-    and auth.uid()::text = (storage.foldername(name))[1]
-  );
-
-create policy "own sighting photos write" on storage.objects
-  for insert with check (
-    bucket_id = 'sighting-photos'
-    and auth.uid()::text = (storage.foldername(name))[1]
-  );
-
-create policy "own sighting photos delete" on storage.objects
-  for delete using (
-    bucket_id = 'sighting-photos'
-    and auth.uid()::text = (storage.foldername(name))[1]
-  );
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'storage' and tablename = 'objects' and policyname = 'own sighting photos read'
+  ) then
+    create policy "own sighting photos read" on storage.objects
+      for select using (
+        bucket_id = 'sighting-photos'
+        and auth.uid()::text = (storage.foldername(name))[1]
+      );
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'storage' and tablename = 'objects' and policyname = 'own sighting photos write'
+  ) then
+    create policy "own sighting photos write" on storage.objects
+      for insert with check (
+        bucket_id = 'sighting-photos'
+        and auth.uid()::text = (storage.foldername(name))[1]
+      );
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'storage' and tablename = 'objects' and policyname = 'own sighting photos delete'
+  ) then
+    create policy "own sighting photos delete" on storage.objects
+      for delete using (
+        bucket_id = 'sighting-photos'
+        and auth.uid()::text = (storage.foldername(name))[1]
+      );
+  end if;
+end $$;

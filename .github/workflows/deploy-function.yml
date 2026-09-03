@@ -76,6 +76,42 @@ jobs:
             exit 1
           fi
 
+      - name: Fail early if the token cannot reach this project
+        # THE FAILURE THIS EXISTS FOR. A Supabase personal access token carries two
+        # independent things: capabilities, and RESOURCE ACCESS. A token can hold every
+        # capability there is and still be scoped to one project — and then every call about
+        # another project answers 403 with a message about "privileges", which reads like a
+        # role problem rather than a scope one. That cost a whole production rollout: the
+        # migration 403'd, the deploy 403'd on its first function, and neither said why.
+        #
+        # `GET /v1/projects` lists exactly the projects this token may act on, so it answers
+        # the question directly. The list is not printed — other project refs are none of a
+        # workflow log's business.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/projects.json -w '%{http_code}' \
+            "https://api.supabase.com/v1/projects" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN")
+          if [ "$code" != "200" ]; then
+            echo "::error::The Supabase access token was rejected (HTTP $code) — expired," \
+                 "revoked, or malformed. Personal access tokens can be given a short" \
+                 "lifetime, so check the expiry. Create a new one at" \
+                 "https://supabase.com/dashboard/account/tokens and update the" \
+                 "SUPABASE_ACCESS_TOKEN repository secret."
+            exit 1
+          fi
+          if ! grep -q "\"$PROJECT_REF\"" /tmp/projects.json; then
+            echo "::error::The token is valid but is NOT SCOPED TO $PROJECT_REF, so every" \
+                 "call about this project will answer 403. Open the token at" \
+                 "https://supabase.com/dashboard/account/tokens and check its 'Resource" \
+                 "access' — it needs to cover this project, not only the other one."
+            exit 1
+          fi
+          echo "Token is scoped to $PROJECT_REF."
+
       - run: npm ci
 
       - name: Regenerate the shared reducer copies
@@ -95,18 +131,30 @@ jobs:
             exit 1
           fi
 
-      - name: Deploy
+      - name: Resolve which functions to deploy
+        # Derived from the directory rather than hardcoded, because the list used to be
+        # written out in three places — the choice enum below and two shell branches — and
+        # adding `seed-packet` meant remembering all three. `_shared` is generated support
+        # code, not a function, so it is excluded.
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           CHOICE: ${{ inputs.function }}
-          PROJECT_REF: ${{ inputs.project_ref }}
         run: |
           set -euo pipefail
           if [ "$CHOICE" = "all" ]; then
-            FUNCTIONS="herbdex-action delete-account identify-plant seed-packet"
+            FUNCTIONS=$(find supabase/functions -mindepth 1 -maxdepth 1 -type d \
+              ! -name '_*' -exec basename {} \; | sort | tr '\n' ' ')
           else
             FUNCTIONS="$CHOICE"
           fi
+          echo "Functions: $FUNCTIONS"
+          echo "FUNCTIONS=$FUNCTIONS" >> "$GITHUB_ENV"
+
+      - name: Deploy
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
           for fn in $FUNCTIONS; do
             echo "::group::Deploying $fn"
             npx --yes supabase@2 functions deploy "$fn" --project-ref "$PROJECT_REF"
@@ -122,15 +170,9 @@ jobs:
         # from the browser exactly like herbdex-action is, and a missing preflight there
         # would make the Delete button fail in a way no test in this repo can see.
         env:
-          CHOICE: ${{ inputs.function }}
           PROJECT_REF: ${{ inputs.project_ref }}
         run: |
           set -euo pipefail
-          if [ "$CHOICE" = "all" ]; then
-            FUNCTIONS="herbdex-action delete-account identify-plant seed-packet"
-          else
-            FUNCTIONS="$CHOICE"
-          fi
           failed=0
           for fn in $FUNCTIONS; do
             status=$(curl -s -o /dev/null -w '%{http_code}' -X OPTIONS \

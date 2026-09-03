@@ -44,12 +44,36 @@ create index if not exists scans_user_created_idx on public.scans (user_id, crea
 
 alter table public.scans enable row level security;
 
-create policy "own scans read" on public.scans
-  for select using (auth.uid() = user_id);
-create policy "own scans insert" on public.scans
-  for insert with check (auth.uid() = user_id);
-create policy "own scans delete" on public.scans
-  for delete using (auth.uid() = user_id);
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'scans' and policyname = 'own scans read'
+  ) then
+    create policy "own scans read" on public.scans
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'scans' and policyname = 'own scans insert'
+  ) then
+    create policy "own scans insert" on public.scans
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'scans' and policyname = 'own scans delete'
+  ) then
+    create policy "own scans delete" on public.scans
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
 -- Deliberately no update policy. See the header.
 
 -- ─────────────────────────────────────────────────────────────────────────────

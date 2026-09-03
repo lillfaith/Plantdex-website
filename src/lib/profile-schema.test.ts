@@ -116,6 +116,46 @@ describe('row level security on profiles', () => {
   });
 });
 
+/**
+ * EVERY MIGRATION MUST SURVIVE BEING RUN TWICE.
+ *
+ * `run-migration.yml` says so in its own header — "the only honest assumption about a
+ * manually dispatched workflow is that somebody will eventually run it twice" — and 0004 and
+ * 0005 were both quietly breaking it. `create table if not exists` made them LOOK idempotent,
+ * but Postgres has no `create policy if not exists`, so the second run aborted with 42710 at
+ * the first policy. That is not hypothetical: it happened during the production rollout, and
+ * it cost a confusing detour because the error named a table the operator had not just been
+ * working on.
+ *
+ * So: any `create policy` outside a guard is a re-run that will fail.
+ */
+describe('migrations can be applied twice', () => {
+  it('guards every create policy, because Postgres has no if-not-exists for them', () => {
+    for (const file of readdirSync(migrations).filter((name) => name.endsWith('.sql'))) {
+      const sql = readFileSync(join(migrations, file), 'utf8');
+      const policies = sql.match(/^\s*create policy/gim) ?? [];
+      if (policies.length === 0) continue;
+      expect(
+        sql,
+        `${file} creates ${policies.length} policy/policies but has no pg_policies guard, ` +
+          'so re-running it aborts with 42710',
+      ).toMatch(/from pg_policies/);
+    }
+  });
+
+  it('guards every create table and index too', () => {
+    for (const file of readdirSync(migrations).filter((name) => name.endsWith('.sql'))) {
+      const sql = readFileSync(join(migrations, file), 'utf8');
+      for (const [what, pattern] of [
+        ['table', /create table (?!if not exists)/i],
+        ['index', /create index (?!if not exists)/i],
+      ] as const) {
+        expect(sql, `${file} creates a ${what} without "if not exists"`).not.toMatch(pattern);
+      }
+    }
+  });
+});
+
 describe('the no-update rule everywhere else', () => {
   it('holds for every migration but 0003', () => {
     for (const file of readdirSync(migrations).filter((name) => name.endsWith('.sql'))) {

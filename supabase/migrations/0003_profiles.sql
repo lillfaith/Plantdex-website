@@ -67,12 +67,44 @@ drop policy if exists "own profile insert" on public.profiles;
 drop policy if exists "own profile update" on public.profiles;
 drop policy if exists "own profile delete" on public.profiles;
 
-create policy "own profile read" on public.profiles
-  for select using (auth.uid() = user_id);
-create policy "own profile insert" on public.profiles
-  for insert with check (auth.uid() = user_id);
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'profiles' and policyname = 'own profile read'
+  ) then
+    create policy "own profile read" on public.profiles
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'profiles' and policyname = 'own profile insert'
+  ) then
+    create policy "own profile insert" on public.profiles
+      for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
 -- The exception, argued in the header. BOTH halves are required.
-create policy "own profile update" on public.profiles
-  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
-create policy "own profile delete" on public.profiles
-  for delete using (auth.uid() = user_id);
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'profiles' and policyname = 'own profile update'
+  ) then
+    create policy "own profile update" on public.profiles
+      for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+end $$;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'profiles' and policyname = 'own profile delete'
+  ) then
+    create policy "own profile delete" on public.profiles
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;

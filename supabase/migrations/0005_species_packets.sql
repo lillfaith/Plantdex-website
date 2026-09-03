@@ -95,8 +95,19 @@ alter table public.species_packets enable row level security;
 -- bypasses RLS entirely — the same shape `delete-account` already uses for the operations a
 -- client must not be trusted with.
 -- ─────────────────────────────────────────────────────────────────────────────
-create policy "canonical packets are public to read" on public.species_packets
-  for select using (true);
+-- Guarded for the same reason as 0004's policies: no `create policy if not exists` exists,
+-- and this file has to survive being run twice.
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'species_packets'
+      and policyname = 'canonical packets are public to read'
+  ) then
+    create policy "canonical packets are public to read" on public.species_packets
+      for select using (true);
+  end if;
+end $$;
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- ACCOUNT DELETION DOES NOT TOUCH THIS TABLE, and must not.

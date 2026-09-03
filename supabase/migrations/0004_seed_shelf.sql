@@ -57,10 +57,39 @@ alter table public.seed_shelf enable row level security;
 
 -- Split policies, never `for all`: `for all` silently includes update, and an update here
 -- would let a client move its own first-found date or rewrite which species a find named.
-create policy "own seed shelf read" on public.seed_shelf
-  for select using (auth.uid() = user_id);
-create policy "own seed shelf insert" on public.seed_shelf
-  for insert with check (auth.uid() = user_id);
-create policy "own seed shelf delete" on public.seed_shelf
-  for delete using (auth.uid() = user_id);
+--
+-- GUARDED, BECAUSE THIS FILE MUST BE SAFE TO RUN TWICE. Postgres has no
+-- `create policy if not exists`, so a second run used to abort with 42710 at the first
+-- policy — which is exactly what happened when this migration was applied by hand and then
+-- repeated. `run-migration.yml` states the re-runnable rule in its own header and the file
+-- was quietly breaking it, because `create table if not exists` made it LOOK idempotent.
+--
+-- Guarded rather than `drop policy if exists` then `create`: dropping first leaves a window,
+-- however brief, in which a table holding real rows has no policy on it at all.
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'seed_shelf' and policyname = 'own seed shelf read'
+  ) then
+    create policy "own seed shelf read" on public.seed_shelf
+      for select using (auth.uid() = user_id);
+  end if;
+
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'seed_shelf' and policyname = 'own seed shelf insert'
+  ) then
+    create policy "own seed shelf insert" on public.seed_shelf
+      for insert with check (auth.uid() = user_id);
+  end if;
+
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'seed_shelf' and policyname = 'own seed shelf delete'
+  ) then
+    create policy "own seed shelf delete" on public.seed_shelf
+      for delete using (auth.uid() = user_id);
+  end if;
+end $$;
 -- Deliberately no update policy. See the header.

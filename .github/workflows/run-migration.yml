@@ -53,6 +53,42 @@ jobs:
             exit 1
           fi
 
+      - name: Fail early if the token cannot reach this project
+        # THE FAILURE THIS EXISTS FOR. A Supabase personal access token carries two
+        # independent things: capabilities, and RESOURCE ACCESS. A token can hold every
+        # capability there is and still be scoped to one project — and then every call about
+        # another project answers 403 with a message about "privileges", which reads like a
+        # role problem rather than a scope one. That cost a whole production rollout: the
+        # migration 403'd, the deploy 403'd on its first function, and neither said why.
+        #
+        # `GET /v1/projects` lists exactly the projects this token may act on, so it answers
+        # the question directly. The list is not printed — other project refs are none of a
+        # workflow log's business.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/projects.json -w '%{http_code}' \
+            "https://api.supabase.com/v1/projects" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN")
+          if [ "$code" != "200" ]; then
+            echo "::error::The Supabase access token was rejected (HTTP $code) — expired," \
+                 "revoked, or malformed. Personal access tokens can be given a short" \
+                 "lifetime, so check the expiry. Create a new one at" \
+                 "https://supabase.com/dashboard/account/tokens and update the" \
+                 "SUPABASE_ACCESS_TOKEN repository secret."
+            exit 1
+          fi
+          if ! grep -q "\"$PROJECT_REF\"" /tmp/projects.json; then
+            echo "::error::The token is valid but is NOT SCOPED TO $PROJECT_REF, so every" \
+                 "call about this project will answer 403. Open the token at" \
+                 "https://supabase.com/dashboard/account/tokens and check its 'Resource" \
+                 "access' — it needs to cover this project, not only the other one."
+            exit 1
+          fi
+          echo "Token is scoped to $PROJECT_REF."
+
       - name: Apply the migration
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
