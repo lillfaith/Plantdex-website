@@ -246,45 +246,6 @@ Deno.serve(async (req: Request) => {
   providerForm.append('images', image, 'scan.jpg');
   providerForm.append('organs', typeof form.get('organ') === 'string' ? String(form.get('organ')) : 'auto');
 
-  /*
-   * TEMPORARY DIAGNOSTIC — remove once the size cliff is understood.
-   *
-   * A 58KB upload to the provider succeeds from a laptop; 8.2KB from here does not. Same key,
-   * same endpoint, same organ. So the question is what this runtime actually puts on the wire,
-   * and guessing has already cost one wrong fix. This posts the identical body to an echo
-   * service and reports what ARRIVED: the framing, the length, and whether the bytes survived.
-   */
-  if (new URL(req.url).searchParams.get('debug') === 'echo') {
-    const attempts: Record<string, unknown>[] = [];
-    for (const [label, body, headers] of [
-      ['formdata', providerForm, undefined],
-      [
-        'buffered',
-        new Uint8Array(await image.arrayBuffer()),
-        { 'Content-Type': 'application/octet-stream' },
-      ],
-    ] as const) {
-      try {
-        const echo = await fetch('https://postman-echo.com/post', {
-          method: 'POST',
-          ...(headers ? { headers } : {}),
-          body: body as BodyInit,
-        });
-        const seen = (await echo.json()) as { headers?: Record<string, string> };
-        attempts.push({
-          label,
-          status: echo.status,
-          contentLength: seen.headers?.['content-length'] ?? null,
-          transferEncoding: seen.headers?.['transfer-encoding'] ?? null,
-          contentType: (seen.headers?.['content-type'] ?? '').slice(0, 60),
-        });
-      } catch (cause) {
-        attempts.push({ label, error: String(cause).slice(0, 160) });
-      }
-    }
-    return json({ imageBytes: image.size, imageType: image.type, attempts });
-  }
-
   let payload: { results?: ProviderResult[] };
   try {
     const response = await fetch(`${PROVIDER_URL}?api-key=${encodeURIComponent(PROVIDER_KEY)}`, {
