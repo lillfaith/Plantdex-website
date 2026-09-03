@@ -350,6 +350,25 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
     let firstSeenAt: string;
 
     beforeAll(async () => {
+      /*
+       * Preflight, so a project that has not been migrated says so once instead of failing
+       * twenty assertions with PostgREST's "could not find the table" buried in each. Both
+       * tables and the function are separate deploys, and any of the three can be missing.
+       */
+      for (const [table, migration] of [
+        ['seed_shelf', '0004_seed_shelf.sql'],
+        ['species_packets', '0005_species_packets.sql'],
+      ] as const) {
+        const { error } = await freshClient().from(table).select('*').limit(1);
+        if (error?.code === 'PGRST205') {
+          throw new Error(
+            `public.${table} does not exist in this project. Run the "Run a Supabase ` +
+              `migration" workflow with migration: ${migration} against this project ref, ` +
+              'then re-run this suite.',
+          );
+        }
+      }
+
       // Same probe as the deletion block: "not deployed" must read as an instruction, not as
       // four unrelated assertion failures.
       const probe = await fetch(`${URL}/functions/v1/seed-packet`, { method: 'OPTIONS' });
