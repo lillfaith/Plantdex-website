@@ -122,7 +122,10 @@ export function SeedShelfView() {
             <span className="text-gold-300"> · {counts.sprouted} ready to claim</span>
           )}
           {counts.grown > 0 && (
-            <span className="text-violet-400"> · {counts.grown} grown into cards</span>
+            <span className="text-violet-400">
+              {' '}
+              · {counts.grown} grown into {counts.grown === 1 ? 'a card' : 'cards'}
+            </span>
           )}
         </p>
       )}
