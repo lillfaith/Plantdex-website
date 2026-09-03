@@ -281,13 +281,33 @@ Deno.serve(async (req: Request) => {
       } catch {
         providerMessage = raw.slice(0, 160);
       }
+      /*
+       * A REJECTED KEY IS A CONFIGURATION FAULT, NOT AN OUTAGE, AND MUST NOT READ AS ONE.
+       *
+       * "The identification service could not be reached" sent a live debugging session
+       * looking for a PlantNet outage that was not happening: the key was simply invalid, and
+       * the provider was saying exactly that. It reuses the existing `unconfigured` code
+       * rather than inventing a state, because from the player's side an absent key and a
+       * refused one are the same thing — this deployment cannot identify plants — and that
+       * path is already handled all the way to the screen.
+       *
+       * WHY THIS WAS HARD TO SEE. The provider answers 401 as soon as it has read the key,
+       * while the browser is still uploading the photograph; its nginx front end then reports
+       * the aborted upload as its own HTML 500. So a real scan looked like a server fault and
+       * only a tiny image revealed the 401 underneath. Anything 4xx is therefore treated as a
+       * refusal even when a larger request would have been masked.
+       */
+      const refused = response.status === 401 || response.status === 403;
       return json(
         {
-          error: 'The identification service could not be reached. Please try again.',
+          error: refused
+            ? 'Plant identification is not set up correctly on this deployment: the provider rejected its API key.'
+            : 'The identification service could not be reached. Please try again.',
+          code: refused ? 'unconfigured' : undefined,
           providerStatus: response.status,
           providerMessage: redact(providerMessage).slice(0, 200),
         },
-        502,
+        refused ? 503 : 502,
       );
     }
     payload = await response.json();
