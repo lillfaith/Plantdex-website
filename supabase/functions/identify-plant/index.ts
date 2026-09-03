@@ -126,6 +126,18 @@ interface ProviderResult {
   powo?: { id?: string | number };
 }
 
+/**
+ * Strip anything key-shaped out of text that came from the provider.
+ *
+ * The API key travels as a query parameter, so an error body that quotes the request URL
+ * quotes the key with it. This runs over every provider string that leaves this function.
+ */
+function redact(value: string): string {
+  return value
+    .replace(/api[-_]?key=[^&\s"']+/gi, 'api-key=[redacted]')
+    .replace(/\b[A-Za-z0-9_-]{24,}\b/g, '[redacted]');
+}
+
 /** Provider ids arrive as strings or numbers depending on the field. Store text or nothing. */
 function taxonId(value: unknown): string | undefined {
   if (typeof value === 'string' && value.trim()) return value.trim();
@@ -247,19 +259,33 @@ Deno.serve(async (req: Request) => {
     }
     if (!response.ok) {
       /*
-       * THE UPSTREAM STATUS TRAVELS WITH THE ERROR, and nothing else does.
+       * THE UPSTREAM STATUS AND ITS STATED REASON TRAVEL WITH THE ERROR, AND NOTHING ELSE.
        *
        * Collapsing every provider failure into one 502 made a misconfigured key, an exhausted
-       * quota and an unusable image indistinguishable from outside — which cost a live
-       * debugging session, because "could not be reached" is a guess presented as a fact. The
-       * player still sees the same sentence; `providerStatus` is for whoever has to work out
-       * why. A status code carries nothing secret: the key is never in the response, never in
-       * a log line here, and never in the URL that reaches the browser.
+       * quota and an unusable image indistinguishable from outside — which cost two live
+       * debugging sessions, because "could not be reached" is a guess presented as a fact.
+       * The player still sees the same sentence; these fields are for whoever has to work out
+       * why.
+       *
+       * WHAT IS DELIBERATELY NOT PASSED THROUGH. The provider's raw body, because an error
+       * body may echo the request URL — and the API key rides in that URL as a query
+       * parameter. So only the structured `error`/`message` fields are read, they are capped,
+       * and `redact()` removes anything key-shaped even from those. A secret must not be able
+       * to escape through a diagnostic added to make debugging easier.
        */
+      const raw = await response.text().catch(() => '');
+      let providerMessage = '';
+      try {
+        const parsed = JSON.parse(raw) as { error?: unknown; message?: unknown };
+        providerMessage = [parsed.error, parsed.message].filter((v) => typeof v === 'string').join(': ');
+      } catch {
+        providerMessage = raw.slice(0, 160);
+      }
       return json(
         {
           error: 'The identification service could not be reached. Please try again.',
           providerStatus: response.status,
+          providerMessage: redact(providerMessage).slice(0, 200),
         },
         502,
       );
