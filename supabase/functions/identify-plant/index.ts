@@ -246,8 +246,21 @@ Deno.serve(async (req: Request) => {
       return json({ candidates: [], providerFoundNothing: true });
     }
     if (!response.ok) {
+      /*
+       * THE UPSTREAM STATUS TRAVELS WITH THE ERROR, and nothing else does.
+       *
+       * Collapsing every provider failure into one 502 made a misconfigured key, an exhausted
+       * quota and an unusable image indistinguishable from outside — which cost a live
+       * debugging session, because "could not be reached" is a guess presented as a fact. The
+       * player still sees the same sentence; `providerStatus` is for whoever has to work out
+       * why. A status code carries nothing secret: the key is never in the response, never in
+       * a log line here, and never in the URL that reaches the browser.
+       */
       return json(
-        { error: 'The identification service could not be reached. Please try again.' },
+        {
+          error: 'The identification service could not be reached. Please try again.',
+          providerStatus: response.status,
+        },
         502,
       );
     }
