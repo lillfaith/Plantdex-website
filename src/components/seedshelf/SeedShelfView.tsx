@@ -336,12 +336,21 @@ function Packet({
       </p>
 
       {status === 'sprouted' && herb && (
+        /*
+         * THE LABEL IS ONE WORD, BUT THE ACCESSIBLE NAME IS NOT. On screen the packet is
+         * already captioned with the species directly above the button, so repeating it
+         * inside was saying the same thing twice and wrapping a 0.72rem button onto three
+         * lines in a third of a phone. A screen reader gets no such adjacency: several
+         * sprouted packets side by side would all announce "Plant, button" with nothing to
+         * tell them apart, which is why the name still travels in `aria-label`.
+         */
         <button
           type="button"
           onClick={onClaim}
+          aria-label={`Plant ${herb.commonName}`}
           className="arcade-key mt-2 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-[0.72rem] font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
         >
-          Claim {herb.commonName}
+          Plant
         </button>
       )}
       {status === 'grown' && herb && (
