@@ -461,6 +461,25 @@ does not carry — the state that used to be a dead end.
   drawn under one row, so a longer slice wraps and the plank lands under the second row with
   the first floating above nothing. Three across at every width; the shelf takes a fixed
   maximum width instead, which is also how a real shelf behaves.
+- **`shelf-wall` is capped at `wood-700`, and that ceiling is a contrast rule rather than a
+  taste one.** The shelf is the one page that prints body text straight onto a wooden ground,
+  and `violet-400` — the dimmest shade it uses, on the safety note at the foot — measures
+  5.35:1 on `wood-700` and 3.21:1 on `wood-500`. So the wall is built from `wood-700` mixed
+  *downward* toward `plum-950`, the lighter half of the ramp stays on the boards and the pots
+  where no text sits, and `seed-shelf-decor.test.ts` fails on a lighter shade appearing in
+  that block. Its stops are whole pixels with hard edges for the same reason the sprites are:
+  a blend of two browns is a smear, and a smear is the one thing that would make this page
+  look unlike the rest of the app. The wall is a SIBLING of `main`, not a background on it —
+  `main` is a centred column, so a background there paints a stripe — and it stops at the
+  page, because a wall running behind the nav and footer is a sitewide theme change made by
+  one route.
+- **The potted plants are furniture and are drawn as shapes, not species.** They fill the
+  empty slots of a part-full board and never take one a packet could use, so the three-across
+  invariant above is untouched. Deliberately not recognisable plants: the rule against
+  invented botany does not stop at data, and a decorative pot shaped like a real species
+  would read as a claim about it on the one page whose whole job is the difference between a
+  card and something with no card. `aria-hidden`, no label, no XP, authored on the same pixel
+  grid as the packets and painted only from deck tokens.
 
 ## Analytics, deletion and export
 

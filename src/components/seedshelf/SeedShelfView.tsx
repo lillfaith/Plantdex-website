@@ -15,6 +15,7 @@ import {
 import { track } from '@/lib/analytics';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { SeedPacket } from './SeedPacket';
+import { ShelfPlant } from './ShelfPlant';
 
 /**
  * THE SEED SHELF — a wooden shelf of generated seed packets, one per species found outside
@@ -93,112 +94,155 @@ export function SeedShelfView() {
   }
 
   return (
-    <main id="main" className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="font-display text-3xl font-extrabold text-gold-plate">Seed Shelf</h1>
-      <p className="mt-1 text-sm text-violet-300">
-        Plants you&apos;ve found that aren&apos;t Plantdex cards — yet.
-      </p>
-
-      {/*
-        The distinction, said once, at the top. A player who has just been told their find is
-        not in the collection needs to know what this shelf IS before they read a count of it.
-      */}
-      <p className="mt-4 text-sm leading-relaxed text-violet-200">
-        A Plantdex card is one of the 45 collectibles. A seed packet is a real species you
-        photographed that has no card yet. Packets earn no XP and don&apos;t fill the
-        collection — they hold your find until a future collection catches up with it.
-      </p>
-
-      {ready && entries.length > 0 && (
-        <p aria-live="polite" className="mt-4 text-xs font-semibold text-violet-200">
-          {counts.species} species on the shelf
-          {counts.encounters > counts.species && (
-            <span className="text-violet-400">
-              {' '}
-              · {counts.encounters} encounters
-            </span>
-          )}
-          {counts.sprouted > 0 && (
-            <span className="text-gold-300"> · {counts.sprouted} ready to claim</span>
-          )}
-          {counts.grown > 0 && (
-            <span className="text-violet-400">
-              {' '}
-              · {counts.grown} grown into {counts.grown === 1 ? 'a card' : 'cards'}
-            </span>
-          )}
+    /*
+     * THE ROOM. The wall is a SIBLING of the content rather than a background on `main`,
+     * because `main` is a centred max-w-5xl column — a background on it would paint a brown
+     * stripe down the middle of a violet page. This wrapper is a plain block, so it spans the
+     * document, and the wall fills it edge to edge behind a column that still centres.
+     *
+     * It stops at this page. The nav and the footer keep the site's own ground: they are
+     * chrome rather than shelf, and a wall running behind them would be a sitewide theme
+     * change made by one route.
+     */
+    <div className="relative isolate">
+      <div aria-hidden="true" className="shelf-wall pointer-events-none absolute inset-0" />
+      {/* Deeper bottom padding than the site default: the wall stops with the page, so
+          the last line of text sitting a few pixels off its bottom edge reads as a
+          clipped background rather than as the floor of a room. */}
+      <main id="main" className="relative mx-auto max-w-5xl px-4 pt-8 pb-16">
+        <h1 className="font-display text-3xl font-extrabold text-gold-plate">Seed Shelf</h1>
+        <p className="mt-1 text-sm text-violet-300">
+          Plants you&apos;ve found that aren&apos;t Plantdex cards — yet.
         </p>
-      )}
 
-      {claimed && (
-        <section className="panel mt-4 border border-gold-500/60 p-4" aria-live="polite">
-          <p className="font-display text-base font-extrabold text-gold-plate">
-            A seed has sprouted.
-          </p>
-          <p className="mt-1 text-sm text-violet-200">
-            {getHerb(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
-            you first found it.
-          </p>
-          <Link
-            href={`/herbdex/${claimed}`}
-            className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-          >
-            Open the card &rarr;
-          </Link>
-        </section>
-      )}
+        {/*
+          The distinction, said once, at the top. A player who has just been told their find is
+          not in the collection needs to know what this shelf IS before they read a count of it.
+        */}
+        <p className="mt-4 text-sm leading-relaxed text-violet-200">
+          A Plantdex card is one of the 45 collectibles. A seed packet is a real species you
+          photographed that has no card yet. Packets earn no XP and don&apos;t fill the
+          collection — they hold your find until a future collection catches up with it.
+        </p>
 
-      {entries.length === 0 ? (
-        <div className="panel mt-6 p-6 text-center">
-          <p className="text-4xl" aria-hidden="true">
-            <PlantdexIcon name="sprout" />
+        {ready && entries.length > 0 && (
+          <p aria-live="polite" className="mt-4 text-xs font-semibold text-violet-200">
+            {counts.species} species on the shelf
+            {counts.encounters > counts.species && (
+              <span className="text-violet-400">
+                {' '}
+                · {counts.encounters} encounters
+              </span>
+            )}
+            {counts.sprouted > 0 && (
+              <span className="text-gold-300"> · {counts.sprouted} ready to claim</span>
+            )}
+            {counts.grown > 0 && (
+              <span className="text-violet-400">
+                {' '}
+                · {counts.grown} grown into {counts.grown === 1 ? 'a card' : 'cards'}
+              </span>
+            )}
           </p>
-          <p className="mt-3 text-sm text-violet-200">Your shelf is empty.</p>
-          <p className="mt-1 text-sm leading-relaxed text-violet-300">
-            Identify a plant that isn&apos;t one of the 45 cards and you can keep it here.
-          </p>
-          <Link
-            href="/scan"
-            className="mt-4 inline-flex min-h-11 items-center rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
-          >
-            Identify a plant
-          </Link>
-        </div>
-      ) : (
-        // Left-aligned with the heading rather than centred: the shelf is a piece of
-        // furniture standing against the same wall as everything else on the page.
-        <div className="mt-6 max-w-md space-y-5 sm:max-w-xl">
-          {boards.map((board, index) => (
-            <ShelfBoard key={index}>
-              {board.map((entry) => (
-                <Packet
-                  key={entry.speciesKey}
-                  entry={entry}
-                  status={shelfStatus(entry, state)}
-                  onClaim={() => claim(entry)}
-                />
-              ))}
-            </ShelfBoard>
-          ))}
-        </div>
-      )}
+        )}
 
-      {!signedIn && entries.length > 0 && (
+        {claimed && (
+          <section className="panel mt-4 border border-gold-500/60 p-4" aria-live="polite">
+            <p className="font-display text-base font-extrabold text-gold-plate">
+              A seed has sprouted.
+            </p>
+            <p className="mt-1 text-sm text-violet-200">
+              {getHerb(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
+              you first found it.
+            </p>
+            <Link
+              href={`/herbdex/${claimed}`}
+              className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+            >
+              Open the card &rarr;
+            </Link>
+          </section>
+        )}
+
+        {entries.length === 0 ? (
+          <>
+            <div className="panel mt-6 p-6 text-center">
+              <p className="text-4xl" aria-hidden="true">
+                <PlantdexIcon name="sprout" />
+              </p>
+              <p className="mt-3 text-sm text-violet-200">Your shelf is empty.</p>
+              <p className="mt-1 text-sm leading-relaxed text-violet-300">
+                Identify a plant that isn&apos;t one of the 45 cards and you can keep it here.
+              </p>
+              <Link
+                href="/scan"
+                className="mt-4 inline-flex min-h-11 items-center rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
+              >
+                Identify a plant
+              </Link>
+            </div>
+
+            {/*
+              AN EMPTY SHELF IS STILL A SHELF. The header of this file asks that somebody's
+              shelf be worth looking at while every packet on it is still waiting — and the one
+              state that failed that was the state with no packets at all, which was a notice
+              floating on a page with no furniture on it whatsoever. The board is real and the
+              plants standing on it are real; the empty thirds are the ones about to be filled.
+            */}
+            <div className="mt-6 max-w-md sm:max-w-xl">
+              <ShelfBoard>
+                {[0, 1, 2].map((slot) => (
+                  <ShelfProp key={slot} variant={slot} />
+                ))}
+              </ShelfBoard>
+            </div>
+          </>
+        ) : (
+          // Left-aligned with the heading rather than centred: the shelf is a piece of
+          // furniture standing against the same wall as everything else on the page.
+          <div className="mt-6 max-w-md space-y-5 sm:max-w-xl">
+            {boards.map((board, index) => (
+              <ShelfBoard key={index}>
+                {board.map((entry) => (
+                  <Packet
+                    key={entry.speciesKey}
+                    entry={entry}
+                    status={shelfStatus(entry, state)}
+                    onClaim={() => claim(entry)}
+                  />
+                ))}
+                {/*
+                  THE GAP ON THE LAST BOARD IS WHERE THE PLANTS GO, and that is the whole rule:
+                  a pot never takes a slot a packet could have used, so the three-across
+                  invariant above is untouched and no board ever wraps. It also puts the
+                  dressing exactly where the shelf looked unfinished — a lone packet on a wide
+                  plank with two empty thirds beside it.
+                */}
+                {Array.from({ length: PER_BOARD - board.length }, (_, slot) => (
+                  <ShelfProp key={`plant-${slot}`} variant={index + slot} />
+                ))}
+              </ShelfBoard>
+            ))}
+          </div>
+        )}
+
+        {!signedIn && entries.length > 0 && (
+          <p className="mt-6 text-xs leading-relaxed text-violet-400">
+            This shelf is saved in this browser. Sign in and you&apos;ll be offered the chance to
+            bring it with you — after that it follows your account to any device.
+          </p>
+        )}
+
         <p className="mt-6 text-xs leading-relaxed text-violet-400">
-          This shelf is saved in this browser. Sign in and you&apos;ll be offered the chance to
-          bring it with you — after that it follows your account to any device.
+          A packet records what an identifier suggested from a photograph. It is not a confirmed
+          identification and never a statement that a plant is safe to touch, pick or eat.{' '}
+          <Link href="/safety" className="underline underline-offset-2 hover:text-violet-300">
+            Read the safety notes
+          </Link>
+          .
         </p>
-      )}
-
-      <p className="mt-6 text-xs leading-relaxed text-violet-400">
-        A packet records what an identifier suggested from a photograph. It is not a confirmed
-        identification and never a statement that a plant is safe to touch, pick or eat.{' '}
-        <Link href="/safety" className="underline underline-offset-2 hover:text-violet-300">
-          Read the safety notes
-        </Link>
-        .
-      </p>
-    </main>
+      </main>
+    </div>
   );
 }
 
@@ -228,6 +272,23 @@ function ShelfBoard({ children }: { children: React.ReactNode }) {
       {/* The board itself: a lit top edge, a grain, and a shadow underneath. */}
       <div aria-hidden="true" className="shelf-board h-3 rounded-sm" />
     </div>
+  );
+}
+
+/**
+ * A potted plant standing in a slot no packet is using.
+ *
+ * Narrower than a packet on purpose: a pot filling its third as completely as the paper does
+ * would read as another collectible rather than as the furniture beside the collectibles. It
+ * carries no label, so the board's `items-end` sets it straight down on the plank.
+ */
+function ShelfProp({ variant }: { variant: number }) {
+  return (
+    <li className="flex flex-col items-center">
+      <div className="mx-auto w-full max-w-12 drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
+        <ShelfPlant variant={variant} />
+      </div>
+    </li>
   );
 }
 

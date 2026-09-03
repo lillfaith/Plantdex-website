@@ -1,3 +1,4 @@
+import { pixelRuns } from '@/lib/pixel-runs';
 import {
   PACKET_HEIGHT,
   PACKET_WIDTH,
@@ -56,7 +57,7 @@ export function SeedPacket({
          * a shelf holds dozens, so the runs are what keep a full shelf a few hundred nodes
          * instead of tens of thousands.
          */
-        runs(row).map(({ x, width, cell }) =>
+        pixelRuns(row).map(({ x, width, cell }) =>
           cell === '.' || cell === ' ' ? null : (
             <rect key={`${y}-${x}`} x={x} y={y} width={width} height={1} fill={fill[cell]} />
           ),
@@ -64,16 +65,4 @@ export function SeedPacket({
       )}
     </svg>
   );
-}
-
-function runs(row: string): { x: number; width: number; cell: string }[] {
-  const out: { x: number; width: number; cell: string }[] = [];
-  let start = 0;
-  for (let x = 1; x <= row.length; x += 1) {
-    if (x === row.length || row[x] !== row[start]) {
-      out.push({ x: start, width: x - start, cell: row[start]! });
-      start = x;
-    }
-  }
-  return out;
 }

@@ -1107,6 +1107,41 @@ body {
   );
 }
 
+/*
+ * THE WALL THE SHELF STANDS AGAINST — pixelated planks, behind the Seed Shelf only.
+ *
+ * WHY NOTHING HERE IS LIGHTER THAN wood-700, AND WHY THAT IS NOT A STYLE CHOICE. The page
+ * prints body text straight onto this wall, and contrast is a property of the token rather
+ * than a per-component decision. Measured against the page's own shades: violet-400, the
+ * dimmest it uses, is 5.35:1 on wood-700 and 3.21:1 on wood-500 — so a wall built from the
+ * middle of the wood ramp would fail AA on the safety note at the foot of the page while
+ * looking, to the eye, like a slightly nicer brown. wood-700 is therefore the CEILING here
+ * and every other shade is mixed downward from it toward plum-950. The lighter half of the
+ * ramp stays where it already earns its keep: the boards and the pots, which carry no text.
+ * `seed-shelf-decor.test.ts` fails if a lighter shade ever appears in this block.
+ *
+ * WHY EVERY STOP IS AN INTEGER PIXEL WITH A HARD EDGE. A blend between two browns is a
+ * smear, and a smear is the one thing that would make this page look unlike the rest of it:
+ * the packets standing on these boards are drawn on a grid, and so are all 45 sprites. The
+ * planks, the seams and the grain are all snapped to whole pixels for the same reason
+ * `image-rendering: pixelated` exists further up this file.
+ *
+ * The three layers are, in paint order: the joint between one course of boards and the next,
+ * the vertical seam between neighbouring planks, and a grain that is just irregular enough
+ * (12px cycle against a 76px plank) not to line up with either.
+ */
+@utility shelf-wall {
+  --plank: var(--color-wood-700);
+  --plank-grain: color-mix(in srgb, var(--color-wood-700) 84%, var(--color-plum-950));
+  --plank-seam: color-mix(in srgb, var(--color-wood-700) 42%, var(--color-plum-950));
+
+  background-color: var(--plank);
+  background-image:
+    repeating-linear-gradient(0deg, var(--plank-seam) 0 3px, transparent 3px 168px),
+    repeating-linear-gradient(90deg, var(--plank-seam) 0 2px, transparent 2px 76px),
+    repeating-linear-gradient(90deg, var(--plank-grain) 0 3px, transparent 3px 12px);
+}
+
 @utility soil-line {
   background-image:
     repeating-linear-gradient(
