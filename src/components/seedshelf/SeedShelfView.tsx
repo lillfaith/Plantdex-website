@@ -118,11 +118,16 @@ export function SeedShelfView() {
         {/*
           The distinction, said once, at the top. A player who has just been told their find is
           not in the collection needs to know what this shelf IS before they read a count of it.
+
+          It used to open by defining a Plantdex card as "one of the 45 collectibles", which
+          the subtitle immediately above had already implied and the empty state says outright.
+          What could NOT be cut is the second half: shelving pays nothing, and this is the
+          place the page owes somebody that fact before they start collecting packets.
         */}
         <p className="mt-4 text-sm leading-relaxed text-violet-200">
-          A Plantdex card is one of the 45 collectibles. A seed packet is a real species you
-          photographed that has no card yet. Packets earn no XP and don&apos;t fill the
-          collection — they hold your find until a future collection catches up with it.
+          A seed packet is a real species you photographed that has no card yet. Packets earn
+          no XP and don&apos;t fill your collection — they hold the find until a future
+          collection catches up.
         </p>
 
         {ready && entries.length > 0 && (
