@@ -157,7 +157,7 @@ BACKS = {
     8: (["Anti-inflam.", "Joint support", "Allergy aid", "Circulatory"], ["Chlorophyll", "Histamine", "Iron", "Silica"], ["Green", "Earthy", "Mineral"], ["Green", "Fresh", "Mild"], ["Tea", "Cooked", "Infusion", "Tincture"], ["Leaf", "Stem", "Root", "Shoot"]),
     9: (["Vitamin-rich", "Appetite support", "Digestive support", "Diuretic", "Cooling"], ["Flavonoids", "Oxalic acid", "Vitamin C", "Potassium"], ["Sour", "Citrus", "Bright"], ["Light", "Fresh", "Green"], ["Fresh", "Tea", "Salad", "Infusion"], ["Leaf", "Flower", "Stem", "Root"]),
     10: (["Hormone support", "Circulatory", "Skin care", "Detoxifying"], ["Isoflavones", "Flavonoids", "Coumarins", "Genistein"], ["Mild", "Sweet", "Grassy"], ["Light", "Floral"], ["Tea", "Tincture", "Infusion", "Salve"], ["Leaf", "Flower", "Stem", "Root"]),
-    11: (["Wound support", "Liver support", "Digestive support", "Diuretic", "Astringent", "Antimicrob."], ["Kaempferol", "Taraxasterol", "Quercetin", "Inulin"], ["Bitter", "Peppery", "Mildly sweet"], ["Mild", "Earthy", "Green"], ["Tea", "Tincture", "Roasted roots", "Fresh greens"], ["Root", "Leaf", "Flower"]),
+    11: (["Wound support", "Fever aid", "Anti-inflam.", "Immune boost"], ["Flavonoids", "Tannins", "Iridoids", "Vitamin C"], ["Mild", "Earthy", "Mildly sweet"], ["Mild", "Fresh", "Green"], ["Tea", "Fresh", "Salad", "Infusion"], ["Leaf", "Flower", "Stem"]),
     12: (["Anti-inflam.", "Skin-soothing", "Cooling", "Respiratory support", "Lymphatic support"], ["Rutin", "Anthocyanins", "Mucilage", "Vitamin C"], ["Green", "Sweet", "Minty"], ["Light", "Floral", "Fresh"], ["Tea", "Syrup", "Salve", "Infusion"], ["Leaf", "Flower", "Stem"]),
     13: (["Cooling", "Nutrient-rich", "Skin-soothing", "Mild laxative", "Itch relief"], ["Saponins", "Vitamin C", "Flavonoids", "Iron"], ["Mild", "Fresh", "Slightly sweet"], ["Light", "Green"], ["Salve", "Poultice", "Tea", "Fresh"], ["Shoot", "Leaf", "Flower", "Seed"]),
     14: (["Drawing", "Antimicrob.", "Wound support", "Skin-soothing"], ["Aucubin", "Flavonoids", "Mucilage", "Allantoin"], ["Mild", "Slightly bitter"], ["Green", "Earthy"], ["Poultice", "Salve", "Tea", "Fresh"], ["Leaf", "Seed", "Stem", "Root"]),
@@ -170,14 +170,14 @@ BACKS = {
     21: (["Digestive support", "Laxative", "Liver support", "Prebiotic"], ["Lactucopicrin", "Sesquiterpene lactones", "Inulin", "Lactucin"], ["Bitter", "Nutty", "Roasted"], ["Toasty", "Coffee", "Earthy"], ["Tea", "Decoction", "Tincture", "Roasted"], ["Root", "Leaf", "Flower"]),
     22: (["Detoxifying", "Liver support", "Skin care", "Anti-inflam.", "Digestive support"], ["Polyphenols", "Lignans", "Arctiin", "Inulin"], ["Bitter", "Earthy", "Slightly sweet"], ["Mild", "Earthy"], ["Decoction", "Tea", "Tincture", "Cooked root"], ["Root", "Leaf", "Seed", "Stem"]),
     23: (["Digestive support", "Nausea aid", "Cooling", "Headache support"], ["Menthol", "Menthone", "Rosmarinic acid", "Limonene"], ["Cool", "Minty", "Sharp"], ["Strong", "Cooling", "Fresh"], ["Tea", "Infusion", "Oil", "Fresh"], ["Leaf", "Stem", "Flower"]),
-    24: (["Antimicrobial", "Anti-inflam.", "Glucose regulation", "Astringent"], ["Phenolic acid", "Anthocyanins", "Gallic acid", "Tannins"], ["Sour", "Lemony", "Tangy"], ["Bright", "Fruity", "Zesty"], ["Tea", "Infusion", "Spice", "Cold soak"], ["Leaf", "Flower", "Stem"]),
+    24: (["Fever aid", "Nervous system", "Digestive support", "Calming"], ["Nepetalactone", "Citronellol", "Flavonoids", "Geraniol"], ["Minty", "Bitter", "Warm"], ["Soft", "Musky", "Minty"], ["Tea", "Infusion", "Tincture"], ["Leaf", "Flower", "Stem"]),
     25: (["Circulatory", "Menstrual support", "Wound support", "Astringent"], ["Fumaric acid", "Choline", "Flavonoids", "Tyramine"], ["Mild", "Peppery", "Green"], ["Light", "Herbal", "Fresh"], ["Tincture", "Tea", "Infusion", "Fresh"], ["Leaf", "Stem", "Flower", "Root"]),
     26: (["Wound support", "Antimicrobial", "Anti-inflam.", "Immune boost"], ["Rosmarinic acid", "Ursolic acid", "Tannins", "Flavonoids"], ["Mild", "Slightly bitter"], ["Light", "Herbal"], ["Tea", "Infusion", "Salve", "Tincture"], ["Leaf", "Flower", "Stem"]),
     27: (["Anti-inflam.", "Expectorant", "Respiratory support", "Soothing"], ["Mucilage", "Verbascoside", "Saponins", "Iridoids"], ["Mild", "Slightly bitter"], ["Light", "Soft", "Herbal"], ["Tea", "Infusion", "Oil", "Tincture"], ["Leaf", "Flower", "Root"]),
     28: (["Diuretic", "Keratin support", "Bone support", "Urinary support"], ["Silica", "Flavonoids", "Saponins", "Alkaloids"], ["Mild", "Earthy", "Slightly bitter"], ["Light", "Green", "Mineral"], ["Tea", "Decoction", "Infusion"], ["Shoot"]),
     29: (["Antimicrobial", "Immune boost", "Digestive support", "Circulatory"], ["Flavonoids", "Sulfur compounds", "Phenolics", "Allicin"], ["Pungent", "Garlic", "Sharp"], ["Strong", "Sulfurous", "Pungent"], ["Fresh", "Cooked", "Tincture"], ["Bulb", "Leaf", "Flower", "Shoot"]),
     30: (["Digestive support", "Oral health", "Astringent", "Skin care"], ["Vitamin C", "Flavonoids", "Ellagic acid", "Tannins"], ["Sweet", "Mild", "Slightly tart"], ["Light", "Fruity", "Fresh"], ["Tea", "Infusion", "Fresh"], ["Fruit", "Leaf", "Flower"]),
-    31: (["Antimicrobial", "Anti-inflam.", "Glucose regulation", "Astringent"], ["Phenolic acid", "Anthocyanins", "Gallic acid", "Tannins"], ["Sour", "Lemony", "Tangy"], ["Bright", "Fruity", "Zesty"], ["Tea", "Infusion", "Spice", "Cold soak"], ["Berry", "Bark"]),
+    31: (["Antiviral", "Immune boost", "Respiratory support", "Fever aid"], ["Anthocyanins", "Chlorogenic acid", "Rutin", "Quercetin"], ["Sweet", "Tart", "Juicy"], ["Floral", "Sweet", "Rich"], ["Tea", "Infusion", "Spice", "Cold soak"], ["Berry", "Flower", "Leaf", "Shoot"]),
     32: (["Wound aid", "Menopause aid", "Nervous system aid", "Mood aid"], ["Hypericin", "Hyperforin", "Flavonoids", "Quercetin"], ["Bitter", "Slightly astringent"], ["Mild", "Herbal", "Dry"], ["Tea", "Tincture", "Oil", "Infusion"], ["Leaf", "Flower"]),
     33: (["Circulatory", "Fever aid", "Wound support", "Antimicrob.", "Anti-inflam."], ["Flavonoids", "Volatile oils", "Achilleine", "Azulene"], ["Bitter", "Bold", "Licorice"], ["Sharp", "Herbal", "Bitter"], ["Tea", "Tincture", "Salve", "Poultice"], ["Leaf", "Flower", "Stem"]),
     34: (["Skin care", "Itch relief", "Anti-fungal", "Wound support"], ["Flavonoids", "Phenolic acid", "Lawsone", "Saponins"], ["Mild", "Green"], ["Light", "Fresh", "Cool"], ["Cooked", "Poultice", "Salve", "Infusion"], ["Leaf", "Stem", "Flower", "Seed"]),
@@ -201,11 +201,14 @@ CARD_WARNINGS = {33: "Beware: this plant has a poisonous lookalike."}
 # Problems with the printed cards, recorded so they are not mistaken for transcription
 # slips and can be fixed in a future print run. The data above matches the cards as
 # printed; nothing here is silently corrected.
+# Cards 11, 24 and 31 were listed here until the August reprint. All three carried another
+# card's back — 11 was Dandelion's, 24 and 31 were both Sumac's — and all three have now
+# been corrected on the card itself, so the entries are gone in the same edit that
+# retranscribed them. An entry is removed only when the printed card is genuinely fixed;
+# removing one to make the app look tidier would have it deny an error still in a buyer's
+# hands.
 KNOWN_CARD_ISSUES = {
     2: "Usable parts list both 'Stock' and 'Stalk'; one is likely a typo.",
-    11: "Back duplicates Dandelion (card 1): Taraxasterol, Inulin and 'Roasted roots' belong to Taraxacum, not Lamium purpureum.",
-    24: "Back duplicates Sumac (card 20); Catnip's own profile (nepetalactone, calming) is absent.",
-    31: "Back duplicates Sumac (card 20); Elderberry's own profile is absent.",
     38: "'Sallicin' is likely a typo for 'Salicin'.",
 }
 
@@ -311,11 +314,49 @@ def main() -> int:
         help="Directory of two-page per-card PDFs (page 1 front, page 2 back).",
     )
     ap.add_argument("--skip-art", action="store_true", help="Rebuild JSON only.")
+    ap.add_argument(
+        "--only",
+        help=(
+            "Comma-separated card numbers to PATCH into the existing herbs.json, e.g. "
+            "'11,24,31'. Every other card is carried through from the file untouched. "
+            "Use this when a few cards are reprinted and the full 45-PDF set is not to hand."
+        ),
+    )
     args = ap.parse_args()
 
     if not args.source.is_dir():
         print(f"Not a directory: {args.source}", file=sys.stderr)
         return 1
+
+    # --- Patch mode ----------------------------------------------------------------------
+    # A full run needs all 45 print masters, and fails rather than writing a partial deck.
+    # That is right for a rebuild and useless for a reprint of three cards, which is the
+    # real case: the corrected PDFs arrive one at a time and the other 42 masters are a
+    # multi-gigabyte folder nobody wants to move around to fix a typo.
+    #
+    # So patch mode reads the herbs the run did NOT touch straight out of the existing
+    # herbs.json and re-emits them unchanged. Everything else about the run is identical —
+    # the same stat re-count against the artwork, the same table validation, the same
+    # all-or-nothing failure — it is only the SET of cards being rebuilt that narrows.
+    only: set[int] | None = None
+    if args.only:
+        try:
+            only = {int(part) for part in args.only.split(",") if part.strip()}
+        except ValueError:
+            print(f"--only takes card numbers, got {args.only!r}", file=sys.stderr)
+            return 1
+        known = {num for (num, *_rest) in DECK}
+        unknown = sorted(only - known)
+        if unknown:
+            print(f"--only names cards that are not in the deck: {unknown}", file=sys.stderr)
+            return 1
+        if not OUT_JSON.exists():
+            print(
+                f"--only patches an existing deck, and {OUT_JSON.relative_to(REPO)} does not "
+                "exist yet. Build the whole deck once from the full set of PDFs first.",
+                file=sys.stderr,
+            )
+            return 1
 
     sources = find_sources(args.source)
     OUT_ART.mkdir(parents=True, exist_ok=True)
@@ -327,6 +368,9 @@ def main() -> int:
     herbs, seen_ids, problems = [], set(), []
 
     for (num, common, sci, rarity, season, uses, w, s, t) in DECK:
+        if only is not None and num not in only:
+            continue
+
         pdf_path = sources.get(num)
         if pdf_path is None:
             problems.append(f"#{num} {common}: no source PDF found")
@@ -415,6 +459,22 @@ def main() -> int:
         for p in problems:
             print(f"  - {p}", file=sys.stderr)
         return 1
+
+    if only is not None:
+        # Carry every untouched card through from the file, then sort back into card order.
+        # The rebuilt entries win, and the deck-level metadata below is regenerated from the
+        # tables either way — so removing a card's KNOWN_CARD_ISSUES entry in the same edit
+        # that fixes its transcription actually reaches herbs.json, rather than leaving the
+        # app reporting an error that is no longer in the data.
+        existing = json.loads(OUT_JSON.read_text(encoding="utf-8"))
+        rebuilt = {h["cardNumber"] for h in herbs}
+        carried = [h for h in existing.get("herbs", []) if h["cardNumber"] not in rebuilt]
+        missing = sorted(only - rebuilt)
+        if missing:
+            print(f"--only asked for {missing} but they were not rebuilt", file=sys.stderr)
+            return 1
+        print(f"Patching {sorted(rebuilt)}; carrying {len(carried)} cards through unchanged.")
+        herbs = sorted(herbs + carried, key=lambda h: h["cardNumber"])
 
     payload = {
         "$comment": (

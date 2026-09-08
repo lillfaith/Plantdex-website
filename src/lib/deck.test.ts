@@ -122,14 +122,17 @@ describe('deck data', () => {
 
 describe('knownIssueFor', () => {
   /**
-   * The deck is printed, so these five are permanent. Transcription is faithful by rule,
-   * which means three cards show ANOTHER plant's profile in good faith — the site is the
-   * only place that can now say so, and a note nobody renders corrects nothing.
+   * Transcription is faithful by rule, so a printing error reaches the site intact and this
+   * note is the only place that can say so. What is left after the August reprint is two
+   * typos; the three cards that carried ANOTHER plant's profile — 11 was Dandelion's, 24 and
+   * 31 were both Sumac's — were corrected on the card itself and their entries went with the
+   * new transcription. An entry may only be removed when the printed card is genuinely
+   * fixed, never to tidy the list, or the app denies an error still in a buyer's hands.
    */
   it('reports the recorded printing error for an affected card', () => {
-    const elderberry = getHerb('sambucus-spp')!;
-    expect(elderberry.cardNumber).toBe(31);
-    expect(knownIssueFor(elderberry)).toMatch(/duplicates Sumac/i);
+    const willow = getHerb('salix-spp')!;
+    expect(willow.cardNumber).toBe(38);
+    expect(knownIssueFor(willow)).toMatch(/sallicin/i);
   });
 
   it('covers every card the build script recorded, and only those', () => {
@@ -142,7 +145,54 @@ describe('knownIssueFor', () => {
   });
 
   it('returns nothing for a card with no recorded error', () => {
-    // Dandelion is card #01 and is the card two of the errors are errors ABOUT.
+    // Dandelion is card #01, and card 11 used to print its back verbatim.
     expect(knownIssueFor(getHerb('taraxacum-officinale')!)).toBeUndefined();
+  });
+
+  /**
+   * THE BUG THE REPRINT FIXED, PINNED SO A REBUILD CANNOT BRING IT BACK.
+   *
+   * Three cards shipped carrying another card's back, and nothing in the data could notice:
+   * every field was individually well-formed, and the duplication was only visible by
+   * reading two cards side by side. A regeneration from a stale PDF, or a copy-paste while
+   * editing the BACKS table, would reintroduce it exactly as silently.
+   *
+   * WHY FOUR OF SIX AND NOT AN EXACT MATCH. Only card 31 was a whole-back copy; 11 and 24
+   * each differed in one field, so an equality check would have caught one of the three and
+   * called the deck clean. The threshold is measured rather than guessed — against the
+   * pre-reprint data all four bad pairings share 4+ fields (20/31 share six, 20/24, 24/31
+   * and 1/11 share five), and against the corrected deck NO pair shares four. There is
+   * therefore no legitimate pair anywhere near this line to false-positive on.
+   *
+   * A compounds-only check was the other candidate and is rejected: Ground Ivy and Self-Heal
+   * genuinely print the same four compounds, so that guard cries wolf on a real card.
+   */
+  it('gives every card its own back, which is what the reprint corrected', () => {
+    const FIELDS = [
+      'healingTraits',
+      'compounds',
+      'taste',
+      'aromatic',
+      'preparations',
+      'usableParts',
+    ] as const;
+
+    const suspicious: string[] = [];
+    for (let i = 0; i < HERBS.length; i += 1) {
+      for (let j = i + 1; j < HERBS.length; j += 1) {
+        const a = HERBS[i]!;
+        const b = HERBS[j]!;
+        const shared = FIELDS.filter(
+          (field) => JSON.stringify(a.back?.[field]) === JSON.stringify(b.back?.[field]),
+        );
+        if (shared.length >= 4) {
+          suspicious.push(
+            `#${a.cardNumber} ${a.commonName} and #${b.cardNumber} ${b.commonName} ` +
+              `share ${shared.length}/6 back fields (${shared.join(', ')})`,
+          );
+        }
+      }
+    }
+    expect(suspicious).toEqual([]);
   });
 });

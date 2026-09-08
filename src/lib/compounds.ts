@@ -105,6 +105,12 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   // cannot tell which these are.
   rutin: molecule(undefined, 'Quercetin bound to the disaccharide rutinose'),
   taraxasterol: molecule(undefined, 'A pentacyclic triterpene'),
+  // Arrived with the August reprint of card 24, which until then printed Sumac's back.
+  // `citronellal` above is the aldehyde and already has a drawing; these three are
+  // different molecules and have none yet, so they take the honest caption instead.
+  nepetalactone: molecule(undefined, 'An iridoid lactone'),
+  citronellol: molecule(undefined, 'A monoterpene alcohol'),
+  geraniol: molecule(undefined, 'A monoterpene alcohol'),
   resveratrol: molecule('resveratrol', 'A stilbenoid'),
   lawsone: molecule('lawsone', 'A naphthoquinone'),
   emodin: molecule('emodin', 'An anthraquinone'),

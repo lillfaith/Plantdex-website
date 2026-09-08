@@ -19,7 +19,8 @@ Payment Link behind `/shop`, see "V0.4 commerce" below), and the **player profil
 npm run dev        # dev server
 npm run verify     # lint + typecheck + test + build — run before pushing
 npm test           # vitest
-npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art
+npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art (needs all 45)
+python3 scripts/build_deck.py --source deck-source --only 11,24,31   # patch a few reprinted cards
 npm run build:structures                           # regenerate the skeletal formulas
 python3 scripts/build_sprites.py                   # regenerate the animated portraits
 python3 scripts/build_sprites.py --preview <herb-id> [--frame N]   # print a frame as text
@@ -102,6 +103,22 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
 - **No invented botany.** Every herb field must come from the physical card — fronts and
   backs are both transcribed in `scripts/build_deck.py`. Where a card contains an error,
   transcribe it faithfully and record it in `KNOWN_CARD_ISSUES`; never silently correct it.
+- **A reprint of a few cards is patched with `--only`, not rebuilt.** A full run needs all 45
+  print masters and fails rather than writing a partial deck, which is right for a rebuild
+  and useless when three corrected PDFs arrive and the other 42 are a folder nobody wants to
+  move. `--only 11,24,31` rebuilds exactly those, carries every other card through from the
+  existing `herbs.json` untouched, and keeps the rest of the run identical — same stat
+  re-count against the artwork, same table validation, same all-or-nothing failure. It
+  regenerates the deck-level metadata from the tables, so a `KNOWN_CARD_ISSUES` entry
+  removed alongside a corrected transcription actually reaches the app.
+- **A `KNOWN_CARD_ISSUES` entry is removed only when the printed card is genuinely fixed**,
+  in the same edit as the new transcription. Cards 11, 24 and 31 each carried another card's
+  back (11 was Dandelion's; 24 and 31 were both Sumac's) until the August reprint corrected
+  them. Removing an entry to tidy the list would have the app deny an error still in a
+  buyer's hands. `deck.test.ts` also pins the shape of that bug directly: no two cards may
+  share four or more of the six back fields. Four is measured, not guessed — all four bad
+  pairings cleared it before the reprint and no pair reaches it after, whereas an exact-match
+  check would have caught only card 31 and called the deck clean.
 - **Icon labels and disclaimer text are the deck's own**, taken from the Icon Cheat Sheet
   (card 46) and Disclaimer (card 47). Change them in the build script, not in components.
 - **"Healing Traits" must always render with its non-claim framing.** It is the deck's
