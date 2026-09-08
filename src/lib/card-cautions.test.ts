@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { SITE_CAUTIONS, siteCautionFor } from './card-cautions';
+import { KNOWN_CARD_ISSUES } from './card-issues';
 import { HERBS } from './deck';
 
 /**
@@ -22,19 +23,44 @@ describe('site cautions', () => {
     }
   });
 
-  it('cover St. John’s Wort and nothing else', () => {
+  it('cover Elderberry and St. John’s Wort, and nothing else', () => {
     // Deliberately exact. This is a high bar by design (see card-cautions.ts): a general
     // herbal caveat belongs on /safety, said once, not repeated onto card pages until
     // nobody reads any of them.
-    expect(Object.keys(SITE_CAUTIONS)).toEqual(['32']);
+    expect(Object.keys(SITE_CAUTIONS).sort()).toEqual(['31', '32']);
+
     const wort = BY_NUMBER.get(32)!;
     expect(wort.commonName).toBe("St. John's Wort");
     expect(siteCautionFor(wort)).toContain('prescription medicines');
+
+    const elder = BY_NUMBER.get(31)!;
+    expect(elder.commonName).toBe('Elderberry');
+    expect(siteCautionFor(elder)).toMatch(/leaves and green shoots are not safe/i);
   });
 
   it('leaves every other plant without one', () => {
     const withCaution = HERBS.filter((herb) => siteCautionFor(herb)).map((h) => h.cardNumber);
-    expect(withCaution).toEqual([32]);
+    expect(withCaution).toEqual([31, 32]);
+  });
+
+  /**
+   * ELDERBERRY IS THE ONE CARD WHERE THE TWO LAYERS MUST BOTH FIRE, and the pairing is the
+   * point rather than a duplication to tidy away. The card lists "Leaf" and "Shoot" as
+   * usable parts, so a reader needs two different answers: the card is wrong (the printing
+   * error note) and here is the risk (this caution). Drop either and the page is worse —
+   * the note alone leaves somebody wondering how much it matters, and the caution alone
+   * leaves them thinking their deck is fine.
+   *
+   * And neither may leak into the transcription: the usable-parts list still reads exactly
+   * as the card prints it, which is what `deck.test.ts` guards from the other side.
+   */
+  it('pairs the elderberry caution with a recorded printing error, both layers intact', () => {
+    const elder = BY_NUMBER.get(31)!;
+    expect(siteCautionFor(elder), 'the risk itself').toBeDefined();
+    expect(KNOWN_CARD_ISSUES['31'], 'the note saying the card is wrong').toMatch(/Leaf.*Shoot/);
+    // The transcription is untouched — the card says these are usable, so the page does.
+    expect(elder.back?.usableParts).toEqual(['Berry', 'Flower', 'Leaf', 'Shoot']);
+    expect(elder.warning, 'must not become a printed card warning').toBeUndefined();
   });
 
   /**

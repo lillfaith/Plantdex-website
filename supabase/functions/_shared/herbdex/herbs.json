@@ -41,6 +41,7 @@
   },
   "knownCardIssues": {
     "2": "Usable parts list both 'Stock' and 'Stalk'; one is likely a typo.",
+    "31": "Usable parts list 'Leaf' and 'Shoot'; elder leaves and green shoots are not safely usable.",
     "38": "'Sallicin' is likely a typo for 'Salicin'."
   },
   "herbs": [

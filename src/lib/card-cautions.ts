@@ -25,8 +25,24 @@ import type { Herb } from './types';
  * preparations for a use case where the reader is disproportionately likely to already be
  * taking one of them. The audit graded #32's evidence `strong` and flagged the interaction
  * risk in the same breath.
+ *
+ * #31 ELDERBERRY MEETS IT FOR A DIFFERENT REASON, AND IS THE STRONGER CASE. The other
+ * cautions here would apply to a correctly printed card; this one exists because the card
+ * is WRONG. Its reprinted back lists "Leaf" and "Shoot" among usable parts, and elder's
+ * leaves, green stems and unripe berries carry cyanogenic glycosides — the flowers and
+ * cooked ripe berries are the parts the plant is actually used for. So the card does not
+ * merely fail to warn: it points a reader at the two parts to leave alone, under a heading
+ * that says "usable". That is the one situation where staying silent is the active choice.
+ *
+ * It is deliberately paired with the `KNOWN_CARD_ISSUES` entry for 31 rather than replacing
+ * it. The two answer different questions — "is my card wrong?" and "what is the risk?" —
+ * and a reader holding the deck needs both. Neither may be folded into the transcription
+ * itself: the usable-parts list still reads exactly as printed.
  */
 export const SITE_CAUTIONS: Record<string, string> = {
+  '31':
+    'Beware: elder leaves and green shoots are not safe to use, despite this card listing ' +
+    'them. The flowers and cooked ripe berries are the parts traditionally used.',
   '32': 'Beware: interacts with many prescription medicines.',
 };
 

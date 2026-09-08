@@ -209,6 +209,11 @@ CARD_WARNINGS = {33: "Beware: this plant has a poisonous lookalike."}
 # hands.
 KNOWN_CARD_ISSUES = {
     2: "Usable parts list both 'Stock' and 'Stalk'; one is likely a typo.",
+    # Not a typo, and the only entry here whose consequence is a hazard rather than a
+    # misprint. Recorded as an error because it is one — the reprinted back is otherwise
+    # correct — and paired with a SITE_CAUTIONS entry in src/lib/card-cautions.ts, because
+    # this note is a correction about the CARD and a reader also needs the risk itself.
+    31: "Usable parts list 'Leaf' and 'Shoot'; elder leaves and green shoots are not safely usable.",
     38: "'Sallicin' is likely a typo for 'Salicin'.",
 }
 

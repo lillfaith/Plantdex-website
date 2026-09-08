@@ -119,6 +119,16 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   share four or more of the six back fields. Four is measured, not guessed — all four bad
   pairings cleared it before the reprint and no pair reaches it after, whereas an exact-match
   check would have caught only card 31 and called the deck clean.
+- **Where a card's error is a hazard, BOTH layers fire and neither substitutes for the
+  other.** Card 31's reprinted back lists "Leaf" and "Shoot" among usable parts, and elder's
+  leaves and green shoots are not safely usable — so it carries a `KNOWN_CARD_ISSUES` entry
+  *and* a `SITE_CAUTIONS` entry. They answer different questions: the note says "your card is
+  wrong", the caution says "here is the risk", and each alone leaves the reader with half of
+  it. The transcription itself stays untouched — the usable-parts list still reads exactly as
+  printed — and neither ever becomes a `CARD_WARNINGS` entry, which is reserved for warnings
+  the card really prints (only card 33). `card-cautions.test.ts` pins all three halves.
+  Note the two render in different places by design: `LockedHerb` shows the caution but not
+  the note, because a locked page has no transcription for the note to be about.
 - **Icon labels and disclaimer text are the deck's own**, taken from the Icon Cheat Sheet
   (card 46) and Disclaimer (card 47). Change them in the build script, not in components.
 - **"Healing Traits" must always render with its non-claim framing.** It is the deck's
