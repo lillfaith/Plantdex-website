@@ -87,6 +87,16 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   quercetin: molecule('quercetin', 'A flavonol'),
   kaempferol: molecule('kaempferol', 'A flavonol'),
   menthol: molecule('menthol', 'A monoterpene alcohol'),
+  /*
+   * Card #24's three, which arrived with the August reprint — until then Catnip printed
+   * Sumac's back and named none of them. They shipped captioned-but-undrawn for one commit,
+   * which put three placeholder boxes on the one card whose signature compound a reader
+   * actually comes looking for, so the drawings followed. `citronellal` below is the
+   * aldehyde and a different molecule; all three share one skeleton in the generator.
+   */
+  nepetalactone: molecule('nepetalactone', 'An iridoid lactone'),
+  citronellol: molecule('citronellol', 'A monoterpene alcohol'),
+  geraniol: molecule('geraniol', 'A monoterpene alcohol'),
   menthone: molecule('menthone', 'A monoterpene ketone'),
   limonene: molecule('limonene', 'A cyclic monoterpene'),
   thymol: molecule('thymol', 'A monoterpene phenol'),
@@ -105,12 +115,6 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   // cannot tell which these are.
   rutin: molecule(undefined, 'Quercetin bound to the disaccharide rutinose'),
   taraxasterol: molecule(undefined, 'A pentacyclic triterpene'),
-  // Arrived with the August reprint of card 24, which until then printed Sumac's back.
-  // `citronellal` above is the aldehyde and already has a drawing; these three are
-  // different molecules and have none yet, so they take the honest caption instead.
-  nepetalactone: molecule(undefined, 'An iridoid lactone'),
-  citronellol: molecule(undefined, 'A monoterpene alcohol'),
-  geraniol: molecule(undefined, 'A monoterpene alcohol'),
   resveratrol: molecule('resveratrol', 'A stilbenoid'),
   lawsone: molecule('lawsone', 'A naphthoquinone'),
   emodin: molecule('emodin', 'An anthraquinone'),

@@ -468,6 +468,69 @@ export const STRUCTURES: Record<string, StructureArt> = {
       </>
     ),
   },
+  'citronellol': {
+    viewBox: '-43.1 -34.0 192.4 72.0',
+    art: (
+      <>
+      <path d="M0.0 0.0L19.1 -11.0" />
+      <path d="M19.1 -11.0L38.1 0.0" />
+      <path d="M38.1 0.0L57.2 -11.0" />
+      <path d="M57.2 -11.0L76.2 0.0" />
+      <path d="M76.2 0.0L95.3 -11.0" />
+      <path d="M95.3 -11.0L114.3 0.0" />
+      <path d="M93.6 -8.1L112.6 2.9" />
+      <path d="M114.3 0.0L133.4 -11.0" />
+      <path d="M0.0 0.0L-10.0 -5.8" />
+      <path d="M38.1 0.0L38.1 22.0" />
+      <path d="M114.3 0.0L114.3 22.0" />
+      <text x="-19.1" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      </>
+    ),
+  },
+  'geraniol': {
+    viewBox: '-43.1 -34.0 192.4 72.0',
+    art: (
+      <>
+      <path d="M0.0 0.0L19.1 -11.0" />
+      <path d="M19.1 -11.0L38.1 0.0" />
+      <path d="M17.4 -8.1L36.4 2.9" />
+      <path d="M38.1 0.0L57.2 -11.0" />
+      <path d="M57.2 -11.0L76.2 0.0" />
+      <path d="M76.2 0.0L95.3 -11.0" />
+      <path d="M95.3 -11.0L114.3 0.0" />
+      <path d="M93.6 -8.1L112.6 2.9" />
+      <path d="M114.3 0.0L133.4 -11.0" />
+      <path d="M0.0 0.0L-10.0 -5.8" />
+      <path d="M38.1 0.0L38.1 22.0" />
+      <path d="M114.3 0.0L114.3 22.0" />
+      <text x="-19.1" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      </>
+    ),
+  },
+  'nepetalactone': {
+    viewBox: '-40.6 -67.0 109.5 127.0',
+    art: (
+      <>
+      <path d="M0.0 -22.0L-12.3 -14.9" />
+      <path d="M-19.1 -3.2L-19.1 11.0" />
+      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-12.4 9.9L-2.4 15.6" />
+      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M19.1 11.0L19.1 -11.0" />
+      <path d="M19.1 -11.0L0.0 -22.0" />
+      <path d="M0.0 -22.0L0.0 -36.2" />
+      <path d="M3.4 -22.0L3.4 -36.2" />
+      <path d="M-0.0 22.0L-0.0 44.0" />
+      <path d="M19.1 -11.0L40.0 -17.8" />
+      <path d="M40.0 -17.8L52.9 0.0" />
+      <path d="M52.9 0.0L40.0 17.8" />
+      <path d="M40.0 17.8L19.1 11.0" />
+      <path d="M40.0 -17.8L46.8 -38.7" />
+      <text x="-19.1" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      </>
+    ),
+  },
   'lawsone': {
     viewBox: '-65.5 -99.2 131.0 134.3',
     art: (

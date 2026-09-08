@@ -224,3 +224,36 @@ describe('class scaffolds', () => {
     }
   });
 });
+
+describe('a drawn structure is actually wired to its compound', () => {
+  /**
+   * THE TRAP THIS EXISTS FOR, WALKED INTO ON THE VERY COMMIT THAT ADDED IT.
+   *
+   * Adding a molecule takes two edits in two files: the geometry goes into
+   * `scripts/chemistry/build_structures.py` (which regenerates `structures.tsx`), and the
+   * compound entry here has to be pointed at it by name. Do only the first and the build is
+   * green, the tests pass, the structure sits in `STRUCTURES` — and the card renders a
+   * PLACEHOLDER BOX, because `molecule(undefined, …)` is a perfectly valid entry meaning
+   * "named honestly, not drawn yet".
+   *
+   * That is exactly what shipped for nepetalactone, citronellol and geraniol: three
+   * placeholder boxes on card #24, on the one plant whose signature compound a reader comes
+   * looking for, caught only by screenshotting the page. Nothing in the type system can see
+   * it, because both halves are individually correct.
+   *
+   * So: if a structure exists under a compound's own name, that compound must use it. The
+   * opposite slip — a structure name with a typo in it — is already covered above by
+   * "points every declared structure at art that exists", so it is not repeated here.
+   */
+  it('never leaves a compound undrawn while its structure sits in STRUCTURES', () => {
+    const orphaned: string[] = [];
+    for (const id of knownCompoundIds()) {
+      const entry = compoundFor(id);
+      if (!entry || entry.kind !== 'molecule' || entry.structure) continue;
+      // The generator keys structures by the compound's own name for every molecule in
+      // this file, so a hit here is a drawing nobody is showing.
+      if (STRUCTURES[id]) orphaned.push(id);
+    }
+    expect(orphaned, 'these have a drawing but render as a placeholder box').toEqual([]);
+  });
+});

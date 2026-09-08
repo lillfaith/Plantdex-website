@@ -92,6 +92,14 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   Ring atoms are walked, never sorted. Every new structure must be rendered and read back
   before it ships; anything not both accurate and legible at plate size is dropped rather than
   shipped, which is why rutin, taraxasterol and ellagic acid are deliberately absent.
+- **Adding a molecule is TWO edits, and doing only the first ships a placeholder box.** The
+  geometry goes in `build_structures.py`; the entry in `compounds.ts` then has to name it.
+  Do only the geometry and everything is green — the structure is in `STRUCTURES`, the types
+  are satisfied, `molecule(undefined, …)` is a legitimate entry meaning "named honestly, not
+  drawn yet" — and the card renders an empty frame. That shipped for nepetalactone,
+  citronellol and geraniol and was caught by screenshotting the page, not by any test, so
+  `compounds.test.ts` now fails on a compound left undrawn while a structure of its own name
+  exists.
 - **A `chemical-class` may carry a `scaffold`, never a `structure`**, and only when one
   genuine skeleton defines the whole class (a catechin *is* a flavan-3-ol). Tannins, saponins,
   alkaloids, glycosides, lignans and sesquiterpene lactones have no single skeleton and must

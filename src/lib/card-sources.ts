@@ -21,10 +21,19 @@ import type { Herb, SourceRef } from './types';
  * — so keeping it out of the synced set costs no redeploy. `edge-shared.test.ts` caught
  * exactly this mistake when `card-issues.ts` was first written.
  *
- * THREE CARDS CARRY NOTHING, DELIBERATELY.
- *   #11 Purple Dead Nettle — the printed back belongs to another plant (see
- *       `card-issues.ts`), so there is no claim on it worth sourcing until it is reprinted.
+ * THREE CARDS CARRY NOTHING, and all three are now waiting on the same thing — an audit.
+ *   #11 Purple Dead Nettle — was `exclude` while the printed back belonged to another
+ *       plant, on the stated condition "until it is reprinted". The August reprint met that
+ *       condition, so it is `hold` now: the card has its own back at last and nobody has
+ *       sourced it yet. Nothing about the page changes — `hold` and `exclude` both render
+ *       as silence — but the record should say "unaudited", not "do not source".
  *   #19 Sheep's Sorrel and #21 Chicory — held pending verification of the card backs.
+ *
+ * A NOTE ON #19's STATED REASON. Its audit note worries that it "may have the wrong back"
+ * because it sits next to Sumac in the deck. `deck.test.ts` now proves no two cards share
+ * four or more of the six back fields, so #19 duplicates nothing — which is evidence for
+ * its back, though not proof that what it prints is correct. The hold stands until somebody
+ * checks the plant, not merely the neighbours.
  *
  * AND #38 WILLOW IS WHY THE "no two cards share a source" TEST EXISTS. The audit mapped
  * #38 to Cinquefoil (*Potentilla*), which is not what the deck prints: card #38 is Willow
@@ -181,11 +190,15 @@ export const CARD_SOURCES: Record<string, CardSources> = {
   },
   // #11 Purple Dead Nettle
   '11': {
-    evidence: 'exclude',
+    evidence: 'hold',
     sourceIds: [],
     auditNote:
-      'IGNORE FOR NOW: the card back in the current PDF is the wrong back. Do not source, display ' +
-      'citations for, or revise this plant from this PDF.',
+      'HOLD FOR AUDIT: excluded until the August reprint because the printed back was ' +
+      "Dandelion's, so there was no claim about Lamium purpureum to source. The reprint " +
+      'fixed that — the back now names flavonoids, tannins, iridoids and vitamin C — so the ' +
+      'reason for excluding it is gone and the card is simply unaudited, like #19 and #21. ' +
+      'It renders exactly as it did (no citations, no evidence label); what changed is that ' +
+      'this is now a queue rather than a refusal.',
   },
   // #12 Wild Violet
   '12': {

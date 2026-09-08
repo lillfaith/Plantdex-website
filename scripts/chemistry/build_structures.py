@@ -209,22 +209,70 @@ M['kaempferol'] = ('Kaempferol', flavonol('kaempferol', (3,)))   # 4'-OH only
 # Genistein: an ISOflavone — same chromone core, B ring on C3 rather than C2, no 3-OH.
 M['genistein'] = ('Genistein', flavonol('genistein', (3,), b_at='c3', three_oh=False))
 
-# Citronellal: 3,7-dimethyloct-6-enal. A plain zigzag, so it is placed directly.
-m = Mol('citronellal')
-step = [(L * 0.866, -L * 0.5), (L * 0.866, L * 0.5)]
-pts = [(0.0, 0.0)]
-for i in range(7):
-    d = step[i % 2]
-    pts.append((pts[-1][0] + d[0], pts[-1][1] + d[1]))
-for i in range(7):
-    # C6=C7 is the only double bond; the aldehyde is drawn below.
-    m.bond(pts[i], pts[i + 1], 2 if i == 5 else 1)
-o = (pts[0][0] - L * 0.866, pts[0][1] - L * 0.5)
-m.bond(pts[0], o, 2); m.label(o, 'O')                       # the aldehyde
-for idx in (2, 6):                                          # methyls at C3 and C7
-    up = (pts[idx][0], pts[idx][1] - L) if pts[idx][1] <= pts[idx - 1][1] else (pts[idx][0], pts[idx][1] + L)
-    m.bond(pts[idx], up)
-M['citronellal'] = ('Citronellal', m)
+def dimethyloctenyl(name, c1_label, c1_double, c2_ene):
+    """
+    The 3,7-dimethyloctenyl skeleton three of the deck's acyclic monoterpenoids share.
+
+    All of them are one 8-carbon zigzag carrying methyls at C3 and C7 with a C6=C7 double
+    bond, and they differ only at C1 and in whether C2=C3 is unsaturated too:
+
+        citronellal   C1 = CHO     (=O)     saturated C2-C3     3,7-dimethyloct-6-enal
+        citronellol   C1 = CH2OH   (-OH)    saturated C2-C3     3,7-dimethyloct-6-en-1-ol
+        geraniol      C1 = CH2OH   (-OH)    C2=C3               3,7-dimethylocta-2,6-dien-1-ol
+
+    Placed directly rather than through the ring helpers, because a chain has no ring to
+    walk: every position is a fixed alternating step from the last, so there is nothing here
+    for a sort to put in the wrong order — which is the failure that damaged the fused rings.
+    Written once and parameterised rather than copied twice, so the three cannot drift into
+    disagreeing about a skeleton they physically share.
+    """
+    m = Mol(name)
+    step = [(L * 0.866, -L * 0.5), (L * 0.866, L * 0.5)]
+    pts = [(0.0, 0.0)]
+    for i in range(7):
+        d = step[i % 2]
+        pts.append((pts[-1][0] + d[0], pts[-1][1] + d[1]))
+    for i in range(7):
+        # Bond i joins C(i+1) to C(i+2), so i == 5 is C6=C7 and i == 1 is C2=C3.
+        m.bond(pts[i], pts[i + 1], 2 if i == 5 or (c2_ene and i == 1) else 1)
+    o = (pts[0][0] - L * 0.866, pts[0][1] - L * 0.5)
+    m.bond(pts[0], o, 2 if c1_double else 1); m.label(o, c1_label)
+    for idx in (2, 6):                                          # methyls at C3 and C7
+        up = (pts[idx][0], pts[idx][1] - L) if pts[idx][1] <= pts[idx - 1][1] else (pts[idx][0], pts[idx][1] + L)
+        m.bond(pts[idx], up)
+    return m
+
+
+M['citronellal'] = ('Citronellal', dimethyloctenyl('citronellal', 'O', True, False))
+M['citronellol'] = ('Citronellol', dimethyloctenyl('citronellol', 'OH', False, False))
+M['geraniol'] = ('Geraniol', dimethyloctenyl('geraniol', 'OH', False, True))
+
+# Nepetalactone: 4,7-dimethyl-5,6,7,7a-tetrahydrocyclopenta[c]pyran-1(4aH)-one — the
+# iridoid catnip is named for, and the one compound on card #24 a reader comes looking for.
+#
+# A cyclopentane cis-fused to a six-membered α,β-unsaturated lactone. The name gives the
+# saturation directly: "5,6,7,7a-tetrahydro" and "1(4aH)-one" leave C3=C4 as the only ring
+# double bond, so the enol ether is the alkene and everything in the five-ring is saturated.
+#
+# The ring double bond is set through `ring(aromatic_from=...)` rather than by indexing
+# `m.bonds`, because an absolute index is only correct while this ring happens to be the
+# first thing drawn. And the cyclopentane's vertices come from the walk `ring_on_edge`
+# guarantees — indices 0 and 1 are the shared edge, the rest follow round it — which is
+# what makes "the methyl goes on C7" a fact rather than a hope. Sorting those vertices on
+# position is precisely the bug that once put a double bond across a pyran ring.
+cx, cy = 0.0, 0.0
+v = ring6(cx, cy)
+m = Mol('nepetalactone')
+# Around the pyranone: v0 C1 (lactone carbonyl), v1 O2, v2 C3, v3 C4, v4 C4a, v5 C7a.
+m.ring(v, aromatic_from=(2,), centre=(cx, cy))          # C3=C4
+m.label(v[1], 'O')                                      # the ring oxygen
+o = away(v[0], cx, cy)
+m.bond(v[0], o, 2); m.label(o, 'O')                     # C1=O, the lactone carbonyl
+m.bond(v[3], away(v[3], cx, cy))                        # C4 methyl
+R, rc = fused(m, v[4], v[5], 5, (cx, cy))               # cyclopentane on the C4a-C7a edge
+# R[0] = C4a, R[1] = C7a, then round: R[2] = C7, which carries the second methyl.
+m.bond(R[2], away(R[2], *rc))                           # C7 methyl
+M['nepetalactone'] = ('Nepetalactone', m)
 
 # Lawsone, second attempt: 2-hydroxy-1,4-naphthoquinone, placed by hand. The generic
 # fused-ring helper sorted the quinone's free vertices by position and put the carbonyls on
