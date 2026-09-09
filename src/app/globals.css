@@ -158,6 +158,32 @@ html {
   background: var(--page-bg);
 }
 
+/*
+ * THE PAGE NEVER SCROLLS SIDEWAYS.
+ *
+ * The rarity aura is a decorative blur that deliberately bleeds OUTSIDE the element it
+ * haloes — `RarityAura` says in as many words that its parent must not clip, because
+ * clipping a glow at its own edge is the same as not drawing it. At Epic the hero layer is
+ * `-inset-20`, and at a 390px viewport that reaches 13px past the page: cards 43, 44 and 45
+ * — the only three Epic cards in the deck, and only once DISCOVERED — each had a horizontal
+ * scrollbar with nothing on the other side of it.
+ *
+ * BOTH selectors are required and that was measured, not reasoned about. On `body` alone the
+ * rule does nothing: the root's overflow is propagated to the viewport, and while the root
+ * is `visible` the propagation comes from body and body's own box then computes back to
+ * visible, so nothing clips. On `html` alone the same propagation empties it out. Naming
+ * both leaves one that actually applies. Every arrangement here looks correct in the
+ * stylesheet; only one of them stops the page moving.
+ *
+ * `clip` rather than `hidden` so this never becomes a scroll container and never breaks
+ * `position: sticky` below it. And at the VIEWPORT rather than on `main`, which also works
+ * but would trim the glow at the column edge on desktop, where it does not overflow at all.
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   /*
    * Two washes rather than one. The old single violet-800 bloom was a stage light: bright,
