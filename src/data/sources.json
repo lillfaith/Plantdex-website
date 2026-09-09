@@ -1239,6 +1239,42 @@
       "organization": "PubMed Central",
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11296349/",
       "verified": false
+    },
+    {
+      "id": "lamium-purpureum-phytochem-2026",
+      "kind": "journal",
+      "title": "A Comprehensive Phytochemical Analysis, Antioxidant, and Antibacterial Properties of Lamium purpureum L.",
+      "author": "Ranjbar et al.",
+      "year": 2026,
+      "publication": "Chemistry & Biodiversity",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13372050/",
+      "accessed": "2026-09-09",
+      "verified": false,
+      "note": "Supplied by the deck owner for card #11. Identifiers cross-checked from several independent search results — PMID 42455643, PMC13372050, DOI 10.1002/cbdv.202502866 — and the title, authors, year and journal agree across all of them. NOT verified in the sense this registry means: pubmed.ncbi.nlm.nih.gov and pmc.ncbi.nlm.nih.gov are blocked by this environment's egress proxy, so the full text has not been opened and read against what it would be cited for. Species-specific to Lamium purpureum. Flip `verified` to true once a person has opened it."
+    },
+    {
+      "id": "rumex-genus-review-2022",
+      "kind": "journal",
+      "title": "The genus Rumex (Polygonaceae): an ethnobotanical, phytochemical and pharmacological review",
+      "author": "Li et al.",
+      "year": 2022,
+      "publication": "Natural Products and Bioprospecting",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9203642/",
+      "accessed": "2026-09-09",
+      "verified": false,
+      "note": "Supplied by the deck owner for card #19. PMC9203642 cross-checked; title, authors, year and journal agree across independent results. GENUS-LEVEL, not species-specific: it reviews the genus Rumex and includes R. acetosella among the species assessed, so it supports genus-level chemistry and traditional use rather than anything particular to sheep's sorrel. That distinction is why this card cannot go to `strong` on this source alone. Full text not opened — PMC is blocked by this environment's egress proxy."
+    },
+    {
+      "id": "cichorium-intybus-review-2013",
+      "kind": "journal",
+      "title": "Cichorium intybus: Traditional Uses, Phytochemistry, Pharmacology, and Toxicology",
+      "author": "Street RA, Sidana J, Prinsloo G",
+      "year": 2013,
+      "publication": "Evidence-Based Complementary and Alternative Medicine",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3860133/",
+      "accessed": "2026-09-09",
+      "verified": false,
+      "note": "Supplied by the deck owner for card #21. The best-identified of the three: PMID 24379887, PMC3860133 and DOI 10.1155/2013/579319 all cross-check, and the title, three named authors, journal and 2013 date agree across independent results. Species-specific to Cichorium intybus, and its own abstract states toxicological data on the species is limited — which is worth carrying into any evidence grade rather than reading the review's breadth as strength. Full text not opened; PubMed and PMC are blocked by this environment's egress proxy."
     }
   ]
 }

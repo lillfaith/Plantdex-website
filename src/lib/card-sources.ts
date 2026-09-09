@@ -290,8 +290,14 @@ export const CARD_SOURCES: Record<string, CardSources> = {
     evidence: 'hold',
     sourceIds: [],
     auditNote:
-      'HOLD FOR VERIFICATION: this card is immediately adjacent to Sumac in the current deck and ' +
-      'may have the wrong back. Do not source or revise it until the correct back is confirmed.',
+      'UNAUDITED, BUT THE BACK IS CONFIRMED. This card was held because it sits beside Sumac in ' +
+      'the deck and three of its neighbours turned out to carry the wrong back. That suspicion is ' +
+      'now disproven rather than merely untested: it shares ZERO of the six back fields with #20, ' +
+      'and what it prints is species-correct for Rumex acetosella — oxalic acid is exactly what ' +
+      'sheep\'s sorrel is known for. So the reason for the hold is gone and only the audit is ' +
+      'outstanding. The owner has supplied a genus-level Rumex review; it is in the registry ' +
+      'UNVERIFIED, because nobody has yet opened it, and a genus review would not carry this card ' +
+      'past `mixed` on its own.',
   },
   // #20 Sumac
   '20': {
@@ -310,8 +316,13 @@ export const CARD_SOURCES: Record<string, CardSources> = {
     evidence: 'hold',
     sourceIds: [],
     auditNote:
-      'HOLD FOR VERIFICATION: this card is immediately adjacent to Sumac in the current deck and ' +
-      'may have the wrong back. Do not source or revise it until the correct back is confirmed.',
+      'UNAUDITED, BUT THE BACK IS CONFIRMED. Held for the same reason as #19 — a neighbour of ' +
+      'Sumac in a stretch of the deck where three cards carried the wrong back. Disproven the same ' +
+      'way: zero of six back fields shared with #20, and lactucopicrin, lactucin and inulin are ' +
+      'precisely Cichorium intybus. The owner has supplied a species-specific 2013 review, which ' +
+      'sits in the registry UNVERIFIED until a person opens it. Note for whoever does: that ' +
+      'review states outright that toxicological data on the species is limited, which belongs in ' +
+      'the grade rather than being read as breadth.',
   },
   // #22 Burdock
   '22': {
