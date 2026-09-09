@@ -13,6 +13,8 @@ import {
   type SeedShelfEntry,
 } from '@/lib/seed-shelf';
 import { track } from '@/lib/analytics';
+import { planShelfRows, type ShelfRow } from '@/lib/shelf-layout';
+import type { HerbdexState } from '@/lib/types';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { SeedPacket } from './SeedPacket';
 import { ShelfPlant } from './ShelfPlant';
@@ -41,21 +43,18 @@ function formatDate(iso: string): string {
 }
 
 /**
- * Packets per board.
+ * Column counts, one per breakpoint.
  *
- * THIS NUMBER AND THE COLUMN COUNT ARE THE SAME NUMBER, and they have to be: a board is one
- * plank drawn under one row, so a board holding more packets than the grid has columns wraps
- * — and the plank then appears under the second row only, with the first row floating above
- * nothing. That is exactly what the first render did.
- *
- * So the shelf is three across at every width, and the unit itself is given a fixed maximum
- * width instead. That is also how a real shelf behaves: it does not grow columns when you
- * move it into a bigger room, the objects on it just get more room.
- *
- * The class names are written out in full because Tailwind scans source text — an
- * interpolated `grid-cols-${n}` compiles to nothing and the grid collapses to one column.
+ * A BOARD IS ONE PLANK UNDER ONE ROW, so the number of slots a row holds and the number of
+ * columns it renders have to be the same number, or the row wraps and the plank lands under
+ * the wrong half of it. Tailwind cannot see an interpolated `grid-cols-${n}`, so both counts
+ * exist as literal classes and the two plans are rendered as separate stacks, one hidden per
+ * breakpoint. That duplicates the packets in the DOM and is worth it: the alternative is
+ * measuring the viewport in JavaScript, which means either a hydration mismatch or a visible
+ * reflow on every load of a page whose whole job is to look like a solid object.
  */
-const PER_BOARD = 3;
+const COLUMNS_MOBILE = 3;
+const COLUMNS_DESKTOP = 5;
 
 export function SeedShelfView() {
   const { entries, signedIn } = useSeedShelf();
@@ -88,10 +87,10 @@ export function SeedShelfView() {
     [discover],
   );
 
-  const boards: SeedShelfEntry[][] = [];
-  for (let i = 0; i < ordered.length; i += PER_BOARD) {
-    boards.push(ordered.slice(i, i + PER_BOARD));
-  }
+  // Planned twice, once per breakpoint. `planShelfRows` is pure and tested: every entry
+  // appears exactly once and in order, and the pots only ever dress slots.
+  const rowsMobile = planShelfRows(ordered, COLUMNS_MOBILE);
+  const rowsDesktop = planShelfRows(ordered, COLUMNS_DESKTOP);
 
   return (
     /*
@@ -194,40 +193,23 @@ export function SeedShelfView() {
               floating on a page with no furniture on it whatsoever. The board is real and the
               plants standing on it are real; the empty thirds are the ones about to be filled.
             */}
-            <div className="mt-6 max-w-md sm:max-w-xl">
-              <ShelfBoard>
-                {[0, 1, 2].map((slot) => (
-                  <ShelfProp key={slot} variant={slot} />
-                ))}
-              </ShelfBoard>
+            <div className="mt-6 max-w-md sm:max-w-2xl">
+              <Shelf rows={planShelfRows([], COLUMNS_MOBILE)} columns={COLUMNS_MOBILE} mobile state={state} />
+              <Shelf rows={planShelfRows([], COLUMNS_DESKTOP)} columns={COLUMNS_DESKTOP} state={state} />
             </div>
           </>
         ) : (
           // Left-aligned with the heading rather than centred: the shelf is a piece of
           // furniture standing against the same wall as everything else on the page.
-          <div className="mt-6 max-w-md space-y-5 sm:max-w-xl">
-            {boards.map((board, index) => (
-              <ShelfBoard key={index}>
-                {board.map((entry) => (
-                  <Packet
-                    key={entry.speciesKey}
-                    entry={entry}
-                    status={shelfStatus(entry, state)}
-                    onClaim={() => claim(entry)}
-                  />
-                ))}
-                {/*
-                  THE GAP ON THE LAST BOARD IS WHERE THE PLANTS GO, and that is the whole rule:
-                  a pot never takes a slot a packet could have used, so the three-across
-                  invariant above is untouched and no board ever wraps. It also puts the
-                  dressing exactly where the shelf looked unfinished — a lone packet on a wide
-                  plank with two empty thirds beside it.
-                */}
-                {Array.from({ length: PER_BOARD - board.length }, (_, slot) => (
-                  <ShelfProp key={`plant-${slot}`} variant={index + slot} />
-                ))}
-              </ShelfBoard>
-            ))}
+          <div className="mt-6 max-w-md sm:max-w-2xl">
+            <Shelf
+              rows={rowsMobile}
+              columns={COLUMNS_MOBILE}
+              mobile
+              state={state}
+              onClaim={claim}
+            />
+            <Shelf rows={rowsDesktop} columns={COLUMNS_DESKTOP} state={state} onClaim={claim} />
           </div>
         )}
 
@@ -252,13 +234,60 @@ export function SeedShelfView() {
 }
 
 /**
+ * A stack of boards, one plank per row, for one breakpoint.
+ *
+ * Rendered twice by the page and hidden by media query rather than measured in JavaScript —
+ * see the column constants at the top for why. `mobile` picks which half is visible; nothing
+ * else about the two differs.
+ */
+function Shelf({
+  rows,
+  columns,
+  mobile = false,
+  state,
+  onClaim,
+}: {
+  rows: ShelfRow[];
+  columns: number;
+  mobile?: boolean;
+  state: HerbdexState;
+  onClaim?: (entry: SeedShelfEntry) => void;
+}) {
+  return (
+    <div className={`${mobile ? 'sm:hidden' : 'hidden sm:block'} space-y-6`}>
+      {rows.map((row, index) => (
+        <ShelfBoard key={index} columns={columns}>
+          {row.map((slot, position) =>
+            slot.kind === 'packet' ? (
+              <Packet
+                key={slot.entry.speciesKey}
+                entry={slot.entry}
+                status={shelfStatus(slot.entry, state)}
+                onClaim={() => onClaim?.(slot.entry)}
+              />
+            ) : (
+              <ShelfProp key={`pot-${position}`} variant={slot.variant} />
+            ),
+          )}
+        </ShelfBoard>
+      ))}
+    </div>
+  );
+}
+
+/**
  * One board of the shelf.
  *
  * The plank is drawn by the container, not by the packets, for the same reason the Garden's
  * soil is: a shelf holding one packet still has to look like a shelf. Uprights at both ends
- * make it read as built rather than as a stripe.
+ * make it read as built rather than as a stripe, and the front edge below the top face is
+ * what gives the plank thickness — without it the board reads as a painted line rather than
+ * as a piece of wood with a near side.
  */
-function ShelfBoard({ children }: { children: React.ReactNode }) {
+function ShelfBoard({ columns, children }: { columns: number; children: React.ReactNode }) {
+  // Literal classes, never interpolated: Tailwind cannot see `grid-cols-${n}` and the grid
+  // silently collapses to a single column.
+  const grid = columns === 5 ? 'grid-cols-5' : 'grid-cols-3';
   return (
     <div className="relative px-3">
       <div
@@ -269,13 +298,10 @@ function ShelfBoard({ children }: { children: React.ReactNode }) {
         aria-hidden="true"
         className="shelf-upright pointer-events-none absolute top-2 right-0 bottom-0 w-2 rounded-r-sm"
       />
-      <ul
-        className="grid grid-cols-3 items-end gap-x-3 px-2 sm:gap-x-6"
-      >
-        {children}
-      </ul>
-      {/* The board itself: a lit top edge, a grain, and a shadow underneath. */}
-      <div aria-hidden="true" className="shelf-board h-3 rounded-sm" />
+      <ul className={`grid ${grid} items-end gap-x-2 px-2 sm:gap-x-4`}>{children}</ul>
+      {/* The board: a lit top face, then a darker front edge that gives it depth. */}
+      <div aria-hidden="true" className="shelf-board h-3 rounded-t-sm" />
+      <div aria-hidden="true" className="shelf-edge h-2 rounded-b-sm" />
     </div>
   );
 }
@@ -283,14 +309,16 @@ function ShelfBoard({ children }: { children: React.ReactNode }) {
 /**
  * A potted plant standing in a slot no packet is using.
  *
- * Narrower than a packet on purpose: a pot filling its third as completely as the paper does
- * would read as another collectible rather than as the furniture beside the collectibles. It
- * carries no label, so the board's `items-end` sets it straight down on the plank.
+ * Narrower than a packet on purpose: a pot filling its column as completely as the paper
+ * does would read as another collectible rather than as the furniture beside the
+ * collectibles. It carries no label, so the board's `items-end` sets it straight down on the
+ * plank — and it is `aria-hidden`, because a screen reader listing somebody's collection
+ * should hear the species they saved and nothing else.
  */
 function ShelfProp({ variant }: { variant: number }) {
   return (
-    <li className="flex flex-col items-center">
-      <div className="mx-auto w-full max-w-12 drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
+    <li aria-hidden="true" className="flex flex-col items-center">
+      <div className="mx-auto w-full max-w-11 drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
         <ShelfPlant variant={variant} />
       </div>
     </li>
@@ -314,7 +342,7 @@ function Packet({
     <li className="flex flex-col items-center">
       {/* The packet stands ON the board: it sits in the row above and the plank is drawn
           under it, so the bottom edge of the paper meets the wood. */}
-      <div className="relative mx-auto w-full max-w-20 drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
+      <div className="relative mx-auto w-full max-w-24 drop-shadow-[0_4px_3px_rgba(0,0,0,0.5)]">
         <SeedPacket
           recipe={entry.packet}
           alt={`Seed packet for ${label}`}
@@ -328,17 +356,26 @@ function Packet({
         )}
       </div>
 
-      {/* Labelled underneath, exactly as the Garden labels its sprites. */}
-      <p className="mt-1.5 line-clamp-2 text-center text-[0.72rem] leading-tight font-semibold text-violet-100">
+      {/*
+        Labelled underneath, exactly as the Garden labels its sprites — inside a fixed block.
+        The board aligns its slots on `items-end`, so without a common caption height a
+        two-line species name lifts its packet a whole line higher than its neighbours and the
+        row stops reading as objects standing on one plank. Long names still clamp; the block
+        just does not change size when they do — FIXED rather than a minimum, because a
+        min-height still grows for a four-line caption and lifted that packet alone.
+      */}
+      <div className="mt-2 flex h-[5.6rem] w-full flex-col justify-start overflow-hidden">
+      <p className="line-clamp-2 text-center text-[0.8rem] leading-snug font-semibold text-violet-100">
         {label}
       </p>
-      <p className="text-center text-[0.72rem] leading-tight text-violet-400 italic">
+      <p className="line-clamp-2 text-center text-[0.74rem] leading-snug text-violet-300 italic">
         {entry.scientificName}
       </p>
-      <p className="mt-0.5 text-center text-[0.72rem] leading-tight text-violet-400">
+      <p className="mt-0.5 text-center text-[0.74rem] leading-snug text-violet-400">
         {status === 'grown' ? 'Grown into a card' : `Found ${formatDate(entry.firstFoundAt)}`}
         {entry.encounters > 1 && ` · ${entry.encounters}×`}
       </p>
+      </div>
 
       {status === 'sprouted' && herb && (
         /*

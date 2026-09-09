@@ -1124,6 +1124,23 @@ body {
 }
 
 /* The upright the boards are fixed to, at each end of the shelf. */
+@utility shelf-edge {
+  /*
+   * The FRONT of the plank, below its lit top face.
+   *
+   * A board drawn as one flat strip reads as a painted line; wood has a near side you can
+   * see, and two tones an obvious pixel apart is what makes it a solid object rather than a
+   * rule. Kept darker than `wood-700` so it stays inside the shelf-wall contrast ceiling and
+   * no text ever sits on it.
+   */
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-wood-700) 62%, var(--color-plum-950)) 0 1px,
+    color-mix(in srgb, var(--color-wood-700) 40%, var(--color-plum-950)) 1px 100%
+  );
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.45);
+}
+
 @utility shelf-upright {
   background-image: linear-gradient(
     90deg,
