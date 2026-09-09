@@ -124,6 +124,7 @@
    * the page ground like every other label on the site.
    */
   --color-wood-700: #402a22;
+
   --color-wood-600: #543728;
   --color-wood-500: #6d4833;
   --color-wood-400: #8a5c41;
@@ -142,6 +143,59 @@
   --shadow-card-lift: 0 14px 36px -10px rgb(0 0 0 / 0.65);
   --shadow-glow: 0 0 0 2px var(--color-gold-500), 0 0 28px -4px var(--color-gold-500);
 }
+
+/*
+ * `@theme static` RATHER THAN `@theme`, AND THAT IS NOT A STYLE CHOICE.
+ *
+ * Tailwind v4 tree-shakes theme variables it cannot see used. Every one of these is consumed
+ * only from an inline `fill="var(--color-...)"` inside generated SVG — there is no utility
+ * class anywhere that names them — so under a plain `@theme` they were dropped from the built
+ * stylesheet entirely. The packets then resolved `fill` to an undefined variable, and SVG
+ * paints an undefined fill BLACK rather than skipping it: a shelf of black rectangles that
+ * `npm run build` reported as a success.
+ *
+ * `static` emits them whether or not a class references them, which is exactly what art
+ * tokens need. Anything added here is for PACKET AND POT ART only: no text is ever set in
+ * these, which is why they sit outside the contrast ramps the text tokens are bound by.
+ */
+@theme static {
+  /*
+   * SEED-PACKET BOTANICALS.
+   *
+   * The shelf had one green in the whole token set — `habitat-woodland` — so however the
+   * generator shuffled, every packet came out of the violet/orchid/mauve half of the deck and
+   * a full shelf read as one lilac smear. These exist so a packet can be leaf, straw, berry or
+   * bark, and they are for PACKET ART only: no text is ever set in them, which is why they sit
+   * outside the contrast ramps the text tokens are bound by.
+   *
+   * Three roles, and the split is what keeps a packet legible at 40px: PAPER is always pale
+   * enough to read as paper against wood, INK always dark enough to hold a motif, BAND always
+   * saturated enough to be a printed strip rather than a tint. `seed-packet.ts` pairs them in
+   * families rather than drawing each independently — three random tokens make mud.
+   */
+  --color-paper-sage: #d2e2c4;
+  --color-paper-fern: #bcdcb2;
+  --color-paper-moss: #cfd8a6;
+  --color-paper-straw: #f1e2ab;
+  --color-paper-cream: #f4ecdb;
+  --color-paper-clay: #e6bda2;
+  --color-paper-blush: #f3c6ce;
+  --color-paper-mist: #c6dced;
+
+  --color-ink-forest: #1c3527;
+  --color-ink-bark: #35251a;
+  --color-ink-wine: #3a1626;
+  --color-ink-sea: #16303a;
+
+  --color-band-leaf: #4f9b60;
+  --color-band-moss: #7ea63f;
+  --color-band-amber: #e3862f;
+  --color-band-gold: #e9b421;
+  --color-band-berry: #b93a55;
+  --color-band-teal: #2f8f8a;
+  --color-band-bark: #8a5c41;
+}
+
 
 /*
  * The deck's identity is a dark violet ground. There is no light variant: this is a

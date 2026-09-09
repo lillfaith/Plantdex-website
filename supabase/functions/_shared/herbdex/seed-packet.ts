@@ -34,7 +34,15 @@ import { hash, seeded } from './rng.ts';
  * with them (see `remote-seed-shelf.ts`), so a shelf somebody has been looking at for a year
  * does not quietly redraw itself when the kit grows.
  */
-export const PACKET_VERSION = 1;
+/**
+ * Bumped to 2 when the palette became botanical.
+ *
+ * Species already in `species_packets` keep the artwork they were minted with — that table is
+ * insert-only and this generator cannot reach it, which is the whole point of the registry.
+ * What changes is what a NEW species mints, and what a signed-out preview draws for a species
+ * nobody has minted yet.
+ */
+export const PACKET_VERSION = 2;
 
 export const PACKET_SHAPES = ['flat', 'folded', 'scalloped', 'notched'] as const;
 export type PacketShape = (typeof PACKET_SHAPES)[number];
@@ -76,43 +84,98 @@ export interface PacketRecipe {
  * chips and the rarity ink — all existing tokens, so a shelf full of packets cannot drift
  * away from the rest of the site.
  */
-const PAPERS = [
-  'mystery-lilac',
-  'mystery-mauve',
-  'mystery-orchid',
-  'mystery-violet',
-  'habitat-woodland',
-  'habitat-meadow',
-  'habitat-wetland',
-  'habitat-wayside',
-  'habitat-garden',
-  'rarity-common',
-  'rarity-uncommon',
-  'rarity-rare',
-  'gold-300',
-  'violet-200',
+interface PacketFamily {
+  readonly id: string;
+  readonly paper: string;
+  readonly band: string;
+  readonly ink: string;
+}
+
+/**
+ * PALETTE FAMILIES — a packet's three colours are chosen together, never independently.
+ *
+ * The first version drew paper, band and ink from three separate lists, which is how a
+ * generator makes mud: most combinations of a pale tint, a saturated strip and a dark motif
+ * do not belong on the same piece of paper, and the ones that did were all violet because
+ * that is what the deck's token set mostly contained. Choosing a FAMILY picks a trio that was
+ * put together on purpose.
+ *
+ * The families are botanical on purpose and span the whole range — leaf, fern, moss, meadow,
+ * gold, berry, bramble, violet, sky, wetland, clay, bark — so a shelf of different species
+ * looks like a shelf of different plants rather than one colourway shuffled.
+ */
+const FAMILIES: readonly PacketFamily[] = [
+  { id: 'leaf', paper: 'paper-sage', band: 'band-leaf', ink: 'ink-forest' },
+  { id: 'fern', paper: 'paper-fern', band: 'band-teal', ink: 'ink-forest' },
+  { id: 'moss', paper: 'paper-moss', band: 'band-moss', ink: 'ink-forest' },
+  { id: 'meadow', paper: 'paper-straw', band: 'band-moss', ink: 'ink-bark' },
+  { id: 'gold', paper: 'paper-cream', band: 'band-gold', ink: 'ink-bark' },
+  { id: 'amber', paper: 'paper-straw', band: 'band-amber', ink: 'ink-bark' },
+  { id: 'berry', paper: 'paper-blush', band: 'band-berry', ink: 'ink-wine' },
+  { id: 'bramble', paper: 'mystery-lilac', band: 'band-berry', ink: 'ink-wine' },
+  { id: 'violet', paper: 'mystery-lilac', band: 'violet-600', ink: 'violet-900' },
+  { id: 'orchid', paper: 'mystery-mauve', band: 'mystery-purple', ink: 'violet-900' },
+  { id: 'rose', paper: 'paper-blush', band: 'pink-accent', ink: 'ink-wine' },
+  { id: 'sky', paper: 'paper-mist', band: 'band-teal', ink: 'ink-sea' },
+  { id: 'wetland', paper: 'paper-mist', band: 'cyan-accent', ink: 'ink-sea' },
+  { id: 'clay', paper: 'paper-clay', band: 'band-amber', ink: 'ink-bark' },
+  { id: 'bark', paper: 'paper-clay', band: 'band-bark', ink: 'ink-bark' },
+  { id: 'snow', paper: 'paper-cream', band: 'band-leaf', ink: 'ink-forest' },
 ] as const;
 
-/** INK: the dark and saturated half, for the motif and the outline of the band. */
-const INKS = [
-  'violet-800',
-  'violet-700',
-  'violet-900',
-  'plum-950',
-  'mystery-indigo',
-  'mystery-purple',
-] as const;
+const FAMILY_BY_ID = new Map(FAMILIES.map((family) => [family.id, family]));
 
-/** BAND: the printed strip across the packet. Saturated, never pale — it has to read at 40px. */
-const BANDS = [
-  'violet-600',
-  'mystery-purple',
-  'mystery-indigo',
-  'pink-accent',
-  'cyan-accent',
-  'gold-500',
-  'mystery-pink',
-] as const;
+/**
+ * WHAT A PLANT'S OWN LATIN NAME SAYS ABOUT ITS COLOUR.
+ *
+ * READING A NAME IS NOT INVENTING BOTANY, and the line matters. `Lamium purpureum` is
+ * *called* purple; that is a fact about the name, checkable by anyone, and the same licence
+ * the motif lexicon above already runs on. What this must never do is assert a colour a name
+ * does not state — there is no flower-colour field for an arbitrary PlantNet species anywhere
+ * in this system, and guessing one from a genus would be exactly the fabricated botany the
+ * rest of the codebase refuses.
+ *
+ * So: epithets that literally name a colour, and epithets that literally name a habitat,
+ * which is a statement about where the plant grows rather than what it looks like — a
+ * `sylvatica` gets woodland tones because it is a woodland plant, not because anyone claims
+ * its flowers are green. Everything else falls through to the deterministic draw, which is
+ * the honest answer for a name that says nothing.
+ *
+ * Matched against the SCIENTIFIC NAME ONLY. The common name is arbitrary text the finder
+ * supplied, and `supabase/functions/seed-packet` is forbidden from reading it when minting —
+ * whoever found a species first would otherwise choose the artwork everybody else ever sees.
+ * Deriving colour from it here would put the preview and the canonical packet out of step.
+ */
+const COLOUR_FAMILY_WORDS: [RegExp, string][] = [
+  // Yellows and golds.
+  [/\b\w*(?:lute\w*|flav\w*|aure\w*|chrys\w*|xanth\w*)\b/, 'gold'],
+  // Oranges and coppers.
+  [/\b\w*(?:aurantiac\w*|croce\w*|cupre\w*|ferrugine\w*)\b/, 'amber'],
+  // Reds, from scarlet to blood.
+  [/\b\w*(?:rubr\w*|ruber|ruben\w*|coccine\w*|sanguine\w*|erythr\w*|punice\w*)\b/, 'berry'],
+  // Pinks and roses.
+  [/\b\w*(?:rose\w*|carne\w*|incarnat\w*)\b/, 'rose'],
+  // Purples and violets.
+  [/\b\w*(?:purpure\w*|violace\w*|lilacin\w*|amethyst\w*)\b/, 'violet'],
+  // Blues.
+  [/\b\w*(?:caerule\w*|coerule\w*|azure\w*|cyane\w*)\b/, 'sky'],
+  // Greens.
+  [/\b\w*(?:virid\w*|viren\w*|chlor\w*|glauc\w*)\b/, 'leaf'],
+  // Whites and pales — cream paper with a leaf band reads as a white flower on foliage.
+  [/\b\w*(?:alb\w*|nive\w*|candid\w*|leuc\w*|lacte\w*)\b/, 'snow'],
+  // Dark and blackish.
+  [/\b\w*(?:nigr\w*|niger|atr\w*|melan\w*)\b/, 'bramble'],
+  // Silvers and greys read as sage foliage.
+  [/\b\w*(?:argente\w*|incan\w*|cinere\w*|cane\w*|tomentos\w*)\b/, 'leaf'],
+
+  // HABITAT epithets: where it grows, not what colour it is.
+  [/\b\w*(?:sylvatic\w*|sylvestr\w*|nemoros\w*|forest\w*)\b/, 'fern'],
+  [/\b\w*(?:palustr\w*|aquatic\w*|fluviatil\w*|riparia\w*|maritim\w*|litoral\w*)\b/, 'wetland'],
+  [/\b\w*(?:praten\w*|arven\w*|campestr\w*|meadow\w*)\b/, 'meadow'],
+  [/\b\w*(?:montan\w*|alpin\w*|saxatil\w*|rupestr\w*)\b/, 'clay'],
+  [/\b\w*(?:arbore\w*|dendro\w*|frutic\w*|lign\w*)\b/, 'bark'],
+  [/\b\w*(?:officinal\w*|sativ\w*|hortens\w*|vulgar\w*)\b/, 'moss'],
+];
 
 /**
  * WORDS IN A PLANT'S OWN NAME THAT SAY WHAT IT LOOKS LIKE.
@@ -139,19 +202,7 @@ const MOTIF_WORDS: [RegExp, PacketMotif][] = [
   [/\b(?:seed|dandelion|taraxacum|sonchus|lactuca|hieracium|tragopogon)\b/, 'seedhead'],
 ];
 
-/**
- * COLOUR WORDS, same idea. "Yellow woodsorrel" is the plant telling you its own colour, so
- * the band takes it. Only the band: a packet whose paper went red would stop reading as
- * paper, and the point of the palette is that the shelf still looks like this site.
- */
-const COLOUR_WORDS: [RegExp, string][] = [
-  [/\b(?:yellow|gold|golden|lutea|luteus|flava|flavum)\b/, 'gold-500'],
-  [/\b(?:blue|azure|caerulea|caeruleum|cyanus)\b/, 'cyan-accent'],
-  [/\b(?:purple|violet|viola|purpurea|purpureum|violacea)\b/, 'mystery-purple'],
-  [/\b(?:pink|rosea|roseum|rosy)\b/, 'mystery-pink'],
-  [/\b(?:red|scarlet|rubra|rubrum|coccinea|sanguinea)\b/, 'pink-accent'],
-  [/\b(?:white|alba|album|nivea)\b/, 'violet-200'],
-];
+
 
 function pick<T>(items: readonly T[], roll: number): T {
   return items[Math.floor(roll * items.length) % items.length]!;
@@ -174,24 +225,27 @@ export function packetRecipe(input: {
   const words = `${input.scientificName ?? input.speciesKey} ${input.commonName ?? ''}`.toLowerCase();
 
   const named = MOTIF_WORDS.find(([pattern]) => pattern.test(words))?.[1];
-  const namedColour = COLOUR_WORDS.find(([pattern]) => pattern.test(words))?.[1];
+  // COLOUR COMES FROM THE SCIENTIFIC NAME ALONE — see COLOUR_FAMILY_WORDS for why the common
+  // name is deliberately not consulted here even though `words` above still carries it.
+  const latin = (input.scientificName ?? input.speciesKey).toLowerCase();
+  const namedFamily = COLOUR_FAMILY_WORDS.find(([pattern]) => pattern.test(latin))?.[1];
 
   // Drawn in a fixed order so adding a lexicon entry never reshuffles the fields after it.
   const shape = pick(PACKET_SHAPES, rand());
   const drawnMotif = pick(PACKET_MOTIFS, rand());
-  const paper = pick(PAPERS, rand());
-  const drawnBand = pick(BANDS, rand());
-  const ink = pick(INKS, rand());
+  const drawnFamily = pick(FAMILIES, rand());
   const accent = pick(PACKET_ACCENTS, rand());
+
+  const family = (namedFamily ? FAMILY_BY_ID.get(namedFamily) : undefined) ?? drawnFamily;
 
   return {
     version: PACKET_VERSION,
     shape,
     motif: named ?? drawnMotif,
     accent,
-    paper,
-    band: namedColour ?? drawnBand,
-    ink,
+    paper: family.paper,
+    band: family.band,
+    ink: family.ink,
   };
 }
 

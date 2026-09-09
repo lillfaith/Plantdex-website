@@ -117,13 +117,35 @@ describe('a name that describes the plant is used', () => {
     expect(packetRecipe({ speciesKey: 'cirsium vulgare' }).motif).toBe('thistle');
   });
 
-  it('takes the band colour from a colour word in the name', () => {
-    expect(
-      packetRecipe({ speciesKey: 'oxalis stricta', commonName: 'Yellow woodsorrel' }).band,
-    ).toBe('gold-500');
-    expect(packetRecipe({ speciesKey: 'nymphaea alba', commonName: 'White water lily' }).band).toBe(
-      'violet-200',
-    );
+  it('takes its palette from a colour word in the LATIN name', () => {
+    // `purpureum` is what the plant is called; reading that is a fact about the name, not a
+    // claim about the plant. The whole family moves together, not just the band.
+    const purple = packetRecipe({ speciesKey: 'lamium purpureum' });
+    expect(purple.band).toBe('violet-600');
+    expect(purple.paper).toBe('mystery-lilac');
+    const gold = packetRecipe({ speciesKey: 'ranunculus flavus' });
+    expect(gold.band).toBe('band-gold');
+    const wet = packetRecipe({ speciesKey: 'caltha palustris' });
+    expect(wet.band).toBe('cyan-accent');
+  });
+
+  it('never lets the common name touch the palette', () => {
+    // THE MINT CANNOT SEE A COMMON NAME — `mintablePacketInput` passes the species key and the
+    // rebuilt binomial and nothing else, so whoever finds a species first cannot choose the
+    // artwork everybody else gets by calling it "Golden star clover". If a preview read it,
+    // the preview and the canonical packet would disagree the moment somebody signed in.
+    const bare = packetRecipe({ speciesKey: 'oxalis stricta' });
+    for (const commonName of ['Yellow woodsorrel', 'Purple monster', 'Scarlet blood berry']) {
+      const withName = packetRecipe({ speciesKey: 'oxalis stricta', commonName });
+      expect(withName.paper, commonName).toBe(bare.paper);
+      expect(withName.band, commonName).toBe(bare.band);
+      expect(withName.ink, commonName).toBe(bare.ink);
+    }
+    // `alba` is a colour word in the LATIN name, so it still steers the palette — cream paper
+    // under a leaf band, which reads as a white flower over foliage.
+    const white = packetRecipe({ speciesKey: 'nymphaea alba', commonName: 'White water lily' });
+    expect(white.paper).toBe('paper-cream');
+    expect(white.band).toBe('band-leaf');
   });
 
   it('falls back to a deterministic draw for a name that describes nothing', () => {

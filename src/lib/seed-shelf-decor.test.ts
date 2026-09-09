@@ -1,8 +1,14 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { SHELF_PLANTS } from '../components/seedshelf/ShelfPlant';
+import {
+  BLOOM,
+  CLAY,
+  FILL,
+  FOLIAGE,
+  SHELF_PLANTS,
+} from '../components/seedshelf/ShelfPlant';
 
 /**
  * THE SEED SHELF'S ROOM — the wall behind it, and the plants standing on it.
@@ -21,6 +27,19 @@ import { SHELF_PLANTS } from '../components/seedshelf/ShelfPlant';
  */
 
 const CSS = readFileSync(join(import.meta.dirname, '..', 'app', 'globals.css'), 'utf8');
+
+/** Every component source, concatenated — what Tailwind itself scans for class names. */
+const SOURCES = (function walk(dir: string): string {
+  return readdirSync(dir, { withFileTypes: true })
+    .map((entry) =>
+      entry.isDirectory()
+        ? walk(join(dir, entry.name))
+        : /\.tsx?$/.test(entry.name)
+          ? readFileSync(join(dir, entry.name), 'utf8')
+          : '',
+    )
+    .join('\n');
+})(join(import.meta.dirname, '..', 'components'));
 
 const shelfWall = () => {
   const block = CSS.match(/@utility shelf-wall \{([\s\S]*?)\n\}/);
@@ -118,11 +137,14 @@ describe('the wall never gets lighter than the text can survive', () => {
 });
 
 describe('every potted plant is a whole rectangle', () => {
-  it('has three of them, so a board of gaps is never one plant repeated', () => {
-    expect(SHELF_PLANTS.length).toBe(3);
+  it('has a whole archetype library, so a shelf is never one plant repeated', () => {
+    // Ten shapes rather than three. The point is not the number: it is that a long shelf
+    // shows leafy, fern, grass, rosette, vine, broadleaf, shrub, berrying and flowering
+    // forms, which is the vocabulary a botanical plate uses before it knows the species.
+    expect(SHELF_PLANTS.length).toBeGreaterThanOrEqual(10);
   });
 
-  it('is rectangular, and all three are the same size', () => {
+  it('is rectangular, and every archetype is the same size', () => {
     const sizes = new Set<string>();
     for (const [index, grid] of SHELF_PLANTS.entries()) {
       const widths = new Set(grid.map((row) => row.length));
@@ -132,7 +154,7 @@ describe('every potted plant is a whole rectangle', () => {
     expect(sizes.size, `plants are different sizes: ${[...sizes].join(', ')}`).toBe(1);
   });
 
-  it('stands its pot on the same rows in all three, so rims line up on a board', () => {
+  it('stands its pot on the same rows in every one, so rims line up on a board', () => {
     const pots = SHELF_PLANTS.map((grid) => grid.slice(-7).join('|'));
     expect(new Set(pots).size, 'the pots differ between variants').toBe(1);
     // And the pot is actually a pot, not eleven rows of foliage that happen to match.
@@ -140,29 +162,69 @@ describe('every potted plant is a whole rectangle', () => {
     expect(pots[0]).toContain('k');
   });
 
-  it('draws three different plants rather than three copies', () => {
+  it('draws a different plant for every archetype rather than copies', () => {
     const foliage = SHELF_PLANTS.map((grid) => grid.slice(0, -7).join('|'));
     expect(new Set(foliage).size).toBe(SHELF_PLANTS.length);
   });
 
   it('uses only cells the fill table knows, so nothing renders as undefined', () => {
     /*
-     * `fill={FILL[cell]}` on an unknown character yields `undefined`, and SVG then paints the
+     * `fill={fill[cell]}` on an unknown character yields `undefined`, and SVG then paints the
      * rect BLACK rather than dropping it — a typo would show as a black block on the shelf.
+     *
+     * Reads the exported table rather than parsing the source for an object literal, which is
+     * what it used to do: the fills are now built by a function so each plant can take its own
+     * foliage, bloom and clay, and a regex over the file stopped finding anything at all.
      */
-    const source = readFileSync(
-      join(import.meta.dirname, '..', 'components', 'seedshelf', 'ShelfPlant.tsx'),
-      'utf8',
-    );
-    const table = source.match(/const FILL: Record<string, string> = \{([\s\S]*?)\n\};/);
-    expect(table).not.toBeNull();
-    const known = new Set([...table![1]!.matchAll(/^\s*([a-z]):/gm)].map(([, c]) => c!));
-    known.add('.');
-
+    const known = new Set([...Object.keys(FILL), '.']);
     const used = new Set(SHELF_PLANTS.flatMap((grid) => grid.flatMap((row) => [...row])));
     for (const cell of used) {
-      expect(known.has(cell), `plant cell "${cell}" has no fill and would paint black`).toBe(true);
+      expect(known.has(cell), `no fill for ${JSON.stringify(cell)}`).toBe(true);
     }
+  });
+
+  it('paints every archetype from deck tokens that really exist', () => {
+    // The pots stand among the packets and are bound by the same rule: no hex anywhere, and
+    // no token invented here that globals.css does not define — a missing token paints the
+    // rect black rather than failing, so it has to be caught here.
+    for (const name of [...FOLIAGE, ...BLOOM, ...CLAY]) {
+      expect(CSS, `--color-${name} is used by a pot but not defined`).toContain(`--color-${name}:`);
+    }
+    // AND IT HAS TO SURVIVE THE BUILD, which being in the file does not guarantee. Tailwind v4
+    // tree-shakes theme variables no utility class mentions, and every art token is used only
+    // from an inline `fill="var(--color-...)"` that it cannot see. They were dropped from the
+    // built stylesheet, SVG painted the undefined fills BLACK, and the build reported success —
+    // caught by a screenshot, not by this file, because this file was reading the source.
+    // `@theme static` is what keeps them; asserting it here is what stops the next one being
+    // added to the wrong block.
+    const staticBlock = CSS.match(/@theme static \{([\s\S]*?)\n\}/);
+    expect(staticBlock, 'the static art-token block is gone').not.toBeNull();
+    for (const name of [...FOLIAGE, ...BLOOM, ...CLAY]) {
+      const declaredStatic = staticBlock![1]!.includes(`--color-${name}:`);
+      // A token referenced anywhere else in the stylesheet — inside a `@utility`, say — is
+      // seen by Tailwind and kept. `habitat-woodland` survives exactly that way. So the rule
+      // is: reachable from the stylesheet, or declared static. Nothing else is safe.
+      const referenced = CSS.split(`--color-${name}`).length - 1 > 1;
+      // ...or named by a utility class in the components, which is how `gold-400` survives:
+      // Tailwind scans the TSX, not just the stylesheet.
+      const usedAsClass = new RegExp(`-${name}\\b`).test(SOURCES);
+      expect(
+        declaredStatic || referenced || usedAsClass,
+        `--color-${name} is art-only and neither static nor referenced, so the build will drop it`,
+      ).toBe(true);
+    }
+    for (const value of Object.values(FILL)) {
+      expect(value, 'a pot fill holds a raw hex value').not.toMatch(/#[0-9a-f]{3,8}\b/i);
+      expect(value).toContain('var(--color-');
+    }
+  });
+
+  it('varies foliage, bloom and clay so a shelf is not one plant recoloured once', () => {
+    // Three separate ramps stepped at different rates. If they marched together there would
+    // be only as many looks as the shortest list, however many archetypes existed.
+    expect(FOLIAGE.length).toBeGreaterThanOrEqual(4);
+    expect(BLOOM.length).toBeGreaterThanOrEqual(4);
+    expect(CLAY.length).toBeGreaterThanOrEqual(3);
   });
 
   it('names no species anywhere, because a pot is not an identification', () => {

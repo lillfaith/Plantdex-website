@@ -318,7 +318,7 @@ function ShelfBoard({ columns, children }: { columns: number; children: React.Re
 function ShelfProp({ variant }: { variant: number }) {
   return (
     <li aria-hidden="true" className="flex flex-col items-center">
-      <div className="mx-auto w-full max-w-11 drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
+      <div className="mx-auto w-full max-w-[4.75rem] drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
         <ShelfPlant variant={variant} />
       </div>
     </li>
@@ -364,19 +364,53 @@ function Packet({
         just does not change size when they do — FIXED rather than a minimum, because a
         min-height still grows for a four-line caption and lifted that packet alone.
       */}
-      <div className="mt-2 flex h-[5.6rem] w-full flex-col justify-start overflow-hidden">
-      <p className="line-clamp-2 text-center text-[0.8rem] leading-snug font-semibold text-violet-100">
-        {label}
-      </p>
-      <p className="line-clamp-2 text-center text-[0.74rem] leading-snug text-violet-300 italic">
-        {entry.scientificName}
-      </p>
-      <p className="mt-0.5 text-center text-[0.74rem] leading-snug text-violet-400">
-        {status === 'grown' ? 'Grown into a card' : `Found ${formatDate(entry.firstFoundAt)}`}
-        {entry.encounters > 1 && ` · ${entry.encounters}×`}
-      </p>
+      {/*
+        TWO LINES OF LABEL, AND THAT IS THE WHOLE CAPTION.
+        A shelf of seventeen packets was carrying seventeen found-dates and encounter counts,
+        and the page stopped reading as a shelf of objects and started reading as a table with
+        pictures in it. The date has not been deleted — it moved into the details below, which
+        is where somebody goes when they want to know about one packet rather than see all of
+        them. The height is fixed so a two-line species name does not lift its packet above its
+        neighbours; long names clamp and the full value is on the details.
+      */}
+      <div className="mt-2 flex h-[3.6rem] w-full flex-col justify-start overflow-hidden">
+        <p className="line-clamp-2 text-center text-[0.82rem] leading-snug font-semibold text-violet-100">
+          {label}
+        </p>
+        <p className="line-clamp-1 text-center text-[0.74rem] leading-snug text-violet-300 italic">
+          {entry.scientificName}
+        </p>
       </div>
 
+      {/*
+        WHERE THE MOVED METADATA WENT.
+        A native <details>, so it is reachable by keyboard and announced as a disclosure
+        without any of it being reimplemented — and so the full species name is available to
+        anyone whose caption above was clamped. Closed, it is one small line; the shelf stays
+        a shelf. The summary is a real hit target rather than a 12px word.
+      */}
+      <details className="group mt-1 w-full">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-center text-[0.72rem] font-semibold text-violet-400 hover:text-violet-200 [&::-webkit-details-marker]:hidden">
+          <span className="group-open:hidden">Details</span>
+          <span className="hidden group-open:inline">Hide</span>
+        </summary>
+        <div className="mt-1 space-y-0.5 text-center text-[0.72rem] leading-snug text-violet-300">
+          <p className="break-words italic">{entry.scientificName}</p>
+          <p>
+            {status === 'grown' ? 'Grown into a card' : `Found ${formatDate(entry.firstFoundAt)}`}
+          </p>
+          {entry.encounters > 1 && <p>Seen {entry.encounters}×</p>}
+        </div>
+      </details>
+
+      {/*
+        A FIXED ACTION SLOT, WHETHER OR NOT THERE IS AN ACTION.
+        Only a sprouted packet has a Plant button, so without a reserved row the cells holding
+        one are taller than the cells beside them — and because the board aligns on items-end,
+        the taller cell's packet rides UP above its neighbours. Two packets standing at
+        different heights on one plank reads as a rendering fault, not as a shelf.
+      */}
+      <div className="flex h-11 w-full items-center justify-center">
       {status === 'sprouted' && herb && (
         /*
          * THE LABEL IS ONE WORD, BUT THE ACCESSIBLE NAME IS NOT. On screen the packet is
@@ -390,7 +424,7 @@ function Packet({
           type="button"
           onClick={onClaim}
           aria-label={`Plant ${herb.commonName}`}
-          className="arcade-key mt-2 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-[0.72rem] font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
+          className="arcade-key min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-[0.72rem] font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
         >
           Plant
         </button>
@@ -398,11 +432,12 @@ function Packet({
       {status === 'grown' && herb && (
         <Link
           href={`/herbdex/${herb.id}`}
-          className="mt-1 text-[0.72rem] font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+          className="text-[0.72rem] font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
         >
           {herb.commonName}
         </Link>
       )}
+      </div>
     </li>
   );
 }
