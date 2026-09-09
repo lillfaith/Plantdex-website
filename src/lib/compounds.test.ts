@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { compoundFor, knownCompoundIds, sortForPlate } from './compounds';
+import { readFileSync } from 'node:fs';
+
+import { compoundFor, knownCompoundIds, sortForPlate, UNDRAWN_MOLECULES } from './compounds';
 import { STRUCTURES } from '@/components/chemistry/structures';
 import { HERBS } from './deck';
 
@@ -255,5 +257,74 @@ describe('a drawn structure is actually wired to its compound', () => {
       if (STRUCTURES[id]) orphaned.push(id);
     }
     expect(orphaned, 'these have a drawing but render as a placeholder box').toEqual([]);
+  });
+});
+
+describe('undrawn molecules', () => {
+  it('records a reason for every named molecule that has no structure, and no others', () => {
+    const undrawn = new Set<string>();
+    for (const herb of HERBS) {
+      for (const printed of herb.back?.compounds ?? []) {
+        const entry = compoundFor(printed);
+        if (entry?.kind === 'molecule' && !entry.structure) undrawn.add(entry.id);
+      }
+    }
+    // Both directions. A molecule that gains art must lose its note, and one that loses art
+    // must gain one — otherwise the map drifts into a list of things that used to be true.
+    expect([...undrawn].sort()).toEqual(Object.keys(UNDRAWN_MOLECULES).sort());
+  });
+
+  it('gives a reason that says which of the two objections applies', () => {
+    for (const [id, why] of Object.entries(UNDRAWN_MOLECULES)) {
+      expect(why, id).toMatch(/LEGIBILITY|IDENTITY|NOT YET DRAWN/);
+      expect(why.length, id).toBeGreaterThan(60);
+    }
+  });
+});
+
+describe('the generated plates', () => {
+  const source = readFileSync(
+    new URL('../components/chemistry/structures.tsx', import.meta.url), 'utf8');
+  const plates = source.split(/^  '/m).slice(1)
+    .map((block) => ({ name: block.slice(0, block.indexOf("'")), block }));
+
+  it('covers every structure the deck actually points at', () => {
+    expect(plates.length).toBe(Object.keys(STRUCTURES).length);
+  });
+
+  it('never draws the same bond twice', () => {
+    // `fused` already draws every bond of a ring, so adding a double bond for an alkene
+    // instead of upgrading the existing one lays a second stroke over the first. On screen
+    // that is indistinguishable from one correct double bond, which is exactly why it needs
+    // a test: it survives every visual check. Ursolic acid shipped this way for three
+    // iterations of the render loop.
+    for (const { name, block } of plates) {
+      const seen = new Set<string>();
+      const dupes: string[] = [];
+      for (const match of block.matchAll(/<path d="M([-\d. L]+)"/g)) {
+        const key = (match[1] ?? '').trim();
+        if (seen.has(key)) dupes.push(key);
+        seen.add(key);
+      }
+      expect(dupes, `${name} draws a bond twice`).toEqual([]);
+    }
+  });
+
+  it('never stacks two labels on the same spot', () => {
+    // A hydroxyl label landing on another one is the readable half of the same collision
+    // class: the atoms are right, the plate is not. Measured, because 0.09 units apart and
+    // 38 units apart look identical in the source.
+    for (const { name, block } of plates) {
+      const pts = [...block.matchAll(/<text x="(-?[\d.]+)" y="(-?[\d.]+)"/g)]
+        .map((m) => [Number(m[1]), Number(m[2])] as [number, number]);
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const a = pts[i]!;
+          const b = pts[j]!;
+          const gap = Math.hypot(a[0] - b[0], a[1] - b[1]);
+          expect(gap, `${name} stacks two labels`).toBeGreaterThan(9);
+        }
+      }
+    }
   });
 });

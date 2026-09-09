@@ -119,7 +119,8 @@ describe('changing any signed field breaks verification', () => {
 
   it('rejects a token edited in place, and one signed by another deployment', async () => {
     const token = await attestIdentity(identity, SECRET);
-    const [version, body, signature] = token.split('.');
+    // The original body is deliberately dropped: this test replaces it with `forgedBody`.
+    const [version, , signature] = token.split('.');
 
     // Re-encode the payload with a different species, keeping the original signature.
     const forgedBody = btoa(JSON.stringify({ n: 'Veronica persica', g: null, p: null, iat: Date.now() }))

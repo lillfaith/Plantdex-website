@@ -82,11 +82,92 @@ def carboxyl(m, v, centre):
     stops them stacking on top of each other. Gallic acid did this with hard-coded offsets
     that only worked because its carboxyl happened to point straight up.
     """
-    c = away(v, *centre)
+    return carboxyl_at(m, v, away(v, *centre))
+
+def free_point(m, v, d=L):
+    """A point one bond from v, in the middle of the widest gap between v's existing bonds.
+
+    A ring-fusion carbon has three ring bonds and no obvious outward direction: its own ring
+    centre points into the ring fused on the other side, and the centroid of three bonds near
+    120 degrees lands back on the atom, so `away` from either is wrong or undefined. The free
+    space is whatever the drawn bonds have left, so it is measured from them rather than
+    assumed — the same reason ring atoms are walked instead of sorted.
+    """
+    angs = []
+    for a, b, _o, _c in m.bonds:
+        for p, q in ((a, b), (b, a)):
+            if math.hypot(p[0] - v[0], p[1] - v[1]) < 0.5:
+                angs.append(math.atan2(q[1] - v[1], q[0] - v[0]) % (2 * math.pi))
+    if not angs:
+        return (v[0] + d, v[1])
+    angs.sort()
+    # Every gap is a candidate, not just the widest: bisecting the widest gap of a fusion
+    # carbon can still aim into the ring fused opposite. Each candidate is scored by the room
+    # it actually has (see `clearance`), and only ties are broken on gap width.
+    cands = []
+    for i, a in enumerate(angs):
+        nxt = angs[(i + 1) % len(angs)] + (2 * math.pi if i + 1 == len(angs) else 0.0)
+        mid = a + (nxt - a) / 2
+        q = (v[0] + d * math.cos(mid), v[1] + d * math.sin(mid))
+        cands.append((round(min(clearance(m, q, v), d) / d, 3), nxt - a, q))
+    return max(cands)[2]
+
+def _seg_dist(q, a, b):
+    """Distance from point q to the segment a-b."""
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    n = dx * dx + dy * dy
+    t = 0.0 if n == 0 else max(0.0, min(1.0, ((q[0] - a[0]) * dx + (q[1] - a[1]) * dy) / n))
+    return math.hypot(q[0] - (a[0] + t * dx), q[1] - (a[1] + t * dy))
+
+def clearance(m, q, origin=None, ignore=0.5):
+    """How far q sits from everything already drawn, BONDS included.
+
+    Measuring to atoms alone is not enough: the centre of a hexagon is one full bond length
+    from all six vertices, so an atom-only test rates it maximally free and will place a
+    substituent in the middle of a ring. That is exactly where ursolic acid's C17 carboxyl
+    landed. The centre is only an apothem from the six edges, so measuring to segments
+    separates the two cases.
+
+    `origin` is the atom the new bond comes FROM; its own bonds touch it and would otherwise
+    score every candidate at zero.
+    """
+    best = float('inf')
+    for a, b, _o, _c in m.bonds:
+        if origin is not None and (math.hypot(a[0] - origin[0], a[1] - origin[1]) < ignore or
+                                   math.hypot(b[0] - origin[0], b[1] - origin[1]) < ignore):
+            continue
+        best = min(best, _seg_dist(q, a, b))
+    return best
+
+def double_ring_bond(m, a, b, inner):
+    """Upgrade the EXISTING a-b bond to a double, rather than drawing a second one on top.
+
+    `fused` has already drawn every bond of the ring, so adding a double bond for an alkene
+    lays a second stroke over the first. On screen the two are indistinguishable from one
+    correct double bond, which is exactly why it survives a visual check — it shows up only
+    as a bond count that does not match the formula.
+    """
+    for i, (p, q, _o, _c) in enumerate(m.bonds):
+        near = lambda x, y: math.hypot(x[0] - y[0], x[1] - y[1]) < 0.5
+        if (near(p, a) and near(q, b)) or (near(p, b) and near(q, a)):
+            m.bonds[i] = (p, q, 2, inner)
+            return m
+    raise ValueError('no existing bond to double')
+
+def carboxyl_at(m, v, c):
+    """`carboxyl`, but the acid carbon is given rather than derived from a ring centre.
+
+    The O and the OH keep their 120-degree fan; what is chosen is how that fan is ROTATED.
+    On a crowded ring-fusion carbon a fixed fan drops both oxygens straight onto ring atoms,
+    which is what put ursolic acid's carbonyl on C19 and its hydroxyl on C21.
+    """
     m.bond(v, c)
     ang = math.atan2(c[1] - v[1], c[0] - v[0])
-    od = (c[0] + L * math.cos(ang - math.radians(60)), c[1] + L * math.sin(ang - math.radians(60)))
-    oh = (c[0] + L * math.cos(ang + math.radians(60)), c[1] + L * math.sin(ang + math.radians(60)))
+    fan = lambda t: [(c[0] + L * math.cos(ang + t + math.radians(k)),
+                      c[1] + L * math.sin(ang + t + math.radians(k))) for k in (-60, 60)]
+    turn = max((math.radians(d) for d in range(-50, 51, 5)),
+               key=lambda t: min(clearance(m, q, c) for q in fan(t)))
+    od, oh = fan(turn)
     m.bond(c, od, 2); m.label(od, 'O')
     m.bond(c, oh); m.label(oh, 'OH')
     return c
@@ -106,8 +187,7 @@ def chromene(m, centre=(0.0, 0.0)):
     A = ring6(*centre)
     cc = fuse(A, 0, 1, *centre)
     C = ring6(*cc)
-    m.ring(A, aromatic_from=(2, 4), centre=centre)
-    m.bond(A[0], A[1], 2, centre)
+    m.ring(A, aromatic_from=(0, 2, 4), centre=centre)
     key = lambda q: (round(q[0], 1), round(q[1], 1))
     sh = {key(A[0]), key(A[1])}
     for i in range(6):
@@ -190,10 +270,65 @@ def glucopyranose(m, centre, anchor, rot=0.0):
         occupied.append(q)
     return G[k]
 
+def legibility(m, ignore=0.5):
+    """The smallest distance between two things in `m` that are not attached to each other.
+
+    One number for "is this plate crowded", covering the three ways a drawing goes illegible:
+    a label over a bond it does not belong to, two labels on top of each other, and two
+    unbonded atoms close enough to read as one. A layout constant can then be SEARCHED
+    against it rather than guessed and eyeballed — eyeballing is what shipped a hydroxyl
+    0.09 units from a ring carbon.
+    """
+    atoms = []
+    for a, b, _o, _c in m.bonds:
+        for q in (a, b):
+            if not any(math.hypot(q[0] - w[0], q[1] - w[1]) < ignore for w in atoms):
+                atoms.append(q)
+    labs = [(lx, ly) for lx, ly, _t in m.labels]
+    worst = float('inf')
+    for q in labs:
+        for a, b, _o, _c in m.bonds:
+            if math.hypot(q[0] - a[0], q[1] - a[1]) < ignore or \
+               math.hypot(q[0] - b[0], q[1] - b[1]) < ignore:
+                continue
+            worst = min(worst, _seg_dist(q, a, b))
+    for i in range(len(labs)):
+        for j in range(i + 1, len(labs)):
+            worst = min(worst, math.hypot(labs[i][0] - labs[j][0], labs[i][1] - labs[j][1]))
+    bonded = set()
+    for a, b, _o, _c in m.bonds:
+        ia = min(range(len(atoms)), key=lambda k: math.hypot(atoms[k][0] - a[0], atoms[k][1] - a[1]))
+        ib = min(range(len(atoms)), key=lambda k: math.hypot(atoms[k][0] - b[0], atoms[k][1] - b[1]))
+        bonded.add((min(ia, ib), max(ia, ib)))
+    for i in range(len(atoms)):
+        for j in range(i + 1, len(atoms)):
+            if (i, j) in bonded:
+                continue
+            worst = min(worst, math.hypot(atoms[i][0] - atoms[j][0], atoms[i][1] - atoms[j][1]))
+    return worst
+
+def _near(p, q, tol=0.5):
+    return math.hypot(p[0] - q[0], p[1] - q[1]) < tol
+
 class Mol:
     def __init__(self, name):
         self.name, self.bonds, self.labels = name, [], []
     def bond(self, a, b, order=1, inner=None):
+        """Draw a-b, or UPGRADE the existing a-b rather than laying a second stroke on it.
+
+        Ring helpers draw every bond of the ring, so the natural way to write an alkene —
+        `m.ring(v)` and then `m.bond(v[0], v[1], 2, centre)` — used to append a second bond
+        over the first. On screen that is indistinguishable from one correct double bond,
+        which is why it survived every visual check and shipped 25 times across 11 plates,
+        vitamin C and every flavonoid among them. A double bond's INNER line is a separate,
+        inset segment, so nothing legitimate ever draws the same endpoints twice.
+        """
+        for i, (p, q, _o, _c) in enumerate(self.bonds):
+            same = (_near(p, a) and _near(q, b)) or (_near(p, b) and _near(q, a))
+            if same:
+                if order > _o:
+                    self.bonds[i] = (p, q, order, inner)
+                return self
         self.bonds.append((a, b, order, inner))
         return self
     def ring(self, verts, aromatic_from=None, centre=None):

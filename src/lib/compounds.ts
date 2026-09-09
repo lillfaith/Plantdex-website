@@ -121,10 +121,10 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   'rosmarinic acid': molecule('rosmarinic-acid', 'A phenolic acid'),
   'chlorogenic acid': molecule('chlorogenic-acid', 'A phenolic acid'),
   'ellagic acid': molecule(undefined, 'A polyphenol'),
-  'ursolic acid': molecule(undefined, 'A pentacyclic triterpenoid'),
+  'ursolic acid': molecule('ursolic-acid', 'A pentacyclic triterpenoid'),
   allicin: molecule('allicin', 'An organosulfur compound'),
   genistein: molecule('genistein', 'An isoflavone'),
-  aucubin: molecule(undefined, 'An iridoid glycoside'),
+  aucubin: molecule('aucubin', 'An iridoid glycoside'),
   arctiin: molecule(undefined, 'A lignan glycoside'),
   sinigrin: molecule('sinigrin', 'A glucosinolate'),
   hypericin: molecule(undefined, 'A naphthodianthrone'),
@@ -141,7 +141,7 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   geraniin: molecule(undefined, 'An ellagitannin'),
   harmine: molecule('harmine', 'A beta-carboline alkaloid'),
   harmaline: molecule('harmaline', 'A beta-carboline alkaloid'),
-  vitexin: molecule(undefined, 'A flavone glycoside'),
+  vitexin: molecule('vitexin', 'Apigenin carrying a C-linked glucose'),
   verbascoside: molecule(undefined, 'A phenylethanoid glycoside'),
   quebecol: molecule(undefined, 'A polyphenol first described in maple syrup'),
   sucrose: molecule(undefined, 'A disaccharide'),
@@ -292,3 +292,72 @@ export function sortForPlate(printed: string[]): string[] {
     return 0;
   });
 }
+
+/**
+ * WHY A NAMED MOLECULE IS STILL NOT DRAWN.
+ *
+ * Every entry here is a specific compound — not a class — that the deck prints and this
+ * module classifies as `molecule`, but which carries no `structure`. Leaving that
+ * unexplained is how the list rots: the next person cannot tell a molecule nobody has got
+ * to yet from one that was tried and rejected, so they either redraw a known failure or
+ * treat a deliberate omission as a gap to be filled badly.
+ *
+ * Two reasons recur, and they are different:
+ *
+ *   LEGIBILITY — the connectivity is certain, but the plate is a scribble at the size it
+ *   renders. `scripts/chemistry/mol.py`'s `legibility()` scores this; the drawn glycosides
+ *   sit at 14–22 (salicin 15, vitexin 14.4), and the ones below are far larger. A scribble
+ *   that claims to be a structure is worse than no structure, because a reader cannot tell
+ *   the difference and it spends the credibility the accurate ones earn.
+ *
+ *   IDENTITY — the compound is not characterised well enough to draw at all. Drawing a
+ *   guess would be inventing chemistry, which is the same offence as inventing botany.
+ *
+ * `compounds.test.ts` keeps this map and the real undrawn set equal in BOTH directions, so
+ * a molecule that gains art must lose its entry here, and a newly undrawn one must gain one.
+ */
+export const UNDRAWN_MOLECULES: Record<string, string> = {
+  taraxasterol:
+    'LEGIBILITY. A pentacyclic triterpene like ursolic acid, but with no substituent to give ' +
+    'the plate a focal point, so at plate size it reads as an undifferentiated raft of rings.',
+  rutin:
+    'LEGIBILITY. Quercetin plus a rutinose DISACCHARIDE — 43 heavy atoms, two sugars fanning ' +
+    'twelve hydroxyls over the flavonol. Vitexin, drawn, is the same shape with one sugar.',
+  'ellagic acid':
+    'LEGIBILITY, and specifically a geometry this generator cannot build. Both lactone rings ' +
+    'share the central biaryl bond, so the four rings are peri-fused rather than edge-fused; ' +
+    'off a regular hexagon lattice the rings overlap and the bridges cut through them. It was ' +
+    'attempted and rejected once already. Drawing it needs hand-placed coordinates, which is ' +
+    'the one thing the chemistry generator does not permit.',
+  quebecol:
+    'IDENTITY. A triarylpropane first described in maple syrup; this codebase could not ' +
+    'establish its substitution pattern from an authoritative source, and the databases that ' +
+    'would settle it are unreachable from the build environment.',
+  sucrose:
+    'NOT YET DRAWN, and the only entry here with no objection to it. Glucose alpha-1,2 ' +
+    'fructose needs a fructoFURANOSE, the one sugar ring `mol.py` has no helper for.',
+  arctiin:
+    'LEGIBILITY. Arctigenin plus a glucose: 38 heavy atoms, and the two benzyl arms hang off ' +
+    'the lactone on rotatable bonds, so the 2D layout is arbitrary rather than determined by ' +
+    'a rigid skeleton. This is why card #22 Burdock legitimately shows no structure.',
+  verbascoside:
+    'LEGIBILITY. 44 heavy atoms with TWO sugars, larger than rutin. This is why card #27 ' +
+    'Mullein legitimately shows no structure.',
+  hypericin:
+    'LEGIBILITY. A naphthodianthrone: eight fused rings carrying eight substituents, which at ' +
+    'plate size is a solid block of ink rather than a readable skeleton.',
+  hyperforin:
+    'IDENTITY. A bridged prenylated phloroglucinol whose stereochemistry and prenyl placement ' +
+    'this codebase could not establish confidently enough to draw.',
+  achilleine:
+    'IDENTITY. Poorly characterised in the literature. The card names it, so the deck names ' +
+    'it, but assigning it a skeleton would be inventing the compound.',
+  salicortin:
+    'LEGIBILITY. Salicin plus a cyclohexenone ester — substantially larger than the salicin ' +
+    'that is drawn on the same card, which already carries #38 Willow.',
+  tremulacin:
+    'LEGIBILITY. Salicortin plus a benzoyl group, larger again — and on the same card as ' +
+    'salicin, which is drawn and carries #38 Willow on its own.',
+  geraniin:
+    'LEGIBILITY. An ellagitannin at 68 heavy atoms; far beyond anything this plate can hold.',
+};

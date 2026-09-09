@@ -1,6 +1,6 @@
 import sys, math, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from mol import Mol, ring6, ring5, ringn, fuse, fused, out, away, branch, carboxyl, chromene, render, ring_on_edge, glucopyranose, L
+from mol import legibility, _seg_dist, Mol, ring6, ring5, ringn, fuse, fused, out, away, branch, carboxyl, carboxyl_at, chromene, double_ring_bond, render, ring_on_edge, glucopyranose, free_point, L
 
 M = {}
 
@@ -132,7 +132,7 @@ m = Mol('ascorbic')
 m.ring(v)
 o1, c1, c2, c3, c4 = v[0], v[1], v[2], v[3], v[4]
 m.label(o1, 'O')                                       # ring oxygen
-m.bond(c2, c3, 2, (0, 0))                              # enediol double bond, inner line
+double_ring_bond(m, c2, c3, (0, 0))                     # enediol: upgrade, do not redraw
 ket = away(c1, 0, 0); m.bond(c1, ket, 2); m.label(ket, 'O')
 # The two enediol hydroxyls go straight down, splayed, so their labels cannot collide.
 for cc_, dx in ((c2, -1), (c3, 1)):
@@ -165,8 +165,10 @@ def flavonol(name, b_ring_ohs, b_at='c2', three_oh=True):
     cc = fuse(A, 0, 1, *ca)
     C = ring6(*cc)                       # C ring (pyranone), shares A[0]-A[1]
     m = Mol(name)
-    m.ring(A, aromatic_from=(2, 4), centre=ca)
-    m.bond(A[0], A[1], 2, ca)
+    # Index 0 belongs in `aromatic_from` with the others rather than being drawn again
+    # afterwards: `m.ring` has already laid that bond down, so a separate `m.bond` put a
+    # second stroke on top of it — on every flavonoid and every beta-carboline in the deck.
+    m.ring(A, aromatic_from=(0, 2, 4), centre=ca)
     # C ring, skipping the shared edge which the A ring already drew
     Cs = [p for p in C]
     shared = {(round(A[0][0], 1), round(A[0][1], 1)), (round(A[1][0], 1), round(A[1][1], 1))}
@@ -199,6 +201,15 @@ def flavonol(name, b_ring_ohs, b_at='c2', three_oh=True):
     m.ring(Bv, aromatic_from=(0, 2, 4), centre=cb)
     for off in b_ring_ohs:
         p = away(Bv[(near + off) % 6], *cb); m.bond(Bv[(near + off) % 6], p); m.label(p, 'OH')
+    # The pieces, for callers that need to hang something else off the A ring. C8 is found
+    # rather than indexed: it is the free A-ring carbon next to C8a, and C8a is whichever
+    # shared carbon carries the pyran oxygen. Picking an index instead would put a glucose
+    # on C6 half the time and silently draw isovitexin.
+    c8a = min((A[0], A[1]), key=lambda q: (q[0] - o1[0]) ** 2 + (q[1] - o1[1]) ** 2)
+    free_a = [q for q in A if (round(q[0], 1), round(q[1], 1)) not in shared]
+    c8 = min(free_a, key=lambda q: (q[0] - c8a[0]) ** 2 + (q[1] - c8a[1]) ** 2)
+    m.parts = {'A': A, 'ca': ca, 'C': Cs, 'cc': cc, 'o1': o1, 'c2': c2, 'c3': c3, 'c4': c4,
+               'c8a': c8a, 'c8': c8}
     return m
 
 M['quercetin'] = ('Quercetin', flavonol('quercetin', (3, 4)))    # 3',4'-catechol
@@ -389,8 +400,10 @@ def beta_carboline(name, c1_methyl=True, saturated=False):
     ca = (0.0, 0.0)
     A = ring6(*ca, rot=0)                       # benzene
     m = Mol(name)
-    m.ring(A, aromatic_from=(2, 4), centre=ca)
-    m.bond(A[0], A[1], 2, ca)
+    # Index 0 belongs in `aromatic_from` with the others rather than being drawn again
+    # afterwards: `m.ring` has already laid that bond down, so a separate `m.bond` put a
+    # second stroke on top of it — on every flavonoid and every beta-carboline in the deck.
+    m.ring(A, aromatic_from=(0, 2, 4), centre=ca)
     # Pyrrole on the benzene's upper-right edge.
     P, cp = ring_on_edge(A[0], A[1], 5, ca)
     for i in range(5):
@@ -802,6 +815,130 @@ for dx, dy, lab in ((L * 0.87, -L * 0.5, 'O'), (L * 0.87, L * 0.5, 'O'), (0, L, 
     q = (sx[0] + dx, sx[1] + dy)
     m.bond(sx, q, 2 if lab == 'O' else 1); m.label(q, lab)
 M['glucosinolate-core'] = ('Glucosinolate core', m)
+
+# Vitexin is apigenin (4',5,7-trihydroxyflavone) carrying a C-linked glucose at C8 — a
+# CARBON-carbon bond to the sugar, not the usual glycosidic oxygen, which is the whole
+# reason it is vitexin and not a plain apigenin glucoside. Its 6-C isomer is isovitexin and
+# is a different compound, so C8 is located from the pyran oxygen rather than assumed.
+# The sugar's offset and rotation are SEARCHED rather than guessed. A glucopyranose fans six
+# substituents off its ring, and at a fixed rotation they swing back over the flavone: the
+# first constant tried here drew an OH label a third of a unit from an A-ring bond. Each
+# candidate is built in full and scored on how close the sugar comes to the rest of the
+# molecule, which is the same measure-don't-assume rule the rest of this file follows.
+def _vitexin(dist, rot, turn):
+    mm = flavonol('vitexin', (3,), three_oh=False)
+    pp = mm.parts
+    c8, ca = pp['c8'], pp['ca']
+    ang = math.atan2(c8[1] - ca[1], c8[0] - ca[0]) + math.radians(turn)
+    gc = (c8[0] + L * dist * math.cos(ang), c8[1] + L * dist * math.sin(ang))
+    mm.bond(c8, glucopyranose(mm, gc, c8, rot=rot))
+    return mm
+
+_best = max(((d, r, t) for d in (2.1, 2.4, 2.7) for r in range(0, 60, 10)
+             for t in (-30, -15, 0, 15, 30)),
+            key=lambda x: legibility(_vitexin(*x)))
+m = _vitexin(*_best)
+M['vitexin'] = ('Vitexin', m)
+
+# Aucubin: 1,4a,5,7a-tetrahydro-5-hydroxy-7-(hydroxymethyl)cyclopenta[c]pyran-1-yl
+# beta-D-glucopyranoside. The bicycle is the same cyclopenta[c]pyran drawn for the iridoid
+# scaffold, so the ring walk is identical and only the substituents differ:
+#
+#   P[0]=C3  P[1]=O2  P[2]=C1  P[3]=C7a  P[4]=C4a  P[5]=C4
+#   F[0]=C7a F[1]=C4a F[2]=C5  F[3]=C6   F[4]=C7      (fused on the C7a-C4a edge)
+#
+# "1,4a,5,7a-tetrahydro" is what fixes the two double bonds: C3=C4 in the pyran (the enol
+# ether) and C6=C7 in the cyclopentene. The glucose hangs off C1 through its own oxygen,
+# which is what makes it a glycoSIDE rather than a C-glycoside like vitexin next door.
+def _aucubin(dist, rot, turn):
+    cai = (0.0, 0.0)
+    P = ring6(*cai, rot=30)
+    mm = Mol('aucubin')
+    mm.ring(P)
+    mm.label(P[1], 'O')
+    F, cf = ring_on_edge(P[3], P[4], 5, cai)
+    for i in range(1, 5):
+        mm.bond(F[i], F[(i + 1) % 5])
+    mm.bond(F[4], F[0])
+    double_ring_bond(mm, P[5], P[0], cai)        # C3=C4, the enol ether
+    double_ring_bond(mm, F[3], F[4], cf)         # C6=C7
+    oh5 = away(F[2], *cf); mm.bond(F[2], oh5); mm.label(oh5, 'OH')
+    ch2 = free_point(mm, F[4]); mm.bond(F[4], ch2)
+    oh10 = free_point(mm, ch2); mm.bond(ch2, oh10); mm.label(oh10, 'OH')
+    og = free_point(mm, P[2]); mm.bond(P[2], og); mm.label(og, 'O')
+    ang = math.atan2(og[1] - P[2][1], og[0] - P[2][0]) + math.radians(turn)
+    cg = (og[0] + L * dist * math.cos(ang), og[1] + L * dist * math.sin(ang))
+    mm.bond(og, glucopyranose(mm, cg, og, rot=rot))
+    return mm
+
+_ab = max(((d, r, t) for d in (1.4, 1.7, 2.0) for r in range(0, 60, 10)
+           for t in (-30, -15, 0, 15, 30)), key=lambda x: legibility(_aucubin(*x)))
+M['aucubin'] = ('Aucubin', _aucubin(*_ab))
+
+# ── Fourth tranche: the pentacyclic triterpene, and two sugars ───────────────
+# Ursane is five SIX-membered rings, which is the whole reason this one is drawable when
+# taraxasterol next door is not: every ring comes off `fused` at the same regular geometry,
+# so the skeleton is walked rather than placed. Ring letters and the carbon numbers they
+# carry are written out below because the ursane/oleanane difference is exactly two methyls
+# — C19 and C20 carry one each here, where oleanane puts both on C20 — and a comment that
+# says "seven methyls" without saying which carbons is a comment that cannot be checked.
+#
+#   A: C1 C2 C3 C4 C5 C10      B: C5 C6 C7 C8 C9 C10      C: C8 C9 C11 C12 C13 C14
+#   D: C13 C14 C15 C16 C17 C18                            E: C17 C18 C19 C20 C21 C22
+#
+# 3-OH, 28-COOH on C17, and the 12-ene inside ring C.
+ca = (0.0, 0.0)
+A = ring6(*ca)
+m = Mol('ursolic-acid'); m.ring(A)
+c1, c2, c3, c4, c5, c10 = A[0], A[1], A[2], A[3], A[4], A[5]
+
+B, cb = fused(m, c10, c5, 6, ca)
+c6, c7, c8, c9 = B[2], B[3], B[4], B[5]
+
+C, cc = fused(m, c9, c8, 6, cb)
+c14, c13, c12, c11 = C[2], C[3], C[4], C[5]
+
+D, cd = fused(m, c13, c14, 6, cc)
+c15, c16, c17, c18 = D[2], D[3], D[4], D[5]
+
+E, ce = fused(m, c18, c17, 6, cd)
+c22, c21, c20, c19 = E[2], E[3], E[4], E[5]
+
+# The 12-ene. `fused` already drew this ring bond, so it is UPGRADED rather than redrawn.
+double_ring_bond(m, c12, c13, cc)
+
+# 3-beta-hydroxyl.
+oh3 = away(c3, *ca); m.bond(c3, oh3); m.label(oh3, 'HO')
+
+# C4 and C17 are both QUATERNARY, and neither can take the ordinary `away(ring centre)`
+# treatment. C4 carries two methyls, so they go either side of the outward bisector; C17
+# already has THREE ring bonds (C16 and C18 in ring D, C22 in ring E), so its acid points
+# away from the centroid of those three rather than away from either ring — pointing it
+# away from ring D alone aims it straight into ring E, which drew the carbonyl oxygen on
+# top of an E-ring vertex and made a triterpene look like it had a ring oxygen.
+def splay(v, cx, cy, deg):
+    a = math.atan2(v[1] - cy, v[0] - cx) + math.radians(deg)
+    return (v[0] + L * math.cos(a), v[1] + L * math.sin(a))
+
+m.bond(c4, splay(c4, *ca, 52))       # C23
+m.bond(c4, splay(c4, *ca, -52))      # C24
+
+# C10, C8, C14 and C17 are RING-FUSION carbons carrying a substituent, and none of them can
+# use `away(ring centre)`: that aims straight at the ring fused on the other side and lands
+# the methyl exactly on a vertex there. It is invisible in the render — the bond is drawn,
+# it just lies on top of one already there — and surfaced only as a heavy-atom count short
+# of C30H48O3. The centroid of the three neighbours is no good either: three bonds near 120
+# degrees average back to the atom itself, so the direction is a division by ~zero.
+#
+# So the direction is MEASURED from the bonds already at the atom: take the widest angular
+# gap between them and bisect it. That is the only free space there is, and it needs no
+# per-atom judgement — the same call serves a fusion carbon with three ring bonds and a
+# plain ring carbon with two.
+for v in (c10, c8, c14, c19, c20):
+    m.bond(v, free_point(m, v))
+
+carboxyl_at(m, c17, free_point(m, c17))
+M['ursolic-acid'] = ('Ursolic acid', m)
 
 # Ellagic acid is NOT here, and it is the one I most wanted: three cards name it. Drawn as
 # two benzenes bridged by a pair of lactones, the rings overlapped and the bridges cut
