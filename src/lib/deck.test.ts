@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { DECK, DECK_SIZE, HERBS, MAX_DECK_XP, USE_LABEL, getHerb } from './deck';
+import { DECK, PRINTED_DECK_SIZE, PRINTED_CARDS, MAX_PRINTED_DECK_XP, USE_LABEL, getPrintedCard } from './deck';
 import { KNOWN_CARD_ISSUES, knownIssueFor } from './card-issues';
 import { RARITIES, SEASONS, USE_KEYS } from './types';
 
@@ -13,18 +13,18 @@ const PUBLIC_DIR = join(process.cwd(), 'public');
  */
 describe('deck data', () => {
   it('contains the full deck', () => {
-    expect(HERBS.length).toBeGreaterThan(0);
-    expect(DECK_SIZE).toBe(HERBS.length);
-    expect(DECK.deckSize).toBe(HERBS.length);
+    expect(PRINTED_CARDS.length).toBeGreaterThan(0);
+    expect(PRINTED_DECK_SIZE).toBe(PRINTED_CARDS.length);
+    expect(DECK.deckSize).toBe(PRINTED_CARDS.length);
   });
 
   it('has unique ids', () => {
-    const ids = HERBS.map((herb) => herb.id);
+    const ids = PRINTED_CARDS.map((herb) => herb.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('has unique, contiguous card numbers starting at 1', () => {
-    const numbers = HERBS.map((herb) => herb.cardNumber).sort((a, b) => a - b);
+    const numbers = PRINTED_CARDS.map((herb) => herb.cardNumber).sort((a, b) => a - b);
     expect(new Set(numbers).size).toBe(numbers.length);
     expect(numbers[0]).toBe(1);
     expect(numbers[numbers.length - 1]).toBe(numbers.length);
@@ -32,14 +32,14 @@ describe('deck data', () => {
 
   it('never uses the common name as the identifier', () => {
     // AGENTS.md: "Do not use the visible common name as the primary database identifier."
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const commonSlug = herb.commonName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       expect(herb.id).not.toBe(commonSlug);
     }
   });
 
   it('uses only known rarities, seasons and use keys', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(RARITIES).toContain(herb.rarity);
       expect(SEASONS).toContain(herb.season);
       expect(herb.uses.length).toBeGreaterThan(0);
@@ -51,7 +51,7 @@ describe('deck data', () => {
   });
 
   it('has required text fields on every herb', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(herb.commonName.trim().length).toBeGreaterThan(0);
       expect(herb.scientificName.trim().length).toBeGreaterThan(0);
       expect(herb.xp).toBeGreaterThan(0);
@@ -59,7 +59,7 @@ describe('deck data', () => {
   });
 
   it('has stats within the 1-5 range printed on the cards', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const value of Object.values(herb.stats)) {
         expect(value).toBeGreaterThanOrEqual(1);
         expect(value).toBeLessThanOrEqual(5);
@@ -68,7 +68,7 @@ describe('deck data', () => {
   });
 
   it('points at card art that actually exists, front and back', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(existsSync(join(PUBLIC_DIR, herb.image))).toBe(true);
       expect(existsSync(join(PUBLIC_DIR, herb.thumb))).toBe(true);
       expect(existsSync(join(PUBLIC_DIR, herb.backImage))).toBe(true);
@@ -76,7 +76,7 @@ describe('deck data', () => {
   });
 
   it('carries the back-of-card content for every herb', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       // Every card back has at least these three sections filled in.
       expect(herb.back.healingTraits.length).toBeGreaterThan(0);
       expect(herb.back.compounds.length).toBeGreaterThan(0);
@@ -102,21 +102,21 @@ describe('deck data', () => {
   });
 
   it('surfaces the printed lookalike warning on Yarrow only', () => {
-    const warned = HERBS.filter((herb) => herb.warning);
+    const warned = PRINTED_CARDS.filter((herb) => herb.warning);
     expect(warned).toHaveLength(1);
     expect(warned[0]!.commonName).toBe('Yarrow');
     expect(warned[0]!.warning).toContain('poisonous lookalike');
   });
 
   it('resolves every herb by id', () => {
-    for (const herb of HERBS) {
-      expect(getHerb(herb.id)).toBe(herb);
+    for (const herb of PRINTED_CARDS) {
+      expect(getPrintedCard(herb.id)).toBe(herb);
     }
-    expect(getHerb('nope')).toBeUndefined();
+    expect(getPrintedCard('nope')).toBeUndefined();
   });
 
   it('reports a max XP equal to the sum of the deck', () => {
-    expect(MAX_DECK_XP).toBe(HERBS.reduce((sum, herb) => sum + herb.xp, 0));
+    expect(MAX_PRINTED_DECK_XP).toBe(PRINTED_CARDS.reduce((sum, herb) => sum + herb.xp, 0));
   });
 });
 
@@ -130,13 +130,13 @@ describe('knownIssueFor', () => {
    * fixed, never to tidy the list, or the app denies an error still in a buyer's hands.
    */
   it('reports the recorded printing error for an affected card', () => {
-    const willow = getHerb('salix-spp')!;
+    const willow = getPrintedCard('salix-spp')!;
     expect(willow.cardNumber).toBe(38);
     expect(knownIssueFor(willow)).toMatch(/sallicin/i);
   });
 
   it('covers every card the build script recorded, and only those', () => {
-    const flagged = HERBS.filter((herb) => knownIssueFor(herb)).map((herb) => herb.cardNumber);
+    const flagged = PRINTED_CARDS.filter((herb) => knownIssueFor(herb)).map((herb) => herb.cardNumber);
     expect(flagged.sort((a, b) => a - b)).toEqual(
       Object.keys(KNOWN_CARD_ISSUES)
         .map(Number)
@@ -146,7 +146,7 @@ describe('knownIssueFor', () => {
 
   it('returns nothing for a card with no recorded error', () => {
     // Dandelion is card #01, and card 11 used to print its back verbatim.
-    expect(knownIssueFor(getHerb('taraxacum-officinale')!)).toBeUndefined();
+    expect(knownIssueFor(getPrintedCard('taraxacum-officinale')!)).toBeUndefined();
   });
 
   /**
@@ -178,10 +178,10 @@ describe('knownIssueFor', () => {
     ] as const;
 
     const suspicious: string[] = [];
-    for (let i = 0; i < HERBS.length; i += 1) {
-      for (let j = i + 1; j < HERBS.length; j += 1) {
-        const a = HERBS[i]!;
-        const b = HERBS[j]!;
+    for (let i = 0; i < PRINTED_CARDS.length; i += 1) {
+      for (let j = i + 1; j < PRINTED_CARDS.length; j += 1) {
+        const a = PRINTED_CARDS[i]!;
+        const b = PRINTED_CARDS[j]!;
         const shared = FIELDS.filter(
           (field) => JSON.stringify(a.back?.[field]) === JSON.stringify(b.back?.[field]),
         );

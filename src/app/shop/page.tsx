@@ -5,7 +5,7 @@ import { BuyButton } from '@/components/shop/BuyButton';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { assetPath } from '@/lib/asset-path';
 import { CURRENT_COLLECTION } from '@/lib/collection';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import {
   DECK_CARD_COUNT,
   INCLUDED,
@@ -43,7 +43,7 @@ export default function ShopPage() {
   const configured = isShopConfigured();
 
   // The ids live in shop.ts so a test can assert they still resolve — see SHOWCASE_HERB_IDS.
-  const showcase = SHOWCASE_HERB_IDS.map((id) => getHerb(id)).filter(
+  const showcase = SHOWCASE_HERB_IDS.map((id) => getPrintedCard(id)).filter(
     (herb): herb is NonNullable<typeof herb> => Boolean(herb),
   );
   // The back shown is the first card's own back, so the two always describe the same species.

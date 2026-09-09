@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { stageForState } from '@/lib/garden';
 import { resolveProfile } from '@/lib/player-profile';
 import { useProfileStore } from '@/lib/profile-store';
@@ -44,7 +44,7 @@ export function AccountBadge() {
   const { profile: stored } = useProfileStore();
 
   const resolved = useMemo(() => resolveProfile(stored, state), [stored, state]);
-  const herb = resolved.avatarHerbId ? getHerb(resolved.avatarHerbId) : undefined;
+  const herb = resolved.avatarHerbId ? getPrintedCard(resolved.avatarHerbId) : undefined;
 
   if (!configured || !ready) return null;
 

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { xpForTask, type TaskProgress } from '@/lib/research';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -25,7 +25,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
 
   // A long challenge shows a strip of its cards; a daily shows the single card it names.
   const cards = task.herbIds
-    .map((id) => getHerb(id))
+    .map((id) => getPrintedCard(id))
     .filter((herb): herb is NonNullable<typeof herb> => Boolean(herb))
     .slice(0, task.kind === 'daily' ? 1 : 8);
 

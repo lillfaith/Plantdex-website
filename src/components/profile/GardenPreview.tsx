@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { GARDEN_PREVIEW_COUNT } from '@/lib/profile-stats';
 import { STAGE_LABEL, type GardenEntry } from '@/lib/garden';
 import { PlantSprite } from '../PlantSprite';
@@ -61,7 +61,7 @@ export function GardenPreview({ entries }: { entries: GardenEntry[] }) {
       {entries.length > 0 && (
         <ul className="mt-5 flex items-end justify-between gap-1 sm:gap-3">
           {beds.map((entry, index) => {
-            const herb = entry ? getHerb(entry.herbId) : undefined;
+            const herb = entry ? getPrintedCard(entry.herbId) : undefined;
             return (
               <li key={entry?.herbId ?? `bed-${index}`} className="min-w-0 flex-1">
                 <span className="flex h-20 items-end justify-center sm:h-24">
@@ -99,7 +99,7 @@ export function GardenPreview({ entries }: { entries: GardenEntry[] }) {
       {entries.length > 0 && (
         <ul className="mt-1.5 flex justify-between gap-1 sm:gap-3">
           {beds.map((entry, index) => {
-            const herb = entry ? getHerb(entry.herbId) : undefined;
+            const herb = entry ? getPrintedCard(entry.herbId) : undefined;
             return (
               <li key={entry?.herbId ?? `label-${index}`} className="min-w-0 flex-1 text-center">
                 {herb && entry && (

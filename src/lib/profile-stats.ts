@@ -1,5 +1,5 @@
 import { ACHIEVEMENTS } from './achievements';
-import { DECK_SIZE, getHerb } from './deck';
+import { PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import { buildGarden, type GardenEntry } from './garden';
 import { HABITATS, habitatOf, type HabitatClass } from './habitat';
 import { stageFor, type MasteryStage } from './mastery';
@@ -64,10 +64,10 @@ export const GARDEN_PREVIEW_COUNT = 5;
 
 /** Only ids that name real cards count. A tampered or stale id is worth nothing anywhere. */
 function realIds(record: Record<string, string>): string[] {
-  return Object.keys(record).filter((id) => getHerb(id));
+  return Object.keys(record).filter((id) => getPrintedCard(id));
 }
 
-const cardNumber = (id: string): number => getHerb(id)?.cardNumber ?? Number.MAX_SAFE_INTEGER;
+const cardNumber = (id: string): number => getPrintedCard(id)?.cardNumber ?? Number.MAX_SAFE_INTEGER;
 const rarityRank = (rarity: Rarity): number => RARITIES.indexOf(rarity);
 
 function habitatStandings(state: HerbdexState): HabitatStanding[] {
@@ -88,8 +88,8 @@ function rarestDiscovered(state: HerbdexState): string | null {
       best = id;
       continue;
     }
-    const a = getHerb(id)!;
-    const b = getHerb(best)!;
+    const a = getPrintedCard(id)!;
+    const b = getPrintedCard(best)!;
     const byRarity = rarityRank(a.rarity) - rarityRank(b.rarity);
     if (byRarity > 0 || (byRarity === 0 && a.cardNumber < b.cardNumber)) best = id;
   }
@@ -135,8 +135,8 @@ export function profileStats(state: HerbdexState): ProfileStats {
     discovered,
     learned: realIds(state.learned).length,
     mastered: realIds(state.mastered).length,
-    deckSize: DECK_SIZE,
-    completionPct: DECK_SIZE > 0 ? Math.round((discovered / DECK_SIZE) * 100) : 0,
+    deckSize: PRINTED_DECK_SIZE,
+    completionPct: PRINTED_DECK_SIZE > 0 ? Math.round((discovered / PRINTED_DECK_SIZE) * 100) : 0,
     achievementsEarned: ACHIEVEMENTS.filter((a) => state.achievements[a.id]).length,
     achievementsTotal: ACHIEVEMENTS.length,
     // Priced through `researchKindFromId` so a record whose id belongs to no known kind is

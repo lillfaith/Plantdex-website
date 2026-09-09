@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildKnowledgeCheck, MIN_QUESTIONS } from './knowledge-check';
-import { HERBS, RARITY_LABEL, SEASON_LABEL } from './deck';
+import { PRINTED_CARDS, RARITY_LABEL, SEASON_LABEL } from './deck';
 
 /**
  * The point of these tests is not that the quiz works — it is that the quiz cannot invent
@@ -10,18 +10,18 @@ import { HERBS, RARITY_LABEL, SEASON_LABEL } from './deck';
 
 const ALL_SEASON_LABELS = new Set(Object.values(SEASON_LABEL));
 const ALL_RARITY_LABELS = new Set(Object.values(RARITY_LABEL));
-const ALL_PARTS = new Set(HERBS.flatMap((herb) => herb.back.usableParts));
-const ALL_COMPOUNDS = new Set(HERBS.flatMap((herb) => herb.back.compounds));
+const ALL_PARTS = new Set(PRINTED_CARDS.flatMap((herb) => herb.back.usableParts));
+const ALL_COMPOUNDS = new Set(PRINTED_CARDS.flatMap((herb) => herb.back.compounds));
 
 describe('buildKnowledgeCheck', () => {
   it('produces a real check for every card in the deck', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(buildKnowledgeCheck(herb).length).toBeGreaterThanOrEqual(MIN_QUESTIONS);
     }
   });
 
   it('never shows an option that is not printed on some card in the deck', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const question of buildKnowledgeCheck(herb)) {
         for (const option of question.options) {
           const printed =
@@ -36,7 +36,7 @@ describe('buildKnowledgeCheck', () => {
   });
 
   it('marks the answer that this card actually carries', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const question of buildKnowledgeCheck(herb)) {
         const answer = question.options[question.answerIndex]!;
         switch (question.id) {
@@ -61,7 +61,7 @@ describe('buildKnowledgeCheck', () => {
 
   /** A distractor that is also true of this card would make the check unfair and wrong. */
   it('never uses a distractor that is itself printed on this card', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const lower = (values: readonly string[]) => values.map((value) => value.toLowerCase());
       for (const question of buildKnowledgeCheck(herb)) {
         const wrong = question.options.filter((_, index) => index !== question.answerIndex);
@@ -80,7 +80,7 @@ describe('buildKnowledgeCheck', () => {
   });
 
   it('gives four distinct options per question, with a findable answer', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const question of buildKnowledgeCheck(herb)) {
         expect(question.options).toHaveLength(4);
         expect(new Set(question.options).size).toBe(4);
@@ -97,7 +97,7 @@ describe('buildKnowledgeCheck', () => {
    */
   it('asks only about card facts, never about use, safety or identification', () => {
     const forbidden = /heal|treat|cure|remed|safe|edible|eat|dose|medic|identif|poison/i;
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const question of buildKnowledgeCheck(herb)) {
         // The plant's own name is not the question's wording — Self-Heal is a card, not a
         // claim — so it is removed before checking how the question is phrased.
@@ -111,14 +111,14 @@ describe('buildKnowledgeCheck', () => {
   });
 
   it('is deterministic — the same card always produces the same check', () => {
-    for (const herb of HERBS.slice(0, 5)) {
+    for (const herb of PRINTED_CARDS.slice(0, 5)) {
       expect(buildKnowledgeCheck(herb)).toEqual(buildKnowledgeCheck(herb));
     }
   });
 
   it('does not put the answer in the same slot every time', () => {
     const slots = new Set(
-      HERBS.flatMap((herb) => buildKnowledgeCheck(herb).map((q) => q.answerIndex)),
+      PRINTED_CARDS.flatMap((herb) => buildKnowledgeCheck(herb).map((q) => q.answerIndex)),
     );
     expect(slots.size).toBeGreaterThan(1);
   });

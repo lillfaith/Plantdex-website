@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
-import { DISCLAIMER, HERBS } from '@/lib/deck';
+import { DISCLAIMER, PRINTED_CARDS } from '@/lib/deck';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { citedCardCount } from '@/lib/card-sources';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
  * species, which the cards do not support and this project does not invent.
  */
 
-const CARDS_WITH_WARNINGS = HERBS.filter((herb) => herb.warning);
+const CARDS_WITH_WARNINGS = PRINTED_CARDS.filter((herb) => herb.warning);
 
 /**
  * Plants where the SITE adds a caution the printed card does not carry.
@@ -34,7 +34,7 @@ const CARDS_WITH_WARNINGS = HERBS.filter((herb) => herb.warning);
  * reader holding the deck has to be able to tell which of the two they are looking at.
  * The bar for adding one is in `src/lib/card-cautions.ts`.
  */
-const CARDS_WITH_SITE_CAUTIONS = HERBS.filter((herb) => siteCautionFor(herb));
+const CARDS_WITH_SITE_CAUTIONS = PRINTED_CARDS.filter((herb) => siteCautionFor(herb));
 
 /** General practice, deliberately species-agnostic. */
 const PRACTICE = [
@@ -197,7 +197,7 @@ export default function SafetyPage() {
             still borrows the credibility of a real one.
           </p>
           <p>
-            {citedCardCount()} of the {HERBS.length} plants now carry independent references,
+            {citedCardCount()} of the {PRINTED_CARDS.length} plants now carry independent references,
             checked that way, under “Sources” on their page, along with a note on how strong
             the evidence behind that card actually is. They cite the plant as a whole rather
             than any one section, so a section of a card is still transcription unless it

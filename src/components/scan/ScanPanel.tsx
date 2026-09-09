@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
@@ -225,7 +225,7 @@ export function ScanPanel() {
                     // Every card in the genus. The deck holds two Rumex species, and naming
                     // one of them confidently was a coin flip that always landed the same way.
                     const ids = near?.match.relatedHerbIds ?? (near?.match.herbId ? [near.match.herbId] : []);
-                    const herbs = ids.map(getHerb).filter((herb) => herb !== undefined);
+                    const herbs = ids.map(getPrintedCard).filter((herb) => herb !== undefined);
                     if (herbs.length === 0) return null;
                     return (
                       <ul className="mt-3 space-y-2">
@@ -304,7 +304,7 @@ export function ScanPanel() {
 
                 <ul className="mt-4 space-y-3">
                   {result.candidates.map((candidate) => {
-                    const herb = candidate.match.herbId ? getHerb(candidate.match.herbId) : null;
+                    const herb = candidate.match.herbId ? getPrintedCard(candidate.match.herbId) : null;
                     if (!herb) return null;
                     const band = confidenceBand(candidate.score);
                     const already = ready && isDiscovered(herb.id);

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { RARITY_LABEL } from './deck';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { RARITIES } from './types';
 
 /**
@@ -32,11 +32,11 @@ describe('rarity displays cannot drift', () => {
   });
 
   it('uses only tiers that exist, and every tier is used by a real card', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(RARITIES, `${herb.id}: unknown rarity`).toContain(herb.rarity);
     }
     // A tier nothing carries would be a vocabulary the deck does not actually print.
-    const inUse = new Set(HERBS.map((herb) => herb.rarity));
+    const inUse = new Set(PRINTED_CARDS.map((herb) => herb.rarity));
     for (const rarity of RARITIES) {
       expect(inUse.has(rarity), `${rarity} is declared but no card carries it`).toBe(true);
     }

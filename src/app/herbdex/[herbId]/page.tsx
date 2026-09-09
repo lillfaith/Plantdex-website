@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getHerb, HERBS, SEASON_LABEL } from '@/lib/deck';
+import { getPrintedCard, PRINTED_CARDS, SEASON_LABEL } from '@/lib/deck';
 import { HerbDetail } from '@/components/herbdex/HerbDetail';
 
 /** Every herb page is statically generated — 45 small, fast, indexable pages. */
 export function generateStaticParams() {
-  return HERBS.map((herb) => ({ herbId: herb.id }));
+  return PRINTED_CARDS.map((herb) => ({ herbId: herb.id }));
 }
 
 /**
@@ -22,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ herbId: string }>;
 }): Promise<Metadata> {
   const { herbId } = await params;
-  const herb = getHerb(herbId);
+  const herb = getPrintedCard(herbId);
   if (!herb) return { title: 'Card not found' };
 
   return {
@@ -34,7 +34,7 @@ export async function generateMetadata({
 
 export default async function HerbPage({ params }: { params: Promise<{ herbId: string }> }) {
   const { herbId } = await params;
-  const herb = getHerb(herbId);
+  const herb = getPrintedCard(herbId);
   if (!herb) notFound();
 
   return <HerbDetail herb={herb} />;

@@ -7,7 +7,7 @@ import {
   isGenusCard,
   GENUS_CARD_NOTICE,
 } from './card-field-notes';
-import { HERBS, isHerbId } from './deck';
+import { PRINTED_CARDS, isPrintedCardId } from './deck';
 import { getSource, sectionCitations } from './sources';
 import { iconForTrait } from './trait-icons';
 
@@ -30,13 +30,13 @@ const MUST_CARRY_RISK = [
 
 describe('field notes', () => {
   it('covers every card in the deck', () => {
-    const missing = HERBS.filter((herb) => fieldNotesFor(herb) === null).map((herb) => herb.id);
+    const missing = PRINTED_CARDS.filter((herb) => fieldNotesFor(herb) === null).map((herb) => herb.id);
     expect(missing, `no field notes for: ${missing.join(', ')}`).toEqual([]);
   });
 
   it('only names real herbs', () => {
     for (const id of Object.keys(FIELD_NOTES)) {
-      expect(isHerbId(id), `${id} is not a deck herb`).toBe(true);
+      expect(isPrintedCardId(id), `${id} is not a deck herb`).toBe(true);
     }
   });
 
@@ -89,7 +89,7 @@ describe('hazards', () => {
 });
 
 describe('genus handling', () => {
-  const genusCards = HERBS.filter(isGenusCard);
+  const genusCards = PRINTED_CARDS.filter(isGenusCard);
 
   it('is derived from the deck, not from a hand-kept list', () => {
     // Nine cards print `spp.`. Deriving it means the notice can never claim a card is
@@ -113,7 +113,7 @@ describe('genus handling', () => {
     // get the accurate caveat instead; saying "Plantdex represents this card at genus
     // level" would misdescribe the deck.
     for (const id of ['mentha-canadensis', 'allium-vineale', 'monarda-fistulosa', 'lonicera-japonica']) {
-      const herb = HERBS.find((candidate) => candidate.id === id)!;
+      const herb = PRINTED_CARDS.find((candidate) => candidate.id === id)!;
       expect(isGenusCard(herb), `${id} is not an spp. card`).toBe(false);
       const note = FIELD_NOTES[id]?.genusTraitsNote;
       expect(note, `${id}: no genus-traits caveat`).toBeDefined();
@@ -213,7 +213,7 @@ describe('trait rows and the icons drawn beside them', () => {
 
 describe('field-note citations', () => {
   it('offers identification sources to the identification section', () => {
-    const dandelion = HERBS.find((herb) => herb.id === 'taraxacum-officinale')!;
+    const dandelion = PRINTED_CARDS.find((herb) => herb.id === 'taraxacum-officinale')!;
     const sections = fieldNoteSectionSources(dandelion);
     expect(sections.identification!.length).toBeGreaterThan(0);
     expect(sections.identification!.every((ref) => typeof ref.sourceId === 'string')).toBe(true);
@@ -232,7 +232,7 @@ describe('field-note citations', () => {
      * moment somebody verified a lookalike source. Habitat now cites `habitatSourceIds`
      * and nothing else.
      */
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const notes = FIELD_NOTES[herb.id];
       const sections = fieldNoteSectionSources(herb);
       if (!sections.habitat) continue;
@@ -246,12 +246,12 @@ describe('field-note citations', () => {
   it('reports habitat as awaiting a source while no habitat source is verified', () => {
     // The honest state today: every habitat sentence is curated but not independently
     // sourced, and the page says so rather than borrowing a citation.
-    const withHabitatRefs = HERBS.filter((herb) => fieldNoteSectionSources(herb).habitat);
+    const withHabitatRefs = PRINTED_CARDS.filter((herb) => fieldNoteSectionSources(herb).habitat);
     expect(withHabitatRefs).toEqual([]);
   });
 
   it('offers nothing for a card whose notes cite nothing', () => {
-    const uncited = HERBS.find((herb) => FIELD_NOTES[herb.id]?.sourceIds.length === 0)!;
+    const uncited = PRINTED_CARDS.find((herb) => FIELD_NOTES[herb.id]?.sourceIds.length === 0)!;
     expect(uncited, 'expected at least one uncited card').toBeDefined();
     expect(fieldNoteSectionSources(uncited)).toEqual({});
   });
@@ -259,7 +259,7 @@ describe('field-note citations', () => {
   it('never surfaces an unverified source through the citation path', () => {
     // The verified-only rule is the whole citation system. Routing field notes through
     // `sectionCitations` must not become a side door around it.
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const refs of Object.values(fieldNoteSectionSources(herb))) {
         for (const ref of refs) {
           const source = getSource(ref.sourceId);
@@ -268,7 +268,7 @@ describe('field-note citations', () => {
       }
     }
     const { cited } = sectionCitations(
-      fieldNoteSectionSources(HERBS.find((h) => h.id === 'taraxacum-officinale')!),
+      fieldNoteSectionSources(PRINTED_CARDS.find((h) => h.id === 'taraxacum-officinale')!),
     );
     // Every field-note source ships verified:false today, so nothing resolves. If this
     // starts failing, sources were verified — which is good, and the wording above it

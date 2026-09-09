@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { formatCitation, getSource, resolveRefs, sectionCitations } from './sources';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { SECTION_LABEL, SOURCEABLE_SECTIONS } from './types';
 
 describe('source registry', () => {
@@ -11,7 +11,7 @@ describe('source registry', () => {
   });
 
   it('every registered source declares a verification status and a title', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const ref of herb.sources ?? []) {
         const source = getSource(ref.sourceId);
         expect(source, `herb ${herb.id} cites unknown source ${ref.sourceId}`).toBeDefined();
@@ -54,7 +54,7 @@ describe('resolveRefs', () => {
 
 describe('every herb carries provenance', () => {
   it('cites the physical card it was transcribed from', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const resolved = resolveRefs(herb.sources);
       expect(resolved.length, `herb ${herb.id} has no verified source`).toBeGreaterThan(0);
       expect(resolved.some((r) => r.source.id === 'plantdex-deck')).toBe(true);

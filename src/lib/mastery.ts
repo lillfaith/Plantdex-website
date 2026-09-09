@@ -1,5 +1,5 @@
 import type { HerbdexState } from './types';
-import { getHerb } from './deck';
+import { getPrintedCard } from './deck';
 
 /**
  * THE THREE-STAGE CARD MASTERY MODEL.
@@ -79,7 +79,7 @@ export function qualifiesForMastery(
   herbId: string,
   sightings: number,
 ): boolean {
-  if (!getHerb(herbId)) return false;
+  if (!getPrintedCard(herbId)) return false;
   if (!state.discoveries[herbId]) return false;
   if (!state.learned[herbId]) return false;
   return sightings >= SIGHTINGS_FOR_MASTERY;
@@ -108,7 +108,7 @@ export interface MasteryTotals {
 /** Deck-wide counts. Ids that are not in the deck are not counted. */
 export function masteryTotals(state: HerbdexState): MasteryTotals {
   const count = (record: Record<string, string>): number =>
-    Object.keys(record).filter((id) => getHerb(id)).length;
+    Object.keys(record).filter((id) => getPrintedCard(id)).length;
 
   return {
     discovered: count(state.discoveries),

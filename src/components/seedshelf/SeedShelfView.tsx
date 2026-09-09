@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import Link from 'next/link';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { useSeedShelf } from '@/lib/seed-shelf-store';
 import {
@@ -79,7 +79,7 @@ export function SeedShelfView() {
   const claim = useCallback(
     (entry: SeedShelfEntry) => {
       const herbId = cardFor(entry);
-      const herb = herbId ? getHerb(herbId) : undefined;
+      const herb = herbId ? getPrintedCard(herbId) : undefined;
       if (!herb) return;
       discover(herb, entry.firstFoundAt);
       track('seed_shelf_sprouted');
@@ -157,7 +157,7 @@ export function SeedShelfView() {
               A seed has sprouted.
             </p>
             <p className="mt-1 text-sm text-violet-200">
-              {getHerb(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
+              {getPrintedCard(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
               you first found it.
             </p>
             <Link
@@ -307,7 +307,7 @@ function Packet({
   onClaim: () => void;
 }) {
   const herbId = cardFor(entry);
-  const herb = herbId ? getHerb(herbId) : undefined;
+  const herb = herbId ? getPrintedCard(herbId) : undefined;
   const label = entry.commonName ?? entry.scientificName;
 
   return (

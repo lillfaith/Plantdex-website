@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import type { ProfileStats } from '@/lib/profile-stats';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 import { RarityBadge } from '../herbdex/RarityBadge';
@@ -39,7 +39,7 @@ interface Tile {
 }
 
 export function FieldRecord({ stats }: { stats: ProfileStats }) {
-  const rarest = stats.rarestHerbId ? getHerb(stats.rarestHerbId) : undefined;
+  const rarest = stats.rarestHerbId ? getPrintedCard(stats.rarestHerbId) : undefined;
 
   const tiles: Tile[] = [
     {

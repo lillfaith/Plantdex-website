@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ACHIEVEMENTS } from '@/lib/achievements';
-import { herbsInDeckOrder } from '@/lib/deck';
+import { printedCardsInDeckOrder } from '@/lib/deck';
 import { FIELD_FRAMES } from '@/lib/field-frames';
 import { FIELD_TITLES, titleLabel } from '@/lib/field-titles';
 import { HABITAT_LABEL } from '@/lib/habitat';
@@ -65,7 +65,7 @@ export function EditProfilePanel({
     if (!saving) setDraft(profile);
   }
 
-  const discovered = herbsInDeckOrder().filter((herb) => state.discoveries[herb.id]);
+  const discovered = printedCardsInDeckOrder().filter((herb) => state.discoveries[herb.id]);
   const frames = FIELD_FRAMES.filter((frame) => frame.isUnlocked(state));
   const titles = FIELD_TITLES.filter((title) => title.isUnlocked(state));
   const earned = ACHIEVEMENTS.filter((achievement) => state.achievements[achievement.id]);

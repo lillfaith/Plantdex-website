@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { COMPOUND_LINKS, LINKABLE_HEALING, linksFor } from './compound-links';
 import { compoundFor } from './compounds';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { getSource } from './sources';
 
 /**
@@ -58,7 +58,7 @@ describe('linksFor', () => {
   it('says nothing the card does not already say', () => {
     // The honesty mechanic: a link surfaces only where the card prints BOTH the compound
     // and the term, so the feature can only rearrange the card's own words.
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const printed of herb.back.compounds) {
         for (const link of linksFor(herb, printed)) {
           const list = herb.back[link.field];
@@ -73,19 +73,19 @@ describe('linksFor', () => {
   });
 
   it('returns nothing for a compound the card names but the term it does not', () => {
-    const mint = HERBS.find((h) => h.back.compounds.includes('Menthol'))!;
+    const mint = PRINTED_CARDS.find((h) => h.back.compounds.includes('Menthol'))!;
     expect(mint, 'no card names Menthol').toBeDefined();
     const fake = { ...mint, back: { ...mint.back, taste: [], aromatic: [], healingTraits: [] } };
     expect(linksFor(fake, 'Menthol')).toEqual([]);
   });
 
   it('returns nothing for a compound with no links at all', () => {
-    const anyHerb = HERBS[0]!;
+    const anyHerb = PRINTED_CARDS[0]!;
     expect(linksFor(anyHerb, 'Not A Real Compound')).toEqual([]);
   });
 
   it('does not repeat the same term twice on one compound', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const printed of herb.back.compounds) {
         const keys = linksFor(herb, printed).map((l) => `${l.field}:${l.term.toLowerCase()}`);
         expect(new Set(keys).size, `${herb.id}: ${printed}`).toBe(keys.length);
@@ -96,7 +96,7 @@ describe('linksFor', () => {
   it('actually connects something — the feature is not inert', () => {
     // A guard against the join silently matching nothing, which would look identical to
     // "this card has no connections" on every page.
-    const connected = HERBS.filter((herb) =>
+    const connected = PRINTED_CARDS.filter((herb) =>
       herb.back.compounds.some((printed) => linksFor(herb, printed).length > 0),
     );
     expect(connected.length, 'no card in the deck produces a single link').toBeGreaterThan(8);
@@ -106,7 +106,7 @@ describe('linksFor', () => {
 describe('the link table', () => {
   it('only keys compounds the deck actually prints', () => {
     const printed = new Set(
-      HERBS.flatMap((h) => h.back.compounds).map((c) => c.trim().toLowerCase().replace(/\s+/g, ' ')),
+      PRINTED_CARDS.flatMap((h) => h.back.compounds).map((c) => c.trim().toLowerCase().replace(/\s+/g, ' ')),
     );
     const unknown = Object.keys(COMPOUND_LINKS).filter((key) => !printed.has(key));
     expect(unknown, `links for compounds no card names: ${unknown.join(', ')}`).toEqual([]);

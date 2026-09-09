@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { FIELD_NOTES } from './card-field-notes';
 import sourcesJson from '../data/sources.json';
 import {
@@ -35,7 +35,7 @@ describe('habitat taxonomy', () => {
   });
 
   it('gives every species in the deck exactly one primary habitat', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const entry = HABITAT_ASSIGNMENTS[herb.id];
       expect(entry, `${herb.id} has no habitat assignment`).toBeDefined();
       expect(HABITATS, `${herb.id}: unknown primary`).toContain(entry!.primary);
@@ -44,7 +44,7 @@ describe('habitat taxonomy', () => {
 
   it('assigns no habitat to a herb that is not in the deck', () => {
     // A typo'd id would otherwise sit in the table forever, silently classifying nothing.
-    const deckIds = new Set(HERBS.map((herb) => herb.id));
+    const deckIds = new Set(PRINTED_CARDS.map((herb) => herb.id));
     for (const id of Object.keys(HABITAT_ASSIGNMENTS)) {
       expect(deckIds.has(id), `${id} is not a herb in the deck`).toBe(true);
     }
@@ -61,7 +61,7 @@ describe('habitat taxonomy', () => {
   });
 
   it('returns habitats primary-first, one or two of them', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const list = habitatsOf(herb.id);
       expect(list.length, herb.id).toBeGreaterThanOrEqual(1);
       expect(list.length, herb.id).toBeLessThanOrEqual(2);
@@ -82,7 +82,7 @@ describe('habitat taxonomy', () => {
   it('counts primaries to exactly the deck size', () => {
     const counts = habitatCounts();
     const primaryTotal = HABITATS.reduce((n, habitat) => n + counts[habitat].primary, 0);
-    expect(primaryTotal).toBe(HERBS.length);
+    expect(primaryTotal).toBe(PRINTED_CARDS.length);
     // Inclusive counts exceed the deck size precisely because secondaries exist.
     const inclusiveTotal = HABITATS.reduce((n, habitat) => n + counts[habitat].inclusive, 0);
     expect(inclusiveTotal).toBeGreaterThan(primaryTotal);
@@ -113,7 +113,7 @@ describe('habitat taxonomy', () => {
     // The classification is a reading OF the cited prose. A species with no prose would
     // mean the class came from somewhere unsourced. Read directly from the field notes
     // rather than through habitat.ts, which deliberately does not import them.
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(FIELD_NOTES[herb.id]?.habitat, `${herb.id} has no cited habitat prose`).toBeTruthy();
     }
   });
@@ -136,7 +136,7 @@ describe('habitat taxonomy', () => {
      */
     const VERIFIED_HABITAT_SOURCE_FLOOR = 0;
 
-    const sourced = HERBS.filter((herb) =>
+    const sourced = PRINTED_CARDS.filter((herb) =>
       (FIELD_NOTES[herb.id]?.habitatSourceIds ?? []).some((id) => SOURCES[id]?.verified),
     );
     expect(
@@ -154,7 +154,7 @@ describe('habitat taxonomy', () => {
 
   it('never counts an unverified id as habitat sourcing', () => {
     // The only way the floor above could be cleared dishonestly.
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const id of FIELD_NOTES[herb.id]?.habitatSourceIds ?? []) {
         expect(SOURCES[id], `${herb.id}: habitat cites unknown source ${id}`).toBeDefined();
       }
@@ -164,7 +164,7 @@ describe('habitat taxonomy', () => {
   it('keeps every field-note source id resolvable in the registry', () => {
     // A dangling id would silently render nothing and look like a missing citation rather
     // than a broken one.
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const notes = FIELD_NOTES[herb.id];
       for (const id of [...(notes?.sourceIds ?? []), ...(notes?.habitatSourceIds ?? [])]) {
         expect(SOURCES[id], `${herb.id}: unknown source id ${id}`).toBeDefined();
@@ -183,7 +183,7 @@ describe('habitat taxonomy', () => {
       );
     }
     // Judgement calls come back in deck order, so the list reads like the deck.
-    const order = HERBS.map((herb) => herb.id);
+    const order = PRINTED_CARDS.map((herb) => herb.id);
     const positions = flagged.map((entry) => order.indexOf(entry.herbId));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
   });
@@ -230,19 +230,19 @@ describe('habitat filtering', () => {
      * filters are a partition — counts sum to the deck and no card appears twice. Matching
      * secondaries would break both, and would put 29 of 45 cards behind "Wayside".
      */
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const matches = HABITATS.filter((habitat) => matchesHabitatFilter(herb.id, habitat));
       expect(matches, `${herb.id} matches ${matches.length} filters`).toHaveLength(1);
     }
     const total = HABITATS.reduce(
-      (n, habitat) => n + HERBS.filter((herb) => matchesHabitatFilter(herb.id, habitat)).length,
+      (n, habitat) => n + PRINTED_CARDS.filter((herb) => matchesHabitatFilter(herb.id, habitat)).length,
       0,
     );
-    expect(total).toBe(HERBS.length);
+    expect(total).toBe(PRINTED_CARDS.length);
   });
 
   it('never matches on a secondary habitat', () => {
-    const withSecondary = HERBS.filter((herb) => HABITAT_ASSIGNMENTS[herb.id]?.secondary);
+    const withSecondary = PRINTED_CARDS.filter((herb) => HABITAT_ASSIGNMENTS[herb.id]?.secondary);
     expect(withSecondary.length).toBeGreaterThan(0);
     for (const herb of withSecondary) {
       const secondary = HABITAT_ASSIGNMENTS[herb.id]!.secondary!;

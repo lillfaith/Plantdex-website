@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ACHIEVEMENTS } from './achievements';
-import { DECK_SIZE, HERBS, getHerb } from './deck';
+import { PRINTED_DECK_SIZE, PRINTED_CARDS, getPrintedCard } from './deck';
 import { HABITATS, habitatOf } from './habitat';
 import { emptyState } from './storage';
 import { GARDEN_PREVIEW_COUNT, RECENT_FIND_COUNT, profileStats } from './profile-stats';
@@ -33,7 +33,7 @@ describe('an empty collection', () => {
     expect(stats.progress.level).toBe(1);
     expect(stats.discovered).toBe(0);
     expect(stats.completionPct).toBe(0);
-    expect(stats.deckSize).toBe(DECK_SIZE);
+    expect(stats.deckSize).toBe(PRINTED_DECK_SIZE);
     expect(stats.achievementsTotal).toBe(ACHIEVEMENTS.length);
   });
 
@@ -74,17 +74,17 @@ describe('counts', () => {
   });
 
   it('reaches 100% on a complete collection', () => {
-    const discovered = Object.fromEntries(HERBS.map((herb) => [herb.id, at(1)]));
+    const discovered = Object.fromEntries(PRINTED_CARDS.map((herb) => [herb.id, at(1)]));
     expect(profileStats(stateWith({ discovered })).completionPct).toBe(100);
   });
 });
 
 describe('the rarest card held', () => {
   it('is the highest rarity, and the lowest card number among equals', () => {
-    const epics = HERBS.filter((herb) => herb.rarity === 'Epic').sort(
+    const epics = PRINTED_CARDS.filter((herb) => herb.rarity === 'Epic').sort(
       (a, b) => a.cardNumber - b.cardNumber,
     );
-    const commons = HERBS.filter((herb) => herb.rarity === 'Common').slice(0, 3);
+    const commons = PRINTED_CARDS.filter((herb) => herb.rarity === 'Common').slice(0, 3);
     expect(epics.length).toBeGreaterThanOrEqual(2);
 
     const discovered = Object.fromEntries(
@@ -98,7 +98,7 @@ describe('the rarest card held', () => {
    * and a sync. Built in both insertion orders; the answer must not change.
    */
   it('does not depend on the order the finds were recorded in', () => {
-    const epics = HERBS.filter((herb) => herb.rarity === 'Epic').sort(
+    const epics = PRINTED_CARDS.filter((herb) => herb.rarity === 'Epic').sort(
       (a, b) => a.cardNumber - b.cardNumber,
     );
     const forwards = Object.fromEntries(epics.map((herb) => [herb.id, at(1)]));
@@ -110,7 +110,7 @@ describe('the rarest card held', () => {
 
 describe('recent finds', () => {
   it('are the newest first, capped, and carry their real mastery stage', () => {
-    const ids = HERBS.slice(0, 6).map((herb) => herb.id);
+    const ids = PRINTED_CARDS.slice(0, 6).map((herb) => herb.id);
     const discovered = Object.fromEntries(ids.map((id, index) => [id, at(index + 1)]));
     const stats = profileStats(
       stateWith({ discovered, learned: [ids[5]!], mastered: [ids[5]!] }),
@@ -124,19 +124,19 @@ describe('recent finds', () => {
   });
 
   it('breaks a same-timestamp tie by card number, not by key order', () => {
-    const ids = HERBS.slice(0, 4)
+    const ids = PRINTED_CARDS.slice(0, 4)
       .map((herb) => herb.id)
-      .sort((a, b) => getHerb(b)!.cardNumber - getHerb(a)!.cardNumber);
+      .sort((a, b) => getPrintedCard(b)!.cardNumber - getPrintedCard(a)!.cardNumber);
     const discovered = Object.fromEntries(ids.map((id) => [id, at(2)]));
     const finds = profileStats(stateWith({ discovered })).recentFinds;
-    const numbers = finds.map((find) => getHerb(find.herbId)!.cardNumber);
+    const numbers = finds.map((find) => getPrintedCard(find.herbId)!.cardNumber);
     expect(numbers).toEqual([...numbers].sort((a, b) => a - b));
   });
 });
 
 describe('the garden preview', () => {
   it('shows the most grown plants first and never the whole garden', () => {
-    const ids = HERBS.slice(0, 12).map((herb) => herb.id);
+    const ids = PRINTED_CARDS.slice(0, 12).map((herb) => herb.id);
     const discovered = Object.fromEntries(ids.map((id) => [id, at(1)]));
     const stats = profileStats(
       stateWith({ discovered, learned: [ids[9]!, ids[10]!], mastered: [ids[10]!] }),
@@ -150,7 +150,7 @@ describe('the garden preview', () => {
 
 describe('habitat standings', () => {
   it('count by primary habitat only', () => {
-    const woodland = HERBS.filter((herb) => habitatOf(herb.id)?.primary === 'woodland').slice(0, 4);
+    const woodland = PRINTED_CARDS.filter((herb) => habitatOf(herb.id)?.primary === 'woodland').slice(0, 4);
     const discovered = Object.fromEntries(woodland.map((herb) => [herb.id, at(1)]));
     const stats = profileStats(stateWith({ discovered }));
     expect(stats.topHabitat).toEqual({ habitat: 'woodland', count: 4 });

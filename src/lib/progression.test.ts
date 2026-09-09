@@ -12,7 +12,7 @@ import {
   xpForState,
 } from './progression';
 import { emptyState } from './storage';
-import { HERBS, MAX_DECK_XP } from './deck';
+import { PRINTED_CARDS, MAX_PRINTED_DECK_XP } from './deck';
 
 describe('level ladder', () => {
   it('starts at zero and increases monotonically', () => {
@@ -70,13 +70,13 @@ describe('level ladder', () => {
     expect(LEVELS.slice(0, 8).map((entry) => entry.minXp)).toEqual([
       0, 250, 600, 1200, 2200, 3600, 5500, 8000,
     ]);
-    expect(LEVELS[7]!.minXp).toBeLessThanOrEqual(MAX_DECK_XP);
+    expect(LEVELS[7]!.minXp).toBeLessThanOrEqual(MAX_PRINTED_DECK_XP);
   });
 });
 
 describe('xpForDiscoveries', () => {
   it('sums the XP of known herbs', () => {
-    const [a, b] = HERBS;
+    const [a, b] = PRINTED_CARDS;
     expect(xpForDiscoveries([a!.id, b!.id])).toBe(a!.xp + b!.xp);
   });
 
@@ -85,14 +85,14 @@ describe('xpForDiscoveries', () => {
   });
 
   it('matches the XP stamped onto each herb at deck build time', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(herb.xp).toBe(XP_BY_RARITY[herb.rarity]);
     }
   });
 });
 
 describe('xpForState across the three mastery stages', () => {
-  const herb = HERBS[0]!;
+  const herb = PRINTED_CARDS[0]!;
   const at = '2026-01-01T00:00:00.000Z';
 
   it('pays for discovery, learning and mastery, and only for real cards', () => {
@@ -141,7 +141,7 @@ describe('xpForState across the three mastery stages', () => {
 
   it('caps out at MAX_COLLECTION_XP when every card is fully mastered', () => {
     const every = (): Record<string, string> =>
-      Object.fromEntries(HERBS.map((entry) => [entry.id, at]));
+      Object.fromEntries(PRINTED_CARDS.map((entry) => [entry.id, at]));
     const complete = {
       ...emptyState(),
       discoveries: every(),

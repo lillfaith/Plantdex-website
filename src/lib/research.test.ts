@@ -14,7 +14,7 @@ import {
 } from './research';
 import { reconcileResearch, applyDiscovery, applyLearned } from './herbdex-reducer';
 import { emptyState } from './storage';
-import { getHerb, HERBS } from './deck';
+import { getPrintedCard, PRINTED_CARDS } from './deck';
 import { RESEARCH_XP, xpForState } from './progression';
 import type { HerbdexState } from './types';
 
@@ -55,7 +55,7 @@ describe('no task can be impossible', () => {
         // The most a step can ever measure is every card in the deck satisfying it, which
         // is bounded above by the deck itself.
         expect(step.target).toBeGreaterThan(0);
-        expect(step.target).toBeLessThanOrEqual(HERBS.length);
+        expect(step.target).toBeLessThanOrEqual(PRINTED_CARDS.length);
       }
     }
   });
@@ -66,7 +66,7 @@ describe('no task can be impossible', () => {
     // asked for something the deck cannot provide, this fails.
     let state = emptyState();
     const counts: Record<string, number> = {};
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       state = applyDiscovery(state, herb.id, at).state;
       state = applyLearned(state, herb.id, at).state;
       state = { ...state, mastered: { ...state.mastered, [herb.id]: at } };
@@ -94,7 +94,7 @@ describe('no task can be impossible', () => {
     const backyard = STANDING_TASKS.find((task) => task.id === 'collection:backyard');
     expect(backyard).toBeDefined();
     for (const herbId of backyard!.herbIds) {
-      const herb = getHerb(herbId);
+      const herb = getPrintedCard(herbId);
       expect(herb, `${herbId} is not a card in this deck`).toBeDefined();
       // The point of the challenge is that these are findable without going anywhere.
       expect(herb!.rarity).toBe('Common');
@@ -113,13 +113,13 @@ describe('progressForTask', () => {
   });
 
   it('counts only cards matching the task, not the whole collection', () => {
-    const summerIds = HERBS.filter((herb) => herb.season === 'summer').map((herb) => herb.id);
+    const summerIds = PRINTED_CARDS.filter((herb) => herb.season === 'summer').map((herb) => herb.id);
     const progress = progressForTask(seasonalSpring, world(progressThrough(summerIds)));
     expect(progress.steps[0]!.current).toBe(0);
   });
 
   it('clamps a step at its target rather than overshooting', () => {
-    const springIds = HERBS.filter((herb) => herb.season === 'spring').map((herb) => herb.id);
+    const springIds = PRINTED_CARDS.filter((herb) => herb.season === 'spring').map((herb) => herb.id);
     const progress = progressForTask(seasonalSpring, world(progressThrough(springIds)));
     const discover = progress.steps[0]!;
     expect(discover.current).toBe(discover.target);
@@ -186,7 +186,7 @@ describe('reconcileResearch', () => {
    * back something already earned.
    */
   it('never revokes a completion when the facts behind it change', () => {
-    const herb = HERBS[0]!;
+    const herb = PRINTED_CARDS[0]!;
     const learned = applyLearned(applyDiscovery(emptyState(), herb.id, at).state, herb.id, at)
       .state;
     const task = researchTaskById(`daily:revisit:${herb.id}`)!;
@@ -265,7 +265,7 @@ describe('daily board', () => {
   });
 
   it('spreads picks across templates once the player has cards to work with', () => {
-    const ids = HERBS.slice(0, 10).map((herb) => herb.id);
+    const ids = PRINTED_CARDS.slice(0, 10).map((herb) => herb.id);
     const state = progressThrough(ids, 'learned');
     const picks = pickDailyTasks(world(state), '2026-08-22', new Set(), 6);
     const templates = new Set(picks.map((task) => task.id.split(':')[1]));
@@ -276,7 +276,7 @@ describe('daily board', () => {
     // Everything discovered, learned, mastered and re-sighted: no daily applies.
     let state = emptyState();
     const counts: Record<string, number> = {};
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       state = applyDiscovery(state, herb.id, at).state;
       state = applyLearned(state, herb.id, at).state;
       state = { ...state, mastered: { ...state.mastered, [herb.id]: at } };
@@ -294,7 +294,7 @@ describe('researchTaskById', () => {
   });
 
   it('resolves a daily id back to the same task', () => {
-    const herb = HERBS[0]!;
+    const herb = PRINTED_CARDS[0]!;
     const task = researchTaskById(`daily:find:${herb.id}`);
     expect(task).toBeDefined();
     expect(task!.herbIds).toEqual([herb.id]);
@@ -321,7 +321,7 @@ describe('XP', () => {
     for (const task of STANDING_TASKS) {
       expect(xpForTask(task)).toBe(RESEARCH_XP[task.kind]);
     }
-    expect(xpForTask(researchTaskById(`daily:find:${HERBS[0]!.id}`)!)).toBe(RESEARCH_XP.daily);
+    expect(xpForTask(researchTaskById(`daily:find:${PRINTED_CARDS[0]!.id}`)!)).toBe(RESEARCH_XP.daily);
   });
 
   it('is stable when the same state is scored twice', () => {

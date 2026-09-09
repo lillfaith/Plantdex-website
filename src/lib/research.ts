@@ -1,6 +1,6 @@
 import type { Herb, HerbdexState, Rarity, Season } from './types';
 import { SEASONS } from './types';
-import { getHerb, HERBS, herbsInDeckOrder, SEASON_LABEL } from './deck';
+import { getPrintedCard, PRINTED_CARDS, printedCardsInDeckOrder, SEASON_LABEL } from './deck';
 import { HABITATS, HABITAT_LABEL, habitatOf, type HabitatClass } from './habitat';
 import { RESEARCH_XP, type ResearchKind } from './progression';
 import { hash, seeded, shuffle } from './rng';
@@ -86,7 +86,7 @@ function countMatching(
 ): number {
   let n = 0;
   for (const id of Object.keys(record)) {
-    const herb = getHerb(id);
+    const herb = getPrintedCard(id);
     if (herb && predicate(herb)) n += 1;
   }
   return n;
@@ -98,9 +98,26 @@ const ofRarity = (rarity: Rarity) => (herb: Herb) => herb.rarity === rarity;
 const ofHabitat = (habitat: HabitatClass) => (herb: Herb) =>
   habitatOf(herb.id)?.primary === habitat;
 
+/**
+ * THE POOL FIELD RESEARCH OPERATES ON: the printed deck, and nothing else.
+ *
+ * Named and exported rather than left as an inlined `PRINTED_CARDS`, because this is the
+ * one decision that keeps the whole feature coherent. Every task is sized against real
+ * supply — the deck holds exactly one winter card, so "master 2 winter cards" would be
+ * impossible — and `research.test.ts` proves completability by mastering the entire deck
+ * and asserting every standing task then reports itself finished.
+ *
+ * Both of those guarantees are statements about a FIXED, KNOWN set. Point this at a growing
+ * catalogue and "master 5 winter cards" silently changes meaning, the completability proof
+ * stops proving anything, and a daily could offer a card the player has no way to reach.
+ * Field Research is about the deck in your hands; a future digital collection that wants
+ * its own challenges should get its own explicitly named pool rather than widening this one.
+ */
+export const RESEARCH_POOL: readonly Herb[] = PRINTED_CARDS;
+
 /** How many cards in the physical deck could ever satisfy a predicate. */
 export function deckSupply(predicate: (herb: Herb) => boolean): number {
-  return HERBS.filter(predicate).length;
+  return RESEARCH_POOL.filter(predicate).length;
 }
 
 // --- Seasonal research ----------------------------------------------------------
@@ -112,7 +129,7 @@ export function deckSupply(predicate: (herb: Herb) => boolean): number {
  * impossible one, and a player would rightly read it as the app being broken.
  */
 function seasonalTask(season: Season): ResearchTask {
-  const cards = herbsInDeckOrder().filter(inSeason(season));
+  const cards = printedCardsInDeckOrder().filter(inSeason(season));
   const supply = cards.length;
   const label = SEASON_LABEL[season];
 
@@ -187,7 +204,7 @@ function backyardTask(): ResearchTask {
     // show that card's artwork.
     steps: BACKYARD_IDS.map((herbId) => ({
       id: herbId,
-      label: getHerb(herbId)?.commonName ?? herbId,
+      label: getPrintedCard(herbId)?.commonName ?? herbId,
       target: 1,
       measure: (world) => (world.state.discoveries[herbId] ? 1 : 0),
     })),
@@ -203,7 +220,7 @@ function hardToFindTask(): ResearchTask {
     kind: 'collection',
     title: 'Hard to Find',
     description: 'The cards the deck rates hardest to come across.',
-    herbIds: herbsInDeckOrder()
+    herbIds: printedCardsInDeckOrder()
       .filter((herb) => herb.rarity === 'Rare' || herb.rarity === 'Epic')
       .map((herb) => herb.id),
     steps: [
@@ -237,7 +254,7 @@ function hardToFindTask(): ResearchTask {
  * and its first step still progresses on that very first find.
  */
 function habitatTask(habitat: HabitatClass): ResearchTask {
-  const cards = herbsInDeckOrder().filter(ofHabitat(habitat));
+  const cards = printedCardsInDeckOrder().filter(ofHabitat(habitat));
   const supply = cards.length;
   const label = HABITAT_LABEL[habitat];
   const discoverTarget = Math.min(3, supply);
@@ -380,7 +397,9 @@ export function pickDailyTasks(
   const candidates: ResearchTask[] = [];
 
   for (const template of DAILY_TEMPLATES) {
-    for (const herb of HERBS) {
+    // RESEARCH_POOL, not the catalogue: a daily must never offer a species the player has
+    // no printed card for, and `deckSupply` above sizes every other task the same way.
+    for (const herb of RESEARCH_POOL) {
       if (template.satisfied(herb, world)) continue;
       if (!template.available(herb, world)) continue;
       const task = dailyTask(template, herb);
@@ -435,7 +454,7 @@ export function researchTaskById(id: string): ResearchTask | undefined {
   if (prefix !== 'daily' || !templateId || !herbId) return undefined;
 
   const template = TEMPLATE_BY_ID.get(templateId);
-  const herb = getHerb(herbId);
+  const herb = getPrintedCard(herbId);
   if (!template || !herb) return undefined;
 
   return dailyTask(template, herb);

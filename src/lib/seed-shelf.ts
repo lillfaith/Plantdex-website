@@ -1,4 +1,4 @@
-import { getHerb } from './deck';
+import { getPrintedCard } from './deck';
 import { matchScientificName, normalizeName } from './plant-match';
 import { packetRecipe, parseRecipe, type PacketRecipe } from './seed-packet';
 import { mintablePacketInput } from './species-identity';
@@ -156,6 +156,12 @@ export function isShelfEligible(scientificName: string): boolean {
   // A bare genus does not identify a species, and a shelf of genera would collide with
   // future cards in ways nothing could resolve.
   if (!key || !key.includes(' ')) return false;
+  // ELIGIBILITY IS ABOUT THE PRINTED DECK, NOT ABOUT WHAT PLANTDEX RECOGNISES.
+  // `matchScientificName` indexes `PRINTED_CARDS` only, which is what keeps this true. A
+  // species gaining a digital-only entry must NOT quietly become ineligible: a player who
+  // shelved it would see it vanish from a shelf they had collected, for a reason nothing in
+  // the UI could explain. The shelf answers "the deck has no card for this", and that stays
+  // its meaning however large the catalogue grows.
   return !matchScientificName(scientificName).confirmable;
 }
 
@@ -329,7 +335,7 @@ function resolvePacket(
 export function cardFor(entry: Pick<SeedShelfEntry, 'scientificName'>): string | null {
   const match = matchScientificName(entry.scientificName);
   if (!match.confirmable || !match.herbId) return null;
-  return getHerb(match.herbId) ? match.herbId : null;
+  return getPrintedCard(match.herbId) ? match.herbId : null;
 }
 
 /**

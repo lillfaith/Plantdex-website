@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { getAchievement } from './achievements';
-import { getHerb } from './deck';
+import { getPrintedCard } from './deck';
 import { DEFAULT_FRAME_ID, getFrame, resolveFrame, type FieldFrame } from './field-frames';
 import { getTitle, type FieldTitle } from './field-titles';
 import type { HerbdexState } from './types';
@@ -148,7 +148,7 @@ export function isEmptyProfile(profile: StoredProfile): boolean {
 }
 
 const isDiscovered = (state: HerbdexState, id: string | null): boolean =>
-  Boolean(id && getHerb(id) && state.discoveries[id]);
+  Boolean(id && getPrintedCard(id) && state.discoveries[id]);
 
 /**
  * The stored choices, filtered down to the ones this collection actually supports.

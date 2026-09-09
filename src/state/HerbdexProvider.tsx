@@ -17,7 +17,7 @@ import {
 } from '@/lib/research';
 import { clearBoard, refreshBoard, useResearchBoard } from '@/lib/research-board';
 import { useSightingCounts } from '@/lib/sightings-store';
-import { DECK_SIZE } from '@/lib/deck';
+import { PRINTED_DECK_SIZE } from '@/lib/deck';
 import { discoveryEvent, researchEvent, track } from '@/lib/analytics';
 import { researchKindFromId } from '@/lib/progression';
 import { createHerbdexStore } from './herbdex-store';
@@ -179,7 +179,7 @@ export function HerbdexProvider({
       discoveredCount: totals.discovered,
       learnedCount: totals.learned,
       masteredCount: totals.mastered,
-      deckSize: DECK_SIZE,
+      deckSize: PRINTED_DECK_SIZE,
       isDiscovered: (herbId: string) => Boolean(state.discoveries[herbId]),
       isLearned: (herbId: string) => Boolean(state.learned[herbId]),
       isMastered: (herbId: string) => Boolean(state.mastered[herbId]),

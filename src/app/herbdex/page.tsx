@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { herbsInDeckOrder } from '@/lib/deck';
+import { printedCardsInDeckOrder } from '@/lib/deck';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default function HerbdexPage() {
-  const herbs = herbsInDeckOrder();
+  const herbs = printedCardsInDeckOrder();
 
   return (
     <main id="main" className="mx-auto max-w-6xl px-4 py-8">

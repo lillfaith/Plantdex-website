@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ACHIEVEMENTS, newlyUnlocked } from './achievements';
-import { DECK_SIZE, HERBS } from './deck';
+import { PRINTED_DECK_SIZE, PRINTED_CARDS } from './deck';
 import { emptyState } from './storage';
 import type { HerbdexState } from './types';
 
@@ -11,7 +11,7 @@ function stateWith(ids: string[]): HerbdexState {
 }
 
 const idsByRarity = (rarity: string) =>
-  HERBS.filter((herb) => herb.rarity === rarity).map((herb) => herb.id);
+  PRINTED_CARDS.filter((herb) => herb.rarity === rarity).map((herb) => herb.id);
 
 describe('achievement registry', () => {
   it('has unique, stable ids', () => {
@@ -34,7 +34,7 @@ describe('count thresholds', () => {
 
   for (const { id, needed } of cases) {
     it(`${id} fires at exactly ${needed} discoveries and not before`, () => {
-      const ids = HERBS.map((herb) => herb.id);
+      const ids = PRINTED_CARDS.map((herb) => herb.id);
       expect(newlyUnlocked(stateWith(ids.slice(0, needed - 1)))).not.toContain(id);
       expect(newlyUnlocked(stateWith(ids.slice(0, needed)))).toContain(id);
     });
@@ -58,14 +58,14 @@ describe('rarity thresholds', () => {
 
 describe('complete-collection', () => {
   it('fires only when the whole deck is discovered', () => {
-    const all = HERBS.map((herb) => herb.id);
-    expect(all.length).toBe(DECK_SIZE);
+    const all = PRINTED_CARDS.map((herb) => herb.id);
+    expect(all.length).toBe(PRINTED_DECK_SIZE);
     expect(newlyUnlocked(stateWith(all.slice(0, -1)))).not.toContain('complete-collection');
     expect(newlyUnlocked(stateWith(all))).toContain('complete-collection');
   });
 
   it('does not re-report an achievement that is already recorded', () => {
-    const state = stateWith(HERBS.map((herb) => herb.id));
+    const state = stateWith(PRINTED_CARDS.map((herb) => herb.id));
     for (const id of newlyUnlocked(state)) state.achievements[id] = '2026-01-01T00:00:00.000Z';
     expect(newlyUnlocked(state)).toEqual([]);
   });

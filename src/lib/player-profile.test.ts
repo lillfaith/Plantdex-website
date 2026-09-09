@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ACHIEVEMENTS } from './achievements';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { emptyState } from './storage';
 import { DEFAULT_FRAME_ID } from './field-frames';
 import {
@@ -27,8 +27,8 @@ function profileWith(overrides: Partial<StoredProfile>): StoredProfile {
   return { ...emptyProfile(), ...overrides };
 }
 
-const FIRST = HERBS[0]!.id;
-const SECOND = HERBS[1]!.id;
+const FIRST = PRINTED_CARDS[0]!.id;
+const SECOND = PRINTED_CARDS[1]!.id;
 
 describe('parseProfile', () => {
   it('returns an empty profile for anything that is not an object', () => {

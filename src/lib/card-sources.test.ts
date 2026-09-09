@@ -7,7 +7,7 @@ import {
   evidenceLabelFor,
   type CardEvidence,
 } from './card-sources';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { getSource, resolveRefs } from './sources';
 
 /**
@@ -21,7 +21,7 @@ import { getSource, resolveRefs } from './sources';
  * caught because someone compared the two by hand.
  */
 
-const BY_NUMBER = new Map(HERBS.map((herb) => [herb.cardNumber, herb]));
+const BY_NUMBER = new Map(PRINTED_CARDS.map((herb) => [herb.cardNumber, herb]));
 
 describe('CARD_SOURCES', () => {
   it('keys only real cards in this deck', () => {
@@ -82,12 +82,12 @@ describe('CARD_SOURCES', () => {
   });
 
   it('holds back exactly the three cards that are uncited by decision', () => {
-    const uncited = HERBS.filter((herb) => (CARD_SOURCES[String(herb.cardNumber)]?.sourceIds.length ?? 0) === 0)
+    const uncited = PRINTED_CARDS.filter((herb) => (CARD_SOURCES[String(herb.cardNumber)]?.sourceIds.length ?? 0) === 0)
       .map((herb) => herb.cardNumber)
       .sort((a, b) => a - b);
     // #11 wrong printed back; #19 and #21 held pending verification of theirs.
     expect(uncited).toEqual([11, 19, 21]);
-    expect(citedCardCount()).toBe(HERBS.length - uncited.length);
+    expect(citedCardCount()).toBe(PRINTED_CARDS.length - uncited.length);
   });
 
   /**
@@ -105,7 +105,7 @@ describe('CARD_SOURCES', () => {
 
 describe('citationsFor', () => {
   it('keeps the deck first for every plant', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const resolved = resolveRefs(citationsFor(herb));
       expect(resolved.length, `herb ${herb.id} has no verified source`).toBeGreaterThan(0);
       expect(resolved[0]!.source.id, `herb ${herb.id}`).toBe('plantdex-deck');

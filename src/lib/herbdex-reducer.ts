@@ -1,5 +1,5 @@
 import type { DiscoveryResult, HerbdexState } from './types';
-import { getHerb } from './deck';
+import { getPrintedCard } from './deck';
 import { newlyUnlocked } from './achievements';
 import { qualifiesForMastery } from './mastery';
 import { progressForTask, xpForTask, type ResearchTask, type ResearchWorld } from './research';
@@ -65,7 +65,7 @@ export function applyDiscovery(
 ): { state: HerbdexState; result: DiscoveryResult } {
   const noop: DiscoveryResult = { awarded: false, xpAwarded: 0, newAchievementIds: [] };
 
-  const herb = getHerb(herbId);
+  const herb = getPrintedCard(herbId);
   if (!herb) return { state, result: noop };
   if (state.discoveries[herbId]) return { state, result: noop };
 
@@ -97,7 +97,7 @@ export function applyLearned(
 ): { state: HerbdexState; result: DiscoveryResult } {
   const noop: DiscoveryResult = { awarded: false, xpAwarded: 0, newAchievementIds: [] };
 
-  if (!getHerb(herbId)) return { state, result: noop };
+  if (!getPrintedCard(herbId)) return { state, result: noop };
   if (!state.discoveries[herbId]) return { state, result: noop };
   if (state.learned[herbId]) return { state, result: noop };
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { herbsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
+import { printedCardsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { SEASONS, type Season } from '@/lib/types';
 import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
@@ -29,7 +29,7 @@ const SEASON_ICON: Record<Season, IconName> = {
  * it can slot in underneath this without changing the structure.
  */
 export default function SeasonsPage() {
-  const herbs = herbsInDeckOrder();
+  const herbs = printedCardsInDeckOrder();
 
   return (
     <main id="main" className="mx-auto max-w-4xl px-4 py-8">

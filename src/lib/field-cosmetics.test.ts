@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { emptyState } from './storage';
 import { HABITATS, habitatOf, type HabitatClass } from './habitat';
 import { isUnlocked, unlockedIds } from './cosmetics';
@@ -38,7 +38,7 @@ function stateWith({
 }
 
 const idsInHabitat = (habitat: HabitatClass) =>
-  HERBS.filter((herb) => habitatOf(herb.id)?.primary === habitat).map((herb) => herb.id);
+  PRINTED_CARDS.filter((herb) => habitatOf(herb.id)?.primary === habitat).map((herb) => herb.id);
 
 const ALL = [...FIELD_FRAMES, ...FIELD_TITLES];
 
@@ -65,7 +65,7 @@ describe('the cosmetic registries', () => {
   });
 
   it('unlock everything for a fully mastered deck', () => {
-    const all = HERBS.map((herb) => herb.id);
+    const all = PRINTED_CARDS.map((herb) => herb.id);
     const complete = stateWith({ discovered: all, mastered: all });
     // Research-gated titles are the exception: they need research records, not cards.
     const researchGated = new Set(['field-researcher', 'seasonal-surveyor']);
@@ -81,7 +81,7 @@ describe('the cosmetic registries', () => {
    * picker and the resolver capable of disagreeing about the same collection.
    */
   it('are pure: the same state always gives the same answer', () => {
-    const half = HERBS.slice(0, 22).map((herb) => herb.id);
+    const half = PRINTED_CARDS.slice(0, 22).map((herb) => herb.id);
     const state = stateWith({ discovered: half, mastered: half.slice(0, 12) });
     for (const item of ALL) expect(item.isUnlocked(state)).toBe(item.isUnlocked(state));
   });
@@ -89,7 +89,7 @@ describe('the cosmetic registries', () => {
 
 describe('frame thresholds', () => {
   it('bloom needs exactly MASTERED_FOR_BLOOM cards', () => {
-    const ids = HERBS.map((herb) => herb.id);
+    const ids = PRINTED_CARDS.map((herb) => herb.id);
     const under = stateWith({ mastered: ids.slice(0, MASTERED_FOR_BLOOM - 1) });
     const at = stateWith({ mastered: ids.slice(0, MASTERED_FOR_BLOOM) });
     expect(getFrame('bloom')!.isUnlocked(under)).toBe(false);
@@ -116,7 +116,7 @@ describe('resolveFrame', () => {
   });
 
   it('returns the chosen frame once it is genuinely earned', () => {
-    const earned = stateWith({ discovered: [HERBS[0]!.id] });
+    const earned = stateWith({ discovered: [PRINTED_CARDS[0]!.id] });
     expect(resolveFrame('amber-ring', earned).id).toBe('amber-ring');
   });
 });
@@ -148,7 +148,7 @@ describe('Habitat Specialist', () => {
 
   it('counts by primary habitat only', () => {
     // A species whose SECONDARY is woodland must not push anyone toward Woodland.
-    const secondaryOnly = HERBS.filter(
+    const secondaryOnly = PRINTED_CARDS.filter(
       (herb) => habitatOf(herb.id)?.secondary === 'woodland' && habitatOf(herb.id)?.primary !== 'woodland',
     ).map((herb) => herb.id);
     if (secondaryOnly.length >= HABITAT_SPECIALIST_THRESHOLD) {
@@ -199,7 +199,7 @@ describe('Habitat Specialist', () => {
 
 describe('cardwright', () => {
   it('needs exactly MASTERED_FOR_CARDWRIGHT cards', () => {
-    const ids = HERBS.map((herb) => herb.id);
+    const ids = PRINTED_CARDS.map((herb) => herb.id);
     expect(getTitle('cardwright')!.isUnlocked(stateWith({ mastered: ids.slice(0, MASTERED_FOR_CARDWRIGHT - 1) }))).toBe(false);
     expect(getTitle('cardwright')!.isUnlocked(stateWith({ mastered: ids.slice(0, MASTERED_FOR_CARDWRIGHT) }))).toBe(true);
   });

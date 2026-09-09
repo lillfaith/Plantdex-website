@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { applyDiscovery, herbdexReducer, reconcileAchievements } from './herbdex-reducer';
 import { emptyState } from './storage';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { xpForState } from './progression';
 import type { HerbdexState } from './types';
 
-const first = HERBS[0]!;
-const second = HERBS[1]!;
+const first = PRINTED_CARDS[0]!;
+const second = PRINTED_CARDS[1]!;
 
 function discoverAll(ids: string[]): HerbdexState {
   let state = emptyState();
@@ -104,7 +104,7 @@ describe('reconcileAchievements', () => {
   it('retroactively unlocks achievements a player already qualifies for', () => {
     // Simulates a saved collection from before an achievement existed.
     const state = emptyState();
-    for (const herb of HERBS.slice(0, 12)) {
+    for (const herb of PRINTED_CARDS.slice(0, 12)) {
       state.discoveries[herb.id] = '2026-01-01T00:00:00.000Z';
     }
     expect(state.achievements).toEqual({});

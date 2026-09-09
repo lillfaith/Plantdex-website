@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { DECK_SIZE, getHerb } from './deck';
+import { PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import {
   DECK_CARD_COUNT,
   INCLUDED,
@@ -113,7 +113,7 @@ describe('paymentLink()', () => {
 
 describe('what the product page claims', () => {
   it('counts the cards from the deck rather than from a typed number', () => {
-    expect(DECK_CARD_COUNT).toBe(DECK_SIZE);
+    expect(DECK_CARD_COUNT).toBe(PRINTED_DECK_SIZE);
     expect(DECK_CARD_COUNT).toBe(45);
     // Cards 46 (Icon Guide) and 47 (Disclaimer) are real cards a buyer receives and are not
     // herbs — scripts/build_deck.py skips them by number. Advertising "45 cards" for a
@@ -125,7 +125,7 @@ describe('what the product page claims', () => {
   it('shows product photography that actually exists', () => {
     /*
      * The showcase is hard-coded ids pointing at GENERATED deck data. Rename a species in
-     * scripts/build_deck.py and getHerb() quietly returns undefined: a card disappears from
+     * scripts/build_deck.py and getPrintedCard() quietly returns undefined: a card disappears from
      * the product page with no error, or — if all three go — static generation crashes on an
      * empty array. Neither shows up in a build log as anything recognisable.
      *
@@ -135,7 +135,7 @@ describe('what the product page claims', () => {
      */
     expect(SHOWCASE_HERB_IDS.length).toBeGreaterThan(0);
     for (const id of SHOWCASE_HERB_IDS) {
-      const herb = getHerb(id);
+      const herb = getPrintedCard(id);
       expect(herb, `showcase id "${id}" is not in the deck any more`).toBeDefined();
       expect(existsSync(`public/cards/${id}.webp`), `missing front art for ${id}`).toBe(true);
       expect(existsSync(`public/cards/back/${id}.webp`), `missing back art for ${id}`).toBe(true);

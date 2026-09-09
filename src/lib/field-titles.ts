@@ -1,5 +1,5 @@
 import { getAchievement } from './achievements';
-import { getHerb } from './deck';
+import { getPrintedCard } from './deck';
 import { HABITATS, habitatOf, type HabitatClass } from './habitat';
 import type { Cosmetic } from './cosmetics';
 import type { HerbdexState } from './types';
@@ -31,7 +31,7 @@ function achievement(id: string) {
 }
 
 function masteredCount(state: HerbdexState): number {
-  return Object.keys(state.mastered).filter((id) => getHerb(id)).length;
+  return Object.keys(state.mastered).filter((id) => getPrintedCard(id)).length;
 }
 
 export const HABITAT_SPECIALIST_ID = 'habitat-specialist';

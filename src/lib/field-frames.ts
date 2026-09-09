@@ -1,6 +1,6 @@
 import type { IconName } from '@/components/icons/PlantdexIcon';
 import { getAchievement } from './achievements';
-import { getHerb } from './deck';
+import { getPrintedCard } from './deck';
 import type { Cosmetic } from './cosmetics';
 import type { HerbdexState } from './types';
 
@@ -37,7 +37,7 @@ export interface FieldFrame extends Cosmetic {
 
 /** How many cards this state has recorded as mastered, ignoring ids that are not real. */
 function masteredCount(state: HerbdexState): number {
-  return Object.keys(state.mastered).filter((id) => getHerb(id)).length;
+  return Object.keys(state.mastered).filter((id) => getPrintedCard(id)).length;
 }
 
 /**

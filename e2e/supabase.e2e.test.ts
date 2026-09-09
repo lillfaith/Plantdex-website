@@ -24,7 +24,7 @@ import { buildWorld, STANDING_TASKS } from '@/lib/research';
 import { progressFromState, xpForState } from '@/lib/progression';
 import { masteryTotals, stageFor } from '@/lib/mastery';
 import { buildGarden, stageForState } from '@/lib/garden';
-import { HERBS } from '@/lib/deck';
+import { PRINTED_CARDS } from '@/lib/deck';
 import { emptyState } from '@/lib/herbdex-state';
 import type { HerbdexState } from '@/lib/types';
 
@@ -83,8 +83,8 @@ const TABLES = [
 ] as const;
 
 /** Two real cards from the deck, so nothing here invents an id the app would reject. */
-const HERB_A = HERBS[0]!;
-const HERB_B = HERBS[1]!;
+const HERB_A = PRINTED_CARDS[0]!;
+const HERB_B = PRINTED_CARDS[1]!;
 
 function credentials(tag: string) {
   return {
@@ -255,7 +255,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       expect(stageForState(fromServer, HERB_A.id)).toBe('growing'); // learned -> growing
       expect(stageForState(fromServer, HERB_B.id)).toBeNull(); // undiscovered -> absent
 
-      const garden = buildGarden(fromServer, HERBS.map((herb) => herb.id));
+      const garden = buildGarden(fromServer, PRINTED_CARDS.map((herb) => herb.id));
       expect(garden.some((entry) => entry.herbId === HERB_A.id)).toBe(true);
       expect(garden.some((entry) => entry.herbId === HERB_B.id)).toBe(false);
     }, 30_000);
@@ -1425,7 +1425,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
     it('is still resolved against the live collection, not trusted as stored', async () => {
       // A featured card Alice has NOT discovered is dropped on read even though the row
       // holds it — the guard that stops the page rendering a locked card as earned.
-      const undiscovered = HERBS.find((herb) => herb.id !== HERB_A.id && herb.id !== HERB_B.id)!;
+      const undiscovered = PRINTED_CARDS.find((herb) => herb.id !== HERB_A.id && herb.id !== HERB_B.id)!;
       await saveRemoteProfile(alice.id, { ...aliceProfile, featuredHerbId: undiscovered.id });
 
       const state = await createRemoteHerbdexStorage(alice.id).load();

@@ -1,5 +1,5 @@
 import type { Herb } from './types';
-import { HERBS, RARITY_LABEL, SEASON_LABEL } from './deck';
+import { PRINTED_CARDS, RARITY_LABEL, SEASON_LABEL } from './deck';
 import { RARITIES, SEASONS } from './types';
 import { hash, seeded, shuffle } from './rng';
 
@@ -72,9 +72,20 @@ function distractorsFrom(
   return [...found.values()];
 }
 
+/**
+ * THE POOL DISTRACTORS ARE DRAWN FROM: the printed deck.
+ *
+ * Every distractor has to be a fact from a real card, because the check may only ask what a
+ * card prints. Defaulting to the printed deck also keeps the difficulty honest — a question
+ * about a Collection 01 card whose wrong answers came from species the player has never
+ * seen and cannot own is not a knowledge check, it is a trick. A future digital collection
+ * that wants checks should pass its own pool explicitly, which the parameter already allows.
+ */
+export const KNOWLEDGE_CHECK_POOL: readonly Herb[] = PRINTED_CARDS;
+
 export function buildKnowledgeCheck(
   herb: Herb,
-  pool: readonly Herb[] = HERBS,
+  pool: readonly Herb[] = KNOWLEDGE_CHECK_POOL,
 ): KnowledgeQuestion[] {
   const rand = seeded(hash(herb.id));
   const others = pool.filter((entry) => entry.id !== herb.id);

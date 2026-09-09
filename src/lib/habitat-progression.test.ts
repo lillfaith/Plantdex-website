@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ACHIEVEMENTS, newlyUnlocked } from './achievements';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { HABITATS, HABITAT_LABEL, habitatOf } from './habitat';
 import { STANDING_TASKS, buildWorld, type ResearchWorld } from './research';
 import { reconcileResearch } from './herbdex-reducer';
@@ -30,7 +30,7 @@ describe('habitat achievements', () => {
 
   it('unlocks a class achievement on the first species with that PRIMARY habitat', () => {
     for (const habitat of HABITATS) {
-      const first = HERBS.find((herb) => habitatOf(herb.id)?.primary === habitat)!;
+      const first = PRINTED_CARDS.find((herb) => habitatOf(herb.id)?.primary === habitat)!;
       const unlocked = newlyUnlocked(withDiscoveries([first.id]));
       expect(unlocked, `${HABITAT_LABEL[habitat]}`).toContain(`habitat-${habitat}`);
     }
@@ -38,7 +38,7 @@ describe('habitat achievements', () => {
 
   it('does NOT unlock on a species whose habitat is only secondary', () => {
     // A "first Woodland species" satisfied by a wayside plant would not mean what it says.
-    const herb = HERBS.find((h) => {
+    const herb = PRINTED_CARDS.find((h) => {
       const a = habitatOf(h.id);
       return a?.secondary && a.secondary !== a.primary;
     })!;
@@ -48,7 +48,7 @@ describe('habitat achievements', () => {
 
   it('unlocks the sweep only when all five classes are covered', () => {
     const oneEach = HABITATS.map(
-      (habitat) => HERBS.find((herb) => habitatOf(herb.id)?.primary === habitat)!.id,
+      (habitat) => PRINTED_CARDS.find((herb) => habitatOf(herb.id)?.primary === habitat)!.id,
     );
     expect(newlyUnlocked(withDiscoveries(oneEach.slice(0, 4)))).not.toContain('habitat-sweep');
     expect(newlyUnlocked(withDiscoveries(oneEach))).toContain('habitat-sweep');
@@ -60,7 +60,7 @@ describe('habitat achievements', () => {
      * records, never stored, and an achievement already recorded is not returned again.
      */
     const oneEach = HABITATS.map(
-      (habitat) => HERBS.find((herb) => habitatOf(herb.id)?.primary === habitat)!.id,
+      (habitat) => PRINTED_CARDS.find((herb) => habitatOf(herb.id)?.primary === habitat)!.id,
     );
     const state = withDiscoveries(oneEach);
     const first = newlyUnlocked(state);
@@ -85,7 +85,7 @@ describe('habitat research tasks', () => {
     // A target the deck cannot meet reads as the app being broken. Wetland holds only six
     // primaries against Woodland's ten.
     for (const habitat of HABITATS) {
-      const supply = HERBS.filter((herb) => habitatOf(herb.id)?.primary === habitat).length;
+      const supply = PRINTED_CARDS.filter((herb) => habitatOf(herb.id)?.primary === habitat).length;
       const task = habitatTasks.find((t) => t.id === `collection:habitat-${habitat}`)!;
       expect(task.herbIds).toHaveLength(supply);
       for (const step of task.steps) {
@@ -97,7 +97,7 @@ describe('habitat research tasks', () => {
 
   it('is completable — every task reports done once the deck is mastered', () => {
     const state = emptyState();
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       state.discoveries[herb.id] = '2026-01-01T00:00:00.000Z';
       state.learned[herb.id] = '2026-01-01T00:00:00.000Z';
     }
@@ -111,7 +111,7 @@ describe('habitat research tasks', () => {
 
   it('records completion once and stays idempotent', () => {
     const state = emptyState();
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       state.discoveries[herb.id] = '2026-01-01T00:00:00.000Z';
       state.learned[herb.id] = '2026-01-01T00:00:00.000Z';
     }

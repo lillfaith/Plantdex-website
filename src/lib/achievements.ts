@@ -1,5 +1,5 @@
 import type { HerbdexState } from './types';
-import { DECK_SIZE, getHerb } from './deck';
+import { PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import { HABITATS, habitatOf, type HabitatClass } from './habitat';
 
 /**
@@ -45,7 +45,7 @@ function researchCount(
 function countWhere(state: HerbdexState, predicate: (rarity: string) => boolean): number {
   let n = 0;
   for (const id of Object.keys(state.discoveries)) {
-    const herb = getHerb(id);
+    const herb = getPrintedCard(id);
     if (herb && predicate(herb.rarity)) n += 1;
   }
   return n;
@@ -106,7 +106,7 @@ export const ACHIEVEMENTS: readonly Achievement[] = [
     id: 'complete-collection',
     name: 'Complete Collection',
     description: 'Discover every herb in the deck.',
-    isUnlocked: (state) => discoveredCount(state) >= DECK_SIZE,
+    isUnlocked: (state) => discoveredCount(state) >= PRINTED_DECK_SIZE,
   },
   // Field Research badges. Deliberately achievements rather than a parallel "badge"
   // system: they get stable ids, pure predicates and retroactive unlocking for free, and

@@ -1,4 +1,4 @@
-import { HERBS } from './deck.ts';
+import { PRINTED_CARDS } from './deck.ts';
 
 /**
  * MAPPING AN IDENTIFICATION RESULT ONTO THE DECK.
@@ -154,12 +154,16 @@ export function genusOf(raw: string): string {
   return normalizeName(raw).split(' ')[0] ?? '';
 }
 
-/** Built once. `Acer spp.` normalises to the bare genus `acer`, which is exactly what we want. */
+/**
+ * Built once, FROM THE PRINTED DECK ONLY.
+ *
+ * `Acer spp.` normalises to the bare genus `acer`, which is exactly what we want.
+ */
 const BY_BINOMIAL = new Map<string, string>();
 const GENUS_CARDS = new Map<string, string>();
 const SPECIES_BY_GENUS = new Map<string, string[]>();
 
-for (const herb of HERBS) {
+for (const herb of PRINTED_CARDS) {
   const key = normalizeName(herb.scientificName);
   const genus = genusOf(herb.scientificName);
   if (/\bspp?\.?$/i.test(herb.scientificName.trim())) {
@@ -172,11 +176,19 @@ for (const herb of HERBS) {
 }
 
 /**
- * Map one scientific name from an identification provider onto the deck.
+ * Map one scientific name from an identification provider onto a PRINTED card.
  *
  * Order matters: an exact species card beats the genus card that would also accept it, so a
  * result of "Rubus fruticosus" prefers a Blackberry species card over "Rubus spp." if both
  * ever existed.
+ *
+ * SCOPE: THE PRINTED DECK, AND ONLY THE PRINTED DECK. The index above is built from
+ * `PRINTED_CARDS`, so a species Plantdex merely knows about digitally does not match here.
+ * That is load-bearing rather than incidental — `isShelfEligible` is defined as "no
+ * confirmable match", so widening this function to the whole catalogue would silently make
+ * every shelved species that later gained a digital card ineligible, and players would
+ * watch entries leave a shelf they had collected. Recognising a species and having printed
+ * a card for it are different facts, and only the second one belongs here.
  */
 export function matchScientificName(scientificName: string): PlantMatch {
   const name = normalizeName(scientificName);

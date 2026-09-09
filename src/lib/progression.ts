@@ -1,5 +1,5 @@
 import type { Herb, HerbdexState, Rarity } from './types';
-import { DECK_SIZE, getHerb, MAX_DECK_XP } from './deck';
+import { PRINTED_DECK_SIZE, getPrintedCard, MAX_PRINTED_DECK_XP } from './deck';
 
 /**
  * THE SINGLE SOURCE OF TRUTH FOR XP AND LEVELS.
@@ -103,19 +103,33 @@ export interface Progress {
   fraction: number;
 }
 
-/** Total XP for a set of discovered herb ids. Unknown ids contribute nothing. */
+/**
+ * Total XP for a set of discovered ids. Ids that are not printed cards contribute nothing.
+ *
+ * `getPrintedCard` is the whole guard: a digital-only species carries no XP here even if its
+ * id somehow reaches this record, so a digital unlock cannot move a player's level.
+ */
 export function xpForDiscoveries(discoveredIds: Iterable<string>): number {
   let total = 0;
   for (const id of discoveredIds) {
-    total += getHerb(id)?.xp ?? 0;
+    total += getPrintedCard(id)?.xp ?? 0;
   }
   return total;
 }
 
-/** How many recorded ids belong to real deck cards. Tampered ids are worth nothing. */
-function countRealHerbs(record: Record<string, string>): number {
+/**
+ * How many recorded ids belong to PRINTED deck cards. Anything else is worth nothing.
+ *
+ * Was `countRealHerbs`, which read as "ids that are real" and now says which set it means.
+ * The behaviour is unchanged and the scope is deliberate twice over: it discards tampered
+ * ids, and it is what makes "existing in, or being collected from, the digital catalogue
+ * awards zero XP" a property of the arithmetic rather than a rule somebody has to remember.
+ * A digital-only id in this record contributes nothing because `getPrintedCard` cannot see
+ * it — the same reason `xpForDiscoveries` below is safe.
+ */
+function countPrintedCards(record: Record<string, string>): number {
   let n = 0;
-  for (const id of Object.keys(record)) if (getHerb(id)) n += 1;
+  for (const id of Object.keys(record)) if (getPrintedCard(id)) n += 1;
   return n;
 }
 
@@ -129,8 +143,8 @@ function countRealHerbs(record: Record<string, string>): number {
 export function xpForState(state: HerbdexState): number {
   return (
     xpForDiscoveries(Object.keys(state.discoveries)) +
-    countRealHerbs(state.learned) * XP_FOR_LEARNING +
-    countRealHerbs(state.mastered) * XP_FOR_MASTERY +
+    countPrintedCards(state.learned) * XP_FOR_LEARNING +
+    countPrintedCards(state.mastered) * XP_FOR_MASTERY +
     xpForResearch(state)
   );
 }
@@ -210,4 +224,4 @@ export function xpForHerb(herb: Herb): number {
  * the level ladder is anchored to, because the ladder should be climbable by collecting,
  * without research being mandatory.
  */
-export const MAX_COLLECTION_XP = MAX_DECK_XP + DECK_SIZE * (XP_FOR_LEARNING + XP_FOR_MASTERY);
+export const MAX_COLLECTION_XP = MAX_PRINTED_DECK_XP + PRINTED_DECK_SIZE * (XP_FOR_LEARNING + XP_FOR_MASTERY);

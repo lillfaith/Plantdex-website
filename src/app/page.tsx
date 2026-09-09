@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
+import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
 import { PlantSprite } from '@/components/PlantSprite';
@@ -33,7 +33,7 @@ const HERO_CREATURES = [
  */
 export default function HomePage() {
   // A few real cards as a preview strip.
-  const showcase = herbsInDeckOrder().filter((herb) =>
+  const showcase = printedCardsInDeckOrder().filter((herb) =>
     ['taraxacum-officinale', 'achillea-millefolium', 'urtica-dioica', 'quercus-spp'].includes(
       herb.id,
     ),
@@ -46,7 +46,7 @@ export default function HomePage() {
             carries an icon guide and a disclaimer. /shop states both; saying "45-card deck"
             here and "47 in all" there is the kind of small inconsistency a buyer notices. */}
         <p className="text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
-          {DECK_SIZE} illustrated species
+          {PRINTED_DECK_SIZE} illustrated species
         </p>
         <h1 className="font-display mt-3 text-4xl leading-tight font-extrabold text-gold-plate sm:text-6xl">
           Plantdex
@@ -77,7 +77,7 @@ export default function HomePage() {
           className="mx-auto mt-8 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
         >
           {HERO_CREATURES.map((herbId) => {
-            const herb = getHerb(herbId);
+            const herb = getPrintedCard(herbId);
             if (!herb) return null;
             return (
               <li key={herbId} className="min-w-0 flex-1">
@@ -142,7 +142,7 @@ export default function HomePage() {
         {/* One quiet line, well below the hero. The primary action on this page is still
             getting the deck; this only says the world could get bigger. */}
         <p className="mx-auto mt-2 max-w-lg text-center text-sm text-violet-400">
-          The first Plantdex collection begins with {DECK_SIZE} plants — with room for the
+          The first Plantdex collection begins with {PRINTED_DECK_SIZE} plants — with room for the
           world to grow.
         </p>
         <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">

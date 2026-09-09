@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import { compoundFor, knownCompoundIds, sortForPlate, UNDRAWN_MOLECULES } from './compounds';
 import { STRUCTURES } from '@/components/chemistry/structures';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 
 /**
  * The compound layer decides what gets DRAWN beside a card's own wording, which makes it
@@ -12,7 +12,7 @@ import { HERBS } from './deck';
  * chemistry. These tests are about that, not about styling.
  */
 
-const printed = [...new Set(HERBS.flatMap((herb) => herb.back.compounds))];
+const printed = [...new Set(PRINTED_CARDS.flatMap((herb) => herb.back.compounds))];
 
 describe('compound classification', () => {
   it('resolves every compound string printed anywhere in the deck', () => {
@@ -140,7 +140,7 @@ describe('plate order', () => {
   });
 
   it('keeps every compound it was given', () => {
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       expect(sortForPlate(herb.back.compounds).sort()).toEqual([...herb.back.compounds].sort());
     }
   });
@@ -263,7 +263,7 @@ describe('a drawn structure is actually wired to its compound', () => {
 describe('undrawn molecules', () => {
   it('records a reason for every named molecule that has no structure, and no others', () => {
     const undrawn = new Set<string>();
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       for (const printed of herb.back?.compounds ?? []) {
         const entry = compoundFor(printed);
         if (entry?.kind === 'molecule' && !entry.structure) undrawn.add(entry.id);

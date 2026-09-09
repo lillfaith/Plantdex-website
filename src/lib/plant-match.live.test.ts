@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { matchScientificName, outcomeFor } from './plant-match';
 
 /**
@@ -78,8 +78,8 @@ describe('every card, against the live provider', () => {
   it('covers all 45 cards', () => {
     // If a card is ever added to the deck this fails until it has been surveyed too — the
     // point of the file is completeness, and a partial survey silently stops being one.
-    expect(Object.keys(LIVE_SURVEY).length).toBe(HERBS.length);
-    for (const herb of HERBS) {
+    expect(Object.keys(LIVE_SURVEY).length).toBe(PRINTED_CARDS.length);
+    for (const herb of PRINTED_CARDS) {
       expect(LIVE_SURVEY[herb.id], `${herb.id} has never been surveyed live`).toBeDefined();
     }
   });
@@ -128,7 +128,7 @@ describe('every card, against the live provider', () => {
   it('resolves every genus-level card through its genus', () => {
     // Nine cards are genus-level ("Quercus spp."). A provider returns a SPECIES, so these are
     // the likeliest place for a mismatch — and all nine resolve, including Oak.
-    const genusCards = HERBS.filter((h) => /\bspp\.?$/i.test(h.scientificName)).map((h) => h.id);
+    const genusCards = PRINTED_CARDS.filter((h) => /\bspp\.?$/i.test(h.scientificName)).map((h) => h.id);
     expect(genusCards.length).toBe(9);
     for (const herbId of genusCards) {
       const top = LIVE_SURVEY[herbId]![0]!;

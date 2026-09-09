@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HERBS, getHerb } from './deck';
+import { PRINTED_CARDS, getPrintedCard } from './deck';
 import {
   confidenceBand,
   genusOf,
@@ -50,7 +50,7 @@ describe('matchScientificName', () => {
      * this deck prints, it resolves to that card. Run across all 45 so a future card with an
      * unusual name cannot quietly become unmatchable.
      */
-    for (const herb of HERBS) {
+    for (const herb of PRINTED_CARDS) {
       const match = matchScientificName(herb.scientificName);
       expect(match.herbId, `${herb.scientificName} did not match its own card`).toBe(herb.id);
       expect(match.confirmable, `${herb.id} should be confirmable`).toBe(true);
@@ -92,7 +92,7 @@ describe('matchScientificName', () => {
   it('never returns a herbId that is not in the deck', () => {
     for (const name of ['Quercus robur', 'Taraxacum erythrospermum', 'Urtica dioica L.']) {
       const { herbId } = matchScientificName(name);
-      if (herbId) expect(getHerb(herbId), `${name} -> unknown id ${herbId}`).toBeDefined();
+      if (herbId) expect(getPrintedCard(herbId), `${name} -> unknown id ${herbId}`).toBeDefined();
     }
   });
 });

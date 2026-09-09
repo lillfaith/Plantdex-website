@@ -1,4 +1,4 @@
-import { DECK_SIZE } from './deck';
+import { PRINTED_DECK_SIZE } from './deck';
 
 /**
  * THE DECK AS A PRODUCT.
@@ -27,13 +27,13 @@ import { DECK_SIZE } from './deck';
  */
 
 /** The number of cards a buyer receives — read from the deck, never typed by hand. */
-export const DECK_CARD_COUNT = DECK_SIZE;
+export const DECK_CARD_COUNT = PRINTED_DECK_SIZE;
 
 /**
  * The two reference cards that ship with the deck but are not species.
  *
  * Card 46 is the Icon Cheat Sheet and card 47 the Disclaimer; both are transcribed in
- * `scripts/build_deck.py` and neither is a plant, which is why `DECK_SIZE` is 45 and the
+ * `scripts/build_deck.py` and neither is a plant, which is why `PRINTED_DECK_SIZE` is 45 and the
  * physical deck is 47 cards. Saying "45 cards" on a product page for a 47-card deck would
  * be an inventory claim that is wrong in the buyer's favour to discover, so both numbers
  * are stated.
@@ -93,7 +93,7 @@ export const INCLUDED: readonly string[] = [
  * The cards shown as product photography, in order.
  *
  * Here rather than inline in the page so a test can assert they all still resolve. They are
- * hard-coded ids pointing at generated deck data: if a species is ever renamed, `getHerb`
+ * hard-coded ids pointing at generated deck data: if a species is ever renamed, `getPrintedCard`
  * quietly returns undefined, a card vanishes from the product page and nobody notices — or,
  * if all three go, static generation crashes on an empty array. `shop.test.ts` fails first.
  *

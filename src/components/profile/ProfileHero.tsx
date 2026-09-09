@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { assetPath } from '@/lib/asset-path';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { RARITY_AURA_COLOUR } from '@/lib/rarity-aura';
 import { STAGE_LABEL, nextStageHint, stageForState } from '@/lib/garden';
 import { HABITAT_LABEL } from '@/lib/habitat';
@@ -68,9 +68,9 @@ export function ProfileHero({
   state: HerbdexState;
 }) {
   const { progress } = stats;
-  const avatarHerb = profile.avatarHerbId ? getHerb(profile.avatarHerbId) : undefined;
-  const sidekick = profile.sidekickHerbId ? getHerb(profile.sidekickHerbId) : undefined;
-  const featured = profile.featuredHerbId ? getHerb(profile.featuredHerbId) : undefined;
+  const avatarHerb = profile.avatarHerbId ? getPrintedCard(profile.avatarHerbId) : undefined;
+  const sidekick = profile.sidekickHerbId ? getPrintedCard(profile.sidekickHerbId) : undefined;
+  const featured = profile.featuredHerbId ? getPrintedCard(profile.featuredHerbId) : undefined;
 
   const habitatName = stats.topHabitat ? HABITAT_LABEL[stats.topHabitat.habitat] : undefined;
   const title = profile.title ? titleLabel(profile.title, state, habitatName) : progress.levelName;

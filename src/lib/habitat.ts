@@ -1,4 +1,4 @@
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 
 /**
  * HABITAT CLASSES.
@@ -353,7 +353,7 @@ export function matchesHabitatFilter(herbId: string, habitat: HabitatClass): boo
 
 /** Herb ids in a habitat, counting secondary membership. Deck order. */
 export function herbIdsInHabitat(habitat: HabitatClass): string[] {
-  return HERBS.filter((herb) => isInHabitat(herb.id, habitat)).map((herb) => herb.id);
+  return PRINTED_CARDS.filter((herb) => isInHabitat(herb.id, habitat)).map((herb) => herb.id);
 }
 
 /**
@@ -366,7 +366,7 @@ export function habitatCounts(): Record<HabitatClass, { primary: number; inclusi
   const counts = Object.fromEntries(
     HABITATS.map((habitat) => [habitat, { primary: 0, inclusive: 0 }]),
   ) as Record<HabitatClass, { primary: number; inclusive: number }>;
-  for (const herb of HERBS) {
+  for (const herb of PRINTED_CARDS) {
     const entry = HABITAT_ASSIGNMENTS[herb.id];
     if (!entry) continue;
     counts[entry.primary].primary += 1;
@@ -381,7 +381,7 @@ export function judgementCalls(): {
   assignment: HabitatAssignment;
   judgement: string;
 }[] {
-  return HERBS.flatMap((herb) => {
+  return PRINTED_CARDS.flatMap((herb) => {
     const assignment = HABITAT_ASSIGNMENTS[herb.id];
     return assignment?.judgement
       ? [{ herbId: herb.id, assignment, judgement: assignment.judgement }]

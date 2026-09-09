@@ -6,14 +6,14 @@ import {
   reconcileMastery,
 } from './herbdex-reducer';
 import { emptyState } from './storage';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { xpForState, XP_FOR_LEARNING, XP_FOR_MASTERY } from './progression';
 import { masteryTotals, qualifiesForMastery, stageFor, stageIndex } from './mastery';
 import { buildGarden, stageForState } from './garden';
 import type { HerbdexState } from './types';
 
-const herb = HERBS[0]!;
-const other = HERBS[1]!;
+const herb = PRINTED_CARDS[0]!;
+const other = PRINTED_CARDS[1]!;
 const at = '2026-01-01T00:00:00.000Z';
 
 /** The full loop the product describes: find it → learn it → find it again. */
@@ -206,7 +206,7 @@ describe('the garden mirrors mastery exactly', () => {
     const state = applyDiscovery(emptyState(), herb.id, at).state;
     const garden = buildGarden(
       state,
-      HERBS.map((entry) => entry.id),
+      PRINTED_CARDS.map((entry) => entry.id),
     );
     expect(garden).toEqual([{ herbId: herb.id, stage: 'sprout' }]);
   });

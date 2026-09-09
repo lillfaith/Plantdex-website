@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createHerbdexStore } from './herbdex-store';
 import { createMemoryAdapter, emptyState, type HerbdexStorage, type ReconcileOutcome } from '@/lib/storage';
-import { HERBS } from '@/lib/deck';
+import { PRINTED_CARDS } from '@/lib/deck';
 import { xpForState } from '@/lib/progression';
 import { buildWorld, STANDING_TASKS } from '@/lib/research';
 import type { HerbdexState } from '@/lib/types';
 
-const herb = HERBS[0]!;
-const other = HERBS[1]!;
+const herb = PRINTED_CARDS[0]!;
+const other = PRINTED_CARDS[1]!;
 
 function seeded(ids: string[]): HerbdexState {
   const state = emptyState();
@@ -125,7 +125,7 @@ describe('createHerbdexStore', () => {
 
   it('unlocks achievements retroactively when hydrating an older collection', async () => {
     // A saved collection with discoveries but no recorded achievements.
-    const adapter = createMemoryAdapter(seeded(HERBS.slice(0, 10).map((h) => h.id)));
+    const adapter = createMemoryAdapter(seeded(PRINTED_CARDS.slice(0, 10).map((h) => h.id)));
     const store = createHerbdexStore(adapter);
     await new Promise<void>((resolve) => store.subscribe(resolve));
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { SITE_CAUTIONS, siteCautionFor } from './card-cautions';
 import { KNOWN_CARD_ISSUES } from './card-issues';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 
 /**
  * The site-added caution layer.
@@ -13,7 +13,7 @@ import { HERBS } from './deck';
  * So this file pins both halves: the caution exists, and it did NOT get into card data.
  */
 
-const BY_NUMBER = new Map(HERBS.map((herb) => [herb.cardNumber, herb]));
+const BY_NUMBER = new Map(PRINTED_CARDS.map((herb) => [herb.cardNumber, herb]));
 
 describe('site cautions', () => {
   it('are attached to real cards', () => {
@@ -39,7 +39,7 @@ describe('site cautions', () => {
   });
 
   it('leaves every other plant without one', () => {
-    const withCaution = HERBS.filter((herb) => siteCautionFor(herb)).map((h) => h.cardNumber);
+    const withCaution = PRINTED_CARDS.filter((herb) => siteCautionFor(herb)).map((h) => h.cardNumber);
     expect(withCaution).toEqual([31, 32]);
   });
 
@@ -73,6 +73,6 @@ describe('site cautions', () => {
   it('never becomes a printed card warning', () => {
     const wort = BY_NUMBER.get(32)!;
     expect(wort.warning).toBeUndefined();
-    expect(HERBS.filter((herb) => herb.warning).map((h) => h.cardNumber)).toEqual([33]);
+    expect(PRINTED_CARDS.filter((herb) => herb.warning).map((h) => h.cardNumber)).toEqual([33]);
   });
 });

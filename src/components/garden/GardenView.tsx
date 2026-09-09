@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { DECK_SIZE, getHerb, herbsInDeckOrder } from '@/lib/deck';
+import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { buildGarden, nextStageHint, STAGE_LABEL } from '@/lib/garden';
 import { GrowthSprite } from './GrowthSprite';
@@ -24,7 +24,7 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
 export function GardenView() {
   const { state, ready, masteredCount } = useHerbdex();
 
-  const order = herbsInDeckOrder().map((herb) => herb.id);
+  const order = printedCardsInDeckOrder().map((herb) => herb.id);
   const garden = ready ? buildGarden(state, order) : [];
 
   return (
@@ -35,7 +35,7 @@ export function GardenView() {
       </p>
 
       <p aria-live="polite" className="mt-4 text-xs font-semibold text-violet-200">
-        {garden.length} of {DECK_SIZE} species planted
+        {garden.length} of {PRINTED_DECK_SIZE} species planted
         {masteredCount > 0 && (
           <span className="text-violet-400"> · {masteredCount} flowering</span>
         )}
@@ -64,7 +64,7 @@ export function GardenView() {
         ) : (
           <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
             {garden.map(({ herbId, stage }) => {
-              const herb = getHerb(herbId);
+              const herb = getPrintedCard(herbId);
               if (!herb) return null;
               const hint = nextStageHint(stage);
               return (

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getHerb } from '@/lib/deck';
+import { getPrintedCard } from '@/lib/deck';
 import { GARDEN_STAGE_BY_MASTERY } from '@/lib/garden';
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import type { RecentFind } from '@/lib/profile-stats';
@@ -81,7 +81,7 @@ export function RecentFinds({ finds }: { finds: RecentFind[] }) {
             className="pixel-rail absolute top-5 bottom-5 left-[1.4rem] z-0"
           />
           {finds.map((find) => {
-            const herb = getHerb(find.herbId);
+            const herb = getPrintedCard(find.herbId);
             if (!herb) return null;
             return (
               <li key={find.herbId} className="relative z-10">

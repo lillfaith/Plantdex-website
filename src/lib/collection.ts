@@ -1,5 +1,5 @@
 import type { Herb } from './types';
-import { DECK_SIZE } from './deck';
+import { PRINTED_DECK_SIZE } from './deck';
 
 /**
  * COLLECTIONS.
@@ -22,6 +22,17 @@ import { DECK_SIZE } from './deck';
  *    it — which is the whole point of the fallback.
  */
 
+/**
+ * Whether a collection was physically printed or exists only in the app.
+ *
+ * This is what lets a future digital collection declare itself rather than being inferred.
+ * `collectionOf()` falls back to Collection 01 for a card that names no collection, which
+ * is correct for the printed 45 — they predate collections existing — and would silently
+ * make a digital card a member of the physical deck. So a digital entry must name its
+ * collection, and `catalogue.test.ts` fails if one does not.
+ */
+export type CollectionMedium = 'printed' | 'digital';
+
 export interface Collection {
   id: string;
   /** Full name, e.g. "Plantdex Collection 01". */
@@ -32,14 +43,21 @@ export interface Collection {
   size: number;
   /** True for the collection currently in print and tracked by this Herbdex. */
   current: boolean;
+  /**
+   * Printed collections are physical products someone bought; digital ones never went to
+   * press. Card counts, Field Research supply and Seed Shelf eligibility are all about the
+   * printed sets, and this is how they say so.
+   */
+  medium: CollectionMedium;
 }
 
 export const COLLECTION_01: Collection = {
   id: 'collection-01',
   name: 'Plantdex Collection 01',
   shortName: 'Collection 01',
-  size: DECK_SIZE,
+  size: PRINTED_DECK_SIZE,
   current: true,
+  medium: 'printed',
 };
 
 /**
@@ -58,6 +76,16 @@ export function getCollection(id: string): Collection | undefined {
 
 /** The collection currently in print. */
 export const CURRENT_COLLECTION = COLLECTION_01;
+
+/** Collections that were physically printed. Today exactly one. */
+export const PRINTED_COLLECTIONS: readonly Collection[] = COLLECTIONS.filter(
+  (collection) => collection.medium === 'printed',
+);
+
+/** True when this card belongs to a collection that was physically printed. */
+export function isInPrintedCollection(herb: Herb): boolean {
+  return collectionOf(herb).medium === 'printed';
+}
 
 /**
  * Which collection a card belongs to.

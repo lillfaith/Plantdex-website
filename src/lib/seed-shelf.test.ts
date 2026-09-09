@@ -14,7 +14,7 @@ import {
   type SeedShelfFind,
 } from './seed-shelf';
 import { emptyState } from './herbdex-state';
-import { HERBS } from './deck';
+import { PRINTED_CARDS } from './deck';
 import { normalizeName } from './plant-match';
 import type { HerbdexState } from './types';
 
@@ -38,7 +38,7 @@ describe('what may go on the shelf', () => {
   it('refuses a species the deck already has a card for', () => {
     // The whole point of the shelf is plants with no card. Offering one that HAS a card
     // would invite somebody to file a discovery in the wrong place.
-    for (const herb of HERBS.slice(0, 8)) {
+    for (const herb of PRINTED_CARDS.slice(0, 8)) {
       expect(isShelfEligible(herb.scientificName), `${herb.scientificName} is a card`).toBe(false);
     }
   });
@@ -46,7 +46,7 @@ describe('what may go on the shelf', () => {
   it('refuses a species a genus card already covers', () => {
     // "Quercus robur" against the deck's "Quercus spp." is `genusCard` — confirmable, so it
     // is a discovery rather than a shelf entry.
-    const genusCard = HERBS.find((herb) => /\bspp?\.?$/i.test(herb.scientificName));
+    const genusCard = PRINTED_CARDS.find((herb) => /\bspp?\.?$/i.test(herb.scientificName));
     expect(genusCard, 'the deck no longer has a genus card to test with').toBeDefined();
     const genus = genusCard!.scientificName.split(' ')[0]!;
     expect(isShelfEligible(`${genus} robur`)).toBe(false);
@@ -90,7 +90,7 @@ describe('what may go on the shelf', () => {
   });
 
   it('creates nothing for a name it refuses', () => {
-    expect(newFind({ scientificName: HERBS[0]!.scientificName })).toBeNull();
+    expect(newFind({ scientificName: PRINTED_CARDS[0]!.scientificName })).toBeNull();
     expect(newFind({ scientificName: 'Bellis' })).toBeNull();
   });
 });
@@ -178,17 +178,17 @@ describe('sprouting into a card', () => {
      * collection exists: an entry naming a species that is already a card matches
      * immediately. A card printed tomorrow does exactly this to a shelf saved today.
      */
-    const asIfCarded = { ...mergeFinds([shelved])[0]!, scientificName: HERBS[0]!.scientificName };
-    expect(cardFor(asIfCarded)).toBe(HERBS[0]!.id);
+    const asIfCarded = { ...mergeFinds([shelved])[0]!, scientificName: PRINTED_CARDS[0]!.scientificName };
+    expect(cardFor(asIfCarded)).toBe(PRINTED_CARDS[0]!.id);
     expect(shelfStatus(asIfCarded, emptyState())).toBe('sprouted');
   });
 
   it('reads as grown once the card is in the collection', () => {
     const state: HerbdexState = {
       ...emptyState(),
-      discoveries: { [HERBS[0]!.id]: '2026-04-01T09:00:00.000Z' },
+      discoveries: { [PRINTED_CARDS[0]!.id]: '2026-04-01T09:00:00.000Z' },
     };
-    const asIfCarded = { ...mergeFinds([shelved])[0]!, scientificName: HERBS[0]!.scientificName };
+    const asIfCarded = { ...mergeFinds([shelved])[0]!, scientificName: PRINTED_CARDS[0]!.scientificName };
     expect(shelfStatus(asIfCarded, state)).toBe('grown');
   });
 
@@ -217,14 +217,14 @@ describe('sprouting into a card', () => {
 describe('the shelf as a whole', () => {
   const state: HerbdexState = {
     ...emptyState(),
-    discoveries: { [HERBS[1]!.id]: '2026-04-01T09:00:00.000Z' },
+    discoveries: { [PRINTED_CARDS[1]!.id]: '2026-04-01T09:00:00.000Z' },
   };
   const entries = [
     { ...mergeFinds([find({ scientificName: 'Bellis perennis', foundAt: '2026-01-01T00:00:00.000Z' })])[0]! },
     { ...mergeFinds([find({ scientificName: 'Bellis sylvestris', foundAt: '2026-03-01T00:00:00.000Z' })])[0]! },
     // One sprouted and one grown, faked the same way the tests above do.
-    { ...mergeFinds([find({ scientificName: 'Bellis annua', foundAt: '2026-02-01T00:00:00.000Z' })])[0]!, scientificName: HERBS[0]!.scientificName },
-    { ...mergeFinds([find({ scientificName: 'Bellis rotundifolia', foundAt: '2026-04-01T00:00:00.000Z' })])[0]!, scientificName: HERBS[1]!.scientificName },
+    { ...mergeFinds([find({ scientificName: 'Bellis annua', foundAt: '2026-02-01T00:00:00.000Z' })])[0]!, scientificName: PRINTED_CARDS[0]!.scientificName },
+    { ...mergeFinds([find({ scientificName: 'Bellis rotundifolia', foundAt: '2026-04-01T00:00:00.000Z' })])[0]!, scientificName: PRINTED_CARDS[1]!.scientificName },
   ];
 
   it('puts what needs claiming first, then the newest, then what has grown', () => {
