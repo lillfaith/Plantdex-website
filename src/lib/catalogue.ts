@@ -80,16 +80,6 @@ export function isDigitalOnly(herb: Herb): boolean {
 }
 
 /**
- * True when this id belongs to a species that was never printed.
- *
- * Exists for the id-keyed stores — `discoveries`, `learned`, `mastered` — which hold ids
- * rather than cards.
- */
-export function isDigitalOnlyId(id: string): boolean {
-  return !PRINTED_IDS.has(id) && BY_ID.has(id);
-}
-
-/**
  * The printed-deck size, re-exported so a caller comparing the two sets reads both from
  * one place and cannot mistake one for the other.
  */

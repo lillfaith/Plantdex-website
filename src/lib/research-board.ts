@@ -1,7 +1,6 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import type { HerbdexState } from './types';
 import { DAILY_BOARD_SIZE, pickDailyTasks, type ResearchWorld } from './research';
 
 /**
@@ -128,12 +127,4 @@ export function useResearchBoard(): readonly string[] {
 /** Testing and "reset my progress" only. */
 export function clearBoard(): void {
   commit({ lastFilled: null, open: [] });
-}
-
-/** Drop board entries for tasks recorded as complete. Used when state is reset. */
-export function pruneBoard(state: HerbdexState): void {
-  const board = read();
-  const open = board.open.filter((id) => !state.research[id]);
-  if (open.length === board.open.length) return;
-  commit({ ...board, open });
 }

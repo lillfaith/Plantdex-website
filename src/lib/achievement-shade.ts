@@ -39,5 +39,3 @@ export function achievementShade(id: string): AccentName {
   }
   return SHADES[hash % SHADES.length]!;
 }
-
-export const ACHIEVEMENT_SHADES = SHADES;

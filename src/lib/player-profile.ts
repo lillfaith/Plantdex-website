@@ -232,8 +232,3 @@ function subscribe(listener: () => void): () => void {
 export function useLocalProfile(): StoredProfile {
   return useSyncExternalStore(subscribe, read, () => EMPTY);
 }
-
-/** Test seam: drops the module cache so a fresh read hits storage again. */
-export function resetLocalProfileCache(): void {
-  cache = null;
-}

@@ -200,30 +200,3 @@ export async function confirmScan(
     .insert({ ...existing, confirmed_herb_id: herbId });
   return !error;
 }
-
-export async function listScans(userId: string): Promise<ScanRecord[]> {
-  if (!supabase) return [];
-  const { data, error } = await supabase
-    .from('scans')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-  if (error || !data) return [];
-  return data.map((row: Record<string, unknown>) => ({
-    id: String(row.id),
-    createdAt: String(row.created_at),
-    photoPath: typeof row.photo_path === 'string' ? row.photo_path : undefined,
-    topScientificName:
-      typeof row.top_scientific_name === 'string' ? row.top_scientific_name : undefined,
-    topHerbId: typeof row.top_herb_id === 'string' ? row.top_herb_id : undefined,
-    confidence: typeof row.confidence === 'number' ? row.confidence : undefined,
-    confirmedHerbId: typeof row.confirmed_herb_id === 'string' ? row.confirmed_herb_id : undefined,
-    outcome: row.outcome as ScanOutcome,
-  }));
-}
-
-export async function deleteScan(userId: string, scanId: string): Promise<boolean> {
-  if (!supabase) return false;
-  const { error } = await supabase.from('scans').delete().eq('user_id', userId).eq('id', scanId);
-  return !error;
-}

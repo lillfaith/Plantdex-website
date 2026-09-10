@@ -77,11 +77,6 @@ export function getCollection(id: string): Collection | undefined {
 /** The collection currently in print. */
 export const CURRENT_COLLECTION = COLLECTION_01;
 
-/** Collections that were physically printed. Today exactly one. */
-export const PRINTED_COLLECTIONS: readonly Collection[] = COLLECTIONS.filter(
-  (collection) => collection.medium === 'printed',
-);
-
 /** True when this card belongs to a collection that was physically printed. */
 export function isInPrintedCollection(herb: Herb): boolean {
   return collectionOf(herb).medium === 'printed';

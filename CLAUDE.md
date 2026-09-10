@@ -593,6 +593,31 @@ the nodes, because every piece of it had passing tests while the seams were brok
   passes just as happily if somebody types the test ref. A live site writing into the test project
   is worse than one with no backend, because it looks like it is working.
 
+## Performance notes
+
+Measured on the built export at 390px, not inferred. Numbers here are the reason a change was
+or was not made; re-measure before trusting any of them again.
+
+- **`next/link` prefetch WORKS on GitHub Pages, and must stay on.** The export emits 276 RSC
+  payload files and prefetch requests them by URL — `/scan/__next._tree.txt`,
+  `/scan/__next.scan.__PAGE__.txt` — so a dumb static host serves them with no header
+  negotiation. This was nearly "fixed": every page shows 8-13 `net::ERR_ABORTED`, which look
+  like failing prefetches and are in fact Next issuing a document prefetch alongside the RSC
+  one and dropping the loser. Turning prefetch off in `SiteNav` did remove them, and **doubled
+  navigation latency — 103ms median to 212ms**, measured five runs each on a 60ms-latency
+  server. Do not disable prefetch to tidy up the network panel.
+- **`/herbdex/research` is the heaviest page: ~562KB of images.** It renders card thumbnails —
+  400px wide, ~21KB each — as 35px chips, and Chromium's lazy threshold pulls about 25 of the
+  79 on first paint. Everything is already `loading="lazy"`; the waste is resolution, not
+  eagerness. Fixing it properly needs either a third, tiny art variant (which means a new field
+  in generated deck data) or fewer/smaller chips on that page. Both are larger than a
+  performance tidy-up, so it is recorded rather than done. `/seasons` looks similar and is not:
+  it pulls only 120KB. `/herbdex` carries no images at all.
+- **Images are `unoptimized` because `output: 'export'` requires it**, so `sizes` and
+  `quality` do nothing and whichever file a component names is the file that ships. Two
+  variants exist: `/cards/*.webp` at 800px (~62KB) and `/cards/thumb/*.webp` at 400px (~21KB).
+  Choosing the right one at the call site is the only lever there is.
+
 ## Analytics, deletion and export
 
 - **`track()` takes an event name and has no second parameter.** That is the privacy

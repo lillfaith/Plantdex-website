@@ -164,11 +164,3 @@ export function useRemoteProfile(userId: string | undefined): RemoteProfileState
   );
   return { profile: snapshot ?? EMPTY, ready: Boolean(userId) && snapshot !== null };
 }
-
-/** Test seam, and what a sign-out uses so no profile survives into the next session. */
-export function resetRemoteProfileCache(): void {
-  cache = null;
-  loadedForUser = null;
-  loadingForUser = null;
-  failedAt = null;
-}
