@@ -109,33 +109,28 @@ export function isSafeGenericGrant(grant: EntryGrant): boolean {
  * "approximately three obvious paths" is a design decision that degrades the moment a fourth
  * is added casually, and a page of links is exactly where that happens.
  *
- * ORDER IS THE ARGUMENT. Scanning is first because it is the only one that requires being
- * outdoors, and it is what makes this a field guide rather than a website — somebody holding a
- * phone at a vendor table can do it standing there. Browsing is second, for the person who
- * just opened the box. "How it works" is third because it is the one a curious reader will
- * scroll to anyway and nobody needs before the other two.
+ * ORDER IS THE ARGUMENT, and `[0]` is the PRIMARY. Scanning is first because it is the only
+ * one that requires being outdoors, and it is what makes this a field guide rather than a
+ * website — somebody holding a phone at a vendor table can do it standing there. Browsing is
+ * second, for the person who just opened the box. "How it works" is third because it is the
+ * one a curious reader will scroll to anyway and nobody needs before the other two.
+ *
+ * `EntryPaths` renders `[0]` as a key and the rest as links: three equal buttons is a menu,
+ * and a menu is what a stranger holding a deck bounces off.
  */
 export interface EntryPath {
   href: string;
   label: string;
-  /** One line. Says what happens, not why it is exciting. */
-  blurb: string;
 }
 
+/*
+ * NO BLURBS. Each path used to carry a sentence explaining its destination, which was the
+ * right answer while all three were equal-weight blocks and somebody had to choose between
+ * them. They are now one key and two links, so there is nothing to choose between and the
+ * sentences were three lines of copy defending a decision the layout already makes.
+ */
 export const ENTRY_PATHS: readonly EntryPath[] = [
-  {
-    href: '/scan',
-    label: 'Scan a plant',
-    blurb: 'Photograph something growing nearby and find out what it is.',
-  },
-  {
-    href: '/herbdex',
-    label: 'Explore the Herbdex',
-    blurb: 'All 45 species in the collection, with everything printed on each card.',
-  },
-  {
-    href: '/learn',
-    label: 'See how Plantdex works',
-    blurb: 'Finding, logging, and what the icons on a card mean.',
-  },
+  { href: '/scan', label: 'Scan a plant' },
+  { href: '/herbdex', label: 'Explore the Herbdex' },
+  { href: '/learn', label: 'How Plantdex works' },
 ];

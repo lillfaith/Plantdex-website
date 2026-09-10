@@ -131,14 +131,30 @@ describe('the three ways in', () => {
     expect(ENTRY_PATHS[0]!.href).toBe('/scan');
   });
 
-  it('names real routes and says what each one does', () => {
+  it('names real routes, once each, with a label short enough to be a control', () => {
     for (const path of ENTRY_PATHS) {
       expect(path.href.startsWith('/'), path.href).toBe(true);
       expect(path.label.length, path.href).toBeGreaterThan(0);
-      // A blurb that is really a second call to action helps nobody choose.
-      expect(path.blurb.length, path.href).toBeGreaterThan(20);
+      // A label long enough to be a sentence is a label that wraps inside a button.
+      expect(path.label.length, path.href).toBeLessThanOrEqual(24);
     }
     expect(new Set(ENTRY_PATHS.map((p) => p.href)).size).toBe(ENTRY_PATHS.length);
+  });
+
+  it('gives the primary path one dominant control and the rest plain links', () => {
+    /*
+     * The hierarchy is the point of this page: a QR arrival has exactly one sensible next
+     * step. Three equal blocks asked a stranger to choose instead of telling them what to do.
+     * Bordered secondaries would put them back in competition, so the guard is that the
+     * secondary branch draws no box.
+     */
+    const paths = readFileSync('src/components/start/EntryPaths.tsx', 'utf8');
+    expect(paths).toContain('bg-gradient-to-r');
+    const secondary = paths.slice(paths.indexOf('rest.map'));
+    expect(secondary).not.toMatch(/\bborder\b/);
+    expect(secondary).not.toMatch(/\brounded-2xl\b/);
+    // Still real destinations, so still a real hit area.
+    expect(secondary).toContain('min-h-11');
   });
 
   it('does not send a first-time visitor at an account wall', () => {

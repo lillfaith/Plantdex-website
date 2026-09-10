@@ -523,6 +523,24 @@ The journey a stranger takes from a printed deck to a saved find:
 → hands over one next action. `launch-loop.test.ts` asserts the EDGES of that journey rather than
 the nodes, because every piece of it had passing tests while the seams were broken.
 
+- **`/start` has ONE dominant action, and the hierarchy is the design.** A QR arrival has
+  exactly one sensible next step — point the camera at something growing — so scanning is a
+  key and the other two paths are plain text links beneath it. The first version rendered all
+  three as full-width blocks of the same shape; shape and size outweigh colour, so the page
+  asked a stranger holding a deck to choose between three things instead of telling them what
+  to do. `entry-point.test.ts` fails if the secondary branch grows a border or a card shape.
+- **`/start` may not promise a find the world might not supply, and may not confuse the two
+  kinds of ownership.** It said "every one of the 45 species is a plant you can go and find",
+  which depends entirely on where the reader is; and "when you find one, the card becomes
+  yours", said to somebody holding that card. The physical card is already theirs — what a
+  find unlocks is the DIGITAL entry, and the two are now named separately in one sentence.
+- **The bridge and the outcomes are one element.** A "how it works" diagram plus a "what
+  happens" panel would be two blocks explaining one idea, and the second reads as a repeat. So
+  the two outcomes ARE the picture — a real card thumbnail and a real generated packet, side by
+  side — with the SCAN key above them serving as the middle step. Drawn from existing assets
+  and unboxed: the heading carries the structure, and a border would only restate it. Both
+  columns share one fixed-height art row with `items-end`; letting the taller column set the
+  row and asking the other to grow with `flex-1` left the two captions at different heights.
 - **`/start` is a printed QR target and grants nothing.** `entry-point.ts` names five trust
   levels that must never collapse — visited a URL, owns a deck, found a plant, verified a
   sighting, mastered a card — and a generic printed code sits at the first. It is a public string
