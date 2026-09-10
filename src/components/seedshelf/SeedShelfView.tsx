@@ -276,7 +276,15 @@ function ShelfBoard({ columns, children }: { columns: number; children: React.Re
         aria-hidden="true"
         className="shelf-upright pointer-events-none absolute top-2 right-0 bottom-0 w-2 rounded-r-sm"
       />
-      <ul className={`grid ${grid} items-end gap-x-2 px-2 sm:gap-x-4`}>{children}</ul>
+      {/*
+        `items-stretch`, NOT `items-end`. Only a sprouted packet carries a button now, so cells
+        are legitimately different heights — and under `items-end` the taller cell's packet
+        rides UP above its neighbours, the bug this file has already fixed twice for other
+        reasons. Stretching lets a cell grow DOWNWARD from a shared top edge: packet and
+        caption are both fixed height so the packets line up, and only a slot with an action is
+        taller. Pots carry `justify-end` so they still stand on the plank.
+      */}
+      <ul className={`grid ${grid} items-stretch gap-x-2 px-2 sm:gap-x-4`}>{children}</ul>
       {/* The board: a lit top face, then a darker front edge that gives it depth. */}
       <div aria-hidden="true" className="shelf-board h-3 rounded-t-sm" />
       <div aria-hidden="true" className="shelf-edge h-2 rounded-b-sm" />
@@ -295,7 +303,7 @@ function ShelfBoard({ columns, children }: { columns: number; children: React.Re
  */
 function ShelfProp({ variant }: { variant: number }) {
   return (
-    <li aria-hidden="true" className="flex flex-col items-center">
+    <li aria-hidden="true" className="flex flex-col items-center justify-end">
       <div className="mx-auto w-full max-w-[4.25rem] drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
         <ShelfPlant variant={variant} />
       </div>
@@ -335,52 +343,59 @@ function Packet({
       </div>
 
       {/*
-        Labelled underneath, exactly as the Garden labels its sprites — inside a fixed block.
-        The board aligns its slots on `items-end`, so without a common caption height a
-        two-line species name lifts its packet a whole line higher than its neighbours and the
-        row stops reading as objects standing on one plank. Long names still clamp; the block
-        just does not change size when they do — FIXED rather than a minimum, because a
-        min-height still grows for a four-line caption and lifted that packet alone.
-      */}
-      {/*
-        TWO LINES OF LABEL, AND THAT IS THE WHOLE CAPTION.
+        TWO NAMES, AND THAT IS THE WHOLE CAPTION.
         A shelf of seventeen packets was carrying seventeen found-dates and encounter counts,
         and the page stopped reading as a shelf of objects and started reading as a table with
-        pictures in it. The date has not been deleted — it moved into the details below, which
-        is where somebody goes when they want to know about one packet rather than see all of
-        them. The height is fixed so a two-line species name does not lift its packet above its
-        neighbours; long names clamp and the full value is on the details.
+        pictures in it. The dates are not deleted — they moved into the details below, which is
+        where somebody goes when they want to know about one packet rather than see all of them.
+
+        NEITHER NAME IS CLIPPED, AND THE BINOMIAL IS WHY. The caption was a FIXED 2.9rem block
+        with the species name clamped to one line, which is how `Eupatorium serotinum` reached
+        a screenshot as `Eupatorium…`. On the one page whose entire subject is species the deck
+        has no card for — where identity is taxonomic and a common name is the loose half —
+        truncating the binomial and printing the common name in full is exactly backwards.
+
+        The fixed height was load-bearing only while the board aligned its slots on `items-end`:
+        bottom-aligned, a two-line name lifted its packet a whole line above its neighbours. The
+        board now stretches from a shared top edge, so every packet in a row starts at the same
+        y whatever its caption does, and the row simply takes the height of its longest one.
+        `min-h` keeps a row of short names as compact as the fixed block was; two lines each is
+        a bound against pathological input, not a budget real names have to fit.
+
+        `flex-1` is the other half. The cell stretches to the row height, so letting the caption
+        absorb whatever slack is left pins the action to the BOTTOM of every cell — which is how
+        two Plant buttons in one row stay on one line even when one of them sits under a name
+        that wrapped further than its neighbour's.
       */}
-      <div className="mt-1.5 flex h-[2.9rem] w-full flex-col justify-start overflow-hidden">
+      <div className="mt-1.5 flex min-h-[2.9rem] w-full flex-1 flex-col justify-start">
         <p className="line-clamp-2 text-center text-[0.8rem] leading-[1.15] font-semibold text-violet-100">
           {label}
         </p>
-        <p className="line-clamp-1 text-center text-[0.72rem] leading-[1.2] text-violet-300 italic">
+        <p className="line-clamp-2 text-center text-[0.72rem] leading-[1.2] text-violet-300 italic">
           {entry.scientificName}
         </p>
       </div>
 
       {/*
-        ONE BUTTON, ALWAYS PRESENT, IN THREE STATES.
-        Rendering it unconditionally is what keeps every slot the same height. The previous
-        version reserved an empty row for packets with no action, which worked but filled the
-        shelf with invisible furniture; a disabled button says the same thing honestly and
-        looks like what it is.
+        NOTHING AT ALL WHILE A PACKET IS WAITING.
+        A packet exists precisely BECAUSE the deck has no card for that species — being on
+        this shelf IS that statement — so a permanently disabled "Plant" underneath restates
+        the packet and puts a dead control in every slot. With a fixed 45-card deck every
+        packet is `waiting`, so the previous version rendered seventeen buttons that could
+        never be pressed and reserved the height for all of them.
 
-        `disabled` rather than hidden, because "you cannot plant this yet" is real information
-        — the deck has no card for this species — and the greying is now the only place the
-        shelf says so. `aria-label` carries the reason, since "Plant, dimmed" explains nothing
-        to a screen reader.
+        No height is reserved either. The row grows only around a slot that has an action,
+        which is what makes a waiting shelf compact.
       */}
-      <div className="mt-1.5 flex w-full items-center justify-center">
-        {status === 'sprouted' && herb ? (
-          /*
+      {status === 'sprouted' && herb && (
+        <div className="mt-1.5 flex w-full items-center justify-center">
+          {/*
            * THE LABEL IS ONE WORD, BUT THE ACCESSIBLE NAME IS NOT. On screen the packet is
            * already captioned with the species directly above the button, so repeating it
            * inside said the same thing twice. A screen reader gets no such adjacency: several
            * sprouted packets side by side would all announce "Plant, button" with nothing to
            * tell them apart, which is why the name still travels in `aria-label`.
-           */
+           */}
           <button
             type="button"
             onClick={onClaim}
@@ -389,21 +404,24 @@ function Packet({
           >
             Plant
           </button>
-        ) : (
-          <button
-            type="button"
-            disabled
-            aria-label={
-              status === 'grown'
-                ? `${label} is already planted in your Herbdex`
-                : `${label} cannot be planted — the deck has no card for it yet`
-            }
-            className="pointer-events-none min-h-11 w-full rounded-full border border-violet-700/40 bg-violet-900/25 px-2 text-[0.72rem] font-bold text-violet-400/70 opacity-50 saturate-50"
-          >
-            {status === 'grown' ? 'Planted' : 'Plant'}
-          </button>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/*
+        GROWN IS QUIET AND FINISHED, AND IT IS NOT A BUTTON.
+        The packet above already draws `faded`, which is this page's existing collected
+        treatment. This adds back the link through to the card it grew into — the navigation
+        the always-on-button version cost — as a link, on the one state where it means
+        something, so no slot gains a permanent affordance.
+      */}
+      {status === 'grown' && herb && (
+        <Link
+          href={`/herbdex/${herb.id}`}
+          className="mt-1 flex min-h-11 w-full items-center justify-center text-center text-[0.72rem] font-semibold text-violet-400 underline-offset-2 hover:text-violet-200 hover:underline"
+        >
+          In your Herbdex
+        </Link>
+      )}
     </li>
   );
 }
