@@ -12,7 +12,7 @@ import { assetPath } from '@/lib/asset-path';
 export const metadata: Metadata = {
   title: 'Start here',
   description:
-    'You have the cards. Now find them growing. Scan what you find to unlock your digital collection.',
+    'You have the cards. Now find them growing. Confirm what you find to unlock your digital collection.',
 };
 
 /**
@@ -99,11 +99,27 @@ export default function StartPage() {
         holding that card. The card is already theirs. What a find unlocks is the DIGITAL
         entry, and those two things are now named separately in the same sentence, because
         conflating them is what would make the rest of the product confusing later.
+
+        TWO MORE, BOTH ABOUT NOT OVERSTATING WHAT THE SCANNER DOES.
+
+        "SCAN ONE AND ITS ENTRY UNLOCKS" made the scanner sound like the thing that decides.
+        It is not, and the entire scan screen is built on it not being: the identifier
+        proposes, the player taps to confirm, and `discover()` runs on that tap and nowhere
+        else. A suggestion from a photograph is not a discovery — that separation is what
+        keeps the collection meaning "plants I actually identified" rather than "things a
+        model guessed at" — so the copy now says CONFIRM A MATCH, which is what really
+        unlocks an entry.
+
+        "ANYTHING YOU FIND OUTSIDE THESE 45 IS KEPT" promised more than the shelf does.
+        A photograph that resolves to nothing, or to a bare genus, or to something above
+        species rank, is not shelved and cannot be: `isShelfEligible` requires a valid
+        species-level name the deck has no confirmable card for. "Recognised species" is the
+        honest subset, and it is a smaller promise that the product actually keeps.
       */}
       <p className="mt-4 text-base leading-relaxed text-violet-200">
-        Find the plants from your cards growing near you. Scan one and its Plantdex entry
-        unlocks &mdash; and anything you find outside these {PRINTED_DECK_SIZE} is kept on your
-        Seed Shelf.
+        Find the plants from your cards growing near you. Confirm a match and its Plantdex entry
+        unlocks &mdash; and recognised species outside these {PRINTED_DECK_SIZE} are kept on
+        your Seed Shelf.
       </p>
 
       {/* ONE dominant action, two quiet links. See `EntryPaths` for why. */}
@@ -167,7 +183,7 @@ export default function StartPage() {
               One of the {PRINTED_DECK_SIZE}
             </span>
             <span className="mt-0.5 text-xs leading-relaxed text-violet-300">
-              Its Plantdex entry unlocks.
+              Confirm the match and its Plantdex entry unlocks.
             </span>
           </li>
 
@@ -183,7 +199,8 @@ export default function StartPage() {
             </span>
             <span className="mt-3 text-sm font-bold text-violet-100">Something else</span>
             <span className="mt-0.5 text-xs leading-relaxed text-violet-300">
-              Its seed packet waits on your Seed Shelf until a collection catches up.
+              If we recognise it, its seed packet waits on your Seed Shelf until a collection
+              catches up.
             </span>
           </li>
         </ul>

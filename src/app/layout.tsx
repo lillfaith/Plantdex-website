@@ -54,8 +54,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <HerbdexProvider>
             <SiteNav />
             <AccountBadge />
-            {/* Bottom padding clears the fixed mobile nav bar; it becomes a top bar at sm.
-                The footer carries its own clearance, so it sits outside this wrapper. */}
+            {/*
+              THE FIXED NAV'S CLEARANCE COMES FROM THE FOOTER, not from here.
+
+              This comment used to say the wrapper below carried bottom padding for it. It
+              carries none — and the clearance is real anyway, because `SiteFooter` ends in
+              `pb-24` (96px against a 48px bar) on mobile and `sm:pb-10` once the bar moves to
+              the top. Hit-tested at the bottom of the scroll at 320, 390 and 430px across
+              /start, /scan, /seed-shelf and /: nothing meaningful is ever behind the bar.
+
+              Left as it is rather than adding padding that would then be doubled. What matters
+              is that the guarantee is written where it actually lives, so nobody removes the
+              footer's padding believing this wrapper is the thing holding the line.
+            */}
             <div>{children}</div>
             <SiteFooter />
           </HerbdexProvider>

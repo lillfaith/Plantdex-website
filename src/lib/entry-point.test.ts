@@ -26,6 +26,18 @@ import { COLLECTION_01, getCollection } from './collection';
 
 const START_PAGE = readFileSync('src/app/start/page.tsx', 'utf8');
 
+/**
+ * The page with its comments removed.
+ *
+ * The call-site guard below asks "does this file CALL something that writes", and the answer
+ * has to come from code rather than from prose. Explaining in a comment why `discover()` runs
+ * on the player's tap and nowhere else tripped the guard on the word `discover(` — a guard its
+ * own explanation can fail is a guard somebody deletes, which this repo has already learnt
+ * once about the analytics schema. Block and line comments both go; JSX comments are block
+ * comments inside braces, so the same strip catches them.
+ */
+const START_CODE = START_PAGE.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+
 describe('a generic printed code grants nothing', () => {
   it('confers only browsing, which everybody already has', () => {
     expect(GENERIC_ENTRY.kind).toBe('generic');
@@ -89,8 +101,8 @@ describe('the /start route cannot write anything', () => {
     // trips it just the same.
     for (const forbidden of FORBIDDEN) {
       expect(
-        START_PAGE.includes(`from '@/lib/${forbidden}`) ||
-          START_PAGE.includes(`from '@/state/${forbidden}`),
+        START_CODE.includes(`from '@/lib/${forbidden}`) ||
+          START_CODE.includes(`from '@/state/${forbidden}`),
         `/start imports ${forbidden} — it must not be able to write anything`,
       ).toBe(false);
     }
@@ -109,7 +121,7 @@ describe('the /start route cannot write anything', () => {
       'addSighting',
       'markLearned',
     ]) {
-      expect(START_PAGE.includes(call), `/start calls ${call}`).toBe(false);
+      expect(START_CODE.includes(call), `/start calls ${call}`).toBe(false);
     }
   });
 
@@ -173,6 +185,40 @@ describe('the three ways in', () => {
   });
 });
 
+describe('the entry page does not overstate what a scan does', () => {
+  it('says CONFIRM, not scan, as the thing that unlocks an entry', () => {
+    /*
+     * The identifier proposes; the player taps to confirm; `discover()` runs on that tap and
+     * nowhere else. The whole scan screen is built on that separation — it is what keeps the
+     * collection meaning "plants I actually identified" rather than "things a model guessed
+     * at" — so the page that sends people to the scanner must not describe scanning itself as
+     * the thing that unlocks a card.
+     */
+    expect(START_CODE).toContain('Confirm a match and its Plantdex entry');
+    expect(/scan (?:one|it) and its Plantdex entry/i.test(START_CODE)).toBe(false);
+  });
+
+  it('promises the shelf only what `isShelfEligible` will actually accept', () => {
+    /*
+     * It said "anything you find outside these 45 is kept on your Seed Shelf". A photograph
+     * that resolves to nothing, to a bare genus, or to something above species rank is not
+     * shelved and cannot be: eligibility requires a valid species-level name with no
+     * confirmable card. "Recognised species" is the honest subset.
+     */
+    expect(START_CODE).toContain('recognised species outside');
+    for (const overclaim of [/anything you find outside/i, /everything you (?:find|scan)/i]) {
+      expect(overclaim.test(START_CODE), `${overclaim} overstates what is stored`).toBe(false);
+    }
+  });
+
+  it('keeps the same distinction in the outcomes captions', () => {
+    // The lead sentence and the picture beneath it must not disagree about what unlocks a
+    // card — two places saying different things is how one of them becomes the stale one.
+    expect(START_CODE).toContain('Confirm the match and its Plantdex entry unlocks.');
+    expect(START_CODE).toContain('If we recognise it');
+  });
+});
+
 describe('the entry page carries its safety weight', () => {
   it('uses the standard notice, not the brief one', () => {
     // It sends people to a camera and tells them to identify living plants, which is exactly
@@ -188,7 +234,7 @@ describe('the entry page carries its safety weight', () => {
 
   it('claims nothing about safety, edibility or medical use', () => {
     for (const claim of [/\bsafe to eat\b/i, /\bedible\b/i, /\btreats?\b/i, /\bcures?\b/i, /\bremedy\b/i]) {
-      expect(claim.test(START_PAGE), `${claim} appears on /start`).toBe(false);
+      expect(claim.test(START_CODE), `${claim} appears on /start`).toBe(false);
     }
   });
 });
