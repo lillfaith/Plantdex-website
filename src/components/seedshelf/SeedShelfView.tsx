@@ -19,28 +19,6 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { SeedPacket } from './SeedPacket';
 import { ShelfPlant } from './ShelfPlant';
 
-/**
- * THE SEED SHELF — a wooden shelf of generated seed packets, one per species found outside
- * the deck.
- *
- * ─────────────────────────────────────────────────────────────────────────────
- * IT IS FURNITURE, NOT AN ERROR LOG. The thing this page replaces is a dead end: "we
- * recognised the plant, but it is not in this collection", full stop. So it is built as a
- * piece of the game world — a board with a lit edge and a shadow, packets standing on it,
- * each one labelled underneath the way the Garden labels its sprites. Somebody's shelf
- * should be worth looking at even while every packet on it is still waiting.
- *
- * WHAT IT MUST NEVER LOOK LIKE IS A COLLECTION. Packets are paper, not cards; the counts say
- * "species on the shelf", never a fraction of anything; and nothing here reports XP, because
- * shelving pays none.
- * ─────────────────────────────────────────────────────────────────────────────
- */
-
-function formatDate(iso: string): string {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return iso.slice(0, 10);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-}
 
 /**
  * Column counts, one per breakpoint.
@@ -254,7 +232,7 @@ function Shelf({
   onClaim?: (entry: SeedShelfEntry) => void;
 }) {
   return (
-    <div className={`${mobile ? 'sm:hidden' : 'hidden sm:block'} space-y-6`}>
+    <div className={`${mobile ? 'sm:hidden' : 'hidden sm:block'} space-y-3`}>
       {rows.map((row, index) => (
         <ShelfBoard key={index} columns={columns}>
           {row.map((slot, position) =>
@@ -318,7 +296,7 @@ function ShelfBoard({ columns, children }: { columns: number; children: React.Re
 function ShelfProp({ variant }: { variant: number }) {
   return (
     <li aria-hidden="true" className="flex flex-col items-center">
-      <div className="mx-auto w-full max-w-[4.75rem] drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
+      <div className="mx-auto w-full max-w-[4.25rem] drop-shadow-[0_3px_2px_rgba(0,0,0,0.45)]">
         <ShelfPlant variant={variant} />
       </div>
     </li>
@@ -342,7 +320,7 @@ function Packet({
     <li className="flex flex-col items-center">
       {/* The packet stands ON the board: it sits in the row above and the plank is drawn
           under it, so the bottom edge of the paper meets the wood. */}
-      <div className="relative mx-auto w-full max-w-24 drop-shadow-[0_4px_3px_rgba(0,0,0,0.5)]">
+      <div className="relative mx-auto w-full max-w-[5.25rem] drop-shadow-[0_4px_3px_rgba(0,0,0,0.5)]">
         <SeedPacket
           recipe={entry.packet}
           alt={`Seed packet for ${label}`}
@@ -373,70 +351,58 @@ function Packet({
         them. The height is fixed so a two-line species name does not lift its packet above its
         neighbours; long names clamp and the full value is on the details.
       */}
-      <div className="mt-2 flex h-[3.6rem] w-full flex-col justify-start overflow-hidden">
-        <p className="line-clamp-2 text-center text-[0.82rem] leading-snug font-semibold text-violet-100">
+      <div className="mt-1.5 flex h-[2.9rem] w-full flex-col justify-start overflow-hidden">
+        <p className="line-clamp-2 text-center text-[0.8rem] leading-[1.15] font-semibold text-violet-100">
           {label}
         </p>
-        <p className="line-clamp-1 text-center text-[0.74rem] leading-snug text-violet-300 italic">
+        <p className="line-clamp-1 text-center text-[0.72rem] leading-[1.2] text-violet-300 italic">
           {entry.scientificName}
         </p>
       </div>
 
       {/*
-        WHERE THE MOVED METADATA WENT.
-        A native <details>, so it is reachable by keyboard and announced as a disclosure
-        without any of it being reimplemented — and so the full species name is available to
-        anyone whose caption above was clamped. Closed, it is one small line; the shelf stays
-        a shelf. The summary is a real hit target rather than a 12px word.
-      */}
-      <details className="group mt-1 w-full">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-center text-[0.72rem] font-semibold text-violet-400 hover:text-violet-200 [&::-webkit-details-marker]:hidden">
-          <span className="group-open:hidden">Details</span>
-          <span className="hidden group-open:inline">Hide</span>
-        </summary>
-        <div className="mt-1 space-y-0.5 text-center text-[0.72rem] leading-snug text-violet-300">
-          <p className="break-words italic">{entry.scientificName}</p>
-          <p>
-            {status === 'grown' ? 'Grown into a card' : `Found ${formatDate(entry.firstFoundAt)}`}
-          </p>
-          {entry.encounters > 1 && <p>Seen {entry.encounters}×</p>}
-        </div>
-      </details>
+        ONE BUTTON, ALWAYS PRESENT, IN THREE STATES.
+        Rendering it unconditionally is what keeps every slot the same height. The previous
+        version reserved an empty row for packets with no action, which worked but filled the
+        shelf with invisible furniture; a disabled button says the same thing honestly and
+        looks like what it is.
 
-      {/*
-        A FIXED ACTION SLOT, WHETHER OR NOT THERE IS AN ACTION.
-        Only a sprouted packet has a Plant button, so without a reserved row the cells holding
-        one are taller than the cells beside them — and because the board aligns on items-end,
-        the taller cell's packet rides UP above its neighbours. Two packets standing at
-        different heights on one plank reads as a rendering fault, not as a shelf.
+        `disabled` rather than hidden, because "you cannot plant this yet" is real information
+        — the deck has no card for this species — and the greying is now the only place the
+        shelf says so. `aria-label` carries the reason, since "Plant, dimmed" explains nothing
+        to a screen reader.
       */}
-      <div className="flex h-11 w-full items-center justify-center">
-      {status === 'sprouted' && herb && (
-        /*
-         * THE LABEL IS ONE WORD, BUT THE ACCESSIBLE NAME IS NOT. On screen the packet is
-         * already captioned with the species directly above the button, so repeating it
-         * inside was saying the same thing twice and wrapping a 0.72rem button onto three
-         * lines in a third of a phone. A screen reader gets no such adjacency: several
-         * sprouted packets side by side would all announce "Plant, button" with nothing to
-         * tell them apart, which is why the name still travels in `aria-label`.
-         */
-        <button
-          type="button"
-          onClick={onClaim}
-          aria-label={`Plant ${herb.commonName}`}
-          className="arcade-key min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-[0.72rem] font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
-        >
-          Plant
-        </button>
-      )}
-      {status === 'grown' && herb && (
-        <Link
-          href={`/herbdex/${herb.id}`}
-          className="text-[0.72rem] font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-        >
-          {herb.commonName}
-        </Link>
-      )}
+      <div className="mt-1.5 flex w-full items-center justify-center">
+        {status === 'sprouted' && herb ? (
+          /*
+           * THE LABEL IS ONE WORD, BUT THE ACCESSIBLE NAME IS NOT. On screen the packet is
+           * already captioned with the species directly above the button, so repeating it
+           * inside said the same thing twice. A screen reader gets no such adjacency: several
+           * sprouted packets side by side would all announce "Plant, button" with nothing to
+           * tell them apart, which is why the name still travels in `aria-label`.
+           */
+          <button
+            type="button"
+            onClick={onClaim}
+            aria-label={`Plant ${herb.commonName}`}
+            className="arcade-key min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-[0.72rem] font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
+          >
+            Plant
+          </button>
+        ) : (
+          <button
+            type="button"
+            disabled
+            aria-label={
+              status === 'grown'
+                ? `${label} is already planted in your Herbdex`
+                : `${label} cannot be planted — the deck has no card for it yet`
+            }
+            className="pointer-events-none min-h-11 w-full rounded-full border border-violet-700/40 bg-violet-900/25 px-2 text-[0.72rem] font-bold text-violet-400/70 opacity-50 saturate-50"
+          >
+            {status === 'grown' ? 'Planted' : 'Plant'}
+          </button>
+        )}
       </div>
     </li>
   );
