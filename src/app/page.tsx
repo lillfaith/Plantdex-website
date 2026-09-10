@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
+import { isShopConfigured } from '@/lib/shop';
 import { PlantSprite } from '@/components/PlantSprite';
 import { RarityAura } from '@/components/game/RarityAura';
 import { assetPath } from '@/lib/asset-path';
@@ -127,8 +128,25 @@ export default function HomePage() {
             Identify a plant
           </Link>
         </div>
+        {/*
+          THE SALE STATE IS DERIVED, NOT TYPED.
+
+          This line used to be an unconditional sentence reading "the physical deck is not on
+          sale yet", while `/shop` has always resolved the same fact from configuration. So the
+          day the owner sets the Payment Link and the price, the deck goes on sale, `/shop`
+          renders an Order panel — and the LANDING PAGE goes on telling every visitor it is not
+          for sale. The first page a buyer from a vendor table sees, contradicting the checkout.
+
+          This repository has been bitten by exactly this shape twice already: `/terms` claiming
+          "there is no shop, no checkout and no payment processing anywhere in the application"
+          after `/shop` shipped, and `/privacy` denying analytics after Plausible was wired in.
+          `legal.test.ts` guards both. A hard-coded denial of something configuration can turn on
+          is a lie with a timer on it, so this one reads the configuration too.
+        */}
         <p className="mt-3 text-xs text-violet-400">
-          The physical deck is not on sale yet — the store opens once printing is confirmed.
+          {isShopConfigured()
+            ? 'A physical deck of real cards, printed front and back.'
+            : 'The physical deck is not on sale yet — the store opens once printing is confirmed.'}
         </p>
       </section>
 

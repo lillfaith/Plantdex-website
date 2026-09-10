@@ -72,6 +72,26 @@ export const EVENT_NAMES = [
   'garden_opened',
   'profile_opened',
 
+  /*
+   * THE LAUNCH FUNNEL — the printed entry point.
+   *
+   * `/start` is what a vendor-table QR, a packaging insert and a sticker all point at, so
+   * these four answer the first two questions a launch has: do people who meet Plantdex on a
+   * physical object open it at all, and do they understand it well enough to choose a door.
+   *
+   * The three exits are separate NAMES rather than one event, for the schema's usual reason:
+   * which path was taken is a dimension the page path cannot imply — every one of them is a
+   * click on `/start` — and a property would be Business-tier and silently invisible on
+   * Starter. Three closed outcomes is exactly the case the name-per-outcome rule is for.
+   *
+   * The gap between `start_opened` and the sum of the three is the real finding: people who
+   * arrived from a printed code, read the page, and left without touching anything.
+   */
+  'start_opened',
+  'start_path_scan',
+  'start_path_herbdex',
+  'start_path_learn',
+
   // Plant profiles. The species comes from the URL; the name carries only how much of that
   // plant the viewer had already unlocked, which the URL cannot say.
   'plant_viewed_locked',
@@ -108,11 +128,31 @@ export const EVENT_NAMES = [
   'scan_related',
   'scan_confirmed',
 
-  // Seed Shelf. Two counts, both about whether the shelf is doing its job: how often a plant
-  // the deck cannot hold is kept anyway, and how often one of those later becomes a card.
-  // No species and no score travel, exactly as above.
+  // Seed Shelf. How often a plant the deck cannot hold is kept anyway, and how often one of
+  // those later becomes a card. No species and no score travel, exactly as above.
+  //
+  // `_save_started` is paired with `seed_shelf_saved` deliberately: the save is a network
+  // write to Supabase that can fail, and only the success was measured, so a production
+  // outage in the one write this loop depends on would show up as "nobody saved anything"
+  // and be indistinguishable from nobody wanting to. The difference between the two counts
+  // is the failure rate.
+  'seed_shelf_save_started',
   'seed_shelf_saved',
   'seed_shelf_sprouted',
+
+  /*
+   * WHERE THE FIND WENT, AND WHETHER ANYBODY FOLLOWED IT.
+   *
+   * The launch loop's last step is telling a player what Plantdex did with their scan and
+   * giving them somewhere to go. These two measure whether that landed — one per branch:
+   * the species had a card, or it did not and became a packet.
+   *
+   * Distinct from `herbdex_opened` and the shelf's own page view because the question is not
+   * "was this page visited" but "was it visited FROM the moment we explained the outcome".
+   * That is a different number and the one that says whether the explanation worked.
+   */
+  'herbdex_opened_from_scan',
+  'seed_shelf_opened_from_scan',
 
   // Commerce. Placement is in the name because that is the entire question a CTA asks.
   'deck_cta_home',

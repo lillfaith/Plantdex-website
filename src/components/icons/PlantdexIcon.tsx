@@ -35,6 +35,7 @@ export type IconName =
   | 'journal'
   | 'seasons'
   | 'learn'
+  | 'scan'
   // Habitat classes
   | 'woodland'
   | 'meadow'
@@ -148,6 +149,22 @@ const ICONS: Record<IconName, React.ReactNode> = {
       <path d="M12 6.8v13" />
       <path d="M12 6.8C10.4 5.3 8.4 4.6 6 4.6c-.9 0-1.7.1-2.5.3v13c.8-.2 1.6-.3 2.5-.3 2.4 0 4.4.7 6 2.2" />
       <path d="M12 6.8c1.6-1.5 3.6-2.2 6-2.2.9 0 1.7.1 2.5.3v13c-.8-.2-1.6-.3-2.5-.3-2.4 0-4.4.7-6 2.2" />
+    </>
+  ),
+  /*
+   * Viewfinder corners round a sprout: point the device at a living thing.
+   *
+   * Deliberately NOT the `research` lens, which is also a magnifier over a leaf. That one
+   * means "study what you have"; this one means "aim at what is in front of you", and the two
+   * would sit five slots apart in the same navigation bar. The four brackets are the same
+   * reticle motif `scanner-frame` draws round the capture panel, so the icon and the screen
+   * it opens are recognisably the same idea.
+   */
+  scan: (
+    <>
+      <path d="M3.6 8.4V5.6a2 2 0 0 1 2-2h2.8M15.6 3.6h2.8a2 2 0 0 1 2 2v2.8" />
+      <path d="M20.4 15.6v2.8a2 2 0 0 1-2 2h-2.8M8.4 20.4H5.6a2 2 0 0 1-2-2v-2.8" />
+      <path d="M12 16.4v-4.2M12 13.4c-.8-1.9-2.5-2.8-4.3-2.7.1 2 1.7 3.3 3.8 3.3M12 15c.8-1.9 2.5-2.8 4.3-2.7-.1 2-1.7 3.3-3.8 3.3" />
     </>
   ),
 

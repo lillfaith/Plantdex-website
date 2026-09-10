@@ -10,6 +10,7 @@ import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { ScanCaution } from './ScanCaution';
+import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
 
 /**
@@ -43,12 +44,28 @@ export function ScanPanel() {
   const [result, setResult] = useState<ScanResult | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [rateLimited, setRateLimited] = useState<{ signedIn: boolean } | null>(null);
-  const [confirmed, setConfirmed] = useState<string | null>(null);
+  /*
+   * What the confirmation ACTUALLY produced, not just which card it was.
+   *
+   * `discover()` already returns the XP it awarded and any achievement ids that unlocked, and
+   * this path was throwing both away — so the scan loop, which is the path a first-time user
+   * takes, was the one place in the app where finding your first plant unlocked "First Find"
+   * and nothing said so. The card page has celebrated it since the beginning.
+   */
+  const [confirmed, setConfirmed] = useState<{
+    herbId: string;
+    xpAwarded: number;
+    newAchievementIds: string[];
+  } | null>(null);
   // The history row this result was written to, so a Seed Shelf save can point back at the
   // scan it came from. Null signed out, where there is no history to point at.
   const [scanId, setScanId] = useState<string | null>(null);
+  // True once this scan's species has been put on the shelf, so the page can stop offering
+  // an alternative to the one place it has just told the player their find went.
+  const [shelved, setShelved] = useState(false);
 
   const answerRef = useRef<HTMLDivElement>(null);
+  const outcomeRef = useRef<HTMLDivElement>(null);
 
   /*
    * Bring the answer to the player rather than trusting them to go and find it.
@@ -62,13 +79,28 @@ export function ScanPanel() {
     if (!result && !problem) return;
     const node = answerRef.current;
     if (!node) return;
+    // Once an outcome exists it is what the player is waiting to read, so bring THAT into
+    // view rather than the top of the answer they have already seen. See `confirmed` below.
+    const target = outcomeRef.current ?? node;
+    if (target !== node) {
+      target.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+        block: 'center',
+      });
+      return;
+    }
     const rect = node.getBoundingClientRect();
     if (rect.top >= 0 && rect.bottom <= window.innerHeight) return;
     node.scrollIntoView({
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       block: 'start',
     });
-  }, [result, problem]);
+    // `confirmed` is a dependency for the reason spelled out at the outcome panel: the panel
+    // reporting the most important action in the app used to render below the fold with
+    // nothing scrolling to it.
+  }, [result, problem, confirmed]);
 
   const run = useCallback(
     async (file: File) => {
@@ -78,6 +110,7 @@ export function ScanPanel() {
       setResult(null);
       setConfirmed(null);
       setScanId(null);
+      setShelved(false);
       track('scan_started');
 
       const answer = await identifyPlant(file);
@@ -274,14 +307,18 @@ export function ScanPanel() {
                   is offered under the card links rather than above them, because reading the
                   related card is the better next step when there is one.
                 */}
-                <SaveToSeedShelf candidates={result.candidates} scanId={scanId ?? undefined} />
+                <SaveToSeedShelf
+                  candidates={result.candidates}
+                  scanId={scanId ?? undefined}
+                  onSaved={() => setShelved(true)}
+                />
 
                 {/*
                   Only on a real no-match. On `relatedOnly` the card is already offered
                   above, so "browse the collection instead" would be pointing away from the
                   very thing the player was just handed.
                 */}
-                {result.outcome === 'noMatch' && (
+                {result.outcome === 'noMatch' && !shelved && (
                   <Link
                     href="/herbdex"
                     className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
@@ -325,7 +362,15 @@ export function ScanPanel() {
                         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                           <Link
                             href={`/herbdex/${herb.id}`}
-                            className="font-bold text-violet-100 underline underline-offset-2 hover:text-gold-400"
+                            /*
+                             * A 44px hit area drawn by a pseudo-element rather than by
+                             * padding: this link sits on a baseline row beside the score
+                             * meter, so growing the box would shift the meter off the name it
+                             * belongs to. Measured at 24px before this — a real sub-target in
+                             * the launch loop's own critical path. Same pattern
+                             * `GlossaryTermLink` uses, and invisible to layout.
+                             */
+                            className="relative font-bold text-violet-100 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
                           >
                             {herb.commonName}
                           </Link>
@@ -374,9 +419,13 @@ export function ScanPanel() {
                               // The player's decision, and the only thing that awards anything.
                               // `discover` is the same call the plant page makes, so a repeat
                               // awards nothing — idempotency is the reducer's, not ours.
-                              discover(herb);
+                              const outcome = discover(herb);
                               track('scan_confirmed');
-                              setConfirmed(herb.id);
+                              setConfirmed({
+                                herbId: herb.id,
+                                xpAwarded: outcome.xpAwarded,
+                                newAchievementIds: outcome.newAchievementIds,
+                              });
                             }}
                             className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
                           >
@@ -403,21 +452,41 @@ export function ScanPanel() {
             )}
           </section>
         )}
+
+        {/*
+          CASE A'S OUTCOME, AND WHY IT MOVED IN HERE.
+
+          This panel used to sit OUTSIDE this region, below everything, with the scroll effect
+          watching only `result` and `problem`. So confirming a find — the single most
+          important action in the app, and the one a first-time user takes once — rendered its
+          confirmation underneath a list of candidates, off the bottom of a phone, behind the
+          fixed nav, with nothing bringing it into view. Exactly the bug this file's own
+          comment above records having fixed for the RESULT, repeated one step later in the
+          flow: every path rendered, and the one that mattered was not visible.
+
+          It is inside the answer region now, directly under the candidate that produced it,
+          and `confirmed` is a dependency of the scroll effect.
+        */}
+        {confirmed &&
+          (() => {
+            const herb = getPrintedCard(confirmed.herbId);
+            if (!herb) return null;
+            return (
+              <div ref={outcomeRef}>
+                <ScanOutcome
+                  kind="card"
+                  herbId={herb.id}
+                  commonName={herb.commonName}
+                  scientificName={herb.scientificName}
+                  href={`/herbdex/${herb.id}`}
+                  xpAwarded={confirmed.xpAwarded}
+                  newAchievementIds={confirmed.newAchievementIds}
+                />
+              </div>
+            );
+          })()}
       </div>
 
-      {confirmed && (
-        <section className="panel p-5" aria-live="polite">
-          <p className="text-sm font-semibold text-gold-300">
-            Added to your collection.
-          </p>
-          <Link
-            href={`/herbdex/${confirmed}`}
-            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-violet-100 underline underline-offset-2 hover:text-gold-400"
-          >
-            Open the card &rarr;
-          </Link>
-        </section>
-      )}
 
       {!user && (
         <p className="text-xs leading-relaxed text-violet-400">

@@ -52,10 +52,34 @@ const PROVIDER_URL = 'https://my-api.plantnet.org/v2/identify/all';
 const ATTESTATION_SECRET = Deno.env.get(ATTESTATION_SECRET_ENV) ?? '';
 
 /**
- * Rotates the anonymous bucket hash daily. Any non-empty secret works; if it is unset the
- * function still runs, but anonymous buckets become stable across days, so set it.
+ * THE ANONYMOUS QUOTA SALT — what it actually does, and why the old default was wrong.
+ *
+ * The bucket is `SHA-256(salt : day : ip)`. The DAY is already in that input, so rotation
+ * across days never depended on the salt at all — the comment that used to sit here claimed
+ * an unset salt made anonymous buckets "stable across days", and that was simply false.
+ *
+ * What the salt actually buys is that the hash cannot be COMPUTED. Without one, anybody who
+ * can read a `scan_quota` row can test a guessed address against it — the day is public and
+ * the hash is standard — which turns a table of opaque buckets into a table anyone can ask
+ * "did this IP scan today?" of. The old fallback was the literal string
+ * `'plantdex-default-salt'`, published in this repository, so an unset secret meant exactly
+ * that: a salt everybody has.
+ *
+ * It also made "is SCAN_QUOTA_SALT set in production?" unanswerable. The function behaves
+ * identically either way — same buckets, same limits, same responses — so nothing would ever
+ * surface the omission.
+ *
+ * The fallback now derives from the service-role key, which is always present (the function
+ * cannot run without it), is stable across isolates so a caller's bucket does not change
+ * between invocations, and is not public. It is only ever an input to a one-way digest and
+ * never leaves this process. Setting SCAN_QUOTA_SALT explicitly is still correct — it lets
+ * the salt rotate without rotating the database key — but an unset one is no longer a hole.
+ *
+ * Deliberately NOT fail-closed, unlike the attestation secret. That one guards what may be
+ * written into a global immutable registry, so refusing is the safe answer. This one guards a
+ * rate-limit bucket, and refusing would take identification down for everybody.
  */
-const QUOTA_SALT = Deno.env.get('SCAN_QUOTA_SALT') ?? 'plantdex-default-salt';
+const QUOTA_SALT = Deno.env.get('SCAN_QUOTA_SALT') ?? `derived:${SERVICE_ROLE_KEY}`;
 
 /*
  * RATE LIMITS.

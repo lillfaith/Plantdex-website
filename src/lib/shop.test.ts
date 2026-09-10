@@ -190,3 +190,42 @@ describe('what the product page claims', () => {
     expect(page).not.toMatch(/searchParams|session_id|useSearchParams|order\s*#|orderNumber/i);
   });
 });
+
+/**
+ * PAGES THAT DENY THE SHOP EXISTS.
+ *
+ * This repository has shipped this bug twice. `/terms` claimed "there is no shop, no checkout
+ * and no payment processing anywhere in the application" after `/shop` shipped, and `/privacy`
+ * denied analytics after Plausible was wired in; `legal.test.ts` guards both now. The landing
+ * page was carrying the third instance — an unconditional sentence reading "the physical deck
+ * is not on sale yet", printed to every visitor while `/shop` resolved the same fact from
+ * configuration and would render an Order panel the moment the owner set the two variables.
+ *
+ * A first-time buyer arriving from a vendor-table QR would have read the landing page telling
+ * them it was not for sale and the checkout offering to sell it. The failure is silent: no
+ * test breaks, no build fails, and it only becomes visible on the single day the whole launch
+ * depends on.
+ */
+describe('no page denies the sale while configuration can turn it on', () => {
+  it('derives the landing page sale state instead of hard-coding it', () => {
+    const page = readFileSync('src/app/page.tsx', 'utf8');
+    const denial = /not on sale yet/;
+    if (denial.test(page)) {
+      // It may SAY it, but only as one branch of the same predicate `/shop` reads. A denial
+      // with no conditional beside it is the bug.
+      expect(
+        page.includes('isShopConfigured'),
+        'the landing page denies the sale unconditionally — derive it from isShopConfigured()',
+      ).toBe(true);
+    }
+  });
+
+  it('reads that state from the one function that owns it', () => {
+    // Not a second copy of the environment check. `isShopConfigured` requires BOTH a
+    // Stripe-validated link and a price, and a page testing only one of them would advertise
+    // a checkout with no price on it, or a price with no way to pay.
+    const page = readFileSync('src/app/page.tsx', 'utf8');
+    expect(page).not.toContain('NEXT_PUBLIC_STRIPE_PAYMENT_LINK');
+    expect(page).not.toContain('NEXT_PUBLIC_DECK_PRICE');
+  });
+});

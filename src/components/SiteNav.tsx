@@ -7,14 +7,30 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 /**
  * Primary navigation.
  *
- * Six destinations, no sub-menus: minor features live inside "Learn" rather than earning
+ * Seven destinations, no sub-menus: minor features live inside "Learn" rather than earning
  * their own top-level slot. On a phone this is a fixed bottom bar within thumb reach,
  * which is where navigation belongs when the app is being used outdoors one-handed; on
  * wider screens it moves to the top.
+ *
+ * SCAN IS HERE BECAUSE IT IS THE ONE ACTION THAT IS ABOUT WHERE YOU ARE STANDING.
+ *
+ * It was reachable from the landing page, the Herbdex and the Seed Shelf, and from nowhere
+ * else — so a player anywhere else in the app who walked past a plant had to navigate back to
+ * a hub first. Every other destination here is somewhere you look things up and can be
+ * reached at leisure; this is the one with a plant in front of it, and it is the core of the
+ * loop the whole product is built round. A bar that carries Seasons but not the camera is a
+ * bar arranged around the website rather than around being outdoors.
+ *
+ * SEED SHELF IS DELIBERATELY NOT AN EIGHTH SLOT. Seven labels already divide a 390px bar into
+ * about 55px each, and "Seed Shelf" is the longest label in the app; an eighth would push
+ * every target under the width a thumb wants and truncate two of the labels. It is reached
+ * from the Herbdex — the collection page, which is where somebody wondering where their finds
+ * went actually goes — and from the Garden and every scan that produces one.
  */
 
 const LINKS: { href: string; label: string; icon: IconName }[] = [
   { href: '/', label: 'Home', icon: 'home' },
+  { href: '/scan', label: 'Scan', icon: 'scan' },
   { href: '/herbdex', label: 'Herbdex', icon: 'herbdex' },
   { href: '/garden', label: 'Garden', icon: 'garden' },
   { href: '/journal', label: 'Journal', icon: 'journal' },

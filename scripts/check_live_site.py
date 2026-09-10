@@ -59,6 +59,69 @@ ROUTES: list[tuple[str, list[str]]] = [
 ]
 
 
+# ── Which backend the deployed bundle actually talks to ─────────────────────────
+#
+# THE ONE LAUNCH QUESTION NOTHING ELSE ANSWERS. Everything above proves pages rendered.
+# None of it proves the deploy is wired to the PRODUCTION Supabase project rather than the
+# test project that `npm run verify:supabase` writes throwaway rows into.
+#
+# That failure is completely silent and survives every other check: the site builds, the
+# pages render, sign-up works, a scan works, a packet mints — into the wrong database. It
+# would be discovered when real players' collections turned out to be sitting in a project
+# used as a scratchpad, or when a test run deleted an account belonging to somebody real.
+#
+# `NEXT_PUBLIC_SUPABASE_URL` is inlined into the client bundle at build time (that is what
+# NEXT_PUBLIC means), so the deployed JavaScript is the honest record of where this build
+# points — better evidence than the Actions variable it came from, because it is what the
+# browser will use. Both refs are public identifiers in a public bundle; neither is a secret.
+#
+# The anon key is deliberately NOT compared. It is safe to publish, but printing it into a
+# workflow log that anyone with repo read access can open is a gratuitous widening, and the
+# project ref alone settles the question.
+PRODUCTION_REF = "vygiamigomwlvnwkryyl"
+TEST_REF = "vgjehmwcpavflbfhbbrp"
+
+
+def check_backend(base: str, origin: str) -> int:
+    """Assert the deployed bundle points at production Supabase. Returns failures."""
+    print()
+    _, page = fetch(f"{base}/account/")
+    scripts = [
+        part.split('"')[0]
+        for part in page.split('src="')[1:]
+        if part.split('"')[0].endswith(".js")
+    ]
+    if not scripts:
+        print("FAIL  /account/ links no script bundle, so the backend cannot be read")
+        return 1
+
+    seen: set[str] = set()
+    for src in scripts:
+        _, body = fetch(src if src.startswith("http") else f"{origin}{src}")
+        for ref in (PRODUCTION_REF, TEST_REF):
+            if ref in body:
+                seen.add(ref)
+
+    if TEST_REF in seen:
+        # Loud, and first: a live site writing into the test project is worse than one that
+        # cannot reach a backend at all, because it looks like it is working.
+        print(f"FAIL  the deployed bundle references the TEST project ({TEST_REF})")
+        print("      Set NEXT_PUBLIC_SUPABASE_URL in the repo's Actions variables to the")
+        print("      production project and redeploy before anybody signs up.")
+        return 1
+    if PRODUCTION_REF in seen:
+        print(f"PASS  backend        production Supabase ({PRODUCTION_REF})")
+        return 0
+
+    # Neither ref present. Not necessarily a misconfiguration — an unset variable leaves the
+    # app in its signed-out local-only mode, which is a legitimate state — but it means
+    # accounts, sync, scanning and minting are all off, so a launch must not proceed on it.
+    print("FAIL  the deployed bundle references NEITHER Supabase project")
+    print("      NEXT_PUBLIC_SUPABASE_URL is probably unset in the Actions variables, which")
+    print("      leaves the live site local-only: no accounts, no sync, no scan, no minting.")
+    return 1
+
+
 def fetch(url: str) -> tuple[int, str]:
     request = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
@@ -116,6 +179,8 @@ def main() -> int:
         print(f"{'PASS' if status == 200 else 'FAIL'}  stylesheet {href.split('/')[-1]}  HTTP {status}  {len(css) // 1024} KB  profile utilities: {len(wanted)}/4 {wanted}")
         if status != 200:
             failures += 1
+
+    failures += check_backend(base, origin)
 
     print(f"\n{failures} failure(s) across {len(ROUTES)} routes and {len(hrefs)} stylesheet(s)")
     return 1 if failures else 0

@@ -516,6 +516,65 @@ does not carry — the state that used to be a dead end.
   card and something with no card. `aria-hidden`, no label, no XP, authored on the same pixel
   grid as the packets and painted only from deck tokens.
 
+## The launch loop
+
+The journey a stranger takes from a printed deck to a saved find:
+`/start` → scan → identify → save → Plantdex resolves it to a card or a seed packet → says which
+→ hands over one next action. `launch-loop.test.ts` asserts the EDGES of that journey rather than
+the nodes, because every piece of it had passing tests while the seams were broken.
+
+- **`/start` is a printed QR target and grants nothing.** `entry-point.ts` names five trust
+  levels that must never collapse — visited a URL, owns a deck, found a plant, verified a
+  sighting, mastered a card — and a generic printed code sits at the first. It is a public string
+  readable off a photograph of the box, so it can establish that somebody saw a code and nothing
+  else. This is structural, not promised: the route is a server component of links that imports
+  no store, no reducer and no progression module, and `entry-point.test.ts` reads its source and
+  fails if one appears. `docs/qr-ownership.md` plans the per-deck claim token that could
+  honestly establish ownership; none of it is built.
+- **Both branches of a scan end the same way.** `ScanOutcome` is one component with two cases:
+  what Plantdex now holds, the artwork of it, and ONE onward link. Case A had been printing a
+  single grey line at the foot of the page and Case B swapping a heading inside the save box —
+  neither told a first-time user what had happened to their find. The packet branch is not the
+  sad one: 45 species out of a world of them means "no card for this" is the ORDINARY outcome.
+- **The outcome must render inside the region the page scrolls to.** The confirmation panel sat
+  outside it with the scroll effect watching only `result` and `problem`, so confirming a find —
+  the one action a first-time user takes — rendered under a list of candidates, off the bottom of
+  a phone, behind the fixed nav, with nothing bringing it into view. The same bug the file already
+  records having fixed for the result, one step later in the flow. `confirmed` is a dependency of
+  that effect and the panel carries `outcomeRef`; both are pinned.
+- **The starter objective is the existing `first-find` achievement, not a new research task.**
+  It is already a pure predicate over state, unlocks retroactively and pays a badge rather than
+  XP. What was missing is that the scan path — the route a stranger actually takes — called
+  `discover()` and threw its answer away, so the moment that teaches "Plantdex rewards going
+  outside" was silent there while the card page had celebrated it since the beginning. Do not add
+  a Field Research task for this: the only XP tiers are 25 (daily, and a daily may not pay until
+  it has been offered) and 250/500, both sized for multi-card challenges, so one would devalue the
+  tier `Backyard Collection` sits in AND hand every existing player 250 XP retroactively.
+- **Scan is in the primary nav; Seed Shelf is on the Herbdex.** The scanner is the one destination
+  that is about where somebody is standing, and it was reachable from three pages and no
+  navigation. The shelf was reachable from the Garden and from the moment a packet was saved, so a
+  player who shelved something and came back later had no route to it at all — kept, and
+  unfindable. Seven nav labels is the ceiling: at 390px each is 53px wide and an eighth truncates.
+- **No page may deny the sale while configuration can turn it on.** The landing page carried an
+  unconditional "the physical deck is not on sale yet" while `/shop` resolved the same fact from
+  `isShopConfigured()`, so the day the owner set the two variables the front page would have
+  contradicted the checkout. Third instance of a shape this repo has shipped twice —
+  `/terms` denying the shop, `/privacy` denying analytics. `shop.test.ts` guards it.
+- **`SCAN_QUOTA_SALT` has no published default.** It fell back to the literal
+  `'plantdex-default-salt'`, which made an unset secret both undetectable and equivalent to a salt
+  everybody has. The adjacent comment also claimed an unset salt left anonymous buckets "stable
+  across days", which was false — the day is already in the hash input. What the salt actually
+  buys is that the bucket cannot be COMPUTED from a guessed address. The fallback now derives from
+  the service-role key: always present, stable across isolates, not public. Deliberately not
+  fail-closed, unlike the attestation secret — that one guards what may be written into a global
+  immutable registry, this one guards a rate-limit bucket, and refusing would take identification
+  down for everybody.
+- **`check_live_site.py` asserts which Supabase project the deployed bundle points at.** It runs
+  automatically after every Pages deploy, and it is the only check that does — `check_live_scan.py`
+  takes the expected ref as a hand-typed argument and only runs on `workflow_dispatch`, so it
+  passes just as happily if somebody types the test ref. A live site writing into the test project
+  is worse than one with no backend, because it looks like it is working.
+
 ## Analytics, deletion and export
 
 - **`track()` takes an event name and has no second parameter.** That is the privacy

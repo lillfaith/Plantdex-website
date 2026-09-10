@@ -72,6 +72,39 @@ export default function HerbdexPage() {
             </span>
           </span>
         </Link>
+
+        {/*
+          THE COLLECTION'S OTHER HALF, AND THE ONLY PLACE TO LOOK FOR IT.
+
+          A scan produces one of two things: a card, or a seed packet for a species this
+          collection has no card for — and the second is the ORDINARY outcome, 45 species out
+          of a world of them. But `/seed-shelf` was reachable from the Garden and from the
+          moment a packet was saved, and from nowhere else. So a player who shelved something,
+          closed the tab and came back had no route to it at all: not from the nav, not from
+          the collection page, not from their profile. The find was kept and became unfindable.
+
+          It belongs here rather than in the nav bar because this is the page somebody opens
+          when they are wondering where their finds went, and because seven labels already
+          divide a 390px bar as far as it goes. Quieter than the scanner above it: the shelf is
+          somewhere you visit, and identifying is something you do.
+        */}
+        <Link
+          href="/seed-shelf"
+          className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-violet-800/70 px-4 py-2.5 transition-colors hover:bg-plum-600/40"
+        >
+          <span
+            aria-hidden="true"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-mystery-violet/20 text-sm text-violet-200"
+          >
+            <PlantdexIcon name="seed" />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-sm font-bold text-violet-100">My Seed Shelf</span>
+            <span className="block text-xs text-violet-300">
+              Species you have found that this collection has no card for
+            </span>
+          </span>
+        </Link>
       </div>
 
       {/* Above the progress header, because it is about that progress — and inline in the

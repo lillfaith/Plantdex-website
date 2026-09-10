@@ -8,6 +8,7 @@ import { loadCanonicalPackets, previewPacket, useCanonicalPackets } from '@/lib/
 import { normalizeName, type ScanCandidate } from '@/lib/plant-match';
 import { track } from '@/lib/analytics';
 import { SeedPacket } from './SeedPacket';
+import { ScanOutcome } from '../scan/ScanOutcome';
 
 /**
  * "Save to Seed Shelf" — the offer on a scan that named a real plant the deck has no card for.
@@ -28,9 +29,19 @@ import { SeedPacket } from './SeedPacket';
 export function SaveToSeedShelf({
   candidates,
   scanId,
+  onSaved,
 }: {
   candidates: readonly ScanCandidate[];
   scanId?: string;
+  /**
+   * Told to the scan screen so it can stand down its own alternatives.
+   *
+   * Once a packet is saved the player has been handed one obvious next step, and the
+   * "Browse the collection instead" link sitting under this panel turned that answer back
+   * into a choice between two gold links of the same weight. The scan screen owns that link,
+   * so it has to hear about the save.
+   */
+  onSaved?: () => void;
 }) {
   const { entries, save } = useSeedShelf();
   const [saving, setSaving] = useState(false);
@@ -70,6 +81,10 @@ export function SaveToSeedShelf({
     if (!candidate) return;
     setSaving(true);
     setError(null);
+    // Paired with `seed_shelf_saved` below. Only the success used to be counted, so an outage
+    // in the one network write this loop depends on would have looked exactly like nobody
+    // wanting to save anything. The difference between the two is the failure rate.
+    track('seed_shelf_save_started');
     try {
       await save({
         scientificName: candidate.scientificName,
@@ -84,12 +99,13 @@ export function SaveToSeedShelf({
       });
       track('seed_shelf_saved');
       setSaved(true);
+      onSaved?.();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'That could not be saved. Try again.');
     } finally {
       setSaving(false);
     }
-  }, [candidate, save, scanId]);
+  }, [candidate, save, scanId, onSaved]);
 
   if (!candidate) return null;
 
@@ -109,6 +125,30 @@ export function SaveToSeedShelf({
   });
   const name = candidate.commonName ?? candidate.scientificName;
 
+  /*
+   * SAVED IS A MOMENT, NOT A CHANGED HEADING.
+   *
+   * This used to swap the box's own title to "On your Seed Shelf" and leave everything else
+   * where it was, which reads as a form acknowledging itself. A species with no card is HALF
+   * of what this product does — 45 species out of a world of them, so it is the ordinary
+   * outcome — and it deserves the same weight as finding a card does. `ScanOutcome` is the
+   * component the card branch uses, so both halves of the loop now end the same way: what
+   * Plantdex holds, the artwork of it, one onward link.
+   */
+  if (saved) {
+    return (
+      <div className="mt-4">
+        <ScanOutcome
+          kind="packet"
+          recipe={recipe}
+          commonName={name}
+          scientificName={candidate.scientificName}
+          href="/seed-shelf"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mt-4 rounded-xl border border-violet-700/70 bg-plum-800/50 p-4">
       <div className="flex items-start gap-3">
@@ -116,21 +156,21 @@ export function SaveToSeedShelf({
           <SeedPacket recipe={recipe} alt={`Seed packet for ${name}`} />
         </span>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-violet-100">
-            {saved ? 'On your Seed Shelf' : 'Keep it on your Seed Shelf'}
-          </h4>
+          {/*
+            Only the UNSAVED state renders below — the saved one returns `ScanOutcome` above,
+            so the `saved ? …` branches that used to be threaded through here are gone rather
+            than left unreachable.
+          */}
+          <h4 className="text-sm font-bold text-violet-100">Keep it on your Seed Shelf</h4>
           <p className="mt-1 text-xs leading-relaxed text-violet-300">
-            {saved
-              ? `${name} is on the shelf. If it becomes a card in a future collection, your find will already be waiting — dated today.`
-              : `This plant isn’t in the Plantdex yet. Save it here — if it becomes a card in a future collection, your discovery will already be waiting.`}
+            This plant isn&rsquo;t in the Plantdex yet. Save it here &mdash; if it becomes a
+            card in a future collection, your discovery will already be waiting.
           </p>
-          {!saved && (
-            <p className="mt-2 text-xs text-violet-400">
-              Saving keeps a record. It earns no XP and doesn&apos;t add to your collection.
-            </p>
-          )}
+          <p className="mt-2 text-xs text-violet-400">
+            Saving keeps a record. It earns no XP and doesn&apos;t add to your collection.
+          </p>
 
-          {saved || already ? (
+          {already ? (
             <Link
               href="/seed-shelf"
               className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
@@ -148,7 +188,7 @@ export function SaveToSeedShelf({
             </button>
           )}
 
-          {already && !saved && (
+          {already && (
             <p className="mt-2 text-xs text-violet-400">
               Already on your shelf — found {new Date(already.firstFoundAt).toLocaleDateString()}.
             </p>
