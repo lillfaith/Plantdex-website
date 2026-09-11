@@ -300,8 +300,8 @@ describe('recordUnlocks is write-once and reports only what is new', () => {
   it('returns nothing when every reached slot is already recorded', () => {
     // Safe to call on every render: the second call is a no-op, which is what stops the
     // reveal firing twice.
-    const first = recordUnlocks(600, '2026-01-01T00:00:00.000Z');
+    const first = recordUnlocks(600, 'scope-a', '2026-01-01T00:00:00.000Z');
     expect(first.map((s) => s.ordinal)).toEqual([1]);
-    expect(recordUnlocks(600, '2026-02-02T00:00:00.000Z')).toEqual([]);
+    expect(recordUnlocks(600, 'scope-a', '2026-02-02T00:00:00.000Z')).toEqual([]);
   });
 });

@@ -25,6 +25,14 @@ import { FIELD_CARD_SLOTS, slotsUnlockedAt, type FieldCardSlot } from './field-c
  *      un-written. So a reached slot is recorded here, and `resolveUnlocked()` returns
  *      DERIVED ∪ RECORDED. Once a card is yours it stays yours, whatever the maths does next.
  *
+ * THE RECORD IS KEYED BY ACCOUNT, and that is not decoration. The ratchet grants cards that
+ * the current XP does not, so a single global key would hand the first player's unlocks to
+ * every account that signs in on a shared device afterwards — 2/9 on a brand-new account
+ * with no XP. This repo has already been bitten by exactly that shape once: the local-import
+ * offer was keyed globally and silently denied itself to every account after the first. A
+ * signed-out device gets its own scope, which is right — signed out, your XP is local too,
+ * so the derived half and the recorded half describe the same player.
+ *
  * WHY NOT IN `HerbdexState`. That holds only what XP is derived FROM, plus achievements. An
  * unlock is derived from XP, so putting it there would be circular and would add a number a
  * client could assert. This is a separate store with its own key that awards nothing and is
@@ -35,17 +43,34 @@ import { FIELD_CARD_SLOTS, slotsUnlockedAt, type FieldCardSlot } from './field-c
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
+/** The signed-out scope. A device is a player too, and gets its own record. */
+export const ANONYMOUS_SCOPE = 'device';
+
+/** The prefix every scope's key shares, so account deletion can sweep all of them. */
 export const FIELD_CARD_UNLOCKS_STORAGE_KEY = 'plantdex.field-cards.v1';
+
+function storageKey(scope: string): string {
+  return `${FIELD_CARD_UNLOCKS_STORAGE_KEY}:${scope}`;
+}
 
 /** ordinal -> ISO timestamp of first reach. */
 type UnlockRecord = Record<string, string>;
 
-let cache: UnlockRecord | null = null;
 const listeners = new Set<() => void>();
 const EMPTY: UnlockRecord = Object.freeze({});
 
+/** The scope the cache below belongs to, so a sign-in cannot read the wrong player's record. */
+let cachedScope: string | null = null;
+let cache: UnlockRecord | null = null;
+
 /**
- * Ordinals recorded by THIS session's `recordUnlocks`, so a page can reveal them.
+ * Ordinals recorded by the LATEST crossing, so a page can reveal exactly those.
+ *
+ * REPLACED, NEVER APPENDED. "New Field Card unlocked" is a statement about the event that
+ * just happened; a player who crosses 600 XP and then 1,200 XP in one sitting should see
+ * Cattail announced, not Coneflower announced a second time alongside it. Accumulating here
+ * would also mean the banner grew all session. Crossing two thresholds on a single XP gain
+ * is one event and correctly announces both.
  *
  * Part of the store's snapshot rather than component state, and that is not a stylistic
  * choice: a component cannot hold it. Setting it with `setState` inside an effect cascades a
@@ -67,11 +92,11 @@ export interface UnlockState {
   justUnlocked: readonly number[];
 }
 
-function read(): UnlockRecord {
-  if (cache) return cache;
+function read(scope: string): UnlockRecord {
+  if (cache && cachedScope === scope) return cache;
   if (typeof window === 'undefined') return EMPTY;
   try {
-    const raw = window.localStorage.getItem(FIELD_CARD_UNLOCKS_STORAGE_KEY);
+    const raw = window.localStorage.getItem(storageKey(scope));
     const parsed: unknown = raw ? JSON.parse(raw) : {};
     const out: UnlockRecord = {};
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
@@ -81,19 +106,26 @@ function read(): UnlockRecord {
         if (typeof value === 'string' && /^\d+$/.test(key)) out[key] = value;
       }
     }
+    if (cachedScope !== scope) {
+      // A different player is reading now, so the previous scope's reveal is not theirs.
+      justUnlocked = [];
+    }
+    cachedScope = scope;
     cache = out;
     return out;
   } catch {
+    cachedScope = scope;
     cache = EMPTY;
     return EMPTY;
   }
 }
 
-function commit(next: UnlockRecord): void {
+function commit(scope: string, next: UnlockRecord): void {
+  cachedScope = scope;
   cache = next;
   snapshot = { record: next, justUnlocked };
   try {
-    window.localStorage.setItem(FIELD_CARD_UNLOCKS_STORAGE_KEY, JSON.stringify(next));
+    window.localStorage.setItem(storageKey(scope), JSON.stringify(next));
   } catch {
     /* A full or blocked store must never break the page; the derived set still works. */
   }
@@ -112,17 +144,21 @@ function subscribe(listener: () => void): () => void {
  * when nothing changed, which is what stops the moment from firing twice — and makes calling
  * this on every render harmless.
  */
-export function recordUnlocks(xp: number, at: string = new Date().toISOString()): FieldCardSlot[] {
+export function recordUnlocks(
+  xp: number,
+  scope: string = ANONYMOUS_SCOPE,
+  at: string = new Date().toISOString(),
+): FieldCardSlot[] {
   const reached = slotsUnlockedAt(xp);
-  const current = read();
+  const current = read(scope);
   const fresh = reached.filter((slot) => !current[String(slot.ordinal)]);
   if (fresh.length === 0) return [];
 
   const next: UnlockRecord = { ...current };
   // Write-once: only slots with no entry are added, so an existing date never moves.
   for (const slot of fresh) next[String(slot.ordinal)] = at;
-  justUnlocked = [...justUnlocked, ...fresh.map((slot) => slot.ordinal)];
-  commit(next);
+  justUnlocked = fresh.map((slot) => slot.ordinal);
+  commit(scope, next);
   return fresh;
 }
 
@@ -131,8 +167,12 @@ export function recordUnlocks(xp: number, at: string = new Date().toISOString())
  *
  * The union is the ratchet. A slot recorded in the past stays unlocked even if the XP that
  * earned it is later recomputed downwards by a formula change.
+ *
+ * The record is a required argument rather than defaulting to the device's: a caller that
+ * forgot to pass one would silently read the signed-out scope while a player was signed in,
+ * and be wrong in the direction of granting cards.
  */
-export function resolveUnlocked(xp: number, record: UnlockRecord = read()): FieldCardSlot[] {
+export function resolveUnlocked(xp: number, record: UnlockRecord): FieldCardSlot[] {
   const derived = new Set(slotsUnlockedAt(xp).map((slot) => slot.ordinal));
   return FIELD_CARD_SLOTS.filter(
     (slot) => derived.has(slot.ordinal) || Boolean(record[String(slot.ordinal)]),
@@ -140,31 +180,50 @@ export function resolveUnlocked(xp: number, record: UnlockRecord = read()): Fiel
 }
 
 /** When a slot was first reached, if it has been. */
-export function unlockedAt(ordinal: number, record: UnlockRecord = read()): string | undefined {
+export function unlockedAt(ordinal: number, record: UnlockRecord): string | undefined {
   return record[String(ordinal)];
 }
 
-/** Subscribe a component to the record and this session's fresh unlocks. */
-export function useFieldCardUnlocks(): UnlockState {
+/**
+ * One account's record and its latest crossing, as one object.
+ *
+ * Separate from the hook so the reveal is observable without rendering: `justUnlocked` is
+ * module state, and a test that could only read `recordUnlocks`'s return value would be
+ * checking what it returns rather than what a component would be shown — which is how an
+ * accumulating banner passed its own test.
+ */
+export function fieldCardUnlockState(scope: string = ANONYMOUS_SCOPE): UnlockState {
+  // Keep the cached object identity unless the record really changed, or every render of
+  // any subscriber would see a new snapshot and loop.
+  const current = read(scope);
+  if (snapshot.record !== current || snapshot.justUnlocked !== justUnlocked) {
+    snapshot = { record: current, justUnlocked };
+  }
+  return snapshot;
+}
+
+/** Subscribe a component to one account's record and its latest crossing. */
+export function useFieldCardUnlocks(scope: string = ANONYMOUS_SCOPE): UnlockState {
   return useSyncExternalStore(
     subscribe,
-    () => {
-      // Keep the cached object identity unless the record really changed, or every render
-      // of any subscriber would see a new snapshot and loop.
-      const current = read();
-      if (snapshot.record !== current || snapshot.justUnlocked !== justUnlocked) {
-        snapshot = { record: current, justUnlocked };
-      }
-      return snapshot;
-    },
+    () => fieldCardUnlockState(scope),
     () => SERVER_STATE,
   );
 }
 
 const SERVER_STATE: UnlockState = { record: EMPTY, justUnlocked: [] };
 
-/** Testing and account deletion only. */
+/** Testing and account deletion only. Takes every scope on this device. */
 export function clearFieldCardUnlocks(): void {
   justUnlocked = [];
-  commit({});
+  cache = null;
+  cachedScope = null;
+  try {
+    for (const key of Object.keys(window.localStorage)) {
+      if (key.startsWith(FIELD_CARD_UNLOCKS_STORAGE_KEY)) window.localStorage.removeItem(key);
+    }
+  } catch {
+    /* Same reasoning as `commit`: a blocked store must not break the page. */
+  }
+  for (const listener of listeners) listener();
 }

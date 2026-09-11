@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "verify:supabase": "node --env-file=.env.local ./node_modules/vitest/vitest.mjs run --config vitest.e2e.config.ts",
+    "build:chips": "python3 scripts/build_chips.py",
     "build:deck": "python3 scripts/build_deck.py",
     "build:sprites": "python3 scripts/build_sprites.py",
     "build:structures": "python3 scripts/chemistry/build_structures.py",

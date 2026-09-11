@@ -21,6 +21,7 @@ npm run verify     # lint + typecheck + test + build — run before pushing
 npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art (needs all 45)
 python3 scripts/build_deck.py --source deck-source --only 11,24,31   # patch a few reprinted cards
+npm run build:chips                                # regenerate the 112px card chips
 npm run build:structures                           # regenerate the skeletal formulas
 python3 scripts/build_sprites.py                   # regenerate the animated portraits
 python3 scripts/build_sprites.py --preview <herb-id> [--frame N]   # print a frame as text
@@ -606,17 +607,38 @@ or was not made; re-measure before trusting any of them again.
   one and dropping the loser. Turning prefetch off in `SiteNav` did remove them, and **doubled
   navigation latency — 103ms median to 212ms**, measured five runs each on a 60ms-latency
   server. Do not disable prefetch to tidy up the network panel.
-- **`/herbdex/research` is the heaviest page: ~562KB of images.** It renders card thumbnails —
-  400px wide, ~21KB each — as 35px chips, and Chromium's lazy threshold pulls about 25 of the
-  79 on first paint. Everything is already `loading="lazy"`; the waste is resolution, not
-  eagerness. Fixing it properly needs either a third, tiny art variant (which means a new field
-  in generated deck data) or fewer/smaller chips on that page. Both are larger than a
-  performance tidy-up, so it is recorded rather than done. `/seasons` looks similar and is not:
-  it pulls only 120KB. `/herbdex` carries no images at all.
+- **`/herbdex/research` was the heaviest page — 913KB of images, now 273KB.** It renders 79
+  card images: 75 chips at 35x56 CSS px and four daily cards at 59x96, and every one of them
+  named the 400px grid thumbnail. `loading="lazy"` was already on all of them; the waste was
+  resolution, not eagerness, and with `unoptimized` forced there is no lever except a smaller
+  file. The chips now name `/cards/chip/*.webp` and the page transfers 273KB (measured at
+  390px, DPR 3, on the built export; the layout is byte-for-byte identical — same 79 elements
+  at the same rendered sizes). The four dailies deliberately keep `thumb`: they are drawn
+  nearly twice as wide, there are only ever a handful, and they are meant to be looked at.
+  `/seasons` looks similar and is not: it pulls only 120KB. `/herbdex` carries no images at all.
 - **Images are `unoptimized` because `output: 'export'` requires it**, so `sizes` and
-  `quality` do nothing and whichever file a component names is the file that ships. Two
-  variants exist: `/cards/*.webp` at 800px (~62KB) and `/cards/thumb/*.webp` at 400px (~21KB).
-  Choosing the right one at the call site is the only lever there is.
+  `quality` do nothing and whichever file a component names is the file that ships. Three
+  variants exist: `/cards/*.webp` at 800px (~62KB), `/cards/thumb/*.webp` at 400px (~21KB) and
+  `/cards/chip/*.webp` at 112px (~4KB). Choosing the right one at the call site is the only
+  lever there is, which is why it goes through `chipArt()` in `card-art.ts` rather than a path
+  spelled out inline.
+- **The chip variant is DERIVED, and its file is what gets pinned.** `scripts/build_chips.py`
+  (`npm run build:chips`) downscales the shipped 800px fronts, so it needs no print masters —
+  which is also the only way to reach the Field Cards, which were never printed and have no PDF
+  in `build_deck.py`'s pipeline. The path is computed rather than stored for the same reason: a
+  `chip` field would have to be added twice, by two processes, to two files. `card-art.test.ts`
+  reads the real directory and fails if a catalogue entry has no chip, if one is not 112px, or
+  if the set stops being a fraction of the thumbnails it replaces — a stronger guarantee than a
+  data field, which can name a file nobody ever rendered. 112px is measured: the strip draws
+  35 CSS px, and 35 x 3 is the most a device pixel ratio of 3 can ask for.
+- **`track()` call sites are found by counting brackets, not by a regex.** The analytics guard
+  matched `/\btrack\(([^;]*?)\);/`, which requires a semicolon straight after the closing
+  bracket — so it read `track('x');` in a handler body and silently skipped every call written
+  inline in JSX as `onClick={() => track('x')}`, which is most of them. It could also run past
+  the real end of a call to some later `);` and then fail on commas in the JSX between, which
+  is how it was found: ordinary map/ternary markup tripped a guard that had never actually read
+  that component's calls. `trackCallArguments()` in `analytics.test.ts` now balances brackets,
+  and a second argument hidden in a JSX handler fails the build.
 
 ## Field Cards and the XP reward loop
 
@@ -649,6 +671,29 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   synced — so there is no server table and no migration. The local record exists for two
   things a pure function cannot do: fire the reveal once, and guarantee that a future XP
   formula change can never take a card back. `resolveUnlocked()` returns DERIVED ∪ RECORDED.
+- **"New Field Card unlocked" means the crossing that JUST happened, and nothing else.** The
+  store REPLACES `justUnlocked` on each crossing rather than appending to it: a player who
+  passes 600 and then 1,200 XP in one sitting must see Cattail announced, not Coneflower
+  announced a second time beside it — and appending also meant the banner grew all session and
+  no card ever stopped being new. Crossing two thresholds on one XP gain is ONE event and
+  correctly announces both. Everything else the player holds sits in the quiet `Unlocked` row
+  at the foot of the panel, which says only that they own it; a card announced above is skipped
+  there so it is never shown twice, and rejoins the row on the next load — which is exactly
+  when it stops being news. That row is also the whole of the 9/9 treatment: at nine the panel
+  is SHORTER than it is mid-progress, because a player who has finished it came to the page for
+  the research below. `unlocked-field-cards.test.ts` reads the reveal off the state a component
+  would render, not off `recordUnlocks`'s return value — which was only ever the fresh slots,
+  so it could not have caught this.
+- **The unlock record is keyed by ACCOUNT, not by browser.** The ratchet deliberately grants
+  cards the current XP does not, so one global key handed the first player's unlocks to every
+  account that signed in on that device afterwards — 2/9 on a brand-new account with no XP.
+  Third instance of a shape this repo has shipped: the local-import offer was keyed globally
+  and silently denied itself to every account after the first. A signed-out device gets the
+  `device` scope, which is right rather than a fallback — signed out, the XP is local too, so
+  the derived half and the recorded half describe the same player. `resolveUnlocked` takes the
+  record as a REQUIRED argument for the same reason: a caller that forgot one would read the
+  signed-out scope while somebody was signed in, and be wrong in the direction of granting
+  cards. Account deletion's `plantdex.` prefix sweep already takes every scope.
 - **The scanner reports research, it does not recompute it.** `HerbdexProvider` publishes the
   outcome reconciliation actually recorded (`lastResearch`, stamped with a time), and
   `ScanResearchFeedback` reads it. Signed in, that authority is the server. A second

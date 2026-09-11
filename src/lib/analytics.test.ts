@@ -94,9 +94,8 @@ describe('analytics schema', () => {
       // and a guard that its own explanation can trip is a guard nobody keeps — the same
       // mistake the id="plausible" check made before it.
       const source = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
-      for (const call of source.matchAll(/\btrack\(([^;]*?)\);/g)) {
-        const args = call[1]!;
-        // Commas inside a builder call are its own arguments, not track's. A TRAILING comma
+      for (const args of trackCallArguments(source)) {
+        // Commas inside a nested call are its own arguments, not track's. A TRAILING comma
         // is formatting — prettier adds one to any multi-line call — and is not an argument
         // either, so it is stripped before the check rather than counted as one.
         const outer = args.replace(/\([^()]*\)/g, '').replace(/,\s*$/, '');
@@ -304,3 +303,31 @@ describe('the provider itself', () => {
     expect(analytics).not.toMatch(/document\.cookie|localStorage|sessionStorage|crypto\.randomUUID/);
   });
 });
+
+/**
+ * The argument list of every `track(...)` call in a file.
+ *
+ * BALANCED, NOT A REGEX. This was `/\btrack\(([^;]*?)\);/`, which required a semicolon
+ * directly after the closing bracket — so it matched `track('x');` in a handler body and
+ * skipped every call written inline in JSX as `onClick={() => track('x')}`, which is most of
+ * them. It could also run past the real end of the call to some later `);` and then fail on
+ * commas belonging to the JSX in between, which is how this was found: ordinary map/ternary
+ * markup in a component tripped a guard that had never actually read that component's calls.
+ *
+ * Counting brackets finds the true end of the argument list, so the check now reads every
+ * call site and only the call site.
+ */
+function trackCallArguments(source: string): string[] {
+  const out: string[] = [];
+  for (const match of source.matchAll(/\btrack\(/g)) {
+    let depth = 1;
+    let i = match.index! + match[0].length;
+    const start = i;
+    for (; i < source.length && depth > 0; i += 1) {
+      if (source[i] === '(') depth += 1;
+      else if (source[i] === ')') depth -= 1;
+    }
+    if (depth === 0) out.push(source.slice(start, i - 1));
+  }
+  return out;
+}

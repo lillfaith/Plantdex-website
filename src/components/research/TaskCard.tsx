@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getPrintedCard } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
+import { CHIP_WIDTH, chipArt } from '@/lib/card-art';
 import { xpForTask, type TaskProgress } from '@/lib/research';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -146,11 +147,20 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
                   title={found ? herb.commonName : `Card #${herb.cardNumber}`}
                   className="block"
                 >
+                  {/*
+                    THE CHIP VARIANT, and this is the page that made it necessary. These are
+                    drawn 35 CSS px wide and there can be 75 of them: naming the 400px grid
+                    thumbnail here was 912KB of images on one page to paint a few thousand
+                    pixels of screen. `unoptimized` is forced by the static export, so the
+                    file named is the file transferred — see `card-art.ts`. The single daily
+                    card above deliberately keeps `thumb`: it is drawn nearly twice this
+                    wide, there are only ever a handful, and it is meant to be looked at.
+                  */}
                   <Image
-                    src={assetPath(herb.thumb)}
+                    src={assetPath(chipArt(herb))}
                     alt={found ? herb.commonName : `Card ${herb.cardNumber}, not discovered`}
-                    width={356}
-                    height={576}
+                    width={CHIP_WIDTH}
+                    height={Math.round((CHIP_WIDTH * 576) / 356)}
                     className={`h-14 w-[2.2rem] rounded object-cover transition-transform hover:scale-105 ${
                       found ? '' : 'blur-[2px] brightness-[0.6] saturate-0'
                     }`}
