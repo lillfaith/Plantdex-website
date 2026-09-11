@@ -12,7 +12,7 @@ import {
   canonicalRecordFor,
 } from '@/lib/species-packets';
 import { isShelfEligible, mergeFinds, newFind } from '@/lib/seed-shelf';
-import { canonicalIdentity } from '@/lib/species-identity';
+import { canonicalIdentity, mintablePacketInput } from '@/lib/species-identity';
 import { attestIdentity, ATTESTATION_TTL_MS } from '@/lib/species-attestation';
 import { packetRecipe, PACKET_VERSION } from '@/lib/seed-packet';
 import { normalizeName } from '@/lib/plant-match';
@@ -341,17 +341,70 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
    */
   describe('the Seed Shelf and the canonical packet registry', () => {
     /*
-     * A real species the deck has no card for. Stable rather than randomised: the registry
-     * is global and has no delete policy for anyone, so a random name per run would leave a
-     * permanent row behind every time this suite is run. One species, one row, forever.
+     * ─────────────────────────────────────────────────────────────────────────
+     * TWO SPECIES, BECAUSE THE REGISTRY IS IMMUTABLE AND THIS SUITE RUNS MORE THAN ONCE.
+     *
+     * This block used to have one species and assert, of that one row, that its
+     * `packet_version` equalled the CURRENT `PACKET_VERSION`. That is true exactly once —
+     * on the first run against a fresh project — and false forever afterwards, because the
+     * registry has no update path by design and `PACKET_VERSION` has since gone from 1 to 2.
+     * The suite was asserting the opposite of the product invariant it exists to protect.
+     *
+     *   STANDING — a real species the deck has no card for, minted by whichever run of this
+     *     suite saw the project first and there permanently: nothing in this project can
+     *     delete a registry row, which is half of what these tests prove. Every reuse,
+     *     immutability and no-client-write test uses it, and its AGE IS THE ASSET — it is
+     *     the only way to check that a species minted under an older generator keeps that
+     *     generator's artwork after `PACKET_VERSION` moves on.
+     *
+     *   FRESH — fixture species unique to this run, from `fixtureSpecies()`. Two tests need
+     *     a species Plantdex has never seen, because both describe a FIRST MINT and that can
+     *     only happen once per name, ever: the version contract below, and the common-name
+     *     steering attack, which was silently exercising the reuse branch on a name an
+     *     earlier run had already minted. A fixture name is deliberately NOT a real
+     *     binomial: the genus is coined from the product and the epithet encodes the run, so
+     *     the row is self-evidently a test fixture, cannot collide with real botany, and can
+     *     never be mistaken for a botanical claim by anyone reading the table. It costs two
+     *     permanent rows in the TEST project per run, which is the price of the block being
+     *     rerunnable at all — and it is a price, so nothing else spends it.
+     *
+     * No cleanup, no deletion and no mutation of either: see the note below.
      *
      * No gbif/powo ids are asserted as VALUES here — this environment cannot reach GBIF to
      * check one, and writing a plausible-looking identifier into a live registry is exactly
      * the kind of invented data the rest of this repo refuses. The columns are checked for
      * existence instead; the real ids arrive from `identify-plant`.
+     * ─────────────────────────────────────────────────────────────────────────
      */
     const SPECIES = { scientificName: 'Bellis perennis', commonName: 'Common daisy' };
     const SPECIES_KEY = normalizeName(SPECIES.scientificName);
+
+    /**
+     * A binomial no plant has, unique to this run.
+     *
+     * Letters only: `species-identity.ts` requires `^[A-Z][a-z]{2,29}$` for a genus and
+     * `^[a-z][a-z-]{1,29}$` for an epithet, so the run stamp is the timestamp's own digits
+     * mapped onto a-j. That keeps it reversible — a row in the table says when it was
+     * written — without a digit the validator would reject.
+     */
+    function fixtureSpecies(): string {
+      const stamp = `${Date.now()}${Math.floor(Math.random() * 1_000)}`.replace(
+        /\d/g,
+        (digit) => 'abcdefghij'[Number(digit)]!,
+      );
+      return `Plantdexia test${stamp}`;
+    }
+
+    const FRESH = { scientificName: fixtureSpecies() };
+    const FRESH_KEY = normalizeName(FRESH.scientificName);
+
+    /**
+     * The nickname a first finder would use to steer everybody else's artwork.
+     *
+     * Every word in it is a lexicon entry: `clover` forces a motif, `gold` a colour family.
+     * That is what makes the attack real, and the test guards that it stays real.
+     */
+    const NICKNAME = 'White star heart clover gold';
     /** Closely related to a card the deck DOES carry (Capsella bursa-pastoris). */
     const RELATIVE = { scientificName: 'Capsella rubella' };
     /** A species the deck carries outright. Must never enter the registry. */
@@ -369,12 +422,70 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       'first_seen_at',
     ];
 
-    let firstSeenAt: string;
+    type RegistryRow = Record<string, unknown>;
+
+    /** One registry row, read back as NOBODY. Public by design; proving it as anon is honest. */
+    async function registryRow(key: string): Promise<RegistryRow | undefined> {
+      const { data, error } = await freshClient()
+        .from('species_packets')
+        .select('*')
+        .eq('species_key', key);
+      expect(error, 'the registry is not readable').toBeNull();
+      expect((data ?? []).length, `${key} has more than one canonical row`).toBeLessThan(2);
+      return (data ?? [])[0] as RegistryRow | undefined;
+    }
+
+    /**
+     * A packet's ARTWORK, without its version stamp.
+     *
+     * THE VERSION CONTRACT BELONGS TO ONE PAIR OF TESTS AND NOT TO ALL OF THEM. Three
+     * separate tests used to compare a whole stored packet against `packetRecipe(...)`,
+     * which stamps today's `PACKET_VERSION`. That silently made each of them a version
+     * assertion about a row minted under whatever generator was deployed at the time — so
+     * one stale row failed three tests that were not about versions at all, and the message
+     * pointed at the artwork instead of at the cause. The two tests that really do own the
+     * version say so in their names; everywhere else compares what was drawn.
+     */
+    function artworkOf(packet: unknown): Record<string, unknown> {
+      const rest = { ...((packet ?? {}) as Record<string, unknown>) };
+      delete rest.version;
+      return rest;
+    }
+
+    /** Alice saves a species through the REAL adapter, carrying a signed candidate. */
+    async function saveAsAlice(species: { scientificName: string; commonName?: string }) {
+      return addRemoteFind(alice.id, {
+        scientificName: species.scientificName,
+        commonName: species.commonName,
+        confidence: 0.91,
+        scanId: `scan_e2e_${Date.now()}`,
+        // The signed candidate her scan would have carried. Creating canon needs one.
+        attestation: await attest(species.scientificName),
+      });
+    }
+
+    /*
+     * THE STANDING ROW, ESTABLISHED BEFORE ANY TEST RUNS RATHER THAN BY ONE OF THEM.
+     *
+     * It used to be captured into a mutable `firstSeenAt` by the first test in the block,
+     * and read by four of the tests after it. So one genuine failure became eight: the
+     * capture never happened, `firstSeenAt` stayed `undefined`, and every downstream
+     * assertion failed against it with a message about the wrong thing. A fixture that one
+     * test writes and others read is not a fixture, it is a dependency between tests.
+     *
+     * Minting here is idempotent — `on conflict do nothing` in the function — so this is a
+     * no-op on every run after the first against a given project.
+     */
+    let standing: RegistryRow;
 
     beforeAll(async () => {
       // Environment preflight is the suite's own, at the top — see the outer beforeAll.
       __resetCanonicalCache();
-    }, 60_000);
+      await saveAsAlice(SPECIES);
+      const row = await registryRow(SPECIES_KEY);
+      expect(row, 'the standing species is not in the registry').toBeTruthy();
+      standing = row!;
+    }, 120_000);
 
     /*
      * NO CLEANUP HERE, DELIBERATELY. This block used to remove Alice's shelf row, which the
@@ -384,37 +495,87 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
      * nothing in this project can delete them, which is the property under test.
      */
 
-    it('mints the species the first time anybody saves it', async () => {
+    it('mints a species the first time anybody saves it, at the CURRENT packet version', async () => {
+      /*
+       * CASE A of the version contract. A species Plantdex has never seen is minted now, so
+       * it must carry today's generator: the current `PACKET_VERSION` and, byte for byte,
+       * what `packetRecipe` produces from the same input the function feeds it.
+       *
+       * `mintablePacketInput` rather than a hand-built object, because that is the exact
+       * helper `supabase/functions/seed-packet` calls — recomputing the artwork any other
+       * way would be a second implementation free to agree by luck.
+       */
+      expect(await registryRow(FRESH_KEY), 'the fixture species was already minted').toBeUndefined();
+
       // The REAL adapter, exactly as the browser calls it: it inserts Alice's private row
       // and then asks the function to introduce the species to Plantdex.
-      const find = await addRemoteFind(alice.id, {
-        scientificName: SPECIES.scientificName,
-        commonName: SPECIES.commonName,
-        confidence: 0.91,
-        scanId: `scan_e2e_${Date.now()}`,
-        // The signed candidate her scan would have carried. Creating canon needs one.
-        attestation: await attest(SPECIES.scientificName),
-      });
+      const find = await saveAsAlice(FRESH);
       expect(find, 'the shelf refused a species with no card').not.toBeNull();
-      expect(find!.speciesKey).toBe(SPECIES_KEY);
+      expect(find!.speciesKey).toBe(FRESH_KEY);
 
-      // Read the registry back with a SIGNED-OUT client. The row is public by design, and
-      // reading it as nobody is the honest way to prove that.
-      const anon = freshClient();
-      const { data, error } = await anon
-        .from('species_packets')
-        .select('*')
-        .eq('species_key', SPECIES_KEY);
-      expect(error, 'the registry is not readable').toBeNull();
-      expect(data?.length, 'the species was not minted').toBe(1);
+      const row = await registryRow(FRESH_KEY);
+      expect(row, 'the species was not minted').toBeTruthy();
+      expect(row!.scientific_name).toBe(FRESH.scientificName);
 
-      const row = data![0] as Record<string, unknown>;
-      expect(row.scientific_name).toBe(SPECIES.scientificName);
-      expect(row.packet_version).toBe(PACKET_VERSION);
-      expect(row.packet).toEqual(packetRecipe({ speciesKey: SPECIES_KEY }));
-      expect(typeof row.first_seen_at).toBe('string');
-      firstSeenAt = row.first_seen_at as string;
-    }, 90_000);
+      /*
+       * THIS IS ALSO THE DEPLOYMENT CHECK, and it is the only test that is. The generator
+       * lives in `src/lib/seed-packet.ts`, is copied to `_shared` by `npm run sync:edge-shared`
+       * and then has to be DEPLOYED; nothing else in this suite would notice a function still
+       * running last month's copy, because every other row it could compare was minted by
+       * that same older function and agrees with itself. A species minted seconds ago is the
+       * one row whose generator is knowable, so this is where the divergence has to surface —
+       * with the remedy in the message, because "expected 1 to be 2" on a packet version
+       * reads like a packet bug and is not one.
+       */
+      const stale =
+        'the deployed seed-packet function is older than this checkout — ' +
+        'run `npm run sync:edge-shared` then `supabase functions deploy seed-packet`';
+      expect(row!.packet_version, stale).toBe(PACKET_VERSION);
+
+      const identity = canonicalIdentity({ scientificName: FRESH.scientificName })!;
+      expect(row!.packet, stale).toEqual(packetRecipe(mintablePacketInput(identity)));
+      expect(typeof row!.first_seen_at).toBe('string');
+    }, 120_000);
+
+    it('leaves an already-minted species at its ORIGINAL packet version', async () => {
+      /*
+       * CASE B, and the failure this whole cleanup came from. The standing species was
+       * minted by an earlier run — under `PACKET_VERSION` 1, as it happens — and the
+       * generator has since moved to 2. The row must not have followed it.
+       *
+       * Both worlds are asserted rather than one, because which one holds depends on the
+       * project this is pointed at and a test that only works against a used project is the
+       * same bug in the other direction:
+       *
+       *   older  the row keeps its own version AND its own artwork, which must therefore
+       *          NOT equal what today's generator draws. Non-vacuous: it proves the two
+       *          really have diverged, not merely that nobody looked.
+       *   equal  a fresh project, minted moments ago in `beforeAll` — the row and the
+       *          current generator agree, which is Case A's guarantee holding here too.
+       *
+       * The version inside the packet and the `packet_version` column are written in one
+       * statement by the function, so they can never disagree; asserting it is what would
+       * catch a future writer that set one and forgot the other.
+       */
+      const version = standing.packet_version as number;
+      const packet = standing.packet as { version?: number };
+      expect(typeof version, 'the registry lost its version column').toBe('number');
+      expect(packet.version, 'the row and its packet disagree about the version').toBe(version);
+      expect(version, 'a row was minted at a version that does not exist yet').toBeLessThanOrEqual(
+        PACKET_VERSION,
+      );
+
+      const identity = canonicalIdentity({ scientificName: SPECIES.scientificName })!;
+      const today = packetRecipe(mintablePacketInput(identity));
+      if (version < PACKET_VERSION) {
+        expect(
+          standing.packet,
+          'a generator change reached a species that was already minted',
+        ).not.toEqual(today);
+      } else {
+        expect(standing.packet, 'a freshly minted row does not match its generator').toEqual(today);
+      }
+    }, 60_000);
 
     it('holds a species, and nothing about the person who found it', async () => {
       /*
@@ -469,7 +630,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       expect(returned, 'the function returned no packet for a species it already knows').toBeTruthy();
 
       // Same artwork, same date — Bob was handed Alice's row, not a fresh one.
-      expect(returned!.first_seen_at).toBe(firstSeenAt);
+      expect(returned!.first_seen_at).toBe(standing.first_seen_at);
 
       const anon = freshClient();
       const { data: all } = await anon.from('species_packets').select('*').eq('species_key', SPECIES_KEY);
@@ -493,7 +654,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         await freshClient().from('species_packets').select('*').eq('species_key', SPECIES_KEY)
       ).data![0] as Record<string, unknown>;
       expect(after).toEqual(before);
-      expect(after.first_seen_at).toBe(firstSeenAt);
+      expect(after.first_seen_at).toBe(standing.first_seen_at);
     }, 60_000);
 
     it('is what the shelf actually draws', async () => {
@@ -587,12 +748,32 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       await ensureCanonicalPackets([
         { ...RELATIVE, attestation: await attest(RELATIVE.scientificName) },
       ]);
+
+      /*
+       * ASSERTED ON THE REFUSAL, NOT ON THE ARTWORK. This used to compare the stored packet
+       * against `packetRecipe(...)`, which says nothing about eligibility and everything
+       * about which generator minted the row — so once an earlier run had minted Capsella
+       * rubella under an earlier generator, an ELIGIBILITY test failed with a colour diff.
+       *
+       * `mintDecision` runs validate → eligibility → reuse, in that order, so an ineligible
+       * species is refused even when it is already canon. That makes "not refused" a live
+       * check of the deployed eligibility rule on every run, mint or reuse — which the
+       * artwork comparison never was.
+       */
+      const { data: response } = await supabase!.functions.invoke('seed-packet', {
+        body: { species: [{ scientificName: RELATIVE.scientificName }] },
+      });
+      const refusals = (response as { refused?: { speciesKey: string | null }[] }).refused ?? [];
+      expect(
+        refusals.map((entry) => entry.speciesKey),
+        'a relative of a card species was refused by the deployed eligibility check',
+      ).not.toContain(relativeKey);
+
       const { data } = await freshClient()
         .from('species_packets')
         .select('*')
         .eq('species_key', relativeKey);
       expect(data?.length, 'a relative of a card species was blocked from the shelf').toBe(1);
-      expect(data![0].packet).toEqual(packetRecipe({ speciesKey: relativeKey }));
     }, 60_000);
 
     it('refuses an unauthenticated caller', async () => {
@@ -712,13 +893,15 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
         .eq('species_key', forgedKey);
       expect(forged ?? [], 'a forged species_key reached the registry').toEqual([]);
 
-      // And none of the other forged fields landed either: the row is the one already minted.
-      const { data: real } = await freshClient()
-        .from('species_packets')
-        .select('*')
-        .eq('species_key', SPECIES_KEY);
-      expect((real![0] as { packet_version: number }).packet_version).toBe(PACKET_VERSION);
-      expect((real![0] as { first_seen_at: string }).first_seen_at).toBe(firstSeenAt);
+      /*
+       * And none of the other forged fields landed either: the row is the one already
+       * minted, byte for byte. Compared against the STANDING SNAPSHOT rather than against
+       * the current `PACKET_VERSION` — the row keeps whatever version minted it, and
+       * asserting today's number here was the second copy of the bug this pass came from.
+       * The snapshot is also the stronger check: it covers every column, not one.
+       */
+      const real = await registryRow(SPECIES_KEY);
+      expect(real, 'a forged request removed the real row').toEqual(standing);
     }, 90_000);
 
     it('drops a malformed taxonomy identifier instead of storing it', async () => {
@@ -762,17 +945,29 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
        * it is handed, and the mint used to be handed the caller's common name — so the first
        * player to find a species could pick the bag everybody else would ever see for it.
        *
-       * The mint now seeds from the species key and the rebuilt binomial only, so the packet
-       * this returns must equal what anyone can recompute from the key alone.
+       * A FRESH SPECIES, AND THAT IS THE FIX. This named `Veronica persica`, which an
+       * earlier run had already minted — so the function took the reuse branch, returned the
+       * existing row without consulting a name at all, and the test passed while exercising
+       * none of the code it describes. A steering attack is a FIRST-MINT attack; on a
+       * species that is already canon there is nothing left to steer. It was also comparing
+       * that old row's artwork against today's generator, which is how an attack test came
+       * to fail with a palette diff.
+       *
+       * WHAT IS ASSERTED, AND WHAT IS DELIBERATELY NOT. The nickname must reach nothing the
+       * artwork is drawn from, and the negative is checked against the lexicon entries it
+       * really does contain. The exact artwork — that the row equals what anyone can
+       * recompute from the key, which is what makes an immutable public row auditable — is
+       * owned by the mint test above, so a stale deployment surfaces there once instead of
+       * here as well.
        */
-      const name = 'Veronica persica';
+      const name = fixtureSpecies();
       const key = normalizeName(name);
       const { data } = await supabase!.functions.invoke('seed-packet', {
         body: {
           species: [
             {
               scientificName: name,
-              commonName: 'White star heart clover gold',
+              commonName: NICKNAME,
               attestation: await attest(name),
             },
           ],
@@ -780,12 +975,30 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       });
       const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
       expect(returned, 'a real species was refused').toBeTruthy();
+
+      /*
+       * BOTH HALVES, because the negative alone proves nothing: "the artwork is not what the
+       * nickname would force" is satisfied for free by a lexicon that ignores every word in
+       * it. So the guard runs first and fails the test if this nickname has stopped being an
+       * attack at all.
+       */
+      const unsteered = packetRecipe({ speciesKey: key });
+      const steered = packetRecipe({ speciesKey: key, commonName: NICKNAME });
       expect(
-        returned!.packet,
-        'a caller-chosen common name changed the canonical artwork',
-      ).toEqual(packetRecipe({ speciesKey: key }));
+        artworkOf(steered),
+        'the nickname reaches no lexicon any more, so this test proves nothing',
+      ).not.toEqual(artworkOf(unsteered));
+
+      const stored = returned!.packet as Record<string, unknown>;
+      for (const field of ['motif', 'paper', 'band', 'ink'] as const) {
+        if (steered[field] === unsteered[field]) continue;
+        expect(
+          stored[field],
+          `a caller-chosen common name reached the canonical ${field}`,
+        ).not.toBe(steered[field]);
+      }
       // The nickname itself is still stored for display — it just reaches nothing derived.
-      expect(returned!.common_name).toBe('White star heart clover gold');
+      expect(returned!.common_name).toBe(NICKNAME);
     }, 90_000);
 
     it('refuses a hostile common name without losing the species', async () => {
@@ -932,7 +1145,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       expect(returned?.species_key, 'an expired token could not reuse existing canon').toBe(
         SPECIES_KEY,
       );
-      expect(returned!.first_seen_at).toBe(firstSeenAt);
+      expect(returned!.first_seen_at).toBe(standing.first_seen_at);
     }, 90_000);
 
     it('treats a replayed valid candidate as a reuse, not a second mint', async () => {
@@ -943,7 +1156,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
           body: { species: [{ scientificName: SPECIES.scientificName, attestation: token }] },
         });
         const returned = ((data as { packets?: Record<string, unknown>[] }).packets ?? [])[0];
-        expect(returned!.first_seen_at).toBe(firstSeenAt);
+        expect(returned!.first_seen_at).toBe(standing.first_seen_at);
       }
       const { data: all } = await freshClient()
         .from('species_packets')

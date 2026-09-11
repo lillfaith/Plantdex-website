@@ -317,8 +317,36 @@ no server we operate ourselves. See `supabase/README.md` for one-time project se
   (0003) is the one such table and holds no value anything is derived from;
   `profile-schema.test.ts` fails if a second table grants an update, or if that one loses
   its `with check`. Verified live by `e2e/supabase.e2e.test.ts`.
-- **Live verification is `npm run verify:supabase`, and it now passes green against the test
-  project** — 37 tests, including the cross-user attacks. Its first real run found one bug,
+- **The live suite must be RERUNNABLE, and the registry is what makes that hard.** A
+  `species_packets` row is global, immutable and undeletable by design, so a test that mints
+  a fixed species and asserts something about the mint is true exactly once — on the first
+  run against a fresh project — and false on every run after. Three tests were written that
+  way and all three failed from the second run onwards: one asserted the row's
+  `packet_version` equalled the CURRENT `PACKET_VERSION`, which is the OPPOSITE of the
+  invariant the registry exists to protect, and two compared an old row's artwork against
+  today's generator. Worse, the steering-attack test was passing while exercising nothing: a
+  first-mint attack on a species that is already canon takes the reuse branch and never
+  reaches the code it describes. So the block now uses TWO kinds of species — a STANDING one
+  whose age is the asset (it is the only way to check that an older generator's artwork
+  survives a `PACKET_VERSION` bump) and a FRESH fixture per run, `Plantdexia test<stamp>`,
+  for the two tests that genuinely need a species Plantdex has never seen. A fixture name is
+  coined rather than botanical precisely so the permanent row it leaves cannot be mistaken
+  for a claim about a plant.
+- **A live fixture that one test writes and others read is a dependency, not a fixture.** One
+  real failure used to report as eight: the first test captured `firstSeenAt` into a mutable
+  outer variable, so when it failed the variable stayed `undefined` and four later tests
+  failed against it with messages about the wrong thing. The standing row is established in
+  `beforeAll` now and read as a snapshot, so a failure is one failure.
+- **Exactly one live test owns "the deployed function matches this checkout".** The generator
+  is copied to `_shared` by `npm run sync:edge-shared` and then has to be DEPLOYED, and
+  nothing else in the suite would notice a stale one — every other row it could compare was
+  minted by that same older function and agrees with itself. So only the fresh-mint test
+  compares stored artwork against `packetRecipe`, and it carries the remedy in its own
+  failure message; every other test asserts the claim in its name (eligibility, reuse,
+  immutability) in a way that holds whichever generator is deployed. Three tests failing with
+  palette diffs is not three bugs, and it should never have read like three.
+- **Live verification is `npm run verify:supabase`** — 60 tests, including the cross-user
+  attacks. Its first real run found one bug,
   and it was in the suite: the `with check` test seeded Bob's profile row through
   `saveRemoteProfile`, which is bound to the app's singleton client — signed in as Alice — so
   the database refused it exactly as it should. A fixture that needs another user's row must
