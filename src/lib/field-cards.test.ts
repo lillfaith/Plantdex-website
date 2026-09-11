@@ -1,3 +1,6 @@
+import { xpForDiscoveries } from './progression';
+import { applyDiscovery } from './herbdex-reducer';
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -303,5 +306,94 @@ describe('recordUnlocks is write-once and reports only what is new', () => {
     const first = recordUnlocks(600, 'scope-a', '2026-01-01T00:00:00.000Z');
     expect(first.map((s) => s.ordinal)).toEqual([1]);
     expect(recordUnlocks(600, 'scope-a', '2026-02-02T00:00:00.000Z')).toEqual([]);
+  });
+});
+
+/**
+ * THE THREE FACTS A FIELD CARD PAGE MUST KEEP APART.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * XP UNLOCK grants READING. DISCOVERY means the species was found outdoors. MASTERY is a
+ * later state still. The card page had been collapsing the first into the second: a Field
+ * Card fell into the printed deck's undiscovered branch, so a player who had EARNED the card
+ * was told they had not discovered the plant and should go and find it — the collection's
+ * promise inverted, with the reward they worked for hidden behind a card back.
+ *
+ * These read the component source rather than rendering it: there is no DOM harness in this
+ * suite, and the failure was never subtle enough to need one — it was a missing branch. What
+ * is asserted is the SHAPE of the gate, which is what was wrong.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+describe('XP unlock, discovery and mastery stay three separate facts', () => {
+  const detail = readFileSync('src/components/herbdex/HerbDetail.tsx', 'utf8');
+
+  it('lets an XP unlock open the card without a discovery or a reveal', () => {
+    // The locked branch must not fire when the card is XP-unlocked.
+    expect(detail).toMatch(/!discovered && !revealed && !xpUnlocked/);
+    // And `xpUnlocked` must be derived from the unlock set, not from the collection.
+    expect(detail).toMatch(/resolveUnlocked\(progress\.xp, record\)/);
+  });
+
+  it('keeps a Field Card below its threshold locked, and reveal cannot open it', () => {
+    const lockedAt = detail.indexOf('fieldCardOrdinal !== undefined && !xpUnlocked');
+    const revealedAt = detail.indexOf('!discovered && !revealed && !xpUnlocked');
+    expect(lockedAt, 'the Field Card lock branch is missing').toBeGreaterThan(-1);
+    // Ordering is the assertion: the threshold is checked BEFORE the reading escape hatch,
+    // so `revealHerb` cannot hand over a card the player has not earned.
+    expect(lockedAt).toBeLessThan(revealedAt);
+  });
+
+  it('writes no discovery and no mastery from an unlock', () => {
+    /*
+     * `recordUnlocks` is the only thing an unlock writes. It must never touch the stores
+     * discovery and mastery live in — checked against the real module rather than the page,
+     * because this is the invariant that makes the collection worth anything.
+     */
+    const store = readFileSync('src/lib/unlocked-field-cards.ts', 'utf8');
+    for (const forbidden of ['applyDiscovery', 'reconcileMastery', 'discover(']) {
+      expect(store, `the unlock store reaches for ${forbidden}`).not.toContain(forbidden);
+    }
+    // And it imports neither the reducer nor the collection's own storage module, so it
+    // could not write a discovery even by accident. (Its own key legitimately ends in
+    // STORAGE_KEY, so the check is on the imports rather than on the substring.)
+    for (const mod of ["from './herbdex-reducer'", "from './storage'", "from './mastery'"]) {
+      expect(store, `the unlock store imports ${mod}`).not.toContain(mod);
+    }
+    const empty = emptyState();
+    recordUnlocks(FIELD_CARD_SLOTS[0]!.xp, 'scope-three-facts');
+    expect(empty.discoveries, 'an unlock wrote a discovery').toEqual({});
+    expect(empty.mastered, 'an unlock wrote mastery').toEqual({});
+  });
+
+  it('records a later physical discovery normally, and it still pays no XP', () => {
+    /*
+     * Unlocking and finding are independent in BOTH directions, so a find after an unlock is
+     * an ordinary discovery: the id lands in `discoveries` exactly as any other would. It
+     * credits zero because XP resolves through the printed deck — which is what stops a
+     * threshold crossing from funding the next one.
+     */
+    const card = FIELD_CARD_SLOTS[0]!.card!;
+    const { state: after, result } = applyDiscovery(
+      emptyState(),
+      card.id,
+      '2026-01-01T00:00:00.000Z',
+    );
+    expect(after.discoveries[card.id], 'a Field Card discovery was refused').toBeTruthy();
+    expect(result.awarded, 'the find was not recorded as a real discovery').toBe(true);
+    expect(after.mastered[card.id], 'discovering it also mastered it').toBeUndefined();
+    expect(result.xpAwarded, 'the reducer credited XP for a Field Card').toBe(0);
+    expect(xpForDiscoveries([card.id]), 'a Field Card discovery paid XP').toBe(0);
+  });
+
+  it('never prints an XP figure the ledger will not pay', () => {
+    /*
+     * THE BUTTON IS A PROMISE. `DiscoverPanel` read `herb.xp` — the value printed on the
+     * artwork — and so offered "+250 XP" for a find that credits zero. It asks the ledger now.
+     */
+    const panel = readFileSync('src/components/herbdex/DiscoverPanel.tsx', 'utf8');
+    expect(panel).toContain('xpForDiscoveries([herb.id])');
+    expect(panel, 'the discover button is back to printing the card face value').not.toMatch(
+      /\{herb\.xp\}\s*XP/,
+    );
   });
 });

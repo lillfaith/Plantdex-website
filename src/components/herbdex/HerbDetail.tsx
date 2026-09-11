@@ -32,6 +32,14 @@ import {
 import { FieldDataStrip } from './FieldDataStrip';
 import { SignatureCompounds } from '../chemistry/SignatureCompounds';
 import { LockedHerb } from './LockedHerb';
+import { LockedFieldCard } from './LockedFieldCard';
+import { FIELD_CARDS_NAME, FIELD_CARD_SLOTS, unlockXpFor } from '@/lib/field-cards';
+import {
+  ANONYMOUS_SCOPE,
+  resolveUnlocked,
+  useFieldCardUnlocks,
+} from '@/lib/unlocked-field-cards';
+import { useAuth } from '@/state/AuthProvider';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
 import { MasteryTrack } from './MasteryTrack';
@@ -188,6 +196,32 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     </dialog>
   );
 
+  /*
+   * THREE FACTS, NOT ONE, AND THIS PAGE HAD BEEN COLLAPSING THEM.
+   *
+   *   XP UNLOCK   you reached a threshold, so the card is YOURS TO READ. Persistent, and
+   *               it says nothing about the world.
+   *   DISCOVERY   you found the species outdoors. Independent of the above in both
+   *               directions — you can unlock without finding, and find without unlocking.
+   *   MASTERY     later still, and untouched here.
+   *
+   * A Field Card was falling into the printed deck's locked branch, which told a player who
+   * had EARNED the card that they had not discovered the plant and should go and find it.
+   * That is the collection's core promise inverted: the unlock they worked for bought them
+   * a card back.
+   *
+   * `xpUnlocked` is therefore a third way into the full view, beside `discovered` and
+   * `revealed`. It grants READING, never a record: no discovery is written, no mastery is
+   * implied, and `discovered` below stays exactly what it was.
+   */
+  const { user } = useAuth();
+  const fieldCardOrdinal = FIELD_CARD_SLOTS.find((slot) => slot.card?.id === herb.id)?.ordinal;
+  const unlockXp = unlockXpFor(herb.id);
+  const { record } = useFieldCardUnlocks(user?.id ?? ANONYMOUS_SCOPE);
+  const xpUnlocked =
+    fieldCardOrdinal !== undefined &&
+    resolveUnlocked(progress.xp, record).some((slot) => slot.ordinal === fieldCardOrdinal);
+
   const discovered = ready && isDiscovered(herb.id);
   /*
    * One view event per card, once storage has resolved.
@@ -232,7 +266,27 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     body = (
       <GrowthPlaceholder className="mx-auto h-96 w-52" label="Loading your card" />
     );
-  } else if (!discovered && !revealed) {
+  } else if (fieldCardOrdinal !== undefined && !xpUnlocked) {
+    /*
+     * Checked BEFORE `revealed`, deliberately: a Field Card is earned, so the reading
+     * escape hatch that exists for a deck somebody bought must not hand one over early.
+     * Discovery does not open it either — finding the plant is a different fact, recorded
+     * on its own, and the card still waits on the threshold.
+     */
+    body = (
+      <>
+        <LockedFieldCard
+          herb={herb}
+          ordinal={fieldCardOrdinal}
+          unlockXp={unlockXp ?? 0}
+          xp={progress.xp}
+        />
+        <div className="mt-10">
+          <SafetyNotice variant="brief" />
+        </div>
+      </>
+    );
+  } else if (!discovered && !revealed && !xpUnlocked) {
     body = (
       <>
         <LockedHerb herb={herb} onDiscovered={onDiscovered} />
@@ -249,7 +303,23 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
       {/* Revealed for reading but not actually found: say so plainly, so the collection
           state is never ambiguous. */}
-      {!discovered && revealed && (
+      {!discovered && xpUnlocked && (
+        /*
+         * THE WHOLE POINT OF THE SEPARATION, said in one line where somebody reads it. The
+         * card is open because XP opened it; the plant has still never been found. Neither
+         * half may be implied by the other.
+         */
+        <p className="panel mb-4 p-3 text-xs text-violet-300">
+          <PlantdexIcon name="locked" className="text-sm" />{' '}
+          <span className="font-bold tracking-[0.12em] text-gold-300 uppercase">
+            {FIELD_CARDS_NAME.replace(/s$/, '')} &middot; Not yet found
+          </span>{' '}
+          &mdash; unlocked with XP. Finding this plant outdoors is a separate record, and it
+          is still unmade.
+        </p>
+      )}
+
+      {!discovered && revealed && !xpUnlocked && (
         <p className="panel mb-4 p-3 text-xs text-violet-300">
           <PlantdexIcon name="revealed" className="text-sm" /> Revealed for reading — still
           undiscovered until you find it outdoors.

@@ -704,6 +704,33 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   `unlocked-field-cards.ts` and never to it. A Field Card also stays SHELF-ELIGIBLE: finding
   a real Purple Coneflower outdoors is a different event from being handed its card by a
   threshold, and the Seed Shelf is right to record it.
+- **XP UNLOCK, DISCOVERY and MASTERY are three facts, and the card page had been collapsing
+  the first two.** A Field Card fell into the printed deck's undiscovered branch, so a player
+  who had EARNED the card was told they had not discovered the plant and should go outdoors
+  and find it — the collection's own promise inverted, with the reward hidden behind a card
+  back. `xpUnlocked` is now a third way into the full view beside `discovered` and `revealed`.
+  It grants READING and writes nothing: no discovery, no mastery, and `discovered` keeps
+  exactly the meaning it had. The banner says `FIELD CARD · NOT YET FOUND` so the two are
+  never read as one, and the ordinary discover action stays, because finding the plant is a
+  separate record that is still unmade.
+- **A Field Card below its threshold gets its OWN locked state, and reveal cannot open it.**
+  `LockedHerb` tells a player to go and find the plant and names the XP a find pays — both
+  right for a printed card, both wrong here, where the gate is XP and a find pays nothing.
+  `LockedFieldCard` says what actually opens it. The threshold is checked BEFORE `revealed`:
+  `reveals.ts` is the reading escape hatch for a deck somebody bought, and a Field Card is
+  earned, so the hatch must not hand one over early.
+- **`applyDiscovery` resolves the id through the CATALOGUE; the AWARD still resolves through
+  the printed deck.** The guard was `getPrintedCard`, which refused a Field Card outright as
+  a phantom id — making "unlocked by XP" and "found outdoors" impossible to hold at once. The
+  award stays `getPrintedCard(herbId)?.xp ?? 0`, so a Field Card credits zero and crossing a
+  threshold still cannot fund the next one. That pulled `catalogue.ts` and `field-cards.ts`
+  into `PURE_MODULES`; `herbdex-action` imports only `reconcileMastery`/`reconcileResearch`,
+  so its deployed behaviour is unchanged and the sync is for consistency, not a redeploy.
+- **A number in a button is a promise, and `DiscoverPanel` was breaking it.** It printed
+  `herb.xp` — the value on the ARTWORK — so a Field Card offered "+250 XP" for a find that
+  credits nothing. It asks `xpForDiscoveries([herb.id])` now, which is the ledger's own rule,
+  and says "this one pays no XP; the record is that you found it" when the answer is zero.
+  `field-cards.test.ts` fails if the face value comes back.
 - **A Field Card pays no XP, which is what stops the ladder running away.** If one counted,
   crossing a threshold would raise the total and could cross the next. XP resolves ids through
   the printed deck only, so a Field Card in `discoveries`, `learned` or `mastered` is worth

@@ -203,9 +203,15 @@ describe('the entry page does not overstate what a scan does', () => {
      * It said "anything you find outside these 45 is kept on your Seed Shelf". A photograph
      * that resolves to nothing, to a bare genus, or to something above species rank is not
      * shelved and cannot be: eligibility requires a valid species-level name with no
-     * confirmable card. "Recognised species" is the honest subset.
+     * confirmable card. "Recognized species" is the honest subset — the word that carries
+     * the guarantee, in the US spelling the rest of the product uses.
+     *
+     * The set is named "Collection 01" rather than counted. A bare number invites the reader
+     * to treat the deck as the whole world, which is the thing the Seed Shelf exists to
+     * contradict, and it would go stale against a second printed collection.
      */
-    expect(START_CODE).toContain('recognised species outside');
+    expect(START_CODE).toContain('recognized species outside Collection 01');
+    expect(/recognised/.test(START_CODE), 'British spelling is back').toBe(false);
     for (const overclaim of [/anything you find outside/i, /everything you (?:find|scan)/i]) {
       expect(overclaim.test(START_CODE), `${overclaim} overstates what is stored`).toBe(false);
     }

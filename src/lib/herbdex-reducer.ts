@@ -1,5 +1,6 @@
 import type { DiscoveryResult, HerbdexState } from './types';
 import { getPrintedCard } from './deck';
+import { getCatalogueEntry } from './catalogue';
 import { newlyUnlocked } from './achievements';
 import { qualifiesForMastery } from './mastery';
 import { progressForTask, xpForTask, type ResearchTask, type ResearchWorld } from './research';
@@ -56,7 +57,15 @@ export function herbdexReducer(state: HerbdexState, action: HerbdexAction): Herb
  * "never award XP repeatedly for the same discovery".
  *
  * Unknown herb ids are rejected rather than recorded, so a tampered id cannot create a
- * phantom entry.
+ * phantom entry. The set it checks against is the CATALOGUE, not the printed deck: a Field
+ * Card is a species Plantdex knows, and finding one outdoors is a real discovery that the
+ * collection should hold. Resolving through the deck here refused it outright, which made
+ * "unlocked by XP" and "found outdoors" impossible to hold at the same time — the opposite
+ * of the separation the Field Cards exist to express.
+ *
+ * The AWARD still resolves through the printed deck, and that half must never move. A Field
+ * Card pays zero, so crossing a threshold cannot raise the total and fund the next one —
+ * the same arithmetic that makes the Seed Shelf structurally unable to pay.
  */
 export function applyDiscovery(
   state: HerbdexState,
@@ -65,7 +74,7 @@ export function applyDiscovery(
 ): { state: HerbdexState; result: DiscoveryResult } {
   const noop: DiscoveryResult = { awarded: false, xpAwarded: 0, newAchievementIds: [] };
 
-  const herb = getPrintedCard(herbId);
+  const herb = getCatalogueEntry(herbId);
   if (!herb) return { state, result: noop };
   if (state.discoveries[herbId]) return { state, result: noop };
 
@@ -78,7 +87,7 @@ export function applyDiscovery(
 
   return {
     state: next,
-    result: { awarded: true, xpAwarded: herb.xp, newAchievementIds },
+    result: { awarded: true, xpAwarded: getPrintedCard(herbId)?.xp ?? 0, newAchievementIds },
   };
 }
 

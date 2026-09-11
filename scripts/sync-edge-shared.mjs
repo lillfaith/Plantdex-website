@@ -38,6 +38,12 @@ export const PURE_MODULES = [
   'mastery.ts',
   'rng.ts',
   'research.ts',
+  // Added with the Field Cards. `applyDiscovery` resolves an id against the CATALOGUE — a
+  // Field Card is a species Plantdex knows, and finding one outdoors is a real discovery —
+  // while the AWARD still resolves through the printed deck, so an unlock pays nothing.
+  // Both halves have to be the same code on both sides, so both modules travel.
+  'field-cards.ts',
+  'catalogue.ts',
   'herbdex-reducer.ts',
   // Added with the Seed Shelf. The `seed-packet` function must mint a species' canonical
   // packet with the EXACT generator the app previews with, and must apply the exact

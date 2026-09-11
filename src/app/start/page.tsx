@@ -118,7 +118,7 @@ export default function StartPage() {
       */}
       <p className="mt-4 text-base leading-relaxed text-violet-200">
         Find the plants from your cards growing near you. Confirm a match and its Plantdex entry
-        unlocks &mdash; and recognised species outside these {PRINTED_DECK_SIZE} are kept on
+        unlocks &mdash; and recognized species outside Collection 01 are kept on
         your Seed Shelf.
       </p>
 

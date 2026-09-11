@@ -3,6 +3,7 @@
 import { useCallback, useRef } from 'react';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { useHerbdex } from '@/state/HerbdexProvider';
+import { xpForDiscoveries } from '@/lib/progression';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
@@ -33,6 +34,16 @@ export function DiscoverPanel({
   onDiscovered?: (result: DiscoveryResult) => void;
 }) {
   const { isDiscovered, discover, state, ready } = useHerbdex();
+
+  /*
+   * WHAT THIS FIND ACTUALLY PAYS, asked of the ledger rather than read off the card.
+   *
+   * `herb.xp` is the value PRINTED on the artwork. For the 45 printed cards the two agree;
+   * for a Field Card they do not, because `xpForDiscoveries` resolves ids through the
+   * printed deck only — so this button was offering "+250 XP" for a find that credits zero.
+   * A number in a button is a promise, and this is the one function that can keep it.
+   */
+  const award = xpForDiscoveries([herb.id]);
 
   const confirmRef = useRef<HTMLDialogElement>(null);
 
@@ -90,7 +101,9 @@ export function DiscoverPanel({
           <span className="relative z-10 flex items-center justify-center gap-2">
             <PlantdexIcon name="discovered" className="text-base" />
             {label}
-            <span className="text-sm font-extrabold opacity-70">+{herb.xp} XP</span>
+            {award > 0 && (
+              <span className="text-sm font-extrabold opacity-70">+{award} XP</span>
+            )}
           </span>
         </button>
       )}
@@ -106,8 +119,16 @@ export function DiscoverPanel({
           to your Herbdex?
         </h2>
         <p className="mt-2 text-sm text-violet-200">
-          Only if you actually found it outdoors. <strong className="text-gold-300">{herb.xp} XP</strong>,
-          once.
+          Only if you actually found it outdoors.{' '}
+          {award > 0 ? (
+            <>
+              <strong className="text-gold-300">{award} XP</strong>, once.
+            </>
+          ) : (
+            /* A Field Card pays nothing — see `award` above. Saying so is the honest half
+               of "log it anyway": the record is the point, not the number. */
+            <>This one pays no XP; the record is that you found it.</>
+          )}
         </p>
         <p className="mt-2 text-xs text-violet-300">
           Logging a find isn&apos;t confirming an identification, and never makes a plant safe
