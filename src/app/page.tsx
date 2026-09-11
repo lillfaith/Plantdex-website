@@ -7,6 +7,8 @@ import { isShopConfigured } from '@/lib/shop';
 import { PlantSprite } from '@/components/PlantSprite';
 import { RarityAura } from '@/components/game/RarityAura';
 import { assetPath } from '@/lib/asset-path';
+import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
+import { EYEBROW } from '@/components/ui/accents';
 
 /**
  * The four species whose creatures lead the landing page.
@@ -244,6 +246,42 @@ export default function HomePage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      {/*
+        A NOTE FROM THE CREATOR, AND THE RESTRAINT IS THE POINT.
+
+        It sits here — after the explanation, before the shop CTA — so it reaches somebody who
+        has read what Plantdex is and is still interested, rather than a stranger who has not
+        yet been told. Not in the hero, where it would be a pitch.
+
+        NO SURFACE, DELIBERATELY. No panel, no border, no background, no card. A card would
+        make this an element of the product; the absence of one is what lets it read as a
+        person speaking. The only separation is a short pixel rule — the deck's own divider,
+        already in globals.css — because a box here would undo the whole effect.
+
+        The words are the author's own and are not ours to tune. Two changes were made, both
+        approved by them explicitly: a missing "as", and Plantdex capitalised to match every
+        other user-facing instance in the app.
+      */}
+      <section aria-labelledby="note-heading" className="mt-14">
+        <div aria-hidden="true" className="pixel-rule mx-auto w-16" />
+        <h2
+          id="note-heading"
+          className={`mt-4 flex items-center justify-center gap-1.5 text-center ${EYEBROW} text-violet-300`}
+        >
+          <PlantdexIcon name="sprout" className="text-sm text-gold-400" aria-hidden="true" />
+          A note from the creator
+        </h2>
+        {/* Left-aligned inside a centred column: four sentences centred would be ragged on
+            both edges and harder to read at 390px, while the eyebrow above still anchors it. */}
+        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-violet-300">
+          Thank you for giving time to this project. I find great purpose in helping people
+          discover how useful and unique the plants under them are, each with their own secret
+          abilities and traits. I hope you enjoy collecting each one as much as I did and
+          growing your Plantdex collection, slowly growing more familiar with your surroundings
+          and these gifts from God.
+        </p>
       </section>
 
       <div className="mt-14">
