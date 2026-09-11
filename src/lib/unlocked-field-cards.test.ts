@@ -169,7 +169,64 @@ describe('the panel is bound to the account, not to the device', () => {
      */
     const source = readFileSync('src/components/research/FieldCardReward.tsx', 'utf8');
     expect(source).toMatch(/useFieldCardUnlocks\(scope\)/);
-    expect(source).toMatch(/recordUnlocks\(progress\.xp, scope\)/);
     expect(source).toMatch(/const scope = user\?\.id \?\? ANONYMOUS_SCOPE/);
+  });
+});
+
+/**
+ * THE CROSSING IS RECORDED WHERE IT HAPPENS, NOT WHERE IT IS DISPLAYED.
+ *
+ * `recordUnlocks` used to be called from a mount effect inside `FieldCardReward`, the panel
+ * on /herbdex/research. So the record was only ever written when a player opened that page:
+ * crossing 600 XP by confirming a find on the scan screen wrote nothing, sent no
+ * `xp_card_unlocked` event, and left the reveal queued until the next visit — where it then
+ * announced a threshold passed days earlier as if it had just happened.
+ *
+ * These tests are deliberately written against the STORE and the PROVIDER SOURCE, with no
+ * component rendered at all. That is the whole point: if recording a crossing requires
+ * rendering anything, the first test here fails.
+ */
+describe('an unlock records without the research panel ever mounting', () => {
+  it('records and announces from a bare XP crossing, with nothing rendered', () => {
+    // No React, no FieldCardReward, no /herbdex/research. Just the XP total changing.
+    const fresh = recordUnlocks(XP[1]!, 'user-solo');
+
+    expect(fresh.map((slot) => slot.ordinal)).toEqual([1]);
+    expect(resolveUnlocked(XP[1]!, fieldCardUnlockState('user-solo').record)).toHaveLength(1);
+    // And the reveal is armed for whenever the player next opens the panel.
+    expect(fieldCardUnlockState('user-solo').justUnlocked).toEqual([1]);
+  });
+
+  it('is the provider that calls it, and it still scopes by account', () => {
+    /*
+     * The counterpart to the panel guard above. `HerbdexProvider` wraps every page, so it is
+     * the only place that observes a crossing however it was caused — a scan, a card page, a
+     * knowledge check, or a sync from another device.
+     */
+    const provider = readFileSync('src/state/HerbdexProvider.tsx', 'utf8');
+    expect(provider, 'the provider no longer records unlocks').toMatch(
+      /recordUnlocks\(progress\.xp, userId \?\? ANONYMOUS_SCOPE\)/,
+    );
+    expect(provider, 'the unlock analytics event moved away with it').toContain(
+      "track('xp_card_unlocked')",
+    );
+
+    // And exactly one place writes it. Two writers would double-fire the analytics event and
+    // make "which one announced it" depend on render order.
+    const panel = readFileSync('src/components/research/FieldCardReward.tsx', 'utf8');
+    expect(panel, 'the panel records unlocks again as well as the provider').not.toContain(
+      'recordUnlocks(',
+    );
+  });
+
+  it('grants no discovery and no mastery, wherever it is called from', () => {
+    /*
+     * Moving WHEN the unlock is recorded must not change WHAT it records. The provider owns
+     * discovery too, so this is exactly the file where the two could get crossed.
+     */
+    const store = readFileSync('src/lib/unlocked-field-cards.ts', 'utf8');
+    for (const forbidden of ['applyDiscovery', 'reconcileMastery', "from './herbdex-reducer'"]) {
+      expect(store, `the unlock store reaches for ${forbidden}`).not.toContain(forbidden);
+    }
   });
 });

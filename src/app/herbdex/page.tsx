@@ -4,6 +4,7 @@ import { printedCardsInDeckOrder } from '@/lib/deck';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
+import { RecentFindsStrip } from '@/components/herbdex/RecentFindsStrip';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
 import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
@@ -143,6 +144,19 @@ export default function HerbdexPage() {
       <div className="mt-5">
         <LocalProgressNotice />
         <ProgressHeader />
+      </div>
+
+      {/*
+        WHAT YOU JUST DID, THEN WHAT TO DO NEXT — in that order.
+
+        The strip is `RecentFinds`, reused from the profile, where it had been the only
+        mount. Recent activity sits above the research teaser deliberately: one looks
+        backwards and one forwards, and a page that opens by telling you what to do next
+        without first acknowledging what you already did reads as a task list. It renders
+        nothing at all until there is a find to show, so a new player still meets the grid.
+      */}
+      <div className="mt-3">
+        <RecentFindsStrip />
       </div>
 
       <div className="mt-3">

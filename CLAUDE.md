@@ -797,6 +797,37 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   record as a REQUIRED argument for the same reason: a caller that forgot one would read the
   signed-out scope while somebody was signed in, and be wrong in the direction of granting
   cards. Account deletion's `plantdex.` prefix sweep already takes every scope.
+- **THE CROSSING IS RECORDED WHERE IT HAPPENS, NOT WHERE IT IS DISPLAYED.** `recordUnlocks`
+  ran in a mount effect inside `FieldCardReward`, which is mounted on exactly one route — so
+  a threshold was only ever written down when a player opened /herbdex/research. Cross 600 XP
+  by confirming a find on the scan screen and nothing happened: no `xp_card_unlocked` event,
+  and the reveal sat queued until the next visit, where it then announced a card earned days
+  earlier as though it had just been won. The most celebratory moment in the product fired on
+  the one page a player had no particular reason to open. It lives in `HerbdexProvider` now,
+  which wraps every page and already owns the derived XP, so it sees every crossing however
+  it was caused. It still grants nothing — the store touches neither `discoveries` nor
+  `mastered` — and the one-time reveal is unchanged, because `recordUnlocks` is write-once and
+  the panel still READS `justUnlocked` rather than computing it. Exactly one writer: a guard
+  in `unlocked-field-cards.test.ts` fails if the panel records again as well.
+- **Two XP gains in quick succession are two events, and the panel shows the latest.** Traced
+  on a real page load: hydration records slots 1-3, then `reconcileResearch` completes a task
+  9ms later and records slot 4, so `justUnlocked` ends as `[4]` and the other three sit in the
+  quiet `Unlocked` row. That is "replace, never append" behaving correctly, not a lost
+  announcement — worth knowing before reading it as a bug.
+- **The countdown, the recent finds and the completion percentage were each stranded on one
+  route.** `FieldCardReward` had a full "N XP to go" readout on /herbdex/research;
+  `RecentFinds` was mounted only by `ProfileView`; `ProgressHeader` computed `collectionPct`
+  and spent it entirely on a bar width and an `aria-label` while /profile printed the same
+  number in a ring. All three now also appear on /herbdex, which is where a returning player
+  lands. Every one REUSES its existing component or data function — `fieldCardProgress`,
+  `RecentFinds`, `recentFinds()` — rather than restating a threshold or a rule; the Herbdex
+  copy is a signpost (one line, a hairline bar) and the research page keeps the full reward.
+- **The profile says what you HOLD; the research page says what is coming.** `FieldCardsHeld`
+  is a strip, not a section: a count, the chips of the cards whose artwork exists, and one
+  line naming what an unlock is. It shows held cards only and never the locked ones — a row of
+  nine slots with two filled is a page telling somebody what they have not got, and
+  `FieldCardReward` is the place that legitimately shows the gap.
+
 - **The scanner reports research, it does not recompute it.** `HerbdexProvider` publishes the
   outcome reconciliation actually recorded (`lastResearch`, stamped with a time), and
   `ScanResearchFeedback` reads it. Signed in, that authority is the server. A second
@@ -818,6 +849,35 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
 - **Slots 5-9 have thresholds and no card, and that is a real state.** The UI says "Field
   Card 7" rather than naming a species nobody has drawn. Inventing botanical data for an
   unfinished card is the one thing this file may never do.
+
+## Motion
+
+Four one-shot moments, and the rule they share: an effect that repeats forever is ambient
+motion, which this app does not use. Every one below is `1` or `2` iterations, never
+`infinite`, and every one is listed explicitly in the `prefers-reduced-motion` block rather
+than left to the global 0.01ms collapse — "it happens to end in the right place" stops being
+true the moment a keyframe is edited.
+
+- **The Field Card bar now uses `path-fill`**, the same 800ms width transition as the mastery
+  track and every profile meter. It was the one progress bar in the app with no transition at
+  all, which is a strange property for the bar whose entire job is showing a threshold being
+  approached.
+- **`stage-grow` crossfades a garden stage change**, keyed on the stage so React mounts a new
+  element and it plays once, at the moment the plant actually grows. Fade plus a two-pixel
+  rise, never a scale: the sprites are pixel art on a shared ground line, and scaling one
+  would blur it and lift it off the soil.
+- **`pip-ready` announces a plantable Seed Shelf packet twice and stops.** The gold readiness
+  dot was entirely static, so a shelf gave no hint that one of its packets had changed.
+- **Common rarity has NO aura, and that is what makes the other tiers mean anything.** Every
+  tier used to glow, so the grid was a field of lit rectangles and rarity read as "some are
+  slightly brighter". Common is 21 of the 45 cards — the baseline the others are measured
+  against. Uncommon keeps 1 layer, Rare and Epic 2.
+  **`concealedAuraLayers` nearly broke on this.** It was defined as
+  `RARITY_AURA_LAYERS[size].Common`, borrowing Common's geometry because it happened to be the
+  gentlest — so emptying Common would have silently stripped the aura from every UNDISCOVERED
+  card in the grid, which is most of them for most players, and nothing would have failed. The
+  concealed layers are spelled out separately now: two decisions that shared a number, and
+  sharing it made them look like one.
 
 ## Analytics, deletion and export
 

@@ -833,6 +833,49 @@ body {
 
 /* The current stage, breathing. Slow and low-contrast so it reads as "you are here"
    rather than as something demanding a tap. */
+/*
+ * A STAGE CHANGE, CROSSFADED.
+ *
+ * The Garden swaps one sprite sheet for another the instant mastery advances, so a plant
+ * that took three real-world steps to grow changed in a single frame — the one moment the
+ * Garden exists to show, and it was the only thing on the page that did not move. Keyed on
+ * the stage in `GrowthSprite`, so React mounts a new element and this plays once; there is
+ * no loop and nothing to wait out.
+ *
+ * Fade plus a two-pixel rise, not a scale: the sprites are pixel art on a shared ground
+ * line, and scaling one would blur it and lift it off the soil.
+ */
+@keyframes stage-grow {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * The Seed Shelf's readiness pip, announced ONCE.
+ *
+ * The gold dot marking a packet that can now be planted was already there and entirely
+ * static, so a shelf of packets gave no hint that one of them had changed. Three beats and
+ * stop — `1` iteration, never `infinite`. A dot pulsing forever in the corner of a page
+ * somebody is reading is the ambient motion this app deliberately avoids.
+ */
+@keyframes pip-ready {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.45);
+    opacity: 0.75;
+  }
+}
+
 @keyframes node-pulse {
   0%, 100% { opacity: 0.35; transform: scale(1); }
   50% { opacity: 0.75; transform: scale(1.18); }
@@ -841,6 +884,14 @@ body {
 @keyframes pip-fill {
   0% { opacity: 0; transform: scale(0.4); }
   100% { opacity: 1; transform: scale(1); }
+}
+
+.stage-grow {
+  animation: stage-grow 420ms cubic-bezier(0.22, 1, 0.36, 1) 1 both;
+}
+
+.pip-ready {
+  animation: pip-ready 900ms ease-in-out 2 both;
 }
 
 .node-earned { animation: node-earned 900ms cubic-bezier(0.22, 1, 0.36, 1) 1; }
@@ -896,6 +947,15 @@ body {
 
   .animate-sheen::after {
     display: none;
+  }
+
+  /* Both are one-shot reveals with `both` fill, so the blanket's 0.01ms already lands them
+     on their finished state — stated explicitly anyway, because "it happens to end in the
+     right place" is the kind of reasoning that stops being true when a keyframe is edited.
+     The plant still changes stage and the pip is still gold; neither moves to say so. */
+  .stage-grow,
+  .pip-ready {
+    animation: none !important;
   }
 
   /* A sprite sheet steps through frames by moving its background, so collapsing the

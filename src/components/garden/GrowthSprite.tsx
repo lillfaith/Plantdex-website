@@ -52,8 +52,15 @@ export function GrowthSprite({
       aria-hidden="true"
       className={`flex h-full w-full items-end justify-center ${className}`}
     >
+      {/*
+        KEYED ON THE STAGE, which is what makes this a transition rather than a class that
+        sits there. React tears down the old element and mounts a new one when `stage`
+        changes, so `stage-grow` plays exactly once, at the moment the plant actually grows —
+        and never on an ordinary re-render of a plant that has not moved.
+      */}
       <span
-        className="block"
+        key={stage}
+        className="stage-grow block"
         style={{
           height: `${scale * 100}%`,
           aspectRatio: `${sprite.frameWidth} / ${sprite.frameHeight}`,

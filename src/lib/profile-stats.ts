@@ -96,7 +96,15 @@ function rarestDiscovered(state: HerbdexState): string | null {
   return best;
 }
 
-function recentFinds(state: HerbdexState, limit: number): RecentFind[] {
+/**
+ * Exported so the Herbdex can show the same strip the profile does.
+ *
+ * The alternative was calling `profileStats()` from /herbdex, which computes habitat
+ * standings, the rarest find, completion and the garden preview to get at three rows — and
+ * would quietly couple the two pages, so a change made for the profile would land on the
+ * Herbdex. One small pure function, called twice, is the smaller surface.
+ */
+export function recentFinds(state: HerbdexState, limit: number): RecentFind[] {
   return realIds(state.discoveries)
     .map((herbId) => ({
       herbId,

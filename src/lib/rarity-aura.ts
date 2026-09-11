@@ -71,9 +71,29 @@ export interface AuraLayer {
  */
 export type AuraSize = 'grid' | 'hero';
 
+/*
+ * COMMON HAS NO AURA, AND THAT IS WHAT MAKES THE OTHERS MEAN SOMETHING.
+ *
+ * Every tier used to glow, Common included — quieter than Epic, but present on all 45 cards,
+ * so the grid was a field of lit rectangles and rarity read as "some are slightly brighter".
+ * A glow that everything has is decoration; a glow that only some things have is a signal.
+ * Common is the deck's baseline — 21 of the 45 cards — so it is the one tier whose calm the
+ * others are measured against.
+ *
+ * An empty list is a real state rather than an omission: `RarityAura` renders no element at
+ * all, so a Common card costs nothing to paint.
+ *
+ * NOTE WHAT THIS NEARLY BROKE. `concealedAuraLayers` used to be defined as
+ * `RARITY_AURA_LAYERS[size].Common` — borrowing Common's geometry because it happened to be
+ * the gentlest. Emptying Common here would therefore have silently stripped the aura from
+ * every UNDISCOVERED card in the grid, which is most of them for most players, and nothing
+ * would have failed. The concealed layers are spelled out below instead: they are a
+ * different decision that happened to share a number, and sharing the number made one
+ * decision look like two.
+ */
 export const RARITY_AURA_LAYERS: Record<AuraSize, Record<Rarity, readonly AuraLayer[]>> = {
   grid: {
-    Common: [{ className: '-inset-1.5 rounded-[1.4rem] blur-md', alpha: 2.4 }],
+    Common: [],
     Uncommon: [{ className: '-inset-2.5 rounded-[1.7rem] blur-lg', alpha: 3.4 }],
     Rare: [
       { className: '-inset-4 rounded-[2.2rem] blur-xl', alpha: 3.2 },
@@ -85,7 +105,7 @@ export const RARITY_AURA_LAYERS: Record<AuraSize, Record<Rarity, readonly AuraLa
     ],
   },
   hero: {
-    Common: [{ className: '-inset-5 rounded-[2.5rem] blur-xl', alpha: 2.6 }],
+    Common: [],
     Uncommon: [{ className: '-inset-8 rounded-[3rem] blur-2xl', alpha: 3.6 }],
     Rare: [
       { className: '-inset-14 rounded-[4.5rem] blur-2xl', alpha: 3.4 },
@@ -107,4 +127,17 @@ export const RARITY_AURA_LAYERS: Record<AuraSize, Record<Rarity, readonly AuraLa
  * page's own violet at the gentlest strength: still a collectible, still telling you nothing.
  */
 export const CONCEALED_AURA_COLOUR = 'var(--color-violet-700)';
-export const concealedAuraLayers = (size: AuraSize) => RARITY_AURA_LAYERS[size].Common;
+
+/*
+ * Spelled out rather than borrowed from a tier. These are the values Common carried before
+ * it went calm, kept deliberately: a silhouette should still read as a collectible waiting
+ * to be found, and that is a separate judgement from how loud a Common card should be once
+ * you hold it. Reading a tier's table here would tie the two together again.
+ */
+const CONCEALED_LAYERS: Record<AuraSize, readonly AuraLayer[]> = {
+  grid: [{ className: '-inset-1.5 rounded-[1.4rem] blur-md', alpha: 2.4 }],
+  hero: [{ className: '-inset-5 rounded-[2.5rem] blur-xl', alpha: 2.6 }],
+};
+
+export const concealedAuraLayers = (size: AuraSize): readonly AuraLayer[] =>
+  CONCEALED_LAYERS[size];

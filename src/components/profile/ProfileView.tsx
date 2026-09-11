@@ -14,6 +14,7 @@ import { EditProfilePanel } from './EditProfilePanel';
 import { FieldRecord } from './FieldRecord';
 import { GardenPreview } from './GardenPreview';
 import { HabitatIdentity } from './HabitatIdentity';
+import { FieldCardsHeld } from './FieldCardsHeld';
 import { PinnedAchievements } from './PinnedAchievements';
 import { ProfileHero } from './ProfileHero';
 import { RecentFinds } from './RecentFinds';
@@ -83,6 +84,7 @@ export function ProfileView() {
       <div className="mt-8 space-y-3 sm:mt-6">
         <FieldRecord stats={stats} />
         <HabitatIdentity stats={stats} />
+        <FieldCardsHeld />
       </div>
 
       {/* The trophies float on the page ground, so they get air on both sides rather than a

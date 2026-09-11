@@ -5,6 +5,7 @@ import type { DiscoveryResult, Herb, HerbdexState } from '@/lib/types';
 import { createLocalStorageAdapter, type HerbdexStorage } from '@/lib/storage';
 import { createRemoteHerbdexStorage } from '@/lib/remote-herbdex-storage';
 import { useAuth } from './AuthProvider';
+import { ANONYMOUS_SCOPE, recordUnlocks } from '@/lib/unlocked-field-cards';
 import { progressFromState, type Progress } from '@/lib/progression';
 import { masteryTotals, stageFor, type MasteryStage } from '@/lib/mastery';
 import {
@@ -108,6 +109,10 @@ export function HerbdexProvider({
 
   const world = useMemo(() => buildWorld(state, sightingCounts), [state, sightingCounts]);
 
+  // Hoisted above the unlock effect below, which needs the XP total. `progressFromState` is
+  // pure and memoised, and the context value reuses this exact object rather than a second.
+  const progress = useMemo(() => progressFromState(state), [state]);
+
   const dailyTasks = useMemo(
     () =>
       boardIds
@@ -163,6 +168,34 @@ export function HerbdexProvider({
   }, [store, ready, world, dailyTasks]);
 
   /*
+   * FIELD CARD UNLOCKS ARE RECORDED WHERE THE CROSSING HAPPENS, WHICH IS HERE.
+   *
+   * This used to live in a mount effect inside `FieldCardReward`, the panel on
+   * /herbdex/research — so the record was only ever written when a player happened to open
+   * that page. Cross 600 XP by confirming a find on the scan screen and nothing happened:
+   * no analytics event, and the "New Field Card unlocked" reveal sat queued until the next
+   * visit to Field Research, where it announced a threshold passed days earlier as though it
+   * had just occurred. The single most celebratory moment in the product fired on the one
+   * page a player had no particular reason to visit.
+   *
+   * The provider wraps every page and already owns the derived XP, so it is the only place
+   * that sees every crossing however it was caused — a scan, a card page, a knowledge check,
+   * a sighting that completes mastery, or a sync from another device.
+   *
+   * IT STILL GRANTS NOTHING. `recordUnlocks` writes to its own store, keyed by account, and
+   * touches neither `discoveries` nor `mastered` — an XP unlock is not a find and not a
+   * mastery, and moving WHEN it is recorded must not change WHAT it records. The one-time
+   * reveal is unchanged too: `recordUnlocks` is write-once and returns [] on a repeat, so
+   * `justUnlocked` is still set exactly once per threshold, and `FieldCardReward` still
+   * reads it from the store rather than computing it.
+   */
+  useEffect(() => {
+    if (!ready) return;
+    const fresh = recordUnlocks(progress.xp, userId ?? ANONYMOUS_SCOPE);
+    fresh.forEach(() => track('xp_card_unlocked'));
+  }, [ready, progress.xp, userId]);
+
+  /*
    * ANALYTICS HANGS OFF THE PROVIDER, not off buttons.
    *
    * Every discovery in the app goes through this one function, so measuring here catches
@@ -203,7 +236,7 @@ export function HerbdexProvider({
     return {
       state,
       ready,
-      progress: progressFromState(state),
+      progress,
       discoveredCount: totals.discovered,
       learnedCount: totals.learned,
       masteredCount: totals.mastered,
@@ -226,7 +259,7 @@ export function HerbdexProvider({
       markLearned,
       reset,
     };
-  }, [state, ready, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, reset]);
+  }, [state, ready, progress, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, reset]);
 
   return <HerbdexContext.Provider value={value}>{children}</HerbdexContext.Provider>;
 }

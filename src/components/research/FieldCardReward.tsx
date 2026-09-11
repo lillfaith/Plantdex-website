@@ -13,7 +13,6 @@ import {
 } from '@/lib/field-cards';
 import {
   ANONYMOUS_SCOPE,
-  recordUnlocks,
   useFieldCardUnlocks,
   resolveUnlocked,
 } from '@/lib/unlocked-field-cards';
@@ -31,7 +30,7 @@ import { track } from '@/lib/analytics';
  *
  * NO CLAIM BUTTON. Unlock is a pure function of XP (`slotsUnlockedAt`), so there is nothing
  * to claim: crossing the line IS the unlock, and a button would only add a way to not have
- * done it yet. `recordUnlocks` writes the date so the reveal fires once rather than on every
+ * done it yet. The provider writes the date so the reveal fires once rather than on every
  * load, and so the set ratchets — see `unlocked-field-cards.ts` for why both matter.
  *
  * "NEW" MEANS THE CROSSING THAT JUST HAPPENED, AND NOTHING ELSE. The announcement is driven
@@ -56,19 +55,15 @@ export function FieldCardReward() {
   const { record, justUnlocked } = useFieldCardUnlocks(scope);
 
   /*
-   * Record any newly reached slot.
+   * THIS PANEL NO LONGER RECORDS THE UNLOCK; IT ONLY SHOWS IT.
    *
-   * In an effect because it writes to an external store; doing it during render would make
-   * the component impure and fire twice under StrictMode. `recordUnlocks` is write-once and
-   * returns [] when nothing is new, so running it on every XP change is idempotent.
+   * The recording moved to `HerbdexProvider`, which wraps every page. It was here, in a
+   * mount effect, which meant a threshold was only ever written down when a player happened
+   * to open this page — so crossing 600 XP on the scan screen announced nothing, and the
+   * reveal below sat queued until the next visit, then celebrated something that had
+   * happened days ago. Reading `justUnlocked` off the store instead of computing it is what
+   * lets the write live where the crossing does while the reveal still fires exactly once.
    */
-  useEffect(() => {
-    if (!ready) return;
-    // One event per card crossed. `recordUnlocks` returns [] on a repeat, so this cannot
-    // double-count a threshold the player already passed.
-    const fresh = recordUnlocks(progress.xp, scope);
-    fresh.forEach(() => track('xp_card_unlocked'));
-  }, [ready, progress.xp, scope]);
 
   useEffect(() => {
     if (ready) track('xp_card_progress_viewed');
@@ -164,9 +159,16 @@ export function FieldCardReward() {
             aria-hidden="true"
             className="mt-2 h-2 w-full overflow-hidden rounded-full bg-plum-900"
           >
+            {/*
+              `path-fill`, the same 800ms width transition the mastery track and every profile
+              meter use. This bar JUMPED: it was the one progress meter in the app with no
+              transition at all, which is a strange thing for the bar whose whole job is to
+              show a threshold being approached. It already has a reduced-motion override in
+              globals.css, so this inherits that rather than needing its own.
+            */}
             <div
-              className="h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent"
-              style={{ width: `${Math.round(fraction * 100)}%` }}
+              className="path-fill h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent"
+              style={{ ['--fill' as string]: `${Math.round(fraction * 100)}%` }}
             />
           </div>
           <p className="mt-1.5 text-xs tabular-nums text-violet-300">

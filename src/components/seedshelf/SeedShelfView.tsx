@@ -337,7 +337,7 @@ function Packet({
         {status === 'sprouted' && (
           <span
             aria-hidden="true"
-            className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-gold-500 ring-2 ring-plum-900"
+            className="pip-ready absolute -top-1 -right-1 h-3 w-3 rounded-full bg-gold-500 ring-2 ring-plum-900"
           />
         )}
       </div>
