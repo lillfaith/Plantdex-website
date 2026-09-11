@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import type { DiscoveryResult, Herb, HerbdexState } from '@/lib/types';
 import { createLocalStorageAdapter, type HerbdexStorage } from '@/lib/storage';
 import { createRemoteHerbdexStorage } from '@/lib/remote-herbdex-storage';
@@ -45,6 +45,19 @@ interface HerbdexContextValue {
   /** Seasonal and collection challenges. Always available; none of them expire. */
   standingTasks: readonly ResearchTask[];
   completedResearchCount: number;
+  /**
+   * What the LAST reconciliation actually recorded, with the time it happened.
+   *
+   * Exposed so a caller that just changed the collection — the scanner — can report the
+   * research consequence WITHOUT recomputing it. Reconciliation is the authority on what
+   * completed (signed in, the server's answer is), so anything else deriving its own answer
+   * would be a second implementation of the rule, free to disagree with the first.
+   *
+   * `at` is what makes it attributable: a caller records the time it acted and only believes
+   * an outcome stamped after that, so it never claims credit for a completion that landed
+   * before it did anything.
+   */
+  lastResearch: { completedResearchIds: string[]; newAchievementIds: string[]; at: number } | null;
   /** `at` is for a Seed Shelf claim, which keeps the date the plant was actually found. */
   discover: (herb: Herb, at?: string) => DiscoveryResult;
   markLearned: (herb: Herb) => DiscoveryResult;
@@ -117,10 +130,25 @@ export function HerbdexProvider({
    * `localDateKey()` is read here, inside an effect, so the static export never bakes in a
    * date and the server and first client render always agree.
    */
+  const [lastResearch, setLastResearch] = useState<HerbdexContextValue['lastResearch']>(null);
+
   useEffect(() => {
     if (!ready) return;
     refreshBoard(world, localDateKey());
     void store.reconcile(world, [...STANDING_TASKS, ...dailyTasks]).then((outcome) => {
+      /*
+       * Publish the delta ONLY when something was actually recorded. Setting it on every
+       * reconcile would re-render every consumer on every state change for no news, and an
+       * empty outcome is the common case — this effect runs after any discovery, sighting or
+       * sync, and most of those complete nothing.
+       */
+      if (outcome.completedResearchIds.length > 0 || outcome.newAchievementIds.length > 0) {
+        setLastResearch({
+          completedResearchIds: [...outcome.completedResearchIds],
+          newAchievementIds: [...outcome.newAchievementIds],
+          at: Date.now(),
+        });
+      }
       /*
        * Research completes by reconciliation rather than by a click, so this is the only
        * place it can be observed. Only the KIND travels — daily, collection or seasonal —
@@ -193,11 +221,12 @@ export function HerbdexProvider({
       completedResearchCount: Object.keys(state.research).filter((id) =>
         Boolean(researchTaskById(id)),
       ).length,
+      lastResearch,
       discover,
       markLearned,
       reset,
     };
-  }, [state, ready, sightingCounts, world, dailyTasks, discover, markLearned, reset]);
+  }, [state, ready, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, reset]);
 
   return <HerbdexContext.Provider value={value}>{children}</HerbdexContext.Provider>;
 }

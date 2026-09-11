@@ -618,6 +618,59 @@ or was not made; re-measure before trusting any of them again.
   variants exist: `/cards/*.webp` at 800px (~62KB) and `/cards/thumb/*.webp` at 400px (~21KB).
   Choosing the right one at the call site is the only lever there is.
 
+## Field Cards and the XP reward loop
+
+Nine digital-only cards earned by XP. Four are finished (#48-51, transcribed from their
+artwork); five are approved thresholds with no card drawn yet. They close the loop the launch
+work left open: a find advances Field Research, research pays XP, XP unlocks a Field Card.
+
+- **An XP unlock is not a discovery, not ownership, and not mastery.** Those are four
+  different facts and `field-cards.test.ts` attacks each separately. `discoveries` means
+  "I identified this plant outdoors" — it is what mastery and Field Research derive from and
+  the only thing that makes the collection worth anything — so an unlock writes to
+  `unlocked-field-cards.ts` and never to it. A Field Card also stays SHELF-ELIGIBLE: finding
+  a real Purple Coneflower outdoors is a different event from being handed its card by a
+  threshold, and the Seed Shelf is right to record it.
+- **A Field Card pays no XP, which is what stops the ladder running away.** If one counted,
+  crossing a threshold would raise the total and could cross the next. XP resolves ids through
+  the printed deck only, so a Field Card in `discoveries`, `learned` or `mastered` is worth
+  exactly zero — the same property that makes the Seed Shelf structurally unable to pay.
+- **They arrive through `DIGITAL_ONLY_ENTRIES`, and that seam is why it was a four-line
+  change.** It was built and tested while empty. Adding four real cards moved no deck count,
+  no research supply, no knowledge-check pool and no shelf eligibility: eleven of the twelve
+  catalogue tests passed untouched, and the twelfth was the one asserting the array was empty.
+- **`COLLECTIONS` gains a digital entry; `PRINTED_COLLECTIONS` stays at one.** The rule that
+  nothing may claim a second collection exists is about a second DECK. `collectionOf()` falls
+  back to Collection 01 for a card declaring nothing, so a Field Card must declare
+  `field-cards` or it silently joins the physical deck. `collection.test.ts` now asserts the
+  printed set rather than the whole list, which is what it always meant.
+- **Unlock is DERIVED from XP; the record is a ratchet.** `slotsUnlockedAt(xp)` is the truth,
+  needs no persistence, and survives a reload or a new device for free because XP is already
+  synced — so there is no server table and no migration. The local record exists for two
+  things a pure function cannot do: fire the reveal once, and guarantee that a future XP
+  formula change can never take a card back. `resolveUnlocked()` returns DERIVED ∪ RECORDED.
+- **The scanner reports research, it does not recompute it.** `HerbdexProvider` publishes the
+  outcome reconciliation actually recorded (`lastResearch`, stamped with a time), and
+  `ScanResearchFeedback` reads it. Signed in, that authority is the server. A second
+  implementation of "did this complete" would be free to disagree with the first, and the one
+  on screen would be the wrong one. PROGRESS is derived, which is safe — it is the same pure
+  `progressForTask` the page renders from, not a second rule.
+- **Research feedback sits BELOW the onward link.** Placed above, its own "View Field
+  Research" link became the first thing in the panel and opening the card you just collected
+  was pushed under a secondary action. One obvious next step; research is the reason to come
+  back, not the thing to do now. Capped at three rows, completions first, and silent when
+  nothing moved.
+- **`generateStaticParams` reads `CATALOGUE`, not `PRINTED_CARDS`.** It read the deck, so no
+  page existed for a Field Card and the reward panel's "View card" link 404'd. Caught by
+  following the link in a browser; every unit test passed. `field-cards.test.ts` now asserts
+  every Field Card is in `CATALOGUE`, which is what the route generates from.
+- **Printed errors on Field Card artwork are transcribed, not corrected.** #49 prints
+  "Hemeostatic", #50 "Campestrol", #51 "caryophyllene" unprefixed. `FIELD_CARD_ISSUES` states
+  each correction; the transcription stays as printed, same contract as `KNOWN_CARD_ISSUES`.
+- **Slots 5-9 have thresholds and no card, and that is a real state.** The UI says "Field
+  Card 7" rather than naming a species nobody has drawn. Inventing botanical data for an
+  unfinished card is the one thing this file may never do.
+
 ## Analytics, deletion and export
 
 - **`track()` takes an event name and has no second parameter.** That is the privacy

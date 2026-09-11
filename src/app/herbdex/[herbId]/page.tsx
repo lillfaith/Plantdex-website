@@ -1,11 +1,21 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getPrintedCard, PRINTED_CARDS, SEASON_LABEL } from '@/lib/deck';
+import { SEASON_LABEL } from '@/lib/deck';
+import { CATALOGUE, getCatalogueEntry } from '@/lib/catalogue';
 import { HerbDetail } from '@/components/herbdex/HerbDetail';
 
-/** Every herb page is statically generated — 45 small, fast, indexable pages. */
+/**
+ * Every species page is statically generated — small, fast, indexable.
+ *
+ * THE CATALOGUE, NOT THE PRINTED DECK. This read `PRINTED_CARDS`, which was right while the
+ * only cards were the printed 45 and wrong the moment Field Cards existed: the reward panel
+ * offered "View card" and the link 404'd, because no page had been generated for a card that
+ * is not in the deck. Caught by following the link in a browser, not by any test — so
+ * `field-cards.test.ts` now asserts every Field Card is in `CATALOGUE`, which is what this
+ * generates from.
+ */
 export function generateStaticParams() {
-  return PRINTED_CARDS.map((herb) => ({ herbId: herb.id }));
+  return CATALOGUE.map((herb) => ({ herbId: herb.id }));
 }
 
 /**
@@ -22,7 +32,7 @@ export async function generateMetadata({
   params: Promise<{ herbId: string }>;
 }): Promise<Metadata> {
   const { herbId } = await params;
-  const herb = getPrintedCard(herbId);
+  const herb = getCatalogueEntry(herbId);
   if (!herb) return { title: 'Card not found' };
 
   return {
@@ -34,7 +44,7 @@ export async function generateMetadata({
 
 export default async function HerbPage({ params }: { params: Promise<{ herbId: string }> }) {
   const { herbId } = await params;
-  const herb = getPrintedCard(herbId);
+  const herb = getCatalogueEntry(herbId);
   if (!herb) notFound();
 
   return <HerbDetail herb={herb} />;

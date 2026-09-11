@@ -5,6 +5,7 @@ import { PlantSprite } from '@/components/PlantSprite';
 import { SeedPacket } from '@/components/seedshelf/SeedPacket';
 import { track } from '@/lib/analytics';
 import { getAchievement } from '@/lib/achievements';
+import { ScanResearchFeedback } from './ScanResearchFeedback';
 import type { PacketRecipe } from '@/lib/seed-packet';
 
 /**
@@ -49,6 +50,8 @@ export type ScanOutcomeProps =
       xpAwarded: number;
       /** Achievement ids that unlocked on THIS discovery, from `discover()` itself. */
       newAchievementIds: readonly string[];
+      /** When the player confirmed, so research feedback can attribute itself. */
+      confirmedAt: number;
     } & Common)
   | ({
       kind: 'packet';
@@ -208,6 +211,21 @@ export function ScanOutcome(props: ScanOutcomeProps) {
           >
             {card ? 'Open its card' : 'Open your Seed Shelf'} &rarr;
           </Link>
+
+          {/*
+            WHAT THIS FIND DID TO FIELD RESEARCH, when it did anything.
+
+            BELOW the onward link, not above it. Placed first, its own "View Field Research"
+            link became the first thing in the panel and the primary action — opening the card
+            you just collected — was pushed under a secondary one. The rule this panel was
+            built on is one obvious next step; research is the reason to come back, not the
+            thing to do right now.
+
+            It reads the outcome reconciliation actually recorded rather than deriving a
+            second answer, and renders nothing at all when no task moved — which is the
+            common case and must stay silent.
+          */}
+          {card && <ScanResearchFeedback herbId={props.herbId} since={props.confirmedAt} />}
         </div>
       </div>
     </section>

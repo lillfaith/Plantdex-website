@@ -3,7 +3,7 @@ import {
   cardLabel,
   cardNumberInCollection,
   collectionOf,
-  COLLECTIONS,
+  PRINTED_COLLECTIONS,
   CURRENT_COLLECTION,
   getCollection,
 } from './collection';
@@ -23,8 +23,16 @@ describe('collections', () => {
    * product that has not been made. Nothing may be added here until it is real.
    */
   it('claims no collection that does not exist', () => {
-    expect(COLLECTIONS).toHaveLength(1);
-    expect(COLLECTIONS[0]).toBe(CURRENT_COLLECTION);
+    /*
+     * THE RULE IS ABOUT PRINTED DECKS, and that is now stated as what it always meant.
+     * This asserted `COLLECTIONS` had exactly one entry, which was the same thing while the
+     * only collection was a printed one. Field Cards are digital, were never pressed, and
+     * imply no physical object — so the set that must stay at one is the PRINTED set.
+     * `catalogue.test.ts` separately proves a digital entry changes no deck count.
+     */
+    expect(PRINTED_COLLECTIONS).toHaveLength(1);
+    expect(PRINTED_COLLECTIONS[0]).toBe(CURRENT_COLLECTION);
+    expect(CURRENT_COLLECTION.medium).toBe('printed');
   });
 
   it('places every card in the deck in the current collection', () => {

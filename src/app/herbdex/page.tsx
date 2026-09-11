@@ -105,6 +105,36 @@ export default function HerbdexPage() {
             </span>
           </span>
         </Link>
+
+        {/*
+          FIELD RESEARCH, WHICH WAS REACHABLE ONLY BY ACCIDENT.
+
+          The page sits at `/herbdex/research`, is in no navigation, and was linked only from
+          three teasers that render today's open dailies — so a player who closed it, or whose
+          board happened to be empty, had no way back. It is the layer that gives XP a reason
+          to exist, so it gets a permanent, findable entry beside the Seed Shelf rather than
+          an eighth nav slot: seven labels already divide a 390px bar as far as it goes.
+
+          Quieter than the scanner above, same weight as the shelf: these are two places you
+          VISIT, and identifying is the thing you DO.
+        */}
+        <Link
+          href="/herbdex/research"
+          className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-violet-800/70 px-4 py-2.5 transition-colors hover:bg-plum-600/40"
+        >
+          <span
+            aria-hidden="true"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-sm text-gold-300"
+          >
+            <PlantdexIcon name="research" />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-sm font-bold text-violet-100">Field Research</span>
+            <span className="block text-xs text-violet-300">
+              Daily tasks, seasonal ladders and challenges — and what your XP unlocks
+            </span>
+          </span>
+        </Link>
       </div>
 
       {/* Above the progress header, because it is about that progress — and inline in the

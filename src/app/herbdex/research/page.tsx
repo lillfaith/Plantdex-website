@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { TrackView } from '@/components/analytics/TrackView';
 import { ResearchView } from '@/components/research/ResearchView';
 
 export const metadata: Metadata = {
@@ -16,5 +17,8 @@ export const metadata: Metadata = {
  * the export is checked for herbdex/research/index.html rather than assumed.
  */
 export default function ResearchPage() {
-  return <ResearchView />;
+  return <>
+      <TrackView event="research_viewed" />
+      <ResearchView />
+    </>;
 }

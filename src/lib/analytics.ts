@@ -128,6 +128,25 @@ export const EVENT_NAMES = [
   'scan_related',
   'scan_confirmed',
 
+  /*
+   * FIELD RESEARCH, AND THE XP REWARD LOOP.
+   *
+   * The launch loop's missing back half: a find advances research, research pays XP, XP
+   * unlocks a Field Card. These answer whether a player ever SEES that chain — the page
+   * exists and is in no navigation, so `research_opened_from_scan` is the number that says
+   * whether the scan result is what introduces it.
+   *
+   * `xp_card_unlocked` has no ordinal in its name deliberately. Which card somebody reached
+   * is a dimension a property would carry, and properties are Business-tier and silently
+   * invisible here; the count of unlocks is the question that matters, and the ladder is
+   * fixed so the distribution is derivable from the XP curve anyway.
+   */
+  'research_viewed',
+  'research_opened_from_scan',
+  'xp_card_progress_viewed',
+  'xp_card_unlocked',
+  'xp_card_opened',
+
   // Seed Shelf. How often a plant the deck cannot hold is kept anyway, and how often one of
   // those later becomes a card. No species and no score travel, exactly as above.
   //

@@ -12,6 +12,7 @@ import {
 import { COLLECTION_01, collectionOf, getCollection, isInPrintedCollection } from './collection';
 import { getPrintedCard, PRINTED_CARDS, PRINTED_DECK_SIZE } from './deck';
 import { buildKnowledgeCheck, KNOWLEDGE_CHECK_POOL } from './knowledge-check';
+import { FIELD_CARDS } from './field-cards';
 import { matchScientificName } from './plant-match';
 import { emptyState } from './herbdex-state';
 import { xpForState } from './progression';
@@ -52,12 +53,18 @@ describe('the catalogue is a superset of the printed deck', () => {
     }
   });
 
-  it('holds no digital-only entries yet, and says so rather than pretending', () => {
-    // The nine hidden cards are designed elsewhere. This staying empty is the correct
-    // state, not an unfinished one — and it is what makes this whole change a no-op today.
-    expect(DIGITAL_ONLY_ENTRIES).toEqual([]);
-    expect(DIGITAL_ONLY_SIZE).toBe(0);
-    expect(CATALOGUE_SIZE).toBe(PRINTED_DECK_SIZE);
+  it('holds the Field Cards, and they widen the catalogue without widening the deck', () => {
+    /*
+     * This asserted the array was EMPTY, which was the correct state while the seam was
+     * being proven against a fixture. It now holds the finished Field Cards, and the
+     * property worth pinning is the one the seam exists for: the catalogue grew and the
+     * printed deck did not. Every other test in this file passed unchanged when these four
+     * arrived, which is the actual result of the Milestone 1 work.
+     */
+    expect(DIGITAL_ONLY_ENTRIES).toEqual(FIELD_CARDS);
+    expect(DIGITAL_ONLY_SIZE).toBe(FIELD_CARDS.length);
+    expect(CATALOGUE_SIZE).toBe(PRINTED_DECK_SIZE + FIELD_CARDS.length);
+    expect(PRINTED_DECK_SIZE).toBe(45);
   });
 
   it('requires any future digital entry to name its collection', () => {

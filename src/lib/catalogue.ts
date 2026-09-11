@@ -1,4 +1,5 @@
 import { PRINTED_CARDS, PRINTED_DECK_SIZE } from './deck';
+import { FIELD_CARDS } from './field-cards';
 import type { Herb } from './types';
 
 /**
@@ -34,7 +35,14 @@ import type { Herb } from './types';
 /**
  * Species that exist digitally and were never printed on a card.
  *
- * EMPTY, AND DELIBERATELY SO. The cards that will fill it are being designed elsewhere;
+ * NOW THE FIELD CARDS, and this seam is why that was a four-line change. It was built and
+ * tested while this array was empty, precisely so the first digital entry could not slip
+ * into the deck's counts, Field Research's supply, the knowledge check's distractors or Seed
+ * Shelf eligibility — every one of which read "the deck" from a single list before. Adding
+ * nine cards moved none of those numbers, and `catalogue.test.ts` proves it against the real
+ * entries rather than against the fixture it used to need.
+ *
+ * PREVIOUSLY EMPTY, AND THE REASONING IS KEPT: The cards that will fill it are being designed elsewhere;
  * inventing placeholder species here to prove the plumbing works would put fabricated
  * botany into the app, which is the one thing this codebase never does. The seam is proven
  * by `catalogue.test.ts` instead, which builds a hypothetical entry as a fixture and checks
@@ -45,7 +53,7 @@ import type { Herb } from './types';
  * right for the printed 45, and would silently make a digital card a member of the physical
  * deck. `catalogue.test.ts` fails on any entry here that omits it.
  */
-export const DIGITAL_ONLY_ENTRIES: readonly Herb[] = [];
+export const DIGITAL_ONLY_ENTRIES: readonly Herb[] = FIELD_CARDS;
 
 /**
  * Every species Plantdex knows: the printed deck plus digital-only entries.

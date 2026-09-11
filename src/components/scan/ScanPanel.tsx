@@ -56,6 +56,8 @@ export function ScanPanel() {
     herbId: string;
     xpAwarded: number;
     newAchievementIds: string[];
+    /* Stamped at the tap so research feedback only claims what followed it. */
+    at: number;
   } | null>(null);
   // The history row this result was written to, so a Seed Shelf save can point back at the
   // scan it came from. Null signed out, where there is no history to point at.
@@ -425,6 +427,7 @@ export function ScanPanel() {
                                 herbId: herb.id,
                                 xpAwarded: outcome.xpAwarded,
                                 newAchievementIds: outcome.newAchievementIds,
+                                at: Date.now(),
                               });
                             }}
                             className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
@@ -481,6 +484,7 @@ export function ScanPanel() {
                   href={`/herbdex/${herb.id}`}
                   xpAwarded={confirmed.xpAwarded}
                   newAchievementIds={confirmed.newAchievementIds}
+                  confirmedAt={confirmed.at}
                 />
               </div>
             );

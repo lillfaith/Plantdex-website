@@ -8,6 +8,7 @@ import { RESEARCH_XP } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { SafetyNotice } from '../SafetyNotice';
 import { TaskCard } from './TaskCard';
+import { FieldCardReward } from './FieldCardReward';
 import { GrowthPlaceholder } from '../GrowthLoader';
 
 /**
@@ -73,6 +74,18 @@ export function ResearchView() {
         </div>
       ) : (
         <>
+          {/*
+            WHAT THE XP IS FOR, above the tasks that pay it.
+
+            The page's time horizons run Today -> Seasonal -> Collection, shortest first.
+            The reward sits ABOVE all three because it is the answer to "why am I doing any
+            of this" — a player who scrolls no further should still have seen that research
+            leads somewhere. It states its own separation from the printed deck in place.
+          */}
+          <div className="mt-8">
+            <FieldCardReward />
+          </div>
+
           <section aria-labelledby="today-heading" className="mt-8">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 id="today-heading" className="font-display text-xl font-bold text-gold-plate">

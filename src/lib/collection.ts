@@ -61,12 +61,52 @@ export const COLLECTION_01: Collection = {
 };
 
 /**
- * Every collection this app knows about.
+ * FIELD CARDS — digital-only, earned by XP, never printed.
  *
- * One entry today. A second gets added here when a second deck actually exists — with real
- * values, after it is printed, not before.
+ * Registered here because the code genuinely requires it: `collectionOf()` resolves a card's
+ * collection through `getCollection()`, and `catalogue.test.ts` fails any digital entry whose
+ * `collectionId` does not resolve. Without a registered object a Field Card would fall back
+ * to Collection 01 — exactly the trap that fallback was documented as.
+ *
+ * `medium: 'digital'` is what keeps it honest. Nothing about Field Cards implies a physical
+ * object: they were never printed, nobody was posted one, and `isInPrintedCollection` is
+ * false for every one of them. The rule that "nothing may claim a second collection exists"
+ * is about a second DECK, and `PRINTED_COLLECTIONS` below is the set that rule governs.
  */
-export const COLLECTIONS: readonly Collection[] = [COLLECTION_01];
+export const FIELD_CARDS_COLLECTION: Collection = {
+  id: 'field-cards',
+  name: 'Plantdex Field Cards',
+  shortName: 'Field Cards',
+  /*
+   * Nine when the set is complete, and nine NOW rather than "however many are finished".
+   * A player who has unlocked two should read "2 of 9", not "2 of 2" — the size is the
+   * shape of the set, not a count of what has been drawn. `field-cards.test.ts` pins this
+   * against FIELD_CARD_SLOTS so the two cannot drift.
+   */
+  size: 9,
+  /* Collection 01 is what the Herbdex tracks and what the deck in somebody's hand is. */
+  current: false,
+  medium: 'digital',
+};
+
+/**
+ * Every collection this app knows about, printed or not.
+ *
+ * Use `PRINTED_COLLECTIONS` for anything about physical decks — card counts, completion,
+ * Field Research supply, Seed Shelf eligibility. This wider list exists so a Field Card can
+ * resolve its own name and nothing more.
+ */
+export const COLLECTIONS: readonly Collection[] = [COLLECTION_01, FIELD_CARDS_COLLECTION];
+
+/**
+ * Collections that were physically printed. Exactly one, and that is the invariant.
+ *
+ * Deleted once as an unused export and reinstated when Field Cards arrived, which is the
+ * honest arc: it had no caller until there was a second collection to exclude.
+ */
+export const PRINTED_COLLECTIONS: readonly Collection[] = COLLECTIONS.filter(
+  (collection) => collection.medium === 'printed',
+);
 
 const BY_ID = new Map(COLLECTIONS.map((collection) => [collection.id, collection]));
 
