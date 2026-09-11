@@ -12,10 +12,20 @@ import { stageFor, type MasteryStage } from './mastery';
  *   learned    → growing     (you know its card)
  *   mastered   → flowering   (you found it again after learning it)
  *
- * Nothing here reads a clock. A plant cannot grow while the app is closed, there is
- * nothing to farm by idling, and no timer to wait out — AGENTS.md rules out watering
- * meters, energy systems and artificial waiting, and the way to guarantee that is to have
- * no time input at all. Growth follows what the player actually did.
+ * Nothing here reads a clock. A plant cannot grow while the app is closed, there is nothing
+ * to farm by idling, and no timer to wait out. Growth follows what the player actually did.
+ *
+ * THAT IS A PLANTDEX PRODUCT DECISION, NOT AN AGENTS.md REQUIREMENT. This comment used to
+ * say "AGENTS.md rules out watering meters, energy systems and artificial waiting", and it
+ * does not: the spec contains the word "garden" zero times, and "watering", "idle" and
+ * "energy system" zero times each. The only nearby thing it really says is "no misleading
+ * countdown timers", which sits under CUSTOMER TRUST and is about the storefront.
+ *
+ * The rule is kept, deliberately and on its own merits — a plant that grows while you are
+ * asleep is measuring your patience rather than your walking, and this is a field guide. But
+ * it is OURS, so it is ours to revisit, and dressing a preference up as an inherited
+ * prohibition is how a design decision stops being re-examined. The structural guarantee is
+ * the same either way: no time input at all, so there is nothing to wait out.
  */
 
 export const GROWTH_STAGES = ['sprout', 'growing', 'flowering'] as const;

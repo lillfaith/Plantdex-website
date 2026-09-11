@@ -44,9 +44,15 @@ export const MASTERY_STAGE_BLURB: Record<MasteryStage, string> = {
 /**
  * Repeat sightings required, after learning the card, before it is mastered.
  *
- * A single return visit. The point is to send the player back outside once more, not to
- * make mastery a grind — AGENTS.md forbids busywork that rewards repetition for its own
- * sake, and a high number here would be exactly that.
+ * A single return visit. The point is to send the player back outside once more, not to make
+ * mastery a grind, and a high number here would be exactly that.
+ *
+ * ATTRIBUTED HONESTLY: this said "AGENTS.md forbids busywork that rewards repetition for its
+ * own sake". It does not — the spec has no "busywork", "grind" or "repetition" in it at all.
+ * What it actually carries is one line in its DO NOT list, "award XP repeatedly for the same
+ * discovery", which is about idempotence rather than about how many visits a stage should
+ * cost. The anti-grind judgement is a Plantdex product decision. It is still the right one;
+ * it simply is not inherited.
  */
 export const SIGHTINGS_FOR_MASTERY = 1;
 

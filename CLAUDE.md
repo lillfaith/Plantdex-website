@@ -68,7 +68,15 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   moment its condition happened to be true.
 - **The garden mirrors mastery; it is not a second progression system.** `src/lib/garden.ts`
   maps each mastery stage to exactly one growth stage and reads no clock at all, which is
-  what structurally rules out the watering meters, timers and idle growth AGENTS.md forbids.
+  what structurally rules out watering meters, timers and idle growth.
+  **THAT IS A PLANTDEX PRODUCT DECISION, NOT AN AGENTS.md REQUIREMENT**, and this file used to
+  claim otherwise. AGENTS.md contains the word "garden" zero times in 799 lines, and
+  "watering", "idle", "busywork", "grind" and "energy system" zero times each; its only
+  adjacent line is "no misleading countdown timers", under CUSTOMER TRUST, about the
+  storefront. `src/lib/mastery.ts` carried the same false attribution for
+  `SIGHTINGS_FOR_MASTERY`. Both are corrected in place. The rules are kept on their own
+  merits — but they are ours to revisit, and a preference dressed as an inherited prohibition
+  is one nobody re-examines. Before citing AGENTS.md in a comment, grep it.
 - **Extend the level ladder upwards; never re-tune existing thresholds.** Raising one
   demotes players whose XP has not changed. Pinned by `src/lib/progression.test.ts`.
 - **Bump `STORAGE_VERSION` only together with adding it to `MIGRATABLE_VERSIONS` in
