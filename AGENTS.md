@@ -772,6 +772,35 @@ Must have:
 - legal/safety pages
 - tested customer journey
 
+## POST-LAUNCH — Mastery Rewards v1
+
+**Unlock Field Recipes / Preparation Guides when a plant reaches Mastered.**
+
+Mastery currently pays a growth stage and a label. This makes it pay something a person can
+use: the traditional preparations for that plant, released at the point where they have
+found it, learned its card, and found it again.
+
+Principles, which are the whole specification and are not negotiable downwards:
+
+- **Culinary first.** Food is the default. It is what most of this deck's species are
+  actually used for, and it is the category where being wrong is least dangerous.
+- **Topical selectively.** Only where a plant has a genuine, well-attested external use.
+- **Internal medicinal preparations only when well-supported and appropriately cautioned.**
+  The bar is the existing `sources.ts` `verified` bar — a person has opened the source and
+  confirmed it supports the claim — not a plausible-sounding tradition.
+- **No forced recipe for every species.** A plant with nothing well-supported to say gets
+  nothing. Inventing a preparation to fill a slot is inventing botany, which is already
+  prohibited; a 45/45 completion rate here would be evidence of exactly that. Ragweed should
+  have no recipe, and the UI must read as complete when it does not.
+- **No disease-treatment claims.** "Healing Traits" framing continues to apply: this is what
+  people have traditionally done, never what a plant treats.
+- **The unlock must feel like a reward, not cosmetic content.** A recipe nobody would cook is
+  a badge with more words. The test is whether a player would use it away from the screen.
+
+Not yet designed: where it lives, whether it is per-card or a collected book, and whether
+it is gated on printed-deck mastery only. Note that mastery is printed-deck-scoped
+(`tracksMastery`), so Field Cards cannot reach Mastered and cannot carry an unlock here.
+
 ---
 
 # CURRENT INSTRUCTION TO CODING AGENT
