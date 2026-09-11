@@ -34,10 +34,13 @@ import { PlantSprite } from '../PlantSprite';
 export function GrowthSprite({
   herb,
   stage,
+  advanced = false,
   className = '',
 }: {
   herb: Herb;
   stage: GardenStage;
+  /** This plant grew since the Garden last showed it — play the moment once. */
+  advanced?: boolean;
   className?: string;
 }) {
   const sprite = spriteFor(herb.id, stage);
@@ -53,14 +56,26 @@ export function GrowthSprite({
       className={`flex h-full w-full items-end justify-center ${className}`}
     >
       {/*
-        KEYED ON THE STAGE, which is what makes this a transition rather than a class that
-        sits there. React tears down the old element and mounts a new one when `stage`
-        changes, so `stage-grow` plays exactly once, at the moment the plant actually grows —
-        and never on an ordinary re-render of a plant that has not moved.
+        GATED ON `advanced`, AND THE PREVIOUS VERSION OF THIS COMMENT WAS WRONG.
+
+        It said `stage-grow` "plays exactly once, at the moment the plant actually grows — and
+        never on an ordinary re-render of a plant that has not moved". True about re-renders,
+        and beside the point: nobody re-renders the Garden, they NAVIGATE to it, and a
+        navigation is a mount. The class was unconditional, so every plant crossfaded on every
+        visit and the one event worth marking was hidden inside a page transition.
+
+        `advanced` comes from `garden-moments.ts`, which knows what this session last SHOWED
+        the player — the only thing that can tell a real advance from an arrival. Still keyed
+        on the stage so a change mounts a fresh element and the animation restarts cleanly.
+
+        Two one-shot effects together, both already in the vocabulary: `stage-grow` crossfades
+        the new drawing in, `node-earned` gives the single scale pop the mastery track already
+        uses to mean "you just earned this". Neither loops, and both are listed in the
+        reduced-motion block.
       */}
       <span
         key={stage}
-        className="stage-grow block"
+        className={`block ${advanced ? 'stage-grow node-earned' : ''}`.trim()}
         style={{
           height: `${scale * 100}%`,
           aspectRatio: `${sprite.frameWidth} / ${sprite.frameHeight}`,

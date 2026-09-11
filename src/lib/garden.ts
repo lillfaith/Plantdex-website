@@ -46,6 +46,35 @@ export const GARDEN_STAGE_BY_MASTERY: Record<MasteryStage, GardenStage> = {
 
 const STAGE_BY_MASTERY = GARDEN_STAGE_BY_MASTERY;
 
+/**
+ * The same mapping read backwards, so a growth stage can name the mastery that caused it.
+ *
+ * The Garden tile says "Discovered" rather than "Sprout": the DRAWING already shows a sprout,
+ * so printing the word beside it restates the picture, while the mastery word answers the
+ * question the tile is actually being asked — why is this plant here. `MASTERY_STAGE_LABEL`
+ * in mastery.ts already supplies the words, so nothing new is written down.
+ *
+ * Spelled out rather than computed from `Object.entries` because a derived inverse silently
+ * survives the forward map gaining a fourth stage that nothing maps back from. `garden.test.ts`
+ * asserts the two are exact inverses in both directions.
+ */
+export const MASTERY_BY_GARDEN_STAGE: Record<GardenStage, MasteryStage> = {
+  sprout: 'discovered',
+  growing: 'learned',
+  flowering: 'mastered',
+};
+
+/**
+ * How far up the ladder a stage sits, so a change can be told apart from a swap.
+ *
+ * Mastery only ever goes forward, so a plant moving BACKWARDS is not a plant shrinking — it is
+ * the collection underneath changing identity, which is what signing out mid-session does. The
+ * Garden's reward moment must not fire for that.
+ */
+export function gardenStageIndex(stage: GardenStage): number {
+  return GROWTH_STAGES.indexOf(stage);
+}
+
 export const STAGE_LABEL: Record<GardenStage, string> = {
   sprout: 'Sprout',
   growing: 'Growing',
@@ -68,13 +97,25 @@ export function stageForState(state: HerbdexState, herbId: string): GardenStage 
   return mastery ? STAGE_BY_MASTERY[mastery] : null;
 }
 
-/** What the player can do next to grow this plant. Drives the hint under each sprite. */
+/**
+ * What the player does next to grow this plant. `null` once there is nothing left to do.
+ *
+ * SHORT ON PURPOSE. This was a full sentence, and it was rendered `sr-only` — so the one line
+ * that answers "what do I do about this plant" existed, was computed for all 45, and had never
+ * been seen by anybody. Made visible, it has to fit a Garden tile: at 390px the grid is three
+ * across, which leaves about 85px of text width, and "Find it again and log the sighting to
+ * make it flower" wraps to five lines on every tile.
+ *
+ * The phrase is exact rather than merely brief. `SIGHTINGS_FOR_MASTERY` is 1, so "Find it
+ * again" is the whole requirement — `garden.test.ts` fails if this copy starts describing a
+ * different rule from the one `qualifiesForMastery` enforces.
+ */
 export function nextStageHint(stage: GardenStage): string | null {
   switch (stage) {
     case 'sprout':
-      return 'Learn its card to grow this plant';
+      return 'Learn its card';
     case 'growing':
-      return 'Find it again and log the sighting to make it flower';
+      return 'Find it again';
     case 'flowering':
       return null;
   }

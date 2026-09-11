@@ -1,9 +1,13 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import Link from 'next/link';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { buildGarden, nextStageHint, STAGE_LABEL } from '@/lib/garden';
+import { buildGarden, nextStageHint, MASTERY_BY_GARDEN_STAGE } from '@/lib/garden';
+import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
+import { clearAdvanced, recordStages, useGardenMoments } from '@/lib/garden-moments';
 import { GrowthSprite } from './GrowthSprite';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -26,6 +30,28 @@ export function GardenView() {
 
   const order = printedCardsInDeckOrder().map((herb) => herb.id);
   const garden = ready ? buildGarden(state, order) : [];
+
+  /*
+   * WHICH PLANTS GREW SINCE THIS SESSION LAST SHOWED THEM — see `garden-moments.ts` for why
+   * that question, and not "did this render", is the one worth asking.
+   *
+   * Recorded in an effect because it writes to a module-level store: doing it during render
+   * makes the component impure and fires twice under StrictMode. The cleanup clears the batch
+   * after 1.2s, the same beat `MasteryTrack` uses to retire its own earned flag, so the
+   * announcement ends by itself rather than sitting on the page until you navigate away.
+   */
+  const justAdvanced = useGardenMoments();
+  const stageSignature = garden.map((entry) => `${entry.herbId}:${entry.stage}`).join(',');
+
+  useEffect(() => {
+    if (!ready) return;
+    if (recordStages(garden).length === 0) return;
+    const timer = setTimeout(clearAdvanced, 1200);
+    return () => clearTimeout(timer);
+    // `stageSignature` rather than `garden`: the array is rebuilt every render and would
+    // re-run this on renders where not one plant changed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, stageSignature]);
 
   return (
     <main id="main" className="mx-auto max-w-5xl px-4 py-8">
@@ -66,7 +92,9 @@ export function GardenView() {
             {garden.map(({ herbId, stage }) => {
               const herb = getPrintedCard(herbId);
               if (!herb) return null;
-              const hint = nextStageHint(stage);
+              const action = nextStageHint(stage);
+              const flowering = stage === 'flowering';
+              const advanced = justAdvanced.includes(herbId);
               return (
                 <li key={herbId}>
                   <Link
@@ -78,19 +106,45 @@ export function GardenView() {
                         planting rather than a row of stickers. Growth is carried by the
                         DRAWING now, not by scaling one image up and down. */}
                     <span className="flex h-20 w-full items-end justify-center">
-                      <GrowthSprite herb={herb} stage={stage} />
+                      <GrowthSprite herb={herb} stage={stage} advanced={advanced} />
                     </span>
+
+                    {/*
+                      THE FINISHED STATE, AND IT IS STATIC. A mature plant is rooted, so it
+                      stands on a lit strip of soil while the younger two do not. `soil-line`
+                      already exists and is used by the profile's garden strip; nothing here
+                      glows, pulses or loops, because the one thing that would cheapen
+                      "finished" is making it flicker for as long as you look at it.
+                    */}
+                    {flowering && (
+                      <span aria-hidden="true" className="soil-line mt-0.5 h-0.5 w-10 rounded-full" />
+                    )}
+
                     <span className="mt-1 w-full truncate text-center text-xs font-semibold text-violet-100">
                       {herb.commonName}
                     </span>
+
+                    {/*
+                      TWO LINES, ANSWERING TWO QUESTIONS. The first says why this plant is at
+                      this stage — the mastery word, not the growth word, because the drawing
+                      already shows a sprout and repeating it teaches nothing. The second says
+                      what moves it next, and is simply absent on a mastered card, which is
+                      what makes a shorter tile read as a finished one.
+
+                      NOT ALSO `sr-only`. The hint used to be screen-reader-only and invisible
+                      to everyone else; duplicating it now that it is visible would just make a
+                      screen reader say it twice. This IS the accessible text.
+                    */}
                     <span
                       className={`text-center text-[0.72rem] ${
-                        stage === 'flowering' ? 'font-bold text-gold-300' : 'text-violet-400'
+                        flowering ? 'font-bold text-gold-300' : 'text-violet-300'
                       }`}
                     >
-                      {STAGE_LABEL[stage]}
+                      {MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[stage]]}
                     </span>
-                    {hint && <span className="sr-only">{hint}</span>}
+                    {action && (
+                      <span className="text-center text-[0.72rem] text-violet-400">{action}</span>
+                    )}
                   </Link>
                 </li>
               );

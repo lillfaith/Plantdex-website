@@ -77,6 +77,29 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   `SIGHTINGS_FOR_MASTERY`. Both are corrected in place. The rules are kept on their own
   merits — but they are ours to revisit, and a preference dressed as an inherited prohibition
   is one nobody re-examines. Before citing AGENTS.md in a comment, grep it.
+- **A garden tile answers two questions, and the drawing already answers a third.** It used to
+  print the GROWTH word under a picture of that growth — "Sprout" beneath a sprout — which is
+  the one thing on the tile carrying no information. It now prints the MASTERY word (why this
+  plant is here) and the next action (what moves it), reusing `MASTERY_STAGE_LABEL` and
+  `nextStageHint` rather than writing a third set of strings. `MASTERY_BY_GARDEN_STAGE` is the
+  inverse of the map that got the plant here and is pinned as an exact inverse in both
+  directions, because an inverse that silently drifts renders `undefined` on a tile. The
+  action line is simply ABSENT once mastered — a shorter tile is what "finished" looks like —
+  and `nextStageHint` is also what the profile's sidekick line reads, so there is one phrasing
+  of each step and not two free to disagree.
+- **The hint was `sr-only`, which is a strange place to keep the only answer to "what now".**
+  Every stage already computed its next step and showed it to nobody but a screen reader. Now
+  that it is visible it is NOT also duplicated to one, or a screen reader hears it twice.
+- **A plant has grown only if it moved FORWARD since this session last SHOWED it.**
+  `garden-moments.ts` is session-scoped and deliberately unpersisted, the same call
+  `unlocked-field-cards.ts` makes and for the same reason: a reload shows the new stage as
+  simply held rather than re-announcing something won last week, while a player still moving
+  around the app sees the moment. It buys no storage key, no migration and NO PER-ACCOUNT
+  SCOPING — nothing is written down, so nothing can leak between accounts on a shared device.
+  Forward only: mastery never reverses, so a backward move is the collection changing identity
+  underneath us (signing out mid-session), and that must not read as a reward. Replaced, never
+  appended, same rule as `justUnlocked`. An id never shown is not an advance, which is the
+  whole of the arrival fix.
 - **Extend the level ladder upwards; never re-tune existing thresholds.** Raising one
   demotes players whose XP has not changed. Pinned by `src/lib/progression.test.ts`.
 - **Bump `STORAGE_VERSION` only together with adding it to `MIGRATABLE_VERSIONS` in
@@ -907,6 +930,14 @@ true the moment a keyframe is edited.
   element and it plays once, at the moment the plant actually grows. Fade plus a two-pixel
   rise, never a scale: the sprites are pixel art on a shared ground line, and scaling one
   would blur it and lift it off the soil.
+  **IT SHIPPED UNCONDITIONAL, AND THE COMMENT DEFENDING IT WAS ARGUING THE WRONG POINT.** The
+  class was written straight onto the span, and the note above it said the animation never
+  fires "on an ordinary re-render of a plant that has not moved" — true, and beside the point,
+  because nobody re-renders the Garden, they NAVIGATE to it, and a navigation is a mount. So
+  all 45 plants crossfaded every single time the page opened, which does not read as 45
+  celebrations; it reads as a page transition, and the one real event was invisible inside it.
+  A one-shot effect is only a moment if something gates it, and the gate has to answer "did
+  this plant move since we last SHOWED it to you", which no render can answer on its own.
 - **`pip-ready` announces a plantable Seed Shelf packet twice and stops.** The gold readiness
   dot was entirely static, so a shelf gave no hint that one of its packets had changed.
 - **Common rarity has NO aura, and that is what makes the other tiers mean anything.** Every
