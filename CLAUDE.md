@@ -731,6 +731,31 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   credits nothing. It asks `xpForDiscoveries([herb.id])` now, which is the ledger's own rule,
   and says "this one pays no XP; the record is that you found it" when the answer is zero.
   `field-cards.test.ts` fails if the face value comes back.
+- **THAT BUG HAD A SECOND HOME, and the fix did not reach it.** `MasteryTrack`'s
+  `XP_FOR_STAGE.discovered` read `herb.xp` too, so the track under a discovered Field Card
+  promised the artwork's 250 for a stage that credits nothing. Both sites now ask the ledger.
+  When a rule is "the number comes from the thing that pays it", fixing one call site is
+  fixing an instance, not the rule — grep for the field before calling it done.
+- **DISCOVERY IS CATALOGUE-SCOPED; LEARNING AND MASTERY ARE PRINTED-DECK-SCOPED. Both are
+  right, they do not meet, and the UI must not pretend otherwise.** `applyDiscovery` resolves
+  through `CATALOGUE` because finding a Field Card outdoors is a real find; `applyLearned` and
+  `qualifiesForMastery` resolve through the printed deck because `masteryTotals`,
+  `KNOWLEDGE_CHECK_POOL`, the achievements, the garden and Field Research every one of them
+  count printed cards. So a Field Card can sit at `discovered` and be structurally unable to
+  reach `learned` — a real state, not a hypothetical. It shipped as a UI that offered the
+  stage anyway: the full three-stage track drawn at "Stage 1 of 3", "Learn this card" as the
+  loudest button on the discovery celebration, and a card check that BUILDS AND PASSES
+  (`buildKnowledgeCheck` takes the card in hand and its distractors from the printed pool, so
+  a Field Card produces four perfectly good questions) — after which `applyLearned` returned
+  the SAME STATE OBJECT, the dialog said "Card learned", and nothing had been recorded. The
+  check could then be retaken forever. `tracksMastery()` in `mastery.ts` states the scope
+  ONCE and the reducer reads it, so a surface that offers a stage and a reducer that refuses
+  it can no longer disagree; `MasteryTrack` draws nothing for a card outside it, which is
+  also what withholds the check, since that track is the only thing mounting
+  `KnowledgeCheck` — pinned as a one-mounter guard in the same shape as
+  `AccountDataSection`'s. Server behaviour is unchanged: `tracksMastery` is the
+  `getPrintedCard` call that was already there, so `herbdex-action` recomputes exactly what
+  it did before and the sync is for consistency, not a redeploy.
 - **A Field Card pays no XP, which is what stops the ladder running away.** If one counted,
   crossing a threshold would raise the total and could cross the next. XP resolves ids through
   the printed deck only, so a Field Card in `discoveries`, `learned` or `mastered` is worth

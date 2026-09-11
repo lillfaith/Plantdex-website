@@ -112,6 +112,21 @@ jobs:
           fi
           echo "Token is scoped to $PROJECT_REF."
 
+      - name: Report which project secrets are set
+        # NOT A GATE. Every function secret fails silently when missing — an unset
+        # SPECIES_ATTESTATION_SECRET means no species is ever minted while scanning carries
+        # on looking fine — so the deploy log is exactly where that answer belongs. It does
+        # not block: a fresh project legitimately has no secrets yet, and refusing to deploy
+        # into one would be a chicken-and-egg. Names only, never values.
+        continue-on-error: true
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          curl -sS -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            "https://api.supabase.com/v1/projects/$PROJECT_REF/secrets" \
+            | python3 scripts/check_function_secrets.py "$PROJECT_REF"
+
       - run: npm ci
 
       - name: Regenerate the shared reducer copies

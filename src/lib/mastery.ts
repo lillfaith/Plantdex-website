@@ -69,6 +69,27 @@ export function stageFor(state: HerbdexState, herbId: string): MasteryStage | nu
 }
 
 /**
+ * Whether the three-stage track applies to this card at all.
+ *
+ * THE PRINTED DECK, AND THE WHOLE SYSTEM AGREES ON THAT. `masteryTotals` counts printed
+ * ids, `KNOWLEDGE_CHECK_POOL` is `PRINTED_CARDS`, achievements resolve through
+ * `getPrintedCard`, the garden mirrors those stages and Field Research is sized against
+ * printed supply. Mastery is what you do with a deck in your hands.
+ *
+ * IT IS EXPORTED BECAUSE DISCOVERY NO LONGER SHARES THAT SCOPE, and the gap is a real
+ * state rather than a hypothetical. `applyDiscovery` resolves through the CATALOGUE — a
+ * Field Card found outdoors is a genuine discovery — while learning and mastery resolve
+ * through the printed deck. So a card can sit at `discovered` and be structurally unable
+ * to reach `learned`, and every surface that draws the track, offers the check, or points
+ * at the next stage has to ask the same question the reducer asks. It used to be four
+ * separate `getPrintedCard` calls and one component that never checked at all, which is
+ * how the UI came to offer a stage the reducer would silently refuse.
+ */
+export function tracksMastery(herbId: string): boolean {
+  return Boolean(getPrintedCard(herbId));
+}
+
+/**
  * Whether a card qualifies for mastery right now.
  *
  * Pure and re-evaluable from scratch — the same property that makes achievement unlocks
@@ -79,7 +100,7 @@ export function qualifiesForMastery(
   herbId: string,
   sightings: number,
 ): boolean {
-  if (!getPrintedCard(herbId)) return false;
+  if (!tracksMastery(herbId)) return false;
   if (!state.discoveries[herbId]) return false;
   if (!state.learned[herbId]) return false;
   return sightings >= SIGHTINGS_FOR_MASTERY;

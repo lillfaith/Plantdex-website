@@ -1,6 +1,6 @@
 import { xpForDiscoveries } from './progression';
-import { applyDiscovery } from './herbdex-reducer';
-import { readFileSync } from 'node:fs';
+import { applyDiscovery, applyLearned } from './herbdex-reducer';
+import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -30,6 +30,7 @@ import { LEVELS } from './progression';
 import { RESEARCH_POOL, STANDING_TASKS } from './research';
 import { isShelfEligible } from './seed-shelf';
 import { emptyState } from './herbdex-state';
+import { qualifiesForMastery, tracksMastery } from './mastery';
 import { xpForState } from './progression';
 import { resolveUnlocked, recordUnlocks } from './unlocked-field-cards';
 import type { HerbdexState } from './types';
@@ -395,5 +396,99 @@ describe('XP unlock, discovery and mastery stay three separate facts', () => {
     expect(panel, 'the discover button is back to printing the card face value').not.toMatch(
       /\{herb\.xp\}\s*XP/,
     );
+  });
+});
+
+/**
+ * THE FOURTH FACT: a card can be DISCOVERED and still be outside the mastery track.
+ *
+ * `applyDiscovery` resolves through the CATALOGUE so a Field Card found outdoors is a real
+ * find; learning and mastery resolve through the PRINTED deck, because that is what
+ * `masteryTotals`, `KNOWLEDGE_CHECK_POOL`, the achievements, the garden and Field Research
+ * all already count. Those two scopes are both correct and they do not meet, which leaves a
+ * card parked at stage 1 of 3 forever.
+ *
+ * That gap shipped as a UI that offered the stage anyway. Discovering a Field Card drew the
+ * full three-stage track, promised "+250 XP" from the artwork for a find that pays nothing,
+ * put "Learn this card" as the loudest button on the celebration, and served a card check
+ * that could be passed — after which `applyLearned` returned the SAME STATE OBJECT, the
+ * dialog said "Card learned", and nothing had been recorded. The check could then be taken
+ * again forever.
+ *
+ * Every test below fails if any one of those surfaces stops asking `tracksMastery`.
+ */
+describe('a discovered Field Card is never offered a stage it cannot reach', () => {
+  const card = FIELD_CARD_SLOTS[0]!.card!;
+  const printed = PRINTED_CARDS[0]!;
+
+  it('states the scope once, and the reducer reads that same predicate', () => {
+    expect(tracksMastery(printed.id), 'a printed card left the mastery track').toBe(true);
+    expect(tracksMastery(card.id), 'a Field Card was admitted to the mastery track').toBe(false);
+
+    // The guard exists ONCE. A second `getPrintedCard` call here is how the reducer and the
+    // UI came to disagree in the first place.
+    const reducer = readFileSync('src/lib/herbdex-reducer.ts', 'utf8');
+    const learned = reducer.slice(reducer.indexOf('export function applyLearned'));
+    expect(learned, 'applyLearned re-derives the scope instead of asking mastery.ts').toContain(
+      'tracksMastery(herbId)',
+    );
+  });
+
+  it('refuses the learn, and says so by returning the very same object', () => {
+    const { state: discovered } = applyDiscovery(emptyState(), card.id);
+    const after = applyLearned(discovered, card.id);
+    expect(after.state, 'applyLearned mutated state for a card it refuses').toBe(discovered);
+    expect(after.state.learned[card.id]).toBeUndefined();
+    expect(after.result.awarded).toBe(false);
+  });
+
+  it('can never qualify for mastery, at any sighting count', () => {
+    const { state } = applyDiscovery(emptyState(), card.id);
+    expect(qualifiesForMastery(state, card.id, Number.MAX_SAFE_INTEGER)).toBe(false);
+  });
+
+  it('draws no track for it, which is also what withholds the card check', () => {
+    const track = readFileSync('src/components/herbdex/MasteryTrack.tsx', 'utf8');
+    expect(track, 'the mastery track no longer checks its own scope').toContain(
+      'if (!tracksMastery(herb.id)) return null;',
+    );
+
+    /*
+     * AND THAT GATE IS THE WHOLE MECHANISM, so it is pinned rather than assumed: the track
+     * is the ONLY thing that mounts `KnowledgeCheck`. Drawing no track is therefore what
+     * makes the unpassable check unreachable — if a second caller ever appears, the check
+     * comes back on a card that cannot be learned and this fails.
+     */
+    const mounters = readdirSync('src/components/herbdex')
+      .filter((file) => file.endsWith('.tsx') && file !== 'KnowledgeCheck.tsx')
+      .filter((file) =>
+        readFileSync(`src/components/herbdex/${file}`, 'utf8').includes('<KnowledgeCheck'),
+      );
+    expect(mounters, 'KnowledgeCheck gained a second mounter').toEqual(['MasteryTrack.tsx']);
+  });
+
+  it('does not print the artwork face value on the track either', () => {
+    /*
+     * The same bug `DiscoverPanel` had, in a second place the first fix did not reach:
+     * `XP_FOR_STAGE.discovered` read `herb.xp`. #48 prints 250 and the ledger pays 0.
+     */
+    const track = readFileSync('src/components/herbdex/MasteryTrack.tsx', 'utf8');
+    expect(track).toContain('discovered: (herb) => xpForDiscoveries([herb.id])');
+    expect(track, 'the track is back to printing the card face value').not.toContain(
+      'discovered: (herb) => herb.xp',
+    );
+    expect(card.xp, 'the fixture stopped being able to catch this').toBeGreaterThan(0);
+    expect(xpForDiscoveries([card.id])).toBe(0);
+  });
+
+  it('does not offer "Learn this card" from the discovery celebration', () => {
+    const celebration = readFileSync('src/components/herbdex/DiscoveryCelebration.tsx', 'utf8');
+    const cta = celebration.indexOf('Learn this card');
+    expect(cta, 'the celebration lost its learn CTA entirely').toBeGreaterThan(-1);
+    // The gate must sit ABOVE the button, so the scroll target cannot be promised for a
+    // card whose mastery panel deliberately does not render.
+    const gate = celebration.indexOf('{tracksMastery(herb.id) && (');
+    expect(gate, 'the celebration offers the learn CTA unconditionally').toBeGreaterThan(-1);
+    expect(gate).toBeLessThan(cta);
   });
 });

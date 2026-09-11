@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { getAchievement } from '@/lib/achievements';
 import { progressFromXp } from '@/lib/progression';
+import { tracksMastery } from '@/lib/mastery';
 import { assetPath } from '@/lib/asset-path';
 import { MysteryCard } from './MysteryCard';
 import { achievementIcon } from '../icons/achievement-icons';
@@ -182,25 +183,39 @@ export function DiscoveryCelebration({
         already broken twice here. Reading the card before answering questions about it is
         also the intended order.
       */}
-      <button
-        type="button"
-        onClick={() => {
-          onClose();
-          // After the dialog has actually closed, or the scroll happens under a modal.
-          requestAnimationFrame(() => {
-            document
-              .getElementById('card-mastery')
-              ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          });
-        }}
-        className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
-      >
-        Learn this card &rarr;
-      </button>
+      {/*
+        AND ONLY WHERE STAGE 2 EXISTS. A Field Card can be discovered — finding one outdoors
+        is a real find — but learning and mastery are the printed deck's track, so this
+        button would have scrolled to a panel that (rightly) no longer draws itself, from a
+        dialog whose loudest control promised a stage the reducer refuses. Where there is no
+        next stage, dismissing IS the next step, so it becomes the primary control rather
+        than sitting as a quiet second choice under a button that does nothing.
+      */}
+      {tracksMastery(herb.id) && (
+        <button
+          type="button"
+          onClick={() => {
+            onClose();
+            // After the dialog has actually closed, or the scroll happens under a modal.
+            requestAnimationFrame(() => {
+              document
+                .getElementById('card-mastery')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          }}
+          className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
+        >
+          Learn this card &rarr;
+        </button>
+      )}
       <button
         type="button"
         onClick={onClose}
-        className="mt-2 min-h-11 w-full rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 transition-colors hover:bg-plum-600"
+        className={
+          tracksMastery(herb.id)
+            ? 'mt-2 min-h-11 w-full rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 transition-colors hover:bg-plum-600'
+            : 'mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100'
+        }
       >
         Keep looking around
       </button>

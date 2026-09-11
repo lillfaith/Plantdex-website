@@ -2,7 +2,7 @@ import type { DiscoveryResult, HerbdexState } from './types';
 import { getPrintedCard } from './deck';
 import { getCatalogueEntry } from './catalogue';
 import { newlyUnlocked } from './achievements';
-import { qualifiesForMastery } from './mastery';
+import { qualifiesForMastery, tracksMastery } from './mastery';
 import { progressForTask, xpForTask, type ResearchTask, type ResearchWorld } from './research';
 import { XP_FOR_LEARNING, XP_FOR_MASTERY } from './progression';
 import { emptyState } from './herbdex-state';
@@ -106,7 +106,12 @@ export function applyLearned(
 ): { state: HerbdexState; result: DiscoveryResult } {
   const noop: DiscoveryResult = { awarded: false, xpAwarded: 0, newAchievementIds: [] };
 
-  if (!getPrintedCard(herbId)) return { state, result: noop };
+  // `tracksMastery`, not a second `getPrintedCard` call. Learning is stage 2 of the
+  // printed deck's track, and this refusal is the reason every surface that OFFERS the
+  // stage has to ask the same question — see mastery.ts. A Field Card reaches this line
+  // (it can be discovered), and a silent no-op here is correct only while nothing upstream
+  // has already told the player it would work.
+  if (!tracksMastery(herbId)) return { state, result: noop };
   if (!state.discoveries[herbId]) return { state, result: noop };
   if (state.learned[herbId]) return { state, result: noop };
 

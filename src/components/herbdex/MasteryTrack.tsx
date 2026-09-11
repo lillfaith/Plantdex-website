@@ -8,9 +8,10 @@ import {
   MASTERY_STAGE_LABEL,
   SIGHTINGS_FOR_MASTERY,
   stageIndex,
+  tracksMastery,
   type MasteryStage,
 } from '@/lib/mastery';
-import { XP_FOR_LEARNING, XP_FOR_MASTERY } from '@/lib/progression';
+import { XP_FOR_LEARNING, XP_FOR_MASTERY, xpForDiscoveries } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { track } from '@/lib/analytics';
 import { Panel } from '../ui/Panel';
@@ -34,8 +35,19 @@ import { KnowledgeCheck } from './KnowledgeCheck';
  *  - Nothing here changes what unlocks a stage; it only draws the result.
  */
 
+/*
+ * THE LEDGER'S NUMBER, NOT THE ARTWORK'S. `herb.xp` is what is printed on the card; what a
+ * discovery actually pays is `xpForDiscoveries`, which resolves through the PRINTED deck and
+ * so credits zero for anything else. The two agree on all 45 printed cards and disagree on
+ * every Field Card — #48 prints 250 and pays nothing — so reading the face value here was a
+ * promise this panel could not keep.
+ *
+ * Second instance of that exact bug: `DiscoverPanel` printed `herb.xp` in its button for the
+ * same reason and was corrected the same way. A number shown next to a stage is a promise,
+ * and it has to come from the thing that pays it.
+ */
 const XP_FOR_STAGE: Record<MasteryStage, (herb: Herb) => number> = {
-  discovered: (herb) => herb.xp,
+  discovered: (herb) => xpForDiscoveries([herb.id]),
   learned: () => XP_FOR_LEARNING,
   mastered: () => XP_FOR_MASTERY,
 };
@@ -72,8 +84,23 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
     return () => clearTimeout(timer);
   }, [justEarned]);
 
-  // Hooks must run on every render, so the early return comes after them.
+  /*
+   * Hooks must run on every render, so the early returns come after them.
+   *
+   * `tracksMastery` IS THE SECOND GATE, AND IT IS NOT DECORATION. This panel used to draw
+   * itself for anything with a stage, and `stageOf` reads recorded state without consulting
+   * the deck — so a Field Card found outdoors got the full three-stage track, "Stage 1 of 3",
+   * and the card check's trigger button. Passing that check calls `markLearned`, which
+   * `applyLearned` refuses for a card outside the printed deck by returning the very same
+   * state object. Nothing was recorded, the track never moved, and the check could be taken
+   * again forever.
+   *
+   * Mastery covers the deck in your hands (see mastery.ts). For a card it does not cover,
+   * the honest thing is to draw no track at all rather than one stuck at its first node —
+   * the discovery is still recorded, still shown, and still a real find.
+   */
   if (!ready || !stage) return null;
+  if (!tracksMastery(herb.id)) return null;
 
   const reached = stageIndex(stage);
   const sightings = sightingsFor(herb.id);
