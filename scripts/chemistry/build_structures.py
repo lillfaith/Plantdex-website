@@ -1,6 +1,6 @@
 import sys, math, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from mol import legibility, _seg_dist, Mol, ring6, ring5, ringn, fuse, fused, out, away, branch, carboxyl, carboxyl_at, chromene, double_ring_bond, render, ring_on_edge, glucopyranose, free_point, L
+from mol import legibility, steady, _seg_dist, Mol, ring6, ring5, ringn, fuse, fused, out, away, branch, carboxyl, carboxyl_at, chromene, double_ring_bond, render, ring_on_edge, glucopyranose, free_point, L
 
 M = {}
 
@@ -836,7 +836,7 @@ def _vitexin(dist, rot, turn):
 
 _best = max(((d, r, t) for d in (2.1, 2.4, 2.7) for r in range(0, 60, 10)
              for t in (-30, -15, 0, 15, 30)),
-            key=lambda x: legibility(_vitexin(*x)))
+            key=lambda x: steady(legibility(_vitexin(*x))))
 m = _vitexin(*_best)
 M['vitexin'] = ('Vitexin', m)
 
@@ -872,7 +872,7 @@ def _aucubin(dist, rot, turn):
     return mm
 
 _ab = max(((d, r, t) for d in (1.4, 1.7, 2.0) for r in range(0, 60, 10)
-           for t in (-30, -15, 0, 15, 30)), key=lambda x: legibility(_aucubin(*x)))
+           for t in (-30, -15, 0, 15, 30)), key=lambda x: steady(legibility(_aucubin(*x))))
 M['aucubin'] = ('Aucubin', _aucubin(*_ab))
 
 # ── Fourth tranche: the pentacyclic triterpene, and two sugars ───────────────

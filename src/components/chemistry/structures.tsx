@@ -34,8 +34,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M0.0 -22.0L0.0 -33.6" />
@@ -53,8 +53,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M0.0 -22.0L0.0 -36.2" />
@@ -74,14 +74,14 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M0.0 -22.0L0.0 -44.0" />
-      <path d="M-0.0 22.0L-0.0 44.0" />
-      <path d="M-0.0 44.0L-21.6 48.3" />
-      <path d="M-0.0 44.0L4.3 65.6" />
+      <path d="M0.0 22.0L0.0 44.0" />
+      <path d="M0.0 44.0L-21.6 48.3" />
+      <path d="M0.0 44.0L4.3 65.6" />
       <path d="M-3.3 44.7L1.0 66.2" />
       </>
     ),
@@ -93,9 +93,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
@@ -115,9 +115,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
@@ -137,21 +137,21 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 11.0L-29.1 16.8" />
-      <path d="M-0.0 22.0L-0.0 33.6" />
+      <path d="M0.0 22.0L0.0 33.6" />
       <path d="M19.1 11.0L29.1 16.8" />
       <path d="M0.0 -22.0L0.0 -44.0" />
       <path d="M0.0 -44.0L12.4 -51.1" />
       <path d="M1.7 -41.1L14.1 -48.2" />
       <path d="M0.0 -44.0L-10.1 -49.8" />
       <text x="-38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-0.0" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="0.0" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="19.1" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="-19.1" y="-55.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HO</text>
@@ -165,15 +165,15 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M0.0 -22.0L0.0 -33.6" />
-      <path d="M-0.0 22.0L-0.0 44.0" />
-      <path d="M-0.0 44.0L-18.9 55.3" />
+      <path d="M0.0 22.0L0.0 44.0" />
+      <path d="M0.0 44.0L-18.9 55.3" />
       <path d="M-18.9 55.3L-27.4 50.2" />
       <text x="0.0" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-37.7" y="44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH2</text>
@@ -316,22 +316,22 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 -55.0L-38.1 -44.0" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
-      <path d="M-38.1 -44.0L-0.0 -44.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
+      <path d="M-38.1 -44.0L0.0 -44.0" />
       <path d="M-29.1 -41.5L-9.0 -41.5" />
       <path d="M-19.1 -55.0L-19.1 -69.2" />
       <path d="M-15.7 -55.0L-15.7 -69.2" />
-      <path d="M-0.0 -44.0L10.0 -49.8" />
+      <path d="M0.0 -44.0L10.0 -49.8" />
       <path d="M-19.1 11.0L-29.1 16.8" />
       <path d="M19.1 11.0L29.1 16.8" />
       <path d="M-38.1 -44.0L-57.2 -55.0" />
@@ -363,22 +363,22 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 -55.0L-38.1 -44.0" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
-      <path d="M-38.1 -44.0L-0.0 -44.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
+      <path d="M-38.1 -44.0L0.0 -44.0" />
       <path d="M-29.1 -41.5L-9.0 -41.5" />
       <path d="M-19.1 -55.0L-19.1 -69.2" />
       <path d="M-15.7 -55.0L-15.7 -69.2" />
-      <path d="M-0.0 -44.0L10.0 -49.8" />
+      <path d="M0.0 -44.0L10.0 -49.8" />
       <path d="M-19.1 11.0L-29.1 16.8" />
       <path d="M19.1 11.0L29.1 16.8" />
       <path d="M-38.1 -44.0L-57.2 -55.0" />
@@ -408,24 +408,24 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 -55.0L-38.1 -44.0" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
-      <path d="M-38.1 -44.0L-0.0 -44.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
+      <path d="M-38.1 -44.0L0.0 -44.0" />
       <path d="M-29.1 -41.5L-9.0 -41.5" />
       <path d="M-19.1 -55.0L-19.1 -69.2" />
       <path d="M-15.7 -55.0L-15.7 -69.2" />
       <path d="M-19.1 11.0L-29.1 16.8" />
       <path d="M19.1 11.0L29.1 16.8" />
-      <path d="M-0.0 -44.0L19.1 -55.0" />
+      <path d="M0.0 -44.0L19.1 -55.0" />
       <path d="M38.1 -88.0L19.1 -77.0" />
       <path d="M35.7 -81.6L25.7 -75.9" />
       <path d="M19.1 -77.0L19.1 -55.0" />
@@ -509,14 +509,14 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M0.0 -22.0L-12.3 -14.9" />
       <path d="M-19.1 -3.2L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M0.0 -22.0L0.0 -36.2" />
       <path d="M3.4 -22.0L3.4 -36.2" />
-      <path d="M-0.0 22.0L-0.0 44.0" />
+      <path d="M0.0 22.0L0.0 44.0" />
       <path d="M19.1 -11.0L40.0 -17.8" />
       <path d="M40.0 -17.8L52.9 0.0" />
       <path d="M52.9 0.0L40.0 17.8" />
@@ -535,8 +535,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
       <path d="M5.8 -14.7L-5.8 -14.7" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-15.6 2.4L-9.9 12.4" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M11.0 19.1L22.0 0.0" />
@@ -564,9 +564,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L11.0 -19.1" />
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
       <path d="M-9.9 -12.4L-15.6 -2.4" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M-5.8 14.7L5.8 14.7" />
       <path d="M11.0 19.1L22.0 0.0" />
@@ -600,9 +600,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M95.3 -11.0L76.2 -22.0" />
@@ -641,14 +641,14 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L11.0 -19.1" />
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
       <path d="M-9.9 -12.4L-15.6 -2.4" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M-5.8 14.7L5.8 14.7" />
       <path d="M11.0 19.1L22.0 0.0" />
       <path d="M-11.0 -19.1L-16.8 -29.1" />
-      <path d="M-22.0 -0.0L-33.6 -0.0" />
+      <path d="M-22.0 0.0L-33.6 0.0" />
       <path d="M22.0 0.0L41.1 -11.0" />
       <path d="M41.1 -11.0L60.1 0.0" />
       <path d="M39.4 -8.1L58.4 2.9" />
@@ -675,7 +675,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M169.3 41.1L175.1 51.1" />
       <path d="M180.3 22.0L191.9 22.0" />
       <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="79.2" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="98.2" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="136.3" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
@@ -692,16 +692,16 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L11.0 -19.1" />
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
       <path d="M-9.9 -12.4L-15.6 -2.4" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M-5.8 14.7L5.8 14.7" />
       <path d="M11.0 19.1L22.0 0.0" />
       <path d="M11.0 -19.1L18.8 -27.7" />
       <path d="M35.2 -31.2L45.8 -26.5" />
       <path d="M45.8 -26.5L43.5 -4.6" />
-      <path d="M43.5 -4.6L22.0 -0.0" />
+      <path d="M43.5 -4.6L22.0 0.0" />
       <path d="M43.5 -4.6L61.3 8.4" />
       <path d="M50.3 -5.0L59.6 1.8" />
       <path d="M61.3 8.4L74.3 2.6" />
@@ -710,11 +710,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M83.7 -22.5L65.9 -35.4" />
       <path d="M65.9 -35.4L45.8 -26.5" />
       <path d="M83.7 -22.5L103.8 -31.4" />
-      <path d="M-22.0 -0.0L-36.2 -0.0" />
+      <path d="M-22.0 0.0L-36.2 0.0" />
       <path d="M-51.0 3.5L-63.7 9.8" />
       <text x="25.7" y="-35.4" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HN</text>
       <text x="81.4" y="-0.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -725,16 +725,16 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L11.0 -19.1" />
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
       <path d="M-9.9 -12.4L-15.6 -2.4" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M-5.8 14.7L5.8 14.7" />
       <path d="M11.0 19.1L22.0 0.0" />
       <path d="M11.0 -19.1L18.8 -27.7" />
       <path d="M35.2 -31.2L45.8 -26.5" />
       <path d="M45.8 -26.5L43.5 -4.6" />
-      <path d="M43.5 -4.6L22.0 -0.0" />
+      <path d="M43.5 -4.6L22.0 0.0" />
       <path d="M43.5 -4.6L61.3 8.4" />
       <path d="M61.3 8.4L74.3 2.6" />
       <path d="M63.4 2.6L70.0 -0.8" />
@@ -742,11 +742,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M83.7 -22.5L65.9 -35.4" />
       <path d="M65.9 -35.4L45.8 -26.5" />
       <path d="M83.7 -22.5L103.8 -31.4" />
-      <path d="M-22.0 -0.0L-36.2 -0.0" />
+      <path d="M-22.0 0.0L-36.2 0.0" />
       <path d="M-51.0 3.5L-63.7 9.8" />
       <text x="25.7" y="-35.4" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">HN</text>
       <text x="81.4" y="-0.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">N</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       </>
     ),
   },
@@ -780,9 +780,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L11.0 -19.1" />
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
       <path d="M-9.9 -12.4L-15.6 -2.4" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M-5.8 14.7L5.8 14.7" />
       <path d="M11.0 19.1L22.0 0.0" />
@@ -818,14 +818,14 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M22.0 0.0L11.0 -19.1" />
       <path d="M15.6 -2.4L9.9 -12.4" />
       <path d="M11.0 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
       <path d="M-9.9 -12.4L-15.6 -2.4" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M-5.8 14.7L5.8 14.7" />
       <path d="M11.0 19.1L22.0 0.0" />
       <path d="M-11.0 -19.1L-16.8 -29.1" />
-      <path d="M-22.0 -0.0L-33.6 -0.0" />
+      <path d="M-22.0 0.0L-33.6 0.0" />
       <path d="M22.0 0.0L41.1 -11.0" />
       <path d="M41.1 -11.0L60.1 0.0" />
       <path d="M39.4 -8.1L58.4 2.9" />
@@ -846,7 +846,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M148.6 33.0L160.9 40.1" />
       <path d="M150.3 30.1L140.2 35.9" />
       <text x="-22.0" y="-38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="79.2" y="-33.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="98.2" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="183.3" y="-11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
@@ -882,9 +882,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
@@ -892,8 +892,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-21.4 -48.6L-31.4 -42.9" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
       <path d="M-38.1 -44.0L-57.2 -55.0" />
       <path d="M-76.2 -88.0L-95.3 -77.0" />
       <path d="M-78.6 -81.6L-88.6 -75.9" />
@@ -915,17 +915,17 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 -55.0L-38.1 -44.0" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
       <path d="M-6.7 -42.9L-16.7 -48.6" />
       <path d="M-38.1 -44.0L-50.4 -51.1" />
       <path d="M-36.4 -46.9L-48.7 -54.0" />
@@ -941,11 +941,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M19.1 -11.0L6.8 -18.1" />
       <path d="M-6.8 -18.1L-19.1 -11.0" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
-      <path d="M-0.0 22.0L-4.6 43.5" />
+      <path d="M0.0 22.0L-4.6 43.5" />
       <path d="M-4.6 43.5L-26.5 45.8" />
       <path d="M-26.5 45.8L-35.4 25.7" />
       <path d="M-35.4 25.7L-19.1 11.0" />
@@ -961,9 +961,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M95.3 -11.0L76.2 -22.0" />
@@ -995,9 +995,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
@@ -1005,8 +1005,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-21.4 -48.6L-31.4 -42.9" />
       <path d="M-38.1 -44.0L-38.1 -32.4" />
       <path d="M-29.1 -16.8L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
       <path d="M-38.1 -44.0L-57.2 -55.0" />
       <path d="M-76.2 -88.0L-95.3 -77.0" />
       <path d="M-78.6 -81.6L-88.6 -75.9" />
@@ -1043,13 +1043,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M22.0 0.0L14.9 -12.3" />
       <path d="M3.2 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M11.0 19.1L22.0 0.0" />
       <path d="M-11.0 -19.1L-22.0 -38.1" />
       <path d="M-22.0 -38.1L-16.2 -48.2" />
-      <path d="M-22.0 -0.0L-33.6 -0.0" />
+      <path d="M-22.0 0.0L-33.6 0.0" />
       <path d="M-11.0 19.1L-16.8 29.1" />
       <path d="M11.0 19.1L16.8 29.1" />
       <path d="M22.0 0.0L44.8 8.3" />
@@ -1069,7 +1069,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M109.6 -14.2L109.6 -10.4" />
       <text x="11.0" y="-19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="-11.0" y="-57.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="52.1" y="11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
@@ -1083,7 +1083,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
     ),
   },
   'lactucin': {
-    viewBox: '-73.9 -72.0 144.1 170.7',
+    viewBox: '-103.9 -72.0 174.1 170.7',
     art: (
       <>
       <path d="M0.0 -25.4L-19.8 -15.8" />
@@ -1100,29 +1100,29 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-55.3 -12.6L-38.7 -27.1" />
       <path d="M-38.7 -27.1L-19.8 -15.8" />
       <path d="M11.0 22.8L17.8 43.8" />
-      <path d="M17.8 43.8L-0.0 56.7" />
-      <path d="M-0.0 56.7L-11.5 48.3" />
+      <path d="M17.8 43.8L0.0 56.7" />
+      <path d="M0.0 56.7L-11.5 48.3" />
       <path d="M-15.4 36.3L-11.0 22.8" />
       <path d="M0.0 -25.4L0.0 -47.4" />
       <path d="M-38.7 -27.1L-40.0 -41.2" />
       <path d="M-35.3 -27.4L-36.6 -41.5" />
-      <path d="M-0.0 56.7L-0.0 70.9" />
+      <path d="M0.0 56.7L0.0 70.9" />
       <path d="M-3.4 56.7L-3.4 70.9" />
       <path d="M17.8 43.8L38.7 50.6" />
       <path d="M16.7 47.0L37.7 53.8" />
       <path d="M-46.6 7.6L-57.9 26.5" />
-      <path d="M-57.9 26.5L-52.3 36.6" />
+      <path d="M-57.9 26.5L-69.5 26.3" />
       <path d="M24.7 5.6L36.0 8.2" />
       <text x="-17.8" y="43.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="-40.7" y="-49.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-0.0" y="78.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-47.2" y="45.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="0.0" y="78.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-79.9" y="26.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="46.2" y="10.5" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
   'lactucopicrin': {
-    viewBox: '-73.9 -135.7 178.0 234.4',
+    viewBox: '-103.9 -135.7 208.0 234.4',
     art: (
       <>
       <path d="M0.0 -25.4L-19.8 -15.8" />
@@ -1139,18 +1139,18 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-55.3 -12.6L-38.7 -27.1" />
       <path d="M-38.7 -27.1L-19.8 -15.8" />
       <path d="M11.0 22.8L17.8 43.8" />
-      <path d="M17.8 43.8L-0.0 56.7" />
-      <path d="M-0.0 56.7L-11.5 48.3" />
+      <path d="M17.8 43.8L0.0 56.7" />
+      <path d="M0.0 56.7L-11.5 48.3" />
       <path d="M-15.4 36.3L-11.0 22.8" />
       <path d="M0.0 -25.4L0.0 -47.4" />
       <path d="M-38.7 -27.1L-40.0 -41.2" />
       <path d="M-35.3 -27.4L-36.6 -41.5" />
-      <path d="M-0.0 56.7L-0.0 70.9" />
+      <path d="M0.0 56.7L0.0 70.9" />
       <path d="M-3.4 56.7L-3.4 70.9" />
       <path d="M17.8 43.8L38.7 50.6" />
       <path d="M16.7 47.0L37.7 53.8" />
       <path d="M-46.6 7.6L-57.9 26.5" />
-      <path d="M-57.9 26.5L-52.3 36.6" />
+      <path d="M-57.9 26.5L-69.5 26.3" />
       <path d="M24.7 5.6L38.6 8.8" />
       <path d="M51.5 4.8L61.1 -5.6" />
       <path d="M61.1 -5.6L75.0 -2.4" />
@@ -1169,8 +1169,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M41.7 -90.7L41.7 -102.3" />
       <text x="-17.8" y="43.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="-40.7" y="-49.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-0.0" y="78.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-47.2" y="45.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="0.0" y="78.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-79.9" y="26.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="46.2" y="10.5" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="82.6" y="-0.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="41.7" y="-112.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
@@ -1183,8 +1183,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M-9.0 -16.8L-19.1 -11.0" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L9.0 -16.8" />
@@ -1196,9 +1196,9 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M38.1 -22.0L38.1 -36.2" />
       <path d="M41.5 -22.0L41.5 -36.2" />
       <path d="M38.1 -22.0L48.2 -16.2" />
-      <path d="M-0.0 22.0L-0.0 44.0" />
+      <path d="M0.0 22.0L0.0 44.0" />
       <path d="M-3.4 22.0L-3.4 44.0" />
-      <path d="M-0.0 44.0L-19.1 55.0" />
+      <path d="M0.0 44.0L-19.1 55.0" />
       <path d="M-19.1 55.0L-31.4 62.0" />
       <path d="M-20.8 52.0L-33.1 59.1" />
       <text x="0.0" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">NH</text>
@@ -1217,17 +1217,17 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 -55.0L-38.1 -44.0" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
       <path d="M-19.1 -55.0L-19.1 -66.6" />
       <path d="M-38.1 -44.0L-57.2 -55.0" />
       <path d="M-76.2 -88.0L-95.3 -77.0" />
@@ -1250,13 +1250,13 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M22.0 0.0L14.9 -12.3" />
       <path d="M3.2 -19.1L-11.0 -19.1" />
-      <path d="M-11.0 -19.1L-22.0 -0.0" />
-      <path d="M-22.0 -0.0L-11.0 19.1" />
+      <path d="M-11.0 -19.1L-22.0 0.0" />
+      <path d="M-22.0 0.0L-11.0 19.1" />
       <path d="M-11.0 19.1L11.0 19.1" />
       <path d="M11.0 19.1L22.0 0.0" />
       <path d="M-11.0 -19.1L-22.0 -38.1" />
       <path d="M-22.0 -38.1L-16.2 -48.2" />
-      <path d="M-22.0 -0.0L-33.6 -0.0" />
+      <path d="M-22.0 0.0L-33.6 0.0" />
       <path d="M-11.0 19.1L-16.8 29.1" />
       <path d="M11.0 19.1L16.8 29.1" />
       <path d="M22.0 0.0L44.8 8.3" />
@@ -1273,7 +1273,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M109.6 -14.2L109.6 -10.4" />
       <text x="11.0" y="-19.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="-11.0" y="-57.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-44.0" y="-0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-44.0" y="0.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="22.0" y="38.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="52.1" y="11.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">S</text>
@@ -1288,24 +1288,24 @@ export const STRUCTURES: Record<string, StructureArt> = {
     ),
   },
   'vitexin': {
-    viewBox: '-156.8 -111.0 218.9 185.3',
+    viewBox: '-143.8 -111.0 205.9 185.3',
     art: (
       <>
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-2.4 -15.6L-12.4 -9.9" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
       <path d="M-12.4 9.9L-2.4 15.6" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M-19.1 -55.0L-38.1 -44.0" />
       <path d="M-38.1 -44.0L-38.1 -29.8" />
       <path d="M-31.4 -18.1L-19.1 -11.0" />
-      <path d="M-0.0 -22.0L-0.0 -44.0" />
-      <path d="M-0.0 -44.0L-19.1 -55.0" />
-      <path d="M-38.1 -44.0L-0.0 -44.0" />
+      <path d="M0.0 -22.0L0.0 -44.0" />
+      <path d="M0.0 -44.0L-19.1 -55.0" />
+      <path d="M-38.1 -44.0L0.0 -44.0" />
       <path d="M-29.1 -41.5L-9.0 -41.5" />
       <path d="M-19.1 -55.0L-19.1 -69.2" />
       <path d="M-15.7 -55.0L-15.7 -69.2" />
@@ -1329,7 +1329,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-82.3 32.7L-61.6 25.1" />
       <path d="M-61.6 25.1L-57.8 3.5" />
       <path d="M-95.3 -3.1L-112.2 -17.3" />
-      <path d="M-112.2 -17.3L-123.1 -13.3" />
+      <path d="M-112.2 -17.3L-110.1 -28.7" />
       <path d="M-99.1 18.5L-110.0 22.5" />
       <path d="M-82.3 32.7L-84.3 44.1" />
       <path d="M-61.6 25.1L-52.7 32.6" />
@@ -1340,7 +1340,7 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <text x="38.1" y="22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-114.3" y="-88.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-74.6" y="-10.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-132.8" y="-9.8" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-108.3" y="-38.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-119.8" y="26.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-86.1" y="54.3" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-44.7" y="39.3" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
@@ -1348,17 +1348,17 @@ export const STRUCTURES: Record<string, StructureArt> = {
     ),
   },
   'aucubin': {
-    viewBox: '-157.7 -108.3 192.7 188.2',
+    viewBox: '-144.2 -124.2 179.3 204.0',
     art: (
       <>
       <path d="M19.1 -11.0L6.8 -18.1" />
       <path d="M-6.8 -18.1L-19.1 -11.0" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M14.7 5.8L14.7 -5.8" />
-      <path d="M-0.0 22.0L-4.6 43.5" />
+      <path d="M0.0 22.0L-4.6 43.5" />
       <path d="M-4.6 43.5L-26.5 45.8" />
       <path d="M-26.5 45.8L-35.4 25.7" />
       <path d="M-25.0 39.1L-29.5 29.1" />
@@ -1367,27 +1367,27 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M-35.4 25.7L-56.9 21.1" />
       <path d="M-56.9 21.1L-68.3 18.7" />
       <path d="M-19.1 -11.0L-31.4 -18.1" />
-      <path d="M-54.5 -47.8L-68.7 -64.7" />
-      <path d="M-68.7 -64.7L-90.4 -60.9" />
-      <path d="M-90.4 -60.9L-97.9 -40.2" />
-      <path d="M-97.9 -40.2L-88.7 -29.3" />
-      <path d="M-76.1 -24.7L-62.1 -27.1" />
-      <path d="M-62.1 -27.1L-54.5 -47.8" />
-      <path d="M-97.9 -40.2L-119.5 -36.4" />
-      <path d="M-119.5 -36.4L-127.0 -45.2" />
-      <path d="M-90.4 -60.9L-97.8 -69.7" />
-      <path d="M-68.7 -64.7L-64.7 -75.6" />
-      <path d="M-54.5 -47.8L-43.1 -49.8" />
-      <path d="M-45.7 -23.6L-62.1 -27.1" />
+      <path d="M-54.2 -44.0L-61.3 -56.3" />
+      <path d="M-73.0 -63.1L-87.2 -63.1" />
+      <path d="M-87.2 -63.1L-98.2 -44.0" />
+      <path d="M-98.2 -44.0L-87.2 -24.9" />
+      <path d="M-87.2 -24.9L-65.2 -24.9" />
+      <path d="M-65.2 -24.9L-54.2 -44.0" />
+      <path d="M-87.2 -63.1L-98.2 -82.1" />
+      <path d="M-98.2 -82.1L-92.4 -92.2" />
+      <path d="M-98.2 -44.0L-109.8 -44.0" />
+      <path d="M-87.2 -24.9L-93.0 -14.9" />
+      <path d="M-65.2 -24.9L-59.4 -14.9" />
+      <path d="M-42.7 -28.3L-54.2 -44.0" />
       <text x="0.0" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
       <text x="10.1" y="59.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-78.4" y="16.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       <text x="-38.1" y="-22.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-83.7" y="-23.3" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
-      <text x="-133.7" y="-53.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-104.5" y="-77.7" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-61.2" y="-85.3" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
-      <text x="-32.9" y="-51.6" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-65.2" y="-63.1" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">O</text>
+      <text x="-87.2" y="-101.2" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-120.2" y="-44.0" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-98.2" y="-5.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
+      <text x="-54.2" y="-5.9" fill="currentColor" stroke="none" fontSize="11" fontWeight="600" textAnchor="middle" dominantBaseline="central">OH</text>
       </>
     ),
   },
@@ -1397,8 +1397,8 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <>
       <path d="M0.0 -22.0L-19.1 -11.0" />
       <path d="M-19.1 -11.0L-19.1 11.0" />
-      <path d="M-19.1 11.0L-0.0 22.0" />
-      <path d="M-0.0 22.0L19.1 11.0" />
+      <path d="M-19.1 11.0L0.0 22.0" />
+      <path d="M0.0 22.0L19.1 11.0" />
       <path d="M19.1 11.0L19.1 -11.0" />
       <path d="M19.1 -11.0L0.0 -22.0" />
       <path d="M19.1 11.0L38.1 22.0" />
@@ -1423,11 +1423,11 @@ export const STRUCTURES: Record<string, StructureArt> = {
       <path d="M114.3 -88.0L95.3 -77.0" />
       <path d="M95.3 -77.0L95.3 -55.0" />
       <path d="M-19.1 11.0L-29.1 16.8" />
-      <path d="M-0.0 22.0L-17.3 35.5" />
-      <path d="M-0.0 22.0L17.3 35.5" />
-      <path d="M19.1 -11.0L38.1 -0.0" />
-      <path d="M57.2 -11.0L76.2 -0.0" />
-      <path d="M76.2 -22.0L95.3 -33.0" />
+      <path d="M0.0 22.0L-17.3 35.5" />
+      <path d="M0.0 22.0L17.3 35.5" />
+      <path d="M19.1 -11.0L0.0 0.0" />
+      <path d="M57.2 -11.0L38.1 0.0" />
+      <path d="M76.2 -22.0L76.2 0.0" />
       <path d="M95.3 -77.0L76.2 -88.0" />
       <path d="M114.3 -88.0L114.3 -110.0" />
       <path d="M114.3 -44.0L133.4 -33.0" />

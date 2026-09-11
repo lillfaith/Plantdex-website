@@ -93,6 +93,29 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
   Ring atoms are walked, never sorted. Every new structure must be rendered and read back
   before it ships; anything not both accurate and legible at plate size is dropped rather than
   shipped, which is why rutin, taraxasterol and ellagic acid are deliberately absent.
+- **The generator must produce the same bytes on every machine, and that is not free.**
+  `structures.tsx` is generated and committed, so a generator that depends on the host's libm
+  fails `structures.generated.test.ts` for everyone except whoever last ran it — and the only
+  way to "fix" that is to commit your own platform's arbitrary choices over theirs. Two causes,
+  both now closed. FIRST, THE SIGN OF ZERO: 236 coordinates here are mathematically zero and
+  arrive as a few femtounits of trig residue, and `f"{-0.0:.1f}"` prints `-0.0` where `0.0`
+  prints `0.0` — so the printed sign belonged to whichever libm computed the cosine. `_c()`
+  snaps anything under `QUANTUM` to a true zero, and a test asserts no `-0.0` survives in the
+  output rather than trusting the helper, because there were FIVE format sites and a sixth
+  would bypass it. SECOND, TIES DECIDED BY THE LAST BIT: the ring-walk direction in
+  `glucopyranose` (18 exact ties, an anchor on the ring's own axis of symmetry), the gap-width
+  tiebreak in `free_point` (3 ties, half a ULP apart), the `>` in `branch` between two
+  symmetric continuations, and the `legibility` searches behind vitexin and aucubin (a 4-way
+  tie at exactly 22.0). Every one compared raw floats that are EQUAL in exact arithmetic.
+  `steady()` puts them on a 1e-9 grid — measured to sit above the largest tie margin (4e-12)
+  and below the smallest genuine one (1.3e-01) — and every remaining tie breaks on an integer,
+  an index or generator order, never on a coordinate. Verified by re-running the generator
+  under eight simulated alternative libms, each perturbing `cos`/`sin`/`atan2`/`hypot`/`sqrt`
+  by a ULP self-consistently: all eight now produce identical bytes.
+- **A generated-file test that passes locally is not evidence it is reproducible.** This one
+  was deterministic on one machine — five runs and three `PYTHONHASHSEED` values gave an
+  identical file — and still divergent across two. Determinism and reproducibility are
+  different properties; only the second is what a committed generated file needs.
 - **Adding a molecule is TWO edits, and doing only the first ships a placeholder box.** The
   geometry goes in `build_structures.py`; the entry in `compounds.ts` then has to name it.
   Do only the geometry and everything is green — the structure is in `STRUCTURES`, the types

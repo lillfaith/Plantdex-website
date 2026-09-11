@@ -27,4 +27,22 @@ describe('structures.tsx', () => {
     if (before !== after) writeFileSync(path, before);   // leave the tree as we found it
     expect(after, 'run `npm run build:structures` and commit the result').toBe(before);
   });
+
+  /*
+   * THE SIGN OF ZERO IS NOT GEOMETRY, and it is how this file came to differ between two
+   * machines that were both right. IEEE-754 has two zeros; `-0.0` and `0.0` format
+   * differently; and 236 coordinates in this deck are mathematically zero, arriving as a few
+   * femtounits of trig residue whose sign belongs to whichever libm computed the cosine. The
+   * test above then failed for everyone whose platform disagreed with whoever last ran the
+   * generator, and the only way to "fix" it was to commit your own platform's coin-flips.
+   *
+   * `_c()` in `mol.py` snaps that residue to a true zero. This asserts the OUTPUT rather
+   * than the helper, because the helper could be bypassed by a sixth format site added later
+   * — there were five, and every one had to be changed.
+   */
+  it('writes no negative zero, which would differ between platforms', () => {
+    const source = readFileSync('src/components/chemistry/structures.tsx', 'utf8');
+    const offenders = [...source.matchAll(/-0\.0(?![0-9])/g)].length;
+    expect(offenders, 'a coordinate kept a platform-dependent sign of zero').toBe(0);
+  });
 });

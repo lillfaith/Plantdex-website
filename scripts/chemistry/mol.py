@@ -10,6 +10,31 @@ import math
 L = 22.0                      # bond length
 AP = L * math.sqrt(3) / 2     # hexagon apothem
 
+# ── Reproducibility across machines ───────────────────────────────────────────
+# Several discrete choices in this file are made by COMPARING FLOATS, and a number of those
+# comparisons are between values that are EQUAL in exact arithmetic: a ring vertex genuinely
+# equidistant from its two neighbours, two placements with identical clearance, two search
+# candidates with the same legibility. Nothing decides them but the last bit of `math.cos`
+# and `math.atan2` — and glibc and Apple's libm are not obliged to agree on that bit.
+#
+# So the generator was deterministic on any ONE machine (five runs and three PYTHONHASHSEED
+# values give an identical file here) and divergent between two, which is the worst shape a
+# generated-and-committed file can have: `structures.generated.test.ts` passes for whoever
+# last ran it and fails for everyone else, and the "fix" is to commit your own platform's
+# arbitrary coin-flips over theirs.
+#
+# QUANTUM sits far above the noise and far below any real difference. Measured on this deck:
+# the largest tie margin is 4e-12 and the smallest genuine margin is 1.3e-01, so 1e-9 erases
+# the noise and changes no decision that had a reason behind it. `steady()` returns an INT,
+# so the comparison that follows is exact integer arithmetic rather than another float
+# compare. Every remaining tie is then broken on an integer — an index or generator order —
+# never on a coordinate.
+QUANTUM = 1e-9
+
+def steady(x):
+    """`x` on the decision grid, as an int, so sub-epsilon noise cannot flip a comparison."""
+    return round(x / QUANTUM)
+
 def ring6(cx, cy, rot=90.0):
     """Six vertices of a regular hexagon, index 0 at `rot` degrees, going anticlockwise."""
     return [(cx + L * math.cos(math.radians(rot + 60 * i)),
@@ -109,8 +134,14 @@ def free_point(m, v, d=L):
         nxt = angs[(i + 1) % len(angs)] + (2 * math.pi if i + 1 == len(angs) else 0.0)
         mid = a + (nxt - a) / 2
         q = (v[0] + d * math.cos(mid), v[1] + d * math.sin(mid))
-        cands.append((round(min(clearance(m, q, v), d) / d, 3), nxt - a, q))
-    return max(cands)[2]
+        # The gap width is the TIEBREAK and was a raw float: three placements on this deck
+        # (all in ursolic acid) tie on the clearance score and then differ by half a ULP of
+        # gap, which is a coin flip. Quantised, those three tie properly and fall through to
+        # `-i`, so the earliest candidate in angular order wins on every machine. `q` is kept
+        # last but can never be reached, which is the point — a position must not be a
+        # tiebreak.
+        cands.append((round(min(clearance(m, q, v), d) / d, 3), steady(nxt - a), -i, q))
+    return max(cands)[3]
 
 def _seg_dist(q, a, b):
     """Distance from point q to the segment a-b."""
@@ -224,13 +255,18 @@ def branch(p, incoming, occupied):
     than by eye is what stopped a hydroxyl being placed exactly on top of a ring carbon:
     the two candidates were 0.09 units apart from an existing vertex and 38 units apart, and
     the sign that chose between them was simply wrong.
+
+    Quantised for the same reason the ring walk is: where the two continuations are
+    symmetric about the incoming bond they are EQUALLY clear by construction, and the raw
+    `>` was then settled by the last bit of a cosine. Tied, the rule has no preference — both
+    are chemically identical, as the first line says — so +60 wins on every machine.
     """
-    best, best_clear = None, -1.0
+    best, best_clear = None, -1
     for deg in (60, -60):
         q = _turn(p, incoming, deg)
         clear = min(math.hypot(q[0] - o[0], q[1] - o[1]) for o in occupied) if occupied else L
-        if clear > best_clear:
-            best, best_clear = q, clear
+        if steady(clear) > best_clear:
+            best, best_clear = q, steady(clear)
     return best
 
 def glucopyranose(m, centre, anchor, rot=0.0):
@@ -245,13 +281,18 @@ def glucopyranose(m, centre, anchor, rot=0.0):
     Ring walk from C1: C1, O, C5, C4, C3, C2.
     """
     G = ring6(*centre, rot=rot)
-    k = min(range(6), key=lambda i: (G[i][0] - anchor[0]) ** 2 + (G[i][1] - anchor[1]) ** 2)
+    k = min(range(6), key=lambda i: steady((G[i][0] - anchor[0]) ** 2 + (G[i][1] - anchor[1]) ** 2))
     # Walk in whichever direction puts the ring oxygen further from the anchor, so the
     # incoming bond and the ring oxygen label never crowd the same corner.
     fwd = G[(k + 1) % 6]
     bwd = G[(k - 1) % 6]
-    step = 1 if (fwd[0] - anchor[0]) ** 2 + (fwd[1] - anchor[1]) ** 2 >= \
-                (bwd[0] - anchor[0]) ** 2 + (bwd[1] - anchor[1]) ** 2 else -1
+    # Quantised, because on this deck EIGHTEEN of these are exact ties — an anchor sitting on
+    # the ring's own axis of symmetry, where both neighbours are equidistant by construction
+    # and the computed difference is ~1e-12 of pure trig rounding. Tied, the stated rule
+    # ("whichever puts the ring oxygen further from the anchor") has no preference, so `>=`
+    # settles it at +1 on every machine instead of letting libm mirror the sugar.
+    step = 1 if steady((fwd[0] - anchor[0]) ** 2 + (fwd[1] - anchor[1]) ** 2) >= \
+                steady((bwd[0] - anchor[0]) ** 2 + (bwd[1] - anchor[1]) ** 2) else -1
     at = lambda n: G[(k + step * n) % 6]
     m.ring(G)
     m.label(at(1), 'O')                                   # ring oxygen, between C1 and C5
@@ -344,6 +385,23 @@ class Mol:
         self.labels.append((p[0] + dx, p[1] + dy, text))
         return self
 
+def _c(v):
+    """A coordinate as it is written into the SVG.
+
+    THE SIGN OF ZERO IS NOT GEOMETRY. IEEE-754 has two zeros and `f"{-0.0:.1f}"` prints
+    "-0.0" where `f"{0.0:.1f}"` prints "0.0" — so a vertex sitting exactly on an axis, which
+    is every ring drawn at the origin, wrote a different byte depending on which libm
+    multiplied the cosine. 236 coordinates in this deck are mathematically zero and arrive
+    here as roughly +/-8e-15 of trig residue, and their PRINTED SIGN was the platform's to
+    choose. That, not any difference in chemistry, is what made the generated file differ
+    between Linux and macOS.
+
+    So anything under QUANTUM is snapped to a true zero, which also absorbs the residue
+    itself rather than only the sign bit. The threshold is eleven orders of magnitude below
+    the 0.1 this prints at, so no coordinate anybody could see is touched.
+    """
+    return f'{0.0 if abs(v) < QUANTUM else v:.1f}'
+
 def render(mol, pad=16, font=11):
     xs, ys = [], []
     for a, b, *_ in mol.bonds:
@@ -362,7 +420,7 @@ def render(mol, pad=16, font=11):
         return (p[0] + dx / n * min(back, n * 0.55), p[1] + dy / n * min(back, n * 0.55))
     for a, b, order, inner in mol.bonds:
         pa, pb = trim(a, b), trim(b, a)
-        lines.append(f'<path d="M{pa[0]:.1f} {pa[1]:.1f}L{pb[0]:.1f} {pb[1]:.1f}" />')
+        lines.append(f'<path d="M{_c(pa[0])} {_c(pa[1])}L{_c(pb[0])} {_c(pb[1])}" />')
         if order == 2:
             if inner:  # aromatic: the second line sits INSIDE the ring
                 cx, cy = inner
@@ -374,12 +432,12 @@ def render(mol, pad=16, font=11):
                 def shrink(u, v, f=0.16):
                     return (u[0] + (v[0] - u[0]) * f, u[1] + (v[1] - u[1]) * f)
                 qa2, qb2 = shrink(qa, qb), shrink(qb, qa)
-                lines.append(f'<path d="M{qa2[0]:.1f} {qa2[1]:.1f}L{qb2[0]:.1f} {qb2[1]:.1f}" />')
+                lines.append(f'<path d="M{_c(qa2[0])} {_c(qa2[1])}L{_c(qb2[0])} {_c(qb2[1])}" />')
             else:      # plain double bond: offset perpendicular
                 dx, dy = pb[0] - pa[0], pb[1] - pa[1]; n = math.hypot(dx, dy)
                 ox, oy = -dy / n * 3.4, dx / n * 3.4
                 lines.append(
-                    f'<path d="M{pa[0]+ox:.1f} {pa[1]+oy:.1f}L{pb[0]+ox:.1f} {pb[1]+oy:.1f}" />')
+                    f'<path d="M{_c(pa[0]+ox)} {_c(pa[1]+oy)}L{_c(pb[0]+ox)} {_c(pb[1]+oy)}" />')
     for x, y, t in mol.labels:
         # camelCase, because the output is JSX and not SVG. React passes the hyphenated
         # forms through to the DOM — measured, so the drawings were never actually wrong —
@@ -387,8 +445,8 @@ def render(mol, pad=16, font=11):
         # with a structure on it. Noise at that volume is not cosmetic: it is where a real
         # error goes to hide.
         lines.append(
-            f'<text x="{x:.1f}" y="{y:.1f}" fill="currentColor" stroke="none" '
+            f'<text x="{_c(x)}" y="{_c(y)}" fill="currentColor" stroke="none" '
             f'fontSize="{font}" fontWeight="600" textAnchor="middle" '
             f'dominantBaseline="central">{t}</text>')
-    vb = f'{x0:.1f} {y0:.1f} {x1-x0:.1f} {y1-y0:.1f}'
+    vb = f'{_c(x0)} {_c(y0)} {_c(x1-x0)} {_c(y1-y0)}'
     return vb, '\n      '.join(lines)
