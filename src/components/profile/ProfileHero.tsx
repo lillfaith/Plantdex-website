@@ -7,11 +7,13 @@ import { STAGE_LABEL, nextStageHint, stageForState } from '@/lib/garden';
 import { HABITAT_LABEL } from '@/lib/habitat';
 import { MASTERY_STAGE_LABEL, stageFor } from '@/lib/mastery';
 import { titleLabel } from '@/lib/field-titles';
+import { progressionSubtext } from '@/lib/progression-track';
 import type { ResolvedProfile } from '@/lib/player-profile';
 import type { ProfileStats } from '@/lib/profile-stats';
 import type { HerbdexState } from '@/lib/types';
 import { PlantSprite } from '../PlantSprite';
 import { RarityAura } from '../game/RarityAura';
+import { XpMilestones } from '../game/XpMilestones';
 import { RarityBadge } from '../herbdex/RarityBadge';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 import { EYEBROW, MICRO_LABEL } from '../ui/accents';
@@ -239,28 +241,29 @@ export function ProfileHero({
           {/* Taller than a normal bar (12px) because this is the page's headline number, and
               filled through `.path-fill` so it animates in once on arrival rather than every
               time something re-renders. */}
-          <div
-            className="mt-1.5 h-3 overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/40"
-            role="progressbar"
-            aria-valuenow={xpPct}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={
-              progress.nextLevelXp === null
-                ? 'Maximum level reached'
-                : `${xpPct}% of the way to level ${progress.level + 1}`
-            }
-          >
+          <div className="relative mt-1.5">
             <div
-              className="path-fill h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent"
-              style={{ '--fill': `${Math.max(xpPct, progress.xp > 0 ? 2 : 0)}%` } as React.CSSProperties}
-            />
+              className="h-3 overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/40"
+              role="progressbar"
+              aria-valuenow={xpPct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={
+                progress.nextLevelXp === null
+                  ? 'Maximum level reached'
+                  : `${xpPct}% of the way to level ${progress.level + 1}`
+              }
+            >
+              <div
+                className="path-fill h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent"
+                style={{ '--fill': `${Math.max(xpPct, progress.xp > 0 ? 2 : 0)}%` } as React.CSSProperties}
+              />
+            </div>
+            {/* The same markers the Herbdex draws, from the same function. The profile is the
+                other place a player reads their standing, so the two must agree. */}
+            <XpMilestones progress={progress} />
           </div>
-          <p className="mt-1 text-xs text-violet-300">
-            {progress.nextLevelXp === null
-              ? 'Highest level reached.'
-              : `${(progress.nextLevelXp - progress.xp).toLocaleString()} XP to level ${progress.level + 1}`}
-          </p>
+          <p className="mt-1 text-xs text-violet-300">{progressionSubtext(progress)}</p>
 
           <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
             <p className={`${MICRO_LABEL} text-violet-300`}>Collection</p>

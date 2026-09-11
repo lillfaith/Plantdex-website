@@ -830,6 +830,39 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   lands. Every one REUSES its existing component or data function — `fieldCardProgress`,
   `RecentFinds`, `recentFinds()` — rather than restating a threshold or a rule; the Herbdex
   copy is a signpost (one line, a hairline bar) and the research page keeps the full reward.
+- **ONE TRACK ON THE GENERAL SURFACES; THE DETAIL STAYS ON FIELD RESEARCH.** Levels and Field
+  Cards are funded by the same XP, so drawing them as two stacked meters told a player there
+  were two systems when exactly one number is going up. `/herbdex` and `/profile` now carry the
+  thresholds as MARKERS ON THE LEVEL BAR — `progression-track.ts` composes `field-cards.ts` and
+  `progression.ts` without either importing the other, so nothing restates a threshold — and
+  the standalone "Next Field Card" box is gone. `/herbdex/research` is untouched and remains the
+  dedicated page: held/9, the next card named, the detailed countdown, the unlock reveal and the
+  unlocked thumbnails. The profile keeps the count, the thumbnails and the "earned with XP, not
+  found outdoors" line, and loses only the duplicate countdown the bar above now carries.
+- **`XpMilestones` is a SIBLING of the bar, never a child.** Both bars clip their fill with
+  `overflow-hidden`, and the first five Field Cards sit EXACTLY on a level-up — at the far right
+  edge, where a nested marker is cut in half by the rounding that makes a bar look like a bar.
+  A diamond and not a tick, deliberately: a checkmark means "task complete", and these are
+  reward thresholds on a road. `aria-hidden`, because the line underneath says in words what
+  the shapes say, and "diamond, diamond" teaches a screen reader nothing.
+- **At most ONE marker falls in any level band, and that is measured rather than assumed.**
+  Levels sit at 0/250/600/1200/2200/3600/5500/8000/10000/12500/15000 and cards at
+  600/1200/2200/3600/5500/7000/8750/11000/14000, so the first five coincide with a level-up and
+  the last four sit alone mid-band. Crowding is therefore not a risk to design around — but
+  `milestonesInLevel` returns a LIST, because that is a property of two ladders free to move,
+  not a promise either makes, and a test sweeps every band and fails if a second ever lands.
+- **The band range is exclusive at the floor, inclusive at the ceiling.** A threshold sitting
+  on the floor was crossed to GET here; pinning it to the left edge of a fresh bar re-announces
+  a reward on the very screen that just announced it.
+- **I CALLED A REACHABLE STATE UNREACHABLE, and a screenshot caught it.** Reasoning only about
+  which thresholds fall INSIDE a band, I concluded the "level first" subtext could never occur,
+  wrote that in a comment, and had the test construct a fake `Progress` for it. It missed the
+  ordinary case where the band's card is already EARNED and the next is a band away: past 8,750
+  the next card is 11,000 while the next level is 10,000. A sweep of every XP total finds 160
+  that produce it — including **0**, where a new player is 250 from Level 2 and 600 from their
+  first card, so it is the first line anyone ever reads. Which states are reachable is a
+  measurement, not a deduction from the thresholds; the test sweeps the ladder now and fails if
+  any of the four sentences has no reachable XP total.
 - **The profile says what you HOLD; the research page says what is coming.** `FieldCardsHeld`
   is a strip, not a section: a count, the chips of the cards whose artwork exists, and one
   line naming what an unlock is. It shows held cards only and never the locked ones — a row of

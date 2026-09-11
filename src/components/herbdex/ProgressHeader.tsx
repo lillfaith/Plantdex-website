@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { CURRENT_COLLECTION } from '@/lib/collection';
-import { fieldCardProgress } from '@/lib/field-cards';
+import { progressionSubtext } from '@/lib/progression-track';
+import { XpMilestones } from '../game/XpMilestones';
 import { CountUp } from './CountUp';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { AchievementShelf } from './AchievementShelf';
@@ -30,10 +31,6 @@ export function ProgressHeader() {
   const masteredPct = asPct(masteredCount);
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
-  // `next` is null once all nine are held, which is what hides the row rather than printing
-  // a countdown to nothing. Same function the research page's panel calls.
-  const progressToNext = fieldCardProgress(progress.xp);
-  const nextCard = ready && progressToNext.next ? progressToNext : null;
 
   /*
    * `game-panel` is the deck's neon surface — a violet-600 edge at 55% with a 10px bloom —
@@ -60,28 +57,39 @@ export function ProgressHeader() {
         </p>
       </div>
 
-      <div
-        className="mt-2 h-3 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-600/45"
-        role="progressbar"
-        aria-valuenow={pct}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={
-          progress.nextLevelXp === null
-            ? 'Maximum level reached'
-            : `${pct}% of the way to level ${progress.level + 1}`
-        }
-      >
+      {/*
+        ONE TRACK. The Field Card thresholds are markers ON this bar, not a second bar under
+        it — both ladders are funded by the same XP, and drawing them apart made one
+        progression look like two. The wrapper exists so `XpMilestones` can sit beside the
+        clipped fill rather than inside it; see that component for why.
+      */}
+      <div className="relative mt-2">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent transition-[width] duration-500 ease-out"
-          style={{ width: `${Math.max(pct, discoveredCount > 0 ? 2 : 0)}%` }}
-        />
+          className="h-3 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-600/45"
+          role="progressbar"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={
+            progress.nextLevelXp === null
+              ? 'Maximum level reached'
+              : `${pct}% of the way to level ${progress.level + 1}`
+          }
+        >
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent transition-[width] duration-500 ease-out"
+            style={{ width: `${Math.max(pct, discoveredCount > 0 ? 2 : 0)}%` }}
+          />
+        </div>
+        <XpMilestones progress={progress} />
       </div>
-      <p className="mt-1.5 text-xs text-violet-300">
-        {progress.nextLevelXp === null
-          ? 'Highest level reached.'
-          : `${(progress.nextLevelXp - progress.xp).toLocaleString()} XP to level ${progress.level + 1}`}
-      </p>
+      {/*
+        And the line under it names whichever rewards are actually ahead — the level, the next
+        Field Card, or both at once when one XP total buys them together, which is true of the
+        first five cards. `progressionSubtext` decides from the two ladders; nothing here
+        knows a threshold.
+      */}
+      <p className="mt-1.5 text-xs text-violet-300">{progressionSubtext(progress)}</p>
 
       <hr className="my-4 border-violet-700/50" />
 
@@ -165,49 +173,6 @@ export function ProgressHeader() {
         {learnedCount} card{learnedCount === 1 ? '' : 's'} learned. Found → learned → found
         again.
       </p>
-
-      {/*
-        THE NEXT REWARD, WHERE A RETURNING PLAYER LANDS.
-
-        This countdown already existed, in full, inside `FieldCardReward` — and that panel is
-        mounted on exactly one route, /herbdex/research. So the app knew precisely how close
-        the next reward was and only said so on a page a player had no particular reason to
-        open. This is the same `fieldCardProgress` call, not a second copy of the ladder: the
-        thresholds still live in `field-cards.ts` and nothing here knows a number.
-
-        Deliberately one line and a hairline bar rather than the research page's full block.
-        That page shows the card, its name and its artwork because it is the reward's home;
-        here it is a signpost, and a second reward panel on the Herbdex would compete with the
-        collection itself for attention.
-      */}
-      {nextCard && (
-        <Link
-          href="/herbdex/research"
-          className="mt-4 block rounded-xl border border-violet-700/60 bg-plum-800/50 p-3 transition-colors hover:border-violet-600"
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-            <span className="text-[0.72rem] font-bold tracking-[0.12em] text-violet-300 uppercase">
-              Next Field Card
-            </span>
-            <span className="text-xs font-semibold text-gold-300 tabular-nums">
-              {nextCard.remaining.toLocaleString()} XP to go
-            </span>
-          </div>
-          <div
-            className="mt-2 h-1.5 overflow-hidden rounded-full bg-plum-950/70 ring-1 ring-violet-700/60"
-            role="progressbar"
-            aria-valuenow={Math.round(nextCard.fraction * 100)}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={`${nextCard.remaining.toLocaleString()} XP until the next Field Card`}
-          >
-            <div
-              className="path-fill h-full rounded-full bg-gradient-to-r from-gold-500 to-pink-accent"
-              style={{ ['--fill' as string]: `${nextCard.fraction * 100}%` }}
-            />
-          </div>
-        </Link>
-      )}
 
       {/*
         The way into the profile, placed in the progress cluster because that is what the

@@ -40,7 +40,7 @@ export function FieldCardsHeld() {
 
   const held = resolveUnlocked(progress.xp, record);
   const drawn = held.filter((slot) => slot.card);
-  const { next, remaining } = fieldCardProgress(progress.xp);
+  const { next } = fieldCardProgress(progress.xp);
 
   return (
     <section aria-labelledby="profile-field-cards" className="panel p-4 sm:p-5">
@@ -78,10 +78,11 @@ export function FieldCardsHeld() {
           {/* Says what an unlock IS, on the one page that lists standings, so a Field Card
               is never read as a plant this player has found. Same distinction the card page
               and the research panel both make in their own words. */}
-          <p className="mt-2.5 text-xs text-violet-400">
-            Earned with XP, not found outdoors.
-            {next && ` ${remaining.toLocaleString()} XP to the next.`}
-          </p>
+          {/* No countdown here any more: the hero's XP track a few rows above now carries
+              "N XP to next Field Card" on the bar itself, and saying it twice on one page is
+              how a number starts being read as two different numbers. This strip's job is
+              what you HOLD. */}
+          <p className="mt-2.5 text-xs text-violet-400">Earned with XP, not found outdoors.</p>
         </>
       )}
     </section>
