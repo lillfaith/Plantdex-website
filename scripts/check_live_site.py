@@ -53,6 +53,24 @@ ROUTES: list[tuple[str, list[str]]] = [
             "a real species you photographed that has no card yet",
         ],
     ),
+    # /start AND /scan, ADDED FOR THE SAME REASON THE SEED SHELF WAS. Neither was listed,
+    # and /start is the worst omission on the list: it is the address printed on the box, so
+    # a 404 there is every physical QR code in circulation pointing at nothing, discovered by
+    # a buyer rather than by us. /scan is the one route that is about where somebody is
+    # standing, and its safety wording is worth asserting is actually being served.
+    #
+    # Body copy, not the nav and not the <title>: "Seed Shelf" matched on /garden/ because it
+    # is a nav label on every page, and a meta description proves only that the shell
+    # rendered. These four strings appear nowhere else in the build.
+    ("/start/", ["What happens when you find something", "Confirm the match and its Plantdex entry unlocks"]),
+    # The scan page carries TWO, and the second is the capture button itself. The first
+    # string also appears on /herbdex/ (which teases the scanner), so on its own it proves
+    # the page rendered but says nothing about the control the whole page exists for.
+    # "Take a photo" is emitted nowhere else in the build.
+    (
+        "/scan/",
+        ["Photograph something growing and see which cards it might be", "Take a photo"],
+    ),
     ("/account/", ["Your profile"]),
     ("/privacy/", ["Profile settings", "visible only to you"]),
     ("/safety/", ["safety"]),

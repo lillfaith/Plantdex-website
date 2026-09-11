@@ -182,11 +182,21 @@ export function ScanPanel() {
           className="sr-only"
           id="scan-photo"
         />
+        {/*
+          "Take a photo", not "Take or choose a photo".
+          The input carries `capture="environment"`, which opens the camera directly on a
+          phone and is simply ignored on a desktop browser, where the same control opens a
+          file picker instead. The old label spelled out both paths — and in doing so made
+          the primary one, on the device this is actually used from, sound optional. This is
+          a field guide: the expected posture is standing in front of the plant. Choosing a
+          file still works exactly as it did; it is just no longer offered as a co-equal
+          option in six words on the loudest control of the page.
+        */}
         <label
           htmlFor="scan-photo"
           className="arcade-key mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 sm:w-auto"
         >
-          {busy ? 'Identifying…' : 'Take or choose a photo'}
+          {busy ? 'Identifying…' : 'Take a photo'}
         </label>
         <p className="mt-2 text-xs text-violet-400">
           {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it

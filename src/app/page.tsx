@@ -184,32 +184,58 @@ export default function HomePage() {
         </ul>
       </section>
 
+      {/*
+        HOW TO USE THE SITE — which is not the same thing this section used to say.
+
+        It read "Learn the card / Find it outside / Log the find", and every word of that
+        assumed a deck already in your hands. The deck is not on sale yet, so step one was
+        something almost nobody arriving here could do, and the scanner — the one thing any
+        visitor can use immediately, and now the second item in the nav — went unmentioned
+        on the page that is supposed to explain the product.
+
+        So it describes the loop a stranger can actually start: photograph something, see
+        what Plantdex makes of it, keep the result. The deck is still the destination (the
+        showcase sits above and the CTA below); it is no longer the PREREQUISITE.
+
+        AND IT IS NOT THREE PANELS ANY MORE. It was three identical bordered boxes, which is
+        the same thing the mastery track was criticised for — it says "here are three boxes"
+        rather than "here is a route". The numbered nodes survive because this genuinely is a
+        sequence, which is the only thing that earns numbering; the boxes do not.
+
+        STEP 2 IS WORDED THE WAY IT IS ON PURPOSE. "It suggests a species. You decide whether
+        it looks right" is the honest description of a photographic identifier, and putting
+        that in the hook rather than only in a notice is what keeps the invitation and the
+        caution from contradicting each other.
+      */}
       <section aria-labelledby="how-heading" className="mt-14">
         <h2
           id="how-heading"
           className="font-display text-center text-2xl font-bold text-gold-plate"
         >
-          How it works
+          Point your phone at a weed
         </h2>
-        <ol className="mt-6 grid gap-4 sm:grid-cols-3">
+        <p className="mx-auto mt-2 max-w-sm text-center text-sm text-violet-300">
+          That is the whole game.
+        </p>
+        <ol className="mx-auto mt-7 grid max-w-3xl gap-7 sm:grid-cols-3 sm:gap-5">
           {[
             {
               step: '1',
-              title: 'Learn the card',
-              body: `One common wild plant per card — botanical name, growing conditions, best season.`,
+              title: 'Snap it',
+              body: 'A leaf, a flower, or the whole plant. Anything growing.',
             },
             {
               step: '2',
-              title: 'Find it outside',
-              body: 'Take the deck to a garden, a park or a hedgerow and match what you see.',
+              title: 'Plantdex has a go',
+              body: 'It suggests a species. You decide whether it looks right.',
             },
             {
               step: '3',
-              title: 'Log the find',
-              body: 'Mark it found to unlock the card and build your collection.',
+              title: 'Keep it either way',
+              body: `${PRINTED_DECK_SIZE} species have a card. Everything else becomes a seed packet.`,
             },
           ].map((item) => (
-            <li key={item.step} className="panel p-5">
+            <li key={item.step} className="text-center sm:text-left">
               <span className="font-display inline-flex h-8 w-8 items-center justify-center rounded-full bg-gold-500 text-sm font-bold text-violet-deep">
                 {item.step}
               </span>
