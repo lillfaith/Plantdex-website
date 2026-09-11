@@ -1,4 +1,6 @@
 import type { Herb, SourceableSection, SourceRef } from './types';
+import { countSources } from './sources';
+import { citationsFor } from './card-sources';
 
 /**
  * Field notes the SITE adds: what a plant looks like, where it grows, and what it gets
@@ -1018,6 +1020,133 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
     ],
     sourceIds: [],
   },
+
+  /*
+   * ── FIELD CARDS (#48-51) ──────────────────────────────────────────────────────
+   *
+   * The digital-only cards. They reach this file by the same route as the printed 45 —
+   * `fieldNotesFor` is a plain id lookup over any `Herb` — so nothing about the rendering
+   * differs, and that is the point: a Field Card page was thin because these four entries
+   * were missing, not because anything withheld them.
+   *
+   * SAME SEPARATION AS EVERY ENTRY ABOVE. The artwork already carries all six back fields,
+   * the stats, the rarity and the season, and none of that is touched here. What is added
+   * is the site's own field-guide layer, exactly as it is for a printed card.
+   *
+   * `sourceIds` IS EMPTY ON ALL FOUR, DELIBERATELY. The extension and flora pages these
+   * notes were written against are recorded in `docs/source-candidates.md`, unverified —
+   * this environment's egress proxy blocks every one of those hosts, so nobody has opened
+   * them. `resolveRefs` drops unverified ids anyway, so an id here would render nothing
+   * while implying a check that did not happen. `sectionCitations` states the sections are
+   * uncited, which is the true thing to say. Verify the candidates and they light up with
+   * no code change.
+   */
+
+  'echinacea-purpurea': {
+    identification: [
+      { trait: 'Upright clump', detail: 'Stiff-stemmed perennial, commonly around 2-4 ft tall.' },
+      { trait: 'Rough leaves', detail: 'Coarse, rough-textured foliage.' },
+      { trait: 'Raised spiny cone', detail: 'A prominent orange-brown to dark central cone on each head, becoming more pronounced as the flower matures.' },
+      { trait: 'Pink-purple rays', detail: 'Ray florets usually pink to purple, often spreading outward or drooping.' },
+    ],
+    habitat:
+      'Sunny open habitats including prairies, meadows, open woods, woodland edges and naturalized areas. Prefers well-drained soil in full sun to light shade, and tolerates relatively dry conditions once established.',
+    lookalikes: [
+      {
+        commonName: 'Black-eyed Susans (Rudbeckia spp.) and other coneflowers',
+        distinguishBy:
+          'Rough leaves, an upright clumping habit and a prominent spiny domed centre, taken together. Cultivated Echinacea varies considerably, so flower colour on its own separates nothing.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  'typha-latifolia': {
+    identification: [
+      { trait: 'Broad strap leaves', detail: 'Flat, broad, strap-like leaves rising from the base.' },
+      { trait: 'Unbranched stalk', detail: 'Erect, unbranched flowering stems.' },
+      { trait: 'The brown spike', detail: 'The dense brown cylindrical female spike is the familiar cattail.' },
+      { trait: 'Male section above', detail: 'The male flower section sits immediately above the female spike.' },
+      { trait: 'Little or no gap', detail: 'In Broadleaf Cattail the two typically touch or sit very closely adjacent, rather than being separated by an obvious gap.' },
+    ],
+    habitat:
+      'Shallow fresh water and saturated soils around ponds, lakes, marshes, ditches and other wetlands. Tolerates prolonged flooding and may also occur in somewhat brackish marshes.',
+    lookalikes: [
+      {
+        commonName: 'Narrowleaf Cattail',
+        scientificName: 'Typha angustifolia',
+        distinguishBy:
+          'Broadleaf generally has broader leaves and little or no visible gap between the male and female portions of the spike.',
+      },
+      {
+        /*
+         * THE RISK LINE SAYS "CONFIRM", NOT "TOXIC". The supplied copy read "Iris species can
+         * be unsafe to ingest"; no source for that is verifiable here, and this file's rule is
+         * that a lookalike is called unsafe only where a source explicitly supports it. A
+         * caution about uncertainty is true whatever the source says, and carries the same
+         * protective weight at the moment it matters. The fan-versus-cluster character stays:
+         * it is a claim about shape, not about safety.
+         */
+        commonName: 'Irises',
+        scientificName: 'Iris spp.',
+        distinguishBy:
+          'Iris leaves emerge in a flattened fan; cattail leaves arise in a more rounded cluster. Before flowering the two are easy to confuse.',
+        risk: 'Confirm identification before gathering young shoots.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  'oenothera-biennis': {
+    identification: [
+      { trait: 'First-year rosette', detail: 'Begins as a basal rosette in its first year.' },
+      { trait: 'Second-year stem', detail: 'Produces a tall upright flowering stem in its second.' },
+      { trait: 'Alternate narrow leaves', detail: 'Stem leaves alternate, narrow to lance-shaped.' },
+      { trait: 'Four-petalled flowers', detail: 'Pale to bright yellow, with four petals and eight stamens.' },
+      { trait: 'Four-lobed stigma', detail: 'A prominent cross-shaped stigma; flowers characteristically begin opening toward evening.' },
+    ],
+    habitat:
+      'Sunny open and disturbed ground — fields, prairies, clearings, roadsides, railroad corridors and waste places. Favours well-drained sandy or gravelly soils and tolerates relatively dry conditions once established.',
+    lookalikes: [
+      {
+        /*
+         * ENDS ON THE DIFFICULTY, NOT ON THE DISCRIMINATOR. This complex genuinely is hard to
+         * separate, and a tidy one-character test here would be a UI convenience that misleads
+         * somebody standing in a field. The order of the sentence is the point.
+         */
+        commonName: 'Northern and hairy evening primrose',
+        scientificName: 'Oenothera parviflora, O. villosa',
+        distinguishBy:
+          'O. parviflora differs in small floral and sepal-tip characters and O. villosa is generally more densely hairy — but both are close-inspection differences, and members of this complex can be genuinely difficult to separate.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  'lindera-benzoin': {
+    identification: [
+      { trait: 'Multi-stemmed shrub', detail: 'Deciduous, with several stems from the base.' },
+      { trait: 'Alternate smooth leaves', detail: 'Simple, oblong to obovate, with mostly smooth margins.' },
+      { trait: 'Spicy when crushed', detail: 'Crushed leaves and young twigs release a distinctive spicy fragrance.' },
+      { trait: 'Flowers before leaves', detail: 'Small greenish-yellow clusters along bare branches in early spring, before or as the leaves emerge.' },
+      { trait: 'Red drupes', detail: 'Female plants later develop bright red aromatic drupes.' },
+    ],
+    habitat:
+      'Moist woods, bottomlands, ravines, valleys, swamps and stream sides in eastern North America. Generally favours moist, well-drained soil in partial shade.',
+    lookalikes: [
+      {
+        /*
+         * NAMES NO SPECIES, ON PURPOSE. No specific southeastern confusion could be verified
+         * from a source here, and inventing a dramatic one to make the section look complete
+         * is the exact failure this file exists to avoid.
+         */
+        commonName: 'Other woodland shrubs, when flowers and fruit are absent',
+        distinguishBy:
+          'Aromatic leaves and stems, early yellow-green flower clusters and, on female plants, red drupes, taken together with the alternate smooth-edged leaves. Leaf shape alone separates nothing.',
+      },
+    ],
+    sourceIds: [],
+  },
 };
 
 export function fieldNotesFor(herb: Herb): FieldNotes | null {
@@ -1061,4 +1190,36 @@ export function fieldNoteSectionSources(
     out.habitat = toRefs(notes.habitatSourceIds);
   }
   return out;
+}
+
+/**
+ * The section-source map the PAGE actually renders from: field notes first, the card's own
+ * `sectionSources` on top, because card-derived sourcing is the stronger claim.
+ *
+ * Extracted so `SourcesSection` and the field-note provenance line compute it from one
+ * place. They were two copies of the same expression, which is exactly how the page came
+ * to promise sources it did not have — see `pageSourceCount`.
+ */
+export function pageSectionSources(herb: Herb): Partial<Record<SourceableSection, SourceRef[]>> {
+  return { ...fieldNoteSectionSources(herb), ...herb.sectionSources };
+}
+
+/**
+ * How many sources this page will actually LIST at the foot — the same number
+ * `SourcesSection` returns null on when it is zero.
+ *
+ * WHY IT IS EXPORTED. The field-note provenance line said the notes "were added here from
+ * the sources listed at the foot of this page" unconditionally. That was true for every
+ * printed card, which is why nobody noticed — and false the moment the Field Cards got
+ * notes, because none of their candidates has been verified, so `SourcesSection` renders
+ * nothing and the sentence pointed at an empty page. A sentence that claims a citation
+ * exists is the one kind of sentence this project may not get wrong, so the claim now
+ * reads the same number the section itself does rather than assuming it.
+ */
+export function pageSourceCount(herb: Herb): number {
+  return countSources({
+    ...herb,
+    sources: citationsFor(herb),
+    sectionSources: pageSectionSources(herb),
+  });
 }

@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
 import { citationsFor, evidenceLabelFor } from '@/lib/card-sources';
-import { fieldNoteSectionSources } from '@/lib/card-field-notes';
+import { pageSectionSources, pageSourceCount } from '@/lib/card-field-notes';
 import {
   claimCitations,
-  countSources,
   formatCitation,
   resolveRefs,
   sectionCitations,
@@ -38,10 +37,13 @@ export function SourcesSection({ herb }: { herb: Herb }) {
   // their own references, so they are merged into the section map the citation system
   // already walks. The herb's own `sectionSources` wins where both exist: card-derived
   // sourcing is the stronger claim.
-  const sectionSources = { ...fieldNoteSectionSources(herb), ...herb.sectionSources };
+  const sectionSources = pageSectionSources(herb);
   const { cited, awaiting } = sectionCitations(sectionSources);
   const claims = claimCitations(herb.claimSources);
-  const total = countSources({ ...herb, sources: citationsFor(herb), sectionSources });
+  // Shared with the field-note provenance line, which claims these sources exist. Two
+  // copies of this expression is how that sentence came to promise a foot-of-page list
+  // that a Field Card does not have.
+  const total = pageSourceCount(herb);
 
   if (total === 0) return null;
 

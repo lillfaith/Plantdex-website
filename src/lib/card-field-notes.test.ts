@@ -1,13 +1,16 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import {
   FIELD_NOTES,
   fieldNoteSectionSources,
   fieldNotesFor,
+  pageSourceCount,
   isGenusCard,
   GENUS_CARD_NOTICE,
 } from './card-field-notes';
-import { PRINTED_CARDS, isPrintedCardId } from './deck';
+import { PRINTED_CARDS } from './deck';
+import { DIGITAL_ONLY_ENTRIES, getCatalogueEntry } from './catalogue';
 import { getSource, sectionCitations } from './sources';
 import { iconForTrait } from './trait-icons';
 
@@ -34,10 +37,83 @@ describe('field notes', () => {
     expect(missing, `no field notes for: ${missing.join(', ')}`).toEqual([]);
   });
 
+  /*
+   * SCOPED TO THE CATALOGUE, NOT THE PRINTED DECK — and it was the printed deck until the
+   * Field Cards got notes. The check's job is to catch a TYPO'D OR PHANTOM id, not to say
+   * which collection may have notes, and `PRINTED_CARDS` only did both jobs while the two
+   * sets were the same set. A Field Card is a real herb with a real page, so citing the
+   * deck here would have made the honest entry indistinguishable from the mistake.
+   */
   it('only names real herbs', () => {
     for (const id of Object.keys(FIELD_NOTES)) {
-      expect(isPrintedCardId(id), `${id} is not a deck herb`).toBe(true);
+      expect(getCatalogueEntry(id), `${id} is not a herb in the catalogue`).toBeDefined();
     }
+  });
+
+  /*
+   * THE FIELD CARDS GET THE SAME DEPTH, and this is what says so in a way that a thin entry
+   * cannot pass. Four sections on their pages were empty — Identification, Lookalikes,
+   * Habitat and Sources — purely because this file had 45 entries and not 49.
+   *
+   * The floor is measured against the printed deck rather than typed: a literal here would
+   * drift the day somebody trims a printed entry, and the claim being made is PARITY, not a
+   * particular number.
+   */
+  it('gives every Field Card the same kind of entry a printed card gets', () => {
+    const printedRows = PRINTED_CARDS.map((herb) => fieldNotesFor(herb)?.identification?.length ?? 0);
+    const floor = Math.min(...printedRows);
+
+    for (const herb of DIGITAL_ONLY_ENTRIES) {
+      const notes = fieldNotesFor(herb);
+      expect(notes, `no field notes for Field Card ${herb.id}`).not.toBeNull();
+      expect(notes!.identification?.length ?? 0, `${herb.id} has fewer traits than the thinnest printed card`)
+        .toBeGreaterThanOrEqual(floor);
+      expect(notes!.habitat, `${herb.id} has no habitat sentence`).toBeTruthy();
+      expect(notes!.lookalikes?.length ?? 0, `${herb.id} names no lookalike`).toBeGreaterThan(0);
+    }
+  });
+
+  /*
+   * A Field Card's sources are UNVERIFIED CANDIDATES sitting in docs/source-candidates.md,
+   * because this environment cannot open the extension and flora pages they were written
+   * against. `resolveRefs` would drop an unverified id anyway and render nothing — so an id
+   * here would buy no citation while implying somebody had checked. Empty is the honest
+   * state, and `sectionCitations` says so on the page.
+   *
+   * This fails the moment somebody adds an id without verifying it, which is the mistake
+   * worth catching; a VERIFIED id is allowed through, since that is the intended end state.
+   */
+  it('never lets a Field Card cite a source nobody has opened', () => {
+    for (const herb of DIGITAL_ONLY_ENTRIES) {
+      const notes = fieldNotesFor(herb);
+      for (const id of [...(notes?.sourceIds ?? []), ...(notes?.habitatSourceIds ?? [])]) {
+        expect(getSource(id)?.verified, `${herb.id} cites unverified source ${id}`).toBe(true);
+      }
+    }
+  });
+
+  /*
+   * THE PROVENANCE SENTENCE MUST NOT PROMISE A LIST THAT IS NOT THERE. It read "added here
+   * from the sources listed at the foot of this page" unconditionally — correct for every
+   * printed card, and false for a Field Card, whose sources are all unverified candidates so
+   * `SourcesSection` renders nothing at all.
+   *
+   * Asserted on the NUMBER both the sentence and the section now read, and on both branches
+   * being reachable: a test that only checked the Field Cards would pass against a component
+   * that had simply deleted the sentence.
+   */
+  it('only claims a foot-of-page source list on pages that have one', () => {
+    for (const herb of DIGITAL_ONLY_ENTRIES) {
+      expect(pageSourceCount(herb), `${herb.id} would promise sources it does not list`).toBe(0);
+    }
+    const dandelion = PRINTED_CARDS.find((herb) => herb.id === 'taraxacum-officinale')!;
+    expect(pageSourceCount(dandelion), 'the other branch is now unreachable').toBeGreaterThan(0);
+
+    const view = readFileSync('src/components/herbdex/FieldNotesSections.tsx', 'utf8');
+    expect(view, 'the sentence is unconditional again').not.toMatch(
+      /These notes are not printed on your card\.\s*They were added here from the sources/,
+    );
+    expect(view).toContain('pageSourceCount(herb) > 0');
   });
 
   it('gives every trait row both a label and a detail', () => {

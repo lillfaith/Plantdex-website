@@ -4,6 +4,7 @@ import {
   isGenusCard,
   GENUS_CARD_NOTICE,
   IDENTIFICATION_CAVEAT,
+  pageSourceCount,
 } from '@/lib/card-field-notes';
 import { Panel } from '../ui/Panel';
 import { ProvenanceChip } from '../game/Provenance';
@@ -64,9 +65,20 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
       />
       {/* Provenance, stated once where the field notes begin. The caveat above is about
           safety and stays exactly as it is; this is about where the words came from. */}
+      {/*
+        THE SECOND SENTENCE IS CONDITIONAL, AND IT WAS NOT. It read "added here from the
+        sources listed at the foot of this page" for every card — true while every card with
+        field notes was a printed card carrying plant-level references, and false the moment
+        the Field Cards got notes: none of their candidates has been verified, so
+        `SourcesSection` returns null and the sentence pointed at a list that is not there.
+        `pageSourceCount` is the same number that section decides on, so the claim and the
+        list cannot disagree.
+      */}
       <p className={`-mt-1 mb-1 ${NOTE} text-violet-300`}>
-        These notes are not printed on your card. They were added here from the sources
-        listed at the foot of this page.
+        These notes are not printed on your card.{' '}
+        {pageSourceCount(herb) > 0
+          ? 'They were added here from the sources listed at the foot of this page.'
+          : 'They were added here by Plantdex, and are not yet backed by an independent source.'}
       </p>
       {/*
         Two columns of trait rows rather than one long list: at reading measure the details
