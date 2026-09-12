@@ -275,6 +275,16 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   wide pink ray mane with `face_rx = 0`, and a smaller orange cone laid over its middle
   carrying the face — which is the plant's own anatomy and costs one extra call. When a
   species has a disc inside a ring, that is the shape to reach for.
+- **A CONCENTRIC SECOND ORGAN READS AS A PICTURE FRAME, and `face_dy` is the way out.**
+  Stacking two heads is only half the job. The coneflower's cone was first drawn the same
+  size as its own face, leaving ~1px of orange around the cream — a headband, and next to
+  the dandelion the sheet was a purple dandelion. Growing it until the rim was even all
+  round produced something worse: a uniform band of one colour family around a cream oval
+  is what a frame IS, so it read as a portrait hung on a wall. Seating the face 1.1px BELOW
+  the cone's centre puts four rows of cone above it and one below, and the organ reads as a
+  dome rising over the face. That is also the botany — a disc standing proud is the whole
+  difference between a coneflower and a daisy. It generalises: an inner organ centred on the
+  face is a frame; an inner organ the face sits LOW in is a dome.
 - **`_flowerhead.py` is for round organs only.** Pine and horsetail are hand-drawn
   because a conifer and a jointed stem have no curve in them, and forcing either through
   the shared generator produced a lumpy circle pretending to be a tree.
