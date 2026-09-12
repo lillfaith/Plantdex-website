@@ -80,12 +80,28 @@ jobs:
         # EVERY function, not just the one being deployed, and BEFORE the deploy rather
         # than after: a function that cannot type-check must never reach a project, and a
         # fault in a sibling is worth knowing about while somebody is already looking.
+        #
+        # `--node-modules-dir=auto`, and it is not a workaround. A bare `deno check` from this
+        # repo root finds the frontend's `package.json`, decides this is a Node project, and
+        # resolves `npm:` specifiers out of `node_modules` — which CI never populates (the
+        # cache is restored but `npm ci` is not run), so the first run of this step failed on
+        # all four functions with "Could not find @supabase/supabase-js in a node_modules
+        # folder". Locally it passed, because a developer's tree is installed. A check that
+        # fails for a reason that has nothing to do with the code is worse than no check.
+        #
+        # The flag is also the more CORRECT semantics: the edge runtime does not read this
+        # repo's node_modules. It resolves `npm:` itself, so checking against the frontend's
+        # pinned copy would be checking a different library from the one deployed.
+        #
+        # `--no-lock` for the same reason. A committed `deno.lock` would pin the graph this
+        # step checks while the deploy keeps resolving `npm:@supabase/supabase-js@2` fresh —
+        # green here, different bytes there, which is the same trap one line up.
         run: |
           set -euo pipefail
           failed=0
           for f in supabase/functions/*/index.ts; do
             echo "── $f"
-            deno check "$f" || failed=1
+            deno check --node-modules-dir=auto --no-lock "$f" || failed=1
           done
           if [ "$failed" -ne 0 ]; then
             echo "::error::A function failed \`deno check\`. Nothing was deployed."

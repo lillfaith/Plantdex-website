@@ -31,3 +31,6 @@ __pycache__/
 # data URIs so it opens with no server. Rebuild it rather than committing 700K of
 # base64 that goes stale the moment a sprite is redrawn.
 gallery.html
+
+# Written by a local `deno check --node-modules-dir=auto`; the CI step passes --no-lock.
+deno.lock
