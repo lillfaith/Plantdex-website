@@ -63,6 +63,35 @@ jobs:
           node-version: 22
           cache: npm
 
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Type-check every function before any of them is deployed
+        # THE GAP THIS CLOSES. `supabase/functions/**` is excluded from this project's
+        # tsconfig and ESLint — it is Deno, with different globals and `npm:`/`https:`
+        # specifiers — so `npm run verify` cannot see it, and until now NOTHING did:
+        # `grep -rln deno .github/workflows/` returned nothing at all. Four functions,
+        # including the one that irreversibly deletes an account, had zero automated
+        # validation. CLAUDE.md already named the remedy, but a manual command nobody runs
+        # is not a check, and a broken annotation sat in `delete-account` undetected until
+        # somebody happened to run it by hand.
+        #
+        # EVERY function, not just the one being deployed, and BEFORE the deploy rather
+        # than after: a function that cannot type-check must never reach a project, and a
+        # fault in a sibling is worth knowing about while somebody is already looking.
+        run: |
+          set -euo pipefail
+          failed=0
+          for f in supabase/functions/*/index.ts; do
+            echo "── $f"
+            deno check "$f" || failed=1
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::A function failed \`deno check\`. Nothing was deployed."
+            exit 1
+          fi
+
       - name: Fail early if the token is missing
         # Without this the CLI fails somewhere inside a login prompt, which reads as a
         # broken workflow rather than a missing secret.

@@ -1,4 +1,4 @@
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2';
 
 /**
  * delete-account — erases everything the signed-in caller has stored, permanently.
@@ -93,7 +93,21 @@ function json(body: unknown, status = 200): Response {
  * the remainder behind — which looks exactly like success.
  */
 async function listAllPhotos(
-  admin: ReturnType<typeof createClient>,
+  /*
+   * `SupabaseClient`, NOT `ReturnType<typeof createClient>`.
+   *
+   * The obvious-looking spelling does not type-check, and it is worth saying why so nobody
+   * reaches for it again. `ReturnType` instantiates the generic signature from its
+   * DECLARATION, where the schema parameter resolves to `never`; a real
+   * `createClient(url, key, {...})` call infers `"public"`. The annotation and the argument
+   * therefore describe different types, and `deno check` reports it at every call site.
+   *
+   * Measured against both the version the frontend pins (2.112.3) and the floating head the
+   * edge runtime resolves: the failure is identical on both, so it is the annotation rather
+   * than a library upgrade. `SupabaseClient` bare is the narrowest spelling that holds on
+   * each — saying what the parameter IS rather than opting out of checking it with `any`.
+   */
+  admin: SupabaseClient,
   userId: string,
 ): Promise<string[]> {
   const paths: string[] = [];
