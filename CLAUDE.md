@@ -265,6 +265,16 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   `face_shift`) and every feature origin comes from it. `scripts/audit_sprites.py`
   renders every frame of every sprite and fails on any feature pixel that landed on
   something that is not its face — run it after touching any sprite.
+- **THE ORGAN THAT SURROUNDS THE FACE *IS* THE `flower_head`; anything on top is a second
+  part layered over it.** Dandelion's mane is not a ring drawn beside a head — it is the
+  generator itself, 27px wide with the face oval carved out of its middle and the lobes ARE
+  the ray florets. The coneflower was first drawn the other way round: a small low-amplitude
+  dome carrying the face, with the rays hung beside it as a separate part. The cone read as a
+  headband and the rays read as pigtails, and six rounds of tuning could not fix it because
+  the composition was wrong rather than the numbers. It is now the generator run TWICE — a
+  wide pink ray mane with `face_rx = 0`, and a smaller orange cone laid over its middle
+  carrying the face — which is the plant's own anatomy and costs one extra call. When a
+  species has a disc inside a ring, that is the shape to reach for.
 - **`_flowerhead.py` is for round organs only.** Pine and horsetail are hand-drawn
   because a conifer and a jointed stem have no curve in them, and forcing either through
   the shared generator produced a lumpy circle pretending to be a tree.

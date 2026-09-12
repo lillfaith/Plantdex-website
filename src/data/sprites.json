@@ -449,6 +449,56 @@
       }
     }
   },
+  "echinacea-purpurea": {
+    "herbId": "echinacea-purpurea",
+    "src": "/cards/animated/echinacea-purpurea.png",
+    "version": "7d6fc082",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 7,
+    "personality": "prickly",
+    "content": {
+      "left": 0.1176,
+      "top": 0.0357,
+      "right": 0.8529,
+      "bottom": 0.9286
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "echinacea-purpurea-sprout",
+        "src": "/cards/animated/echinacea-purpurea-sprout.png",
+        "version": "d74adc67",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "prickly",
+        "content": {
+          "left": 0.2353,
+          "top": 0.3929,
+          "right": 0.7941,
+          "bottom": 0.9286
+        }
+      },
+      "growing": {
+        "herbId": "echinacea-purpurea-growing",
+        "src": "/cards/animated/echinacea-purpurea-growing.png",
+        "version": "bcdaf9d1",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "prickly",
+        "content": {
+          "left": 0.2647,
+          "top": 0.25,
+          "right": 0.7353,
+          "bottom": 0.9286
+        }
+      }
+    }
+  },
   "equisetum-arvense": {
     "herbId": "equisetum-arvense",
     "src": "/cards/animated/equisetum-arvense.png",

@@ -30,7 +30,8 @@ import { LEVELS } from './progression';
 import { RESEARCH_POOL, STANDING_TASKS } from './research';
 import { isShelfEligible } from './seed-shelf';
 import { HABITATS, matchesHabitatFilter } from './habitat';
-import { hasSprite } from './plant-sprites';
+import { hasSprite, hasStageArt } from './plant-sprites';
+import { GROWTH_STAGES } from './garden';
 import { emptyState } from './herbdex-state';
 import { qualifiesForMastery, tracksMastery } from './mastery';
 import { xpForState } from './progression';
@@ -574,8 +575,42 @@ describe('the Field Card band in the Herbdex grid', () => {
     expect(mystery, 'a card without a sprite renders an empty back again').toContain(
       'hasSprite(herb.id) ?',
     );
-    for (const card of FIELD_CARDS) {
-      expect(hasSprite(card.id), `${card.id} gained a sprite — re-check the fallback`).toBe(false);
+  });
+
+  /*
+   * SPRITES ARE BEING DRAWN ONE SPECIES AT A TIME, and this tracks that honestly rather than
+   * pretending the set is finished. The earlier version of the guard above asserted all four
+   * had NO sprite, which was true when it was written and is the reason it failed the moment
+   * #48 was drawn — it carried the remedy in its own message. That half now lives here.
+   *
+   * What it does NOT do is demand all four. Slots 5-9 have thresholds and no art at all, the
+   * keyhole above is the honest answer for anything undrawn, and a test insisting on
+   * coverage would only invite somebody to satisfy it with a placeholder — which is the one
+   * thing the sprite rules forbid outright.
+   *
+   * What it DOES pin: a species that has a sprite is STAGED. A half-staged sprite renders an
+   * adult where a seedling belongs, and `stageForState` would silently show the wrong age
+   * rather than fail.
+   *
+   * `flowering` is deliberately not checked, and that is not an omission. `hasStageArt` reads
+   * the `stages` map, which holds only the two YOUNG sheets — the adult is the base sprite
+   * itself, so every printed card in the deck reports `flowering: false` too. Asserting it
+   * would fail all 45.
+   */
+  it('gives every Field Card that has a sprite its young stages too', () => {
+    const drawn = FIELD_CARDS.filter((card) => hasSprite(card.id));
+    expect(drawn.length, 'no Field Card has a sprite yet — has the build run?').toBeGreaterThan(0);
+
+    const young = GROWTH_STAGES.filter((stage) => stage !== 'flowering');
+    for (const card of drawn) {
+      for (const stage of young) {
+        expect(
+          hasStageArt(card.id, stage),
+          `${card.id} has no ${stage} art — a half-staged sprite shows the wrong age`,
+        ).toBe(true);
+      }
+      // The base sheet IS the adult, so this is what "has a flowering sprite" means here.
+      expect(hasSprite(card.id)).toBe(true);
     }
   });
 
