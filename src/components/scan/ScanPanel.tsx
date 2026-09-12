@@ -93,11 +93,12 @@ export function ScanPanel() {
   /*
    * WARM THE FUNCTION WHILE THE PLAYER IS STILL FRAMING THE SHOT.
    *
-   * The first scan of a session pays for two things nobody should have to wait on: a CORS
-   * preflight for the multipart POST, and a cold Deno isolate. Both are already over by the
-   * time the photograph is ready if something asks first. It costs no quota — the function
-   * answers OPTIONS before it claims anything — sends no image, and its failure is ignored
-   * entirely, because a warm-up that could break a scan would be worse than a cold one.
+   * The first scan of a session otherwise arrives at a cold Deno isolate, which is already
+   * running by the time the photograph is ready if something asks first. It costs no quota —
+   * the function answers OPTIONS before it claims anything — sends no image, and its failure
+   * is ignored entirely, because a warm-up that could break a scan would be worse than a cold
+   * one. It does NOT prime the later POST's CORS preflight; that was measured and is wrong,
+   * and `scan-warmup.ts` carries the numbers.
    */
   useEffect(() => {
     void warmIdentifier();

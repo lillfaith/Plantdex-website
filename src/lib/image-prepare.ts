@@ -110,6 +110,75 @@ function extensionFor(file: File): string {
 }
 
 /**
+ * Anything that can be painted to a canvas, with its own dimensions.
+ *
+ * `ImageBitmap` and `HTMLImageElement` both satisfy this and both are valid `drawImage`
+ * sources, which is what lets one resize-and-encode step serve two decoders.
+ */
+interface Decoded {
+  source: CanvasImageSource;
+  width: number;
+  height: number;
+  /** Releases whatever the decoder is holding — a bitmap handle, or an object URL. */
+  release: () => void;
+}
+
+/**
+ * Decode through an `<img>` and an object URL.
+ *
+ * THE SECOND DECODER, AND WHY THERE HAS TO BE ONE. `createImageBitmap` is not universally
+ * available — Safari only gained it for a `Blob` in 15, so iOS 14 has none — and it can also
+ * simply throw. Until this existed, every one of those cases fell through to "keep the
+ * original bytes", and on the scan path that now means REFUSED: a perfectly good JPEG the
+ * identifier would have accepted, turned away with a message blaming its format.
+ *
+ * Anything a browser can display, it can draw. Measured against a JPEG carrying EXIF
+ * orientation 6: this path reports 1200x1600, the exact dimensions `createImageBitmap` gives,
+ * so a photo recovered here is not rotated relative to one that took the normal route — and
+ * the re-encoded output carries no Exif marker, so the GPS promise holds on both paths
+ * equally. That second property is what makes this a real fallback rather than a loophole.
+ */
+async function decodeViaImageElement(file: File): Promise<Decoded> {
+  const url = URL.createObjectURL(file);
+  try {
+    const image = new Image();
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error('img decode failed'));
+      image.src = url;
+    });
+    if (!image.naturalWidth || !image.naturalHeight) throw new Error('img decoded empty');
+    // Released by the CALLER, once the pixels have been drawn — revoking here would pull the
+    // source out from under `drawImage`.
+    return {
+      source: image,
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+      release: () => URL.revokeObjectURL(url),
+    };
+  } catch (error) {
+    // The one path where nothing downstream will revoke it.
+    URL.revokeObjectURL(url);
+    throw error;
+  }
+}
+
+/** `createImageBitmap` first, an `<img>` second, and only then give up. */
+async function decode(file: File): Promise<Decoded> {
+  try {
+    const bitmap = await createImageBitmap(file);
+    return {
+      source: bitmap,
+      width: bitmap.width,
+      height: bitmap.height,
+      release: () => bitmap.close(),
+    };
+  } catch {
+    return decodeViaImageElement(file);
+  }
+}
+
+/**
  * @param profile How hard to compress. Defaults to `KEEP_PROFILE`, so a caller that says
  *   nothing gets the fidelity stored photos have always had; only `scans.ts` asks for less.
  */
@@ -117,22 +186,19 @@ export async function prepareImage(
   file: File,
   profile: PrepareProfile = KEEP_PROFILE,
 ): Promise<PreparedImage> {
+  let decoded: Decoded | null = null;
   try {
-    const bitmap = await createImageBitmap(file);
-    const scale = Math.min(1, profile.maxEdge / Math.max(bitmap.width, bitmap.height));
-    const width = Math.max(1, Math.round(bitmap.width * scale));
-    const height = Math.max(1, Math.round(bitmap.height * scale));
+    decoded = await decode(file);
+    const scale = Math.min(1, profile.maxEdge / Math.max(decoded.width, decoded.height));
+    const width = Math.max(1, Math.round(decoded.width * scale));
+    const height = Math.max(1, Math.round(decoded.height * scale));
 
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const context = canvas.getContext('2d');
-    if (!context) {
-      bitmap.close();
-      throw new Error('no 2d context');
-    }
-    context.drawImage(bitmap, 0, 0, width, height);
-    bitmap.close();
+    if (!context) throw new Error('no 2d context');
+    context.drawImage(decoded.source, 0, 0, width, height);
 
     const blob = await new Promise<Blob | null>((resolve) =>
       canvas.toBlob(resolve, 'image/jpeg', profile.quality),
@@ -142,14 +208,21 @@ export async function prepareImage(
     // Re-encoding to JPEG drops the original's EXIF wholesale, GPS included. That is a
     // privacy win worth naming: /safety asks people not to record exact spots for wild
     // plants, and an untouched phone photo carries the coordinates whether they meant it or
-    // not.
+    // not. It holds for BOTH decoders — the pixels go through this same canvas either way.
     return { blob, contentType: 'image/jpeg', extension: 'jpg', downscaled: true };
   } catch {
+    // Both decoders failed, or the encode did. In practice this is a format the browser
+    // genuinely cannot read — HEIC outside Safari. The bytes are kept as they came, which is
+    // right where the photo is STORED and is why `scans.ts` refuses to transmit one.
     return {
       blob: file,
       contentType: file.type || 'application/octet-stream',
       extension: extensionFor(file),
       downscaled: false,
     };
+  } finally {
+    // Runs on every path, so a bitmap handle is never leaked and an object URL never
+    // outlives the draw that needed it.
+    decoded?.release();
   }
 }

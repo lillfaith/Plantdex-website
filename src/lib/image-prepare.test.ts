@@ -64,6 +64,47 @@ describe('prepare profiles', () => {
   });
 });
 
+describe('two decoders before giving up', () => {
+  /*
+   * THE REGRESSION THIS PINS. Refusing to transmit anything that could not be re-encoded was
+   * right for HEIC, but the flag it keys on is set by ANY decode or encode failure — so with
+   * one decoder, `createImageBitmap` being absent (Safari before 15) or throwing, or `toBlob`
+   * returning null under memory pressure, turned a perfectly good JPEG into a refused scan
+   * with a message blaming its format. Measured across all four failure modes before this
+   * second path was added.
+   */
+  it('tries createImageBitmap first and an <img> second', () => {
+    expect(PREPARE).toContain('createImageBitmap(file)');
+    expect(PREPARE).toContain('decodeViaImageElement');
+    // Order matters: the bitmap path is the fast one and the fallback must not pre-empt it.
+    expect(PREPARE.indexOf('createImageBitmap(file)')).toBeLessThan(
+      PREPARE.indexOf('return decodeViaImageElement(file)'),
+    );
+  });
+
+  it('reaches the raw-bytes fallback only when BOTH decoders have failed', () => {
+    // `decode()` is the only caller of either decoder, and `prepareImage` has exactly one
+    // catch — so there is no path that gives up while a decoder is still untried.
+    expect(PREPARE).toMatch(/async function decode\(file: File\)/);
+    expect(codeOnly(PREPARE).match(/blob: file\b/g) ?? []).toHaveLength(1);
+  });
+
+  it('always releases what a decoder was holding', () => {
+    // A bitmap handle and an object URL both leak silently. The `finally` covers the success
+    // path, the failure path and the raw-bytes path at once.
+    expect(PREPARE).toContain('} finally {');
+    expect(PREPARE).toContain('decoded?.release()');
+    expect(PREPARE).toContain('URL.revokeObjectURL(url)');
+  });
+
+  it('sends both decoders through the same canvas, so neither can skip the re-encode', () => {
+    // The EXIF/GPS guarantee is a property of the canvas step, not of either decoder. One
+    // drawImage and one toBlob is what makes that true for both paths.
+    expect(codeOnly(PREPARE).match(/drawImage\(/g) ?? []).toHaveLength(1);
+    expect(codeOnly(PREPARE).match(/canvas\.toBlob\(/g) ?? []).toHaveLength(1);
+  });
+});
+
 describe('what is promised about location data', () => {
   /*
    * THE DEFECT THESE PIN, and why there are three of them. `prepareImage` keeps the ORIGINAL

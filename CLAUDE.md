@@ -811,11 +811,28 @@ or was not made; re-measure before trusting any of them again.
 - **The busy bar is determinate and reuses `path-fill`.** `animate-pulse` is one class away and
   is `infinite`, which the Motion section forbids; a bar that moves only when something real
   happened satisfies both rules at once. Pinned by `image-prepare.test.ts`.
-- **An `OPTIONS` on mount warms the identifier for free.** The first scan of a session otherwise
-  pays for a CORS preflight on the multipart POST and a cold Deno isolate, both while somebody is
-  standing in front of a plant. It spends no quota — `identify-plant` answers `OPTIONS` above
-  both `claim_scan` calls — and every failure is swallowed, because an optimisation that can
-  break the thing it optimises is worse than none.
+- **An `OPTIONS` on mount warms the identifier's ISOLATE, and nothing else.** The first scan of
+  a session otherwise arrives at a cold start, while somebody is standing in front of a plant.
+  It spends no quota — `identify-plant` answers `OPTIONS` above both `claim_scan` calls — and
+  every failure is swallowed, because an optimisation that can break the thing it optimises is
+  worse than none.
+- **IT DOES NOT PRIME THE LATER CORS PREFLIGHT, though the comment defending it said so** — in
+  the code and in the report that shipped it. Measured against a logging server, replaying the
+  warm-up and then the real POST: `OPTIONS, OPTIONS` then `OPTIONS, POST`. The warm-up costs TWO
+  round trips, because `OPTIONS` is not CORS-safelisted and the browser preflights it; and the
+  POST issues its own preflight anyway. The isolate boot is the larger term and is real, so the
+  warm-up stays — but an argument that is not true is the thing this file keeps warning about,
+  and it was written here twice before anybody measured it.
+- **`prepareImage` TRIES TWO DECODERS BEFORE GIVING UP, and the second one is not optional.**
+  `createImageBitmap` is absent in Safari before 15 and can simply throw, and `toBlob` can
+  return null under memory pressure — and once `scans.ts` refuses to transmit anything it could
+  not re-encode, every one of those became a REFUSED scan on a perfectly good JPEG, with a
+  message blaming the file's format. Measured across four failure modes. An `<img>` plus an
+  object URL recovers all of them, reports the identical oriented dimensions
+  (1200x1600 on an EXIF-rotated fixture, matching `createImageBitmap` exactly), and feeds the
+  same canvas — so EXIF and its GPS are dropped on both paths equally. Only a format the
+  browser genuinely cannot read reaches the refusal, which is also what makes the refusal
+  message true.
 - **`track()` call sites are found by counting brackets, not by a regex.** The analytics guard
   matched `/\btrack\(([^;]*?)\);/`, which requires a semicolon straight after the closing
   bracket — so it read `track('x');` in a handler body and silently skipped every call written

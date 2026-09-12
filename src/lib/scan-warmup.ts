@@ -5,16 +5,28 @@ import { supabase } from './supabase-client';
 /**
  * Ask the identifier to wake up, before anybody has a photograph to send it.
  *
- * THE FIRST SCAN OF A SESSION PAYS TWICE FOR NOTHING. The identification request is a
- * multipart POST carrying `apikey` and `Authorization`, which is not a simple request — so
- * the browser sends a CORS preflight and waits a full round trip before a single byte of the
- * photograph moves. And the edge function is an isolate that may not be running, so the
- * request that finally arrives arrives at a cold start. Both of those happen while somebody
- * is standing in front of a plant holding up a phone.
+ * WHAT THIS BUYS: THE ISOLATE IS ALREADY RUNNING. The edge function may not be, so without
+ * this the first scan of a session arrives at a cold start — while somebody is standing in
+ * front of a plant holding up a phone. An OPTIONS at mount boots it, and by the time a
+ * photograph exists that cost is already paid.
  *
- * Neither has to be on that path. An OPTIONS sent when the scan screen mounts answers the
- * preflight into the browser's cache (the function sets `Access-Control-Max-Age: 86400`) and
- * boots the isolate, and by the time a photograph exists both are already done.
+ * WHAT IT DOES NOT BUY, THOUGH THIS COMMENT ONCE CLAIMED IT DID: the later POST's CORS
+ * preflight. The claim was that an OPTIONS here answers the preflight into the browser's
+ * cache under `Access-Control-Max-Age: 86400`. Measured against a logging server, replaying
+ * this exact call and then the exact identify POST:
+ *
+ *   after warm-up   : OPTIONS, OPTIONS
+ *   after real POST : OPTIONS, POST
+ *
+ * Two things are wrong with the old story. This warm-up COSTS TWO ROUND TRIPS rather than
+ * one — `OPTIONS` is not a CORS-safelisted method, so the browser preflights the warm-up
+ * itself — and the real POST still issues its own preflight regardless; the cache entry this
+ * creates does not serve it.
+ *
+ * The isolate boot is the larger term and is real, so this earns its place. The extra round
+ * trip is not worth engineering away with a `GET`: nothing waits on this, it fires at mount,
+ * and a stream of 405s in the network panel is the kind of tidying this repo has already
+ * recorded going wrong once.
  *
  * IT COSTS NO QUOTA AND SENDS NO IMAGE. `identify-plant` answers OPTIONS at the top of its
  * handler, before it resolves the caller and before either `claim_scan` — so this cannot
