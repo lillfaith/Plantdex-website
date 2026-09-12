@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage, LegalSection, LegalTable, OwnerGap } from '@/components/legal/LegalPage';
+import { isShopConfigured } from '@/lib/shop';
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
@@ -203,9 +204,36 @@ export default function TermsPage() {
           details, and an order is not connected to a Plantdex account &mdash; buying a deck does
           not create one.
         </p>
+        {/*
+          CONDITIONAL, for the reason `/shipping` already is. This paragraph used to state
+          unconditionally that the price was awaiting owner input and that the shop "says the
+          deck is not on sale" — both true while the shop was unconfigured, and both FALSE the
+          moment the owner set NEXT_PUBLIC_DECK_PRICE, because `OwnerGap` reads the static
+          `OWNER_INPUTS` array and nothing in that path looks at the environment. The page
+          would have printed "awaiting owner input" while /shop charged a real price.
+
+          Fourth instance of the shape this repo has now shipped three times — /terms denying
+          the shop, /privacy denying analytics, the landing page denying the sale — and on
+          /terms again. The lesson each time is the same: a sentence about configuration must
+          be resolved FROM that configuration, never written as prose that happens to be true
+          on the day.
+        */}
         <p className="text-sm text-violet-300">
-          The price itself is <OwnerGap id="commerce-terms" />, and until it is set the shop
-          page says the deck is not on sale rather than showing a figure nobody has decided.
+          {isShopConfigured() ? (
+            <>
+              The price shown on the{' '}
+              <Link href="/shop" className="underline underline-offset-2 hover:text-gold-400">
+                shop page
+              </Link>{' '}
+              is the offer, and Stripe holds the authoritative figure on the checkout itself.
+              If the two ever differ, the checkout is the one that governs.
+            </>
+          ) : (
+            <>
+              The price itself is <OwnerGap id="commerce-terms" />, and until it is set the shop
+              page says the deck is not on sale rather than showing a figure nobody has decided.
+            </>
+          )}
         </p>
       </LegalSection>
 
