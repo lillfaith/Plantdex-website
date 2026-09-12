@@ -7,6 +7,9 @@ import { HABITATS, HABITAT_LABEL, matchesHabitatFilter, type HabitatClass } from
 import { SEASON_LABEL } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { HerbCard } from './HerbCard';
+import { FIELD_CARDS_TOTAL, unlockXpFor } from '@/lib/field-cards';
+import { CURRENT_COLLECTION } from '@/lib/collection';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 type StatusFilter = 'all' | 'discovered' | 'undiscovered' | 'mastered';
 
@@ -52,8 +55,8 @@ function Chip({
  * scientific names, but only for herbs the player has already discovered — searching by
  * name would otherwise reveal what is hiding behind an undiscovered slot.
  */
-export function HerbGrid({ herbs }: { herbs: Herb[] }) {
-  const { isDiscovered, isMastered, stageOf, ready } = useHerbdex();
+export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards?: Herb[] }) {
+  const { isDiscovered, isMastered, stageOf, ready, progress } = useHerbdex();
   const [status, setStatus] = useState<StatusFilter>('all');
   const [rarity, setRarity] = useState<Rarity | 'all'>('all');
   const [season, setSeason] = useState<Season | 'all'>('all');
@@ -90,6 +93,59 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
       return true;
     });
   }, [herbs, status, rarity, season, habitat, query, isDiscovered, isMastered, ready]);
+
+  /*
+   * THE FIELD CARDS RUN THROUGH THE SAME FILTERS, WITH ONE EXEMPTION.
+   *
+   * Status, rarity, season and search all mean the same thing for a Field Card as for a
+   * printed one, so they are applied unchanged. HABITAT is not: `HABITAT_ASSIGNMENTS` is a
+   * curated map over the printed deck, and `habitat.test.ts` pins its five classes as a
+   * PARTITION of those 45 — every card in exactly one, the counts summing to the deck.
+   * Adding four more would either break that partition or quietly change what the habitat
+   * achievement and the habitat research task count, which is a progression change wearing
+   * a filter's clothes.
+   *
+   * So a habitat filter hides the band entirely rather than showing an empty one. That is
+   * the truthful answer: these four carry no habitat class, so none of them matches.
+   */
+  const visibleFieldCards = useMemo(() => {
+    if (habitat !== 'all') return [];
+    const needle = query.trim().toLowerCase();
+    return fieldCards.filter((herb) => {
+      const discovered = ready && isDiscovered(herb.id);
+      const unlockXp = unlockXpFor(herb.id) ?? 0;
+      const earned = ready && progress.xp >= unlockXp;
+
+      if (status === 'discovered' && !discovered) return false;
+      if (status === 'undiscovered' && discovered) return false;
+      if (status === 'mastered' && !(ready && isMastered(herb.id))) return false;
+      if (rarity !== 'all' && herb.rarity !== rarity) return false;
+      if (season !== 'all' && herb.season !== season) return false;
+
+      if (needle) {
+        // Same rule as the printed grid, against the state that reveals the NAME here:
+        // an earned Field Card shows its face, so its name is already public to this
+        // player and searching it reveals nothing they cannot see.
+        const haystack =
+          discovered || earned
+            ? `${herb.commonName} ${herb.scientificName} #${herb.cardNumber}`
+            : `#${herb.cardNumber}`;
+        if (!haystack.toLowerCase().includes(needle)) return false;
+      }
+      return true;
+    });
+  }, [
+    fieldCards,
+    habitat,
+    status,
+    rarity,
+    season,
+    query,
+    isDiscovered,
+    isMastered,
+    ready,
+    progress.xp,
+  ]);
 
   // Named, not counted: "2 active" tells a player something is on without telling them
   // what, which is the same problem as hiding it.
@@ -226,6 +282,65 @@ export function HerbGrid({ herbs }: { herbs: Herb[] }) {
             </li>
           ))}
         </ul>
+      )}
+
+      {/*
+        ── FIELD CARDS ───────────────────────────────────────────────────────────
+        AFTER #45, WHERE THEIR NUMBERS PUT THEM, AND UNDER THEIR OWN NAME.
+
+        The artwork prints #48-51, so this is simply where they belong; running them into
+        the printed grid with no divider would put them in the same reading order and be
+        the more literal answer, but it would also make four digital cards look like part
+        of Collection 01, which is untrue. The heading is what keeps "45 cards · Collection
+        01" honest while the grid holds 49 tiles.
+
+        A `<section>` with its own heading rather than more `<li>`s in the list above: they
+        are a different collection, and a screen reader should hear that boundary rather
+        than a list that silently changes meaning at item 46.
+      */}
+      {visibleFieldCards.length > 0 && (
+        <section aria-labelledby="field-cards-heading" className="mt-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t border-gold-500/30 pt-5">
+            <h2
+              id="field-cards-heading"
+              className="font-display flex items-center gap-2 text-lg font-extrabold text-gold-plate"
+            >
+              <PlantdexIcon name="mastered" className="text-base text-gold-400" aria-hidden="true" />
+              Field Cards
+            </h2>
+            <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-400 uppercase tabular-nums">
+              {visibleFieldCards.length} of {FIELD_CARDS_TOTAL}
+            </p>
+          </div>
+          {/*
+            Says what they ARE in one line, because the grid above has trained the reader
+            that a tile is a plant you go and find, and these are not that. "Not found
+            outdoors" is the load-bearing half: it is the distinction the whole card page
+            was rebuilt once to protect.
+          */}
+          <p className="mt-1.5 text-xs leading-relaxed text-violet-300">
+            Digital-only cards, earned by XP rather than found outdoors. They pay no XP
+            themselves and are not part of {CURRENT_COLLECTION.shortName}.
+          </p>
+
+          <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {visibleFieldCards.map((herb) => {
+              const discovered = ready && isDiscovered(herb.id);
+              const threshold = unlockXpFor(herb.id) ?? 0;
+              const earned = ready && progress.xp >= threshold;
+              return (
+                <li key={herb.id}>
+                  <HerbCard
+                    herb={herb}
+                    discovered={discovered}
+                    stage={ready ? stageOf(herb.id) : null}
+                    unlock={earned ? { kind: 'earned' } : { kind: 'locked', xp: threshold }}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
     </div>
   );

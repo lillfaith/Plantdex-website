@@ -29,6 +29,8 @@ import { PRINTED_CARDS, PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import { LEVELS } from './progression';
 import { RESEARCH_POOL, STANDING_TASKS } from './research';
 import { isShelfEligible } from './seed-shelf';
+import { HABITATS, matchesHabitatFilter } from './habitat';
+import { hasSprite } from './plant-sprites';
 import { emptyState } from './herbdex-state';
 import { qualifiesForMastery, tracksMastery } from './mastery';
 import { xpForState } from './progression';
@@ -490,5 +492,106 @@ describe('a discovered Field Card is never offered a stage it cannot reach', () 
     const gate = celebration.indexOf('{tracksMastery(herb.id) && (');
     expect(gate, 'the celebration offers the learn CTA unconditionally').toBeGreaterThan(-1);
     expect(gate).toBeLessThan(cta);
+  });
+});
+
+/*
+ * ── THE FIELD CARDS IN THE HERBDEX GRID ───────────────────────────────────────
+ *
+ * They were absent from /herbdex entirely: the page rendered `printedCardsInDeckOrder()`,
+ * so a player's own collection page never showed the four cards they had earned. Putting
+ * them in is mostly layout — except for one thing that is not layout at all.
+ *
+ * `HerbCard` was BINARY, and correct while the grid held only printed cards, where the one
+ * question is "have you found this plant". A Field Card asks two questions with different
+ * answers. Dropping them into the undiscovered branch would have reproduced, tile for tile,
+ * the bug this file already guards on the card page: a player who had EARNED a card shown a
+ * silhouette captioned "Not discovered".
+ */
+describe('the Field Card band in the Herbdex grid', () => {
+  const grid = readFileSync('src/components/herbdex/HerbGrid.tsx', 'utf8');
+  const tile = readFileSync('src/components/herbdex/HerbCard.tsx', 'utf8');
+  const page = readFileSync('src/app/herbdex/page.tsx', 'utf8');
+
+  it('shows the card face for an EARNED Field Card, not only a discovered one', () => {
+    /*
+     * The regression guard. `showFace` is what draws the artwork, the name and the card
+     * number; collapsing it back to `discovered` is the exact mistake, and it would look
+     * entirely reasonable in a diff.
+     */
+    expect(tile).toContain('const showFace = discovered || earned;');
+    expect(tile, 'the artwork is gated on discovery again').not.toContain('{discovered ? (\n            <Image');
+    expect(tile, 'an earned card is not told it was found').toContain('Earned &middot; not yet found');
+  });
+
+  it('keeps the stage marker and rarity badge for a FOUND card only', () => {
+    // Earning grants reading. The stage marker is a record of a real find and must not
+    // appear on a card nobody has been outdoors for.
+    const marker = tile.indexOf('{discovered && (\n            <span\n              className={`absolute top-1.5 right-1.5');
+    expect(marker, 'the mastery marker is no longer gated on discovery').toBeGreaterThan(-1);
+  });
+
+  it('names the XP that actually opens a locked Field Card', () => {
+    // "Not discovered" is right for a printed card and wrong here: going outdoors does
+    // nothing for a Field Card until the threshold is crossed.
+    expect(tile).toContain("XP to unlock");
+    expect(tile).toContain("locked ? `${locked.xp.toLocaleString()} XP to unlock` : 'Not discovered'");
+  });
+
+  it('orders them by the number printed on the artwork, so they land after #45', () => {
+    expect(page).toContain('a.cardNumber - b.cardNumber');
+    const numbers = FIELD_CARDS.map((card) => card.cardNumber);
+    expect(numbers).toEqual([...numbers].sort((a, b) => a - b));
+    expect(Math.min(...numbers), 'a Field Card would sort among the printed deck')
+      .toBeGreaterThan(PRINTED_DECK_SIZE);
+  });
+
+  it('does not let four digital cards read as part of the printed collection', () => {
+    // The page header still says "45 cards · Collection 01" while the grid holds 49 tiles.
+    // The band's own heading and line are what keep that true.
+    expect(grid).toContain('field-cards-heading');
+    expect(grid).toContain('Field Cards');
+    expect(grid).toMatch(/not part of \{CURRENT_COLLECTION\.shortName\}/);
+    for (const card of FIELD_CARDS) {
+      expect(collectionOf(card).id, `${card.id} joined the printed collection`).toBe(
+        FIELD_CARDS_COLLECTION_ID,
+      );
+    }
+  });
+
+  it('draws something on a locked tile for a card with no sprite', () => {
+    /*
+     * FOUND BY LOOKING, NOT BY A TEST. `MysteryCard` composes the face-down back from the
+     * plant's own sprite, and all 45 printed cards have one — so an empty back was
+     * unreachable until the Field Cards joined the grid. `sprites.json` holds 45 entries
+     * and no sheet exists on disk for #48-51, so the four locked tiles rendered as blank
+     * gradients: not a card face down, a broken tile.
+     *
+     * The fallback is a keyhole rather than a generic plant, deliberately. A shape standing
+     * in for an unknown species is the same mistake the Seed Shelf's pots rule forbids.
+     */
+    const mystery = readFileSync('src/components/herbdex/MysteryCard.tsx', 'utf8');
+    expect(mystery, 'a card without a sprite renders an empty back again').toContain(
+      'hasSprite(herb.id) ?',
+    );
+    for (const card of FIELD_CARDS) {
+      expect(hasSprite(card.id), `${card.id} gained a sprite — re-check the fallback`).toBe(false);
+    }
+  });
+
+  it('hides the band under a habitat filter rather than showing an empty one', () => {
+    /*
+     * `HABITAT_ASSIGNMENTS` is a curated map over the printed 45 and `habitat.test.ts` pins
+     * it as a partition of them. Adding Field Cards to it would change what the habitat
+     * achievement and research task count — a progression change wearing a filter's
+     * clothes — so the band steps aside instead.
+     */
+    expect(grid).toContain("if (habitat !== 'all') return [];");
+    for (const card of FIELD_CARDS) {
+      for (const habitat of HABITATS) {
+        expect(matchesHabitatFilter(card.id, habitat), `${card.id} gained a habitat class`)
+          .toBe(false);
+      }
+    }
   });
 });

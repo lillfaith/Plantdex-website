@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { printedCardsInDeckOrder } from '@/lib/deck';
+import { FIELD_CARDS } from '@/lib/field-cards';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
@@ -21,6 +22,13 @@ export const metadata: Metadata = {
 
 export default function HerbdexPage() {
   const herbs = printedCardsInDeckOrder();
+  /*
+   * Sorted by the number printed on the artwork (#48-51), which is what puts them after
+   * #45 rather than anywhere else. `cardNumberInCollection` is their position WITHIN Field
+   * Cards (#01-04) and is the wrong key here: the grid is ordered by the deck-wide number
+   * a player reads off the card in front of them.
+   */
+  const fieldCards = [...FIELD_CARDS].sort((a, b) => a.cardNumber - b.cardNumber);
 
   return (
     <main id="main" className="mx-auto max-w-6xl px-4 py-8">
@@ -164,7 +172,7 @@ export default function HerbdexPage() {
       </div>
 
       <div className="mt-6">
-        <HerbGrid herbs={herbs} />
+        <HerbGrid herbs={herbs} fieldCards={fieldCards} />
       </div>
 
       {/* The deck's own explanation of Encounter Rate, so the game term is not read as a

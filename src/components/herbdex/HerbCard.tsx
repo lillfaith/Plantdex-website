@@ -32,20 +32,57 @@ const STAGE_MARK: Record<MasteryStage, IconName> = {
  * (AGENTS.md: essential information must not depend solely on colour). The stage marker
  * follows the same rule: every marker carries its stage name in the accessible label.
  */
+/**
+ * A Field Card's XP state, and ONLY ever passed for a Field Card.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * WHY THE TILE NEEDED A THIRD STATE AT ALL.
+ *
+ * `discovered` is binary and that was correct while the grid held only printed cards,
+ * where the single question is "have you found this plant". A Field Card asks two
+ * questions at once — have you EARNED it (XP), and have you FOUND it (outdoors) — and
+ * they have different answers.
+ *
+ * Reusing the undiscovered branch would have re-created, in the grid, precisely the bug
+ * CLAUDE.md records fixing on the card page: a player who had WON a Field Card was shown
+ * a silhouette captioned "Not discovered" and told to go outside and find it. Earning and
+ * finding stay three separate facts here — locked, earned, found — exactly as they are in
+ * the reducer.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export type FieldCardUnlock =
+  /** Below the threshold. The tile names the XP, because that is what actually opens it. */
+  | { kind: 'locked'; xp: number }
+  /** Past the threshold. The card is readable and owned — but still not FOUND. */
+  | { kind: 'earned' };
+
 export function HerbCard({
   herb,
   discovered,
   stage = null,
   priority = false,
+  unlock,
 }: {
   herb: Herb;
   discovered: boolean;
   /** Mastery stage, or null while storage is still loading. */
   stage?: MasteryStage | null;
   priority?: boolean;
+  /** Field Cards only. Absent for every printed card, whose behaviour is unchanged. */
+  unlock?: FieldCardUnlock;
 }) {
   const number = `#${String(herb.cardNumber).padStart(2, '0')}`;
   const stageLabel = stage ? MASTERY_STAGE_LABEL[stage] : 'Discovered';
+
+  /*
+   * An earned Field Card shows its face. It is owned and readable — withholding the
+   * artwork from somebody who crossed the threshold would make the reward invisible at
+   * the one place they go to look at their collection. What it does NOT get is the stage
+   * marker or the rarity badge: those belong to a card that was found.
+   */
+  const earned = unlock?.kind === 'earned';
+  const showFace = discovered || earned;
+  const locked = unlock?.kind === 'locked' ? unlock : null;
 
   return (
     /*
@@ -54,13 +91,17 @@ export function HerbCard({
       — it has to sit around the card, not in it.
     */
     <div className="relative">
-      <RarityAura rarity={herb.rarity} concealed={!discovered} />
+      <RarityAura rarity={herb.rarity} concealed={!showFace} />
       <Link
         href={`/herbdex/${herb.id}`}
         aria-label={
-          discovered
-            ? `${herb.commonName}, card ${number}, ${herb.rarity}. ${stageLabel}.`
-            : `Card ${number}. Not discovered.`
+          locked
+            ? `Card ${number}. Field Card, locked. ${locked.xp.toLocaleString()} XP to unlock.`
+            : earned
+              ? `${herb.commonName}, card ${number}, ${herb.rarity}. Field Card, earned with XP. Not yet found.`
+              : discovered
+                ? `${herb.commonName}, card ${number}, ${herb.rarity}. ${stageLabel}.`
+                : `Card ${number}. Not discovered.`
         }
         className="group relative z-10 block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
       >
@@ -80,12 +121,12 @@ export function HerbCard({
         */}
         <div
           className={`relative aspect-[356/576] bg-plum-800 ${
-            discovered
+            showFace
               ? 'group-hover:[outline:2px_solid_var(--color-violet-600)] group-hover:[outline-offset:-2px] group-focus-visible:[outline:2px_solid_var(--color-violet-600)] group-focus-visible:[outline-offset:-2px]'
               : ''
           }`}
         >
-          {discovered ? (
+          {showFace ? (
             <Image
               src={assetPath(herb.thumb)}
               alt={`Plantdex card ${number}: ${herb.commonName} (${herb.scientificName})`}
@@ -98,15 +139,20 @@ export function HerbCard({
           ) : (
             <>
               <MysteryCard herb={herb} />
+              {/*
+                THE CAPTION NAMES WHAT ACTUALLY OPENS THE CARD. "Not discovered" is right
+                for a printed card and wrong for a locked Field Card, where going outdoors
+                does nothing at all until the XP is earned.
+              */}
               <div className="absolute inset-x-0 bottom-0 flex justify-center pb-8">
                 <span className="text-[0.72rem] leading-tight font-bold tracking-[0.14em] text-plum-950/75 uppercase">
-                  Not discovered
+                  {locked ? `${locked.xp.toLocaleString()} XP to unlock` : 'Not discovered'}
                 </span>
               </div>
             </>
           )}
 
-          {discovered && (
+          {showFace && (
             <span className="absolute top-1.5 left-1.5 rounded-md bg-plum-950/75 px-1.5 py-0.5 text-[0.72rem] font-bold text-gold-400 tabular-nums">
               {number}
             </span>
@@ -129,10 +175,10 @@ export function HerbCard({
         <div className="space-y-0.5 bg-plum-800/90 px-2 pt-1.5 pb-2">
           <p
             className={`truncate text-xs font-bold ${
-              discovered ? 'text-violet-100' : 'text-violet-400'
+              showFace ? 'text-violet-100' : 'text-violet-400'
             }`}
           >
-            {discovered ? herb.commonName : '???'}
+            {showFace ? herb.commonName : '???'}
           </p>
           {/*
             QUIET, NOT ABSENT. This line used to be a filled pill under every one of the 45
@@ -144,9 +190,14 @@ export function HerbCard({
           */}
           {discovered ? (
             <RarityBadge rarity={herb.rarity} tone="quiet" />
+          ) : earned ? (
+            /* Earned, not found — and it says so, because those are different records. */
+            <span className="block text-[0.72rem] leading-none font-medium text-gold-400">
+              Earned &middot; not yet found
+            </span>
           ) : (
             <span className="block text-[0.72rem] leading-none font-medium text-violet-400">
-              Find it to reveal
+              {locked ? 'Earned with XP' : 'Find it to reveal'}
             </span>
           )}
         </div>

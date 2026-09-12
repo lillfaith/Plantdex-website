@@ -1,5 +1,6 @@
 import type { Herb } from '@/lib/types';
 import { PlantSprite } from '../PlantSprite';
+import { hasSprite } from '@/lib/plant-sprites';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
@@ -60,11 +61,30 @@ export function MysteryCard({
       {/* The plant, as a shadow. Centred slightly high so the number and the keyhole below
           are not crowded by it. */}
       <span className="absolute inset-0 flex items-center justify-center pb-[10%]">
-        {/* Sized as a fraction of the CARD, not in sprite pixels: a locked thumbnail on a
-            phone and the same card at full size then hold the same composition. */}
-        <span className="block w-[74%]">
-          <PlantSprite herbId={herb.id} alt="" frozen fit className="plant-silhouette" />
-        </span>
+        {/*
+          NOT EVERY CARD HAS A SPRITE, and one without renders an EMPTY BACK — a blank
+          gradient that reads as a broken tile rather than a card face down. All 45 printed
+          cards have one, so this was unreachable until the Field Cards joined the grid:
+          `sprites.json` holds 45 entries and no sheet exists on disk for #48-51.
+
+          The fallback is deliberately NOT a generic plant. A shape standing in for a
+          species is the thing the Seed Shelf's pots rule already forbids — a drawing the
+          reader would take as a claim about which plant is hiding here. The keyhole says
+          the true thing instead: something is locked, and its shape is not the clue.
+
+          Sized as a fraction of the CARD, not in sprite pixels: a locked thumbnail on a
+          phone and the same card at full size then hold the same composition.
+        */}
+        {hasSprite(herb.id) ? (
+          <span className="block w-[74%]">
+            <PlantSprite herbId={herb.id} alt="" frozen fit className="plant-silhouette" />
+          </span>
+        ) : (
+          <PlantdexIcon
+            name="locked"
+            className={`text-plum-950/25 ${detail ? 'text-7xl' : 'text-4xl'}`}
+          />
+        )}
       </span>
 
       {/* A low bloom off the foot of the card, which is where the printed back is darkest —
