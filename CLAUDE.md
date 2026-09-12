@@ -757,6 +757,56 @@ or was not made; re-measure before trusting any of them again.
   if the set stops being a fraction of the thumbnails it replaces — a stronger guarantee than a
   data field, which can name a file nobody ever rendered. 112px is measured: the strip draws
   35 CSS px, and 35 x 3 is the most a device pixel ratio of 3 can ask for.
+- **IDENTIFICATION FELT BROKEN AND THE SERVER WAS NOT THE PROBLEM.** Timestamps from the
+  `verify-plant-id` workflow put three consecutive round trips at **2.2-2.3s each** from a wired
+  runner with a tiny image — so the provider call is the bulk of it and is not ours to speed up.
+  Everything that WAS ours turned out to be somewhere else: four serialized round trips in front
+  of the provider call, the size of the upload, and a UI that changed one word on a button and
+  then showed nothing for several seconds. Re-measure before trusting any of these again.
+- **`auth.getUser()` and the GLOBAL `claim_scan` ran one after the other for no reason.** The
+  global backstop is keyed on the literal bucket `global` and reads no user id, so the two are
+  now one `Promise.all`; the PER-CALLER claim genuinely does depend on the answer and stays put.
+  Unchanged, and deliberately: the global unit is still spent before the per-caller limit is
+  checked, so somebody over their own quota still costs the shared 450 one. That is an
+  accounting defect, not a latency one, and fixing it is a migration.
+- **The `scan_quota` housekeeping delete was AWAITED on every request**, so every player paid a
+  round trip to tidy up rows they will never see. It is started where it was and awaited at the
+  end, by which time the provider call has covered it. NOT left floating: an isolate can be
+  frozen the moment a response is written, so it is handed to `EdgeRuntime.waitUntil` for the
+  paths that return early. `Promise.resolve` is what issues it — a PostgREST builder is a lazy
+  thenable, and `deno check` rejects it as a `Promise`.
+- **`prepareImage` has TWO profiles because it serves two jobs, and the point is that one did
+  not change.** A sighting photo is KEPT and looked at again; a scan photo is transmitted once
+  and discarded, and on a mobile uplink it is usually the largest single term in the wait.
+  `KEEP_PROFILE` is byte-for-byte what every stored photo already used; `IDENTIFY_PROFILE` is
+  1024px/0.75 — measured at **1.6x fewer bytes** (85.9KB -> 53.5KB on a real photograph, and the
+  browser sent 51.8KB end to end). The default argument is `KEEP_PROFILE`, so a caller that
+  forgets cannot silently downgrade somebody's stored photograph. **Whether a smaller upload
+  costs ACCURACY is a fact about PlantNet's model that nothing here can reason its way to** —
+  `identify_web_images.py` takes `SIZES` and asks it of real field photographs through the real
+  function, and this value moves when that says it may.
+- **A profile may make the output smaller; nothing may make it a passthrough.** The re-encode is
+  what drops EXIF and its GPS, which the scan screen promises in words — so "it is already small
+  enough, skip it" is a plausible-looking optimisation that breaks a stated promise.
+  `image-prepare.test.ts` counts the `blob: file` sites and fails on a second one.
+- **The status panel reports TWO stages because two are all the code can see.** `prepareImage`
+  finishing is a real boundary and `identifyPlant` now reports it through a callback; there is no
+  third stage because `fetch` gives no upload-completion signal, and an "Uploading" that flipped
+  to "Identifying" on a timer would be a state invented to look busier. It renders INSIDE the
+  answer region, so the existing scroll effect brings it into view — without that, the whole wait
+  happened at the top of a page the player had already scrolled past.
+- **The photograph is on screen before any work starts, and that is the largest perceived win
+  here.** An object URL costs no decode and no round trip, where the first visible response to a
+  tap used to be the finished answer. Create it OUTSIDE the state updater: React invokes an
+  updater twice under StrictMode, so minting it in there makes two and keeps one.
+- **The busy bar is determinate and reuses `path-fill`.** `animate-pulse` is one class away and
+  is `infinite`, which the Motion section forbids; a bar that moves only when something real
+  happened satisfies both rules at once. Pinned by `image-prepare.test.ts`.
+- **An `OPTIONS` on mount warms the identifier for free.** The first scan of a session otherwise
+  pays for a CORS preflight on the multipart POST and a cold Deno isolate, both while somebody is
+  standing in front of a plant. It spends no quota — `identify-plant` answers `OPTIONS` above
+  both `claim_scan` calls — and every failure is swallowed, because an optimisation that can
+  break the thing it optimises is worse than none.
 - **`track()` call sites are found by counting brackets, not by a regex.** The analytics guard
   matched `/\btrack\(([^;]*?)\);/`, which requires a semicolon straight after the closing
   bracket — so it read `track('x');` in a handler body and silently skipped every call written

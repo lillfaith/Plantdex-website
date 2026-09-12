@@ -8,8 +8,16 @@ name: Identify real photographs
 # "broadleaf dock will not identify" both came from. This closes it with real pictures taken
 # by different people in different light.
 #
-# Costs one identification per image. The anonymous allowance is 5 a day per IP and a runner
-# gets a fresh one each job, so the default batch is deliberately small.
+# It also answers the one question that decides how much of a photograph the app should
+# upload. Set `sizes` and each photograph is re-encoded at each setting and identified once
+# per setting, so the candidates and scores can be compared directly — which is the only
+# honest way to move `IDENTIFY_PROFILE` in src/lib/image-prepare.ts, because whether a
+# smaller upload costs accuracy is a fact about PlantNet's model and not one this repository
+# can reason its way to.
+#
+# Costs one identification per image PER SIZE. The anonymous allowance is 5 a day per IP and
+# a runner gets a fresh one each job, so with three sizes the batch is one photograph; repeat
+# across species as separate runs.
 on:
   workflow_dispatch:
     inputs:
@@ -19,9 +27,14 @@ on:
         default: Rumex obtusifolius
         type: string
       limit:
-        description: How many photographs to try (the anonymous cap is 5)
+        description: How many photographs to try (limit x sizes must stay under 5)
         required: true
         default: '4'
+        type: string
+      sizes:
+        description: 'Upload sizes to compare as edgeXquality, e.g. 1280x82,1024x75,800x75. Blank sends the photograph as downloaded.'
+        required: false
+        default: ''
         type: string
       project_ref:
         description: Which Supabase project to call
@@ -57,5 +70,11 @@ jobs:
         env:
           CATEGORY: ${{ inputs.category }}
           LIMIT: ${{ inputs.limit }}
+          SIZES: ${{ inputs.sizes }}
           PROJECT_REF: ${{ inputs.project_ref }}
-        run: python3 scripts/identify_web_images.py
+        run: |
+          # Only needed for the size comparison; the plain path re-encodes nothing.
+          if [ -n "$SIZES" ]; then
+            python3 -m pip install --quiet --disable-pip-version-check pillow
+          fi
+          python3 scripts/identify_web_images.py

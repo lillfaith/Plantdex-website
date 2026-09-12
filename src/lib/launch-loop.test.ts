@@ -108,9 +108,18 @@ describe('both branches of a scan end somewhere', () => {
      *
      * Two things have to hold: the outcome has a ref for the scroll to target, and `confirmed`
      * is a dependency of the effect that scrolls. Either alone leaves the panel unreachable.
+     *
+     * MEMBERSHIP, NOT THE EXACT ARRAY. This used to pin `[result, problem, confirmed]`
+     * literally, which failed the moment `busy` was added so the in-flight STATUS could be
+     * scrolled to as well — a change in the same spirit as the fix this guards. Pinning the
+     * whole list makes every future addition look like a regression while saying nothing more
+     * about the one that matters, so it asserts what it is named for: `confirmed` is in there.
      */
     expect(SCAN_PANEL).toContain('ref={outcomeRef}');
-    expect(SCAN_PANEL).toMatch(/\}, \[result, problem, confirmed\]\)/);
+    const deps = SCAN_PANEL.match(/\}, \[([^\]]*)\]\);/g) ?? [];
+    expect(deps.some((list) => /\bresult\b/.test(list) && /\bproblem\b/.test(list) && /\bconfirmed\b/.test(list))).toBe(
+      true,
+    );
   });
 
   it('offers exactly one onward link, so an answer does not become a decision', () => {

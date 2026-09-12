@@ -16,13 +16,23 @@ WHERE THE IMAGES COME FROM. Wikimedia Commons, resolved through its own API. Sta
 explicit licensing, no scraping of a search engine's result page, and reproducible — the
 same category returns the same files, so a run can be repeated and compared.
 
-WHAT IT COSTS. One identification per image against the project's daily allowance. The
-anonymous bucket is 5/day per IP and a runner gets a fresh one per job, so keep batches
-small.
+COMPARING UPLOAD SIZES. Set SIZES (e.g. "1280x82,1024x75,800x75", as edge x quality) and
+each photograph is re-encoded at each setting and identified once per setting, with the
+answers printed side by side. That is the ONLY honest way to choose what `IDENTIFY_PROFILE`
+in `src/lib/image-prepare.ts` sends: the upload is usually the largest term in the wait on a
+phone, smaller is faster, and whether smaller is also WORSE is a question about PlantNet's
+model that nothing in this repository can answer by reasoning. Card art cannot answer it
+either — see above — so it is asked of real field photographs, through the real function.
+
+WHAT IT COSTS. One identification per image per size, against the project's daily allowance.
+The anonymous bucket is 5/day per IP and a runner gets a fresh one per job, so keep batches
+small: with three sizes that is ONE photograph per job, repeated across species as separate
+runs.
 """
 
 from __future__ import annotations
 
+import io
 import json
 import os
 import sys
@@ -94,14 +104,51 @@ def identify(image: bytes, filename: str, project: str, key: str) -> dict:
         return {"httpError": error.code, "body": error.read().decode("utf-8", "replace")[:300]}
 
 
+def parse_sizes(raw: str) -> list[tuple[int, int]]:
+    """["1280x82", "800x75"] -> [(1280, 82), (800, 75)]. Empty means "send as downloaded"."""
+    out: list[tuple[int, int]] = []
+    for part in raw.replace(" ", "").split(","):
+        if not part:
+            continue
+        edge, _, quality = part.partition("x")
+        out.append((int(edge), int(quality or 82)))
+    return out
+
+
+def reencode(blob: bytes, edge: int, quality: int) -> bytes:
+    """What the browser sends: longest edge capped, re-encoded as JPEG at that quality.
+
+    Mirrors `prepareImage` in src/lib/image-prepare.ts — cap the LONGEST edge, preserve the
+    aspect ratio, write JPEG. Pillow's resampling is not the browser's, so this measures the
+    SIZE the model is given rather than reproducing a browser's exact bytes; that is the
+    variable being tested.
+    """
+    from PIL import Image  # imported here so the no-SIZES path needs no Pillow
+
+    image = Image.open(io.BytesIO(blob)).convert("RGB")
+    width, height = image.size
+    scale = min(1.0, edge / max(width, height))
+    if scale < 1.0:
+        image = image.resize(
+            (max(1, round(width * scale)), max(1, round(height * scale))), Image.LANCZOS
+        )
+    buffer = io.BytesIO()
+    image.save(buffer, "JPEG", quality=quality)
+    return buffer.getvalue()
+
+
 def main() -> int:
     category = os.environ.get("CATEGORY", "").strip()
     project = os.environ.get("PROJECT_REF", "").strip()
     key = os.environ.get("ANON_KEY", "").strip()
     limit = int(os.environ.get("LIMIT", "4"))
+    sizes = parse_sizes(os.environ.get("SIZES", ""))
     if not (category and project and key):
         print("set CATEGORY, PROJECT_REF and ANON_KEY")
         return 2
+    if sizes:
+        print(f"comparing {len(sizes)} upload sizes: " + ", ".join(f"{e}px q{q}" for e, q in sizes))
+        print(f"budget: {limit} photograph(s) x {len(sizes)} sizes = {limit * len(sizes)} identifications\n")
 
     images = commons_images(category, limit)
     print(f"{len(images)} photographs from Commons category '{category}'\n")
@@ -123,23 +170,44 @@ def main() -> int:
             print(f"  SKIP  {short}: could not download ({error})")
             continue
 
-        answer = identify(blob, "scan.jpg", project, key)
-        print(f"── {short}  ({len(blob) // 1024} KB)")
+        print(f"── {short}  (as downloaded: {len(blob) // 1024} KB)")
 
-        if "httpError" in answer:
-            print(f"     HTTP {answer['httpError']}: {answer['body']}")
-            if answer["httpError"] == 429:
-                print("     quota reached — stopping")
-                break
-            continue
+        # No SIZES: the original single-variant behaviour, unchanged.
+        variants = [("as downloaded", blob)]
+        if sizes:
+            variants = []
+            for edge, quality in sizes:
+                try:
+                    variants.append((f"{edge}px q{quality}", reencode(blob, edge, quality)))
+                except Exception as error:  # noqa: BLE001
+                    print(f"     could not re-encode at {edge}px: {error}")
 
-        candidates = answer.get("candidates", [])
-        if not candidates:
-            print("     provider recognised nothing")
-        for candidate in candidates:
-            print(f"     {candidate['scientificName']:<34} {candidate['score']:.3f}")
-        print(f"     remaining today: {answer.get('remaining')}\n")
-        replay[short] = [[c["scientificName"], round(c["score"], 3)] for c in candidates]
+        stopped = False
+        for label, payload in variants:
+            answer = identify(payload, "scan.jpg", project, key)
+            print(f"   {label:<16} {len(payload) // 1024:>4} KB")
+
+            if "httpError" in answer:
+                print(f"     HTTP {answer['httpError']}: {answer['body']}")
+                if answer["httpError"] == 429:
+                    print("     quota reached — stopping")
+                    stopped = True
+                    break
+                continue
+
+            candidates = answer.get("candidates", [])
+            if not candidates:
+                print("     provider recognised nothing")
+            for candidate in candidates:
+                print(f"     {candidate['scientificName']:<34} {candidate['score']:.3f}")
+            print(f"     remaining today: {answer.get('remaining')}")
+            # Keyed by size as well as photograph, so two runs of the same species at
+            # different settings can be diffed rather than overwriting each other.
+            key_name = short if label == "as downloaded" else f"{short} @ {label}"
+            replay[key_name] = [[c["scientificName"], round(c["score"], 3)] for c in candidates]
+        print()
+        if stopped:
+            break
 
     print("REPLAY_JSON_START")
     print(json.dumps(replay, indent=1))

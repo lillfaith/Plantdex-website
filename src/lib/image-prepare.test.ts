@@ -1,0 +1,109 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+import { IDENTIFY_PROFILE, KEEP_PROFILE } from './image-prepare';
+
+const PREPARE = readFileSync('src/lib/image-prepare.ts', 'utf8');
+const SCANS = readFileSync('src/lib/scans.ts', 'utf8');
+const PHOTO_STORE = readFileSync('src/lib/photo-store.ts', 'utf8');
+const REMOTE_SIGHTINGS = readFileSync('src/lib/remote-sightings.ts', 'utf8');
+const SCAN_PANEL = readFileSync('src/components/scan/ScanPanel.tsx', 'utf8');
+const WARMUP = readFileSync('src/lib/scan-warmup.ts', 'utf8');
+
+/** Comments explain the decisions; the guards below are about the code that implements them. */
+function codeOnly(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+}
+
+/**
+ * The prepare pipeline has two profiles because it serves two jobs, and the whole value of
+ * the split is that one of them did NOT change. These are source-reading guards for the same
+ * reason `analytics.test.ts` and `launch-loop.test.ts` are: `createImageBitmap`, `<canvas>`
+ * and `toBlob` do not exist under vitest's environment, so the behaviour cannot be executed
+ * here — but the decisions can be pinned, and a decision quietly reversed is the failure mode
+ * that matters.
+ */
+describe('prepare profiles', () => {
+  it('leaves the KEPT photograph at exactly the fidelity it always had', () => {
+    // Not "some sensible value" — these two numbers are what every photo already stored was
+    // written with, and a change here silently makes new sightings look different from old
+    // ones in the same journal.
+    expect(KEEP_PROFILE).toEqual({ maxEdge: 1280, quality: 0.82 });
+  });
+
+  it('sends less than it keeps, on both axes', () => {
+    expect(IDENTIFY_PROFILE.maxEdge).toBeLessThan(KEEP_PROFILE.maxEdge);
+    expect(IDENTIFY_PROFILE.quality).toBeLessThan(KEEP_PROFILE.quality);
+  });
+
+  it('defaults to the KEEP profile, so a caller that says nothing loses no fidelity', () => {
+    // The direction of the default is the safety property. Defaulting the other way would
+    // mean any future caller that forgot the argument quietly downgraded a stored photo.
+    expect(PREPARE).toMatch(/profile:\s*PrepareProfile\s*=\s*KEEP_PROFILE/);
+  });
+
+  it('asks for the smaller profile only on the path that transmits and discards', () => {
+    expect(SCANS).toContain('prepareImage(file, IDENTIFY_PROFILE)');
+    for (const source of [PHOTO_STORE, REMOTE_SIGHTINGS]) {
+      expect(source).not.toContain('IDENTIFY_PROFILE');
+    }
+  });
+
+  it('never lets a profile turn the re-encode into a passthrough', () => {
+    /*
+     * The re-encode is what drops EXIF and its GPS, and the scan screen promises that in
+     * words. A profile may only choose how small the output is; a short-circuit that returned
+     * the original bytes when they were "already small enough" would be a plausible-looking
+     * optimisation that breaks a stated promise, so the only `blob: file` in this module is
+     * the decode-failure fallback the docstring argues for.
+     */
+    const passthroughs = PREPARE.match(/blob:\s*file\b/g) ?? [];
+    expect(passthroughs).toHaveLength(1);
+    expect(PREPARE).toContain("contentType: 'image/jpeg'");
+  });
+});
+
+describe('the scan status', () => {
+  it('reports only the boundary the code can actually observe', () => {
+    // One callback, at the end of preparation. There is deliberately no "upload finished"
+    // signal, because `fetch` does not give one — a third stage could only be invented.
+    expect(SCANS).toContain('onPrepared?.();');
+    expect(SCANS).not.toMatch(/onUploaded|setTimeout\(/);
+    expect(SCAN_PANEL).toContain("identifyPlant(file, () => setStage('identifying'))");
+  });
+
+  it('shows the chosen photograph before any work starts', () => {
+    // The object URL is created in the same synchronous block as the stage change, ahead of
+    // the await — that ordering is the entire point, so pin it rather than just the call.
+    const pick = SCAN_PANEL.slice(
+      SCAN_PANEL.indexOf("setStage('preparing')"),
+      SCAN_PANEL.indexOf('await identifyPlant'),
+    );
+    expect(pick).toContain('URL.createObjectURL(file)');
+    expect(SCAN_PANEL).toContain('URL.revokeObjectURL');
+  });
+
+  it('never loops an animation while waiting', () => {
+    /*
+     * CLAUDE.md's Motion rule: every effect is 1 or 2 iterations, never `infinite`. A busy
+     * indicator is the most tempting place in the app to break it, and `animate-pulse` is one
+     * class away. The bar is determinate and reuses `path-fill` instead.
+     */
+    expect(SCAN_PANEL).not.toContain('animate-pulse');
+    expect(SCAN_PANEL).not.toContain('animate-spin');
+    expect(SCAN_PANEL).toContain('path-fill');
+  });
+});
+
+describe('the identifier warm-up', () => {
+  it('sends no image and spends no quota', () => {
+    // OPTIONS is answered above the quota claims in the function, so this cannot consume an
+    // identification. A POST here would spend one of five for an anonymous player.
+    expect(WARMUP).toContain("method: 'OPTIONS'");
+    expect(codeOnly(WARMUP)).not.toMatch(/\bPOST\b|FormData|body:/);
+  });
+
+  it('cannot fail the thing it exists to speed up', () => {
+    expect(WARMUP).toContain('} catch {');
+    expect(WARMUP).toMatch(/if \(warmed\) return;/);
+  });
+});

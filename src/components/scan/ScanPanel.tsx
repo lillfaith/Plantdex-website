@@ -7,6 +7,7 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { getPrintedCard } from '@/lib/deck';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
+import { warmIdentifier } from '@/lib/scan-warmup';
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { ScanCaution } from './ScanCaution';
@@ -40,7 +41,27 @@ export function ScanPanel() {
   const { discover, isDiscovered, ready } = useHerbdex();
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [busy, setBusy] = useState(false);
+  /*
+   * TWO STAGES, AND DELIBERATELY NOT THREE.
+   *
+   * `preparing` is the decode-and-re-encode in `prepareImage`; `identifying` is everything
+   * after it — upload, quota, provider, answer. There is no third stage because `fetch` gives
+   * no upload-completion signal, so an "Uploading" that flipped to "Identifying" on a timer
+   * would be a state the code cannot observe, invented to look busier. Two honest stages beat
+   * three convincing ones.
+   */
+  const [stage, setStage] = useState<'idle' | 'preparing' | 'identifying'>('idle');
+  const busy = stage !== 'idle';
+  /*
+   * The chosen photograph, shown the INSTANT it is chosen.
+   *
+   * Before this, the first visible response to a tap was the finished answer — everything in
+   * between happened behind a single changed word on a button, including a full-resolution
+   * decode that blocks the main thread and can outlast a second on its own. An object URL
+   * costs no decode and no round trip: the picture is on screen before the work starts, which
+   * is the difference between "it did nothing" and "it is working on this".
+   */
+  const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [rateLimited, setRateLimited] = useState<{ signedIn: boolean } | null>(null);
@@ -70,6 +91,26 @@ export function ScanPanel() {
   const outcomeRef = useRef<HTMLDivElement>(null);
 
   /*
+   * WARM THE FUNCTION WHILE THE PLAYER IS STILL FRAMING THE SHOT.
+   *
+   * The first scan of a session pays for two things nobody should have to wait on: a CORS
+   * preflight for the multipart POST, and a cold Deno isolate. Both are already over by the
+   * time the photograph is ready if something asks first. It costs no quota — the function
+   * answers OPTIONS before it claims anything — sends no image, and its failure is ignored
+   * entirely, because a warm-up that could break a scan would be worse than a cold one.
+   */
+  useEffect(() => {
+    void warmIdentifier();
+  }, []);
+
+  // An object URL holds the file alive until it is released. One per pick, released when it
+  // is replaced or when the screen goes away.
+  useEffect(() => {
+    if (!preview) return;
+    return () => URL.revokeObjectURL(preview);
+  }, [preview]);
+
+  /*
    * Bring the answer to the player rather than trusting them to go and find it.
    *
    * Only when it is not already fully on screen, so a desktop layout where everything fits
@@ -78,7 +119,10 @@ export function ScanPanel() {
    * viewport rather than assumed: a region can end inside `innerHeight` and still be hidden.
    */
   useEffect(() => {
-    if (!result && !problem) return;
+    // `busy` joins `result` and `problem` for the reason the region exists: on a 390px
+    // viewport the status line renders below the fold too, and a player who cannot see the
+    // work happening is in exactly the position this region was built to fix.
+    if (!result && !problem && !busy) return;
     const node = answerRef.current;
     if (!node) return;
     // Once an outcome exists it is what the player is waiting to read, so bring THAT into
@@ -102,11 +146,17 @@ export function ScanPanel() {
     // `confirmed` is a dependency for the reason spelled out at the outcome panel: the panel
     // reporting the most important action in the app used to render below the fold with
     // nothing scrolling to it.
-  }, [result, problem, confirmed]);
+  }, [result, problem, confirmed, busy]);
 
   const run = useCallback(
     async (file: File) => {
-      setBusy(true);
+      setStage('preparing');
+      // Created OUTSIDE the state updater, deliberately. An updater is not a place for a side
+      // effect: React invokes it twice under StrictMode, so minting the URL in there would
+      // create two and keep one, leaking the other and revoking a URL still being displayed.
+      // The effect above owns releasing it, which is the only place that knows when it stops
+      // being on screen.
+      setPreview(URL.createObjectURL(file));
       setProblem(null);
       setRateLimited(null);
       setResult(null);
@@ -115,12 +165,19 @@ export function ScanPanel() {
       setShelved(false);
       track('scan_started');
 
-      const answer = await identifyPlant(file);
+      /*
+       * The stage flips on the next macrotask rather than inline, because `prepareImage`'s
+       * decode runs on the main thread: set synchronously, React would batch the change into
+       * the same commit as the work that blocks the paint, and "Preparing photo" would never
+       * be drawn at all. A frame is what it costs to actually see the first stage.
+       */
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      const answer = await identifyPlant(file, () => setStage('identifying'));
 
       if (isScanFailure(answer)) {
         if (answer.kind === 'rateLimited') setRateLimited({ signedIn: answer.signedIn });
         setProblem(answer.message);
-        setBusy(false);
+        setStage('idle');
         return;
       }
 
@@ -140,7 +197,7 @@ export function ScanPanel() {
       // History is account data; signed out there is nowhere to keep it, and saying so is
       // better than silently discarding it. A failed write never costs the player the answer.
       if (user) void recordScan(user.id, answer).then(setScanId);
-      setBusy(false);
+      setStage('idle');
     },
     [user],
   );
@@ -223,6 +280,64 @@ export function ScanPanel() {
       <div ref={answerRef} className="scroll-mt-4 space-y-5">
         {/* Unconditional, and above every result. Never gated on a score. */}
         <ScanCaution />
+
+        {/*
+          WHAT IS HAPPENING, WHERE THE ANSWER WILL BE.
+
+          Until this existed, the whole wait was one changed word on a button at the top of
+          the page — and on a 390px viewport the player had already scrolled past it, so a
+          scan looked like a tap that did nothing for several seconds. The status renders
+          inside the answer region, so the existing scroll effect brings it into view and the
+          answer then replaces it in the place the player is already looking.
+
+          THE PHOTOGRAPH IS THE POINT OF THIS PANEL. It is on screen from the instant of the
+          tap, before the decode has started, which is the first honest signal that the app
+          received the thing it was handed.
+        */}
+        {busy && (
+          <section className="panel p-5" aria-live="polite" aria-busy="true">
+            <div className="flex items-center gap-4">
+              {preview && (
+                // The player's own photograph, not decoded by us — the browser draws it from
+                // the file directly. `alt` is empty because it is the picture they just took
+                // and the status line beside it carries the meaning.
+                // eslint-disable-next-line @next/next/no-img-element -- a blob: URL next/image cannot optimise, and it must appear before any decoding starts.
+                <img
+                  src={preview}
+                  alt=""
+                  className="h-16 w-16 shrink-0 rounded-lg border border-violet-800/70 object-cover"
+                />
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-violet-100">
+                  {stage === 'preparing' ? 'Preparing photo\u2026' : 'Identifying\u2026'}
+                </p>
+                {/*
+                  A determinate bar with exactly two steps, because there are exactly two
+                  things this code can observe happening. It reuses `path-fill` — the same
+                  800ms width transition as the mastery track and every profile meter — and
+                  adds no keyframe: CLAUDE.md's Motion rule allows one-shot effects only, and
+                  a bar that loops forever while waiting is ambient motion by another name.
+                  It moves when something real happened, and is still the rest of the time.
+                */}
+                <div
+                  aria-hidden="true"
+                  className="mt-2 h-2 w-full overflow-hidden rounded-full bg-plum-900"
+                >
+                  <div
+                    className="path-fill h-full rounded-full bg-gold-500"
+                    style={{ ['--fill' as string]: stage === 'preparing' ? '15%' : '65%' }}
+                  />
+                </div>
+                <p className="mt-1.5 text-xs text-violet-300">
+                  {stage === 'preparing'
+                    ? 'Resizing it and removing its location data on your device.'
+                    : 'Sent for identification. This usually takes a few seconds.'}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
 
         {problem && (
           <section className="panel p-5">

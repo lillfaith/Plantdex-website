@@ -1,5 +1,5 @@
 import { supabase } from './supabase-client';
-import { prepareImage } from './image-prepare';
+import { IDENTIFY_PROFILE, prepareImage } from './image-prepare';
 import {
   matchScientificName,
   outcomeFor,
@@ -24,8 +24,15 @@ import {
  * ─────────────────────────────────────────────────────────────────────────────
  *
  * THE PHOTOGRAPH IS PREPARED BEFORE IT LEAVES. `prepareImage` is the same pipeline sightings
- * use: a 1280px JPEG with EXIF — and therefore GPS — dropped in the re-encode. Nothing here
- * may bypass it; a raw phone photo carries the coordinates of the plant and of the person.
+ * use, with EXIF — and therefore GPS — dropped in the re-encode. Nothing here may bypass it;
+ * a raw phone photo carries the coordinates of the plant and of the person.
+ *
+ * IT ASKS FOR `IDENTIFY_PROFILE` RATHER THAN THE STORED-PHOTO ONE, because this image is
+ * transmitted once and then dropped: nothing displays it, no row keeps it, and its only reader
+ * is a model. Every byte above what that model needs is a byte somebody standing in a field
+ * pushes up a mobile uplink before they are told what they are looking at — which is usually
+ * the largest single term in the wait. A sighting photo is a different object with a different
+ * job, and keeps its own fidelity.
  */
 
 export interface ScanResult {
@@ -64,18 +71,29 @@ function newScanId(): string {
  * Works signed out — anonymous scanning is supported, with a smaller daily allowance the
  * server enforces. A rate-limit answer is a normal outcome, not an exception, so it comes
  * back as a typed failure the UI can explain rather than a thrown error.
+ *
+ * @param onPrepared Called once the photograph has been decoded, downscaled and re-encoded,
+ *   which is the one boundary inside this call that a screen can HONESTLY report. The UI
+ *   cannot see it from outside — preparation and the request are one await from there — and
+ *   without it a status line either shows a single undifferentiated "working" for the whole
+ *   wait, or invents a transition on a timer. There is deliberately no second callback for
+ *   "upload finished": `fetch` does not expose it, so nothing here could report it truthfully.
  */
-export async function identifyPlant(file: File): Promise<ScanResult | ScanFailure> {
+export async function identifyPlant(
+  file: File,
+  onPrepared?: () => void,
+): Promise<ScanResult | ScanFailure> {
   if (!supabase) {
     return { kind: 'unconfigured', message: 'Plant identification is not available here yet.' };
   }
 
   let prepared;
   try {
-    prepared = await prepareImage(file);
+    prepared = await prepareImage(file, IDENTIFY_PROFILE);
   } catch {
     return { kind: 'error', message: 'That image could not be read. Try another photograph.' };
   }
+  onPrepared?.();
 
   const form = new FormData();
   // `prepared.blob` is the downscaled, re-encoded image — EXIF and its GPS are gone with the

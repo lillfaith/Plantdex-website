@@ -191,30 +191,43 @@ Deno.serve(async (req: Request) => {
    * treated as anonymous rather than rejected — the anon key itself arrives in that header
    * for a signed-out caller.
    */
-  let userId: string | null = null;
-  const authHeader = req.headers.get('Authorization');
-  if (authHeader) {
+  const resolveCaller = async (): Promise<string | null> => {
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) return null;
     const asCaller = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
     });
     const { data } = await asCaller.auth.getUser();
-    userId = data.user?.id ?? null;
-  }
+    return data.user?.id ?? null;
+  };
 
   // ── Quota ────────────────────────────────────────────────────────────────
+  /*
+   * THE GLOBAL CLAIM DOES NOT DEPEND ON WHO IS CALLING, so it does not wait to find out.
+   *
+   * Resolving the caller is a network round trip to the auth service, and the global backstop
+   * is keyed on the literal bucket 'global' — nothing in it reads `userId`. Run serially they
+   * are two round trips in front of a provider call that is already the slow part of the
+   * request; run together they are one. The PER-CALLER claim below genuinely does depend on
+   * the answer and stays where it is.
+   *
+   * ORDER IS UNCHANGED. The global backstop is still claimed before the per-caller limit is
+   * checked, so a caller over their own quota still spends a unit of the shared 450 — a small
+   * accounting defect that predates this and is deliberately not fixed here, because merging
+   * the two claims into one atomic decision is a migration, not a latency change.
+   */
+  const [userId, { data: globalCount, error: globalError }] = await Promise.all([
+    resolveCaller(),
+    admin.rpc('claim_scan', { p_bucket: 'global', p_day: day, p_limit: GLOBAL_DAILY_LIMIT }),
+  ]);
+  if (globalError) return json({ error: 'Could not check the daily allowance.' }, 500);
+
   const ip =
     req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     req.headers.get('cf-connecting-ip') ||
     'unknown';
   const bucket = userId ? `user:${userId}` : await anonBucket(ip, day);
   const limit = userId ? USER_DAILY_LIMIT : ANON_DAILY_LIMIT;
-
-  const { data: globalCount, error: globalError } = await admin.rpc('claim_scan', {
-    p_bucket: 'global',
-    p_day: day,
-    p_limit: GLOBAL_DAILY_LIMIT,
-  });
-  if (globalError) return json({ error: 'Could not check the daily allowance.' }, 500);
   if (globalCount === null) {
     return json(
       {
@@ -245,12 +258,35 @@ Deno.serve(async (req: Request) => {
     );
   }
 
-  // Housekeeping: yesterday's buckets are meaningless and the anonymous ones should not
-  // outlive the day whose salt made them.
-  await admin
-    .from('scan_quota')
-    .delete()
-    .lt('day', new Date(Date.now() - 2 * 86400_000).toISOString().slice(0, 10));
+  /*
+   * HOUSEKEEPING, AND WHY IT NO LONGER SITS IN FRONT OF THE PLAYER.
+   *
+   * Yesterday's buckets are meaningless and the anonymous ones should not outlive the day
+   * whose salt made them — but this delete used to be AWAITED on every single request, so
+   * every person scanning a plant paid a round trip for tidying up rows they will never see.
+   *
+   * It is started here and resolved at the end, by which time the ~1.5s provider call has
+   * covered it many times over: the cost is now zero rather than one round trip.
+   * `Promise.resolve` is what actually issues the query — a PostgREST builder is a lazy
+   * thenable, not a promise, so nothing runs until something calls `.then()` on it — and the
+   * `catch` is there because a failed tidy-up must never fail a scan, which is also how the
+   * old unchecked `await` behaved.
+   */
+  const housekeeping: Promise<unknown> = Promise.resolve(
+    admin
+      .from('scan_quota')
+      .delete()
+      .lt('day', new Date(Date.now() - 2 * 86400_000).toISOString().slice(0, 10)),
+  ).catch(() => undefined);
+  /*
+   * Every path below this point returns before the final `await`, so hand the promise to the
+   * runtime: an isolate may be frozen the moment a response is written, and a detached promise
+   * that never ran is a tidy-up nobody would ever notice missing. Guarded because
+   * `EdgeRuntime` is a Supabase extension rather than a Deno global — where it is absent the
+   * query is already in flight and simply usually finishes anyway.
+   */
+  (globalThis as { EdgeRuntime?: { waitUntil?: (promise: Promise<unknown>) => void } })
+    .EdgeRuntime?.waitUntil?.(housekeeping);
 
   // ── The image ────────────────────────────────────────────────────────────
   let form: FormData;
@@ -377,6 +413,9 @@ Deno.serve(async (req: Request) => {
       };
     }),
   );
+
+  // Free by now — the provider call above took far longer than this did.
+  await housekeeping;
 
   return json({
     candidates: attested.filter((candidate) => candidate.scientificName),
