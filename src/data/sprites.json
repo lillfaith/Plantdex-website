@@ -952,14 +952,14 @@
   "lindera-benzoin": {
     "herbId": "lindera-benzoin",
     "src": "/cards/animated/lindera-benzoin.png",
-    "version": "34d7e000",
+    "version": "3083d6d9",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
     "personality": "peppery",
     "content": {
-      "left": 0.1765,
+      "left": 0.1471,
       "top": 0.1071,
       "right": 0.8235,
       "bottom": 0.8929
@@ -984,7 +984,7 @@
       "growing": {
         "herbId": "lindera-benzoin-growing",
         "src": "/cards/animated/lindera-benzoin-growing.png",
-        "version": "b36d7a9b",
+        "version": "95a9c6e1",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
@@ -2252,7 +2252,7 @@
   "typha-latifolia": {
     "herbId": "typha-latifolia",
     "src": "/cards/animated/typha-latifolia.png",
-    "version": "ab2dba77",
+    "version": "bfbba79b",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -2284,7 +2284,7 @@
       "growing": {
         "herbId": "typha-latifolia-growing",
         "src": "/cards/animated/typha-latifolia-growing.png",
-        "version": "2500e0a9",
+        "version": "55a4c7b1",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,

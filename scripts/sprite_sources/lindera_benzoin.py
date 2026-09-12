@@ -49,6 +49,8 @@ PALETTE = {
     "r": (203, 52, 42, 255),     # drupe deep
     "b": (148, 110, 76, 255),    # woody stem
     "B": (96, 71, 52, 255),      # stem shadow
+    "Y": (230, 234, 123, 255),   # flower cluster - the chartreuse the card front shows
+    "y": (211, 211, 54, 255),    # flower cluster, deep
     "K": (237, 223, 192, 255),   # the warm air coming off it
 }
 
@@ -109,6 +111,27 @@ DRUPE = [
 
 DRUPE_L_AT = (6, 14)
 DRUPE_R_AT = (21, 14)
+
+# --- The flowers -------------------------------------------------------------
+#
+# THE CARD FRONT IS THIS PLANT IN BLOOM: tight chartreuse clusters on bare twigs, which is
+# what Lindera does in early spring before a single leaf opens, and why the card's season
+# is spring. The portrait carries the flowers AND the drupes at once, which no single day
+# in the plant's year does - it is a creature portrait rather than a botanical plate, and
+# the two together are what the species is known by. Nothing here claims to depict a
+# specimen, and the identification content on the card stays the reference outdoors.
+#
+# Speckled rather than solid: a cluster is many tiny flowers, and an unbroken blob of
+# yellow beside a red berry reads as a second fruit.
+CLUSTER = [
+    " oYo ",
+    "oYyYo",
+    "oyYyo",
+    " oyo ",
+]
+
+CLUSTER_L_AT = (4, 5)
+CLUSTER_R_AT = (21, 5)
 
 # --- The scent ---------------------------------------------------------------
 #
@@ -218,7 +241,7 @@ SPRITE = {
         "sprout": {
             "frames": 8,
             "fps": stage_fps(8, "sprout"),
-            "hide": ["drupeL", "drupeR", "scent", "cheeks"],
+            "hide": ["drupeL", "drupeR", "flowerL", "flowerR", "scent", "cheeks"],
             "swap": {
                 "canopy": YOUNG,
                 "stems": YOUNG_STEM,
@@ -257,6 +280,8 @@ SPRITE = {
             "origins": {
                 "canopy": MID_AT,
                 "stems": (12, 18),
+                "flowerL": (6, 8),
+                "flowerR": (20, 8),
                 **seat_young(MID_AT, MID, eye_dy=1, mouth_dy=4),
             },
             "motion": {
@@ -264,6 +289,8 @@ SPRITE = {
                 "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_EYES},
                 "cheeks": {"dy": G_BOB, "dx": G_DX},
                 "mouth": {"dy": G_BOB, "dx": G_DX},
+                "flowerL": {"dy": G_BOB},
+                "flowerR": {"dy": G_BOB},
             },
         },
     },
@@ -286,6 +313,8 @@ SPRITE = {
                 "tight": CANOPY_TIGHT,
             },
         },
+        {"name": "flowerL", "origin": CLUSTER_L_AT, "rows": CLUSTER},
+        {"name": "flowerR", "origin": CLUSTER_R_AT, "rows": CLUSTER},
         {
             "name": "scent",
             "origin": SCENT_AT,
@@ -340,6 +369,9 @@ SPRITE = {
         # as travelling through the whole shrub rather than happening to the leaves.
         "drupeL": {"dy": [0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
         "drupeR": {"dy": [0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
+        # The clusters ride the canopy exactly, because they are attached to it.
+        "flowerL": {"dy": [0, 0, 1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+        "flowerR": {"dy": [0, 0, 1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
     },
     "palette": PALETTE,
 }

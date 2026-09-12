@@ -92,7 +92,7 @@ BODY_AT = (4, 11)
 # was thirteen wide and read as a bottle; the proportion is what says cattail, so the
 # proportion is what the face had to give way to. Straight sides, rounded ends, shaded
 # left to right because that is what a cylinder does - a radial gradient would be a ball.
-SPIKE = [
+_SPIKE = [
     " oooo ",
     "oNmmbo",
     "oNmmbo",
@@ -108,39 +108,26 @@ SPIKE = [
     " oooo ",
 ]
 
-SPIKE_L = [
-    "oooo  ",
-    "oNmbo ",
-    "oNmbo ",
-    "oNmbo ",
-    "oNmmbo",
-    "oNmmbo",
-    "oNmmbo",
-    "oNmmbo",
-    "ommmbo",
-    "ommbbo",
-    "ombbBo",
-    "obbBBo",
-    " oooo ",
-]
+# A WIGGLE IS NOT A SLIDE. Shifting the whole spike sideways moves it at the foot as well
+# as the tip, which reads as the plant being shoved rather than the spike shaking itself.
+# So each row takes its OWN offset: the base holds, the middle gives a pixel, the top five
+# give two. That is a whip, and it is the only thing on this plant that moves under its
+# own power.
+_SPAN = 2
+_BEND = (2, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0)
 
-SPIKE_R = [
-    "  oooo",
-    " oNmbo",
-    " oNmbo",
-    " oNmbo",
-    "oNmmbo",
-    "oNmmbo",
-    "oNmmbo",
-    "oNmmbo",
-    "ommmbo",
-    "ommbbo",
-    "ombbBo",
-    "obbBBo",
-    " oooo ",
-]
 
-SPIKE_AT = (13, 3)
+def _bend(rows, offsets):
+    out = [" " * (_SPAN + o) + r for r, o in zip(rows, offsets)]
+    w = max(len(line) for line in out)
+    return [line.ljust(w) for line in out]
+
+
+SPIKE = _bend(_SPIKE, (0,) * len(_SPIKE))
+SPIKE_L = _bend(_SPIKE, tuple(-o for o in _BEND))
+SPIKE_R = _bend(_SPIKE, _BEND)
+
+SPIKE_AT = (11, 2)
 
 # --- The male spike ----------------------------------------------------------
 #
@@ -276,7 +263,7 @@ MID_BODY = _mid_body()
 
 MID_BODY_AT = (5, 13)
 
-SPIKE_MID = [
+_SPIKE_MID = [
     " oooo ",
     "oGggdo",
     "oGggdo",
@@ -287,7 +274,13 @@ SPIKE_MID = [
     " oooo ",
 ]
 
-SPIKE_MID_AT = (13, 8)
+_BEND_MID = (2, 2, 2, 1, 1, 0, 0, 0)
+
+SPIKE_MID = _bend(_SPIKE_MID, (0,) * len(_SPIKE_MID))
+SPIKE_MID_L = _bend(_SPIKE_MID, tuple(-o for o in _BEND_MID))
+SPIKE_MID_R = _bend(_SPIKE_MID, _BEND_MID)
+
+SPIKE_MID_AT = (11, 8)
 
 MALE_MID = [
     " oo ",
@@ -376,10 +369,7 @@ SPRITE = {
                 "cheeks": young_cheeks(face_box(MID_BODY)[2]),
             },
             "variants": {
-                "spike": {
-                    "lean_l": [r[1:] + " " for r in SPIKE_MID],
-                    "lean_r": [" " + r[:-1] for r in SPIKE_MID],
-                },
+                "spike": {"lean_l": SPIKE_MID_L, "lean_r": SPIKE_MID_R},
                 "eyes": {
                     "blink": YOUNG_EYES["blink"],
                     "half": YOUNG_EYES["half"],
@@ -441,10 +431,10 @@ SPRITE = {
         *feature_parts(BODY_AT, BODY, eyes="round", mouth="small", eye_dy=1, mouth_dy=4),
     ],
     #
-    #  0    1     2      3      4      5     6     7     8      9   10   11   12    13
-    # rest wind  shake  shake  shake  drift drift drift settle rest rest rest blink rest
+    #  0     1      2      3      4      5      6      7     8      9   10  11  12    13
+    # rest wiggle wiggle wiggle wiggle wiggle wiggle wiggle settle rest rest rest blink rest
     #
-    # THE POLLEN SHAKE. The spike leans one way, snaps back the other, and lets go; the
+    # THE POLLEN SHAKE. The spike whips back and forth for half the loop and lets go; the
     # gold then FALLS rather than dispersing, because cattail pollen drops - it is heavy
     # enough to have been collected in a bag held under the spike, which is why the card
     # lists it as a usable part at all.
@@ -454,38 +444,42 @@ SPRITE = {
     # only widens its stance and looks up. A body travelling as far as its own pollen
     # would read as the whole plant jumping.
     "motion": {
+        # THE TIP TRAVELS FARTHER THAN THE SPIKE IT SITS ON. Given the same offsets it
+        # looked welded on; two pixels against the spike's own bend is what makes the top
+        # of the thing whip rather than tilt.
         "male": {
-            "art": ["lean_l", "lean_l", "lean_r", "lean_l", "lean_r", None, None,
-                    None, None, None, None, None, None, None],
-            "dy": [0, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "art": [None, "lean_l", "lean_r", "lean_l", "lean_r", "lean_l",
+                    "lean_r", None, None, None, None, None, None, None],
+            "dx": [0, -2, 2, -2, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0],
+            "dy": [0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
         "spike": {
-            "art": [None, "lean_l", "lean_r", "lean_l", "lean_r", None, None,
-                    None, None, None, None, None, None, None],
+            "art": [None, "lean_l", "lean_r", "lean_l", "lean_r", "lean_l",
+                    "lean_r", None, None, None, None, None, None, None],
         },
         "pollen": {
-            "art": [None, None, "a", "b", "c", "c", "d", "d", None, None,
+            "art": [None, "a", "b", "c", "c", "d", "d", "d", None, None,
                     None, None, None, None],
             # Falling, and drifting clear of the spike rather than down through it.
-            "dy": [0, 0, 1, 3, 5, 8, 11, 13, 0, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 2, 4, 6, 9, 11, 13, 0, 0, 0, 0, 0, 0],
             "dx": [0, 0, 0, 1, 1, 2, 2, 3, 0, 0, 0, 0, 0, 0],
         },
         "body": {
-            "art": [None, None, "wide", "wide", "wide", "wide", None, None, None,
+            "art": [None, "wide", "wide", "wide", "wide", "wide", "wide", None, None,
                     None, None, None, None, None],
         },
         "eyes": {
-            "art": [None, None, "wide", "wide", "wide", "wide", "wide", None, None,
+            "art": [None, "wide", "wide", "wide", "wide", "wide", "wide", None, None,
                     None, None, None, "blink", None],
         },
         "mouth": {
-            "art": [None, None, None, "wide", "wide", "wide", "wide", None, None,
+            "art": [None, None, "wide", "wide", "wide", "wide", "wide", None, None,
                     None, None, None, None, None],
         },
         # The straps sway half a beat behind, which is what makes the shake read as
         # travelling down the plant rather than happening to the spike alone.
-        "bladeL": {"dy": [0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
-        "bladeR": {"dy": [0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0]},
+        "bladeL": {"dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0]},
+        "bladeR": {"dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0]},
     },
     "palette": PALETTE,
 }
