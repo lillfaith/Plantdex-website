@@ -59,11 +59,21 @@ export const KEEP_PROFILE: PrepareProfile = { maxEdge: 1280, quality: 0.82 };
  * camera photo carries far more sensor detail than a card front does, so the absolute saving
  * on a phone is several times larger than that measurement's absolute numbers.
  *
- * WHY 1024 AND NOT 800. 800px is ~2.2x fewer bytes and tempting, and nothing in this
- * repository can say whether it costs identification accuracy — that is a question about
- * PlantNet's model, answerable only by putting real field photographs through the real
- * function at each size. `scripts/identify_web_images.py` does exactly that (`SIZES=...`), and
- * this value moves when that measurement says it may, not before.
+ * WHY 1024 AND NOT 800, MEASURED. Three real Wikimedia field photographs were put through the
+ * deployed function at 1280/1024/800 (`identify_web_images.py`, `SIZES=...`). The TOP
+ * CANDIDATE was identical at every size for all three, and no photograph changed confidence
+ * band between 1280 and 1024 — so `plant-match` resolves the same card and the UI says the
+ * same words. What the scores did was NOT consistent, which is the finding:
+ *
+ *   dandelion  0.347 -> 0.440 -> 0.545   (362 -> 201 -> 132 KB)  rose
+ *   plantain   0.838 -> 0.877 -> 0.886   (424 -> 210 -> 132 KB)  rose
+ *   yarrow     0.305 -> 0.273 -> 0.196   (   - ->   - ->  87 KB)  FELL
+ *
+ * Smaller is therefore not uniformly better OR worse. At 1024 the worst movement is yarrow's
+ * -0.032; at 800 it is -0.109, a third of that photograph's confidence — and confidence is what
+ * this screen shows a player deciding whether to trust a suggestion. So 1024 is where the
+ * evidence supports stopping. 800 remains available and would be ~2.7x smaller than 1280 on a
+ * real photograph; it needs more than three pictures before it is worth that score.
  */
 export const IDENTIFY_PROFILE: PrepareProfile = { maxEdge: 1024, quality: 0.75 };
 

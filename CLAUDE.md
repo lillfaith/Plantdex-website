@@ -779,12 +779,21 @@ or was not made; re-measure before trusting any of them again.
   not change.** A sighting photo is KEPT and looked at again; a scan photo is transmitted once
   and discarded, and on a mobile uplink it is usually the largest single term in the wait.
   `KEEP_PROFILE` is byte-for-byte what every stored photo already used; `IDENTIFY_PROFILE` is
-  1024px/0.75 — measured at **1.6x fewer bytes** (85.9KB -> 53.5KB on a real photograph, and the
-  browser sent 51.8KB end to end). The default argument is `KEEP_PROFILE`, so a caller that
-  forgets cannot silently downgrade somebody's stored photograph. **Whether a smaller upload
-  costs ACCURACY is a fact about PlantNet's model that nothing here can reason its way to** —
-  `identify_web_images.py` takes `SIZES` and asks it of real field photographs through the real
-  function, and this value moves when that says it may.
+  1024px/0.75. On REAL field photographs that is **~2x fewer bytes** — 424KB -> 210KB, 362KB ->
+  201KB — and the card-art measurement badly understated it, because a camera photo carries far
+  more sensor detail than a card front. The default argument is `KEEP_PROFILE`, so a caller that
+  forgets cannot silently downgrade somebody's stored photograph.
+- **WHETHER A SMALLER UPLOAD COSTS ACCURACY WAS MEASURED, AND THE ANSWER IS NOT A DIRECTION.**
+  `identify_web_images.py` takes `SIZES` and puts real Wikimedia photographs through the real
+  deployed function at each size. Across three species the TOP CANDIDATE was identical at 1280,
+  1024 and 800, and no photograph changed confidence band between 1280 and 1024 — so the matcher
+  resolves the same card and the UI says the same words. But the scores moved BOTH WAYS:
+  dandelion 0.347 -> 0.440 -> 0.545 and plantain 0.838 -> 0.877 -> 0.886 ROSE as the upload
+  shrank, while yarrow 0.305 -> 0.273 -> 0.196 FELL. "Smaller is fine" and "smaller is better"
+  are both wrong. At 1024 the worst movement is -0.032; at 800 it is -0.109, a third of that
+  photograph's confidence, which is the number the screen shows somebody deciding whether to
+  trust a suggestion — so 1024 is where three pictures support stopping, and 800 needs more than
+  three before it is worth that.
 - **A profile may make the output smaller; nothing may make it a passthrough.** The re-encode is
   what drops EXIF and its GPS, which the scan screen promises in words — so "it is already small
   enough, skip it" is a plausible-looking optimisation that breaks a stated promise.
