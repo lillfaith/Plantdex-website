@@ -194,11 +194,26 @@ Deno.serve(async (req: Request) => {
   const resolveCaller = async (): Promise<string | null> => {
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) return null;
-    const asCaller = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data } = await asCaller.auth.getUser();
-    return data.user?.id ?? null;
+    try {
+      const asCaller = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        global: { headers: { Authorization: authHeader } },
+      });
+      const { data } = await asCaller.auth.getUser();
+      return data.user?.id ?? null;
+    } catch {
+      /*
+       * ANONYMOUS IS THE ANSWER TO "I COULD NOT TELL", not a failure.
+       *
+       * That was already this function's rule for a header it cannot resolve — the anon key
+       * itself arrives in that header for a signed-out caller — but the rule lived in
+       * `data.user?.id ?? null` and only covered a REFUSAL, not a network fault. Now that
+       * this runs inside a `Promise.all` beside the global claim, a throw here would reject
+       * the pair, leave the other promise's rejection unhandled, and fail a scan that was
+       * always going to be served anonymously. The caller simply gets the anonymous
+       * allowance, which is what an unauthenticated request gets anyway.
+       */
+      return null;
+    }
   };
 
   // ── Quota ────────────────────────────────────────────────────────────────

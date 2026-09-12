@@ -298,15 +298,28 @@ export function ScanPanel() {
           <section className="panel p-5" aria-live="polite" aria-busy="true">
             <div className="flex items-center gap-4">
               {preview && (
-                // The player's own photograph, not decoded by us — the browser draws it from
-                // the file directly. `alt` is empty because it is the picture they just took
-                // and the status line beside it carries the meaning.
-                // eslint-disable-next-line @next/next/no-img-element -- a blob: URL next/image cannot optimise, and it must appear before any decoding starts.
-                <img
-                  src={preview}
-                  alt=""
-                  className="h-16 w-16 shrink-0 rounded-lg border border-violet-800/70 object-cover"
-                />
+                /*
+                  THE WHOLE PHOTOGRAPH, AT ITS OWN PROPORTIONS.
+
+                  This was an `object-cover` square, which is the right treatment for a
+                  decorative tile and the wrong one for the picture somebody just took: a
+                  portrait phone photo is 3024x4032, so a 1:1 crop threw away a THIRD of its
+                  height — measured — and a landscape shot lost half its width. The plant is
+                  usually the tallest thing in the frame, so what got cut was the flower and
+                  the base: the player was shown a square of leaf and asked to recognise their
+                  own photograph in it.
+
+                  `object-contain` in a FIXED SLOT is what keeps both properties at once. The
+                  image is never cropped and never stretched, and the slot does not resize
+                  between a portrait and a landscape shot, so the status text beside it does
+                  not jump. The slot carries the border and the ground, so the letterboxing
+                  either side reads as a frame rather than as a gap. Same rule as
+                  `PhotoField`, which has always shown a chosen photo at `w-auto`.
+                */
+                <span className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-violet-800/70 bg-plum-900">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- a blob: URL next/image cannot optimise, and it must appear before any decoding starts. */}
+                  <img src={preview} alt="" className="h-full w-full object-contain" />
+                </span>
               )}
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-violet-100">
