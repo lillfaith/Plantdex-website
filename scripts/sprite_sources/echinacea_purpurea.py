@@ -19,11 +19,27 @@ layered over, never a substitute for it.
 The rays are also drawn SWEPT: on a mature E. purpurea the ray florets reflex backward and
 hang, which is why the cone stands so proud, and it is the thing most drawings get wrong.
 
-WHERE THE FACE GOES: in the cone, which is the part the character lives in.
+WHERE THE FACE GOES: in the cone, which is the part the character lives in - and LOW in it,
+which took three passes to get right. A cone the same size as the face leaves a 1px orange rim
+that reads as a headband, and the sheet next to the dandelion's was a purple dandelion. Growing
+the cone until the rim was even all round fixed that and introduced a worse thing: a uniform
+band around a cream oval reads as a PICTURE FRAME, because two colour families stacked
+concentrically is what a frame is. `face_dy` is the answer - the face sits 1.1px below the
+cone's centre, so there are four rows of cone above it and one below, and the organ reads as a
+dome RISING over the face rather than a ring around it. Which is also the plant: the thing that
+separates a coneflower from a daisy is a disc that stands proud.
 
-PERSONALITY: prickly. Its trademark gesture is THE BRISTLE - the spines stand up around the
-cone, hold for a beat, and flatten again, while the rays lift with the startle and settle. A
-hedgehog's entire vocabulary, in a flower.
+PERSONALITY: tingly. Its trademark gesture is THE TINGLE, and it comes off the card rather than
+out of my head - the back prints TASTE: Bitter, Pungent, TINGLING against AROMATIC: Earthy,
+Herbal, MILD. A quiet, unremarkable-smelling thing that turns out to be electric. The spines
+snap up on one frame and then the creature buzzes, shivering a pixel either way while the
+bristles hold. `Echinacea` is Greek `echinos`, HEDGEHOG, and the bristles are why; the jitter is
+what makes them a tingle rather than a startle.
+
+DELIBERATELY NOT THE HEALING TRAITS. The same back prints anti-inflammatory, immune aid and
+respiratory support, and none of them appears here in any form. A gesture may illustrate what a
+plant tastes and smells like; it may never illustrate a medicinal effect - the line self-heal
+already keeps by mending a notch in its OWN leaf.
 
 COLOUR: rays at ~320 deg, leaves at ~105 deg - far outside the 34 deg either side of its own
 flower that the set forbids - with the cone at ~30 deg between them. Midtones stay under the
@@ -59,11 +75,11 @@ PALETTE = {
 # rays and each is thinner, and that count is most of what separates the two silhouettes at
 # thumbnail size. `face_rx = 0` draws no face — this organ is behind the cone and must stay a
 # clean ring.
-MANE_W, MANE_H = 27, 23
-MANE_CX, MANE_CY = 13.0, 11.0
+MANE_W, MANE_H = 29, 23
+MANE_CX, MANE_CY = 14.0, 11.0
 
 
-def _mane(rx=10.5, ry=9.5, light=(-0.85, -0.65)):
+def _mane(rx=11.4, ry=9.5, light=(-0.85, -0.65)):
     return flower_head(
         MANE_W, MANE_H, MANE_CX, MANE_CY, rx, ry, 13, 0.22, 0, 0,
         light=light, trim_tail=False, chars="RrqQFo",
@@ -73,22 +89,29 @@ def _mane(rx=10.5, ry=9.5, light=(-0.85, -0.65)):
 MANE = _mane()
 # The startle: the whole ring lifts and widens a little. Reflexed rays cannot fall further,
 # so the only direction they have is up.
-MANE_LIFT = _mane(rx=11.0, ry=10.2)
+MANE_LIFT = _mane(rx=11.9, ry=10.2)
 
-MANE_AT = (2, 1)
+MANE_AT = (1, 1)
+
+# BUDDING: the same ring at a short radius. A coneflower does not open all at once — the
+# green bud cracks and the rays push out as stubs, still short and still half-held by the
+# bracts, before they lengthen and reflex. Generated from the same call rather than drawn
+# again, so the adult's ray count and spacing are exactly what the bud grows into.
+BUD_MANE = _mane(rx=6.4, ry=5.6)
+BUD_MANE_AT = (2, 7)
 
 # --- The cone ---------------------------------------------------------------
 #
 # Nine shallow lobes so the rim is bumpy rather than smooth — a cone is packed bracts, and a
 # clean ellipse here reads as a berry. The amplitude stays low because the SPINES do the
 # spiky work; a permanently jagged rim would leave the gesture nothing to add.
-CONE_W, CONE_H = 15, 14
+CONE_W, CONE_H = 18, 15
 
 
 def _cone(face_dx=0.0, light=(-0.85, -0.65)):
     return flower_head(
-        CONE_W, CONE_H, 7.0, 6.2, 6.6, 6.0, 9, 0.10, 5.3, 4.2,
-        face_dx=face_dx, light=light, trim_tail=False, chars="NmbBFo",
+        CONE_W, CONE_H, 8.5, 6.7, 7.8, 6.6, 9, 0.10, 5.3, 4.2,
+        face_dx=face_dx, face_dy=1.1, light=light, trim_tail=False, chars="NmbBFo",
     )
 
 
@@ -96,7 +119,7 @@ CONE = _cone()
 CONE_LEFT = _cone(face_dx=-1.3, light=(-0.35, -0.65))
 CONE_RIGHT = _cone(face_dx=1.3, light=(-1.25, -0.65))
 
-CONE_AT = (8, 6)
+CONE_AT = (6, 5)
 
 L_DX, _ = face_shift(CONE, CONE_LEFT)
 R_DX, _ = face_shift(CONE, CONE_RIGHT)
@@ -106,17 +129,17 @@ R_DX, _ = face_shift(CONE, CONE_RIGHT)
 # Their own part, because the gesture is them moving against the cone. Flat at rest: a
 # coneflower is prickly to touch and does not look it, which is the joke the bristle tells.
 SPINES_FLAT = [
-    " b b b b b b ",
-    "b b b b b b b",
+    " b b b b b b b ",
+    "b b b b b b b b",
 ]
 
 SPINES_UP = [
-    "B B B B B B B",
-    " b b b b b b ",
-    "b b b b b b b",
+    "B B B B B B B B",
+    " b b b b b b b ",
+    "b b b b b b b b",
 ]
 
-SPINES_AT = (9, 7)
+SPINES_AT = (8, 6)
 
 # --- Leaves and stem --------------------------------------------------------
 #
@@ -155,9 +178,11 @@ STEM = [
 #   sprout    a rough toothed leaf wearing the face. No cone, no mane, no spines: a
 #             first-year coneflower is a rosette and nothing else, and the card's own
 #             identification says the rough leaves are the giveaway.
-#   growing   the cone in bud, green and closed, spines already there but flat. The prickle
-#             arrives before the colour does, which is true of the plant and is what makes
-#             the stage worth drawing rather than a smaller copy of the adult.
+#   growing   the head in BUD: a closed green cone, spines already there but flat, and the
+#             first purple breaking at the crown. E. purpurea rays emerge upright from the
+#             top of a developing head and only reflex later, so short stubs at the crown is
+#             a real phase rather than a shrunken adult - and the prickle arriving before the
+#             colour is what makes the stage worth drawing at all.
 #   flowering mane, cone, and bristles that move.
 
 BUD_PALETTE = {
@@ -199,7 +224,7 @@ SEED_STEM = [
 ]
 
 BUD_W, BUD_H = 15, 12
-BUD_AT = (9, 7)
+BUD_AT = (9, 11)
 
 
 def _bud(face_dx=0.0, light=(-0.85, -0.65)):
@@ -228,7 +253,7 @@ G_EYES = [None, None, "half", "half", None, None, None, "blink", None, None]
 
 SPRITE = {
     "herbId": "echinacea-purpurea",
-    "personality": "prickly",
+    "personality": "tingly",
     "stages": {
         "sprout": {
             "frames": 8,
@@ -265,9 +290,9 @@ SPRITE = {
             "frames": 10,
             "fps": stage_fps(7, "growing"),
             "palette": BUD_PALETTE,
-            "hide": ["mane"],
             "swap": {
                 "cone": BUD,
+                "mane": BUD_MANE,
                 "spines": SPINES_FLAT,
                 "eyes": YOUNG_EYES["rows"],
                 "mouth": YOUNG_MOUTH["rows"],
@@ -279,14 +304,16 @@ SPRITE = {
             },
             "origins": {
                 "cone": BUD_AT,
-                "spines": (11, 8),
-                "leafL": (8, 19),
-                "leafR": (17, 19),
-                "stem": (14, 19),
+                "mane": BUD_MANE_AT,
+                "spines": (11, 12),
+                "leafL": (8, 20),
+                "leafR": (17, 20),
+                "stem": (14, 20),
                 **seat_young(BUD_AT, BUD, mouth_dy=4),
             },
             "motion": {
                 "cone": {"dy": G_BOB, "art": G_HEAD},
+                "mane": {"dy": G_BOB},
                 "spines": {"dy": G_BOB},
                 "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_EYES},
                 "cheeks": {"dy": G_BOB, "dx": G_DX},
@@ -326,26 +353,43 @@ SPRITE = {
         *feature_parts(CONE_AT, CONE, eyes="round", mouth="small", eye_dy=1, mouth_dy=5),
     ],
     #
-    #  0    1     2       3       4      5     6      7       8     9   10   11   12    13
-    # rest tense BRISTLE BRISTLE hold  hold  hold  settle settle rest rest rest blink rest
+    #  0    1     2      3      4      5      6      7      8      9   10   11   12    13
+    # rest still ZAP   buzz   buzz   buzz   buzz  settle settle rest rest rest blink rest
     #
-    # The bristle is frames 2-8 and it is this sprite's trademark: the spines stand over two
-    # frames, hold for three, and flatten over two more. Frame 0 is the rest pose reduced
-    # motion freezes on — spines down, rays swept, cone proud — which is a complete
-    # coneflower and claims nothing untrue.
+    # THE TINGLE, frames 2-8, and it comes off the card rather than out of my head. The back
+    # prints TASTE: Bitter, Pungent, TINGLING — the alkamide buzz echinacea is known for, the
+    # one that fizzes on the tongue and will not sit still. It also prints AROMATIC: Earthy,
+    # Herbal, MILD, so the plant gives you no warning at all. That contrast is the whole
+    # character: a quiet, unremarkable-smelling thing that turns out to be electric.
+    #
+    # So the spines do not merely rise. They snap up on ONE frame — the zap — and then the
+    # creature buzzes, shivering a pixel left and right on alternating frames while the
+    # bristles hold. A smooth rise was a hedgehog; the jitter is the tingle, and the two
+    # together are the plant the card describes.
+    #
+    # DELIBERATELY NOT THE HEALING TRAITS. The same back prints anti-inflammatory, immune aid
+    # and respiratory support, and none of them appears here in any form. A gesture may
+    # illustrate what a plant tastes and smells like; it may never illustrate a medicinal
+    # effect, which is the rule self-heal already keeps by mending a notch in its OWN leaf.
+    #
+    # Frame 0 is the rest pose reduced motion freezes on — spines down, rays swept, cone
+    # proud — a complete coneflower that claims nothing untrue.
     "motion": {
         # UP AND A ROW WIDER. Spines that only rose would read as the cone growing; the third
         # row appearing is what makes it a bristle.
         "spines": {
             "art": [None, None, "up", "up", "up", "up", "up", "up", None, None,
                     None, None, None, None],
-            "dy": [0, 0, -2, -3, -3, -3, -3, -2, -1, 0, 0, 0, 0, 0],
+            # -3 on the very first frame of the zap: the snap is the point.
+            "dy": [0, 0, -3, -3, -3, -3, -3, -2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, -1, 1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
         # The cone rises barely. A dome travelling as far as its own spines would read as the
         # head coming off the stem.
         "cone": {
-            "art": [None, "right", None, None, None, None, None, "left", None, None,
+            "art": [None, None, None, None, None, None, None, "left", None, None,
                     None, None, None, None],
+            "dx": [0, 0, 0, 1, -1, 1, -1, 0, 0, 0, 0, 0, 0, 0],
             "dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
         # The mane lifts and widens with the startle, then settles.
@@ -355,19 +399,20 @@ SPRITE = {
             "dy": [0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "eyes": {
-            "art": [None, None, "shut", "shut", None, None, None, "half", None, None,
+            # Eyes WIDE on the zap, not shut. Something just happened to this plant.
+            "art": [None, None, None, None, None, None, None, "half", None, None,
                     None, None, "blink", None],
-            "dx": [0, R_DX, 0, 0, 0, 0, 0, L_DX, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, -1, 1, -1, L_DX, 0, 0, 0, 0, 0, 0],
             "dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
         "cheeks": {
-            "dx": [0, R_DX, 0, 0, 0, 0, 0, L_DX, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, -1, 1, -1, L_DX, 0, 0, 0, 0, 0, 0],
             "dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
         "mouth": {
             "art": [None, None, "wide", "wide", "wide", "wide", "wide", None, None,
                     None, None, None, None, None],
-            "dx": [0, R_DX, 0, 0, 0, 0, 0, L_DX, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, -1, 1, -1, L_DX, 0, 0, 0, 0, 0, 0],
             "dy": [0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0],
         },
         # The leaves flinch down half a beat after the spines go up, which is what sells the
