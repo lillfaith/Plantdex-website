@@ -285,6 +285,30 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   dome rising over the face. That is also the botany — a disc standing proud is the whole
   difference between a coneflower and a daisy. It generalises: an inner organ centred on the
   face is a frame; an inner organ the face sits LOW in is a dome.
+- **WHERE A STRUCTURE CANNOT CARRY A FACE, THE FACE GOES IMMEDIATELY BELOW IT.** Mullein
+  states this in its own docstring and the cattail proved why it is a rule rather than a
+  preference. The eyes need eight pixels of face to sit in, which puts a floor of about
+  thirteen on any organ carrying them — and a cattail spike is roughly four times taller
+  than it is wide, so a face-bearing spike on a 28px canvas comes out SQUARE. Four passes
+  produced a brown bottle with a cork in it, and reshading cannot fix an aspect ratio. The
+  spike is six wide now, which is close to the plant's own proportion, and the face sits on
+  the clump of leaf bases underneath. Grep the deck before inventing a composition: pine,
+  horsetail, yarrow and mullein had already met most of these walls.
+- **PARTS PAINT IN ORDER, so anything that crosses the face lands UNDER the features.** The
+  cattail's pollen fell down through the head and put a gold speck beneath one eye —
+  `audit_sprites.py` reported it as the EYES being off-face, which is the right failure with
+  a misleading subject. Route loose elements clear of the face rather than reordering the
+  parts, or the thing falling in front of the plant ends up behind it.
+- **THE BLUSH SITS AT `mouth_dy - 1`, so a mouth at 3 draws it through the eyes.** On a
+  six-row face that renders as a pair of slanted brows and the creature looks cross — which
+  is invisible in the ASCII preview and obvious the moment the PNG is enlarged. Seat the
+  mouth at 4 and give the organ a seventh row if it has not got one.
+- **A SHARED BASE UNDER SEPARATE STEMS READS AS A STOOL, and a widening one reads as a
+  POT.** Spicebush is multi-stemmed, which is the one structural fact its silhouette can
+  carry; converging its three trunks into a flare gave it three legs and a foot. Three
+  trunks straight to the ground say it without either reading. A potted wild shrub is also
+  a claim about cultivation, which is the same reason the Seed Shelf's decorative pots are
+  deliberately not real species.
 - **`_flowerhead.py` is for round organs only.** Pine and horsetail are hand-drawn
   because a conifer and a jointed stem have no curve in them, and forcing either through
   the shared generator produced a lumpy circle pretending to be a tree.
