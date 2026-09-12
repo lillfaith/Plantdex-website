@@ -283,7 +283,7 @@ export default function PrivacyPage() {
             {
               term: 'The photograph, resized and stripped',
               detail:
-                'Before it leaves your device it is re-encoded to 1280px, which drops its EXIF metadata — including any GPS coordinates your camera recorded. The original file is never sent.',
+                'Before it leaves your device it is re-encoded, which drops its EXIF metadata — including any GPS coordinates your camera recorded. The original file is never sent: if your browser cannot read the format well enough to re-encode it, the scan is refused rather than sent as it came.',
             },
             {
               term: 'Nothing that identifies you',

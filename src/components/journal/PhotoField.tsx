@@ -207,9 +207,20 @@ export function PhotoField({
         </p>
       )}
 
+      {/*
+        THE EXCEPTION IS STATED, because it is real and this sentence used to deny it.
+        `prepareImage` cannot re-encode a format the browser cannot decode — HEIC in Chrome
+        and Firefox, in practice — and on THIS path it deliberately keeps the original rather
+        than lose the photograph. So the stripping does not always happen, and a flat promise
+        that it does was untrue in exactly the case where it matters. The scan screen solves
+        the same problem the other way, by refusing to send; here the photo stays on your own
+        device or in your own private bucket, so keeping it is the better trade — but it is
+        not ours to describe as something it is not.
+      */}
       <p className="mt-1 text-xs leading-relaxed text-violet-400">
         Photos are resized before they are saved, which also strips the location data a
-        phone camera writes into them.
+        phone camera writes into them. A format your browser cannot read &mdash; usually
+        HEIC &mdash; is kept exactly as it came, location data and all, rather than lost.
       </p>
     </div>
   );

@@ -8,6 +8,8 @@ const PHOTO_STORE = readFileSync('src/lib/photo-store.ts', 'utf8');
 const REMOTE_SIGHTINGS = readFileSync('src/lib/remote-sightings.ts', 'utf8');
 const SCAN_PANEL = readFileSync('src/components/scan/ScanPanel.tsx', 'utf8');
 const WARMUP = readFileSync('src/lib/scan-warmup.ts', 'utf8');
+const PHOTO_FIELD = readFileSync('src/components/journal/PhotoField.tsx', 'utf8');
+const PRIVACY = readFileSync('src/app/privacy/page.tsx', 'utf8');
 
 /** Comments explain the decisions; the guards below are about the code that implements them. */
 function codeOnly(source: string): string {
@@ -59,6 +61,52 @@ describe('prepare profiles', () => {
     const passthroughs = PREPARE.match(/blob:\s*file\b/g) ?? [];
     expect(passthroughs).toHaveLength(1);
     expect(PREPARE).toContain("contentType: 'image/jpeg'");
+  });
+});
+
+describe('what is promised about location data', () => {
+  /*
+   * THE DEFECT THESE PIN, and why there are three of them. `prepareImage` keeps the ORIGINAL
+   * bytes when the browser cannot decode the format, and three separate places described that
+   * world wrongly: the scan screen promised stripping unconditionally while `scans.ts`
+   * forwarded a raw HEIC — GPS intact — to a third party; the journal made the same flat
+   * promise on a path that really does keep the original; and /privacy claimed "the original
+   * file is never sent" alongside a pixel size the scan path had stopped using.
+   *
+   * Nothing caught any of it: `legal.test.ts` checks the privacy page against the ANALYTICS
+   * code in both directions and says nothing about photographs. Same guard shape, applied to
+   * the claim that was actually drifting.
+   */
+  it('refuses to send a photograph it could not re-encode', () => {
+    // The whole fix. Measured: Chromium cannot decode HEIC, the fallback fires, and the raw
+    // bytes leave with their GPS tags on them — while PlantNet refuses the file anyway.
+    expect(SCANS).toContain('if (!prepared.downscaled)');
+    const guard = SCANS.slice(SCANS.indexOf('if (!prepared.downscaled)'));
+    expect(guard.slice(0, 400)).toContain("kind: 'error'");
+    // The refusal must come BEFORE the request is built, not after.
+    expect(SCANS.indexOf('if (!prepared.downscaled)')).toBeLessThan(SCANS.indexOf('new FormData()'));
+  });
+
+  it('keeps the scan screen able to promise it', () => {
+    // Only true because of the guard above. If the refusal is ever removed, this sentence
+    // becomes a lie again, so the two are pinned together deliberately.
+    expect(SCAN_PANEL).toContain('location data removed before it');
+  });
+
+  it('does not make the flat promise on the path that keeps originals', () => {
+    // The sighting path deliberately stores what it cannot decode — losing somebody's
+    // photograph is the worse failure there — so its copy has to name the exception.
+    expect(PHOTO_FIELD).toMatch(/cannot read/i);
+    expect(PHOTO_FIELD).toMatch(/HEIC/);
+  });
+
+  it('does not let /privacy state a resize the code has stopped doing', () => {
+    // It said "re-encoded to 1280px" while the scan path had moved to 1024. A number in a
+    // privacy policy is a promise, and this one is better made without a figure that two
+    // profiles would have to agree on forever.
+    expect(PRIVACY).not.toMatch(/re-encoded to \d+px/);
+    expect(PRIVACY).toContain('The original file is never sent');
+    expect(PRIVACY).toMatch(/refused rather than sent/);
   });
 });
 
