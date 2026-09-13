@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { getAchievement } from '@/lib/achievements';
 import { progressFromXp } from '@/lib/progression';
@@ -24,16 +25,44 @@ import { CountUp } from './CountUp';
  * `xpAfter - xpAwarded`. That is what makes the bar and the number animate from the real
  * previous state rather than from zero.
  */
+export interface CelebrationNext {
+  /** Where the primary control goes. */
+  href: string;
+  /** Its label, e.g. "Open its card". */
+  label: string;
+  /** The dismiss control's label — "Keep looking around" is the card page's own phrasing. */
+  dismissLabel: string;
+  /** Fired on navigation, for the caller's own analytics goal. */
+  onNavigate?: () => void;
+}
+
 export function DiscoveryCelebration({
   herb,
   result,
   xpAfter,
   onClose,
+  next,
 }: {
   herb: Herb;
   result: DiscoveryResult;
   xpAfter: number;
   onClose: () => void;
+  /**
+   * THE FOOTER IS THE ONLY PART OF THIS COMPONENT THAT BELONGS TO ONE PAGE.
+   *
+   * Everything above — the flip, the counting XP, the level bar, the achievement rows — is
+   * the discovery itself and is identical wherever a discovery happens. The footer is not:
+   * its default primary control scrolls to `#card-mastery`, an element that exists on a
+   * plant page and NOWHERE ELSE. Mounting this on /scan unchanged would ship the loudest
+   * button on the dialog pointing at nothing, which is precisely the class of bug this file
+   * already records fixing twice (a stage offered by a surface the reducer refuses).
+   *
+   * So a caller on another screen passes its own onward step. Omitted, the card page's
+   * behaviour is byte-for-byte what it was. The reward body stays ONE implementation, which
+   * is the whole reason this is a prop rather than a second celebration component free to
+   * drift from this one.
+   */
+  next?: CelebrationNext;
 }) {
   const [revealed, setRevealed] = useState(false);
 
@@ -191,34 +220,62 @@ export function DiscoveryCelebration({
         next stage, dismissing IS the next step, so it becomes the primary control rather
         than sitting as a quiet second choice under a button that does nothing.
       */}
-      {tracksMastery(herb.id) && (
-        <button
-          type="button"
-          onClick={() => {
-            onClose();
-            // After the dialog has actually closed, or the scroll happens under a modal.
-            requestAnimationFrame(() => {
-              document
-                .getElementById('card-mastery')
-                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-          }}
-          className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
-        >
-          Learn this card &rarr;
-        </button>
+      {/*
+        A CALLER-SUPPLIED ONWARD STEP, WHERE THERE IS ONE. On /scan the next thing to do is
+        open the card just collected, so the primary is a real navigation rather than a
+        scroll — there is no mastery track on that page to scroll to. A `<Link>` and not a
+        close-then-push: the dialog goes away with the page, and nothing has to sequence a
+        route change against a closing modal.
+      */}
+      {next ? (
+        <>
+          <Link
+            href={next.href}
+            onClick={next.onNavigate}
+            className="mt-5 flex min-h-11 w-full items-center justify-center rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
+          >
+            {next.label} &rarr;
+          </Link>
+          <button
+            type="button"
+            onClick={onClose}
+            className="mt-2 min-h-11 w-full rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 transition-colors hover:bg-plum-600"
+          >
+            {next.dismissLabel}
+          </button>
+        </>
+      ) : (
+        <>
+          {tracksMastery(herb.id) && (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                // After the dialog has actually closed, or the scroll happens under a modal.
+                requestAnimationFrame(() => {
+                  document
+                    .getElementById('card-mastery')
+                    ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+              }}
+              className="mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
+            >
+              Learn this card &rarr;
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onClose}
+            className={
+              tracksMastery(herb.id)
+                ? 'mt-2 min-h-11 w-full rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 transition-colors hover:bg-plum-600'
+                : 'mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100'
+            }
+          >
+            Keep looking around
+          </button>
+        </>
       )}
-      <button
-        type="button"
-        onClick={onClose}
-        className={
-          tracksMastery(herb.id)
-            ? 'mt-2 min-h-11 w-full rounded-full border border-violet-600 px-5 text-sm font-semibold text-violet-200 transition-colors hover:bg-plum-600'
-            : 'mt-5 min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100'
-        }
-      >
-        Keep looking around
-      </button>
     </div>
   );
 }

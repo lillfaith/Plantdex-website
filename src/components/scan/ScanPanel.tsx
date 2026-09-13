@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { getPrintedCard } from '@/lib/deck';
+import type { DiscoveryResult } from '@/lib/types';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
 import { warmIdentifier } from '@/lib/scan-warmup';
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
+import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
@@ -38,7 +40,7 @@ function relatedGenus(candidates: readonly ScanCandidate[]): string {
 
 export function ScanPanel() {
   const { user } = useAuth();
-  const { discover, isDiscovered, ready } = useHerbdex();
+  const { discover, isDiscovered, ready, progress } = useHerbdex();
 
   const inputRef = useRef<HTMLInputElement>(null);
   /*
@@ -82,6 +84,35 @@ export function ScanPanel() {
   } | null>(null);
   // The history row this result was written to, so a Seed Shelf save can point back at the
   // scan it came from. Null signed out, where there is no history to point at.
+  /*
+   * THE CELEBRATION, WHICH IS A SEPARATE FACT FROM THE RECORD.
+   *
+   * `confirmed` above is the RECORD of what happened and stays on screen for as long as the
+   * player is on this page — `ScanOutcome` reads it. This is the MOMENT, and it is over when
+   * the dialog closes. Two lifetimes, so two pieces of state: clearing one on close must not
+   * take the outcome panel with it.
+   *
+   * Set only when `awarded` is true. A plant already in the collection returns
+   * `awarded: false` from the same idempotent `discover()` every other entry point calls, and
+   * a celebration there would claim a reward the reducer did not give. The candidate row
+   * already says "Already in your collection", and that is the whole of what is true.
+   */
+  const celebrateRef = useRef<HTMLDialogElement>(null);
+  const [celebrating, setCelebrating] = useState<{
+    herbId: string;
+    result: DiscoveryResult;
+  } | null>(null);
+
+  // Closed with Escape or a backdrop click as well as by the button, so the state that
+  // mounts the contents is cleared by the `close` event rather than by any one control.
+  useEffect(() => {
+    const node = celebrateRef.current;
+    if (!node) return;
+    const handleClose = () => setCelebrating(null);
+    node.addEventListener('close', handleClose);
+    return () => node.removeEventListener('close', handleClose);
+  }, []);
+
   const [scanId, setScanId] = useState<string | null>(null);
   // True once this scan's species has been put on the shelf, so the page can stop offering
   // an alternative to the one place it has just told the player their find went.
@@ -250,9 +281,27 @@ export function ScanPanel() {
           file still works exactly as it did; it is just no longer offered as a co-equal
           option in six words on the loudest control of the page.
         */}
+        {/*
+          THE ONE PIECE OF FRAMING ADVICE, BESIDE THE CONTROL IT IS ABOUT.
+
+          It cannot go where it belongs — over the viewfinder — because there is no viewfinder
+          to put it on: `capture="environment"` hands off to the OS camera app, and the page is
+          backgrounded for the whole of the capture. So the last moment Plantdex can say
+          anything is the instant before the tap, which is here.
+
+          Short enough to be REMEMBERED through that handoff, which is the real constraint: the
+          paragraph above describes what makes a good photograph and this is the single
+          instruction to carry into a screen we do not control. Deliberately "one plant" rather
+          than a framing rectangle — nothing here implies the plant must fit a box.
+        */}
+        <p className="mt-4 flex items-center gap-2 text-xs font-semibold text-mystery-pink">
+          <span aria-hidden="true" className="pixel-rule w-4 shrink-0" />
+          Fill the frame with one plant
+        </p>
+
         <label
           htmlFor="scan-photo"
-          className="arcade-key mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 sm:w-auto"
+          className="arcade-key mt-2 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 sm:w-auto"
         >
           {busy ? 'Identifying…' : 'Take a photo'}
         </label>
@@ -296,7 +345,20 @@ export function ScanPanel() {
           received the thing it was handed.
         */}
         {busy && (
-          <section className="panel p-5" aria-live="polite" aria-busy="true">
+          /*
+            THE SAME RETICLE AS THE CAPTURE PANEL, BECAUSE THIS IS THE SAME INSTRUMENT.
+
+            Between the tap and the answer the player has just come back from the OS camera —
+            a screen with none of Plantdex on it — and returned to a plain panel. Wearing the
+            capture panel's own four pink brackets is what makes the handoff read as a round
+            trip through one device rather than as a departure and an unrelated arrival. It is
+            the frame we CAN draw, sitting either side of the one we cannot.
+
+            `scanner-frame` already exists and is already on the capture panel; this adds one
+            class and no CSS. Not also on the photo thumbnail inside it — two nested reticles
+            is a pattern, not an instrument.
+          */
+          <section className="panel scanner-frame p-5" aria-live="polite" aria-busy="true">
             <div className="flex items-center gap-4">
               {preview && (
                 /*
@@ -568,6 +630,23 @@ export function ScanPanel() {
                                 newAchievementIds: outcome.newAchievementIds,
                                 at: Date.now(),
                               });
+                              /*
+                               * THE MOMENT, AND ONLY WHEN ONE WAS EARNED.
+                               *
+                               * The card page has celebrated a discovery since the beginning;
+                               * the scanner — the route a stranger from a vendor table
+                               * actually takes — recorded the identical reward and rendered it
+                               * as two static chips under a paragraph. Same event, same data,
+                               * no moment. This is the card page's own celebration, reading
+                               * the same `DiscoveryResult`, with an onward step that suits
+                               * this screen instead of a mastery track that is not on it.
+                               *
+                               * Gated on `awarded`: a repeat find celebrates nothing.
+                               */
+                              if (outcome.awarded) {
+                                setCelebrating({ herbId: herb.id, result: outcome });
+                                celebrateRef.current?.showModal();
+                              }
                             }}
                             className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
                           >
@@ -637,6 +716,77 @@ export function ScanPanel() {
           scan history is kept &mdash; signed out, nothing is saved anywhere.
         </p>
       )}
+
+      {/*
+        THE DIALOG ELEMENT IS ALWAYS HERE; ONLY ITS CONTENTS ARE CONDITIONAL.
+
+        Same structure as `HerbDetail`'s, and for the reason recorded there: a <dialog> that
+        mounts and unmounts around its own open state is one React can recreate underneath
+        itself. This sits at a fixed position at the end of the tree, and `celebrating` decides
+        what is inside it.
+
+        `aria-label` is STATIC. HerbDetail's own comment records a dangling `aria-labelledby`
+        pointing at a heading that only existed once the dialog had something to show. Here the
+        species is not even known until somebody confirms, so naming it would dangle on every
+        load of this page — a static label cannot.
+
+        A closed <dialog> is `display: none`, so it contributes nothing to the `space-y-5`
+        rhythm above; when open the browser positions it itself.
+      */}
+      <dialog
+        ref={celebrateRef}
+        aria-label="New discovery"
+        /*
+         * TAP THE BACKDROP TO LEAVE, AND THIS IS NOT DECORATION.
+         *
+         * Measured at 390x720 with two achievements unlocked — which is the FIRST find every
+         * new player makes, so it is the common case rather than an edge one: the reveal, the
+         * XP, the level bar and two achievement rows are taller than the dialog's 90dvh, so
+         * the footer holding both controls sits below the fold INSIDE a scrollable modal. The
+         * way out existed and was not visible, on the one screen that is the climax of the
+         * loop.
+         *
+         * A click reports the <dialog> itself as its target only when it landed outside the
+         * content box, so this closes on the backdrop and never on the card, the buttons or
+         * the achievement rows. Escape already worked; this is the pointer equivalent, and it
+         * is what the brief asked for by "dismissible by tap".
+         *
+         * Scoped to this dialog deliberately. The plant page's copy has the same geometry and
+         * the same pre-existing behaviour, but it is not what this pass was asked to change.
+         */
+        onClick={(event) => {
+          if (event.target === celebrateRef.current) celebrateRef.current?.close();
+        }}
+        className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
+      >
+        {celebrating &&
+          (() => {
+            const herb = getPrintedCard(celebrating.herbId);
+            if (!herb) return null;
+            return (
+              <DiscoveryCelebration
+                herb={herb}
+                result={celebrating.result}
+                /*
+                 * The total AFTER the discovery. `discover()` has already run and the provider
+                 * has re-rendered by the time this mounts, so `progress.xp` is the new total —
+                 * which is what lets the bar and the figure animate from the real previous
+                 * value rather than from zero. Same contract as the card page.
+                 */
+                xpAfter={progress.xp}
+                onClose={() => celebrateRef.current?.close()}
+                next={{
+                  href: `/herbdex/${herb.id}`,
+                  label: 'Open its card',
+                  dismissLabel: 'Keep scanning',
+                  // The same goal `ScanOutcome`'s link fires, because it measures the same
+                  // thing: the scan flow led to the card. No new event name.
+                  onNavigate: () => track('herbdex_opened_from_scan'),
+                }}
+              />
+            );
+          })()}
+      </dialog>
     </div>
   );
 }
