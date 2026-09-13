@@ -304,4 +304,11 @@ export const LEGAL_STATUS: 'draft' | 'published' =
  * describe what the app does. Update it when the data handling changes, not when a typo is
  * fixed.
  */
-export const LEGAL_REVIEWED = '2026-08-31';
+export const LEGAL_REVIEWED = '2026-09-13';
+/*
+ * MOVED BECAUSE THE DATA HANDLING CHANGED, which is the only thing that moves it. A photo the
+ * browser cannot re-encode is now REFUSED rather than stored as the camera original, so there
+ * is no longer any path that keeps EXIF and its GPS — that is a different description of the
+ * application from the one 2026-08-31 was checked against, and leaving the date would have
+ * understated a real change on the page whose whole job is describing what the app does.
+ */
