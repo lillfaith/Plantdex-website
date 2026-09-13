@@ -138,10 +138,10 @@ export default function PrivacyPage() {
             Plantdex does not upload or store camera location metadata.
           </strong>{' '}
           A phone writes GPS coordinates into a photograph whether or not you meant it to.
-          Every photograph &mdash; whether it is saved to a sighting or sent to be identified
-          &mdash; is re-encoded on your device first, and that re-encoding drops the EXIF
-          metadata the coordinates live in. There is no exception for a format that cannot be
-          re-encoded: such a photo is refused rather than kept or sent as it came.
+          Every scan or sighting photograph is re-encoded on your device first, and that
+          re-encoding drops the EXIF metadata the coordinates live in. There is no exception
+          for a format that cannot be re-encoded: such a photo is refused rather than kept or
+          sent as it came.
         </p>
         <p>
           A sighting has a <strong className="text-violet-100">region</strong> field, but it is
