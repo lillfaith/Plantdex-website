@@ -18,9 +18,8 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
  * composed by the `card-mystery` utility, so this is the real product's back rather than a
  * purple gradient invented to look mysterious.
  *
- * WHAT IT SHOWS, AND WHAT IT MUST NOT. The plant's own sprite, held on its resting frame
- * and reduced to a soft shadow: enough shape to be worth chasing, no name, no stats, no
- * printed text — the blur that used to be doing that job is no longer load-bearing, because
+ * WHAT IT SHOWS, AND WHAT IT MUST NOT. The plant's own sprite, reduced to a soft shadow:
+ * enough shape to be worth chasing, no name, no stats, no printed text — the blur that used to be doing that job is no longer load-bearing, because
  * the artwork simply is not here. The card number stays, as it does on a real card's
  * corner, and a keyhole marks it as a secret rather than an error.
  *
@@ -31,10 +30,27 @@ export function MysteryCard({
   herb,
   /** `grid` is the Herbdex thumbnail; `detail` is the larger single-card view. */
   size = 'grid',
+  /**
+   * Let the silhouette perform its idle instead of holding frame 0.
+   *
+   * OFF EVERYWHERE THE CARD IS AT REST, AND THAT IS THE WHOLE OF THE DEFAULT. A locked
+   * Herbdex is mostly locked tiles, and forty-odd shadows all twitching at once is a grid
+   * of wriggling stains rather than a deck lying face down — the same reason frame 0 is
+   * authored as a complete resting pose in the first place.
+   *
+   * The one caller that turns it on is the discovery celebration, where the card is held
+   * face down for half a second BEFORE it turns: there the creature moving under the back
+   * is what makes the pause read as something alive waiting to be turned over rather than
+   * as the dialog having stalled. `prefers-reduced-motion` still freezes it, globally and
+   * without a branch here — `.plant-sprite` is pinned in globals.css — so asking for less
+   * motion gives back exactly the still silhouette every other tile shows.
+   */
+  animated = false,
   className = '',
 }: {
   herb: Herb;
   size?: 'grid' | 'detail';
+  animated?: boolean;
   className?: string;
 }) {
   const number = `#${String(herb.cardNumber).padStart(2, '0')}`;
@@ -77,7 +93,13 @@ export function MysteryCard({
         */}
         {hasSprite(herb.id) ? (
           <span className="block w-[74%]">
-            <PlantSprite herbId={herb.id} alt="" frozen fit className="plant-silhouette" />
+            <PlantSprite
+              herbId={herb.id}
+              alt=""
+              frozen={!animated}
+              fit
+              className="plant-silhouette"
+            />
           </span>
         ) : (
           <PlantdexIcon

@@ -181,6 +181,52 @@ describe('the reveal holds the card face down first', () => {
     expect(CELEBRATION_SRC).toMatch(/reduced \? 60 : FACE_DOWN_HOLD_MS/);
   });
 
+  it('gives the hold something to watch, without moving the composition', () => {
+    /*
+     * A HALF SECOND OF A STILL PICTURE IS INDISTINGUISHABLE FROM A STALL. The beat above
+     * buys the mystery back half a second on screen; frozen on frame 0 — which is right for
+     * every other face-down card in the app — that half second reads as a dialog that has
+     * not finished loading rather than as suspense.
+     *
+     * So the silhouette performs during the hold. Deliberately the SAME sprite the card back
+     * already composed, opted into by a prop, and not a second element laid over it: the
+     * number, the keyhole and the framing must be exactly where they are on every other
+     * locked card, or the celebration is showing a different object from the one in the grid.
+     */
+    const mystery = strip(readFileSync('src/components/herbdex/MysteryCard.tsx', 'utf8'));
+    expect(CELEBRATION_SRC).toMatch(/<MysteryCard herb=\{herb\} animated \/>/);
+    expect(mystery).toMatch(/frozen=\{!animated\}/);
+  });
+
+  it('leaves every card that is merely at rest holding frame 0', () => {
+    /*
+     * THE DEFAULT IS THE LOAD-BEARING HALF. A locked Herbdex is mostly locked tiles, so an
+     * always-on idle would make the grid forty-odd wriggling shadows — ambient motion, which
+     * this app does not use, and a deck lying face down is exactly what it would stop looking
+     * like. The two full-size locked pages are pages somebody READS; a moving shadow beside
+     * the text is the same problem at a different size.
+     *
+     * Reduced motion needs no branch here and must not grow one: `.plant-sprite` is pinned in
+     * the prefers-reduced-motion block in globals.css, so the opt-in above gives back the
+     * still silhouette for anyone who asked for less motion.
+     */
+    const mystery = strip(readFileSync('src/components/herbdex/MysteryCard.tsx', 'utf8'));
+    expect(mystery, 'the idle must be opt-in, or every locked tile plays it').toContain(
+      'animated = false',
+    );
+
+    for (const file of [
+      'src/components/herbdex/HerbCard.tsx',
+      'src/components/herbdex/LockedHerb.tsx',
+      'src/components/herbdex/LockedFieldCard.tsx',
+    ]) {
+      expect(
+        strip(readFileSync(file, 'utf8')),
+        `${file} animates a card that is simply sitting there`,
+      ).not.toMatch(/<MysteryCard[^>]*animated/);
+    }
+  });
+
   it('leaves ordinary card flipping alone', () => {
     /*
      * `CardFlip` is the plant page's front/back toggle and is a different component with a

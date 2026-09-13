@@ -160,7 +160,23 @@ export function DiscoveryCelebration({
           <div className="aspect-[356/576] w-full" />
 
           <div className="flip-face shadow-card">
-            <MysteryCard herb={herb} />
+            {/*
+              THE SILHOUETTE PERFORMS DURING THE HOLD, AND THAT IS WHAT THE HOLD IS FOR.
+
+              Frozen — which is every other face-down card in the app — the half second
+              before the turn is a still picture, and a still picture held for half a second
+              is indistinguishable from a dialog that has not finished loading. Moving, the
+              same pause says there is a creature under there: the plant's own trademark
+              gesture, in shadow, with no name and no artwork given away.
+
+              It is the SAME sprite the card already showed, not a second element laid over
+              it, so nothing about the composition, the number or the keyhole moves. Left
+              playing through the turn rather than snapped back at `revealed`: freezing
+              resets to frame 0, and the reset would land exactly as the card starts
+              rotating, with the front face square to the viewer. Once past a quarter turn
+              the face is `backface-visibility: hidden` and there is nothing to paint.
+            */}
+            <MysteryCard herb={herb} animated />
             <span className="flip-shade flip-shade-front" aria-hidden="true" />
           </div>
 
