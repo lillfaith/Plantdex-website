@@ -256,8 +256,9 @@ export default function PrivacyPage() {
         <p>
           <strong className="text-violet-100">Supabase</strong> provides the database,
           authentication and file storage that accounts depend on. They hold the data described
-          above on our behalf, on servers in <OwnerGap id="data-region" />. The data processing
-          agreement covering that arrangement is <OwnerGap id="data-processing-agreement" />.
+          above on our behalf, on servers in <OwnerGap id="data-region" />. Supabase publishes a
+          data processing addendum; its status for Plantdex is{' '}
+          <OwnerGap id="data-processing-agreement" />.
         </p>
         <p>
           <strong className="text-violet-100">GitHub Pages</strong> serves the site&rsquo;s

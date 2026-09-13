@@ -111,23 +111,23 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
      */
     id: 'data-processing-agreement',
     label: 'Whether a data processing agreement with Supabase is in place',
-    why: 'A privacy page that names a processor holding account data and photographs has to say what governs that arrangement. The dashboard presents the addendum as a document to read rather than a step to complete, which reads at first like an unfinished task.',
+    why: 'A privacy page that names a processor holding account data and photographs has to say what governs that arrangement. Supabase publishes an addendum; what is not established is whether this account has accepted it, which is what would put it in force.',
     kind: 'legal',
     blocking: true,
     /*
-     * ANSWERED BY THE DOCUMENT ITSELF, which is why there was never a signature to find. Its
-     * opening paragraph: the addendum "supplements and forms part of the Supabase Terms of
-     * Service … This DPA is effective as of the Effective Date of the Agreement." Nothing is
-     * signed because acceptance of the terms is the execution — clause 12.2 says the same of
-     * the standard contractual clauses, and 2.3 of Schedule 2 of the UK addendum.
+     * THIS WAS BRIEFLY MARKED ANSWERED, AND SHOULD NOT HAVE BEEN. The addendum's own opening
+     * says it "supplements and forms part of the Supabase Terms of Service … effective as of
+     * the Effective Date of the Agreement", and that was read as meaning acceptance of the
+     * terms is acceptance of the addendum. It does not follow, and the currently published
+     * wording the owner then checked is narrower still: it dates the addendum from when the
+     * customer "signs or otherwise agrees to" it. Two readings of a document neither of us
+     * can bind, and the question is not which reading is better — it is whether THIS ACCOUNT
+     * agreed, which no clause can answer and no dashboard page showed.
      *
-     * WHAT THIS DOES NOT SETTLE, and must not be read as settling: that an addendum EXISTS is
-     * a different question from whether this deployment meets the obligations it places on
-     * the CUSTOMER side — clause 4 puts notice, consent, data-subject-rights and response
-     * duties on us, not on Supabase. That half belongs to `audience-scope`, which is open.
+     * An effective-date clause tells you WHEN an agreement starts once it exists. It is not
+     * evidence that it exists. The page may say Supabase publishes an addendum, because that
+     * is observable; it may not say one is in force here, because that is not.
      */
-    value:
-      "Supabase's own data processing addendum, which forms part of their terms of service and takes effect with them rather than being signed separately",
   },
   {
     id: 'audience-scope',
