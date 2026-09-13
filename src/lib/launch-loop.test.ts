@@ -123,8 +123,28 @@ describe('both branches of a scan end somewhere', () => {
   });
 
   it('offers exactly one onward link, so an answer does not become a decision', () => {
-    const links = SCAN_OUTCOME.match(/<Link\b/g) ?? [];
-    expect(links).toHaveLength(1);
+    /*
+     * COUNTED PER BRANCH, NOT PER FILE, AND THE DIFFERENCE IS THE WHOLE POINT.
+     *
+     * This asserted that `<Link` appeared exactly once in the source. That was a fair proxy
+     * while the component had one return, and it broke — correctly — the moment a second
+     * branch was added: the compact receipt shown after `DiscoveryCelebration` has spoken.
+     * Two branches, one link each, is the rule being satisfied, and a file-level count reads
+     * it as a violation.
+     *
+     * The rule was never about the file. It is that any ONE rendered outcome offers a single
+     * next step, because a second choice turns an answer back into a decision. So each branch
+     * is measured on its own, which is strictly stronger: the old check could not have caught
+     * a branch that grew to two links while another lost its only one.
+     */
+    const branches = SCAN_OUTCOME.split(/\n  (?:if \(|return \()/).slice(1);
+    expect(branches.length, 'expected the receipt branch and the full panel').toBeGreaterThanOrEqual(
+      2,
+    );
+    branches.forEach((branch, index) => {
+      const links = branch.match(/<Link\b/g) ?? [];
+      expect(links, `outcome branch ${index} must offer exactly one onward link`).toHaveLength(1);
+    });
   });
 });
 

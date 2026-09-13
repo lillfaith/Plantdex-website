@@ -73,6 +73,89 @@ describe('a scan celebrates only what it actually awarded', () => {
   });
 });
 
+describe('the celebration is the only place the reward is announced', () => {
+  const OUTCOME = strip(readFileSync('src/components/scan/ScanOutcome.tsx', 'utf8'));
+
+  /**
+   * Just the compact branch, so a rule about what IT renders is not accidentally satisfied
+   * (or broken) by the full panel below, which legitimately still prints XP and achievements.
+   *
+   * Bounded by the component's own top-level `return (` — the one at two-space indent, which
+   * opens the full panel. An earlier version of this stopped at the first `return (` after the
+   * guard, which is the receipt's OWN return, so the slice held the condition and none of the
+   * JSX and every assertion passed vacuously.
+   */
+  const receiptBranch = (source: string) =>
+    source.slice(
+      source.indexOf("props.kind === 'card' && props.celebrated"),
+      source.indexOf('\n  return ('),
+    );
+
+  it('collapses the outcome panel to a receipt once the dialog has spoken', () => {
+    /*
+     * The panel predates the celebration and used to be the ONLY thing that ever said a find
+     * had paid anything, so it printed all of it. With the dialog in front of it, the XP, the
+     * achievements and the "You found a Plantdex species" heading are a second telling of
+     * something the player just watched — and the flatter one, since the dialog counts the XP
+     * up and gives each achievement its own row.
+     */
+    expect(OUTCOME).toContain('props.kind === \'card\' && props.celebrated');
+    expect(OUTCOME).toContain('added to your Herbdex');
+
+    // The receipt branch must return BEFORE the full panel, or it renders both.
+    const receipt = OUTCOME.indexOf('props.kind === \'card\' && props.celebrated');
+    const fullPanel = OUTCOME.indexOf('You found a Plantdex species');
+    expect(receipt, 'the compact branch must short-circuit the full panel').toBeLessThan(fullPanel);
+  });
+
+  it('prints no XP and no achievement in the receipt', () => {
+    // Slice the compact branch out and read it on its own: the rule is about what THAT
+    // returns, and the full panel below it legitimately still prints both.
+    const receipt = receiptBranch(OUTCOME);
+    expect(receipt, 'the receipt repeats the XP the dialog already counted up').not.toMatch(/xpAwarded/);
+    expect(receipt, 'the receipt repeats achievements the dialog already announced').not.toMatch(
+      /newAchievementIds|getAchievement/,
+    );
+    expect(receipt, 'the receipt reuses "new discovery" language').not.toMatch(/You found a|New /);
+  });
+
+  it('keeps Field Research, which the celebration never showed', () => {
+    /*
+     * The one thing in this panel that is NOT a repeat. `DiscoveryCelebration` renders no
+     * task rows and no counts, so a research task that moved is earned progress visible
+     * nowhere else — removing it to make the receipt shorter would hide a reward rather than
+     * de-duplicate one. It is silent when nothing moved, which is the common case.
+     */
+    const receipt = receiptBranch(OUTCOME);
+    expect(receipt).toContain('<ScanResearchFeedback');
+  });
+
+  it('never calls a just-confirmed species one that was ALREADY held', () => {
+    /*
+     * `already` is `isDiscovered`, which flips true on the tap — so the row that offered the
+     * find re-rendered as "Already in your collection" directly above a panel saying the
+     * plant is in the collection NOW. Both true; together they describe one event in two
+     * tenses. ALREADY means before this scan, and for the species just confirmed it is false.
+     */
+    expect(SCAN_PANEL).toContain("confirmed?.herbId === herb.id");
+    const branch = SCAN_PANEL.slice(
+      SCAN_PANEL.indexOf("confirmed?.herbId === herb.id"),
+      SCAN_PANEL.indexOf("confirmed?.herbId === herb.id") + 220,
+    );
+    expect(branch).toMatch(/Added /);
+    expect(branch).toMatch(/Already in your collection/);
+    expect(
+      branch.indexOf('Added '),
+      'the just-confirmed card must take the ADDED wording, not the ALREADY one',
+    ).toBeLessThan(branch.indexOf('Already in your collection'));
+    // And it stays a MARKER: the receipt below carries the full sentence, so repeating it
+    // here would print the same line twice on one screen.
+    expect(branch, 'the candidate row echoes the receipt sentence').not.toMatch(
+      /Added to your Herbdex/,
+    );
+  });
+});
+
 describe('the celebration is one implementation, not two', () => {
   it('offers the mastery scroll only where a mastery track exists', () => {
     /*

@@ -52,6 +52,16 @@ export type ScanOutcomeProps =
       newAchievementIds: readonly string[];
       /** When the player confirmed, so research feedback can attribute itself. */
       confirmedAt: number;
+      /**
+       * Whether `DiscoveryCelebration` already showed this find's rewards.
+       *
+       * True for every ordinary first find, because the confirm button only exists for a
+       * species not yet in the collection — so `discover()` awards, and the celebration
+       * opens. It is false only in the narrow case where the reducer awarded nothing
+       * (the card was discovered between this panel rendering and the tap), and there the
+       * full panel is right: it has no rewards to print either.
+       */
+      celebrated?: boolean;
     } & Common)
   | ({
       kind: 'packet';
@@ -62,6 +72,55 @@ export type ScanOutcomeProps =
 
 export function ScanOutcome(props: ScanOutcomeProps) {
   const card = props.kind === 'card';
+
+  /*
+   * ─────────────────────────────────────────────────────────────────────────
+   * THE CELEBRATION IS THE REWARD MOMENT; THIS IS THE RECEIPT.
+   *
+   * Before the celebration existed, this panel was the only thing that ever said a find had
+   * paid anything, so it said all of it: the species, the XP, every achievement, and the
+   * heading "You found a Plantdex species". With the dialog in front of it, all four are a
+   * second telling of something the player has just watched — and the flatter telling, since
+   * the dialog counted the XP up and gave each achievement its own row.
+   *
+   * Worse than redundant, it read as CONTRADICTORY. The candidate row above had already
+   * flipped to "Already in your collection" the instant the button was tapped, so the screen
+   * held "already" and "is in your collection now" at once, with a reward summary between
+   * them, describing one event in two tenses.
+   *
+   * So once the celebration has spoken, this becomes a receipt: what was added, and the way
+   * to go and look at it. One line, one link.
+   *
+   * WHAT STAYS, AND WHY IT IS NOT A REPEAT. `ScanResearchFeedback` renders below. The
+   * celebration does not show Field Research at all — no task rows, no counts — so a task
+   * that moved or completed is genuinely earned progress shown NOWHERE else. Dropping it to
+   * make this shorter would hide a reward rather than de-duplicate one, and it is silent in
+   * the common case where nothing moved.
+   * ─────────────────────────────────────────────────────────────────────────
+   */
+  if (props.kind === 'card' && props.celebrated) {
+    return (
+      <section
+        aria-live="polite"
+        className="rounded-2xl border border-gold-500/30 border-l-4 border-l-gold-500 bg-plum-800/60 p-4"
+      >
+        <p className="text-sm font-bold text-violet-100">
+          {props.commonName} added to your Herbdex{' '}
+          <span aria-hidden="true" className="text-gold-400">
+            &#10003;
+          </span>
+        </p>
+        <Link
+          href={props.href}
+          onClick={() => track('herbdex_opened_from_scan')}
+          className="mt-2 inline-flex min-h-11 items-center text-sm font-bold text-gold-400 underline underline-offset-2 hover:text-gold-300"
+        >
+          Open its card &rarr;
+        </Link>
+        <ScanResearchFeedback herbId={props.herbId} since={props.confirmedAt} />
+      </section>
+    );
+  }
 
   return (
     <section

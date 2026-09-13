@@ -81,6 +81,15 @@ export function ScanPanel() {
     newAchievementIds: string[];
     /* Stamped at the tap so research feedback only claims what followed it. */
     at: number;
+    /*
+     * WHETHER THE CELEBRATION ALREADY SAID ALL THIS.
+     *
+     * When it did, it is the authoritative reward moment — the XP counted up, the level bar
+     * moved and every achievement arrived as its own row. Printing the same three facts again
+     * in the panel underneath is not a second reward, it is the same reward described twice,
+     * and the second telling is the flatter one.
+     */
+    celebrated: boolean;
   } | null>(null);
   // The history row this result was written to, so a Seed Shelf save can point back at the
   // scan it came from. Null signed out, where there is no history to point at.
@@ -612,8 +621,30 @@ export function ScanPanel() {
                               : `Related to this card, but a different species \u2014 so it cannot be logged as ${herb.commonName}.`}
                           </p>
                         ) : already ? (
+                          /*
+                           * TWO DIFFERENT FACTS WEARING ONE SENTENCE.
+                           *
+                           * `already` is `isDiscovered`, which flips true the instant the
+                           * confirm button is tapped — so the row that had offered the find
+                           * re-rendered as "Already in your collection", one line above a
+                           * panel saying the plant "is in your collection NOW". Both true,
+                           * and together they read as a contradiction: ALREADY means before
+                           * this scan, and for the species just confirmed that is false.
+                           *
+                           * So the just-confirmed card gets its own wording. Everything else
+                           * — a species genuinely held before today's scan — keeps the
+                           * original sentence, which is the only case it was ever about.
+                           *
+                           * A MARKER, NOT A SENTENCE. The receipt below already says
+                           * "Dandelion added to your Herbdex" in full; spelling it out here
+                           * too put the same line on screen twice about 200px apart. The
+                           * species name sits directly above this, so one word and a tick is
+                           * the whole of what this row still has to say.
+                           */
                           <p className="mt-2 text-xs font-semibold text-gold-300">
-                            Already in your collection.
+                            {confirmed?.herbId === herb.id
+                              ? 'Added \u2713'
+                              : 'Already in your collection.'}
                           </p>
                         ) : (
                           <button
@@ -629,6 +660,7 @@ export function ScanPanel() {
                                 xpAwarded: outcome.xpAwarded,
                                 newAchievementIds: outcome.newAchievementIds,
                                 at: Date.now(),
+                                celebrated: outcome.awarded,
                               });
                               /*
                                * THE MOMENT, AND ONLY WHEN ONE WAS EARNED.
@@ -703,6 +735,7 @@ export function ScanPanel() {
                   xpAwarded={confirmed.xpAwarded}
                   newAchievementIds={confirmed.newAchievementIds}
                   confirmedAt={confirmed.at}
+                  celebrated={confirmed.celebrated}
                 />
               </div>
             );
