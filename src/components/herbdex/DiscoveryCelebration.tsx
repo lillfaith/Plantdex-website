@@ -113,7 +113,13 @@ export function DiscoveryCelebration({
         the same structure as `CardFlip`, for the same reason.
       */}
       <div className="flip-scene mx-auto mt-4 w-44">
-        <div className={`flip-card ${revealed ? 'flip-card-revealed' : ''}`}>
+        {/*
+          A FULL REVOLUTION HERE, A HALF TURN EVERYWHERE ELSE. `flip-card-spin` takes the card
+          round once before it lands face up (540deg), which is the flourish this one moment
+          earns; the plant page's `CardFlip` is a toggle and keeps the ordinary 180deg turn.
+          See the utility in globals.css for why it is scoped rather than global.
+        */}
+        <div className={`flip-card flip-card-spin ${revealed ? 'flip-card-revealed' : ''}`}>
           <div className="aspect-[356/576] w-full" />
 
           <div className="flip-face shadow-card">

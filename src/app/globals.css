@@ -534,8 +534,32 @@ body {
 @utility flip-scene {
   /* Judged by eye against the printed deck: shorter reads like a fairground trick, longer
      is a flat wipe. This is roughly a hand's distance from a card held up. */
-  perspective: 1400px;
+  perspective: var(--flip-perspective, 1400px);
   perspective-origin: 50% 45%;
+}
+
+/*
+ * PERSPECTIVE IS A RATIO, NOT A DISTANCE, AND 1400px WAS TUNED AGAINST A DESKTOP CARD.
+ *
+ * The value only means anything relative to the size of the thing being turned. The same
+ * 1400px covers a 336px hero on a wide screen (~4x its width) and a 224px card on a phone
+ * (~6x) — and the further the viewer is from the card, the flatter the rotation, until a turn
+ * stops looking like a turn and starts looking like a horizontal squash. That squash is the
+ * exact failure `CardFlip`'s own docstring records having fixed once already, when no ancestor
+ * carried perspective at all; at phone widths it had quietly crept part of the way back.
+ *
+ * 760px restores roughly the desktop ratio at mobile card sizes, so the near edge swings
+ * towards the viewer and the far edge foreshortens — the card turns through depth instead of
+ * getting thin and fat again. Nothing else about the flip changes: same duration, same easing,
+ * same faces.
+ *
+ * A CUSTOM PROPERTY rather than a second `perspective` declaration, so an individual scene can
+ * still set its own if it is drawn at a size neither value suits.
+ */
+@media (max-width: 640px) {
+  .flip-scene {
+    --flip-perspective: 760px;
+  }
 }
 
 @utility flip-card {
@@ -553,6 +577,38 @@ body {
 
 @utility flip-card-revealed {
   transform: rotateY(180deg);
+}
+
+/*
+ * THE CELEBRATION TURN: ONE FULL REVOLUTION, THEN THE REVEAL.
+ *
+ * 540deg is 360 + 180 — the card goes all the way round once and keeps going until it lands
+ * face up. Not 360, which would finish on the card BACK it started from and reveal nothing;
+ * not 180, which is the ordinary turn this sits beside.
+ *
+ * 900ms is the existing 560ms/180deg kept at roughly its own pace over three times the
+ * rotation, so the card turns at a speed a hand could produce rather than whipping round. Any
+ * faster and three revolutions of a detailed card front is a smear; slower and it stops being
+ * a flourish and starts being a wait — the reward moment has ~1.5s in total to spend.
+ *
+ * SCOPED TO THE CELEBRATION, and that is not incidental. `CardFlip` on a plant page is a
+ * TOGGLE — it turns back and forth on a button, so a spin there would send the card round one
+ * and a half times to show a face it could have reached in half a turn, every time. This is a
+ * one-shot reveal and is the only place a full revolution means anything.
+ *
+ * The shade tracks the longer duration, or the two faces finish lighting at 560ms while the
+ * card is still turning.
+ */
+@utility flip-card-spin {
+  transition-duration: 900ms;
+
+  &.flip-card-revealed {
+    transform: rotateY(540deg);
+  }
+
+  & .flip-shade {
+    transition-duration: 900ms;
+  }
 }
 
 /*
@@ -976,8 +1032,13 @@ body {
     background-position-x: 0% !important;
   }
 
-  /* The flip is decorative — land on the revealed face immediately. */
-  .flip-card {
+  /* The flip is decorative — land on the revealed face immediately. Both durations, because
+     `flip-card-spin` sets its own 900ms and a rule naming only `.flip-card` would leave the
+     celebration's card turning a full revolution for somebody who asked for no motion. The
+     end state is identical either way: 540deg and 180deg both show the card front. */
+  .flip-card,
+  .flip-card-spin,
+  .flip-card-spin .flip-shade {
     transition-duration: 0.01ms !important;
   }
 
