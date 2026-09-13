@@ -156,6 +156,43 @@ describe('the celebration is the only place the reward is announced', () => {
   });
 });
 
+describe('the reveal holds the card face down first', () => {
+  const CELEBRATION_SRC = strip(
+    readFileSync('src/components/herbdex/DiscoveryCelebration.tsx', 'utf8'),
+  );
+
+  it('starts face down, which is what there is to hold', () => {
+    // `revealed` false is the mystery back; the flip class is only applied once it turns.
+    expect(CELEBRATION_SRC).toContain('useState(false)');
+    expect(CELEBRATION_SRC).toMatch(/revealed \? 'flip-card-revealed' : ''/);
+  });
+
+  it('waits long enough to be seen, and skips the wait under reduced motion', () => {
+    /*
+     * The beat existed and was 60ms — four frames, so the card appeared to arrive face up.
+     *
+     * The reduced-motion branch is the load-bearing half. This hold is a setTimeout, and the
+     * global prefers-reduced-motion rule collapses CSS durations only — it cannot touch a JS
+     * timer. Without the branch, somebody who asked for LESS motion would get MORE waiting:
+     * half a second on a static back, then an instant snap with no turn to explain it.
+     */
+    expect(CELEBRATION_SRC).toContain('const FACE_DOWN_HOLD_MS = 520');
+    expect(CELEBRATION_SRC).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
+    expect(CELEBRATION_SRC).toMatch(/reduced \? 60 : FACE_DOWN_HOLD_MS/);
+  });
+
+  it('leaves ordinary card flipping alone', () => {
+    /*
+     * `CardFlip` is the plant page's front/back toggle and is a different component with a
+     * different job — it is turned by a button, in both directions, as many times as somebody
+     * likes. A suspense beat there would delay a control the player just pressed.
+     */
+    const cardFlip = strip(readFileSync('src/components/herbdex/CardFlip.tsx', 'utf8'));
+    expect(cardFlip).not.toContain('FACE_DOWN_HOLD_MS');
+    expect(cardFlip).not.toContain('setTimeout');
+  });
+});
+
 describe('the celebration is one implementation, not two', () => {
   it('offers the mastery scroll only where a mastery track exists', () => {
     /*

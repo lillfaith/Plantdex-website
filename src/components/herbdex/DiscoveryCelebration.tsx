@@ -36,6 +36,44 @@ export interface CelebrationNext {
   onNavigate?: () => void;
 }
 
+/**
+ * How long the card is held FACE DOWN before it turns.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE BEAT WAS ALREADY HERE AND WAS TOO SHORT TO SEE.
+ *
+ * `revealed` has always started false, so the mystery back has always been the first thing
+ * painted — but it flipped 60ms later, which is about four frames. The structure said "you
+ * found something, then here it is"; the timing delivered both at once, and the card appeared
+ * to arrive face up.
+ *
+ * 520ms is the pause. Long enough to register a face-down card and understand that something
+ * is about to be turned over, short enough that it reads as suspense rather than as the app
+ * being slow. It sits in front of the 900ms turn, so the whole reveal lands inside the ~1.5s
+ * this moment has to spend.
+ *
+ * REDUCED MOTION GETS THE OLD FOUR FRAMES, AND THAT IS NOT A DETAIL. This hold is a
+ * setTimeout, not a CSS transition — the global `prefers-reduced-motion` rule in globals.css
+ * collapses the flip's DURATION and cannot touch a JS timer. Left alone, somebody who asked
+ * for less motion would get MORE waiting than everybody else: half a second staring at a
+ * static card back, followed by an instant snap with no turn to explain it. Suspense is
+ * built out of motion, so where there is no motion there is nothing to build it from.
+ *
+ * Read at fire time rather than from a hook: it is one boolean consulted once per
+ * celebration, and `CountUp` already reads the same query the same way.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+const FACE_DOWN_HOLD_MS = 520;
+
+function revealDelay(): number {
+  const reduced =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // The original next-frame delay, which is only there so the browser paints the back
+  // before the transition starts.
+  return reduced ? 60 : FACE_DOWN_HOLD_MS;
+}
+
 export function DiscoveryCelebration({
   herb,
   result,
@@ -77,8 +115,7 @@ export function DiscoveryCelebration({
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
-    // Next frame, so the browser paints the start state before the transition begins.
-    timers.push(setTimeout(() => setRevealed(true), 60));
+    timers.push(setTimeout(() => setRevealed(true), revealDelay()));
     timers.push(setTimeout(() => setBarPhase('filling'), 700));
     if (leveledUp) timers.push(setTimeout(() => setBarPhase('newLevel'), 1500));
     return () => timers.forEach(clearTimeout);
