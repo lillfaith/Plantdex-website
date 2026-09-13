@@ -43,7 +43,7 @@ export default function ShippingPage() {
 
       <LegalSection id="where" heading="Where it ships">
         <p>
-          The list of destinations is <OwnerGap id="shipping-policy" />.
+          The list of destinations is <OwnerGap id="shipping-destinations" />.
         </p>
         <p>
           Whatever that list turns out to be, it is enforced by the checkout rather than by
@@ -71,24 +71,24 @@ export default function ShippingPage() {
           rows={[
             {
               term: 'Time to dispatch',
-              detail: <OwnerGap id="shipping-policy" />,
+              detail: <OwnerGap id="shipping-dispatch" />,
             },
             {
               term: 'Delivery estimate',
-              detail: <OwnerGap id="shipping-policy" />,
+              detail: <OwnerGap id="shipping-delivery" />,
             },
             {
               term: 'Postage cost',
               detail: (
                 <>
-                  <OwnerGap id="shipping-policy" /> Whatever it is, it is shown on the checkout
+                  <OwnerGap id="shipping-postage" /> Whatever it is, it is shown on the checkout
                   page and added before you pay — never after.
                 </>
               ),
             },
             {
               term: 'Tracking',
-              detail: <OwnerGap id="shipping-policy" />,
+              detail: <OwnerGap id="shipping-tracking" />,
             },
           ]}
         />

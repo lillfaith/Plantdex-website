@@ -58,6 +58,34 @@ describe('owner input registry', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it('stops counting an entry as outstanding once it carries an answer', () => {
+    /*
+     * `blocking` records that the answer MATTERS; `value` records that it has been given. The
+     * two together are what let LEGAL_STATUS flip on its own when the last blocking answer
+     * lands, instead of needing somebody to remember a second edit in a second file — which
+     * is exactly the kind of edit that gets forgotten and ships a "draft" banner over a
+     * finished policy, or worse, a finished-looking policy with a gap still in it.
+     */
+    const answered = OWNER_INPUTS.filter((input) => input.blocking && input.value);
+    const outstanding = blockingOwnerInputs();
+
+    for (const input of answered) {
+      expect(
+        outstanding.some((open) => open.id === input.id),
+        `"${input.id}" has an answer and is still listed as outstanding`,
+      ).toBe(false);
+    }
+
+    // And the other direction: everything still listed is blocking AND genuinely unanswered,
+    // so a blank string cannot quietly retire an entry.
+    for (const input of outstanding) {
+      expect(input.blocking, input.id).toBe(true);
+      expect(input.value, `"${input.id}" is listed as outstanding but carries a value`).toBe(
+        undefined,
+      );
+    }
+  });
+
   it('marks the pages as a draft while anything blocking is outstanding', () => {
     // The banner is driven by this, so the two cannot disagree.
     expect(LEGAL_STATUS).toBe(blockingOwnerInputs().length > 0 ? 'draft' : 'published');

@@ -38,6 +38,16 @@ export interface OwnerInput {
    * not, because the honest interim statement is that data is kept until deletion.
    */
   blocking: boolean;
+  /**
+   * The owner's answer, once given. Absent means still outstanding.
+   *
+   * THE ANSWER LIVES HERE AND NOWHERE ELSE. `legal-entity` renders in three sentences and
+   * `contact-email` in six, so writing an answer into the copy means writing it six times and
+   * hoping all six stay in step. `OwnerGap` reads this field instead: one answer, one place,
+   * no drift. It is also what lets `LEGAL_STATUS` flip on its own when the last blocking
+   * value lands, rather than needing somebody to remember a second edit.
+   */
+  value?: string;
 }
 
 /**
@@ -61,6 +71,13 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'Every right described on the privacy page — access, deletion, correction — needs somewhere to be exercised. There is no contact route anywhere in the app today.',
     kind: 'business',
     blocking: true,
+    /*
+     * THE ADDRESS THE OWNER GAVE, and the reason this field exists rather than six pasted
+     * copies: this one renders on /privacy, /returns (three times), /shipping and
+     * /terms-of-sale. A template placeholder arrived here twice before the real address did,
+     * and both times it would have shipped as a policy nobody could act on.
+     */
+    value: 'bboymont@gmail.com',
   },
   {
     id: 'governing-law',
@@ -68,6 +85,7 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'The Terms describe obligations but cannot say which law interprets them, or where a dispute would be heard.',
     kind: 'legal',
     blocking: true,
+    value: 'the law of the State of Georgia, USA, with any dispute heard in the courts of Georgia',
   },
   {
     id: 'data-region',
@@ -89,6 +107,7 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'The app asks for an email address and stores photographs, and nothing in it checks or mentions age. A deck about plants plausibly attracts children, which brings specific obligations.',
     kind: 'legal',
     blocking: true,
+    value: '13 years old',
   },
   {
     id: 'retention',
@@ -96,6 +115,13 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'Deleting an account now erases every row and every photograph immediately, so the app-level answer is "nothing is kept". What survives in the provider\'s own backups, and for how long, is a question about the Supabase plan rather than about this code.',
     kind: 'operational',
     blocking: false,
+    /*
+     * THE APP-LEVEL TRUTH, WHICH IS ALREADY TRUE IN CODE, and deliberately no number for the
+     * provider's backups. Inventing "30 days" would be a claim about somebody else's
+     * infrastructure; saying the window is Supabase's rather than ours is simply accurate.
+     */
+    value:
+      "governed by Supabase's own backup schedule rather than by Plantdex \u2014 nothing is kept in the application itself, and no copy is made anywhere else",
   },
   {
     id: 'liability',
@@ -116,20 +142,86 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'A price is an offer. Stripe holds the real one on the Payment Link, and the page prints whatever NEXT_PUBLIC_DECK_PRICE is set to — so the two have to be set together, by the owner, from a landed cost that is known.',
     kind: 'business',
     blocking: false,
+    value: '$24.99 USD, before tax and shipping',
   },
+  /*
+   * SHIPPING IS FIVE FACTS, NOT ONE. A single `shipping-policy` entry fed six render sites
+   * that ask five different questions, so one string could not serve them — "United States
+   * only" would have appeared in the Postage cost row. Each fact gets its own id and its own
+   * answer. Every value here came from the owner: AGENTS.md prohibits fabricated shipping
+   * claims outright, so a plausible default is the one thing that may never be written here.
+   */
   {
-    id: 'shipping-policy',
-    label: 'Countries shipped to, dispatch time, delivery estimate and postage cost',
-    why: 'Every one of these is a promise to a buyer and none of them can be derived from this repository. A plausible "ships in 3-5 days" is a fabricated shipping claim, which AGENTS.md prohibits outright.',
+    id: 'shipping-destinations',
+    label: 'Countries shipped to',
+    why: 'The checkout enforces this, not the page — so the page must describe what the Payment Link is actually configured to allow.',
     kind: 'business',
     blocking: false,
+    value: 'the United States only',
   },
   {
-    id: 'returns-policy',
-    label: 'Return window, condition required, and who pays return postage',
-    why: 'Consumers in the UK and EU have statutory cancellation rights that a policy may extend but never reduce, so the wording is a legal decision rather than a preference. It also depends on where the seller is established.',
+    id: 'shipping-dispatch',
+    label: 'Time from payment to dispatch',
+    why: 'A promise to a buyer, and one this repository cannot derive. It is also distinct from transit time, which the page prints separately.',
+    kind: 'business',
+    blocking: false,
+    value: '3-5 business days',
+  },
+  {
+    id: 'shipping-delivery',
+    label: 'Carrier transit time after dispatch',
+    why: 'Buyers read the SUM of this and the dispatch window, so the two are stated separately and must both be honest.',
+    kind: 'business',
+    blocking: false,
+    value: '3-7 business days after dispatch',
+  },
+  {
+    id: 'shipping-postage',
+    label: 'Postage cost and how it is charged',
+    why: 'The page states this is added at checkout before payment, so it has to match how the Stripe Payment Link is configured — which cannot be read from this repository.',
+    kind: 'business',
+    blocking: false,
+    value: 'A flat $5.99 USD per order.',
+  },
+  {
+    id: 'shipping-tracking',
+    label: 'Whether tracking is provided',
+    why: 'The page has a Tracking row, and an unanswered one implies nothing rather than saying so.',
+    kind: 'business',
+    blocking: false,
+    value: 'Every order ships tracked, and the tracking number is sent to you.',
+  },
+  /*
+   * RETURNS IS THREE FACTS, split for the same reason shipping is. These govern VOLUNTARY
+   * returns only: a damaged, faulty, wrong or undelivered order is already stated on the page
+   * as always covered at the seller's cost, and that is not an owner input.
+   *
+   * `kind: 'legal'` on each, because a policy may EXTEND statutory rights and never reduce
+   * them — the page says in words that the law wins on conflict.
+   */
+  {
+    id: 'returns-window',
+    label: 'How long a buyer has to start a voluntary return',
+    why: 'A commercial choice the owner is free to make more generous than the law, and not free to make less.',
     kind: 'legal',
     blocking: false,
+    value: '30 days from delivery',
+  },
+  {
+    id: 'returns-condition',
+    label: 'Condition a returned deck must be in',
+    why: 'Printed cards can be read, photographed or copied and then returned, so the condition bar is a real commercial decision rather than boilerplate.',
+    kind: 'legal',
+    blocking: false,
+    value: 'Opened is fine — it must be complete, with all cards present, and undamaged.',
+  },
+  {
+    id: 'returns-postage',
+    label: 'Who pays return postage on a voluntary return',
+    why: 'Distinct from a damaged or wrong order, where the page already promises the cost is never the buyer\'s.',
+    kind: 'legal',
+    blocking: false,
+    value: 'You do, on a change-of-mind return. We pay it when the deck was damaged, faulty or wrong.',
   },
   {
     id: 'tax-registration',
@@ -137,6 +229,14 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'Stripe Tax can calculate and monitor thresholds, but calculating tax is not the same as being registered to collect it. Collecting in a jurisdiction where the business is not registered is a compliance problem, not a settings toggle.',
     kind: 'operational',
     blocking: false,
+    /*
+     * CHECKOUT BEHAVIOUR ONLY — this sentence deliberately makes NO claim about where the
+     * seller is registered to collect. Stripe Tax is enabled while the seller holds no
+     * registrations, which is exactly the situation the `why` above warns about; describing
+     * the checkout is truthful, describing a registration would not be.
+     */
+    value:
+      'Calculated and added by Stripe at checkout, based on your delivery address. The price above is before tax.',
   },
 ];
 
@@ -147,7 +247,9 @@ export function ownerInput(id: string): OwnerInput | undefined {
 }
 
 export function blockingOwnerInputs(): readonly OwnerInput[] {
-  return OWNER_INPUTS.filter((input) => input.blocking);
+  // An answered entry is no longer outstanding, whatever its `blocking` flag says — the flag
+  // records that the answer MATTERS, not that it is missing.
+  return OWNER_INPUTS.filter((input) => input.blocking && !input.value);
 }
 
 /**

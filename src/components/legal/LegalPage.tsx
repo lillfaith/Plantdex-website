@@ -24,6 +24,15 @@ export function OwnerGap({ id }: { id: string }) {
     // Unregistered ids are a build failure via legal.test.ts, but never render a bare token.
     return <span className="font-bold text-stat-temp">[ awaiting owner input ]</span>;
   }
+  /*
+   * ANSWERED ENTRIES RENDER AS ORDINARY PROSE, not as a highlighted box that happens to
+   * contain the right words. The highlight exists to make an unanswered gap impossible to
+   * miss during review; once the owner has answered, the sentence should simply read as a
+   * sentence. This is the whole reason the answer lives on the registry entry rather than
+   * being pasted into each page: six render sites, one source of truth.
+   */
+  if (input.value) return <>{input.value}</>;
+
   return (
     <mark className="rounded border border-stat-temp/60 bg-stat-temp/15 px-1.5 py-0.5 text-sm font-bold text-violet-100">
       <span className="sr-only">Awaiting owner input: </span>

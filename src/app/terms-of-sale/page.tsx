@@ -72,7 +72,7 @@ export default function TermsOfSalePage() {
               term: 'Postage',
               detail: (
                 <>
-                  <OwnerGap id="shipping-policy" /> Shown at checkout before payment.
+                  <OwnerGap id="shipping-postage" /> Shown at checkout before payment.
                 </>
               ),
             },

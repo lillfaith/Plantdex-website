@@ -30,8 +30,7 @@ export default function ReturnsPage() {
           Nothing on this page reduces the rights you have by law. Depending on where you and
           the seller are, you may have a legal right to cancel an order within a set period and
           receive a refund regardless of any policy stated here. Which regime applies is{' '}
-          <OwnerGap id="audience-scope" />, and the policy terms themselves are{' '}
-          <OwnerGap id="returns-policy" />.
+          <OwnerGap id="audience-scope" />, and the policy terms themselves are set out below.
         </p>
         <p className="text-sm text-violet-300">
           Where the policy below and the law disagree, the law wins. That is not generosity;
@@ -42,9 +41,9 @@ export default function ReturnsPage() {
       <LegalSection id="terms" heading="The terms">
         <LegalTable
           rows={[
-            { term: 'How long you have', detail: <OwnerGap id="returns-policy" /> },
-            { term: 'Condition it must be in', detail: <OwnerGap id="returns-policy" /> },
-            { term: 'Who pays return postage', detail: <OwnerGap id="returns-policy" /> },
+            { term: 'How long you have', detail: <OwnerGap id="returns-window" /> },
+            { term: 'Condition it must be in', detail: <OwnerGap id="returns-condition" /> },
+            { term: 'Who pays return postage', detail: <OwnerGap id="returns-postage" /> },
             {
               term: 'Damaged or faulty on arrival',
               detail: (
