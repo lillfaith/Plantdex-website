@@ -12,6 +12,8 @@ import {
   displayPrice,
   isShopConfigured,
   paymentLink,
+  PRODUCT_HERO,
+  PRODUCT_PHOTOS,
 } from './shop';
 
 /** Every .ts/.tsx file under src/, so a key cannot hide in a directory nobody listed. */
@@ -139,6 +141,61 @@ describe('what the product page claims', () => {
       expect(herb, `showcase id "${id}" is not in the deck any more`).toBeDefined();
       expect(existsSync(`public/cards/${id}.webp`), `missing front art for ${id}`).toBe(true);
       expect(existsSync(`public/cards/back/${id}.webp`), `missing back art for ${id}`).toBe(true);
+    }
+  });
+
+  it('ships every product photograph it names, in both variants', () => {
+    /*
+     * Same guard shape as the card art above, for the same reason: a page can name a file
+     * that does not exist and the only symptom is a broken image on the page selling the
+     * thing. Both variants are checked because the call sites differ — the hero names the
+     * full-size file and the two-up names `thumb`, and a missing thumb breaks only the
+     * smaller one, which is exactly the failure nobody notices in a desktop screenshot.
+     */
+    for (const photo of [PRODUCT_HERO, ...PRODUCT_PHOTOS]) {
+      expect(
+        existsSync(`public/product/${photo.file}.webp`),
+        `missing display variant for ${photo.file}`,
+      ).toBe(true);
+      expect(
+        existsSync(`public/product/thumb/${photo.file}.webp`),
+        `missing thumb variant for ${photo.file}`,
+      ).toBe(true);
+      // Alt text is what a screen reader gets instead of the photograph, and a product page
+      // whose images are unlabelled is selling to some people and not others.
+      expect(photo.alt.length, `${photo.file} needs real alt text`).toBeGreaterThan(40);
+      expect(photo.caption.length, `${photo.file} needs a caption`).toBeGreaterThan(10);
+    }
+  });
+
+  it('carries no camera metadata in any published photograph', () => {
+    /*
+     * THE GUARD THAT MADE `build_product_photos.py` A SCRIPT RATHER THAN A RESIZE.
+     *
+     * A phone writes GPS into EXIF, and these are photographs of a product taken where its
+     * owner lives — so an unprocessed one publishes the coordinates of a house, on a public
+     * repository and a public site. It would also invert what /privacy tells players:
+     * "Plantdex does not upload or store camera location metadata", enforced for their
+     * photos by `image-prepare.ts` refusing anything it cannot re-encode. The owner's own
+     * images are the last place that rule should lapse.
+     *
+     * Checked HERE and not only in the generator, because a property asserted solely by the
+     * script that wrote the files is a property nobody re-checks — and the files are
+     * committed, so a hand-dropped replacement never runs that script at all.
+     *
+     * Reads the container directly: a WebP carrying EXIF stores it in a chunk literally
+     * named "EXIF", so its absence in the bytes is the whole assertion.
+     */
+    const files = [PRODUCT_HERO, ...PRODUCT_PHOTOS].flatMap((photo) => [
+      `public/product/${photo.file}.webp`,
+      `public/product/thumb/${photo.file}.webp`,
+    ]);
+    for (const file of files) {
+      const bytes = readFileSync(file);
+      expect(
+        bytes.includes(Buffer.from('EXIF', 'ascii')),
+        `${file} still carries an EXIF chunk — re-run npm run build:product`,
+      ).toBe(false);
     }
   });
 

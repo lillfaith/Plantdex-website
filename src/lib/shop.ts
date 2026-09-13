@@ -106,6 +106,63 @@ export const SHOWCASE_HERB_IDS = [
   'quercus-spp',
 ] as const;
 
+/**
+ * PHOTOGRAPHS OF THE ACTUAL PRINTED DECK.
+ *
+ * The card images beside these are RENDERS — the same generated artwork the site draws
+ * everywhere else. They show what is printed; they cannot show what arrives. A photograph of
+ * the object in a hand, outdoors, is the one claim a render structurally cannot make, and it
+ * is the claim a buyer is actually weighing.
+ *
+ * Three, each saying something the other two do not: what you get, what it is for, and that
+ * the backs are printed too. A fourth was shot indoors on fabric and is deliberately unused —
+ * it broke the set, and the job it did (a legible full back) is done better by the render.
+ *
+ * Dimensions are the built output, not the source, because `images.unoptimized` is forced by
+ * `output: 'export'` and a wrong intrinsic size is a layout shift nothing corrects. Generated
+ * by `npm run build:product` from `product-source/`; `shop.test.ts` fails if a file named here
+ * is missing, and — the reason that script exists — if any of them carries EXIF.
+ */
+export interface ProductPhoto {
+  /** Basename under /product and /product/thumb, without the extension. */
+  readonly file: string;
+  readonly width: number;
+  readonly height: number;
+  readonly alt: string;
+  readonly caption: string;
+}
+
+export const PRODUCT_HERO: ProductPhoto = {
+  file: 'deck-in-hand',
+  width: 1100,
+  height: 1154,
+  alt:
+    'Six cards from the deck fanned out in a hand and held over grass, among them Wild Mint, ' +
+    'Catnip, Shepherd\u2019s Purse, Self-Heal and Mullein.',
+  caption: 'The printed deck, outdoors where it is meant to be used.',
+};
+
+export const PRODUCT_PHOTOS: readonly ProductPhoto[] = [
+  {
+    file: 'card-and-plant',
+    width: 600,
+    height: 703,
+    alt:
+      'Three cards \u2014 Red Clover, Self-Heal and Purple Dead Nettle \u2014 held up beside a ' +
+      'red clover flower growing in the ground behind them.',
+    caption: 'A card beside the plant it describes.',
+  },
+  {
+    file: 'card-backs',
+    width: 600,
+    height: 604,
+    alt:
+      'Five cards fanned with their backs showing, each printed with healing traits, signature ' +
+      'compounds, taste and aromatic profiles, preparations and usable parts.',
+    caption: 'The backs, as printed.',
+  },
+];
+
 export const NOT_INCLUDED: readonly string[] = [
   'No subscription — Plantdex online is free to everyone, cards or no cards',
   'No app to install — the Plantdex is a website',

@@ -11,6 +11,8 @@ import {
   INCLUDED,
   NOT_INCLUDED,
   PHYSICAL_CARD_COUNT,
+  PRODUCT_HERO,
+  PRODUCT_PHOTOS,
   SHOWCASE_HERB_IDS,
   displayPrice,
   isShopConfigured,
@@ -66,6 +68,28 @@ export default function ShopPage() {
         </p>
       </header>
 
+      {/*
+        THE PHOTOGRAPH LEADS, AND THE RENDERS FOLLOW.
+
+        Everything below this was a render — the same generated artwork the site draws on
+        every other page. Renders show what is PRINTED; they cannot show what ARRIVES, and a
+        buyer deciding whether to spend money on a physical object is weighing the second.
+        So the object in a hand goes first and the artwork detail comes after it.
+      */}
+      <figure className="mt-8">
+        <Image
+          src={assetPath(`/product/${PRODUCT_HERO.file}.webp`)}
+          alt={PRODUCT_HERO.alt}
+          width={PRODUCT_HERO.width}
+          height={PRODUCT_HERO.height}
+          priority
+          className="w-full rounded-2xl border border-violet-800/60"
+        />
+        <figcaption className="mt-2 text-center text-xs text-violet-400">
+          {PRODUCT_HERO.caption}
+        </figcaption>
+      </figure>
+
       {/* ── The cards themselves ─────────────────────────────────────────────── */}
       <section className="mt-10" aria-labelledby="cards-heading">
         <h2 id="cards-heading" className="sr-only">
@@ -103,6 +127,31 @@ export default function ShopPage() {
           </figcaption>
         </figure>
         )}
+        {/*
+          Two more photographs, at the `thumb` variant because they are drawn at about half
+          width — 600px covers 390 CSS px at DPR 3 with room over. Naming the 1100px file here
+          would ship four times the bytes to draw the same pixels, which is the one lever
+          `unoptimized` leaves available.
+        */}
+        <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {PRODUCT_PHOTOS.map((photo) => (
+            <li key={photo.file}>
+              <figure>
+                <Image
+                  src={assetPath(`/product/thumb/${photo.file}.webp`)}
+                  alt={photo.alt}
+                  width={photo.width}
+                  height={photo.height}
+                  loading="lazy"
+                  className="w-full rounded-xl border border-violet-800/60"
+                />
+                <figcaption className="mt-2 text-center text-xs text-violet-400">
+                  {photo.caption}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* ── Physical ↔ digital ───────────────────────────────────────────────── */}
