@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from 'react';
 import { supabase } from './supabase-client';
 import type { GrowthStage, NewSighting, Sighting } from './sightings';
-import { prepareImage } from './image-prepare';
+import { UnprocessableImageError, prepareImage } from './image-prepare';
 
 /**
  * The signed-in counterpart to `sightings.ts`. Same shape (`Sighting`, `NewSighting`), a
@@ -197,19 +197,36 @@ export async function addRemoteSighting(
   let photoPath: string | undefined;
 
   if (supabase && input.photoFile) {
-    // Prepared exactly as the signed-out path prepares it: a 1280px JPEG, EXIF and its GPS
-    // dropped in the re-encode. This used to upload the untouched original with an
-    // extension guessed from the filename, so a phone photo went to Storage at full size
-    // and a mislabelled file was stored under a type it was not.
-    const { blob, contentType, extension } = await prepareImage(input.photoFile);
-    const path = `${userId}/${id}.${extension}`;
-    const { error } = await supabase.storage
-      .from('sighting-photos')
-      .upload(path, blob, { contentType });
-    // Losing the photo must not lose the note the player just wrote — log a sighting
-    // without it rather than fail the whole submission.
-    if (error) console.warn('[plantdex] photo upload failed; saving the sighting without it', error);
-    else photoPath = path;
+    /*
+     * Prepared exactly as the signed-out path prepares it: a re-encoded JPEG with EXIF and
+     * its GPS dropped. This used to upload the untouched original with an extension guessed
+     * from the filename, so a phone photo went to Storage at full size and a mislabelled file
+     * was stored under a type it was not.
+     *
+     * A FILE THAT CANNOT BE PROCESSED IS NOT UPLOADED AT ALL. Not as the original, not under
+     * another name — zero bytes reach Storage, because a camera original is exactly the thing
+     * that carries the coordinates. `PhotoField` refuses these when they are chosen, so this
+     * is defence in depth rather than the path anybody meets; it keeps the note for the same
+     * reason a failed upload does, since losing what somebody wrote is a separate harm.
+     */
+    let prepared;
+    try {
+      prepared = await prepareImage(input.photoFile);
+    } catch (error) {
+      if (!(error instanceof UnprocessableImageError)) throw error;
+      console.warn('[plantdex] photo could not be processed; saving the sighting without it', error);
+    }
+
+    if (prepared) {
+      const path = `${userId}/${id}.${prepared.extension}`;
+      const { error } = await supabase.storage
+        .from('sighting-photos')
+        .upload(path, prepared.blob, { contentType: prepared.contentType });
+      // Losing the photo must not lose the note the player just wrote — log a sighting
+      // without it rather than fail the whole submission.
+      if (error) console.warn('[plantdex] photo upload failed; saving the sighting without it', error);
+      else photoPath = path;
+    }
   }
 
   const sighting: Sighting = {

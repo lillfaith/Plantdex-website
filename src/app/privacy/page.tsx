@@ -107,7 +107,7 @@ export default function PrivacyPage() {
             {
               term: 'Sighting photographs',
               detail:
-                'Stored in a private bucket, in a folder belonging to your account. They are not public, and are not readable by other signed-in users.',
+                'Resized and re-encoded on your device before they are stored, which strips the EXIF metadata a camera writes — including any GPS coordinates. The original camera file is never stored: a photo your browser cannot re-encode is refused rather than saved as it came. What is stored goes in a private bucket, in a folder belonging to your account; it is not public, and not readable by other signed-in users.',
             },
             {
               term: 'Your Seed Shelf',
@@ -132,6 +132,16 @@ export default function PrivacyPage() {
         <p>
           Plantdex does not use your device&rsquo;s location. It never requests location
           permission, and it stores no coordinates.
+        </p>
+        <p>
+          <strong className="text-violet-100">
+            Plantdex does not upload or store camera location metadata.
+          </strong>{' '}
+          A phone writes GPS coordinates into a photograph whether or not you meant it to.
+          Every photograph &mdash; whether it is saved to a sighting or sent to be identified
+          &mdash; is re-encoded on your device first, and that re-encoding drops the EXIF
+          metadata the coordinates live in. There is no exception for a format that cannot be
+          re-encoded: such a photo is refused rather than kept or sent as it came.
         </p>
         <p>
           A sighting has a <strong className="text-violet-100">region</strong> field, but it is
@@ -283,7 +293,7 @@ export default function PrivacyPage() {
             {
               term: 'The photograph, resized and stripped',
               detail:
-                'Before it leaves your device it is re-encoded, which drops its EXIF metadata — including any GPS coordinates your camera recorded. The original file is never sent: if your browser cannot read the format well enough to re-encode it, the scan is refused rather than sent as it came.',
+                'Before it leaves your device it is re-encoded, which drops its EXIF metadata — including any GPS coordinates your camera recorded. The original file is never sent: if your browser cannot re-encode the format, the scan is refused rather than sent as it came.',
             },
             {
               term: 'Nothing that identifies you',

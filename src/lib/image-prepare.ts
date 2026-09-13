@@ -15,12 +15,19 @@
  * screen makes to the player in words. A profile may make the output smaller; nothing may
  * make it a passthrough.
  *
- * WHAT HAPPENS TO A FORMAT THE BROWSER CANNOT DECODE. HEIC is the case that matters — it is
- * the iPhone default, and Chrome and Firefox cannot decode it at all. `createImageBitmap`
- * throws there, and the honest answer is to store the ORIGINAL BYTES rather than lose the
- * photo: it is the player's own picture, their own phone renders it, and a note with an
- * unrenderable photo is still better than a note whose photo silently vanished. The result
- * says which happened so the caller can tell them.
+ * WHAT HAPPENS TO A FORMAT THE BROWSER CANNOT DECODE. It is REFUSED. This module used to
+ * fall back to the original bytes — the player's own picture, rendering fine on their own
+ * phone, and better than a note whose photo silently vanished. That reasoning was about
+ * losing a photograph, and it quietly traded away something else: a camera original carries
+ * EXIF, and EXIF carries GPS, so the fallback meant Plantdex knowingly retained the
+ * coordinates of a person and a plant. The rule is now one sentence with no exceptions —
+ * **Plantdex does not upload or store camera location metadata** — and the only way to keep a
+ * rule like that is to make the exception unrepresentable.
+ *
+ * So there is no longer any path that returns `file`. `prepareImage` either hands back a
+ * re-encoded JPEG or throws `UnprocessableImageError`, and every caller refuses rather than
+ * storing what it was given. HEIC outside Safari is the case that reaches it; proper HEIC
+ * conversion is a later job, deliberately not a pre-launch dependency.
  */
 
 /**
@@ -77,37 +84,36 @@ export const KEEP_PROFILE: PrepareProfile = { maxEdge: 1280, quality: 0.82 };
  */
 export const IDENTIFY_PROFILE: PrepareProfile = { maxEdge: 1024, quality: 0.75 };
 
+/**
+ * The browser could not decode-and-re-encode this file, so it cannot be stripped of its
+ * metadata, so it does not get stored or uploaded.
+ *
+ * A named type rather than a bare `Error` because callers must be able to tell "we refuse
+ * this photograph" from "something went wrong", and say so in different words.
+ */
+export class UnprocessableImageError extends Error {
+  constructor(cause: string) {
+    super(`Could not process this image safely: ${cause}`);
+    this.name = 'UnprocessableImageError';
+  }
+}
+
+/**
+ * Always a re-encoded JPEG. There is deliberately no variant meaning "the original,
+ * untouched" — see the note at the top of this file.
+ */
 export interface PreparedImage {
   blob: Blob;
-  /** What to send as the content type, and what the stored file's extension follows. */
-  contentType: string;
-  /** File extension, with no dot. */
-  extension: string;
-  /**
-   * False when the browser could not decode the original, so the bytes were stored as they
-   * came. The photo is safe; it may not render in every browser.
-   */
-  downscaled: boolean;
+  contentType: 'image/jpeg';
+  extension: 'jpg';
 }
 
-const EXTENSION_BY_TYPE: Record<string, string> = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-  'image/heic': 'heic',
-  'image/heif': 'heif',
-  'image/gif': 'gif',
-  'image/avif': 'avif',
-};
-
-/** Extension from the MIME type, falling back to the filename's own. */
-function extensionFor(file: File): string {
-  const byType = EXTENSION_BY_TYPE[file.type.toLowerCase()];
-  if (byType) return byType;
-  const dot = file.name.lastIndexOf('.');
-  const fromName = dot === -1 ? '' : file.name.slice(dot + 1).toLowerCase();
-  return /^[a-z0-9]{1,5}$/.test(fromName) ? fromName : 'jpg';
-}
+/*
+ * `EXTENSION_BY_TYPE` and `extensionFor` used to live here. They existed ONLY to name the
+ * original file's extension when its bytes were stored as they came, and nothing stores
+ * those bytes any more — the output is always `.jpg`. Deleted rather than left: a helper
+ * that names a raw original is a loaded gun next to a rule that says we never keep one.
+ */
 
 /**
  * Anything that can be painted to a canvas, with its own dimensions.
@@ -205,21 +211,16 @@ export async function prepareImage(
     );
     if (!blob) throw new Error('encode failed');
 
-    // Re-encoding to JPEG drops the original's EXIF wholesale, GPS included. That is a
-    // privacy win worth naming: /safety asks people not to record exact spots for wild
-    // plants, and an untouched phone photo carries the coordinates whether they meant it or
-    // not. It holds for BOTH decoders — the pixels go through this same canvas either way.
-    return { blob, contentType: 'image/jpeg', extension: 'jpg', downscaled: true };
-  } catch {
-    // Both decoders failed, or the encode did. In practice this is a format the browser
-    // genuinely cannot read — HEIC outside Safari. The bytes are kept as they came, which is
-    // right where the photo is STORED and is why `scans.ts` refuses to transmit one.
-    return {
-      blob: file,
-      contentType: file.type || 'application/octet-stream',
-      extension: extensionFor(file),
-      downscaled: false,
-    };
+    // Re-encoding to JPEG drops the original's EXIF wholesale, GPS included — which is the
+    // whole mechanism behind the promise, not a side effect of resizing. It holds for BOTH
+    // decoders, because the pixels go through this same canvas either way, and there is no
+    // third path that could skip it.
+    return { blob, contentType: 'image/jpeg', extension: 'jpg' };
+  } catch (error) {
+    // Both decoders failed, or the encode did. Either way the metadata cannot be stripped,
+    // so the file is refused — never stored, never uploaded, never kept as it came.
+    if (error instanceof UnprocessableImageError) throw error;
+    throw new UnprocessableImageError(error instanceof Error ? error.message : 'unknown');
   } finally {
     // Runs on every path, so a bitmap handle is never leaked and an object URL never
     // outlives the draw that needed it.

@@ -30,6 +30,14 @@ function openDb(): Promise<IDBDatabase> {
   });
 }
 
+/**
+ * Store a photograph, or refuse it.
+ *
+ * `prepareImage` throws when it cannot decode-and-re-encode, and that throw is deliberately
+ * NOT caught here: nothing reaches IndexedDB, so a camera original with its GPS on it cannot
+ * be written to the device. `sightings-store.ts` already turns the throw into "save the note
+ * without the photo", which is the right trade — zero bytes stored, nothing written lost.
+ */
 export async function savePhoto(file: File): Promise<string> {
   const id = `photo_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const { blob } = await prepareImage(file);

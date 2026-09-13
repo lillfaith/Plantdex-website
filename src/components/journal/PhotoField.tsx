@@ -8,6 +8,7 @@ import {
   formatBytes,
   validatePhoto,
 } from '@/lib/photo-input';
+import { UnprocessableImageError, prepareImage } from '@/lib/image-prepare';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
@@ -40,6 +41,9 @@ export function PhotoField({
   const inputId = useId();
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // A decode takes real time on a 12MP photo, and the field would otherwise sit silent
+  // between the pick and the preview.
+  const [checking, setChecking] = useState(false);
   const dropRef = useRef<HTMLLabelElement>(null);
 
   /*
@@ -54,8 +58,21 @@ export function PhotoField({
     return () => URL.revokeObjectURL(preview);
   }, [preview]);
 
+  /*
+   * REFUSED HERE, WHERE IT COSTS NOTHING, RATHER THAN AT SAVE TIME.
+   *
+   * `validatePhoto` is pure and cannot answer the question that now matters: can this browser
+   * actually decode and re-encode the file? That is the only thing that strips EXIF, and
+   * Plantdex does not store a photograph whose metadata it could not strip. Asking at the
+   * moment of choosing means somebody learns immediately, with the picker still in front of
+   * them — not after they have written a note and pressed save.
+   *
+   * The decoded result is deliberately DISCARDED. This is a probe, not the save: the real
+   * `prepareImage` runs again in the storage path, because a file could in principle change
+   * between the two and the storage path must be safe on its own terms.
+   */
   const accept = useCallback(
-    (candidate: File | null) => {
+    async (candidate: File | null) => {
       if (!candidate) {
         setError(null);
         onChange(null);
@@ -67,7 +84,24 @@ export function PhotoField({
         onChange(null);
         return;
       }
+
       setError(null);
+      setChecking(true);
+      try {
+        await prepareImage(candidate);
+      } catch (problem) {
+        setChecking(false);
+        setError(
+          problem instanceof UnprocessableImageError
+            ? 'Your browser cannot read that photo\u2019s format, so its location data cannot be ' +
+              'removed \u2014 and Plantdex does not store a photo it could not strip. HEIC is the ' +
+              'usual culprit. Take the photo with your camera here, or choose a JPEG or PNG.'
+            : 'That photo could not be read. Try another one.',
+        );
+        onChange(null);
+        return;
+      }
+      setChecking(false);
       onChange(candidate);
     },
     [onChange],
@@ -91,7 +125,7 @@ export function PhotoField({
         setError(result.reason);
         return;
       }
-      accept(result.file);
+      void accept(result.file);
     },
     [accept],
   );
@@ -110,7 +144,7 @@ export function PhotoField({
       event.preventDefault();
       const result = firstUsablePhoto(files);
       if ('ok' in result) setError(result.reason);
-      else accept(result.file);
+      else void accept(result.file);
     };
     node.addEventListener('paste', onPaste);
     return () => node.removeEventListener('paste', onPaste);
@@ -186,7 +220,7 @@ export function PhotoField({
           id={inputId}
           type="file"
           accept={ACCEPT_ATTRIBUTE}
-          onChange={(event) => accept(event.target.files?.[0] ?? null)}
+          onChange={(event) => void accept(event.target.files?.[0] ?? null)}
           className="sr-only"
         />
       </label>
@@ -194,11 +228,17 @@ export function PhotoField({
       {file && (
         <button
           type="button"
-          onClick={() => accept(null)}
+          onClick={() => void accept(null)}
           className="mt-1.5 min-h-11 text-xs font-semibold text-violet-300 underline underline-offset-2 hover:text-stat-temp"
         >
           Remove photo
         </button>
+      )}
+
+      {checking && (
+        <p aria-live="polite" className="mt-1.5 text-xs font-semibold text-violet-200">
+          Checking the photo&hellip;
+        </p>
       )}
 
       {error && (
@@ -208,19 +248,19 @@ export function PhotoField({
       )}
 
       {/*
-        THE EXCEPTION IS STATED, because it is real and this sentence used to deny it.
-        `prepareImage` cannot re-encode a format the browser cannot decode — HEIC in Chrome
-        and Firefox, in practice — and on THIS path it deliberately keeps the original rather
-        than lose the photograph. So the stripping does not always happen, and a flat promise
-        that it does was untrue in exactly the case where it matters. The scan screen solves
-        the same problem the other way, by refusing to send; here the photo stays on your own
-        device or in your own private bucket, so keeping it is the better trade — but it is
-        not ours to describe as something it is not.
+        A FLAT PROMISE, BECAUSE IT IS NOW FLATLY TRUE.
+        This sentence has been wrong twice in opposite directions. It first claimed stripping
+        always happened, while this path kept the original bytes of anything the browser could
+        not decode — so a camera file with its GPS on it went into storage. It was then
+        corrected to describe that exception honestly, which was true but was a worse product:
+        Plantdex should not be retaining coordinates at all. The exception is gone rather than
+        documented, so the plainest wording is also the accurate one.
       */}
       <p className="mt-1 text-xs leading-relaxed text-violet-400">
-        Photos are resized before they are saved, which also strips the location data a
-        phone camera writes into them. A format your browser cannot read &mdash; usually
-        HEIC &mdash; is kept exactly as it came, location data and all, rather than lost.
+        Photos are resized and re-encoded before they are saved, which strips the location
+        data a phone camera writes into them. Plantdex does not upload or store camera
+        location metadata &mdash; so a photo your browser cannot re-encode is refused rather
+        than saved as it came.
       </p>
     </div>
   );

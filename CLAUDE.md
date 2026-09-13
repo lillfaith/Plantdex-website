@@ -795,9 +795,28 @@ or was not made; re-measure before trusting any of them again.
   trust a suggestion — so 1024 is where three pictures support stopping, and 800 needs more than
   three before it is worth that.
 - **A profile may make the output smaller; nothing may make it a passthrough.** The re-encode is
-  what drops EXIF and its GPS, which the scan screen promises in words — so "it is already small
-  enough, skip it" is a plausible-looking optimisation that breaks a stated promise.
-  `image-prepare.test.ts` counts the `blob: file` sites and fails on a second one.
+  what drops EXIF and its GPS, which the app promises in words — so "it is already small
+  enough, skip it" is a plausible-looking optimisation that silently retains a camera's
+  coordinates. `image-prepare.test.ts` fails on ANY `blob: file` in the module; there are now
+  zero, because the fallback that used to justify one is gone.
+- **PLANTDEX DOES NOT UPLOAD OR STORE CAMERA LOCATION METADATA, and the exception is
+  unrepresentable rather than documented.** `prepareImage` used to return the ORIGINAL BYTES
+  when the browser could not decode a format, and that was argued for at length: a note with an
+  unrenderable photo beats a note whose photo vanished. The argument was about losing a
+  photograph and it quietly traded away something else — a camera original carries EXIF, EXIF
+  carries GPS, so the fallback meant knowingly retaining the coordinates of a person and a
+  plant, in IndexedDB or in Storage. There is now NO path that returns `file`: `prepareImage`
+  either hands back a re-encoded JPEG or throws `UnprocessableImageError`. `PreparedImage` has
+  no variant that could carry an original, which is what stops this being a guard each of the
+  three callers has to remember.
+- **The picker refuses at PICK time, and the storage paths refuse again.** `validatePhoto` is
+  pure and cannot answer "can this browser re-encode it", so `PhotoField` probes with the real
+  `prepareImage` and discards the result. That is where it costs nothing — somebody learns with
+  the picker still open rather than after writing a note. `photo-store` lets the throw through
+  so nothing reaches IndexedDB, and `remote-sightings` skips the upload entirely; both keep the
+  note, because losing what somebody wrote is a separate harm from refusing a file.
+- **HEIC conversion is deliberately NOT a pre-launch dependency.** The refusal is the shipped
+  answer for a format the browser cannot read; a real decoder can come later.
 - **The status panel reports TWO stages because two are all the code can see.** `prepareImage`
   finishing is a real boundary and `identifyPlant` now reports it through a callback; there is no
   third stage because `fetch` gives no upload-completion signal, and an "Uploading" that flipped
@@ -830,9 +849,11 @@ or was not made; re-measure before trusting any of them again.
   message blaming the file's format. Measured across four failure modes. An `<img>` plus an
   object URL recovers all of them, reports the identical oriented dimensions
   (1200x1600 on an EXIF-rotated fixture, matching `createImageBitmap` exactly), and feeds the
-  same canvas — so EXIF and its GPS are dropped on both paths equally. Only a format the
-  browser genuinely cannot read reaches the refusal, which is also what makes the refusal
-  message true.
+  same canvas — so EXIF and its GPS are dropped on both paths equally, and there is no third
+  path that could skip it. Only a format the browser genuinely cannot read reaches the refusal,
+  which is also what makes the refusal message true. Note `toBlob` returning null still
+  refuses: the ENCODE is what strips the metadata, so without it there is nothing safe to
+  store, and that is correct rather than a leftover.
 - **`track()` call sites are found by counting brackets, not by a regex.** The analytics guard
   matched `/\btrack\(([^;]*?)\);/`, which requires a semicolon straight after the closing
   bracket — so it read `track('x');` in a handler body and silently skipped every call written

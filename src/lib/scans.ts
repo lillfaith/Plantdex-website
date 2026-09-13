@@ -1,5 +1,5 @@
 import { supabase } from './supabase-client';
-import { IDENTIFY_PROFILE, prepareImage } from './image-prepare';
+import { IDENTIFY_PROFILE, UnprocessableImageError, prepareImage } from './image-prepare';
 import {
   matchScientificName,
   outcomeFor,
@@ -90,45 +90,27 @@ export async function identifyPlant(
   let prepared;
   try {
     prepared = await prepareImage(file, IDENTIFY_PROFILE);
-  } catch {
+  } catch (error) {
+    /*
+     * WHAT WE COULD NOT RE-ENCODE, WE DO NOT SEND — and since `prepareImage` no longer has a
+     * raw-bytes path at all, this is now the only outcome rather than a guard somebody has to
+     * remember. Measured with a HEIC carrying real coordinates, back when the fallback still
+     * existed: 75,838 raw bytes went out with the GPS tags intact (48 deg 51' N, 2 deg 17' E,
+     * read straight out of the request body), the screen said location data had been removed,
+     * one of five daily identifications was spent, and PlantNet refused the file anyway —
+     * HTTP 400, "Unsupported file type for image[0] (jpeg or png)". Nothing was gained by
+     * sending it, which is why refusing costs nothing.
+     */
+    if (error instanceof UnprocessableImageError) {
+      return {
+        kind: 'error',
+        message:
+          'Your browser cannot read that photo\u2019s format, so its location data cannot be ' +
+          'removed before sending \u2014 and the identifier only accepts JPEG or PNG anyway. ' +
+          'Take a photo with your camera, or choose a JPEG or PNG.',
+      };
+    }
     return { kind: 'error', message: 'That image could not be read. Try another photograph.' };
-  }
-
-  /*
-   * WHAT WE COULD NOT RE-ENCODE, WE DO NOT SEND.
-   *
-   * `prepareImage` falls back to the ORIGINAL BYTES when the browser cannot decode the
-   * format. For a photograph the player KEEPS that is the right call and is argued at length
-   * in that file — their own picture, their own device, and a note with an unrenderable photo
-   * beats a note whose photo vanished. For a photograph sent to a THIRD PARTY it is the
-   * opposite, and this path was doing it anyway.
-   *
-   * Measured rather than reasoned about, with a HEIC carrying real coordinates:
-   *   - Chromium cannot decode HEIC, so the fallback fires and 75,838 raw bytes go out.
-   *   - Those bytes still carry the GPS tags — 48 deg 51' N, 2 deg 17' E, read straight back
-   *     out of the request body.
-   *   - The screen says, unconditionally, that location data is removed before the photo
-   *     leaves the device.
-   *   - And PlantNet REFUSES the file regardless: HTTP 400, "Unsupported file type for
-   *     image[0] (jpeg or png)", surfaced to the player as "the identification service could
-   *     not be reached".
-   *
-   * So the request leaked the player's coordinates, broke a promise printed on the screen,
-   * spent one of five daily identifications, and could never have succeeded. There is no
-   * case in which sending it helps anybody, which is what makes refusing the whole fix rather
-   * than a trade: the sentence on the scan screen becomes TRUE instead of being softened.
-   *
-   * The sighting paths are deliberately untouched. They keep the original, because losing
-   * somebody's photograph is the worse failure there — see `PhotoField`, which now says so.
-   */
-  if (!prepared.downscaled) {
-    return {
-      kind: 'error',
-      message:
-        'Your browser cannot read that photo\u2019s format, so its location data cannot be ' +
-        'removed before sending \u2014 and the identifier only accepts JPEG or PNG anyway. ' +
-        'Take a photo with your camera, or choose a JPEG or PNG.',
-    };
   }
 
   onPrepared?.();
