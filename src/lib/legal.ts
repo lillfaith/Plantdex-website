@@ -89,10 +89,45 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
   },
   {
     id: 'data-region',
-    label: 'Supabase project region, and whether a data processing agreement is in place',
+    label: 'Supabase project region',
     why: 'The app stores accounts and photos in Supabase. Where those servers physically sit determines what has to be disclosed about international transfers, and the repository only holds the project URL.',
     kind: 'operational',
     blocking: true,
+    /*
+     * READ OFF THE DASHBOARD, not inferred. A `cf-ray` header from a request to the project
+     * names the Cloudflare edge that answered it, which is where the CALLER is, not where the
+     * database sits — so the one piece of evidence reachable from here is the one that looks
+     * authoritative and is not. The owner read this from Project Settings.
+     */
+    value: 'East US (North Virginia), in the United States',
+  },
+  {
+    /*
+     * SPLIT OUT OF `data-region`, WHICH WAS TWO QUESTIONS SHARING A SENTENCE. The region is a
+     * fact anybody with the dashboard can read; whether an agreement is in place is a
+     * determination about how a published document is entered into. Gluing them together meant
+     * the known half could not be disclosed until the unknown half was settled — the same
+     * reason `shipping-policy` became five ids.
+     */
+    id: 'data-processing-agreement',
+    label: 'Whether a data processing agreement with Supabase is in place',
+    why: 'A privacy page that names a processor holding account data and photographs has to say what governs that arrangement. The dashboard presents the addendum as a document to read rather than a step to complete, which reads at first like an unfinished task.',
+    kind: 'legal',
+    blocking: true,
+    /*
+     * ANSWERED BY THE DOCUMENT ITSELF, which is why there was never a signature to find. Its
+     * opening paragraph: the addendum "supplements and forms part of the Supabase Terms of
+     * Service … This DPA is effective as of the Effective Date of the Agreement." Nothing is
+     * signed because acceptance of the terms is the execution — clause 12.2 says the same of
+     * the standard contractual clauses, and 2.3 of Schedule 2 of the UK addendum.
+     *
+     * WHAT THIS DOES NOT SETTLE, and must not be read as settling: that an addendum EXISTS is
+     * a different question from whether this deployment meets the obligations it places on
+     * the CUSTOMER side — clause 4 puts notice, consent, data-subject-rights and response
+     * duties on us, not on Supabase. That half belongs to `audience-scope`, which is open.
+     */
+    value:
+      "Supabase's own data processing addendum, which forms part of their terms of service and takes effect with them rather than being signed separately",
   },
   {
     id: 'audience-scope',
