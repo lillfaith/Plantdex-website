@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { deckCtaEvent, track, type CtaPlacement } from '@/lib/analytics';
+import { isShopConfigured } from '@/lib/shop';
 
 /**
- * "Get the deck" — the link from the educational site into the shop.
+ * The link from the educational site into the shop. Its label follows the sale state; see
+ * `ctaLabel` below.
  *
  * ─────────────────────────────────────────────────────────────────────────────
  * FOUR PLACEMENTS, AND DELIBERATELY NOT MORE.
@@ -23,18 +25,41 @@ import { deckCtaEvent, track, type CtaPlacement } from '@/lib/analytics';
  * has no custom properties to answer it with. See `src/lib/analytics.ts`.
  */
 
-const COPY: Record<CtaPlacement, { label: string; line: string }> = {
-  home: {
-    label: 'Get the deck',
-    line: 'The collectible field companion this world is built around.',
-  },
-  herbdex: {
-    label: 'Get the deck',
-    line: 'Take the collection outside — printed, illustrated, pocket-sized.',
-  },
-  plant: { label: 'Get the deck', line: 'This card, in your hand, where the plant is.' },
-  footer: { label: 'Get the deck', line: '' },
+const COPY: Record<CtaPlacement, { line: string }> = {
+  home: { line: 'The collectible field companion this world is built around.' },
+  herbdex: { line: 'Take the collection outside — printed, illustrated, pocket-sized.' },
+  plant: { line: 'This card, in your hand, where the plant is.' },
+  footer: { line: '' },
 };
+
+/**
+ * The label, RESOLVED FROM THE SALE STATE rather than typed once and forgotten.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * "GET THE DECK" IS A PROMISE THE PAGE BEHIND IT CANNOT KEEP WHILE THE SHOP IS OFF.
+ *
+ * All four placements said it unconditionally, and `/shop` resolves its own state from
+ * `isShopConfigured()` — so with the Stripe variables unset, four buttons across the site
+ * offered to sell a deck and every one of them landed on a page reading "Not on sale yet".
+ * That is the shape this repository has now shipped three times in the other direction:
+ * `/terms` denying a shop that existed, `/privacy` denying analytics that were wired in,
+ * the landing page denying a sale configuration could switch on. A CTA asserting a sale
+ * that is switched OFF is the same bug facing the other way, and it greets a buyer from a
+ * vendor table on the first tap.
+ *
+ * So it is derived from the same predicate the destination reads, and it therefore REVERTS
+ * BY ITSELF: set the Payment Link and the price and every placement says "Get the deck"
+ * again with no edit here. Nothing about the four placements, their analytics events or the
+ * rule that a CTA never displaces a safety notice changes.
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * The footer is shorter than the rest on purpose: it is a row of wayfinding links, and a
+ * verb there would make it the only instruction in a list of destinations.
+ */
+function ctaLabel(placement: CtaPlacement): string {
+  if (isShopConfigured()) return 'Get the deck';
+  return placement === 'footer' ? 'The deck' : 'See the deck';
+}
 
 export function DeckCta({
   placement,
@@ -43,7 +68,8 @@ export function DeckCta({
   placement: CtaPlacement;
   className?: string;
 }) {
-  const { label, line } = COPY[placement];
+  const { line } = COPY[placement];
+  const label = ctaLabel(placement);
 
   // The footer's is a quiet text link — a footer is wayfinding, and a button there would be
   // the loudest thing on every page of the site.

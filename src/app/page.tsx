@@ -104,6 +104,24 @@ export default function HomePage() {
         </ul>
 
         {/*
+          THE LOOP, IN ONE SENTENCE, WHERE THE DECISION IS MADE.
+
+          Everything below this explains the product properly — the three numbered steps, the
+          showcase, the note from the creator. All of it is below the fold on a 390px phone,
+          and a stranger who cannot tell what this IS does not scroll to find out. Four short
+          clauses naming the four things the navigation is made of is what the page owed them
+          before the buttons, not after.
+
+          Deliberately one line and not a panel: the brief here was "do not make the homepage
+          busier", and a bordered explainer between the creatures and the call to action would
+          be exactly that.
+        */}
+        <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-violet-200">
+          Find plants outside. Scan them. Build your Herbdex. Learn each card and grow your
+          Garden.
+        </p>
+
+        {/*
           TWO WAYS IN, BECAUSE THERE ARE TWO PEOPLE HERE.
 
           "Explore the Herbdex" is for somebody at a table with the deck. "Identify a plant"
@@ -113,21 +131,28 @@ export default function HomePage() {
           of the Herbdex — measured at y=563 on a 390x720 phone with the nav floor at 662, so
           barely a strip of it cleared the bar.
 
-          The Herbdex keeps the primary gradient: the collection is still what this is. Scan
-          is an outlined peer rather than a third-tier link.
+          SCAN NOW CARRIES THE GRADIENT, AND THE ORDER IS THE ARGUMENT. The Herbdex led here
+          for as long as the deck was the product. It is not what a first-time visitor can
+          DO: arriving with no deck and no discoveries, "Explore the Herbdex" opens a wall of
+          45 silhouettes and a progress bar reading 0%, which is the collection at its least
+          legible. Identifying something growing is the one action that works on the first
+          visit and produces the first card — so it takes the primary treatment, and the
+          collection becomes the outlined peer rather than the other way round.
+
+          The classes are swapped between the two links; neither treatment is new.
         */}
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/herbdex"
-            className="flex min-h-12 w-full max-w-xs items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-8 text-base font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:w-auto"
-          >
-            Explore the Herbdex
-          </Link>
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/scan"
-            className="flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-full border border-gold-500/70 bg-plum-800/60 px-8 text-base font-bold text-gold-300 transition-colors hover:bg-plum-700 sm:w-auto"
+            className="flex min-h-12 w-full max-w-xs items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-8 text-base font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:w-auto"
           >
             Identify a plant
+          </Link>
+          <Link
+            href="/herbdex"
+            className="flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-full border border-gold-500/70 bg-plum-800/60 px-8 text-base font-bold text-gold-300 transition-colors hover:bg-plum-700 sm:w-auto"
+          >
+            Explore the Herbdex
           </Link>
         </div>
         {/*
@@ -145,10 +170,18 @@ export default function HomePage() {
           `legal.test.ts` guards both. A hard-coded denial of something configuration can turn on
           is a lie with a timer on it, so this one reads the configuration too.
         */}
+        {/*
+          AND IT NOW CARRIES THE TWO FACTS A STRANGER CANNOT OTHERWISE TELL: that the thing
+          they are about to tap costs nothing, and that the deck is not a prerequisite for
+          it. Both were true and stated only on /shop — a page somebody reaches by deciding
+          to buy something, which is the wrong side of the question. Folded into this line
+          rather than added beside it, because a second grey sentence under the buttons is
+          the "busier homepage" the brief rules out.
+        */}
         <p className="mt-3 text-xs text-violet-400">
           {isShopConfigured()
-            ? 'A physical deck of real cards, printed front and back.'
-            : 'The physical deck is not on sale yet — the store opens once printing is confirmed.'}
+            ? 'The digital Plantdex is free. The physical deck is an optional field companion.'
+            : 'The digital Plantdex is free. The physical deck is optional — and not on sale yet.'}
         </p>
       </section>
 

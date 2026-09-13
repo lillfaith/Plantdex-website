@@ -305,4 +305,29 @@ describe('no page denies the sale while configuration can turn it on', () => {
     expect(page).not.toContain('NEXT_PUBLIC_STRIPE_PAYMENT_LINK');
     expect(page).not.toContain('NEXT_PUBLIC_DECK_PRICE');
   });
+
+  it('does not offer to sell the deck from a button while the shop is off', () => {
+    /*
+     * THE SAME RULE, APPLIED TO THE CONTROL RATHER THAN THE SENTENCE.
+     *
+     * `DeckCta` renders in four places and used to say "Get the deck" in all four regardless
+     * of configuration — so with the Stripe variables unset, four buttons offered a purchase
+     * and every one landed on a `/shop` reading "Not on sale yet". A page that DENIES a sale
+     * configuration can switch on is the bug the describe block above exists for; a button
+     * that ASSERTS a sale configuration has switched off is the same bug facing the other
+     * way, and it is the first thing a buyer taps.
+     *
+     * Source-level, like its siblings: what is pinned is that the label RESOLVES from the one
+     * predicate the destination reads, not which words come out of it.
+     */
+    const source = strip(readFileSync('src/components/shop/DeckCta.tsx', 'utf8'));
+    expect(source, 'DeckCta must resolve its label from isShopConfigured()').toMatch(
+      /isShopConfigured\(\)/,
+    );
+    // And the purchase verb may only appear inside that branch, never as a bare default.
+    const labels = source.match(/'Get the deck'/g) ?? [];
+    expect(labels, 'DeckCta hard-codes a purchase label outside the sale branch').toHaveLength(
+      1,
+    );
+  });
 });

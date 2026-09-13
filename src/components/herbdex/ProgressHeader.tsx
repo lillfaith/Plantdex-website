@@ -90,6 +90,26 @@ export function ProgressHeader() {
         knows a threshold.
       */}
       <p className="mt-1.5 text-xs text-violet-300">{progressionSubtext(progress)}</p>
+      {/*
+        WHAT XP IS FOR — and the only place in the app that says so.
+
+        The line above is a countdown: "600 XP to next Field Card" is precise and means
+        nothing at all to somebody who has never earned any, because it presumes you already
+        know what XP is and why a Field Card is worth crossing a threshold for. This is the
+        sentence underneath it that the countdown has always assumed.
+
+        AT ZERO ONLY. It is onboarding, not a caption: a player at 4,000 XP has answered this
+        question by playing, and a permanent explanatory sentence under the bar on the page
+        they open most is exactly the clutter the rest of this panel avoids. `ready` guards
+        it too — mid-hydration every collection reads as 0 XP, and a line that flashes in and
+        out on every load is worse than one that never appears.
+      */}
+      {ready && progress.xp === 0 && (
+        <p className="mt-1.5 text-xs text-violet-400">
+          Earn XP by exploring and completing Field Research. Higher levels unlock digital
+          Field Cards.
+        </p>
+      )}
 
       <hr className="my-4 border-violet-700/50" />
 
@@ -170,8 +190,14 @@ export function ProgressHeader() {
         />
       </div>
       <p className="mt-1.5 text-xs text-violet-400">
+        {/*
+          THE SEQUENCE NOW NAMES ITS OWN OUTCOME. It read "Found → learned → found again",
+          which stops one word short of the thing the bar directly above it is counting —
+          so the caption described the actions and never said what they produce. The heading
+          says "Cards mastered"; this is what gets a card there.
+        */}
         {learnedCount} card{learnedCount === 1 ? '' : 's'} learned. Found → learned → found
-        again.
+        again → mastered.
       </p>
 
       {/*

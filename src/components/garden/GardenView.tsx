@@ -80,11 +80,19 @@ export function GardenView() {
             <p className="mt-1 text-sm text-violet-300">
               Every plant you discover takes root here.
             </p>
+            {/*
+              IT SENT AN EMPTY GARDEN TO AN EMPTY HERBDEX. A player looking at bare ground has
+              discovered nothing — which means the collection this button opened was 45
+              silhouettes and a 0% bar, a second empty page reached by following the only
+              advice the first one gave. The action that actually plants something is the
+              scanner, so that is where the one button on this state points. The copy above
+              it is unchanged.
+            */}
             <Link
-              href="/herbdex"
+              href="/scan"
               className="mt-4 inline-flex min-h-11 items-center rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
             >
-              Open my Herbdex
+              Identify a plant
             </Link>
           </div>
         ) : (

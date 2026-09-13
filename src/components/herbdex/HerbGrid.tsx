@@ -56,7 +56,7 @@ function Chip({
  * name would otherwise reveal what is hiding behind an undiscovered slot.
  */
 export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards?: Herb[] }) {
-  const { isDiscovered, isMastered, stageOf, ready, progress } = useHerbdex();
+  const { isDiscovered, isMastered, stageOf, ready, progress, discoveredCount } = useHerbdex();
   const [status, setStatus] = useState<StatusFilter>('all');
   const [rarity, setRarity] = useState<Rarity | 'all'>('all');
   const [season, setSeason] = useState<Season | 'all'>('all');
@@ -264,6 +264,25 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
       <p aria-live="polite" className="mt-4 text-xs text-violet-400">
         Showing {visible.length} of {herbs.length} cards
       </p>
+      {/*
+        WHAT THE SILHOUETTES ARE, SAID ONCE, TO THE ONE PERSON WHO CANNOT TELL.
+
+        Every undiscovered tile already prints "Find it to reveal" under it, which is the
+        instruction. What it does not carry is WHERE — and a first-time visitor reading 45
+        of them can reasonably conclude the cards unlock by tapping, by paying, or by owning
+        the deck. "Outside" is the whole distinction the collection is built on.
+
+        Gated on an empty collection, like `FirstFindNote` and for the same reason: somebody
+        holding one card has already learned this by doing it, and a permanent line
+        explaining the grid to them is clutter. Nothing about the mystery treatment, the
+        aura or the locked identities changes — this says what the concealment MEANS, not
+        what is behind it.
+      */}
+      {ready && discoveredCount === 0 && (
+        <p className="mt-1 text-xs text-violet-400">
+          Undiscovered species stay hidden until you find them outside.
+        </p>
+      )}
 
       {visible.length === 0 ? (
         <p className="panel mt-3 p-6 text-center text-sm text-violet-300">

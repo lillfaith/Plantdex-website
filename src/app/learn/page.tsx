@@ -34,8 +34,24 @@ export default function LearnPage() {
   return (
     <main id="main" className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">Learn</h1>
-      <p className="mt-1 text-sm text-violet-300">
-        Background for the deck — terminology and traditional methods.
+      {/*
+        WHAT "LEARN" MEANS HERE, WHICH IS NARROWER THAN THE WORD.
+
+        "Background for the deck" describes a category, not a use. A first-time visitor
+        reading a nav label called Learn reasonably expects to be taught plants — and this
+        section teaches VOCABULARY: the words printed on the cards, the methods those words
+        name, and the safety language the rest of the site is written in. Saying so is what
+        stops the page being opened for the wrong reason and closed disappointed.
+
+        IT MAY NOT OPEN WITH THE GLOSSARY'S OWN WORDS. The first draft read "What the words
+        on the cards mean", and the Glossary card two lines below begins "What the words
+        mean" — the same sentence twice within one screen, which reads as a stutter and makes
+        the intro look like a caption for the first card rather than for all three. The nav
+        label and the three destinations are unchanged; only this sentence is.
+      */}
+      <p className="mt-1 text-sm leading-relaxed text-violet-300">
+        The vocabulary behind the deck — the terminology printed on the cards, the
+        preparation methods those words name, and the safety language used across this site.
       </p>
 
       <ul className="mt-6 space-y-3">

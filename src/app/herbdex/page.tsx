@@ -4,6 +4,7 @@ import { printedCardsInDeckOrder } from '@/lib/deck';
 import { FIELD_CARDS } from '@/lib/field-cards';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
+import { FirstFindNote } from '@/components/herbdex/FirstFindNote';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { RecentFindsStrip } from '@/components/herbdex/RecentFindsStrip';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
@@ -49,6 +50,10 @@ export default function HerbdexPage() {
         {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
       </p>
 
+      {/* Renders only while the collection is genuinely empty; see the component for why it
+          is a line rather than a second button above the one directly beneath it. */}
+      <FirstFindNote />
+
       {/*
         FIRST THING AFTER THE TITLE, BECAUSE IT ANSWERS THE TITLE.
 
@@ -77,7 +82,7 @@ export default function HerbdexPage() {
           <span className="min-w-0">
             <span className="block font-bold text-violet-100">Identify a plant</span>
             <span className="block text-xs text-violet-300">
-              Photograph something growing and see which cards it might be
+              Photograph something growing and see what Plantdex thinks it might be
             </span>
           </span>
         </Link>
