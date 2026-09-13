@@ -49,6 +49,28 @@ export default function HerbdexPage() {
       <p className="mt-1.5 text-xs font-semibold tracking-wide text-violet-400 uppercase">
         {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
       </p>
+      {/*
+        AND WHAT THAT NAME MEANS, ONCE, WHERE IT FIRST APPEARS AS A NAME.
+
+        "Collection 01" is a proper noun the app uses on six surfaces and defines on none.
+        A reader can infer from the chip above that it involves 45 cards; what they cannot
+        infer is that it is the PHYSICAL deck — which is the fact the Field Card band, the
+        Seed Shelf and "Beyond Collection 01" all quietly depend on further down this page.
+
+        Here rather than on /scan, /shop or a card page: this is the label's own home, the
+        one place it is printed as a standalone identity rather than used in a sentence, and
+        the page a new arrival reaches first. Defining it on each surface that mentions it
+        would be the same sentence five times.
+
+        NOT gated on an empty collection, unlike the two onboarding aids below it. Those
+        teach an action somebody then performs; this defines a term that stays in the
+        interface forever, and a definition a returning reader cannot find again is not
+        much of a definition. It is one dim line under the chip it explains.
+      */}
+      <p className="mt-1 text-xs text-violet-400">
+        {CURRENT_COLLECTION.shortName} is the {CURRENT_COLLECTION.size}-card physical
+        Plantdex deck.
+      </p>
 
       {/* Renders only while the collection is genuinely empty; see the component for why it
           is a line rather than a second button above the one directly beneath it. */}
