@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
+import { FIELD_LOG_TRIGGER_ID } from '@/lib/grow-track';
 import type { Herb } from '@/lib/types';
 import { GROWTH_STAGE_LABEL, GROWTH_STAGES, type GrowthStage } from '@/lib/sightings';
 import { localDateKey } from '@/lib/research';
@@ -112,7 +113,10 @@ export function MySightings({ herb }: { herb: Herb }) {
             {sightings.length}
           </span>
         </h2>
+        {/* The id is how the growth panel's third step opens this form; see
+            FIELD_LOG_TRIGGER_ID for why the two sections talk through the DOM. */}
         <button
+          id={FIELD_LOG_TRIGGER_ID}
           type="button"
           onClick={() => formRef.current?.showModal()}
           className="min-h-11 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 transition-colors hover:bg-gold-500/30 hover:text-gold-200"

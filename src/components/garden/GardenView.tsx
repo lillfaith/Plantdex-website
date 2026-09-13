@@ -105,8 +105,20 @@ export function GardenView() {
               const advanced = justAdvanced.includes(herbId);
               return (
                 <li key={herbId}>
+                  {/*
+                    THE TILE LANDS ON THE TRACK, NOT THE TOP OF THE PAGE.
+
+                    The line under each sprite already names the next step — "Learn its card",
+                    "Find it again" — and tapping it opened a long plant page at the top,
+                    leaving the player to find the panel that answers it eleven sections down.
+                    The hash is `MasteryTrack`'s existing anchor, the same one the hero CTA and
+                    the discovery celebration use, so all three land in one place.
+
+                    Absent once flowering: `nextStageHint` is null there, and a finished plant
+                    should open its card rather than a track with nothing left on it.
+                  */}
                   <Link
-                    href={`/herbdex/${herb.id}`}
+                    href={action ? `/herbdex/${herb.id}#card-mastery` : `/herbdex/${herb.id}`}
                     className="group flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-plum-600/50"
                   >
                     {/* Every sprite gets the same box and stands on its bottom edge, so a

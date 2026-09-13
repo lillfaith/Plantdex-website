@@ -42,6 +42,7 @@ import {
 import { useAuth } from '@/state/AuthProvider';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
+import { GrowSpriteCta } from './GrowSpriteCta';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { DeckCta } from '../shop/DeckCta';
@@ -346,6 +347,19 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
       <div className="mt-6">
         <DiscoverPanel herb={herb} onDiscovered={onDiscovered} />
+      </div>
+
+      {/*
+        THE WAY INTO THE GROWTH TRACK, DIRECTLY UNDER THE DISCOVERY STAMP.
+
+        Here rather than lower because this is the primary-action slot of the page: the hero
+        is above it and `DiscoverPanel` occupies the same position for a plant not yet found,
+        so an arriving player meets one action either way — find it, or grow it. The track
+        itself stays at its own place near the foot; this is a signpost to it, and renders
+        nothing at all for an undiscovered plant or a card outside the printed deck.
+      */}
+      <div className="mt-3">
+        <GrowSpriteCta herb={herb} />
       </div>
 
       {/*

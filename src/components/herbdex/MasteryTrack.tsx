@@ -6,11 +6,11 @@ import {
   MASTERY_STAGES,
   MASTERY_STAGE_BLURB,
   MASTERY_STAGE_LABEL,
-  SIGHTINGS_FOR_MASTERY,
   stageIndex,
   tracksMastery,
   type MasteryStage,
 } from '@/lib/mastery';
+import { FIELD_LOG_TRIGGER_ID, growTrack } from '@/lib/grow-track';
 import { XP_FOR_LEARNING, XP_FOR_MASTERY, xpForDiscoveries } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { track } from '@/lib/analytics';
@@ -104,8 +104,41 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
 
   const reached = stageIndex(stage);
   const sightings = sightingsFor(herb.id);
-  const stillNeeded = Math.max(0, SIGHTINGS_FOR_MASTERY - sightings);
   const masteredAt = state.mastered[herb.id];
+
+  /*
+   * THE STEPS, DERIVED FROM THE SAME RECORDS MASTERY READS. Not memoised: it is three
+   * boolean lookups and two string picks over state this component already holds, and a
+   * `useMemo` here would cost more than it saves while adding a dependency array to keep
+   * honest.
+   */
+  const quest = growTrack(state, herb.id, sightings);
+  const learnStep = quest?.steps.find((step) => step.id === 'learn');
+  const learnStepIsNext = learnStep?.current ?? false;
+
+  /*
+   * OPENING THE FIELD LOG, WHICH IS A SIBLING SECTION AND OWNS ITS OWN <dialog>.
+   *
+   * Both are bands in the same ordered list on the plant page, rendered from a config — so
+   * neither is the other's parent and there is nothing to pass a ref through. The choices
+   * were a context provider for one button, lifting the dialog out of the component that
+   * owns it, or asking the DOM for the trigger that is already there. The third is the only
+   * one that adds no state and no coupling in the type system, and the id it looks for is
+   * asserted by the tests so it cannot be renamed out from under this.
+   *
+   * `.click()` rather than a scroll: the Field Log form is a MODAL, so it covers the page
+   * wherever the page happens to be. Scrolling first would animate the background of a
+   * dialog nobody can see behind. If the trigger is somehow absent the sighting section is
+   * scrolled to instead, which is the honest fallback — never a dead button.
+   */
+  const openFieldLog = () => {
+    const trigger = document.getElementById(FIELD_LOG_TRIGGER_ID);
+    if (trigger) {
+      trigger.click();
+      return;
+    }
+    document.getElementById('sightings-heading')?.scrollIntoView({ behavior: 'smooth' });
+  };
   // The line fills to the LAST completed node, so a half-done track reads as half-done.
   const fill = reached <= 1 ? 0 : ((reached - 1) / (MASTERY_STAGES.length - 1)) * 100;
 
@@ -200,11 +233,86 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
         </ol>
       </div>
 
-      {/* The one next action, stated plainly under the track. */}
-      {stage === 'discovered' && (
-        <p className="mt-5 text-sm text-violet-200 sm:text-sm">
-          Read the card, then answer a few questions about it.
-        </p>
+      {/*
+        ── THE QUEST, AS THREE STEPS ───────────────────────────────────────────
+        This was three stage-keyed paragraphs — one sentence visible at a time, each
+        describing only the stage the player happened to be on. A player could therefore see
+        "read the card, then answer a few questions" and have no idea a third requirement
+        existed, or what it was. A progression you can only see one step of is not one you
+        can plan against.
+
+        Every flag comes from `growTrack`, which asks the same records `qualifiesForMastery`
+        asks, in the same order. There is no checklist state here to fall out of step with
+        the reducer — the panel cannot claim a step is done that mastery does not count, and
+        cannot miss one that it does.
+      */}
+      {quest && (
+        <ol className="mt-5 space-y-3">
+          {quest.steps.map((step) => (
+            <li key={step.id} className="flex items-start gap-3">
+              <span
+                aria-hidden="true"
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs ${
+                  step.done
+                    ? 'border-gold-400 bg-gold-500/25 text-gold-300'
+                    : step.current
+                      ? 'border-mystery-pink bg-mystery-pink/15 text-mystery-pink'
+                      : 'border-violet-700 bg-plum-900 text-violet-500'
+                }`}
+              >
+                <PlantdexIcon name={step.done ? 'check' : 'pending'} />
+              </span>
+
+              <div className="min-w-0 flex-1">
+                <p className="flex flex-wrap items-baseline justify-between gap-x-3">
+                  <span
+                    className={`text-sm font-bold ${
+                      step.done ? 'text-gold-300' : 'text-violet-100'
+                    }`}
+                  >
+                    {step.label}
+                  </span>
+                  {/* Status in WORDS, never by colour alone. "Next" rather than "Locked":
+                      the Field Log accepts a sighting at any time, so a lock here would
+                      describe a rule the app does not enforce. */}
+                  <span
+                    className={`text-[0.72rem] font-bold tracking-[0.08em] uppercase ${
+                      step.done
+                        ? 'text-gold-400'
+                        : step.current
+                          ? 'text-mystery-pink'
+                          : 'text-violet-400'
+                    }`}
+                  >
+                    {step.done ? 'Complete' : step.current ? 'Next' : 'Then'}
+                  </span>
+                </p>
+
+                {/* The supporting line, and only where it still has something to say. A
+                    finished step needs no instructions. */}
+                {!step.done && step.note && (
+                  <p className="mt-1 text-xs leading-relaxed text-violet-300">{step.note}</p>
+                )}
+                {/* Except this one: a sighting logged before the check is the one case where
+                    a DONE step carries news, because it changes what the next step means. */}
+                {step.done && step.id === 'sighting' && !learnStep?.done && step.note && (
+                  <p className="mt-1 text-xs leading-relaxed text-gold-300">{step.note}</p>
+                )}
+
+                {/* ONE action, on the step that is actually next. */}
+                {step.current && step.id === 'sighting' && (
+                  <button
+                    type="button"
+                    onClick={openFieldLog}
+                    className="mt-2 min-h-11 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 transition-colors hover:bg-gold-500/30 hover:text-gold-200"
+                  >
+                    Log a sighting
+                  </button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
       )}
 
       {/*
@@ -212,21 +320,12 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
         mounted. Passing the check advances the stage, which re-renders everything above —
         a check mounted inside the `discovered` branch would be torn down while its result
         dialog was still on screen.
-      */}
-      <KnowledgeCheck herb={herb} showTrigger={stage === 'discovered'} />
 
-      {stage === 'learned' && (
-        <div className="mt-4">
-          <p className="text-sm text-violet-200">
-            Find it again and log{' '}
-            {stillNeeded === 1 ? 'the sighting' : `${stillNeeded} more sightings`} below.
-          </p>
-          <p className="mt-1.5 text-xs text-violet-400">
-            <span className="font-semibold text-gold-300">+{XP_FOR_MASTERY} XP</span> — the one
-            stage you can&apos;t earn from the sofa.
-          </p>
-        </div>
-      )}
+        Its TRIGGER is now shown on the step rather than on the stage, which is the same
+        condition said more precisely: the check is offered exactly when learning is the step
+        to act on.
+      */}
+      <KnowledgeCheck herb={herb} showTrigger={learnStepIsNext} />
 
       {stage === 'mastered' && (
         <div className="mt-5 flex items-start gap-3 border-t border-gold-500/25 pt-4">
