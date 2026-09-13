@@ -9,16 +9,20 @@
  * directions. It lets through things nothing can render — SVG (which is a script vector,
  * not a photo), TIFF, BMP — and it tells the person nothing about what will work, so a
  * failure arrives after they have chosen, not before. Naming the formats lets the field say
- * "JPEG, PNG, WebP, HEIC, GIF or AVIF" instead of nothing at all.
+ * something useful instead of nothing at all.
  */
 
 /**
  * The formats a phone camera or a photo library actually produces.
  *
- * HEIC/HEIF earns its place: it is the iPhone default and by far the most common thing a
- * field app is handed. Most non-Apple browsers cannot DECODE it, which is handled where
- * images are prepared (`image-prepare.ts`) rather than by refusing the file — the bytes are
- * still the player's photo, and their own phone displays it perfectly well.
+ * HEIC/HEIF earns its place in the PICKER: it is the iPhone default and by far the most
+ * common thing a field app is handed, and Safari decodes it perfectly well.
+ *
+ * IT IS DELIBERATELY NOT IN THE ADVERTISED LABEL, and that gap is the point. Most non-Apple
+ * browsers cannot decode HEIC, and since `image-prepare.ts` stopped returning raw bytes,
+ * what it cannot decode it REFUSES — so a categorical "HEIC supported" is a promise the
+ * device may break the instant it is taken up. Accepting it and naming it are two different
+ * claims: the picker still tries, because on the phone where it is the default it works.
  *
  * SVG is deliberately absent. It is markup that can carry script, it is never a photograph,
  * and accepting it would put attacker-controlled markup in a bucket that later serves signed
@@ -57,8 +61,14 @@ export const ACCEPTED_EXTENSIONS: readonly string[] = [
 /** The `accept` attribute for the file input, listing both so every picker filters well. */
 export const ACCEPT_ATTRIBUTE = [...ACCEPTED_IMAGE_TYPES, ...ACCEPTED_EXTENSIONS].join(',');
 
-/** Human list for the field's own label. */
-export const ACCEPTED_LABEL = 'JPEG, PNG, WebP, HEIC, GIF or AVIF';
+/**
+ * What the field ADVERTISES — deliberately not the same as what the picker accepts.
+ *
+ * Naming only the formats every browser can re-encode keeps the sentence true on every
+ * device; "and other browser-supported image formats" is what makes room for HEIC on the
+ * phone that produced it, without promising it on the laptop that cannot read it.
+ */
+export const ACCEPTED_LABEL = 'JPEG, PNG, WebP and other browser-supported image formats';
 
 /**
  * The ceiling on what will be accepted from the picker, before downscaling.
@@ -109,7 +119,10 @@ export function validatePhoto(file: { name: string; type: string; size: number }
     const seen = file.type || extensionOf(file.name) || 'an unrecognised format';
     return {
       ok: false,
-      reason: `That looks like ${seen}. Photos need to be ${ACCEPTED_LABEL}.`,
+      // Not ACCEPTED_LABEL: that string ends in "and other browser-supported image
+      // formats", which reads as a shrug in requirement form. A rejection has to name
+      // something the person can actually go and pick.
+      reason: `That looks like ${seen}. Plantdex needs a photo \u2014 a JPEG, PNG or WebP works everywhere.`,
     };
   }
   if (file.size > MAX_UPLOAD_BYTES) {
