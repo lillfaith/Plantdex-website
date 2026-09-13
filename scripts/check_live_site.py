@@ -67,9 +67,25 @@ ROUTES: list[tuple[str, list[str]]] = [
     # string also appears on /herbdex/ (which teases the scanner), so on its own it proves
     # the page rendered but says nothing about the control the whole page exists for.
     # "Take a photo" is emitted nowhere else in the build.
+    #
+    # THIS MARKER WENT STALE ONCE, AND THE CHECK DID ITS JOB BY FAILING. The intro read
+    # "...see which cards it might be", which described the 45-card deck and so implied the
+    # scanner only worked on it; the copy was corrected and run 21 failed on the very deploy
+    # that corrected it. That is the check behaving correctly — a marker is a claim about
+    # what the live site says, so changing the copy is *meant* to break it until somebody
+    # re-states the claim. Do not soften one to a substring that would survive the next
+    # rewrite: a marker that cannot go stale is a marker that cannot detect anything.
+    #
+    # THE TRAILING FULL STOP IS LOAD-BEARING and this marker is stronger than the one it
+    # replaces. /herbdex/ teases the scanner with the same words and no period, so the old
+    # string matched both routes; with the period this is emitted on /scan/ alone. Verified
+    # against the real `out/`: one occurrence there, zero everywhere else in the build.
     (
         "/scan/",
-        ["Photograph something growing and see which cards it might be", "Take a photo"],
+        [
+            "Photograph something growing and see what Plantdex thinks it might be.",
+            "Take a photo",
+        ],
     ),
     ("/account/", ["Your profile"]),
     ("/privacy/", ["Profile settings", "visible only to you"]),
