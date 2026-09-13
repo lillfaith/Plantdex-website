@@ -9,6 +9,7 @@ import { USE_LABEL } from '@/lib/deck';
 import { CardFlip } from '../herbdex/CardFlip';
 import { RarityAura } from './RarityAura';
 import { PlantSprite } from '../PlantSprite';
+import { GrowSpriteCta } from '../herbdex/GrowSpriteCta';
 import { HabitatChips } from './HabitatChip';
 import { RarityMeter } from './RarityMeter';
 import { XpBar } from './XpBar';
@@ -105,16 +106,33 @@ export function SpeciesHero({
             no room beside the heading — on a 390px screen it wrapped onto a line of its own
             and read as a stranded illustration rather than a companion.
           */}
-          {/* `fit` sets width:100% inline, which beats any width class on the sprite
-              itself — so the SIZE lives on this wrapper. Without it the companion rendered
-              358px wide on a 390px screen and read as a banner rather than a creature. */}
-          <div className="ml-auto w-28 shrink-0 drop-shadow-[0_6px_20px_rgba(23,16,28,0.65)] sm:w-40">
-            <PlantSprite
-              herbId={herb.id}
-              alt={`Pixel-art portrait of ${herb.commonName}`}
-              stage={portraitStage}
-              fit
-            />
+          {/*
+            THE CREATURE AND THE CONTROL THAT GROWS IT, AS ONE COLUMN.
+
+            The button used to sit far below, under the discovery stamp — one clear line, and
+            a full screen below the fold at 390px, since the card art alone is 414px tall.
+            Attached to the sprite it is both on the first screen and next to the thing it
+            acts on: somebody looking at a small green rosette and wondering how to grow it
+            now has the answer directly beneath it.
+
+            THE COLUMN IS SIZED BY THE SPRITE, NOT BY THE BUTTON. The width classes stay on
+            the inner wrapper, so the creature keeps the exact dimensions this hero was
+            composed around — `fit` sets width:100% inline and would otherwise let the button
+            decide how big the plant is.
+          */}
+          <div className="ml-auto flex w-28 shrink-0 flex-col items-center gap-2 sm:w-40">
+            {/* `fit` sets width:100% inline, which beats any width class on the sprite
+                itself — so the SIZE lives on this wrapper. Without it the companion rendered
+                358px wide on a 390px screen and read as a banner rather than a creature. */}
+            <div className="w-full drop-shadow-[0_6px_20px_rgba(23,16,28,0.65)]">
+              <PlantSprite
+                herbId={herb.id}
+                alt={`Pixel-art portrait of ${herb.commonName}`}
+                stage={portraitStage}
+                fit
+              />
+            </div>
+            <GrowSpriteCta herb={herb} />
           </div>
         </div>
 
