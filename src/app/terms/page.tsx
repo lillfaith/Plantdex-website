@@ -230,8 +230,8 @@ export default function TermsPage() {
             </>
           ) : (
             <>
-              The price itself is <OwnerGap id="commerce-terms" />, and until it is set the shop
-              page says the deck is not on sale rather than showing a figure nobody has decided.
+              The planned price is <OwnerGap id="commerce-terms" />. The deck is not on sale
+              yet, so the shop page says so rather than offering a checkout.
             </>
           )}
         </p>

@@ -220,6 +220,26 @@ describe('no page denies the sale while configuration can turn it on', () => {
     }
   });
 
+  it('does not imply a live checkout on the sale terms while the shop is off', () => {
+    /*
+     * THE INVERSE OF THE RULE ABOVE, and it arrived the moment `commerce-terms` was answered.
+     * A denial that outlives its configuration is one bug; an ASSERTION that outlives it is
+     * the same bug pointing the other way, and the more expensive one — /terms-of-sale is a
+     * page of contract-formation and payment language, so printing a bare price on it while
+     * /shop says "Not on sale yet" tells a reader there is something to buy.
+     *
+     * Source-level, like its sibling: what matters is that the page RESOLVES the state from
+     * the one function that owns it rather than stating a tense in prose.
+     */
+    const source = readFileSync('src/app/terms-of-sale/page.tsx', 'utf8');
+    expect(source, '/terms-of-sale must resolve its sale state from isShopConfigured()').toMatch(
+      /isShopConfigured\(\)/,
+    );
+    // And the settled price stays an owner input rather than being re-typed into the copy.
+    expect(source).toMatch(/<OwnerGap id="commerce-terms" \/>/);
+    expect(source, '/terms-of-sale hard-codes a price').not.toMatch(/\$\d+\.\d{2}/);
+  });
+
   it('reads that state from the one function that owns it', () => {
     // Not a second copy of the environment check. `isShopConfigured` requires BOTH a
     // Stripe-validated link and a price, and a page testing only one of them would advertise
