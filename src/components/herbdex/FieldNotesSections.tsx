@@ -73,9 +73,15 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
         `SourcesSection` returns null and the sentence pointed at a list that is not there.
         `pageSourceCount` is the same number that section decides on, so the claim and the
         list cannot disagree.
+
+        THE FIRST SENTENCE SAID "not PRINTED on your card", which is the same printed-card
+        assumption, one clause earlier: a Field Card is not printed at all, so the sentence
+        distinguished these notes from something the reader does not have. "Part of the card
+        itself" is the distinction that was always meant and holds for both kinds — and it is
+        the provenance dialog's own wording for the same fact, so the two agree.
       */}
       <p className={`-mt-1 mb-1 ${NOTE} text-violet-300`}>
-        These notes are not printed on your card.{' '}
+        These notes are not part of the card itself.{' '}
         {pageSourceCount(herb) > 0
           ? 'They were added here from the sources listed at the foot of this page.'
           : 'They were added here by Plantdex, and are not yet backed by an independent source.'}

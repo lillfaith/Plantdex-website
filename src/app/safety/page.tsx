@@ -170,10 +170,22 @@ export default function SafetyPage() {
           Where the plant information comes from
         </h2>
         <div className="panel mt-4 space-y-3 p-5 text-sm leading-relaxed text-violet-200">
+          {/*
+            "THE PHYSICAL CARD" WAS TRUE OF THE WHOLE SITE AND STOPPED BEING SO AT CARD #48.
+            Field Cards are digital-only and earned with XP, so a sentence promising every
+            field on the site came off a printed card was, for eight of them, describing an
+            object that does not exist. The transcription rule itself is unchanged and applies
+            to both — FIELD_CARD_ISSUES records errors on Field Card artwork exactly as
+            KNOWN_CARD_ISSUES does for the deck — so what needed naming was the SOURCE, not
+            the standard. Same fix as the provenance chip on every card page, and the two must
+            keep saying the same thing.
+          */}
           <p>
             Every plant field on this site — traits, compounds, taste, preparations, usable
-            parts, season, encounter rate — is transcribed directly from the physical card,
-            including the card’s own wording. Nothing presented as the card’s own text has
+            parts, season, encounter rate — is transcribed directly from that plant’s own
+            Plantdex card, including the card’s own wording. For Collection 01 that card is the
+            printed one in the deck; Field Cards are digital-only Plantdex cards earned with
+            XP, and have no printed counterpart. Nothing presented as the card’s own text has
             been added, expanded or paraphrased.
           </p>
           <p>

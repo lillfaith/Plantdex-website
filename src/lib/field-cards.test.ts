@@ -713,6 +713,28 @@ describe('a Field Card page never claims a physical card', () => {
     );
   });
 
+  it('does not claim sitewide that every field came off a printed card', () => {
+    /*
+     * THE SAME BUG HAD TWO MORE HOMES, and fixing the chip alone left them. /safety promised
+     * "Every plant field on this site ... is transcribed directly from the physical card",
+     * which is a claim about the WHOLE site and so false for eight cards; the field-notes
+     * caveat said these notes are not "printed on" your card, distinguishing them from
+     * something a Field Card reader does not have.
+     *
+     * Both are pinned here rather than where they live, because what they have in common is
+     * the Field Cards — grep for the field, not the file, was the lesson the XP-value bug
+     * taught this repo twice.
+     */
+    const SAFETY = readFileSync('src/app/safety/page.tsx', 'utf8');
+    const NOTES = readFileSync('src/components/herbdex/FieldNotesSections.tsx', 'utf8');
+    expect(SAFETY).not.toContain('transcribed directly from the physical card');
+    expect(SAFETY, '/safety no longer names the Field Cards as a source').toContain(
+      'Field Cards are digital-only',
+    );
+    expect(NOTES).not.toContain('not printed on your card');
+    expect(NOTES).toContain('not part of the card itself');
+  });
+
   it('calls a Field Card transcription a transcription', () => {
     // Not "added by Plantdex": FIELD_CARD_ISSUES transcribes errors printed on the artwork
     // faithfully, the same contract KNOWN_CARD_ISSUES has, so the source is a card either way.
