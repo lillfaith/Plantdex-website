@@ -10,15 +10,20 @@ import { readFileSync } from 'node:fs';
  * stop being those three lines and start being a second animation system, a spoiler, or a
  * hole in the discovery loop.
  *
- * THE ONE THAT WOULD HURT MOST IS NAVIGATION. An undiscovered tile is a <Link> to its
- * locked card page, and that page is where `DiscoverPanel` renders "Log a Discovery" — so
- * the grid tile is the route into recording a find. A press target that swallowed the
- * whole tile would take that route away without failing anything.
+ * THE FIRST ATTEMPT PUT THIS IN THE GRID AND THAT WAS THE WRONG PLACE. An undiscovered
+ * tile is a <Link> to its locked card page, and that page is where `DiscoverPanel` renders
+ * "Log a Discovery" — so the tile is the route into recording a find. Anything that made
+ * the tile a control took that route away, or split it into two regions that behave
+ * differently. The gesture belongs where a player has already arrived and asked the
+ * question: the locked card page, where the card is not a link to anywhere.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 const strip = (source: string) => source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
 
 const CARD = strip(readFileSync('src/components/herbdex/HerbCard.tsx', 'utf8'));
+const ART = strip(readFileSync('src/components/herbdex/LockedCardArt.tsx', 'utf8'));
+const LOCKED = strip(readFileSync('src/components/herbdex/LockedHerb.tsx', 'utf8'));
+const LOCKED_FIELD = strip(readFileSync('src/components/herbdex/LockedFieldCard.tsx', 'utf8'));
 const MYSTERY = strip(readFileSync('src/components/herbdex/MysteryCard.tsx', 'utf8'));
 const SPRITE = strip(readFileSync('src/components/PlantSprite.tsx', 'utf8'));
 const CSS = readFileSync('src/app/globals.css', 'utf8');
@@ -62,15 +67,15 @@ describe('a press cannot stack, reveal, or cost anything', () => {
      * The guard is the state that also drives the class, so "already playing" and "class
      * already applied" cannot disagree. Nothing here restarts an animation mid-flight.
      */
-    expect(CARD).toMatch(/if \(playing\) return;/);
-    expect(CARD).toMatch(/setPlaying\(true\)/);
+    expect(ART).toMatch(/if \(playing\) return;/);
+    expect(ART).toMatch(/setPlaying\(true\)/);
   });
 
   it('clears only on the animation ending, plus a ceiling that cannot strand it', () => {
     expect(MYSTERY).toContain('onAnimationEnd={playOnce ? onPlayEnd : undefined}');
-    expect(CARD).toMatch(/onPlayEnd=\{stopSprite\}/);
-    // A dropped animationend must not leave the control dead for the session.
-    expect(CARD).toMatch(/setTimeout\(\(\) => setPlaying\(false\), \d+\)/);
+    expect(ART).toMatch(/onPlayEnd=\{stop\}/);
+    // A dropped animationend must not leave the card unable to play again.
+    expect(ART).toMatch(/setTimeout\(\(\) => setPlaying\(false\), \d+\)/);
   });
 
   it('writes nothing: no discovery, no XP, no mastery, no unlock', () => {
@@ -79,8 +84,8 @@ describe('a press cannot stack, reveal, or cost anything', () => {
      * state, and this card component has never been a writer — if it acquires one of these
      * the feature has stopped being a toy and started being a shortcut into the collection.
      */
-    for (const forbidden of ['discover(', 'useHerbdex', 'recordUnlocks', 'applyDiscovery', 'track(']) {
-      expect(CARD, `the grid tile now calls ${forbidden}`).not.toContain(forbidden);
+    for (const forbidden of ['discover(', 'useHerbdex', 'recordUnlocks', 'applyDiscovery']) {
+      expect(ART, `the locked card art now calls ${forbidden}`).not.toContain(forbidden);
     }
   });
 
@@ -96,40 +101,61 @@ describe('a press cannot stack, reveal, or cost anything', () => {
   });
 });
 
-describe('the press target does not eat the route into discovery', () => {
-  it('keeps the control OUTSIDE the link, which is also the only valid HTML', () => {
+describe('the grid tile is left alone, and stays the route into discovery', () => {
+  it('has no control of its own — the whole tile is still just a link', () => {
     /*
-     * Interactive content inside an <a> is invalid and browsers disagree about which of the
-     * two owns a press. Asserted positionally: the button must appear after the link closes.
+     * THE REGRESSION THIS EXISTS TO PREVENT, because it is one somebody would re-introduce
+     * in good faith. Making the tile play its sprite means either swallowing the press that
+     * opens the card — and with it the only route from the grid to "Log a Discovery" — or
+     * carving one tile into two regions that do different things on a tap.
      */
-    const linkClose = CARD.lastIndexOf('</Link>');
-    const button = CARD.indexOf('aria-label="Animate mystery plant"');
-    expect(button, 'the poke button is gone').toBeGreaterThan(-1);
-    expect(button, 'the poke button is nested inside the card link').toBeGreaterThan(linkClose);
+    expect(CARD, 'the grid tile grew its own press target again').not.toContain('<button');
+    expect(CARD, 'the grid tile is animating a sprite').not.toContain('playOnce');
+    expect(CARD, 'the grid tile is holding animation state').not.toContain('useState');
   });
 
-  it('covers the sprite only, never the whole tile', () => {
-    // Inset on all four sides: a target at `inset-0` would swallow the tile's own link.
-    const target = CARD.match(/className="pointer-events-auto absolute ([^"]*)"/);
-    expect(target, 'the poke target lost its bounds').not.toBeNull();
-    expect(target![1]).toMatch(/inset-x-\[\d+%\]/);
-    expect(target![1]).toMatch(/top-\[\d+%\]/);
-    expect(target![1]).toMatch(/bottom-\[\d+%\]/);
-    expect(target![1], 'the target covers the entire card').not.toMatch(/inset-0/);
+  it('still draws its silhouette at rest', () => {
+    expect(CARD).toContain('<MysteryCard herb={herb} />');
+  });
+});
+
+describe('the locked card page is where the silhouette performs', () => {
+  it('is reached by both locked states, from one component rather than two copies', () => {
+    // A printed card not yet found, and a Field Card below its threshold. Same wrapper, same
+    // behaviour; two copies of this state would be two places for it to drift.
+    expect(LOCKED).toContain('<LockedCardArt herb={herb} />');
+    expect(LOCKED_FIELD).toContain('<LockedCardArt herb={herb} />');
   });
 
-  it('renders only on a face-down card that actually has a sheet', () => {
-    // A discovered card keeps its old behaviour exactly; a card with no sprite shows the
-    // keyhole, and a press on nothing is a control that lies about being one.
-    expect(CARD).toMatch(/const pokeable = !showFace && hasSprite\(herb\.id\)/);
-    expect(CARD).toMatch(/\{pokeable && \(/);
+  it('plays on arrival, once, with no dependency that could restart it', () => {
+    /*
+     * `play` changes identity with `playing`, so listing it as a dependency would fire the
+     * effect again the moment the first pass ended — a loop assembled out of one-shots,
+     * which is the exact thing the iteration count is there to prevent.
+     */
+    expect(ART).toMatch(/useEffect\(\(\) => \{\s*const frame = requestAnimationFrame\(play\);/);
+    expect(ART).toMatch(/\}, \[\]\);/);
+    // And it is cancelled on unmount, so a page left before the frame runs starts nothing.
+    expect(ART).toMatch(/cancelAnimationFrame\(frame\)/);
   });
 
-  it('is a real control with a label and a visible focus ring', () => {
-    expect(CARD).toMatch(/<button\s/);
-    expect(CARD).toContain('type="button"');
-    expect(CARD).toContain('aria-label="Animate mystery plant"');
-    expect(CARD, 'a control a keyboard can reach and not see').toMatch(/focus-visible:outline/);
+  it('makes the whole card the control, because here it is not a link', () => {
+    expect(ART).toMatch(/<button\s/);
+    expect(ART).toContain('type="button"');
+    expect(ART).toContain('aria-label=');
+    expect(ART, 'a control a keyboard can reach and not see').toMatch(/focus-visible:outline/);
+  });
+
+  it('draws a plain frame where there is no sheet to play', () => {
+    // MysteryCard shows a keyhole for a card with no sprite, and a button over a keyhole is
+    // a control that lies about having something to do.
+    expect(ART).toMatch(/if \(!hasSprite\(herb\.id\)\) \{/);
+  });
+
+  it('writes nothing: no discovery, no XP, no mastery, no unlock', () => {
+    for (const forbidden of ['discover(', 'useHerbdex', 'recordUnlocks', 'applyDiscovery', 'track(']) {
+      expect(ART, `the locked card art now calls ${forbidden}`).not.toContain(forbidden);
+    }
   });
 });
 
@@ -141,9 +167,9 @@ describe('reduced motion is refused in JS, not collapsed in CSS', () => {
      * emit no `animationend` — leaving the flag stuck true and the control dead for the rest
      * of the session. Read at press time, the same way the discovery celebration reads it.
      */
-    expect(CARD).toContain("window.matchMedia('(prefers-reduced-motion: reduce)').matches");
-    const check = CARD.indexOf('prefers-reduced-motion');
-    const set = CARD.indexOf('setPlaying(true)');
+    expect(ART).toContain("window.matchMedia('(prefers-reduced-motion: reduce)').matches");
+    const check = ART.indexOf('prefers-reduced-motion');
+    const set = ART.indexOf('setPlaying(true)');
     expect(check, 'the reduced-motion check runs after the flag is set').toBeLessThan(set);
   });
 

@@ -7,7 +7,7 @@ import { track } from '@/lib/analytics';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { DiscoverPanel } from './DiscoverPanel';
 import { CardWarning, SiteCaution } from '../SafetyNotice';
-import { MysteryCard } from './MysteryCard';
+import { LockedCardArt } from './LockedCardArt';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
@@ -44,9 +44,7 @@ export function LockedHerb({
         periwinkle ramp, with the plant present only as a shadow. Larger here, so the
         silhouette is worth looking at rather than merely worth noticing.
       */}
-      <div className="relative mx-auto mt-4 aspect-[356/576] w-52 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift">
-        <MysteryCard herb={herb} size="detail" />
-      </div>
+      <LockedCardArt herb={herb} />
 
       <h1 className="font-display mt-5 text-2xl font-bold text-violet-100">
         You haven&apos;t discovered this plant yet

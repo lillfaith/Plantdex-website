@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MysteryCard } from './MysteryCard';
+import { LockedCardArt } from './LockedCardArt';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { FIELD_CARDS_NAME } from '@/lib/field-cards';
 import type { Herb } from '@/lib/types';
@@ -47,9 +47,7 @@ export function LockedFieldCard({
 
       {/* The same silhouette the grid uses. Nothing here names the species: an unearned
           card should not be readable, and inventing a placeholder name would be worse. */}
-      <div className="relative mx-auto mt-4 aspect-[356/576] w-52 overflow-hidden rounded-[var(--radius-card)] shadow-card-lift">
-        <MysteryCard herb={herb} size="detail" />
-      </div>
+      <LockedCardArt herb={herb} />
 
       <h1 className="font-display mt-5 text-2xl font-bold text-violet-100">
         This Field Card is not unlocked yet

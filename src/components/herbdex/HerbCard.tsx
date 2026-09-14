@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RarityAura } from '../game/RarityAura';
@@ -9,7 +8,6 @@ import { assetPath } from '@/lib/asset-path';
 import { MASTERY_STAGE_LABEL, type MasteryStage } from '@/lib/mastery';
 import { RarityBadge } from './RarityBadge';
 import { MysteryCard } from './MysteryCard';
-import { hasSprite } from '@/lib/plant-sprites';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 
 /**
@@ -86,67 +84,6 @@ export function HerbCard({
   const showFace = discovered || earned;
   const locked = unlock?.kind === 'locked' ? unlock : null;
 
-  /*
-   * ── POKING A FACE-DOWN CARD ────────────────────────────────────────────────────────
-   *
-   * A silhouette moves once when you press it, and stops. That is the whole feature, and
-   * everything below is about the three things it must not become.
-   *
-   * IT MUST NOT LOOP. `plant-sprite-once` is the shared idle with its iteration count set
-   * to 1 and no fill mode, so the pass ends on frame 0 — the pose `build_sprites.py`
-   * authors as a complete resting plant. Nothing here re-implements the walk.
-   *
-   * IT MUST NOT STACK. `playing` is the class's own presence: while it is true the class
-   * is already applied and a further press changes nothing, so repeated taps cannot start
-   * a second pass over the first. The only thing that clears it is the animation's own
-   * `animationend`, plus the ceiling below.
-   *
-   * IT MUST NOT REVEAL ANYTHING. It does not: the sprite is the one `MysteryCard` already
-   * draws, under the filter `MysteryCard` already applies, and no prop here touches the
-   * card's face, name, rarity or discovery state. The button renders only where a
-   * silhouette is actually drawn — a card with no sheet shows the keyhole and gets no
-   * control, because there would be nothing for a press to do.
-   */
-  const [playing, setPlaying] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
-
-  const playSprite = useCallback(() => {
-    if (playing) return;
-    /*
-     * REDUCED MOTION IS REFUSED HERE RATHER THAN COLLAPSED IN CSS, and the difference
-     * matters. The global rule pins `.plant-sprite` to `animation: none`, so setting the
-     * class would paint nothing AND fire no `animationend` — leaving `playing` stuck true
-     * and the control dead for the rest of the session. Read at press time, the same way
-     * the discovery celebration reads it for its face-down hold.
-     */
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return;
-    }
-    setPlaying(true);
-    /*
-     * A ceiling, not a duration. The pass ends on `animationend`; this only exists so a
-     * dropped event — a backgrounded tab, a sheet that failed to load — cannot leave the
-     * control permanently unpressable. Four seconds is past the longest sheet in the set
-     * (blue vervain, 14 frames at 6fps).
-     */
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => setPlaying(false), 4000);
-  }, [playing]);
-
-  const stopSprite = useCallback(() => {
-    if (timer.current) clearTimeout(timer.current);
-    setPlaying(false);
-  }, []);
-
-  const pokeable = !showFace && hasSprite(herb.id);
-
   return (
     /*
       The wrapper exists for the aura and nothing else. The <Link> below clips to a rounded
@@ -201,7 +138,7 @@ export function HerbCard({
             />
           ) : (
             <>
-              <MysteryCard herb={herb} playOnce={playing} onPlayEnd={stopSprite} />
+              <MysteryCard herb={herb} />
               {/*
                 THE CAPTION NAMES WHAT ACTUALLY OPENS THE CARD. "Not discovered" is right
                 for a printed card and wrong for a locked Field Card, where going outdoors
@@ -265,41 +202,6 @@ export function HerbCard({
           )}
         </div>
       </Link>
-
-      {/*
-        ── THE POKE TARGET ────────────────────────────────────────────────────────────
-        A SIBLING OF THE LINK, NEVER A CHILD OF IT, and that is not a style preference:
-        interactive content inside an <a> is invalid HTML and browsers disagree about
-        which of the two a press belongs to. Laid over the sprite and given a higher
-        stacking context than the link's own `z-10`, so a press here lands on the button
-        and a press anywhere else — the caption, the number, the card's edges — still
-        falls through to the link and opens the card exactly as it did before.
-
-        SIZED TO THE ART, NOT TO THE TILE. The wrapper repeats the face's own
-        `aspect-[356/576]` at `top-0`, so its box is the card art regardless of how tall
-        the caption strip under it grows. Within that, the inset matches where
-        `MysteryCard` actually draws: 74% of the width, centred, sitting high because the
-        number and the keyhole are below it. About 126x110 CSS px in a two-across grid at
-        390px, comfortably past a 44px target.
-
-        IT ADDS NO VISIBLE FURNITURE. No border, no background, no chevron — the tile
-        looks exactly as it did. The one thing it must show is a focus ring, because a
-        control a keyboard can reach and cannot see is worse than no control at all.
-
-        TAB ORDER IS CARD THEN SPRITE. It sits after the link in the DOM, so the first
-        stop is still "open this card" — the thing that leads somewhere — and the toy is
-        second.
-      */}
-      {pokeable && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 aspect-[356/576]">
-          <button
-            type="button"
-            aria-label="Animate mystery plant"
-            onClick={playSprite}
-            className="pointer-events-auto absolute inset-x-[13%] top-[23%] bottom-[33%] cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
-          />
-        </div>
-      )}
     </div>
   );
 }
