@@ -103,7 +103,7 @@ export default function ShippingPage() {
           One boxed deck of {PHYSICAL_CARD_COUNT} cards, ready to take outside. There is no
           code in the box, because there is nothing to unlock &mdash; log what you find in the{' '}
           <Link href="/herbdex" className="underline underline-offset-2 hover:text-gold-400">
-            Herbdex
+            collection
           </Link>{' '}
           whenever you get back.
         </p>

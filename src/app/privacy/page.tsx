@@ -211,7 +211,7 @@ export default function PrivacyPage() {
             {
               term: 'A short list of actions',
               detail:
-                'Opening the Herbdex, the garden or your profile; viewing, revealing, discovering or mastering a card; passing a knowledge check; finishing a Field Research task; starting or completing a sign-up; signing in; and importing local progress into an account.',
+                'Opening the collection, the garden or your profile; viewing, revealing, discovering or mastering a card; passing a knowledge check; finishing a Field Research task; starting or completing a sign-up; signing in; and importing local progress into an account.',
             },
             {
               term: 'Nothing attached to them',

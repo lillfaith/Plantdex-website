@@ -249,7 +249,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   const breadcrumb = (
     <nav aria-label="Breadcrumb" className="mb-2">
       <Link href="/herbdex" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
-        ← My Herbdex
+        ← My Collection
       </Link>
     </nav>
   );

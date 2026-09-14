@@ -28,11 +28,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Plantdex — the herbalism card deck & Herbdex',
+    default: 'Plantdex — the herbalism card deck & collection',
     template: '%s · Plantdex',
   },
   description:
-    'Plantdex is a 45-card illustrated deck of common wild plants, with a companion Herbdex for tracking the plants you find in the real world.',
+    'Plantdex is a 45-card illustrated deck of common wild plants, with a companion collection for tracking the plants you find in the real world.',
   applicationName: 'Plantdex',
 };
 

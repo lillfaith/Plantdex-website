@@ -102,7 +102,7 @@ export default function ShopThanksPage() {
             href="/herbdex"
             className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold text-plum-900 transition hover:bg-gold-300"
           >
-            Open the Herbdex
+            Open the collection
           </Link>
           <Link
             href="/account"

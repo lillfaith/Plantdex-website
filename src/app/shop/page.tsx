@@ -180,7 +180,7 @@ export default function ShopPage() {
           thing a website cannot: {DECK_CARD_COUNT} printed cards in your pocket, no signal
           required, in the hedgerow where you actually need them.{' '}
           <Link href="/herbdex" className="underline underline-offset-2 hover:text-gold-400">
-            Explore the Herbdex
+            Explore the collection
           </Link>{' '}
           to see what the cards connect to.
         </p>
@@ -284,7 +284,7 @@ export default function ShopPage() {
                 href="/herbdex"
                 className="font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
               >
-                Open the Herbdex
+                Open the collection
               </Link>
               .
             </p>

@@ -105,7 +105,7 @@ export function ScanOutcome(props: ScanOutcomeProps) {
         className="rounded-2xl border border-gold-500/30 border-l-4 border-l-gold-500 bg-plum-800/60 p-4"
       >
         <p className="text-sm font-bold text-violet-100">
-          {props.commonName} added to your Herbdex{' '}
+          {props.commonName} added to your collection{' '}
           <span aria-hidden="true" className="text-gold-400">
             &#10003;
           </span>

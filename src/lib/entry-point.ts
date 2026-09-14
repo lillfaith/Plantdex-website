@@ -131,6 +131,6 @@ export interface EntryPath {
  */
 export const ENTRY_PATHS: readonly EntryPath[] = [
   { href: '/scan', label: 'Scan a plant' },
-  { href: '/herbdex', label: 'Explore the Herbdex' },
+  { href: '/herbdex', label: 'Explore the collection' },
   { href: '/learn', label: 'How Plantdex works' },
 ];

@@ -31,7 +31,7 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 const LINKS: { href: string; label: string; icon: IconName }[] = [
   { href: '/', label: 'Home', icon: 'home' },
   { href: '/scan', label: 'Scan', icon: 'scan' },
-  { href: '/herbdex', label: 'Herbdex', icon: 'herbdex' },
+  { href: '/herbdex', label: 'Collection', icon: 'herbdex' },
   { href: '/garden', label: 'Garden', icon: 'garden' },
   { href: '/journal', label: 'Journal', icon: 'journal' },
   { href: '/seasons', label: 'Seasons', icon: 'seasons' },

@@ -32,7 +32,7 @@ UA = "plantdex-live-check (https://github.com/lillfaith/Plantdex-website)"
 ROUTES: list[tuple[str, list[str]]] = [
     ("/", ["Plantdex"]),
     ("/profile/", ["Your field naturalist card", "Field record", "Growing right now"]),
-    ("/herbdex/", ["My Herbdex", "Identify a plant"]),
+    ("/herbdex/", ["My Collection", "Identify a plant"]),
     ("/garden/", ["My Garden"]),
     ("/journal/", ["Journal"]),
     # The Seed Shelf shipped after this list was written, and its absence here is exactly

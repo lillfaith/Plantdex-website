@@ -100,7 +100,7 @@ describe('the celebration is the only place the reward is announced', () => {
      * up and gives each achievement its own row.
      */
     expect(OUTCOME).toContain('props.kind === \'card\' && props.celebrated');
-    expect(OUTCOME).toContain('added to your Herbdex');
+    expect(OUTCOME).toContain('added to your collection');
 
     // The receipt branch must return BEFORE the full panel, or it renders both.
     const receipt = OUTCOME.indexOf('props.kind === \'card\' && props.celebrated');
@@ -151,7 +151,7 @@ describe('the celebration is the only place the reward is announced', () => {
     // And it stays a MARKER: the receipt below carries the full sentence, so repeating it
     // here would print the same line twice on one screen.
     expect(branch, 'the candidate row echoes the receipt sentence').not.toMatch(
-      /Added to your Herbdex/,
+      /Added to your collection/,
     );
   });
 });

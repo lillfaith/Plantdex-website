@@ -419,7 +419,7 @@ function Packet({
           href={`/herbdex/${herb.id}`}
           className="mt-1 flex min-h-11 w-full items-center justify-center text-center text-[0.72rem] font-semibold text-violet-400 underline-offset-2 hover:text-violet-200 hover:underline"
         >
-          In your Herbdex
+          In your collection
         </Link>
       )}
     </li>

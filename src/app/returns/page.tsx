@@ -92,7 +92,7 @@ export default function ReturnsPage() {
           for. Returning a deck does not remove your collection, close your account or revoke
           anything &mdash; the{' '}
           <Link href="/herbdex" className="underline underline-offset-2 hover:text-gold-400">
-            Herbdex
+            collection
           </Link>{' '}
           is free to everyone, buyer or not.
         </p>

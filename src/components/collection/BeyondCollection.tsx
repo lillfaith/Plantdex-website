@@ -40,7 +40,7 @@ export function BeyondCollection() {
       </h2>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-violet-200">
-        A complete {CURRENT_COLLECTION.size}-card deck — this Herbdex fills up without
+        A complete {CURRENT_COLLECTION.size}-card deck — your collection fills up without
         anything else. More collections are planned.
       </p>
 

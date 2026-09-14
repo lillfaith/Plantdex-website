@@ -44,7 +44,7 @@ export default function ScanPage() {
       </p>
       <p className="mt-2 text-sm leading-relaxed text-violet-300">
         If it is one of the {CURRENT_COLLECTION.size} {CURRENT_COLLECTION.shortName} plants,
-        you can add it to your Herbdex. Anything else can go on your Seed Shelf.
+        you can add it to your collection. Anything else can go on your Seed Shelf.
       </p>
       <p className="mt-2 text-sm leading-relaxed font-semibold text-violet-200">
         The answer is a suggestion to check, not a verdict.

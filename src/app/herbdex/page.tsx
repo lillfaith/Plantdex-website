@@ -16,7 +16,7 @@ import { DeckCta } from '@/components/shop/DeckCta';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
 export const metadata: Metadata = {
-  title: 'My Herbdex',
+  title: 'My Collection',
   description:
     'Track the wild plants you have found in real life, earn XP, and complete your Plantdex collection.',
 };
@@ -40,7 +40,7 @@ export default function HerbdexPage() {
         </Link>
       </nav>
 
-      <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Herbdex</h1>
+      <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Collection</h1>
       <p className="mt-1 text-sm text-violet-300">
         Found a plant in the wild? Open its card and log it.
       </p>

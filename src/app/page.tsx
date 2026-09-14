@@ -117,14 +117,14 @@ export default function HomePage() {
           be exactly that.
         */}
         <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-violet-200">
-          Find plants outside. Scan them. Build your Herbdex. Learn each card and grow your
+          Find plants outside. Scan them. Build your collection. Learn each card and grow your
           Garden.
         </p>
 
         {/*
           TWO WAYS IN, BECAUSE THERE ARE TWO PEOPLE HERE.
 
-          "Explore the Herbdex" is for somebody at a table with the deck. "Identify a plant"
+          "Explore the collection" is for somebody at a table with the deck. "Identify a plant"
           is for somebody standing in front of something they cannot name, which is the whole
           reason this is a field guide and not a website. That second person had no route in
           from the front page at all, and the one entry point that existed sat near the bottom
@@ -133,7 +133,7 @@ export default function HomePage() {
 
           SCAN NOW CARRIES THE GRADIENT, AND THE ORDER IS THE ARGUMENT. The Herbdex led here
           for as long as the deck was the product. It is not what a first-time visitor can
-          DO: arriving with no deck and no discoveries, "Explore the Herbdex" opens a wall of
+          DO: arriving with no deck and no discoveries, "Explore the collection" opens a wall of
           45 silhouettes and a progress bar reading 0%, which is the collection at its least
           legible. Identifying something growing is the one action that works on the first
           visit and produces the first card — so it takes the primary treatment, and the
@@ -152,7 +152,7 @@ export default function HomePage() {
             href="/herbdex"
             className="flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-full border border-gold-500/70 bg-plum-800/60 px-8 text-base font-bold text-gold-300 transition-colors hover:bg-plum-700 sm:w-auto"
           >
-            Explore the Herbdex
+            Explore the collection
           </Link>
         </div>
         {/*

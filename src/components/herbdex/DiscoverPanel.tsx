@@ -116,7 +116,7 @@ export function DiscoverPanel({
       >
         <h2 id="confirm-title" className="font-display text-lg font-bold text-gold-plate">
           Add {spoilerFree ? `card #${String(herb.cardNumber).padStart(2, '0')}` : herb.commonName}{' '}
-          to your Herbdex?
+          to your collection?
         </h2>
         <p className="mt-2 text-sm text-violet-200">
           Only if you actually found it outdoors.{' '}

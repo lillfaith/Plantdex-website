@@ -116,7 +116,7 @@ export function qualifiesForMastery(
 export function nextStepFor(stage: MasteryStage | null): string | null {
   switch (stage) {
     case null:
-      return 'Find this plant outdoors to add it to your Herbdex.';
+      return 'Find this plant outdoors to add it to your collection.';
     case 'discovered':
       return 'Read the card, then pass its knowledge check to learn it.';
     case 'learned':

@@ -30,7 +30,7 @@ export function FirstFindNote() {
 
   return (
     <p className="mt-4 text-sm leading-relaxed text-violet-200">
-      Your Herbdex is empty. Find your first plant outside to reveal its card and begin your
+      Your collection is empty. Find your first plant outside to reveal its card and begin your
       collection.
     </p>
   );

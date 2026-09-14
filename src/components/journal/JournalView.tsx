@@ -52,7 +52,7 @@ export function JournalView() {
             href="/herbdex"
             className="mt-4 inline-flex min-h-11 items-center rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400"
           >
-            Go to my Herbdex
+            Go to my collection
           </Link>
         </div>
       ) : (

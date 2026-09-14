@@ -99,7 +99,7 @@ export function LockedHerb({
           Reveal this plant?
         </h2>
         <p className="mt-2 text-sm text-violet-200">
-          This will show its identity and card, but it won&apos;t count toward your Herbdex
+          This will show its identity and card, but it won&apos;t count toward your
           collection. It stays locked until you log a real discovery.
         </p>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">

@@ -59,7 +59,7 @@ export function ResearchView() {
     <main id="main" className="mx-auto max-w-4xl px-4 py-8">
       <nav aria-label="Breadcrumb" className="mb-2">
         <Link href="/herbdex" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
-          ← My Herbdex
+          ← My Collection
         </Link>
       </nav>
 
