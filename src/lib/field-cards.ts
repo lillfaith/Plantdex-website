@@ -25,10 +25,16 @@ import type { Herb } from './types';
  * `catalogue.test.ts` already requires, because `collectionOf()` falls back to Collection 01
  * for a card that declares nothing and that fallback is exactly the trap.
  *
- * WHY THE NUMBERING RUNS 48-51. The physical deck is 47 cards: 45 species plus the icon
+ * WHY THE NUMBERING RUNS 48-55. The physical deck is 47 cards: 45 species plus the icon
  * cheat sheet (#46) and the disclaimer (#47). These were authored as #48 onward and print
  * that number on their face, so `cardNumber` reproduces what the artwork says. Their
- * position WITHIN Field Cards is `cardNumberInCollection`, which is what the UI shows.
+ * position WITHIN Field Cards is `cardNumberInCollection`, which is what the UI shows — so
+ * these are Field Cards 1-8, not cards 48-55 of anything.
+ *
+ * THAT DISTINCTION IS ALSO WHY THE SEQUENCE MUST STAY CONTIGUOUS ANYWAY. `cardNumber` is a
+ * claim about the artwork, and two cards printing the same number is a claim that cannot
+ * both be true; a gap is a slot nothing will ever fill. Both arrived in one upload of the
+ * second tranche and both were fixed in the artwork rather than papered over here.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -179,6 +185,132 @@ const SPICEBUSH: Herb = {
   },
 };
 
+/* ── The four cards added in the second tranche ───────────────────────────────
+ *
+ * NUMBERED 52-55, WHICH IS THE FIRST THING THAT WAS WRONG ABOUT THEM. The first export of
+ * this set printed 53, 54, 55 and 54 — a gap where #52 should have been, and #54 on two
+ * different species. Copying that in would have put a duplicate `cardNumber` into the app
+ * and a hole in the sequence that nothing would ever fill. The artwork was re-exported
+ * instead, so every number below is the number on the card, and the run 48-55 is
+ * contiguous. Nothing here is a discrepancy, which is why `FIELD_CARD_ISSUES` gains no
+ * entries for them.
+ *
+ * `xp` follows the ladder the first four established — Common 150, Uncommon 250, Rare 350 —
+ * and is inert either way: XP resolves ids through the printed deck, so a Field Card credits
+ * zero however this reads. It is set consistently rather than left to drift, because a
+ * number nobody pays is still a number somebody will later assume means something.
+ *
+ * Stats are MEASURED, not typed from a glance: `scripts/build_field_card_art.py` re-derives
+ * the droplet / sun / thermometer counts from the rendered artwork with the printed deck's
+ * own detector, and refuses to write art for a card whose pips disagree with what was about
+ * to be written here. The season and the two use icons are read from the face and checked
+ * against printed cards that carry the same glyphs.
+ */
+
+const WITCH_HAZEL: Herb = {
+  id: 'hamamelis-virginiana',
+  cardNumber: 52,
+  collectionId: FIELD_CARDS_COLLECTION_ID,
+  cardNumberInCollection: 5,
+  commonName: 'Witch Hazel',
+  scientificName: 'Hamamelis virginiana',
+  rarity: 'Rare',
+  xp: 350,
+  season: 'autumn',
+  uses: ['wound', 'topical'],
+  stats: { water: 4, sun: 3, temperature: 2 },
+  image: '/cards/hamamelis-virginiana.webp',
+  thumb: '/cards/thumb/hamamelis-virginiana.webp',
+  backImage: '/cards/back/hamamelis-virginiana.webp',
+  sprite: '/cards/sprite/hamamelis-virginiana.webp',
+  back: {
+    healingTraits: ['Skin care', 'Astringent', 'Anti-inflam.', 'Anorectal relief'],
+    compounds: ['Tannins', 'Gallic acid', 'Quercetin', 'Catechins'],
+    taste: ['Bitter', 'Drying'],
+    aromatic: ['Woody', 'Earthy', 'Herbal'],
+    preparations: ['Distillate', 'Poultice', 'Compress'],
+    usableParts: ['Bark', 'Twigs', 'Leaf', 'Flower'],
+  },
+};
+
+const COMMON_MALLOW: Herb = {
+  id: 'malva-neglecta',
+  cardNumber: 53,
+  collectionId: FIELD_CARDS_COLLECTION_ID,
+  cardNumberInCollection: 6,
+  commonName: 'Common Mallow',
+  scientificName: 'Malva neglecta',
+  rarity: 'Uncommon',
+  xp: 250,
+  season: 'summer',
+  uses: ['lungs', 'digestive'],
+  stats: { water: 3, sun: 4, temperature: 3 },
+  image: '/cards/malva-neglecta.webp',
+  thumb: '/cards/thumb/malva-neglecta.webp',
+  backImage: '/cards/back/malva-neglecta.webp',
+  sprite: '/cards/sprite/malva-neglecta.webp',
+  back: {
+    healingTraits: ['Anti-inflam.', 'Respiratory support', 'Digestive support', 'Skin aid'],
+    compounds: ['Mucilage', 'Fatty acids', 'Phenolic acid', 'Vitamin C'],
+    taste: ['Mild', 'Nutty', 'Green'],
+    aromatic: ['Mild', 'Earthy'],
+    preparations: ['Raw', 'Cooked', 'Tea', 'Poultice'],
+    usableParts: ['Leaf', 'Shoot', 'Flower'],
+  },
+};
+
+const MILK_THISTLE: Herb = {
+  id: 'silybum-marianum',
+  cardNumber: 54,
+  collectionId: FIELD_CARDS_COLLECTION_ID,
+  cardNumberInCollection: 7,
+  commonName: 'Milk Thistle',
+  scientificName: 'Silybum marianum',
+  rarity: 'Uncommon',
+  xp: 250,
+  season: 'summer',
+  uses: ['tea', 'digestive'],
+  stats: { water: 2, sun: 4, temperature: 5 },
+  image: '/cards/silybum-marianum.webp',
+  thumb: '/cards/thumb/silybum-marianum.webp',
+  backImage: '/cards/back/silybum-marianum.webp',
+  sprite: '/cards/sprite/silybum-marianum.webp',
+  back: {
+    healingTraits: ['Liver support', 'Anti-inflam.', 'Antioxidant', 'Glucose regulation'],
+    compounds: ['Silibinin', 'Isosilybin', 'Taxifolin', 'Flavonoids'],
+    taste: ['Bitter', 'Nutty', 'Earthy'],
+    aromatic: ['Mild', 'Green', 'Bitter'],
+    preparations: ['Ground seed', 'Tea', 'Extract', 'Tincture'],
+    usableParts: ['Seed', 'Leaf', 'Root', 'Stem'],
+  },
+};
+
+const BLUE_VERVAIN: Herb = {
+  id: 'verbena-hastata',
+  cardNumber: 55,
+  collectionId: FIELD_CARDS_COLLECTION_ID,
+  cardNumberInCollection: 8,
+  commonName: 'Blue Vervain',
+  scientificName: 'Verbena hastata',
+  rarity: 'Uncommon',
+  xp: 250,
+  season: 'autumn',
+  uses: ['wound', 'heart'],
+  stats: { water: 4, sun: 4, temperature: 3 },
+  image: '/cards/verbena-hastata.webp',
+  thumb: '/cards/thumb/verbena-hastata.webp',
+  backImage: '/cards/back/verbena-hastata.webp',
+  sprite: '/cards/sprite/verbena-hastata.webp',
+  back: {
+    healingTraits: ['Digestive support', 'Nervous system aid', 'Sleep aid', 'Calming'],
+    compounds: ['Hastatoside', 'Verbenalin', 'Aucubin', 'Apigenin'],
+    taste: ['Astringent', 'Bitter', 'Strong'],
+    aromatic: ['Mild', 'Earthy', 'Herbal'],
+    preparations: ['Infusion', 'Tincture', 'Decoction', 'Dried'],
+    usableParts: ['Leaf', 'Flower', 'Stem'],
+  },
+};
+
 /**
  * Errors the Field Card artwork itself contains, by card number.
  *
@@ -211,7 +343,7 @@ export const FIELD_CARD_ISSUES: Readonly<Record<number, string>> = {
  * card. 14000 sits under both Plantdex Grandmaster (15000) and the 19250 non-daily ceiling,
  * so the ninth is reachable without grinding dailies.
  *
- * Ordinals 5-9 have approved thresholds and no card yet. They stay `card: undefined` until
+ * Ordinal 9 has an approved threshold and no card yet. It stays `card: undefined` until
  * finished artwork and a transcription arrive.
  */
 export const FIELD_CARD_SLOTS: readonly FieldCardSlot[] = [
@@ -219,10 +351,10 @@ export const FIELD_CARD_SLOTS: readonly FieldCardSlot[] = [
   { ordinal: 2, xp: 1_200, card: CATTAIL },
   { ordinal: 3, xp: 2_200, card: EVENING_PRIMROSE },
   { ordinal: 4, xp: 3_600, card: SPICEBUSH },
-  { ordinal: 5, xp: 5_500 },
-  { ordinal: 6, xp: 7_000 },
-  { ordinal: 7, xp: 8_750 },
-  { ordinal: 8, xp: 11_000 },
+  { ordinal: 5, xp: 5_500, card: WITCH_HAZEL },
+  { ordinal: 6, xp: 7_000, card: COMMON_MALLOW },
+  { ordinal: 7, xp: 8_750, card: MILK_THISTLE },
+  { ordinal: 8, xp: 11_000, card: BLUE_VERVAIN },
   { ordinal: 9, xp: 14_000 },
 ];
 

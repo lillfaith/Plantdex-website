@@ -1022,7 +1022,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
   },
 
   /*
-   * ── FIELD CARDS (#48-51) ──────────────────────────────────────────────────────
+   * ── FIELD CARDS (#48-55) ──────────────────────────────────────────────────────
    *
    * The digital-only cards. They reach this file by the same route as the printed 45 —
    * `fieldNotesFor` is a plain id lookup over any `Herb` — so nothing about the rendering
@@ -1033,7 +1033,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
    * the stats, the rarity and the season, and none of that is touched here. What is added
    * is the site's own field-guide layer, exactly as it is for a printed card.
    *
-   * `sourceIds` IS EMPTY ON ALL FOUR, DELIBERATELY. The extension and flora pages these
+   * `sourceIds` IS EMPTY ON ALL OF THEM, DELIBERATELY. The extension and flora pages these
    * notes were written against are recorded in `docs/source-candidates.md`, unverified —
    * this environment's egress proxy blocks every one of those hosts, so nobody has opened
    * them. `resolveRefs` drops unverified ids anyway, so an id here would render nothing
@@ -1143,6 +1143,123 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
         commonName: 'Other woodland shrubs, when flowers and fruit are absent',
         distinguishBy:
           'Aromatic leaves and stems, early yellow-green flower clusters and, on female plants, red drupes, taken together with the alternate smooth-edged leaves. Leaf shape alone separates nothing.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  /*
+   * The second tranche, #52-55. Written to the same rule as everything above: a trait row
+   * names a character somebody can check in the field, and a lookalike names the ONE thing
+   * that separates the pair rather than describing either plant.
+   */
+
+  'hamamelis-virginiana': {
+    identification: [
+      { trait: 'Oblique leaf base', detail: 'The two halves of the leaf base meet the stalk at noticeably different heights — the single most reliable character on the plant, and present whether or not it is flowering.' },
+      { trait: 'Wavy-toothed leaves', detail: 'Broadly oval to obovate with shallow, rounded, wavy margins rather than sharp teeth.' },
+      { trait: 'Strap-like yellow flowers', detail: 'Four narrow, crumpled, ribbon-shaped petals in small clusters, opening in autumn as or after the leaves fall — when almost nothing else is in bloom.' },
+      { trait: 'Multi-stemmed and zigzag', detail: 'A large shrub or small tree with several stems from the base and twigs that change direction slightly at each bud.' },
+      { trait: 'Woody splitting capsules', detail: 'Hard two-beaked capsules persist on the twigs, splitting open to eject their seeds; last year\'s empty capsules are often present beside this year\'s flowers.' },
+    ],
+    habitat:
+      'Understorey of moist to dryish deciduous woods, wooded slopes, ravines and stream banks in eastern North America. Usually in partial to full shade beneath taller trees rather than in the open.',
+    lookalikes: [
+      {
+        commonName: 'American Hazelnut',
+        scientificName: 'Corylus americana',
+        distinguishBy:
+          'Leaf base. Hazelnut leaves are symmetrical where they meet the stalk and doubly toothed; witch hazel leaves are conspicuously lopsided at the base with wavy, rounded margins. The names are similar and the plants are not related.',
+        risk: 'Do not treat this distinction on its own as proof that a plant is safe to use.',
+      },
+      {
+        commonName: 'Vernal Witch Hazel',
+        scientificName: 'Hamamelis vernalis',
+        distinguishBy:
+          'When it flowers. Vernal witch hazel blooms in late winter to early spring on bare twigs; H. virginiana blooms in autumn as the leaves drop. A plant in flower in October is not H. vernalis.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  'malva-neglecta': {
+    identification: [
+      { trait: 'Sprawling from a taproot', detail: 'Stems trail outward along the ground from a central deep taproot rather than standing upright.' },
+      { trait: 'Round scalloped leaves', detail: 'Roughly circular to kidney-shaped, with five to seven shallow lobes and crenate margins, on long stalks.' },
+      { trait: 'Palmate veins from one point', detail: 'The main veins all radiate from where the stalk joins the blade, at a heart-shaped notch.' },
+      { trait: 'Small veined flowers in the leaf axils', detail: 'Five notched petals, whitish to pale pink with darker stripes, tucked where the leaf stalks meet the stem.' },
+      { trait: 'Flat round "cheese" fruits', detail: 'The fruit is a flattened disc that breaks into wedge-shaped segments, resembling a wheel of cheese — the character the plant is named for in most languages.' },
+    ],
+    habitat:
+      'Disturbed and compacted ground: gardens, farmyards, path edges, roadsides, waste places and pavement cracks. Widely naturalised and tolerant of poor soil.',
+    lookalikes: [
+      {
+        commonName: 'Ground Ivy',
+        scientificName: 'Glechoma hederacea',
+        distinguishBy:
+          'Stem cross-section and smell. Ground ivy has square stems, opposite leaves and a strong minty scent when crushed; mallow has round stems, alternate leaves and no distinctive smell. Both have rounded scalloped leaves near the ground, which is why the pair is confused.',
+        risk: 'Do not treat leaf shape alone as an identification. Ground ivy is a different plant in a different family and is Collection 01 card #16.',
+      },
+      {
+        commonName: 'Cranesbills and wild geraniums',
+        scientificName: 'Geranium spp.',
+        distinguishBy:
+          'How deeply the leaf is cut. Geranium leaves are divided nearly to the base into distinct narrow segments; mallow leaves are only shallowly lobed and stay one continuous round blade.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  'silybum-marianum': {
+    identification: [
+      { trait: 'White-marbled leaves', detail: 'Glossy dark green leaves veined and blotched with milky white, as if splashed — the character that names the plant and separates it from every other thistle at a glance.' },
+      { trait: 'Long spreading bracts', detail: 'Each flower head is cupped by stout, leathery bracts that taper into long spines and curve outward from the head.' },
+      { trait: 'Solitary purple heads', detail: 'Large rounded heads of purple disc florets, usually borne singly at the stem tips rather than in clusters.' },
+      { trait: 'Spiny lobed margins', detail: 'Leaves are deeply lobed with sharp marginal spines, and clasp the stem where they join it.' },
+      { trait: 'First-year rosette', detail: 'Begins as a flat basal rosette of marbled leaves, sending up its tall flowering stem in the following season.' },
+    ],
+    habitat:
+      'Open disturbed ground in warm, dry climates: overgrazed pasture, rangeland, roadsides, fence lines and waste places. Mediterranean in origin and widely naturalised, notably in California and other dry western regions.',
+    lookalikes: [
+      {
+        commonName: 'Bull Thistle',
+        scientificName: 'Cirsium vulgare',
+        distinguishBy:
+          'Leaf colour pattern. Bull thistle leaves are plain green with no white marbling, and its stems carry spiny wings running down from the leaf bases; milk thistle stems are unwinged.',
+        risk: 'Do not treat this short comparison as a guarantee of safe identification.',
+      },
+      {
+        commonName: 'Scotch or Cotton Thistle',
+        scientificName: 'Onopordum acanthium',
+        distinguishBy:
+          'The kind of pale colouring. Cotton thistle is evenly grey-white all over from dense woolly hairs; milk thistle is glossy and green with sharply defined white veins, and is not woolly.',
+      },
+    ],
+    sourceIds: [],
+  },
+
+  'verbena-hastata': {
+    identification: [
+      { trait: 'Square stems', detail: 'Stems are four-angled in cross-section — run a finger down one to feel the corners.' },
+      { trait: 'Candelabra of slender spikes', detail: 'Several narrow, stiffly erect flower spikes branch from the top of the stem, standing up together like a candelabra.' },
+      { trait: 'A ring of open flowers', detail: 'Only a narrow band of tiny flowers is open on each spike at once, and that band travels upward as the season goes on, leaving bare fruiting spike below it.' },
+      { trait: 'Opposite toothed leaves', detail: 'Lance-shaped, sharply toothed leaves set in opposite pairs, the lower ones often with a pair of spreading lobes at the base.' },
+      { trait: 'Small five-lobed blue flowers', detail: 'Individual flowers are only a few millimetres across, violet-blue, with five shallow lobes.' },
+    ],
+    habitat:
+      'Consistently damp open ground: wet meadows, marsh and pond margins, stream banks, ditches and damp thickets, usually in full sun. Across much of North America.',
+    lookalikes: [
+      {
+        commonName: 'Hoary Vervain',
+        scientificName: 'Verbena stricta',
+        distinguishBy:
+          'Hairiness and spike shape. Hoary vervain is densely grey-hairy with broader, unlobed, nearly stalkless leaves and thicker spikes; blue vervain is greener, nearly smooth, with narrow spikes and stalked lance-shaped leaves.',
+      },
+      {
+        commonName: 'Purple Loosestrife',
+        scientificName: 'Lythrum salicaria',
+        distinguishBy:
+          'Count the flower parts and look at the spike. Loosestrife carries one dense magenta spike of six-petalled flowers; blue vervain carries several slender spikes of small five-lobed flowers with only a ring of them open. The two grow in the same wet ground and are routinely mistaken at a distance.',
       },
     ],
     sourceIds: [],

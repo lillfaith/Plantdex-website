@@ -226,17 +226,36 @@ describe('the unlock ladder', () => {
     expect(nextSlotAfter(13_999)?.ordinal).toBe(9);
   });
 
-  it('leaves slots 5-9 without a card rather than inventing one', () => {
+  it('leaves the undrawn slot without a card rather than inventing one', () => {
     /*
-     * The thresholds are approved; the cards are not drawn. A slot with no card is a REAL
+     * The thresholds are approved; the last card is not drawn. A slot with no card is a REAL
      * state the UI renders as "another Field Card", and it is the only honest option — this
      * repo never fills a card with plausible-sounding botany.
+     *
+     * Eight of nine are drawn. This is written as an exact count rather than a slice so that
+     * finishing the ninth fails here and has to be acknowledged, which is what stopped the
+     * count silently going stale when the second tranche landed.
      */
-    for (const slot of FIELD_CARD_SLOTS.slice(4)) {
-      expect(slot.card, `slot ${slot.ordinal}`).toBeUndefined();
-    }
-    for (const slot of FIELD_CARD_SLOTS.slice(0, 4)) {
-      expect(slot.card, `slot ${slot.ordinal}`).toBeDefined();
+    const drawn = FIELD_CARD_SLOTS.filter((slot) => slot.card);
+    expect(drawn).toHaveLength(8);
+    expect(FIELD_CARD_SLOTS.filter((slot) => !slot.card).map((slot) => slot.ordinal)).toEqual([9]);
+  });
+
+  it('fills the ladder from the bottom, leaving no drawn card above an empty slot', () => {
+    /*
+     * A STRUCTURAL RULE, NOT A RESTATEMENT OF THE COUNT ABOVE. The ladder is climbed in
+     * order, so an undrawn slot below a drawn one is a player crossing a threshold that
+     * announces "another Field Card" and then crossing the next to be handed a real one —
+     * the reward getting BETTER for having waited, and the earlier slot never fillable
+     * without reshuffling thresholds somebody has already unlocked against.
+     */
+    const drawnFlags = FIELD_CARD_SLOTS.map((slot) => Boolean(slot.card));
+    const firstEmpty = drawnFlags.indexOf(false);
+    if (firstEmpty !== -1) {
+      expect(
+        drawnFlags.slice(firstEmpty).some(Boolean),
+        'a drawn card sits above an empty slot',
+      ).toBe(false);
     }
   });
 
@@ -286,8 +305,30 @@ describe('the artwork is transcribed, not improved', () => {
   });
 
   it('numbers each card as its face does, past the 47 physical cards', () => {
-    expect(FIELD_CARDS.map((c) => c.cardNumber)).toEqual([48, 49, 50, 51]);
-    expect(FIELD_CARDS.map((c) => c.cardNumberInCollection)).toEqual([1, 2, 3, 4]);
+    expect(FIELD_CARDS.map((c) => c.cardNumber)).toEqual([48, 49, 50, 51, 52, 53, 54, 55]);
+    expect(FIELD_CARDS.map((c) => c.cardNumberInCollection)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  });
+
+  it('runs contiguously with no repeat, which the second tranche arrived without', () => {
+    /*
+     * THE EXACT DEFECT THIS GUARD WAS WRITTEN FOR. The first export of cards 5-8 printed
+     * 53, 54, 55 and 54: a hole where #52 belongs, and #54 on two different species.
+     *
+     * Both halves matter and they fail differently. A REPEAT makes `cardNumber` a claim
+     * about the artwork that cannot be true of both cards, and the UI sorts on it. A GAP is
+     * quieter and worse — nothing ever fails, and #52 is simply a number the set skips
+     * forever, because the next tranche will start from the highest one printed.
+     *
+     * Fixed in the artwork rather than here, which is why neither card needs a
+     * FIELD_CARD_ISSUES entry: the app and the card agree.
+     */
+    const numbers = FIELD_CARDS.map((card) => card.cardNumber);
+    expect(new Set(numbers).size, 'two Field Cards print the same number').toBe(numbers.length);
+    for (let i = 1; i < numbers.length; i += 1) {
+      expect(numbers[i], `a gap before #${numbers[i]}`).toBe(numbers[i - 1]! + 1);
+    }
+    // And the set still starts where the physical deck stops: 45 species + 2 reference cards.
+    expect(numbers[0]).toBe(48);
   });
 
   it('fills every field a card page renders', () => {

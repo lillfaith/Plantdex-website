@@ -749,6 +749,56 @@
       }
     }
   },
+  "hamamelis-virginiana": {
+    "herbId": "hamamelis-virginiana",
+    "src": "/cards/animated/hamamelis-virginiana.png",
+    "version": "52517226",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "deadpan",
+    "content": {
+      "left": 0.1176,
+      "top": 0.1071,
+      "right": 0.8824,
+      "bottom": 0.8929
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "hamamelis-virginiana-sprout",
+        "src": "/cards/animated/hamamelis-virginiana-sprout.png",
+        "version": "ea255640",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "deadpan",
+        "content": {
+          "left": 0.2353,
+          "top": 0.4286,
+          "right": 0.7353,
+          "bottom": 0.8571
+        }
+      },
+      "growing": {
+        "herbId": "hamamelis-virginiana-growing",
+        "src": "/cards/animated/hamamelis-virginiana-growing.png",
+        "version": "d6c02dde",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "deadpan",
+        "content": {
+          "left": 0.1471,
+          "top": 0.2143,
+          "right": 0.7941,
+          "bottom": 0.8214
+        }
+      }
+    }
+  },
   "hypericum-perforatum": {
     "herbId": "hypericum-perforatum",
     "src": "/cards/animated/hypericum-perforatum.png",
@@ -1045,6 +1095,56 @@
           "top": 0.2857,
           "right": 0.8235,
           "bottom": 0.9643
+        }
+      }
+    }
+  },
+  "malva-neglecta": {
+    "herbId": "malva-neglecta",
+    "src": "/cards/animated/malva-neglecta.png",
+    "version": "6dcaec1c",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 12,
+    "fps": 7,
+    "personality": "obliging",
+    "content": {
+      "left": 0.0588,
+      "top": 0.1429,
+      "right": 0.9412,
+      "bottom": 0.7857
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "malva-neglecta-sprout",
+        "src": "/cards/animated/malva-neglecta-sprout.png",
+        "version": "35e51f91",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "obliging",
+        "content": {
+          "left": 0.3235,
+          "top": 0.5,
+          "right": 0.6765,
+          "bottom": 0.8929
+        }
+      },
+      "growing": {
+        "herbId": "malva-neglecta-growing",
+        "src": "/cards/animated/malva-neglecta-growing.png",
+        "version": "5836119f",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "obliging",
+        "content": {
+          "left": 0.1471,
+          "top": 0.2857,
+          "right": 0.8529,
+          "bottom": 0.7857
         }
       }
     }
@@ -2049,6 +2149,56 @@
       }
     }
   },
+  "silybum-marianum": {
+    "herbId": "silybum-marianum",
+    "src": "/cards/animated/silybum-marianum.png",
+    "version": "fc67ee17",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 12,
+    "fps": 8,
+    "personality": "guarded",
+    "content": {
+      "left": 0.1471,
+      "top": 0.0714,
+      "right": 0.8235,
+      "bottom": 0.8929
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "silybum-marianum-sprout",
+        "src": "/cards/animated/silybum-marianum-sprout.png",
+        "version": "ca56511e",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "guarded",
+        "content": {
+          "left": 0.2353,
+          "top": 0.4286,
+          "right": 0.7353,
+          "bottom": 0.9286
+        }
+      },
+      "growing": {
+        "herbId": "silybum-marianum-growing",
+        "src": "/cards/animated/silybum-marianum-growing.png",
+        "version": "99138e2a",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "guarded",
+        "content": {
+          "left": 0.2059,
+          "top": 0.25,
+          "right": 0.7647,
+          "bottom": 0.8929
+        }
+      }
+    }
+  },
   "solidago-canadensis": {
     "herbId": "solidago-canadensis",
     "src": "/cards/animated/solidago-canadensis.png",
@@ -2395,6 +2545,56 @@
           "top": 0.3214,
           "right": 0.9706,
           "bottom": 1.0
+        }
+      }
+    }
+  },
+  "verbena-hastata": {
+    "herbId": "verbena-hastata",
+    "src": "/cards/animated/verbena-hastata.png",
+    "version": "3552e48a",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 6,
+    "personality": "measured",
+    "content": {
+      "left": 0.1471,
+      "top": 0.25,
+      "right": 0.8529,
+      "bottom": 0.8929
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "verbena-hastata-sprout",
+        "src": "/cards/animated/verbena-hastata-sprout.png",
+        "version": "42317e8c",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "measured",
+        "content": {
+          "left": 0.2353,
+          "top": 0.4643,
+          "right": 0.7647,
+          "bottom": 0.8571
+        }
+      },
+      "growing": {
+        "herbId": "verbena-hastata-growing",
+        "src": "/cards/animated/verbena-hastata-growing.png",
+        "version": "d78d9e24",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 5,
+        "personality": "measured",
+        "content": {
+          "left": 0.2059,
+          "top": 0.3214,
+          "right": 0.7941,
+          "bottom": 0.8571
         }
       }
     }
