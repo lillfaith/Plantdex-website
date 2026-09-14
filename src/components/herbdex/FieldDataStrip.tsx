@@ -6,6 +6,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { InfoTile } from '../ui/InfoTile';
 import { MICRO_LABEL } from '../ui/accents';
 import { ProvenanceChip } from '../game/Provenance';
+import { isFieldCard } from '@/lib/field-cards';
 
 /**
  * Season, encounter rate, XP and growing conditions — the card's own reference data.
@@ -22,7 +23,7 @@ export function FieldDataStrip({ herb }: { herb: Herb }) {
       <SectionHeader
         id="field-data-heading"
         title="Card data"
-        right={<ProvenanceChip source="card" />}
+        right={<ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />}
       />
       <div className="grid grid-cols-3 gap-2.5">
         <InfoTile icon={herb.season} label="Best in" align="center">

@@ -671,3 +671,52 @@ describe('the Field Card band in the Herbdex grid', () => {
     }
   });
 });
+
+describe('a Field Card page never claims a physical card', () => {
+  const PROVENANCE = readFileSync('src/components/game/Provenance.tsx', 'utf8');
+  const STRIP = readFileSync('src/components/herbdex/FieldDataStrip.tsx', 'utf8');
+  const BACK = readFileSync('src/components/herbdex/CardBackDetails.tsx', 'utf8');
+
+  /*
+   * THE BUG THIS PINS. Both card-data sections passed `source="card"` unconditionally, so a
+   * Field Card page printed "Physical card data" and, behind the question mark, "Transcribed
+   * word for word from the printed card in your deck". There is no such card: Field Cards are
+   * digital-only and issued by XP. The page told a reader the wording had been checked against
+   * an object they could hold.
+   *
+   * It is a truthfulness bug rather than a cosmetic one, which is why it is pinned here beside
+   * the other three facts these cards keep getting confused for each other.
+   */
+  it('chooses the chip from the card kind rather than assuming printed', () => {
+    for (const [name, source] of [
+      ['FieldDataStrip', STRIP],
+      ['CardBackDetails', BACK],
+    ] as const) {
+      expect(source, `${name} hard-codes a printed-card claim`).not.toContain(
+        'ProvenanceChip source="card"',
+      );
+      expect(source, `${name} does not ask which kind of card it is`).toContain('isFieldCard');
+    }
+  });
+
+  it('keeps the deck claim reachable only from the printed branch', () => {
+    /*
+     * The phrase itself is still correct for the 45 printed cards, so the guard is not that it
+     * is absent — it is that it sits behind the branch. Were the dialog to list both kinds
+     * again, a Field Card reader would meet the sentence anyway and the bug would be moved
+     * rather than fixed.
+     */
+    expect(PROVENANCE).toContain('printed card in your deck');
+    expect(PROVENANCE).toContain("source === 'field-card'");
+    expect(PROVENANCE.indexOf("source === 'field-card'")).toBeLessThan(
+      PROVENANCE.indexOf('printed card in your deck', PROVENANCE.indexOf('<dialog')),
+    );
+  });
+
+  it('calls a Field Card transcription a transcription', () => {
+    // Not "added by Plantdex": FIELD_CARD_ISSUES transcribes errors printed on the artwork
+    // faithfully, the same contract KNOWN_CARD_ISSUES has, so the source is a card either way.
+    expect(PROVENANCE).toContain('Field Card data');
+    expect(PROVENANCE).toContain('Transcribed word for word from the Field Card itself');
+  });
+});

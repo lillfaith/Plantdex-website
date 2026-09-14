@@ -6,6 +6,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { Chip, ChipRow } from '../ui/Chip';
 import { InfoTile } from '../ui/InfoTile';
 import { ProvenanceChip } from '../game/Provenance';
+import { isFieldCard } from '@/lib/field-cards';
 import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
@@ -76,7 +77,7 @@ export function UsablePartsSection({ herb }: { herb: Herb }) {
         title={BACK_SECTION_LABEL.usableParts}
         accent="mauve"
         size="lg"
-        right={<ProvenanceChip source="card" />}
+        right={<ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />}
         note="The parts the card names as usable."
       />
       <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">

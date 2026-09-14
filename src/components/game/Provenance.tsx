@@ -3,7 +3,19 @@
 import { useId, useRef } from 'react';
 
 /**
- * Where a section's content came from: the printed card, or Plantdex.
+ * Where a section's content came from: the card, or Plantdex.
+ *
+ * THREE SOURCES, NOT TWO, BECAUSE NOT EVERY CARD IS PRINTED. This said "the printed card in
+ * your deck" on every card page in the app, including the eight Field Cards — which are
+ * digital-only, issued by XP, and have no physical counterpart in anybody's deck. The claim
+ * was false on those pages from the day #48 shipped, and falsely SPECIFIC: it told a reader
+ * the wording had been checked against an object they could hold.
+ *
+ * A Field Card's data really is a transcription — `FIELD_CARD_ISSUES` records errors printed
+ * on its artwork and transcribes them faithfully, the same contract `KNOWN_CARD_ISSUES` has
+ * for the deck — so the fix is to name the right SOURCE, not to downgrade it to "added by
+ * Plantdex". `field-card` therefore keeps the card treatment and the card's wording, and
+ * changes only the object it points at.
  *
  * This replaces the full-width uppercase line "ADDED BY PLANTDEX — NOT ON THE CARD" that
  * sat above three sections. The DISTINCTION is not being softened — it is load-bearing,
@@ -16,10 +28,25 @@ import { useId, useRef } from 'react';
  * (U+2726) sits inside the range it blocks — the marks here are geometric shapes, which
  * render in the page's own font and take the colour of the token around them.
  */
-export function ProvenanceChip({ source }: { source: 'card' | 'plantdex' }) {
+export type ProvenanceSource = 'card' | 'field-card' | 'plantdex';
+
+const CHIP: Record<ProvenanceSource, { mark: string; label: string }> = {
+  card: { mark: '\u25A3', label: 'Physical card data' },
+  'field-card': { mark: '\u25A4', label: 'Field Card data' },
+  plantdex: { mark: '\u25C8', label: 'Plantdex field data' },
+};
+
+export function ProvenanceChip({ source }: { source: ProvenanceSource }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
-  const isCard = source === 'card';
+  /*
+   * The two card kinds share the chip's colour deliberately. Both are the card's own words
+   * transcribed; the difference is which card, and that is what the mark and the label say.
+   * A third colour would imply a third KIND of trustworthiness and would also mean adding a
+   * shade for it, which the palette rule forbids.
+   */
+  const isCard = source !== 'plantdex';
+  const chip = CHIP[source];
 
   return (
     <span className="inline-flex items-center gap-1.5 align-middle">
@@ -31,15 +58,15 @@ export function ProvenanceChip({ source }: { source: 'card' | 'plantdex' }) {
         }`}
       >
         <span aria-hidden="true" className="leading-none">
-          {isCard ? '▣' : '◈'}
+          {chip.mark}
         </span>
-        {isCard ? 'Physical card data' : 'Plantdex field data'}
+        {chip.label}
       </span>
 
       <button
         type="button"
         onClick={() => dialogRef.current?.showModal()}
-        aria-label="What is the difference between physical card data and Plantdex field data?"
+        aria-label={`What is the difference between ${chip.label.toLowerCase()} and Plantdex field data?`}
         /* 16px mark, 44px target — the hit box grows without moving anything on screen. */
         className="relative inline-flex h-4 w-4 items-center justify-center rounded-full border border-violet-600 text-[0.72rem] leading-none font-bold text-violet-300 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:border-gold-500 hover:text-gold-400"
       >
@@ -55,17 +82,36 @@ export function ProvenanceChip({ source }: { source: 'card' | 'plantdex' }) {
           Where this comes from
         </h2>
         <dl className="mt-3 space-y-3 text-sm leading-relaxed">
+          {/*
+            ONE CARD ENTRY, THE ONE THIS PAGE HAS. Listing both would put "the printed card in
+            your deck" in front of a reader holding no such card — the original bug, moved
+            rather than fixed — and a glossary of card kinds is not what somebody tapping a
+            question mark beside one chip is asking for.
+          */}
           <div>
-            <dt className="font-bold text-violet-100">▣ Physical card data</dt>
+            <dt className="font-bold text-violet-100">
+              {chip.mark} {chip.label}
+            </dt>
             <dd className="mt-0.5 text-violet-200">
-              Transcribed word for word from the printed card in your deck, including its own
-              wording. Nothing is added, expanded or paraphrased.
+              {source === 'field-card' ? (
+                <>
+                  Transcribed word for word from the Field Card itself, including its own
+                  wording. Field Cards are issued by Plantdex and earned with XP, so this one
+                  has no printed counterpart in the deck. Nothing is added, expanded or
+                  paraphrased.
+                </>
+              ) : (
+                <>
+                  Transcribed word for word from the printed card in your deck, including its
+                  own wording. Nothing is added, expanded or paraphrased.
+                </>
+              )}
             </dd>
           </div>
           <div>
             <dt className="font-bold text-mystery-pink">◈ Plantdex field data</dt>
             <dd className="mt-0.5 text-violet-200">
-              Added by this site and not printed on your card — identification traits, habitat
+              Added by this site and not on the card — identification traits, habitat
               and lookalikes. It carries its own sources, listed at the foot of the page, and
               is kept separate from the transcription rather than mixed into it.
             </dd>

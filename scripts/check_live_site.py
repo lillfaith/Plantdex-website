@@ -34,6 +34,24 @@ ROUTES: list[tuple[str, list[str]]] = [
     ("/profile/", ["Your field naturalist card", "Field record", "Growing right now"]),
     ("/herbdex/", ["My Collection", "Identify a plant"]),
     ("/garden/", ["My Garden"]),
+    # SEASONS IS HERE BECAUSE IT NO LONGER HAS A NAV SLOT. It was dropped from the bottom bar
+    # so six labels would fit at 320px, and the Garden card directly above is now its only
+    # route in. A page reachable from one link is a page whose breakage nobody trips over,
+    # which is exactly the gap this file exists to close — the same argument the Seed Shelf
+    # block below makes, and it was right then.
+    #
+    # THE FULL SENTENCE, NOT THE PHRASE. That Garden card reads "grouped by when it is
+    # typically easiest to find", so the bare substring matches /garden/ too and would pass
+    # against a Seasons page that never rendered. Verified against the real `out/`: both
+    # markers appear on /seasons/ and nowhere else in the build. The heading is deliberately
+    # not one of them — it is the page subtitle and the aside it prints above the list.
+    (
+        "/seasons/",
+        [
+            "When each plant in the deck is typically easiest to find.",
+            "Typical, not exact",
+        ],
+    ),
     ("/journal/", ["Journal"]),
     # The Seed Shelf shipped after this list was written, and its absence here is exactly
     # the gap this file exists to close: run 5 passed green on the deploy that introduced
