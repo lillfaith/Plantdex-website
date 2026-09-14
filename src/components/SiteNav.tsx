@@ -7,7 +7,7 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 /**
  * Primary navigation.
  *
- * Seven destinations, no sub-menus: minor features live inside "Learn" rather than earning
+ * Six destinations, no sub-menus: minor features live inside "Learn" rather than earning
  * their own top-level slot. On a phone this is a fixed bottom bar within thumb reach,
  * which is where navigation belongs when the app is being used outdoors one-handed; on
  * wider screens it moves to the top.
@@ -18,14 +18,20 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
  * else — so a player anywhere else in the app who walked past a plant had to navigate back to
  * a hub first. Every other destination here is somewhere you look things up and can be
  * reached at leisure; this is the one with a plant in front of it, and it is the core of the
- * loop the whole product is built round. A bar that carries Seasons but not the camera is a
- * bar arranged around the website rather than around being outdoors.
+ * loop the whole product is built round.
  *
- * SEED SHELF IS DELIBERATELY NOT AN EIGHTH SLOT. Seven labels already divide a 390px bar into
- * about 55px each, and "Seed Shelf" is the longest label in the app; an eighth would push
- * every target under the width a thumb wants and truncate two of the labels. It is reached
- * from the Herbdex — the collection page, which is where somebody wondering where their finds
- * went actually goes — and from the Garden and every scan that produces one.
+ * SEASONS AND SEED SHELF HANG OFF THE GARDEN, WHICH IS THE PAGE THEIR QUESTION IS ASKED ON.
+ *
+ * Neither is a place you set out for; both are the second thought you have while looking at
+ * what you have grown. "When can I find the rest of these" and "what about the things with no
+ * card" are asked standing in front of the beds, so that is where they are answered.
+ *
+ * THE BAR IS A FIXED WIDTH AND THE LABELS ARE NOT. Seven slots divided a 390px bar into about
+ * 53px each, which fitted only while every label was short: renaming Herbdex to Collection put
+ * a 60px label in a 51px cell, and at 320px the bar overflowed by 15px and clipped "Learn".
+ * Six gives every target about 62px and clears 320px with room. Treat that as the budget
+ * rather than the slot count — a seventh short label is not obviously wrong, a seventh long
+ * one is, and the measurement is the thing to re-run.
  */
 
 const LINKS: { href: string; label: string; icon: IconName }[] = [
@@ -34,7 +40,6 @@ const LINKS: { href: string; label: string; icon: IconName }[] = [
   { href: '/herbdex', label: 'Collection', icon: 'herbdex' },
   { href: '/garden', label: 'Garden', icon: 'garden' },
   { href: '/journal', label: 'Journal', icon: 'journal' },
-  { href: '/seasons', label: 'Seasons', icon: 'seasons' },
   { href: '/learn', label: 'Learn', icon: 'learn' },
 ];
 

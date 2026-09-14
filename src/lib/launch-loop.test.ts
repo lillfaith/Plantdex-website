@@ -30,6 +30,7 @@ const SCAN_PANEL = read('src/components/scan/ScanPanel.tsx');
 const SCAN_OUTCOME = read('src/components/scan/ScanOutcome.tsx');
 const SAVE_TO_SHELF = read('src/components/seedshelf/SaveToSeedShelf.tsx');
 const HERBDEX = read('src/app/herbdex/page.tsx');
+const GARDEN = read('src/components/garden/GardenView.tsx');
 
 describe('every destination in the loop exists as a route', () => {
   it('serves each page the loop sends people to', () => {
@@ -67,10 +68,44 @@ describe('the scanner is reachable from anywhere', () => {
     expect(NAV).toContain("href: '/scan'");
   });
 
-  it('keeps the bar to seven, because an eighth truncates labels at 390px', () => {
+  it('keeps the bar to six, because the labels no longer fit in seven', () => {
+    /*
+     * MEASURED, NOT CHOSEN. Seven slots divided a 390px bar into about 53px each, which held
+     * only while every label was short. Renaming Herbdex to Collection put a 60px label in a
+     * 51px cell — `flex-1` carries `min-width: auto`, so the widest cell refuses to shrink and
+     * takes the width off its neighbours — and at 320px the bar overflowed by 15px and clipped
+     * "Learn". Six gives every target about 62px and clears 320px.
+     *
+     * The real budget is label WIDTH rather than slot count, which no string test can read.
+     * This pins the count because it is the proxy available here; re-measure at 320px before
+     * moving it, and treat a long new label as a change to this number even if the count is
+     * unchanged.
+     */
     const links = NAV.match(/href: '\/[a-z-]*'/g) ?? [];
-    expect(links.length).toBeGreaterThanOrEqual(7);
-    expect(links.length).toBeLessThanOrEqual(7);
+    expect(links.length).toBe(6);
+  });
+});
+
+describe('a feature dropped from the nav keeps a route in', () => {
+  it('links Seasons from the Garden', () => {
+    /*
+     * Removing a destination from the bar is only safe if something else points at it. The
+     * Seed Shelf is the precedent directly below: it was kept, and it was unfindable, because
+     * every route to it happened to be a page somebody had to already be on.
+     *
+     * The Garden is where the question belongs — a bed showing four plants out of forty-five
+     * is what prompts "when can I find the others" — and it is one tap from the bar, so the
+     * feature lost a slot rather than its reachability.
+     */
+    expect(GARDEN, 'Seasons lost its nav slot and nothing replaced the route').toContain(
+      'href="/seasons"',
+    );
+  });
+
+  it('does not leave Seasons in the nav as well', () => {
+    // Belt and braces: the point of the move is the bar's width budget, so a link left in
+    // both places would pass the test above while buying none of what it was for.
+    expect(NAV).not.toContain("href: '/seasons'");
   });
 });
 

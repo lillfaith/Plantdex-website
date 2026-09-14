@@ -210,6 +210,33 @@ export function GardenView() {
           &rarr;
         </span>
       </Link>
+
+      {/*
+        SEASONS LOST ITS NAV SLOT AND LANDED HERE, for the same reason the Seed Shelf never had
+        one: the question it answers is asked while looking at the beds. A garden showing four
+        plants out of forty-five invites exactly one question — when can I find the others —
+        and this is the answer to it.
+
+        DELIBERATELY NOT "WHAT'S IN SEASON NOW". The page groups all four seasons and prints
+        "typical, not exact ... a guide to when to start looking, not a harvesting schedule";
+        it reads no clock and does not mark the current season. A link promising what is in
+        season NOW would promise the one thing that page refuses to say, and the wording here
+        is its own subtitle rather than a second claim free to disagree with it.
+      */}
+      <Link
+        href="/seasons"
+        className="mt-3 flex min-h-14 items-center justify-between gap-3 rounded-xl border border-violet-700/60 bg-plum-800/50 p-4 transition-colors hover:border-violet-600 hover:bg-plum-600/40"
+      >
+        <span>
+          <span className="block text-sm font-bold text-violet-100">What&apos;s in season</span>
+          <span className="block text-xs text-violet-300">
+            Every card grouped by when it&apos;s typically easiest to find
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-gold-400">
+          &rarr;
+        </span>
+      </Link>
     </main>
   );
 }
