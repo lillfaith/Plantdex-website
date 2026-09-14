@@ -46,11 +46,28 @@ export function MysteryCard({
    * motion gives back exactly the still silhouette every other tile shows.
    */
   animated = false,
+  /**
+   * Walk the sheet ONCE and settle back on frame 0.
+   *
+   * Distinct from `animated`, which loops for as long as it is set — that is what the
+   * discovery celebration wants while the card is held face down. This is for a card at
+   * rest in the grid that somebody poked: one pass, then the silhouette it was before.
+   *
+   * The SHADE IS NOT TOUCHED by either. `plant-silhouette` is a filter on the sprite
+   * element itself, so every frame of a pass is flattened to the same plum shadow — there
+   * is no frame at which colour could appear, and that is a property of where the filter
+   * sits rather than a rule anything has to remember.
+   */
+  playOnce = false,
+  /** Fired when a `playOnce` pass ends, so the caller can clear its own state. */
+  onPlayEnd,
   className = '',
 }: {
   herb: Herb;
   size?: 'grid' | 'detail';
   animated?: boolean;
+  playOnce?: boolean;
+  onPlayEnd?: () => void;
   className?: string;
 }) {
   const number = `#${String(herb.cardNumber).padStart(2, '0')}`;
@@ -96,7 +113,9 @@ export function MysteryCard({
             <PlantSprite
               herbId={herb.id}
               alt=""
-              frozen={!animated}
+              frozen={!animated && !playOnce}
+              once={playOnce}
+              onAnimationEnd={playOnce ? onPlayEnd : undefined}
               fit
               className="plant-silhouette"
             />

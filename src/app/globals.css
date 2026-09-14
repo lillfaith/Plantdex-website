@@ -839,6 +839,26 @@ body {
 }
 
 /*
+ * ONE PASS THROUGH THE SHEET, THEN BACK TO THE RESTING FRAME.
+ *
+ * The whole of it is the iteration count, and that is the point: it reuses
+ * `plant-sprite-play` / `plant-sprite-play-fit` and the same `steps()` class the idle
+ * uses, so a one-shot is the SAME animation as the loop rather than a second copy of it
+ * that could drift.
+ *
+ * WHY IT NEEDS NO `animation-fill-mode`, AND MUST NOT HAVE ONE. `steps()` shows frames
+ * 0..n-1 and the keyframes overshoot by one frame so each step lands square (see
+ * `--sprite-travel`). With no fill mode the element reverts to its BASE
+ * `background-position` the instant the animation ends — which is 0, which is frame 0,
+ * which `build_sprites.py` authors as a complete resting pose for exactly this reason.
+ * `forwards` would strand it on the last frame of the gesture: a witch hazel frozen
+ * mid-recoil, a thistle stuck with its collar shut.
+ */
+.plant-sprite-once {
+  animation-iteration-count: 1;
+}
+
+/*
  * The silhouette itself: the plant reduced to a shadow on the card back. Dark enough that
  * nothing identifying survives beyond the shape, soft enough that it reads as something
  * seen THROUGH the card rather than printed on it.

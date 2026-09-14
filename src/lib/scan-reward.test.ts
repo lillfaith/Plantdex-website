@@ -195,7 +195,21 @@ describe('the reveal holds the card face down first', () => {
      */
     const mystery = strip(readFileSync('src/components/herbdex/MysteryCard.tsx', 'utf8'));
     expect(CELEBRATION_SRC).toMatch(/<MysteryCard herb=\{herb\} animated \/>/);
-    expect(mystery).toMatch(/frozen=\{!animated\}/);
+    /*
+     * STATED AS "FREEZE ONLY WHEN NOBODY ASKED FOR MOTION", not as one exact expression.
+     * This originally pinned `frozen={!animated}` literally and failed the moment the grid
+     * gained its own one-shot mode — a guard tripping on a second legitimate caller rather
+     * than on a regression. What it is actually protecting is that the card back holds
+     * frame 0 by DEFAULT and gives that up only on an explicit opt-in, so it now asserts
+     * both halves: `animated` must still lift the freeze, and the freeze must still be the
+     * behaviour when no caller has asked for anything.
+     */
+    expect(mystery, 'the celebration no longer lifts the freeze').toMatch(
+      /frozen=\{![\w\s!&]*animated[\w\s!&]*\}/,
+    );
+    expect(mystery, 'a face-down card no longer defaults to its resting frame').toMatch(
+      /animated = false/,
+    );
   });
 
   it('leaves every card that is merely at rest holding frame 0', () => {

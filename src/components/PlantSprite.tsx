@@ -29,6 +29,8 @@ export function PlantSprite({
   scale = 1,
   frozen = false,
   fit = false,
+  once = false,
+  onAnimationEnd,
   className = '',
   style,
 }: {
@@ -55,6 +57,23 @@ export function PlantSprite({
    * creatures shrink to fit four across a phone and still perform.
    */
   fit?: boolean;
+  /**
+   * Walk the sheet ONCE and stop on the resting frame, instead of looping.
+   *
+   * Reuses the idle's own keyframes and `steps()` class — see `.plant-sprite-once` in
+   * globals.css. Ignored when `frozen`, because a sprite told both to hold frame 0 and to
+   * play once has been given two orders and holding is the safer one to obey.
+   *
+   * It carries no timing of its own: the caller decides WHEN a pass starts, and the pass
+   * itself is the same length the loop's would be.
+   */
+  once?: boolean;
+  /**
+   * Fired when a `once` pass finishes. The caller uses it to put the sprite back to rest;
+   * it is the only signal that a one-shot is over, because the animation carries no
+   * duration the caller knows — each species sets its own from its frame count and fps.
+   */
+  onAnimationEnd?: () => void;
   className?: string;
   /**
    * Extra style, merged over the sizing this component computes.
@@ -76,7 +95,10 @@ export function PlantSprite({
     <div
       role="img"
       aria-label={alt}
-      className={`plant-sprite plant-sprite-${sprite.frames}${fit ? ' plant-sprite-fit' : ''}${frozen ? ' plant-sprite-frozen' : ''} ${className}`}
+      onAnimationEnd={onAnimationEnd}
+      className={`plant-sprite plant-sprite-${sprite.frames}${fit ? ' plant-sprite-fit' : ''}${
+        frozen ? ' plant-sprite-frozen' : once ? ' plant-sprite-once' : ''
+      } ${className}`}
       style={{
         ...(fit
           ? {
