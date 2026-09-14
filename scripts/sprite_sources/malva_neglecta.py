@@ -121,8 +121,19 @@ STEMS_AT = (11, 18)
 FLOWER = [
     " ogo ",
     "oPPPo",
-    "oPVPo",
+    "PPVPP",
     "oPPPo",
+    " ooo ",
+]
+
+# Half shut. Mallow flowers roll their petals up, and a pair that closes and opens across
+# the loop is the difference between a plant wearing two decorations and a plant doing
+# something with them.
+FLOWER_SHUT = [
+    " ogo ",
+    " oPo ",
+    " oVo ",
+    " oPo ",
     " ooo ",
 ]
 
@@ -188,6 +199,13 @@ WEDGE_NONE = [" "]
 WEDGE = [
     "oCo",
     "oKo",
+]
+
+# Turned edge-on at the top of its travel. Two poses is all it takes for a flat thing to
+# read as being turned over rather than carried.
+WEDGE_EDGE = [
+    "oCCo",
+    " oo ",
 ]
 
 WEDGE_AT = (24, 13)
@@ -340,13 +358,23 @@ SPRITE = {
             "rows": LEAF,
             "variants": {"left": LEAF_LEFT, "right": LEAF_RIGHT},
         },
-        {"name": "flowerL", "origin": FLOWER_L_AT, "rows": FLOWER},
-        {"name": "flowerR", "origin": FLOWER_R_AT, "rows": FLOWER},
+        {
+            "name": "flowerL",
+            "origin": FLOWER_L_AT,
+            "rows": FLOWER,
+            "variants": {"shut": FLOWER_SHUT},
+        },
+        {
+            "name": "flowerR",
+            "origin": FLOWER_R_AT,
+            "rows": FLOWER,
+            "variants": {"shut": FLOWER_SHUT},
+        },
         {
             "name": "wedge",
             "origin": WEDGE_AT,
             "rows": WEDGE_NONE,
-            "variants": {"a": WEDGE},
+            "variants": {"a": WEDGE, "edge": WEDGE_EDGE},
         },
         *feature_parts(LEAF_AT, LEAF, eyes="round", mouth="small", eye_dy=1, mouth_dy=4),
     ],
@@ -363,40 +391,77 @@ SPRITE = {
     # texture change on the same object; a split disc that rises reads as a thing being
     # held up, which is what turns a fruit into a demonstration.
     "motion": {
+        # A CONSTANT SLOW NOD UNDER EVERYTHING ELSE. The first pass gave the leaf a dy array
+        # of nothing but zeros and the flowers the same — three parts declared as moving and
+        # not one of them moving a pixel, so the whole plant sat rigid while one fruit
+        # performed beside it. A sprawling plant on a long stalk is never still; this is the
+        # breath the gesture happens on top of.
         "leaf": {
             "art": [None, None, "right", "right", "right", "right", "right", "right",
                     None, None, None, None],
-            "dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "dy": [0, -1, -1, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
         },
         "cheese": {
             "art": [None, None, None, "seamed", "notched", "notched", "notched", "seamed",
                     None, None, None, None],
+            # The wheel rocks as the wedge leaves and again as it returns — a disc that
+            # loses a sixth of itself and does not move is a picture of a disc.
+            "dy": [0, -1, -1, 0, 1, 0, 1, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0],
         },
-        # Out, held, and back in. It never leaves the canvas, unlike the witch hazel seed:
-        # that one is thrown and this one is put back, and the loop has to say so.
+        # OUT, TURNED OVER, AND BACK IN. It never leaves the canvas, unlike the witch hazel
+        # seed: that one is thrown and this one is put back, and the loop has to say so.
         "wedge": {
-            "art": [None, None, None, None, "a", "a", "a", None, None, None, None, None],
-            "dy": [0, 0, 0, 0, -2, -3, -2, 0, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0],
+            "art": [None, None, None, None, "a", "edge", "a", None, None, None, None, None],
+            "dy": [0, 0, 0, 0, -3, -5, -3, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 0, 2, 4, 2, 0, 0, 0, 0, 0],
         },
         # The eyes travel with the turned face and come back with it. No independent lift:
         # the fruit is beside the creature, not above it, so there is nothing to look up at.
         "eyes": {
             "art": [None, None, "half", None, None, None, None, None, None, None,
                     "blink", None],
-            "dx": [0, 0, R_DX, R_DX, R_DX, R_DX, R_DX, R_DX, 0, 0, 0, 0],
+            "dy": [0, -1, -1, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+            "dx": [0, 0, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1,
+                   0, 0, 0, 0],
         },
         "cheeks": {
-            "dx": [0, 0, R_DX, R_DX, R_DX, R_DX, R_DX, R_DX, 0, 0, 0, 0],
+            "dy": [0, -1, -1, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+            "dx": [0, 0, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1,
+                   0, 0, 0, 0],
         },
         "mouth": {
             "art": [None, None, None, None, "wide", "wide", "wide", None, None, None,
                     None, None],
-            "dx": [0, 0, R_DX, R_DX, R_DX, R_DX, R_DX, R_DX, 0, 0, 0, 0],
+            "dy": [0, -1, -1, 0, 1, 1, 1, 0, -1, -1, 0, 0],
+            "dx": [0, 0, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1, R_DX + 1,
+                   0, 0, 0, 0],
         },
-        # The flowers ride the plant and do nothing. They are the identity, not the act.
-        "flowerL": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-        "flowerR": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+        # THE FLOWERS KEEP THEIR OWN TIME, and that is deliberate. They ride the nod a frame
+        # late, and they roll shut and open on a cycle that does not line up with the wheel —
+        # so the plant reads as several things living at once rather than one rigid cut-out
+        # with a fruit animating beside it.
+        # THEY CARRY THE LEAF'S OWN dx, and that is not optional. Given a nod of their own
+        # and none of the leaf's sideways travel, the pair stayed behind while the plant
+        # turned and the flowers visibly came off it — connected in frame 0, which is all
+        # the audit checks, and detached for six frames in the middle of the loop.
+        "flowerL": {
+            "art": ["shut", None, None, None, None, None, None, None, None, "shut",
+                    "shut", "shut"],
+            "dy": [0, 0, -1, -1, 0, 1, 1, 1, 0, -1, -1, 0],
+            "dx": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        },
+        "flowerR": {
+            "art": [None, None, None, "shut", "shut", "shut", None, None, None, None,
+                    None, None],
+            "dy": [-1, 0, 0, -1, -1, 0, 1, 1, 1, 0, -1, -1],
+            "dx": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        },
+        # The stems lag everything: the movement reaches the ground last.
+        "stems": {
+            "dx": [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+        },
     },
     "palette": PALETTE,
 }

@@ -108,6 +108,16 @@ BRACTS_UP = [
     "   oBBBo   ",
 ]
 
+# Flared. The wings drop and the spines throw wide — the half-beat before the collar comes
+# up, and the reason this reads as armour working rather than a hood being pulled on.
+BRACTS_WIDE = [
+    "s         s",
+    "o         o",
+    "obo     obo",
+    " obbo obbo ",
+    "  oBBBBBo  ",
+]
+
 BRACTS_AT = (11, 14)
 
 # --- The leaves --------------------------------------------------------------
@@ -289,7 +299,7 @@ SPRITE = {
             "name": "bracts",
             "origin": BRACTS_AT,
             "rows": BRACTS,
-            "variants": {"up": BRACTS_UP},
+            "variants": {"up": BRACTS_UP, "wide": BRACTS_WIDE},
         },
     ],
     #
@@ -304,28 +314,51 @@ SPRITE = {
     # The head DIPS a pixel as the collar rises, which is the creature drawing back into
     # its own armour rather than the armour arriving around a plant that has not noticed.
     "motion": {
+        # FLARE, THEN CLOSE. The first pass raised the collar two pixels and called it a
+        # gesture; a plate of armour that shifts by two pixels reads as a shrug. It now
+        # drops and spreads on frame 2, sweeps up four pixels over 3-4, holds shut, and
+        # opens in two stages rather than one so the release is as deliberate as the close.
         "bracts": {
-            "art": [None, None, "up", "up", "up", "up", "up", "up", None, None, None, None],
-            "dy": [0, 0, -1, -2, -2, -2, -2, -1, 0, 0, 0, 0],
+            "art": [None, None, "wide", "up", "up", "up", "up", "up", "wide", None,
+                    None, None],
+            "dy": [0, 0, 1, -2, -4, -4, -4, -3, 1, 0, 0, 0],
         },
+        # The head sinks INTO the collar as it rises. Two pixels down against four up is
+        # six pixels of relative travel, which is what makes the creature look covered
+        # rather than merely surrounded.
         "head": {
-            "dy": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 0],
         },
         "eyes": {
-            "art": [None, None, "half", "half", "half", "half", "half", "half", None,
+            "art": [None, None, "wide", "half", "half", "half", "half", "half", "half",
                     None, "blink", None],
-            "dy": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 0],
         },
         "cheeks": {
-            "dy": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 0],
         },
         "mouth": {
-            "dy": [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+            "art": [None, None, None, "frown", "frown", "frown", "frown", "frown", None,
+                    None, None, None],
+            "dy": [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 0],
         },
-        # The leaves lag the head by a frame — the stem is stout and the movement reaches
-        # them late, which is what stops the whole plant reading as one rigid cut-out.
-        "leafL": {"dy": [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0]},
-        "leafR": {"dy": [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0]},
+        # THE LEAVES STIFFEN AND LIFT, a frame behind the collar. A rosette going rigid is
+        # the rest of the plant joining in; without it the armour is a hat and the body
+        # underneath has not noticed.
+        "leafL": {
+            "dy": [0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        },
+        "leafR": {
+            "dy": [0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0],
+            "dx": [0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0],
+        },
+        # And the stout stem compresses by a pixel under the whole thing, which is the only
+        # movement it is allowed: Silybum holds a heavy head on one thick stalk, and a stem
+        # that swayed would make this a grass.
+        "stem": {
+            "dy": [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+        },
     },
     "palette": PALETTE,
 }

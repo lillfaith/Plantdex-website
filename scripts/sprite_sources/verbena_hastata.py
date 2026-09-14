@@ -275,27 +275,60 @@ SPRITE = {
     # one cut, because a band travelling downward would say the flowers were closing in
     # order, which is not a thing this plant does.
     "motion": {
+        # THE SPIKES WAVE, AND THE FIRST PASS FORGOT TO MOVE THE PLANT AT ALL. Three bands
+        # of colour climbed three columns that never shifted a pixel — a progress bar, which
+        # is the metaphor, drawn as a progress bar, which is not a creature. Verbena hastata
+        # is a tall thin thing standing in wet open ground: it is always moving slightly, and
+        # the tips travel further than the feet because they are further from the anchor.
+        #
+        # Each spike is a frame out of step with its neighbour on the SWAY as well as on the
+        # ring, so the candelabra never lines up into one shape. Two pixels either way, not
+        # one: at one the three of them read as jitter, and a spike a foot taller than the
+        # leaves under it has to travel visibly further than they do or the plant reads as
+        # rigid with a twitch at the top.
         "spikeM": {
             "art": ["r0", "r1", "r2", "r3", "r4", "r5", "r5", "r5", "r5", "r5",
                     "r5", "r5", "r0", "r0"],
+            "dx": [0, 1, 2, 1, -1, -2, -1, 1, 2, 1, -1, -2, -1, 0],
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0],
         },
         "spikeL": {
             "art": ["r0", "r0", "r1", "r2", "r3", "r4", "r5", "r5", "r5", "r5",
                     "r5", "r5", "r0", "r0"],
+            "dx": [-1, 0, 1, 2, 1, -1, -2, -1, 1, 2, 1, -1, -1, -1],
+            "dy": [0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0, 0],
         },
         "spikeR": {
             "art": ["r0", "r0", "r0", "r1", "r2", "r3", "r4", "r5", "r5", "r5",
                     "r5", "r5", "r0", "r0"],
+            "dx": [2, 1, -1, -2, -1, 1, 2, 1, -1, -2, -1, 1, 2, 1],
+            "dy": [-1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0],
+        },
+        # The clump rocks under them on a longer, shallower cycle — the spikes are what the
+        # wind reaches, the leaves are what is holding on.
+        "clump": {
+            "art": [None, None, None, "right", "right", None, None, None, "left", "left",
+                    None, None, None, None],
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 1, 1, 0, 0, -1, -1, 0, 0, 1, 1, 0, 0],
         },
         # It is counting, not watching: the eyes stay level all the way up and only close
         # once every ring has arrived. A creature that tracked the bands would be spicebush.
         "eyes": {
             "art": [None, None, None, None, None, None, None, None, "shut", "shut",
                     "shut", None, None, None],
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 0, R_DX, R_DX, 0, 0, 0, L_DX, L_DX, 0, 0, 0, 0],
+        },
+        "cheeks": {
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 0, R_DX, R_DX, 0, 0, 0, L_DX, L_DX, 0, 0, 0, 0],
         },
         "mouth": {
             "art": [None, None, None, None, None, None, None, None, "wide", "wide",
                     None, None, None, None],
+            "dy": [0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0],
+            "dx": [0, 0, 0, R_DX, R_DX, 0, 0, 0, L_DX, L_DX, 0, 0, 0, 0],
         },
     },
     "palette": PALETTE,

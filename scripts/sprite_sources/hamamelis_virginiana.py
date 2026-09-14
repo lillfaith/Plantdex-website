@@ -119,19 +119,31 @@ STEMS_AT = (9, 18)
 # BY EMPTY SPACE rather than by outline, so the eye reads four things radiating from a point
 # instead of one thing with a hole in it.
 RIBBON = [
-    " ogo",
-    "Y Y ",
-    " yY ",
-    "Y Y ",
+    " ogo ",
+    "Y Y Y",
+    " oyo ",
+    "Y Y Y",
+    "  Y  ",
 ]
 
-# Drawn in after the shot, when the whole shrub is still moving: the straps are the
-# lightest thing on the plant and lag everything else, so they swing to one side.
+# Blown to one side. The straps are the lightest thing on the shrub, so they are the last
+# to settle and they travel further than anything else — which is what sells a recoil that
+# the woody parts can only hint at.
 RIBBON_SWEPT = [
-    " ogo",
-    "  YY",
-    " yY ",
-    "  YY",
+    " ogo ",
+    "   YY",
+    " oyYY",
+    "   YY",
+    "   Y ",
+]
+
+# Pulled in tight against the twig on the brace, one frame before the shot.
+RIBBON_TIGHT = [
+    " ogo ",
+    "  Y  ",
+    " oyo ",
+    "  Y  ",
+    "     ",
 ]
 
 # At the canopy's shoulders, where the flowers actually open — on the twigs, level with the
@@ -355,13 +367,13 @@ SPRITE = {
             "name": "ribbonL",
             "origin": RIBBON_L_AT,
             "rows": RIBBON,
-            "variants": {"swept": RIBBON_SWEPT},
+            "variants": {"swept": RIBBON_SWEPT, "tight": RIBBON_TIGHT},
         },
         {
             "name": "ribbonR",
             "origin": RIBBON_R_AT,
             "rows": RIBBON,
-            "variants": {"swept": RIBBON_SWEPT},
+            "variants": {"swept": RIBBON_SWEPT, "tight": RIBBON_TIGHT},
         },
         {
             "name": "seed",
@@ -385,50 +397,76 @@ SPRITE = {
     # mouth and level eyes - not a grin, which would be spicebush being pleased with
     # itself. This one denies everything.
     "motion": {
+        # THE SHRUB LEANS LEFT AS THE SEED GOES RIGHT, and that is the whole of the recoil.
+        # The first pass moved the canopy one pixel down and back; a catapult that fires
+        # something off the canvas and rocks by one pixel reads as a plant with a twitch.
+        # Two pixels of lift, a pixel of lean AGAINST the shot, and a second smaller
+        # rebound — Newton drawn at sprite scale.
         "canopy": {
-            "art": [None, None, "tight", None, None, None, None, "tight", None, None,
+            "art": [None, None, "tight", "tight", None, None, None, "tight", None, None,
                     None, None, None, None],
-            "dy": [0, 0, 1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 2, -2, -1, 0, 0, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -2, -2, -1, 0, -1, 0, 0, 0, 0, 0, 0],
         },
         "capsuleR": {
             "art": [None, None, "tense", "open", "open", "open", "open", "open", None,
                     None, None, None, None, None],
+            "dy": [0, 0, 2, -1, 0, 0, 0, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -1, -1, 0, 0, -1, 0, 0, 0, 0, 0, 0],
         },
+        # Further and faster. It clears the frame by 6 rather than drifting off it, and the
+        # horizontal travel accelerates — a thrown thing does not move at a constant rate.
         "seed": {
-            "art": [None, None, None, "a", "a", "a", None, None, None, None,
+            "art": [None, None, None, "a", "a", "a", "a", None, None, None,
                     None, None, None, None],
-            "dy": [0, 0, 0, -2, -7, -12, 0, 0, 0, 0, 0, 0, 0, 0],
-            "dx": [0, 0, 0, 1, 3, 6, 0, 0, 0, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 0, -3, -9, -15, -21, 0, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 0, 2, 5, 9, 13, 0, 0, 0, 0, 0, 0, 0],
         },
         # The eyes widen on the shot and are level again by the time anyone looks. They do
         # NOT track the seed: a creature watching its own projectile is a creature taking
         # responsibility for it, and this one does not.
         "eyes": {
-            "art": [None, None, "half", None, None, None, None, None, None,
+            "art": [None, None, "half", "wide", "wide", None, None, None, None,
                     None, None, None, "blink", None],
-            "dy": [0, 0, 1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 2, -2, -1, 0, 0, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -2, -2, -1, 0, -1, 0, 0, 0, 0, 0, 0],
         },
         "cheeks": {
-            "dy": [0, 0, 1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 2, -2, -1, 0, 0, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -2, -2, -1, 0, -1, 0, 0, 0, 0, 0, 0],
         },
         "mouth": {
-            "art": [None, None, "flat", "flat", None, None, None, None, None,
+            "art": [None, None, "flat", "flat", "flat", None, None, None, None,
                     "flat", "flat", None, None, None],
-            "dy": [0, 0, 1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0],
+            "dy": [0, 0, 2, -2, -1, 0, 0, 2, -1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -2, -2, -1, 0, -1, 0, 0, 0, 0, 0, 0],
         },
-        # The straps lag the recoil by a frame and stay swept one frame longer than the
-        # canopy moves: they are the lightest thing on the shrub and the last to settle.
+        # THE STRAPS ARE THE LOUDEST THING IN THE LOOP, because they are the only part light
+        # enough to be thrown about by it. They pull in tight on the brace, blow sideways for
+        # four frames, and are still settling two frames after the woody parts have stopped.
         "ribbonL": {
-            "art": [None, None, None, None, None, None, None, "swept", "swept", None,
-                    None, None, None, None],
-            "dy": [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            "art": [None, None, "tight", "swept", "swept", "swept", "swept", "swept",
+                    "swept", None, None, None, None, None],
+            "dy": [0, 0, 2, -2, -2, -1, -1, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -3, -3, -2, -1, -1, 0, 0, 0, 0, 0, 0],
         },
         "ribbonR": {
-            "art": [None, None, None, None, None, None, None, "swept", "swept", None,
-                    None, None, None, None],
-            "dy": [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            "art": [None, None, "tight", "swept", "swept", "swept", "swept", "swept",
+                    "swept", None, None, None, None, None],
+            "dy": [0, 0, 2, -2, -2, -1, -1, 1, 0, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, -3, -3, -2, -1, -1, 0, 0, 0, 0, 0, 0],
         },
-        "capsuleL": {"dy": [0, 0, 1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0]},
+        # The shut capsule swings a beat behind everything else — the movement reaches it
+        # through the twig rather than happening to it.
+        "capsuleL": {
+            "dy": [0, 0, 1, 2, -2, -1, 0, 1, 1, 0, 0, 0, 0, 0],
+            "dx": [0, 0, 1, 0, -2, -2, -1, 0, 0, 0, 0, 0, 0, 0],
+        },
+        # And the trunks barely move at all. A woody shrub is anchored; if the stems swung
+        # with the canopy the whole plant would read as a flag rather than a catapult.
+        "stems": {
+            "dx": [0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        },
     },
     "palette": PALETTE,
 }

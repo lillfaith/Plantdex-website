@@ -752,7 +752,7 @@
   "hamamelis-virginiana": {
     "herbId": "hamamelis-virginiana",
     "src": "/cards/animated/hamamelis-virginiana.png",
-    "version": "52517226",
+    "version": "b118050d",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
@@ -761,7 +761,7 @@
     "content": {
       "left": 0.1176,
       "top": 0.1071,
-      "right": 0.8824,
+      "right": 0.9118,
       "bottom": 0.8929
     },
     "stages": {
@@ -784,7 +784,7 @@
       "growing": {
         "herbId": "hamamelis-virginiana-growing",
         "src": "/cards/animated/hamamelis-virginiana-growing.png",
-        "version": "d6c02dde",
+        "version": "70a1f44e",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
@@ -793,7 +793,7 @@
         "content": {
           "left": 0.1471,
           "top": 0.2143,
-          "right": 0.7941,
+          "right": 0.8235,
           "bottom": 0.8214
         }
       }
@@ -1102,14 +1102,14 @@
   "malva-neglecta": {
     "herbId": "malva-neglecta",
     "src": "/cards/animated/malva-neglecta.png",
-    "version": "6dcaec1c",
+    "version": "22f2a33a",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 12,
     "fps": 7,
     "personality": "obliging",
     "content": {
-      "left": 0.0588,
+      "left": 0.0882,
       "top": 0.1429,
       "right": 0.9412,
       "bottom": 0.7857
@@ -1134,7 +1134,7 @@
       "growing": {
         "herbId": "malva-neglecta-growing",
         "src": "/cards/animated/malva-neglecta-growing.png",
-        "version": "5836119f",
+        "version": "4793eefb",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
@@ -2152,7 +2152,7 @@
   "silybum-marianum": {
     "herbId": "silybum-marianum",
     "src": "/cards/animated/silybum-marianum.png",
-    "version": "fc67ee17",
+    "version": "07180099",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 12,
@@ -2552,7 +2552,7 @@
   "verbena-hastata": {
     "herbId": "verbena-hastata",
     "src": "/cards/animated/verbena-hastata.png",
-    "version": "3552e48a",
+    "version": "6052987a",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
