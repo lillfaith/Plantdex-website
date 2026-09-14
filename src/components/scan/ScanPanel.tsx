@@ -7,6 +7,7 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { getPrintedCard } from '@/lib/deck';
 import type { DiscoveryResult } from '@/lib/types';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
+import { ambiguousCardNames, genusLabel } from '@/lib/scan-ambiguity';
 import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
 import { warmIdentifier } from '@/lib/scan-warmup';
 import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
@@ -552,11 +553,19 @@ export function ScanPanel() {
                 </p>
 
                 <ul className="mt-4 space-y-3">
-                  {result.candidates.map((candidate) => {
+                  {(() => {
+                    /*
+                     * Computed ONCE for the list, not per row: it is a property of the result
+                     * set. Empty on an ordinary scan, so every branch below is a no-op there.
+                     */
+                    const ambiguous = ambiguousCardNames(result.candidates);
+                    return result.candidates.map((candidate) => {
                     const herb = candidate.match.herbId ? getPrintedCard(candidate.match.herbId) : null;
                     if (!herb) return null;
                     const band = confidenceBand(candidate.score);
                     const already = ready && isDiscovered(herb.id);
+                    // This row prints a card name a sibling row prints too.
+                    const sharesName = ambiguous.has(herb.commonName);
                     return (
                       <li
                         key={candidate.scientificName}
@@ -572,20 +581,36 @@ export function ScanPanel() {
                         }`}
                       >
                         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                          <Link
-                            href={`/herbdex/${herb.id}`}
-                            /*
-                             * A 44px hit area drawn by a pseudo-element rather than by
-                             * padding: this link sits on a baseline row beside the score
-                             * meter, so growing the box would shift the meter off the name it
-                             * belongs to. Measured at 24px before this — a real sub-target in
-                             * the launch loop's own critical path. Same pattern
-                             * `GlossaryTermLink` uses, and invisible to layout.
-                             */
-                            className="relative font-bold text-violet-100 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
-                          >
-                            {herb.commonName}
-                          </Link>
+                          {/*
+                            WHICHEVER LINE ANSWERS "WHICH PLANT IS THIS" LEADS.
+
+                            Normally that is the card's common name and the binomial below is
+                            a detail. When a sibling row prints the SAME card name, the common
+                            name has stopped distinguishing anything and the binomial is the
+                            only thing that does — so the two swap, and the card becomes the
+                            supporting line rather than the heading. Same two facts either
+                            way; no row gains or loses information, and nothing is collapsed.
+                          */}
+                          {sharesName ? (
+                            <span className="font-bold break-words italic text-violet-100">
+                              {candidate.scientificName}
+                            </span>
+                          ) : (
+                            <Link
+                              href={`/herbdex/${herb.id}`}
+                              /*
+                               * A 44px hit area drawn by a pseudo-element rather than by
+                               * padding: this link sits on a baseline row beside the score
+                               * meter, so growing the box would shift the meter off the name it
+                               * belongs to. Measured at 24px before this — a real sub-target in
+                               * the launch loop's own critical path. Same pattern
+                               * `GlossaryTermLink` uses, and invisible to layout.
+                               */
+                              className="relative font-bold text-violet-100 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
+                            >
+                              {herb.commonName}
+                            </Link>
+                          )}
                           <span className="flex items-center gap-2 text-xs tabular-nums text-violet-300">
                             <span
                               aria-hidden="true"
@@ -602,9 +627,40 @@ export function ScanPanel() {
                             {Math.round(candidate.score * 100)}% &middot; {band}
                           </span>
                         </div>
-                        <p className="mt-0.5 text-xs italic text-violet-400">
-                          {candidate.scientificName}
-                        </p>
+                        {/*
+                          THE CARD RELATION, STATED AS A RELATION. "Matches the Elderberry
+                          card" is a claim about this app's own mapping — `matchScientificName`
+                          is a pure function of the name, so it is deterministic and checkable —
+                          and NOT a claim that the photograph is an elder. That uncertainty is
+                          carried by the score beside it and by the caution above every result,
+                          neither of which this touches.
+
+                          A GENUS CARD SAYS SO OUT LOUD, because "one card covers the whole
+                          genus" is the actual reason two elders offer the same card, and a
+                          player who reads it once is not surprised by the next one.
+
+                          `sameGenus` names the card without claiming a match: the sentence
+                          below it already explains the refusal, so this only has to keep the
+                          route to the card that the promoted binomial took away.
+                        */}
+                        {sharesName ? (
+                          <p className="mt-1 text-xs leading-relaxed text-violet-300">
+                            <Link
+                              href={`/herbdex/${herb.id}`}
+                              className="relative font-semibold text-violet-200 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
+                            >
+                              {candidate.match.kind === 'genusCard'
+                                ? `The ${herb.commonName} card covers the whole ${genusLabel(herb.scientificName)} genus`
+                                : candidate.match.confirmable
+                                  ? `Matches the ${herb.commonName} card`
+                                  : `The deck\u2019s nearest card: ${herb.commonName}`}
+                            </Link>
+                          </p>
+                        ) : (
+                          <p className="mt-0.5 text-xs italic text-violet-400">
+                            {candidate.scientificName}
+                          </p>
+                        )}
 
                         {/* A card-printed warning belongs BEFORE the confirm button, not after it. */}
                         {herb.warning && (
@@ -642,9 +698,23 @@ export function ScanPanel() {
                            * the whole of what this row still has to say.
                            */
                           <p className="mt-2 text-xs font-semibold text-gold-300">
+                            {/*
+                              THE CARD IS WHAT WAS ADDED, AND WITH TWO ELDERS ON SCREEN THAT
+                              STOPS BEING PEDANTIC. Confirming Sambucus canadensis records the
+                              Elderberry CARD, and `already` is keyed on that card — so the
+                              Sambucus nigra row turns to "Added" at the same moment, and a
+                              bare tick under that binomial reads as "we recorded nigra".
+                              Naming the card is true of both rows and claims nothing about
+                              either species. Unambiguous rows keep the shorter marker, where
+                              the species and the card are the same thing anyway.
+                            */}
                             {confirmed?.herbId === herb.id
-                              ? 'Added \u2713'
-                              : 'Already in your collection.'}
+                              ? sharesName
+                                ? `${herb.commonName} card added \u2713`
+                                : 'Added \u2713'
+                              : sharesName
+                                ? `${herb.commonName} card already in your collection.`
+                                : 'Already in your collection.'}
                           </p>
                         ) : (
                           <button
@@ -682,12 +752,27 @@ export function ScanPanel() {
                             }}
                             className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
                           >
-                            Yes, I found {herb.commonName}
+                            {/*
+                              TWO ROWS MUST NOT OFFER THE SAME SENTENCE. "Yes, I found
+                              Elderberry" under each of two elders is a choice with no
+                              choosing in it — whichever is tapped, the button said the same
+                              words, so the player cannot know which species they agreed to.
+                              Naming the species makes the two buttons differ from each other,
+                              directly under the binomial they name.
+
+                              The ordinary wording is untouched: where one row prints a name,
+                              "Yes, I found Dandelion" is the plainer sentence and there is
+                              nothing to disambiguate.
+                            */}
+                            {sharesName
+                              ? `Confirm ${candidate.scientificName}`
+                              : `Yes, I found ${herb.commonName}`}
                           </button>
                         )}
                       </li>
                     );
-                  })}
+                    });
+                  })()}
                 </ul>
               </>
             )}

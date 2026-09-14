@@ -137,17 +137,33 @@ describe('the celebration is the only place the reward is announced', () => {
      * plant is in the collection NOW. Both true; together they describe one event in two
      * tenses. ALREADY means before this scan, and for the species just confirmed it is false.
      */
+    /*
+     * SLICED TO THE END OF THE TERNARY, NOT TO A FIXED 220 CHARACTERS. That window was long
+     * enough for the two-arm version and stopped reaching the second arm the moment each arm
+     * gained an ambiguous-name variant — so the guard failed while the rule it protects was
+     * intact. A marker that has to be re-counted whenever the branch grows is measuring the
+     * wrong thing; the closing tag is where this decision actually ends.
+     */
     expect(SCAN_PANEL).toContain("confirmed?.herbId === herb.id");
-    const branch = SCAN_PANEL.slice(
-      SCAN_PANEL.indexOf("confirmed?.herbId === herb.id"),
-      SCAN_PANEL.indexOf("confirmed?.herbId === herb.id") + 220,
-    );
+    const opens = SCAN_PANEL.indexOf("confirmed?.herbId === herb.id");
+    const branch = SCAN_PANEL.slice(opens, SCAN_PANEL.indexOf('</p>', opens));
     expect(branch).toMatch(/Added /);
     expect(branch).toMatch(/Already in your collection/);
+    /*
+     * BOTH ARMS, because there are now two of each. A row sharing a card name with a sibling
+     * names the CARD in its marker — confirming Sambucus canadensis records the Elderberry
+     * card, and the Sambucus nigra row beside it flips at the same instant, so a bare tick
+     * under that binomial would read as "we recorded nigra". Every ADDED wording must still
+     * precede every ALREADY wording, whichever arm it sits in.
+     */
+    const added = [...branch.matchAll(/Added /g)].map((hit) => hit.index);
+    const alreadys = [...branch.matchAll(/[Aa]lready in your collection/g)].map((hit) => hit.index);
+    expect(added.length, 'an ADDED wording went missing').toBeGreaterThan(0);
+    expect(alreadys.length, 'an ALREADY wording went missing').toBeGreaterThan(0);
     expect(
-      branch.indexOf('Added '),
+      Math.max(...added),
       'the just-confirmed card must take the ADDED wording, not the ALREADY one',
-    ).toBeLessThan(branch.indexOf('Already in your collection'));
+    ).toBeLessThan(Math.min(...alreadys));
     // And it stays a MARKER: the receipt below carries the full sentence, so repeating it
     // here would print the same line twice on one screen.
     expect(branch, 'the candidate row echoes the receipt sentence').not.toMatch(
