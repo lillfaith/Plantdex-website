@@ -70,6 +70,42 @@ export type CardScope =
  */
 export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
   /*
+   * ─────────────────────────────────────────────────────────────────────────
+   * CARDS CONSIDERED FOR GENUS SCOPE AND DELIBERATELY LEFT `species`.
+   *
+   * Recorded here rather than in a commit message because the next person to read a
+   * genus-level English name on a species card will have exactly this idea, and the reasons
+   * are not recoverable from the data alone.
+   *
+   * #1 DANDELION — the closest call, and the evidence is in `ACCEPTED_NAME_SYNONYMS`. The
+   * card is ALREADY aggregate-scoped: `taraxacum sect` maps to it, and a section is a
+   * supra-specific rank, so the card knowingly covers more than one microspecies. But a
+   * SECTION is not the GENUS. *T. erythrospermum* sits in sect. Erythrosperma, a different
+   * section, which is precisely why the synonym table's author excluded it by name. Genus
+   * scope would overturn a recorded, reasoned decision and would be strictly broader than
+   * the aggregate the card actually represents. The identification traits ARE all
+   * genus-level (rosette, backward-pointing lobes, single hollow leafless stalk, milky sap,
+   * seed clock) and every lookalike is outside Taraxacum — but that is true of most cards
+   * and does not by itself establish product intent.
+   *
+   * #22 BURDOCK — traits are likewise genus-level (woolly pale leaf undersides, purple
+   * heads, hooked burs) and the only lookalike is rhubarb, outside Arctium. But there is NO
+   * in-repo evidence either way: no Arctium synonyms, no note distinguishing *A. lappa*
+   * from *A. minus*, and the card prints a specific binomial. Absent a signal, the narrow
+   * reading stands. This one is an owner decision, not a data one.
+   *
+   * #9 Wood Sorrel, #12 Wild Violet, #23 Wild Mint, #27 Mullein, #29 Field Garlic,
+   * #30 Wild Strawberry, #33 Yarrow, #40 Honeysuckle — owner policy, for reasons that are
+   * about the plants rather than the deck: Oxalis and Fragaria are too broad to infer
+   * equivalence from a common name; Mentha and Lonicera contain species with materially
+   * different safety and use profiles and must not be treated as interchangeable; Viola has
+   * recorded GBIF evidence against widening; Verbascum, Allium and Achillea each mean the
+   * printed species unless a card says otherwise.
+   *
+   * The through-line: a generic-sounding English name is not evidence of generic intent.
+   * ─────────────────────────────────────────────────────────────────────────
+   */
+  /*
    * #3 GOLDENROD — the card the bug was reported against, and the one scope decision the
    * owner has stated: the card is "Goldenrod" broadly rather than *S. canadensis*
    * specifically. Every North American Solidago the provider returns for a goldenrod

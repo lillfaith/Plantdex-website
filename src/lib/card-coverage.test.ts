@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { PRINTED_CARDS } from './deck';
-import { CARD_COVERAGE, allScopes, broadenedCards } from './card-coverage';
+import { CARD_COVERAGE, allScopes, broadenedCards, scopeFor } from './card-coverage';
 import { genusOf, matchScientificName } from './plant-match';
 
 /**
@@ -99,6 +99,64 @@ describe('no species may be claimed by two cards', () => {
     const crispus = matchScientificName('Rumex crispus');
     expect(crispus.kind).toBe('sameGenus');
     expect(crispus.confirmable).toBe(false);
+  });
+});
+
+describe('the cards considered for widening and kept narrow', () => {
+  /*
+   * POLICY, PINNED. These are decisions, not defaults — every one was looked at and refused.
+   * Without a test they are indistinguishable from cards nobody thought about, which is
+   * exactly how a later "this common name sounds generic" pass would undo them.
+   */
+  const KEPT_NARROW = [
+    'taraxacum-officinale',
+    'arctium-lappa',
+    'oxalis-stricta',
+    'viola-sororia',
+    'mentha-canadensis',
+    'verbascum-thapsus',
+    'allium-vineale',
+    'fragaria-virginiana',
+    'achillea-millefolium',
+    'lonicera-japonica',
+  ];
+
+  it('keeps all ten at species scope', () => {
+    for (const id of KEPT_NARROW) {
+      expect(scopeFor(id)?.type, id).toBe('species');
+      expect(CARD_COVERAGE[id], `${id} was widened`).toBeUndefined();
+    }
+  });
+
+  it('still refuses a different species in each of those genera', () => {
+    for (const [name, card] of [
+      ['Taraxacum erythrospermum', 'taraxacum-officinale'],
+      ['Arctium minus', 'arctium-lappa'],
+      ['Oxalis corniculata', 'oxalis-stricta'],
+      ['Viola riviniana', 'viola-sororia'],
+      ['Mentha spicata', 'mentha-canadensis'],
+      ['Verbascum blattaria', 'verbascum-thapsus'],
+      ['Allium canadense', 'allium-vineale'],
+      ['Fragaria vesca', 'fragaria-virginiana'],
+      ['Achillea ptarmica', 'achillea-millefolium'],
+      ['Lonicera maackii', 'lonicera-japonica'],
+    ] as const) {
+      const match = matchScientificName(name);
+      expect(match.kind, name).toBe('sameGenus');
+      expect(match.confirmable, name).toBe(false);
+      expect(match.herbId, name).toBe(card);
+    }
+  });
+
+  it('keeps Dandelion covering its SECTION but not its genus', () => {
+    /*
+     * The distinction the #1 decision turns on. `taraxacum sect` is a supra-specific rank
+     * and maps to the card, so the card is already an aggregate — but sect. Erythrosperma,
+     * where T. erythrospermum sits, is a different section. Aggregate is not genus.
+     */
+    expect(matchScientificName('Taraxacum sect. Taraxacum').herbId).toBe('taraxacum-officinale');
+    expect(matchScientificName('Taraxacum sect. Taraxacum').confirmable).toBe(true);
+    expect(matchScientificName('Taraxacum erythrospermum').confirmable).toBe(false);
   });
 });
 
