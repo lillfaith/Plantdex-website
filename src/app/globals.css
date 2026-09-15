@@ -833,6 +833,36 @@ body {
   animation-name: plant-sprite-play-fit;
 }
 
+/*
+ * THE SCAN PAGE'S SCOUT, SWAYING.
+ *
+ * A CREATURE IDLE, NOT A UI EFFECT — which is why it loops where the four one-shot moments
+ * do not. That rule is about bars, crossfades and readiness pips, where repetition is
+ * ambient noise dressed as feedback. All 54 plant sprites loop forever on the same
+ * reasoning: a living thing that holds perfectly still is the strange one.
+ *
+ * Transform only, so it composites and never triggers layout — this sits on the page whose
+ * real work starts when somebody taps the camera, and an idle costing a frame there would be
+ * the worst possible trade. It pivots at the FOOT rather than the centre: a creature turning
+ * about its middle is a sticker being wiggled, one turning at the base is a plant in a
+ * breeze. Two degrees, because the lens is held out at arm's length and its tip travels far
+ * further than the body does.
+ */
+@keyframes scan-scout-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.scan-scout {
+  transform-origin: 50% 95%;
+  animation: scan-scout-sway 4.5s ease-in-out infinite;
+}
+
 .plant-sprite-frozen {
   animation: none;
   background-position: 0 0;
@@ -983,6 +1013,16 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /*
+   * Named rather than left to the global 0.01ms collapse, same as everything else that moves
+   * here: collapsed to nothing the sway would park at -2deg and leave the creature
+   * permanently tilted, which reads as a rendering fault rather than as stillness.
+   */
+  .scan-scout {
+    animation: none !important;
+    transform: none !important;
+  }
+
   /*
    * The rail stops dead rather than being removed. Freezing it keeps the shelf's shape and
    * the achievements that happen to be on screen; deleting the animation would leave the

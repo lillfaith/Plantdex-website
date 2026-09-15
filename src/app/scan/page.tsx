@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
+import { ScanScout } from '@/components/scan/ScanScout';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
@@ -23,7 +24,25 @@ export const metadata: Metadata = {
 export default function ScanPage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-gold-plate">Identify a plant</h1>
+      {/*
+        THE SCOUT SITS BESIDE THE HEADING, AND ON ITS LEFT.
+
+        Above the heading it would be the first thing on the page and would push the title, the
+        three explanatory lines and the caution down a whole creature's height on a 390px
+        screen — buying personality with the words that tell somebody what this page does.
+
+        LEFT rather than right because `AccountBadge` is `fixed top-2 right-2` on every page,
+        44px of tap target in exactly the corner a right-aligned scout reaches into. Nothing on
+        this page could have told me that; it took a screenshot. The heading is one line at
+        390px and the scout takes 64px of the 358px available, so neither wraps.
+
+        `shrink-0` because a flex sibling with an intrinsic aspect ratio gives up its width
+        first and squashes to a sliver the moment the heading wants more room.
+      */}
+      <div className="flex items-center gap-3">
+        <ScanScout className="w-16 shrink-0 sm:w-20" />
+        <h1 className="font-display text-2xl font-bold text-gold-plate">Identify a plant</h1>
+      </div>
       {/*
         WHAT THIS SCANNER ACTUALLY ACCEPTS, WHICH IS NOT WHAT IT SAID.
 

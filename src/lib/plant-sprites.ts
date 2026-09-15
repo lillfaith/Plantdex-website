@@ -45,6 +45,20 @@ export interface PlantSpriteEntry {
    * keeps showing it after a deploy that redrew every portrait.
    */
   version: string;
+  /**
+   * Frame 0 on its own, for surfaces that never animate.
+   *
+   * A frozen sprite showing the resting pose does not need the sheet, and the sheet is the
+   * expensive half: pixel art compresses to almost nothing on disk (54 sheets ≈ 254 KB) and
+   * decodes to 70 MB of RGBA, because a browser holds the whole bitmap to show one frame of
+   * it. The signed-out collection is 54 frozen tiles and was pulling all 54 sheets.
+   *
+   * Optional because a stage whose art predates the field has none, and `PlantSprite` falls
+   * back to holding frame 0 of the sheet exactly as it used to.
+   */
+  still?: string;
+  /** The still's own content hash. A redrawn sprite busts both, so they cannot disagree. */
+  stillVersion?: string;
   /** One frame's dimensions, already at the shipped scale. */
   frameWidth: number;
   frameHeight: number;

@@ -91,6 +91,12 @@ export function PlantSprite({
   const width = sprite.frameWidth * scale;
   const height = sprite.frameHeight * scale;
 
+  /*
+   * Only when there is a still to use: a stage whose art predates this field falls back to
+   * the sheet and holds frame 0 exactly as it did, rather than rendering nothing.
+   */
+  const still = frozen && Boolean(sprite.still);
+
   return (
     <div
       role="img"
@@ -100,13 +106,30 @@ export function PlantSprite({
         frozen ? ' plant-sprite-frozen' : once ? ' plant-sprite-once' : ''
       } ${className}`}
       style={{
+        /*
+         * A FROZEN SPRITE LOADS ONE FRAME, NOT THE WHOLE SHEET.
+         *
+         * Pixel art compresses so well that the sheets looked free: all 54 adult sheets are
+         * ~254 KB on disk. Decoded they are 70 MB of RGBA, because the browser holds the
+         * entire bitmap however little of it is on screen — one sheet is 3680x160, or 2.3 MB
+         * resident, to show a 170px square. The signed-out collection is 54 face-down tiles,
+         * every one a frozen sprite showing frame 0, and it was pulling all 54 sheets.
+         *
+         * `still` is that one frame, written by the same generator from the same bytes. It
+         * is what `frozen` means, so the two travel together and no caller has to remember.
+         * Anything that animates — the locked card page, the garden, the hero — still takes
+         * the sheet, unchanged.
+         *
+         * This is invisible to a bytes-on-the-wire audit, which is why it survived the last
+         * performance pass: the network panel shows 254 KB and says nothing is wrong.
+         */
         ...(fit
           ? {
               width: '100%',
               aspectRatio: `${sprite.frameWidth} / ${sprite.frameHeight}`,
               // A percentage background-size measures against the element, so the sheet
               // scales with the box: `frames × 100%` puts exactly one frame in view.
-              backgroundSize: `${sprite.frames * 100}% 100%`,
+              backgroundSize: still ? '100% 100%' : `${sprite.frames * 100}% 100%`,
               // How far the percentage walk travels. See `plant-sprite-play-fit`: 100% is
               // the LAST frame rather than one past it, so the range has to overshoot by
               // frames/(frames-1) for every step to land on a whole frame.
@@ -116,10 +139,13 @@ export function PlantSprite({
               width,
               height,
               // The sheet is `frames` wide; height auto-scales with it.
-              backgroundSize: `${width * sprite.frames}px ${height}px`,
+              backgroundSize: still ? `${width}px ${height}px` : `${width * sprite.frames}px ${height}px`,
             }),
-        // `?v=` is the sheet's content hash — see `PlantSpriteEntry.version`.
-        backgroundImage: `url(${assetPath(sprite.src)}?v=${sprite.version})`,
+        // `?v=` is the asset's content hash — see `PlantSpriteEntry.version`. The still
+        // carries its own, so a redrawn sprite busts both and they cannot disagree.
+        backgroundImage: still
+          ? `url(${assetPath(sprite.still!)}?v=${sprite.stillVersion})`
+          : `url(${assetPath(sprite.src)}?v=${sprite.version})`,
         // Custom properties rather than literals so one keyframe serves every sprite.
         // `steps()` is the one thing that cannot read a variable, hence the class above.
         ['--sprite-sheet-width' as string]: `${width * sprite.frames}px`,

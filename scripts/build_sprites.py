@@ -349,6 +349,28 @@ def compile_sprite(sprite: dict) -> dict:
     out_path = OUT_DIR / f"{sprite['herbId']}.png"
     sheet.save(out_path, "PNG", optimize=True)
 
+    # --- The still: frame 0 on its own ---------------------------------------
+    #
+    # A SHEET IS CHEAP ON THE WIRE AND EXPENSIVE IN MEMORY, and the collection grid pays the
+    # second for none of the first. Pixel art compresses extraordinarily well: all 54 adult
+    # sheets together are ~254 KB on disk. Decoded they are 70 MB of RGBA, because a browser
+    # holds the whole bitmap however little of it is on screen — one dandelion sheet is
+    # 3680x160, which is 2.3 MB resident to show a 170px square.
+    #
+    # The signed-out collection is 54 face-down tiles, every one of them a FROZEN sprite
+    # showing frame 0 and nothing else. It was loading all 54 sheets to do it.
+    #
+    # So frame 0 is written out on its own. It is the pose `build_sprites.py` already
+    # authors as a complete resting plant - the same frame `prefers-reduced-motion` freezes
+    # on - so this adds no new art and invents nothing; it is a crop of bytes that already
+    # exist. `PlantSprite` uses it wherever it is `frozen`, and the sheet stays exactly as
+    # it was for anything that actually animates.
+    still = sheet.crop((0, 0, cell * SCALE, height * SCALE))
+    still_dir = OUT_DIR / "still"
+    still_dir.mkdir(parents=True, exist_ok=True)
+    still_path = still_dir / f"{sprite['herbId']}.png"
+    still.save(still_path, "PNG", optimize=True)
+
     # A short content hash, appended to the URL by `PlantSprite` as `?v=`.
     #
     # These sheets are REGENERATED IN PLACE: the filename never changes, but the bytes do
@@ -368,6 +390,11 @@ def compile_sprite(sprite: dict) -> dict:
         "frames": frames,
         "fps": sprite["fps"],
         "personality": sprite["personality"],
+        # Frame 0 alone, for every surface that only ever shows the resting pose. Carries
+        # its own hash: it changes when the sprite does, and a stale still beside a fresh
+        # sheet would be the same cache bug the sheet's own version exists to prevent.
+        "still": f"/cards/animated/still/{sprite['herbId']}.png",
+        "stillVersion": hashlib.sha1(still_path.read_bytes()).hexdigest()[:8],
         "content": content_box(sheet, cell * SCALE, height * SCALE),
     }
 

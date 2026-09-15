@@ -8,6 +8,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "generous",
+    "still": "/cards/animated/still/acer-spp.png",
+    "stillVersion": "7e3e9dde",
     "content": {
       "left": 0.1765,
       "top": 0.0357,
@@ -24,6 +26,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "generous",
+        "still": "/cards/animated/still/acer-spp-sprout.png",
+        "stillVersion": "0231fd59",
         "content": {
           "left": 0.2941,
           "top": 0.3929,
@@ -40,6 +44,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "generous",
+        "still": "/cards/animated/still/acer-spp-growing.png",
+        "stillVersion": "691314a2",
         "content": {
           "left": 0.2353,
           "top": 0.2143,
@@ -58,6 +64,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "capable",
+    "still": "/cards/animated/still/achillea-millefolium.png",
+    "stillVersion": "8757d9d6",
     "content": {
       "left": 0.0294,
       "top": 0.0357,
@@ -74,6 +82,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "capable",
+        "still": "/cards/animated/still/achillea-millefolium-sprout.png",
+        "stillVersion": "ff4af204",
         "content": {
           "left": 0.1471,
           "top": 0.4643,
@@ -90,6 +100,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "capable",
+        "still": "/cards/animated/still/achillea-millefolium-growing.png",
+        "stillVersion": "59f59e57",
         "content": {
           "left": 0.0588,
           "top": 0.2857,
@@ -108,6 +120,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "pleased",
+    "still": "/cards/animated/still/alliaria-petiolata.png",
+    "stillVersion": "473f37da",
     "content": {
       "left": 0.0294,
       "top": 0.1071,
@@ -124,6 +138,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "pleased",
+        "still": "/cards/animated/still/alliaria-petiolata-sprout.png",
+        "stillVersion": "f470736f",
         "content": {
           "left": 0.0882,
           "top": 0.4643,
@@ -140,6 +156,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "pleased",
+        "still": "/cards/animated/still/alliaria-petiolata-growing.png",
+        "stillVersion": "07132369",
         "content": {
           "left": 0.0588,
           "top": 0.2857,
@@ -158,6 +176,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "startled",
+    "still": "/cards/animated/still/allium-vineale.png",
+    "stillVersion": "d885050c",
     "content": {
       "left": 0.1765,
       "top": 0.1071,
@@ -174,6 +194,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "startled",
+        "still": "/cards/animated/still/allium-vineale-sprout.png",
+        "stillVersion": "c7254b20",
         "content": {
           "left": 0.2353,
           "top": 0.4643,
@@ -190,6 +212,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "startled",
+        "still": "/cards/animated/still/allium-vineale-growing.png",
+        "stillVersion": "b7d54e4e",
         "content": {
           "left": 0.2059,
           "top": 0.25,
@@ -208,6 +232,8 @@
     "frames": 14,
     "fps": 12,
     "personality": "sheepish",
+    "still": "/cards/animated/still/ambrosia-artemisiifolia.png",
+    "stillVersion": "4182222b",
     "content": {
       "left": 0.0588,
       "top": 0.1429,
@@ -224,6 +250,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "sheepish",
+        "still": "/cards/animated/still/ambrosia-artemisiifolia-sprout.png",
+        "stillVersion": "2fec4079",
         "content": {
           "left": 0.1176,
           "top": 0.4643,
@@ -240,6 +268,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "sheepish",
+        "still": "/cards/animated/still/ambrosia-artemisiifolia-growing.png",
+        "stillVersion": "b9cc8f23",
         "content": {
           "left": 0.0882,
           "top": 0.3214,
@@ -258,6 +288,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "eager",
+    "still": "/cards/animated/still/arctium-lappa.png",
+    "stillVersion": "b88249f1",
     "content": {
       "left": 0.0294,
       "top": 0.1071,
@@ -274,6 +306,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "eager",
+        "still": "/cards/animated/still/arctium-lappa-sprout.png",
+        "stillVersion": "3b298ba3",
         "content": {
           "left": 0.0588,
           "top": 0.4286,
@@ -290,6 +324,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "eager",
+        "still": "/cards/animated/still/arctium-lappa-growing.png",
+        "stillVersion": "c63bd41b",
         "content": {
           "left": 0.0294,
           "top": 0.2857,
@@ -308,6 +344,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "lustrous",
+    "still": "/cards/animated/still/callicarpa-americana.png",
+    "stillVersion": "660fc822",
     "content": {
       "left": 0.1765,
       "top": 0.0714,
@@ -324,6 +362,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "lustrous",
+        "still": "/cards/animated/still/callicarpa-americana-sprout.png",
+        "stillVersion": "3ac82755",
         "content": {
           "left": 0.2353,
           "top": 0.3571,
@@ -340,6 +380,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "lustrous",
+        "still": "/cards/animated/still/callicarpa-americana-growing.png",
+        "stillVersion": "a2b8f5b4",
         "content": {
           "left": 0.2059,
           "top": 0.1429,
@@ -358,6 +400,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "thrifty",
+    "still": "/cards/animated/still/capsella-bursa-pastoris.png",
+    "stillVersion": "e3020217",
     "content": {
       "left": 0.2059,
       "top": 0.0,
@@ -374,6 +418,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "thrifty",
+        "still": "/cards/animated/still/capsella-bursa-pastoris-sprout.png",
+        "stillVersion": "77aa5ca9",
         "content": {
           "left": 0.2353,
           "top": 0.3929,
@@ -390,6 +436,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "thrifty",
+        "still": "/cards/animated/still/capsella-bursa-pastoris-growing.png",
+        "stillVersion": "3755b9db",
         "content": {
           "left": 0.2353,
           "top": 0.1071,
@@ -408,6 +456,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "unhurried",
+    "still": "/cards/animated/still/chenopodium-album.png",
+    "stillVersion": "4b9e4dc5",
     "content": {
       "left": 0.1176,
       "top": 0.1429,
@@ -424,6 +474,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "unhurried",
+        "still": "/cards/animated/still/chenopodium-album-sprout.png",
+        "stillVersion": "e660a019",
         "content": {
           "left": 0.2353,
           "top": 0.4643,
@@ -440,6 +492,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "unhurried",
+        "still": "/cards/animated/still/chenopodium-album-growing.png",
+        "stillVersion": "edb83a38",
         "content": {
           "left": 0.1471,
           "top": 0.3214,
@@ -458,6 +512,8 @@
     "frames": 16,
     "fps": 8,
     "personality": "early riser",
+    "still": "/cards/animated/still/cichorium-intybus.png",
+    "stillVersion": "149e9998",
     "content": {
       "left": 0.0588,
       "top": 0.1429,
@@ -474,6 +530,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "early riser",
+        "still": "/cards/animated/still/cichorium-intybus-sprout.png",
+        "stillVersion": "d450e688",
         "content": {
           "left": 0.1176,
           "top": 0.5,
@@ -490,6 +548,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "early riser",
+        "still": "/cards/animated/still/cichorium-intybus-growing.png",
+        "stillVersion": "ebb68448",
         "content": {
           "left": 0.2941,
           "top": 0.2857,
@@ -508,6 +568,8 @@
     "frames": 14,
     "fps": 7,
     "personality": "tingly",
+    "still": "/cards/animated/still/echinacea-purpurea.png",
+    "stillVersion": "ee7ed31f",
     "content": {
       "left": 0.0882,
       "top": 0.0357,
@@ -524,6 +586,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "tingly",
+        "still": "/cards/animated/still/echinacea-purpurea-sprout.png",
+        "stillVersion": "fdfe6fb1",
         "content": {
           "left": 0.2353,
           "top": 0.3929,
@@ -540,6 +604,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "tingly",
+        "still": "/cards/animated/still/echinacea-purpurea-growing.png",
+        "stillVersion": "ccc6c8b1",
         "content": {
           "left": 0.2647,
           "top": 0.25,
@@ -558,6 +624,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "prehistoric",
+    "still": "/cards/animated/still/equisetum-arvense.png",
+    "stillVersion": "1238aa0a",
     "content": {
       "left": 0.2941,
       "top": 0.3929,
@@ -574,6 +642,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "prehistoric",
+        "still": "/cards/animated/still/equisetum-arvense-sprout.png",
+        "stillVersion": "38256cb4",
         "content": {
           "left": 0.3235,
           "top": 0.6071,
@@ -590,6 +660,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "prehistoric",
+        "still": "/cards/animated/still/equisetum-arvense-growing.png",
+        "stillVersion": "4a1633ac",
         "content": {
           "left": 0.3235,
           "top": 0.4643,
@@ -608,6 +680,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "sweet",
+    "still": "/cards/animated/still/fragaria-virginiana.png",
+    "stillVersion": "dcd8f34c",
     "content": {
       "left": 0.0588,
       "top": 0.0357,
@@ -624,6 +698,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "sweet",
+        "still": "/cards/animated/still/fragaria-virginiana-sprout.png",
+        "stillVersion": "810d0d2d",
         "content": {
           "left": 0.1765,
           "top": 0.3929,
@@ -640,6 +716,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "sweet",
+        "still": "/cards/animated/still/fragaria-virginiana-growing.png",
+        "stillVersion": "56ef8b7f",
         "content": {
           "left": 0.1471,
           "top": 0.2143,
@@ -658,6 +736,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "overfamiliar",
+    "still": "/cards/animated/still/galium-aparine.png",
+    "stillVersion": "b8120ded",
     "content": {
       "left": 0.0882,
       "top": 0.2857,
@@ -674,6 +754,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "overfamiliar",
+        "still": "/cards/animated/still/galium-aparine-sprout.png",
+        "stillVersion": "27a54509",
         "content": {
           "left": 0.1471,
           "top": 0.4643,
@@ -690,6 +772,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "overfamiliar",
+        "still": "/cards/animated/still/galium-aparine-growing.png",
+        "stillVersion": "07e9b671",
         "content": {
           "left": 0.1176,
           "top": 0.3929,
@@ -708,6 +792,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "inquisitive",
+    "still": "/cards/animated/still/geranium-maculatum.png",
+    "stillVersion": "940df710",
     "content": {
       "left": 0.0882,
       "top": 0.0357,
@@ -724,6 +810,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "inquisitive",
+        "still": "/cards/animated/still/geranium-maculatum-sprout.png",
+        "stillVersion": "c582101a",
         "content": {
           "left": 0.1765,
           "top": 0.3214,
@@ -740,6 +828,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "inquisitive",
+        "still": "/cards/animated/still/geranium-maculatum-growing.png",
+        "stillVersion": "314cd824",
         "content": {
           "left": 0.2353,
           "top": 0.2143,
@@ -758,6 +848,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "companionable",
+    "still": "/cards/animated/still/glechoma-hederacea.png",
+    "stillVersion": "269f130e",
     "content": {
       "left": 0.0882,
       "top": 0.2857,
@@ -774,6 +866,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "companionable",
+        "still": "/cards/animated/still/glechoma-hederacea-sprout.png",
+        "stillVersion": "5a65b5e6",
         "content": {
           "left": 0.1471,
           "top": 0.5,
@@ -790,6 +884,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "companionable",
+        "still": "/cards/animated/still/glechoma-hederacea-growing.png",
+        "stillVersion": "94951d76",
         "content": {
           "left": 0.0882,
           "top": 0.3929,
@@ -808,6 +904,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "deadpan",
+    "still": "/cards/animated/still/hamamelis-virginiana.png",
+    "stillVersion": "f6bc1c9b",
     "content": {
       "left": 0.1176,
       "top": 0.1071,
@@ -824,6 +922,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "deadpan",
+        "still": "/cards/animated/still/hamamelis-virginiana-sprout.png",
+        "stillVersion": "5275bab2",
         "content": {
           "left": 0.2353,
           "top": 0.4286,
@@ -840,6 +940,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "deadpan",
+        "still": "/cards/animated/still/hamamelis-virginiana-growing.png",
+        "stillVersion": "d50fb004",
         "content": {
           "left": 0.1471,
           "top": 0.2143,
@@ -858,6 +960,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "sunlit",
+    "still": "/cards/animated/still/hypericum-perforatum.png",
+    "stillVersion": "d3fc43e6",
     "content": {
       "left": 0.1176,
       "top": 0.0357,
@@ -874,6 +978,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "sunlit",
+        "still": "/cards/animated/still/hypericum-perforatum-sprout.png",
+        "stillVersion": "d64e5479",
         "content": {
           "left": 0.2353,
           "top": 0.3929,
@@ -890,6 +996,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "sunlit",
+        "still": "/cards/animated/still/hypericum-perforatum-growing.png",
+        "stillVersion": "0593eab5",
         "content": {
           "left": 0.3529,
           "top": 0.2143,
@@ -908,6 +1016,8 @@
     "frames": 14,
     "fps": 12,
     "personality": "jumpy",
+    "still": "/cards/animated/still/impatiens-capensis.png",
+    "stillVersion": "899e48d0",
     "content": {
       "left": 0.2941,
       "top": 0.1429,
@@ -924,6 +1034,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "jumpy",
+        "still": "/cards/animated/still/impatiens-capensis-sprout.png",
+        "stillVersion": "dac54c71",
         "content": {
           "left": 0.2941,
           "top": 0.4286,
@@ -940,6 +1052,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "jumpy",
+        "still": "/cards/animated/still/impatiens-capensis-growing.png",
+        "stillVersion": "071005cb",
         "content": {
           "left": 0.3529,
           "top": 0.2857,
@@ -958,6 +1072,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "orienting",
+    "still": "/cards/animated/still/lactuca-serriola.png",
+    "stillVersion": "547f94c9",
     "content": {
       "left": 0.2059,
       "top": 0.1071,
@@ -974,6 +1090,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "orienting",
+        "still": "/cards/animated/still/lactuca-serriola-sprout.png",
+        "stillVersion": "422e3ed5",
         "content": {
           "left": 0.1176,
           "top": 0.3929,
@@ -990,6 +1108,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "orienting",
+        "still": "/cards/animated/still/lactuca-serriola-growing.png",
+        "stillVersion": "c61dfd87",
         "content": {
           "left": 0.2059,
           "top": 0.25,
@@ -1008,6 +1128,8 @@
     "frames": 14,
     "fps": 12,
     "personality": "all talk",
+    "still": "/cards/animated/still/lamium-purpureum.png",
+    "stillVersion": "b77aedbb",
     "content": {
       "left": 0.0882,
       "top": 0.25,
@@ -1024,6 +1146,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "all talk",
+        "still": "/cards/animated/still/lamium-purpureum-sprout.png",
+        "stillVersion": "c6f3cd56",
         "content": {
           "left": 0.1471,
           "top": 0.5357,
@@ -1040,6 +1164,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "all talk",
+        "still": "/cards/animated/still/lamium-purpureum-growing.png",
+        "stillVersion": "ddf659a5",
         "content": {
           "left": 0.1176,
           "top": 0.4286,
@@ -1058,6 +1184,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "peppery",
+    "still": "/cards/animated/still/lindera-benzoin.png",
+    "stillVersion": "5fed9fe4",
     "content": {
       "left": 0.1471,
       "top": 0.1071,
@@ -1074,6 +1202,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "peppery",
+        "still": "/cards/animated/still/lindera-benzoin-sprout.png",
+        "stillVersion": "6f7397ef",
         "content": {
           "left": 0.2353,
           "top": 0.4286,
@@ -1090,6 +1220,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "peppery",
+        "still": "/cards/animated/still/lindera-benzoin-growing.png",
+        "stillVersion": "6f33a2a0",
         "content": {
           "left": 0.2059,
           "top": 0.2143,
@@ -1108,6 +1240,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "sweet-toothed",
+    "still": "/cards/animated/still/lonicera-japonica.png",
+    "stillVersion": "4cde46d7",
     "content": {
       "left": 0.0588,
       "top": 0.1071,
@@ -1124,6 +1258,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "sweet-toothed",
+        "still": "/cards/animated/still/lonicera-japonica-sprout.png",
+        "stillVersion": "d647cce8",
         "content": {
           "left": 0.1471,
           "top": 0.4643,
@@ -1140,6 +1276,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "sweet-toothed",
+        "still": "/cards/animated/still/lonicera-japonica-growing.png",
+        "stillVersion": "1c9b5838",
         "content": {
           "left": 0.1471,
           "top": 0.2857,
@@ -1158,6 +1296,8 @@
     "frames": 12,
     "fps": 7,
     "personality": "obliging",
+    "still": "/cards/animated/still/malva-neglecta.png",
+    "stillVersion": "831ab8fe",
     "content": {
       "left": 0.0882,
       "top": 0.1429,
@@ -1174,6 +1314,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "obliging",
+        "still": "/cards/animated/still/malva-neglecta-sprout.png",
+        "stillVersion": "996e28cd",
         "content": {
           "left": 0.3235,
           "top": 0.5,
@@ -1190,6 +1332,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "obliging",
+        "still": "/cards/animated/still/malva-neglecta-growing.png",
+        "stillVersion": "b36853c1",
         "content": {
           "left": 0.1471,
           "top": 0.2857,
@@ -1208,6 +1352,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "calm",
+    "still": "/cards/animated/still/melissa-officinalis.png",
+    "stillVersion": "9a86be5a",
     "content": {
       "left": 0.0294,
       "top": 0.1786,
@@ -1224,6 +1370,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "calm",
+        "still": "/cards/animated/still/melissa-officinalis-sprout.png",
+        "stillVersion": "6000bf12",
         "content": {
           "left": 0.1176,
           "top": 0.4643,
@@ -1240,6 +1388,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "calm",
+        "still": "/cards/animated/still/melissa-officinalis-growing.png",
+        "stillVersion": "e731d1bd",
         "content": {
           "left": 0.0588,
           "top": 0.3571,
@@ -1258,6 +1408,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "refreshing",
+    "still": "/cards/animated/still/mentha-canadensis.png",
+    "stillVersion": "38d34ee2",
     "content": {
       "left": 0.0294,
       "top": 0.2857,
@@ -1274,6 +1426,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "refreshing",
+        "still": "/cards/animated/still/mentha-canadensis-sprout.png",
+        "stillVersion": "6dc8e5cc",
         "content": {
           "left": 0.1176,
           "top": 0.5357,
@@ -1290,6 +1444,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "refreshing",
+        "still": "/cards/animated/still/mentha-canadensis-growing.png",
+        "stillVersion": "5b3b9dce",
         "content": {
           "left": 0.0588,
           "top": 0.4286,
@@ -1308,6 +1464,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "flamboyant",
+    "still": "/cards/animated/still/monarda-fistulosa.png",
+    "stillVersion": "2dda95cd",
     "content": {
       "left": 0.0882,
       "top": 0.0714,
@@ -1324,6 +1482,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "flamboyant",
+        "still": "/cards/animated/still/monarda-fistulosa-sprout.png",
+        "stillVersion": "141fa828",
         "content": {
           "left": 0.1471,
           "top": 0.4643,
@@ -1340,6 +1500,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "flamboyant",
+        "still": "/cards/animated/still/monarda-fistulosa-growing.png",
+        "stillVersion": "cc90088e",
         "content": {
           "left": 0.1176,
           "top": 0.25,
@@ -1358,6 +1520,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "unrepentant",
+    "still": "/cards/animated/still/morus-spp.png",
+    "stillVersion": "ac9183f1",
     "content": {
       "left": 0.0294,
       "top": 0.1429,
@@ -1374,6 +1538,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "unrepentant",
+        "still": "/cards/animated/still/morus-spp-sprout.png",
+        "stillVersion": "1a6f89d5",
         "content": {
           "left": 0.0882,
           "top": 0.4286,
@@ -1390,6 +1556,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "unrepentant",
+        "still": "/cards/animated/still/morus-spp-growing.png",
+        "stillVersion": "656c474a",
         "content": {
           "left": 0.0294,
           "top": 0.2857,
@@ -1408,6 +1576,8 @@
     "frames": 16,
     "fps": 12,
     "personality": "giddy",
+    "still": "/cards/animated/still/nepeta-cataria.png",
+    "stillVersion": "f91953dc",
     "content": {
       "left": 0.0294,
       "top": 0.0,
@@ -1424,6 +1594,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "giddy",
+        "still": "/cards/animated/still/nepeta-cataria-sprout.png",
+        "stillVersion": "64c5d89b",
         "content": {
           "left": 0.0882,
           "top": 0.3571,
@@ -1440,6 +1612,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "giddy",
+        "still": "/cards/animated/still/nepeta-cataria-growing.png",
+        "stillVersion": "2c17467f",
         "content": {
           "left": 0.0588,
           "top": 0.1786,
@@ -1458,6 +1632,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "nocturnal",
+    "still": "/cards/animated/still/oenothera-biennis.png",
+    "stillVersion": "dcfb32fc",
     "content": {
       "left": 0.1765,
       "top": 0.0,
@@ -1474,6 +1650,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "nocturnal",
+        "still": "/cards/animated/still/oenothera-biennis-sprout.png",
+        "stillVersion": "ee52b135",
         "content": {
           "left": 0.1765,
           "top": 0.3929,
@@ -1490,6 +1668,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "nocturnal",
+        "still": "/cards/animated/still/oenothera-biennis-growing.png",
+        "stillVersion": "ec42dcd3",
         "content": {
           "left": 0.2647,
           "top": 0.1429,
@@ -1508,6 +1688,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "private",
+    "still": "/cards/animated/still/oxalis-stricta.png",
+    "stillVersion": "053124c0",
     "content": {
       "left": 0.2647,
       "top": 0.1786,
@@ -1524,6 +1706,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "private",
+        "still": "/cards/animated/still/oxalis-stricta-sprout.png",
+        "stillVersion": "aa8f929a",
         "content": {
           "left": 0.3235,
           "top": 0.4643,
@@ -1540,6 +1724,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "private",
+        "still": "/cards/animated/still/oxalis-stricta-growing.png",
+        "stillVersion": "2ed1f204",
         "content": {
           "left": 0.2941,
           "top": 0.3214,
@@ -1558,6 +1744,8 @@
     "frames": 16,
     "fps": 8,
     "personality": "theatrical",
+    "still": "/cards/animated/still/passiflora-incarnata.png",
+    "stillVersion": "378592d3",
     "content": {
       "left": 0.0588,
       "top": 0.1071,
@@ -1574,6 +1762,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "theatrical",
+        "still": "/cards/animated/still/passiflora-incarnata-sprout.png",
+        "stillVersion": "b1fead3f",
         "content": {
           "left": 0.0882,
           "top": 0.3929,
@@ -1590,6 +1780,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "theatrical",
+        "still": "/cards/animated/still/passiflora-incarnata-growing.png",
+        "stillVersion": "206ad97e",
         "content": {
           "left": 0.0588,
           "top": 0.25,
@@ -1608,6 +1800,8 @@
     "frames": 16,
     "fps": 6,
     "personality": "ancient",
+    "still": "/cards/animated/still/pinus-spp.png",
+    "stillVersion": "4ca20c16",
     "content": {
       "left": 0.2353,
       "top": 0.0357,
@@ -1624,6 +1818,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "ancient",
+        "still": "/cards/animated/still/pinus-spp-sprout.png",
+        "stillVersion": "88cbcded",
         "content": {
           "left": 0.3529,
           "top": 0.3571,
@@ -1640,6 +1836,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "ancient",
+        "still": "/cards/animated/still/pinus-spp-growing.png",
+        "stillVersion": "093c58df",
         "content": {
           "left": 0.3235,
           "top": 0.2143,
@@ -1658,6 +1856,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "unbothered",
+    "still": "/cards/animated/still/plantago-major.png",
+    "stillVersion": "c4dce1bd",
     "content": {
       "left": 0.0294,
       "top": 0.1071,
@@ -1674,6 +1874,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "unbothered",
+        "still": "/cards/animated/still/plantago-major-sprout.png",
+        "stillVersion": "29f75577",
         "content": {
           "left": 0.1176,
           "top": 0.4286,
@@ -1690,6 +1892,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "unbothered",
+        "still": "/cards/animated/still/plantago-major-growing.png",
+        "stillVersion": "27cfbb0c",
         "content": {
           "left": 0.0588,
           "top": 0.25,
@@ -1708,6 +1912,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "smug",
+    "still": "/cards/animated/still/portulaca-oleracea.png",
+    "stillVersion": "1a24b301",
     "content": {
       "left": 0.0294,
       "top": 0.1429,
@@ -1724,6 +1930,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "smug",
+        "still": "/cards/animated/still/portulaca-oleracea-sprout.png",
+        "stillVersion": "a594e3d5",
         "content": {
           "left": 0.0882,
           "top": 0.4286,
@@ -1740,6 +1948,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "smug",
+        "still": "/cards/animated/still/portulaca-oleracea-growing.png",
+        "stillVersion": "860d4c0e",
         "content": {
           "left": 0.0294,
           "top": 0.2857,
@@ -1758,6 +1968,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "quietly capable",
+    "still": "/cards/animated/still/prunella-vulgaris.png",
+    "stillVersion": "45eda32c",
     "content": {
       "left": 0.0294,
       "top": 0.1071,
@@ -1774,6 +1986,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "quietly capable",
+        "still": "/cards/animated/still/prunella-vulgaris-sprout.png",
+        "stillVersion": "973257e1",
         "content": {
           "left": 0.1176,
           "top": 0.4643,
@@ -1790,6 +2004,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "quietly capable",
+        "still": "/cards/animated/still/prunella-vulgaris-growing.png",
+        "stillVersion": "cf033c45",
         "content": {
           "left": 0.0588,
           "top": 0.2857,
@@ -1808,6 +2024,8 @@
     "frames": 16,
     "fps": 6,
     "personality": "patriarchal",
+    "still": "/cards/animated/still/quercus-spp.png",
+    "stillVersion": "3229b13c",
     "content": {
       "left": 0.1471,
       "top": 0.0,
@@ -1824,6 +2042,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "patriarchal",
+        "still": "/cards/animated/still/quercus-spp-sprout.png",
+        "stillVersion": "f432c135",
         "content": {
           "left": 0.3235,
           "top": 0.3929,
@@ -1840,6 +2060,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "patriarchal",
+        "still": "/cards/animated/still/quercus-spp-growing.png",
+        "stillVersion": "3645cf91",
         "content": {
           "left": 0.2353,
           "top": 0.1429,
@@ -1858,6 +2080,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "ceremonial",
+    "still": "/cards/animated/still/rhus-spp.png",
+    "stillVersion": "e930b6df",
     "content": {
       "left": 0.0294,
       "top": 0.0357,
@@ -1874,6 +2098,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "ceremonial",
+        "still": "/cards/animated/still/rhus-spp-sprout.png",
+        "stillVersion": "0d1362b1",
         "content": {
           "left": 0.0882,
           "top": 0.4286,
@@ -1890,6 +2116,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "ceremonial",
+        "still": "/cards/animated/still/rhus-spp-growing.png",
+        "stillVersion": "591d6241",
         "content": {
           "left": 0.0588,
           "top": 0.1786,
@@ -1908,6 +2136,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "vain",
+    "still": "/cards/animated/still/rosa-spp.png",
+    "stillVersion": "adcba289",
     "content": {
       "left": 0.0294,
       "top": 0.1071,
@@ -1924,6 +2154,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "vain",
+        "still": "/cards/animated/still/rosa-spp-sprout.png",
+        "stillVersion": "1fc85961",
         "content": {
           "left": 0.0882,
           "top": 0.3929,
@@ -1940,6 +2172,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "vain",
+        "still": "/cards/animated/still/rosa-spp-growing.png",
+        "stillVersion": "11abf117",
         "content": {
           "left": 0.0882,
           "top": 0.2143,
@@ -1958,6 +2192,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "conditional",
+    "still": "/cards/animated/still/rubus-spp.png",
+    "stillVersion": "6c1ce52b",
     "content": {
       "left": 0.0294,
       "top": 0.0714,
@@ -1974,6 +2210,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "conditional",
+        "still": "/cards/animated/still/rubus-spp-sprout.png",
+        "stillVersion": "d50aef49",
         "content": {
           "left": 0.0294,
           "top": 0.3929,
@@ -1990,6 +2228,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "conditional",
+        "still": "/cards/animated/still/rubus-spp-growing.png",
+        "stillVersion": "f0de1bc8",
         "content": {
           "left": 0.0294,
           "top": 0.25,
@@ -2008,6 +2248,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "sour",
+    "still": "/cards/animated/still/rumex-acetosella.png",
+    "stillVersion": "8dc5bd32",
     "content": {
       "left": 0.0294,
       "top": 0.0714,
@@ -2024,6 +2266,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "sour",
+        "still": "/cards/animated/still/rumex-acetosella-sprout.png",
+        "stillVersion": "f2b9f662",
         "content": {
           "left": 0.0882,
           "top": 0.4643,
@@ -2040,6 +2284,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "sour",
+        "still": "/cards/animated/still/rumex-acetosella-growing.png",
+        "stillVersion": "2cab4346",
         "content": {
           "left": 0.0588,
           "top": 0.25,
@@ -2058,6 +2304,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "steady",
+    "still": "/cards/animated/still/rumex-obtusifolius.png",
+    "stillVersion": "a910e5c9",
     "content": {
       "left": 0.1765,
       "top": 0.0714,
@@ -2074,6 +2322,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "steady",
+        "still": "/cards/animated/still/rumex-obtusifolius-sprout.png",
+        "stillVersion": "872d2fbb",
         "content": {
           "left": 0.2059,
           "top": 0.4643,
@@ -2090,6 +2340,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "steady",
+        "still": "/cards/animated/still/rumex-obtusifolius-growing.png",
+        "stillVersion": "fa0ae237",
         "content": {
           "left": 0.1765,
           "top": 0.25,
@@ -2108,6 +2360,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "consoling",
+    "still": "/cards/animated/still/salix-spp.png",
+    "stillVersion": "645622f4",
     "content": {
       "left": 0.2059,
       "top": 0.1786,
@@ -2124,6 +2378,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "consoling",
+        "still": "/cards/animated/still/salix-spp-sprout.png",
+        "stillVersion": "d9849e28",
         "content": {
           "left": 0.2941,
           "top": 0.5,
@@ -2140,6 +2396,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "consoling",
+        "still": "/cards/animated/still/salix-spp-growing.png",
+        "stillVersion": "0ce3a9c4",
         "content": {
           "left": 0.2647,
           "top": 0.3214,
@@ -2158,6 +2416,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "venerable",
+    "still": "/cards/animated/still/sambucus-spp.png",
+    "stillVersion": "bdb8486a",
     "content": {
       "left": 0.0294,
       "top": 0.0714,
@@ -2174,6 +2434,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "venerable",
+        "still": "/cards/animated/still/sambucus-spp-sprout.png",
+        "stillVersion": "19cfbae0",
         "content": {
           "left": 0.1471,
           "top": 0.4286,
@@ -2190,6 +2452,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "venerable",
+        "still": "/cards/animated/still/sambucus-spp-growing.png",
+        "stillVersion": "a5ced088",
         "content": {
           "left": 0.0294,
           "top": 0.25,
@@ -2208,6 +2472,8 @@
     "frames": 12,
     "fps": 8,
     "personality": "guarded",
+    "still": "/cards/animated/still/silybum-marianum.png",
+    "stillVersion": "4cb51ab8",
     "content": {
       "left": 0.1471,
       "top": 0.0714,
@@ -2224,6 +2490,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "guarded",
+        "still": "/cards/animated/still/silybum-marianum-sprout.png",
+        "stillVersion": "c1a48387",
         "content": {
           "left": 0.2353,
           "top": 0.4286,
@@ -2240,6 +2508,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "guarded",
+        "still": "/cards/animated/still/silybum-marianum-growing.png",
+        "stillVersion": "46cef803",
         "content": {
           "left": 0.2059,
           "top": 0.25,
@@ -2258,6 +2528,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "grand",
+    "still": "/cards/animated/still/solidago-canadensis.png",
+    "stillVersion": "78bed053",
     "content": {
       "left": 0.0588,
       "top": 0.0,
@@ -2274,6 +2546,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "grand",
+        "still": "/cards/animated/still/solidago-canadensis-sprout.png",
+        "stillVersion": "38ddfe8a",
         "content": {
           "left": 0.0882,
           "top": 0.4286,
@@ -2290,6 +2564,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "grand",
+        "still": "/cards/animated/still/solidago-canadensis-growing.png",
+        "stillVersion": "ff4a5022",
         "content": {
           "left": 0.0588,
           "top": 0.1786,
@@ -2308,6 +2584,8 @@
     "frames": 14,
     "fps": 12,
     "personality": "delighted",
+    "still": "/cards/animated/still/stellaria-media.png",
+    "stillVersion": "1fdf2a4f",
     "content": {
       "left": 0.2353,
       "top": 0.2143,
@@ -2324,6 +2602,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "delighted",
+        "still": "/cards/animated/still/stellaria-media-sprout.png",
+        "stillVersion": "7bc56673",
         "content": {
           "left": 0.2941,
           "top": 0.5,
@@ -2340,6 +2620,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "delighted",
+        "still": "/cards/animated/still/stellaria-media-growing.png",
+        "stillVersion": "3e622c53",
         "content": {
           "left": 0.2353,
           "top": 0.3571,
@@ -2358,6 +2640,8 @@
     "frames": 16,
     "fps": 12,
     "personality": "energetic",
+    "still": "/cards/animated/still/taraxacum-officinale.png",
+    "stillVersion": "4cc97da6",
     "content": {
       "left": 0.0435,
       "top": 0.125,
@@ -2374,6 +2658,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "energetic",
+        "still": "/cards/animated/still/taraxacum-officinale-sprout.png",
+        "stillVersion": "22a62132",
         "content": {
           "left": 0.2391,
           "top": 0.4375,
@@ -2390,6 +2676,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "energetic",
+        "still": "/cards/animated/still/taraxacum-officinale-growing.png",
+        "stillVersion": "9c12fc1d",
         "content": {
           "left": 0.2609,
           "top": 0.2812,
@@ -2408,6 +2696,8 @@
     "frames": 14,
     "fps": 10,
     "personality": "hopeful",
+    "still": "/cards/animated/still/trifolium-pratense.png",
+    "stillVersion": "44f3f731",
     "content": {
       "left": 0.0294,
       "top": 0.0357,
@@ -2424,6 +2714,8 @@
         "frames": 8,
         "fps": 6,
         "personality": "hopeful",
+        "still": "/cards/animated/still/trifolium-pratense-sprout.png",
+        "stillVersion": "0e0e1f0d",
         "content": {
           "left": 0.2059,
           "top": 0.4286,
@@ -2440,6 +2732,8 @@
         "frames": 10,
         "fps": 8,
         "personality": "hopeful",
+        "still": "/cards/animated/still/trifolium-pratense-growing.png",
+        "stillVersion": "d4cd9aaa",
         "content": {
           "left": 0.0588,
           "top": 0.25,
@@ -2458,6 +2752,8 @@
     "frames": 14,
     "fps": 7,
     "personality": "dusty",
+    "still": "/cards/animated/still/typha-latifolia.png",
+    "stillVersion": "55bccbaa",
     "content": {
       "left": 0.1471,
       "top": 0.0,
@@ -2474,6 +2770,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "dusty",
+        "still": "/cards/animated/still/typha-latifolia-sprout.png",
+        "stillVersion": "5444c9e1",
         "content": {
           "left": 0.2353,
           "top": 0.3571,
@@ -2490,6 +2788,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "dusty",
+        "still": "/cards/animated/still/typha-latifolia-growing.png",
+        "stillVersion": "2be8329a",
         "content": {
           "left": 0.2059,
           "top": 0.1786,
@@ -2508,6 +2808,8 @@
     "frames": 14,
     "fps": 12,
     "personality": "alert",
+    "still": "/cards/animated/still/urtica-dioica.png",
+    "stillVersion": "e11fd968",
     "content": {
       "left": 0.1471,
       "top": 0.2857,
@@ -2524,6 +2826,8 @@
         "frames": 8,
         "fps": 7,
         "personality": "alert",
+        "still": "/cards/animated/still/urtica-dioica-sprout.png",
+        "stillVersion": "c2918919",
         "content": {
           "left": 0.1176,
           "top": 0.5357,
@@ -2540,6 +2844,8 @@
         "frames": 10,
         "fps": 10,
         "personality": "alert",
+        "still": "/cards/animated/still/urtica-dioica-growing.png",
+        "stillVersion": "1e57d74a",
         "content": {
           "left": 0.0882,
           "top": 0.4643,
@@ -2558,6 +2864,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "proud",
+    "still": "/cards/animated/still/verbascum-thapsus.png",
+    "stillVersion": "325ee927",
     "content": {
       "left": 0.0588,
       "top": 0.1429,
@@ -2574,6 +2882,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "proud",
+        "still": "/cards/animated/still/verbascum-thapsus-sprout.png",
+        "stillVersion": "38faf6b8",
         "content": {
           "left": 0.1176,
           "top": 0.5,
@@ -2590,6 +2900,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "proud",
+        "still": "/cards/animated/still/verbascum-thapsus-growing.png",
+        "stillVersion": "59f000bb",
         "content": {
           "left": 0.0588,
           "top": 0.3214,
@@ -2608,6 +2920,8 @@
     "frames": 14,
     "fps": 6,
     "personality": "measured",
+    "still": "/cards/animated/still/verbena-hastata.png",
+    "stillVersion": "4bcc460b",
     "content": {
       "left": 0.1471,
       "top": 0.25,
@@ -2624,6 +2938,8 @@
         "frames": 8,
         "fps": 4,
         "personality": "measured",
+        "still": "/cards/animated/still/verbena-hastata-sprout.png",
+        "stillVersion": "6ad0608e",
         "content": {
           "left": 0.2353,
           "top": 0.4643,
@@ -2640,6 +2956,8 @@
         "frames": 10,
         "fps": 5,
         "personality": "measured",
+        "still": "/cards/animated/still/verbena-hastata-growing.png",
+        "stillVersion": "38d1ae22",
         "content": {
           "left": 0.2059,
           "top": 0.3214,
@@ -2658,6 +2976,8 @@
     "frames": 14,
     "fps": 8,
     "personality": "bashful",
+    "still": "/cards/animated/still/viola-sororia.png",
+    "stillVersion": "16187155",
     "content": {
       "left": 0.0882,
       "top": 0.2143,
@@ -2674,6 +2994,8 @@
         "frames": 8,
         "fps": 5,
         "personality": "bashful",
+        "still": "/cards/animated/still/viola-sororia-sprout.png",
+        "stillVersion": "d0438768",
         "content": {
           "left": 0.2059,
           "top": 0.4643,
@@ -2690,6 +3012,8 @@
         "frames": 10,
         "fps": 6,
         "personality": "bashful",
+        "still": "/cards/animated/still/viola-sororia-growing.png",
+        "stillVersion": "e94e9340",
         "content": {
           "left": 0.2941,
           "top": 0.3214,
