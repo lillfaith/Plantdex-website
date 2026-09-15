@@ -157,16 +157,54 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
+      {/*
+        THE CLAUSE ITSELF LIVES HERE, not in the owner-input registry.
+
+        That registry exists so a FACT referenced by six sentences has one home — an email
+        address, a governing law. This is not a fact quoted by the policy, it is the policy:
+        four paragraphs of operative text appearing exactly once, on the page that governs.
+        `/terms-of-sale` carries the sale-specific half and points back here rather than
+        restating it, so the two cannot drift into saying different things.
+
+        DELIBERATELY NO DOLLAR CAP. "Liability limited to the purchase price" is the obvious
+        next clause and was ruled out pending review: enforceability varies, and this is a
+        product where somebody may eat a plant.
+
+        The final paragraph is not boilerplate either — it is what keeps the three above it
+        from reading as an attempt to exclude what cannot be excluded.
+      */}
       <LegalSection id="liability" heading="Responsibility">
         <p>
-          Nothing in these terms limits liability for anything that cannot lawfully be limited.
-          Beyond that, the warranty disclaimer and limitation of liability are{' '}
-          <OwnerGap id="liability" />.
+          Plantdex, including the printed deck, website, plant-identification features,
+          educational materials, and related content, is provided for educational and
+          informational purposes only. It is not medical, nutritional, toxicological, or
+          professional foraging advice, and it is not a substitute for independent
+          identification or advice from a qualified professional.
         </p>
-        <p className="text-sm text-violet-300">
-          This section is deliberately left open rather than filled with standard wording. It is
-          the clause most likely to matter on a site about plants people may eat, and it is a
-          decision for a lawyer, not for a draft.
+        <p>
+          Plant identification from photographs is inherently uncertain. Plantdex does not
+          guarantee that any identification suggestion, plant description, preparation method,
+          safety statement, or other content is complete, current, or error-free. You are
+          responsible for independently confirming the identity and safety of any plant before
+          handling, consuming, drinking, applying, preparing, or otherwise using it.
+        </p>
+        <p>
+          To the fullest extent permitted by applicable law, Plantdex and its operator disclaim
+          warranties, express or implied, including warranties of accuracy, reliability,
+          merchantability, fitness for a particular purpose, and non-infringement.
+        </p>
+        <p>
+          To the fullest extent permitted by applicable law, Plantdex and its operator will not
+          be liable for indirect, incidental, special, consequential, exemplary, or punitive
+          damages, or for injury, illness, allergic reaction, poisoning, property damage, loss
+          of data, loss of profits, or other loss arising from reliance on plant-identification
+          suggestions, educational content, preparation information, or use of the service or
+          deck.
+        </p>
+        <p>
+          Where liability cannot legally be excluded, liability will be limited to the maximum
+          extent permitted by law. Nothing in these terms excludes or limits liability,
+          warranties, remedies, or consumer rights that cannot lawfully be excluded or limited.
         </p>
       </LegalSection>
 

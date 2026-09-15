@@ -42,9 +42,38 @@ export default function PrivacyPage() {
           Plantdex is operated by <OwnerGap id="legal-entity" />. Questions about anything on
           this page, or a request about your own data, go to <OwnerGap id="contact-email" />.
         </p>
+      </LegalSection>
+
+      {/*
+        WHO THIS IS FOR — a posture, stated, rather than a ruling this repository cannot make.
+
+        This replaced a one-line gap ("which privacy laws apply … is [Which privacy regimes
+        apply]"). The tempting answer was "US only, GDPR does not apply", and it is a claim
+        nobody here can support: the app is publicly reachable and whether a regime applies
+        turns on facts well past where the shop ships. Each sentence below is either
+        observable (where Plantdex is operated, who it is marketed to) or a commitment
+        (rights are honoured where law gives them). None of it asserts that a particular law
+        does or does not reach a particular reader.
+
+        The last paragraph is load-bearing rather than boilerplate: without it, the first two
+        could be read as an attempt to contract out of a regime, which is the failure mode
+        this wording exists to avoid.
+      */}
+      <LegalSection id="audience" heading="Who this service is intended for">
         <p>
-          Which privacy laws apply to you depends on where you and the operator are, which is{' '}
-          <OwnerGap id="audience-scope" />.
+          Plantdex is operated from the United States and is intended primarily for users in
+          the United States. The service is not specifically marketed to residents of the
+          European Union, United Kingdom, or other jurisdictions outside the United States.
+        </p>
+        <p>
+          Privacy rights vary by location. Where applicable law gives you rights relating to
+          your personal information, Plantdex will honor those rights as required by that law.
+          You may contact us at <OwnerGap id="contact-email" /> to request access, correction,
+          deletion, or other rights that apply to you.
+        </p>
+        <p>
+          Nothing in this policy is intended to waive rights that cannot legally be waived or
+          to claim that a particular privacy law does not apply where it does.
         </p>
       </LegalSection>
 

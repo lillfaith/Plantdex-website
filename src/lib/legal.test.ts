@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { ANALYTICS_PROVIDER, EVENT_NAMES, UNEMITTED_EVENTS } from './analytics';
 import {
   LEGAL_REVIEWED,
+  reviewOutstanding,
   LEGAL_STATUS,
   OWNER_INPUTS,
   blockingOwnerInputs,
@@ -30,6 +31,19 @@ function readdirRecursive(dir: string): string[] {
     const path = join(dir, entry.name);
     return entry.isDirectory() ? readdirRecursive(path) : [path];
   });
+}
+
+/**
+ * A page's VISIBLE prose — comments removed.
+ *
+ * A reader sees the JSX, not the docblock, and several guards here assert that a page does
+ * or does not say something. Read raw, a comment EXPLAINING why wording was avoided
+ * satisfies a "does it say it" check and trips a "does it not say it" check — both of which
+ * happened while writing the two guards below: a note quoting the sentence "GDPR does not
+ * apply" as the thing NOT to write failed the test forbidding it.
+ */
+function prose(path: string): string {
+  return read(path).replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
 }
 
 /** Every `<OwnerGap id="..." />` used across the legal pages. */
@@ -84,6 +98,93 @@ describe('owner input registry', () => {
         undefined,
       );
     }
+  });
+
+  it('keeps an answer awaiting review out of "published"', () => {
+    /*
+     * THE FAILURE THIS EXISTS FOR IS SILENT AND IN THE FUTURE.
+     *
+     * Two answers here — the audience posture and the liability clause — are careful drafts
+     * of wording whose SCOPE is a legal question. Counted only as "answered", the day the
+     * last genuinely-missing fact lands (the legal entity, the Supabase DPA) the draft
+     * banner would disappear from prose nobody has reviewed, and the pages would present
+     * themselves as in force. Nothing on the page would look wrong; that is the problem.
+     *
+     * So a pending review holds the pages in draft on its own, with every blocking input
+     * answered.
+     */
+    expect(reviewOutstanding().length).toBeGreaterThan(0);
+    expect(LEGAL_STATUS).toBe('draft');
+  });
+
+  it('says why each review is still wanted, rather than just flagging one', () => {
+    // A bare boolean would be a shrug. The sentence is what tells whoever clears it what
+    // they are being asked to confirm.
+    for (const input of reviewOutstanding()) {
+      expect(input.reviewRecommended!.length, input.id).toBeGreaterThan(40);
+    }
+  });
+
+  it('only recommends review for something that has an answer to review', () => {
+    /*
+     * `reviewRecommended` on an unanswered entry would be incoherent — there is no wording
+     * to check — and would hold the pages in draft for a reason the banner cannot explain,
+     * since the banner counts it separately from the visible holes.
+     */
+    for (const input of reviewOutstanding()) {
+      expect(input.value, `"${input.id}" wants review but carries no answer`).toBeDefined();
+    }
+  });
+
+  it('states the liability clause on the page, not in the registry', () => {
+    /*
+     * The registry holds FACTS many sentences reference. This is four paragraphs of
+     * operative text that appears once, on the page it governs — pasted into a string it
+     * would render as one undifferentiated run, and pasted into both /terms and
+     * /terms-of-sale it would be two copies free to drift.
+     *
+     * Checked by its substance rather than its length: the clause has to actually say the
+     * things that make it a disclaimer.
+     */
+    const terms = prose('src/app/terms/page.tsx');
+    expect(terms).toMatch(/educational and\s+informational purposes only/);
+    expect(terms).toMatch(/inherently uncertain/);
+    expect(terms).toMatch(/merchantability, fitness for a particular purpose/);
+    // The carve-out is what stops the rest reading as an attempt to exclude the unexcludable.
+    expect(terms).toMatch(/cannot lawfully be excluded or limited/);
+  });
+
+  it('adds no monetary liability cap anywhere', () => {
+    /*
+     * "Liability limited to the purchase price" is the obvious next clause and was ruled out
+     * pending legal review: enforceability varies, and this is a product where somebody may
+     * eat a plant. A guard rather than a comment, because the comment is in a file nobody
+     * reads while drafting the next paragraph.
+     */
+    for (const path of PAGES) {
+      expect(prose(path), `${path}: monetary liability cap`).not.toMatch(
+        /liability[^.]{0,80}(limited|capped)[^.]{0,80}(\$|purchase price|amount (you )?paid)/i,
+      );
+    }
+  });
+
+  it('claims no blanket GDPR or CCPA compliance, and denies no regime either', () => {
+    /*
+     * BOTH DIRECTIONS ARE WRONG AND THEY FAIL DIFFERENTLY. Claiming compliance with a regime
+     * nobody has verified is a false statement in the document a reader is entitled to rely
+     * on. Categorically denying one — "GDPR does not apply" — is a claim this repository
+     * cannot support either: the app is publicly reachable and applicability turns on facts
+     * well past where the shop ships.
+     *
+     * The published posture is narrower than both: where Plantdex is operated and who it is
+     * directed to (observable), plus a commitment to honour rights where law gives them.
+     */
+    const privacy = prose('src/app/privacy/page.tsx');
+    expect(privacy).not.toMatch(/(GDPR|CCPA)[^.]{0,40}(compliant|compliance)/i);
+    expect(privacy).not.toMatch(/(GDPR|CCPA|General Data Protection)[^.]{0,30}does not apply/i);
+    expect(privacy).toMatch(/not specifically marketed to residents of the\s+European Union/);
+    // The sentence that keeps the two above it from reading as a contracting-out.
+    expect(privacy).toMatch(/waive rights that cannot legally be waived/);
   });
 
   it('marks the pages as a draft while anything blocking is outstanding', () => {

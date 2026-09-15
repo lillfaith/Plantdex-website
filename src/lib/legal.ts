@@ -39,6 +39,21 @@ export interface OwnerInput {
    */
   blocking: boolean;
   /**
+   * WHY THIS ANSWER STILL WANTS A LAWYER, when it has one.
+   *
+   * Some questions here are answerable in the owner's own words and still not SETTLED by
+   * them: "which privacy regimes apply" and "how far may liability be excluded" both depend
+   * on facts and law outside this repository, so a careful draft is the right thing to
+   * publish and the wrong thing to call final.
+   *
+   * It is a separate axis from `value` on purpose. Without it the only two states are
+   * "missing" and "done", so a considered draft has to be recorded as done — and the day the
+   * last genuinely-missing answer lands, the draft banner disappears from wording nobody has
+   * reviewed. `LEGAL_STATUS` reads this too, so an outstanding review keeps the pages in
+   * draft rather than merely noting a regret in a comment.
+   */
+  reviewRecommended?: string;
+  /**
    * The owner's answer, once given. Absent means still outstanding.
    *
    * THE ANSWER LIVES HERE AND NOWHERE ELSE. `legal-entity` renders in three sentences and
@@ -127,6 +142,12 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
      * An effective-date clause tells you WHEN an agreement starts once it exists. It is not
      * evidence that it exists. The page may say Supabase publishes an addendum, because that
      * is observable; it may not say one is in force here, because that is not.
+     *
+     * HOW TO ACTUALLY CLOSE IT. Supabase offers a DPA to customers who ask, from the
+     * organisation-level Security area of the dashboard, and the document carries customer
+     * fields and signature lines — it takes effect when the customer signs or otherwise
+     * agrees to it. So this becomes answerable by EXECUTING it, not by reading it again.
+     * Record the date it was accepted as the value.
      */
   },
   {
@@ -135,6 +156,28 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'This depends on where users and the business are, not on the code. It changes which rights must be listed and whether a lawful-basis statement is required.',
     kind: 'legal',
     blocking: true,
+    /*
+     * THE ANSWER IS A POSTURE, NOT A RULING, and the wording is the owner's own.
+     *
+     * "US only, GDPR does not apply" would have been the easy sentence and it is a claim
+     * this repository cannot support: the app is publicly reachable, and whether a regime
+     * applies turns on facts well beyond where the shop ships. So the page says where
+     * Plantdex is operated and who it is directed to — both observable — and commits to
+     * honouring rights where law gives them, without asserting that any particular law does
+     * or does not reach a given reader.
+     *
+     * Read inline: "/privacy" carries the full statement as prose; this summary completes
+     * the cross-reference on "/returns", which asks only which regime governs a refund.
+     */
+    value:
+      'primarily the United States, where Plantdex is operated and to whose users it is ' +
+      'directed \u2014 it is not specifically marketed to the EU or UK, and no blanket GDPR or ' +
+      'CCPA compliance claim is made, but rights under any law that does apply to you are ' +
+      'honoured as that law requires',
+    reviewRecommended:
+      'Which regimes legally reach a publicly accessible service is a question of fact and ' +
+      'law, not of copy. The wording claims no more than it can support, which is the point ' +
+      'of it, but a lawyer should confirm the posture before the pages come out of draft.',
   },
   {
     id: 'minimum-age',
@@ -164,6 +207,31 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
     why: 'Standard clauses, but their scope and any statutory carve-outs are a legal decision, and this is a product where a person may eat a plant.',
     kind: 'legal',
     blocking: true,
+    /*
+     * ANSWERED IN THE OWNER'S OWN WORDS, and the full clause is PROSE ON "/terms" rather
+     * than a string here. That is not a departure from "the answer lives in one place": what
+     * lives in one place is the ANSWER to a question six sentences reference, and this
+     * answer is four paragraphs of operative text that appears exactly once, on the page it
+     * governs. A clause is the policy, not a fact quoted by it.
+     *
+     * This summary is what the two CROSS-REFERENCES need — "/terms-of-sale" states the sale
+     * position and points at the Terms for the clause itself.
+     *
+     * DELIBERATELY NO DOLLAR CAP. "Liability limited to the purchase price" is the obvious
+     * next clause and the owner ruled it out pending review: enforceability varies and this
+     * is a product where somebody may eat a plant. Do not add one here.
+     */
+    value:
+      'set out in full under Responsibility in the Terms of Use \u2014 in short, Plantdex is ' +
+      'educational and is not professional foraging, medical or toxicological advice; no ' +
+      'warranty is given that any identification suggestion or plant description is complete, ' +
+      'current or error-free; and liability is excluded to the fullest extent the law permits, ' +
+      'with nothing excluded that cannot lawfully be excluded',
+    reviewRecommended:
+      'The clause is deliberately firm rather than aggressive and preserves consumer rights ' +
+      'that cannot be waived, but its scope and any statutory carve-outs are a legal ' +
+      'decision on a product that carries ingestion risk. A lawyer should confirm it before ' +
+      'the pages come out of draft.',
   },
   /*
    * COMMERCE. These are marked non-blocking because they gate SELLING, not publishing the
@@ -288,14 +356,38 @@ export function blockingOwnerInputs(): readonly OwnerInput[] {
 }
 
 /**
+ * Answers that are written but not yet professionally reviewed.
+ *
+ * Separate from `blockingOwnerInputs()` because they fail differently: a blocking input has
+ * a HOLE in the page, visible to any reader. These have finished sentences that read as
+ * settled, which is exactly why they need a second signal — nothing about the page itself
+ * would tell you the wording is a considered draft.
+ */
+export function reviewOutstanding(): readonly OwnerInput[] {
+  return OWNER_INPUTS.filter((input) => input.reviewRecommended);
+}
+
+/**
  * Whether the pages are finished.
  *
- * `'draft'` while any blocking input is outstanding. The pages say so at the top, because a
- * visitor reading a policy is entitled to know it is incomplete — and because a draft that
- * looks finished is how a placeholder ships.
+ * `'draft'` while any blocking input is outstanding, OR while any answer is still awaiting
+ * review. The pages say so at the top, because a visitor reading a policy is entitled to
+ * know it is incomplete — and because a draft that looks finished is how a placeholder
+ * ships.
+ *
+ * REVIEW COUNTS TOWARDS DRAFT, and that is the whole reason the flag is a field rather than
+ * a comment. Two of these answers are careful drafts of clauses whose SCOPE is a legal
+ * question — which regimes reach a public website, how far liability may be excluded on a
+ * product somebody may eat. Counted only as "answered", the day the last genuinely-missing
+ * fact landed the banner would vanish from wording nobody had reviewed, and the pages would
+ * present themselves as in force. A label that changes nothing is a label nobody acts on.
+ *
+ * So this flips to `'published'` only when the gaps are filled AND the reviews are cleared,
+ * and clearing one is deleting its `reviewRecommended` — a deliberate edit by somebody who
+ * knows what it means.
  */
 export const LEGAL_STATUS: 'draft' | 'published' =
-  blockingOwnerInputs().length > 0 ? 'draft' : 'published';
+  blockingOwnerInputs().length > 0 || reviewOutstanding().length > 0 ? 'draft' : 'published';
 
 /**
  * The date the *described behaviour* was last checked against the code.

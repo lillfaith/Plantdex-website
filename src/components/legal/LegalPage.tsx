@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { LEGAL_REVIEWED, LEGAL_STATUS, blockingOwnerInputs, ownerInput } from '@/lib/legal';
+import {
+  LEGAL_REVIEWED,
+  LEGAL_STATUS,
+  blockingOwnerInputs,
+  ownerInput,
+  reviewOutstanding,
+} from '@/lib/legal';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
@@ -41,9 +47,19 @@ export function OwnerGap({ id }: { id: string }) {
   );
 }
 
-/** The draft banner, shown while any blocking owner input is outstanding. */
+/**
+ * The draft banner, shown while anything is outstanding — a missing fact OR an unreviewed
+ * answer.
+ *
+ * IT HAS TO NAME BOTH, because they look completely different on the page. A blocking input
+ * leaves a visible hole in a sentence, so "marked below in the text" tells a reader exactly
+ * where to look. An answer awaiting review leaves FINISHED PROSE that reads as settled —
+ * there is nothing marked, nothing to find, and a banner that only mentioned holes would
+ * send someone hunting for one that is not there and conclude the notice was stale.
+ */
 function DraftNotice() {
   const blocking = blockingOwnerInputs();
+  const unreviewed = reviewOutstanding();
   if (LEGAL_STATUS === 'published') return null;
   return (
     <aside
@@ -60,9 +76,27 @@ function DraftNotice() {
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-violet-200">
         This page describes what the application actually does today, written from the code
-        rather than from a template. {blocking.length} details cannot be established from the
-        software and are marked below in the text. Until they are filled in by the owner, this
-        is a working draft rather than a policy anyone should rely on.
+        rather than from a template.{' '}
+        {blocking.length > 0 && (
+          <>
+            {blocking.length} detail{blocking.length === 1 ? '' : 's'} cannot be established
+            from the software and {blocking.length === 1 ? 'is' : 'are'} marked below in the
+            text.{' '}
+          </>
+        )}
+        {unreviewed.length > 0 && (
+          <>
+            {/*
+              SAID PLAINLY, because this is the half a reader cannot see. The sentences it
+              refers to are complete and read as settled; only this line distinguishes a
+              considered draft from a reviewed one.
+            */}
+            {unreviewed.length === 1 ? 'One section is' : `${unreviewed.length} sections are`}{' '}
+            written but not yet checked by a lawyer.{' '}
+          </>
+        )}
+        Until that is resolved, this is a working draft rather than a policy anyone should
+        rely on.
       </p>
     </aside>
   );

@@ -136,9 +136,22 @@ export default function TermsOfSalePage() {
         </p>
       </LegalSection>
 
+      {/*
+        POINTS AT THE TERMS RATHER THAN RESTATING THEM. One clause, two pages: pasted here it
+        would be two copies free to drift, and the day one was amended the other would become
+        the stale one a buyer happened to read. The gap renders the registry's SUMMARY; the
+        operative text is under Responsibility in the Terms of Use.
+
+        The sale-specific sentence below is the one thing that genuinely belongs here rather
+        than there — it is about the goods, not the service.
+      */}
       <LegalSection id="liability" heading="Liability">
         <p>
           The warranty and liability position is <OwnerGap id="liability" />.
+        </p>
+        <p>
+          Except where required by law, the seller does not warrant that the deck or website
+          will meet a particular educational, medical, identification, or foraging purpose.
         </p>
         <p>
           One thing is stated plainly regardless, because it is the risk this particular product
