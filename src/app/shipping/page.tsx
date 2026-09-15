@@ -81,8 +81,15 @@ export default function ShippingPage() {
               term: 'Postage cost',
               detail: (
                 <>
-                  <OwnerGap id="shipping-postage" /> Whatever it is, it is shown on the checkout
-                  page and added before you pay — never after.
+                  {/*
+                    THE HEDGE WAS WRITTEN FOR AN UNKNOWN VALUE AND OUTLIVED IT. "Whatever it
+                    is" was the honest phrasing while `shipping-postage` was an open owner
+                    input and this row could render a highlighted gap mid-sentence. With an
+                    answer recorded it reads as evasion about a number stated one clause
+                    earlier. The gap still supplies the amount — nothing here restates it.
+                  */}
+                  <OwnerGap id="shipping-postage" /> It is shown on the checkout page and added
+                  before you pay — never after.
                 </>
               ),
             },
