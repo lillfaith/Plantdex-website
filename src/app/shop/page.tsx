@@ -72,6 +72,28 @@ export default function ShopPage() {
           lawns, hedges and waste ground. The ones you walk past, not the ones you have to
           travel to find.
         </p>
+
+        {/*
+          THE BUY BUTTON ABOVE THE FOLD, AND THE PURCHASE PANEL STILL BELOW.
+
+          A second control rather than a moved one, deliberately. The Order section further
+          down carries the fine print a buyer is entitled to before paying — who takes the
+          payment, what Stripe confirms on its own page, shipping, returns, terms of sale —
+          and hoisting all of that up here would put conditions in front of somebody who has
+          not yet seen the product. Hoisting the button ALONE would leave that section
+          explaining a purchase with no way to make it.
+
+          So: the decision is offered where somebody arrives already knowing they want it,
+          and the full panel stays where the detail belongs.
+
+          GATED ON THE SAME `configured`, which is `isCommerceLive()`. Off, this renders
+          nothing at all and the panel below says "Not on sale yet" — one refusal, not two.
+        */}
+        {configured && (
+          <div className="mt-6 flex justify-center">
+            <BuyButton href={link!} price={price!} />
+          </div>
+        )}
       </header>
 
       {/*

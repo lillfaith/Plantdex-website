@@ -121,9 +121,14 @@ ROUTES: list[tuple[str, list[str]]] = [
     # the anchor whose href is the Stripe Payment Link, so it cannot render without the link
     # rendering too. That makes it a claim about the CHECKOUT rather than about the page.
     # Measured across two real builds of the same commit — one with the Stripe variables
-    # supplied, one without: present exactly once in /shop/index.html when commerce is live,
-    # ZERO times when it is off, and emitted by no other file in the build. The earlier
-    # candidate "Order" appears in two files and is a weaker substring.
+    # supplied, one without: PRESENT in /shop/index.html when commerce is live, ZERO times
+    # when it is off, and emitted by no other file in the build. The earlier candidate
+    # "Order" appears in two files and is a weaker substring.
+    #
+    # Deliberately not a count. It read "exactly once" until the buy button was also placed
+    # above the fold, which made that true of the marker and false of the page within a day.
+    # What the check needs is presence in one state and absence in the other; how many times
+    # the CTA is offered is a layout decision and none of this file's business.
     #
     # IF THE DECK EVER COMES OFF SALE, this line goes back to ["Not on sale yet"] in the same
     # change. Do not carry both markers "to be safe" — a check that passes in either state
