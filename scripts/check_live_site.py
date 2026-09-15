@@ -108,6 +108,25 @@ ROUTES: list[tuple[str, list[str]]] = [
     ("/account/", ["Your profile"]),
     ("/privacy/", ["Profile settings", "visible only to you"]),
     ("/safety/", ["safety"]),
+    # /shop WAS THE ONE COMMERCE ROUTE NOTHING FETCHED. Everything above proves a page
+    # rendered; none of it proved the checkout is in the state we think it is, which on a
+    # page that takes money is the one state worth asserting.
+    #
+    # THE CAPITAL N IS LOAD-BEARING. Four other pages carry the lowercase phrase "not on
+    # sale yet" in prose — the landing page, /shipping, /terms and /terms-of-sale — so a
+    # case-insensitive or lowercased marker would pass against a /shop that never rendered.
+    # `m not in body` is a case-sensitive substring, so this exact string is emitted by
+    # /shop/index.html and nowhere else. Verified against the real `out/`, not assumed.
+    #
+    # THIS MARKER IS EXPECTED TO FAIL THE DAY PLANTDEX GOES ON SALE, and that is the point.
+    # `/shop` prints "Order" instead once `isCommerceLive()` is true — configuration set AND
+    # LEGAL_STATUS out of draft — so enabling checkout deliberately breaks this line.
+    # UPDATING IT IS A COMMERCE-LAUNCH CHECKLIST ITEM: swap the marker to one the on-sale
+    # page emits (and that no other route does) in the same change that sets the Stripe
+    # variables. Do not delete the route to make the check pass, and do not soften the
+    # marker to something that survives both states — a marker that cannot go stale is a
+    # marker that cannot detect anything, which is the lesson the /scan/ note above records.
+    ("/shop/", ["Not on sale yet"]),
 ]
 
 
