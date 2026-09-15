@@ -57,14 +57,38 @@ jobs:
         # the deck is not on sale rather than inventing a price. A Payment Link is a shareable
         # URL carrying no secret — a Stripe API KEY must never be added here, and none is
         # needed, which is the whole reason Payment Links were chosen.
+        #
+        # SITE_DOMAIN is the custom-domain switch and is normally UNSET, which reproduces
+        # today's build exactly: the /Plantdex-website base path, and no CNAME. Setting it to
+        # a bare hostname (no scheme, no trailing slash) drops the base path and makes the
+        # step below write the CNAME. Read `docs/custom-domain.md` BEFORE setting it — the
+        # DNS records and the Supabase redirect allow-list have to be in place first, and the
+        # allow-list is the one that fails silently, taking password reset and signup
+        # confirmation down while every page still loads.
         env:
           GITHUB_PAGES: 'true'
+          SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.NEXT_PUBLIC_PLAUSIBLE_DOMAIN }}
           NEXT_PUBLIC_STRIPE_PAYMENT_LINK: ${{ vars.NEXT_PUBLIC_STRIPE_PAYMENT_LINK }}
           NEXT_PUBLIC_DECK_PRICE: ${{ vars.NEXT_PUBLIC_DECK_PRICE }}
         run: npm run build
+
+      # THE CNAME IS WRITTEN HERE, NOT COMMITTED TO public/.
+      #
+      # GitHub Pages reads this file out of the published artifact and treats it as the
+      # site's custom domain. A committed one would therefore take effect on the very next
+      # deploy — before any DNS existed — and Pages would begin redirecting the working
+      # github.io URL to a hostname that does not resolve. That is a full outage caused by
+      # adding a file, so the file only ever exists when the variable does.
+      #
+      # It must land in `out/` rather than `public/`, because `next build` has already run
+      # and would not copy it. Writing it after the build is also what keeps the two halves
+      # of the switch on one variable: the same SITE_DOMAIN that dropped the base path above.
+      - name: Write CNAME for the custom domain
+        if: vars.SITE_DOMAIN != ''
+        run: echo -n "${{ vars.SITE_DOMAIN }}" > out/CNAME
 
       # Pages must be switched on once by a repo admin:
       #   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"

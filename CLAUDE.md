@@ -643,6 +643,49 @@ does not carry — the state that used to be a dead end.
   card and something with no card. `aria-hidden`, no label, no XP, authored on the same pixel
   grid as the packets and painted only from deck tokens.
 
+## Progression is self-declared
+
+Nothing in Plantdex verifies that anybody went outside, and nothing is meant to. This is
+written down because it looks like an oversight and is a decision.
+
+- **Every stage is a claim the player makes.** `DiscoverPanel` records a find from two taps
+  and no camera at all. `SIGHTINGS_FOR_MASTERY` is 1 and `photoId` is optional on a
+  `Sighting`. So the whole ladder — discovery, mastery, XP, Field Card unlocks, garden
+  growth, Field Research — is reachable without ever opening the scanner. Photographing a
+  trading card is strictly MORE work than the shortcut already sitting beside it, which is
+  the first thing to weigh before building anything to stop it.
+- **A false record cheats nobody but its author.** There is no leaderboard, no public
+  profile, no feed, no followers and no economy — `/profile` is owner-only by design. A
+  scan of a card returns a deck species, so `isShelfEligible` is false and the global
+  `species_packets` registry cannot be reached from it either. What is at stake is one
+  person's own collection meaning what it says, and that caps what is proportionate to
+  spend here.
+- **So the words are what is load-bearing.** Each surface that writes a discovery states
+  what it is recording, and `scan-reward.test.ts` fails if either loses it. That is the
+  whole mechanism. The scanner shipped without its sentence for long enough that the case
+  it exists for is not the dishonest one: a deck owner photographs a card to LOOK THE PLANT
+  UP, the identifier answers correctly because it is a picture of the right species, and one
+  tap later Plantdex has written down a find nobody made.
+- **Do not add a checkbox in front of the confirm button.** `/start` sends a first-time
+  visitor here for ONE action (`entry-point.ts`), and a second decision costs that more than
+  it buys — while stopping nobody, since the card page's path has no camera in it. Pinned.
+- **Do not read EXIF to tell indoors from outdoors.** It would work. It also reverses the
+  decision under Performance notes that `prepareImage` has NO path returning original bytes
+  and `PreparedImage` has no variant that could carry one — precisely so retaining a
+  person's coordinates is unrepresentable rather than merely discouraged. Anti-cheat in a
+  single-player game does not buy that back.
+- **Detecting the card from the image was considered and rejected.** A photograph of a card
+  does carry a strong high-contrast quadrilateral filling the frame, and the canvas is
+  already decoded. But a false positive DENIES A REAL FIND, which is worse than the thing it
+  prevents, and a leaf against a window frame or a label at a botanical garden produces one.
+  The provider is no help either: it returns a name, a score and taxonomy ids, and nothing
+  about whether the image is a photograph of a photograph.
+- **If this ever does need teeth, the honest lever is the sighting, not the scan.** Two
+  photographs of one moment genuinely are one sighting, so a perceptual hash stored per
+  sighting is a correct invariant with zero cheaters in the world — it improves the journal
+  on its own merits. It buys nothing until `SIGHTINGS_FOR_MASTERY` is raised above 1, and
+  that is a progression change with its own consequences.
+
 ## The launch loop
 
 The journey a stranger takes from a printed deck to a saved find:
@@ -714,6 +757,21 @@ the nodes, because every piece of it had passing tests while the seams were brok
   fail-closed, unlike the attestation secret — that one guards what may be written into a global
   immutable registry, this one guards a rate-limit bucket, and refusing would take identification
   down for everybody.
+- **A CUSTOM DOMAIN IS ONE VARIABLE, AND IT MOVES THREE THINGS THAT MUST MOVE TOGETHER.**
+  `SITE_DOMAIN` (a bare hostname, unset today) drops the `/Plantdex-website` base path in
+  `next.config.ts`, makes `deploy.yml` write `out/CNAME`, and repoints the live check. Each
+  half alone is an outage a green deploy log would not report: the base path left on makes
+  every asset, every `next/link` href and both auth redirects 404 from a build that compiled
+  and uploaded perfectly; a `CNAME` committed to `public/` takes effect on the NEXT deploy,
+  before any DNS exists, and Pages starts redirecting the working github.io URL at a hostname
+  that does not resolve — a file with no code in it taking the site down. Hence written after
+  the build, never committed. `custom-domain.test.ts` loads the real config under both
+  environments rather than regexing its source, and fails if any of the three comes off the
+  variable. The fourth step is in a dashboard no test can reach: Supabase's redirect
+  allow-list. `auth-redirect.ts` builds from `window.location.origin` so the code follows for
+  free, and Supabase then refuses to redirect anywhere unlisted — every page loads and
+  password reset and signup confirmation are silently broken. `docs/custom-domain.md` is the
+  runbook and the order matters.
 - **`check_live_site.py` asserts which Supabase project the deployed bundle points at.** It runs
   automatically after every Pages deploy, and it is the only check that does — `check_live_scan.py`
   takes the expected ref as a hand-typed argument and only runs on `workflow_dispatch`, so it

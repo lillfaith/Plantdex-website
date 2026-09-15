@@ -17,6 +17,65 @@ const strip = (source: string) => source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g,
 
 const SCAN_PANEL = strip(readFileSync('src/components/scan/ScanPanel.tsx', 'utf8'));
 const CELEBRATION = strip(readFileSync('src/components/herbdex/DiscoveryCelebration.tsx', 'utf8'));
+const DISCOVER_PANEL = strip(readFileSync('src/components/herbdex/DiscoverPanel.tsx', 'utf8'));
+
+/**
+ * EVERY ENTRY POINT THAT WRITES A DISCOVERY SAYS WHAT A DISCOVERY IS.
+ *
+ * Progression in Plantdex is self-declared at every stage, deliberately: `DiscoverPanel`
+ * records a find from two taps and no camera, and `SIGHTINGS_FOR_MASTERY` is 1 with
+ * `photoId` optional. Nothing here verifies that anybody went outside, and nothing is meant
+ * to — there is no leaderboard, no public profile and no economy for a false record to
+ * cheat. See CLAUDE.md, "Progression is self-declared".
+ *
+ * What that makes load-bearing is the WORDS. The only thing standing between a player and a
+ * collection that does not mean what it says is each confirmation stating what it records,
+ * so a surface that writes a discovery without saying so is the actual regression here.
+ *
+ * The card page has carried its sentence from the beginning; the scanner shipped without
+ * one for long enough that a deck owner photographing their own card to look it up was
+ * handed a find they never made. These fail if either one loses it.
+ */
+describe('a confirmation says what it is recording', () => {
+  /*
+   * Whitespace-collapsed, because these sentences live in JSX text and Prettier is free to
+   * break one across a line at any width. A guard that a reflow can silently switch off is
+   * worse than no guard: it would still be green on the day the sentence was deleted.
+   */
+  const flat = (source: string) => source.replace(/\s+/g, ' ');
+  const FIND_WORDS = /found it outdoors|met the plant outdoors/;
+
+  it('qualifies the confirmation on the card page', () => {
+    expect(flat(DISCOVER_PANEL)).toMatch(FIND_WORDS);
+  });
+
+  it('qualifies the confirmation on the scanner too', () => {
+    expect(flat(SCAN_PANEL)).toMatch(FIND_WORDS);
+  });
+
+  it('names the card photograph, which is the case a stranger falls into', () => {
+    /*
+     * Not anti-cheat phrasing. The identifier answers a photograph of a card CORRECTLY —
+     * it is a picture of the right species — so every other guard in this file passes and
+     * the record is still false. Naming it is the only thing that tells somebody holding
+     * the deck that looking a card up is not the same as finding the plant.
+     */
+    expect(flat(SCAN_PANEL)).toMatch(/Photographing one of your cards is not a find/);
+  });
+
+  it('keeps it a sentence rather than a second decision', () => {
+    /*
+     * `/start` sends a first-time visitor here for ONE action (`entry-point.ts`), and a
+     * checkbox in front of the confirm button would make it two — while stopping nobody,
+     * since the two-tap path on the card page has no camera in it at all. A guard, because
+     * "make them tick a box" is the obvious next diff and it costs the launch loop more
+     * than it buys.
+     */
+    const flatPanel = flat(SCAN_PANEL);
+    const confirmArea = flatPanel.slice(flatPanel.indexOf('Photographing one of your cards'));
+    expect(confirmArea).not.toMatch(/type="checkbox"/);
+  });
+});
 
 describe('a scan celebrates only what it actually awarded', () => {
   it('opens the dialog behind `awarded`, never on a bare confirmation', () => {

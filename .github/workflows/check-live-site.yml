@@ -34,7 +34,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # THE CHECK HAS TO FOLLOW THE DOMAIN, OR IT GUARDS THE WRONG SITE.
+      #
+      # This URL used to be a literal. On the day a custom domain goes live that literal
+      # keeps passing — the old github.io address still answers — while the address people
+      # actually visit could be entirely broken. A green check on a URL nobody uses is worse
+      # than no check, because it is read as evidence.
+      #
+      # So it derives from the same `SITE_DOMAIN` variable that drives the base path and the
+      # CNAME (see deploy.yml). Unset, it is exactly the literal it replaced. An explicit
+      # `site_url` input still wins, which is how a one-off run checks somewhere else.
       - name: Fetch every route and check what it contains
         env:
-          SITE_URL: ${{ inputs.site_url || 'https://lillfaith.github.io/Plantdex-website' }}
+          SITE_URL: >-
+            ${{ inputs.site_url
+                || (vars.SITE_DOMAIN != '' && format('https://{0}', vars.SITE_DOMAIN))
+                || 'https://lillfaith.github.io/Plantdex-website' }}
         run: python3 scripts/check_live_site.py

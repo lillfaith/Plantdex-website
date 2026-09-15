@@ -551,6 +551,38 @@ export function ScanPanel() {
                     ? 'Check the card before you confirm. You are the one recording the find.'
                     : "The identifier's best guess is not a card in this deck, but one below is. Open it and compare before you confirm anything."}
                 </p>
+                {/*
+                  WHAT A FIND IS, SAID WHERE THE FIND IS MADE — and the case this closes is
+                  not the cheat it looks like.
+
+                  `DiscoverPanel` has always qualified its confirmation with "Only if you
+                  actually found it outdoors", inside a dialog. The scanner had no equivalent:
+                  its paragraph above is about IDENTIFICATION ("check the card"), and its
+                  confirm button is one tap with no dialog in front of it. So the one route a
+                  stranger actually takes was the one route that never said what it was
+                  recording.
+
+                  The reason to fix it is the INNOCENT case, not the dishonest one. Somebody
+                  holding the deck photographs a card to look the plant up — an entirely
+                  reasonable thing to do with a phone and a card — the identifier names the
+                  species correctly, and one tap later Plantdex has written down that they
+                  found it outdoors. Nobody cheated and the collection is wrong anyway.
+
+                  Deliberately a sentence and not a control. A checkbox in front of the
+                  confirm button would put a second decision on the one action `/start` sends
+                  a first-time visitor to take, and `entry-point.ts` is explicit that this
+                  path gets ONE dominant action. It also could not stop anyone who meant it:
+                  progression here is self-declared at every stage by design (see CLAUDE.md,
+                  "Progression is self-declared"), and this line exists so that a player who
+                  did not mean to is not silently handed a false record.
+
+                  It sits ABOVE the list rather than under each button because it qualifies
+                  every confirm in it — the same reason `ScanCaution` is not repeated per row.
+                */}
+                <p className="mt-2 text-sm leading-relaxed font-semibold text-violet-200">
+                  Photographing one of your cards is not a find. Log it only if you met the
+                  plant outdoors.
+                </p>
 
                 <ul className="mt-4 space-y-3">
                   {(() => {
