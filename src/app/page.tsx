@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
-import { isShopConfigured } from '@/lib/shop';
+import { isCommerceLive } from '@/lib/shop';
 import { PlantSprite } from '@/components/PlantSprite';
 import { RarityAura } from '@/components/game/RarityAura';
 import { assetPath } from '@/lib/asset-path';
@@ -179,7 +179,7 @@ export default function HomePage() {
           the "busier homepage" the brief rules out.
         */}
         <p className="mt-3 text-xs text-violet-400">
-          {isShopConfigured()
+          {isCommerceLive()
             ? 'The digital Plantdex is free. The physical deck is an optional field companion.'
             : 'The digital Plantdex is free. The physical deck is optional — and not on sale yet.'}
         </p>

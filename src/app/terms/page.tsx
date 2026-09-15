@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage, LegalSection, LegalTable, OwnerGap } from '@/components/legal/LegalPage';
-import { isShopConfigured } from '@/lib/shop';
+import { isCommerceLive } from '@/lib/shop';
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
@@ -257,7 +257,7 @@ export default function TermsPage() {
           on the day.
         */}
         <p className="text-sm text-violet-300">
-          {isShopConfigured() ? (
+          {isCommerceLive() ? (
             <>
               The price shown on the{' '}
               <Link href="/shop" className="underline underline-offset-2 hover:text-gold-400">

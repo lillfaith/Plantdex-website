@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage, LegalSection, LegalTable, OwnerGap } from '@/components/legal/LegalPage';
-import { PHYSICAL_CARD_COUNT, isShopConfigured } from '@/lib/shop';
+import { PHYSICAL_CARD_COUNT, isCommerceLive } from '@/lib/shop';
 
 export const metadata: Metadata = {
   title: 'Shipping',
@@ -27,7 +27,7 @@ export default function ShippingPage() {
       intro="How the printed deck is sent, and what is known about where and when. Anything not yet decided is marked rather than guessed."
     >
       <LegalSection id="status" heading="Current status">
-        {isShopConfigured() ? (
+        {isCommerceLive() ? (
           <p>
             The deck is on sale. The countries it can be sent to are set on the checkout page
             itself — if yours cannot be selected there, it is not one we can post to yet.

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage, LegalSection, LegalTable, OwnerGap } from '@/components/legal/LegalPage';
-import { PHYSICAL_CARD_COUNT, DECK_CARD_COUNT, isShopConfigured } from '@/lib/shop';
+import { PHYSICAL_CARD_COUNT, DECK_CARD_COUNT, isCommerceLive } from '@/lib/shop';
 
 export const metadata: Metadata = {
   title: 'Terms of sale',
@@ -32,7 +32,7 @@ export default function TermsOfSalePage() {
          * there is nothing to buy yet — otherwise this page contradicts /shop, which is the
          * same shape as the landing page once denying a sale the configuration could enable.
          */
-        isShopConfigured()
+        isCommerceLive()
           ? 'The terms on which the printed deck is sold. These cover buying a physical object; the Terms of Use cover using this website, which is free.'
           : 'The terms on which the printed deck will be sold. It is not on sale yet — there is no checkout to complete — and these terms are published in advance so they can be read before that changes. They cover buying a physical object; the Terms of Use cover using this website, which is free.'
       }
@@ -73,11 +73,11 @@ export default function TermsOfSalePage() {
         <LegalTable
           rows={[
             {
-              term: isShopConfigured() ? 'Price' : 'Planned price',
+              term: isCommerceLive() ? 'Price' : 'Planned price',
               detail: (
                 <>
                   <OwnerGap id="commerce-terms" />
-                  {isShopConfigured() ? null : ' \u2014 the price the deck will be offered at. It is not on sale yet.'}
+                  {isCommerceLive() ? null : ' \u2014 the price the deck will be offered at. It is not on sale yet.'}
                 </>
               ),
             },

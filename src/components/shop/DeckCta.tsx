@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { deckCtaEvent, track, type CtaPlacement } from '@/lib/analytics';
-import { isShopConfigured } from '@/lib/shop';
+import { isCommerceLive } from '@/lib/shop';
 
 /**
  * The link from the educational site into the shop. Its label follows the sale state; see
@@ -39,7 +39,7 @@ const COPY: Record<CtaPlacement, { line: string }> = {
  * "GET THE DECK" IS A PROMISE THE PAGE BEHIND IT CANNOT KEEP WHILE THE SHOP IS OFF.
  *
  * All four placements said it unconditionally, and `/shop` resolves its own state from
- * `isShopConfigured()` — so with the Stripe variables unset, four buttons across the site
+ * `isCommerceLive()` — so with the Stripe variables unset, four buttons across the site
  * offered to sell a deck and every one of them landed on a page reading "Not on sale yet".
  * That is the shape this repository has now shipped three times in the other direction:
  * `/terms` denying a shop that existed, `/privacy` denying analytics that were wired in,
@@ -57,7 +57,7 @@ const COPY: Record<CtaPlacement, { line: string }> = {
  * verb there would make it the only instruction in a list of destinations.
  */
 function ctaLabel(placement: CtaPlacement): string {
-  if (isShopConfigured()) return 'Get the deck';
+  if (isCommerceLive()) return 'Get the deck';
   return placement === 'footer' ? 'The deck' : 'See the deck';
 }
 

@@ -15,8 +15,8 @@ import {
   PRODUCT_PHOTOS,
   SHOWCASE_HERB_IDS,
   displayPrice,
-  isShopConfigured,
-  paymentLink,
+  isCommerceLive,
+  checkoutLink,
 } from '@/lib/shop';
 
 export const metadata: Metadata = {
@@ -40,9 +40,15 @@ export const metadata: Metadata = {
  * from the owner and Stripe; until they exist this page says so rather than guessing.
  */
 export default function ShopPage() {
-  const link = paymentLink();
+  const link = checkoutLink();
   const price = displayPrice();
-  const configured = isShopConfigured();
+  /*
+   * LIVE, not merely configured. Setting the two Stripe variables is no longer enough to
+   * open a checkout: the Terms of Sale have to be in force too. `checkoutLink()` returns
+   * null under the same condition, so `link!` below cannot resolve to a real URL while this
+   * is false — the branch and the href cannot disagree.
+   */
+  const configured = isCommerceLive();
 
   // The ids live in shop.ts so a test can assert they still resolve — see SHOWCASE_HERB_IDS.
   const showcase = SHOWCASE_HERB_IDS.map((id) => getPrintedCard(id)).filter(

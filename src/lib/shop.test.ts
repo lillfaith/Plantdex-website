@@ -268,11 +268,19 @@ describe('no page denies the sale while configuration can turn it on', () => {
     const page = readFileSync('src/app/page.tsx', 'utf8');
     const denial = /not on sale yet/;
     if (denial.test(page)) {
-      // It may SAY it, but only as one branch of the same predicate `/shop` reads. A denial
-      // with no conditional beside it is the bug.
+      /*
+       * It may SAY it, but only as one branch of the same predicate `/shop` reads. A denial
+       * with no conditional beside it is the bug.
+       *
+       * The pinned name moved from `isShopConfigured` to `isCommerceLive` when commerce
+       * gained its legal gate, and that is a STRENGTHENING rather than a rename: the
+       * predicate /shop reads now requires terms in force as well as Stripe variables, so a
+       * page still deriving from configuration alone would claim a sale on a site whose
+       * checkout refuses. Same rule, one more way for the two to disagree.
+       */
       expect(
-        page.includes('isShopConfigured'),
-        'the landing page denies the sale unconditionally — derive it from isShopConfigured()',
+        page.includes('isCommerceLive'),
+        'the landing page denies the sale unconditionally — derive it from isCommerceLive()',
       ).toBe(true);
     }
   });
@@ -289,8 +297,8 @@ describe('no page denies the sale while configuration can turn it on', () => {
      * the one function that owns it rather than stating a tense in prose.
      */
     const source = readFileSync('src/app/terms-of-sale/page.tsx', 'utf8');
-    expect(source, '/terms-of-sale must resolve its sale state from isShopConfigured()').toMatch(
-      /isShopConfigured\(\)/,
+    expect(source, '/terms-of-sale must resolve its sale state from isCommerceLive()').toMatch(
+      /isCommerceLive\(\)/,
     );
     // And the settled price stays an owner input rather than being re-typed into the copy.
     expect(source).toMatch(/<OwnerGap id="commerce-terms" \/>/);
@@ -321,8 +329,8 @@ describe('no page denies the sale while configuration can turn it on', () => {
      * predicate the destination reads, not which words come out of it.
      */
     const source = strip(readFileSync('src/components/shop/DeckCta.tsx', 'utf8'));
-    expect(source, 'DeckCta must resolve its label from isShopConfigured()').toMatch(
-      /isShopConfigured\(\)/,
+    expect(source, 'DeckCta must resolve its label from isCommerceLive()').toMatch(
+      /isCommerceLive\(\)/,
     );
     // And the purchase verb may only appear inside that branch, never as a bare default.
     const labels = source.match(/'Get the deck'/g) ?? [];

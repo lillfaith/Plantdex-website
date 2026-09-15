@@ -1,4 +1,5 @@
 import { PRINTED_DECK_SIZE } from './deck';
+import { LEGAL_STATUS } from './legal';
 
 /**
  * THE DECK AS A PRODUCT.
@@ -70,9 +71,71 @@ export function displayPrice(): string | null {
   return price ? price : null;
 }
 
-/** True only when there is both something to sell and a price to print for it. */
+/**
+ * True only when there is both something to sell and a price to print for it.
+ *
+ * CONFIGURED IS NOT LIVE. This answers one question — are the Stripe variables set and
+ * valid — and deliberately keeps answering only that, so the two halves of the decision stay
+ * separately testable. `isCommerceLive()` is what surfaces ask.
+ */
 export function isShopConfigured(): boolean {
   return paymentLink() !== null && displayPrice() !== null;
+}
+
+/**
+ * Whether the deck may actually be SOLD: configured, and governed by terms that are in force.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE GAP THIS CLOSES. `/shop` was gated on configuration alone, so setting two repository
+ * variables would have put a live checkout on a site whose own Terms of Sale carry a
+ * "Draft — not yet in force" banner and say so in the first thing a reader sees. Two
+ * settings in a dashboard, no code change, no review — and a buyer handing over a card
+ * under terms the seller has published as not yet applying to anything.
+ *
+ * It is the same shape this repository has shipped three times and caught three times:
+ * `/terms` denying the shop, `/privacy` denying analytics, the landing page denying the
+ * sale. Each was a page asserting one thing while configuration asserted another. This is
+ * that bug with the polarity reversed — configuration turning the sale ON while the pages
+ * still say it is off — which is the more expensive direction, because the contradiction is
+ * discovered by somebody at a checkout rather than by somebody reading.
+ *
+ * IT DEPENDS ON `LEGAL_STATUS`, NOT ON ANY GAP'S NAME. That is the whole point: the registry
+ * is free to gain a blocking input or a `reviewRecommended` tomorrow, and commerce gates
+ * itself on it with no edit here. Naming `legal-entity` or `liability` would gate on today's
+ * list and silently stop gating the moment the list changed.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export function isCommerceLive(): boolean {
+  return isShopConfigured() && LEGAL_STATUS !== 'draft';
+}
+
+/**
+ * The Payment Link, but only when the deck may actually be sold.
+ *
+ * WHY THIS EXISTS RATHER THAN A GUARD AT EACH CALL SITE. `paymentLink()` reads configuration
+ * and knows nothing about whether selling is permitted, so every future component rendering
+ * a buy button would have to remember to check `isCommerceLive()` first — and the one that
+ * forgot would ship a working checkout under draft terms, which is precisely the failure
+ * being designed out. Rendering surfaces call this; nothing renders `paymentLink()` into an
+ * href. `shop.test.ts` fails on any component that does.
+ *
+ * Same reasoning as `prepareImage` having no path that returns original bytes: make the
+ * unwanted state unrepresentable rather than documented.
+ *
+ * WHAT THIS DOES AND DOES NOT REMOVE FROM THE BUILD, measured rather than assumed. Built with
+ * both Stripe variables set while `LEGAL_STATUS` is draft: ZERO HTML files carry the URL and
+ * zero `href`s point at Stripe, so nothing a reader can click exists. The literal DOES still
+ * appear once, in the `DeckCta` client chunk — `DeckCta` is `'use client'` and imports this
+ * module, and Next inlines every `NEXT_PUBLIC_*` it can reach at build time, exactly as it
+ * does for the Supabase pair. That is a property of the variable, not a leak past this gate:
+ * a Payment Link is a public shareable URL carrying no secret. But it is DISCOVERABLE by
+ * reading the bundle, so "the link is not in the build" would be false and must not be
+ * claimed. Removing it entirely means resolving the state in a server component and passing
+ * a boolean into `DeckCta` — a change to four call sites, worth doing only if the link must
+ * be unfindable rather than merely unofferable.
+ */
+export function checkoutLink(): string | null {
+  return isCommerceLive() ? paymentLink() : null;
 }
 
 /**
