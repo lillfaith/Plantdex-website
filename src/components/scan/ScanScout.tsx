@@ -31,17 +31,26 @@ import { pixelRuns } from '@/lib/pixel-runs';
  */
 
 /*
- * 26 wide, 22 tall, and every cell of it is COMPUTED rather than hand-placed — see
- * `scripts/` for the same argument made about the skeletal formulas. Four hand-drawn attempts
- * produced a face that read as a skull and a lens that read as a lollipop, because a circle
- * typed one row at a time is a circle nobody measured. The geometry is two discs, a swept
- * blade pair, a line for the arm and a line for the handle, with one automatic pass laying a
- * dark cell against every drawn edge.
+ * AUTHORED ON THE DECK'S OWN CELL: 34 x 28.
  *
- * THE LENS IS HELD AT BROW HEIGHT, NOT BESIDE THE FACE. At face height and near face size it
- * read as a second head — the same failure the coneflower's rays had, a composition problem
- * rather than a numbers one. Raised and shrunk, it is plainly an object being held up to look
- * through, which is the whole point of putting it on this page.
+ * That is exactly what `build_sprites.py` emits, at 170x140 with `SCALE = 5`. It was drawn
+ * 26 x 22 first, which looks like an arbitrary choice and is not: at any given rendered
+ * width a coarser grid makes each authored pixel BIGGER, so the one decorative creature in
+ * the app was the one thing on screen at a different resolution from all 54 real ones —
+ * ~30% chunkier pixels, beside a nav and a card grid full of the finer kind. Matching the
+ * cell is what makes it read as the same hand. The extra rows also buy the face enough room
+ * for 2x2 eyes, which a 22-row canvas could not carry without crowding the mouth.
+ *
+ * Every cell is COMPUTED rather than hand-placed — see `build_structures.py` for the same
+ * argument. Four hand-drawn attempts produced a face that read as a skull and a lens that
+ * read as a lollipop, because a circle typed one row at a time is a circle nobody measured.
+ * The geometry is two discs, a swept blade pair, a line for the arm and a line for the
+ * handle, with one automatic pass laying a dark cell against every drawn edge.
+ *
+ * THE LENS IS HELD AT BROW HEIGHT, NOT BESIDE THE FACE. At face height and near face size
+ * it read as a second head — the same failure the coneflower's rays had, a composition
+ * problem rather than a numbers one. Raised and shrunk, it is plainly an object being held
+ * up to look through, which is the whole point of putting it on this page.
  *
  *   l/d  leaf, lit and shadowed      m  lens rim (metal)
  *   s    stem                        g  lens glass
@@ -50,29 +59,36 @@ import { pixelRuns } from '@/lib/pixel-runs';
  *                                    o  outline
  */
 const SCOUT = [
-  '..........................',
-  '..............ooooo.......',
-  '..ooooooo..oooodddoooo....',
-  '.oommmmmoooodddllldddoo...',
-  'oomFFgggmooddlllllllddoo..',
-  'ommFggggmmddlllllllllddo..',
-  'omgggggggmdllllFFFlllldo..',
-  'ommgggggmmdlllFFFFFllldoo.',
-  'oomgggggmddllFFFFFFFllddo.',
-  '.oommmmmoodllFeFFFeFlldoo.',
-  '..ooooohhodllFFFFFFFlldo..',
-  '......ohhhddlFFmmmFFlddo..',
-  '......oohhhddlFFFFFlddoo..',
-  '.......oohhhdddllldddoo...',
-  '........oohhaaodddoooo....',
-  '.........oooooassooooo....',
-  '........ooollllssllllooo..',
-  '.......oolllllossollllloo.',
-  '.......ollllloossoolllllo.',
-  '.......oddddooossoooddddo.',
-  '.......ooodddddoodddddooo.',
-  '.........oooooooooooooo...',
+  '..................................',
+  '....................ooo...........',
+  '................ooooodooooo.......',
+  '...ooooooooo...oodddddddddoo......',
+  '..oommmmmmmoooooddlllllllddooo....',
+  '..omFFggggmmooddlllllllllllddo....',
+  '.oomFggggggmoodllllllllllllldoo...',
+  '.ommgggggggmmddlllllllllllllddo...',
+  '.omgggggggggmdlllllFFFFFllllldo...',
+  '.ommgggggggmmdlllFFFFFFFFFllldoo..',
+  '.oomgggggggmddlllFFFFFFFFFlllddo..',
+  '..ommgggggmmodllFFeeFFFeeFFlldoo..',
+  '..oommmmmmmoodllFFeeFFFeeFFlldo...',
+  '...ooooooohhoddlFFFFFFFFFFFlddo...',
+  '.........ohhhodllFFFmmmFFFlldoo...',
+  '.........oohhhddllFFFFFFFllddo....',
+  '..........oohhhoddlFFFFFlddooo....',
+  '...........oohhhodddddddddoo......',
+  '............oohhaaaosdsoooo.......',
+  '.............ooaaaaassso..........',
+  '..............ooooaasssooooo......',
+  '............oooollllssslllloooo...',
+  '..........ooollllllosssollllllooo.',
+  '..........ollllllloosssoolllllllo.',
+  '..........ollllllooosssooollllllo.',
+  '..........ooddddoooosssooooddddoo.',
+  '...........oodddddddooodddddddoo..',
+  '............ooooooooo.ooooooooo...',
 ];
+
 const token = (name: string) => `var(--color-${name})`;
 
 /*
