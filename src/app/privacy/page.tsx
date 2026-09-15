@@ -285,9 +285,21 @@ export default function PrivacyPage() {
         <p>
           <strong className="text-violet-100">Supabase</strong> provides the database,
           authentication and file storage that accounts depend on. They hold the data described
-          above on our behalf, on servers in <OwnerGap id="data-region" />. Supabase publishes a
-          data processing addendum; its status for Plantdex is{' '}
-          <OwnerGap id="data-processing-agreement" />.
+          above on our behalf, on servers in <OwnerGap id="data-region" />.
+        </p>
+        {/*
+          ITS OWN SENTENCE, because the answer became one.
+
+          This used to read "Supabase publishes a data processing addendum; its status for
+          Plantdex is [gap]" \u2014 a lead-in built for a short fragment. The resolved value is a
+          full statement naming the document, its version, and how it takes effect, and
+          jammed into that clause it read as a non-sequitur and said "data processing
+          addendum" twice in one breath. The registry value is unchanged; the sentence around
+          it moved.
+        */}
+        <p>
+          <OwnerGap id="data-processing-agreement" />. Plantdex has not separately executed
+          one, and under the addendum&rsquo;s own terms does not need to.
         </p>
         <p>
           <strong className="text-violet-100">GitHub Pages</strong> serves the site&rsquo;s
