@@ -126,28 +126,49 @@ export const OWNER_INPUTS: readonly OwnerInput[] = [
      */
     id: 'data-processing-agreement',
     label: 'Whether a data processing agreement with Supabase is in place',
-    why: 'A privacy page that names a processor holding account data and photographs has to say what governs that arrangement. Supabase publishes an addendum; what is not established is whether this account has accepted it, which is what would put it in force.',
+    why: 'A privacy page that names a processor holding account data and photographs has to say what governs that arrangement. Supabase publishes an addendum and appears to incorporate it by reference into the Terms of Service, which would put it in force without a separate signature \u2014 but that reading has not been confirmed against the current pages, so the page does not yet state it as fact.',
     kind: 'legal',
     blocking: true,
     /*
-     * THIS WAS BRIEFLY MARKED ANSWERED, AND SHOULD NOT HAVE BEEN. The addendum's own opening
-     * says it "supplements and forms part of the Supabase Terms of Service … effective as of
-     * the Effective Date of the Agreement", and that was read as meaning acceptance of the
-     * terms is acceptance of the addendum. It does not follow, and the currently published
-     * wording the owner then checked is narrower still: it dates the addendum from when the
-     * customer "signs or otherwise agrees to" it. Two readings of a document neither of us
-     * can bind, and the question is not which reading is better — it is whether THIS ACCOUNT
-     * agreed, which no clause can answer and no dashboard page showed.
+     * RE-AUDITED, AND THE PREVIOUS NOTE HERE WAS WRONG IN A SPECIFIC WAY.
      *
-     * An effective-date clause tells you WHEN an agreement starts once it exists. It is not
-     * evidence that it exists. The page may say Supabase publishes an addendum, because that
-     * is observable; it may not say one is in force here, because that is not.
+     * It asserted that the addendum "takes effect when the customer signs or otherwise
+     * agrees to it", and concluded the question was "whether THIS ACCOUNT agreed, which no
+     * clause can answer". That signing requirement was INFERRED FROM AN OLDER PDF COPY of
+     * the document, which carries customer fields and signature lines. A stale artefact of a
+     * process is not evidence of the current process, and the inference was never checked
+     * against the live legal pages.
      *
-     * HOW TO ACTUALLY CLOSE IT. Supabase offers a DPA to customers who ask, from the
-     * organisation-level Security area of the dashboard, and the document carries customer
-     * fields and signature lines — it takes effect when the customer signs or otherwise
-     * agrees to it. So this becomes answerable by EXECUTING it, not by reading it again.
-     * Record the date it was accepted as the value.
+     * THE STRUCTURE THAT WOULD SETTLE IT IS INCORPORATION BY REFERENCE, and it appears to be
+     * what Supabase actually uses: the Terms of Service define the Data Processing Addendum
+     * as the document published at supabase.com/legal/customer-resources/data-processing-
+     * addendum, "or, if the Parties have a separately executed agreement in effect that
+     * covers the same subject matter, the separately executed agreement". A separately
+     * executed DPA reads there as an ALTERNATIVE for customers who want one, not as the only
+     * route into force. If that is right, accepting the Terms is accepting the addendum, and
+     * the old note's central claim collapses: there is no separate account-level act left to
+     * verify, because using the service under the Terms IS the act.
+     *
+     * WHY IT IS STILL OPEN ANYWAY, and this is the honest part. supabase.com is blocked by
+     * this environment's network egress proxy \u2014 both the fetch tool and curl get 403 on
+     * CONNECT \u2014 so the clauses above reached this file through SEARCH-ENGINE SUMMARIES
+     * rather than a read of the controlling pages. That is secondhand for a definition, and
+     * secondhand is not the standard for a sentence a privacy policy asserts as fact. The
+     * preamble alone would not be enough either: a DPA can incorporate itself in its opening
+     * and still condition effect elsewhere, and the operative clause is the one that governs.
+     *
+     * So the direction of the evidence has moved and the false assumption is gone, but the
+     * entry stays blocking. Resolving it means reading the current Terms of Service and the
+     * current addendum and quoting the operative incorporation clause \u2014 from the pages
+     * themselves, on a machine that can reach them.
+     *
+     * If they confirm incorporation, the value is that the addendum is incorporated into the
+     * Terms and in force for this organisation without separate execution, with the version
+     * date. If they do not, the value is the date the owner executed one. Do NOT reinstate a
+     * signing requirement without a current clause that states one.
+     *
+     * A search result reported the addendum's page as last updated 2026-08-01. Unverified,
+     * recorded here as a lead rather than as the version date.
      */
   },
   {
