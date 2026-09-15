@@ -404,10 +404,23 @@ export function blockingOwnerInputs(): readonly OwnerInput[] {
 /**
  * Answers that are written but not yet professionally reviewed.
  *
- * Separate from `blockingOwnerInputs()` because they fail differently: a blocking input has
- * a HOLE in the page, visible to any reader. These have finished sentences that read as
- * settled, which is exactly why they need a second signal — nothing about the page itself
- * would tell you the wording is a considered draft.
+ * ADVISORY, AND DELIBERATELY SO SINCE THE OWNER DECIDED IT.
+ *
+ * This used to feed `LEGAL_STATUS`, so an outstanding review held the pages in draft on its
+ * own. That was the right default while the question was open — a careful draft of a clause
+ * whose SCOPE is a legal question should not present itself as in force by accident. The
+ * owner has now decided that review is RECOMMENDED but is not a launch blocker, which is
+ * theirs to decide: the wording is published as their own considered draft, not as counsel's.
+ *
+ * WHAT DID NOT CHANGE, AND MUST NOT. The flags stay on the entries, the reasons stay
+ * readable, and nothing anywhere claims a lawyer looked at them. Downgrading a blocker to a
+ * note is a decision about RISK; quietly deleting the note would be a decision about the
+ * RECORD, and those are not the same thing. `legal.test.ts` fails if a flag disappears or if
+ * any page starts implying review happened.
+ *
+ * This is the internal indication the owner asked to keep: the registry is where the
+ * recommendation lives, and this function is how status reporting reads it. It is
+ * deliberately NOT rendered on the public pages — see `DraftNotice`.
  */
 export function reviewOutstanding(): readonly OwnerInput[] {
   return OWNER_INPUTS.filter((input) => input.reviewRecommended);
@@ -416,24 +429,21 @@ export function reviewOutstanding(): readonly OwnerInput[] {
 /**
  * Whether the pages are finished.
  *
- * `'draft'` while any blocking input is outstanding, OR while any answer is still awaiting
- * review. The pages say so at the top, because a visitor reading a policy is entitled to
- * know it is incomplete — and because a draft that looks finished is how a placeholder
- * ships.
+ * `'draft'` while any blocking input is outstanding, and nothing else. The pages say so at
+ * the top, because a visitor reading a policy is entitled to know it is incomplete — and
+ * because a draft that looks finished is how a placeholder ships.
  *
- * REVIEW COUNTS TOWARDS DRAFT, and that is the whole reason the flag is a field rather than
- * a comment. Two of these answers are careful drafts of clauses whose SCOPE is a legal
- * question — which regimes reach a public website, how far liability may be excluded on a
- * product somebody may eat. Counted only as "answered", the day the last genuinely-missing
- * fact landed the banner would vanish from wording nobody had reviewed, and the pages would
- * present themselves as in force. A label that changes nothing is a label nobody acts on.
+ * A BLOCKING INPUT IS A HOLE; A RECOMMENDED REVIEW IS AN OPINION. The first leaves a
+ * sentence the page cannot finish — a controller nobody named, a governing law nobody chose
+ * — and no amount of judgement fills it, because the fact is simply absent. The second is a
+ * finished sentence somebody might improve. Only the first can make a page untrue, so only
+ * the first holds publication.
  *
- * So this flips to `'published'` only when the gaps are filled AND the reviews are cleared,
- * and clearing one is deleting its `reviewRecommended` — a deliberate edit by somebody who
- * knows what it means.
+ * `reviewOutstanding()` therefore no longer feeds this. It is still exported, still
+ * populated, and still read by status reporting and by the tests.
  */
 export const LEGAL_STATUS: 'draft' | 'published' =
-  blockingOwnerInputs().length > 0 || reviewOutstanding().length > 0 ? 'draft' : 'published';
+  blockingOwnerInputs().length > 0 ? 'draft' : 'published';
 
 /**
  * The date the *described behaviour* was last checked against the code.

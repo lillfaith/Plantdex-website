@@ -100,121 +100,101 @@ describe('owner input registry', () => {
     }
   });
 
-  it('keeps an answer awaiting review out of "published"', () => {
+  it('does NOT let a recommended review hold the pages in draft', () => {
     /*
-     * THE FAILURE THIS EXISTS FOR IS SILENT AND IN THE FUTURE.
+     * REVERSED BY AN OWNER DECISION, and the reversal is the thing worth pinning.
      *
-     * Two answers here — the audience posture and the liability clause — are careful drafts
-     * of wording whose SCOPE is a legal question. Counted only as "answered", the day the
-     * last genuinely-missing fact lands (the legal entity, the Supabase DPA) the draft
-     * banner would disappear from prose nobody has reviewed, and the pages would present
-     * themselves as in force. Nothing on the page would look wrong; that is the problem.
+     * This flag used to feed LEGAL_STATUS, so an outstanding review held publication on its
+     * own. The owner has since decided review is RECOMMENDED but not a launch blocker —
+     * their call to make, and the wording ships as their own considered draft rather than as
+     * counsel's.
      *
-     * So a pending review holds the pages in draft on its own, with every blocking input
-     * answered.
+     * The distinction the code now draws: a blocking input is a HOLE, a sentence the page
+     * cannot finish because the fact is absent. A recommended review is a finished sentence
+     * somebody might improve. Only the first can make a page untrue.
      */
     expect(reviewOutstanding().length).toBeGreaterThan(0);
-    expect(LEGAL_STATUS).toBe('draft');
+    expect(blockingOwnerInputs()).toHaveLength(0);
+    expect(LEGAL_STATUS).toBe('published');
   });
 
-  it('says why each review is still wanted, rather than just flagging one', () => {
-    // A bare boolean would be a shrug. The sentence is what tells whoever clears it what
-    // they are being asked to confirm.
+  it('keeps the review recommendations on the registry, reasons and all', () => {
+    /*
+     * DOWNGRADING A BLOCKER TO A NOTE IS A DECISION ABOUT RISK. Deleting the note would be a
+     * decision about the RECORD, and those are not the same thing — the owner asked
+     * explicitly for the metadata to survive. If a future edit tidies these away, whoever
+     * later asks "was this ever reviewed?" gets silence instead of an answer.
+     */
+    const ids = reviewOutstanding().map((input) => input.id);
+    expect(ids).toContain('audience-scope');
+    expect(ids).toContain('liability');
     for (const input of reviewOutstanding()) {
       expect(input.reviewRecommended!.length, input.id).toBeGreaterThan(40);
-    }
-  });
-
-  it('only recommends review for something that has an answer to review', () => {
-    /*
-     * `reviewRecommended` on an unanswered entry would be incoherent — there is no wording
-     * to check — and would hold the pages in draft for a reason the banner cannot explain,
-     * since the banner counts it separately from the visible holes.
-     */
-    for (const input of reviewOutstanding()) {
       expect(input.value, `"${input.id}" wants review but carries no answer`).toBeDefined();
     }
   });
 
-  it('states the liability clause on the page, not in the registry', () => {
+  it('claims nowhere that a lawyer reviewed anything', () => {
     /*
-     * The registry holds FACTS many sentences reference. This is four paragraphs of
-     * operative text that appears once, on the page it governs — pasted into a string it
-     * would render as one undifferentiated run, and pasted into both /terms and
-     * /terms-of-sale it would be two copies free to drift.
+     * THE FAILURE MODE OF THIS WHOLE CHANGE, IN ONE TEST.
      *
-     * Checked by its substance rather than its length: the clause has to actually say the
-     * things that make it a disclaimer.
+     * Removing the "not yet checked by a lawyer" line from the banner is the ABSENCE of a
+     * claim, not the opposite claim — it restores what the pages said before the flag
+     * existed. The cheap way to make a page look finished would be to assert the review
+     * happened, and that is a false statement about professional advice in the one document
+     * a reader is entitled to rely on.
+     *
+     * `LEGAL_REVIEWED` is deliberately not caught by this: it renders as "Last checked
+     * against the application", which is a claim about the CODE matching the description,
+     * and is true.
      */
-    const terms = prose('src/app/terms/page.tsx');
-    expect(terms).toMatch(/educational and\s+informational purposes only/);
-    expect(terms).toMatch(/inherently uncertain/);
-    expect(terms).toMatch(/merchantability, fitness for a particular purpose/);
-    // The carve-out is what stops the rest reading as an attempt to exclude the unexcludable.
-    expect(terms).toMatch(/cannot lawfully be excluded or limited/);
-  });
-
-  it('adds no monetary liability cap anywhere', () => {
-    /*
-     * "Liability limited to the purchase price" is the obvious next clause and was ruled out
-     * pending legal review: enforceability varies, and this is a product where somebody may
-     * eat a plant. A guard rather than a comment, because the comment is in a file nobody
-     * reads while drafting the next paragraph.
-     */
-    for (const path of PAGES) {
-      expect(prose(path), `${path}: monetary liability cap`).not.toMatch(
-        /liability[^.]{0,80}(limited|capped)[^.]{0,80}(\$|purchase price|amount (you )?paid)/i,
+    for (const path of [...PAGES, 'src/components/legal/LegalPage.tsx']) {
+      const source = prose(path);
+      expect(source, `${path}: claims legal review`).not.toMatch(
+        /(reviewed|checked|approved|vetted|cleared)\s+by\s+(a\s+)?(lawyer|attorney|counsel|solicitor)/i,
+      );
+      expect(source, `${path}: claims legal review`).not.toMatch(
+        /(legal|lawyer|attorney|counsel)[- ](reviewed|approved|vetted|cleared)/i,
       );
     }
   });
 
-  it('claims no blanket GDPR or CCPA compliance, and denies no regime either', () => {
+  it('keeps the recommendation off the public pages entirely', () => {
     /*
-     * BOTH DIRECTIONS ARE WRONG AND THEY FAIL DIFFERENTLY. Claiming compliance with a regime
-     * nobody has verified is a false statement in the document a reader is entitled to rely
-     * on. Categorically denying one — "GDPR does not apply" — is a claim this repository
-     * cannot support either: the app is publicly reachable and applicability turns on facts
-     * well past where the shop ships.
-     *
-     * The published posture is narrower than both: where Plantdex is operated and who it is
-     * directed to (observable), plus a commitment to honour rights where law gives them.
+     * Printed now, it would be a warning a reader can do nothing with, attached to prose
+     * that is complete and accurate, on pages people already skim — which is how the
+     * notices that DO matter end up scrolled past. It lives on the registry instead.
      */
-    const privacy = prose('src/app/privacy/page.tsx');
-    expect(privacy).not.toMatch(/(GDPR|CCPA)[^.]{0,40}(compliant|compliance)/i);
-    expect(privacy).not.toMatch(/(GDPR|CCPA|General Data Protection)[^.]{0,30}does not apply/i);
-    expect(privacy).toMatch(/not specifically marketed to residents of the\s+European Union/);
-    // The sentence that keeps the two above it from reading as a contracting-out.
-    expect(privacy).toMatch(/waive rights that cannot legally be waived/);
+    for (const path of [...PAGES, 'src/components/legal/LegalPage.tsx']) {
+      expect(prose(path), `${path}: prints the review recommendation`).not.toMatch(
+        /not yet checked by a lawyer|awaiting (legal )?review|pending legal review/i,
+      );
+    }
   });
 
-  it('marks the pages as a draft while anything at all is outstanding', () => {
+  it('marks the pages as a draft only while a blocking input is unanswered', () => {
     /*
-     * BOTH HALVES, and this guard knew only one of them until the day it mattered.
+     * ONE CONDITION NOW, and the guard says so rather than restating a compound it would
+     * outlive. This test has already been wrong once in this file's history: it asserted the
+     * blocking half alone while the code read blocking OR review, and kept passing for
+     * months because a blocking gap was open and both sides agreed for the wrong reason.
      *
-     * It read `blockingOwnerInputs().length > 0 ? 'draft' : 'published'`, which was the whole
-     * rule when it was written and stopped being so the moment `reviewRecommended` started
-     * feeding LEGAL_STATUS. It kept passing anyway — with a blocking gap still open both
-     * sides said 'draft' and agreed for the wrong reason — and only failed when the last
-     * blocking answer landed and the reviews were left holding the draft on their own. Which
-     * is precisely the state the review flag exists to produce.
-     *
-     * A test that agrees with the code for a reason that is about to expire is worse than no
-     * test: it reports green right up to the moment it is needed. The banner is driven by
-     * this, so the two cannot disagree.
+     * The banner is driven by this, so the two cannot disagree.
      */
-    const outstanding = blockingOwnerInputs().length > 0 || reviewOutstanding().length > 0;
-    expect(LEGAL_STATUS).toBe(outstanding ? 'draft' : 'published');
+    expect(LEGAL_STATUS).toBe(blockingOwnerInputs().length > 0 ? 'draft' : 'published');
   });
 
-  it('is held in draft by the reviews alone, with every blocking gap answered', () => {
+  it('would return to draft if a blocking input were ever unanswered again', () => {
     /*
-     * The state the guard above missed, pinned directly rather than left implied. If a future
-     * edit made LEGAL_STATUS read only `blockingOwnerInputs()` again, this is the test that
-     * says so in words instead of failing somewhere vague.
+     * The rule stated forwards, not just observed at today's values. Every blocking entry
+     * carries an answer right now, which is the only reason the pages are published — not
+     * because the concept of blocking has been retired.
      */
-    expect(blockingOwnerInputs()).toHaveLength(0);
-    expect(reviewOutstanding().length).toBeGreaterThan(0);
-    expect(LEGAL_STATUS).toBe('draft');
+    const blocking = OWNER_INPUTS.filter((input) => input.blocking);
+    expect(blocking.length).toBeGreaterThan(0);
+    for (const input of blocking) {
+      expect(input.value, `blocking input "${input.id}" is unanswered`).toBeDefined();
+    }
   });
 
   it('dates the review, and does not date it in the future', () => {

@@ -1,12 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import {
-  LEGAL_REVIEWED,
-  LEGAL_STATUS,
-  blockingOwnerInputs,
-  ownerInput,
-  reviewOutstanding,
-} from '@/lib/legal';
+import { LEGAL_REVIEWED, LEGAL_STATUS, blockingOwnerInputs, ownerInput } from '@/lib/legal';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
@@ -48,18 +42,27 @@ export function OwnerGap({ id }: { id: string }) {
 }
 
 /**
- * The draft banner, shown while anything is outstanding — a missing fact OR an unreviewed
- * answer.
+ * The draft banner, shown while a blocking owner input is still unanswered.
  *
- * IT HAS TO NAME BOTH, because they look completely different on the page. A blocking input
- * leaves a visible hole in a sentence, so "marked below in the text" tells a reader exactly
- * where to look. An answer awaiting review leaves FINISHED PROSE that reads as settled —
- * there is nothing marked, nothing to find, and a banner that only mentioned holes would
- * send someone hunting for one that is not there and conclude the notice was stale.
+ * IT NAMES HOLES, AND ONLY HOLES. A blocking input leaves a visible gap in a sentence, so
+ * "marked below in the text" tells a reader exactly where to look and the notice is
+ * actionable. That is the entire condition now: `reviewOutstanding()` is advisory and is
+ * deliberately NOT mentioned here.
+ *
+ * WHY A RECOMMENDED REVIEW DOES NOT BELONG ON A PUBLIC PAGE. It was named here while it held
+ * the pages in draft, which it no longer does. Printed now, it would be a warning a reader
+ * can do nothing with, attached to prose that is complete and accurate, on the one page
+ * people already skim — and the surest way to make the notices that DO matter get scrolled
+ * past. The recommendation is not hidden: it stays on the registry entry with its reason,
+ * and `reviewOutstanding()` reports it internally.
+ *
+ * NOTHING HERE, OR ANYWHERE, SAYS A LAWYER REVIEWED ANYTHING. Removing the "not yet checked
+ * by a lawyer" line is not a claim that one has been; it is the absence of a claim either
+ * way, which is what the pages said before the flag existed. `legal.test.ts` fails on any
+ * page that starts asserting review took place.
  */
 function DraftNotice() {
   const blocking = blockingOwnerInputs();
-  const unreviewed = reviewOutstanding();
   if (LEGAL_STATUS === 'published') return null;
   return (
     <aside
@@ -72,31 +75,14 @@ function DraftNotice() {
         className="flex items-center gap-2 text-sm font-bold tracking-wide text-violet-100 uppercase"
       >
         <PlantdexIcon name="errata" className="text-base" />
-        Draft — not yet in force
+        Draft &mdash; not yet in force
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-violet-200">
         This page describes what the application actually does today, written from the code
-        rather than from a template.{' '}
-        {blocking.length > 0 && (
-          <>
-            {blocking.length} detail{blocking.length === 1 ? '' : 's'} cannot be established
-            from the software and {blocking.length === 1 ? 'is' : 'are'} marked below in the
-            text.{' '}
-          </>
-        )}
-        {unreviewed.length > 0 && (
-          <>
-            {/*
-              SAID PLAINLY, because this is the half a reader cannot see. The sentences it
-              refers to are complete and read as settled; only this line distinguishes a
-              considered draft from a reviewed one.
-            */}
-            {unreviewed.length === 1 ? 'One section is' : `${unreviewed.length} sections are`}{' '}
-            written but not yet checked by a lawyer.{' '}
-          </>
-        )}
-        Until that is resolved, this is a working draft rather than a policy anyone should
-        rely on.
+        rather than from a template. {blocking.length} detail
+        {blocking.length === 1 ? '' : 's'} cannot be established from the software and{' '}
+        {blocking.length === 1 ? 'is' : 'are'} marked below in the text. Until they are filled
+        in by the owner, this is a working draft rather than a policy anyone should rely on.
       </p>
     </aside>
   );

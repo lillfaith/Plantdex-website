@@ -90,6 +90,47 @@ describe('a checkout needs configuration AND terms in force', () => {
   });
 });
 
+describe('legal review alone no longer holds commerce shut', () => {
+  const original = { ...process.env };
+  afterEach(() => {
+    process.env = { ...original };
+    vi.doUnmock('./legal');
+    vi.resetModules();
+  });
+
+  /*
+   * THE OWNER DOWNGRADED REVIEW FROM BLOCKER TO RECOMMENDATION, which moves LEGAL_STATUS to
+   * 'published' with every blocking input answered. These two pin what that did and did NOT
+   * change: the Stripe half of the gate is untouched and is now the only thing standing
+   * between here and a live checkout.
+   */
+
+  it('still refuses to sell with the Stripe variables missing', async () => {
+    const shop = await loadShop({ legal: 'published', configured: false });
+    expect(shop.isShopConfigured()).toBe(false);
+    expect(shop.isCommerceLive()).toBe(false);
+    expect(shop.checkoutLink()).toBeNull();
+  });
+
+  it('sells once the law is settled and the variables are valid', async () => {
+    const shop = await loadShop({ legal: 'published', configured: true });
+    expect(shop.isCommerceLive()).toBe(true);
+    expect(shop.checkoutLink()).toBe(LINK);
+  });
+
+  it('keeps the gate a conjunction, not a single condition', () => {
+    /*
+     * With `LEGAL_STATUS` now 'published' in the real registry, the legal half of this
+     * expression is true for every caller — so a refactor that dropped it would break
+     * nothing today and quietly remove the guard that exists for the day a blocking input
+     * returns. Read from the source, because no runtime assertion can see a term that is
+     * currently always true.
+     */
+    const shop = readFileSync('src/lib/shop.ts', 'utf8');
+    expect(shop).toMatch(/isShopConfigured\(\) && LEGAL_STATUS !== 'draft'/);
+  });
+});
+
 describe('the gate is wired where it can be forgotten', () => {
   const strip = (s: string) => s.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
 
