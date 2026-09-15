@@ -112,21 +112,23 @@ ROUTES: list[tuple[str, list[str]]] = [
     # rendered; none of it proved the checkout is in the state we think it is, which on a
     # page that takes money is the one state worth asserting.
     #
-    # THE CAPITAL N IS LOAD-BEARING. Four other pages carry the lowercase phrase "not on
-    # sale yet" in prose — the landing page, /shipping, /terms and /terms-of-sale — so a
-    # case-insensitive or lowercased marker would pass against a /shop that never rendered.
-    # `m not in body` is a case-sensitive substring, so this exact string is emitted by
-    # /shop/index.html and nowhere else. Verified against the real `out/`, not assumed.
+    # THIS MARKER TRACKS THE LIVE COMMERCE STATE. It was "Not on sale yet" while the shop was
+    # shut, and that string is emitted only by the OFF branch — so the swap had to happen in
+    # the same change that opened the checkout, or the check would assert the state the site
+    # had just left. Both directions of that mistake are silent until somebody reads the run.
     #
-    # THIS MARKER IS EXPECTED TO FAIL THE DAY PLANTDEX GOES ON SALE, and that is the point.
-    # `/shop` prints "Order" instead once `isCommerceLive()` is true — configuration set AND
-    # LEGAL_STATUS out of draft — so enabling checkout deliberately breaks this line.
-    # UPDATING IT IS A COMMERCE-LAUNCH CHECKLIST ITEM: swap the marker to one the on-sale
-    # page emits (and that no other route does) in the same change that sets the Stripe
-    # variables. Do not delete the route to make the check pass, and do not soften the
-    # marker to something that survives both states — a marker that cannot go stale is a
-    # marker that cannot detect anything, which is the lesson the /scan/ note above records.
-    ("/shop/", ["Not on sale yet"]),
+    # "Buy the deck" is the order CTA itself, not monitoring-only copy: it is the text inside
+    # the anchor whose href is the Stripe Payment Link, so it cannot render without the link
+    # rendering too. That makes it a claim about the CHECKOUT rather than about the page.
+    # Measured across two real builds of the same commit — one with the Stripe variables
+    # supplied, one without: present exactly once in /shop/index.html when commerce is live,
+    # ZERO times when it is off, and emitted by no other file in the build. The earlier
+    # candidate "Order" appears in two files and is a weaker substring.
+    #
+    # IF THE DECK EVER COMES OFF SALE, this line goes back to ["Not on sale yet"] in the same
+    # change. Do not carry both markers "to be safe" — a check that passes in either state
+    # asserts nothing, which is the lesson the /scan/ note above already records.
+    ("/shop/", ["Buy the deck"]),
 ]
 
 
