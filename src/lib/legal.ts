@@ -75,10 +75,35 @@ export interface OwnerInput {
 export const OWNER_INPUTS: readonly OwnerInput[] = [
   {
     id: 'legal-entity',
-    label: 'Legal entity name and trading address',
+    /*
+     * THE LABEL SAID "and trading address", AND THE CODE NEVER ASKED FOR ONE.
+     *
+     * All three render sites want an identity as the object of a sentence — "Plantdex is
+     * operated by ___", "The seller is ___" — and no page in the application prints a postal
+     * address anywhere: returns are initiated by email, and a delivery address is collected
+     * and held by Stripe. So the old label described a requirement that did not exist, and
+     * left in place beside a value deliberately carrying no address it would read as though
+     * one had been recorded.
+     *
+     * If an address is ever genuinely required, it is a SEPARATE entry rendered as its own
+     * block on the one page that needs it \u2014 the same reason `shipping-policy` became five
+     * ids. It does not belong folded in here, where it would land on /privacy and /terms,
+     * neither of which has any use for it.
+     */
+    label: 'Legal entity name',
     why: 'A privacy policy has to name the party that decides how the data is used. "Plantdex" is a product name; the controller is a person or a company.',
     kind: 'business',
     blocking: true,
+    /*
+     * A NATURAL PERSON TRADING UNDER THE PRODUCT NAME, and no corporate designation, because
+     * none exists. Appending a company form would be the tidier-looking string and it would
+     * be a false statement about a legal entity, in the one document a reader is entitled to
+     * rely on. Do not add one unless an entity is actually formed.
+     *
+     * No address, by the owner's instruction and because nothing renders one. See the label
+     * note above.
+     */
+    value: 'Lillian Jahr, trading as Plantdex',
   },
   {
     id: 'contact-email',

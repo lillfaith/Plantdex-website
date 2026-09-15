@@ -187,9 +187,34 @@ describe('owner input registry', () => {
     expect(privacy).toMatch(/waive rights that cannot legally be waived/);
   });
 
-  it('marks the pages as a draft while anything blocking is outstanding', () => {
-    // The banner is driven by this, so the two cannot disagree.
-    expect(LEGAL_STATUS).toBe(blockingOwnerInputs().length > 0 ? 'draft' : 'published');
+  it('marks the pages as a draft while anything at all is outstanding', () => {
+    /*
+     * BOTH HALVES, and this guard knew only one of them until the day it mattered.
+     *
+     * It read `blockingOwnerInputs().length > 0 ? 'draft' : 'published'`, which was the whole
+     * rule when it was written and stopped being so the moment `reviewRecommended` started
+     * feeding LEGAL_STATUS. It kept passing anyway — with a blocking gap still open both
+     * sides said 'draft' and agreed for the wrong reason — and only failed when the last
+     * blocking answer landed and the reviews were left holding the draft on their own. Which
+     * is precisely the state the review flag exists to produce.
+     *
+     * A test that agrees with the code for a reason that is about to expire is worse than no
+     * test: it reports green right up to the moment it is needed. The banner is driven by
+     * this, so the two cannot disagree.
+     */
+    const outstanding = blockingOwnerInputs().length > 0 || reviewOutstanding().length > 0;
+    expect(LEGAL_STATUS).toBe(outstanding ? 'draft' : 'published');
+  });
+
+  it('is held in draft by the reviews alone, with every blocking gap answered', () => {
+    /*
+     * The state the guard above missed, pinned directly rather than left implied. If a future
+     * edit made LEGAL_STATUS read only `blockingOwnerInputs()` again, this is the test that
+     * says so in words instead of failing somewhere vague.
+     */
+    expect(blockingOwnerInputs()).toHaveLength(0);
+    expect(reviewOutstanding().length).toBeGreaterThan(0);
+    expect(LEGAL_STATUS).toBe('draft');
   });
 
   it('dates the review, and does not date it in the future', () => {
