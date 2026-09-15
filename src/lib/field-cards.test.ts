@@ -226,19 +226,25 @@ describe('the unlock ladder', () => {
     expect(nextSlotAfter(13_999)?.ordinal).toBe(9);
   });
 
-  it('leaves the undrawn slot without a card rather than inventing one', () => {
+  it('has every slot drawn, and the ladder is complete', () => {
     /*
-     * The thresholds are approved; the last card is not drawn. A slot with no card is a REAL
-     * state the UI renders as "another Field Card", and it is the only honest option — this
-     * repo never fills a card with plausible-sounding botany.
+     * THE NINTH LANDED, AND THIS IS WHERE THAT GETS ACKNOWLEDGED. This read "leaves the
+     * undrawn slot without a card rather than inventing one" and pinned eight of nine
+     * deliberately as an exact count, so finishing the last one could not slip past. It
+     * failed the moment Beautyberry filled ordinal 9 — the guard working, not a guard in
+     * the way.
      *
-     * Eight of nine are drawn. This is written as an exact count rather than a slice so that
-     * finishing the ninth fails here and has to be acknowledged, which is what stopped the
-     * count silently going stale when the second tranche landed.
+     * The rule it protected is unchanged and still worth stating: a slot with no card is a
+     * REAL state the UI renders as "Field Card 9", and it stays the only honest answer for
+     * an approved threshold whose artwork does not exist. `FieldCardSlot.card` is optional
+     * for exactly that reason, and a tenth slot would begin there.
+     *
+     * Still an exact count, now facing the other way: a slot losing its card, or a tenth
+     * arriving undrawn, is a deliberate change that has to be acknowledged here.
      */
-    const drawn = FIELD_CARD_SLOTS.filter((slot) => slot.card);
-    expect(drawn).toHaveLength(8);
-    expect(FIELD_CARD_SLOTS.filter((slot) => !slot.card).map((slot) => slot.ordinal)).toEqual([9]);
+    expect(FIELD_CARD_SLOTS.filter((slot) => slot.card)).toHaveLength(9);
+    expect(FIELD_CARD_SLOTS.filter((slot) => !slot.card)).toEqual([]);
+    expect(FIELD_CARD_SLOTS).toHaveLength(FIELD_CARDS_TOTAL);
   });
 
   it('fills the ladder from the bottom, leaving no drawn card above an empty slot', () => {
@@ -305,8 +311,10 @@ describe('the artwork is transcribed, not improved', () => {
   });
 
   it('numbers each card as its face does, past the 47 physical cards', () => {
-    expect(FIELD_CARDS.map((c) => c.cardNumber)).toEqual([48, 49, 50, 51, 52, 53, 54, 55]);
-    expect(FIELD_CARDS.map((c) => c.cardNumberInCollection)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(FIELD_CARDS.map((c) => c.cardNumber)).toEqual([48, 49, 50, 51, 52, 53, 54, 55, 56]);
+    expect(FIELD_CARDS.map((c) => c.cardNumberInCollection)).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9,
+    ]);
   });
 
   it('runs contiguously with no repeat, which the second tranche arrived without', () => {

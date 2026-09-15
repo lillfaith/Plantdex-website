@@ -158,6 +158,15 @@ export function LookalikeSection({ herb }: { herb: Herb }) {
           </li>
         ))}
       </ul>
+      {/*
+        BELOW THE LIST, because it qualifies all of it. The two Callicarpa entries each
+        explain themselves; this says the genus is wider than the two and that berry colour
+        settles nothing — a caution about the SET, which is not something a per-entry field
+        can carry without attaching it to one arbitrary member.
+      */}
+      {notes.lookalikeNote && (
+        <p className={`mt-3 ${READING} leading-relaxed text-violet-300`}>{notes.lookalikeNote}</p>
+      )}
     </section>
   );
 }

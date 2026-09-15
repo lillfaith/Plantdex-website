@@ -6,6 +6,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { Chip, ChipRow } from '../ui/Chip';
 import { InfoTile } from '../ui/InfoTile';
 import { ProvenanceChip } from '../game/Provenance';
+import { evidenceFor, STANDING_LABEL } from '@/lib/trait-evidence';
 import { isFieldCard } from '@/lib/field-cards';
 import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
@@ -159,7 +160,47 @@ export function HealingTraitsSection({ herb }: { herb: Herb }) {
           </li>
         ))}
       </ChipRow>
+      <TraitEvidenceNote herb={herb} />
     </Panel>
+  );
+}
+
+/**
+ * Which of the printed traits are ethnobotanical record and which have laboratory work.
+ *
+ * UNDER the chips, never instead of them: the transcription is what the card says and does
+ * not move. This answers the question the four equal chips raise — whether they are four of
+ * the same kind of thing — and it renders only for cards that have an authored entry, so
+ * every other page is byte-identical.
+ *
+ * The Plantdex chip is the right one here even though the subject is a card field: the
+ * EVIDENCE FRAMING is the site's, not the deck's, and labelling it card data would borrow
+ * the transcription's authority for a judgement the card never made.
+ */
+function TraitEvidenceNote({ herb }: { herb: Herb }) {
+  const evidence = evidenceFor(herb);
+  if (!evidence) return null;
+  return (
+    <div className="mt-4 rounded-xl border border-violet-700/60 bg-plum-800/45 p-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className={`${MICRO_LABEL} text-violet-300`}>What stands behind these</p>
+        <ProvenanceChip source="plantdex" />
+      </div>
+      <p className="mt-2 text-xs leading-relaxed text-violet-200">{evidence.summary}</p>
+      <dl className="mt-3 space-y-2.5">
+        {evidence.traits.map((row) => (
+          <div key={row.trait}>
+            <dt className="text-xs font-bold text-violet-100">
+              {row.trait}
+              <span className="ml-2 rounded-full border border-violet-600/70 bg-violet-800/30 px-2 py-0.5 text-[0.72rem] font-semibold tracking-wide text-violet-300 uppercase">
+                {STANDING_LABEL[row.standing]}
+              </span>
+            </dt>
+            <dd className="mt-1 text-xs leading-relaxed text-violet-200">{row.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   );
 }
 

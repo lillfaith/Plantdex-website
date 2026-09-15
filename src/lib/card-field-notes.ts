@@ -44,6 +44,15 @@ export interface FieldNotes {
   habitat?: string;
   lookalikes?: Lookalike[];
   /**
+   * One sentence qualifying the lookalike list AS A LIST, under the whole group.
+   *
+   * Added for Beautyberry, where every near relative is another purple-fruited Callicarpa
+   * and the honest warning is about the genus rather than about any one of the two named.
+   * Putting it in a per-lookalike `distinguishBy` would attach a general caution to whichever
+   * species happened to be last, and would go unread by somebody who only compared the other.
+   */
+  lookalikeNote?: string;
+  /**
    * For a card that names a SPECIES while the traits shown are genus-wide (#23, #29, #36,
    * #40). Distinct from the genus-level notice, which belongs only to cards whose own
    * scientific name is `spp.` — see `isGenusCard`.
@@ -1262,6 +1271,34 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
           'Count the flower parts and look at the spike. Loosestrife carries one dense magenta spike of six-petalled flowers; blue vervain carries several slender spikes of small five-lobed flowers with only a ring of them open. The two grow in the same wet ground and are routinely mistaken at a distance.',
       },
     ],
+    sourceIds: [],
+  },
+  'callicarpa-americana': {
+    identification: [
+      { trait: 'Berries clasp the stem', detail: 'Bright purple to violet fruits sit in dense clusters wrapped directly around the stem at the leaf nodes, rather than hanging from the branch tips.' },
+      { trait: 'Opposite toothed leaves', detail: 'Leaves are opposite, simple, and oval to elliptic, with toothed margins.' },
+      { trait: 'Tapering, textured blades', detail: 'Each blade narrows toward the tip and has a visibly veined, slightly rough surface.' },
+      { trait: 'A branching shrub', detail: 'Woody, branching and deciduous — a shrub rather than a soft-stemmed herbaceous plant.' },
+      { trait: 'Pale flowers come first', detail: 'Small pale pink to lavender flowers appear in clusters at the nodes before the purple fruits develop.' },
+    ],
+    habitat:
+      'American beautyberry grows in open woods, woodland edges, thickets, roadsides, fence lines, and other partly open habitats. It is especially associated with the southeastern United States and often grows in sun to partial shade on reasonably well-drained ground.',
+    lookalikes: [
+      {
+        commonName: 'Japanese Beautyberry',
+        scientificName: 'Callicarpa japonica',
+        distinguishBy:
+          'Another Callicarpa, and it also bears purple fruit — so colour settles nothing. Compare leaf shape, the growth habit of the shrub, and how the fruit clusters sit on the stem, together with where the plant is growing and whether it is planted or wild.',
+      },
+      {
+        commonName: "Bodinier's Beautyberry",
+        scientificName: 'Callicarpa bodinieri',
+        distinguishBy:
+          'Commonly met as an ornamental and also carrying purple fruit clusters. Confirm leaf form, branching habit and fruit placement, and take the regional and cultivation context into account rather than the berries alone.',
+      },
+    ],
+    lookalikeNote:
+      'Other Callicarpa species can look very similar when fruiting. Confirm multiple features rather than relying only on purple berries.',
     sourceIds: [],
   },
 };

@@ -219,3 +219,21 @@ Source-quality order used when choosing candidates, per the brief: peer-reviewed
 government database → university extension → botanical institution → pharmacopoeia →
 high-quality reference. SEO herbal blogs were excluded from every search by domain filter,
 not by judgement after the fact.
+
+## #56 Beautyberry — *Callicarpa americana* (Field Card)
+
+Supplied by the repo owner rather than found by search, and **still unverified here**: this
+environment cannot open any of these hosts, so nothing below has been read against the claim
+it sits beside. `sourceIds` on the card and its field notes stay empty until somebody does.
+
+| Claim | Section | Candidate | Type |
+|---|---|---|---|
+| Callicarpenal and intermedeol isolated from *C. americana* leaves; mosquito bite-deterrent activity | facts | https://pubmed.ncbi.nlm.nih.gov/16028979 | Peer-reviewed |
+| Callicarpenal and intermedeol repellent against blacklegged and lone star ticks | facts | https://pubmed.ncbi.nlm.nih.gov/17380408/ | Peer-reviewed |
+| Traditional use of roots, leaves and branches; crushed leaves as a farmers' mosquito deterrent | traditionalUse | https://plants.ces.ncsu.edu/plants/callicarpa-americana/ | Univ. extension |
+| Clerodane diterpene from the leaves; growth-inhibitory activity against *Cutibacterium acnes* | facts | https://pmc.ncbi.nlm.nih.gov/articles/PMC13162267/ | Peer-reviewed |
+
+Card claims still needing a candidate: identification traits, habitat, the two *Callicarpa*
+lookalikes, taste and aromatic profile, and the "Skin care" and "Fever aid" healing traits —
+the last two are exactly why `trait-evidence.ts` files them as traditional use rather than
+as laboratory evidence.

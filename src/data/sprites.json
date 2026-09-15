@@ -299,6 +299,56 @@
       }
     }
   },
+  "callicarpa-americana": {
+    "herbId": "callicarpa-americana",
+    "src": "/cards/animated/callicarpa-americana.png",
+    "version": "58996531",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "lustrous",
+    "content": {
+      "left": 0.1765,
+      "top": 0.0714,
+      "right": 0.8235,
+      "bottom": 1.0
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "callicarpa-americana-sprout",
+        "src": "/cards/animated/callicarpa-americana-sprout.png",
+        "version": "69449622",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "lustrous",
+        "content": {
+          "left": 0.2353,
+          "top": 0.3571,
+          "right": 0.7353,
+          "bottom": 0.9286
+        }
+      },
+      "growing": {
+        "herbId": "callicarpa-americana-growing",
+        "src": "/cards/animated/callicarpa-americana-growing.png",
+        "version": "000165a6",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "lustrous",
+        "content": {
+          "left": 0.2059,
+          "top": 0.1429,
+          "right": 0.7941,
+          "bottom": 0.8929
+        }
+      }
+    }
+  },
   "capsella-bursa-pastoris": {
     "herbId": "capsella-bursa-pastoris",
     "src": "/cards/animated/capsella-bursa-pastoris.png",

@@ -113,6 +113,22 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   // ── Molecules whose drawing is not shipped yet ──────────────────────────────
   // Named and captioned honestly; the plate simply carries no structure, and the reader
   // cannot tell which these are.
+  /*
+   * BEAUTYBERRY'S THREE, NAMED AND NOT DRAWN — the same answer rutin, taraxasterol and
+   * ellagic acid got, and for the same reason. Callicarpenal is a clerodane diterpene
+   * dialdehyde; intermedeol and spathulenol are bicyclic and tricyclic sesquiterpene
+   * alcohols. Every one of them has stereocentres and a fused-ring system whose geometry
+   * this generator COMPUTES from an authored bond lattice — so drawing them means authoring
+   * that lattice from a structure I have not been able to open and check. A ring drawn from
+   * memory is the invented-botany failure wearing a lab coat, and a plausible-looking wrong
+   * skeleton is worse than an honest absence on the one section a reader opens to check.
+   *
+   * The subtitles are the compound CLASS each belongs to, which is a fact about the name
+   * itself and needs no drawing to be true.
+   */
+  callicarpenal: molecule(undefined, 'A clerodane diterpene'),
+  intermedeol: molecule(undefined, 'A sesquiterpene alcohol'),
+  spathulenol: molecule(undefined, 'A sesquiterpene alcohol'),
   rutin: molecule(undefined, 'Quercetin bound to the disaccharide rutinose'),
   taraxasterol: molecule(undefined, 'A pentacyclic triterpene'),
   resveratrol: molecule('resveratrol', 'A stilbenoid'),
@@ -154,6 +170,17 @@ const TABLE: Record<string, Omit<CompoundEntry, 'id'>> = {
   flavonoids: family(
     'The C6-C3-C6 core every flavonoid is built on. Individual compounds differ in how it is oxidised and hydroxylated.',
     'flavonoid-core',
+  ),
+  /*
+   * A CLASS, AND DELIBERATELY WITHOUT A SCAFFOLD. Card #56 prints "Clerodanes" beside three
+   * exact compounds, so the card itself is mixing one class in with three molecules — which
+   * is transcribed as printed and disambiguated here rather than silently promoted to a
+   * fourth molecule. A `scaffold` is allowed only where ONE genuine skeleton defines the
+   * whole class and can be drawn accurately; neither half holds here, so it gets none.
+   */
+  clerodanes: family(
+    'A large family of diterpenes sharing a clerodane carbon skeleton. Members differ widely ' +
+      'from one another — the name covers many distinct compounds rather than naming one.',
   ),
   tannins: family('A group of plant polyphenols that bind proteins, not one compound.'),
   saponins: family('A group of glycosides that foam in water, not one compound.'),

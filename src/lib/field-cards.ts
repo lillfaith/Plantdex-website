@@ -311,6 +311,32 @@ const BLUE_VERVAIN: Herb = {
   },
 };
 
+const BEAUTYBERRY: Herb = {
+  id: 'callicarpa-americana',
+  cardNumber: 56,
+  collectionId: FIELD_CARDS_COLLECTION_ID,
+  cardNumberInCollection: 9,
+  commonName: 'Beautyberry',
+  scientificName: 'Callicarpa americana',
+  rarity: 'Rare',
+  xp: 350,
+  season: 'summer',
+  uses: ['immune', 'topical'],
+  stats: { water: 2, sun: 4, temperature: 5 },
+  image: '/cards/callicarpa-americana.webp',
+  thumb: '/cards/thumb/callicarpa-americana.webp',
+  backImage: '/cards/back/callicarpa-americana.webp',
+  sprite: '/cards/sprite/callicarpa-americana.webp',
+  back: {
+    healingTraits: ['Skin care', 'Insect repellent', 'Antibacterial', 'Fever aid'],
+    compounds: ['Callicarpenal', 'Intermedeol', 'Clerodanes', 'Spathulenol'],
+    taste: ['Mild', 'Sweet', 'Astringent'],
+    aromatic: ['Green', 'Herbal', 'Resinous'],
+    preparations: ['Decoction', 'Poultice', 'Leaf rub', 'Extract'],
+    usableParts: ['Leaf', 'Root', 'Branch', 'Berry'],
+  },
+};
+
 /**
  * Errors the Field Card artwork itself contains, by card number.
  *
@@ -343,8 +369,11 @@ export const FIELD_CARD_ISSUES: Readonly<Record<number, string>> = {
  * card. 14000 sits under both Plantdex Grandmaster (15000) and the 19250 non-daily ceiling,
  * so the ninth is reachable without grinding dailies.
  *
- * Ordinal 9 has an approved threshold and no card yet. It stays `card: undefined` until
- * finished artwork and a transcription arrive.
+ * ORDINAL 9 IS NOW FILLED, AND THE LADDER IS COMPLETE. `FieldCardSlot.card` stays optional
+ * all the same: the type describes a slot with an approved threshold and no finished card,
+ * which is the state every one of these passed through and the state a tenth would start in.
+ * Nothing here says nine is a maximum — `FIELD_CARDS_TOTAL` does, and it is the number the
+ * UI counts against.
  */
 export const FIELD_CARD_SLOTS: readonly FieldCardSlot[] = [
   { ordinal: 1, xp: 600, card: CONEFLOWER },
@@ -355,7 +384,7 @@ export const FIELD_CARD_SLOTS: readonly FieldCardSlot[] = [
   { ordinal: 6, xp: 7_000, card: COMMON_MALLOW },
   { ordinal: 7, xp: 8_750, card: MILK_THISTLE },
   { ordinal: 8, xp: 11_000, card: BLUE_VERVAIN },
-  { ordinal: 9, xp: 14_000 },
+  { ordinal: 9, xp: 14_000, card: BEAUTYBERRY },
 ];
 
 /** The finished cards, in ladder order. This is what `DIGITAL_ONLY_ENTRIES` is built from. */
