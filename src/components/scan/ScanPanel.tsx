@@ -683,9 +683,21 @@ export function ScanPanel() {
                             >
                               {candidate.match.kind === 'genusCard'
                                 ? `The ${herb.commonName} card covers the whole ${genusLabel(herb.scientificName)} genus`
-                                : candidate.match.confirmable
-                                  ? `Matches the ${herb.commonName} card`
-                                  : `The deck\u2019s nearest card: ${herb.commonName}`}
+                                : candidate.match.kind === 'acceptedScope'
+                                  ? /*
+                                     * ACCEPTED, AND SAID AS ACCEPTANCE. This species is not
+                                     * the binomial the card prints, but the card's declared
+                                     * coverage includes it — so the sentence has to read as
+                                     * a match rather than as the near-miss the old
+                                     * `sameGenus` wording gave it. Deliberately distinct
+                                     * from the `genusCard` line above: that card SAYS
+                                     * `Genus spp.`, this one prints a species and was
+                                     * widened, and a reader is owed the difference.
+                                     */
+                                    `The ${herb.commonName} card covers this ${genusLabel(herb.scientificName)} species`
+                                  : candidate.match.confirmable
+                                    ? `Matches the ${herb.commonName} card`
+                                    : `The deck\u2019s nearest card: ${herb.commonName}`}
                             </Link>
                           </p>
                         ) : (
@@ -702,7 +714,20 @@ export function ScanPanel() {
                           </p>
                         )}
 
-                        {candidate.match.kind === 'sameGenus' ? (
+                        {candidate.match.kind === 'ambiguous' ? (
+                          /*
+                           * MORE THAN ONE CARD CLAIMS THIS SPECIES, so the app refuses to
+                           * choose and says why. Awarding the wrong card is worse than
+                           * awarding none, and picking silently would make the wrongness
+                           * invisible to everyone including us. `coverage.test.ts` fails the
+                           * build on overlapping scope, so this should be unreachable — it
+                           * renders because "unreachable" is a property of today's data.
+                           */
+                          <p className="mt-2 text-xs leading-relaxed text-violet-300">
+                            More than one card in the deck covers this species, so it cannot
+                            be logged as any of them without guessing which you found.
+                          </p>
+                        ) : candidate.match.kind === 'sameGenus' ? (
                           <p className="mt-2 text-xs leading-relaxed text-violet-300">
                             {(candidate.match.relatedHerbIds?.length ?? 1) > 1
                               ? `Related to the deck\u2019s ${candidate.match.relatedHerbIds?.length} cards in this group, but a different species \u2014 so it cannot be logged as any of them.`

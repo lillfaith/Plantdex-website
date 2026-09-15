@@ -1,4 +1,5 @@
 import { PRINTED_CARDS } from './deck.ts';
+import { scopeFor } from './card-coverage.ts';
 
 /**
  * MAPPING AN IDENTIFICATION RESULT ONTO THE DECK.
@@ -28,7 +29,24 @@ import { PRINTED_CARDS } from './deck.ts';
  * "this is safe" — see `plant-id-safety.test.ts`.
  */
 
-export type MatchKind = 'exact' | 'genusCard' | 'sameGenus' | 'none';
+export type MatchKind =
+  | 'exact'
+  | 'genusCard'
+  /**
+   * A species inside a card's DECLARED coverage that is not the card's own binomial — the
+   * goldenrod case. Confirmable, and deliberately distinct from `genusCard`: that one means
+   * the card itself prints `Genus spp.`, this one means the card prints a binomial and the
+   * owner has declared the card broader. Two different facts about why a name is accepted.
+   */
+  | 'acceptedScope'
+  /**
+   * Claimable by MORE THAN ONE card, so the app refuses to pick. Not confirmable — awarding
+   * the wrong card is worse than awarding none, and silently choosing the first would make
+   * the wrongness invisible. `relatedHerbIds` carries every claimant.
+   */
+  | 'ambiguous'
+  | 'sameGenus'
+  | 'none';
 
 export interface PlantMatch {
   kind: MatchKind;
@@ -37,7 +55,8 @@ export interface PlantMatch {
   /**
    * Whether this may be offered as a discovery of that card.
    *
-   * True for `exact` and `genusCard`; FALSE for `sameGenus`, which is a related card rather
+   * True for `exact`, `genusCard` and `acceptedScope`; FALSE for `ambiguous` and for
+   * `sameGenus`, which is a related card rather
    * than this plant. That distinction is the point of the type.
    */
   confirmable: boolean;
@@ -176,6 +195,30 @@ for (const herb of PRINTED_CARDS) {
 }
 
 /**
+ * Every card claiming this name through DECLARED COVERAGE — never through its own binomial.
+ *
+ * Returns all claimants rather than the first, because the caller has to be able to tell one
+ * from several. Scope is read from `card-coverage.ts`, so widening a card is a data edit
+ * there and not a new branch here — the difference between a declarative model and the pile
+ * of string special-cases this replaced.
+ */
+function cardsCoveringByScope(name: string, genus: string): string[] {
+  const claimed: string[] = [];
+  for (const herb of PRINTED_CARDS) {
+    const scope = scopeFor(herb.id);
+    if (!scope || scope.type === 'species') continue;
+    if (scope.type === 'genus') {
+      if (genusOf(herb.scientificName) !== genus) continue;
+      if (scope.excluded?.some((one) => normalizeName(one) === name)) continue;
+      claimed.push(herb.id);
+    } else if (scope.accepted.some((one) => normalizeName(one) === name)) {
+      claimed.push(herb.id);
+    }
+  }
+  return claimed;
+}
+
+/**
  * Map one scientific name from an identification provider onto a PRINTED card.
  *
  * Order matters: an exact species card beats the genus card that would also accept it, so a
@@ -203,8 +246,31 @@ export function matchScientificName(scientificName: string): PlantMatch {
 
   const genus = genusOf(scientificName);
 
-  const genusCard = GENUS_CARDS.get(genus);
-  if (genusCard) return { kind: 'genusCard', herbId: genusCard, confirmable: true };
+  /*
+   * DECLARED COVERAGE, and the specificity rule that keeps it from swallowing anything.
+   *
+   * An exact binomial has already returned above, so a card that prints this very species
+   * always beats a broader card that merely contains it — which is what stops Goldenrod's
+   * genus scope claiming a species another card names outright, and what would keep the two
+   * Rumex cards intact if either were ever broadened.
+   *
+   * MORE THAN ONE CLAIMANT IS AN AMBIGUITY, NOT A TIE TO BREAK. Two cards declaring
+   * overlapping scope is a classification mistake, and the honest response is to say so
+   * rather than award whichever happened to be first in deck order. `coverage.test.ts`
+   * fails the build on one, so this branch should be unreachable — it exists because
+   * "unreachable" is a property of today's data, not of the code.
+   */
+  const claimants = cardsCoveringByScope(name, genus);
+  if (claimants.length === 1) {
+    const herbId = claimants[0]!;
+    // The nine `Genus spp.` cards keep their own kind: the card says what it covers, and a
+    // reader is owed that distinction from a card the owner widened after printing.
+    const kind: MatchKind = GENUS_CARDS.get(genus) === herbId ? 'genusCard' : 'acceptedScope';
+    return { kind, herbId, confirmable: true };
+  }
+  if (claimants.length > 1) {
+    return { kind: 'ambiguous', herbId: claimants[0], relatedHerbIds: claimants, confirmable: false };
+  }
 
   // A different species in a genus the deck covers. Related, and worth showing so the player
   // can see why it came up — but never confirmable as that card.

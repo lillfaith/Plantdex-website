@@ -44,6 +44,11 @@ export const PURE_MODULES = [
   // Both halves have to be the same code on both sides, so both modules travel.
   'field-cards.ts',
   'catalogue.ts',
+  // Travels with `plant-match.ts`, which imports it. `seed-packet` applies `isShelfEligible`
+  // server-side, and that is defined as "no confirmable match" — so a card the owner widened
+  // must widen identically on both sides, or the server would mint a shelf packet for a
+  // species the client already resolves to a printed card.
+  'card-coverage.ts',
   'herbdex-reducer.ts',
   // Added with the Seed Shelf. The `seed-packet` function must mint a species' canonical
   // packet with the EXACT generator the app previews with, and must apply the exact
