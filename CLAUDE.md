@@ -22,6 +22,8 @@ npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art (needs all 45)
 python3 scripts/build_deck.py --source deck-source --only 11,24,31   # patch a few reprinted cards
 npm run build:chips                                # regenerate the 112px card chips
+npm run build:scout                                # regenerate the scan page's scout sheet
+python3 scripts/build_scan_scout.py --preview 3     # print one frame of its gesture as text
 npm run build:structures                           # regenerate the skeletal formulas
 python3 scripts/build_sprites.py                   # regenerate the animated portraits
 python3 scripts/build_sprites.py --preview <herb-id> [--frame N]   # print a frame as text

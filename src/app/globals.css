@@ -834,33 +834,58 @@ body {
 }
 
 /*
- * THE SCAN PAGE'S SCOUT, SWAYING.
+ * THE SCAN PAGE'S SCOUT, LOOKING AROUND.
  *
  * A CREATURE IDLE, NOT A UI EFFECT — which is why it loops where the four one-shot moments
  * do not. That rule is about bars, crossfades and readiness pips, where repetition is
  * ambient noise dressed as feedback. All 54 plant sprites loop forever on the same
  * reasoning: a living thing that holds perfectly still is the strange one.
  *
- * Transform only, so it composites and never triggers layout — this sits on the page whose
- * real work starts when somebody taps the camera, and an idle costing a frame there would be
- * the worst possible trade. It pivots at the FOOT rather than the centre: a creature turning
- * about its middle is a sticker being wiggled, one turning at the base is a plant in a
- * breeze. Two degrees, because the lens is held out at arm's length and its tip travels far
- * further than the body does.
+ * IT USED TO SWAY, AND A SWAY IS THE WRONG IDIOM HERE. `rotate` tweens: it interpolates
+ * through every intermediate angle, which is exactly what the plant sprites are built NOT to
+ * do. So the one decorative creature in the app was also the only one gliding, next to a nav
+ * and a grid full of creatures that snap. It is a sheet now, walked by the same three
+ * mechanisms every portrait uses — a horizontal row of frames, `background-position` under
+ * `steps()`, and `pixelated` to keep the authored pixels square at any size.
+ *
+ * NOT A SPECIES, SO NOT IN `sprites.json`. It borrows the sprite system's rendering and
+ * stays out of its data; see `scripts/build_scan_scout.py`. Its sheet URL is set inline by
+ * the component through `assetPath()` rather than written here as a CSS `url()`, because a
+ * root-absolute path in a stylesheet is the one asset reference `basePath` cannot rewrite —
+ * it would 404 on every build that still carries `/Plantdex-website`.
+ *
+ * `--scout-travel` is 100 × frames / (frames - 1), the same correction
+ * `plant-sprite-play-fit` carries and for the same reason: a percentage background-position
+ * is measured against (container - image), so at 1400% wide 100% is the LAST frame, not one
+ * past it. Walking 0% → 100% in `steps(14)` would land every step between two frames.
  */
-@keyframes scan-scout-sway {
-  0%,
-  100% {
-    transform: rotate(-2deg);
+@keyframes scan-scout-look {
+  from {
+    background-position-x: 0%;
   }
-  50% {
-    transform: rotate(2deg);
+  to {
+    background-position-x: var(--scout-travel);
   }
 }
 
 .scan-scout {
-  transform-origin: 50% 95%;
-  animation: scan-scout-sway 4.5s ease-in-out infinite;
+  --scout-frames: 14;
+  --scout-travel: 107.6923%;
+  display: block;
+  /*
+    The authored cell, so the caller still sets only a width — `w-16` on the scan page — and
+    the height follows. The SVG's viewBox used to do this; nothing else did.
+  */
+  aspect-ratio: 34 / 28;
+  background-repeat: no-repeat;
+  background-size: calc(var(--scout-frames) * 100%) 100%;
+  image-rendering: pixelated;
+  /*
+    1.75s over 14 frames is 8fps, which is the deck's own rate: 46 of the 54 plant sheets are
+    14 frames at 8 or 10fps. Matching it is what makes this read as the same hand rather than
+    as a faster, cheaper creature standing next to them.
+  */
+  animation: scan-scout-look 1.75s steps(14) infinite;
 }
 
 .plant-sprite-frozen {
@@ -1015,12 +1040,16 @@ body {
 @media (prefers-reduced-motion: reduce) {
   /*
    * Named rather than left to the global 0.01ms collapse, same as everything else that moves
-   * here: collapsed to nothing the sway would park at -2deg and leave the creature
-   * permanently tilted, which reads as a rendering fault rather than as stillness.
+   * here. Removing the animation reverts `background-position-x` to its base 0, which is
+   * frame 0 — and `build_scan_scout.py` refuses to emit a sheet whose frame 0 is not the
+   * authored resting pose, checked against it cell by cell. So this holds a complete
+   * creature with its glass down, not a pose caught mid-glance.
+   *
+   * No `animation-fill-mode` anywhere on this, and there must not be: `forwards` would
+   * strand it on frame 13 instead, which is the same trap `.plant-sprite-once` documents.
    */
   .scan-scout {
     animation: none !important;
-    transform: none !important;
   }
 
   /*
