@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { getPrintedCard } from '@/lib/deck';
+import { getCatalogueEntry } from '@/lib/catalogue';
 import { assetPath } from '@/lib/asset-path';
 import { GROWTH_STAGE_LABEL } from '@/lib/sightings';
 import { useSightingsStore } from '@/lib/sightings-store';
@@ -58,7 +58,9 @@ export function JournalView() {
       ) : (
         <ol className="mt-6 space-y-5">
           {sightings.map((sighting) => {
-            const herb = getPrintedCard(sighting.herbId);
+            // A sighting of a Field Card species is a real sighting; resolving it through
+            // the printed deck alone hid the entry from its own journal.
+            const herb = getCatalogueEntry(sighting.herbId);
             return (
               <li key={sighting.id} className="panel p-4">
                 <div className="flex items-start gap-3">

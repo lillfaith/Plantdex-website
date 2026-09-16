@@ -183,6 +183,51 @@ describe('an XP unlock is not a discovery', () => {
     }
   });
 
+  it('resolves to something the scan can actually RENDER, not just match', () => {
+    /*
+     * THE HALF I MISSED FIRST TIME, AND IT SHIPPED. Widening the matcher made
+     * `matchScientificName` return `hamamelis-virginiana` — and every display site then
+     * resolved that id with `getPrintedCard`, which cannot see it, and each one dropped the
+     * row it could not resolve. The live result was a "Possible matches" panel with its
+     * heading, its caution and its quota line and NO CANDIDATES AT ALL: strictly worse than
+     * the wrong answer it replaced, and invisible to every test, because matching was right.
+     *
+     * So this asserts the whole chain a row needs, not just the match: name → id → a card
+     * object with the fields the row prints.
+     */
+    for (const card of [...FIELD_CARDS, ...PRINTED_CARDS]) {
+      const { herbId } = matchScientificName(card.scientificName);
+      expect(herbId, card.scientificName).toBeDefined();
+      const rendered = getCatalogueEntry(herbId!);
+      expect(rendered?.commonName, card.scientificName).toBeTruthy();
+      expect(rendered?.id, card.scientificName).toBe(card.id);
+    }
+  });
+
+  it('is displayed through the catalogue everywhere a scan or shelf shows a card', () => {
+    /*
+     * The rule, pinned at source, because behaviour tests cannot reach a JSX branch that
+     * returns null. RESOLVE THROUGH THE CATALOGUE WHEREVER YOU DISPLAY A CARD; through the
+     * printed deck wherever you COUNT or AWARD one. The second half is why `progression.ts`,
+     * `mastery.ts`, `research.ts` and the profile stats still use `getPrintedCard` and must
+     * keep doing so — a Field Card is worth no XP and fills no slot in Collection 01.
+     */
+    for (const file of [
+      'src/components/scan/ScanPanel.tsx',
+      'src/lib/scan-ambiguity.ts',
+      'src/components/seedshelf/SeedShelfView.tsx',
+      'src/components/journal/JournalView.tsx',
+    ]) {
+      const source = readFileSync(file, 'utf8')
+        // Comments legitimately NAME the function while explaining why it is not used here.
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/^\s*\/\/.*$/gm, '');
+      expect(source, `${file} resolves a card id through the printed deck`).not.toMatch(
+        /getPrintedCard\s*\(/,
+      );
+    }
+  });
+
   it('is still worth no XP when a scan discovers it', () => {
     /*
      * The load-bearing half of "recognising is not rewarding". `applyDiscovery` resolves ids

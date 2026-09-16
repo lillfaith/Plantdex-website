@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import Link from 'next/link';
-import { getPrintedCard } from '@/lib/deck';
+import { getCatalogueEntry } from '@/lib/catalogue';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { useSeedShelf } from '@/lib/seed-shelf-store';
 import {
@@ -56,7 +56,10 @@ export function SeedShelfView() {
   const claim = useCallback(
     (entry: SeedShelfEntry) => {
       const herbId = cardFor(entry);
-      const herb = herbId ? getPrintedCard(herbId) : undefined;
+      // `cardFor` returns catalogue ids, so a shelved species that sprouted into a Field
+      // Card resolves here too. Through `getPrintedCard` this returned undefined and the
+      // claim button silently did nothing.
+      const herb = herbId ? getCatalogueEntry(herbId) : undefined;
       if (!herb) return;
       discover(herb, entry.firstFoundAt);
       track('seed_shelf_sprouted');
@@ -134,7 +137,7 @@ export function SeedShelfView() {
               A seed has sprouted.
             </p>
             <p className="mt-1 text-sm text-violet-200">
-              {getPrintedCard(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
+              {getCatalogueEntry(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
               you first found it.
             </p>
             <Link
@@ -321,7 +324,7 @@ function Packet({
   onClaim: () => void;
 }) {
   const herbId = cardFor(entry);
-  const herb = herbId ? getPrintedCard(herbId) : undefined;
+  const herb = herbId ? getCatalogueEntry(herbId) : undefined;
   const label = entry.commonName ?? entry.scientificName;
 
   return (

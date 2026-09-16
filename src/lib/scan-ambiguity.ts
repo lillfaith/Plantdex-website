@@ -1,4 +1,4 @@
-import { getPrintedCard } from "./deck";
+import { getCatalogueEntry } from "./catalogue";
 import { genusOf, type ScanCandidate } from "./plant-match";
 
 /**
@@ -43,7 +43,7 @@ export function ambiguousCardNames(
   const counts = new Map<string, number>();
   for (const candidate of candidates) {
     const herb = candidate.match.herbId
-      ? getPrintedCard(candidate.match.herbId)
+      ? getCatalogueEntry(candidate.match.herbId)
       : undefined;
     if (!herb) continue;
     counts.set(herb.commonName, (counts.get(herb.commonName) ?? 0) + 1);

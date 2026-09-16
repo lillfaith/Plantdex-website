@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { getPrintedCard } from '@/lib/deck';
+import { getCatalogueEntry } from '@/lib/catalogue';
 import type { DiscoveryResult } from '@/lib/types';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { ambiguousCardNames, genusLabel } from '@/lib/scan-ambiguity';
@@ -471,7 +471,7 @@ export function ScanPanel() {
                     // Every card in the genus. The deck holds two Rumex species, and naming
                     // one of them confidently was a coin flip that always landed the same way.
                     const ids = near?.match.relatedHerbIds ?? (near?.match.herbId ? [near.match.herbId] : []);
-                    const herbs = ids.map(getPrintedCard).filter((herb) => herb !== undefined);
+                    const herbs = ids.map(getCatalogueEntry).filter((herb) => herb !== undefined);
                     if (herbs.length === 0) return null;
                     return (
                       <ul className="mt-3 space-y-2">
@@ -592,7 +592,18 @@ export function ScanPanel() {
                      */
                     const ambiguous = ambiguousCardNames(result.candidates);
                     return result.candidates.map((candidate) => {
-                    const herb = candidate.match.herbId ? getPrintedCard(candidate.match.herbId) : null;
+                    /*
+                     * THE CATALOGUE, NOT THE PRINTED DECK. `matchScientificName` resolves Field Cards now, so a
+                     * match can carry an id `getPrintedCard` cannot see — and every one of these sites drops a
+                     * row it cannot resolve. That is how scanning a witch hazel produced a "Possible matches"
+                     * panel with its heading, its caution and its quota line, and no candidates at all.
+                     *
+                     * Printed-only is still correct for XP, mastery, the garden, Field Research and the
+                     * collection stats, and those call sites are deliberately untouched. The rule is: resolve
+                     * through the catalogue wherever you are DISPLAYING a card, through the printed deck
+                     * wherever you are COUNTING or AWARDING one.
+                     */
+                    const herb = candidate.match.herbId ? getCatalogueEntry(candidate.match.herbId) : null;
                     if (!herb) return null;
                     const band = confidenceBand(candidate.score);
                     const already = ready && isDiscovered(herb.id);
@@ -864,7 +875,7 @@ export function ScanPanel() {
         */}
         {confirmed &&
           (() => {
-            const herb = getPrintedCard(confirmed.herbId);
+            const herb = getCatalogueEntry(confirmed.herbId);
             if (!herb) return null;
             return (
               <div ref={outcomeRef}>
@@ -936,7 +947,7 @@ export function ScanPanel() {
       >
         {celebrating &&
           (() => {
-            const herb = getPrintedCard(celebrating.herbId);
+            const herb = getCatalogueEntry(celebrating.herbId);
             if (!herb) return null;
             return (
               <DiscoveryCelebration
