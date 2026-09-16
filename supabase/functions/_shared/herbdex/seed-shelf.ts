@@ -1,4 +1,4 @@
-import { getPrintedCard } from './deck.ts';
+import { getCatalogueEntry } from './catalogue.ts';
 import { matchScientificName, normalizeName } from './plant-match.ts';
 import { packetRecipe, parseRecipe, type PacketRecipe } from './seed-packet.ts';
 import { mintablePacketInput } from './species-identity.ts';
@@ -156,12 +156,18 @@ export function isShelfEligible(scientificName: string): boolean {
   // A bare genus does not identify a species, and a shelf of genera would collide with
   // future cards in ways nothing could resolve.
   if (!key || !key.includes(' ')) return false;
-  // ELIGIBILITY IS ABOUT THE PRINTED DECK, NOT ABOUT WHAT PLANTDEX RECOGNISES.
-  // `matchScientificName` indexes `PRINTED_CARDS` only, which is what keeps this true. A
-  // species gaining a digital-only entry must NOT quietly become ineligible: a player who
-  // shelved it would see it vanish from a shelf they had collected, for a reason nothing in
-  // the UI could explain. The shelf answers "the deck has no card for this", and that stays
-  // its meaning however large the catalogue grows.
+  // ELIGIBILITY IS "PLANTDEX HAS NO CARD FOR THIS", WHICH IS WHAT THE PAGE ALREADY PROMISES.
+  //
+  // This used to read the printed deck alone, and the result contradicted the shelf's own
+  // first sentence — "a real species you photographed that has no card yet" — for the four
+  // species that have a Field Card. Scanning Witch Hazel was told the deck had no card for
+  // it and offered a packet, while `/herbdex/hamamelis-virginiana` sat there being a card.
+  //
+  // THE OLD COMMENT FEARED ENTRIES VANISHING FROM SHELVES. They cannot: rows are write-once,
+  // nothing deletes them, and this function is consulted only by `newFind` when a row is
+  // CREATED. An existing row for a species that now has a card SPROUTS instead — `cardFor`
+  // below resolves it and `entryStatus` reports it — which is the moment the shelf exists
+  // for, not a loss.
   return !matchScientificName(scientificName).confirmable;
 }
 
@@ -335,7 +341,16 @@ function resolvePacket(
 export function cardFor(entry: Pick<SeedShelfEntry, 'scientificName'>): string | null {
   const match = matchScientificName(entry.scientificName);
   if (!match.confirmable || !match.herbId) return null;
-  return getPrintedCard(match.herbId) ? match.herbId : null;
+  /*
+   * THE CATALOGUE, so a shelved species sprouts into a Field Card as readily as a printed
+   * one. Restricted to `getPrintedCard`, a shelved Witch Hazel would have sat at `waiting`
+   * forever while its card existed — the shelf asserting, permanently, something false.
+   *
+   * Claiming stays the ordinary idempotent `discover()` call every other entry point makes,
+   * and `applyDiscovery` already resolves ids through the CATALOGUE, so a Field Card is a
+   * legitimate target and credits zero XP exactly as it does everywhere else.
+   */
+  return getCatalogueEntry(match.herbId) ? match.herbId : null;
 }
 
 /**

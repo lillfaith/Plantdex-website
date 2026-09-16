@@ -266,12 +266,26 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     body = (
       <GrowthPlaceholder className="mx-auto h-96 w-52" label="Loading your card" />
     );
-  } else if (fieldCardOrdinal !== undefined && !xpUnlocked) {
+  } else if (fieldCardOrdinal !== undefined && !xpUnlocked && !discovered) {
     /*
      * Checked BEFORE `revealed`, deliberately: a Field Card is earned, so the reading
      * escape hatch that exists for a deck somebody bought must not hand one over early.
-     * Discovery does not open it either — finding the plant is a different fact, recorded
-     * on its own, and the card still waits on the threshold.
+     *
+     * A DISCOVERY IS NOT THAT HATCH, AND THIS BRANCH USED TO TREAT THEM AS THE SAME THING.
+     * `revealed` is a claim backed by nothing — a button that says "show me anyway" — so
+     * refusing it here is right. A discovery is the strongest claim the product recognises:
+     * the player went outside and found the plant. Once the scanner could resolve a Field
+     * Card species at all, the old rule produced the collection's promise inverted for the
+     * second time in this file — log a real find, then be told to go and earn XP before you
+     * may look at the card for the plant in front of you.
+     *
+     * IT STILL GRANTS ONLY READING, which is the whole reason this is safe. No XP: awards
+     * resolve through the printed deck, so a Field Card credits zero. No mastery:
+     * `tracksMastery` is printed-deck-scoped, so the stage track does not render. And
+     * critically NO XP UNLOCK — `unlockedFieldCards` is untouched, so the threshold still
+     * governs the ladder and the "New Field Card unlocked" reveal, and finding one plant
+     * can never shortcut the next rung. Unlock and discovery stay two records that each
+     * open the card, which is exactly the shape `xpUnlocked` established above.
      */
     body = (
       <>

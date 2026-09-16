@@ -1,4 +1,5 @@
 import { PRINTED_CARDS } from './deck';
+import { CATALOGUE } from './catalogue';
 import { scopeFor } from './card-coverage';
 
 /**
@@ -174,7 +175,30 @@ export function genusOf(raw: string): string {
 }
 
 /**
- * Built once, FROM THE PRINTED DECK ONLY.
+ * Built once, FROM THE WHOLE CATALOGUE — the printed 45 AND the Field Cards.
+ *
+ * IT USED TO BE THE PRINTED DECK ONLY, AND THAT TOLD PLAYERS SOMETHING FALSE. Witch Hazel is
+ * Field Card 1. Scanning a real `Hamamelis virginiana` found no match, so the scan said the
+ * deck had no card for it and offered the Seed Shelf — for a species you can open at
+ * `/herbdex/hamamelis-virginiana`. Two subsystems then compounded it: `isShelfEligible` is
+ * defined as "no confirmable match", so a species Plantdex HAS a card for was ruled shelf
+ * material, against the shelf's own stated premise of "a real species you photographed that
+ * has no card yet".
+ *
+ * THE OLD COMMENT HERE DEFENDED THAT SCOPE, AND ITS ARGUMENT DOES NOT SURVIVE THE FACTS. It
+ * warned that widening would make an already-shelved species ineligible and that "players
+ * would watch entries leave a shelf they had collected". Entries do not leave: shelf rows are
+ * write-once and nothing deletes them, `isShelfEligible` is checked only when a row is
+ * CREATED, and an entry whose species gains a card SPROUTS — which is the moment the Seed
+ * Shelf was built for and the mechanism CLAUDE.md describes as needing no migration. The
+ * failure it predicted was the opposite of what widening does, and it was written while
+ * `DIGITAL_ONLY_ENTRIES` was still empty, so nothing had ever exercised it.
+ *
+ * WHAT `confirmable` MEANS IS UNCHANGED IN SPIRIT AND BROADER IN FACT: "Plantdex has a card
+ * that is this species". It still says nothing about whether the player may READ that card —
+ * a Field Card below its XP threshold is recognised here and still gated by
+ * `LockedFieldCard` — and nothing about XP, which resolves through the printed deck alone,
+ * so a Field Card discovery still pays zero.
  *
  * `Acer spp.` normalises to the bare genus `acer`, which is exactly what we want.
  */
@@ -182,7 +206,7 @@ const BY_BINOMIAL = new Map<string, string>();
 const GENUS_CARDS = new Map<string, string>();
 const SPECIES_BY_GENUS = new Map<string, string[]>();
 
-for (const herb of PRINTED_CARDS) {
+for (const herb of CATALOGUE) {
   const key = normalizeName(herb.scientificName);
   const genus = genusOf(herb.scientificName);
   if (/\bspp?\.?$/i.test(herb.scientificName.trim())) {
@@ -204,6 +228,14 @@ for (const herb of PRINTED_CARDS) {
  */
 function cardsCoveringByScope(name: string, genus: string): string[] {
   const claimed: string[] = [];
+  /*
+   * PRINTED_CARDS, deliberately, while the index above is the whole catalogue. Declared
+   * coverage answers "the owner widened this PRINTED card beyond the binomial it prints",
+   * which is a statement about physical artwork somebody is holding. No Field Card prints a
+   * binomial at all, every one is species-scoped, and `scopeFor` would hand them the
+   * `species` default this loop skips on the next line — so iterating the catalogue here
+   * would add a pass over nine entries to reach the identical answer.
+   */
   for (const herb of PRINTED_CARDS) {
     const scope = scopeFor(herb.id);
     if (!scope || scope.type === 'species') continue;
@@ -219,19 +251,16 @@ function cardsCoveringByScope(name: string, genus: string): string[] {
 }
 
 /**
- * Map one scientific name from an identification provider onto a PRINTED card.
+ * Map one scientific name from an identification provider onto a card.
  *
  * Order matters: an exact species card beats the genus card that would also accept it, so a
  * result of "Rubus fruticosus" prefers a Blackberry species card over "Rubus spp." if both
  * ever existed.
  *
- * SCOPE: THE PRINTED DECK, AND ONLY THE PRINTED DECK. The index above is built from
- * `PRINTED_CARDS`, so a species Plantdex merely knows about digitally does not match here.
- * That is load-bearing rather than incidental — `isShelfEligible` is defined as "no
- * confirmable match", so widening this function to the whole catalogue would silently make
- * every shelved species that later gained a digital card ineligible, and players would
- * watch entries leave a shelf they had collected. Recognising a species and having printed
- * a card for it are different facts, and only the second one belongs here.
+ * SCOPE: THE WHOLE CATALOGUE — printed cards and Field Cards alike. See the index above for
+ * why this changed and why the argument that kept it narrow did not hold. A match here means
+ * "Plantdex has a card that is this species", never "the player may read it" and never "this
+ * is worth XP".
  */
 export function matchScientificName(scientificName: string): PlantMatch {
   const name = normalizeName(scientificName);

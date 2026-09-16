@@ -606,8 +606,9 @@ does not carry — the state that used to be a dead end.
   specimen.
 - **Any valid species-level plant with no card is eligible, including a close relative of one
   that has a card.** The deck carries *Capsella bursa-pastoris*; *Capsella rubella* is a
-  different species and belongs on the shelf. `isShelfEligible` asks only "does the deck have a
-  *confirmable* card for THIS species", never "does something like it exist" — the Seed Shelf is
+  different species and belongs on the shelf. `isShelfEligible` asks only "does Plantdex have a
+  *confirmable* card for THIS species" — across the whole catalogue — and never "does something
+  like it exist" — the Seed Shelf is
   a broad botanical archive and the deck is curated collectible content, and the variety
   preference that shapes the deck applies to what we proactively curate and showcase, never as
   a restriction on what a player may shelve. Do not change the matcher, the genus-card rules or
@@ -933,9 +934,15 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   different facts and `field-cards.test.ts` attacks each separately. `discoveries` means
   "I identified this plant outdoors" — it is what mastery and Field Research derive from and
   the only thing that makes the collection worth anything — so an unlock writes to
-  `unlocked-field-cards.ts` and never to it. A Field Card also stays SHELF-ELIGIBLE: finding
-  a real Purple Coneflower outdoors is a different event from being handed its card by a
-  threshold, and the Seed Shelf is right to record it.
+  `unlocked-field-cards.ts` and never to it. A Field Card is NOT shelf-eligible, and
+  used to be. The argument was that finding a real Purple Coneflower outdoors is a different
+  event from being handed its card by a threshold — true, and still enforced where it belongs,
+  in the two separate records. But it was IMPLEMENTED as "the matcher only indexes printed
+  cards", and that made the scanner tell a player that Witch Hazel is not a card and offer
+  them the Seed Shelf — contradicting both `/herbdex/hamamelis-virginiana` and the shelf's own
+  "a real species you photographed that has no card yet". The matcher now indexes `CATALOGUE`,
+  so `confirmable` means "Plantdex has a card that IS this species" — never "you may read it",
+  never "this is worth XP".
 - **XP UNLOCK, DISCOVERY and MASTERY are three facts, and the card page had been collapsing
   the first two.** A Field Card fell into the printed deck's undiscovered branch, so a player
   who had EARNED the card was told they had not discovered the plant and should go outdoors
@@ -945,12 +952,22 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
   exactly the meaning it had. The banner says `FIELD CARD · NOT YET FOUND` so the two are
   never read as one, and the ordinary discover action stays, because finding the plant is a
   separate record that is still unmade.
-- **A Field Card below its threshold gets its OWN locked state, and reveal cannot open it.**
+- **A Field Card below its threshold gets its OWN locked state; reveal cannot open it, but a
+  DISCOVERY can.**
   `LockedHerb` tells a player to go and find the plant and names the XP a find pays — both
   right for a printed card, both wrong here, where the gate is XP and a find pays nothing.
   `LockedFieldCard` says what actually opens it. The threshold is checked BEFORE `revealed`:
   `reveals.ts` is the reading escape hatch for a deck somebody bought, and a Field Card is
-  earned, so the hatch must not hand one over early.
+  earned, so the hatch must not hand one over early. A DISCOVERY IS NOT THAT HATCH, and this
+  branch used to refuse it too. `revealed` is a claim backed by nothing — a button saying
+  "show me anyway" — while a find is the strongest claim the product recognises, so
+  `discovered` now opens a Field Card at any XP. It grants only READING: no XP (awards are
+  printed-deck-scoped), no mastery (`tracksMastery` likewise), and critically no entry in
+  `unlockedFieldCards` — so finding one plant can never shortcut the next rung of the ladder,
+  and the threshold still owns the "New Field Card unlocked" reveal. Once the scanner could
+  resolve a Field Card species at all, the old rule meant logging a real find and then being
+  told to go and earn XP before you could look at the card for the plant in front of you: the
+  collection's promise inverted for the second time in that one file.
 - **`applyDiscovery` resolves the id through the CATALOGUE; the AWARD still resolves through
   the printed deck.** The guard was `getPrintedCard`, which refused a Field Card outright as
   a phantom id — making "unlocked by XP" and "found outdoors" impossible to hold at once. The

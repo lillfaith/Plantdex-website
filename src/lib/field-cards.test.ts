@@ -29,6 +29,7 @@ import { PRINTED_CARDS, PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import { LEVELS } from './progression';
 import { RESEARCH_POOL, STANDING_TASKS } from './research';
 import { isShelfEligible } from './seed-shelf';
+import { matchScientificName } from './plant-match';
 import { HABITATS, matchesHabitatFilter } from './habitat';
 import { hasSprite, hasStageArt } from './plant-sprites';
 import { GROWTH_STAGES } from './garden';
@@ -146,15 +147,59 @@ describe('an XP unlock is not a discovery', () => {
     }
   });
 
-  it('stays eligible for the Seed Shelf, because unlocking is not finding', () => {
+  it('is NOT Seed Shelf material, because Plantdex does have a card for it', () => {
     /*
-     * Subtle and important. Shelf eligibility asks "does the PRINTED deck have a confirmable
-     * card for this species". A Field Card is not printed, so photographing a real Purple
-     * Coneflower outdoors still shelves it — which is right: the player found a plant, and
-     * that is a different fact from having been given its card by an XP threshold.
+     * THIS ASSERTION USED TO READ THE OTHER WAY, AND IT WAS WRONG IN THE FIELD.
+     *
+     * It argued that shelf eligibility asks "does the PRINTED deck have a card", so
+     * photographing a real Purple Coneflower should still shelve it — the player found a
+     * plant, which is a different fact from being handed its card by a threshold. The second
+     * half of that is true and is still enforced, three tests up: an unlock writes no
+     * discovery and a discovery writes no unlock.
+     *
+     * The first half was not. The Seed Shelf's own first sentence is "a real species you
+     * photographed that has NO CARD YET", and Witch Hazel has a card — you can open it at
+     * `/herbdex/hamamelis-virginiana`. Scanning one was told the deck had no card for it and
+     * offered a packet, which is a false statement about this app's own contents, made to
+     * the player at the exact moment they had done the thing the product asks for.
+     *
+     * So eligibility now asks the question the page already promises: has Plantdex any card
+     * for this species. What stops that collapsing "unlocked" into "found" is not this
+     * function — it is that the two records remain separate everywhere they are written.
      */
     for (const card of FIELD_CARDS) {
-      expect(isShelfEligible(card.scientificName), card.scientificName).toBe(true);
+      expect(isShelfEligible(card.scientificName), card.scientificName).toBe(false);
+    }
+  });
+
+  it('resolves from a scan to its own card, rather than to no card at all', () => {
+    // The bug this changed for: a real `Hamamelis virginiana` came back unmatched, so the
+    // scan offered the shelf. `confirmable` is what both the scan copy and `isShelfEligible`
+    // read, so it is the single fact that has to be true for either to stop lying.
+    for (const card of FIELD_CARDS) {
+      const match = matchScientificName(card.scientificName);
+      expect(match.herbId, card.scientificName).toBe(card.id);
+      expect(match.confirmable, card.scientificName).toBe(true);
+    }
+  });
+
+  it('is still worth no XP when a scan discovers it', () => {
+    /*
+     * The load-bearing half of "recognising is not rewarding". `applyDiscovery` resolves ids
+     * through the CATALOGUE so a Field Card is a legitimate find, but awards resolve through
+     * the printed deck — so finding one outdoors credits zero and can never fund the next
+     * threshold. Widening the matcher must not have opened a back door to that.
+     */
+    for (const card of FIELD_CARDS) {
+      const { state, result } = applyDiscovery(emptyState(), card.id, '2026-05-01T00:00:00.000Z');
+      // The find IS recorded — a Field Card is a species Plantdex knows, so finding one is
+      // a real discovery and `applyDiscovery` resolves it through the catalogue.
+      expect(state.discoveries[card.id], card.id).toBe('2026-05-01T00:00:00.000Z');
+      expect(result.awarded, card.id).toBe(true);
+      // And it pays nothing, by both routes: what the call reports, and what the ledger
+      // derives from the state afterwards.
+      expect(result.xpAwarded, card.id).toBe(0);
+      expect(xpForState(state), card.id).toBe(0);
     }
   });
 });
