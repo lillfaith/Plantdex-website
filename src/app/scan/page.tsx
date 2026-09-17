@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
 import { ScanScout } from '@/components/scan/ScanScout';
 import { SafetyNotice } from '@/components/SafetyNotice';
-import { CURRENT_COLLECTION } from '@/lib/collection';
 
 export const metadata: Metadata = {
   title: 'Identify a plant',
@@ -52,6 +51,15 @@ export default function ScanPage() {
         the second is the ORDINARY one; the page that invites the photograph is where that
         belongs, not only in the answer after somebody has already risked a tap.
 
+        IT NO LONGER NAMES A NUMBER, AND THAT IS NOW THE ACCURATE VERSION. It used to read
+        "one of the 45 Collection 01 plants", counted from `CURRENT_COLLECTION` rather than
+        typed as a literal — which was right while the printed deck was the only thing the
+        scanner could resolve. It is not any more: the matcher indexes `CATALOGUE`, so the
+        nine Field Cards resolve too and 49 species have a card. "A plant we have a card for"
+        is the question `confirmable` actually answers, and it stays true whatever either
+        number does next. Do not reintroduce a count here — there are two, and naming either
+        one alone is the thing that just went stale.
+
         THREE SENTENCES IN THREE PARAGRAPHS, NOT ONE RUN-ON. At 390px the combined version
         wrapped to five lines and the safety clause landed mid-block, reading as the tail of a
         feature description rather than as a caution. Splitting them costs no vertical space
@@ -62,8 +70,8 @@ export default function ScanPage() {
         Photograph something growing and see what Plantdex thinks it might be.
       </p>
       <p className="mt-2 text-sm leading-relaxed text-violet-300">
-        If it is one of the {CURRENT_COLLECTION.size} {CURRENT_COLLECTION.shortName} plants,
-        you can add it to your collection. Anything else can go on your Seed Shelf.
+        If it is a plant we have a card for, you can add it to your collection. Anything else
+        can go on your Seed Shelf.
       </p>
       <p className="mt-2 text-sm leading-relaxed font-semibold text-violet-200">
         The answer is a suggestion to check, not a verdict.
