@@ -49,6 +49,17 @@ export const PURE_MODULES = [
   // must widen identically on both sides, or the server would mint a shelf packet for a
   // species the client already resolves to a printed card.
   'card-coverage.ts',
+  // The provider seam. Pure: a response body in, the neutral shape out, no fetch and no env.
+  // They travel so the edge function normalises with exactly the code vitest tested against
+  // mocks — the alternative is a second mapping on the server, free to disagree with the one
+  // under test, which is the drift `_shared` exists to prevent.
+  'identification-types.ts',
+  'plantnet-normalize.ts',
+  'plantid-normalize.ts',
+  // `identification-confidence.ts` is deliberately NOT here. Banding a probability is a
+  // presentation decision and happens in the browser; the function returns the raw number.
+  // Syncing it would put an unreachable module in the bundle, which `edge-shared.test.ts`
+  // fails on — correctly, because an unused copy is one free to drift unnoticed.
   'herbdex-reducer.ts',
   // Added with the Seed Shelf. The `seed-packet` function must mint a species' canonical
   // packet with the EXACT generator the app previews with, and must apply the exact

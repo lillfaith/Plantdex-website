@@ -1,5 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { canonicalIdentity } from '../_shared/herbdex/species-identity.ts';
+import { identifyWithPlantId, identifyWithPlantNet, type ObservationImage } from './providers.ts';
+import { isIdentificationFailure } from '../_shared/herbdex/identification-types.ts';
 import {
   ATTESTATION_SECRET_ENV,
   attestIdentity,
@@ -32,7 +34,23 @@ const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 /** PlantNet. Set with `supabase secrets set PLANTNET_API_KEY=...` — never in the repo. */
 const PROVIDER_KEY = Deno.env.get('PLANTNET_API_KEY') ?? '';
-const PROVIDER_URL = 'https://my-api.plantnet.org/v2/identify/all';
+const PLANT_ID_KEY = Deno.env.get('PLANT_ID_API_KEY') ?? '';
+
+/*
+ * WHICH PROVIDER ANSWERS, AND WHY UNSET MEANS PLANTNET.
+ *
+ * Unset reproduces today's behaviour exactly, so deploying this changes nothing on the live
+ * site until the owner chooses. An UNKNOWN value is a configuration error rather than a
+ * silent fall back to the default: falling back would let a typo look like a working
+ * deployment while quietly answering from the provider nobody selected.
+ */
+const PROVIDER_ID = (Deno.env.get('PLANT_IDENTIFICATION_PROVIDER') ?? 'plantnet').trim();
+
+/** Two required, three allowed. Enforced here as well as in the browser. */
+const MIN_IMAGES = 2;
+const MAX_IMAGES = 3;
+/** PlantNet's vocabulary. Anything else from a client is replaced with `auto`. */
+const ORGANS = new Set(['habit', 'leaf', 'flower', 'fruit', 'bark', 'auto']);
 
 /**
  * THE SPECIES ATTESTATION SECRET — a dedicated secret, never the service-role key.
@@ -132,24 +150,6 @@ async function anonBucket(ip: string, day: string): Promise<string> {
   return `anon:${hex.slice(0, 32)}`;
 }
 
-interface ProviderResult {
-  score: number;
-  species?: {
-    scientificNameWithoutAuthor?: string;
-    scientificName?: string;
-    commonNames?: string[];
-  };
-  /*
-   * Taxonomy backbone ids, when the provider attaches them. Passed through for the Seed
-   * Shelf, which keeps species the deck has no card for and wants a canonical handle on them
-   * rather than a name it would later have to match by string. Nothing in the app MATCHES on
-   * these — `plant-match.ts` still works by normalised name — so a provider that stops
-   * sending them costs a stored identifier, not a broken scan.
-   */
-  gbif?: { id?: string | number };
-  powo?: { id?: string | number };
-}
-
 /**
  * Strip anything key-shaped out of text that came from the provider.
  *
@@ -162,18 +162,20 @@ function redact(value: string): string {
     .replace(/\b[A-Za-z0-9_-]{24,}\b/g, '[redacted]');
 }
 
-/** Provider ids arrive as strings or numbers depending on the field. Store text or nothing. */
-function taxonId(value: unknown): string | undefined {
-  if (typeof value === 'string' && value.trim()) return value.trim();
-  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
-  return undefined;
-}
-
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS_HEADERS });
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
 
-  if (!PROVIDER_KEY) {
+  /*
+   * THE GATE FOLLOWS THE SELECTED PROVIDER, WHICH IT DID NOT WHEN THERE WAS ONLY ONE.
+   *
+   * This read `PLANTNET_API_KEY` unconditionally. With `plantid` selected and PlantNet's key
+   * absent — the ordinary state for a deployment that has moved over — every scan would have
+   * been refused as unconfigured before the dispatch below ever ran, and the message would
+   * have blamed a provider nobody was using.
+   */
+  const activeKey = PROVIDER_ID === 'plantid' ? PLANT_ID_KEY : PROVIDER_KEY;
+  if (!activeKey) {
     return json(
       { error: 'Plant identification is not configured on this deployment.', code: 'unconfigured' },
       503,
@@ -310,97 +312,143 @@ Deno.serve(async (req: Request) => {
   } catch {
     return json({ error: 'Send the photograph as multipart form data.' }, 400);
   }
-  const image = form.get('image');
-  if (!(image instanceof File)) return json({ error: 'No photograph was attached.' }, 400);
-  if (image.size > MAX_IMAGE_BYTES) {
-    return json({ error: 'That photograph is too large. Images are resized before upload.' }, 413);
+  /*
+   * TWO TO THREE PHOTOGRAPHS OF ONE PLANT, VALIDATED HERE AS WELL AS IN THE BROWSER.
+   *
+   * The client disables its own button below two, but this endpoint is reachable without it,
+   * and the count is the whole basis of the identification: both providers treat the set as
+   * ONE individual, so a caller that sent pictures of two different plants would be asking
+   * for a blended answer and getting a confident one.
+   *
+   * `getAll` rather than `get` is the change. The old code read a single `image` and appended
+   * one `organs` field — the multi-image shape PlantNet documents was already half-wired.
+   */
+  const files = form.getAll('image').filter((one): one is File => one instanceof File);
+  if (files.length < MIN_IMAGES) {
+    return json(
+      {
+        error: `Add ${MIN_IMAGES} photographs of the same plant — the whole plant and a close-up.`,
+        code: 'tooFewImages',
+      },
+      400,
+    );
+  }
+  if (files.length > MAX_IMAGES) {
+    return json({ error: `At most ${MAX_IMAGES} photographs.`, code: 'tooManyImages' }, 400);
+  }
+  for (const file of files) {
+    if (file.size > MAX_IMAGE_BYTES) {
+      return json({ error: 'That photograph is too large. Images are resized before upload.' }, 413);
+    }
   }
 
-  // ── The provider ─────────────────────────────────────────────────────────
-  const providerForm = new FormData();
-  providerForm.append('images', image, 'scan.jpg');
-  providerForm.append('organs', typeof form.get('organ') === 'string' ? String(form.get('organ')) : 'auto');
+  /*
+   * Organ tags ride alongside, one per image and in the same order. An absent or unrecognised
+   * tag becomes `auto` rather than an error: a wrong organ label costs a little accuracy, and
+   * refusing the scan over one costs the whole find.
+   */
+  const organs = form.getAll('organ').map((one) => String(one));
+  const images: ObservationImage[] = files.map((file, index) => ({
+    file,
+    organ: ORGANS.has(organs[index] ?? '') ? organs[index]! : 'auto',
+  }));
 
-  let payload: { results?: ProviderResult[] };
-  try {
-    const response = await fetch(`${PROVIDER_URL}?api-key=${encodeURIComponent(PROVIDER_KEY)}`, {
-      method: 'POST',
-      body: providerForm,
-    });
-    if (response.status === 404) {
-      // PlantNet answers 404 when it recognises nothing at all. That is a real result, not
-      // an error, and it must reach the player as "no match" rather than as a failure.
-      return json({ candidates: [], providerFoundNothing: true });
-    }
-    if (!response.ok) {
-      /*
-       * THE UPSTREAM STATUS AND ITS STATED REASON TRAVEL WITH THE ERROR, AND NOTHING ELSE.
-       *
-       * Collapsing every provider failure into one 502 made a misconfigured key, an exhausted
-       * quota and an unusable image indistinguishable from outside — which cost two live
-       * debugging sessions, because "could not be reached" is a guess presented as a fact.
-       * The player still sees the same sentence; these fields are for whoever has to work out
-       * why.
-       *
-       * WHAT IS DELIBERATELY NOT PASSED THROUGH. The provider's raw body, because an error
-       * body may echo the request URL — and the API key rides in that URL as a query
-       * parameter. So only the structured `error`/`message` fields are read, they are capped,
-       * and `redact()` removes anything key-shaped even from those. A secret must not be able
-       * to escape through a diagnostic added to make debugging easier.
-       */
-      const raw = await response.text().catch(() => '');
-      let providerMessage = '';
-      try {
-        const parsed = JSON.parse(raw) as { error?: unknown; message?: unknown };
-        providerMessage = [parsed.error, parsed.message].filter((v) => typeof v === 'string').join(': ');
-      } catch {
-        providerMessage = raw.slice(0, 160);
-      }
-      /*
-       * A REJECTED KEY IS A CONFIGURATION FAULT, NOT AN OUTAGE, AND MUST NOT READ AS ONE.
-       *
-       * "The identification service could not be reached" sent a live debugging session
-       * looking for a PlantNet outage that was not happening: the key was simply invalid, and
-       * the provider was saying exactly that. It reuses the existing `unconfigured` code
-       * rather than inventing a state, because from the player's side an absent key and a
-       * refused one are the same thing — this deployment cannot identify plants — and that
-       * path is already handled all the way to the screen.
-       *
-       * WHY THIS WAS HARD TO SEE. The provider answers 401 as soon as it has read the key,
-       * while the browser is still uploading the photograph; its nginx front end then reports
-       * the aborted upload as its own HTML 500. So a real scan looked like a server fault and
-       * only a tiny image revealed the 401 underneath. Anything 4xx is therefore treated as a
-       * refusal even when a larger request would have been masked.
-       */
-      const refused = response.status === 401 || response.status === 403;
-      return json(
-        {
-          error: refused
-            ? 'Plant identification is not set up correctly on this deployment: the provider rejected its API key.'
-            : 'The identification service could not be reached. Please try again.',
-          code: refused ? 'unconfigured' : undefined,
-          providerStatus: response.status,
-          providerMessage: redact(providerMessage).slice(0, 200),
-        },
-        refused ? 503 : 502,
-      );
-    }
-    payload = await response.json();
-  } catch {
-    return json({ error: 'The identification service could not be reached. Please try again.' }, 502);
+  // ── The provider ─────────────────────────────────────────────────────────
+
+  /*
+   * DISPATCH, AND THE KEY NEVER LEAVES THE SERVER.
+   *
+   * Both adapters return the SAME normalised shape, so everything below this point is
+   * provider-agnostic — which is the point of the seam: swapping providers is a branch here
+   * and a normalizer in `_shared`, not a change to the matcher, the scan UI or the reducer.
+   */
+  if (PROVIDER_ID !== 'plantnet' && PROVIDER_ID !== 'plantid') {
+    return json(
+      {
+        error: 'Plant identification is not set up correctly on this deployment.',
+        code: 'unconfigured',
+      },
+      500,
+    );
+  }
+
+  const identification =
+    PROVIDER_ID === 'plantid'
+      ? await identifyWithPlantId(images, PLANT_ID_KEY)
+      : await identifyWithPlantNet(images, PROVIDER_KEY);
+
+  if (isIdentificationFailure(identification)) {
+    /*
+     * THE FAILURE KIND SURVIVES TO THE CLIENT AS A CODE, AND THE PROVIDER'S BODY DOES NOT.
+     *
+     * An error body may echo the request URL, and PlantNet's key rides in that URL as a query
+     * parameter — so nothing from the provider's response is forwarded. Only our own kind and
+     * a sentence written here.
+     *
+     * A REFUSED KEY IS A CONFIGURATION FAULT AND MUST NOT READ AS AN OUTAGE. "Could not be
+     * reached" once sent a live debugging session hunting a PlantNet outage that was not
+     * happening: the key was invalid and the provider was saying so. `auth` and `unconfigured`
+     * both reuse the existing `unconfigured` code, because from the player's side an absent
+     * key and a refused one are the same fact — this deployment cannot identify plants — and
+     * that path is already handled all the way to the screen.
+     */
+    const { kind, message, status } = identification;
+    const configFault = kind === 'auth' || kind === 'unconfigured';
+    return json(
+      {
+        error: configFault
+          ? 'Plant identification is not set up correctly on this deployment.'
+          : kind === 'rateLimited'
+            ? 'The identification service is busy. Please try again shortly.'
+            : kind === 'schema'
+              ? 'The identification service answered in a way this app did not recognise.'
+              : 'The identification service could not be reached. Please try again.',
+        code: configFault ? 'unconfigured' : kind,
+        provider: identification.provider,
+        providerStatus: status,
+        /*
+         * REDACTED EVEN THOUGH IT IS OUR OWN TEXT. Every message reaching here is written in
+         * `providers.ts`, so none of it quotes a provider body today — but PlantNet's key
+         * travels as a query parameter, and the cost of a future adapter forwarding upstream
+         * text is a leaked key. Defence kept where it is cheap rather than removed because it
+         * is currently unnecessary.
+         */
+        providerMessage: redact(message),
+      },
+      configFault ? 500 : 502,
+    );
+  }
+
+  /*
+   * "NOT A PLANT" IS AN ANSWER, AND IT STOPS EVERYTHING.
+   *
+   * Only an explicit `false` blocks — `null` means the provider does not answer that question
+   * (PlantNet has no equivalent) and must never be read as a yes. Nothing is matched, nothing
+   * is attested, and therefore nothing can reach a card or the global species registry.
+   */
+  if (identification.isPlant === false) {
+    return json({ candidates: [], notAPlant: true, provider: identification.provider });
+  }
+
+  if (identification.candidates.length === 0) {
+    return json({ candidates: [], providerFoundNothing: true, provider: identification.provider });
   }
 
   /*
    * Only what the client needs, and nothing that identifies the caller. No IP, no bucket, no
-   * user id, and none of the provider's raw response beyond name and score.
+   * user id, and none of the provider's raw response beyond the fields named here.
+   *
+   * `scientificName` is the provider's own string, untouched — the client builds the observed
+   * taxon from it, and normalisation must never become the record of what was returned.
    */
-  const candidates = (payload.results ?? []).slice(0, 5).map((result) => ({
-    scientificName:
-      result.species?.scientificNameWithoutAuthor ?? result.species?.scientificName ?? '',
-    commonName: result.species?.commonNames?.[0],
-    score: typeof result.score === 'number' ? Math.max(0, Math.min(1, result.score)) : 0,
-    gbifId: taxonId(result.gbif?.id),
-    powoId: taxonId(result.powo?.id),
+  const candidates = identification.candidates.slice(0, 5).map((candidate) => ({
+    scientificName: candidate.scientificName,
+    commonName: candidate.commonNames[0],
+    commonNames: candidate.commonNames,
+    score: candidate.probability,
+    rank: candidate.rank,
+    gbifId: candidate.gbifId,
+    powoId: candidate.powoId,
   }));
 
   /*
