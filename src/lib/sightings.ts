@@ -2,6 +2,8 @@
 
 import { useMemo, useSyncExternalStore } from 'react';
 import { deletePhoto } from './photo-store';
+import type { SpeciesConfidence } from './plant-match';
+import type { TaxonRank } from './card-coverage';
 
 /**
  * The field journal: repeated observations of a species the player has discovered.
@@ -54,6 +56,37 @@ export interface Sighting {
   /** Key into the IndexedDB photo store. */
   photoId?: string;
   createdAt: string;
+
+  /* ── What the identifier actually said ──────────────────────────────────────
+   *
+   * ALL OPTIONAL, AND THAT IS THE COMPATIBILITY GUARANTEE. Every sighting recorded before
+   * these existed — and every sighting logged by hand from a card page, which involves no
+   * identifier at all — simply has none of them. `isSighting` below is NOT extended to
+   * require them, deliberately: adding them there would reject every legacy record on read
+   * and empty somebody's journal. Nothing backfills them either. A sighting with no
+   * observed taxon means we never knew one, and inventing one retroactively would be
+   * fabricating a botanical record.
+   *
+   * WHY `herbId` IS NOT ENOUGH. `herbId` is the CARD. A `Solidago altissima` observation can
+   * qualify for the Goldenrod card, whose binomial is `Solidago canadensis` — and before
+   * this, the collection, the journal and the sighting all recorded Goldenrod and the actual
+   * taxon survived nowhere on the client. The card and the plant are two different facts.
+   */
+
+  /**
+   * The provider's string, EXACTLY as returned, authorship and all.
+   *
+   * This is the historical record. `normalizeName` is for lookup and must never become the
+   * thing we remember — it drops authorship, collapses ranks, and its rules are free to
+   * change, which would silently rewrite the past if this field were derived from it.
+   */
+  observedTaxonProviderName?: string;
+  /** The cleaned display form at the time of recording. */
+  observedTaxonName?: string;
+  /** `species`, `section`, … — so a section stays a section. */
+  observedTaxonRank?: TaxonRank;
+  /** Strength of the SPECIES-level identification. `unresolved` above species rank. */
+  speciesConfidence?: SpeciesConfidence;
 }
 
 export type NewSighting = Omit<Sighting, 'id' | 'createdAt'>;
@@ -70,6 +103,12 @@ const listeners = new Set<() => void>();
  * blanked the entire plant page. Storage is the one input this app does not control:
  * legacy records, a hand-edited localStorage, or an import path that forgets a field all
  * produce it. Anything added to `Sighting` and then dereferenced belongs here too.
+ *
+ * THE OBSERVED-TAXON FIELDS ARE THE EXCEPTION, AND MUST STAY OUT. They are optional by
+ * design: every sighting recorded before they existed lacks them, as does every find logged
+ * from a card page. Requiring one here would make `read()` filter out real history — the
+ * exact failure this guard was written to prevent, arriving from the other direction. Guard
+ * what you dereference unconditionally; never guard what is legitimately absent.
  */
 function isSighting(value: unknown): value is Sighting {
   if (typeof value !== 'object' || value === null) return false;

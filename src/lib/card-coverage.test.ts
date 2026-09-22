@@ -25,7 +25,7 @@ describe('every printed card has exactly one declared scope', () => {
     expect(PRINTED_CARDS).toHaveLength(45);
     for (const { herbId, scope } of scopes) {
       expect(scope, herbId).toBeDefined();
-      expect(['species', 'genus', 'custom']).toContain(scope.type);
+      expect(['species', 'genus', 'acceptedGroup']).toContain(scope.type);
     }
   });
 
@@ -109,7 +109,14 @@ describe('the cards considered for widening and kept narrow', () => {
    * exactly how a later "this common name sounds generic" pass would undo them.
    */
   const KEPT_NARROW = [
-    'taraxacum-officinale',
+    /*
+     * `taraxacum-officinale` USED TO BE ON THIS LIST AND HAS MOVED, WITHOUT THE DECISION
+     * CHANGING. What this block pins is that a card was considered for GENUS scope and
+     * refused; Dandelion still is, and is asserted so below. What it now also has is a
+     * curated accepted group of two section names — which is the opposite of genus widening,
+     * because a section is explicitly listed and every other Taraxacum, including every
+     * other section, stays unconfirmable.
+     */
     'arctium-lappa',
     'oxalis-stricta',
     'viola-sororia',
@@ -121,11 +128,18 @@ describe('the cards considered for widening and kept narrow', () => {
     'lonicera-japonica',
   ];
 
-  it('keeps all ten at species scope', () => {
+  it('keeps the remaining nine at species scope', () => {
     for (const id of KEPT_NARROW) {
       expect(scopeFor(id)?.type, id).toBe('species');
       expect(CARD_COVERAGE[id], `${id} was widened`).toBeUndefined();
     }
+  });
+
+  it('keeps Dandelion out of GENUS scope, which is what it was considered for', () => {
+    // A curated section group is not the genus. The refusal this block records still stands.
+    const scope = scopeFor('taraxacum-officinale');
+    expect(scope?.type).toBe('acceptedGroup');
+    expect(scope?.type, 'never widened to its genus').not.toBe('genus');
   });
 
   it('still refuses a different species in each of those genera', () => {
@@ -148,14 +162,21 @@ describe('the cards considered for widening and kept narrow', () => {
     }
   });
 
-  it('keeps Dandelion covering its SECTION but not its genus', () => {
+  it('keeps Dandelion covering CURATED sections, not every section and not its genus', () => {
     /*
-     * The distinction the #1 decision turns on. `taraxacum sect` is a supra-specific rank
-     * and maps to the card, so the card is already an aggregate — but sect. Erythrosperma,
-     * where T. erythrospermum sits, is a different section. Aggregate is not genus.
+     * The distinction the #1 decision turns on, now enforced per section rather than by a
+     * key that happened to swallow them all. Aggregate is not genus — and one section is not
+     * every section.
      */
-    expect(matchScientificName('Taraxacum sect. Taraxacum').herbId).toBe('taraxacum-officinale');
-    expect(matchScientificName('Taraxacum sect. Taraxacum').confirmable).toBe(true);
+    for (const accepted of ['Taraxacum sect. Taraxacum', 'Taraxacum sect. Ruderalia']) {
+      const match = matchScientificName(accepted);
+      expect(match.herbId, accepted).toBe('taraxacum-officinale');
+      expect(match.confirmable, accepted).toBe(true);
+      expect(match.eligibility, accepted).toBe('acceptedGroup');
+    }
+    for (const refused of ['Taraxacum sect. Erythrosperma', 'Taraxacum sect. Palustria']) {
+      expect(matchScientificName(refused).confirmable, refused).toBe(false);
+    }
     expect(matchScientificName('Taraxacum erythrospermum').confirmable).toBe(false);
   });
 });

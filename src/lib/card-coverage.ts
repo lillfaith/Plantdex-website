@@ -44,13 +44,52 @@ export type CardScope =
    * do not. Empty today; an entry here is a botanical claim and needs the same standard of
    * evidence as a synonym.
    */
-  | { readonly type: 'genus'; readonly excluded?: readonly string[] }
+  | {
+      readonly type: 'genus';
+      readonly excluded?: readonly string[];
+      /**
+       * TEMPORARY TECHNICAL DEBT, AND THE ONLY REASON THIS VARIANT STILL EXISTS AS AN
+       * OVERRIDE.
+       *
+       * Genus scope asserts that every species of a genus belongs to a card that prints ONE
+       * binomial — which is inference from genus membership, exactly what the curated model
+       * replaced. Goldenrod carries it only so that live coverage does not silently narrow
+       * before its accepted species have been botanically researched. When that list exists
+       * this becomes an `acceptedGroup` and this field goes with it.
+       *
+       * `card-coverage.test.ts` fails if a SECOND card acquires it, so the debt cannot
+       * spread while it waits.
+       */
+      readonly pendingCuration?: string;
+    }
   /**
-   * An explicit list of binomials, for a card whose intended grouping does not correspond to
-   * one genus. Nothing uses this yet — no printed card has been established to need it —
-   * but the matcher handles it, so declaring one is a data change rather than a code change.
+   * AN EXPLICITLY RESEARCHED SET OF TAXA THE CARD'S IDENTIFICATION, USE AND SAFETY
+   * INFORMATION APPLIES TO.
+   *
+   * This is the curated relationship, and it replaces an unused `custom` variant that held
+   * bare strings. Every member carries its own `note` — why this card covers it — because a
+   * list of binomials with no reasons is indistinguishable from a guess six months later,
+   * and because these decisions touch what somebody might eat.
+   *
+   * A member may be SUPRA-SPECIFIC (a section). That is the point: an observation can
+   * qualify for a card without the species being resolved. It never becomes the card's own
+   * binomial — see `observedTaxon` in `plant-match.ts`.
    */
-  | { readonly type: 'custom'; readonly accepted: readonly string[] };
+  | { readonly type: 'acceptedGroup'; readonly accepted: readonly AcceptedTaxon[] };
+
+/** The rank a name claims. Lives here so `plant-match.ts` can import it without a cycle. */
+export type TaxonRank = 'species' | 'section' | 'subgenus' | 'series' | 'subsection' | 'genus';
+
+/** One researched member of a card's accepted group. */
+export interface AcceptedTaxon {
+  /** As it should be DISPLAYED, rank word included: `Taraxacum sect. Ruderalia`. */
+  readonly scientificName: string;
+  readonly rank: TaxonRank;
+  /** Why this card's identification, use and safety information applies to this taxon. */
+  readonly note: string;
+  /** Citation. Same standard as a synonym: a checked fact, never a recollection. */
+  readonly source?: string;
+}
 
 /**
  * OVERRIDES ONLY. The nine `Genus spp.` cards are not listed: their scope is already stated
@@ -115,7 +154,76 @@ export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
    *
    * NO COLLISION: Solidago is represented by exactly one printed card.
    */
-  'solidago-canadensis': { type: 'genus' },
+  /*
+   * GOLDENROD IS TEMPORARY, AND IS THE ONLY ENTRY LIKE IT.
+   *
+   * Card #03 prints `Solidago canadensis` — not `Solidago spp.` — so under the curated model
+   * it has no business claiming its whole genus. It keeps genus scope here for exactly one
+   * reason: narrowing it now, before the accepted species have been researched, would
+   * silently remove coverage that is live today (`S. altissima` and `S. gigantea` both
+   * resolve to this card). Losing real coverage to tidy a model is the wrong trade.
+   *
+   * What it must NOT do meanwhile is pretend the observation was `S. canadensis`. It does
+   * not: a genus-scope match now reports `observedTaxon` as the species the provider
+   * actually named, at `speciesConfidence: 'moderate'`, and the card is what gets recorded.
+   *
+   * Replace with `{ type: 'acceptedGroup', accepted: [...] }` once the botanical work is
+   * done. Do not populate that list by reading a flora and guessing.
+   */
+  'solidago-canadensis': {
+    type: 'genus',
+    pendingCuration:
+      'Prints a binomial, not `spp.`. Needs a researched list of accepted Solidago taxa; ' +
+      'kept genus-wide meanwhile so live coverage does not narrow silently.',
+  },
+
+  /*
+   * DANDELION COVERS ONE RESEARCHED SECTION, AND UNTIL NOW COVERED ALL OF THEM BY ACCIDENT.
+   *
+   * The section entry used to live in `ACCEPTED_NAME_SYNONYMS` as the key `taraxacum sect`,
+   * which is not a synonym at all — a section is a RANK ABOVE the species, so calling it one
+   * asserted that `Taraxacum sect. <anything>` and `Taraxacum officinale` denote the same
+   * plant. Worse, `normalizeName` dropped the section's epithet, so all three of
+   * sect. Ruderalia, sect. Erythrosperma and sect. Palustria collapsed onto that one key and
+   * every one of them matched as an EXACT, confirmable `T. officinale` — including the
+   * section containing `Taraxacum erythrospermum`, a species this deck deliberately refuses.
+   *
+   * It is an accepted GROUP member now: the card is reachable, the observation stays a
+   * section, and no other section rides in with it.
+   */
+  'taraxacum-officinale': {
+    type: 'acceptedGroup',
+    accepted: [
+      {
+        scientificName: 'Taraxacum sect. Taraxacum',
+        rank: 'section',
+        note:
+          'The autonym, and the name identification providers actually return for an ' +
+          'aggregate dandelion rather than a microspecies — recorded in this repo before ' +
+          'the curated model existed (see `plant-match.test.ts`, "the section name the ' +
+          'provider returns for the aggregate"). Removing it would silently drop live ' +
+          'coverage, so it is listed explicitly rather than assumed.',
+        source: 'https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1',
+      },
+      {
+        scientificName: 'Taraxacum sect. Ruderalia',
+        rank: 'section',
+        note:
+          'The section containing the common dandelion, named by the owner as the card\'s ' +
+          'established scope. WIDELY TREATED AS THE SAME SECTION as the autonym above, but ' +
+          'that equivalence is NOT verified here: the cited IPNI record could not be ' +
+          'resolved from the build environment. Both are listed so that neither reading ' +
+          'loses coverage; if they are confirmed synonymous, one entry can be dropped.',
+        source: 'https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1',
+      },
+      /*
+       * sect. Erythrosperma and sect. Palustria are DELIBERATELY ABSENT. Erythrosperma
+       * contains `Taraxacum erythrospermum`, which this deck refuses as unconfirmable — so
+       * accepting its section would contradict that decision, which is exactly what the old
+       * collapsed `taraxacum sect` key did. Neither may be added without research.
+       */
+    ],
+  },
 };
 
 /**
