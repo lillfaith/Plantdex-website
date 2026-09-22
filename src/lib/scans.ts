@@ -79,17 +79,59 @@ function newScanId(): string {
  *   wait, or invents a transition on a timer. There is deliberately no second callback for
  *   "upload finished": `fetch` does not expose it, so nothing here could report it truthfully.
  */
+/**
+ * ONE OBSERVATION: two or three photographs of the SAME individual plant.
+ *
+ * The organ tag travels with each photograph because PlantNet asks for one per image and
+ * requires the counts to match; plant.id has no organ vocabulary and simply ignores them.
+ * That asymmetry is the seam working — the observation is provider-neutral and each adapter
+ * uses what its provider understands.
+ */
+export interface ObservationPhoto {
+  readonly file: File;
+  readonly organ: 'habit' | 'leaf' | 'auto';
+}
+
+/** Two required, three allowed. The server enforces the same bounds. */
+export const MIN_OBSERVATION_PHOTOS = 2;
+export const MAX_OBSERVATION_PHOTOS = 3;
+
 export async function identifyPlant(
-  file: File,
+  photos: readonly ObservationPhoto[],
   onPrepared?: () => void,
 ): Promise<ScanResult | ScanFailure> {
+  /*
+   * ARGUMENTS BEFORE ENVIRONMENT, AND THE ORDER IS THE MESSAGE.
+   *
+   * The configured check used to come first, so a caller passing one photograph to an
+   * unconfigured deployment was told identification is unavailable — true, and not the
+   * problem they had. The count is a property of the request; whether a backend exists is
+   * not. Validate what you were handed, then where you are.
+   *
+   * REFUSED HERE AS WELL AS IN THE BUTTON AND ON THE SERVER, and not for its own sake: both
+   * providers treat the set as ONE individual, so the count is the basis of the answer. A
+   * single photograph would still produce a confident-looking result — just a worse one —
+   * which is the failure mode this whole change exists to reduce.
+   */
+  if (photos.length < MIN_OBSERVATION_PHOTOS) {
+    return {
+      kind: 'error',
+      message: `Add ${MIN_OBSERVATION_PHOTOS} photographs of the same plant before identifying.`,
+    };
+  }
+  if (photos.length > MAX_OBSERVATION_PHOTOS) {
+    return { kind: 'error', message: `At most ${MAX_OBSERVATION_PHOTOS} photographs.` };
+  }
+
   if (!supabase) {
     return { kind: 'unconfigured', message: 'Plant identification is not available here yet.' };
   }
 
-  let prepared;
+  let prepared: Awaited<ReturnType<typeof prepareImage>>[];
   try {
-    prepared = await prepareImage(file, IDENTIFY_PROFILE);
+    prepared = await Promise.all(
+      photos.map((photo) => prepareImage(photo.file, IDENTIFY_PROFILE)),
+    );
   } catch (error) {
     /*
      * WHAT WE COULD NOT RE-ENCODE, WE DO NOT SEND — and since `prepareImage` no longer has a
@@ -116,11 +158,22 @@ export async function identifyPlant(
   onPrepared?.();
 
   const form = new FormData();
-  // `prepared.blob` is the downscaled, re-encoded image — EXIF and its GPS are gone with the
-  // re-encode. The original File is deliberately never sent.
-  form.append('image', new File([prepared.blob], `scan.${prepared.extension}`, {
-    type: prepared.contentType,
-  }));
+  /*
+   * Each `prepared.blob` is the downscaled, re-encoded image — EXIF and its GPS are gone with
+   * the re-encode. The original Files are deliberately never sent, and that now holds for
+   * every photograph in the observation rather than for the only one: `prepareImage` runs per
+   * photo, so adding images added no path that skips the re-encode.
+   *
+   * `image` and `organ` are appended in matching order, repeated. The server reads them with
+   * `getAll`.
+   */
+  prepared.forEach((one, index) => {
+    form.append(
+      'image',
+      new File([one.blob], `scan-${index}.${one.extension}`, { type: one.contentType }),
+    );
+    form.append('organ', photos[index]!.organ);
+  });
 
   const { data, error } = await supabase.functions.invoke('identify-plant', { body: form });
 

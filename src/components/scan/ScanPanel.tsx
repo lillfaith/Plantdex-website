@@ -8,9 +8,17 @@ import { getCatalogueEntry } from '@/lib/catalogue';
 import type { DiscoveryResult } from '@/lib/types';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { ambiguousCardNames, genusLabel } from '@/lib/scan-ambiguity';
-import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
+import {
+  MIN_OBSERVATION_PHOTOS,
+  identifyPlant,
+  isScanFailure,
+  recordScan,
+  type ObservationPhoto,
+  type ScanResult,
+} from '@/lib/scans';
+import { ObservationPhotos } from './ObservationPhotos';
 import { warmIdentifier } from '@/lib/scan-warmup';
-import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
+import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { ScanCaution } from './ScanCaution';
@@ -43,7 +51,6 @@ export function ScanPanel() {
   const { user } = useAuth();
   const { discover, isDiscovered, ready, progress } = useHerbdex();
 
-  const inputRef = useRef<HTMLInputElement>(null);
   /*
    * TWO STAGES, AND DELIBERATELY NOT THREE.
    *
@@ -191,14 +198,16 @@ export function ScanPanel() {
   }, [result, problem, confirmed, busy]);
 
   const run = useCallback(
-    async (file: File) => {
+    async (photos: ObservationPhoto[]) => {
       setStage('preparing');
       // Created OUTSIDE the state updater, deliberately. An updater is not a place for a side
       // effect: React invokes it twice under StrictMode, so minting the URL in there would
       // create two and keep one, leaking the other and revoking a URL still being displayed.
       // The effect above owns releasing it, which is the only place that knows when it stops
       // being on screen.
-      setPreview(URL.createObjectURL(file));
+      // The whole-plant shot is the observation's face: it is the required first slot, so it
+      // is always present here, and it is the one a player recognises as "the plant I found".
+      setPreview(URL.createObjectURL(photos[0]!.file));
       setProblem(null);
       setRateLimited(null);
       setResult(null);
@@ -214,7 +223,7 @@ export function ScanPanel() {
        * be drawn at all. A frame is what it costs to actually see the first stage.
        */
       await new Promise((resolve) => setTimeout(resolve, 0));
-      const answer = await identifyPlant(file, () => setStage('identifying'));
+      const answer = await identifyPlant(photos, () => setStage('identifying'));
 
       if (isScanFailure(answer)) {
         if (answer.kind === 'rateLimited') setRateLimited({ signedIn: answer.signedIn });
@@ -244,15 +253,13 @@ export function ScanPanel() {
     [user],
   );
 
-  const onPick = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      // Reset first, or picking the same file twice never fires a change event.
-      event.target.value = '';
-      if (file) void run(file);
-    },
-    [run],
-  );
+  /*
+   * The observation lives here rather than inside `ObservationPhotos` so that the Identify
+   * button — which is part of the scanner frame, not of the photo list — can read how many
+   * photographs are held. One owner, and the button cannot disagree with the slots.
+   */
+  const [photos, setPhotos] = useState<ObservationPhoto[]>([]);
+  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS;
 
   return (
     <div className="space-y-5">
@@ -268,29 +275,14 @@ export function ScanPanel() {
         </h2>
         <div aria-hidden="true" className="pixel-rule mt-2 w-24" />
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Photograph a leaf, a flower or the whole plant. The clearer and closer the shot, the
-          better the suggestion.
+          Two or three photographs identify a plant far better than one. The clearer and
+          closer each shot, the better the suggestion.
         </p>
 
-        <input
-          ref={inputRef}
-          type="file"
-          accept={ACCEPT_ATTRIBUTE}
-          capture="environment"
-          onChange={onPick}
-          className="sr-only"
-          id="scan-photo"
-        />
-        {/*
-          "Take a photo", not "Take or choose a photo".
-          The input carries `capture="environment"`, which opens the camera directly on a
-          phone and is simply ignored on a desktop browser, where the same control opens a
-          file picker instead. The old label spelled out both paths — and in doing so made
-          the primary one, on the device this is actually used from, sound optional. This is
-          a field guide: the expected posture is standing in front of the plant. Choosing a
-          file still works exactly as it did; it is just no longer offered as a co-equal
-          option in six words on the loudest control of the page.
-        */}
+        <div className="mt-4">
+          <ObservationPhotos onChange={setPhotos} disabled={busy} />
+        </div>
+
         {/*
           THE ONE PIECE OF FRAMING ADVICE, BESIDE THE CONTROL IT IS ABOUT.
 
@@ -299,22 +291,40 @@ export function ScanPanel() {
           backgrounded for the whole of the capture. So the last moment Plantdex can say
           anything is the instant before the tap, which is here.
 
-          Short enough to be REMEMBERED through that handoff, which is the real constraint: the
-          paragraph above describes what makes a good photograph and this is the single
-          instruction to carry into a screen we do not control. Deliberately "one plant" rather
-          than a framing rectangle — nothing here implies the plant must fit a box.
+          Short enough to be REMEMBERED through that handoff, which is the real constraint.
+          Deliberately "one plant" rather than a framing rectangle — nothing here implies the
+          plant must fit a box — and it now carries the weight of the whole set, because every
+          photograph must be of that same one plant.
         */}
         <p className="mt-4 flex items-center gap-2 text-xs font-semibold text-mystery-pink">
           <span aria-hidden="true" className="pixel-rule w-4 shrink-0" />
           Fill the frame with one plant
         </p>
 
-        <label
-          htmlFor="scan-photo"
-          className="arcade-key mt-2 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 sm:w-auto"
+        {/*
+          A BUTTON, NOT A LABEL, AND THAT IS THE STRUCTURAL CHANGE.
+
+          Capture used to BE the submit: one `<label for>` opened the camera and the answer
+          followed whatever came back. With an observation there are two separate moments —
+          gathering photographs, then asking — so the control that asks has to be its own
+          button, and it can be DISABLED, which a label cannot meaningfully be.
+
+          Disabled below two photographs rather than hidden: a control that vanishes teaches
+          nothing, while one that is visibly not ready, beside a count saying why, tells
+          somebody exactly what remains.
+        */}
+        <button
+          type="button"
+          disabled={!canIdentify || busy}
+          onClick={() => void run(photos)}
+          className="arcade-key mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 disabled:cursor-not-allowed disabled:bg-violet-600 disabled:text-violet-300 sm:w-auto"
         >
-          {busy ? 'Identifying…' : 'Take a photo'}
-        </label>
+          {busy
+            ? 'Identifying…'
+            : canIdentify
+              ? `Identify this plant (${photos.length} photo${photos.length === 1 ? '' : 's'})`
+              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'}`}
+        </button>
         <p className="mt-2 text-xs text-violet-400">
           {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it
           leaves your device.
