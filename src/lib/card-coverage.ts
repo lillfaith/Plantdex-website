@@ -89,6 +89,19 @@ export interface AcceptedTaxon {
   readonly note: string;
   /** Citation. Same standard as a synonym: a checked fact, never a recollection. */
   readonly source?: string;
+  /**
+   * ALTERNATE NAMES FOR THE SAME TAXON, for matching only.
+   *
+   * A second name is not a second member. `Taraxacum sect. Ruderalia` and
+   * `Taraxacum sect. Taraxacum` are one section under two names, so modelling them as two
+   * entries would say the card covers two sections — which is the inference this whole file
+   * exists to refuse, arriving by the back door.
+   *
+   * MATCHING ONLY. Whichever of these a provider returns is what gets RECORDED: the
+   * canonical name is how we find the card, never what we claim was observed. See
+   * `ObservedTaxon` in `plant-match.ts`.
+   */
+  readonly synonyms?: readonly string[];
 }
 
 /**
@@ -197,23 +210,15 @@ export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
       {
         scientificName: 'Taraxacum sect. Taraxacum',
         rank: 'section',
+        synonyms: ['Taraxacum sect. Ruderalia'],
         note:
-          'The autonym, and the name identification providers actually return for an ' +
-          'aggregate dandelion rather than a microspecies — recorded in this repo before ' +
-          'the curated model existed (see `plant-match.test.ts`, "the section name the ' +
-          'provider returns for the aggregate"). Removing it would silently drop live ' +
-          'coverage, so it is listed explicitly rather than assumed.',
-        source: 'https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1',
-      },
-      {
-        scientificName: 'Taraxacum sect. Ruderalia',
-        rank: 'section',
-        note:
-          'The section containing the common dandelion, named by the owner as the card\'s ' +
-          'established scope. WIDELY TREATED AS THE SAME SECTION as the autonym above, but ' +
-          'that equivalence is NOT verified here: the cited IPNI record could not be ' +
-          'resolved from the build environment. Both are listed so that neither reading ' +
-          'loses coverage; if they are confirmed synonymous, one entry can be dropped.',
+          'The section containing the common dandelion, and the name identification ' +
+          'providers return for an aggregate match rather than a microspecies. ONE section ' +
+          'under two names: POWO accepts `T. sect. Taraxacum` (IPNI 254151-1) and treats ' +
+          '`T. officinale` as a synonym of it; Flora of China describes modern usage as ' +
+          '`T. sect. Taraxacum (T. sect. Ruderalia)`; VicFlora treats `sect. Ruderalia` as ' +
+          'a synonym of it. Listed as one member with an alternate name, NOT as two ' +
+          'members — two entries would assert the card covers two sections.',
         source: 'https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1',
       },
       /*

@@ -384,7 +384,19 @@ function cardsCoveringByScope(name: string, genus: string): string[] {
       if (genusOf(herb.scientificName) !== genus) continue;
       if (scope.excluded?.some((one) => normalizeName(one) === name)) continue;
       claimed.push(herb.id);
-    } else if (scope.accepted.some((one) => normalizeName(one.scientificName) === name)) {
+    } else if (
+      /*
+       * A member matches by its canonical name OR any of its alternate names. The alternates
+       * are how the card is FOUND; what the provider returned is what gets recorded, so
+       * canonicalising here cannot rewrite the observation — `observedTaxon` is built from
+       * the raw string before any of this runs.
+       */
+      scope.accepted.some(
+        (one) =>
+          normalizeName(one.scientificName) === name ||
+          one.synonyms?.some((alt) => normalizeName(alt) === name),
+      )
+    ) {
       claimed.push(herb.id);
     }
   }

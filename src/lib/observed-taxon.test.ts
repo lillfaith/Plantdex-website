@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { PRINTED_CARDS, getPrintedCard } from './deck';
-import { CARD_COVERAGE, allScopes } from './card-coverage';
+import { CARD_COVERAGE, allScopes, scopeFor } from './card-coverage';
 import { matchScientificName, normalizeName, speciesConfidenceFor } from './plant-match';
 import { applyDiscovery } from './herbdex-reducer';
 import { emptyState } from './herbdex-state';
@@ -59,6 +59,76 @@ describe('an accepted-group observation keeps its own name', () => {
     expect(match.observedTaxon?.providerName).toBe('Taraxacum sect. Ruderalia Kirschner');
     expect(match.observedTaxon?.key).toBe(normalizeName('Taraxacum sect. Ruderalia'));
     expect(match.observedTaxon?.providerName).not.toBe(match.observedTaxon?.key);
+  });
+});
+
+describe('one section, two names — canonical matching without rewriting', () => {
+  /*
+   * POWO accepts `Taraxacum sect. Taraxacum` (IPNI 254151-1) and treats `T. officinale` as a
+   * synonym of it; Flora of China gives modern usage as `T. sect. Taraxacum
+   * (T. sect. Ruderalia)`; VicFlora treats `sect. Ruderalia` as a synonym. So these are ONE
+   * section under two names, and the card must cover one section rather than two.
+   *
+   * The tension this block holds: the canonical name is how the card is FOUND, and the
+   * provider's name is what gets RECORDED. Canonicalisation for matching must never become a
+   * rewrite of the observation.
+   */
+  it('accepts the canonical section name', () => {
+    const match = matchScientificName('Taraxacum sect. Taraxacum');
+    expect(match.herbId).toBe('taraxacum-officinale');
+    expect(match.eligibility).toBe('acceptedGroup');
+    expect(match.confirmable).toBe(true);
+  });
+
+  it('accepts the synonymous section name into the SAME accepted group', () => {
+    const match = matchScientificName('Taraxacum sect. Ruderalia');
+    expect(match.herbId).toBe('taraxacum-officinale');
+    expect(match.eligibility).toBe('acceptedGroup');
+    expect(match.confirmable).toBe(true);
+  });
+
+  it('is modelled as ONE member with an alternate name, not two members', () => {
+    // Two entries would assert the card covers two sections — the inference being refused.
+    const scope = scopeFor('taraxacum-officinale');
+    expect(scope?.type).toBe('acceptedGroup');
+    const accepted = scope?.type === 'acceptedGroup' ? scope.accepted : [];
+    expect(accepted).toHaveLength(1);
+    expect(accepted[0]?.scientificName).toBe('Taraxacum sect. Taraxacum');
+    expect(accepted[0]?.synonyms).toContain('Taraxacum sect. Ruderalia');
+  });
+
+  it('records Ruderalia as Ruderalia when that is what the provider returned', () => {
+    /*
+     * THE LOAD-BEARING ONE. Matching canonicalises; the record must not. If this ever fails,
+     * the app is quietly restating somebody's observation as a name they never saw.
+     */
+    const match = matchScientificName('Taraxacum sect. Ruderalia');
+    expect(match.observedTaxon?.providerName).toBe('Taraxacum sect. Ruderalia');
+    expect(match.observedTaxon?.name).toBe('Taraxacum sect. Ruderalia');
+    expect(match.observedTaxon?.name).not.toBe('Taraxacum sect. Taraxacum');
+    expect(match.observedTaxon?.name).not.toBe('Taraxacum officinale');
+  });
+
+  it('refuses the other sections, which are distinct taxa and not mere name variants', () => {
+    for (const name of ['Taraxacum sect. Erythrosperma', 'Taraxacum sect. Palustria']) {
+      const match = matchScientificName(name);
+      expect(match.eligibility, name).toBe('related');
+      expect(match.confirmable, `${name} must not qualify for being a Taraxacum section`)
+        .toBe(false);
+      expect(match.observedTaxon?.name, name).toBe(name);
+    }
+  });
+
+  it('keeps section-rank identification unresolved at every probability', () => {
+    for (const name of ['Taraxacum sect. Taraxacum', 'Taraxacum sect. Ruderalia']) {
+      const match = matchScientificName(name);
+      for (const score of [0.01, 0.42, 0.87, 0.99, 1]) {
+        expect(
+          speciesConfidenceFor(match.observedTaxon!.rank, score),
+          `${name} @ ${score}`,
+        ).toBe('unresolved');
+      }
+    }
   });
 });
 
