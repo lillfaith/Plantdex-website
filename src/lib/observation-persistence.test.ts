@@ -405,3 +405,61 @@ describe('the scan screen actually calls the path above', () => {
     expect(panel).toContain('{!confirmed.journalled && (');
   });
 });
+
+describe('every write path names every field of a Sighting', () => {
+  /*
+   * THE FAILURE MODE HERE IS A SUCCESSFUL WRITE.
+   *
+   * Three places build a row out of a `Sighting` BY HAND — the remote adapter's insert, the
+   * local-progress import's upsert, and (read side) the export. A field left out of one of
+   * them is not an error and not a warning: it is a valid statement that stores null. The
+   * import was exactly that, and it is the path where it would hurt most — a signed-out
+   * player scanning for weeks, then making an account, with the import the ONLY thing
+   * carrying those observations across. The card would arrive and the plant would not.
+   *
+   * So the guard is derived from the type rather than from a list somebody remembers to
+   * extend: read `Sighting`'s own fields and require each to appear in each writer.
+   */
+  const sightingSource = readFileSync('src/lib/sightings.ts', 'utf8');
+  const body = /export interface Sighting \{([\s\S]*?)\n\}/.exec(sightingSource)?.[1] ?? '';
+  const fields = [...body.matchAll(/^ {2}(\w+)\??:/gm)].map(([, name]) => name!);
+
+  /** Columns whose name is not the snake_case of the field. */
+  const COLUMN: Record<string, string> = {
+    id: 'id',
+    herbId: 'herb_id',
+    photoId: 'photo_path',
+    createdAt: 'created_at',
+  };
+  const column = (field: string) =>
+    COLUMN[field] ?? field.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+
+  it('parsed the interface — an empty field list would pass everything below', () => {
+    expect(fields).toContain('herbId');
+    expect(fields).toContain('observedTaxonName');
+    expect(fields.length).toBeGreaterThanOrEqual(16);
+  });
+
+  it.each([
+    ['the remote adapter', 'src/lib/remote-sightings.ts'],
+    ['the local-progress import', 'src/lib/import-local-progress.ts'],
+  ])('%s writes a column for each one', (_label, path) => {
+    const source = readFileSync(path, 'utf8');
+    for (const field of fields) {
+      expect(source, `${path} never writes ${column(field)}`).toMatch(
+        new RegExp(`${column(field)}:`),
+      );
+    }
+  });
+
+  it('the export reads a column for each one', () => {
+    const source = readFileSync('src/lib/export-account-data.ts', 'utf8');
+    for (const field of fields) {
+      // `id`, `date` and the rest are read through `String(row.…)`; all that matters is that
+      // the column name appears at all.
+      expect(source, `the export never reads ${column(field)}`).toMatch(
+        new RegExp(`row\\.${column(field)}`),
+      );
+    }
+  });
+});
