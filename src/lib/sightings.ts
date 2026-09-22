@@ -2,7 +2,7 @@
 
 import { useMemo, useSyncExternalStore } from 'react';
 import { deletePhoto } from './photo-store';
-import type { SpeciesConfidence } from './plant-match';
+import type { Eligibility, SpeciesConfidence } from './plant-match';
 import type { TaxonRank } from './card-coverage';
 
 /**
@@ -81,12 +81,34 @@ export interface Sighting {
    * change, which would silently rewrite the past if this field were derived from it.
    */
   observedTaxonProviderName?: string;
-  /** The cleaned display form at the time of recording. */
+  /**
+   * The tidied identity at the time of recording.
+   *
+   * Authorship dropped; EVERYTHING that narrows the name kept — `subsp. intermedia` and the
+   * `×` of a hybrid both. This is not the key below: dropping a hybrid sign does not
+   * generalise a name, it invents a species that does not exist.
+   */
   observedTaxonName?: string;
-  /** `species`, `section`, … — so a section stays a section. */
+  /**
+   * The lookup form — what `normalizeName` produced, and therefore HOW the card was found.
+   *
+   * Stored rather than recomputed because the normaliser's rules are free to change: deriving
+   * it later would answer with today's rules and silently rewrite the reason this observation
+   * reached this card. It is never the identity, and nothing may display it as one.
+   */
+  observedTaxonKey?: string;
+  /** `species`, `subspecies`, `section`, … — so a section stays a section. */
   observedTaxonRank?: TaxonRank;
+  /**
+   * WHY this observation qualified for `herbId` — which is a different question from what the
+   * plant is. `exact` means the card's own species; `legacyGenus` means the card was declared
+   * broad enough to accept it and the species is not the card's binomial.
+   */
+  eligibility?: Eligibility;
   /** Strength of the SPECIES-level identification. `unresolved` above species rank. */
   speciesConfidence?: SpeciesConfidence;
+  /** Which service named it — `plantnet`, `plantid`. Absent for a hand-logged sighting. */
+  identificationProvider?: string;
 }
 
 export type NewSighting = Omit<Sighting, 'id' | 'createdAt'>;

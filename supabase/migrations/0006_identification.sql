@@ -42,8 +42,34 @@
 
 -- The provider's string EXACTLY as returned, authorship and all. The historical record.
 alter table public.sightings add column if not exists observed_taxon_provider_name text;
--- The cleaned display form at the time of recording. Derived; safe to recompute.
+-- The tidied identity at the time of recording: authorship dropped, and EVERYTHING that
+-- narrows the name kept — the infraspecific rank and the hybrid sign both. Derived, and safe
+-- to recompute, which the key below is not a substitute for: `Mentha × piperita` and
+-- `Plantago major subsp. intermedia` both key to something that is a different taxon.
 alter table public.sightings add column if not exists observed_taxon_name text;
+/*
+ * THE MATCHING KEY, STORED BECAUSE IT IS A DIFFERENT FACT FROM EITHER NAME ABOVE.
+ *
+ * It is what `normalizeName` produced for this observation, which is how the card was found.
+ * Kept so a row can answer "why did this reach that card" years later, after the normaliser's
+ * rules have moved — recomputing it from the provider name would answer with TODAY's rules
+ * and quietly rewrite the reason. It is never the identity: it has no hybrid sign, no
+ * authorship and no infraspecific rank.
+ */
+alter table public.sightings add column if not exists observed_taxon_key text;
+/*
+ * WHY the observation qualified for `herb_id`: `exact`, `acceptedGroup`, `genusCard`,
+ * `legacyGenus`. Without it a row cannot distinguish "this IS the card's species" from "the
+ * card was declared broad enough to accept it", which is the whole difference between a
+ * Solidago canadensis find and a Solidago altissima one on the Goldenrod card.
+ */
+alter table public.sightings add column if not exists eligibility text
+  check (
+    eligibility is null
+    or eligibility in ('exact', 'acceptedGroup', 'genusCard', 'legacyGenus', 'ambiguous', 'related', 'none')
+  );
+-- Which service named it. A deployment setting, not a fact about the person.
+alter table public.sightings add column if not exists identification_provider text;
 -- `species`, `section`, `genus`, … — so a section stays a section. A supra-specific taxon
 -- must never be readable back as an exact species identification.
 -- The list is EXACTLY `TaxonRank` in `src/lib/card-coverage.ts`, and
@@ -53,7 +79,15 @@ alter table public.sightings add column if not exists observed_taxon_name text;
 alter table public.sightings add column if not exists observed_taxon_rank text
   check (
     observed_taxon_rank is null
-    or observed_taxon_rank in ('species', 'section', 'subgenus', 'series', 'subsection', 'genus')
+    or observed_taxon_rank in (
+      -- Above the species: none of these says WHICH species.
+      'genus', 'subgenus', 'section', 'subsection', 'series',
+      'species',
+      -- Below the species: each resolves the species and narrows it further.
+      'subspecies', 'variety', 'form',
+      -- The conservative failure. An unhandled qualifier is never promoted to `species`.
+      'unknown'
+    )
   );
 -- Strength of the SPECIES-level identification, which is not the provider's score: a
 -- section named with 0.99 confidence is still `unresolved` at species rank.
@@ -76,6 +110,32 @@ alter table public.sightings add column if not exists species_confidence text
 
 alter table public.scans add column if not exists identification_observation_id uuid;
 alter table public.scans add column if not exists provider text;
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- 2b. THE CANDIDATE THE PLAYER CHOSE IS NOT THE CANDIDATE THE PROVIDER LED WITH
+--
+-- `top_scientific_name` and `confidence` describe the provider's FIRST candidate.
+-- `confirmed_herb_id` describes the card the player tapped. Those were the only two facts
+-- the row held, and a player who scrolls past the leading answer and confirms the fourth one
+-- produced a row that reads as though the leading answer were what they confirmed:
+--
+--     top_scientific_name = Oxalis dillenii      (0.41, the provider's best guess)
+--     confirmed_herb_id   = oxalis-stricta       (Wood Sorrel, from a 0.09 candidate)
+--
+-- Nothing in that row says `Oxalis dillenii` was rejected. Read back — by the journal, by an
+-- export, by anyone evaluating the identifier — it attributes a taxon to the player that they
+-- explicitly did not choose. The selection is its own set of facts and is stored as such.
+-- ─────────────────────────────────────────────────────────────────────────────
+
+alter table public.scans add column if not exists confirmed_scientific_name text;
+alter table public.scans add column if not exists confirmed_probability numeric(4, 3)
+  check (
+    confirmed_probability is null
+    or (confirmed_probability >= 0 and confirmed_probability <= 1)
+  );
+alter table public.scans add column if not exists confirmed_taxon_rank text;
+alter table public.scans add column if not exists confirmed_eligibility text;
+alter table public.scans add column if not exists confirmed_species_confidence text;
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- 3. PROVIDER COMPARISON — telemetry, off by default, allow-listed by user id.

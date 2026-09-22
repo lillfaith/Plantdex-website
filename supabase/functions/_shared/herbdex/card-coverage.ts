@@ -86,12 +86,29 @@ export type CardScope =
  * `identification-schema.test.ts` holds the two equal.
  */
 export const TAXON_RANKS = [
-  'species',
-  'section',
-  'subgenus',
-  'series',
-  'subsection',
+  // Above the species. None of these resolves WHICH species, whatever the provider's score.
   'genus',
+  'subgenus',
+  'section',
+  'subsection',
+  'series',
+  'species',
+  // Below the species. Each of these RESOLVES the species and then narrows it further — a
+  // subspecies of Plantago major is Plantago major — so they are species-level for
+  // confidence and must still be stored at their own rank, or the narrowing is lost.
+  'subspecies',
+  'variety',
+  'form',
+  /*
+   * THE CONSERVATIVE FAILURE, and the reason this list has a member that is not a rank.
+   *
+   * A name carrying a qualifier the parser does not know — `agg.`, `convar.`, `grex`,
+   * `nothosubsp.`, a bare third epithet — used to fall through to `species`. That is a
+   * PROMOTION: it reports a confident species-level identification for a name that never
+   * claimed one. An unhandled marker lands here instead, which resolves to `unresolved`
+   * confidence, and the qualifier stays visible in the display name.
+   */
+  'unknown',
 ] as const;
 export type TaxonRank = (typeof TAXON_RANKS)[number];
 

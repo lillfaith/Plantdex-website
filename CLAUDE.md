@@ -18,6 +18,7 @@ Payment Link behind `/shop`, see "V0.4 commerce" below), and the **player profil
 ```bash
 npm run dev        # dev server
 npm run verify     # lint + typecheck + test + build — run before pushing
+npm run check:edge # deno check on supabase/functions — what verify structurally CANNOT do
 npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art (needs all 45)
 python3 scripts/build_deck.py --source deck-source --only 11,24,31   # patch a few reprinted cards
@@ -1314,8 +1315,58 @@ Three facts, and every bug this system has had was two of them being treated as 
 - **`normalizeName` IS A LOOKUP KEY AND MUST NEVER BECOME THE RECORD.** It drops authorship,
   folds synonymous section names onto one key, and its rules are free to change — so a column
   derived from it would silently rewrite history the next time they moved.
-  `observed_taxon_provider_name` is the provider's string exactly as returned; everything else
-  is derived and may be recomputed. The same reason `scans.top_scientific_name` is untouched.
+  `observed_taxon_provider_name` is the provider's string exactly as returned. The same reason
+  `scans.top_scientific_name` is untouched.
+- **THE IDENTITY AND THE KEY ARE TWO REPRESENTATIONS, AND REBUILDING ONE FROM THE OTHER
+  INVENTED NAMES.** `displayName` used to be rebuilt from the normalised key — which exists to
+  find cards, so it drops the hybrid sign and every infraspecific rank. That wrote
+  `Mentha piperita` and `Quercus leana` into the record. NEITHER IS A NAME: dropping a hybrid
+  sign does not generalise a name, it invents a species, in an app whose subject is telling
+  plants apart. `taxon-name.ts` parses the RAW string into the identity — authorship dropped,
+  everything that narrows the name kept — and `normalizeName` is untouched and still builds the
+  key. Both are stored, because the key is also the REASON a card was reached, and recomputing
+  it later would answer with that day's normaliser rules rather than the observation's.
+- **ASCII `x` IS A HYBRID SIGN ONLY AS A WHOLE WORD.** `Quercus xalapensis` is a real species,
+  so reading a glued `x` as a sign would invent a hybrid — the same failure as dropping one,
+  pointing the other way. The U+00D7 glyph is unambiguous and is read glued or free. Write both
+  glyphs as escapes in source: `no-emoji.test.ts` sweeps a range that includes U+2715.
+- **AN UNHANDLED RANK MARKER IS `unknown`, NEVER `species`.** `taxonRank` read the key, so
+  `Plantago major subsp. intermedia` reported `species` — a subspecies silently promoted, and
+  a confident species-level confidence for a name that never claimed one. Ranks now come from
+  the provider's own words. Above the species (`genus`, `subgenus`, `section`, `subsection`,
+  `series`) nothing resolves which species; at or below it (`species`, `subspecies`, `variety`,
+  `form`) all four DO, so refusing them would be the mirror bug — throwing away a more precise
+  identification for being unusual. A qualifier the parser does not know (`agg.`, `convar.`,
+  `grex`, a bare third epithet) lands on `unknown` and stays visible in the display name.
+  `f.` is *forma* after an epithet and *filius* after a name, so it is a rank only when a
+  lowercase epithet follows.
+- **A CONFIRMED SCAN WRITES THREE RECORDS AND THEY ARE NOT THE SAME FACT.** `discoveries` holds
+  the CARD; `sightings` holds the OBSERVATION; `scans` holds the provider's TOP candidate and,
+  separately, the one the player SELECTED. The scan path used to write only the first, so the
+  taxon reached none of the columns that exist for it — and `confirmScan` had NO CALLER AT ALL
+  while its own doc said "what the UI calls after an explicit tap". The sighting goes through
+  `sightings-store.ts`, so signed out is the same call writing localStorage; it does not master
+  the card by itself, because `qualifiesForMastery` still requires `learned`. A failed journal
+  write never fails the confirm — the discovery is already recorded — and the panel says so
+  rather than letting somebody believe the observation was kept.
+- **THE TOP CANDIDATE IS NOT THE CHOSEN ONE.** A player who scrolls past the leading answer and
+  confirms a lower one used to leave a row reading `top = Oxalis dillenii 0.41` beside
+  `confirmed = Wood Sorrel`, with nothing saying dillenii had been REJECTED — a row attributing
+  a taxon to somebody who explicitly declined it. The whole chosen candidate is written
+  alongside, and the leading answer is left exactly as it was.
+- **CARD MEMBERSHIP NEVER PROMOTES A CANDIDATE.** `outcomeFor` reads RANK — whether the
+  provider's own leading answer is confirmable — never a score and never "is one of these a
+  Plantdex card". A 0.09 deck species below a 0.41 non-deck one leaves the outcome `uncertain`.
+  Reversing that would let the collection overrule the identifier.
+- **`npm run verify` CANNOT TYPE-CHECK THE EDGE FUNCTIONS, AND THAT HID FOURTEEN ERRORS.**
+  `supabase/functions/**` is excluded from this project's tsconfig and ESLint because it is
+  Deno. `npm run check:edge` runs `deno check` over all four entrypoints; its first run found
+  `providers.ts`'s `failure()` helper typing its `kind` as
+  `IdentificationResult extends { kind: infer K } ? K : never` — which looks like it selects the
+  failure half of the union and does not, because a conditional type distributes over a naked
+  TYPE PARAMETER and never over a concrete union alias. It evaluated to `never`, so all
+  fourteen call sites were errors, and 1,084 green unit tests could not see one of them. It is
+  a separate script rather than part of `verify` because it fetches a Deno toolchain.
 - **A supra-specific taxon may qualify for a card and may NEVER become an exact species.**
   `Taraxacum sect. Taraxacum` opens the Dandelion card; it is not rewritten to *T. officinale*,
   and `speciesConfidenceFor` returns `unresolved` above species rank BEFORE it looks at the

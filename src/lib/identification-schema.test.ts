@@ -35,8 +35,15 @@ const fn = readFileSync('supabase/functions/identify-plant/index.ts', 'utf8');
 const TAXON_FIELDS = [
   'observedTaxonProviderName',
   'observedTaxonName',
+  // The matching key, stored as its own fact: it is HOW the card was found, and recomputing
+  // it later would answer with the normaliser's rules of that day rather than of this one.
+  'observedTaxonKey',
   'observedTaxonRank',
+  // WHY the observation qualified — `exact` against `legacyGenus` is the whole difference
+  // between a Solidago canadensis find and a Solidago altissima one on the same card.
+  'eligibility',
   'speciesConfidence',
+  'identificationProvider',
 ] as const;
 
 /** camelCase → snake_case, the one naming rule every column in this project follows. */

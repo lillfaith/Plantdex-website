@@ -3,9 +3,11 @@ import { IDENTIFY_PROFILE, UnprocessableImageError, prepareImage } from './image
 import {
   matchScientificName,
   outcomeFor,
+  speciesConfidenceFor,
   type ScanCandidate,
   type ScanOutcome,
 } from './plant-match';
+import type { NewSighting } from './sightings';
 
 /**
  * PLANT ID, CLIENT SIDE.
@@ -285,7 +287,67 @@ export async function recordScan(
 }
 
 /**
- * Record which card the player confirmed.
+ * The taxon a confirmed candidate records, as the journal stores it.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ONE MAPPING, SHARED, BECAUSE THE FIELDS ONLY MEAN ANYTHING TOGETHER.
+ *
+ * `herbId` is the CARD and every other field here is the PLANT, and the two are routinely
+ * different: an observation of `Solidago altissima` qualifies for the Goldenrod card, whose
+ * binomial is `Solidago canadensis`. A caller that filled in some of these and not others
+ * would write a row that is half a record — the commonest way for the distinction to be lost
+ * is not a wrong value but a missing one.
+ *
+ * `providerName` is what came back, untouched. `name` is the identity — authorship dropped,
+ * hybrid sign and infraspecific rank kept. `key` is how the card was FOUND and is never shown
+ * as a name. `eligibility` is why it qualified. `speciesConfidence` is how settled the species
+ * is, which is not the provider's score: a section named at 0.99 is still `unresolved`.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export function observedTaxonFields(
+  candidate: ScanCandidate,
+  provider?: string,
+): Pick<
+  NewSighting,
+  | 'observedTaxonProviderName'
+  | 'observedTaxonName'
+  | 'observedTaxonKey'
+  | 'observedTaxonRank'
+  | 'eligibility'
+  | 'speciesConfidence'
+  | 'identificationProvider'
+> {
+  const taxon = candidate.match.observedTaxon;
+  return {
+    observedTaxonProviderName: candidate.scientificName,
+    observedTaxonName: taxon?.name,
+    observedTaxonKey: taxon?.key,
+    observedTaxonRank: taxon?.rank,
+    eligibility: candidate.match.eligibility,
+    speciesConfidence: taxon ? speciesConfidenceFor(taxon.rank, candidate.score) : undefined,
+    identificationProvider: provider,
+  };
+}
+
+/**
+ * Record which card the player confirmed, AND WHICH CANDIDATE THEY CHOSE.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE TOP CANDIDATE AND THE CHOSEN ONE ARE DIFFERENT FACTS, AND ONLY ONE WAS STORED.
+ *
+ * `top_scientific_name` and `confidence` are the provider's leading answer; they are written
+ * by `recordScan` before anybody has decided anything. This used to add only
+ * `confirmed_herb_id`, so a player who scrolled past the leading answer and confirmed a lower
+ * one left a row reading:
+ *
+ *     top_scientific_name = Oxalis dillenii   0.41
+ *     confirmed_herb_id   = oxalis-stricta            (from a 0.09 candidate)
+ *
+ * Nothing in that said `Oxalis dillenii` had been REJECTED. Anything reading the row back —
+ * the export, an accuracy evaluation, a person — would attribute a taxon to the player that
+ * they explicitly declined. The whole chosen candidate is written alongside now, and the
+ * provider's leading answer is left exactly as it was.
+ * ─────────────────────────────────────────────────────────────────────────────
  *
  * Deliberately a DELETE-then-INSERT rather than an update: there is no update policy on
  * `scans`, by design, so a confirmation replaces the row rather than editing it. Awarding
@@ -295,6 +357,7 @@ export async function confirmScan(
   userId: string,
   scanId: string,
   herbId: string,
+  candidate: ScanCandidate,
 ): Promise<boolean> {
   if (!supabase) return false;
   const { data: existing } = await supabase
@@ -304,9 +367,20 @@ export async function confirmScan(
     .eq('id', scanId)
     .maybeSingle();
   if (!existing) return false;
+  const taxon = candidate.match.observedTaxon;
   await supabase.from('scans').delete().eq('user_id', userId).eq('id', scanId);
-  const { error } = await supabase
-    .from('scans')
-    .insert({ ...existing, confirmed_herb_id: herbId });
+  const { error } = await supabase.from('scans').insert({
+    ...existing,
+    confirmed_herb_id: herbId,
+    // The provider's own string for the candidate that was chosen — never the top one, and
+    // never rewritten to the card's binomial.
+    confirmed_scientific_name: candidate.scientificName,
+    confirmed_probability: candidate.score,
+    confirmed_taxon_rank: taxon?.rank ?? null,
+    confirmed_eligibility: candidate.match.eligibility,
+    confirmed_species_confidence: taxon
+      ? speciesConfidenceFor(taxon.rank, candidate.score)
+      : null,
+  });
   return !error;
 }

@@ -10,12 +10,16 @@ import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { ambiguousCardNames, genusLabel } from '@/lib/scan-ambiguity';
 import {
   MIN_OBSERVATION_PHOTOS,
+  confirmScan,
   identifyPlant,
   isScanFailure,
+  observedTaxonFields,
   recordScan,
   type ObservationPhoto,
   type ScanResult,
 } from '@/lib/scans';
+import { useSightingsStore } from '@/lib/sightings-store';
+import { localDateKey } from '@/lib/research';
 import { ObservationPhotos } from './ObservationPhotos';
 import { warmIdentifier } from '@/lib/scan-warmup';
 import { ACCEPTED_LABEL } from '@/lib/photo-input';
@@ -50,6 +54,12 @@ function relatedGenus(candidates: readonly ScanCandidate[]): string {
 export function ScanPanel() {
   const { user } = useAuth();
   const { discover, isDiscovered, ready, progress } = useHerbdex();
+  /*
+   * THE FACADE, NOT EITHER ADAPTER. Signed in it writes the Supabase row; signed out it
+   * writes localStorage and IndexedDB — which is what makes "preserve the observation
+   * locally" the SAME code path rather than a second anonymous history to keep in step.
+   */
+  const { addSighting } = useSightingsStore();
 
   /*
    * TWO STAGES, AND DELIBERATELY NOT THREE.
@@ -98,6 +108,16 @@ export function ScanPanel() {
      * and the second telling is the flatter one.
      */
     celebrated: boolean;
+    /*
+     * WHETHER THE JOURNAL ENTRY ACTUALLY LANDED.
+     *
+     * The discovery is written by the reducer and is safe by the time this state is set; the
+     * sighting is a separate write that can fail on its own (a refused insert, an offline
+     * device). Saying nothing would be the worst of the three options: the player has a find
+     * in their collection and believes the observation was recorded with it. `false` prints
+     * one line saying it was not.
+     */
+    journalled: boolean;
   } | null>(null);
   // The history row this result was written to, so a Seed Shelf save can point back at the
   // scan it came from. Null signed out, where there is no history to point at.
@@ -809,7 +829,52 @@ export function ScanPanel() {
                                 newAchievementIds: outcome.newAchievementIds,
                                 at: Date.now(),
                                 celebrated: outcome.awarded,
+                                journalled: true,
                               });
+                              /*
+                               * THE OBSERVATION, WHICH IS NOT THE DISCOVERY.
+                               *
+                               * `discover()` records THE CARD. Until this call existed, that
+                               * was the only thing a scan wrote on the client, so the taxon
+                               * the identifier actually named survived nowhere a signed-out
+                               * player could reach and — signed in — only inside the scan
+                               * history. Confirming `Solidago altissima` recorded Goldenrod
+                               * and the plant was gone.
+                               *
+                               * `observedTaxonFields` is the one mapping, so the card and the
+                               * plant cannot drift apart at this call site. Dated where the
+                               * player is, never in UTC, for the reason `todayIso` gives.
+                               *
+                               * IT DOES NOT MASTER THE CARD BY ITSELF. `qualifiesForMastery`
+                               * needs `learned` as well, so this satisfies the sighting half
+                               * and leaves the knowledge check exactly where it was.
+                               */
+                              void addSighting({
+                                herbId: herb.id,
+                                date: localDateKey(),
+                                ...observedTaxonFields(candidate, result.provider),
+                              }).catch((error: unknown) => {
+                                // Never throw out of the confirm: the discovery is already
+                                // recorded and losing it would be the larger harm. The panel
+                                // says the journal entry did not save.
+                                console.warn('[plantdex] could not log the sighting', error);
+                                setConfirmed((current) =>
+                                  current && current.herbId === herb.id
+                                    ? { ...current, journalled: false }
+                                    : current,
+                                );
+                              });
+                              /*
+                               * WHICH CANDIDATE, not just which card. The history row holds
+                               * the provider's TOP answer; without this it would read as
+                               * though that were what the player chose, even when they
+                               * scrolled past it and picked the fourth one. Signed out there
+                               * is no row to amend, and the local sighting above is the
+                               * record.
+                               */
+                              if (user && scanId) {
+                                void confirmScan(user.id, scanId, herb.id, candidate);
+                              }
                               /*
                                * THE MOMENT, AND ONLY WHEN ONE WAS EARNED.
                                *
@@ -900,6 +965,17 @@ export function ScanPanel() {
                   confirmedAt={confirmed.at}
                   celebrated={confirmed.celebrated}
                 />
+                {/*
+                  ONLY WHEN IT FAILED, and never as reassurance when it worked. A line saying
+                  "saved to your journal" after every single find is noise that teaches people
+                  to stop reading the place a real failure would appear.
+                */}
+                {!confirmed.journalled && (
+                  <p className="mt-3 text-xs leading-relaxed text-mystery-pink">
+                    The card is in your collection, but this observation could not be saved to
+                    your field journal. You can log it from the card page.
+                  </p>
+                )}
               </div>
             );
           })()}

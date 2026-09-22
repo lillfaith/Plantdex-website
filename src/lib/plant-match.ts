@@ -1,6 +1,7 @@
 import { PRINTED_CARDS } from './deck';
 import { CATALOGUE } from './catalogue';
 import { scopeFor, type TaxonRank } from './card-coverage';
+import { parseScientificName } from './taxon-name';
 
 /**
  * MAPPING AN IDENTIFICATION RESULT ONTO THE DECK.
@@ -91,6 +92,16 @@ export interface ObservedTaxon {
   readonly name: string;
   readonly key: string;
   readonly rank: TaxonRank;
+  /**
+   * Whether the name carries a hybrid sign.
+   *
+   * Stored as a flag as well as printed in `name`, because the KEY cannot carry it:
+   * `Mentha × piperita` and a hypothetical `Mentha piperita` normalise identically, so
+   * anything reading the key alone has no way to tell a nothospecies from a species. Nothing
+   * in the deck turns on it today; it exists so that a reader of the record is never left
+   * inferring a hybrid from punctuation inside a display string.
+   */
+  readonly hybrid: boolean;
 }
 
 export interface PlantMatch {
@@ -238,29 +249,15 @@ export function normalizeName(raw: string): string {
 /**
  * The RANK a provider's name actually claims — which is not always species.
  *
- * `observedTaxon.rank` exists so a section can be recorded as a section. Before this, a
- * supra-specific answer was flattened into the card's binomial and the distinction was gone
- * by the time anything was written down. `TaxonRank` itself lives in `card-coverage.ts`,
- * which `AcceptedTaxon` needs it for — importing it the other way round would be a cycle.
+ * READS THE RAW STRING, NOT THE KEY, AND THAT IS THE WHOLE FIX. This used to call
+ * `normalizeName` and inspect the result — but the key has already thrown away everything
+ * that distinguishes a rank: `Plantago major subsp. intermedia` becomes `plantago major`,
+ * so the rank it reported was `species` for an observation that had named a subspecies.
+ * `taxon-name.ts` reads the provider's own words instead, and answers `unknown` rather than
+ * guessing when it meets a marker it does not know.
  */
-const INFRAGENERIC_RANK: Record<string, TaxonRank> = {
-  sect: 'section',
-  subsect: 'subsection',
-  subg: 'subgenus',
-  subgen: 'subgenus',
-  ser: 'series',
-};
-
-/** What rank `raw` names. Reads the provider's own words; never guesses from the card. */
 export function taxonRank(raw: string): TaxonRank {
-  const key = normalizeName(raw);
-  const parts = key.split(' ');
-  if (parts.length >= 2) {
-    const asRank = INFRAGENERIC_RANK[parts[1]!];
-    if (asRank) return asRank;
-    return 'species';
-  }
-  return 'genus';
+  return parseScientificName(raw).rank;
 }
 
 const RANKS = new Set(['subsp', 'ssp', 'var', 'subvar', 'f', 'forma', 'cv', 'sp', 'spp', 'agg']);
@@ -276,27 +273,19 @@ const RANKS = new Set(['subsp', 'ssp', 'var', 'subvar', 'f', 'forma', 'cv', 'sp'
 const INFRAGENERIC = new Set(['sect', 'subg', 'subgen', 'ser', 'subsect']);
 
 /**
- * The name as it should be SHOWN — rebuilt from the normalised key, never from the raw.
+ * The name as it should be SHOWN — the provider's identity, tidied but never generalised.
  *
- * Rebuilding guarantees the displayed name and the looked-up name are the same taxon, which
- * a separate cleaning pass could not promise. Authorship is dropped because it is not part
- * of the name a player is reading, and the provider's exact original survives untouched in
- * `ObservedTaxon.providerName` — normalisation is for finding things, and must never become
- * the historical record of what the provider actually returned.
+ * IT USED TO BE REBUILT FROM THE NORMALISED KEY, and that quietly manufactured names. The key
+ * exists to find cards, so it drops the hybrid sign and every infraspecific rank — and
+ * rebuilding from it turned `Mentha × piperita` into `Mentha piperita` and `Quercus x leana`
+ * into `Quercus leana`, NEITHER OF WHICH IS A NAME. Dropping a hybrid sign does not
+ * generalise a name, it invents a species, which is the one thing this app may never do.
+ *
+ * Authorship is still dropped: it is not part of the name a player reads, and the provider's
+ * exact original survives untouched in `ObservedTaxon.providerName`.
  */
 export function displayName(raw: string): string {
-  const parts = normalizeName(raw).split(' ').filter(Boolean);
-  if (parts.length === 0) return '';
-  const [genus, second, third] = parts;
-  const capitalised = genus!.charAt(0).toUpperCase() + genus!.slice(1);
-  if (!second) return capitalised;
-  // A rank marker prints with its point, and the taxon it introduces is capitalised.
-  if (INFRAGENERIC.has(second)) {
-    return third
-      ? `${capitalised} ${second}. ${third.charAt(0).toUpperCase()}${third.slice(1)}`
-      : `${capitalised} ${second}.`;
-  }
-  return `${capitalised} ${second}`;
+  return parseScientificName(raw).display;
 }
 
 /**
@@ -310,8 +299,23 @@ export function displayName(raw: string): string {
  * Reuses `confidenceBand` rather than restating its thresholds, so species confidence and
  * the confidence shown beside a candidate can never drift apart.
  */
+/**
+ * Ranks at which the SPECIES is settled.
+ *
+ * A subspecies, variety or form names a species and then narrows it further, so all three
+ * resolve the species exactly as `species` does — treating them as `unresolved` would be the
+ * mirror of the bug above, throwing away a MORE precise identification for being unusual.
+ * Everything above the species, and `unknown`, resolves nothing.
+ */
+const SPECIES_RESOLVING: ReadonlySet<TaxonRank> = new Set<TaxonRank>([
+  'species',
+  'subspecies',
+  'variety',
+  'form',
+]);
+
 export function speciesConfidenceFor(rank: TaxonRank, score: number): SpeciesConfidence {
-  if (rank !== 'species') return 'unresolved';
+  if (!SPECIES_RESOLVING.has(rank)) return 'unresolved';
   const band = confidenceBand(score);
   return band === 'strong' ? 'high' : band === 'moderate' ? 'moderate' : 'low';
 }
@@ -431,11 +435,15 @@ export function matchScientificName(scientificName: string): PlantMatch {
    * for it, and the branch that finds no card is exactly the one a Seed Shelf entry is built
    * from, so dropping the taxon there would lose it where it is most needed.
    */
+  // ONE parse, so the display name, the rank and the hybrid flag cannot describe different
+  // readings of the same string.
+  const parsed = parseScientificName(scientificName);
   const observedTaxon: ObservedTaxon = {
     providerName: scientificName,
-    name: displayName(scientificName),
+    name: parsed.display,
     key: name,
-    rank: taxonRank(scientificName),
+    rank: parsed.rank,
+    hybrid: parsed.hybrid,
   };
   const withTaxon = (match: Omit<PlantMatch, 'observedTaxon'>): PlantMatch => ({
     ...match,

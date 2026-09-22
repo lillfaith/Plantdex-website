@@ -374,6 +374,13 @@ export async function exportAccountData(userId: string, email?: string): Promise
         : undefined,
     observedTaxonName:
       typeof row.observed_taxon_name === 'string' ? row.observed_taxon_name : undefined,
+    observedTaxonKey:
+      typeof row.observed_taxon_key === 'string' ? row.observed_taxon_key : undefined,
+    eligibility: (typeof row.eligibility === 'string'
+      ? row.eligibility
+      : undefined) as Sighting['eligibility'],
+    identificationProvider:
+      typeof row.identification_provider === 'string' ? row.identification_provider : undefined,
     observedTaxonRank: (typeof row.observed_taxon_rank === 'string'
       ? row.observed_taxon_rank
       : undefined) as Sighting['observedTaxonRank'],

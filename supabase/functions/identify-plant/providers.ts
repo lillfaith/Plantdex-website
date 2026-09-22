@@ -4,6 +4,8 @@ import {
   parsePlantIdResponse,
 } from '../_shared/herbdex/plantid-normalize.ts';
 import type {
+  IdentificationFailure,
+  IdentificationFailureKind,
   IdentificationResult,
   ProviderId,
 } from '../_shared/herbdex/identification-types.ts';
@@ -43,13 +45,28 @@ async function fetchWithTimeout(url: string, init: RequestInit): Promise<Respons
   }
 }
 
+/**
+ * A failure, named by its kind.
+ *
+ * THE KIND PARAMETER USED TO BE INFERRED, AND IT INFERRED `never`. It read
+ * `IdentificationResult extends { kind: infer K } ? K : never` — which looks like it picks
+ * the failure half out of the union and does not, because a conditional type distributes over
+ * a naked TYPE PARAMETER, never over a concrete union alias. So the check asked "does
+ * `NormalizedIdentification | IdentificationFailure` as a whole extend `{ kind: ... }`", the
+ * success half has no `kind`, and the answer was `never` — making every one of the fourteen
+ * call sites in this file a type error.
+ *
+ * Nothing in `npm run verify` could see it: `supabase/functions/**` is excluded from this
+ * project's tsconfig because it is Deno, so the errors existed only under `deno check`. Name
+ * the union that is actually meant.
+ */
 function failure(
   provider: ProviderId,
-  kind: IdentificationResult extends { kind: infer K } ? K : never,
+  kind: IdentificationFailureKind,
   message: string,
   status?: number,
-): IdentificationResult {
-  return { provider, kind, message, status } as IdentificationResult;
+): IdentificationFailure {
+  return { provider, kind, message, status };
 }
 
 /* ── PlantNet ─────────────────────────────────────────────────────────────────

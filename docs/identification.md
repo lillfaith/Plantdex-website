@@ -35,7 +35,61 @@ you which of its species you are looking at.
 **The provider's own string is the historical record.** `normalizeName()` drops authorship,
 folds synonymous section names onto one key, and its rules are free to change — so it is a
 **lookup key** and never the thing we remember. `observed_taxon_provider_name` holds what the
-provider actually returned; everything else may be recomputed from it.
+provider actually returned.
+
+### Two representations of one name, and why
+
+`taxon-name.ts` builds the **identity**; `normalizeName` builds the **key**. They answer
+different questions and neither substitutes for the other.
+
+| Provider string | Identity (`observed_taxon_name`) | Key (`observed_taxon_key`) | Rank |
+|---|---|---|---|
+| `Taraxacum officinale F.H.Wigg.` | `Taraxacum officinale` | `taraxacum officinale` | species |
+| `Plantago major subsp. intermedia` | `Plantago major subsp. intermedia` | `plantago major` | subspecies |
+| `Mentha × piperita` | `Mentha × piperita` | `mentha piperita` | species |
+| `Quercus x leana` | `Quercus × leana` | `quercus leana` | species |
+| `Taraxacum sect. Ruderalia` | `Taraxacum sect. Ruderalia` | `taraxacum sect ruderalia` | section |
+| `Rubus fruticosus agg.` | `Rubus fruticosus agg.` | `rubus fruticosus` | **unknown** |
+
+The identity used to be rebuilt from the key, and that manufactured names: `Mentha piperita`
+and `Quercus leana` are not taxa. **Dropping a hybrid sign does not generalise a name, it
+invents a species** — on a product about telling plants apart. Both representations are stored,
+because the key is also the *reason* a card was reached, and recomputing it later would answer
+with the normaliser's rules of that day rather than of the day the observation was made.
+
+**Ranks.** Above the species: `genus`, `subgenus`, `section`, `subsection`, `series` — none of
+them resolves *which* species, whatever the score. At or below it: `species`, `subspecies`,
+`variety`, `form` — all four settle the species, so all four give a real
+`species_confidence`. And `unknown`, which is the **conservative failure**: a qualifier the
+parser does not know (`agg.`, `convar.`, `grex`, `nothosubsp.`, a bare third epithet) is never
+promoted to `species`. It resolves to `unresolved` confidence and the qualifier stays visible
+in the identity.
+
+### What a confirmed scan writes
+
+Three records, and they are not the same fact:
+
+| Record | Holds |
+|---|---|
+| `discoveries` | the **card**, through the ordinary idempotent `discover()` |
+| `sightings` | the **observation** — card, provider string, identity, key, rank, eligibility, species confidence, provider |
+| `scans` | the provider's **top** candidate *and*, separately, the candidate the player **selected** |
+
+The sighting goes through `sightings-store.ts`, so a signed-out player's observation is kept in
+localStorage by the same call that writes the Supabase row signed in — there is no second
+anonymous history to keep in step. It does **not** master the card on its own:
+`qualifiesForMastery` still requires `learned`, so this satisfies the sighting half and leaves
+the knowledge check where it was.
+
+`scans` holds both candidates because a player who scrolls past the leading answer and confirms
+a lower one otherwise leaves a row reading `top = Oxalis dillenii 0.41` beside
+`confirmed = Wood Sorrel`, with nothing saying `Oxalis dillenii` was **rejected**. That row
+attributes a taxon to somebody who explicitly declined it.
+
+**Card membership never promotes a candidate.** `outcomeFor` reads rank — whether the
+provider's *own* leading answer is confirmable — and never a score and never "is one of these a
+Plantdex card". A 0.09 deck species sitting below a 0.41 non-deck one leaves the outcome
+`uncertain`, which is the honest rendering.
 
 ---
 
@@ -226,10 +280,24 @@ no captured real API response committed here, and nothing in the suite makes a n
 
 - `identification-providers.test.ts` — normalisation, fail-closed parsing, confidence bands
 - `identification-schema.test.ts` — 0006 against the types it has to stay level with, and the two comparison gates
+- `observation-persistence.test.ts` — the whole path from a provider string to a stored row, driving the real local and remote adapters
+- `taxon-identity.test.ts` — ranks, hybrid notation in both spellings, conservative failure
 - `observed-taxon.test.ts` — the three facts, kept apart
 - `card-coverage.test.ts` — scopes and accepted-group curation rules; `observed-taxon.test.ts` holds `pendingCuration` to one entry
 - `observation-photos.test.ts` — the 2/3 slot rules
 - `edge-shared.test.ts` — the generated `_shared` copy matches source, and every specifier resolves under Deno
 
-What the suite **cannot** check: that the deployed function is this checkout, and that a live
-provider response matches the adapter. Step 4 above is the only way to find out.
+`npm run check:edge` type-checks the Deno half, which `npm run verify` structurally cannot:
+`supabase/functions/**` is excluded from this project's tsconfig and ESLint because it is a
+different runtime. It is a separate script rather than part of `verify` because it fetches a
+Deno toolchain on first run.
+
+**That gap was not theoretical.** Its first run reported 14 errors in `providers.ts`: the
+`failure()` helper typed its `kind` parameter as
+`IdentificationResult extends { kind: infer K } ? K : never`, which looks like it selects the
+failure half of the union and does not — a conditional type distributes over a naked *type
+parameter*, never over a concrete union alias — so it evaluated to `never` and every call site
+was an error. 1,084 green unit tests could not see it.
+
+What neither suite can check: that the **deployed** function is this checkout, and that a
+**live** provider response matches the adapter. Step 4 above is the only way to find out.
