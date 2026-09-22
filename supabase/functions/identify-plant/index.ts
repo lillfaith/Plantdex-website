@@ -1,7 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { canonicalIdentity } from '../_shared/herbdex/species-identity.ts';
 import { identifyWithPlantId, identifyWithPlantNet, type ObservationImage } from './providers.ts';
-import { isIdentificationFailure } from '../_shared/herbdex/identification-types.ts';
+import {
+  isIdentificationFailure,
+  type IdentificationFailure,
+  type NormalizedIdentification,
+} from '../_shared/herbdex/identification-types.ts';
 import {
   ATTESTATION_SECRET_ENV,
   attestIdentity,
@@ -45,6 +49,29 @@ const PLANT_ID_KEY = Deno.env.get('PLANT_ID_API_KEY') ?? '';
  * deployment while quietly answering from the provider nobody selected.
  */
 const PROVIDER_ID = (Deno.env.get('PLANT_IDENTIFICATION_PROVIDER') ?? 'plantnet').trim();
+
+/*
+ * PROVIDER COMPARISON — off unless BOTH of these say otherwise.
+ *
+ * Deciding between PlantNet and plant.id on anything but anecdote needs both answers to the
+ * SAME photographs. Comparison mode asks both and records what each said; the player is
+ * still served the configured provider's answer, so nothing about the flow changes for them.
+ *
+ * TWO GATES, AND THE SECOND IS AN EXPLICIT LIST OF ACCOUNTS. A flag alone would mean "every
+ * signed-in player is now in an experiment", which is the thing not to build: it doubles the
+ * shared API spend, and it keeps a record of somebody's scans for a purpose they had no part
+ * in. The list holds the ids of whoever is running the evaluation. An anonymous caller is
+ * never in it — there is no id to match, and no account for the row to belong to.
+ */
+const COMPARISON_ON = (Deno.env.get('IDENTIFICATION_COMPARISON') ?? '').trim() === 'on';
+const COMPARISON_USER_IDS = new Set(
+  (Deno.env.get('IDENTIFICATION_COMPARISON_USER_IDS') ?? '')
+    .split(',')
+    .map((one) => one.trim())
+    .filter(Boolean),
+);
+/** At most this many candidates per provider reach the comparison row. */
+const COMPARISON_CANDIDATE_CAP = 5;
 
 /** Two required, three allowed. Enforced here as well as in the browser. */
 const MIN_IMAGES = 2;
@@ -160,6 +187,42 @@ function redact(value: string): string {
   return value
     .replace(/api[-_]?key=[^&\s"']+/gi, 'api-key=[redacted]')
     .replace(/\b[A-Za-z0-9_-]{24,}\b/g, '[redacted]');
+}
+
+/**
+ * One provider's answer, flattened for the comparison table.
+ *
+ * A FAILURE IS A ROW, NOT A DROPPED ONE. "plant.id refused the key" and "plant.id answered
+ * with nothing" are the two most useful results an evaluation can have, and both would
+ * disappear if this only recorded successes. The candidate list is capped here rather than
+ * by the column: an uncapped jsonb is an unbounded write.
+ *
+ * NOTHING ABOUT THE CALLER BEYOND THEIR OWN ID GOES IN. No image, no photo path, no IP, no
+ * quota bucket. The table holds answers.
+ */
+function comparisonRow(
+  userId: string,
+  observationId: string,
+  provider: 'plantnet' | 'plantid',
+  result: NormalizedIdentification | IdentificationFailure,
+): Record<string, unknown> {
+  const base = { user_id: userId, observation_id: observationId, provider };
+  if (isIdentificationFailure(result)) {
+    return { ...base, candidates: [], failure: result.kind };
+  }
+  const candidates = result.candidates.slice(0, COMPARISON_CANDIDATE_CAP).map((candidate) => ({
+    scientificName: candidate.scientificName,
+    rank: candidate.rank,
+    probability: candidate.probability,
+  }));
+  const top = candidates[0];
+  return {
+    ...base,
+    top_scientific_name: top?.scientificName ?? null,
+    top_rank: top?.rank ?? null,
+    top_probability: top?.probability ?? null,
+    candidates,
+  };
 }
 
 Deno.serve(async (req: Request) => {
@@ -372,10 +435,53 @@ Deno.serve(async (req: Request) => {
     );
   }
 
-  const identification =
-    PROVIDER_ID === 'plantid'
-      ? await identifyWithPlantId(images, PLANT_ID_KEY)
-      : await identifyWithPlantNet(images, PROVIDER_KEY);
+  /*
+   * COMPARISON MODE RUNS THE OTHER PROVIDER ALONGSIDE, AND COSTS THE PLAYER NOTHING.
+   *
+   * Both calls go out together, so the wait is the slower of the two rather than their sum,
+   * and the ALTERNATE's answer is never what gets returned — it is recorded and dropped. A
+   * missing key on the alternate side simply means no second call: comparison is an
+   * evaluation aid and must never be able to fail a scan somebody is standing in a field
+   * waiting for.
+   */
+  const comparing = Boolean(userId) && COMPARISON_ON && COMPARISON_USER_IDS.has(userId!);
+  const alternateId = PROVIDER_ID === 'plantid' ? 'plantnet' : 'plantid';
+  const alternateKey = alternateId === 'plantid' ? PLANT_ID_KEY : PROVIDER_KEY;
+
+  const run = (id: 'plantnet' | 'plantid', key: string) =>
+    id === 'plantid' ? identifyWithPlantId(images, key) : identifyWithPlantNet(images, key);
+
+  const [identification, alternate] = await Promise.all([
+    run(PROVIDER_ID, activeKey),
+    comparing && alternateKey ? run(alternateId, alternateKey) : Promise.resolve(null),
+  ]);
+
+  /*
+   * The id that ties the two rows — and the client's own scan row — to one set of
+   * photographs. Minted here because this is the only place that has seen both answers, and
+   * returned to the client so `recordScan` can carry it onto `scans`. That is what lets
+   * "which provider agreed with what the player confirmed?" be a JOIN rather than a column
+   * somebody has to go back and update; there is no update policy to do it with, deliberately.
+   */
+  const observationId = crypto.randomUUID();
+
+  if (comparing) {
+    /*
+     * Fire-and-forget, and handed to `waitUntil` for the same reason the quota housekeeping
+     * is: an isolate can be frozen the moment the response is written. Telemetry that fails
+     * is telemetry that is missing a row, which is the correct way for it to fail — it must
+     * never turn into an error the player sees.
+     */
+    const rows = [
+      comparisonRow(userId!, observationId, PROVIDER_ID, identification),
+      ...(alternate ? [comparisonRow(userId!, observationId, alternateId, alternate)] : []),
+    ];
+    const write: Promise<unknown> = Promise.resolve(
+      admin.from('identification_comparisons').insert(rows),
+    ).catch(() => undefined);
+    (globalThis as { EdgeRuntime?: { waitUntil?: (promise: Promise<unknown>) => void } })
+      .EdgeRuntime?.waitUntil?.(write);
+  }
 
   if (isIdentificationFailure(identification)) {
     /*
@@ -427,11 +533,21 @@ Deno.serve(async (req: Request) => {
    * is attested, and therefore nothing can reach a card or the global species registry.
    */
   if (identification.isPlant === false) {
-    return json({ candidates: [], notAPlant: true, provider: identification.provider });
+    return json({
+      candidates: [],
+      notAPlant: true,
+      provider: identification.provider,
+      observationId,
+    });
   }
 
   if (identification.candidates.length === 0) {
-    return json({ candidates: [], providerFoundNothing: true, provider: identification.provider });
+    return json({
+      candidates: [],
+      providerFoundNothing: true,
+      provider: identification.provider,
+      observationId,
+    });
   }
 
   /*
@@ -485,5 +601,14 @@ Deno.serve(async (req: Request) => {
     remaining: Math.max(0, limit - (count as number)),
     limit,
     signedIn: Boolean(userId),
+    /*
+     * WHICH PROVIDER ANSWERED, and which set of photographs this was. Neither identifies
+     * anybody: the provider is a deployment setting, and the observation id is a random uuid
+     * minted for this request. The client stores both on its own scan row, so a history row
+     * can say what produced it — before this, a deployment that switched providers left every
+     * earlier scan looking as though the new one had answered it.
+     */
+    provider: identification.provider,
+    observationId,
   });
 });

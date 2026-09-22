@@ -42,6 +42,14 @@ export interface ScanResult {
   remaining?: number;
   limit?: number;
   signedIn?: boolean;
+  /**
+   * Which service answered — `plantnet` or `plantid`. A deployment setting, not a fact about
+   * the caller. Recorded on the history row because otherwise switching providers would make
+   * every scan ever taken look as though the new one had answered it.
+   */
+  provider?: string;
+  /** Server-minted uuid for this set of photographs. See `identification_observation_id`. */
+  observationId?: string;
 }
 
 export type ScanFailure =
@@ -57,6 +65,8 @@ export interface ScanRecord {
   topHerbId?: string;
   confidence?: number;
   confirmedHerbId?: string;
+  provider?: string;
+  observationId?: string;
   outcome: ScanOutcome;
 }
 
@@ -218,6 +228,8 @@ export async function identifyPlant(
     remaining?: number;
     limit?: number;
     signedIn?: boolean;
+    provider?: string;
+    observationId?: string;
   };
 
   const candidates: ScanCandidate[] = (raw.candidates ?? []).map((candidate) => ({
@@ -231,6 +243,8 @@ export async function identifyPlant(
     remaining: raw.remaining,
     limit: raw.limit,
     signedIn: raw.signedIn,
+    provider: raw.provider,
+    observationId: raw.observationId,
   };
 }
 
@@ -261,6 +275,11 @@ export async function recordScan(
     top_herb_id: top?.match.confirmable ? (top.match.herbId ?? null) : null,
     confidence: top?.score ?? null,
     outcome: result.outcome,
+    // Both come from the server's own answer, never from anything chosen here. Null on a
+    // deployment that has not redeployed the function yet, which is a row that simply does
+    // not say — not a row claiming a provider it cannot know.
+    provider: result.provider ?? null,
+    identification_observation_id: result.observationId ?? null,
   });
   return error ? null : id;
 }

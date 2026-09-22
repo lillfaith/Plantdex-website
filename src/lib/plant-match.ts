@@ -66,8 +66,14 @@ export type Eligibility =
   | 'related'
   | 'none';
 
-/** Strength of the SPECIES-level identification. Independent of card eligibility. */
-export type SpeciesConfidence = 'high' | 'moderate' | 'low' | 'unresolved';
+/**
+ * Strength of the SPECIES-level identification. Independent of card eligibility.
+ *
+ * An array for the same reason `TAXON_RANKS` is one: `sightings.species_confidence` repeats
+ * it as a CHECK, and a union cannot be compared to a migration.
+ */
+export const SPECIES_CONFIDENCES = ['high', 'moderate', 'low', 'unresolved'] as const;
+export type SpeciesConfidence = (typeof SPECIES_CONFIDENCES)[number];
 
 /**
  * WHAT THE PROVIDER ACTUALLY SAID.

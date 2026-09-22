@@ -85,6 +85,12 @@ export interface AccountExport {
    */
   seedShelf: SeedShelfEntry[];
   seedShelfFinds: SeedShelfFind[];
+  /**
+   * Provider comparison rows, when this account was on the evaluation allow-list. Almost
+   * always empty — the mode is off by default — but it is data recorded about this person's
+   * scans, so it is exported rather than quietly held back.
+   */
+  identificationComparisons: Record<string, unknown>[];
   photos: {
     included: ExportedPhoto[];
     omitted: { sightingId: string; reference: string; reason: string }[];
@@ -237,8 +243,10 @@ export async function exportLocalData(): Promise<AccountExport> {
     profile: readLocalProfile(),
     reveals: readLocalReveals(),
     sightings,
-    // Scanning is a server feature, so a signed-out device has no scan history to export.
+    // Scanning is a server feature, so a signed-out device has no scan history to export,
+    // and no comparison rows either — both are written server-side against an account.
     scans: [],
+    identificationComparisons: [],
     // The shelf, however, is kept on the device when signed out — so it is here.
     seedShelf: mergeFinds(getLocalFinds()),
     seedShelfFinds: getLocalFinds(),
@@ -266,6 +274,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     sightingRows,
     scanRows,
     seedShelfRows,
+    comparisonRows,
     profileRow,
   ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
@@ -291,6 +300,14 @@ export async function exportAccountData(userId: string, email?: string): Promise
         .select('*')
         .eq('user_id', userId)
         .order('found_at', { ascending: false }),
+      // Provider comparison telemetry. Empty for almost everybody — the mode is off unless
+      // this account is on the evaluation allow-list — but it is user-scoped when it exists,
+      // so it is downloadable and deletable like everything else.
+      client
+        .from('identification_comparisons')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false }),
       // `maybeSingle`: a player who has never opened their profile has no row, and that is
       // the ordinary case rather than an error.
       client.from('profiles').select('*').eq('user_id', userId).maybeSingle(),
@@ -305,6 +322,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     sightings: sightingRows,
     scans: scanRows,
     'seed shelf': seedShelfRows,
+    'identification comparisons': comparisonRows,
     profile: profileRow,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
@@ -347,6 +365,21 @@ export async function exportAccountData(userId: string, email?: string): Promise
     foundAgain: row.found_again === true,
     photoId: typeof row.photo_path === 'string' ? row.photo_path : undefined,
     createdAt: String(row.created_at),
+    // The observed taxon travels with the sighting. An export that kept the CARD and dropped
+    // what the plant was actually identified as would hand somebody a file that says
+    // "Goldenrod" where the record says "Solidago altissima".
+    observedTaxonProviderName:
+      typeof row.observed_taxon_provider_name === 'string'
+        ? row.observed_taxon_provider_name
+        : undefined,
+    observedTaxonName:
+      typeof row.observed_taxon_name === 'string' ? row.observed_taxon_name : undefined,
+    observedTaxonRank: (typeof row.observed_taxon_rank === 'string'
+      ? row.observed_taxon_rank
+      : undefined) as Sighting['observedTaxonRank'],
+    speciesConfidence: (typeof row.species_confidence === 'string'
+      ? row.species_confidence
+      : undefined) as Sighting['speciesConfidence'],
   }));
 
   const seedShelfFinds = ((seedShelfRows.data ?? []) as Record<string, unknown>[])
@@ -372,6 +405,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     scans: (scanRows.data ?? []) as Record<string, unknown>[],
     seedShelf: mergeFinds(seedShelfFinds),
     seedShelfFinds,
+    identificationComparisons: (comparisonRows.data ?? []) as Record<string, unknown>[],
     photos: await collectPhotos(sightings, async (path) => {
       const { data, error } = await client.storage.from('sighting-photos').download(path);
       if (error) return null;

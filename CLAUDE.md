@@ -1299,6 +1299,88 @@ followers, comments, leaderboards or feed.
   directions, and checks the browser keys too — a table added to one and forgotten in the
   other is how a "deleted" account keeps a row.
 
+## Identification: the card, the plant, and how sure we are
+
+Three facts, and every bug this system has had was two of them being treated as one. See
+`docs/identification.md` for the runbook.
+
+- **A CARD IS NOT A TAXON.** `herbId` answers "which card did this qualify for";
+  `observedTaxon` answers "what was this plant". The Goldenrod card's binomial is *Solidago
+  canadensis* and an observation of *Solidago altissima* legitimately qualifies for it — and
+  before `observedTaxon` existed, that observation was RECORDED as `solidago-canadensis` and
+  the real name survived nowhere the player could see. The card had become the record of the
+  plant. `eligibility` is the third: WHY it qualified (`exact`, `genusCard`, `acceptedGroup`,
+  `legacyGenus`), which is what stops "a card matched" being read as "the species is settled".
+- **`normalizeName` IS A LOOKUP KEY AND MUST NEVER BECOME THE RECORD.** It drops authorship,
+  folds synonymous section names onto one key, and its rules are free to change — so a column
+  derived from it would silently rewrite history the next time they moved.
+  `observed_taxon_provider_name` is the provider's string exactly as returned; everything else
+  is derived and may be recomputed. The same reason `scans.top_scientific_name` is untouched.
+- **A supra-specific taxon may qualify for a card and may NEVER become an exact species.**
+  `Taraxacum sect. Taraxacum` opens the Dandelion card; it is not rewritten to *T. officinale*,
+  and `speciesConfidenceFor` returns `unresolved` above species rank BEFORE it looks at the
+  score — a section named at 0.99 still has not said which species. The fix that made this
+  real was in `normalizeName`, which used to collapse every `Taraxacum sect. X` onto one key:
+  so *sect. Erythrosperma* — deliberately refused — became an `exact` confirmable Dandelion.
+  Sections stay distinguishable; `sect. Ruderalia` is carried as a SYNONYM of `sect.
+  Taraxacum` (IPNI/POWO 254151-1), not as a second group, and whichever name the provider
+  used is what gets stored.
+- **An accepted group is RESEARCH, never inference.** `acceptedGroup` members are curated
+  explicitly, each with a `note` saying why and a `source`. Nothing derives accepted taxa from
+  genus membership — that would quietly turn every card into a genus card and rewrite *Oxalis
+  dillenii* as *Oxalis stricta*.
+- **`pendingCuration` is a placeholder, there is exactly ONE, and it must stay that way.**
+  Goldenrod keeps genus-wide behaviour because *Solidago* is taxonomically difficult and the
+  accepted list is a botanical question — inventing it here would be inventing botany.
+  Curating it is a content change with a zero-row migration. `observed-taxon.test.ts` fails if
+  a second appears, which is the point: a compatibility state nothing stops spreading is just
+  a design.
+- **The provider is a SERVER-SIDE choice and neither key may reach the browser.**
+  `PLANT_IDENTIFICATION_PROVIDER` selects PlantNet or plant.id behind one normalised shape,
+  so swapping is a branch in `identify-plant` plus a normalizer in `_shared` — not a change to
+  the matcher, the scan UI or the reducer. Unset means `plantnet`, which reproduces today
+  exactly; an UNKNOWN value refuses, because falling back would let a typo look like a working
+  deployment answering from a provider nobody chose. The key gate follows the SELECTED
+  provider — it read `PLANTNET_API_KEY` unconditionally, which on a plant.id deployment would
+  have refused every scan and blamed a provider nobody was using.
+- **`isPlant` is `boolean | null`, and only an explicit `false` blocks.** PlantNet does not
+  answer that question, so `null` means "not asked" and must never be read as a yes. Parsing
+  is fail-closed: a response that does not match the expected shape is a `schema` failure, not
+  a partial result. No test spends a provider credit and no captured real response is
+  committed.
+- **An observation is TWO OR THREE PHOTOGRAPHS OF ONE PLANT, refused in both places.** Both
+  providers treat the set as one individual, so a caller sending two different plants gets a
+  confident blend. The browser disables its button below two; the endpoint refuses
+  independently, because it is reachable without the button. Every image goes through
+  `IDENTIFY_PROFILE`, which has no path returning original bytes.
+- **The observed-taxon columns are additive and nothing backfills them.** 0006 adds four
+  nullable columns to `sightings`; `isSighting` deliberately does NOT require them, because
+  every sighting logged by hand from a card page involves no identifier at all. Requiring one
+  would make `read()` filter out real history — the guard's own failure arriving from the
+  other direction. A sighting with no observed taxon means we never knew one, and inventing
+  one retroactively would be fabricating a botanical record.
+- **`TAXON_RANKS` and `SPECIES_CONFIDENCES` are ARRAYS with the types derived from them**,
+  because the database repeats both as CHECK constraints and a union gives nothing to compare
+  a migration against. A constraint NARROWER than the union does not degrade — Postgres
+  refuses the insert, so a subsection observation would be rejected outright and the sighting
+  lost. `identification-schema.test.ts` holds them equal, and also holds the remote adapter to
+  reading AND writing every field: a missing key in the insert object is a valid insert that
+  silently stores null.
+- **Comparison mode takes TWO switches plus a named account.** A flag alone would mean every
+  signed-in player is in an experiment — it doubles the shared API spend and keeps a record of
+  somebody's scans for a purpose they had no part in. The alternate provider's answer is
+  recorded and DROPPED; if it reached the response, an allow-listed account would silently be
+  using a different identifier from everybody else and the comparison would measure the wrong
+  thing. The write is detached and caught: telemetry that fails is a missing row, never an
+  error somebody standing in front of a plant is shown.
+- **`identification_comparisons` has no update policy, and confirmation is a JOIN.**
+  `scans.identification_observation_id` carries the id the function minted, and
+  `scans.confirmed_herb_id` already holds what the player confirmed — so "did this provider
+  agree?" needs no column anybody goes back and edits. Anything that would need one is the
+  wrong design here. It is user-scoped, so it is in `USER_TABLES` and in the export:
+  telemetry somebody cannot download or delete is not telemetry, it is a record kept about
+  them.
+
 ## V0.4 commerce
 
 A Stripe Payment Link behind `/shop`. The site stays a static export; there is no commerce

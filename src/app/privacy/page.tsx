@@ -312,7 +312,11 @@ export default function PrivacyPage() {
         </p>
         <p>
           <strong className="text-violet-100">PlantNet</strong> identifies plants from
-          photographs you choose to submit, and receives nothing else.
+          photographs you choose to submit, and receives nothing else. Plantdex can be
+          configured to use{' '}
+          <strong className="text-violet-100">plant.id, by Kindwise</strong> for the same job
+          instead; the photographs go to whichever one this deployment is set to, and to
+          nothing else. Both receive an image and return names.
         </p>
         <p>
           <strong className="text-violet-100">Stripe</strong> handles payment if you buy the
@@ -326,9 +330,12 @@ export default function PrivacyPage() {
 
       <LegalSection id="plant-id" heading="If you identify a plant from a photo">
         <p>
-          Plant identification sends your photograph to{' '}
-          <strong className="text-violet-100">PlantNet</strong>, an identification service, and
-          shows you what came back. It happens only when you choose to identify something.
+          Plant identification sends your photographs to an outside identification service —{' '}
+          <strong className="text-violet-100">PlantNet</strong> or{' '}
+          <strong className="text-violet-100">plant.id</strong>, depending on how this
+          deployment is configured — and shows you what came back. It happens only when you
+          choose to identify something, and it asks for two or three pictures of the same
+          plant because that is what makes the answer worth anything.
         </p>
         <LegalTable
           rows={[
@@ -350,7 +357,12 @@ export default function PrivacyPage() {
             {
               term: 'Your scan history, only if you have an account',
               detail:
-                'What you photographed, what was suggested and what you confirmed. You can delete any of it, it is in your data export, and it is erased with your account. Signed out, no history is kept anywhere.',
+                'What you photographed, what was suggested and what you confirmed. The suggested name is kept exactly as the service returned it, separately from whichever Plantdex card it turned out to qualify for — the card is not a claim about which species you saw. You can delete any of it, it is in your data export, and it is erased with your account. Signed out, no history is kept anywhere.',
+            },
+            {
+              term: 'Both services\u2019 answers, only while we are comparing them',
+              detail:
+                'Choosing between two identification services honestly needs both answers to the same photographs. That comparison is off by default and runs only for a short list of accounts belonging to whoever is doing the evaluation \u2014 never a sample of the public, and never without that account being named in the configuration. It records the names and scores each service returned. No photograph, no location and nothing about your device. It is in your data export and is erased with your account.',
             },
           ]}
         />

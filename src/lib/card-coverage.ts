@@ -57,7 +57,7 @@ export type CardScope =
        * before its accepted species have been botanically researched. When that list exists
        * this becomes an `acceptedGroup` and this field goes with it.
        *
-       * `card-coverage.test.ts` fails if a SECOND card acquires it, so the debt cannot
+       * `observed-taxon.test.ts` fails if a SECOND card acquires it, so the debt cannot
        * spread while it waits.
        */
       readonly pendingCuration?: string;
@@ -77,8 +77,23 @@ export type CardScope =
    */
   | { readonly type: 'acceptedGroup'; readonly accepted: readonly AcceptedTaxon[] };
 
-/** The rank a name claims. Lives here so `plant-match.ts` can import it without a cycle. */
-export type TaxonRank = 'species' | 'section' | 'subgenus' | 'series' | 'subsection' | 'genus';
+/**
+ * The rank a name claims. Lives here so `plant-match.ts` can import it without a cycle.
+ *
+ * DECLARED AS AN ARRAY, and the type derived from it, because the database has to repeat
+ * this list as a CHECK constraint and a union alone gives nothing to compare it against. A
+ * constraint narrower than the union does not degrade — it refuses the insert — so
+ * `identification-schema.test.ts` holds the two equal.
+ */
+export const TAXON_RANKS = [
+  'species',
+  'section',
+  'subgenus',
+  'series',
+  'subsection',
+  'genus',
+] as const;
+export type TaxonRank = (typeof TAXON_RANKS)[number];
 
 /** One researched member of a card's accepted group. */
 export interface AcceptedTaxon {
