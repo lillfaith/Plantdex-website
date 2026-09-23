@@ -296,10 +296,31 @@ describe('the function-secret check follows the provider, and never prints a val
     for (const body of printed) {
       expect(body, 'a print() interpolates raw_provider').not.toMatch(/\braw_provider\b/);
       expect(body, 'a print() interpolates a secret value').not.toMatch(/values\.get\(/);
-      expect(body, 'a print() interpolates the allow-list').not.toMatch(/\blisted\b(?!\))/);
+      expect(body, 'a print() interpolates the allow-list').not.toMatch(/allow_list\b(?!_present)/);
     }
-    // The allow-list is reported as a COUNT. It names accounts.
-    expect(script).toContain('{len(listed)} account(s)');
+    /*
+     * SET OR NOT, NEVER THE IDS AND NEVER A COUNT. This asserted a count until the endpoint
+     * turned out to return values DIGESTED rather than in plaintext — there is nothing to
+     * split and nothing to count, and the old code printed "0 account(s)" for a list that
+     * may well have been populated. `allow_list_present` is a boolean by name as well as by
+     * type, so a value cannot reach a print through it.
+     */
+    expect(script).toContain("{'set' if allow_list_present else 'NOT SET'}");
+    expect(script).toContain('allow_list_present = bool(');
+  });
+
+  it('recognises a value the API returns hashed, rather than expecting plaintext', () => {
+    /*
+     * THE FALSE ALARM THIS EXISTS FOR. `GET /v1/projects/{ref}/secrets` answers with each
+     * value as a SHA-256 digest. The first version compared that digest against the literal
+     * word `plantid`, found no match, and reported a correctly set secret as one this
+     * repository does not implement — sending somebody to re-set a value that was already
+     * right. The comparison has to run the other way: hash what we implement and look for it.
+     */
+    expect(script).toContain('hashlib.sha256(candidate.encode()).hexdigest()');
+    expect(script).toContain('def resolve_provider(');
+    // Plaintext still resolves: the endpoint's behaviour is not ours to guarantee.
+    expect(script).toMatch(/stored == candidate or stored == hashlib\.sha256/);
   });
 
   it('requires the key for the SELECTED provider, not one named in advance', () => {

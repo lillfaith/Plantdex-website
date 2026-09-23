@@ -13,11 +13,6 @@ them fails SILENTLY and DIFFERENTLY when it is missing:
   SCAN_QUOTA_SALT             unset -> the function derives a fallback from the service-role
                               key and behaves identically, so the omission is undetectable
                               from outside by design.
-
-The common shape is that a missing secret changes what the product DOES without changing
-what it SAYS, so "is it set on production?" was a question nobody in this repository could
-answer — including from a session, since the access token rightly lives only in Actions.
-
   PLANT_ID_API_KEY            unset on a deployment that SELECTED plant.id -> every scan is
                               refused as `unconfigured`, blaming a provider nobody chose.
                               Unset while PlantNet is selected -> comparison mode records
@@ -25,18 +20,31 @@ answer — including from a session, since the access token rightly lives only i
   IDENTIFICATION_COMPARISON   on with an empty allow-list, or an allow-list with the switch
                               off -> a deployment that looks configured and records nothing.
 
-WHICH PROVIDER KEY IS REQUIRED DEPENDS ON WHICH PROVIDER IS SELECTED, so this script reads
-the VALUE of `PLANT_IDENTIFICATION_PROVIDER` to decide. That mirrors `identify-plant`'s own
-gate, which used to read `PLANTNET_API_KEY` unconditionally and would have refused every
-scan on a plant.id deployment while naming the wrong secret. A checker that hard-required
-PlantNet's key would reproduce exactly that mistake one layer up.
+The common shape is that a missing secret changes what the product DOES without changing
+what it SAYS, so "is it set on production?" was a question nobody in this repository could
+answer — including from a session, since the access token rightly lives only in Actions.
 
-IT PRINTS NAMES AND A YES/NO, AND NEVER A VALUE. `GET /v1/projects/{ref}/secrets` returns
-each secret's value alongside its name, and a workflow log is readable by anyone with repo
-access — so only names, a provider CHOICE and a COUNT of allow-listed accounts reach stdout.
-The three values it reads are used for decisions and never interpolated into output. That is
-the same rule `check_auth_config.py` follows for the same reason, and it is what keeps a
-read-only check from becoming a credential leak.
+WHICH PROVIDER KEY IS REQUIRED DEPENDS ON WHICH PROVIDER IS SELECTED, so this script has to
+know which one is. That mirrors `identify-plant`'s own gate, which used to read
+`PLANTNET_API_KEY` unconditionally and would have refused every scan on a plant.id
+deployment while naming the wrong secret. A checker that hard-required PlantNet's key would
+reproduce exactly that mistake one layer up.
+
+IT CANNOT READ THE VALUE, AND ASSUMING IT COULD PRODUCED A FALSE ALARM. This endpoint does
+NOT return plaintext: it returns each secret's value as a SHA-256 DIGEST. The first version
+compared that digest against the word `plantid`, found no match, and reported a correctly
+set secret as "something this repository does not implement" — sending somebody to re-set a
+value that was already right. So the comparison runs the other way round: hash each value
+this repository implements and look for THAT. It is exact, it needs no plaintext, and it
+cannot leak, because a digest is all it ever holds.
+
+What that costs is anything not drawn from a known-values list. The comparison allow-list is
+free-form account ids, so this can say whether it is SET but never how many it names.
+
+IT PRINTS NAMES AND A YES/NO, AND NEVER A VALUE. A workflow log is readable by anyone with
+repo access, so only names and resolved CHOICES reach stdout — never a stored value, and
+never the digest either. That is the same rule `check_auth_config.py` follows for the same
+reason, and it is what keeps a read-only check from becoming a credential leak.
 
 Secrets the platform injects itself (SUPABASE_URL, the two keys, the DB URL) are always
 present and are not reported; only the ones this repository's own functions read.
@@ -44,6 +52,7 @@ present and are not reported; only the ones this repository's own functions read
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 
@@ -88,6 +97,26 @@ def expected_secrets(provider: str) -> list[tuple[str, bool, str]]:
     ]
 
 
+def stored_is(stored: str, candidate: str) -> bool:
+    """Does this stored secret hold `candidate`?
+
+    The Management API returns a SHA-256 digest rather than the value, so the only way to
+    recognise a known value is to hash it and compare. Plaintext is accepted too, because
+    the endpoint's behaviour is not this repository's to guarantee and a checker that broke
+    the day it changed would be worse than one that handles both.
+    """
+    stored = (stored or "").strip()
+    return stored == candidate or stored == hashlib.sha256(candidate.encode()).hexdigest()
+
+
+def resolve_provider(stored: str) -> str | None:
+    """Which implemented provider this is, or None when it is neither."""
+    for name in PROVIDER_KEYS:
+        if stored_is(stored, name):
+            return name
+    return None
+
+
 def describe_unrecognised(value: str) -> str:
     """Say enough about an unrecognised provider value to fix it, WITHOUT echoing it.
 
@@ -105,6 +134,14 @@ def describe_unrecognised(value: str) -> str:
     """
     cleaned = value.strip().strip('"\'').lower()
     notes = [f"length {len(value)}"]
+    stripped = value.strip()
+    if len(stripped) == 64 and all(ch in "0123456789abcdefABCDEF" for ch in stripped):
+        # The shape that cost a round: a SHA-256 digest, which is what this endpoint returns
+        # for a value it will not hand back in the clear.
+        notes.append(
+            "looks like a SHA-256 digest — the API returns values hashed, so this is a "
+            "value this script does not know how to recognise rather than a malformed one"
+        )
     if "=" in value:
         notes.append("contains '=' — looks like a NAME=value pair went into the value box")
     if value.strip().startswith("supabase "):
@@ -128,25 +165,27 @@ def comparison_report(present: set[str], values: dict[str, str], provider: str) 
     failure shape as every other secret in this file: the product does something different
     without saying anything different.
     """
-    on = values.get("IDENTIFICATION_COMPARISON", "").strip() == "on"
-    listed = [one for one in values.get("IDENTIFICATION_COMPARISON_USER_IDS", "").split(",") if one.strip()]
+    on = stored_is(values.get("IDENTIFICATION_COMPARISON", ""), "on")
+    # SET OR NOT, NEVER A COUNT. The allow-list is free-form account ids and the API returns
+    # it digested, so there is nothing to count. Printing "0 account(s)" for a list that was
+    # in fact populated is worse than admitting the limit.
+    allow_list_present = bool(values.get("IDENTIFICATION_COMPARISON_USER_IDS", "").strip())
     notes: list[str] = []
 
-    # A count, never the ids. The allow-list names accounts.
     print(f"  {'IDENTIFICATION_COMPARISON':<28} {'on' if on else 'off'}")
-    print(f"  {'IDENTIFICATION_COMPARISON_USER_IDS':<28} {len(listed)} account(s)")
+    print(f"  {'IDENTIFICATION_COMPARISON_USER_IDS':<28} {'set' if allow_list_present else 'NOT SET'}")
 
-    if on and not listed:
+    if on and not allow_list_present:
         notes.append(
             "::warning::comparison is on but the allow-list is empty — it enrols nobody "
             "and will record nothing."
         )
-    if listed and not on:
+    if allow_list_present and not on:
         notes.append(
             "::warning::accounts are allow-listed but IDENTIFICATION_COMPARISON is not "
             "'on' — comparison is off and will record nothing."
         )
-    if on and listed:
+    if on and allow_list_present:
         alternate = next(name for key, name in PROVIDER_KEYS.items() if key != provider)
         if alternate not in present:
             notes.append(
@@ -174,8 +213,9 @@ def main() -> int:
     }
 
     raw_provider = values.get("PLANT_IDENTIFICATION_PROVIDER", "").strip()
-    provider = raw_provider or DEFAULT_PROVIDER
-    known = provider in PROVIDER_KEYS
+    resolved = resolve_provider(raw_provider) if raw_provider else DEFAULT_PROVIDER
+    provider = resolved or DEFAULT_PROVIDER
+    known = resolved is not None
     expected = expected_secrets(provider)
 
     print(f"project: {project}")
