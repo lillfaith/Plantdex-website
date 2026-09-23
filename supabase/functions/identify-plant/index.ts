@@ -472,15 +472,27 @@ Deno.serve(async (req: Request) => {
      * is telemetry that is missing a row, which is the correct way for it to fail — it must
      * never turn into an error the player sees.
      */
-    const rows = [
-      comparisonRow(userId!, observationId, PROVIDER_ID, identification),
-      ...(alternate ? [comparisonRow(userId!, observationId, alternateId, alternate)] : []),
-    ];
-    const write: Promise<unknown> = Promise.resolve(
-      admin.from('identification_comparisons').insert(rows),
-    ).catch(() => undefined);
-    (globalThis as { EdgeRuntime?: { waitUntil?: (promise: Promise<unknown>) => void } })
-      .EdgeRuntime?.waitUntil?.(write);
+    /*
+     * THE WHOLE BLOCK IS GUARDED, NOT JUST THE PROMISE. `.catch()` only covers a rejection,
+     * and everything above it — building the rows, constructing the PostgREST builder — runs
+     * SYNCHRONOUSLY on the response path. A throw there would escape the catch and turn a
+     * telemetry fault into a failed scan, which is precisely the thing this block may never
+     * do. Nothing here is expected to throw; that is an argument for the guard being cheap,
+     * not for leaving it out.
+     */
+    try {
+      const rows = [
+        comparisonRow(userId!, observationId, PROVIDER_ID, identification),
+        ...(alternate ? [comparisonRow(userId!, observationId, alternateId, alternate)] : []),
+      ];
+      const write: Promise<unknown> = Promise.resolve(
+        admin.from('identification_comparisons').insert(rows),
+      ).catch(() => undefined);
+      (globalThis as { EdgeRuntime?: { waitUntil?: (promise: Promise<unknown>) => void } })
+        .EdgeRuntime?.waitUntil?.(write);
+    } catch {
+      // A missing row. Never an error the player sees.
+    }
   }
 
   if (isIdentificationFailure(identification)) {
