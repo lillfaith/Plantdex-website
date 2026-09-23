@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Easing, Img, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Easing, Img, interpolate, OffthreadVideo, Sequence, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Backdrop } from '../components/Backdrop';
 import { CardReveal } from '../components/PhysicalCard';
 import { PhoneFrame, ScreenshotView } from '../components/ScreenshotDemo';
@@ -7,12 +7,13 @@ import { RevealRing, SparkBurst } from '../components/Sparkles';
 import { SpriteAnimation } from '../components/SpriteAnimation';
 import { Caption, GradientText, Kicker, SafetyLine, useOutro, useRise } from '../components/Text';
 import { UiCallout } from '../components/UiCallout';
-import { fillCardTokens, image } from '../lib/assets';
+import { fillCardTokens, footage, image } from '../lib/assets';
 import { C, goldPink, outfit, SAFE } from '../lib/brand';
 import { rand } from '../lib/rand';
 import type {
   CardRevealScene,
   CtaScene,
+  FootageScene,
   HookScene,
   Line,
   PhotoScene,
@@ -190,6 +191,57 @@ export const PhotoView: React.FC<{ scene: PhotoScene }> = ({ scene }) => {
         src={photo.src}
         style={{ position: 'absolute', width: dw, height: dh, left: -(dw - W) * px, top: -(dh - 1920) * py }}
       />
+      <Caption
+        line={scene.caption}
+        kicker={scene.kicker}
+        delay={6}
+        size={58}
+        plate
+        style={{
+          position: 'absolute',
+          ...(scene.captionAt === 'bottom' ? { bottom: SAFE.bottom + 20 } : { top: SAFE.top + 10 }),
+          left: SAFE.side,
+          width: W - SAFE.side * 2,
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
+
+// ── Footage: owner-shot video, full bleed ──────────────────────────────────
+/**
+ * Real footage of the real deck. Played muted (the ad's sound is chosen in-platform), with
+ * an optional slow push-in; uniform scale only, never a crop that reframes the subject away.
+ */
+export const FootageView: React.FC<{ scene: FootageScene }> = ({ scene }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const clip = footage(scene.clip);
+  const rate = scene.playbackRate ?? 1;
+  const startAt = scene.startAt ?? 0;
+  if (startAt + (scene.duration / fps) * rate > clip.duration + 0.05) {
+    throw new Error(`${scene.clip}: ${scene.duration} frames at ${rate}x runs past the end of a ${clip.duration}s clip`);
+  }
+  const zoom = interpolate(frame, [0, scene.duration], [scene.zoomFrom ?? 1, scene.zoomTo ?? 1], {
+    extrapolateRight: 'clamp',
+  });
+  const cover = Math.max(W / clip.width, 1920 / clip.height);
+  const offsetY = scene.offsetY ?? 0;
+  // An offset must never uncover the frame edge: the zoom has to overhang by at least as much.
+  if ((1920 * ((scene.zoomFrom ?? 1) - 1)) / 2 < Math.abs(offsetY)) {
+    throw new Error(`${scene.clip}: offsetY ${offsetY} would expose the frame edge at zoom ${scene.zoomFrom ?? 1}`);
+  }
+  return (
+    <AbsoluteFill style={{ background: C.ground, overflow: 'hidden' }}>
+      <AbsoluteFill style={{ transform: `translateY(${offsetY}px) scale(${zoom})` }}>
+        <OffthreadVideo
+          src={clip.src}
+          muted
+          playbackRate={rate}
+          startFrom={Math.round(startAt * fps)}
+          style={{ width: clip.width * cover, height: clip.height * cover, objectFit: 'cover' }}
+        />
+      </AbsoluteFill>
       <Caption
         line={scene.caption}
         kicker={scene.kicker}

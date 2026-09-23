@@ -41,6 +41,7 @@ interface Manifest {
   screens: Record<string, Record<string, string | null>>;
   uiParts: Record<string, { file: string; note: string | null }>;
   product: string[];
+  footage: Record<string, { file: string; width: number; height: number; fps: number; frames: number; duration: number }>;
   brand: { palette: Record<string, string> };
   files: Record<string, FileEntry>;
 }
@@ -116,4 +117,11 @@ export function fillCardTokens(text: string, id: string): string {
     if (v === undefined) throw new MissingAssetError(`Unknown card token ${m}`);
     return v;
   });
+}
+
+export function footage(key: string): { src: string; width: number; height: number; duration: number } {
+  const f = manifest.footage[key];
+  if (!f) throw new MissingAssetError(`Unknown footage clip: ${key}`);
+  fileInfo(f.file);
+  return { src: asset(f.file), width: f.width, height: f.height, duration: f.duration };
 }

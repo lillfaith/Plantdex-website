@@ -10,7 +10,8 @@ the video.
 
 ## 1. Only real assets
 
-- **Every pixel of product imagery comes from the ad asset pack**, as indexed in
+- **Every pixel of product imagery comes from the ad asset pack** (including owner-shot
+  footage and photos added with `scripts/add_supplied.py`), as indexed in
   `manifest/assets.json`. Cards, sprites, screenshots, UI components, product photography,
   the app icon and the colour tokens. `lint:ads` fails on any image path that is not in
   the manifest, and `qc` re-hashes every file a render used against the manifest.
@@ -50,6 +51,11 @@ Not allowed:
 - **Showing a card back that carries "Healing Traits"** without the product's non-claim
   framing. The per-card backs (`01-cards/back-800`) print traditional-use headings; an ad
   cannot carry the framing the app gives them, so ads use card fronts only.
+
+- **Full-bleed means sharp.** A full-screen scene uses footage or an image at least
+  1080×1920; the 1100px product photos are inset-only, since full-bleed they upscale ~1.5×
+  and go soft. The box back prints "medicinal" and "Healing traits": show the box as an
+  object, never feature that copy.
 
 ## 3. Gameplay and features — say only what exists
 

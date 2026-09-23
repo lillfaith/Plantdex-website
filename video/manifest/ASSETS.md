@@ -9,6 +9,11 @@ search it with `npm run find -- <term>`.
 - `plantdex-ad-assets-part2-cards.zip` — 277 files, sha256 `5bcbf75d981d2be0…`
 - `plantdex-ad-assets-part3-screens.zip` — 31 files, sha256 `617e2f518fda6e9a…`
 - `plantdex-ad-assets-part4-screens-desktop-full.zip` — 11 files, sha256 `4a9b45c9057daf81…`
+- owner-supplied `image.jpg` → `08-photos/box-front.jpg`, original sha256 `238769e648eee253…` (re-encoded; location metadata removed)
+- owner-supplied `image.jpg` → `08-photos/box-back.jpg`, original sha256 `dc899a7e3c792139…` (re-encoded; location metadata removed)
+- owner-supplied `image.jpg` → `08-photos/cards-fanned-on-grass.jpg`, original sha256 `20fcb08ad119d0c6…` (re-encoded; location metadata removed)
+- owner-supplied `IMG_9519.mov` → `07-footage/deck-fan-on-grass.mp4`, original sha256 `411dea8465b2e738…` (re-encoded; location metadata removed)
+- owner-supplied `IMG_9516.mov` → `07-footage/box-in-hand.mp4`, original sha256 `873d04acd4fc80bb…` (re-encoded; location metadata removed)
 
 ## Best for 9:16 video
 
@@ -20,7 +25,8 @@ Ranked for vertical social. Every path is relative to `assets/plantdex-ad-assets
 | Hero card | `01-cards/front-800/<id>.jpg` | 800×1295 card face; scale ≤1.4× on a 1080 frame to stay sharp |
 | Creature | `03-sprites/frames/<id>/` | real frame sequence at the manifest fps; scale by whole numbers, nearest-neighbour |
 | Creature still | `03-sprites/hero-trimmed/8x/<id>.png` | frame 0 trimmed to ink, already upscaled |
-| Real-world proof | `02-product/card-and-plant.jpg`, `deck-in-hand.jpg` | physical cards held outdoors; near-square, use as a pan/zoom plate |
+| Real-world footage | `07-footage/*.mp4` | owner-shot vertical video, 1080×1920 — full-frame and sharp; prefer it to a photo for any full-bleed scene |
+| Real-world proof | `02-product/card-and-plant.jpg`, `deck-in-hand.jpg` | physical cards held outdoors; near-square and only 1100px, so use them INSET — full-bleed they upscale ~1.5× and go soft |
 | UI callouts | `06-ui-parts/progress-panel.png`, `garden-grid.png`, `field-record.png`, `observation-slots.png` | cropped components at 3×, legible when placed full-width |
 | Avoid in vertical | `05-screens/desktop-*`, `*-full` | landscape, or 10k+ px tall — reference only |
 
@@ -136,6 +142,24 @@ Ranked for vertical social. Every path is relative to `assets/plantdex-ad-assets
 - `02-product/thumb/card-and-plant.jpg`
 - `02-product/thumb/card-backs.jpg`
 - `02-product/thumb/deck-in-hand.jpg`
+
+## Owner-supplied footage
+
+| Key | Size | Length | Original |
+|---|---|---|---|
+| box-in-hand | 1080×1920 @ 30fps | 4.87s (146 frames) | `IMG_9516.mov` |
+| deck-fan-on-grass | 2160×3840 @ 30fps | 1.93s (58 frames) | `IMG_9519.mov` |
+
+## Owner-supplied photos
+
+| Key | Size | Original |
+|---|---|---|
+| box-back | 1932×2576 | `image.jpg` |
+| box-front | 1932×2576 | `image.jpg` |
+| cards-fanned-on-grass | 1348×1170 | `image.jpg` |
+
+The box back (`box-back`, and the back in `box-in-hand`) prints "medicinal" and "Healing traits" — 
+show the box as an object, never zoom in to feature that copy (CREATIVE_RULES §4).
 
 ## Scout
 

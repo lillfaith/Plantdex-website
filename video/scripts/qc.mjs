@@ -60,6 +60,7 @@ function referencedFiles(spec) {
     if (s.type === 'hook') addSprite(s.plant, s.stage);
     if (s.type === 'cardReveal') files.add(manifest.plants[s.plant].cards.front);
     if (s.type === 'photo') files.add(s.image);
+    if (s.type === 'footage') files.add(manifest.footage[s.clip].file);
     if (s.type === 'screenDemo') s.shots.forEach((x) => files.add(manifest.screens[x.screen][x.framing]));
     if (s.type === 'uiCallout') {
       files.add(manifest.uiParts[s.part].file);

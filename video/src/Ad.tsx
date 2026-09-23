@@ -6,7 +6,7 @@ import { slide } from '@remotion/transitions/slide';
 import { wipe } from '@remotion/transitions/wipe';
 import type { AdSpec, Scene, Transition } from './lib/spec';
 import { C } from './lib/brand';
-import { CardRevealView, CtaView, Hook, PhotoView, ScreenDemoView, UiCalloutView } from './scenes/Scenes';
+import { CardRevealView, CtaView, FootageView, Hook, PhotoView, ScreenDemoView, UiCalloutView } from './scenes/Scenes';
 
 // Widened to one type so TransitionSeries accepts whichever preset a spec picks.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,6 +29,8 @@ const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
       return <CardRevealView scene={scene} />;
     case 'photo':
       return <PhotoView scene={scene} />;
+    case 'footage':
+      return <FootageView scene={scene} />;
     case 'screenDemo':
       return <ScreenDemoView scene={scene} />;
     case 'uiCallout':

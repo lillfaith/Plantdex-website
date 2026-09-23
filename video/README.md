@@ -18,6 +18,16 @@ npm run assets -- path/to/plantdex-ad-assets-part1-sprites-ui.zip \
 npm run manifest          # only needed when the pack itself changes
 ```
 
+Owner-shot photos and video go in with `add_supplied.py`, then `npm run manifest`:
+
+```bash
+python3 scripts/add_supplied.py IMG_9519.mov deck-fan-on-grass IMG_1234.jpg box-front
+```
+
+It **re-encodes every file**, which removes the camera's GPS/location metadata before anything
+can be uploaded. Video lands in `07-footage/` (H.264, capped at 2160 wide), photos in
+`08-photos/`. `assets/sources.json` keeps each original's name and hash.
+
 The ZIPs unpack into `assets/` (gitignored, 79MB). The manifest in `manifest/` IS
 committed. It records each ZIP's SHA-256 and every file's hash, and QC checks renders
 against it.
@@ -46,7 +56,7 @@ node scripts/render.mjs wild-plant-appeared --stills 0,90,200
 |---|---|
 | `ads/*.json` | One spec per ad: its scenes, their timing, and which assets and captions each uses. List new files in `src/ads.ts`. |
 | `src/Ad.tsx` | Renders any spec: scenes in a `TransitionSeries` with `fade` / `slide-up` / `wipe` entrances. |
-| `src/scenes/Scenes.tsx` | The six scene types: `hook`, `cardReveal`, `photo`, `screenDemo`, `uiCallout` and `cta`. |
+| `src/scenes/Scenes.tsx` | The scene types: `hook`, `cardReveal`, `photo`, `footage` (owner-shot video), `screenDemo`, `uiCallout` and `cta`. |
 | `src/components/` | Reusable parts: `SpriteAnimation` (real frame sequences at the manifest fps, integer nearest-neighbour scale), `PhysicalCard`/`CardReveal`, `PhoneFrame`/`ScreenshotView` (pan, zoom, highlight), `UiCallout`, `Caption`/`Kicker`/`SafetyLine`, `Backdrop`, `SparkBurst`/`RevealRing` (decorative). |
 | `src/lib/assets.ts` | The only way to reach an image. Every lookup goes through the manifest and throws on anything not in the pack. |
 | `src/lib/brand.ts` | Colour tokens from the pack's `palette.json`; Outfit and Fraunces from `fonts/`. |
@@ -102,7 +112,7 @@ and product shots has no recorded licence, so confirm that before any paid place
 |---|---|---|---|
 | 0–2.5s | hook | Dandelion adult sprite, 16 real frames @ 12fps, 4×: opens as a silhouette (the Herbdex's undiscovered look) and bursts into colour with a flash, shake and punch | "A wild **Dandelion** appeared!" (the name comes from the card) |
 | 2.2–5s | card reveal | Card #01 front | "Collection 01 · Card #01" / "Every plant is a real, illustrated card." |
-| 4.7–6.8s | photo | `02-product/card-and-plant.jpg` | "Now find them growing." / "Find plants outside. Scan them. Build your collection." (home and /start copy) |
+| 4.7–6.8s | footage | `07-footage/deck-fan-on-grass.mp4` (owner-shot 4K, Dandelion on top) with a slow push-in | "Now find them growing." / "Find plants outside. Scan them. Build your collection." (home and /start copy) |
 | 6.5–10.5s | screen demo | `/scan` then `/herbdex/taraxacum-officinale` phone screenshots, joined by a push | scan and /start copy, plus the safety line "The answer is a suggestion to check, not a verdict." highlighted where the real page prints it |
 | 10.2–12.3s | UI callout | `garden-grid` plus Dandelion's sprout, growing and adult sprites | Garden page copy: "Find it — sprout. Learn its card — growing. Find it again — flowering." |
 | 12–15s | CTA | `02-product/deck-in-hand.jpg`, four real sprites | "Plantdex" / "The digital Plantdex is free." / "Link in bio" |

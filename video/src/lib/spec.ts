@@ -72,6 +72,25 @@ export interface PhotoScene extends SceneBase {
   captionAt?: 'top' | 'bottom';
 }
 
+export interface FootageScene extends SceneBase {
+  type: 'footage';
+  duration: number;
+  /** Key under `footage` in the manifest (owner-shot video). */
+  clip: string;
+  /** Seconds into the clip to start. */
+  startAt?: number;
+  /** <1 slows the clip down to fill the scene; never so slow that it runs out. */
+  playbackRate?: number;
+  /** Slow push-in on the footage, uniform scale only. */
+  zoomFrom?: number;
+  zoomTo?: number;
+  /** Shift the footage down (px) to clear the caption plate off printed card text. */
+  offsetY?: number;
+  kicker?: Line;
+  caption: Line;
+  captionAt?: 'top' | 'bottom';
+}
+
 export interface ScreenShot {
   screen: string;
   framing: 'phone-viewport' | 'phone-full';
@@ -119,6 +138,7 @@ export type Scene =
   | HookScene
   | CardRevealScene
   | PhotoScene
+  | FootageScene
   | ScreenDemoScene
   | UiCalloutScene
   | CtaScene;

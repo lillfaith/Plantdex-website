@@ -113,6 +113,17 @@ for (const { file, spec } of ADS) {
         checkLine(ad, `${w} kicker`, s.kicker);
         checkLine(ad, `${w} caption`, s.caption);
         break;
+      case 'footage': {
+        const clip = manifest.footage?.[s.clip];
+        if (!clip) fail(ad, `${w}: unknown footage clip ${s.clip}`);
+        else {
+          const needed = (s.startAt ?? 0) + (s.duration / spec.fps) * (s.playbackRate ?? 1);
+          if (needed > clip.duration + 0.05) fail(ad, `${w}: needs ${needed.toFixed(2)}s of a ${clip.duration.toFixed(2)}s clip`);
+        }
+        checkLine(ad, `${w} kicker`, s.kicker);
+        checkLine(ad, `${w} caption`, s.caption);
+        break;
+      }
       case 'screenDemo': {
         const sum = s.shots.reduce((n, x) => n + x.duration, 0);
         if (sum !== s.duration) fail(ad, `${w}: shots add up to ${sum}, scene is ${s.duration}`);

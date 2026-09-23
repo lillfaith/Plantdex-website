@@ -21,6 +21,36 @@
    "zip": "plantdex-ad-assets-part4-screens-desktop-full.zip",
    "sha256": "4a9b45c9057daf81e3c316aba5c7e1dbc345f80669bb09ca64da3f2ba56d1a4e",
    "files": 11
+  },
+  {
+   "zip": null,
+   "file": "image.jpg",
+   "sha256": "238769e648eee25356465e6a196c69e9529ecd70d31f18b7cb174b7677911088",
+   "dest": "08-photos/box-front.jpg"
+  },
+  {
+   "zip": null,
+   "file": "image.jpg",
+   "sha256": "dc899a7e3c792139e20c7802b4392b90dff5a2e4d69ed7d3093b28aa378f1cb2",
+   "dest": "08-photos/box-back.jpg"
+  },
+  {
+   "zip": null,
+   "file": "image.jpg",
+   "sha256": "20fcb08ad119d0c67fde79a7ec0ac8bdd493598398b28080ddebe0add870c5cd",
+   "dest": "08-photos/cards-fanned-on-grass.jpg"
+  },
+  {
+   "zip": null,
+   "file": "IMG_9519.mov",
+   "sha256": "411dea8465b2e7383969d63c53d1c5726820721a98d0da426fbf8411d75c7528",
+   "dest": "07-footage/deck-fan-on-grass.mp4"
+  },
+  {
+   "zip": null,
+   "file": "IMG_9516.mov",
+   "sha256": "873d04acd4fc80bbadd630ac1b72dbeff0c46ed97eb2d291b182ac42d8fe331a",
+   "dest": "07-footage/box-in-hand.mp4"
   }
  ],
  "plants": {
@@ -6541,6 +6571,40 @@
   "02-product/thumb/card-backs.jpg",
   "02-product/thumb/deck-in-hand.jpg"
  ],
+ "footage": {
+  "box-in-hand": {
+   "file": "07-footage/box-in-hand.mp4",
+   "original": "IMG_9516.mov",
+   "width": 1080,
+   "height": 1920,
+   "fps": 30.0,
+   "frames": 146,
+   "duration": 4.866667
+  },
+  "deck-fan-on-grass": {
+   "file": "07-footage/deck-fan-on-grass.mp4",
+   "original": "IMG_9519.mov",
+   "width": 2160,
+   "height": 3840,
+   "fps": 30.0,
+   "frames": 58,
+   "duration": 1.933333
+  }
+ },
+ "photos": {
+  "box-back": {
+   "file": "08-photos/box-back.jpg",
+   "original": "image.jpg"
+  },
+  "box-front": {
+   "file": "08-photos/box-front.jpg",
+   "original": "image.jpg"
+  },
+  "cards-fanned-on-grass": {
+   "file": "08-photos/cards-fanned-on-grass.jpg",
+   "original": "image.jpg"
+  }
+ },
  "screens": {
   "card-dandelion": {
    "route": "/herbdex/taraxacum-officinale",
@@ -31330,6 +31394,50 @@
    "height": 345,
    "alpha": false,
    "category": "06-ui-parts"
+  },
+  "07-footage/box-in-hand.mp4": {
+   "bytes": 8941790,
+   "sha256": "73b76c461f5e4bbfd7b06238a5e7f01681981d53c6a6edb32d3edb86629f0890",
+   "width": 1080,
+   "height": 1920,
+   "fps": 30.0,
+   "frames": 146,
+   "duration": 4.866667,
+   "category": "07-footage"
+  },
+  "07-footage/deck-fan-on-grass.mp4": {
+   "bytes": 17492448,
+   "sha256": "b75a4019e117340cdcc52bbb3471105d547057ac3cd04493fb104e2836bc9a14",
+   "width": 2160,
+   "height": 3840,
+   "fps": 30.0,
+   "frames": 58,
+   "duration": 1.933333,
+   "category": "07-footage"
+  },
+  "08-photos/box-back.jpg": {
+   "bytes": 1714417,
+   "sha256": "f33d7a58b8811bab2c300040127c99829b68697f708b9d1d97b237f5b45c1f8b",
+   "width": 1932,
+   "height": 2576,
+   "alpha": false,
+   "category": "08-photos"
+  },
+  "08-photos/box-front.jpg": {
+   "bytes": 1449670,
+   "sha256": "1a9184be6686f95149e96cf36df095c81b96c04607ae6b833fb933b747283d9b",
+   "width": 1932,
+   "height": 2576,
+   "alpha": false,
+   "category": "08-photos"
+  },
+  "08-photos/cards-fanned-on-grass.jpg": {
+   "bytes": 801068,
+   "sha256": "15e24301a5f76b2bc1b537a2273ef08a1316bc1fb4fce590531608a44e33720e",
+   "width": 1348,
+   "height": 1170,
+   "alpha": false,
+   "category": "08-photos"
   },
   "README.txt": {
    "bytes": 4107,

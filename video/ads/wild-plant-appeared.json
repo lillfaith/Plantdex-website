@@ -44,20 +44,14 @@
       }
     },
     {
-      "type": "photo",
+      "type": "footage",
       "enter": "fade",
       "duration": 65,
-      "image": "02-product/card-and-plant.jpg",
-      "from": {
-        "x": 0.45,
-        "y": 0.2,
-        "zoom": 1.0
-      },
-      "to": {
-        "x": 0.5,
-        "y": 0.3,
-        "zoom": 1.08
-      },
+      "clip": "deck-fan-on-grass",
+      "startAt": 0,
+      "playbackRate": 0.88,
+      "zoomFrom": 1.18,
+      "zoomTo": 1.24,
       "kicker": {
         "text": "Now find them growing.",
         "source": "quote"
@@ -66,7 +60,8 @@
         "text": "Find plants outside. *Scan them.* Build your collection.",
         "source": "quote"
       },
-      "captionAt": "top"
+      "captionAt": "top",
+      "offsetY": 160
     },
     {
       "type": "screenDemo",

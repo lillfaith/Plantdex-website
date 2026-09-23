@@ -1,7 +1,7 @@
 {
   "id": "wild-plant-appeared",
   "title": "Wild Plant Appeared",
-  "checkedAt": "2026-09-23T22:19:56.053Z",
+  "checkedAt": "2026-09-23T22:32:06.409Z",
   "assets": {
     "files": 82,
     "verified": 82
@@ -65,7 +65,7 @@
     "frames": 450,
     "duration": 15.061333,
     "audioCodec": "aac",
-    "bytes": 6459521
+    "bytes": 11458779
   },
   "firstFrameContrast": "15.5",
   "hookSpriteDistinctFrames": 40,
