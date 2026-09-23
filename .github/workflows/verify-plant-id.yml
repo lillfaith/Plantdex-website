@@ -93,23 +93,42 @@ jobs:
             src="public/cards/$id.webp"
             if [ ! -f "$src" ]; then echo "::warning::no card art for $id"; continue; fi
 
-            # The card fronts embed real species photographs; crop to the photo panel so the
-            # provider is not asked to identify the card's typography.
-            python3 -c "from PIL import Image;im=Image.open('$src').convert('RGB');w,h=im.size;im.crop((int(w*.12),int(h*.11),int(w*.88),int(h*.50))).resize((900,int(900*(h*.39)/(w*.76)))).save('/tmp/s.jpg',quality=88)"
+            # TWO photographs, because the endpoint now requires two and refuses below it.
+            # This posted a single `image` field and would have started answering
+            # `400 tooFewImages` the moment the multi-photo function deployed — the one check
+            # that proves a provider key works live, broken by the deploy it exists to verify.
+            # `scripts/crop_card_photo.py` carries the cropping and why the pair is honest.
+            python3 scripts/crop_card_photo.py "$src" /tmp/s1.jpg /tmp/s2.jpg
 
             code=$(curl -sS -o /tmp/out.json -w '%{http_code}' --max-time 90 \
               -X POST "https://$PROJECT_REF.supabase.co/functions/v1/identify-plant" \
-              -H "apikey: $ANON" -H "Authorization: Bearer $ANON" -F "image=@/tmp/s.jpg")
+              -H "apikey: $ANON" -H "Authorization: Bearer $ANON" \
+              -F "image=@/tmp/s1.jpg" -F "organ=habit" \
+              -F "image=@/tmp/s2.jpg" -F "organ=leaf")
 
             echo "──────────────────────────────────────────────"
             echo "$id  ->  HTTP $code"
             if grep -q '"code":"unconfigured"' /tmp/out.json; then
-              echo "::error::PLANTNET_API_KEY is not set on $PROJECT_REF."
+              # Provider-neutral, because the deployment chooses which provider answers.
+              # `unconfigured` means "the key for the SELECTED provider is absent, or the
+              # provider refused it" — naming PLANTNET_API_KEY here would send somebody
+              # hunting the wrong secret on a plant.id deployment, which is precisely the
+              # confusion the function's own comment records having caused once.
+              echo "::error::The selected provider's key is missing or was refused on $PROJECT_REF."
+              echo "  Check PLANT_IDENTIFICATION_PROVIDER and the key secret that matches it."
+              cat /tmp/out.json
+              exit 1
+            fi
+            if grep -q '"code":"tooFewImages"' /tmp/out.json; then
+              echo "::error::identify-plant wants more photographs than this workflow sent."
               exit 1
             fi
             if [ "$code" = "429" ]; then echo "  rate limited — quota reached, stopping"; break; fi
             if [ "$code" != "200" ]; then echo "::warning::unexpected status"; cat /tmp/out.json; fail=1; continue; fi
-            python3 -c "import json;d=json.load(open('/tmp/out.json'));c=d.get('candidates',[]);print(f'  candidates: {len(c)}');[print(f\"    {x['scientificName']:<38} {x['score']:.3f}\") for x in c];print('  remaining today:', d.get('remaining'))"
+            # `provider` and `observationId` are what make this readable once two providers
+            # exist: WHICH one answered, and the id to join an `identification_comparisons`
+            # row on afterwards. Without them a green run says nothing about the provider.
+            python3 -c "import json;d=json.load(open('/tmp/out.json'));c=d.get('candidates',[]);print('  provider:', d.get('provider'), '| observation:', d.get('observationId'));print(f'  candidates: {len(c)}');[print(f\"    {x['scientificName']:<38} {x['score']:.3f}  {x.get('rank','')}\") for x in c];print('  remaining today:', d.get('remaining'))"
           done
           echo "──────────────────────────────────────────────"
           exit $fail

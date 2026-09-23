@@ -131,3 +131,56 @@ describe('the observation UI', () => {
     expect(UI).toMatch(/aria-live="polite"/);
   });
 });
+
+describe('the live check sends a real observation, not one photograph', () => {
+  /*
+   * THE CHECK THAT PROVES A PROVIDER KEY WORKS, BROKEN BY THE DEPLOY IT EXISTS TO VERIFY.
+   *
+   * `verify-plant-id.yml` is the only thing in this repository that calls a deployed
+   * `identify-plant` with a real photograph — the unit tests cannot prove a key is present,
+   * valid and answering. It posted ONE `image` field, which the endpoint refused the moment
+   * `MIN_OBSERVATION_PHOTOS` rose to two: the smoke test would have failed with
+   * `400 tooFewImages` and looked exactly like a broken provider.
+   *
+   * Source-level, because the alternative is dispatching a workflow that spends a real
+   * identification from a shared daily allowance to find out.
+   */
+  const workflow = readFileSync('.github/workflows/verify-plant-id.yml', 'utf8');
+
+  it('posts at least as many images as the endpoint requires', () => {
+    const posted = (workflow.match(/-F "image=@/g) ?? []).length;
+    expect(posted).toBeGreaterThanOrEqual(MIN_OBSERVATION_PHOTOS);
+    expect(posted).toBeLessThanOrEqual(MAX_OBSERVATION_PHOTOS);
+  });
+
+  it('tags an organ for every image, in the same order', () => {
+    // The endpoint reads `image` and `organ` with `getAll` and pairs them by index. A
+    // missing tag is not an error — it becomes `auto` — but a count that does not match is
+    // a workflow quietly describing the wrong photograph.
+    const images = (workflow.match(/-F "image=@/g) ?? []).length;
+    const organs = (workflow.match(/-F "organ=/g) ?? []).length;
+    expect(organs).toBe(images);
+  });
+
+  it('produces exactly that many files from one card front', () => {
+    // The crop script is what makes the pair: if it ever wrote one file again, the curl
+    // above would post a path that does not exist and the failure would name curl.
+    const crop = readFileSync('scripts/crop_card_photo.py', 'utf8');
+    expect(crop).toContain('whole_path');
+    expect(crop).toContain('close_path');
+    expect(workflow).toContain('scripts/crop_card_photo.py "$src" /tmp/s1.jpg /tmp/s2.jpg');
+  });
+
+  it('does not blame one provider for a key the deployment may not use', () => {
+    // `unconfigured` follows the SELECTED provider. Naming PLANTNET_API_KEY sent a live
+    // debugging session hunting the wrong secret once already.
+    expect(workflow).not.toMatch(/::error::PLANTNET_API_KEY is not set/);
+    expect(workflow).toContain("The selected provider's key is missing or was refused");
+  });
+
+  it('reports which provider actually answered', () => {
+    // A green run that does not name the provider says nothing about plant.id.
+    expect(workflow).toContain("d.get('provider')");
+    expect(workflow).toContain("d.get('observationId')");
+  });
+});
