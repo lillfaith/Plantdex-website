@@ -88,6 +88,38 @@ def expected_secrets(provider: str) -> list[tuple[str, bool, str]]:
     ]
 
 
+def describe_unrecognised(value: str) -> str:
+    """Say enough about an unrecognised provider value to fix it, WITHOUT echoing it.
+
+    The no-value rule is not relaxed here, and the reason is concrete: the commonest way
+    this field goes wrong is pasting into the wrong box, and the box next to it holds an API
+    key. Printing "what you actually set" would then print the key into a log anyone with
+    repo access can read — turning a typo into a credential leak.
+
+    So this reports SHAPE: a length and a handful of booleans, from which the value cannot be
+    reconstructed but every likely mistake is obvious. In practice one of these lights up:
+
+      looks like NAME=value   the whole `NAME=value` pair went into the value box
+      looks like a command    the entire `supabase secrets set ...` line was pasted
+      known after cleanup     right word, wrong case or stray whitespace/quotes
+    """
+    cleaned = value.strip().strip('"\'').lower()
+    notes = [f"length {len(value)}"]
+    if "=" in value:
+        notes.append("contains '=' — looks like a NAME=value pair went into the value box")
+    if value.strip().startswith("supabase "):
+        notes.append("starts with 'supabase ' — looks like the whole CLI command was pasted")
+    if any(ch.isspace() for ch in value.strip()):
+        notes.append("contains internal whitespace")
+    if value != value.strip():
+        notes.append("has leading or trailing whitespace")
+    if cleaned in PROVIDER_KEYS:
+        notes.append(f"would be valid after trimming/lowercasing — set it to exactly '{cleaned}'")
+    elif cleaned.replace("-", "").replace(".", "").replace("_", "") in PROVIDER_KEYS:
+        notes.append("close to a valid value but punctuated — no dash, dot or underscore")
+    return "; ".join(notes)
+
+
 def comparison_report(present: set[str], values: dict[str, str], provider: str) -> list[str]:
     """Problems with comparison mode that are invisible from outside.
 
@@ -175,11 +207,14 @@ def main() -> int:
     if not known:
         # Same rule the function follows: an unknown value is a configuration error, never a
         # silent fall back to the default.
+        shape = describe_unrecognised(raw_provider)
         print(
             f"::error::{project}: PLANT_IDENTIFICATION_PROVIDER is set to something this "
             f"repository does not implement. identify-plant refuses every scan in that "
             f"state. Valid values: {', '.join(sorted(PROVIDER_KEYS))}."
         )
+        # Shape only — see `describe_unrecognised`. The value is never printed.
+        print(f"::error::{project}: what is set, without revealing it — {shape}")
         return 1
 
     if missing_required:
