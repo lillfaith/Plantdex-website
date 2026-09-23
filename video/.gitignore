@@ -1,0 +1,7 @@
+node_modules/
+# The unpacked ad asset pack: 79MB of images, rebuilt with `npm run assets -- <zips>`.
+assets/
+# Render scratch. The finished MP4s in exports/ ARE committed; qc/ contact sheets are not.
+exports/qc/
+.remotion/
+out/

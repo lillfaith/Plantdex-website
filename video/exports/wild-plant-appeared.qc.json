@@ -1,0 +1,79 @@
+{
+  "id": "wild-plant-appeared",
+  "title": "Wild Plant Appeared",
+  "checkedAt": "2026-09-23T21:29:26.633Z",
+  "assets": {
+    "files": 82,
+    "verified": 82
+  },
+  "sprites": [
+    {
+      "sprite": "taraxacum-officinale/adult",
+      "frames": 16,
+      "distinct": 15,
+      "holds": 0,
+      "fps": 12,
+      "minInk": "0.275"
+    },
+    {
+      "sprite": "taraxacum-officinale/sprout",
+      "frames": 8,
+      "distinct": 6,
+      "holds": 0,
+      "fps": 7,
+      "minInk": "0.139"
+    },
+    {
+      "sprite": "taraxacum-officinale/growing",
+      "frames": 10,
+      "distinct": 7,
+      "holds": 1,
+      "fps": 10,
+      "minInk": "0.161"
+    },
+    {
+      "sprite": "trifolium-pratense/adult",
+      "frames": 14,
+      "distinct": 11,
+      "holds": 1,
+      "fps": 10,
+      "minInk": "0.350"
+    },
+    {
+      "sprite": "viola-sororia/adult",
+      "frames": 14,
+      "distinct": 9,
+      "holds": 3,
+      "fps": 8,
+      "minInk": "0.232"
+    },
+    {
+      "sprite": "solidago-canadensis/adult",
+      "frames": 14,
+      "distinct": 11,
+      "holds": 2,
+      "fps": 6,
+      "minInk": "0.319"
+    }
+  ],
+  "container": {
+    "videoCodec": "h264",
+    "pixFmt": "yuv420p",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "frames": 450,
+    "duration": 15.061333,
+    "audioCodec": "aac",
+    "bytes": 6121787
+  },
+  "firstFrameContrast": "12.4",
+  "hookSpriteDistinctFrames": 40,
+  "picture": {
+    "frames": 450,
+    "minMean": "22.3",
+    "minStd": "12.4"
+  },
+  "contactSheet": "exports/qc/wild-plant-appeared-contact.jpg",
+  "problems": []
+}

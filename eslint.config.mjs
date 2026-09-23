@@ -8,7 +8,8 @@ const eslintConfig = [
   {
     // supabase/functions runs on Deno, a separate runtime with its own globals and module
     // resolution (npm:/https: specifiers, Deno.serve) — not this project's ESLint/TS setup.
-    ignores: ['.next/**', 'node_modules/**', 'out/**', 'next-env.d.ts', 'supabase/functions/**'],
+    // video/ is a standalone Remotion package with its own tsconfig and dependencies.
+    ignores: ['.next/**', 'node_modules/**', 'out/**', 'next-env.d.ts', 'supabase/functions/**', 'video/**'],
   },
 ];
 

@@ -1,0 +1,33 @@
+{
+  "name": "plantdex-video",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Plantdex ad production: data-driven Remotion compositions built only from the real asset pack.",
+  "scripts": {
+    "assets": "python3 scripts/unpack_assets.py",
+    "manifest": "python3 scripts/build_manifest.py",
+    "studio": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint:ads": "node scripts/lint-ads.mjs",
+    "render": "node scripts/render.mjs",
+    "qc": "node scripts/qc.mjs",
+    "produce": "npm run lint:ads && npm run typecheck && npm run render && npm run qc",
+    "find": "node scripts/find-asset.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.527",
+    "@remotion/cli": "4.0.527",
+    "@remotion/fonts": "4.0.527",
+    "@remotion/renderer": "4.0.527",
+    "@remotion/transitions": "4.0.527",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.527"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.4",
+    "@types/react": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}

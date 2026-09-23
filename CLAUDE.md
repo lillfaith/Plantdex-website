@@ -1329,3 +1329,21 @@ backend and no order state anywhere in this repository.
   checkout and no payment processing anywhere in the application", which stopped being true
   the moment `/shop` shipped — exactly as the privacy page's "no analytics" sentences did.
   `legal.test.ts` now fails if a `/shop` route exists while `/terms` denies it.
+
+## Video ads (`video/`)
+
+A standalone Remotion package for 9:16 social ads — its own `package.json`/`tsconfig`, and
+excluded from this project's TypeScript and ESLint. **`video/CREATIVE_RULES.md` governs every
+ad** and carries this file's product rules into video: only real assets from the ad asset
+pack, never an invented card, sprite, screen or feature, no medical/edibility/commerce claims.
+
+- **The manifest is the allow-list.** `video/manifest/assets.json` indexes the four pack ZIPs
+  (hashes included); `src/lib/assets.ts` throws on anything not in it, `lint:ads` fails a spec
+  that names one, and `qc` re-hashes every file a render used.
+- **On-screen text declares its source.** `quote` must exist verbatim in this repo's `src/` —
+  so rewording app copy breaks the ad that quotes it, which is the point. `card` is filled from
+  card data by token. `authored` is scanned for banned claims and read by a person.
+- **Sprites play their real frames at the `sprites.json` fps, integer-scaled, nearest-neighbour.**
+- **Ads use card FRONTS only.** A back prints "Healing Traits", and an ad cannot carry the
+  non-claim framing the app gives that heading.
+- `cd video && npm run produce` = lint → typecheck → render → QC. See `video/README.md`.
