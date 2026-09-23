@@ -270,3 +270,69 @@ describe('a discovery stays card-level, and evidence stays one layer down', () =
     expect(types).toMatch(/discoveries:\s*Record<string, Timestamp>;/);
   });
 });
+
+describe('the function-secret check follows the provider, and never prints a value', () => {
+  /*
+   * `check_function_secrets.py` reads `GET /v1/projects/{ref}/secrets`, which returns each
+   * secret's VALUE beside its name, into a workflow log anyone with repo access can read.
+   * It now reads three of those values — to decide which provider key is required, and
+   * whether comparison mode is actually configured — so the rule that none of them reaches
+   * stdout stops being free and starts needing a guard.
+   *
+   * Source-level because `npm run verify` cannot run Python (the same reason
+   * `audit_sprites.py` is a separate command), so the alternative is no check at all.
+   */
+  const script = readFileSync('scripts/check_function_secrets.py', 'utf8');
+  const printed = [...script.matchAll(/print\(([\s\S]*?)\n(?=\S|\s{4}\S)/g)].map(([, body]) => body);
+
+  it('parsed the script — an empty print list would pass everything below', () => {
+    expect(script).toContain('def main()');
+    expect(printed.length).toBeGreaterThan(5);
+  });
+
+  it('never interpolates a secret value into output', () => {
+    // The three it reads. `provider` is the VALIDATED choice and is allowed; `raw_provider`
+    // and any `values.get(...)` are the untrusted strings that came off the wire.
+    for (const body of printed) {
+      expect(body, 'a print() interpolates raw_provider').not.toMatch(/\braw_provider\b/);
+      expect(body, 'a print() interpolates a secret value').not.toMatch(/values\.get\(/);
+      expect(body, 'a print() interpolates the allow-list').not.toMatch(/\blisted\b(?!\))/);
+    }
+    // The allow-list is reported as a COUNT. It names accounts.
+    expect(script).toContain('{len(listed)} account(s)');
+  });
+
+  it('requires the key for the SELECTED provider, not one named in advance', () => {
+    /*
+     * The mistake this mirrors: `identify-plant` read `PLANTNET_API_KEY` unconditionally and
+     * would have refused every scan on a plant.id deployment while blaming the wrong secret.
+     * A checker with a hard-coded required key reproduces that one layer up — it would pass
+     * a plant.id deployment with no plant.id key, and fail a working one that has no PlantNet
+     * key.
+     */
+    expect(script).toContain('def expected_secrets(provider: str)');
+    expect(script).toMatch(/selected = PROVIDER_KEYS\.get\(provider/);
+    expect(script).toMatch(/PROVIDER_KEYS = \{[^}]*"plantnet"[^}]*"plantid"[^}]*\}/);
+  });
+
+  it('treats an unrecognised provider as an error, never a fall back', () => {
+    // Same rule the function follows: falling back would let a typo look like a working
+    // deployment answering from a provider nobody chose.
+    expect(script).toContain('if not known:');
+    expect(script).toMatch(/::error::.*PLANT_IDENTIFICATION_PROVIDER is set to something/);
+  });
+
+  it('names every secret the identification path reads', () => {
+    for (const secret of [
+      'PLANTNET_API_KEY',
+      'PLANT_ID_API_KEY',
+      'PLANT_IDENTIFICATION_PROVIDER',
+      'IDENTIFICATION_COMPARISON',
+      'IDENTIFICATION_COMPARISON_USER_IDS',
+      'SPECIES_ATTESTATION_SECRET',
+      'SCAN_QUOTA_SALT',
+    ]) {
+      expect(script, `the check does not know about ${secret}`).toContain(secret);
+    }
+  });
+});
