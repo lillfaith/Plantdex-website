@@ -59,7 +59,14 @@ jobs:
         # Unset, the build still succeeds and every player is told Plant ID "is not
         # available here yet" — invisible from the repo, invisible from CI, visible only in
         # the served bundle. So this reads the served bundle.
-        if: inputs.site_url != ''
+        #
+        # ONLY AGAINST THE PROJECT THE LIVE SITE IS SUPPOSED TO POINT AT. The served bundle
+        # carries ONE project, so asking whether it reaches the TEST one is a question with a
+        # guaranteed answer and no meaning — and it aborts the run before the identification
+        # that was the point of dispatching it. That happened: a test-project run died here
+        # reporting something true only of production, and spent nothing verifying plant.id.
+        # A check that cannot pass for the run you asked for should not gate it.
+        if: inputs.site_url != '' && inputs.project_ref == 'vygiamigomwlvnwkryyl'
         # Through env rather than interpolated into the command: a dispatch input spliced
         # straight into a shell line is a command-injection shape, and it costs nothing to
         # not write one.
