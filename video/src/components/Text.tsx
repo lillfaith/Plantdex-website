@@ -3,6 +3,22 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { C, goldPink, outfit } from '../lib/brand';
 import type { Line } from '../lib/spec';
 
+/**
+ * `*words*` in a caption render in the brand gradient. Emphasis is presentation only: the
+ * asterisks are stripped before `lint:ads` compares a quote with the app's copy, so marking a
+ * word can never change what the words say.
+ */
+export function Emphasis({ text }: { text: string }): React.ReactElement {
+  const parts = text.split(/(\*[^*]+\*)/g).filter(Boolean);
+  return (
+    <>
+      {parts.map((p, i) =>
+        p.startsWith('*') && p.endsWith('*') ? <GradientText key={i}>{p.slice(1, -1)}</GradientText> : <React.Fragment key={i}>{p}</React.Fragment>,
+      )}
+    </>
+  );
+}
+
 /** Shared entrance: fade + small rise, spring-timed. Returns style for a child. */
 export function useRise(delay = 0, distance = 36): React.CSSProperties {
   const frame = useCurrentFrame();
@@ -97,7 +113,7 @@ export const Caption: React.FC<{
           textWrap: 'balance',
         }}
       >
-        {line.text}
+        <Emphasis text={line.text} />
       </div>
     </div>
   );

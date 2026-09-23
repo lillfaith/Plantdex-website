@@ -55,8 +55,10 @@ const TOKENS = new Set(['commonName', 'scientificName', 'cardNumber', 'rarity'])
 const errors = [];
 const fail = (ad, msg) => errors.push(`${ad}: ${msg}`);
 
-function checkLine(ad, where, line) {
-  if (!line) return;
+function checkLine(ad, where, raw) {
+  if (!raw) return;
+  // `*emphasis*` is presentation; every check reads the words without it.
+  const line = { ...raw, text: typeof raw.text === 'string' ? raw.text.replace(/\*/g, '') : raw.text };
   if (typeof line.text !== 'string' || !['quote', 'card', 'authored'].includes(line.source)) {
     fail(ad, `${where}: text needs {text, source: quote|card|authored}`);
     return;

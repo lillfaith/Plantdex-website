@@ -23,8 +23,13 @@ export const SpriteAnimation: React.FC<{
   loop?: boolean;
   /** Centre the drawn ink rather than the whole cell (cells carry empty sky). */
   centreOnInk?: boolean;
+  /**
+   * 0 = the sprite as drawn, 1 = a solid silhouette of it (the Herbdex's own undiscovered
+   * treatment). A brightness filter over the real frame: the outline stays the plant's own.
+   */
+  silhouette?: number;
   style?: React.CSSProperties;
-}> = ({ plant, stage = 'adult', scale, startFrame = 0, loop = true, centreOnInk = true, style }) => {
+}> = ({ plant, stage = 'adult', scale, startFrame = 0, loop = true, centreOnInk = true, silhouette = 0, style }) => {
   if (!Number.isInteger(scale) || scale < 1) {
     throw new Error(`SpriteAnimation scale must be a whole number ≥ 1, got ${scale}`);
   }
@@ -56,6 +61,10 @@ export const SpriteAnimation: React.FC<{
           width: w,
           height: h,
           imageRendering: 'pixelated',
+          filter:
+            silhouette > 0
+              ? `brightness(${1 - silhouette}) drop-shadow(0 0 ${Math.round(18 * silhouette)}px rgba(212, 132, 245, ${0.55 * silhouette}))`
+              : undefined,
         }}
       />
     </div>

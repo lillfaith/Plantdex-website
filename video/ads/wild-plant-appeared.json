@@ -39,7 +39,7 @@
         "source": "card"
       },
       "caption": {
-        "text": "Every plant is a real, illustrated card.",
+        "text": "Every plant is a *real, illustrated card.*",
         "source": "authored"
       }
     },
@@ -63,7 +63,7 @@
         "source": "quote"
       },
       "caption": {
-        "text": "Find plants outside. Scan them. Build your collection.",
+        "text": "Find plants outside. *Scan them.* Build your collection.",
         "source": "quote"
       },
       "captionAt": "top"
@@ -82,11 +82,11 @@
             "zoom": 1
           },
           "to": {
-            "y": 0.18,
+            "y": 0.12,
             "zoom": 1
           },
           "caption": {
-            "text": "Photograph something growing and see what Plantdex thinks it might be.",
+            "text": "Photograph *something growing* and see what Plantdex thinks it might be.",
             "source": "quote"
           },
           "highlights": [
@@ -113,7 +113,7 @@
             "zoom": 1
           },
           "caption": {
-            "text": "Confirm the match and its Plantdex entry unlocks.",
+            "text": "Confirm the match and its *Plantdex entry unlocks.*",
             "source": "quote"
           }
         }
@@ -139,7 +139,7 @@
         "source": "quote"
       },
       "caption": {
-        "text": "Find it — sprout. Learn its card — growing. Find it again — flowering.",
+        "text": "Find it — *sprout.* Learn its card — *growing.* Find it again — *flowering.*",
         "source": "quote"
       },
       "growth": {
@@ -180,7 +180,7 @@
       },
       "lines": [
         {
-          "text": "The digital Plantdex is free.",
+          "text": "The digital Plantdex is *free.*",
           "source": "quote"
         }
       ],

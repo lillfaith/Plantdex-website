@@ -100,10 +100,10 @@ and product shots has no recorded licence, so confirm that before any paid place
 
 | Time | Scene | Assets | Text |
 |---|---|---|---|
-| 0–2.5s | hook | Dandelion adult sprite, 16 real frames @ 12fps, 4× | "A wild **Dandelion** appeared!" (the name comes from the card) |
+| 0–2.5s | hook | Dandelion adult sprite, 16 real frames @ 12fps, 4×: opens as a silhouette (the Herbdex's undiscovered look) and bursts into colour with a flash, shake and punch | "A wild **Dandelion** appeared!" (the name comes from the card) |
 | 2.2–5s | card reveal | Card #01 front | "Collection 01 · Card #01" / "Every plant is a real, illustrated card." |
 | 4.7–6.8s | photo | `02-product/card-and-plant.jpg` | "Now find them growing." / "Find plants outside. Scan them. Build your collection." (home and /start copy) |
-| 6.5–10.5s | screen demo | `/scan` then `/herbdex/taraxacum-officinale` phone screenshots | scan and /start copy, plus the safety line "The answer is a suggestion to check, not a verdict." highlighted where the real page prints it |
+| 6.5–10.5s | screen demo | `/scan` then `/herbdex/taraxacum-officinale` phone screenshots, joined by a push | scan and /start copy, plus the safety line "The answer is a suggestion to check, not a verdict." highlighted where the real page prints it |
 | 10.2–12.3s | UI callout | `garden-grid` plus Dandelion's sprout, growing and adult sprites | Garden page copy: "Find it — sprout. Learn its card — growing. Find it again — flowering." |
 | 12–15s | CTA | `02-product/deck-in-hand.jpg`, four real sprites | "Plantdex" / "The digital Plantdex is free." / "Link in bio" |
 

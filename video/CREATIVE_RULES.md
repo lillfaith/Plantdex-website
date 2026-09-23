@@ -26,6 +26,14 @@ Allowed: move, scale, rotate, tilt in 3D, crop to a region, mask with rounded co
 a drop shadow, fade, blur a *background* plate, pan and zoom, sequence frames, place assets
 side by side, put a device frame around a screenshot.
 
+Also allowed, because the app itself does it:
+
+- **A sprite as a silhouette, revealed.** Undiscovered plants are silhouettes in the Herbdex
+  grid, so a dark silhouette that bursts into the real sprite mirrors real behaviour. The
+  outline must be the real frame's (`SpriteAnimation silhouette`), never a drawn shape.
+- **Gradient emphasis on caption words** (`*word*` in a spec). It changes colour only;
+  `lint:ads` strips the markers before checking a quote, so emphasis can't alter wording.
+
 Not allowed:
 
 - **Changing proportions.** No non-uniform scaling. Card aspect 800:1295 stays 800:1295.
