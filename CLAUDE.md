@@ -1312,6 +1312,26 @@ Three facts, and every bug this system has had was two of them being treated as 
   the real name survived nowhere the player could see. The card had become the record of the
   plant. `eligibility` is the third: WHY it qualified (`exact`, `genusCard`, `acceptedGroup`,
   `legacyGenus`), which is what stops "a card matched" being read as "the species is settled".
+- **`discoveries` IS CARD-LEVEL AND STAYS CARD-LEVEL. EVIDENCE LIVES ON THE SIGHTING AND THE
+  SCAN.** A discovery asserts exactly one thing: *this Plantdex card is unlocked for this
+  player*. It is `{herbId: timestamp}` and it carries no taxon, no rank, no eligibility, no
+  confidence and no provider — DELIBERATELY, not as an omission waiting to be filled in.
+  - It is what XP, mastery, Field Research, the garden, the achievements and the collection
+    percentage all count, and every one of those counts CARDS. A confidence column here would
+    be a value those systems could start reading, which is how a card-level record quietly
+    becomes a second, weaker species claim.
+  - It is reachable without any identifier at all — `DiscoverPanel` records a find from two
+    taps and no camera (see "Progression is self-declared"). A taxon field on a discovery
+    would therefore be null for the majority of real rows and present for the rest, and a
+    field that means "we happened to come in through the scanner" is not evidence.
+  - The evidence exists and is already stored, one layer down. `sightings` holds the
+    observation — provider string, identity, key, rank, eligibility, species confidence,
+    provider — and `scans` holds the provider's leading candidate beside the one the player
+    selected. A card in the collection is a claim about the COLLECTION; what the plant was,
+    and how sure anyone is, is a question for the sighting that produced it.
+  - So: **do not add confidence or taxonomic columns to `discoveries`.** If a surface needs
+    to say how a card was earned, it reads the sightings for that `herbId` — where the answer
+    already is, with its provenance attached.
 - **`normalizeName` IS A LOOKUP KEY AND MUST NEVER BECOME THE RECORD.** It drops authorship,
   folds synonymous section names onto one key, and its rules are free to change — so a column
   derived from it would silently rewrite history the next time they moved.
@@ -1366,7 +1386,13 @@ Three facts, and every bug this system has had was two of them being treated as 
   failure half of the union and does not, because a conditional type distributes over a naked
   TYPE PARAMETER and never over a concrete union alias. It evaluated to `never`, so all
   fourteen call sites were errors, and 1,084 green unit tests could not see one of them. It is
-  a separate script rather than part of `verify` because it fetches a Deno toolchain.
+  part of `npm run verify`, between `typecheck` and `test`, so an edge-function change cannot
+  pass verification without it. It fetches a Deno toolchain on first run and is cached after.
+  Deliberately WITHOUT `--node-modules-dir=auto`, which `deploy-function.yml`'s own copy
+  carries: that workflow restores an npm cache without running `npm ci`, so Deno finds no
+  `node_modules` to resolve `npm:` specifiers from. `verify` runs `next build` and `vitest`
+  and therefore cannot run at all on an uninstalled tree, so the flag would buy nothing there
+  and costs a `deno approve-scripts` warning on every run.
 - **A supra-specific taxon may qualify for a card and may NEVER become an exact species.**
   `Taraxacum sect. Taraxacum` opens the Dandelion card; it is not rewritten to *T. officinale*,
   and `speciesConfidenceFor` returns `unresolved` above species rank BEFORE it looks at the
@@ -1381,11 +1407,19 @@ Three facts, and every bug this system has had was two of them being treated as 
   genus membership — that would quietly turn every card into a genus card and rewrite *Oxalis
   dillenii* as *Oxalis stricta*.
 - **`pendingCuration` is a placeholder, there is exactly ONE, and it must stay that way.**
-  Goldenrod keeps genus-wide behaviour because *Solidago* is taxonomically difficult and the
-  accepted list is a botanical question — inventing it here would be inventing botany.
-  Curating it is a content change with a zero-row migration. `observed-taxon.test.ts` fails if
-  a second appears, which is the point: a compatibility state nothing stops spreading is just
-  a design.
+  Goldenrod (`solidago-canadensis`) keeps genus-wide behaviour because *Solidago* is
+  taxonomically difficult and the accepted list is a botanical question — inventing it here
+  would be inventing botany. **It is TEMPORARY and still open.** Card #03 prints a binomial,
+  not `spp.`, so under the curated model it has no business claiming its whole genus; it holds
+  that scope only so live coverage does not narrow silently before the research is done.
+  Every match through it is tagged `eligibility: 'legacyGenus'` — never `acceptedGroup`, never
+  `genusCard` — precisely so the temporary rows are findable later by the reason they were
+  written, and the observation itself is never rewritten to *S. canadensis*. Curating it is a
+  content change with a zero-row migration: replace the scope with an `acceptedGroup` whose
+  members each carry a `note` and a `source`. Do not broaden it, do not narrow it, and do not
+  populate that list by reading a flora and guessing. `observed-taxon.test.ts` fails if a
+  second `pendingCuration` appears, which is the point: a compatibility state nothing stops
+  spreading is just a design.
 - **The provider is a SERVER-SIDE choice and neither key may reach the browser.**
   `PLANT_IDENTIFICATION_PROVIDER` selects PlantNet or plant.id behind one normalised shape,
   so swapping is a branch in `identify-plant` plus a normalizer in `_shared` — not a change to

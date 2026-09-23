@@ -69,11 +69,30 @@ in the identity.
 
 Three records, and they are not the same fact:
 
-| Record | Holds |
-|---|---|
-| `discoveries` | the **card**, through the ordinary idempotent `discover()` |
-| `sightings` | the **observation** — card, provider string, identity, key, rank, eligibility, species confidence, provider |
-| `scans` | the provider's **top** candidate *and*, separately, the candidate the player **selected** |
+| Record | Level | Holds |
+|---|---|---|
+| `discoveries` | **card** | that this Plantdex card is unlocked for this player, and nothing else |
+| `sightings` | **evidence** | the observation — card, provider string, identity, key, rank, eligibility, species confidence, provider |
+| `scans` | **evidence** | the provider's **top** candidate *and*, separately, the candidate the player **selected** |
+
+### A discovery is a claim about the collection, not about the plant
+
+`discoveries` is `{herbId: timestamp}`. It carries no taxon, no rank, no eligibility, no
+confidence and no provider, and that is **deliberate and settled** — not an omission waiting
+to be filled in.
+
+- It is what XP, mastery, Field Research, the garden, the achievements and the collection
+  percentage all count, and every one of them counts **cards**. A confidence column here
+  would be a value those systems could start reading, which is how a card-level record
+  quietly becomes a second, weaker species claim.
+- It is reachable with no identifier at all — the card page records a find from two taps and
+  no camera. A taxon field would be null for most real rows and present for the rest, and a
+  field that means "this one happened to come in through the scanner" is not evidence.
+- The evidence already exists one layer down, with its provenance attached.
+
+**So a surface that needs to say how a card was earned reads the sightings for that
+`herbId`** — where the taxon, the rank, the eligibility reason and the species confidence all
+are. Do not add taxonomic or confidence columns to `discoveries`.
 
 The sighting goes through `sightings-store.ts`, so a signed-out player's observation is kept in
 localStorage by the same call that writes the Supabase row signed in — there is no second
@@ -114,14 +133,23 @@ A `genus` scope is a placeholder, not a design. It says: this card behaved as ge
 before the accepted-group model existed, the botany has not been curated yet, and the
 behaviour is held unchanged rather than silently narrowed or broadened under somebody.
 
-**There is exactly one, and `observed-taxon.test.ts` fails if a second appears.** It is
-Goldenrod (`solidago-canadensis`). *Solidago* is a large, taxonomically difficult genus, and
-the accepted species list is a botanical question, not an implementation detail — inventing it
-here would be inventing botany, which this project does not do anywhere else either.
+**There is exactly one, it is still open, and `observed-taxon.test.ts` fails if a second
+appears.** It is Goldenrod (`solidago-canadensis`). Card #03 prints a binomial, not `spp.`, so
+under the curated model it has no business claiming its whole genus — it holds that scope only
+so live coverage does not narrow silently before the research is done. *Solidago* is a large,
+taxonomically difficult genus, and the accepted species list is a botanical question, not an
+implementation detail; inventing it here would be inventing botany, which this project does not
+do anywhere else either.
 
-Curating it means replacing the scope with an `acceptedGroup` whose members are researched and
-sourced. That is a content change with a data migration of zero rows: existing sightings keep
-their own observed taxon and are unaffected either way.
+**Status: TEMPORARY, pending botanical curation.** Every match through it is tagged
+`eligibility: 'legacyGenus'` — never `acceptedGroup`, never `genusCard` — so the rows written
+during this period are findable later by the reason they were written, and the observation is
+never rewritten to *S. canadensis*.
+
+Curating it means replacing the scope with an `acceptedGroup` whose members each carry a `note`
+and a `source`. That is a content change with a data migration of zero rows: existing sightings
+keep their own observed taxon and are unaffected either way. Until then: do not broaden it, do
+not narrow it, and do not populate that list by reading a flora and guessing.
 
 ---
 
@@ -287,10 +315,11 @@ no captured real API response committed here, and nothing in the suite makes a n
 - `observation-photos.test.ts` — the 2/3 slot rules
 - `edge-shared.test.ts` — the generated `_shared` copy matches source, and every specifier resolves under Deno
 
-`npm run check:edge` type-checks the Deno half, which `npm run verify` structurally cannot:
-`supabase/functions/**` is excluded from this project's tsconfig and ESLint because it is a
-different runtime. It is a separate script rather than part of `verify` because it fetches a
-Deno toolchain on first run.
+`npm run check:edge` type-checks the Deno half, which the rest of `verify` structurally
+cannot: `supabase/functions/**` is excluded from this project's tsconfig and ESLint because it
+is a different runtime. **It runs as part of `npm run verify`**, between `typecheck` and
+`test`, so an edge-function change cannot pass verification without it. It fetches a Deno
+toolchain on first run and is cached after.
 
 **That gap was not theoretical.** Its first run reported 14 errors in `providers.ts`: the
 `failure()` helper typed its `kind` parameter as

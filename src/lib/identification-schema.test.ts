@@ -207,3 +207,66 @@ describe('comparison mode is off unless two separate things say otherwise', () =
     expect(fn).toMatch(/isIdentificationFailure\(result\)[\s\S]{0,160}failure: result\.kind/);
   });
 });
+
+describe('a discovery stays card-level, and evidence stays one layer down', () => {
+  /*
+   * A SETTLED DECISION, PINNED SO IT CANNOT DRIFT BACK.
+   *
+   * `discoveries` asserts exactly one thing: this Plantdex card is unlocked for this player.
+   * No taxon, no rank, no eligibility, no confidence, no provider — deliberately, and not as
+   * an omission waiting to be filled in.
+   *
+   * WHY IT IS TEMPTING AND WRONG. Reading a collection back, "how sure was this find?" is a
+   * natural question, and a `species_confidence` column here would answer it in one join
+   * fewer. But XP, mastery, Field Research, the garden, the achievements and the completion
+   * percentage all count DISCOVERIES, and all of them count cards — so a confidence column is
+   * a value those systems could start reading, which is how a card-level record quietly turns
+   * into a second, weaker species claim. And a discovery is reachable with no identifier at
+   * all (two taps on a card page, no camera), so the column would be null for most real rows:
+   * a field meaning "this one happened to come in through the scanner" is not evidence.
+   *
+   * The evidence exists, on `sightings` and `scans`, with its provenance attached.
+   */
+  const accounts = readFileSync('supabase/migrations/0001_accounts.sql', 'utf8');
+  const table =
+    /create table if not exists public\.discoveries\s*\(([\s\S]*?)\n\);/.exec(accounts)?.[1] ?? '';
+  const columns = [...table.matchAll(/^\s{2}([a-z_]+)\s+(uuid|text|timestamptz|numeric|boolean|jsonb)/gim)].map(
+    ([, name]) => name!,
+  );
+
+  it('parsed the table — an empty column list would pass everything below', () => {
+    expect(columns).toEqual(['user_id', 'herb_id', 'discovered_at']);
+  });
+
+  it('holds no taxon, rank, eligibility, confidence or provider column', () => {
+    for (const word of [
+      'taxon',
+      'rank',
+      'eligibility',
+      'confidence',
+      'provider',
+      'scientific',
+      'species',
+      'probability',
+      'score',
+    ]) {
+      expect(
+        columns.filter((name) => name.includes(word)),
+        `discoveries grew a ${word} column — evidence belongs on sightings/scans`,
+      ).toEqual([]);
+    }
+  });
+
+  it('and neither does 0006, which is where such a column would most plausibly land', () => {
+    expect(sql, '0006 alters the discoveries table').not.toMatch(
+      /alter table public\.discoveries/i,
+    );
+  });
+
+  it('keeps the client-side record a bare herb-id-to-timestamp map', () => {
+    // `Record<string, Timestamp>` has nowhere to put a taxon. Widening it to an object is the
+    // same decision as adding the column, made in TypeScript instead of SQL.
+    const types = readFileSync('src/lib/types.ts', 'utf8');
+    expect(types).toMatch(/discoveries:\s*Record<string, Timestamp>;/);
+  });
+});

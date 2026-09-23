@@ -20,7 +20,7 @@
     "build:structures": "python3 scripts/chemistry/build_structures.py",
     "sync:edge-shared": "node scripts/sync-edge-shared.mjs",
     "check:edge": "npx --yes deno@2 check supabase/functions/*/index.ts",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "verify": "npm run lint && npm run typecheck && npm run check:edge && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
