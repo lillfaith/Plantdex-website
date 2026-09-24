@@ -158,6 +158,24 @@ Not allowed:
   380px are covered by platform UI on TikTok/Reels/Shorts).
 - Motion is purposeful and finite: no infinite pulsing, no strobing.
 
+## 6a. Pacing: built for a first watch
+
+Optimise for a normal phone viewer absorbing each selling point the first time, never for the
+shortest runtime. ~19–21s is fine for a full product story.
+
+- **One main sentence at a time.** Supporting labels, small safety lines and background UI
+  may stay visible, but the eye must always know the one thing to read. When a new element
+  takes over (stat rows under a headline), dim the old one.
+- **Read time:** a caption stays fully visible for at least ~2s, or ~0.25s per word if that is
+  longer, counted until the next transition STARTS, not until the scene ends.
+- **Reward beats hold.** Stat reveals hold ~2–2.5s after the last one lands; an unlock stamp
+  holds ~1.5–2s. Never transition out right after an animation finishes.
+- **Headlines get their own beat** before the thing they introduce appears.
+- **UI screens:** don't expect the viewer to read the UI. Pan to the one part that matters
+  and highlight it.
+- **Visual-only scenes** (growth stages) can stay quick; the final CTA screen stays fully
+  visible for at least 2s.
+
 ## 7. Before an ad ships
 
 1. `npm run lint:ads` — every asset in the manifest; banned-claim scan; safety line present.

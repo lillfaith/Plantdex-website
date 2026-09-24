@@ -127,20 +127,22 @@ first three words are already on screen at frame 0, the thumbnail). The reveal a
 "A wild **Dandelion** appeared!" then land as the payoff. Driven by the hook's `teaser` field;
 everything after the reveal is the same spec.
 
-### Wild Plant Appeared: knowledge reward (`wild-plant-appeared-v3`, 16.9s)
+### Wild Plant Appeared: knowledge reward (`wild-plant-appeared-v3`, 20.8s)
 
 The ad's logic: collecting game → real card → real plant → real knowledge → identify →
-unlock → progress → product.
+unlock → progress → product. It's paced for a first watch (CREATIVE_RULES §6a): one main
+sentence at a time, and every hold counted until the next transition starts.
 
-- Opening through the footage is as in version 2, except the card caption now reads
-  "Every card teaches you about *a real plant.*"
-- **Knowledge (1.8s):** "Every discovery unlocks *real plant knowledge.*" over the card, then
-  three stat rows popping in 4 frames apart: TRADITIONAL USES · Tea · Roasted roots, NOTABLE
-  COMPOUNDS · Inulin · Quercetin, EDIBILITY · Fresh greens. Plus a small "Never eat a wild plant
-  you haven't positively identified." EDIBILITY's value is the card's own printed preparation;
-  Dandelion carries no Edible icon, so lint requires the value to come from the card and the
-  identify-first line to be present.
-- **Scan → unlock:** the scan screen carries the small "suggestion to check, not a verdict"
-  line. The next shot reads "Confirm the match →", then "Dandelion unlocked." stamps in with
-  a burst and a gold glow on the phone frame, all off the screenshot.
-- Confirmation and growth scenes shortened; the stages pop in faster.
+| Start | Beat | Held |
+|---|---|---|
+| 0.0s | "I turned finding wild plants into a *collecting game.*" → silhouette reveal → "A wild Dandelion appeared!" | 3.7s |
+| 3.3s | Card #01: "Every card teaches you about *a real plant.*" | caption ~2s |
+| 6.3s | Owner 4K footage: "Find plants outside. *Scan them.* Build your collection." | 2.3s |
+| 8.3s | "Every discovery unlocks *real plant knowledge.*" alone for 0.8s, then dims as TRADITIONAL USES · NOTABLE COMPOUNDS · EDIBILITY pop in | rows held ~2.2s |
+| 11.8s | Identify a plant: pans to the "Whole Plant" photo slot and highlights it; small "suggestion to check, not a verdict" line | 2.8s |
+| 14.7s | "Confirm the match →" / **"Dandelion unlocked."** stamp + burst + phone glow | ~1.7s after the stamp |
+| 16.5s | Growth stages (sprout → growing → flowering) | 1.7s |
+| 17.8s | Plantdex / "The digital Plantdex is *free.*" / Link in bio | 3.0s |
+
+EDIBILITY's value ("Fresh greens") is the card's own printed preparation, paired with a small
+identify-first line; lint enforces both.

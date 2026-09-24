@@ -4,12 +4,12 @@
   "fps": 30,
   "width": 1080,
   "height": 1920,
-  "durationInFrames": 508,
+  "durationInFrames": 625,
   "transitionFrames": 10,
   "scenes": [
     {
       "type": "hook",
-      "duration": 120,
+      "duration": 110,
       "plant": "taraxacum-officinale",
       "stage": "adult",
       "spriteScale": 4,
@@ -39,7 +39,7 @@
     {
       "type": "cardReveal",
       "enter": "slide-up",
-      "duration": 85,
+      "duration": 100,
       "plant": "taraxacum-officinale",
       "kicker": {
         "text": "Collection 01 · Card #{cardNumber}",
@@ -53,16 +53,12 @@
     {
       "type": "footage",
       "enter": "fade",
-      "duration": 65,
+      "duration": 70,
       "clip": "deck-fan-on-grass",
       "startAt": 0,
-      "playbackRate": 0.88,
+      "playbackRate": 0.82,
       "zoomFrom": 1.18,
       "zoomTo": 1.24,
-      "kicker": {
-        "text": "Now find them growing.",
-        "source": "quote"
-      },
       "caption": {
         "text": "Find plants outside. *Scan them.* Build your collection.",
         "source": "quote"
@@ -73,7 +69,7 @@
     {
       "type": "knowledge",
       "enter": "slide-up",
-      "duration": 54,
+      "duration": 115,
       "plant": "taraxacum-officinale",
       "headline": {
         "text": "Every discovery unlocks *real plant knowledge.*",
@@ -116,23 +112,24 @@
       "safety": {
         "text": "Never eat a wild plant you haven't positively identified.",
         "source": "authored"
-      }
+      },
+      "rowsAt": 24
     },
     {
       "type": "screenDemo",
       "enter": "wipe",
-      "duration": 105,
+      "duration": 150,
       "shots": [
         {
           "screen": "scan",
           "framing": "phone-viewport",
-          "duration": 55,
+          "duration": 85,
           "from": {
             "y": 0,
             "zoom": 1
           },
           "to": {
-            "y": 0.12,
+            "y": 0.45,
             "zoom": 1
           },
           "caption": {
@@ -141,19 +138,19 @@
           },
           "highlights": [
             {
-              "x": 0.03,
-              "y": 0.235,
-              "w": 0.83,
-              "h": 0.03,
-              "from": 14,
-              "to": 55
+              "x": 0.095,
+              "y": 0.532,
+              "w": 0.81,
+              "h": 0.165,
+              "from": 38,
+              "to": 85
             }
           ]
         },
         {
           "screen": "card-dandelion",
           "framing": "phone-viewport",
-          "duration": 50,
+          "duration": 65,
           "from": {
             "y": 0,
             "zoom": 1
@@ -172,7 +169,7 @@
               "source": "card"
             },
             "plant": "taraxacum-officinale",
-            "at": 10
+            "at": 14
           }
         }
       ],
@@ -184,7 +181,7 @@
     {
       "type": "uiCallout",
       "enter": "slide-up",
-      "duration": 55,
+      "duration": 50,
       "part": "garden-grid",
       "crop": {
         "x": 0,
@@ -230,7 +227,7 @@
     {
       "type": "cta",
       "enter": "fade",
-      "duration": 84,
+      "duration": 90,
       "photo": "02-product/deck-in-hand.jpg",
       "headline": {
         "text": "Plantdex",

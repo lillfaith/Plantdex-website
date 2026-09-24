@@ -117,6 +117,11 @@ export interface KnowledgeScene extends SceneBase {
   tags: KnowledgeTag[];
   /** Small line under the stats. Required by lint when a tag is about edibility. */
   safety?: Line;
+  /**
+   * Frame the first row pops. Before it the headline has the screen to itself; once the rows
+   * arrive it dims, so there is only ever one thing the eye is asked to read. Default 5.
+   */
+  rowsAt?: number;
 }
 
 export interface ScreenShot {

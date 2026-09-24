@@ -336,10 +336,15 @@ export const KnowledgeView: React.FC<{ scene: KnowledgeScene }> = ({ scene }) =>
   const rowTop = cardTop + cardH + 36;
   const rowH = 104;
   const rowGap = 16;
-  const firstPop = 5;
+  const firstPop = scene.rowsAt ?? 5;
   const gap = 4;
   const float = Math.sin(frame / 14) * 4;
   const tags = scene.tags.slice(0, 4);
+  // The headline steps back as the stats arrive: one main thing to read at a time.
+  const headlineDim = interpolate(frame, [firstPop, firstPop + 10], [1, 0.5], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
   return (
     <AbsoluteFill>
       <Backdrop glowY={36} seed="know" />
@@ -357,7 +362,7 @@ export const KnowledgeView: React.FC<{ scene: KnowledgeScene }> = ({ scene }) =>
         line={scene.headline}
         delay={0}
         size={60}
-        style={{ position: 'absolute', top: SAFE.top + 10, left: SAFE.side, width: W - SAFE.side * 2 }}
+        style={{ position: 'absolute', top: SAFE.top + 10, left: SAFE.side, width: W - SAFE.side * 2, opacity: headlineDim }}
       />
       <div style={{ position: 'absolute', left: (W - cardW) / 2, top: cardTop + float }}>
         <PhysicalCard plant={scene.plant} width={cardW} rotateY={-4} rotateX={3} rotateZ={-1.5} />
