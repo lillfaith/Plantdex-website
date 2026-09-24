@@ -1,0 +1,269 @@
+{
+  "id": "wild-plant-appeared-v3",
+  "title": "Wild Plant Appeared (curiosity hook + knowledge reward)",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 545,
+  "transitionFrames": 10,
+  "scenes": [
+    {
+      "type": "hook",
+      "duration": 120,
+      "plant": "taraxacum-officinale",
+      "stage": "adult",
+      "spriteScale": 4,
+      "accent": 1,
+      "lines": [
+        {
+          "text": "A wild",
+          "source": "authored"
+        },
+        {
+          "text": "{commonName}",
+          "source": "card"
+        },
+        {
+          "text": "appeared!",
+          "source": "authored"
+        }
+      ],
+      "teaser": {
+        "duration": 60,
+        "line": {
+          "text": "I turned finding wild plants into a *collecting game.*",
+          "source": "authored"
+        }
+      }
+    },
+    {
+      "type": "cardReveal",
+      "enter": "slide-up",
+      "duration": 85,
+      "plant": "taraxacum-officinale",
+      "kicker": {
+        "text": "Collection 01 · Card #{cardNumber}",
+        "source": "card"
+      },
+      "caption": {
+        "text": "Every plant is a *real, illustrated card.*",
+        "source": "authored"
+      }
+    },
+    {
+      "type": "footage",
+      "enter": "fade",
+      "duration": 65,
+      "clip": "deck-fan-on-grass",
+      "startAt": 0,
+      "playbackRate": 0.88,
+      "zoomFrom": 1.18,
+      "zoomTo": 1.24,
+      "kicker": {
+        "text": "Now find them growing.",
+        "source": "quote"
+      },
+      "caption": {
+        "text": "Find plants outside. *Scan them.* Build your collection.",
+        "source": "quote"
+      },
+      "captionAt": "top",
+      "offsetY": 160
+    },
+    {
+      "type": "knowledge",
+      "enter": "slide-up",
+      "duration": 60,
+      "plant": "taraxacum-officinale",
+      "headline": {
+        "text": "Every plant unlocks *something real to learn.*",
+        "source": "authored"
+      },
+      "tags": [
+        {
+          "label": {
+            "text": "Identification",
+            "source": "authored"
+          },
+          "field": "identification",
+          "items": [
+            "One flower per stalk"
+          ]
+        },
+        {
+          "label": {
+            "text": "Traditional uses",
+            "source": "authored"
+          },
+          "field": "preparations",
+          "items": [
+            "Tea",
+            "Roasted roots"
+          ]
+        },
+        {
+          "label": {
+            "text": "Notable compounds",
+            "source": "authored"
+          },
+          "field": "compounds",
+          "items": [
+            "Inulin",
+            "Quercetin"
+          ]
+        },
+        {
+          "label": {
+            "text": "Usable parts",
+            "source": "authored"
+          },
+          "field": "usableParts",
+          "items": [
+            "Root",
+            "Leaf",
+            "Flower"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "screenDemo",
+      "enter": "wipe",
+      "duration": 120,
+      "shots": [
+        {
+          "screen": "scan",
+          "framing": "phone-viewport",
+          "duration": 55,
+          "from": {
+            "y": 0,
+            "zoom": 1
+          },
+          "to": {
+            "y": 0.12,
+            "zoom": 1
+          },
+          "caption": {
+            "text": "Photograph *something growing* and see what Plantdex thinks it might be.",
+            "source": "quote"
+          },
+          "highlights": [
+            {
+              "x": 0.03,
+              "y": 0.235,
+              "w": 0.83,
+              "h": 0.03,
+              "from": 14,
+              "to": 55
+            }
+          ]
+        },
+        {
+          "screen": "card-dandelion",
+          "framing": "phone-viewport",
+          "duration": 65,
+          "from": {
+            "y": 0,
+            "zoom": 1
+          },
+          "to": {
+            "y": 0.55,
+            "zoom": 1
+          },
+          "caption": {
+            "text": "Confirm the match and its *Plantdex entry unlocks.*",
+            "source": "quote"
+          }
+        }
+      ],
+      "safety": {
+        "text": "The answer is a suggestion to check, not a verdict.",
+        "source": "quote"
+      }
+    },
+    {
+      "type": "uiCallout",
+      "enter": "slide-up",
+      "duration": 65,
+      "part": "garden-grid",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 0.5,
+        "h": 0.5
+      },
+      "kicker": {
+        "text": "How plants grow",
+        "source": "quote"
+      },
+      "caption": {
+        "text": "Find it — *sprout.* Learn its card — *growing.* Find it again — *flowering.*",
+        "source": "quote"
+      },
+      "growth": {
+        "plant": "taraxacum-officinale",
+        "stages": [
+          {
+            "stage": "sprout",
+            "label": {
+              "text": "sprout",
+              "source": "quote"
+            }
+          },
+          {
+            "stage": "growing",
+            "label": {
+              "text": "growing",
+              "source": "quote"
+            }
+          },
+          {
+            "stage": "adult",
+            "label": {
+              "text": "flowering",
+              "source": "quote"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "cta",
+      "enter": "fade",
+      "duration": 90,
+      "photo": "02-product/deck-in-hand.jpg",
+      "headline": {
+        "text": "Plantdex",
+        "source": "authored"
+      },
+      "lines": [
+        {
+          "text": "The digital Plantdex is *free.*",
+          "source": "quote"
+        }
+      ],
+      "sprites": [
+        {
+          "plant": "taraxacum-officinale",
+          "stage": "adult"
+        },
+        {
+          "plant": "trifolium-pratense",
+          "stage": "adult"
+        },
+        {
+          "plant": "viola-sororia",
+          "stage": "adult"
+        },
+        {
+          "plant": "solidago-canadensis",
+          "stage": "adult"
+        }
+      ],
+      "button": {
+        "text": "Link in bio",
+        "source": "authored"
+      }
+    }
+  ]
+}

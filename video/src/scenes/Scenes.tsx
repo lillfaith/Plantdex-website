@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, Easing, Img, interpolate, OffthreadVideo, Sequence, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Backdrop } from '../components/Backdrop';
-import { CardReveal } from '../components/PhysicalCard';
+import { CardReveal, PhysicalCard } from '../components/PhysicalCard';
 import { PhoneFrame, ScreenshotView } from '../components/ScreenshotDemo';
 import { RevealRing, SparkBurst } from '../components/Sparkles';
 import { SpriteAnimation } from '../components/SpriteAnimation';
@@ -14,6 +14,7 @@ import type {
   CardRevealScene,
   CtaScene,
   FootageScene,
+  KnowledgeScene,
   HookScene,
   Line,
   PhotoScene,
@@ -316,6 +317,91 @@ export const FootageView: React.FC<{ scene: FootageScene }> = ({ scene }) => {
           width: W - SAFE.side * 2,
         }}
       />
+    </AbsoluteFill>
+  );
+};
+
+// ── Knowledge: what a discovery teaches ─────────────────────────────────────
+/**
+ * The card, centred, with the plant's real knowledge popping out around it like stats. Every
+ * value is the plant's own data (lint checks each against herbs.json / card-field-notes.ts),
+ * and tags sit beside the card touching only its border, never its printed text.
+ */
+export const KnowledgeView: React.FC<{ scene: KnowledgeScene }> = ({ scene }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  // Card and tags share the width without touching: 16 + 272 tag + 26 gap + 452 card + 26 + 272
+  // + 16 = 1080, so no tag ever sits on printed card text (the tilt adds ~12px each side).
+  const cardW = 452;
+  const cardH = Math.round((cardW * 1295) / 800);
+  const cardTop = 500;
+  const cardLeft = (W - cardW) / 2;
+  const tagW = 272;
+  const slots = [
+    { x: 16, y: cardTop + 40, from: 1 },
+    { x: W - 16 - tagW, y: cardTop + 200, from: -1 },
+    { x: 16, y: cardTop + 400, from: 1 },
+    { x: W - 16 - tagW, y: cardTop + 560, from: -1 },
+  ];
+  const firstPop = 6;
+  const gap = 5;
+  const float = Math.sin(frame / 14) * 5;
+  return (
+    <AbsoluteFill>
+      <Backdrop glowY={48} seed="know" />
+      <div
+        style={{
+          position: 'absolute',
+          left: W / 2 - 480,
+          top: cardTop + cardH / 2 - 560,
+          width: 960,
+          height: 1120,
+          background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${C.gold}40 0%, ${C.pink}22 45%, ${C.ground}00 72%)`,
+        }}
+      />
+      <Caption
+        line={scene.headline}
+        delay={0}
+        size={62}
+        style={{ position: 'absolute', top: SAFE.top + 10, left: SAFE.side, width: W - SAFE.side * 2 }}
+      />
+      <div style={{ position: 'absolute', left: cardLeft, top: cardTop + float }}>
+        <PhysicalCard plant={scene.plant} width={cardW} rotateY={-4} rotateX={3} rotateZ={-1.5} />
+      </div>
+      {scene.tags.slice(0, 4).map((tag, i) => {
+        const slot = slots[i]!;
+        const at = firstPop + i * gap;
+        const p = spring({ frame: frame - at, fps, config: { damping: 11, stiffness: 240, mass: 0.55 } });
+        const ping = interpolate(frame - at, [0, 3, 10], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+        if (frame < at) return null;
+        return (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              left: slot.x,
+              top: slot.y,
+              width: tagW,
+              padding: '16px 18px 18px',
+              borderRadius: 22,
+              background: `${C.panel}f2`,
+              border: `3px solid ${C.gold}`,
+              boxShadow: `0 18px 40px rgba(0,0,0,0.5), 0 0 ${Math.round(40 * ping)}px ${C.gold}`,
+              opacity: Math.min(1, p * 1.6),
+              transform: `translateX(${(1 - p) * 90 * slot.from}px) scale(${0.7 + 0.3 * p})`,
+              transformOrigin: slot.from > 0 ? 'right center' : 'left center',
+              fontFamily: outfit,
+            }}
+          >
+            <div style={{ fontSize: 21, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: C.gold }}>
+              {tag.label.text}
+            </div>
+            <div style={{ marginTop: 6, fontSize: 31, fontWeight: 700, lineHeight: 1.15, color: C.text }}>
+              {tag.items.join(' · ')}
+            </div>
+          </div>
+        );
+      })}
     </AbsoluteFill>
   );
 };

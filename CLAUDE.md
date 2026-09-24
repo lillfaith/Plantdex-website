@@ -1346,4 +1346,8 @@ pack, never an invented card, sprite, screen or feature, no medical/edibility/co
 - **Sprites play their real frames at the `sprites.json` fps, integer-scaled, nearest-neighbour.**
 - **Ads use card FRONTS only.** A back prints "Healing Traits", and an ad cannot carry the
   non-claim framing the app gives that heading.
+- **Core ad message (CREATIVE_RULES §0): real plants, real knowledge.** Ads periodically reveal
+  what a discovery teaches (identification, traditional uses, compounds, usable parts) via the
+  `knowledge` scene, whose values lint checks against the plant's own data. Edibility appears
+  only for cards printing the Edible icon, never as a safety claim; nothing implies treatment.
 - `cd video && npm run produce` = lint → typecheck → render → QC. See `video/README.md`.

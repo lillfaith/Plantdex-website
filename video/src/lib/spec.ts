@@ -96,6 +96,27 @@ export interface FootageScene extends SceneBase {
   captionAt?: 'top' | 'bottom';
 }
 
+/** One stat-style tag: a label and the plant's own values for it. */
+export interface KnowledgeTag {
+  label: Line;
+  /**
+   * Where the values come from, so lint can check them against THIS plant's data:
+   * `identification` = a trait name in src/lib/card-field-notes.ts; any other value is a
+   * card-back field in herbs.json (preparations, compounds, usableParts, taste, aromatic).
+   */
+  field: 'identification' | 'preparations' | 'compounds' | 'usableParts' | 'taste' | 'aromatic';
+  items: string[];
+}
+
+export interface KnowledgeScene extends SceneBase {
+  type: 'knowledge';
+  duration: number;
+  plant: string;
+  headline: Line;
+  /** Up to four; they pop in around the card in order: top-left, top-right, lower-left, lower-right. */
+  tags: KnowledgeTag[];
+}
+
 export interface ScreenShot {
   screen: string;
   framing: 'phone-viewport' | 'phone-full';
@@ -144,6 +165,7 @@ export type Scene =
   | CardRevealScene
   | PhotoScene
   | FootageScene
+  | KnowledgeScene
   | ScreenDemoScene
   | UiCalloutScene
   | CtaScene;

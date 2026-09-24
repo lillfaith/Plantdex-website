@@ -126,3 +126,12 @@ Identical to the ad above except for the first two seconds. The silhouette holds
 first three words are already on screen at frame 0, the thumbnail). The reveal and
 "A wild **Dandelion** appeared!" then land as the payoff. Driven by the hook's `teaser` field;
 everything after the reveal is the same spec.
+
+### Wild Plant Appeared: knowledge reward (`wild-plant-appeared-v3`, 18.2s)
+
+Version 2 plus a 2s `knowledge` scene between the outdoor footage and the scan flow: the
+Dandelion card centred, "Every plant unlocks *something real to learn.*", and four stat tags
+popping in 5 frames apart. The tags are IDENTIFICATION (One flower per stalk), TRADITIONAL
+USES (Tea · Roasted roots), NOTABLE COMPOUNDS (Inulin · Quercetin) and USABLE PARTS (Root ·
+Leaf · Flower). Every value is lint-checked against the plant's data. USABLE PARTS stands in
+for EDIBILITY because Dandelion's card doesn't carry the Edible icon (CREATIVE_RULES §0).

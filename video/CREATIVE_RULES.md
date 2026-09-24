@@ -8,6 +8,42 @@ the video.
 
 ---
 
+## 0. The core message: real plants, real knowledge
+
+**This is Plantdex's most important selling point, and every ad should carry it.** The plants
+are not random collectibles. They are real backyard and wild plants, and each one comes with
+real things to learn: how to recognise it, what it has traditionally been used for, the
+compounds it contains, which parts are used, and, for some cards, whether the card marks it
+edible. The viewer should leave thinking: *"I'm collecting plants, but I'm also learning what
+they actually are and why people care about them."*
+
+- **Reveal knowledge as the reward for discovering a plant**, periodically, like game stats
+  being unlocked. The `knowledge` scene does exactly this. Every value it shows is checked by
+  `lint:ads` against that plant's own data (`herbs.json` card backs,
+  `src/lib/card-field-notes.ts` identification traits), so a tag can never show something
+  the app does not teach.
+- **Preferred wording** (all `authored`, all still scanned for banned claims):
+  - "Learn what this plant has traditionally been used for."
+  - "Discover the compounds inside it."
+  - "Learn how to recognize it in the wild."
+  - "Every card teaches you something real about the plant."
+  - "Every plant unlocks something real to learn."
+  - "These aren't fictional collectibles. They're real plants growing around you."
+  - "Collect plants you can actually find outside."
+  - "Learn whether it's edible." (**only** under the edibility rule below)
+- **Never say or imply** that a plant cures, treats, prevents, heals, replaces medication or
+  guarantees a health benefit. "Traditional uses" means what the card prints as traditional
+  preparation (Tea, Roasted roots), not what it does to a body. Don't feature "Healing traits"
+  items (Anti-inflam., Liver support…) as ad copy.
+- **Edibility is card-specific.** The app never declares a plant safe to eat. An EDIBILITY tag
+  or "learn whether it's edible" may appear only for a card that prints the **Edible** use
+  icon: Purslane (#6), Maple (#17), Blackberry (#18), Sumac (#20), Chicory (#21), Field
+  Garlic (#29), Wild Strawberry (#30), Passion Flower (#43), Prickly Lettuce (#44). Never
+  Elderberry (#31), whose card carries a hazard caution. An edibility beat always needs an
+  on-screen identify-first line (e.g. "Never eat a wild plant you haven't positively
+  identified."). Dandelion's card does NOT carry the Edible icon, so Dandelion ads use
+  USABLE PARTS instead. `lint:ads` fails an edibility tag on any other card.
+
 ## 1. Only real assets
 
 - **Every pixel of product imagery comes from the ad asset pack** (including owner-shot

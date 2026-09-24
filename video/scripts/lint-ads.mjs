@@ -55,6 +55,19 @@ const BANNED = [
 ];
 const TOKENS = new Set(['commonName', 'scientificName', 'cardNumber', 'rarity']);
 
+// The plant's own knowledge, for checking every value a `knowledge` tag shows.
+const deck = JSON.parse(readFileSync(join(REPO, 'src/data/herbs.json'), 'utf8'));
+const fieldNotesSrc = readFileSync(join(REPO, 'src/lib/card-field-notes.ts'), 'utf8');
+function plantKnowledge(id, field) {
+  if (field === 'identification') {
+    const start = fieldNotesSrc.indexOf(`'${id}': {`);
+    if (start < 0) return null;
+    const end = fieldNotesSrc.indexOf('sourceIds', start);
+    return [...fieldNotesSrc.slice(start, end).matchAll(/trait: '([^']+)'/g)].map((m) => m[1]);
+  }
+  return deck.herbs.find((h) => h.id === id)?.back?.[field] ?? null;
+}
+
 const errors = [];
 const fail = (ad, msg) => errors.push(`${ad}: ${msg}`);
 
@@ -132,6 +145,24 @@ for (const { file, spec } of ADS) {
         }
         checkLine(ad, `${w} kicker`, s.kicker);
         checkLine(ad, `${w} caption`, s.caption);
+        break;
+      }
+      case 'knowledge': {
+        checkPlant(ad, w, s.plant, { hero: true });
+        checkLine(ad, `${w} headline`, s.headline);
+        if (!s.tags.length || s.tags.length > 4) fail(ad, `${w}: needs 1–4 tags`);
+        s.tags.forEach((t, j) => {
+          checkLine(ad, `${w} tag ${j + 1} label`, t.label);
+          const known = plantKnowledge(s.plant, t.field);
+          if (!known) fail(ad, `${w} tag ${j + 1}: ${s.plant} has no ${t.field} data`);
+          for (const item of t.items) {
+            checkLine(ad, `${w} tag ${j + 1} value`, { text: item, source: 'card' });
+            if (known && !known.includes(item)) fail(ad, `${w} tag ${j + 1}: "${item}" is not in ${s.plant}'s ${t.field} (${known.join(', ')})`);
+          }
+          // An edibility claim can only come from a card that PRINTS the Edible use icon.
+          if (/edib/i.test(t.label.text) && !deck.herbs.find((h) => h.id === s.plant)?.uses?.includes('edible'))
+            fail(ad, `${w} tag ${j + 1}: ${s.plant}'s card does not carry the Edible icon`);
+        });
         break;
       }
       case 'screenDemo': {
