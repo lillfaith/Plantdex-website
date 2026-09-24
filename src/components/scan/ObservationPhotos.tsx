@@ -19,9 +19,10 @@ import {
  * method rather than a preference about forms.
  *
  * THE SLOTS ARE NAMED, NOT NUMBERED, because the name is the instruction. "Photo 2" tells
- * somebody standing in front of a plant nothing; "Close-Up — a clear leaf, and where it
- * attaches to the stem" tells them what to point the camera at, which is the only thing that
- * improves the answer.
+ * somebody standing in front of a plant nothing; "Leaf + stem" tells them what to point the
+ * camera at, which is the only thing that improves the answer. The prose under each was
+ * shortened to one line for the same reason the names exist: it is read standing up, outdoors,
+ * on a phone, and a sentence that has to be parsed is a sentence that gets skipped.
  *
  * THE THIRD IS OPTIONAL AND SAYS SO. A flower, fruit or bark shot is the single most useful
  * addition when the plant has one — and many plants, in many seasons, have none of them.
@@ -42,23 +43,22 @@ interface Slot {
 const SLOTS: readonly Slot[] = [
   {
     key: 'whole',
-    label: 'Whole Plant',
-    instruction: 'Photograph the entire plant so we can see its overall shape and growth.',
+    label: 'Whole plant',
+    instruction: 'Show its overall shape and how it grows.',
     organ: 'habit',
     required: true,
   },
   {
     key: 'close',
-    label: 'Close-Up',
-    instruction: 'Photograph a clear leaf and, if possible, where it attaches to the stem.',
+    label: 'Leaf + stem',
+    instruction: 'Show one leaf clearly and, if you can, where it joins the stem.',
     organ: 'leaf',
     required: true,
   },
   {
     key: 'feature',
-    label: 'Identifying Feature',
-    instruction:
-      'Photograph a flower, fruit, seed head, bark, stem, or another distinctive feature.',
+    label: 'Flower / fruit / feature',
+    instruction: 'Capture the most distinctive feature you can find.',
     // `auto` rather than a guess: this slot is deliberately whatever the plant offers, and
     // naming one organ here would mislabel every other thing somebody legitimately shoots.
     organ: 'auto',

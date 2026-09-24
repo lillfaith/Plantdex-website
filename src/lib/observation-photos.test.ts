@@ -84,7 +84,12 @@ describe('the observation UI', () => {
   const PANEL = readFileSync('src/components/scan/ScanPanel.tsx', 'utf8');
 
   it('names three slots and marks the third recommended, not required', () => {
-    for (const label of ['Whole Plant', 'Close-Up', 'Identifying Feature']) {
+    /*
+     * The names are the instruction — "Photo 2" tells somebody standing in front of a plant
+     * nothing — so what is pinned is that each one names an ORGAN or a view, not the
+     * particular wording. They were shortened once already, for a screen read outdoors.
+     */
+    for (const label of ['Whole plant', 'Leaf + stem', 'Flower / fruit / feature']) {
       expect(UI, label).toContain(label);
     }
     // A flower or fruit is the most useful third shot and many plants have neither in a
@@ -93,9 +98,9 @@ describe('the observation UI', () => {
   });
 
   it('carries the instruction for each slot, because the name alone is not one', () => {
-    expect(UI).toContain('Photograph the entire plant');
-    expect(UI).toContain('where it attaches to the stem');
-    expect(UI).toContain('flower, fruit, seed head, bark');
+    expect(UI).toContain('overall shape and how it grows');
+    expect(UI).toContain('where it joins the stem');
+    expect(UI).toContain('most distinctive feature');
   });
 
   it('says the photographs must be of the SAME individual plant', () => {

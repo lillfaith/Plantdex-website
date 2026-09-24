@@ -377,7 +377,16 @@ describe('the scan screen actually calls the path above', () => {
 
   it('logs a sighting when a candidate is confirmed', () => {
     expect(panel).toContain('void addSighting({');
-    expect(panel).toMatch(/\.\.\.observedTaxonFields\(candidate, result\.provider\)/);
+    /*
+     * `result?.provider`, optionally chained, because the confirm handler is now a
+     * component-level `useCallback` shared by the leading candidate's one-tap confirm and by
+     * the comparison panel's deliberate one. It is only ever reached from a row inside the
+     * result branch, so the value is always there — but the compiler cannot see that from
+     * where the callback is declared, and widening the type to pretend otherwise would be
+     * worse than a question mark. The assertion is unchanged in substance: the taxon fields
+     * come from the candidate and the provider, together, at this one call site.
+     */
+    expect(panel).toMatch(/\.\.\.observedTaxonFields\(candidate, result\??\.provider\)/);
     // Through the facade, so signed out writes localStorage by the same call.
     expect(panel).toContain("import { useSightingsStore } from '@/lib/sightings-store';");
   });
