@@ -44,6 +44,17 @@ npm run produce                 # lint:ads → typecheck → render → qc
 Blotato, TikTok, Reels and Shorts). It also writes `exports/<id>.qc.json` and a contact sheet
 at `exports/qc/<id>-contact.jpg`. **Look at the contact sheet before uploading.**
 
+**iPhone master** (4K HEVC .mov that saves straight to Photos):
+
+```bash
+node scripts/render.mjs wild-plant-appeared-v3 --iphone   # exports/<id>-iphone-4k.mov
+```
+
+It renders at 2× (2160×3840) rather than upscaling, and uses the format iPhones record in:
+HEVC Main tagged `hvc1` in a QuickTime .mov, BT.709 limited range, 48kHz stereo AAC,
+faststart. About 5 minutes and roughly 1.1MB per second of video. Use the 1080p MP4 for
+Blotato and platform uploads, and the .mov to keep, preview or edit on the phone.
+
 Stills only, for fast layout iteration:
 
 ```bash
