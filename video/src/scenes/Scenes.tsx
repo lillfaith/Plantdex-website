@@ -39,7 +39,8 @@ const W = 1080;
 export const Hook: React.FC<{ scene: HookScene }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const revealAt = 15;
+  const teaser = scene.teaser;
+  const revealAt = teaser ? teaser.duration : 15;
   const lines = scene.lines.map((l) => fill(l, scene.plant));
   const cy = 1090;
 
@@ -48,9 +49,19 @@ export const Hook: React.FC<{ scene: HookScene }> = ({ scene }) => {
     extrapolateRight: 'clamp',
   });
   // Anticipation: a small rustle that speeds up just before the reveal.
-  const rustle = frame < revealAt ? Math.sin(frame * (0.9 + frame * 0.05)) * (1.5 + frame * 0.18) : 0;
+  // With a teaser the wait is long, so the rustle stays small and only builds over the last
+  // half-second; without one it is the short original anticipation.
+  const build = Math.max(0, frame - (revealAt - 15));
+  const rustle =
+    frame >= revealAt
+      ? 0
+      : teaser
+        ? Math.sin(frame * (0.5 + build * 0.06)) * (0.8 + build * 0.35)
+        : Math.sin(frame * (0.9 + frame * 0.05)) * (1.5 + frame * 0.18);
   const punch = spring({ frame: frame - revealAt, fps, config: { damping: 8, stiffness: 180, mass: 0.6 } });
-  const scale = frame < revealAt ? 0.94 : 0.94 + 0.06 * punch + 0.1 * Math.sin(Math.min(punch, 1) * Math.PI);
+  // A teaser's silhouette creeps toward the viewer while the line is read.
+  const approach = teaser ? interpolate(frame, [0, revealAt], [0.86, 0.94], { extrapolateRight: 'clamp' }) : 0.94;
+  const scale = frame < revealAt ? approach : 0.94 + 0.06 * punch + 0.1 * Math.sin(Math.min(punch, 1) * Math.PI);
   const shakeT = frame - revealAt;
   const shake =
     shakeT >= 0 && shakeT < 7
@@ -67,6 +78,7 @@ export const Hook: React.FC<{ scene: HookScene }> = ({ scene }) => {
       <Backdrop glowY={56} seed="hook" />
       <RevealRing x={W / 2} y={cy} at={revealAt} size={980} />
       <SparkBurst x={W / 2} y={cy} at={revealAt} seed="hook" count={22} radius={470} />
+      {teaser ? <TeaserLine line={fill(teaser.line, scene.plant)} exitAt={revealAt} /> : null}
       <div
         style={{
           position: 'absolute',
@@ -87,7 +99,7 @@ export const Hook: React.FC<{ scene: HookScene }> = ({ scene }) => {
                 fontSize: accent ? 172 : 100,
                 lineHeight: accent ? 1.02 : 1.12,
                 letterSpacing: accent ? '-0.025em' : '0',
-                ...(i === 0 ? {} : riseAt(frame, fps, revealAt + 2 + (i - 1) * 7)),
+                ...(i === 0 ? (teaser ? riseAt(frame, fps, revealAt) : {}) : riseAt(frame, fps, revealAt + 2 + (i - 1) * 7)),
               }}
             >
               {accent ? <GradientText>{l.text}</GradientText> : l.text}
@@ -124,6 +136,55 @@ export const Hook: React.FC<{ scene: HookScene }> = ({ scene }) => {
         }}
       />
     </AbsoluteFill>
+  );
+};
+
+/**
+ * The curiosity line: words pop in fast (the first two are already there at frame 0, so the
+ * thumbnail reads as a sentence starting), hold, then lift away as the reveal fires.
+ */
+const TeaserLine: React.FC<{ line: Line; exitAt: number }> = ({ line, exitAt }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const words: { text: string; em: boolean }[] = [];
+  for (const part of line.text.split(/(\*[^*]+\*)/g).filter(Boolean)) {
+    const em = part.startsWith('*') && part.endsWith('*');
+    for (const w of (em ? part.slice(1, -1) : part).split(/\s+/).filter(Boolean)) words.push({ text: w, em });
+  }
+  const exit = interpolate(frame, [exitAt - 3, exitAt + 3], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  if (exit <= 0) return null;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: SAFE.top + 30,
+        left: SAFE.side,
+        width: W - SAFE.side * 2,
+        textAlign: 'center',
+        fontFamily: outfit,
+        fontWeight: 800,
+        fontSize: 104,
+        lineHeight: 1.08,
+        letterSpacing: '-0.02em',
+        color: C.text,
+        opacity: exit,
+        transform: `translateY(${(1 - exit) * -40}px)`,
+      }}
+    >
+      {words.map((w, i) => {
+        // The first three words are up at frame 0, so the thumbnail reads as a line, not a word.
+        const at = Math.max(0, (i - 2) * 2.5);
+        const p = at === 0 ? 1 : spring({ frame: frame - at, fps, config: { damping: 12, stiffness: 220, mass: 0.5 } });
+        return (
+          <span
+            key={i}
+            style={{ display: 'inline-block', marginRight: '0.24em', opacity: Math.min(1, p * 1.5), transform: `translateY(${(1 - p) * 30}px) scale(${0.85 + 0.15 * p})` }}
+          >
+            {w.em ? <GradientText>{w.text}</GradientText> : w.text}
+          </span>
+        );
+      })}
+    </div>
   );
 };
 

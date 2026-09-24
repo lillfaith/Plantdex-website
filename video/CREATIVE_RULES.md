@@ -95,6 +95,10 @@ Not allowed:
 
 ## 5. Commerce and trust
 
+- **No third-party trademarks on screen** — no "Pokémon", "Pokédex" or similar, even as a
+  comparison. It reads as an affiliation and platforms reject or limit it. Name the genre
+  instead ("a collecting game"). `lint:ads` enforces a list.
+
 - **Never claim the deck is on sale, or give a price, shipping time, stock level,
   discount, deadline or scarcity** unless the owner has confirmed it for that campaign.
   As of the pack's screenshots the site says: *"The digital Plantdex is free. The physical

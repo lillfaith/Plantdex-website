@@ -49,6 +49,9 @@ const BANNED = [
   [/(\$\s?\d|\d+\s?% off|\bfree shipping\b|\bships? in\b|\bdelivery in\b)/i, 'price/shipping claim'],
   [/\b(definitely|guaranteed|100% accurate|always right)\b/i, 'certainty claim'],
   [/\b(\d[\d,]*\+? (users|players|downloads|reviews)|rated \d|★)\b/i, 'fabricated social proof'],
+  // Comparative hooks name a genre, never a brand: a third-party trademark on screen reads as an
+  // affiliation claim and gets ads rejected. "Plantdex" is ours; these are not.
+  [/(pok[eé]mon|pok[eé]dex|nintendo|game ?freak|pikachu|tamagotchi|animal crossing)/i, 'third-party trademark'],
 ];
 const TOKENS = new Set(['commonName', 'scientificName', 'cardNumber', 'rarity']);
 
@@ -102,6 +105,13 @@ for (const { file, spec } of ADS) {
         checkPlant(ad, w, s.plant, { hero: true, stage: s.stage });
         if (!Number.isInteger(s.spriteScale) || s.spriteScale < 1) fail(ad, `${w}: spriteScale must be a whole number`);
         s.lines.forEach((l, j) => checkLine(ad, `${w} line ${j + 1}`, l));
+        if (s.teaser) {
+          checkLine(ad, `${w} teaser`, s.teaser.line);
+          // Words pop 2.5 frames apart; the whole sentence needs >= 1s on screen after that.
+          const words = s.teaser.line.text.replace(/\*/g, '').split(/\s+/).length;
+          if (s.teaser.duration - words * 2.5 < spec.fps) fail(ad, `${w}: teaser is on screen < 1s once fully shown`);
+          if (s.teaser.duration >= s.duration) fail(ad, `${w}: teaser is longer than the scene`);
+        }
         break;
       case 'cardReveal':
         checkPlant(ad, w, s.plant, { hero: true });

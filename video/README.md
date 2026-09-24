@@ -118,3 +118,11 @@ and product shots has no recorded licence, so confirm that before any paid place
 | 12–15s | CTA | `02-product/deck-in-hand.jpg`, four real sprites | "Plantdex" / "The digital Plantdex is free." / "Link in bio" |
 
 It has no music. The silent AAC track is deliberate: add a trending sound in-platform.
+
+### Wild Plant Appeared: curiosity hook (`wild-plant-appeared-v2`, 16.5s)
+
+Identical to the ad above except for the first two seconds. The silhouette holds for 2s while
+"I turned finding wild plants into a *collecting game.*" builds word by word above it (the
+first three words are already on screen at frame 0, the thumbnail). The reveal and
+"A wild **Dandelion** appeared!" then land as the payoff. Driven by the hook's `teaser` field;
+everything after the reveal is the same spec.

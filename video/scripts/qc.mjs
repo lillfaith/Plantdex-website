@@ -229,7 +229,9 @@ for (const { spec } of ADS.filter((a) => !ids.length || ids.includes(a.spec.id))
     const framesDir = join(qcDir, spec.id, 'seconds');
     mkdirSync(framesDir, { recursive: true });
     const shots = [];
-    for (let t = 0.5; t < p.duration; t += 1) {
+    // Sample from the FRAME count, not the container duration: the silent audio track can run
+    // a few ms past the last video frame, and a seek there returns no picture.
+    for (let t = 0.5; t < p.frames / p.fps - 0.05; t += 1) {
       const out = join(framesDir, `t${t.toFixed(1).padStart(4, '0')}.png`);
       execFileSync(FFMPEG, ['-v', 'error', '-y', '-ss', String(t), '-i', mp4, '-frames:v', '1', '-f', 'image2', '-c:v', 'png', out], { env: ENV });
       shots.push(out);

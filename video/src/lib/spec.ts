@@ -50,6 +50,11 @@ export interface HookScene extends SceneBase {
   lines: Line[];
   /** Index into `lines` rendered in the accent colour. */
   accent?: number;
+  /**
+   * A curiosity line shown over the silhouette BEFORE the reveal, word by word. When set, the
+   * reveal waits `duration` frames and `lines` become the payoff. `*words*` take the gradient.
+   */
+  teaser?: { line: Line; duration: number };
 }
 
 export interface CardRevealScene extends SceneBase {
