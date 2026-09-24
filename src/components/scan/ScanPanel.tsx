@@ -25,6 +25,7 @@ import { warmIdentifier } from '@/lib/scan-warmup';
 import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
+import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
@@ -156,10 +157,18 @@ export function ScanPanel() {
   const [shelved, setShelved] = useState(false);
 
   /*
-   * WHICH ROW HAS ITS CARD OPEN FOR COMPARISON. One at a time: two cards open at once is two
-   * plants to hold in your head, which is the opposite of what comparing is for.
+   * WHICH CANDIDATE IS BEING CHECKED AGAINST ITS FIELD NOTES.
+   *
+   * The dialog itself is mounted once, far below, for the reason `HerbDetail` and
+   * `KnowledgeCheck` both record: confirming advances the collection and re-renders the row
+   * this was opened from, so a <dialog> living inside that row would be unmounted by the very
+   * action it reports. This holds only the subject.
    */
-  const [comparing, setComparing] = useState<string | null>(null);
+  const [checking, setChecking] = useState<{
+    herb: NonNullable<ReturnType<typeof getCatalogueEntry>>;
+    candidate: ScanCandidate;
+  } | null>(null);
+  const traitsRef = useRef<HTMLDialogElement>(null);
 
   /** The organs of the photographs that produced the result currently on screen. */
   const [sentOrgans, setSentOrgans] = useState<readonly ObservationPhoto['organ'][]>([]);
@@ -599,12 +608,33 @@ export function ScanPanel() {
                               href={`/herbdex/${herb.id}`}
                               className="block rounded-xl border-y border-r border-l-4 border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink p-3 transition-colors hover:bg-plum-600/40"
                             >
-                              <span className="block font-bold text-violet-100">
-                                {herb.commonName}
-                              </span>
-                              <span className="block text-xs italic text-violet-400">
-                                {herb.scientificName}
-                              </span>
+                              {/*
+                                THE GRID'S OWN RULE, APPLIED HERE. An undiscovered card is a
+                                number and a silhouette everywhere else in the app; naming it
+                                on the scan screen made this the one surface that gave it
+                                away. The link stays — it lands on the locked page, which
+                                spoils nothing — and a card already in the collection is named
+                                as usual, because there is nothing left to protect.
+                              */}
+                              {ready && isDiscovered(herb.id) ? (
+                                <>
+                                  <span className="block font-bold text-violet-100">
+                                    {herb.commonName}
+                                  </span>
+                                  <span className="block text-xs italic text-violet-400">
+                                    {herb.scientificName}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="block font-bold text-violet-100">
+                                    Card #{String(herb.cardNumber).padStart(2, '0')}
+                                  </span>
+                                  <span className="block text-xs text-violet-400">
+                                    Undiscovered
+                                  </span>
+                                </>
+                              )}
                             </Link>
                           </li>
                         ))}
@@ -752,12 +782,14 @@ export function ScanPanel() {
                      */
                     const leads = index === 0;
                     /*
-                     * A LOWER-RANKED CARD CANDIDATE GETS COMPARED, NOT CONFIRMED. The leader
-                     * is the identification, so confirming it is one deliberate tap. Anything
-                     * below it is the player overruling the identifier, which is allowed and
-                     * is a bigger decision — so it goes through the card first.
+                     * WHAT THIS ROW MAY CALL THE ENTRY. Discovered, its own name; undiscovered,
+                     * nothing that would spoil the reveal — the same rule `LockedHerb` states
+                     * and the same one the grid draws. It is deliberately not a card number
+                     * here: a number would be a fact about the collectible on a row that is
+                     * about a taxon, and the row has no use for one.
                      */
-                    const needsComparison = !leads;
+                    const entryName =
+                      herb && ready && isDiscovered(herb.id) ? herb.commonName : 'a Plantdex entry';
                     const rowKey = candidate.scientificName;
                     return (
                       <li
@@ -824,16 +856,25 @@ export function ScanPanel() {
                         )}
 
                         {/*
-                          THE CARD, AS METADATA ABOUT THE CANDIDATE.
+                          THAT AN ENTRY EXISTS, WITHOUT SAYING WHICH ONE.
 
-                          A DRAWN CHIP, NOT A GLYPH. A playing-card emoji is the obvious thing
-                          to put here and `no-emoji.test.ts` forbids it for the reason the
-                          sprites exist: this interface is pixel art, and a font's idea of a
-                          card is neither drawn by us nor the same on two platforms.
+                          This printed "Has a Plantdex card: Wood Sorrel" and linked to it —
+                          on a card the player has not discovered. `LockedHerb` states the
+                          opposite rule outright: an undiscovered card shows "nothing that
+                          would spoil the reveal — no name, no artwork, no card-back content".
+                          So the scan screen was handing over the reward in order to ask
+                          whether to award it, and the flip at the end had nothing left to
+                          turn over.
 
-                          The wording states a RELATION — what the deck covers — and never
-                          that the photograph is that plant. That uncertainty is carried by
-                          the score above and the caution over the whole result.
+                          IT STILL SAYS WHY THE MATCH HAPPENED, because that is about the
+                          TAXON rather than the collectible: a `spp.` card covering a whole
+                          genus is the actual reason two of these rows can offer the same
+                          entry, and the genus is already printed on the row above. What goes
+                          is the card's own name and the route to it.
+
+                          A DRAWN CHIP, NOT A GLYPH. `no-emoji.test.ts` forbids one, for the
+                          reason the sprites exist: this interface is pixel art, and a font's
+                          idea of a card is neither drawn by us nor the same on two platforms.
                         */}
                         {herb && candidate.match.confirmable && (
                           <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-relaxed text-violet-300">
@@ -841,16 +882,13 @@ export function ScanPanel() {
                               aria-hidden="true"
                               className="inline-block h-2.5 w-2.5 shrink-0 border-2 border-gold-400 bg-gold-400"
                             />
-                            <Link
-                              href={`/herbdex/${herb.id}`}
-                              className="relative font-semibold text-violet-200 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
-                            >
+                            <span className="font-semibold text-violet-200">
                               {candidate.match.kind === 'genusCard'
-                                ? `Has a Plantdex card: ${herb.commonName}, which covers the whole ${genusLabel(herb.scientificName)} genus`
+                                ? `Plantdex entry available \u2014 one covers the whole ${genusLabel(herb.scientificName)} genus`
                                 : candidate.match.kind === 'acceptedScope'
-                                  ? `Has a Plantdex card: ${herb.commonName}, which covers this ${genusLabel(herb.scientificName)} species`
-                                  : `Has a Plantdex card: ${herb.commonName}`}
-                            </Link>
+                                  ? `Plantdex entry available \u2014 it covers this ${genusLabel(herb.scientificName)} species`
+                                  : 'Plantdex entry available'}
+                            </span>
                           </p>
                         )}
 
@@ -897,10 +935,10 @@ export function ScanPanel() {
                            */
                           <p className="mt-2 text-xs leading-relaxed text-violet-300">
                             {index !== firstRelated
-                              ? `Related to ${herb.commonName}, but a different species.`
+                              ? `Related to ${entryName}, but a different species.`
                               : (candidate.match.relatedHerbIds?.length ?? 1) > 1
                                 ? `Related to the deck’s ${candidate.match.relatedHerbIds?.length} cards in this group, but a different species — so it cannot be logged as any of them.`
-                                : `Related to this card, but a different species — so it cannot be logged as ${herb.commonName}.`}
+                                : `Related to ${entryName}, but a different species — so it cannot be logged under it.`}
                           </p>
                         ) : already ? (
                           /*
@@ -916,66 +954,31 @@ export function ScanPanel() {
                               ? 'Added \u2713'
                               : 'Already in your collection.'}
                           </p>
-                        ) : needsComparison ? (
-                          /*
-                           * COMPARE, THEN DECIDE — TWO STEPS, AND THE SECOND IS THE PLAYER'S.
-                           *
-                           * This row is not what the identifier led with, so offering "Yes, I
-                           * found Wood Sorrel" under it asks somebody to agree with a claim
-                           * nothing on the page has made. Opening the card first is the step
-                           * that turns it into a judgement they can actually make, and the
-                           * affirmation is separate from the record it writes.
-                           *
-                           * NOT the checkbox `scan-reward.test.ts` forbids: that guard is
-                           * about putting a second decision in front of the ONE action
-                           * `/start` sends a stranger to take, which is confirming the
-                           * identifier's own leading answer. That path is untouched and still
-                           * one tap. This is the overrule path, and it should cost more.
-                           */
-                          <div className="mt-3">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setComparing((current) => (current === rowKey ? null : rowKey))
-                              }
-                              aria-expanded={comparing === rowKey}
-                              className="min-h-11 w-full rounded-full border border-violet-600 px-4 text-sm font-bold text-violet-100 transition-colors hover:border-gold-500/60 hover:text-gold-300"
-                            >
-                              {comparing === rowKey
-                                ? `Hide the ${herb.commonName} card`
-                                : `Compare with ${herb.commonName} card →`}
-                            </button>
-                            {comparing === rowKey && (
-                              <div className="mt-3 rounded-lg border border-violet-700 bg-plum-800/50 p-3">
-                                <p className="text-xs leading-relaxed text-violet-300">
-                                  The identifier put{' '}
-                                  <span className="italic">{result.candidates[0]?.scientificName}</span>{' '}
-                                  ahead of this one. Open the card and check it against the
-                                  plant in front of you before you decide.
-                                </p>
-                                <Link
-                                  href={`/herbdex/${herb.id}`}
-                                  className="mt-2 inline-flex min-h-11 items-center text-sm font-bold text-gold-300 underline underline-offset-4 hover:text-gold-200"
-                                >
-                                  Open the {herb.commonName} card
-                                </Link>
-                                <button
-                                  type="button"
-                                  onClick={() => confirmCandidate(herb, candidate)}
-                                  className="arcade-key mt-2 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
-                                >
-                                  This matches my plant &mdash; add {herb.commonName}
-                                </button>
-                              </div>
-                            )}
-                          </div>
                         ) : (
+                          /*
+                           * INSPECT, THEN DECIDE — AND NOTHING IS NAMED UNTIL IT IS EARNED.
+                           *
+                           * This button used to read "Yes, I found Wood Sorrel", which spent
+                           * the reveal in order to ask for it: `LockedHerb` withholds the name,
+                           * the artwork and the card back precisely so the flip at the end has
+                           * something to turn over, and the one route that actually ends in a
+                           * discovery was giving it away first.
+                           *
+                           * So the label names no card, and the panel it opens is NOT the
+                           * collectible — it is the site's own field notes, which are what a
+                           * person standing in front of a plant needs and which reveal nothing
+                           * they have not earned. The confirmation lives inside it, so the
+                           * deliberate tap comes AFTER the comparison rather than instead of it.
+                           */
                           <button
                             type="button"
-                            onClick={() => confirmCandidate(herb, candidate)}
+                            onClick={() => {
+                              setChecking({ herb, candidate });
+                              traitsRef.current?.showModal();
+                            }}
                             className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
                           >
-                            Yes, I found {herb.commonName}
+                            Check identifying traits <span aria-hidden="true">&rarr;</span>
                           </button>
                         )}
                       </li>
@@ -1076,6 +1079,35 @@ export function ScanPanel() {
           scan history is kept &mdash; signed out, nothing is saved anywhere.
         </p>
       )}
+
+      {/*
+        THE TRAITS PANEL IS MOUNTED HERE, NOT IN THE ROW THAT OPENS IT.
+
+        Same rule as the celebration below and as `KnowledgeCheck`: confirming from inside it
+        writes a discovery, which re-renders the candidate list — so a <dialog> living in the
+        row would be torn out from under the action it is reporting. It sits at a fixed
+        position at the end of the tree and `checking` decides what is inside it.
+      */}
+      <IdentifyTraitsPanel
+        dialogRef={traitsRef}
+        herb={checking?.herb ?? null}
+        scientificName={checking?.candidate.scientificName ?? null}
+        onConfirm={() => {
+          /*
+           * CAPTURED BEFORE CLOSING. `close()` fires `onClose`, which clears `checking` — so
+           * reading it after would hand `confirmCandidate` an empty subject. The celebration
+           * is opened by that call, and this dialog must be out of the way before it is.
+           */
+          const subject = checking;
+          traitsRef.current?.close();
+          if (subject) confirmCandidate(subject.herb, subject.candidate);
+        }}
+        onDismiss={() => {
+          traitsRef.current?.close();
+          setChecking(null);
+        }}
+      />
+
 
       {/*
         THE DIALOG ELEMENT IS ALWAYS HERE; ONLY ITS CONTENTS ARE CONDITIONAL.

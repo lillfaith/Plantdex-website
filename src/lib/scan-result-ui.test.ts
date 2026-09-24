@@ -49,15 +49,19 @@ describe('1. the provider ranking is what the page emphasises', () => {
     expect(PANEL).toContain('Closest suggestion');
   });
 
-  it('offers the one-tap confirm only to the leader', () => {
+  it('sends every collectible candidate down the same path, whatever its rank', () => {
     /*
-     * `needsComparison` is the whole rule: anything below the leader is the player OVERRULING
-     * the identifier, which is a larger decision than agreeing with it and must not be one
-     * tap. Keyed on rank alone — a lower-ranked candidate does not become a one-tap confirm
-     * by being in the deck, which is the exact substitution this file exists to prevent.
+     * There was briefly a rank-dependent interaction here: one tap for the leader, a
+     * comparison for anything below it. That is gone. Inspecting the traits is worth doing
+     * for the leader too, and a single path means the row's action cannot become a second
+     * place where rank is re-litigated — which is how the deck got its thumb on the scale the
+     * first time.
      */
-    expect(PANEL).toContain('const needsComparison = !leads;');
-    expect(PANEL).not.toMatch(/needsComparison\s*=\s*[^;]*confirmable/);
+    expect(PANEL).not.toContain('needsComparison');
+    const action = PANEL.slice(PANEL.indexOf('INSPECT, THEN DECIDE'));
+    expect(action.slice(0, 1400), 'the action branches on rank again').not.toMatch(
+      /\bleads\b/,
+    );
   });
 });
 
@@ -94,9 +98,18 @@ describe('2. card availability does not reorder or remove candidates', () => {
 });
 
 describe('3. a related species still cannot be logged as the card species', () => {
-  it('keeps the refusal sentence', () => {
-    expect(PANEL).toMatch(/Related to this card, but a different species/);
-    expect(PANEL).toMatch(/cannot be logged as \$\{herb\.commonName\}/);
+  it('keeps the refusal, without naming the entry it refuses', () => {
+    /*
+     * The sentence used to end "...so it cannot be logged as Wood Sorrel", which named an
+     * undiscovered card on the one screen that leads to discovering it. `entryName` is the
+     * card's own name once it is in the collection and a neutral phrase before that, so the
+     * refusal survives intact and the reveal does too.
+     */
+    expect(PANEL).toMatch(/Related to \$\{entryName\}, but a different species/);
+    expect(PANEL).toMatch(/cannot be logged under it/);
+    expect(PANEL).toContain(
+      "herb && ready && isDiscovered(herb.id) ? herb.commonName : 'a Plantdex entry'",
+    );
   });
 
   it('explains the refusal once in full, then names it', () => {
@@ -108,7 +121,7 @@ describe('3. a related species still cannot be logged as the card species', () =
      */
     expect(PANEL).toContain('const firstRelated = result.candidates.findIndex(');
     expect(PANEL).toContain('{index !== firstRelated');
-    expect(PANEL).toContain('Related to ${herb.commonName}, but a different species.');
+    expect(PANEL).toContain('Related to ${entryName}, but a different species.');
   });
 
   it('puts every action branch after the branches that refuse', () => {
@@ -119,11 +132,11 @@ describe('3. a related species still cannot be logged as the card species', () =
      */
     const sameGenus = PANEL.indexOf("candidate.match.kind === 'sameGenus'");
     const ambiguous = PANEL.indexOf("candidate.match.kind === 'ambiguous'");
-    const calls = [...PANEL.matchAll(/confirmCandidate\(herb, candidate\)/g)].map((m) => m.index!);
+    const opens = [...PANEL.matchAll(/setChecking\(\{ herb, candidate \}\)/g)].map((m) => m.index!);
     expect(ambiguous).toBeGreaterThan(-1);
     expect(sameGenus).toBeGreaterThan(ambiguous);
-    expect(calls, 'exactly two ways to confirm: the leader, and after a comparison').toHaveLength(2);
-    for (const at of calls) expect(at).toBeGreaterThan(sameGenus);
+    expect(opens, 'one way into the traits panel, and it is the last branch').toHaveLength(1);
+    for (const at of opens) expect(at).toBeGreaterThan(sameGenus);
   });
 });
 
@@ -210,14 +223,15 @@ describe('the score is presented as a score, not a probability', () => {
 });
 
 describe('the card is stated as a relation, never as the identification', () => {
-  it('names what the deck covers and claims nothing about the photograph', () => {
-    expect(PANEL).toContain('Has a Plantdex card: ${herb.commonName}');
+  it('says an entry exists without saying which one', () => {
+    expect(PANEL).toContain("'Plantdex entry available'");
     expect(PANEL).not.toMatch(/This is your \$\{herb\.commonName\}/);
     expect(PANEL).not.toMatch(/You found \$\{candidate\.scientificName\}/);
   });
 
-  it('offers a comparison before a lower-ranked card is logged', () => {
-    expect(PANEL).toContain('Compare with ${herb.commonName} card');
-    expect(PANEL).toContain('This matches my plant');
+  it('still says WHY a genus card matched, which is about the taxon', () => {
+    // The genus is already printed on the row; withholding it would hide the reason two
+    // rows can offer the same entry while protecting nothing.
+    expect(PANEL).toMatch(/one covers the whole \$\{genusLabel\(herb\.scientificName\)\} genus/);
   });
 });
