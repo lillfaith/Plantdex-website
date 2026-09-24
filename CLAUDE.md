@@ -326,6 +326,16 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   plant. Detached elements *during* a gesture are fine and often the point (flung seeds, a
   falling samara, shed snow), which is why the rule is frame 0 only: at rest a plant is
   one plant. `audit_sprites.py` flood-fills it.
+- **`audit_sprites.py` REWRITES the sheets it audits, so never run it beside anything that
+  reads them.** Its `stale()` check calls `compile_sprite()` IN PLACE and compares the bytes
+  before and after — that is how it detects a stale build, and it means every run genuinely
+  rewrites all 162 PNGs even when nothing changed. Run it concurrently with `npm test` and
+  `plant-sprites.test.ts` hashes a half-written file:
+  `oxalis-stricta: manifest version is stale: expected 'c4def14b' to be 'da39a3ee'`.
+  `da39a3ee` is the SHA-1 of the EMPTY STRING, and the message accuses the manifest, which is
+  the one thing that is not wrong — the file on disk is fine and the same test passes the
+  moment it is run on its own. Run the audit and the suite one after the other, never in
+  parallel.
 - **`--preview` renders without writing, so always run the plain build before committing.**
   It is entirely possible to tweak a sprite, preview it, and commit the *previous* PNG —
   which happened, and shipped a strawberry two pixels out of place. `npm run verify`
@@ -803,7 +813,11 @@ or was not made; re-measure before trusting any of them again.
   390px, DPR 3, on the built export; the layout is byte-for-byte identical — same 79 elements
   at the same rendered sizes). The four dailies deliberately keep `thumb`: they are drawn
   nearly twice as wide, there are only ever a handful, and they are meant to be looked at.
-  `/seasons` looks similar and is not: it pulls only 120KB. `/herbdex` carries no images at all.
+  `/seasons` looks similar and is not: it pulls only 120KB. `/herbdex` carries no CARD art —
+  but it is not imageless, and this line used to say it was: it pulls 55 sprite `still` PNGs
+  at roughly 1KB each, about 49KB in total. They are CSS backgrounds rather than `<img>`, so
+  counting `<img>` elements on that page returns ZERO and is the measurement that produced the
+  wrong sentence. Measure transferred bytes by request type, not by element count.
 - **Images are `unoptimized` because `output: 'export'` requires it**, so `sizes` and
   `quality` do nothing and whichever file a component names is the file that ships. Three
   variants exist: `/cards/*.webp` at 800px (~62KB), `/cards/thumb/*.webp` at 400px (~21KB) and
@@ -927,9 +941,15 @@ or was not made; re-measure before trusting any of them again.
 
 ## Field Cards and the XP reward loop
 
-Nine digital-only cards earned by XP. Four are finished (#48-51, transcribed from their
-artwork); five are approved thresholds with no card drawn yet. They close the loop the launch
-work left open: a find advances Field Research, research pays XP, XP unlocks a Field Card.
+Nine digital-only cards earned by XP, all nine now drawn (#48-56, transcribed from their
+artwork). They close the loop the launch work left open: a find advances Field Research,
+research pays XP, XP unlocks a Field Card.
+
+`FieldCardSlot.card` stays OPTIONAL even with the ladder full, and that is not an oversight:
+the type describes a slot with an approved threshold and no finished card, which is the state
+every one of these passed through and the state a tenth would start in. Nothing about nine
+being complete may be baked into a type — `FIELD_CARDS_TOTAL` is the number the UI counts
+against.
 
 - **An XP unlock is not a discovery, not ownership, and not mastery.** Those are four
   different facts and `field-cards.test.ts` attacks each separately. `discoveries` means
@@ -1129,9 +1149,11 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
 - **Printed errors on Field Card artwork are transcribed, not corrected.** #49 prints
   "Hemeostatic", #50 "Campestrol", #51 "caryophyllene" unprefixed. `FIELD_CARD_ISSUES` states
   each correction; the transcription stays as printed, same contract as `KNOWN_CARD_ISSUES`.
-- **Slots 5-9 have thresholds and no card, and that is a real state.** The UI says "Field
-  Card 7" rather than naming a species nobody has drawn. Inventing botanical data for an
-  unfinished card is the one thing this file may never do.
+- **A slot with a threshold and no card is a real state, and the UI still handles it.** All
+  nine are drawn today, so nothing renders that branch — but it is kept rather than deleted,
+  because a tenth slot would start there and the handling is what stops the alternative:
+  inventing botanical data for an unfinished card, which is the one thing this file may never
+  do. The UI says "Field Card 7" rather than naming a species nobody has drawn.
 
 ## Motion
 
@@ -1283,10 +1305,12 @@ followers, comments, leaderboards or feed.
   deliberately no per-stage avatar to pick. The larger avatars keep the authored composition,
   ground line and all — they have the room.
 - **`FRAME_FILL` is measured, not chosen by eye.** 0.74 is the largest share at which not one
-  of the 135 sheets loses a pixel to the badge's circle; 0.82 costs twelve of them a leaf
-  tip. `audit_sprites.py` re-measures that against the real art — `npm run verify` cannot,
-  since the cropping only happens in a browser — so a plant redrawn wider, or a fill raised
-  without re-measuring, fails the audit instead of shipping cropped.
+  of the 162 sheets loses a pixel to the badge's circle; 0.82 costs twelve of them a leaf
+  tip. The count was 135 when that was first written — 45 species x 3 stages — and the nine
+  Field Cards took it to 54 x 3 without the fill needing to move. `audit_sprites.py`
+  re-measures it against the real art — `npm run verify` cannot, since the cropping only
+  happens in a browser — so a plant redrawn wider, or a fill raised without re-measuring,
+  fails the audit instead of shipping cropped, and it passes clean at 162 today.
 - **Signing in seeds the account profile from the device; it never overwrites and never
   clears.** A signed-in save writes the account only, so on a shared device signing in does
   not repaint the signed-out identity — the same reasoning that keys the collection import
