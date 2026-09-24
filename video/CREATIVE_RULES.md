@@ -41,8 +41,10 @@ they actually are and why people care about them."*
   Garlic (#29), Wild Strawberry (#30), Passion Flower (#43), Prickly Lettuce (#44). Never
   Elderberry (#31), whose card carries a hazard caution. An edibility beat always needs an
   on-screen identify-first line (e.g. "Never eat a wild plant you haven't positively
-  identified."). Dandelion's card does NOT carry the Edible icon, so Dandelion ads use
-  USABLE PARTS instead. `lint:ads` fails an edibility tag on any other card.
+  identified."). **Owner decision:** a card without the icon may still carry an EDIBILITY tag
+  when its value is what the card PRINTS about eating it: an eaten preparation or part from
+  its back (Dandelion: "Fresh greens"). Never a value from anywhere else. `lint:ads` enforces
+  all of it: the value from the card, the identify-first line in the scene, and never Elderberry.
 
 ## 1. Only real assets
 

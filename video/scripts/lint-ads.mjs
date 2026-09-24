@@ -151,6 +151,7 @@ for (const { file, spec } of ADS) {
         checkPlant(ad, w, s.plant, { hero: true });
         checkLine(ad, `${w} headline`, s.headline);
         if (!s.tags.length || s.tags.length > 4) fail(ad, `${w}: needs 1–4 tags`);
+        checkLine(ad, `${w} safety`, s.safety);
         s.tags.forEach((t, j) => {
           checkLine(ad, `${w} tag ${j + 1} label`, t.label);
           const known = plantKnowledge(s.plant, t.field);
@@ -159,9 +160,17 @@ for (const { file, spec } of ADS) {
             checkLine(ad, `${w} tag ${j + 1} value`, { text: item, source: 'card' });
             if (known && !known.includes(item)) fail(ad, `${w} tag ${j + 1}: "${item}" is not in ${s.plant}'s ${t.field} (${known.join(', ')})`);
           }
-          // An edibility claim can only come from a card that PRINTS the Edible use icon.
-          if (/edib/i.test(t.label.text) && !deck.herbs.find((h) => h.id === s.plant)?.uses?.includes('edible'))
-            fail(ad, `${w} tag ${j + 1}: ${s.plant}'s card does not carry the Edible icon`);
+          // EDIBILITY is only honest when the value is what the card itself prints about eating
+          // it: the Edible use icon, or an eaten preparation/part from its back. The values are
+          // already checked against the card above; here the tag must also carry the
+          // identify-first line, because an edibility beat without one reads as a safety claim.
+          if (/edib/i.test(t.label.text)) {
+            const card = deck.herbs.find((h) => h.id === s.plant);
+            const printed = card?.uses?.includes('edible') || ['preparations', 'usableParts'].includes(t.field);
+            if (!printed) fail(ad, `${w} tag ${j + 1}: edibility must come from the Edible icon or the card's printed preparations/usable parts`);
+            if (s.plant === 'sambucus-spp') fail(ad, `${w} tag ${j + 1}: Elderberry carries a hazard caution; no edibility beat`);
+            if (!s.safety || !/identif/i.test(s.safety.text)) fail(ad, `${w} tag ${j + 1}: an edibility tag needs an identify-first safety line in the scene`);
+          }
         });
         break;
       }
@@ -171,10 +180,16 @@ for (const { file, spec } of ADS) {
         s.shots.forEach((shot, j) => {
           if (!manifest.screens[shot.screen]?.[shot.framing]) fail(ad, `${w} shot ${j + 1}: no ${shot.framing} screenshot "${shot.screen}"`);
           checkLine(ad, `${w} shot ${j + 1}`, shot.caption);
+          if (shot.payoff) {
+            checkLine(ad, `${w} shot ${j + 1} payoff`, shot.payoff.line);
+            if (shot.payoff.plant) checkPlant(ad, `${w} shot ${j + 1} payoff`, shot.payoff.plant);
+            if (shot.payoff.at >= shot.duration - 15) fail(ad, `${w} shot ${j + 1}: payoff lands with < 0.5s left to read`);
+          }
         });
         if (s.shots.some((x) => x.screen === 'scan' || x.screen === 'start') && !s.safety)
           fail(ad, `${w}: shows identification, so it needs a safety line`);
-        if (s.safety && s.duration < 45) fail(ad, `${w}: safety line must be on screen ≥ 1.5s`);
+        // The safety line shows with the first shot (the scan screen), so THAT shot is what must last.
+        if (s.safety && s.shots[0].duration < 45) fail(ad, `${w}: safety line must be on screen ≥ 1.5s (first shot)`);
         checkLine(ad, `${w} safety`, s.safety);
         break;
       }

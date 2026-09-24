@@ -113,8 +113,10 @@ export interface KnowledgeScene extends SceneBase {
   duration: number;
   plant: string;
   headline: Line;
-  /** Up to four; they pop in around the card in order: top-left, top-right, lower-left, lower-right. */
+  /** Up to four stat rows under the card, popping in fast from alternating sides. */
   tags: KnowledgeTag[];
+  /** Small line under the stats. Required by lint when a tag is about edibility. */
+  safety?: Line;
 }
 
 export interface ScreenShot {
@@ -125,6 +127,12 @@ export interface ScreenShot {
   to: Pan;
   caption: Line;
   highlights?: Highlight[];
+  /**
+   * A reward stamp that lands under the caption `at` frames into the shot (e.g. "{commonName}
+   * unlocked."), with a burst and a glow on the phone frame. Typography and effects only: it
+   * never sits on the screenshot, so it cannot be mistaken for app UI.
+   */
+  payoff?: { line: Line; plant?: string; at: number };
 }
 
 export interface ScreenDemoScene extends SceneBase {

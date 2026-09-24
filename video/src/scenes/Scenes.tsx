@@ -330,48 +330,42 @@ export const FootageView: React.FC<{ scene: FootageScene }> = ({ scene }) => {
 export const KnowledgeView: React.FC<{ scene: KnowledgeScene }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  // Card and tags share the width without touching: 16 + 272 tag + 26 gap + 452 card + 26 + 272
-  // + 16 = 1080, so no tag ever sits on printed card text (the tilt adds ~12px each side).
-  const cardW = 452;
+  const cardW = 400;
   const cardH = Math.round((cardW * 1295) / 800);
-  const cardTop = 500;
-  const cardLeft = (W - cardW) / 2;
-  const tagW = 272;
-  const slots = [
-    { x: 16, y: cardTop + 40, from: 1 },
-    { x: W - 16 - tagW, y: cardTop + 200, from: -1 },
-    { x: 16, y: cardTop + 400, from: 1 },
-    { x: W - 16 - tagW, y: cardTop + 560, from: -1 },
-  ];
-  const firstPop = 6;
-  const gap = 5;
-  const float = Math.sin(frame / 14) * 5;
+  const cardTop = 420;
+  const rowTop = cardTop + cardH + 36;
+  const rowH = 104;
+  const rowGap = 16;
+  const firstPop = 5;
+  const gap = 4;
+  const float = Math.sin(frame / 14) * 4;
+  const tags = scene.tags.slice(0, 4);
   return (
     <AbsoluteFill>
-      <Backdrop glowY={48} seed="know" />
+      <Backdrop glowY={36} seed="know" />
       <div
         style={{
           position: 'absolute',
-          left: W / 2 - 480,
-          top: cardTop + cardH / 2 - 560,
-          width: 960,
-          height: 1120,
+          left: W / 2 - 420,
+          top: cardTop + cardH / 2 - 480,
+          width: 840,
+          height: 960,
           background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${C.gold}40 0%, ${C.pink}22 45%, ${C.ground}00 72%)`,
         }}
       />
       <Caption
         line={scene.headline}
         delay={0}
-        size={62}
+        size={60}
         style={{ position: 'absolute', top: SAFE.top + 10, left: SAFE.side, width: W - SAFE.side * 2 }}
       />
-      <div style={{ position: 'absolute', left: cardLeft, top: cardTop + float }}>
+      <div style={{ position: 'absolute', left: (W - cardW) / 2, top: cardTop + float }}>
         <PhysicalCard plant={scene.plant} width={cardW} rotateY={-4} rotateX={3} rotateZ={-1.5} />
       </div>
-      {scene.tags.slice(0, 4).map((tag, i) => {
-        const slot = slots[i]!;
+      {tags.map((tag, i) => {
         const at = firstPop + i * gap;
-        const p = spring({ frame: frame - at, fps, config: { damping: 11, stiffness: 240, mass: 0.55 } });
+        const from = i % 2 === 0 ? -1 : 1;
+        const p = spring({ frame: frame - at, fps, config: { damping: 11, stiffness: 260, mass: 0.5 } });
         const ping = interpolate(frame - at, [0, 3, 10], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
         if (frame < at) return null;
         return (
@@ -379,29 +373,41 @@ export const KnowledgeView: React.FC<{ scene: KnowledgeScene }> = ({ scene }) =>
             key={i}
             style={{
               position: 'absolute',
-              left: slot.x,
-              top: slot.y,
-              width: tagW,
-              padding: '16px 18px 18px',
-              borderRadius: 22,
+              left: SAFE.side,
+              top: rowTop + i * (rowH + rowGap),
+              width: W - SAFE.side * 2,
+              height: rowH,
+              boxSizing: 'border-box',
+              padding: '0 30px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 24,
+              borderRadius: 26,
               background: `${C.panel}f2`,
               border: `3px solid ${C.gold}`,
-              boxShadow: `0 18px 40px rgba(0,0,0,0.5), 0 0 ${Math.round(40 * ping)}px ${C.gold}`,
+              boxShadow: `0 16px 36px rgba(0,0,0,0.5), 0 0 ${Math.round(44 * ping)}px ${C.gold}`,
               opacity: Math.min(1, p * 1.6),
-              transform: `translateX(${(1 - p) * 90 * slot.from}px) scale(${0.7 + 0.3 * p})`,
-              transformOrigin: slot.from > 0 ? 'right center' : 'left center',
+              transform: `translateX(${(1 - p) * 140 * from}px) scale(${0.8 + 0.2 * p})`,
               fontFamily: outfit,
             }}
           >
-            <div style={{ fontSize: 21, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: C.gold }}>
+            <span style={{ fontSize: 27, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.gold, whiteSpace: 'nowrap' }}>
               {tag.label.text}
-            </div>
-            <div style={{ marginTop: 6, fontSize: 31, fontWeight: 700, lineHeight: 1.15, color: C.text }}>
+            </span>
+            <span style={{ fontSize: 42, fontWeight: 800, color: C.text, textAlign: 'right', whiteSpace: 'nowrap' }}>
               {tag.items.join(' · ')}
-            </div>
+            </span>
           </div>
         );
       })}
+      {scene.safety ? (
+        <SafetyLine
+          line={scene.safety}
+          delay={firstPop + tags.length * gap}
+          style={{ position: 'absolute', top: rowTop + tags.length * (rowH + rowGap) + 6, left: SAFE.side, width: W - SAFE.side * 2, fontSize: 30 }}
+        />
+      ) : null}
     </AbsoluteFill>
   );
 };
@@ -418,7 +424,11 @@ export const ScreenDemoView: React.FC<{ scene: ScreenDemoScene }> = ({ scene }) 
     <AbsoluteFill>
       <Backdrop glowY={60} seed="screens" />
       <div style={{ position: 'absolute', top: phoneTop, left: (W - phoneW - 28) / 2, ...useRise(0, 60) }}>
-        <PhoneFrame width={phoneW} height={phoneH}>
+        <PhoneFrame
+          width={phoneW}
+          height={phoneH}
+          style={{ boxShadow: `0 0 0 3px ${C.line}, 0 50px 90px rgba(0,0,0,0.6), 0 0 ${Math.round(90 * payoffGlow(frame, scene))}px ${C.gold}` }}
+        >
           {scene.shots.map((shot, i) => {
             const from = start;
             start += shot.duration;
@@ -458,37 +468,95 @@ export const ScreenDemoView: React.FC<{ scene: ScreenDemoScene }> = ({ scene }) 
           s += shot.duration;
           return (
             <Sequence key={`c${i}`} from={from} durationInFrames={shot.duration} layout="none">
-              <CaptionWithOutro line={shot.caption} duration={shot.duration} last={i === scene.shots.length - 1} />
+              <CaptionWithOutro line={shot.caption} duration={shot.duration} last={i === scene.shots.length - 1} payoff={shot.payoff} />
             </Sequence>
           );
         });
       })()}
       {scene.safety ? (
-        <SafetyLine
-          line={scene.safety}
-          delay={6}
-          style={{ position: 'absolute', top: phoneTop - 66, left: SAFE.side, width: W - SAFE.side * 2 }}
-        />
+        // Shown with the scan screen, where identification is being described, and cleared
+        // before the next shot so the unlock stamp has the room.
+        <Sequence from={0} durationInFrames={scene.shots[0]!.duration} layout="none">
+          <SafetyWithOutro line={scene.safety} duration={scene.shots[0]!.duration} top={phoneTop - 58} />
+        </Sequence>
       ) : null}
     </AbsoluteFill>
   );
 };
 
-const CaptionWithOutro: React.FC<{ line: Line; duration: number; last: boolean }> = ({ line, duration, last }) => {
-  const out = useOutro(duration, 8);
+/** 0..1 glow on the phone frame around each shot's payoff moment. */
+function payoffGlow(frame: number, scene: ScreenDemoScene): number {
+  let start = 0;
+  let g = 0;
+  for (const shot of scene.shots) {
+    if (shot.payoff) {
+      const at = start + shot.payoff.at;
+      g = Math.max(g, interpolate(frame, [at, at + 4, at + 30], [0, 1, 0.35], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }));
+    }
+    start += shot.duration;
+  }
+  return g;
+}
+
+const SafetyWithOutro: React.FC<{ line: Line; duration: number; top: number }> = ({ line, duration, top }) => {
+  const out = useOutro(duration, 6);
   return (
-    <Caption
+    <SafetyLine
       line={line}
-      delay={2}
-      size={54}
-      style={{
-        position: 'absolute',
-        top: SAFE.top + 10,
-        left: SAFE.side,
-        width: W - SAFE.side * 2,
-        opacity: last ? 1 : out,
-      }}
+      delay={4}
+      style={{ position: 'absolute', top, left: SAFE.side, width: W - SAFE.side * 2, fontSize: 30, opacity: out }}
     />
+  );
+};
+
+const CaptionWithOutro: React.FC<{
+  line: Line;
+  duration: number;
+  last: boolean;
+  payoff?: { line: Line; plant?: string; at: number };
+}> = ({ line, duration, last, payoff }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const out = useOutro(duration, 8);
+  const stamp = payoff ? spring({ frame: frame - payoff.at, fps, config: { damping: 9, stiffness: 200, mass: 0.6 } }) : 0;
+  const payoffLine = payoff ? fill(payoff.line, payoff.plant) : null;
+  return (
+    <>
+      <Caption
+        line={line}
+        delay={2}
+        size={54}
+        style={{
+          position: 'absolute',
+          top: SAFE.top + 10,
+          left: SAFE.side,
+          width: W - SAFE.side * 2,
+          opacity: last ? 1 : out,
+        }}
+      />
+      {payoff && payoffLine && frame >= payoff.at ? (
+        <>
+          <SparkBurst x={W / 2} y={SAFE.top + 150} at={payoff.at} seed="unlock" count={20} radius={380} />
+          <div
+            style={{
+              position: 'absolute',
+              top: SAFE.top + 82,
+              width: W,
+              textAlign: 'center',
+              fontFamily: outfit,
+              fontWeight: 800,
+              fontSize: 88,
+              lineHeight: 1,
+              letterSpacing: '-0.02em',
+              opacity: Math.min(1, stamp * 2),
+              transform: `scale(${1.5 - 0.5 * stamp})`,
+            }}
+          >
+            <GradientText>{payoffLine.text}</GradientText>
+          </div>
+        </>
+      ) : null}
+    </>
   );
 };
 
@@ -519,7 +587,7 @@ export const UiCalloutView: React.FC<{ scene: UiCalloutScene }> = ({ scene }) =>
         }}
       >
         {scene.growth.stages.map((g, i) => (
-          <GrowthStage key={g.stage} plant={scene.growth!.plant} stage={g.stage} label={g.label} delay={14 + i * 8} />
+          <GrowthStage key={g.stage} plant={scene.growth!.plant} stage={g.stage} label={g.label} delay={6 + i * 5} />
         ))}
       </div>
     ) : null}

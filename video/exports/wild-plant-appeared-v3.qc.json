@@ -1,7 +1,7 @@
 {
   "id": "wild-plant-appeared-v3",
   "title": "Wild Plant Appeared (curiosity hook + knowledge reward)",
-  "checkedAt": "2026-09-24T19:19:16.732Z",
+  "checkedAt": "2026-09-24T19:33:10.136Z",
   "assets": {
     "files": 82,
     "verified": 82
@@ -62,17 +62,17 @@
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "frames": 545,
-    "duration": 18.218667,
+    "frames": 508,
+    "duration": 16.981333,
     "audioCodec": "aac",
-    "bytes": 13527590
+    "bytes": 13407155
   },
   "firstFrameContrast": "23.4",
   "hookSpriteDistinctFrames": 40,
   "picture": {
-    "frames": 545,
+    "frames": 508,
     "minMean": "23.0",
-    "minStd": "16.6"
+    "minStd": "17.6"
   },
   "contactSheet": "exports/qc/wild-plant-appeared-v3-contact.jpg",
   "problems": []

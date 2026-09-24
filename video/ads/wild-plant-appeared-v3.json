@@ -4,7 +4,7 @@
   "fps": 30,
   "width": 1080,
   "height": 1920,
-  "durationInFrames": 545,
+  "durationInFrames": 508,
   "transitionFrames": 10,
   "scenes": [
     {
@@ -46,7 +46,7 @@
         "source": "card"
       },
       "caption": {
-        "text": "Every plant is a *real, illustrated card.*",
+        "text": "Every card teaches you about *a real plant.*",
         "source": "authored"
       }
     },
@@ -73,23 +73,13 @@
     {
       "type": "knowledge",
       "enter": "slide-up",
-      "duration": 60,
+      "duration": 54,
       "plant": "taraxacum-officinale",
       "headline": {
-        "text": "Every plant unlocks *something real to learn.*",
+        "text": "Every discovery unlocks *real plant knowledge.*",
         "source": "authored"
       },
       "tags": [
-        {
-          "label": {
-            "text": "Identification",
-            "source": "authored"
-          },
-          "field": "identification",
-          "items": [
-            "One flower per stalk"
-          ]
-        },
         {
           "label": {
             "text": "Traditional uses",
@@ -114,22 +104,24 @@
         },
         {
           "label": {
-            "text": "Usable parts",
+            "text": "Edibility",
             "source": "authored"
           },
-          "field": "usableParts",
+          "field": "preparations",
           "items": [
-            "Root",
-            "Leaf",
-            "Flower"
+            "Fresh greens"
           ]
         }
-      ]
+      ],
+      "safety": {
+        "text": "Never eat a wild plant you haven't positively identified.",
+        "source": "authored"
+      }
     },
     {
       "type": "screenDemo",
       "enter": "wipe",
-      "duration": 120,
+      "duration": 105,
       "shots": [
         {
           "screen": "scan",
@@ -161,18 +153,26 @@
         {
           "screen": "card-dandelion",
           "framing": "phone-viewport",
-          "duration": 65,
+          "duration": 50,
           "from": {
             "y": 0,
             "zoom": 1
           },
           "to": {
-            "y": 0.55,
+            "y": 0.3,
             "zoom": 1
           },
           "caption": {
-            "text": "Confirm the match and its *Plantdex entry unlocks.*",
-            "source": "quote"
+            "text": "Confirm the match →",
+            "source": "authored"
+          },
+          "payoff": {
+            "line": {
+              "text": "{commonName} unlocked.",
+              "source": "card"
+            },
+            "plant": "taraxacum-officinale",
+            "at": 10
           }
         }
       ],
@@ -184,7 +184,7 @@
     {
       "type": "uiCallout",
       "enter": "slide-up",
-      "duration": 65,
+      "duration": 55,
       "part": "garden-grid",
       "crop": {
         "x": 0,
@@ -230,7 +230,7 @@
     {
       "type": "cta",
       "enter": "fade",
-      "duration": 90,
+      "duration": 84,
       "photo": "02-product/deck-in-hand.jpg",
       "headline": {
         "text": "Plantdex",

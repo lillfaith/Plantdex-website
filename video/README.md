@@ -127,11 +127,20 @@ first three words are already on screen at frame 0, the thumbnail). The reveal a
 "A wild **Dandelion** appeared!" then land as the payoff. Driven by the hook's `teaser` field;
 everything after the reveal is the same spec.
 
-### Wild Plant Appeared: knowledge reward (`wild-plant-appeared-v3`, 18.2s)
+### Wild Plant Appeared: knowledge reward (`wild-plant-appeared-v3`, 16.9s)
 
-Version 2 plus a 2s `knowledge` scene between the outdoor footage and the scan flow: the
-Dandelion card centred, "Every plant unlocks *something real to learn.*", and four stat tags
-popping in 5 frames apart. The tags are IDENTIFICATION (One flower per stalk), TRADITIONAL
-USES (Tea · Roasted roots), NOTABLE COMPOUNDS (Inulin · Quercetin) and USABLE PARTS (Root ·
-Leaf · Flower). Every value is lint-checked against the plant's data. USABLE PARTS stands in
-for EDIBILITY because Dandelion's card doesn't carry the Edible icon (CREATIVE_RULES §0).
+The ad's logic: collecting game → real card → real plant → real knowledge → identify →
+unlock → progress → product.
+
+- Opening through the footage is as in version 2, except the card caption now reads
+  "Every card teaches you about *a real plant.*"
+- **Knowledge (1.8s):** "Every discovery unlocks *real plant knowledge.*" over the card, then
+  three stat rows popping in 4 frames apart: TRADITIONAL USES · Tea · Roasted roots, NOTABLE
+  COMPOUNDS · Inulin · Quercetin, EDIBILITY · Fresh greens. Plus a small "Never eat a wild plant
+  you haven't positively identified." EDIBILITY's value is the card's own printed preparation;
+  Dandelion carries no Edible icon, so lint requires the value to come from the card and the
+  identify-first line to be present.
+- **Scan → unlock:** the scan screen carries the small "suggestion to check, not a verdict"
+  line. The next shot reads "Confirm the match →", then "Dandelion unlocked." stamps in with
+  a burst and a gold glow on the phone frame, all off the screenshot.
+- Confirmation and growth scenes shortened; the stages pop in faster.
