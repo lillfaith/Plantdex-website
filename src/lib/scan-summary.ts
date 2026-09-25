@@ -220,7 +220,14 @@ export function improvementHint(
   hasFeaturePhoto: boolean,
 ): string | undefined {
   if (level === 'species') return undefined;
+  /*
+   * AN INSTRUCTION, NOT AN EXPLANATION. This used to justify itself — "a distinctive feature
+   * separates close relatives faster than more leaf shots" — which is a sentence about how
+   * identification works, read by somebody who wants to know what to photograph next. The
+   * reason is true and is not what they are standing there for.
+   */
   return hasFeaturePhoto
-    ? 'Try another angle, or a photo of a different part — a flower, fruit, seed head, stem or bark each narrow it differently.'
-    : 'Add a clear photo of a flower, fruit, seed head, stem or bark. A distinctive feature separates close relatives faster than more leaf shots.';
+    ? 'Try a different part \u2014 flower, fruit, seed head, stem or bark.'
+    : 'Add a photo of a flower, fruit, seed head, stem or bark.';
 }
+

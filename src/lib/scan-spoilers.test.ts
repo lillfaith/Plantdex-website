@@ -180,9 +180,11 @@ describe('5. an ineligible relative cannot unlock the card', () => {
 
 describe('6. a collectible candidate keeps its provider-ranked position', () => {
   it('does not reorder around card availability', () => {
-    expect(PANEL).toContain('result.candidates.map((candidate, index) =>');
+    expect(PANEL).toContain(').map((candidate, index) => {');
     expect(PANEL).not.toMatch(/result\.candidates[^\n]*\.sort\(/);
     expect(PANEL).not.toMatch(/confirmable[^\n]*\?\s*-1\s*:/);
+    // The disclosure slices from the front; it never promotes a card-bearing candidate into view.
+    expect(PANEL_CODE).not.toMatch(/slice\([^)]*confirmable/);
   });
 });
 

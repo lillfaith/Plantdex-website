@@ -100,7 +100,7 @@ export function IdentifyTraitsPanel({
           )}
 
           {notes?.identification?.length ? (
-            <ul className="mt-4 space-y-1">
+            <ul className="mt-4 space-y-1.5">
               {notes.identification.map(({ trait, detail }) => {
                 const icon = iconForTrait(trait);
                 const on = ticked.has(trait);
@@ -163,7 +163,7 @@ export function IdentifyTraitsPanel({
           <p className="mt-3 text-xs leading-relaxed text-gold-300">{IDENTIFICATION_CAVEAT}</p>
 
           {notes?.lookalikes?.length ? (
-            <section className="mt-4">
+            <section className="mt-4 border-t border-violet-800/70 pt-4">
               {/*
                 IMMEDIATELY AFTER THE TRAITS, the order `FieldNotesSections` already uses: a
                 reader who has just matched a trait list is the reader who needs to know what
@@ -184,7 +184,9 @@ export function IdentifyTraitsPanel({
                         </span>
                       )}
                     </p>
-                    <p className="text-xs leading-relaxed text-violet-300">{look.distinguishBy}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-violet-400">
+                      {look.distinguishBy}
+                    </p>
                     {look.risk && (
                       <p className="mt-1 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-2 text-xs leading-relaxed text-violet-100">
                         <span className="font-bold text-pink-accent">Risk: </span>
@@ -203,7 +205,7 @@ export function IdentifyTraitsPanel({
           ) : null}
 
           {notes?.habitat && (
-            <section className="mt-4">
+            <section className="mt-4 border-t border-violet-800/70 pt-4">
               <h3 className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
                 <PlantdexIcon name="compass" aria-hidden="true" className="text-sm" />
                 Typical habitat
@@ -224,7 +226,12 @@ export function IdentifyTraitsPanel({
             </p>
           )}
 
-          <div className="mt-5 flex flex-col gap-2">
+          {/*
+            A RULE BEFORE THE DECISION. The panel is read top to bottom and then acted on, so
+            the actions want a boundary rather than more margin — otherwise "This matches my
+            plant" is simply the next thing below the habitat sentence.
+          */}
+          <div className="mt-5 flex flex-col gap-2 border-t border-violet-800/70 pt-5">
             <button
               type="button"
               onClick={onConfirm}

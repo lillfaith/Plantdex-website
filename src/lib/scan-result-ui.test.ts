@@ -68,8 +68,20 @@ describe('1. the provider ranking is what the page emphasises', () => {
 
 describe('2. card availability does not reorder or remove candidates', () => {
   it('renders the candidates in the order they arrived', () => {
-    expect(PANEL).toContain('result.candidates.map((candidate, index) =>');
-    for (const reorder of [/result\.candidates[^\n]*\.sort\(/, /result\.candidates[^\n]*\.reverse\(/]) {
+    /*
+     * The list now opens with the first three, so the rendered collection is a SLICE — and a
+     * slice is new surface a reorder could hide in. What is asserted is that it is taken from
+     * the FRONT of the untouched array, and that nothing sorts, reverses or filters it.
+     */
+    expect(PANEL).toContain('? result.candidates');
+    expect(PANEL).toContain('result.candidates.slice(0, VISIBLE_CANDIDATES)');
+    expect(PANEL).toContain(').map((candidate, index) => {');
+    for (const reorder of [
+      /result\.candidates[^\n]*\.sort\(/,
+      /result\.candidates[^\n]*\.reverse\(/,
+      /result\.candidates[^\n]*\.filter\([^\n]*confirmable/,
+      /\.slice\([1-9]/,
+    ]) {
       expect(PANEL, `the list reorders the provider's candidates: ${reorder}`).not.toMatch(reorder);
     }
   });
@@ -172,7 +184,7 @@ describe('5. the improvement hint is wired to the photographs that were sent', (
 
   it('renders the hint only when there is one', () => {
     expect(PANEL).toContain('{hint && (');
-    expect(PANEL).toContain('Want a better result?');
+    expect(PANEL).toContain('Want a stronger match?');
   });
 });
 

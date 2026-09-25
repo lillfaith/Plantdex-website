@@ -30,6 +30,9 @@ import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
 
+/** How many candidates the result list opens with; the rest are one tap away. */
+const VISIBLE_CANDIDATES = 3;
+
 /**
  * PLANT ID V1 — the scan screen.
  *
@@ -170,6 +173,18 @@ export function ScanPanel() {
   } | null>(null);
   const traitsRef = useRef<HTMLDialogElement>(null);
 
+  /*
+   * HOW MANY CANDIDATES THE LIST OPENS WITH.
+   *
+   * Five rows of equal weight is a list to work through, not a result to read, and the
+   * provider's fifth answer is routinely a 3% congener nobody is choosing. Three is the
+   * leader plus the two live alternatives — which is also what `plausibleField` tends to
+   * hold — and the rest are one tap away. NOTHING IS DISCARDED: `result.candidates` is
+   * untouched, the order is untouched, and every row renders the same way when opened.
+   */
+  const [showAllCandidates, setShowAllCandidates] = useState(false);
+  const listRef = useRef<HTMLHeadingElement>(null);
+
   /** The organs of the photographs that produced the result currently on screen. */
   const [sentOrgans, setSentOrgans] = useState<readonly ObservationPhoto['organ'][]>([]);
 
@@ -259,6 +274,7 @@ export function ScanPanel() {
       setConfirmed(null);
       setScanId(null);
       setShelved(false);
+      setShowAllCandidates(false);
       track('scan_started');
 
       /*
@@ -743,12 +759,18 @@ export function ScanPanel() {
                   plant outdoors.
                 </p>
 
-                <h4 className="mt-5 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
+                <h4
+                  ref={listRef}
+                  className="mt-5 scroll-mt-24 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase"
+                >
                   Best matches
                 </h4>
 
                 <ul className="mt-2 space-y-3">
-                  {result.candidates.map((candidate, index) => {
+                  {(showAllCandidates
+                    ? result.candidates
+                    : result.candidates.slice(0, VISIBLE_CANDIDATES)
+                  ).map((candidate, index) => {
                     /*
                      * Which row gets the full "related, but a different species" explanation.
                      * A property of the LIST rather than of a row, so it is resolved against
@@ -794,10 +816,17 @@ export function ScanPanel() {
                     return (
                       <li
                         key={rowKey}
-                        className={`rounded-xl border-y border-r border-l-4 p-3 ${
+                        /*
+                          THE LEADER IS LIFTED, NOT DECORATED. A faint ground and a little
+                          more padding are enough to read as "this one first" at a glance —
+                          and neither says CORRECT, which is the line this row may not cross.
+                          The gold edge already marks rank; adding a second louder signal
+                          would start claiming certainty the score below it does not support.
+                        */
+                        className={`rounded-xl border-y border-r border-l-4 ${
                           leads
-                            ? 'border-y-gold-500/25 border-r-gold-500/25 border-l-gold-500'
-                            : 'border-y-violet-800/70 border-r-violet-800/70 border-l-violet-600'
+                            ? 'border-y-gold-500/25 border-r-gold-500/25 border-l-gold-500 bg-plum-700/30 p-3.5'
+                            : 'border-y-violet-800/70 border-r-violet-800/70 border-l-violet-600 p-3'
                         }`}
                       >
                         {/*
@@ -1030,6 +1059,31 @@ export function ScanPanel() {
                   })}
                 </ul>
 
+                {result.candidates.length > VISIBLE_CANDIDATES && (
+                  <button
+                    type="button"
+                    aria-expanded={showAllCandidates}
+                    onClick={() => {
+                      setShowAllCandidates((open) => !open);
+                      /*
+                       * COLLAPSING FROM BELOW THE FOLD WOULD LEAVE THE READER IN THE FOOTER.
+                       * The list shortens under them, so the page scrolls up by however many
+                       * rows just left — which reads as the app jumping. Bringing the heading
+                       * back puts them at the top of the thing they just collapsed; expanding
+                       * grows downwards from where they are and needs nothing.
+                       */
+                      if (showAllCandidates) {
+                        listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                    className="mt-2 min-h-11 w-full rounded-full border border-violet-700 px-4 text-xs font-bold tracking-[0.08em] text-violet-300 uppercase transition-colors hover:border-violet-500 hover:text-violet-100"
+                  >
+                    {showAllCandidates
+                      ? 'Show fewer'
+                      : `Show ${result.candidates.length - VISIBLE_CANDIDATES} more`}
+                  </button>
+                )}
+
                 {/*
                   WHAT THE NUMBERS ARE, SAID ONCE UNDER THE LIST THEY QUALIFY.
 
@@ -1047,7 +1101,7 @@ export function ScanPanel() {
                 {hint && (
                   <div className="mt-4 rounded-xl border border-violet-700 bg-plum-800/40 p-3">
                     <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
-                      Want a better result?
+                      Want a stronger match?
                     </p>
                     <p className="mt-1 text-sm leading-relaxed text-violet-200">{hint}</p>
                   </div>
