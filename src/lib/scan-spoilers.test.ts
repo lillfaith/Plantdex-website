@@ -73,7 +73,7 @@ describe('2. the card name is withheld until it is earned', () => {
      */
     const uses = [...PANEL.matchAll(/herb\.commonName/g)];
     expect(uses.length, 'a new unguarded common-name use appeared').toBe(3);
-    expect(PANEL).toContain("herb && ready && isDiscovered(herb.id) ? herb.commonName : 'a Plantdex entry'");
+    expect(PANEL).toContain('herb && ready && isDiscovered(herb.id) ? herb.commonName : null');
     expect(PANEL).toContain('{ready && isDiscovered(herb.id) ? (');
   });
 
@@ -253,3 +253,83 @@ describe('the traits panel has real content for every printed card', () => {
     expect(leaking.length, 'lookalike prose names more cards than it used to').toBeLessThanOrEqual(28);
   });
 });
+
+describe('the traits checklist is an aid and gates nothing', () => {
+  it('never reads the ticks when confirming', () => {
+    /*
+     * THE LINE THIS PREVENTS: `disabled={ticked.size < 3}`. Counting ticks would invent a
+     * confidence system this app deliberately does not have — eligibility belongs to the
+     * matcher, and a checkbox may not overrule it in either direction, including by refusing
+     * a find the matcher allows.
+     */
+    const confirm = TRAITS.slice(TRAITS.indexOf('onClick={onConfirm}'));
+    const button = confirm.slice(0, confirm.indexOf('</button>'));
+    expect(button, 'the confirm button is gated on the checklist').not.toMatch(/disabled/);
+    expect(TRAITS_CODE, 'onConfirm is handed the tick state').not.toMatch(/onConfirm\([^)]/);
+    expect(TRAITS_CODE, 'the ticks are counted for a decision').not.toMatch(/ticked\.size/);
+  });
+
+  it('keeps the ticks local, unstored and unread', () => {
+    for (const leak of [/localStorage/, /sessionStorage/, /indexedDB/i, /supabase/i, /addSighting/]) {
+      expect(TRAITS_CODE, `the checklist persists its ticks: ${leak}`).not.toMatch(leak);
+    }
+  });
+
+  it('clears the ticks when the subject changes', () => {
+    // Reopening on a different candidate must not show the previous plant's ticks.
+    expect(TRAITS_CODE).toContain('if (subject !== scientificName)');
+    expect(TRAITS_CODE).toContain('setTicked(new Set())');
+  });
+
+  it('draws organ icons from the existing mapper, decoratively', () => {
+    /*
+     * `iconForTrait` already exists and carries three fixed defects in its ORDER — a denial
+     * trait ("Sheaths, not leaves") must draw no leaf, fruit beats flower because "head" is
+     * in the flower pattern, root beats stem because "node" is in the stem pattern. A second
+     * mapper written beside it would reintroduce all three.
+     */
+    expect(TRAITS_CODE).toContain("import { iconForTrait } from '@/lib/trait-icons'");
+    expect(TRAITS_CODE).toContain('iconForTrait(trait)');
+    const icon = TRAITS.slice(TRAITS.indexOf('<PlantdexIcon'));
+    expect(icon.slice(0, 200)).toContain('aria-hidden="true"');
+  });
+});
+
+describe('the result list was compacted without losing the distinctions', () => {
+  it('states related-and-not-loggable in two words rather than a sentence', () => {
+    expect(PANEL_CODE).toContain('not collectible');
+    expect(PANEL_CODE, 'the long refusal sentence is back on every row').not.toMatch(
+      /but a different species \u2014 so it cannot be logged/,
+    );
+  });
+
+  it('keeps the score line to one line, with the leader mark elsewhere', () => {
+    /*
+     * Sliced from the comment-stripped source and anchored on the meter, because the note
+     * explaining why the leader mark left this line necessarily names it.
+     */
+    const from = PANEL_CODE.indexOf('pixel-meter');
+    const meta = PANEL_CODE.slice(from, PANEL_CODE.indexOf('</div>', from));
+    expect(meta).toContain('Match score:');
+    expect(meta).toContain('{band}');
+    /*
+     * Folded into the score line, the leader mark wrapped three ways at 390px — taller than
+     * the separate line it was meant to replace. It is a chip on the name's own row instead.
+     */
+    expect(meta, 'the leader mark is back in the score line').not.toContain('Closest suggestion');
+  });
+
+  it('reserves gold for the leader and the commit, violet for Plantdex status', () => {
+    /*
+     * The entry chip and the "Check traits" button were both gold, so a 23% relative carrying
+     * a card wore the identifier-leader accent. Rank and collection stop competing for one
+     * colour here.
+     */
+    const badge = PANEL.slice(PANEL.indexOf('PLANTDEX STATUS IS VIOLET'));
+    expect(badge.slice(0, 900)).toMatch(/border-violet-400 bg-violet-400/);
+    const action = PANEL.slice(PANEL.indexOf('INSPECT, THEN DECIDE'));
+    const button = action.slice(0, action.indexOf('</button>'));
+    expect(button, 'the traits button competes with the leader accent').not.toMatch(/gold/);
+  });
+});
+

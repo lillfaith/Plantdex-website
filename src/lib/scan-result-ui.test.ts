@@ -45,8 +45,9 @@ describe('1. the provider ranking is what the page emphasises', () => {
   });
 
   it('marks the leader as the closest suggestion, and marks nothing else', () => {
-    expect(PANEL).toMatch(/\{leads && \(/);
-    expect(PANEL).toContain('Closest suggestion');
+    // A chip beside the binomial, so the score line stays one line on every row.
+    expect(PANEL).toMatch(/\{leads && \(\s*<span[\s\S]{0,260}Closest suggestion/);
+    expect(PANEL, 'a second row also claims to lead').not.toMatch(/index === 1[^\n]*Closest/);
   });
 
   it('sends every collectible candidate down the same path, whatever its rank', () => {
@@ -93,7 +94,7 @@ describe('2. card availability does not reorder or remove candidates', () => {
      * card-name heading produced. A structural fix, so there is nothing left to detect.
      */
     const row = PANEL.slice(PANEL.indexOf('THE BINOMIAL LEADS, ALWAYS'));
-    expect(row.slice(0, 900)).toContain('{candidate.scientificName}');
+    expect(row.slice(0, 1400)).toContain('{candidate.scientificName}');
   });
 });
 
@@ -105,11 +106,14 @@ describe('3. a related species still cannot be logged as the card species', () =
      * card's own name once it is in the collection and a neutral phrase before that, so the
      * refusal survives intact and the reveal does too.
      */
-    expect(PANEL).toMatch(/Related to \$\{entryName\}, but a different species/);
-    expect(PANEL).toMatch(/cannot be logged under it/);
-    expect(PANEL).toContain(
-      "herb && ready && isDiscovered(herb.id) ? herb.commonName : 'a Plantdex entry'",
-    );
+    /*
+     * Compacted from a full sentence to two words and a consequence. Both halves of the
+     * distinction survive — RELATED, and NOT LOGGABLE — and a card already in the collection
+     * is still named, because there is nothing left to protect once it is.
+     */
+    expect(PANEL).toMatch(/not collectible/);
+    expect(PANEL).toMatch(/Related\$\{entryName \? ` to \$\{entryName\}` : ' species'\}/);
+    expect(PANEL).toContain('herb && ready && isDiscovered(herb.id) ? herb.commonName : null');
   });
 
   it('explains the refusal once in full, then names it', () => {
@@ -120,8 +124,8 @@ describe('3. a related species still cannot be logged as the card species', () =
      * a caution repeated four times is a caution nobody reads by the third.
      */
     expect(PANEL).toContain('const firstRelated = result.candidates.findIndex(');
-    expect(PANEL).toContain('{index !== firstRelated');
-    expect(PANEL).toContain('Related to ${entryName}, but a different species.');
+    expect(PANEL).toContain('{index === firstRelated');
+    expect(PANEL).toContain("'Related species'");
   });
 
   it('puts every action branch after the branches that refuse', () => {

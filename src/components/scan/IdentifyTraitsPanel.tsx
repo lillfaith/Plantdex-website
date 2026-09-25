@@ -1,6 +1,6 @@
 'use client';
 
-import type { RefObject } from 'react';
+import { useState, type RefObject } from 'react';
 import type { Herb } from '@/lib/types';
 import {
   GENUS_CARD_NOTICE,
@@ -8,34 +8,33 @@ import {
   fieldNotesFor,
   isGenusCard,
 } from '@/lib/card-field-notes';
+import { iconForTrait } from '@/lib/trait-icons';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
- * WHAT TO GO AND LOOK AT, BEFORE ANYTHING IS UNLOCKED.
+ * WHAT TO GO AND LOOK AT, AS A CHECKLIST RATHER THAN A BRIEFING.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * THE SCAN SCREEN WAS SPENDING THE REVEAL TO ASK FOR IT. A candidate that matched a card
- * printed the card's COMMON NAME on the row — "Has a Plantdex card: Wood Sorrel" — and
- * offered to open that card. `LockedHerb` states the opposite rule in as many words: an
- * undiscovered card shows "nothing that would spoil the reveal — no name, no artwork, no
- * card-back content". So the one path that ends in a discovery was also the one path that
- * gave the discovery away first, and the flip at the end had nothing left to turn over.
+ * THE SCAN SCREEN MAY NOT SPEND THE REVEAL TO ASK FOR IT. A candidate matching a card used
+ * to print the card's COMMON NAME on the row and offer to open it; `LockedHerb` withholds
+ * exactly that — "no name, no artwork, no card-back content" — so the one path ending in a
+ * discovery was the one path giving it away first. Nothing here names the collectible.
  *
- * WHAT THIS PANEL MAY CONTAIN is therefore decided by what it is FOR: comparing a living
- * plant against a proposed species. That is the site's own field notes — traits, habitat and
- * lookalikes, all curated with sources in `card-field-notes.ts` — and nothing from the
- * collectible at all. No common name, no card number, no artwork, no sprite, and none of the
- * card back: `healingTraits`, `compounds`, `taste`, `aromatic`, `preparations` and
- * `usableParts` are what a player has EARNED, and they say nothing about which plant this is.
+ * WHAT IT MAY CONTAIN is decided by what it is FOR: comparing a living plant against a
+ * proposed species. That is the site's own curated field notes, and nothing from the card —
+ * no artwork, no sprite, no common name, and none of `healingTraits`, `compounds`, `taste`,
+ * `aromatic`, `preparations` or `usableParts`, which are what a discovery BUYS and which say
+ * nothing about which plant this is.
  *
- * THE NAME IS THE SCIENTIFIC ONE, AND IT IS NOT A SPOILER. It came from the identifier and
- * is already printed on the row above. Five cards — the `spp.` genus cards — do carry their
- * common name inside the curated trait prose, because for those the common name IS the genus
- * ("Oak", "Maple"), which `Quercus spp.` on the row has already said. Nothing is redacted to
- * hide it: the same prose carries lookalike warnings naming poison sumac and death camas, and
- * editing safety text to protect a surprise is not a trade this app makes.
+ * READ STANDING UP, SO IT IS ROWS AND NOT PARAGRAPHS. This began as prose and read like a
+ * briefing: three explanatory sentences before the first trait. A person holding a phone in
+ * front of a plant is matching, not reading, so each trait is one tappable row with its own
+ * organ icon, and the lookalike and habitat sections are a line each.
  *
- * IT ALSO DOES NOT ESTABLISH SAFETY, and says so where the traits are rather than at the foot
- * where it would be scrolled past. `IDENTIFICATION_CAVEAT` is the deck's own sentence.
+ * THE BOXES ARE AN AID AND NOTHING ELSE. They are local state, never persisted, never read
+ * by anything, and they gate NOTHING: the confirm button is enabled at zero ticks and at
+ * four. Counting them would invent a confidence system this app deliberately does not have —
+ * eligibility is the matcher's, and a checkbox may not overrule it in either direction.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 export function IdentifyTraitsPanel({
@@ -46,20 +45,28 @@ export function IdentifyTraitsPanel({
   onDismiss,
 }: {
   /**
-   * Owned by the caller and mounted ONCE, high in the tree.
-   *
-   * Same rule `KnowledgeCheck` and the discovery celebration follow: confirming advances the
-   * collection and re-renders the row this was opened from, so a dialog living inside that
-   * row would be unmounted by the very action it reports. It must outlive the state change
-   * and keep a stable position, or React recreates the element underneath itself.
+   * Owned by the caller and mounted ONCE, high in the tree. Same rule `KnowledgeCheck` and
+   * the discovery celebration follow: confirming re-renders the row this was opened from, so
+   * a dialog living inside that row would be unmounted by the action it reports.
    */
   readonly dialogRef: RefObject<HTMLDialogElement | null>;
-  /** Absent until a row is chosen, so the dialog can be mounted before there is a subject. */
   readonly herb: Herb | null;
   readonly scientificName: string | null;
   readonly onConfirm: () => void;
   readonly onDismiss: () => void;
 }) {
+  /*
+   * Keyed by trait label and reset whenever the subject changes, so reopening on a different
+   * candidate never shows the previous plant's ticks. Deliberately not lifted, not stored and
+   * not returned: there is nothing for anybody to read.
+   */
+  const [ticked, setTicked] = useState<ReadonlySet<string>>(new Set());
+  const [subject, setSubject] = useState<string | null>(null);
+  if (subject !== scientificName) {
+    setSubject(scientificName);
+    setTicked(new Set());
+  }
+
   const notes = herb ? fieldNotesFor(herb) : null;
 
   return (
@@ -76,15 +83,13 @@ export function IdentifyTraitsPanel({
           </p>
           {/*
             THE PROPOSED SPECIES, NOT THE CARD. The binomial is the identifier's answer and
-            the thing being tested; the collectible it would unlock is deliberately unnamed
-            until it is unlocked.
+            the thing being tested; the collectible stays unnamed until it is unlocked.
           */}
           <h2 className="font-display mt-1 text-xl font-bold break-words italic text-violet-100">
             {scientificName}
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-violet-300">
-            Compare the plant in front of you against these traits. Plantdex has not checked
-            your photographs against anything &mdash; you are the one deciding.
+          <p className="mt-1 text-sm leading-relaxed text-violet-300">
+            Compare these traits with the plant in front of you.
           </p>
 
           {isGenusCard(herb) && (
@@ -95,43 +100,80 @@ export function IdentifyTraitsPanel({
           )}
 
           {notes?.identification?.length ? (
-            <section className="mt-4">
-              <h3 className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
-                What to look at
-              </h3>
-              <dl className="mt-2 space-y-2">
-                {notes.identification.map(({ trait, detail }) => (
-                  <div key={trait}>
-                    <dt className="text-sm font-bold text-violet-100">{trait}</dt>
-                    <dd className="text-sm leading-relaxed text-violet-300">{detail}</dd>
-                  </div>
-                ))}
-              </dl>
-              {/* Said where the traits are, which is the only place it gets read. */}
-              <p className="mt-3 text-xs leading-relaxed text-gold-300">{IDENTIFICATION_CAVEAT}</p>
-            </section>
+            <ul className="mt-4 space-y-1">
+              {notes.identification.map(({ trait, detail }) => {
+                const icon = iconForTrait(trait);
+                const on = ticked.has(trait);
+                return (
+                  <li key={trait}>
+                    {/*
+                      A BUTTON WITH `aria-pressed`, NOT A CHECKBOX. It records nothing and
+                      submits nothing, so a form control would promise a consequence there
+                      isn't one of — and the drawn square is the same filled/hollow marker
+                      `ObservationPhotos` uses for its slots, rather than a font's tick.
+                    */}
+                    <button
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() =>
+                        setTicked((current) => {
+                          const next = new Set(current);
+                          if (!next.delete(trait)) next.add(trait);
+                          return next;
+                        })
+                      }
+                      className="flex min-h-11 w-full items-start gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors hover:bg-plum-700/40"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`mt-0.5 inline-block h-3.5 w-3.5 shrink-0 border-2 ${
+                          on ? 'border-gold-400 bg-gold-400' : 'border-violet-400'
+                        }`}
+                      />
+                      {icon && (
+                        <PlantdexIcon
+                          name={icon}
+                          aria-hidden="true"
+                          className={`mt-px shrink-0 text-base ${on ? 'text-gold-300' : 'text-violet-400'}`}
+                        />
+                      )}
+                      <span className="min-w-0">
+                        <span
+                          className={`block text-sm font-bold ${on ? 'text-gold-200' : 'text-violet-100'}`}
+                        >
+                          {trait}
+                        </span>
+                        <span className="block text-xs leading-relaxed text-violet-300">
+                          {detail}
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
           ) : (
-            /*
-             * HONEST ABOUT HAVING NOTHING. A Field Card has no curated field notes, and an
-             * empty "What to look at" heading would read as "there is nothing to check".
-             */
+            /* A Field Card has no curated notes, and an empty heading would read as "nothing to check". */
             <p className="mt-4 text-sm leading-relaxed text-violet-300">
-              Plantdex has no field notes for this species yet, so check it against a field
-              guide rather than against this screen.
+              No field notes for this species yet &mdash; check it against a field guide.
             </p>
           )}
 
+          {/* Said ONCE, where the traits are, which is the only place it gets read. */}
+          <p className="mt-3 text-xs leading-relaxed text-gold-300">{IDENTIFICATION_CAVEAT}</p>
+
           {notes?.lookalikes?.length ? (
             <section className="mt-4">
-              <h3 className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
-                Easily confused with
-              </h3>
               {/*
                 IMMEDIATELY AFTER THE TRAITS, the order `FieldNotesSections` already uses: a
-                reader who has just matched a trait list is exactly the reader who needs to
-                know what else matches it.
+                reader who has just matched a trait list is the reader who needs to know what
+                else matches it. `risk` keeps its own hazard weight; everything else is one line.
               */}
-              <ul className="mt-2 space-y-2">
+              <h3 className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.1em] text-pink-accent uppercase">
+                <PlantdexIcon name="safety" aria-hidden="true" className="text-sm" />
+                Easily confused with
+              </h3>
+              <ul className="mt-1.5 space-y-2">
                 {notes.lookalikes.map((look) => (
                   <li key={look.commonName}>
                     <p className="text-sm font-bold text-violet-100">
@@ -142,7 +184,7 @@ export function IdentifyTraitsPanel({
                         </span>
                       )}
                     </p>
-                    <p className="text-sm leading-relaxed text-violet-300">{look.distinguishBy}</p>
+                    <p className="text-xs leading-relaxed text-violet-300">{look.distinguishBy}</p>
                     {look.risk && (
                       <p className="mt-1 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-2 text-xs leading-relaxed text-violet-100">
                         <span className="font-bold text-pink-accent">Risk: </span>
@@ -162,18 +204,18 @@ export function IdentifyTraitsPanel({
 
           {notes?.habitat && (
             <section className="mt-4">
-              <h3 className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
-                Where it grows
+              <h3 className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
+                <PlantdexIcon name="compass" aria-hidden="true" className="text-sm" />
+                Typical habitat
               </h3>
-              <p className="mt-1 text-sm leading-relaxed text-violet-300">{notes.habitat}</p>
+              <p className="mt-1 text-xs leading-relaxed text-violet-300">{notes.habitat}</p>
             </section>
           )}
 
           {/*
-            THE CARD'S OWN PRINTED WARNING, which is the one piece of card content that may
-            appear before discovery. AGENTS.md requires a printed warning never to sit behind
-            an interaction, and `LockedHerb` already shows it on a locked page for the same
-            reason: it names a real risk of misidentification, which outranks the surprise.
+            THE CARD'S OWN PRINTED WARNING — the one piece of card content that may appear
+            before discovery. AGENTS.md requires a printed warning never to sit behind an
+            interaction, and `LockedHerb` shows it on a locked page for the same reason.
           */}
           {herb.warning && (
             <p className="mt-4 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-3 text-xs leading-relaxed text-violet-100">
@@ -182,22 +224,18 @@ export function IdentifyTraitsPanel({
             </p>
           )}
 
-          <p className="mt-4 text-sm leading-relaxed font-semibold text-violet-200">
-            Log it only if you met the plant outdoors and the traits above match what you saw.
-          </p>
-
-          <div className="mt-4 flex flex-col gap-2">
+          <div className="mt-5 flex flex-col gap-2">
             <button
               type="button"
               onClick={onConfirm}
-              className="arcade-key min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
+              className="arcade-key min-h-12 w-full rounded-full bg-gold-400 px-4 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
             >
               This matches my plant
             </button>
             {/*
               NOT A CANCEL. "I'm not sure yet" is the honest answer to a comparison somebody
-              could not complete, and naming it that way makes leaving a legitimate outcome
-              rather than an abandoned task.
+              could not finish, and naming it that way makes leaving an outcome rather than an
+              abandoned task.
             */}
             <button
               type="button"
@@ -207,6 +245,10 @@ export function IdentifyTraitsPanel({
               I&rsquo;m not sure yet
             </button>
           </div>
+          {/* One line, at the point of decision. The full safety section stays on the page. */}
+          <p className="mt-2 text-center text-xs text-violet-400">
+            Log it only if you met this plant outdoors.
+          </p>
         </div>
       )}
     </dialog>

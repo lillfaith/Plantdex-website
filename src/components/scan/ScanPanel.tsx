@@ -789,7 +789,7 @@ export function ScanPanel() {
                      * about a taxon, and the row has no use for one.
                      */
                     const entryName =
-                      herb && ready && isDiscovered(herb.id) ? herb.commonName : 'a Plantdex entry';
+                      herb && ready && isDiscovered(herb.id) ? herb.commonName : null;
                     const rowKey = candidate.scientificName;
                     return (
                       <li
@@ -800,7 +800,17 @@ export function ScanPanel() {
                             : 'border-y-violet-800/70 border-r-violet-800/70 border-l-violet-600'
                         }`}
                       >
-                        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                        {/*
+                          THE NAME GETS ITS OWN LINE, AND THE META LINE GETS THE FULL WIDTH.
+
+                          These shared one `justify-between` baseline row. That was fine while
+                          the right-hand side was just a score, and broke the moment "Closest
+                          suggestion" joined it: at 390px the leader's meta wrapped onto two
+                          ragged lines beside the binomial, which is taller and worse than the
+                          three separate lines it replaced. Stacking them is what makes the
+                          compaction actually compact.
+                        */}
+                        <div className="flex flex-col gap-y-1">
                           {/*
                             THE BINOMIAL LEADS, ALWAYS.
 
@@ -812,8 +822,23 @@ export function ScanPanel() {
                             Heading by the binomial also makes the duplicate-name case
                             structurally impossible rather than handled.
                           */}
-                          <span className="font-bold break-words italic text-violet-100">
-                            {candidate.scientificName}
+                          <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span className="font-bold break-words italic text-violet-100">
+                              {candidate.scientificName}
+                            </span>
+                            {/*
+                              THE LEADER MARK IS A CHIP BESIDE THE NAME, NOT A THIRD ITEM IN
+                              THE SCORE LINE. Folded in there it made the leader's meta wrap
+                              three ways at 390px — "Closest" over "suggestion", "Match" over
+                              "score: 45%" — which is taller than the separate line it was
+                              meant to replace. Up here it sits on the name's own row, and the
+                              score line stays ONE line on every row including this one.
+                            */}
+                            {leads && (
+                              <span className="rounded-full border border-gold-500/60 bg-gold-500/12 px-2 py-0.5 text-[0.72rem] font-bold tracking-[0.08em] text-gold-300 uppercase">
+                                Closest suggestion
+                              </span>
+                            )}
                           </span>
                           <span className="flex items-center gap-2 text-xs tabular-nums text-violet-300">
                             <span
@@ -839,21 +864,23 @@ export function ScanPanel() {
                               a score used to rank suggestions against each other, and the
                               qualitative band steps down to a secondary note beside it.
                             */}
+                            {/*
+                              ONE META LINE, NOT THREE. "Closest suggestion" used to be its
+                              own paragraph under the row, the score its own cluster and the
+                              band a third element — three lines saying three short things.
+                              They are one dot-separated line now, which is the same
+                              information at roughly a third of the height.
+                            */}
                             <span>
                               Match score:{' '}
                               <span className="font-bold text-violet-100">
                                 {Math.round(candidate.score * 100)}%
                               </span>
                             </span>
+                            <span aria-hidden="true" className="text-violet-600">&middot;</span>
                             <span className="text-violet-400">{band}</span>
                           </span>
                         </div>
-
-                        {leads && (
-                          <p className="mt-1 text-xs font-semibold text-gold-300">
-                            Closest suggestion
-                          </p>
-                        )}
 
                         {/*
                           THAT AN ENTRY EXISTS, WITHOUT SAYING WHICH ONE.
@@ -878,9 +905,16 @@ export function ScanPanel() {
                         */}
                         {herb && candidate.match.confirmable && (
                           <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-relaxed text-violet-300">
+                            {/*
+                              PLANTDEX STATUS IS VIOLET; GOLD IS THE IDENTIFIER'S LEADER AND
+                              THE COMMIT. This chip was gold, so a 23% relative carrying a card
+                              wore the same accent as the 45% answer above it — the ranking
+                              competing with the collection for one colour. Violet says
+                              "Plantdex has something here" without claiming rank.
+                            */}
                             <span
                               aria-hidden="true"
-                              className="inline-block h-2.5 w-2.5 shrink-0 border-2 border-gold-400 bg-gold-400"
+                              className="inline-block h-2.5 w-2.5 shrink-0 border-2 border-violet-400 bg-violet-400"
                             />
                             <span className="font-semibold text-violet-200">
                               {candidate.match.kind === 'genusCard'
@@ -934,11 +968,21 @@ export function ScanPanel() {
                            * confirm button, whichever sentence it prints.
                            */
                           <p className="mt-2 text-xs leading-relaxed text-violet-300">
-                            {index !== firstRelated
-                              ? `Related to ${entryName}, but a different species.`
-                              : (candidate.match.relatedHerbIds?.length ?? 1) > 1
-                                ? `Related to the deck’s ${candidate.match.relatedHerbIds?.length} cards in this group, but a different species — so it cannot be logged as any of them.`
-                                : `Related to ${entryName}, but a different species — so it cannot be logged under it.`}
+                            {/*
+                              TWO WORDS AND A CONSEQUENCE, REPEATED CHEAPLY. The full sentence
+                              — "Related to a Plantdex entry, but a different species, so it
+                              cannot be logged under it" — is correct and was printed on up to
+                              four rows of one screen. The distinction it carries is RELATED and
+                              NOT LOGGABLE, and both survive here; what goes is the fourth
+                              reading of the same clause.
+
+                              The old wording also counted the deck's cards in the group, which
+                              existed to disambiguate a NAMED card. No row names one any more,
+                              so the count had nothing left to disambiguate.
+                            */}
+                            {index === firstRelated
+                              ? `Related${entryName ? ` to ${entryName}` : ' species'} \u00b7 not collectible`
+                              : 'Related species'}
                           </p>
                         ) : already ? (
                           /*
@@ -976,9 +1020,9 @@ export function ScanPanel() {
                               setChecking({ herb, candidate });
                               traitsRef.current?.showModal();
                             }}
-                            className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
+                            className="mt-2.5 min-h-11 w-full rounded-full border border-violet-500 bg-violet-600/15 px-4 text-sm font-bold text-violet-100 transition-colors hover:bg-violet-600/30"
                           >
-                            Check identifying traits <span aria-hidden="true">&rarr;</span>
+                            Check traits <span aria-hidden="true">&rarr;</span>
                           </button>
                         )}
                       </li>
