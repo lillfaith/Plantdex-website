@@ -53,7 +53,7 @@ const BANNED = [
   // affiliation claim and gets ads rejected. "Plantdex" is ours; these are not.
   [/(pok[eé]mon|pok[eé]dex|nintendo|game ?freak|pikachu|tamagotchi|animal crossing)/i, 'third-party trademark'],
 ];
-const TOKENS = new Set(['commonName', 'scientificName', 'cardNumber', 'rarity']);
+const TOKENS = new Set(['commonName', 'scientificName', 'cardNumber', 'rarity', 'xp']);
 
 // The plant's own knowledge, for checking every value a `knowledge` tag shows.
 const deck = JSON.parse(readFileSync(join(REPO, 'src/data/herbs.json'), 'utf8'));
@@ -147,6 +147,27 @@ for (const { file, spec } of ADS) {
         checkLine(ad, `${w} caption`, s.caption);
         break;
       }
+      case 'ownership': {
+        checkPlant(ad, w, s.plant, { hero: true, stage: s.stage });
+        checkLine(ad, `${w} headline`, s.headline);
+        checkLine(ad, `${w} owned`, s.owned);
+        checkLine(ad, `${w} discovered`, s.discovered);
+        if (s.at >= s.duration - 30) fail(ad, `${w}: status lands with < 1s left`);
+        if (s.xp) {
+          checkLine(ad, `${w} xp`, s.xp);
+          // The XP number must come from the card's own value, never typed in.
+          if (s.xp.source !== 'card' || !s.xp.text.includes('{xp}')) fail(ad, `${w}: XP must be the card's {xp} token`);
+          if ((manifest.plants[s.plant]?.xp ?? 0) === 0) fail(ad, `${w}: ${s.plant} credits no XP on discovery (Field Card)`);
+        }
+        if (s.counter) {
+          checkLine(ad, `${w} counter`, s.counter.label);
+          // One discovery adds exactly one; the total is the printed deck.
+          if (s.counter.of !== deck.deckSize) fail(ad, `${w}: counter total ${s.counter.of} is not the deck size ${deck.deckSize}`);
+          if (s.counter.to !== s.counter.from + 1) fail(ad, `${w}: a discovery moves the count by exactly one`);
+          if (s.counter.from < 0 || s.counter.to > s.counter.of) fail(ad, `${w}: counter out of range`);
+        }
+        break;
+      }
       case 'knowledge': {
         checkPlant(ad, w, s.plant, { hero: true });
         checkLine(ad, `${w} headline`, s.headline);
@@ -189,7 +210,8 @@ for (const { file, spec } of ADS) {
         if (s.shots.some((x) => x.screen === 'scan' || x.screen === 'start') && !s.safety)
           fail(ad, `${w}: shows identification, so it needs a safety line`);
         // The safety line shows with the first shot (the scan screen), so THAT shot is what must last.
-        if (s.safety && s.shots[0].duration < 45) fail(ad, `${w}: safety line must be on screen ≥ 1.5s (first shot)`);
+        const safetyFrames = s.shots[0].payoff?.at ?? s.shots[0].duration;
+        if (s.safety && safetyFrames < 45) fail(ad, `${w}: safety line must be on screen ≥ 1.5s (first shot, until any payoff)`);
         checkLine(ad, `${w} safety`, s.safety);
         break;
       }

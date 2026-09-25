@@ -1,0 +1,62 @@
+{
+  "id": "owned-not-discovered",
+  "title": "Owned ≠ Discovered",
+  "checkedAt": "2026-09-24T23:57:14.246Z",
+  "assets": {
+    "files": 62,
+    "verified": 62
+  },
+  "sprites": [
+    {
+      "sprite": "taraxacum-officinale/adult",
+      "frames": 16,
+      "distinct": 15,
+      "holds": 0,
+      "fps": 12,
+      "minInk": "0.275"
+    },
+    {
+      "sprite": "trifolium-pratense/adult",
+      "frames": 14,
+      "distinct": 11,
+      "holds": 1,
+      "fps": 10,
+      "minInk": "0.350"
+    },
+    {
+      "sprite": "viola-sororia/adult",
+      "frames": 14,
+      "distinct": 9,
+      "holds": 3,
+      "fps": 8,
+      "minInk": "0.232"
+    },
+    {
+      "sprite": "solidago-canadensis/adult",
+      "frames": 14,
+      "distinct": 11,
+      "holds": 2,
+      "fps": 6,
+      "minInk": "0.319"
+    }
+  ],
+  "container": {
+    "videoCodec": "h264",
+    "pixFmt": "yuv420p",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "frames": 520,
+    "duration": 17.386667,
+    "audioCodec": "aac",
+    "bytes": 16227743
+  },
+  "firstFrameContrast": "16.9",
+  "picture": {
+    "frames": 520,
+    "minMean": "23.8",
+    "minStd": "16.9"
+  },
+  "contactSheet": "exports/qc/owned-not-discovered-contact.jpg",
+  "problems": []
+}

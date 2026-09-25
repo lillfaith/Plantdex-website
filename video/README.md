@@ -157,3 +157,22 @@ sentence at a time, and every hold counted until the next transition starts.
 
 EDIBILITY's value ("Fresh greens") is the card's own printed preparation, paired with a small
 identify-first line; lint enforces both.
+
+### Owned ≠ Discovered (`owned-not-discovered`, 17.3s)
+
+A separate ad built on the central mechanic: owning a card is not the same as discovering the
+plant. It needs no new outdoor footage.
+
+| Start | Beat |
+|---|---|
+| 0.0s | "I own this card… *but I still haven't unlocked it.*" The Dandelion card swings in beside its digital entry, shown as the Herbdex's own undiscovered silhouette. The hook dims as OWNED ✓ / DISCOVERED ✕ lands. |
+| 4.7s | Scan screen: "To unlock it, *find the real plant.*", the photo slot highlighted, the small "suggestion to check" line, then a "Scan complete." stamp. |
+| 7.3s | "Dandelion discovered." The sprite flashes into colour, DISCOVERED flips to ✓, **+100 XP** (the card's own value) and HERBS DISCOVERED 07 → 08 / 45. |
+| 10.7s | Box in hand, angled so the box-back copy isn't featured: "45 cards. *45 real-world discoveries.*" |
+| 12.5s | Deck on grass: "The deck is the guide. *Outside is the game.*" |
+| 14.5s | Plantdex / "The digital Plantdex is *free.*" / Link in bio. |
+
+New scene type `ownership` (`src/scenes/Ownership.tsx`) in `locked` and `discovered` modes.
+Lint requires the XP to be the card's `{xp}` token (never typed, never a 0-XP Field Card), the
+counter total to be the printed deck size, and the count to move by exactly one. The starting
+number (07) is an illustrative example.

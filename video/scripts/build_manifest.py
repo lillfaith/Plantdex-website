@@ -121,6 +121,8 @@ def field_cards() -> dict[str, dict]:
                 "scientificName": field("scientificName"),
                 "cardNumber": int(field("cardNumber") or 0),
                 "rarity": field("rarity"),
+                # Field Cards credit 0 XP on discovery (awards are printed-deck-scoped).
+                "xp": 0,
                 "collection": "field-cards",
                 "printed": False,
                 "printedWarning": None,
@@ -138,6 +140,7 @@ def printed_cards() -> tuple[dict[str, dict], dict]:
             "scientificName": h["scientificName"],
             "cardNumber": h["cardNumber"],
             "rarity": h["rarity"],
+            "xp": h["xp"],
             "collection": "collection-01",
             "printed": True,
             "printedWarning": h.get("warning"),

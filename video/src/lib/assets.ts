@@ -28,6 +28,8 @@ export interface PlantEntry {
   scientificName: string;
   cardNumber: number;
   rarity: string;
+  /** XP a discovery of this card credits (the printed value; 0 for Field Cards). */
+  xp: number;
   collection: string;
   printed: boolean;
   printedWarning: string | null;
@@ -111,6 +113,7 @@ export function fillCardTokens(text: string, id: string): string {
     scientificName: p.scientificName,
     cardNumber: String(p.cardNumber).padStart(2, '0'),
     rarity: p.rarity,
+    xp: String(p.xp),
   };
   return text.replace(/\{(\w+)\}/g, (m, k: string) => {
     const v = tokens[k];

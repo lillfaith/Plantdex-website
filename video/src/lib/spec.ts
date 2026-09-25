@@ -124,6 +124,33 @@ export interface KnowledgeScene extends SceneBase {
   rowsAt?: number;
 }
 
+/**
+ * Owning the card vs discovering the plant: the physical card beside its digital entry.
+ * `locked` shows the entry as the Herbdex's own undiscovered silhouette with OWNED ✓ and
+ * DISCOVERED ✕. `discovered` flashes the real sprite into colour, flips DISCOVERED to ✓, then
+ * shows the XP the card credits and a collection count ticking up by exactly one.
+ */
+export interface OwnershipScene extends SceneBase {
+  type: 'ownership';
+  duration: number;
+  plant: string;
+  stage: SpriteStage;
+  mode: 'locked' | 'discovered';
+  /** Main line at the top (hook in `locked`, the discovery in `discovered`). */
+  headline?: Line;
+  owned: Line;
+  discovered: Line;
+  /** Frame the OWNED / DISCOVERED status row appears (`locked`), or the flash lands (`discovered`). */
+  at: number;
+  /** `discovered` only: "+{xp} XP", filled from the card. */
+  xp?: Line;
+  /**
+   * `discovered` only: an example count. `of` must be the printed deck size and `to` must be
+   * `from + 1`, the only step one discovery makes; the starting number is illustrative.
+   */
+  counter?: { label: Line; from: number; to: number; of: number };
+}
+
 export interface ScreenShot {
   screen: string;
   framing: 'phone-viewport' | 'phone-full';
@@ -179,6 +206,7 @@ export type Scene =
   | PhotoScene
   | FootageScene
   | KnowledgeScene
+  | OwnershipScene
   | ScreenDemoScene
   | UiCalloutScene
   | CtaScene;

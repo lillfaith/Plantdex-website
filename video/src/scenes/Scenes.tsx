@@ -481,8 +481,14 @@ export const ScreenDemoView: React.FC<{ scene: ScreenDemoScene }> = ({ scene }) 
       {scene.safety ? (
         // Shown with the scan screen, where identification is being described, and cleared
         // before the next shot so the unlock stamp has the room.
-        <Sequence from={0} durationInFrames={scene.shots[0]!.duration} layout="none">
-          <SafetyWithOutro line={scene.safety} duration={scene.shots[0]!.duration} top={phoneTop - 58} />
+        // If that shot has a payoff stamp, the line clears just before it lands (lint keeps
+        // it on screen >= 1.5s either way).
+        <Sequence from={0} durationInFrames={scene.shots[0]!.payoff?.at ?? scene.shots[0]!.duration} layout="none">
+          <SafetyWithOutro
+            line={scene.safety}
+            duration={scene.shots[0]!.payoff?.at ?? scene.shots[0]!.duration}
+            top={phoneTop - 58}
+          />
         </Sequence>
       ) : null}
     </AbsoluteFill>

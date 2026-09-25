@@ -1,0 +1,177 @@
+{
+  "id": "owned-not-discovered",
+  "title": "Owned ≠ Discovered",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 520,
+  "transitionFrames": 10,
+  "scenes": [
+    {
+      "type": "ownership",
+      "duration": 150,
+      "plant": "taraxacum-officinale",
+      "stage": "adult",
+      "mode": "locked",
+      "headline": {
+        "text": "I own this card… *but I still haven't unlocked it.*",
+        "source": "authored"
+      },
+      "owned": {
+        "text": "Owned",
+        "source": "authored"
+      },
+      "discovered": {
+        "text": "Discovered",
+        "source": "authored"
+      },
+      "at": 78
+    },
+    {
+      "type": "screenDemo",
+      "enter": "slide-up",
+      "duration": 90,
+      "shots": [
+        {
+          "screen": "scan",
+          "framing": "phone-viewport",
+          "duration": 90,
+          "from": {
+            "y": 0.1,
+            "zoom": 1
+          },
+          "to": {
+            "y": 0.45,
+            "zoom": 1
+          },
+          "caption": {
+            "text": "To unlock it, *find the real plant.*",
+            "source": "authored"
+          },
+          "highlights": [
+            {
+              "x": 0.095,
+              "y": 0.532,
+              "w": 0.81,
+              "h": 0.165,
+              "from": 30,
+              "to": 90
+            }
+          ],
+          "payoff": {
+            "line": {
+              "text": "Scan complete.",
+              "source": "authored"
+            },
+            "at": 52
+          }
+        }
+      ],
+      "safety": {
+        "text": "The answer is a suggestion to check, not a verdict.",
+        "source": "quote"
+      }
+    },
+    {
+      "type": "ownership",
+      "enter": "fade",
+      "duration": 110,
+      "plant": "taraxacum-officinale",
+      "stage": "adult",
+      "mode": "discovered",
+      "headline": {
+        "text": "{commonName} discovered.",
+        "source": "card"
+      },
+      "owned": {
+        "text": "Owned",
+        "source": "authored"
+      },
+      "discovered": {
+        "text": "Discovered",
+        "source": "authored"
+      },
+      "at": 8,
+      "xp": {
+        "text": "+{xp} XP",
+        "source": "card"
+      },
+      "counter": {
+        "label": {
+          "text": "Herbs discovered",
+          "source": "quote"
+        },
+        "from": 7,
+        "to": 8,
+        "of": 45
+      }
+    },
+    {
+      "type": "footage",
+      "enter": "slide-up",
+      "duration": 65,
+      "clip": "box-in-hand",
+      "startAt": 0.0,
+      "caption": {
+        "text": "45 cards. *45 real-world discoveries.*",
+        "source": "authored"
+      },
+      "captionAt": "top",
+      "playbackRate": 0.95
+    },
+    {
+      "type": "footage",
+      "enter": "fade",
+      "duration": 70,
+      "clip": "deck-fan-on-grass",
+      "startAt": 0,
+      "playbackRate": 0.82,
+      "zoomFrom": 1.18,
+      "zoomTo": 1.24,
+      "offsetY": 160,
+      "caption": {
+        "text": "The deck is the guide. *Outside is the game.*",
+        "source": "authored"
+      },
+      "captionAt": "top"
+    },
+    {
+      "type": "cta",
+      "enter": "fade",
+      "duration": 85,
+      "photo": "02-product/deck-in-hand.jpg",
+      "headline": {
+        "text": "Plantdex",
+        "source": "authored"
+      },
+      "lines": [
+        {
+          "text": "The digital Plantdex is *free.*",
+          "source": "quote"
+        }
+      ],
+      "sprites": [
+        {
+          "plant": "taraxacum-officinale",
+          "stage": "adult"
+        },
+        {
+          "plant": "trifolium-pratense",
+          "stage": "adult"
+        },
+        {
+          "plant": "viola-sororia",
+          "stage": "adult"
+        },
+        {
+          "plant": "solidago-canadensis",
+          "stage": "adult"
+        }
+      ],
+      "button": {
+        "text": "Link in bio",
+        "source": "authored"
+      }
+    }
+  ]
+}

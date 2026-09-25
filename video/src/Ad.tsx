@@ -5,6 +5,7 @@ import { fade } from '@remotion/transitions/fade';
 import { slide } from '@remotion/transitions/slide';
 import { wipe } from '@remotion/transitions/wipe';
 import type { AdSpec, Scene, Transition } from './lib/spec';
+import { OwnershipView } from './scenes/Ownership';
 import { C } from './lib/brand';
 import { CardRevealView, CtaView, FootageView, Hook, KnowledgeView, PhotoView, ScreenDemoView, UiCalloutView } from './scenes/Scenes';
 
@@ -31,6 +32,8 @@ const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
       return <PhotoView scene={scene} />;
     case 'footage':
       return <FootageView scene={scene} />;
+    case 'ownership':
+      return <OwnershipView scene={scene} />;
     case 'knowledge':
       return <KnowledgeView scene={scene} />;
     case 'screenDemo':
