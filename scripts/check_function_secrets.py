@@ -58,6 +58,9 @@ import sys
 
 DEFAULT_PROVIDER = "plantnet"
 PROVIDER_KEYS = {"plantnet": "PLANTNET_API_KEY", "plantid": "PLANT_ID_API_KEY"}
+# Named so `image_floor_report` can say "this is production" rather than the caller having
+# to. It is the one check here whose verdict depends on WHICH project is being read.
+PRODUCTION_REF = "vygiamigomwlvnwkryyl"
 
 
 def expected_secrets(provider: str) -> list[tuple[str, bool, str]]:
@@ -157,6 +160,51 @@ def describe_unrecognised(value: str) -> str:
     return "; ".join(notes)
 
 
+def image_floor_report(values: dict[str, str], project: str) -> list[str]:
+    """Whether this project has lowered the photograph floor, which only TEST may do.
+
+    `IDENTIFY_MIN_IMAGES` exists to answer one benchmark question — is the second photograph
+    worth the friction of requiring it — and it is the one secret here whose presence on the
+    WRONG project is itself the fault. Unset means the product's own rule: two photographs,
+    enforced in the browser and again at the endpoint.
+
+    It is the same silent-failure shape as everything else in this file, pointing the other
+    way. A deployment that lowered its floor and forgot says nothing about it: scans keep
+    working, the button still asks for two, and single-image requests the UI never makes are
+    quietly accepted by a public endpoint. Nothing errors, and no log mentions it.
+
+    The value is digested by the API like every other, but its vocabulary is three numbers —
+    so unlike the free-form allow-list, this one CAN be named exactly.
+    """
+    raw = values.get("IDENTIFY_MIN_IMAGES", "").strip()
+    if not raw:
+        print(f"  {'IDENTIFY_MIN_IMAGES':<28} unset (floor is 2 — the product's own rule)")
+        return []
+
+    resolved = next((str(n) for n in (1, 2, 3) if stored_is(raw, str(n))), None)
+    print(f"  {'IDENTIFY_MIN_IMAGES':<28} SET to {resolved or 'an unrecognised value'}")
+
+    notes: list[str] = []
+    if resolved is None:
+        # `resolveMinImages` clamps anything that is not a positive integer back to the
+        # default, so this is not an outage — but a value nobody can name is a value nobody
+        # is maintaining, and the whole point of this script is that nothing else would say.
+        notes.append(
+            f"::warning::{project}: IDENTIFY_MIN_IMAGES holds a value this repository does "
+            "not recognise. `resolveMinImages` clamps it back to 2, so behaviour is the "
+            "default — but it should be unset rather than left holding something unread."
+        )
+    elif project == PRODUCTION_REF:
+        notes.append(
+            f"::error::{project} is PRODUCTION and has IDENTIFY_MIN_IMAGES set. This "
+            "variable lowers the photograph floor for the accuracy benchmark and belongs on "
+            "the test project alone. Unset it: the browser asks every player for two "
+            "photographs, and an endpoint that accepts one is accepting requests the UI "
+            "never makes."
+        )
+    return notes
+
+
 def comparison_report(present: set[str], values: dict[str, str], provider: str) -> list[str]:
     """Problems with comparison mode that are invisible from outside.
 
@@ -209,7 +257,13 @@ def main() -> int:
     values = {
         str(entry.get("name")): str(entry.get("value") or "")
         for entry in entries
-        if entry.get("name") in {"PLANT_IDENTIFICATION_PROVIDER", "IDENTIFICATION_COMPARISON", "IDENTIFICATION_COMPARISON_USER_IDS"}
+        if entry.get("name")
+        in {
+            "PLANT_IDENTIFICATION_PROVIDER",
+            "IDENTIFICATION_COMPARISON",
+            "IDENTIFICATION_COMPARISON_USER_IDS",
+            "IDENTIFY_MIN_IMAGES",
+        }
     }
 
     raw_provider = values.get("PLANT_IDENTIFICATION_PROVIDER", "").strip()
@@ -236,6 +290,7 @@ def main() -> int:
             missing_required.append(name)
 
     notes = comparison_report(present, values, provider)
+    notes += image_floor_report(values, project)
 
     for name, required, breaks in expected:
         if name not in present:
@@ -255,6 +310,9 @@ def main() -> int:
         )
         # Shape only — see `describe_unrecognised`. The value is never printed.
         print(f"::error::{project}: what is set, without revealing it — {shape}")
+        return 1
+
+    if any(note.startswith("::error::") for note in notes):
         return 1
 
     if missing_required:
