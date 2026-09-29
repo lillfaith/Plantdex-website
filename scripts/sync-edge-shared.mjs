@@ -60,6 +60,11 @@ export const PURE_MODULES = [
   'identification-types.ts',
   'plantnet-normalize.ts',
   'plantid-normalize.ts',
+  // How many photographs an observation must carry. It travels because the clamp is the one
+  // thing standing between a mistyped environment variable and a public endpoint with no
+  // minimum at all — so the server runs the function vitest actually executed, rather than a
+  // second copy of the same four guards written out by hand in Deno.
+  'observation-bounds.ts',
   // `identification-confidence.ts` is deliberately NOT here. Banding a probability is a
   // presentation decision and happens in the browser; the function returns the raw number.
   // Syncing it would put an unreachable module in the bundle, which `edge-shared.test.ts`

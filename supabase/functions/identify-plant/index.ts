@@ -1,5 +1,6 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { canonicalIdentity } from '../_shared/herbdex/species-identity.ts';
+import { resolveMinImages } from '../_shared/herbdex/observation-bounds.ts';
 import { identifyWithPlantId, identifyWithPlantNet, type ObservationImage } from './providers.ts';
 import {
   isIdentificationFailure,
@@ -76,6 +77,29 @@ const COMPARISON_CANDIDATE_CAP = 5;
 /** Two required, three allowed. Enforced here as well as in the browser. */
 const MIN_IMAGES = 2;
 const MAX_IMAGES = 3;
+
+/*
+ * THE FLOOR THAT IS ACTUALLY ENFORCED, AND WHY IT IS NOT JUST `MIN_IMAGES`.
+ *
+ * Requiring two photographs costs every player a second tap and a second framing, in front
+ * of a plant, and it was chosen from an argument rather than from a measurement. Whether the
+ * second photograph buys enough accuracy to be worth that friction is answerable — but not by
+ * a benchmark bound by the very floor it is evaluating, so `scripts/identify_web_images.py`
+ * cannot ask the question against any deployment that hard-codes it.
+ *
+ * `IDENTIFY_MIN_IMAGES` is therefore read ON THE DEPLOYMENT BEING MEASURED and nowhere else.
+ * UNSET — which is what production is, and stays — `resolveMinImages` returns `MIN_IMAGES`
+ * and this is byte-for-byte the behaviour of the constant it replaced. A value that is not a
+ * positive integer, or that would sit above `MAX_IMAGES`, does not get honoured either: the
+ * asymmetry matters, because a typo that RAISES the floor costs one scan while a typo that
+ * removes it silently turns off a check on a public endpoint. `observation-bounds.ts` is a
+ * shared pure module rather than four guards rewritten here, so the rule the server runs is
+ * the one `observation-bounds.test.ts` executes.
+ */
+const MIN_IMAGES_FLOOR = resolveMinImages(Deno.env.get('IDENTIFY_MIN_IMAGES'), {
+  fallback: MIN_IMAGES,
+  max: MAX_IMAGES,
+});
 /** PlantNet's vocabulary. Anything else from a client is replaced with `auto`. */
 const ORGANS = new Set(['habit', 'leaf', 'flower', 'fruit', 'bark', 'auto']);
 
@@ -387,10 +411,12 @@ Deno.serve(async (req: Request) => {
    * one `organs` field — the multi-image shape PlantNet documents was already half-wired.
    */
   const files = form.getAll('image').filter((one): one is File => one instanceof File);
-  if (files.length < MIN_IMAGES) {
+  if (files.length < MIN_IMAGES_FLOOR) {
     return json(
       {
-        error: `Add ${MIN_IMAGES} photographs of the same plant — the whole plant and a close-up.`,
+        // The NUMBER the caller must actually satisfy, not the default. A deployment that
+        // lowered the floor and then told people to add two would be lying to them.
+        error: `Add ${MIN_IMAGES_FLOOR} photographs of the same plant — the whole plant and a close-up.`,
         code: 'tooFewImages',
       },
       400,

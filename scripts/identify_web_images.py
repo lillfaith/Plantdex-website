@@ -62,7 +62,7 @@ ENVIRONMENT.
 
   Both modes      PROJECT_REF, ANON_KEY
   Size mode       CATEGORY, LIMIT, SIZES
-  Benchmark mode  MANIFEST, OUT, CONDITIONS, SIGNED_IN, ONLY, EDGE, QUALITY,
+  Benchmark mode  MANIFEST, OUT, CONDITIONS, SIGNED_IN, PILOT, ONLY, EDGE, QUALITY,
                   ACCESS_TOKEN or (USER_EMAIL and USER_PASSWORD) for the comparison account,
                   and optionally PLAIN_ACCESS_TOKEN or (PLAIN_USER_EMAIL and
                   PLAIN_USER_PASSWORD) for a second, ordinary account
@@ -533,6 +533,10 @@ def run_benchmark() -> int:
 
     manifest = load_manifest(manifest_path)
     sets = [one for one in manifest.get("sets", []) if not only or one.get("id") in only]
+    # PILOT=1 selects the sets the manifest itself marks, so which six ran is recorded in a
+    # file under version control rather than in whoever's shell history.
+    if os.environ.get("PILOT", "").strip() == "1":
+        sets = [one for one in sets if one.get("pilot")]
     if not sets:
         print("manifest selected no sets")
         return 2
