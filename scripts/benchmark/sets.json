@@ -1,0 +1,161 @@
+{
+  "about": [
+    "IMAGE SETS for scripts/identify_web_images.py in benchmark mode.",
+    "",
+    "A SET is one species and up to three photographs of it. The condition matrix runs the",
+    "same set at one, two and three photographs, and at two different slot-3 organ tags, so",
+    "everything that moves between conditions is the request rather than the pictures.",
+    "",
+    "`expectedHerbId` is the card a CORRECT identification should reach, and null means the",
+    "correct answer is NO CARD — the Seed Shelf. Those entries are not filler: the share of",
+    "real scans that land on the shelf is a measurement nobody here has made, and a benchmark",
+    "built only from deck species would report a card-match rate of 100% by construction and",
+    "tell us nothing about the outcome a stranger is most likely to meet.",
+    "",
+    "`sameIndividual` is the honesty field and every entry below says false. A Commons",
+    "category returns photographs of DIFFERENT PLANTS taken by different people, so a set",
+    "built from one is a fair test of 'does the deck find this species' and a WEAK test of",
+    "'do three views of one plant beat two' — the provider is being handed three specimens,",
+    "which is not what a player sends. Setting `files` to a hand-picked series by one",
+    "photographer of one plant, and `sameIndividual` to true, is what makes the photo-count",
+    "result mean what it says. Run with RESOLVE=1 to list a category's files and pick from",
+    "them; it spends nothing.",
+    "",
+    "`organs` are the tags sent with photographs 1, 2 and 3. They describe what the",
+    "photographs ACTUALLY SHOW, so the p3tag condition is a true organ tag rather than a",
+    "guess — which is the only way the comparison against p3auto measures the tag."
+  ],
+  "profile": { "edge": 1024, "quality": 75 },
+  "sets": [
+    {
+      "id": "plantago-major",
+      "group": "deck-control",
+      "why": "An easy, distinctive deck species. The control: if this moves between conditions, the harness is measuring noise.",
+      "truth": { "scientificName": "Plantago major", "expectedHerbId": "plantago-major" },
+      "sameIndividual": false,
+      "category": "Plantago major",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "taraxacum-officinale",
+      "group": "deck-control",
+      "why": "Easy in flower, and the species whose SECTIONS the normaliser deliberately keeps apart. A provider answer of 'Taraxacum sect. Taraxacum' should open the card; 'sect. Erythrosperma' should not.",
+      "truth": { "scientificName": "Taraxacum officinale", "expectedHerbId": "taraxacum-officinale" },
+      "sameIndividual": false,
+      "category": "Taraxacum officinale",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "rumex-obtusifolius",
+      "group": "deck-hard",
+      "why": "The species that produced 'it will not identify dock'. Five real photographs scored 0.616 to 0.303, which is why outcomeFor reads rank rather than an absolute score. Re-measure that spread.",
+      "truth": { "scientificName": "Rumex obtusifolius", "expectedHerbId": "rumex-obtusifolius" },
+      "sameIndividual": false,
+      "category": "Rumex obtusifolius",
+      "files": [],
+      "organs": ["habit", "leaf", "fruit"]
+    },
+    {
+      "id": "viola-sororia",
+      "group": "deck-hard",
+      "why": "The relatedOnly case. A field violet came back as five Viola species, none of them sororia. Measures how often the deck's violet is reachable at all.",
+      "truth": { "scientificName": "Viola sororia", "expectedHerbId": "viola-sororia" },
+      "sameIndividual": false,
+      "category": "Viola sororia",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "solidago-canadensis",
+      "group": "deck-hard",
+      "why": "The one pendingCuration card. Every match through it is tagged legacyGenus, so this set measures how much live coverage that temporary scope is actually carrying before it is curated away.",
+      "truth": { "scientificName": "Solidago canadensis", "expectedHerbId": "solidago-canadensis" },
+      "sameIndividual": false,
+      "category": "Solidago canadensis",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "oxalis-stricta",
+      "group": "deck-hard",
+      "why": "Oxalis dillenii is a separate species the deck must not rewrite to stricta. Measures how often the leading answer is the congener.",
+      "truth": { "scientificName": "Oxalis stricta", "expectedHerbId": "oxalis-stricta" },
+      "sameIndividual": false,
+      "category": "Oxalis stricta",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "quercus-rubra",
+      "group": "deck-genus-card",
+      "why": "A real species inside a spp. card. A correct answer here is a genusCard match, which is confirmable — a different eligibility from every other deck set.",
+      "truth": { "scientificName": "Quercus rubra", "expectedHerbId": "quercus-spp" },
+      "sameIndividual": false,
+      "category": "Quercus rubra",
+      "files": [],
+      "organs": ["habit", "leaf", "bark"]
+    },
+    {
+      "id": "hamamelis-virginiana",
+      "group": "field-card",
+      "why": "A Field Card species. The matcher indexes CATALOGUE rather than the printed deck, so this should be confirmable — and it was not before that change. A regression here is the scanner telling a player a card they can read is not a card.",
+      "truth": { "scientificName": "Hamamelis virginiana", "expectedHerbId": "hamamelis-virginiana" },
+      "sameIndividual": false,
+      "category": "Hamamelis virginiana",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "capsella-rubella",
+      "group": "shelf",
+      "why": "The Seed Shelf case named in CLAUDE.md: the deck carries C. bursa-pastoris and rubella is a different species that belongs on the shelf. Also the hardest of them, because the two are genuinely difficult apart.",
+      "truth": { "scientificName": "Capsella rubella", "expectedHerbId": null },
+      "sameIndividual": false,
+      "category": "Capsella rubella",
+      "files": [],
+      "organs": ["habit", "leaf", "fruit"]
+    },
+    {
+      "id": "bellis-perennis",
+      "group": "shelf",
+      "why": "An extremely common lawn plant with no card and no deck congener. The plain Seed Shelf outcome, and the one a stranger scanning their own garden is most likely to hit.",
+      "truth": { "scientificName": "Bellis perennis", "expectedHerbId": null },
+      "sameIndividual": false,
+      "category": "Bellis perennis",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "daucus-carota",
+      "group": "shelf-lookalike",
+      "why": "Wild carrot: no card, and half of the lookalike pair below. Its own identification is the baseline the hemlock result is read against.",
+      "truth": { "scientificName": "Daucus carota", "expectedHerbId": null },
+      "sameIndividual": false,
+      "category": "Daucus carota",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "conium-maculatum",
+      "group": "shelf-lookalike",
+      "why": "Poison hemlock, the classic dangerous lookalike for wild carrot. Neither is a card, so nothing here can reach a discovery — what is being measured is whether the identifier confuses the two, because the shelf entry prints the name the provider gave and a reader will act on it.",
+      "truth": { "scientificName": "Conium maculatum", "expectedHerbId": null },
+      "sameIndividual": false,
+      "category": "Conium maculatum",
+      "files": [],
+      "organs": ["habit", "leaf", "flower"]
+    },
+    {
+      "id": "rumex-crispus",
+      "group": "congener",
+      "why": "An off-deck Rumex. The deck holds TWO Rumex cards, so a correct outcome is relatedOnly naming both — never a confirmable obtusifolius. This is the set that would catch the matcher over-reaching.",
+      "truth": { "scientificName": "Rumex crispus", "expectedHerbId": null },
+      "sameIndividual": false,
+      "category": "Rumex crispus",
+      "files": [],
+      "organs": ["habit", "leaf", "fruit"]
+    }
+  ]
+}
