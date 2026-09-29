@@ -1,31 +1,41 @@
-name: Prepare the comparison test account
+name: Mint a disposable TEST account
 
-# Hands back the two values needed to point a local site at the TEST project and enable
-# provider comparison for exactly one account: the project's anon key, and a user id.
+# Creates one throwaway account on the TEST project and hands back the two values the
+# accuracy benchmark needs from it: the project's anon key, and the new account's user id.
 #
-# WHY IT RUNS HERE. Both need the Management API, which answers the access token this repo
-# already holds and will not answer a sandboxed session. Nothing is stored, nothing is added
-# to the repo, and this workflow writes no secret of its own.
+# ── THE PASSWORD IS NEVER AN INPUT AND NEVER REACHES A LOG ───────────────────────────────
 #
-# THE ANON KEY IS PRINTED, DELIBERATELY. It is a public value — production's is a repo
-# VARIABLE baked into every deployed bundle a browser downloads. RLS is the boundary, not
-# the key's secrecy. The service-role key is never fetched here and never should be.
+# The first version of this workflow took the password as a `workflow_dispatch` string and
+# said so in its own description: "RECORDED IN THIS RUN'S LOG IN PLAINTEXT". Dispatch inputs
+# are echoed into the run's configuration, and Actions cannot mask a value it was never told
+# is secret — so the credential was written, in the clear, into a record anybody with repo
+# access can read, for as long as the log is retained. "They are only throwaway accounts" is
+# an argument about blast radius, not about whether writing credentials into logs is a thing
+# to do on purpose.
 #
-# TEST ONLY, AND THERE IS NO PROJECT INPUT. An account minted on production would be a
-# real-looking row in front of real players, and the comparison allow-list has no business
-# naming a production user — confining the experiment to test is the whole point of it.
+# It now comes from the repository secret `TEST_ACCOUNT_PASSWORD`, which Actions masks
+# automatically everywhere it appears. One shared value for both disposable accounts is
+# deliberate: they exist for one experiment, they hold nothing, and a second secret would be
+# a second thing to rotate for no gain in separation — the accounts are told apart by their
+# EMAIL and their user id, which is what the allow-list keys on.
+#
+# THE ANON KEY IS STILL PRINTED, DELIBERATELY, and it is not a credential in this sense. It
+# is a public value — production's is a repo VARIABLE baked into every deployed bundle a
+# browser downloads. RLS is the boundary, not the key's secrecy. The service-role key is
+# never fetched here and never should be.
+#
+# ── TEST ONLY, ENFORCED RATHER THAN INTENDED ─────────────────────────────────────────────
+#
+# There is no project input, the ref is a literal, and a guard step below FAILS if that
+# literal is ever anything but the test project. The last of those is the one that survives a
+# careless edit: the first two are conventions a future change can quietly break, and an
+# account minted on production would be a real-looking row in front of real players, whose id
+# then has no business appearing in a comparison allow-list at all.
 on:
   workflow_dispatch:
     inputs:
       email:
-        description: Email for the test account (blank = just print the anon key)
-        required: false
-        default: ''
-        type: string
-      password:
-        description: >-
-          Password for it. RECORDED IN THIS RUN'S LOG IN PLAINTEXT - use a throwaway you use
-          nowhere else. Ignored when email is blank.
+        description: Email for the disposable account (blank = just print the anon key)
         required: false
         default: ''
         type: string
@@ -35,11 +45,29 @@ permissions:
 
 env:
   PROJECT_REF: vgjehmwcpavflbfhbbrp
+  PRODUCTION_REF: vygiamigomwlvnwkryyl
 
 jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
+      - name: Refuse to run against anything but the test project
+        # ENFORCED, NOT CONVENTIONAL. `PROJECT_REF` is a literal above with no input feeding
+        # it, so this can only fire if somebody edits that literal — which is exactly the
+        # change that must not pass silently.
+        run: |
+          set -euo pipefail
+          if [ "$PROJECT_REF" != "vgjehmwcpavflbfhbbrp" ]; then
+            echo "::error::This workflow is hard-scoped to the TEST project. PROJECT_REF is" \
+                 "'$PROJECT_REF'. Minting accounts anywhere else is not what this is for."
+            exit 1
+          fi
+          if [ "$PROJECT_REF" = "$PRODUCTION_REF" ]; then
+            echo "::error::PROJECT_REF is the PRODUCTION project. Refusing."
+            exit 1
+          fi
+          echo "Scoped to TEST ($PROJECT_REF)."
+
       - name: Fail early if the token is missing
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
@@ -48,6 +76,21 @@ jobs:
             echo "::error::SUPABASE_ACCESS_TOKEN is not set."
             exit 1
           fi
+
+      - name: Fail early if the account password secret is missing
+        # Checked BEFORE the anon key is fetched, so a missing secret costs nothing and is
+        # reported as the one thing that is wrong.
+        if: inputs.email != ''
+        env:
+          TEST_ACCOUNT_PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
+        run: |
+          if [ -z "$TEST_ACCOUNT_PASSWORD" ]; then
+            echo "::error::TEST_ACCOUNT_PASSWORD is not set. Add it under Settings ->" \
+                 "Secrets and variables -> Actions -> Secrets. Use a long random value you" \
+                 "use nowhere else: it is the password for disposable test accounts only."
+            exit 1
+          fi
+          echo "Password secret is present."
 
       - name: Read the test project's anon key
         env:
@@ -77,18 +120,19 @@ jobs:
         if: inputs.email != ''
         env:
           EMAIL: ${{ inputs.email }}
-          PASSWORD: ${{ inputs.password }}
+          # A repository secret, so Actions masks it in every log line it could reach —
+          # including a curl error body that happened to echo the request.
+          PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
         run: |
           set -euo pipefail
-          if [ -z "$PASSWORD" ]; then
-            echo "::error::A password is required when an email is given."
-            exit 1
-          fi
 
           # `/auth/v1/signup` under the anon key: the same call the app's own form makes, so
           # this is an ordinary account rather than an admin-minted one. Email confirmation
           # is off on this project, so the user comes straight back — if that ever changes,
           # e2e/supabase.e2e.test.ts carries the remedy in its own failure message.
+          #
+          # The password reaches curl through a FILE on stdin rather than a command line, so
+          # it never appears in a process listing either.
           BODY=$(jq -nc --arg e "$EMAIL" --arg p "$PASSWORD" '{email: $e, password: $p}' \
             | curl -sS "https://$PROJECT_REF.supabase.co/auth/v1/signup" \
                 -H "apikey: $ANON" -H "Content-Type: application/json" --data @-)
@@ -97,25 +141,34 @@ jobs:
           USER_ID=$(printf '%s' "$BODY" | jq -r '.id // .user.id // empty')
 
           if [ -z "$USER_ID" ]; then
-            # The body carries the reason worth reading — already registered, weak password,
-            # signups disabled. It holds no key, so echoing it is safe and is the only way to
-            # tell those apart from here.
-            echo "::error::No user id came back. Response: $BODY"
+            # The reason is worth reading — already registered, weak password, signups
+            # disabled — but the body is a response to a request that CONTAINED the password,
+            # and some error shapes echo what was sent. So only the provider's own message
+            # and code are printed, never the whole body.
+            REASON=$(printf '%s' "$BODY" | jq -r '[.error_code // .code // empty,
+                                                   .msg // .message // .error_description // empty]
+                                                  | map(select(. != "")) | join(": ")')
+            echo "::error::No user id came back. ${REASON:-the response carried no readable reason}"
             exit 1
           fi
 
           {
             echo
-            echo "## IDENTIFICATION_COMPARISON_USER_IDS"
+            echo "## Account created"
+            echo
+            echo "Email: \`$EMAIL\`"
+            echo
+            echo "Its password is the repository secret \`TEST_ACCOUNT_PASSWORD\` and is"
+            echo "deliberately not reproduced here."
+            echo
+            echo "### User id"
             echo
             echo '```'
             echo "$USER_ID"
             echo '```'
             echo
-            echo "Paste that into the secret of the same name, on the **test** project only."
-            echo
-            echo "Expected digest once saved:"
-            echo '```'
-            printf '%s' "$USER_ID" | sha256sum | cut -d' ' -f1
-            echo '```'
+            echo "For the COMPARISON account, pass that to **Configure TEST identification"
+            echo "settings** as \`comparison_user_ids\`. For the PLAIN account, do not — it"
+            echo "exists to spend the signed-in quota without spending a Kindwise credit, and"
+            echo "allow-listing it would double the cost of every run."
           } >> "$GITHUB_STEP_SUMMARY"

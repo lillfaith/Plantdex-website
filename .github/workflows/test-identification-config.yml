@@ -61,12 +61,32 @@ permissions:
 env:
   # TEST. Deliberately not an input — see above.
   PROJECT_REF: vgjehmwcpavflbfhbbrp
+  PRODUCTION_REF: vygiamigomwlvnwkryyl
 
 jobs:
   configure:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Refuse to run against anything but the test project
+        # ENFORCED, NOT CONVENTIONAL. `PROJECT_REF` is a literal above with no input feeding
+        # it, so this can only fire if somebody edits that literal — which is exactly the
+        # change that must not pass silently. `IDENTIFY_MIN_IMAGES` on production would let a
+        # public endpoint accept requests its own UI never makes, and an allow-list there
+        # would enrol real players in a paid experiment they had no part in.
+        run: |
+          set -euo pipefail
+          if [ "$PROJECT_REF" != "vgjehmwcpavflbfhbbrp" ]; then
+            echo "::error::This workflow is hard-scoped to the TEST project. PROJECT_REF is" \
+                 "'$PROJECT_REF'. These settings belong nowhere else."
+            exit 1
+          fi
+          if [ "$PROJECT_REF" = "$PRODUCTION_REF" ]; then
+            echo "::error::PROJECT_REF is the PRODUCTION project. Refusing."
+            exit 1
+          fi
+          echo "Scoped to TEST ($PROJECT_REF)."
 
       - name: Fail early if the token is missing
         env:
