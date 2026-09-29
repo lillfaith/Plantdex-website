@@ -57,6 +57,23 @@ Four separate numbers that must never be summed into an "accuracy":
 Plus the outcome distribution, `confidenceBand` and `speciesConfidence` distributions, the
 leading-score spread, a per-set table, and a tally of repeated confusions.
 
+### The pilot
+
+Six sets, marked `pilot` in the manifest and selected with `PILOT=1`: two easy deck species
+(*Plantago major*, *Taraxacum officinale*), two known-hard deck species (*Rumex obtusifolius*
+— the 0.616-to-0.303 spread that made `outcomeFor` read rank rather than a score; *Viola
+sororia* — the `relatedOnly` case), one easy off-deck species (*Bellis perennis*) and one
+off-deck species that is a lookalike of a deck card (*Capsella rubella* against the deck's
+*C. bursa-pastoris*).
+
+A spread of **difficulty**, not of coverage. The first thing a six-set run can tell you is
+whether an aggregate is broad or is being carried by one or two hard species, and that needs
+both ends of the range present. The genus-card and Field Card paths are deliberately out:
+each exercises one eligibility branch, and neither is where the accuracy question lives.
+
+Four conditions x six sets = 24 requests, **6 Kindwise credits**. Read it per set first and
+in aggregate second — six sets is not enough for the aggregate to be the interesting number.
+
 ### Cost
 
 One PlantNet identification per request. A request made with the **comparison account's**
@@ -72,17 +89,32 @@ bucket is what makes a run take a week, so the unpaid conditions should go out a
 **second, ordinary account that is not on the comparison allow-list** — `PLAIN_USER_EMAIL` /
 `PLAIN_USER_PASSWORD`. That buys the 30/day bucket and spends no credit.
 
-### The one blocker
+### The 1-photograph arm
 
-The endpoint refuses fewer than two images (`MIN_IMAGES = 2`), so the 1-photograph arm
-cannot run against any current deployment. Sending the same photograph twice is not a
-substitute — the provider treats the set as one individual and two identical views is a
-different request from one view.
+It exists to answer one question: **does the second photograph buy enough accuracy to
+justify making every player take it?** That is a requirement the product imposes on
+everybody, chosen from an argument rather than a measurement, and it cannot be evaluated by
+a harness bound by the very floor it is evaluating.
 
-Answering it needs `MIN_IMAGES` to become an env-overridden floor, defaulted to 2 and set
-only on the **test** project. That is a real change to a shared function and is not made
-here. Until it is, `p1` is left out of the default conditions and a run that includes it
-records the 400 rather than a result.
+So `identify-plant` reads `IDENTIFY_MIN_IMAGES` (`src/lib/observation-bounds.ts`). It is set
+**only on the test project**. Unset — which is what production is, and stays — the floor is
+`MIN_IMAGES`, and the endpoint behaves exactly as before.
+
+The resolver fails safe asymmetrically, which is why it is a function rather than a
+`Number()` call: a typo that *raises* the floor costs one scan, loudly, while a typo that
+removes it (`0`, `-1`, `''`, `two`, `1.5`, a stray quote from a dashboard field) silently
+turns off a check on a public endpoint. Anything that is not a positive integer is the
+fallback; anything above `MAX_IMAGES` is clamped, because a floor above the ceiling would
+refuse every request that could ever be made. `observation-bounds.test.ts` pins all of it,
+including the regression that would otherwise typecheck, deploy, pass everything and do
+nothing — adding the override while leaving the comparison on `MIN_IMAGES`.
+
+Sending the same photograph twice is **not** a substitute. Both providers treat the set as
+one individual, so two identical views is a different request from one view.
+
+`p1` stays out of the default conditions: against a deployment that has not set the variable
+every p1 request is a 400, and spending quota to record the same refusal is measuring the
+floor rather than the photographs.
 
 ### Running it
 
@@ -94,8 +126,9 @@ DRY_RUN=1 MANIFEST=scripts/benchmark/sets.json \
 # 2. Which Commons files a set would use. Sends nothing.
 RESOLVE=1 MANIFEST=scripts/benchmark/sets.json ... python3 scripts/identify_web_images.py
 
-# 3. The run. This spends.
-MANIFEST=scripts/benchmark/sets.json PROJECT_REF=... ANON_KEY=... \
+# 3. The run. This spends. PILOT=1 selects the six sets the manifest marks.
+PILOT=1 CONDITIONS=p1,p2,p3auto,p3tag SIGNED_IN=p3auto \
+  MANIFEST=scripts/benchmark/sets.json PROJECT_REF=... ANON_KEY=... \
   USER_EMAIL=... USER_PASSWORD=...            # the allow-listed comparison account \
   PLAIN_USER_EMAIL=... PLAIN_USER_PASSWORD=... # an ordinary second account \
   python3 scripts/identify_web_images.py
@@ -179,3 +212,10 @@ The same four numbers as the benchmark, plus three the benchmark cannot produce:
 Do not tune a threshold on the same scans that measured it. If the field run suggests a
 change, the change gets its own confirming run — otherwise the number is fitted to forty-five
 photographs of one person's neighbourhood in one season.
+
+**`confidenceBand`'s 0.70 and 0.35 are not moved on pilot evidence.** Six sets cannot
+separate a band from noise: a 24-request run puts a handful of answers in each band, and
+every rate it produces carries an interval tens of points wide. Calibration observations get
+written down — which band each answer landed in, and whether it turned out right — and the
+thresholds wait for substantially more data. A threshold moved on six sets is a threshold
+fitted to six sets.
