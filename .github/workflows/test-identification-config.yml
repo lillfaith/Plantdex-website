@@ -47,10 +47,18 @@ on:
           - '1' # the benchmark's 1-photograph arm
           - '2'
           - '3'
+      comparison_email:
+        description: >-
+          Email of the disposable account to allow-list. RESOLVED to its UUID here, so
+          nobody copies one by hand. Blank leaves the list alone.
+        required: false
+        default: ''
+        type: string
       comparison_user_ids:
         description: >-
-          Comma-separated account UUIDs to allow-list for provider comparison. REPLACES the
-          list. Blank leaves it alone; the word "clear" empties it.
+          Comma-separated account UUIDs, for when an email cannot be used. REPLACES the
+          list. Blank leaves it alone; the word "clear" empties it. Ignored if
+          comparison_email is set.
         required: false
         default: ''
         type: string
@@ -115,15 +123,50 @@ jobs:
           fi
           echo "Token is scoped to $PROJECT_REF."
 
+      - name: Resolve the allow-list from an email, without printing a token
+        # A STEP SUMMARY IS NOT READABLE BY AUTOMATION, which is how this step came to
+        # exist: `comparison-account.yml` writes the new account's id to its summary, and
+        # nothing but a human reading the page can get it back out. Copying a UUID between
+        # two workflow runs by hand is a step that silently allow-lists the WRONG account if
+        # it goes wrong, and the cost of that is every request in the run becoming a paid
+        # one.
+        #
+        # So the email is resolved to its id here instead. `test_account_id.py` signs in and
+        # emits ONLY `.user.id`; the access and refresh tokens in that response are dropped
+        # in-process. The id itself is not a credential — it names a throwaway row and is
+        # exactly what the allow-list is made of — so it IS printed, because a log that does
+        # not say which account was enrolled cannot be audited.
+        if: inputs.comparison_email != ''
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          EMAIL: ${{ inputs.comparison_email }}
+          PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "$PASSWORD" ]; then
+            echo "::error::TEST_ACCOUNT_PASSWORD is not set."
+            exit 1
+          fi
+          ANON=$(curl -sS "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            | jq -r '.[] | select(.name == "anon") | .api_key')
+          echo "::add-mask::$ANON"
+          RESOLVED=$(ANON_KEY="$ANON" python3 scripts/test_account_id.py)
+          echo "Allow-listing exactly one account: $RESOLVED"
+          echo "RESOLVED_IDS=$RESOLVED" >> "$GITHUB_ENV"
+
       - name: Validate the allow-list before anything is written
         # BEFORE, not after. A malformed id is accepted by the API and then silently matches
         # nobody, so the run would report success and the comparison would record nothing —
         # the exact failure shape `check_function_secrets.py` exists to catch elsewhere.
         env:
-          IDS: ${{ inputs.comparison_user_ids }}
+          FALLBACK_IDS: ${{ inputs.comparison_user_ids }}
         run: |
           set -euo pipefail
+          IDS="${RESOLVED_IDS:-$FALLBACK_IDS}"
+          echo "IDS=$IDS" >> "$GITHUB_ENV"
           if [ -z "$IDS" ] || [ "$IDS" = "clear" ]; then exit 0; fi
+          export IDS
           python3 - <<'PY'
           import os, re, sys
           raw = os.environ["IDS"]
@@ -143,7 +186,6 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           MIN_IMAGES: ${{ inputs.min_images }}
-          IDS: ${{ inputs.comparison_user_ids }}
         run: |
           set -euo pipefail
           API="https://api.supabase.com/v1/projects/$PROJECT_REF/secrets"
@@ -168,9 +210,12 @@ jobs:
             *)     set_secret IDENTIFY_MIN_IMAGES "$MIN_IMAGES" ;;
           esac
 
-          if [ -z "$IDS" ]; then
+          # `${IDS:-}` rather than `$IDS`: this step runs under `set -u`, and the variable
+          # arrives through $GITHUB_ENV from the step above, which is a channel worth not
+          # assuming.
+          if [ -z "${IDS:-}" ]; then
             echo "IDENTIFICATION_COMPARISON_USER_IDS left as it was"
-          elif [ "$IDS" = "clear" ]; then
+          elif [ "${IDS:-}" = "clear" ]; then
             clear_secret IDENTIFICATION_COMPARISON_USER_IDS
           else
             set_secret IDENTIFICATION_COMPARISON_USER_IDS "$IDS"
