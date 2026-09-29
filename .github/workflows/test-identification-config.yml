@@ -1,0 +1,204 @@
+name: Configure TEST identification settings
+
+# Sets the two project secrets the accuracy benchmark needs, on the TEST project and ONLY on
+# the TEST project: `IDENTIFY_MIN_IMAGES` and `IDENTIFICATION_COMPARISON_USER_IDS`.
+#
+# THERE IS NO PROJECT INPUT, AND THAT IS THE ENTIRE SAFETY ARGUMENT. `PROJECT_REF` is a
+# literal below, so production is not reachable from this workflow at all — not by a wrong
+# choice in a dropdown, not by a typo, not by a copied dispatch. Same shape and same reason as
+# `comparison-account.yml`, which mints accounts on test and takes no project either.
+#
+# ── IDENTIFY_MIN_IMAGES ──────────────────────────────────────────────────────────────────
+# Requiring two photographs is a cost this product imposes on every player: a second tap and
+# a second framing, in front of a plant. It was chosen from an argument rather than a
+# measurement, and the measurement is impossible against a deployment that hard-codes the
+# floor it is evaluating — so the benchmark's 1-photograph arm needs this set to `1` here.
+#
+# `unset` is the resting state and the cleanup: `resolveMinImages` returns `MIN_IMAGES` for an
+# absent variable, so unset and `2` behave identically and unset is the honest one. Nothing
+# above `3` is offered — `MAX_IMAGES` is 3 and a floor above the ceiling would refuse every
+# request that could ever be made. A production endpoint accepting a single image would be
+# accepting requests its own UI never makes, which is why this must never be a choice.
+#
+# ── IDENTIFICATION_COMPARISON_USER_IDS ───────────────────────────────────────────────────
+# The allow-list of accounts whose scans ask BOTH providers. Comparison costs a paid Kindwise
+# credit per request and keeps a record of somebody's scans for a purpose they had no part in,
+# so it is an explicit list of the evaluation's own throwaway accounts and never a sample of
+# anybody else. REPLACED, not appended: the input is the whole list, so a stale id cannot
+# survive a run, and `clear` empties it.
+#
+# It is validated as a comma-separated list of UUIDs before it is sent. A malformed id here
+# fails open in the worst direction — `COMPARISON_USER_IDS.has(userId)` simply never matches,
+# comparison silently records nothing, and the run looks like it worked.
+#
+# AFTERWARDS: a secret change needs a REDEPLOY (edge functions read their environment at
+# boot), then `check-function-secrets` against BOTH projects.
+on:
+  workflow_dispatch:
+    inputs:
+      min_images:
+        description: Minimum photographs the TEST endpoint accepts ("keep" leaves it alone)
+        required: true
+        default: keep
+        type: choice
+        options:
+          - keep
+          - unset # the product's own rule, and the resting state
+          - '1' # the benchmark's 1-photograph arm
+          - '2'
+          - '3'
+      comparison_user_ids:
+        description: >-
+          Comma-separated account UUIDs to allow-list for provider comparison. REPLACES the
+          list. Blank leaves it alone; the word "clear" empties it.
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  # TEST. Deliberately not an input — see above.
+  PROJECT_REF: vgjehmwcpavflbfhbbrp
+  PRODUCTION_REF: vygiamigomwlvnwkryyl
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refuse to run against anything but the test project
+        # ENFORCED, NOT CONVENTIONAL. `PROJECT_REF` is a literal above with no input feeding
+        # it, so this can only fire if somebody edits that literal — which is exactly the
+        # change that must not pass silently. `IDENTIFY_MIN_IMAGES` on production would let a
+        # public endpoint accept requests its own UI never makes, and an allow-list there
+        # would enrol real players in a paid experiment they had no part in.
+        run: |
+          set -euo pipefail
+          if [ "$PROJECT_REF" != "vgjehmwcpavflbfhbbrp" ]; then
+            echo "::error::This workflow is hard-scoped to the TEST project. PROJECT_REF is" \
+                 "'$PROJECT_REF'. These settings belong nowhere else."
+            exit 1
+          fi
+          if [ "$PROJECT_REF" = "$PRODUCTION_REF" ]; then
+            echo "::error::PROJECT_REF is the PRODUCTION project. Refusing."
+            exit 1
+          fi
+          echo "Scoped to TEST ($PROJECT_REF)."
+
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Create one at" \
+                 "https://supabase.com/dashboard/account/tokens and add it under" \
+                 "Settings -> Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - name: Refuse a token that cannot reach the test project
+        # The same guard `deploy-function` carries. A token scoped to the wrong project
+        # answers 403 on every call, which reads as a broken workflow rather than a token
+        # that needs its resource access widened.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -sS --fail-with-body -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            https://api.supabase.com/v1/projects > /tmp/projects.json
+          if ! grep -q "\"$PROJECT_REF\"" /tmp/projects.json; then
+            echo "::error::The token is valid but is NOT SCOPED TO $PROJECT_REF."
+            exit 1
+          fi
+          echo "Token is scoped to $PROJECT_REF."
+
+      - name: Validate the allow-list before anything is written
+        # BEFORE, not after. A malformed id is accepted by the API and then silently matches
+        # nobody, so the run would report success and the comparison would record nothing —
+        # the exact failure shape `check_function_secrets.py` exists to catch elsewhere.
+        env:
+          IDS: ${{ inputs.comparison_user_ids }}
+        run: |
+          set -euo pipefail
+          if [ -z "$IDS" ] || [ "$IDS" = "clear" ]; then exit 0; fi
+          python3 - <<'PY'
+          import os, re, sys
+          raw = os.environ["IDS"]
+          ids = [one.strip() for one in raw.split(",") if one.strip()]
+          uuid = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+                            r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+          bad = [one for one in ids if not uuid.match(one)]
+          if bad:
+              # The ids are not secret — they name throwaway accounts on a test project and
+              # the whole point of printing them is that a typo is visible.
+              print(f"::error::Not a UUID: {', '.join(bad)}")
+              sys.exit(1)
+          print(f"{len(ids)} account(s) will be allow-listed.")
+          PY
+
+      - name: Apply
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MIN_IMAGES: ${{ inputs.min_images }}
+          IDS: ${{ inputs.comparison_user_ids }}
+        run: |
+          set -euo pipefail
+          API="https://api.supabase.com/v1/projects/$PROJECT_REF/secrets"
+
+          set_secret() {
+            curl -sS --fail-with-body -X POST -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              -H "Content-Type: application/json" "$API" \
+              --data "$(jq -nc --arg n "$1" --arg v "$2" '[{name: $n, value: $v}]')" > /dev/null
+            echo "set $1"
+          }
+          clear_secret() {
+            # A 404 means it was already absent, which is success for a clear.
+            curl -sS -X DELETE -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              -H "Content-Type: application/json" "$API" \
+              --data "$(jq -nc --arg n "$1" '[$n]')" > /dev/null
+            echo "cleared $1"
+          }
+
+          case "$MIN_IMAGES" in
+            keep)  echo "IDENTIFY_MIN_IMAGES left as it was" ;;
+            unset) clear_secret IDENTIFY_MIN_IMAGES ;;
+            *)     set_secret IDENTIFY_MIN_IMAGES "$MIN_IMAGES" ;;
+          esac
+
+          if [ -z "$IDS" ]; then
+            echo "IDENTIFICATION_COMPARISON_USER_IDS left as it was"
+          elif [ "$IDS" = "clear" ]; then
+            clear_secret IDENTIFICATION_COMPARISON_USER_IDS
+          else
+            set_secret IDENTIFICATION_COMPARISON_USER_IDS "$IDS"
+          fi
+
+      - name: Read both projects back
+        # A write nobody verified is a write somebody will assume happened. The read-only
+        # checker names both variables, resolves the floor's value, and exits non-zero if
+        # PRODUCTION is ever found holding the floor.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          failed=0
+          for ref in vgjehmwcpavflbfhbbrp vygiamigomwlvnwkryyl; do
+            curl -sS --fail-with-body \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              "https://api.supabase.com/v1/projects/$ref/secrets" \
+              | python3 scripts/check_function_secrets.py "$ref" || failed=1
+          done
+          exit $failed
+
+      - name: Say what still has to happen
+        run: |
+          {
+            echo "## A secret change needs a redeploy"
+            echo
+            echo "Edge functions read their environment at boot, so nothing above takes effect"
+            echo "until \`identify-plant\` is deployed again. Run **Deploy Supabase edge"
+            echo "function** against \`$PROJECT_REF\`."
+          } >> "$GITHUB_STEP_SUMMARY"
