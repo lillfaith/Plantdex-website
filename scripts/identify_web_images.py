@@ -549,6 +549,33 @@ def run_benchmark() -> int:
         )
     )
     plan = budget(sets, conditions, signed_in, have_plain)
+
+    """
+    THE CEILING IS CHECKED BEFORE ANYTHING IS SENT, AND IT IS NOT THE SAME AS THE PLAN.
+
+    `budget()` says what this configuration WOULD spend; MAX_REQUESTS and MAX_KINDWISE say
+    what the operator agreed to. They are separate on purpose: a manifest edit, a stray
+    condition in CONDITIONS or one more set marked `pilot` all change the first silently,
+    and the whole point of an approved budget is that it is a number somebody signed off
+    rather than a number recomputed from whatever the inputs happen to say today.
+
+    Kindwise credits are BOUGHT, so this refuses rather than truncating. Truncation would
+    produce a partial run that looks complete — the worst outcome, because the report would
+    be read as evidence.
+    """
+    max_requests = int(os.environ.get("MAX_REQUESTS", "0"))
+    max_kindwise = int(os.environ.get("MAX_KINDWISE", "0"))
+    over = []
+    if max_requests and plan["requests"] > max_requests:
+        over.append(f"{plan['requests']} requests exceeds MAX_REQUESTS={max_requests}")
+    if max_kindwise and plan["kindwise"] > max_kindwise:
+        over.append(f"{plan['kindwise']} Kindwise credits exceeds MAX_KINDWISE={max_kindwise}")
+    if over:
+        print("REFUSING TO RUN — the plan exceeds the approved ceiling:")
+        for line in over:
+            print(f"  {line}")
+        print("Nothing was sent and nothing was spent.")
+        return 2
     print(f"manifest: {manifest_path}")
     print(f"conditions: {', '.join(conditions)}")
     print(f"signed in (and therefore comparing providers): {', '.join(signed_in) or 'none'}")
