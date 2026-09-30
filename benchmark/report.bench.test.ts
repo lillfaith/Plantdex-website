@@ -41,6 +41,8 @@ interface Record_ {
   truth: BenchmarkTruth;
   sameIndividual: boolean;
   source: string;
+  certainty?: string;
+  class?: string;
   signedIn: boolean;
   comparing: boolean;
   images: { title: string; organ: string; bytes: number }[];
@@ -113,7 +115,9 @@ function verdictFor(record: Record_): Verdict {
 
 function reportTally(label: string, tally: Tally): void {
   console.log(`\n  ${label}   (${tally.n} sets)`);
-  console.log(`    provider led with the right species   ${pct(tally.topSpeciesCorrect, tally.n)}`);
+  console.log(
+    `    provider led with the right species   ${pct(tally.topSpeciesCorrect, tally.topSpeciesOf)}`,
+  );
   console.log(`    Plantdex offered the right outcome    ${pct(tally.topCardCorrect, tally.n)}`);
   console.log(
     `    right card anywhere in the list       ${pct(tally.cardAnywhere, tally.cardAnywhereOf)}`,
@@ -147,22 +151,36 @@ describe.skipIf(records.length === 0)('identification accuracy benchmark', () =>
     console.log('================================================================');
     console.log(`  ${records.length} requests   ${sets.size} sets   ${conditions.size} conditions`);
     console.log(`  source: ${RESULTS}`);
+    const fieldRows = records.filter((one) => one.source === 'field').length;
     console.log('\n  LIMITS OF THIS EVIDENCE. Read these before quoting a number.');
     console.log(
-      '   - Wikimedia photographs are CLEANER than what a player sends: framed, in focus,\n' +
-        '     often by somebody who knew what the plant was. Every rate below is therefore an\n' +
-        '     UPPER BOUND on field performance, not an estimate of it.',
+      fieldRows === records.length
+        ? '   - These ARE phone photographs taken in the field, so the usual caveat does not\n' +
+            '     apply: no upper-bound correction is needed. What remains is that they are one\n' +
+            '     person, one area, one season.'
+        : '   - Wikimedia photographs are CLEANER than what a player sends: framed, in focus,\n' +
+            '     often by somebody who knew what the plant was. Every rate below is therefore\n' +
+            '     an UPPER BOUND on field performance, not an estimate of it.',
     );
     console.log(
-      `   - ${sameIndividual} of ${records.length} requests used photographs of ONE individual.\n` +
-        '     Where that is 0, the photo-count comparison handed the provider three DIFFERENT\n' +
-        '     plants, which is not what the app sends — it may flatter three photographs\n' +
-        '     (more variation) or penalise them (a blended answer). Treat the count axis as\n' +
-        '     indicative until a set built from a named photo series says otherwise.',
+      `   - ${sameIndividual} of ${records.length} requests used photographs of ONE individual.` +
+        (sameIndividual === records.length
+          ? '\n     ALL of them, so the photo-count axis is measuring what the app actually\n' +
+            '     sends: several views of one plant. This is the arm the Commons run could not\n' +
+            '     support.'
+          : '\n     Where that is 0, the photo-count comparison handed the provider three\n' +
+            '     DIFFERENT plants, which is not what the app sends — it may flatter three\n' +
+            '     photographs (more variation) or penalise them (a blended answer). Treat the\n' +
+            '     count axis as indicative until a set built from one specimen says otherwise.'),
     );
+    const field = records.filter((one) => one.source === 'field').length;
     console.log(
-      '   - The ground truth is the Commons category name. A miscategorised file is a wrong\n' +
-        '     answer scored as a provider failure.',
+      field === records.length
+        ? '   - The ground truth is what the photographer wrote down BEFORE scanning. Rows\n' +
+            '     marked `unsure` are reported separately and never counted as a provider\n' +
+            '     failure; genus- and family-level truth is scored at that rank, not below it.'
+        : '   - The ground truth is the Commons category name. A miscategorised file is a\n' +
+            '     wrong answer scored as a provider failure.',
     );
     console.log(
       '   - The sample is small. Every rate carries a 95% interval; two rates whose intervals\n' +

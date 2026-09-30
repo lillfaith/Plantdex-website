@@ -145,6 +145,48 @@ A 429 stops the run and leaves the JSONL valid; `ONLY=set-a,set-b` resumes it.
 
 ---
 
+## What the Commons pilot established
+
+Two findings, both closed, both preserved here because the temptation on each is to
+"fix" it by weakening a taxonomy rule that is working correctly.
+
+### `Capsella rubella` -> `C. bursa-pastoris` was a PROVIDER misidentification
+
+Traced through the real modules. PlantNet was shown *Capsella rubella* and answered
+*Capsella bursa-pastoris* — the binomial the deck card prints. `BY_BINOMIAL` hit on the
+first branch and returned `exact` / confirmable, which is the only correct response to that
+input. The card's scope is `{"type":"species"}`, the narrowest setting there is; nothing
+broadened, no synonym, no genus rule, no accepted group. Had the provider been right,
+`Capsella rubella` resolves to `sameGenus` / `related` / **not confirmable** and goes to the
+Seed Shelf, exactly as intended.
+
+**Plantdex contributed no error.** No setting of the matching code prevents this, because
+the input string was the deck's own species name. Any remedy is about PRESENTING provider
+uncertainty — not about tightening taxonomy, and not about an absolute confidence floor:
+this false card scored 0.635-0.877, HIGHER than most correct matches in the same run, so a
+floor would refuse more true finds than false ones.
+
+### `Taraxacum officinale` -> `T. mattmarkense` was ALSO a provider misidentification
+
+`Taraxacum mattmarkense` Soest is in **`T.` sect. *Alpina***, not sect. *Taraxacum*. Its
+protologue (van Soest 1959, *Acta Botanica Neerlandica* 8: 86, "Alpine species of
+Taraxacum") describes it as "a remarkable member of *T.* sect. *Alpina*, confined to the
+western part of the Alps"; Euro+Med gives its range as Austria, Bulgaria, France, Italy and
+Switzerland. It is accepted (IPNI 253957-1, GBIF 5697122).
+
+The Dandelion card's accepted group is `Taraxacum` sect. *Taraxacum* (IPNI 254151-1, syn.
+sect. *Ruderalia*). **A different section.** So the refusal was CORRECT: adding
+*T. mattmarkense* would assert that a western-Alpine endemic is the common dandelion
+aggregate.
+
+This looked like a curation gap and is not one. It is the Capsella failure pointing the
+other way — one over-matches, one under-matches, both because the provider named the wrong
+species. **No Dandelion scope change was made and none is warranted on this evidence.**
+Curating sect. *Taraxacum* microspecies speculatively, with no evidence the provider ever
+returns them, would add false-positive surface to solve a problem nobody has demonstrated.
+
+---
+
 ## 2. The field protocol
 
 30 to 50 scans with an ordinary phone, outdoors, by somebody who is not looking at the code.

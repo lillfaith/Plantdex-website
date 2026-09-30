@@ -66,6 +66,9 @@ ENVIRONMENT.
                   ACCESS_TOKEN or (USER_EMAIL and USER_PASSWORD) for the comparison account,
                   and optionally PLAIN_ACCESS_TOKEN or (PLAIN_USER_EMAIL and
                   PLAIN_USER_PASSWORD) for a second, ordinary account
+  Field mode      FIELD=field/manifest.json, OUT, CONDITIONS, ONLY, EDGE, QUALITY,
+                  and a signed-in account. PlantNet only: SIGNED_IN is REFUSED, so no
+                  plant.id credit can be spent from this mode.
   Read-back       COMPARISONS=1, OUT, COMPARISONS_OUT, and the same credentials
   Either          DRY_RUN=1 (budget only), RESOLVE=1 (list Commons files, no calls)
 
@@ -457,6 +460,195 @@ def print_budget(plan: dict[str, int]) -> None:
     print()
 
 
+# ── Field mode: photographs of ONE individual, taken on a phone ──────────────
+
+
+def run_field() -> int:
+    """FIELD=<manifest> — the same condition matrix, against local phone photographs.
+
+    WHY THIS EXISTS AND WHY IT IS A SEPARATE MODE. The Commons pilot recorded
+    `sameIndividual: 0 of 24` and said so in its own report: a category returns photographs
+    of DIFFERENT PLANTS by different people, so "do three views beat two" was being asked of
+    three specimens rather than three views. That is the weakest axis in the whole benchmark
+    and the only way to fix it is photographs somebody took of one plant, in one session, on
+    the device the app actually runs on.
+
+    So the images come from `field/manifest.json` — written by `check_field_set.py`, which
+    has already refused a mis-numbered file, a position-1 photograph that is not `habit`, an
+    organ outside PlantNet's vocabulary, and any specimen whose ground truth is missing.
+    Everything downstream is unchanged: the same `reencode`, the same `identify`, the same
+    JSONL, the same scorer.
+
+    PLANTNET ONLY, ENFORCED RATHER THAN INTENDED. This phase exists to test the EXISTING
+    production system against real photographs before it ships, and plant.id is deliberately
+    not part of it. A comparison request costs a paid credit and would answer a question this
+    phase is not asking, so `SIGNED_IN` is refused here outright rather than defaulted to
+    empty — a default is a thing somebody overrides by accident.
+
+    THE EXPECTED CARD IS NOT IN THE MANIFEST, AND MUST NOT BE. "Which card should this
+    species reach" is a question for `matchScientificName`, which the TypeScript scorer runs;
+    a column here would be somebody's opinion of the answer, free to disagree with the code
+    that actually decides it. The manifest carries the TRUTH (what the plant is) and the
+    scorer derives the expectation.
+    """
+    project = os.environ.get("PROJECT_REF", "").strip()
+    key = os.environ.get("ANON_KEY", "").strip()
+    manifest_path = os.environ.get("FIELD", "").strip()
+    out_path = os.environ.get("OUT", "field-results.jsonl").strip()
+    dry_run = os.environ.get("DRY_RUN", "").strip() == "1"
+    edge = int(os.environ.get("EDGE", str(DEFAULT_EDGE)))
+    quality = int(os.environ.get("QUALITY", str(DEFAULT_QUALITY)))
+    only = {one for one in os.environ.get("ONLY", "").replace(" ", "").split(",") if one}
+
+    if os.environ.get("SIGNED_IN", "").strip():
+        print(
+            "SIGNED_IN is refused in field mode. This phase tests the PlantNet system that is\n"
+            "about to ship; a comparison request costs a paid plant.id credit and answers a\n"
+            "question this phase is not asking. Nothing was sent."
+        )
+        return 2
+
+    conditions = [
+        one
+        for one in os.environ.get("CONDITIONS", "p1,p2,p3auto").replace(" ", "").split(",")
+        if one
+    ]
+    unknown = [one for one in conditions if one not in CONDITIONS]
+    if unknown:
+        print(f"unknown condition(s): {', '.join(unknown)}")
+        return 2
+
+    manifest = load_manifest(manifest_path)
+    root = os.path.dirname(os.path.abspath(manifest_path))
+    specimens = [
+        one for one in manifest.get("specimens", []) if not only or one.get("id") in only
+    ]
+    if not specimens:
+        print("manifest selected no specimens")
+        return 2
+
+    # A specimen with two photographs cannot run a three-photograph condition. Counted
+    # rather than assumed, because the budget has to be the number of requests that will
+    # actually go out.
+    planned: list[tuple[dict, str]] = []
+    for entry in specimens:
+        held = len(entry.get("photos", []))
+        for condition in conditions:
+            if CONDITIONS[condition][0] <= held:
+                planned.append((entry, condition))
+
+    print(f"manifest: {manifest_path}")
+    print(f"conditions: {', '.join(conditions)}")
+    print("provider: PlantNet only (comparison refused in this mode)")
+    print(f"upload profile: {edge}px q{quality}\n")
+    print("BUDGET")
+    print(f"  specimens            {len(specimens)}")
+    print(f"  total requests       {len(planned)}")
+    print(f"  PlantNet ids         {len(planned)}")
+    print("  Kindwise credits     0   (no comparison request is made in this mode)")
+    skipped = len(specimens) * len(conditions) - len(planned)
+    if skipped:
+        print(f"  skipped              {skipped}  (three-photo conditions on two-photo specimens)")
+    print(f"\n  at {USER_DAILY_LIMIT}/day signed in = "
+          f"{-(-len(planned) // USER_DAILY_LIMIT) if planned else 0} day(s)\n")
+
+    max_requests = int(os.environ.get("MAX_REQUESTS", "0"))
+    if max_requests and len(planned) > max_requests:
+        print(f"REFUSING TO RUN — {len(planned)} requests exceeds MAX_REQUESTS={max_requests}.")
+        return 2
+
+    if dry_run:
+        print("DRY_RUN=1 — nothing was sent and nothing was spent.")
+        return 0
+
+    # ── Load and re-encode every photograph before anything is sent ──────────
+    prepared: dict[str, list[tuple[str, str, bytes]]] = {}
+    for entry in specimens:
+        shots: list[tuple[str, str, bytes]] = []
+        for photo in sorted(entry.get("photos", []), key=lambda one: one["position"]):
+            path = os.path.join(root, photo["file"])
+            try:
+                with open(path, "rb") as handle:
+                    shots.append((photo["file"], photo["organ"], reencode(handle.read(), edge, quality)))
+            except Exception as error:  # noqa: BLE001
+                print(f"  {entry['id']}: could not prepare {photo['file']}: {error}")
+        if len(shots) < 2:
+            print(f"  {entry['id']}: fewer than 2 usable photographs — skipped")
+            continue
+        sizes = ", ".join(f"{len(blob) // 1024}KB" for _, _, blob in shots)
+        print(f"── {entry['id']}  {entry['truth']['scientificName']}  ({sizes})")
+        prepared[entry["id"]] = shots
+
+    token: str | None = os.environ.get("ACCESS_TOKEN", "").strip() or None
+    email = os.environ.get("USER_EMAIL", "").strip()
+    password = os.environ.get("USER_PASSWORD", "").strip()
+    if not token and email and password:
+        token = sign_in(project, key, email, password)
+
+    written = 0
+    stopped = False
+    with open(out_path, "w", encoding="utf-8") as handle:
+        for entry in specimens:
+            shots = prepared.get(entry["id"])
+            if not shots:
+                continue
+            for condition in conditions:
+                count, _ = CONDITIONS[condition]
+                if count > len(shots):
+                    continue
+                tags = organs_for(condition, [organ for _, organ, _ in shots])
+                payload = [(shots[i][2], tags[i]) for i in range(count)]
+                answer = identify(payload, project, key, token)
+                record = {
+                    "setId": entry["id"],
+                    "condition": condition,
+                    "truth": {
+                        "scientificName": entry["truth"]["scientificName"],
+                        "rank": entry["truth"].get("rank", "species"),
+                    },
+                    "certainty": entry.get("certainty"),
+                    "class": entry.get("class"),
+                    # TRUE here, and that is the whole point of this phase.
+                    "sameIndividual": True,
+                    "source": "field",
+                    "signedIn": bool(token),
+                    "comparing": False,
+                    "profile": {"edge": edge, "quality": quality},
+                    "images": [
+                        {"title": shots[i][0], "organ": tags[i], "bytes": len(shots[i][2])}
+                        for i in range(count)
+                    ],
+                    "http": answer["http"],
+                    "response": answer["body"],
+                    "at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                }
+                handle.write(json.dumps(record) + "\n")
+                handle.flush()
+                written += 1
+
+                body = answer["body"]
+                if answer["http"] != 200:
+                    note = body.get("code") or body.get("error") or body.get("raw", "")
+                    print(f"   {entry['id']:<12} {condition:<7} HTTP {answer['http']}  {note}")
+                    if answer["http"] == 429:
+                        print("     quota reached — stopping; re-run with ONLY to resume")
+                        stopped = True
+                        break
+                    continue
+                top = (body.get("candidates") or [{}])[0]
+                print(
+                    f"   {entry['id']:<12} {condition:<7} "
+                    f"{top.get('scientificName', '(nothing)'):<34} "
+                    f"{top.get('score', 0):.3f}  left {body.get('remaining')}"
+                )
+            if stopped:
+                break
+
+    print(f"\n{written} record(s) -> {out_path}")
+    print(f"Now: BENCH_RESULTS={out_path} npx vitest run --config vitest.bench.config.ts")
+    return 0
+
+
 def run_comparisons() -> int:
     """COMPARISONS=1 — read the alternate provider's rows back for a finished run.
 
@@ -796,6 +988,8 @@ def main() -> int:
     if not (project and key):
         print("set PROJECT_REF and ANON_KEY")
         return 2
+    if os.environ.get("FIELD", "").strip():
+        return run_field()
     if os.environ.get("COMPARISONS", "").strip() == "1":
         return run_comparisons()
     if os.environ.get("MANIFEST", "").strip():

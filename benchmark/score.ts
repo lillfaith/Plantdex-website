@@ -30,6 +30,7 @@
 
 import {
   confidenceBand,
+  genusOf,
   matchScientificName,
   normalizeName,
   outcomeFor,
@@ -43,8 +44,35 @@ import {
 export interface BenchmarkTruth {
   /** The species the photographs are of, as the manifest states it. */
   scientificName: string;
-  /** The card a correct identification reaches, or null when the right answer is no card. */
-  expectedHerbId: string | null;
+  /**
+   * The card a correct identification reaches, or null when the right answer is no card.
+   *
+   * OPTIONAL, AND DERIVED WHEN ABSENT. A field manifest states what the PLANT is; it does
+   * not state which card that ought to reach, and it must not — that is a question for
+   * `matchScientificName`, and a hand-written column would be somebody's opinion of the
+   * answer, free to disagree with the code that actually decides it. `expectedFor` below
+   * asks the real matcher.
+   */
+  expectedHerbId?: string | null;
+  /**
+   * `species`, `genus` or `family`. Genus- and family-level truth is honest rather than
+   * lazy: Solidago and the asters cannot be settled from a phone photograph, and a guess
+   * in the denominator would be scored as a provider failure.
+   */
+  rank?: string;
+}
+
+/**
+ * Which card a CORRECT identification of this species should reach, asked of the matcher
+ * that ships rather than written down beside the photographs.
+ *
+ * It resolves the truth name exactly as a provider answer would be resolved, which is what
+ * makes the expectation and the outcome comparable: both went through the same rules.
+ */
+export function expectedFor(truth: BenchmarkTruth): string | null {
+  if (truth.expectedHerbId !== undefined) return truth.expectedHerbId;
+  const match = matchScientificName(truth.scientificName);
+  return match.confirmable ? (match.herbId ?? null) : null;
 }
 
 /** A provider answer, flattened from either the response or a comparison row. */
@@ -55,7 +83,8 @@ export interface RawCandidate {
 
 export interface Verdict {
   outcome: ScanOutcome;
-  topSpeciesCorrect: boolean;
+  /** Null when the ground truth is family-level and says nothing about the species. */
+  topSpeciesCorrect: boolean | null;
   topCardCorrect: boolean;
   /** Null for a species with no card: there is no card to find further down the list. */
   cardAnywhere: boolean | null;
@@ -84,7 +113,7 @@ export function score(raw: readonly RawCandidate[], truth: BenchmarkTruth): Verd
   const candidates = candidatesOf(raw);
   const outcome = outcomeFor(candidates);
   const top = candidates[0];
-  const expected = truth.expectedHerbId;
+  const expected = expectedFor(truth);
 
   if (!top) {
     return {
@@ -109,7 +138,22 @@ export function score(raw: readonly RawCandidate[], truth: BenchmarkTruth): Verd
    * names together, so `Bellis perennis L.` and `Bellis perennis` agree — and it is NOT
    * being stored anywhere, which is the rule it must never break.
    */
-  const topSpeciesCorrect = normalizeName(top.scientificName) === normalizeName(truth.scientificName);
+  /*
+   * RANK-AWARE, BECAUSE THE TRUTH IS NOT ALWAYS A SPECIES.
+   *
+   * Comparing keys outright would score `Solidago canadensis` as WRONG against a truth of
+   * `Solidago` — punishing the provider for being more precise than the observer could be.
+   * At genus truth the comparison is on the genus; at family truth nothing at species level
+   * is claimed, so this is null and the rate is reported over a smaller denominator rather
+   * than quietly counting a row it cannot judge.
+   */
+  const truthRank = (truth.rank ?? 'species').toLowerCase();
+  const topSpeciesCorrect =
+    truthRank === 'family'
+      ? null
+      : truthRank === 'genus'
+        ? genusOf(top.scientificName) === genusOf(truth.scientificName)
+        : normalizeName(top.scientificName) === normalizeName(truth.scientificName);
   const offersACard = top.match.confirmable;
   const topCardCorrect =
     expected === null ? !offersACard : offersACard && top.match.herbId === expected;
@@ -133,13 +177,18 @@ export function score(raw: readonly RawCandidate[], truth: BenchmarkTruth): Verd
     topScore: top.score,
     band: confidenceBand(top.score),
     speciesConfidence: rank ? speciesConfidenceFor(rank, top.score) : null,
-    confusedWith: topSpeciesCorrect ? null : normalizeName(top.scientificName) || top.scientificName,
+    confusedWith:
+      topSpeciesCorrect === false
+        ? normalizeName(top.scientificName) || top.scientificName
+        : null,
   };
 }
 
 export interface Tally {
   n: number;
   topSpeciesCorrect: number;
+  /** Denominator for topSpeciesCorrect: rows whose truth is precise enough to judge it. */
+  topSpeciesOf: number;
   topCardCorrect: number;
   cardAnywhere: number;
   /** Denominator for cardAnywhere: sets that have a card to find. */
@@ -155,6 +204,7 @@ export function emptyTally(): Tally {
   return {
     n: 0,
     topSpeciesCorrect: 0,
+    topSpeciesOf: 0,
     topCardCorrect: 0,
     cardAnywhere: 0,
     cardAnywhereOf: 0,
@@ -168,7 +218,10 @@ export function emptyTally(): Tally {
 
 export function add(tally: Tally, verdict: Verdict): Tally {
   tally.n += 1;
-  if (verdict.topSpeciesCorrect) tally.topSpeciesCorrect += 1;
+  if (verdict.topSpeciesCorrect !== null) {
+    tally.topSpeciesOf += 1;
+    if (verdict.topSpeciesCorrect) tally.topSpeciesCorrect += 1;
+  }
   if (verdict.topCardCorrect) tally.topCardCorrect += 1;
   if (verdict.topCardWrong) tally.topCardWrong += 1;
   if (verdict.cardAnywhere !== null) {
