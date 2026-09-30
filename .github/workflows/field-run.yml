@@ -1,0 +1,161 @@
+name: Run the field validation
+
+# Puts the committed `field/` specimens through the deployed TEST identifier and uploads the
+# raw JSONL and the scored report as artifacts.
+#
+# WHY IT RUNS HERE. Same reason as `identification-pilot.yml`: signing in needs the disposable
+# accounts' password, and a repository secret read by the job that uses it is the only place
+# that password is not copied to. The harness would run fine on a laptop; a laptop is then
+# where the credential lives.
+#
+# PLANTNET ONLY, AND THE HARNESS ENFORCES IT. `run_field()` REFUSES a `SIGNED_IN` value
+# outright, so no comparison request can be issued from this mode and no plant.id credit can
+# be spent — the budget line prints `Kindwise credits 0` because zero is structural here, not
+# a setting. This phase exists to test the PlantNet system that is about to ship.
+#
+# TEST ONLY, ENFORCED RATHER THAN INTENDED. No input can name a Supabase project, the ref is
+# a literal, and the guard below fails if that literal is ever anything but the test project.
+# Production is never contacted at all — not even read — because nothing here needs it.
+#
+# BUDGET: 8 specimens x 3 conditions = 24 requests, 24 PlantNet identifications, 0 credits.
+# `MAX_REQUESTS` is passed to the harness, which REFUSES to send anything if the plan it
+# computes exceeds it — a manifest edit changes the plan silently, and an approved budget is a
+# number somebody signed off.
+on:
+  workflow_dispatch:
+    inputs:
+      account_email:
+        description: Disposable TEST account to sign in as (use the NON-allow-listed one)
+        required: true
+        type: string
+      conditions:
+        description: Which arms to run
+        required: true
+        default: p1,p2,p3auto
+        type: string
+      only:
+        description: Comma-separated specimen ids, to resume a partial run. Blank = all.
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  PROJECT_REF: vgjehmwcpavflbfhbbrp
+  PRODUCTION_REF: vygiamigomwlvnwkryyl
+  FIELD: field/manifest.json
+  MAX_REQUESTS: '24'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse to run against anything but the test project
+        run: |
+          set -euo pipefail
+          if [ "$PROJECT_REF" != "vgjehmwcpavflbfhbbrp" ]; then
+            echo "::error::Hard-scoped to TEST. PROJECT_REF is '$PROJECT_REF'."
+            exit 1
+          fi
+          if [ "$PROJECT_REF" = "$PRODUCTION_REF" ]; then
+            echo "::error::PROJECT_REF is the PRODUCTION project. Refusing."
+            exit 1
+          fi
+          echo "Scoped to TEST ($PROJECT_REF)."
+
+      - name: Fail early if a required secret is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          TEST_ACCOUNT_PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
+        run: |
+          missing=""
+          [ -z "$SUPABASE_ACCESS_TOKEN" ] && missing="$missing SUPABASE_ACCESS_TOKEN"
+          [ -z "$TEST_ACCOUNT_PASSWORD" ] && missing="$missing TEST_ACCOUNT_PASSWORD"
+          if [ -n "$missing" ]; then echo "::error::Not set:$missing"; exit 1; fi
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Fetch the anon key, masked
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          ANON=$(curl -sS "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            | python3 -c "import json,sys; print(next(k['api_key'] for k in json.load(sys.stdin) if k['name']=='anon'))")
+          echo "::add-mask::$ANON"
+          echo "ANON_KEY=$ANON" >> "$GITHUB_ENV"
+
+      - name: Show the budget without sending anything
+        env:
+          DRY_RUN: '1'
+          CONDITIONS: ${{ inputs.conditions }}
+          ONLY: ${{ inputs.only }}
+        run: python3 scripts/identify_web_images.py
+
+      - run: python3 -m pip install --quiet --disable-pip-version-check pillow
+
+      - name: Identify every specimen
+        env:
+          OUT: field-results.jsonl
+          CONDITIONS: ${{ inputs.conditions }}
+          ONLY: ${{ inputs.only }}
+          USER_EMAIL: ${{ inputs.account_email }}
+          USER_PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
+        run: python3 scripts/identify_web_images.py
+
+      - name: Assert what was actually spent
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          rows = [json.loads(l) for l in open("field-results.jsonl") if l.strip()]
+          comparing = [r for r in rows if r.get("comparing")]
+          print(f"requests recorded  : {len(rows)}")
+          print(f"comparison requests: {len(comparing)}  (= Kindwise credits)")
+          assert len(rows) <= 24, f"{len(rows)} requests exceeds the approved 24"
+          assert not comparing, "a comparison request was made in a PlantNet-only phase"
+          print("Within budget, and no plant.id credit was spent.")
+          PY
+
+      - run: npm ci
+
+      - name: Score it with the real matcher
+        env:
+          BENCH_RESULTS: field-results.jsonl
+        run: |
+          set -euo pipefail
+          npx vitest run --config vitest.bench.config.ts 2>&1 | tee field-report.txt
+
+      - name: Prove the artifacts carry nothing secret
+        env:
+          TEST_ACCOUNT_PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          fail=0
+          for f in field-results.jsonl field-report.txt; do
+            for needle in "$TEST_ACCOUNT_PASSWORD" "$SUPABASE_ACCESS_TOKEN" "$ANON_KEY"; do
+              if [ -n "$needle" ] && grep -qF -- "$needle" "$f" 2>/dev/null; then
+                echo "::error::$f contains a secret value. Not uploading."; fail=1
+              fi
+            done
+            if grep -qE 'eyJ[A-Za-z0-9_-]{10,}\.eyJ' "$f" 2>/dev/null; then
+              echo "::error::$f looks like it contains a JWT. Not uploading."; fail=1
+            fi
+          done
+          exit $fail
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: field-validation
+          path: |
+            field-results.jsonl
+            field-report.txt
+          retention-days: 30
