@@ -24,6 +24,7 @@ import {
   add,
   discordant,
   emptyTally,
+  expectedFor,
   rate,
   score,
   type BenchmarkTruth,
@@ -287,7 +288,15 @@ describe.skipIf(records.length === 0)('identification accuracy benchmark', () =>
     for (const setId of setIds) {
       const mine = records.filter((one) => one.setId === setId);
       const truth = mine[0]!.truth;
-      const target = truth.expectedHerbId ?? 'no card (Seed Shelf)';
+      /*
+       * `expectedFor`, NOT `truth.expectedHerbId`. A field manifest carries no expected
+       * card — it is DERIVED from the truth name by the real matcher — so reading the raw
+       * field printed "no card (Seed Shelf)" against every specimen in the first field run,
+       * including ones whose species the deck plainly carries. The SCORING was right
+       * throughout; only this header line lied, which is the more dangerous shape of bug:
+       * a reader checks the header, not the arithmetic.
+       */
+      const target = expectedFor(truth) ?? 'no card (Seed Shelf)';
       console.log(`\n  ${setId}   truth: ${truth.scientificName}  ->  ${target}`);
       for (const condition of CONDITION_ORDER) {
         const one = mine.find((record) => record.condition === condition);
