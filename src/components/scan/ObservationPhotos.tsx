@@ -44,14 +44,16 @@ const SLOTS: readonly Slot[] = [
   {
     key: 'whole',
     label: 'Whole plant',
-    instruction: 'Show its overall shape and how it grows.',
+    instruction: 'Step back. Show its overall shape and how it grows.',
     organ: 'habit',
     required: true,
   },
   {
     key: 'close',
     label: 'Leaf + stem',
-    instruction: 'Show one leaf clearly and, if you can, where it joins the stem.',
+    instruction:
+      'Get close and fill the frame with one leaf and where it joins the stem. Other '
+      + 'plants in the shot will confuse the result.',
     organ: 'leaf',
     required: true,
   },
@@ -198,7 +200,7 @@ export function ObservationPhotos({
                     />
                     {slot.label}{' '}
                     <span className="text-xs font-semibold text-violet-400">
-                      {slot.required ? 'Required' : 'Recommended'}
+                      {slot.required ? 'Required' : 'Optional \u2014 usually helpful'}
                     </span>
                   </p>
                   <p className="mt-1 text-xs leading-relaxed text-violet-300">{slot.instruction}</p>
