@@ -30,6 +30,17 @@ WHAT IT REFUSES, AND WHY EACH ONE IS A REAL MISTAKE:
   organ3 disagreeing with the files      `none` beside a third photograph, or a third organ
                                          recorded for a specimen that has two files
 
+FOUR OPTIONAL PROVENANCE COLUMNS, FOR A SET THAT WAS NOT PHOTOGRAPHED HERE. `source`,
+`source_ref`, `verification` and `same_individual` are absent from the phone set and default
+to exactly what that set is: photographs somebody took of one plant, with no external record
+behind them. They exist because the second dataset is documented internet observations, and
+three facts about such a record cannot be recovered later — WHICH record it was, HOW its
+identification was established, and whether its photographs are one individual. The last is
+the one that must never be assumed: `sameIndividual` was hard-coded `true` here, which is
+true of a phone set by construction and is a claim about somebody else's photographs. A set
+that had to combine two plants records `false` and is then excluded from the photo-count
+question rather than quietly answering it.
+
 WHAT IT DELIBERATELY DOES NOT CHECK. Whether the identification is right — that is the
 benchmark's job, afterwards. Whether `truth_name` is a real species — it may legitimately be a
 genus or a family, and validating binomials here would start inventing botany. Whether
@@ -56,6 +67,12 @@ ORGANS = {"habit", "leaf", "flower", "fruit", "bark", "auto"}
 
 TRUTH_RANKS = {"species", "genus", "family"}
 CERTAINTIES = {"certain", "probable", "unsure"}
+# How the identification behind a specimen was established. `self` is the phone set: nobody
+# but the collector stands behind it. The rest name an external record, and the distinction
+# between them is the whole reason the column exists — "research grade" and "a specimen in a
+# bag with a label" are not the same evidence.
+VERIFICATIONS = {"self", "research-grade", "specimen-backed", "community", "unverified"}
+OPTIONAL_COLUMNS = ["source", "source_ref", "verification", "same_individual"]
 REQUIRED_COLUMNS = [
     "specimen_id",
     "date",
@@ -125,6 +142,24 @@ def main() -> int:
                 organ3 = row.get("organ3", "")
                 if organ3 and organ3 != "none" and organ3 not in ORGANS:
                     problems.append(f"{spec}: organ3 {organ3!r} is not an organ or 'none'")
+                verification = row.get("verification", "")
+                if verification and verification not in VERIFICATIONS:
+                    problems.append(
+                        f"{spec}: verification {verification!r} must be one of "
+                        f"{', '.join(sorted(VERIFICATIONS))}"
+                    )
+                same = row.get("same_individual", "")
+                if same and same not in ("true", "false"):
+                    problems.append(
+                        f"{spec}: same_individual {same!r} must be 'true' or 'false' — it is a "
+                        "claim about the photographs, so there is no default worth guessing"
+                    )
+                # A record you cannot go back to is not a source. Either both halves or neither.
+                if bool(row.get("source")) != bool(row.get("source_ref")):
+                    problems.append(
+                        f"{spec}: source and source_ref must be given together — a source with no "
+                        "identifier cannot be checked by anybody afterwards"
+                    )
                 rows[spec] = row
 
     # ── The directories ──────────────────────────────────────────────────────
@@ -250,7 +285,12 @@ def main() -> int:
                 "class": rows[spec].get("class", ""),
                 "habitat": rows[spec].get("habitat", ""),
                 "notes": rows[spec].get("notes", ""),
-                "sameIndividual": True,
+                # Defaults are the PHONE set's own facts, not neutral ones: photographs taken
+                # here of one plant, standing on nobody's authority but the collector's.
+                "sameIndividual": rows[spec].get("same_individual", "true") != "false",
+                "source": rows[spec].get("source") or "field",
+                "sourceRef": rows[spec].get("source_ref", ""),
+                "verification": rows[spec].get("verification") or "self",
                 "photos": [
                     {"position": slot, "file": f"{spec}/{photos[spec][slot][0]}", "organ": photos[spec][slot][1]}
                     for slot in sorted(photos[spec])

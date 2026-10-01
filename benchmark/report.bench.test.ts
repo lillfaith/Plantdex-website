@@ -43,7 +43,19 @@ interface Record_ {
   condition: string;
   truth: BenchmarkTruth;
   sameIndividual: boolean;
+  /**
+   * Where the photographs came from: `field` (taken on a phone here), `iNaturalist` (a
+   * documented observation), `commons`. It was read as a BOOLEAN — `source === 'field'`
+   * against an else-branch that said "Wikimedia" — which is fine while there are two
+   * sources and silently mislabels the third. A run of documented observations would have
+   * been captioned as Wikimedia category images, in the one paragraph headed LIMITS OF THIS
+   * EVIDENCE.
+   */
   source: string;
+  /** The record this specimen came from, e.g. `observation 107290092`. Empty for `field`. */
+  sourceRef?: string;
+  /** How that identification was established: `self`, `research-grade`, `specimen-backed`. */
+  verification?: string;
   certainty?: string;
   class?: string;
   signedIn: boolean;
@@ -150,6 +162,51 @@ function reportTally(label: string, tally: Tally): void {
   console.log(`    leading score                         ${spread(tally.scores)}`);
 }
 
+/**
+ * What a reader must subtract from every rate below, keyed by where the photographs came
+ * from. Three entries and not two: these used to be the arms of a ternary on
+ * `source === 'field'`, so any third source printed the Wikimedia sentence — a caption
+ * claiming the pictures are something they are not, inside the section that exists to stop
+ * exactly that.
+ */
+const CAVEAT: Record<string, string> = {
+  field:
+    '   - These ARE phone photographs taken in the field, so the usual caveat does not\n' +
+    '     apply: no upper-bound correction is needed. What remains is that they are one\n' +
+    '     person, one area, one season.',
+  iNaturalist:
+    '   - These are somebody ELSE\'s photographs of a documented observation. They were\n' +
+    '     taken to document a plant, so they are better framed than a player\'s snapshot —\n' +
+    '     treat each rate as an upper bound. They are not, however, catalogue images: an\n' +
+    '     observation is one organism in its own habitat, clutter and all.',
+  commons:
+    '   - Wikimedia photographs are CLEANER than what a player sends: framed, in focus,\n' +
+    '     often by somebody who knew what the plant was. Every rate below is therefore\n' +
+    '     an UPPER BOUND on field performance, not an estimate of it.',
+  mixed:
+    '   - THIS FILE MIXES SOURCES, so every pooled rate below is an average over kinds of\n' +
+    '     photograph that do not belong in one number. Split the file and re-run.',
+};
+
+/** Where the ground truth came from, and therefore what a wrong answer means. */
+const TRUTH_NOTE: Record<string, string> = {
+  field:
+    '   - The ground truth is what the photographer wrote down BEFORE scanning. Rows\n' +
+    '     marked `unsure` are reported separately and never counted as a provider\n' +
+    '     failure; genus- and family-level truth is scored at that rank, not below it.',
+  iNaturalist:
+    '   - The ground truth is the community identification on the cited observation, not\n' +
+    '     this benchmark\'s opinion. It is evidence somebody else can check, which is the\n' +
+    '     point — and it is still a determination, not a fact: a research-grade record\n' +
+    '     carried by one agreeing identifier is weaker than a vouchered one, so each set\n' +
+    '     prints how its identification was established:',
+  commons:
+    '   - The ground truth is the Commons category name. A miscategorised file is a\n' +
+    '     wrong answer scored as a provider failure.',
+  mixed:
+    '   - Ground truth was established differently across these rows; see each set below.',
+};
+
 describe.skipIf(records.length === 0)('identification accuracy benchmark', () => {
   it('states what this run can and cannot support', () => {
     const sets = new Set(records.map((one) => one.setId));
@@ -161,17 +218,13 @@ describe.skipIf(records.length === 0)('identification accuracy benchmark', () =>
     console.log('================================================================');
     console.log(`  ${records.length} requests   ${sets.size} sets   ${conditions.size} conditions`);
     console.log(`  source: ${RESULTS}`);
-    const fieldRows = records.filter((one) => one.source === 'field').length;
+    const sources = [...new Set(records.map((one) => one.source))].sort();
+    // One source names its own caveat; anything else is a file that should not have
+    // been pooled, and says so rather than picking one of them to speak for the rest.
+    const provenance = sources.length === 1 ? (sources[0] ?? 'mixed') : 'mixed';
     console.log('\n  LIMITS OF THIS EVIDENCE. Read these before quoting a number.');
-    console.log(
-      fieldRows === records.length
-        ? '   - These ARE phone photographs taken in the field, so the usual caveat does not\n' +
-            '     apply: no upper-bound correction is needed. What remains is that they are one\n' +
-            '     person, one area, one season.'
-        : '   - Wikimedia photographs are CLEANER than what a player sends: framed, in focus,\n' +
-            '     often by somebody who knew what the plant was. Every rate below is therefore\n' +
-            '     an UPPER BOUND on field performance, not an estimate of it.',
-    );
+    console.log(`   - PROVENANCE: ${sources.join(', ')}.`);
+    console.log(CAVEAT[provenance] ?? CAVEAT.mixed);
     console.log(
       `   - ${sameIndividual} of ${records.length} requests used photographs of ONE individual.` +
         (sameIndividual === records.length
@@ -183,15 +236,15 @@ describe.skipIf(records.length === 0)('identification accuracy benchmark', () =>
             '     photographs (more variation) or penalise them (a blended answer). Treat the\n' +
             '     count axis as indicative until a set built from one specimen says otherwise.'),
     );
-    const field = records.filter((one) => one.source === 'field').length;
-    console.log(
-      field === records.length
-        ? '   - The ground truth is what the photographer wrote down BEFORE scanning. Rows\n' +
-            '     marked `unsure` are reported separately and never counted as a provider\n' +
-            '     failure; genus- and family-level truth is scored at that rank, not below it.'
-        : '   - The ground truth is the Commons category name. A miscategorised file is a\n' +
-            '     wrong answer scored as a provider failure.',
-    );
+    console.log(TRUTH_NOTE[provenance] ?? TRUTH_NOTE.mixed);
+    for (const setId of [...new Set(records.map((one) => one.setId))]) {
+      const one = records.find((row) => row.setId === setId)!;
+      if (one.source === 'field') continue;
+      console.log(
+        `       ${setId}  ${one.truth.scientificName}  —  ${one.source} ` +
+          `${one.sourceRef ?? '(no reference)'}, ${one.verification ?? 'unverified'}`,
+      );
+    }
     console.log(
       '   - The sample is small. Every rate carries a 95% interval; two rates whose intervals\n' +
         '     overlap have not been shown to differ.',

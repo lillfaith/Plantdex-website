@@ -608,9 +608,22 @@ def run_field() -> int:
                     },
                     "certainty": entry.get("certainty"),
                     "class": entry.get("class"),
-                    # TRUE here, and that is the whole point of this phase.
-                    "sameIndividual": True,
-                    "source": "field",
+                    # READ, NEVER ASSUMED. This was hard-coded `true` while the only set was
+                    # photographs taken here, where it holds by construction. It stopped
+                    # holding the moment a second set arrived from documented internet
+                    # observations: an iNaturalist observation is one organism at one place
+                    # and time, so its photographs ARE one individual — but that is a fact
+                    # about the record, which the manifest carries, not about this mode. A
+                    # set that had to combine two plants says so, and the report then
+                    # excludes it from the photo-count question instead of letting it answer
+                    # one it cannot.
+                    "sameIndividual": bool(entry.get("sameIndividual", True)),
+                    # `field` is the phone set. Anything else names where the record came
+                    # from, and is what keeps the two datasets apart in the report rather
+                    # than averaged into one number.
+                    "source": entry.get("source") or "field",
+                    "sourceRef": entry.get("sourceRef", ""),
+                    "verification": entry.get("verification") or "self",
                     "signedIn": bool(token),
                     "comparing": False,
                     "profile": {"edge": edge, "quality": quality},

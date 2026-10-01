@@ -17,13 +17,29 @@ name: Run the field validation
 # a literal, and the guard below fails if that literal is ever anything but the test project.
 # Production is never contacted at all — not even read — because nothing here needs it.
 #
-# BUDGET: 8 specimens x 3 conditions = 24 requests, 24 PlantNet identifications, 0 credits.
-# `MAX_REQUESTS` is passed to the harness, which REFUSES to send anything if the plan it
+# BUDGET: 3 conditions per specimen, so 8 phone specimens = 24 requests and 3 internet ones
+# = 9. `MAX_REQUESTS` is passed to the harness, which REFUSES to send anything if the plan it
 # computes exceeds it — a manifest edit changes the plan silently, and an approved budget is a
 # number somebody signed off.
+#
+# TWO DATASETS, NEVER ONE FILE. `field/` is photographs taken on a phone; `field-inat/` is
+# documented iNaturalist observations, which answer a different question and carry different
+# evidence behind their ground truth. They run separately, write separate JSONL, and upload
+# separate artifacts, because the moment they share a file the report averages a number over
+# two kinds of picture and nobody can tell afterwards which half moved it.
 on:
   workflow_dispatch:
     inputs:
+      set:
+        description: >-
+          Which specimen set to run. `field` is the phone-collected set; `field-inat` is the
+          documented-observation set. Never both — see the note above.
+        required: true
+        default: field
+        type: choice
+        options:
+          - field
+          - field-inat
       account_email:
         description: Disposable TEST account to sign in as (use the NON-allow-listed one)
         required: true
@@ -52,7 +68,11 @@ permissions:
 env:
   PROJECT_REF: vgjehmwcpavflbfhbbrp
   PRODUCTION_REF: vygiamigomwlvnwkryyl
-  FIELD: field/manifest.json
+  # The dropdown already confines this to two values; it is composed here rather than taken
+  # as a path so no input can ever name a file outside the two committed sets.
+  FIELD: ${{ inputs.set }}/manifest.json
+  OUT: ${{ inputs.set }}-results.jsonl
+  REPORT: ${{ inputs.set }}-report.txt
 
 jobs:
   run:
@@ -110,7 +130,6 @@ jobs:
 
       - name: Identify every specimen
         env:
-          OUT: field-results.jsonl
           CONDITIONS: ${{ inputs.conditions }}
           ONLY: ${{ inputs.only }}
           MAX_REQUESTS: ${{ inputs.max_requests }}
@@ -130,7 +149,7 @@ jobs:
           python3 - <<'PY'
           import json, os
           cap = int(os.environ["MAX_REQUESTS"])
-          rows = [json.loads(l) for l in open("field-results.jsonl") if l.strip()]
+          rows = [json.loads(l) for l in open(os.environ["OUT"]) if l.strip()]
           comparing = [r for r in rows if r.get("comparing")]
           print(f"requests recorded  : {len(rows)}  (approved ceiling {cap})")
           print(f"comparison requests: {len(comparing)}  (= Kindwise credits)")
@@ -143,10 +162,10 @@ jobs:
 
       - name: Score it with the real matcher
         env:
-          BENCH_RESULTS: field-results.jsonl
+          BENCH_RESULTS: ${{ inputs.set }}-results.jsonl
         run: |
           set -euo pipefail
-          npx vitest run --config vitest.bench.config.ts 2>&1 | tee field-report.txt
+          npx vitest run --config vitest.bench.config.ts 2>&1 | tee "$REPORT"
 
       - name: Prove the artifacts carry nothing secret
         env:
@@ -155,7 +174,7 @@ jobs:
         run: |
           set -euo pipefail
           fail=0
-          for f in field-results.jsonl field-report.txt; do
+          for f in "$OUT" "$REPORT"; do
             for needle in "$TEST_ACCOUNT_PASSWORD" "$SUPABASE_ACCESS_TOKEN" "$ANON_KEY"; do
               if [ -n "$needle" ] && grep -qF -- "$needle" "$f" 2>/dev/null; then
                 echo "::error::$f contains a secret value. Not uploading."; fail=1
@@ -169,8 +188,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: field-validation
+          name: validation-${{ inputs.set }}
           path: |
-            field-results.jsonl
-            field-report.txt
+            ${{ inputs.set }}-results.jsonl
+            ${{ inputs.set }}-report.txt
           retention-days: 30
