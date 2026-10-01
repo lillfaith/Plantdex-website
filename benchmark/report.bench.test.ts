@@ -20,6 +20,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
+import { matchScientificName } from '@/lib/plant-match';
+
 import {
   add,
   discordant,
@@ -49,7 +51,14 @@ interface Record_ {
   images: { title: string; organ: string; bytes: number }[];
   http: number;
   response: {
-    candidates?: { scientificName: string; score: number }[];
+    /*
+     * `rank` is the PROVIDER'S OWN word for how precise its answer is, carried through
+     * untouched by `identify-plant`. It was in the recording from the first run and nothing
+     * printed it, which is how a report can hold the answer to a question and still not
+     * answer it — the Goldenrod scope decision turns on whether PlantNet replies at species
+     * or genus rank, and only the full dump below can say.
+     */
+    candidates?: { scientificName: string; score: number; rank?: string }[];
     observationId?: string;
     provider?: string;
     code?: string;
@@ -276,6 +285,55 @@ describe.skipIf(records.length === 0)('identification accuracy benchmark', () =>
       if (moved.length) console.log(`     moved: ${moved.join(', ')}`);
     }
     expect(setIds.length).toBeGreaterThan(0);
+  });
+
+  it('prints every candidate, with the provider rank and what the matcher did with it', () => {
+    /*
+     * THE WHOLE LIST, NOT THE LEADER. Every rate in this report is computed from
+     * `candidates[0]`, which is correct — `outcomeFor` reads rank at the top of the list and
+     * that is what a player meets. But a scope decision is made from what the provider
+     * ACTUALLY SAID, including the answers it ranked second and fifth, and the leader alone
+     * cannot show that a card was one place away from being offered.
+     *
+     * Printed for every set rather than a chosen few: the moment it is a filter, the one
+     * specimen somebody needed is the one that was filtered out.
+     */
+    console.log('\n----------------------------------------------------------------');
+    console.log('FULL CANDIDATE LISTS  (provider name, score, provider rank, our verdict)');
+    console.log('----------------------------------------------------------------');
+    for (const setId of [...new Set(records.map((one) => one.setId))]) {
+      const mine = records.filter((one) => one.setId === setId);
+      const truth = mine[0]!.truth;
+      console.log(
+        `\n  ${setId}   truth: ${truth.scientificName}` +
+          ` (${truth.rank ?? 'species'})  ->  ${expectedFor(truth) ?? 'no card (Seed Shelf)'}`,
+      );
+      for (const condition of CONDITION_ORDER) {
+        const one = mine.find((record) => record.condition === condition);
+        if (!one) continue;
+        if (one.http !== 200) {
+          console.log(`    ${condition}: HTTP ${one.http} ${one.response.code ?? ''}`);
+          continue;
+        }
+        const raw = one.response.candidates ?? [];
+        if (raw.length === 0) {
+          console.log(`    ${condition}: the provider returned NO candidates`);
+          continue;
+        }
+        console.log(`    ${condition}:`);
+        raw.forEach((candidate, index) => {
+          const match = matchScientificName(candidate.scientificName);
+          const verdict = match.confirmable
+            ? `CONFIRMABLE -> ${match.herbId} (${match.eligibility})`
+            : `${match.kind}${match.herbId ? ` -> ${match.herbId}` : ''}`;
+          console.log(
+            `      ${index + 1}. ${candidate.scientificName.padEnd(34)}` +
+              ` ${candidate.score.toFixed(3)}  rank=${(candidate.rank ?? '?').padEnd(8)} ${verdict}`,
+          );
+        });
+      }
+    }
+    expect(records.length).toBeGreaterThan(0);
   });
 
   it('reports each set, so a species that keeps failing is visible', () => {

@@ -187,6 +187,71 @@ returns them, would add false-positive surface to solve a problem nobody has dem
 
 ---
 
+## OPEN: the Goldenrod scope, and what decides it
+
+The pilot produced one genuine false card: PlantNet answered `Solidago caesia` at **0.065**
+and Plantdex offered a confirmable Goldenrod. No threshold was involved — `outcomeFor` reads
+RANK, correctly, so a confirmable species-rank leader is `matched` whether it scored 0.065 or
+0.95. **A confidence floor would not have caught it**, and the pilot's other false card scored
+0.877, higher than most correct answers.
+
+The cause is the card's `{type: 'genus', pendingCuration}` scope, which makes **every** name in
+the genus confirmable — roughly 120 North American species, plus the bare genus and any
+section.
+
+### Constraints on any replacement
+
+1. Bare `Solidago` must NOT be confirmable.
+2. `S. caesia` and other unrelated Solidago must NOT unlock the card.
+3. Genus-wide matching is not restored.
+4. `S. elongata`, `S. lepida`, `S. gigantea` and the whole subsection are NOT added.
+
+### Why subsect. *Triplinerviae* is not the answer
+
+A first proposal offered the subsection plus *S. altissima*, *S. elongata* and *S. lepida*.
+**Two of those failed verification**, and they failed because the justification was broad
+historical lumping (Scoggan, *Flora of Canada*, 1979) rather than current authority:
+
+- ***S. elongata*** — Semple et al. (2017) found strong statistical support for recognising it
+  as a DISTINCT species, diagnosable within the subsection by a non-glandular elongate
+  inflorescence. A Pacific species, BC to California.
+- ***S. lepida*** — POWO, BONAP, FNA and VASCAN all accept it as a separate species; only USDA
+  PLANTS still ranks it as a variety.
+
+Under POWO and FNA today, *canadensis*, *altissima*, *lepida*, *elongata* and *gigantea* are
+all SEPARATE ACCEPTED SPECIES sharing a subsection. There is no modern accepted group that
+lumps them, so the subsection is a difficult assemblage rather than a usable scope.
+
+### The two surviving options
+
+**A — species-only.** `{type: 'species'}`. Eligible: `S. canadensis` and, because
+`normalizeName` drops infraspecific rank, every `S. canadensis var./subsp. …` combination.
+Zero false positives, nothing to maintain.
+
+**B — species plus a curated `S. altissima`.** POWO treats `S. canadensis` var. `scabra` as a
+heterotypic synonym of `S. altissima` subsp. `altissima`.
+
+**An inconsistency argues for B and was only found by tracing:** under A,
+`Solidago canadensis var. scabra` OPENS the card (it normalises to `solidago canadensis`)
+while `Solidago altissima` does not — two names POWO says are the same plant, treated
+differently.
+
+### What decides it: phase 2, specimen 7
+
+Neither option can be chosen from a database. The question is what PlantNet actually returns
+for a real North American goldenrod, and the report's FULL CANDIDATE LISTS section prints
+every candidate with its score, the provider's own rank, and what the matcher made of it.
+
+| If p1/p2/p3auto lead with | Then |
+| --- | --- |
+| `S. canadensis` | favours **A** — species-only costs nothing |
+| `S. altissima`, repeatedly | quantify the unlock cost of excluding it; favours **B** |
+| bare `Solidago` at genus rank | **flag separately.** Both options refuse it, so both lose real coverage. Do NOT broaden the card to absorb this — it is a different problem and needs its own decision. |
+
+No scope change until that result exists.
+
+---
+
 ## 2. The field protocol
 
 30 to 50 scans with an ordinary phone, outdoors, by somebody who is not looking at the code.
