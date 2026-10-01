@@ -137,9 +137,15 @@ export interface AcceptedTaxon {
 }
 
 /**
- * OVERRIDES ONLY. The nine `Genus spp.` cards are not listed: their scope is already stated
- * on the card itself and is derived below, so repeating it here would be two sources of
- * truth for one fact and a chance for them to disagree.
+ * OVERRIDES ONLY.
+ *
+ * A `Genus spp.` card's BREADTH is stated on the card itself and derived below, so it is
+ * never restated here — repeating it would be two sources of truth for one fact and a chance
+ * for them to disagree. Three such cards now appear anyway, carrying `type: 'genus'` only
+ * because `excluded` has nowhere else to live: the entry adds a NARROWING, never the breadth.
+ * `card-coverage.test.ts` fails if an override on a card printing `spp.` is anything but
+ * `type: 'genus'`, which is what stops one of these entries quietly contradicting the artwork
+ * it was meant to leave alone.
  *
  * EVERY ENTRY IS AN OWNER DECISION ABOUT WHAT A CARD REPRESENTS, not a taxonomic lookup.
  * GBIF can say whether two names denote the same plant — that is what `check_synonyms.py`
@@ -153,6 +159,67 @@ export interface AcceptedTaxon {
  * their own right. Wild Violet therefore stays `species` despite a genus-level English name.
  */
 export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
+  /*
+   * ─────────────────────────────────────────────────────────────────────────
+   * HISTORICAL COMBINATIONS WHOSE ACCEPTED PLACEMENT IS IN ANOTHER GENUS.
+   *
+   * A `Genus spp.` card accepts any name whose FIRST WORD normalises to its genus, because
+   * that is what `genusOf()` reads. So a plant that has been moved OUT of the genus still
+   * reaches the card under its old name — and the current name, being in the new genus,
+   * matches nothing. The exposure therefore exists ONLY under the historical combination,
+   * which is why it is invisible unless somebody probes for it.
+   *
+   * EVERY NAME BELOW WAS RESOLVED AGAINST THE GBIF BACKBONE FROM A RUNNER, not recalled.
+   * `src/lib/taxon-placements.ts` carries the evidence and `taxon-placements.test.ts` fails
+   * if a verified out-of-genus name is ever not excluded here. Nothing is listed from memory:
+   * a Pine case was proposed and WITHDRAWN when GBIF reported `Pinus abies`, `P. larix` and
+   * `P. picea` as accepted *Pinus* homonyms rather than as names for spruce, larch and fir.
+   * ─────────────────────────────────────────────────────────────────────────
+   */
+
+  /*
+   * SUMAC — the one with teeth. Five historical `Rhus` combinations are names for poison
+   * sumac, poison ivy and poison oak, every one of which GBIF places in *Toxicodendron*.
+   * Card #20 lists BERRY and BARK as usable parts and prints no warning, so an unlock here
+   * would attach edible-part content to a plant whose contact causes urushiol dermatitis.
+   *
+   * The modern names are already refused — `Toxicodendron vernix` matches nothing — so this
+   * list closes the only door that was open.
+   *
+   * AN EXCLUDED NAME RETURNS `kind: 'none'`, NOT `sameGenus`. That was measured rather than
+   * assumed, and it matters: `sameGenus` would still have offered Sumac as a RELATED card for
+   * poison ivy. It falls out of `SPECIES_BY_GENUS` being built from cards' own binomials —
+   * `Rhus spp.` contributes none — so there is no same-genus card to fall back to.
+   */
+  'rhus-spp': {
+    type: 'genus',
+    excluded: [
+      // -> Toxicodendron (genus; GBIF cannot resolve the species from the bare string)
+      'Rhus vernix',
+      // -> Toxicodendron radicans subsp. radicans
+      'Rhus radicans',
+      // -> Toxicodendron (genus)
+      'Rhus toxicodendron',
+      // -> Toxicodendron diversilobum
+      'Rhus diversiloba',
+      // -> Toxicodendron rydbergii
+      'Rhus rydbergii',
+    ],
+  },
+
+  /*
+   * MULBERRY — `Morus papyrifera` is paper mulberry, GBIF-accepted as
+   * *Broussonetia papyrifera*. Not a poisoning risk: this is the "the card is about a
+   * different plant" problem rather than a safety one, and the card lists Fruit, Leaf, Bark.
+   */
+  'morus-spp': { type: 'genus', excluded: ['Morus papyrifera'] },
+
+  /*
+   * OAK — `Quercus densiflora` is tanoak, GBIF-accepted as *Notholithocarpus densiflorus*.
+   * Same shape as Mulberry; the card lists Bark, Nut, Leaf.
+   */
+  'quercus-spp': { type: 'genus', excluded: ['Quercus densiflora'] },
+
   /*
    * ─────────────────────────────────────────────────────────────────────────
    * CARDS CONSIDERED FOR GENUS SCOPE AND DELIBERATELY LEFT `species`.

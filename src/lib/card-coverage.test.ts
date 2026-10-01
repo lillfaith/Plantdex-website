@@ -43,11 +43,28 @@ describe('every printed card has exactly one declared scope', () => {
     );
   });
 
-  it('keeps the `spp.` cards out of the override table', () => {
-    // Their scope is printed on the card. Repeating it here would be two sources for one
-    // fact, free to disagree the day somebody edits one of them.
+  it('lets a `spp.` card be overridden only to NARROW it', () => {
+    /*
+     * THIS TEST USED TO REQUIRE NO OVERRIDE AT ALL, and the reason was sound: a `spp.`
+     * card's scope is printed on its face, so restating it here would be two sources for
+     * one fact, free to disagree the day somebody edits one of them.
+     *
+     * What it could not express is the case that arrived — an override carrying ONLY an
+     * `excluded` list, which adds a narrowing and restates no breadth. Three cards hold one
+     * now, because five historical `Rhus` combinations are names for poison ivy, oak and
+     * sumac. So the rule is no longer "absent" but "`genus` and nothing else": the single
+     * shape that cannot contradict the artwork, since it is what the artwork already says.
+     */
     for (const herb of PRINTED_CARDS.filter((h) => /\bspp?\.?$/i.test(h.scientificName))) {
-      expect(CARD_COVERAGE[herb.id], `${herb.id} restates its printed scope`).toBeUndefined();
+      const override = CARD_COVERAGE[herb.id];
+      if (!override) continue;
+      expect(override.type, `${herb.id} overrides its printed scope to ${override.type}`).toBe(
+        'genus',
+      );
+      // An exclusion is the only thing an override on such a card may add.
+      expect(override.type === 'genus' && (override.excluded?.length ?? 0) > 0, herb.id).toBe(
+        true,
+      );
     }
   });
 
@@ -295,6 +312,20 @@ describe('scope is a claim about identity, never about reward', () => {
         new RegExp(`\\b${forbidden}`, 'i').test(source.replace(/\/\*[\s\S]*?\*\//g, '')),
         `card-coverage.ts references "${forbidden}"`,
       ).toBe(false);
+    }
+  });
+});
+
+describe('overrides on a card that prints `Genus spp.`', () => {
+  it('never carries `pendingCuration`, which is for cards printing a binomial', () => {
+    // `pendingCuration` means "this card prints a binomial and is held genus-wide until its
+    // accepted species are researched". On a card that PRINTS `spp.` it would be meaningless,
+    // and `observed-taxon.test.ts` counts those entries to keep that debt from spreading.
+    for (const herb of PRINTED_CARDS) {
+      if (!/\bspp?\.?$/i.test(herb.scientificName.trim())) continue;
+      const override = CARD_COVERAGE[herb.id];
+      if (override?.type !== 'genus') continue;
+      expect(override.pendingCuration, herb.id).toBeUndefined();
     }
   });
 });

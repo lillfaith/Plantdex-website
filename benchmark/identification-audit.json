@@ -812,7 +812,9 @@
       "pendingCuration": null,
       "acceptedMembers": [],
       "excluded": [],
-      "synonyms": [],
+      "synonyms": [
+        "oxalis europaea"
+      ],
       "sameGenusCards": [],
       "awardsXp": 100,
       "tracksMastery": true,
@@ -842,6 +844,17 @@
           "herbId": "oxalis-stricta",
           "confirmable": true,
           "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "B",
+          "what": "accepted synonym",
+          "name": "oxalis europaea",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "oxalis-stricta",
+          "confirmable": true,
+          "rank": "species",
           "outcome": "matched"
         },
         {
@@ -1779,7 +1792,13 @@
       "scopeType": "genus",
       "pendingCuration": null,
       "acceptedMembers": [],
-      "excluded": [],
+      "excluded": [
+        "Rhus vernix",
+        "Rhus radicans",
+        "Rhus toxicodendron",
+        "Rhus diversiloba",
+        "Rhus rydbergii"
+      ],
       "synonyms": [],
       "sameGenusCards": [],
       "awardsXp": 175,
@@ -1814,6 +1833,56 @@
           "confirmable": true,
           "rank": "species",
           "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus vernix",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus radicans",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus toxicodendron",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus diversiloba",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus rydbergii",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
         },
         {
           "id": "H",
@@ -3643,7 +3712,9 @@
       "scopeType": "genus",
       "pendingCuration": null,
       "acceptedMembers": [],
-      "excluded": [],
+      "excluded": [
+        "Morus papyrifera"
+      ],
       "synonyms": [],
       "sameGenusCards": [],
       "awardsXp": 300,
@@ -3678,6 +3749,16 @@
           "confirmable": true,
           "rank": "species",
           "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Morus papyrifera",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
         },
         {
           "id": "H",
@@ -3891,7 +3972,9 @@
       "scopeType": "genus",
       "pendingCuration": null,
       "acceptedMembers": [],
-      "excluded": [],
+      "excluded": [
+        "Quercus densiflora"
+      ],
       "synonyms": [],
       "sameGenusCards": [],
       "awardsXp": 500,
@@ -3926,6 +4009,16 @@
           "confirmable": true,
           "rank": "species",
           "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Quercus densiflora",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
         },
         {
           "id": "H",

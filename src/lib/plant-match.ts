@@ -187,6 +187,22 @@ const ACCEPTED_NAME_SYNONYMS: Record<string, string> = {
    * That is the point of asking rather than pattern-matching on "it is also a violet".
    */
   'viola papilionacea': 'viola-sororia',
+  /*
+   * GBIF backbone: Oxalis europaea Jord. is a SYNONYM whose accepted name is
+   * Oxalis stricta L. (matchType EXACT, confidence 98), resolved from a runner via
+   * scripts/resolve_taxa.py — not recalled. *O. stricta* is the Wood Sorrel card's own
+   * anchor, so this is the SAME PLANT under an older name.
+   *
+   * THAT IS WHY IT BELONGS HERE AND NOT IN AN ACCEPTED GROUP. A synonym needs no equivalence
+   * argument: there is no second species to weigh the card's use, part, chemistry, edibility
+   * or safety content against. It was first proposed as a `curatedEquivalent` candidate for
+   * Wood Sorrel, and the taxonomy check reclassified it — which is the cheaper answer by six
+   * criteria.
+   *
+   * The sibling candidates stay out: *Oxalis dillenii* and *O. corniculata* are both
+   * GBIF-ACCEPTED species in their own right, so neither is a synonym of anything here.
+   */
+  'oxalis europaea': 'oxalis-stricta',
 };
 
 /**

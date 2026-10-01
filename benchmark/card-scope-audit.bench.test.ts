@@ -239,15 +239,26 @@ describe('card scope audit', () => {
  * this file cannot do.
  */
 const HISTORICAL: readonly { name: string; means: string; concern: string }[] = [
-  { name: 'Rhus vernix', means: 'poison sumac (now Toxicodendron vernix)', concern: 'SEVERE: urushiol' },
+  { name: 'Rhus vernix', means: 'poison sumac (GBIF: genus Toxicodendron)', concern: 'SEVERE: urushiol' },
   { name: 'Rhus radicans', means: 'poison ivy (now Toxicodendron radicans)', concern: 'SEVERE: urushiol' },
-  { name: 'Rhus toxicodendron', means: 'eastern poison oak (now Toxicodendron pubescens)', concern: 'SEVERE: urushiol' },
+  { name: 'Rhus toxicodendron', means: 'eastern poison oak (GBIF: genus Toxicodendron)', concern: 'SEVERE: urushiol' },
   { name: 'Rhus diversiloba', means: 'western poison oak (now Toxicodendron diversilobum)', concern: 'SEVERE: urushiol' },
   { name: 'Rhus rydbergii', means: 'western poison ivy (now Toxicodendron rydbergii)', concern: 'SEVERE: urushiol' },
-  { name: 'Pinus abies', means: 'Norway spruce (now Picea abies)', concern: 'not a pine; card says Needle/Resin/Cone/Shoot' },
-  { name: 'Pinus larix', means: 'European larch (now Larix decidua)', concern: 'not a pine' },
-  { name: 'Pinus canadensis', means: 'eastern hemlock (now Tsuga canadensis)', concern: 'not a pine; the NAME invites a lethal confusion with poison hemlock' },
-  { name: 'Pinus picea', means: 'silver fir (now Abies alba)', concern: 'not a pine' },
+  /*
+   * THE PINE ROWS ARE KEPT AND THEIR CLAIM IS WITHDRAWN. They were written as Linnaean names
+   * for spruce, larch, hemlock and silver fir reaching the Pine card. GBIF does not support
+   * that: queried without authorship, all three binomials come back ACCEPTED in genus *Pinus*
+   * — later homonyms by Siev. and Hablitz — and `Pinus canadensis` resolves no further than
+   * family Pinaceae. The strings are genuinely ambiguous and a backbone query cannot say which
+   * a provider meant, so there is nothing to exclude.
+   *
+   * They stay listed because a deleted row is one somebody re-proposes. A checked-and-cleared
+   * name is evidence too.
+   */
+  { name: 'Pinus abies', means: 'ambiguous: Linnaean basionym of Picea abies, AND an accepted Pinus homonym (Siev.)', concern: 'WITHDRAWN — GBIF resolves the bare string inside Pinus' },
+  { name: 'Pinus larix', means: 'ambiguous: Linnaean basionym of Larix decidua, AND an accepted Pinus homonym (Siev.)', concern: 'WITHDRAWN — as above' },
+  { name: 'Pinus canadensis', means: 'ambiguous; GBIF resolves only to family Pinaceae', concern: 'WITHDRAWN — unresolvable, nothing to exclude' },
+  { name: 'Pinus picea', means: 'ambiguous: Linnaean name for Abies alba, AND an accepted Pinus homonym (Hablitz)', concern: 'WITHDRAWN — as above' },
   { name: 'Morus papyrifera', means: 'paper mulberry (now Broussonetia papyrifera)', concern: 'different plant; card says Fruit/Leaf/Bark' },
   { name: 'Quercus densiflora', means: 'tanoak (now Notholithocarpus densiflorus)', concern: 'not an oak; card says Bark/Nut/Leaf' },
   // Current accepted names in-genus whose CONTENT fit is the question, not their placement.

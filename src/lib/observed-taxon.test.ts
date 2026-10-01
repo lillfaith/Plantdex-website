@@ -226,8 +226,28 @@ describe('the curated model cannot quietly widen', () => {
   });
 
   it('keeps every genus override out of the cards that print a binomial, bar the flagged one', () => {
+    /*
+     * THE NAME SAID "cards that print a binomial" AND THE CODE DID NOT CHECK IT. Every
+     * `type: 'genus'` override was asserted to be Goldenrod, which held only while the table
+     * contained nothing else. It stopped holding when three `spp.` cards gained an override
+     * carrying an `excluded` list — and those are the opposite of what this test guards: a
+     * NARROWING of a breadth the artwork already declares, not a card quietly claiming its
+     * genus.
+     *
+     * The invariant itself is unchanged and still the one that matters: a card printing a
+     * BINOMIAL may not behave as a genus card, and Goldenrod is the single flagged exception.
+     * A second one still fails here.
+     */
     for (const [herbId, scope] of Object.entries(CARD_COVERAGE)) {
       if (scope.type !== 'genus') continue;
+      const herb = PRINTED_CARDS.find((one) => one.id === herbId);
+      expect(herb, `${herbId} is not a printed card`).toBeDefined();
+      if (/\bspp?\.?$/i.test(herb!.scientificName.trim())) {
+        // Permitted only as a narrowing; `card-coverage.test.ts` pins that shape.
+        expect(scope.excluded?.length ?? 0, `${herbId} overrides its own scope for nothing`)
+          .toBeGreaterThan(0);
+        continue;
+      }
       expect(herbId, 'an unflagged genus override on a binomial card').toBe('solidago-canadensis');
     }
   });
