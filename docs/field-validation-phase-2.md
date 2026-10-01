@@ -18,9 +18,21 @@ is supporting validation that must NOT hold up the decision.
 
 | | Specimens | Blocking? |
 | --- | --- | --- |
-| **Goldenrod scope, A vs B** | 7 | **YES** — nothing else can answer it |
-| **Taraxacum on real local plants** | 1, 2 | **YES** — two different individuals |
+| **Goldenrod scope, A vs B** | 7 | **NO LONGER — see below** |
+| **Taraxacum on real local plants** | 1, 2 | **NO LONGER — see below** |
 | Everything else | 3-6, 8, 9 | No. Useful, not blocking. |
+
+> **Both blocking questions were answered off this set**, by three documented iNaturalist
+> observations — see [`field-validation-internet-set.md`](./field-validation-internet-set.md).
+> Taraxacum is **validated and closed**: the matcher handled `T. officinale`,
+> `T.` sect. *Taraxacum* and `T. campylodes` correctly and the *T. mattmarkense* failure did
+> not reproduce. Goldenrod is **answered as a provider question and DEFERRED as a product
+> one**: PlantNet answers goldenrod at species rank and never returned a bare genus, so that
+> half is settled — but Options A and B are both paused pending a card-scope architecture
+> covering the whole deck, and **no Goldenrod taxonomy change may be implemented before it**.
+>
+> This set is therefore no longer gating anything. It remains worth running as ordinary
+> real-device validation, which is a different job from deciding what a card means.
 
 **If weather, season or time costs you specimens, drop from the bottom.** A run of three —
 one goldenrod and two dandelions — resolves both open questions. A run of nine is better

@@ -261,3 +261,78 @@ anything; it is a reason to keep the axis in the phone set rather than to act no
 - **n = 3.** Every interval in the report spans most of the possible range. The Goldenrod
   finding is strong because it is a *structural* observation — which species are confirmable —
   not because 3 specimens established a rate.
+
+---
+
+# Decision status
+
+Recorded after the run, by the product owner. **Nothing below is implemented.** This section
+exists so that a reader who finds this evidence does not act on it.
+
+## Dandelion — validated, closed for now
+
+The current accepted-group logic is **validated**. The run produced `Taraxacum officinale`,
+`Taraxacum sect. Taraxacum` and `Taraxacum campylodes`, and the matcher handled all three
+correctly; the earlier *T. mattmarkense* problem did not reproduce as a leading result, and
+out-of-scope microspecies stayed non-confirmable.
+
+**Do not change the Dandelion scope** unless later evidence reveals a genuinely new problem.
+
+## Goldenrod — evidence preserved, decision DEFERRED
+
+Every finding above stands as recorded: PlantNet led with *S. gigantea* at all three
+conditions and never with *S. canadensis*; *S. canadensis* stayed in the list; *S. rugosa*,
+*S. juncea* and *S. altissima* are confirmable **only** because of the genus-wide legacy
+scope; bare `Solidago` never appeared. The conclusion that the genus-wide `pendingCuration`
+behaviour is too broad for a card internally represented as *S. canadensis* stands too.
+
+**Option A and Option B are both paused, and neither may be implemented.** The product
+question turned out to be larger than "should *S. altissima* also unlock". What is wanted
+first is an explicit separation between **the taxon the player found** and **the card concept
+a discovery is allowed to unlock** — something of the shape:
+
+```
+observed taxon   Solidago gigantea
+unlocked card    Goldenrod
+anchor taxon     Solidago canadensis
+unlock basis     curatedEquivalent
+```
+
+That would **not** assert the species are taxonomically identical. It would record a
+deliberate determination that the existing card is an appropriate representation of both, on
+morphology, traditional-use relevance, chemistry, edible-use and safety claims, and what the
+card actually prints. A species failing that evidentiary bar stays non-confirmable **even
+where PlantNet reliably confuses it with the anchor** — which is the whole point, and the
+reason this benchmark must not be allowed to set the scope.
+
+**So this run is provider-behaviour evidence and nothing more.** It says what PlantNet does.
+It does not say what the Goldenrod card should mean. A card-scope architecture for the whole
+deck is coming; no Goldenrod taxonomy change may be implemented before it.
+
+Note this is a sharper rule than the existing one in CLAUDE.md, which already says of
+`pendingCuration`: *do not broaden it, do not narrow it.* Both options were narrowings. Both
+are now also out.
+
+## Photo count — no change
+
+`MIN_OBSERVATION_PHOTOS` stays at 2. Three documented specimens cannot answer the
+photo-count question, and the non-monotonic score behaviour (p2 weakest on every specimen)
+reinforces that framing and quality matter more than raw count. The improved photo guidance
+copy stays as shipped.
+
+## Phone validation — not cancelled, no longer gating
+
+Phone validation continues as ordinary validation of real-device behaviour. It no longer
+blocks the card-scope architecture work, and the two datasets stay separate exactly as the
+workflow enforces them.
+
+## One preservation caveat, stated plainly
+
+The *substance* of this run — every candidate, score, rank and matcher verdict — is
+transcribed above and committed, so it survives in the repository. The **raw JSONL** exists
+only as Actions artifact
+[11193399221](https://github.com/lillfaith/Plantdex-website/actions/runs/36926501768/artifacts/11193399221),
+on the default 30-day retention, and this environment cannot download it (the artifact blob
+host is blocked by org policy). If the raw rows matter beyond 30 days, somebody with browser
+access has to pull that zip; raising `retention-days` now would not reach an artifact already
+uploaded.
