@@ -1,0 +1,47 @@
+name: Find iNaturalist observations
+
+# Prints research-grade, CC-licensed, multi-photo iNaturalist observations for a taxon, so a
+# human can pick ones to stand in for a field specimen.
+#
+# WHY IT RUNS IN CI. The iNaturalist API is not reachable from a sandbox; only the open-data
+# photo bucket is. So the SEARCH happens here and the picking happens by reading this log.
+#
+# IT SPENDS NOTHING. It talks only to api.inaturalist.org — no PlantNet, no plant.id, no
+# Supabase, no secret of any kind. There is deliberately no project input and no credential
+# read, because it needs neither.
+on:
+  workflow_dispatch:
+    inputs:
+      taxon:
+        description: Scientific name to search for
+        required: true
+        default: Taraxacum officinale
+        type: string
+      limit:
+        description: How many candidate observations to print
+        required: true
+        default: '8'
+        type: string
+      place_id:
+        description: >-
+          Optional iNaturalist place id to confine the search. 1 = United States, 6712 =
+          Canada. Blank searches everywhere, which for a Holarctic weed will return European
+          records too.
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search
+        env:
+          TAXON: ${{ inputs.taxon }}
+          LIMIT: ${{ inputs.limit }}
+          PLACE_ID: ${{ inputs.place_id }}
+        run: python3 scripts/inat_observations.py
