@@ -1,5 +1,14 @@
 /**
- * CHECKED-IN TAXONOMIC EVIDENCE for names a `Genus spp.` card could wrongly accept.
+ * CHECKED-IN EVIDENCE BEHIND EVERY GENUS-CARD EXCLUSION.
+ *
+ * TWO KINDS, and they are not the same argument. A TAXONOMIC exclusion says the name is not
+ * really in this genus any more (`VERIFIED_PLACEMENTS`). A CONTENT exclusion says it is
+ * genuinely in the genus and the CARD'S OWN CLAIMS do not hold for it
+ * (`CONTENT_EXCLUSIONS`) — which no backbone can answer and no amount of taxonomy will
+ * settle. Keeping them apart is what stops a safety judgement being mistaken for a lookup.
+ *
+ * `taxon-placements.test.ts` requires every excluded name to appear in exactly one of them,
+ * so an exclusion with no recorded reason cannot exist.
  *
  * ─────────────────────────────────────────────────────────────────────────────
  * WHAT THIS IS FOR. A `Genus spp.` card accepts any name whose FIRST WORD normalises to its
@@ -29,6 +38,8 @@
  * file is that every row was asked rather than recalled.
  * ─────────────────────────────────────────────────────────────────────────────
  */
+
+/* ── TAXONOMIC: the name's accepted placement has left the genus ──────────────────────── */
 
 /** One name, resolved against a backbone, with enough provenance to re-check it. */
 export interface VerifiedPlacement {
@@ -138,3 +149,58 @@ export const VERIFIED_PLACEMENTS: readonly VerifiedPlacement[] = [
 export function outOfGenusPlacements(): readonly VerifiedPlacement[] {
   return VERIFIED_PLACEMENTS.filter((one) => one.acceptedGenus !== one.queriedGenus);
 }
+
+/* ── CONTENT: in the genus, but the card's own claims do not hold ─────────────────────── */
+
+/**
+ * A species that really is in the card's genus and is excluded anyway, because the card's
+ * printed content would materially mislead whoever found it.
+ *
+ * THIS IS A JUDGEMENT, NOT A LOOKUP, and the fields say so: it records which of the card's
+ * own claims fail and what the evidence was, rather than a backbone's verdict. Human and
+ * animal evidence are separate fields because conflating them is the specific error available
+ * here — a toxicity established in cattle is not a human claim, and a species is not excluded
+ * on one.
+ */
+export interface ContentExclusion {
+  readonly name: string;
+  readonly cardId: string;
+  /** Which printed claims fail for this species. The card's own words, not a paraphrase. */
+  readonly failingClaims: readonly string[];
+  /** What is established in humans. Empty means nothing is, and that must be said. */
+  readonly humanEvidence: string;
+  /** What is established only in other animals, named. */
+  readonly animalEvidence: string;
+  /** Why a caution could not carry it, since a caution is the cheaper answer. */
+  readonly whyNotACaution: string;
+  readonly source: string;
+  readonly checkedOn: string;
+}
+
+export const CONTENT_EXCLUSIONS: readonly ContentExclusion[] = [
+  {
+    name: 'Sambucus ebulus',
+    cardId: 'sambucus-spp',
+    failingClaims: [
+      'usable part: Berry',
+      'preparation: Cold soak',
+      'trait: Antiviral / Immune boost / Respiratory support / Fever aid',
+    ],
+    humanEvidence:
+      'A peer-reviewed review states its usefulness as food is RESTRICTED by its toxicity. ' +
+      'All parts carry ribosome-inactivating proteins with lectin activity (ebulin) plus a ' +
+      'cyanogenic glycoside; high-dose fruit consumption induces vomitory toxicity, ' +
+      'especially in children, and it appears in paediatric acute-plant-exposure casework. ' +
+      'The documented mitigation is COOKING.',
+    animalEvidence: 'Not the basis for this exclusion; the human evidence stands on its own.',
+    whyNotACaution:
+      'Two independent failures, and the first is that the card names a method which ' +
+      'DEFEATS the only documented mitigation: `Cold soak` is uncooked, and heat is what ' +
+      'removes the lectin risk. The second is that the four printed traits are the ' +
+      'S. nigra / S. canadensis profile — a different medicinal tradition — so a player ' +
+      'handed this card is not reading a card with a gap in it, they are reading a card ' +
+      'about another plant.',
+    source: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5871274/',
+    checkedOn: '2026-10-01',
+  },
+];

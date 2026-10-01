@@ -212,6 +212,24 @@ export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
    * *Broussonetia papyrifera*. Not a poisoning risk: this is the "the card is about a
    * different plant" problem rather than a safety one, and the card lists Fruit, Leaf, Bark.
    */
+  /*
+   * ELDERBERRY — A CONTENT EXCLUSION, NOT A TAXONOMIC ONE, and the distinction is the point.
+   * `Sambucus ebulus` is genuinely a *Sambucus*; no backbone query would flag it. It is
+   * excluded because the CARD'S OWN CLAIMS fail for it on two counts: the card prints
+   * `Cold soak`, and cooking is the single documented mitigation for its lectins, so the
+   * card names the method that defeats the fix; and its four traits are the S. nigra /
+   * S. canadensis profile, a different medicinal tradition.
+   *
+   * `S. racemosa` is deliberately NOT here. Its raw berries and seeds cause GI upset and
+   * cooking plus straining removes it — a real elderberry with a real food use, so it gets
+   * the caution on card #31 rather than losing the card. Excluding it would deny a
+   * legitimate find.
+   *
+   * Evidence in `CONTENT_EXCLUSIONS`; `taxon-placements.test.ts` fails if an excluded name
+   * has no recorded reason.
+   */
+  'sambucus-spp': { type: 'genus', excluded: ['Sambucus ebulus'] },
+
   'morus-spp': { type: 'genus', excluded: ['Morus papyrifera'] },
 
   /*

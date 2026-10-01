@@ -4,14 +4,18 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import { PRINTED_CARDS } from './deck';
-import { scopeFor } from './card-coverage';
+import { allScopes, scopeFor } from './card-coverage';
 import { applyDiscovery } from './herbdex-reducer';
 import { emptyState } from './herbdex-state';
 import type { HerbdexState } from './types';
 import { genusOf, matchScientificName, normalizeName, outcomeFor } from './plant-match';
 import { progressFromState } from './progression';
 import { isShelfEligible } from './seed-shelf';
-import { outOfGenusPlacements, VERIFIED_PLACEMENTS } from './taxon-placements';
+import {
+  CONTENT_EXCLUSIONS,
+  outOfGenusPlacements,
+  VERIFIED_PLACEMENTS,
+} from './taxon-placements';
 
 const LIB = join(process.cwd(), 'src', 'lib');
 
@@ -46,6 +50,52 @@ describe('verified taxon placements', () => {
     }
   });
 
+  /*
+   * NO EXCLUSION WITHOUT A RECORDED REASON. Every name in every scope's `excluded` list must
+   * be accounted for by exactly one of the two evidence tables — taxonomic (its placement
+   * left the genus) or content (the card's own claims fail for it). Exactly one, because the
+   * two are different arguments and a name in both would mean nobody decided which applied.
+   */
+  it('accounts for every excluded name in exactly one evidence table', () => {
+    const taxonomic = new Set(VERIFIED_PLACEMENTS.map((one) => normalizeName(one.name)));
+    const content = new Set(CONTENT_EXCLUSIONS.map((one) => normalizeName(one.name)));
+
+    let seen = 0;
+    for (const { herbId, scope } of allScopes()) {
+      if (scope.type !== 'genus') continue;
+      for (const name of scope.excluded ?? []) {
+        seen += 1;
+        const key = normalizeName(name);
+        const inTaxonomic = taxonomic.has(key);
+        const inContent = content.has(key);
+        expect(
+          Number(inTaxonomic) + Number(inContent),
+          `${herbId} excludes ${name} with ${inTaxonomic && inContent ? 'TWO reasons' : 'no recorded reason'}`,
+        ).toBe(1);
+      }
+    }
+    expect(seen).toBeGreaterThan(0);
+  });
+
+  it('points every content exclusion at the card it actually narrows', () => {
+    for (const one of CONTENT_EXCLUSIONS) {
+      const scope = scopeFor(one.cardId);
+      expect(scope?.type, one.cardId).toBe('genus');
+      const excluded = (scope?.type === 'genus' ? (scope.excluded ?? []) : []).map(normalizeName);
+      expect(excluded, `${one.cardId} does not exclude ${one.name}`).toContain(
+        normalizeName(one.name),
+      );
+      expect(one.source).toMatch(/^https?:\/\//);
+      expect(one.checkedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(one.failingClaims.length, one.name).toBeGreaterThan(0);
+      // An empty human-evidence field is a real answer and must be WRITTEN, never left blank:
+      // "nothing is established in humans" is the sentence a reader needs most.
+      expect(one.humanEvidence.length, one.name).toBeGreaterThan(20);
+      expect(one.animalEvidence.length, one.name).toBeGreaterThan(10);
+      expect(one.whyNotACaution.length, one.name).toBeGreaterThan(20);
+    }
+  });
+
   it('every row carries provenance that can be re-checked', () => {
     for (const placement of VERIFIED_PLACEMENTS) {
       expect(placement.source, placement.name).toMatch(/^https?:\/\//);
@@ -72,8 +122,13 @@ describe('verified taxon placements', () => {
   });
 });
 
-describe('excluded historical combinations', () => {
-  const EXCLUDED = outOfGenusPlacements();
+describe('excluded names, taxonomic and content alike', () => {
+  // Both kinds must behave identically once excluded: the REASON differs, the consequence
+  // must not. A content exclusion that still paid XP would be the worse bug of the two.
+  const EXCLUDED = [
+    ...outOfGenusPlacements().map((one) => ({ name: one.name })),
+    ...CONTENT_EXCLUSIONS.map((one) => ({ name: one.name })),
+  ];
 
   it('award no card: not confirmable, no herbId, outcome is noMatch', () => {
     for (const { name } of EXCLUDED) {
@@ -141,6 +196,12 @@ describe('legitimate members of the same genera are unaffected', () => {
     ['Rhus coriaria', 'rhus-spp'],
     // Bare genus on a card that PRINTS `spp.` is the card's own declared scope.
     ['Rhus', 'rhus-spp'],
+    ['Sambucus nigra', 'sambucus-spp'],
+    ['Sambucus canadensis', 'sambucus-spp'],
+    // Deliberately still unlocking: a real elderberry with a real food use. It carries the
+    // raw-berry caution on card #31 instead of losing the card.
+    ['Sambucus racemosa', 'sambucus-spp'],
+    ['Sambucus', 'sambucus-spp'],
     ['Morus alba', 'morus-spp'],
     ['Morus rubra', 'morus-spp'],
     ['Morus', 'morus-spp'],

@@ -2808,7 +2808,9 @@
       "scopeType": "genus",
       "pendingCuration": null,
       "acceptedMembers": [],
-      "excluded": [],
+      "excluded": [
+        "Sambucus ebulus"
+      ],
       "synonyms": [],
       "sameGenusCards": [],
       "awardsXp": 175,
@@ -2843,6 +2845,16 @@
           "confirmable": true,
           "rank": "species",
           "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Sambucus ebulus",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
         },
         {
           "id": "H",

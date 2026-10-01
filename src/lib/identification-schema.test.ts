@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import { TAXON_RANKS } from './card-coverage';
-import { SPECIES_CONFIDENCES } from './plant-match';
+import { ELIGIBILITIES, SPECIES_CONFIDENCES } from './plant-match';
 
 /**
  * `supabase/migrations/0006_identification.sql`, and the two seams it has to stay level with.
@@ -102,9 +102,10 @@ describe('the rank and confidence checks match their unions exactly', () => {
     return [...block.matchAll(/'([^']+)'/g)].map(([, value]) => value!).sort();
   }
 
-  it('parsed both lists — an empty one would pass every check below', () => {
+  it('parsed every list — an empty one would pass every check below', () => {
     expect(allowed('observed_taxon_rank').length).toBeGreaterThan(0);
     expect(allowed('species_confidence').length).toBeGreaterThan(0);
+    expect(allowed('eligibility').length).toBeGreaterThan(0);
   });
 
   it('accepts exactly the ranks TaxonRank defines', () => {
@@ -115,6 +116,21 @@ describe('the rank and confidence checks match their unions exactly', () => {
 
   it('accepts exactly the bands SpeciesConfidence defines', () => {
     expect(allowed('species_confidence')).toEqual([...SPECIES_CONFIDENCES].sort());
+  });
+
+  it('accepts exactly the values Eligibility defines', () => {
+    /*
+     * THE GAP THIS CLOSES. Two columns were pinned to their arrays and this one was not,
+     * while `Eligibility` was a bare union with nothing to compare. So a new member could be
+     * added to the type, pass typecheck, pass 1,200 tests, reach production, and be REFUSED
+     * BY POSTGRES on the first sighting that used it — losing the observation, which is
+     * exactly what a constraint narrower than its type does.
+     *
+     * It fails here now, before the value can be issued. `legacyGenus` is deliberately in
+     * both: it is no longer meant to be issued once the curated model lands, but stored rows
+     * carry it and the column must keep accepting them.
+     */
+    expect(allowed('eligibility')).toEqual([...ELIGIBILITIES].sort());
   });
 
   it('never admits a supra-specific rank as though it were a species', () => {

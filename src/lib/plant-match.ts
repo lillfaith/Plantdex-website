@@ -54,18 +54,42 @@ export type MatchKind =
  * WHY AN OBSERVATION QUALIFIES FOR A CARD — which is a different question from what the
  * plant is, and a different question again from how sure we are of the species.
  */
-export type Eligibility =
+/**
+ * DECLARED AS AN ARRAY, and the type derived from it — the same rule as `TAXON_RANKS` and
+ * `SPECIES_CONFIDENCES`, and for the same reason, which this type did not follow.
+ *
+ * `sightings.eligibility` repeats these values as a CHECK constraint in migration 0006. A
+ * bare union gives a test nothing to compare that constraint against, so adding a member to
+ * the type and forgetting the migration used to fail NOTHING: the build stays green, the app
+ * emits the new value, and Postgres refuses the insert — which loses the sighting, because a
+ * constraint NARROWER than the type does not degrade gracefully.
+ * `identification-schema.test.ts` now holds the two equal, so the migration is what fails
+ * first.
+ *
+ * ORDER IS THE VOCABULARY'S, NOT A RANKING: the unlocking bases, then the ones that unlock
+ * nothing.
+ */
+export const ELIGIBILITIES = [
   /** The card's own binomial, or a checked nomenclatural synonym of it. */
-  | 'exact'
+  'exact',
   /** A researched member of the card's curated accepted group. */
-  | 'acceptedGroup'
+  'acceptedGroup',
   /** The card itself prints `Genus spp.`, so the genus is its stated scope. */
-  | 'genusCard'
-  /** Inside a `pendingCuration` genus override. Temporary — see `card-coverage.ts`. */
-  | 'legacyGenus'
-  | 'ambiguous'
-  | 'related'
-  | 'none';
+  'genusCard',
+  /**
+   * Inside a `pendingCuration` genus override. Temporary — see `card-coverage.ts`.
+   *
+   * READABLE FOREVER, AND THE PLAN IS THAT IT STOPS BEING ISSUED. Stored sightings carry it,
+   * so removing it from this list would make real rows unreadable and the only way to "fix"
+   * them would be to rewrite why a past observation reached a card. It goes quiet, not away.
+   */
+  'legacyGenus',
+  'ambiguous',
+  'related',
+  'none',
+] as const;
+
+export type Eligibility = (typeof ELIGIBILITIES)[number];
 
 /**
  * Strength of the SPECIES-level identification. Independent of card eligibility.
