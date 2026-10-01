@@ -1,0 +1,27 @@
+name: Resolve taxa against GBIF
+
+# Prints what each queried name currently IS, and which genus its accepted name sits in.
+#
+# It runs here because api.gbif.org is blocked from the sandbox this repo is edited in —
+# measured, not assumed. Read-only, spends nothing, reads no secret, touches no Supabase
+# project and contacts no identification provider.
+on:
+  workflow_dispatch:
+    inputs:
+      names:
+        description: Semicolon-separated scientific names
+        required: true
+        default: Rhus vernix; Rhus radicans; Rhus toxicodendron
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          NAMES: ${{ inputs.names }}
+        run: python3 scripts/resolve_taxa.py
