@@ -187,6 +187,28 @@ returns them, would add false-positive surface to solve a problem nobody has dem
 
 ---
 
+## The audit settled 51 of 54 cards
+
+`benchmark/identification-audit.bench.test.ts` probes every card in the CATALOGUE through the
+real `matchScientificName` and `outcomeFor` — 314 probes, zero API calls — and writes
+`benchmark/identification-audit.json`. It collapses 54 cards into five behaviour groups:
+
+- **42 exact-only.** The printed binomial and its infraspecific forms, nothing else.
+- **9 `spp.` cards.** Genus breadth is what the card prints, so bare-genus and congener
+  unlocks are correct for them.
+- **1 curated section** (Dandelion), sourced.
+- **1 unresolved scope** (Goldenrod).
+- **1 exact-only card printing a lookalike warning** (Yarrow).
+
+The systemic finding is a single sentence: **Goldenrod is the only card that prints a
+binomial and behaves like a genus card.** There is exactly one such defect in the system.
+
+THE AUDIT IS NOT TO BE EXPANDED CARD BY CARD. 51 of 54 are structurally verified and are not
+reopened unless a future test actually exposes a new failure. Two flags in the first version
+fired on correct behaviour — `aboveSpecies` tested `rank !== 'species'` and so caught
+varieties and subspecies, which are BELOW the species and resolve it — and were fixed before
+the output was trusted. A checker that fires on correct behaviour is one people stop reading.
+
 ## OPEN: the Goldenrod scope, and what decides it
 
 The pilot produced one genuine false card: PlantNet answered `Solidago caesia` at **0.065**

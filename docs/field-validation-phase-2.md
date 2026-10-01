@@ -9,6 +9,25 @@ credits.** PlantNet only, same as phase 1.
 
 ---
 
+## BLOCKING vs SUPPORTING
+
+The automated audit (`benchmark/identification-audit.bench.test.ts`, 314 probes over all 54
+cards) established that **51 of 54 are structurally verified** and need no botanical research
+and no field testing. That collapses this set's job to two questions, and everything else here
+is supporting validation that must NOT hold up the decision.
+
+| | Specimens | Blocking? |
+| --- | --- | --- |
+| **Goldenrod scope, A vs B** | 7 | **YES** — nothing else can answer it |
+| **Taraxacum on real local plants** | 1, 2 | **YES** — two different individuals |
+| Everything else | 3-6, 8, 9 | No. Useful, not blocking. |
+
+**If weather, season or time costs you specimens, drop from the bottom.** A run of three —
+one goldenrod and two dandelions — resolves both open questions. A run of nine is better
+evidence about photo count and false unlocks, and neither of those is gating the merge.
+
+`ONLY=spec-001,spec-002,spec-007` runs exactly the blocking three: **9 requests.**
+
 ## What it is for
 
 Four questions, each tied to specific specimens rather than to the set as a whole:

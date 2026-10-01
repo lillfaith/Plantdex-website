@@ -38,6 +38,13 @@ on:
         required: false
         default: ''
         type: string
+      max_requests:
+        description: >-
+          Ceiling on PlantNet identifications. The harness refuses to send ANYTHING if its
+          computed plan exceeds this, so it is an approved budget rather than a prediction.
+        required: true
+        default: '27'
+        type: string
 
 permissions:
   contents: read
@@ -46,7 +53,6 @@ env:
   PROJECT_REF: vgjehmwcpavflbfhbbrp
   PRODUCTION_REF: vygiamigomwlvnwkryyl
   FIELD: field/manifest.json
-  MAX_REQUESTS: '24'
 
 jobs:
   run:
@@ -97,6 +103,7 @@ jobs:
           DRY_RUN: '1'
           CONDITIONS: ${{ inputs.conditions }}
           ONLY: ${{ inputs.only }}
+          MAX_REQUESTS: ${{ inputs.max_requests }}
         run: python3 scripts/identify_web_images.py
 
       - run: python3 -m pip install --quiet --disable-pip-version-check pillow
@@ -106,20 +113,28 @@ jobs:
           OUT: field-results.jsonl
           CONDITIONS: ${{ inputs.conditions }}
           ONLY: ${{ inputs.only }}
+          MAX_REQUESTS: ${{ inputs.max_requests }}
           USER_EMAIL: ${{ inputs.account_email }}
           USER_PASSWORD: ${{ secrets.TEST_ACCOUNT_PASSWORD }}
         run: python3 scripts/identify_web_images.py
 
       - name: Assert what was actually spent
+        # The ceiling is enforced before sending; this asserts what the RECORD says came
+        # back, against the SAME number the operator approved rather than a second literal.
+        # A hardcoded 24 here would have refused the nine-specimen phase-2 set, which needs
+        # 27 — a cap sized for a previous run is how a safety limit becomes an outage.
+        env:
+          MAX_REQUESTS: ${{ inputs.max_requests }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json
+          import json, os
+          cap = int(os.environ["MAX_REQUESTS"])
           rows = [json.loads(l) for l in open("field-results.jsonl") if l.strip()]
           comparing = [r for r in rows if r.get("comparing")]
-          print(f"requests recorded  : {len(rows)}")
+          print(f"requests recorded  : {len(rows)}  (approved ceiling {cap})")
           print(f"comparison requests: {len(comparing)}  (= Kindwise credits)")
-          assert len(rows) <= 24, f"{len(rows)} requests exceeds the approved 24"
+          assert len(rows) <= cap, f"{len(rows)} requests exceeds the approved {cap}"
           assert not comparing, "a comparison request was made in a PlantNet-only phase"
           print("Within budget, and no plant.id credit was spent.")
           PY
