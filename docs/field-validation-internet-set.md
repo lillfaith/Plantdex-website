@@ -138,3 +138,126 @@ gh workflow run field-run.yml -f set=field-inat -f max_requests=9 -f account_ema
 
 Nine PlantNet identifications, zero Kindwise credits: `run_field()` refuses a `SIGNED_IN`
 value outright, so no plant.id request is reachable from this mode at all.
+
+---
+
+# Results
+
+Run [36926501768](https://github.com/lillfaith/Plantdex-website/actions/runs/36926501768),
+TEST project, PlantNet only. 9 identifications, **0 Kindwise credits** — the budget assertion
+passed, and `run_field()` makes a comparison request unreachable from this mode.
+
+## Goldenrod — the scope question is answered, and the answer is worse than expected
+
+**PlantNet never once led with *Solidago canadensis*.** It led with ***S. gigantea*** in all
+three conditions, with *S. canadensis* second every time:
+
+| | 1st | 2nd | 3rd | 4th | 5th |
+|---|---|---|---|---|---|
+| **p1** | *S. gigantea* **0.318** | *S. canadensis* 0.203 | *S. rugosa* 0.184 | *S. juncea* 0.100 | *S. altissima* 0.016 |
+| **p2** | *S. gigantea* **0.236** | *S. canadensis* 0.150 | *S. rugosa* 0.136 | *S. juncea* 0.074 | *Euthamia graminifolia* 0.053 |
+| **p3auto** | *S. gigantea* **0.354** | *S. canadensis* 0.167 | *S. rugosa* 0.115 | *S. juncea* 0.062 | *Euthamia graminifolia* 0.045 |
+
+Every candidate came back at **rank `species`**. The matcher's verdict on each:
+
+```
+Solidago gigantea     CONFIRMABLE -> solidago-canadensis (legacyGenus)
+Solidago canadensis   CONFIRMABLE -> solidago-canadensis (exact)
+Solidago rugosa       CONFIRMABLE -> solidago-canadensis (legacyGenus)
+Solidago juncea       CONFIRMABLE -> solidago-canadensis (legacyGenus)
+Solidago altissima    CONFIRMABLE -> solidago-canadensis (legacyGenus)
+Euthamia graminifolia none
+```
+
+Three facts follow, and they point in different directions.
+
+**1. PlantNet answers goldenrod at SPECIES level, not genus.** This is what specimen 7 of the
+phase-2 set existed to establish. **Bare `Solidago` never appeared** — not once, at any
+condition, at any position in the list. Making a bare-genus answer non-confirmable therefore
+costs no measurable coverage on this evidence. (Flagged here explicitly because the standing
+instruction was to report a bare-genus answer separately rather than let it broaden the card.)
+
+**2. The current scope is unlocking Goldenrod from species outside the card's own group.**
+*S. rugosa* is subsect. ***Venosae***; *S. juncea* is subsect. ***Junceae***. Neither is in
+subsect. *Triplinerviae* at all, and both are `CONFIRMABLE -> solidago-canadensis` today. This
+is no longer a hypothetical from a probe sweep — it is what the deployed system did with a
+photograph of a real, documented goldenrod.
+
+**3. The leading answer is a species the standing constraints exclude.** *S. gigantea* leads
+all three conditions and is on the do-not-add list. So **a scope that excludes *S. gigantea*
+makes PlantNet's top answer on this specimen non-confirmable**, and the card would then be
+reached only via the second candidate — which `outcomeFor` does not do, because it reads the
+LEADING candidate's rank, never "is one of these a Plantdex card". That is the rule protecting
+the collection from being overruled by itself, and it is not a thing to weaken here.
+
+**This is the trade, stated plainly: tightening the scope to exclude *S. gigantea* means this
+specimen stops unlocking the Goldenrod card at all.** Not "unlocks it more slowly" —
+`uncertain`, and a Seed Shelf offer. Whether that is the right price is the A-vs-B decision,
+and it is not mine to make.
+
+Two cautions about reading the scored summary for this specimen:
+
+- It reports `matched / ok` at all three conditions. That is **correct and misleading**: the
+  card resolved, via `legacyGenus`, from a species that is not the card's species.
+- It reports `WRONG card offered in first place: 0%`. True, and **structurally guaranteed**:
+  the deck holds exactly one *Solidago* card, so no *Solidago* answer can ever offer a wrong
+  one. The metric cannot detect this failure mode. `provider led with the right species — 33%`
+  is the line that does.
+
+## Dandelion — the Alpine failure did NOT repeat
+
+The pilot had PlantNet answer *T. mattmarkense* (sect. *Alpina*, western Alps) on Commons
+images. On two independently documented North American observations it **never led**:
+
+| | spec-001 (vouchered) | spec-002 |
+|---|---|---|
+| **p1** | *T. officinale* **0.390** `exact` | *T.* sect. *Taraxacum* **0.268** `acceptedGroup` |
+| **p2** | *T. officinale* **0.289** `exact` | *T.* sect. *Taraxacum* **0.198** `acceptedGroup` |
+| **p3auto** | *T. officinale* **0.297** `exact` | *T. campylodes* **0.368** `exact` |
+
+*T. mattmarkense* appears twice in the whole run, both on spec-001, at **rank 4 (0.028)** and
+**rank 5 (0.021)** — present in the tail, nowhere near leading, and correctly refused as
+`sameGenus` rather than confirmable. Other microspecies in the tail (*T. dissectum*,
+*T. erythrospermum*, *T. palustre*, *T. rubicundum*, *T. pubescens*) were refused the same way.
+
+**The Taraxacum curation is doing exactly what it was built to do, on live data:**
+
+- `Taraxacum sect. Taraxacum` → `acceptedGroup` → unlocks the card. The leading answer on
+  spec-002 at two of three conditions is a **section**, and it resolves correctly. Had
+  `normalizeName` still collapsed every `Taraxacum sect. X` onto one key, sect. *Erythrosperma*
+  would resolve here too; it does not.
+- `Taraxacum campylodes` → `exact`. The synonym table carries it, so the p3auto leader on
+  spec-002 is read as *T. officinale* rather than as an unknown species.
+- Every out-of-scope microspecies → `sameGenus`, non-confirmable.
+
+**This closes the Taraxacum question in the direction of leaving it alone.** Nothing here
+argues for a scope change; the two conclusions preserved from the pilot stand — *Capsella
+rubella* → *C. bursa-pastoris* and *T. officinale* → *T. mattmarkense* were both provider
+misidentifications, and Plantdex's refusal of the sect. *Alpina* species was correct.
+
+## Photo count — no signal, and the sample cannot produce one
+
+```
+p1 vs p2       over 3 sets:  both right 3   both wrong 0   only p1 0   only p2 0
+p2 vs p3auto   over 3 sets:  both right 3   both wrong 0   only p2 0   only p3auto 0
+```
+
+Zero discordant pairs. Every specimen reached the same card at one, two and three photographs,
+so **this set says nothing about the minimum photo count in either direction.** Three specimens
+could not have, and `MIN_OBSERVATION_PHOTOS` should not move on it.
+
+The leading SCORES did move, and not monotonically — p1 median 0.32, p2 median **0.24**,
+p3auto median 0.35. p2 was the weakest condition on every single specimen. That rhymes with
+phase 1's magnolia (confident at one photograph, nothing at two and three) and with the
+upload-size measurement, where scores moved both ways. Three specimens is not evidence for
+anything; it is a reason to keep the axis in the phone set rather than to act now.
+
+## What this set does NOT license
+
+- **It is not phone validation.** These photographs were taken to document a plant. Every rate
+  above is an upper bound, and the real-phone set still has to happen.
+- **It is not pooled with phase 1.** Separate manifest, JSONL, report and artifact, enforced by
+  the workflow rather than by convention.
+- **n = 3.** Every interval in the report spans most of the possible range. The Goldenrod
+  finding is strong because it is a *structural* observation — which species are confirmable —
+  not because 3 specimens established a rate.
