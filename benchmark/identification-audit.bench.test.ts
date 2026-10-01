@@ -25,7 +25,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import { CATALOGUE, isPrintedCard } from '@/lib/catalogue';
-import { allScopes, scopeFor, type CardScope } from '@/lib/card-coverage';
+import { scopeFor, type CardScope } from '@/lib/card-coverage';
 import { getPrintedCard } from '@/lib/deck';
 import { tracksMastery } from '@/lib/mastery';
 import {
