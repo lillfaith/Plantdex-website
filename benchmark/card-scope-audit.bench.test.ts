@@ -19,6 +19,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { CATALOGUE, isPrintedCard } from '../src/lib/catalogue';
+import { matchScientificName } from '../src/lib/plant-match';
 import { type CardScope, scopeFor } from '../src/lib/card-coverage';
 import type { Herb } from '../src/lib/types';
 
@@ -221,5 +222,73 @@ describe('card scope audit', () => {
       );
     }
     expect(CARDS.filter((one) => one.declaredOnCard).length).toBe(9);
+  });
+});
+
+/**
+ * HISTORICAL COMBINATIONS AND FORMER GENUS PLACEMENTS, probed against the real matcher.
+ *
+ * A `Genus spp.` card accepts ANY name whose first word normalises to its genus. That is not
+ * a list — it is unbounded, and enumerating "the taxa that can unlock it" by listing current
+ * accepted species understates the exposure badly. The names that matter are the ones whose
+ * accepted placement has MOVED: `genusOf()` reads the name as returned, so a plant that is no
+ * longer in the genus still reaches the genus's card under its old name.
+ *
+ * Each entry says what the name means, so a reader does not have to know. `concern` is the
+ * card-content reason it would matter — NOT a safety determination, which is literature work
+ * this file cannot do.
+ */
+const HISTORICAL: readonly { name: string; means: string; concern: string }[] = [
+  { name: 'Rhus vernix', means: 'poison sumac (now Toxicodendron vernix)', concern: 'SEVERE: urushiol' },
+  { name: 'Rhus radicans', means: 'poison ivy (now Toxicodendron radicans)', concern: 'SEVERE: urushiol' },
+  { name: 'Rhus toxicodendron', means: 'eastern poison oak (now Toxicodendron pubescens)', concern: 'SEVERE: urushiol' },
+  { name: 'Rhus diversiloba', means: 'western poison oak (now Toxicodendron diversilobum)', concern: 'SEVERE: urushiol' },
+  { name: 'Rhus rydbergii', means: 'western poison ivy (now Toxicodendron rydbergii)', concern: 'SEVERE: urushiol' },
+  { name: 'Pinus abies', means: 'Norway spruce (now Picea abies)', concern: 'not a pine; card says Needle/Resin/Cone/Shoot' },
+  { name: 'Pinus larix', means: 'European larch (now Larix decidua)', concern: 'not a pine' },
+  { name: 'Pinus canadensis', means: 'eastern hemlock (now Tsuga canadensis)', concern: 'not a pine; the NAME invites a lethal confusion with poison hemlock' },
+  { name: 'Pinus picea', means: 'silver fir (now Abies alba)', concern: 'not a pine' },
+  { name: 'Morus papyrifera', means: 'paper mulberry (now Broussonetia papyrifera)', concern: 'different plant; card says Fruit/Leaf/Bark' },
+  { name: 'Quercus densiflora', means: 'tanoak (now Notholithocarpus densiflorus)', concern: 'not an oak; card says Bark/Nut/Leaf' },
+  // Current accepted names in-genus whose CONTENT fit is the question, not their placement.
+  { name: 'Sambucus ebulus', means: 'dwarf elder — accepted, in genus', concern: 'content: edibility differs from S. nigra/canadensis' },
+  { name: 'Sambucus racemosa', means: 'red elderberry — accepted, in genus', concern: 'content: edibility guidance differs' },
+  { name: 'Pinus ponderosa', means: 'ponderosa pine — accepted, in genus', concern: 'content: needle preparation' },
+  { name: 'Acer rubrum', means: 'red maple — accepted, in genus', concern: 'content: card lists Leaf' },
+];
+
+describe('genus-card reachability', () => {
+  it('reports that no card excludes anything today', () => {
+    const withExclusions = CARDS.filter(
+      (one) => one.scope?.type === 'genus' && (one.scope.excluded?.length ?? 0) > 0,
+    );
+    console.log('\n----------------------------------------------------------------');
+    console.log('EXCLUSIONS IN FORCE');
+    console.log('----------------------------------------------------------------');
+    console.log(`  cards declaring an \`excluded\` list: ${withExclusions.length}`);
+    console.log('  The mechanism exists in `CardScope` and is wired in `cardsCoveringByScope`.');
+    console.log('  Empty means every name beginning with the genus word is confirmable.');
+    expect(withExclusions.length).toBeGreaterThanOrEqual(0);
+  });
+
+  it('probes historical combinations against the real matcher', () => {
+    console.log('\n----------------------------------------------------------------');
+    console.log('HISTORICAL / FORMER-PLACEMENT NAMES — what the matcher does TODAY');
+    console.log('----------------------------------------------------------------');
+    let unlocks = 0;
+    for (const probe of HISTORICAL) {
+      const match = matchScientificName(probe.name);
+      if (match.confirmable) unlocks += 1;
+      console.log(
+        `  ${probe.name.padEnd(22)} ${match.confirmable ? 'UNLOCKS' : 'refused'} ` +
+          `${String(match.herbId ?? '-').padEnd(14)} ${probe.means}`,
+      );
+      if (match.confirmable) console.log(`${' '.repeat(24)}-> ${probe.concern}`);
+    }
+    console.log(`\n  ${unlocks} of ${HISTORICAL.length} unlock a card today.`);
+    // The observation itself must survive whichever way the scope question is settled.
+    for (const probe of HISTORICAL) {
+      expect(matchScientificName(probe.name).observedTaxon?.name).toBe(probe.name);
+    }
   });
 });

@@ -31,6 +31,7 @@ import urllib.parse
 import urllib.request
 
 MATCH = "https://api.gbif.org/v1/species/match"
+USAGE = "https://api.gbif.org/v1/species"
 UA = "plantdex-nomenclature-check (https://github.com/lillfaith/Plantdex-website)"
 
 
@@ -39,6 +40,29 @@ def resolve(name: str) -> dict:
     request = urllib.request.Request(url, headers={"User-Agent": UA})
     with urllib.request.urlopen(request, timeout=45) as response:
         return json.load(response)
+
+
+def accepted_for(answer: dict) -> str:
+    """The ACCEPTED name behind a synonym match, fetched rather than assumed.
+
+    THE BUG THIS FIXES. `/species/match` returns `scientificName` as the name it matched,
+    which for a `status: SYNONYM` row is the SYNONYM — so the table printed the queried name
+    straight back under a column headed ACCEPTED NAME. For `Stellaria pallida` and
+    `Oxalis europaea` that is the one cell the whole question turns on: a synonym of the
+    card's anchor is an `unlockBasis: 'synonym'` and needs no equivalence argument at all,
+    while a synonym of some THIRD species is a different plant entirely. Printing the input
+    back as though it were the output is worse than printing nothing.
+    """
+    key = answer.get("acceptedUsageKey") or answer.get("acceptedKey")
+    if not key:
+        return ""
+    try:
+        request = urllib.request.Request(f"{USAGE}/{key}", headers={"User-Agent": UA})
+        with urllib.request.urlopen(request, timeout=45) as response:
+            usage = json.load(response)
+    except Exception:  # noqa: BLE001
+        return ""
+    return usage.get("scientificName") or usage.get("canonicalName") or ""
 
 
 def read_names() -> list[str]:
@@ -77,6 +101,9 @@ def main() -> int:
         family = answer.get("family") or "?"
         match_type = answer.get("matchType", "?")
         confidence = answer.get("confidence", "?")
+        if status == "SYNONYM":
+            real = accepted_for(answer)
+            accepted = f"-> {real}" if real else f"{accepted} (accepted name NOT RESOLVED)"
         print(
             f"{name:<30} {status:<10} {'yes' if synonym else 'no':<4} {rank:<9} "
             f"{accepted:<36} {genus:<18} {family:<16} {match_type}/{confidence}"
