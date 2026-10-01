@@ -46,7 +46,22 @@ import urllib.request
 API = "https://api.inaturalist.org/v1/observations"
 # iNaturalist asks for a identifying agent and a modest request rate.
 UA = "plantdex-identification-benchmark (https://github.com/lillfaith/Plantdex-website)"
-OPEN_DATA = "https://inaturalist-open-data.s3.amazonaws.com/photos"
+
+
+def medium_url(photo: dict) -> str | None:
+    """The open-data URL for this photo's medium rendition, taken from the API's own string.
+
+    THE EXTENSION IS NOT PREDICTABLE FROM THE PHOTO ID. This script first composed
+    `.../photos/<id>/medium.jpg` by hand, which 404s for every photo iNaturalist stored as
+    `.jpeg` — and the two are mixed within a single observation, so a guessed extension gives
+    a list of URLs where some work and some do not, for no reason a reader can see. The API
+    returns the real `square` URL; swapping the rendition in it is the only part that is ours
+    to decide.
+    """
+    url = photo.get("url")
+    if not url or "/square." not in url:
+        return None
+    return url.replace("/square.", "/medium.")
 
 
 def search(taxon: str, limit: int, place_id: str | None) -> list[dict]:
@@ -84,8 +99,10 @@ def main() -> int:
     kept = 0
     for obs in search(taxon, limit, place_id):
         photos = obs.get("photos") or []
-        # The open-data bucket serves by photo id; a photo with no id cannot be fetched.
-        usable = [p for p in photos if p.get("id") and p.get("license_code")]
+        # A photo with no id, no licence or no open-data URL cannot be fetched at all.
+        usable = [
+            p for p in photos if p.get("id") and p.get("license_code") and medium_url(p)
+        ]
         if len(usable) < 3:
             continue
 
@@ -105,7 +122,7 @@ def main() -> int:
         for index, photo in enumerate(usable, start=1):
             print(
                 f"    {index}. photo {photo['id']}  {photo.get('license_code')}"
-                f"  {OPEN_DATA}/{photo['id']}/medium.jpg"
+                f"  {medium_url(photo) or '(no open-data url)'}"
             )
         print()
         kept += 1
