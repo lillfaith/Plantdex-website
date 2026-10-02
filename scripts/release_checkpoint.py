@@ -81,6 +81,17 @@ def get(path: str, token: str) -> tuple[int, object]:
         return error.code, error.read().decode()[:300]
 
 
+def ok(status: int) -> bool:
+    """Any 2xx. The query endpoint answers 201, not 200.
+
+    Checking `== 200` made every SUCCESSFUL query look like a failure: the rows came back and
+    were printed under `::error::`, and the run exited 1 while nothing was wrong. A checkpoint
+    that cries wolf is worse than none, because the next person to read it will not know which
+    half to believe.
+    """
+    return 200 <= status < 300
+
+
 def query(ref: str, token: str, sql: str) -> tuple[int, object]:
     body = json.dumps({"query": " ".join(sql.split())}).encode()
     request = urllib.request.Request(
@@ -111,7 +122,7 @@ def main() -> int:
     print("=" * 72)
 
     status, projects = get("/projects", token)
-    if status != 200 or not isinstance(projects, list):
+    if not ok(status) or not isinstance(projects, list):
         print(f"::error::GET /projects returned {status}: {projects}")
         return 1
     mine = next((p for p in projects if p.get("id") == ref), None)
@@ -127,7 +138,7 @@ def main() -> int:
 
     print("\nDEPLOYED EDGE FUNCTIONS")
     status, functions = get(f"/projects/{ref}/functions", token)
-    if status != 200 or not isinstance(functions, list):
+    if not ok(status) or not isinstance(functions, list):
         print(f"  ::error::GET functions returned {status}: {functions}")
     elif not functions:
         print("  (none deployed)")
@@ -141,7 +152,7 @@ def main() -> int:
 
     print("\nBACKUP / PITR POSTURE")
     status, backups = get(f"/projects/{ref}/database/backups", token)
-    if status != 200 or not isinstance(backups, dict):
+    if not ok(status) or not isinstance(backups, dict):
         print(f"  ::error::GET backups returned {status}: {backups}")
     else:
         print(f"  pitr_enabled   {backups.get('pitr_enabled')}")
@@ -159,7 +170,7 @@ def main() -> int:
     for label, sql in QUERIES.items():
         status, rows = query(ref, token, sql)
         print(f"\n  {label}")
-        if status != 200:
+        if not ok(status):
             print(f"    ::error::{status}: {rows}")
             failed = True
             continue
