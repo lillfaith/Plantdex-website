@@ -772,7 +772,7 @@ the nodes, because every piece of it had passing tests while the seams were brok
   immutable registry, this one guards a rate-limit bucket, and refusing would take identification
   down for everybody.
 - **A CUSTOM DOMAIN IS ONE VARIABLE, AND IT MOVES THREE THINGS THAT MUST MOVE TOGETHER.**
-  `SITE_DOMAIN` (a bare hostname, unset today) drops the `/Plantdex-website` base path in
+  `SITE_DOMAIN` (a bare hostname, SET to `plantdex.online` and live) drops the `/Plantdex-website` base path in
   `next.config.ts`, makes `deploy.yml` write `out/CNAME`, and repoints the live check. Each
   half alone is an outage a green deploy log would not report: the base path left on makes
   every asset, every `next/link` href and both auth redirects 404 from a build that compiled

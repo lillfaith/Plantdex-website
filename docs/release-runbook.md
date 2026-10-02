@@ -153,10 +153,13 @@ plant.id stays benchmark-only by your decision. **Still a judgement call**, unch
 work since: the question is whether PlantNet's measured behaviour is enough to launch on.
 
 **2 · When is the custom domain cut over?**
-`SITE_DOMAIN` is unset, so the site ships on github.io with the `/Plantdex-website` base path.
-`docs/custom-domain.md` is the runbook and its fourth step is in a dashboard no test can reach
-(Supabase's redirect allow-list). **Independent of this release** — do it before or after, not
-during.
+**RESOLVED, AND NOT BY THIS RELEASE — IT WAS ALREADY DONE.** This paragraph used to say
+`SITE_DOMAIN` was unset and the site shipped on github.io with the `/Plantdex-website` base
+path. That was stale: the variable is set to `plantdex.online`, the base path is off, and
+`deploy.yml` has been writing `out/CNAME` on every deploy. Measured during step 5 — see
+"THE CUSTOM DOMAIN IS ALREADY CUT OVER" below, which also records that the fourth step, the
+Supabase redirect allow-list that no test can reach, is in place for both auth targets. The
+standing decision was no domain change during this release, and none was made.
 
 ### Resolved since you last asked
 
@@ -474,5 +477,126 @@ the silent-failure state `docs/custom-domain.md` warns about.
 **Nothing was changed for this, and nothing needs to be.** The standing decision was no
 domain or DNS change during this release; the cutover had already happened outside it, and
 `deploy.yml` has honoured `SITE_DOMAIN` on every deploy since. What is wrong is the written
-record: this runbook's line above saying `SITE_DOMAIN` is unset, and CLAUDE.md's "a bare
-hostname, unset today". Both are stale, and the live site is the authority.
+record. **Both have since been corrected** — the decision above, and CLAUDE.md's "a bare
+hostname, unset today" — because the live site is the authority and a runbook that misstates
+which address production answers on is worse than one that says nothing.
+
+---
+
+## Steps 6-8 — frontend merged, deployed and verified 2026-10-02 04:21-04:23 UTC
+
+### Step 6 · the merge, and the one commit deliberately taken back out
+
+`claude/plantdex-v0-3-supabase-verify-iic8pz` (`ff623a8`) merged into
+`claude/planning-session-61zwro` with `--no-ff`, pushed as a fast-forward of three commits.
+**Deployed commit: `27af809`.**
+
+Two conflicts, both `add/add` in CI-only files cherry-picked onto the default branch during
+release preparation and developed further on the feature branch: `.github/workflows/field-run.yml`
+and `scripts/release_checkpoint.py`. Each feature-branch version is the default branch's
+content **plus** later work — measured as a strict superset by diffing the two blobs, not
+assumed — so both resolved to the feature-branch side. No application source was in conflict.
+
+**`e15e4d3` was excluded, and excluding it took a revert.** The standing decision was that the
+auth reset-flow repair does not ride along with this release. It was not on a separate branch:
+it sat **second in the feature branch's own history**, so a plain merge would have shipped it
+as a passenger. Measured before acting: no later commit on the branch touches any of its four
+files, and its only importer is `AuthForms.tsx`, which the revert restores in the same move.
+So it comes out cleanly and nothing in the identification work depends on it. It is `26761c3`,
+and `docs/auth-email.md` goes out with it — **the work is still worth shipping on its own.**
+
+Verified before the push, and the harness lied once on the way:
+
+- `npm run verify` on the merged, reverted tree: lint, typecheck, `check:edge`, **1251 tests
+  across 84 files**, and a clean static export of 80 pages.
+- The first attempt reported **exit 0 while the build had actually failed** — `npm run verify`
+  was run against a `node_modules` symlinked out of the worktree, and Turbopack refuses a
+  symlink pointing outside the filesystem root. The tests had genuinely passed; the build had
+  not run at all. Re-done with a real `npm ci`. **A green summary line is not a green run.**
+- The test delta is accounted for, not waved at: the feature branch is **85 files / 1261
+  tests**, the merged tree is **84 / 1251**, and `auth-errors.test.ts` is exactly 1 file and
+  10 tests. Nothing else was lost. (The gate table at the top of this file records 1260; the
+  true figure on the branch was 1261 by the time it merged.)
+- Post-push, the default branch differs from the feature branch in **only** `AuthForms.tsx`,
+  `auth-errors.ts`, `auth-errors.test.ts` and `docs/auth-email.md` — i.e. exactly `e15e4d3`.
+
+### Step 7 · the Pages deploy
+
+Run 36964191054 at `27af809`: `npm run lint && typecheck && test` green in CI, static export
+built, **`Write CNAME for the custom domain` ran** — which is gated on `vars.SITE_DOMAIN != ''`
+and is therefore direct proof the variable is set — artifact uploaded, and `deploy-pages`
+success at **04:22:47 UTC**.
+
+### Step 8 · live production smoke
+
+`check-live-site.yml` run 36964294084 fired automatically against `https://plantdex.online`:
+
+- **12 of 13 routes PASS.** Both stylesheets served, the new one carrying 4/4 profile
+  utilities, so this is not a stale-cache render.
+- **`PASS backend production Supabase (vygiamigomwlvnwkryyl)`** — the live bundle writes into
+  production, not test, which is the one failure mode that looks like success.
+- Page sizes moved as a real release should: `/scan/` 28 → 33 KB, `/privacy/` 76 → 79 KB,
+  `/safety/` 45 → 50 KB, and a new stylesheet hash.
+
+`verify-plant-id.yml` run 36964357688 against the deployed site and the deployed function:
+`/scan/` served, **the safety caution present in the live prerendered HTML**, the production
+project in the bundle, and a live PlantNet identification returning
+`Taraxacum campylodes 0.444 species` beside `Taraxacum sect. Taraxacum 0.209 section` —
+the supra-specific rank surviving as a section rather than being promoted to a species.
+
+**Rollback was not needed and was not performed.** Tag `pre-identification-20261002`
+(`2943b43`) stands unused.
+
+### The one red check, and why it is the check working
+
+`/scan/` failed on the marker `"Take a photo"`. **That string is gone from the build on
+purpose**: one photograph used to be a scan, an observation is now two or three photographs of
+one plant, and the capture control counts down what is still needed. Measured in the deployed
+build: **0 occurrences** of `"Take a photo"`, 1 of `"Add 2 more photos"`, 1 of the safety
+caution, 6 of the page heading — so the page renders correctly and only the claim was stale.
+
+`check_live_site.py` anticipates exactly this and says the remedy is to **re-state the claim
+rather than soften it**, which is what the marker now does. Verified by running the real
+`ROUTES` list against the deployed build's own `out/`: every route passes, `/scan/` included.
+(`/shop/` fails that local check alone, because a local build has no
+`NEXT_PUBLIC_STRIPE_PAYMENT_LINK` and renders the honest "not on sale yet" state; it passed
+against the live site, where the variable is set.)
+
+### What was NOT verified, stated rather than glossed
+
+**No signed-in player path was exercised against production.** Observed-taxon preservation,
+unlock basis and XP/mastery are proven by 1251 unit tests on the exact deployed tree and by
+0007's CHECK admitting every basis — but nobody watched a row land in `sightings` with a
+non-null `eligibility` in the production database. Two reasons, both honest: doing it means
+writing real rows into a live players' database, and `live_scan_browser.mjs`, the one harness
+that could drive the real UI, calls `setInputFiles` with a single photograph and so cannot
+satisfy the two-photo floor this release introduced.
+
+The database side of that gap is closed either way: a basis the app can emit is a basis the
+CHECK accepts, which is the failure that would have lost a sighting.
+
+### Post-release tasks this release added
+
+Two, both found during verification, both deliberately left for afterwards. They join the
+`deploy.yml` paths filter already recorded above.
+
+**1 · `check_live_scan.py` reports a false negative on a redirecting URL.** Handed
+`https://lillfaith.github.io/Plantdex-website` it followed Pages' redirect to the custom
+domain for the HTML — so every content check passed — then joined the chunk paths against the
+ORIGIN it was given. Those hrefs no longer carry the base path, so all 16 chunk fetches hit
+`https://lillfaith.github.io/_next/...`, failed, and were swallowed by a bare
+`except: continue`. With the ref set empty it declared *"The deployed bundle carries no
+Supabase project"* and told the reader to go and set two repository variables that were
+already set. That is the worst shape a check can have: confident, specific, and wrong about
+the backend. The fix is to resolve chunk URLs against the FINAL response's URL rather than the
+requested one, and to stop swallowing every chunk failure silently — a run where no chunk
+loaded should say so rather than blame the bundle. It cost twenty minutes here and would cost
+far more to somebody who believed it.
+
+**2 · `live_scan_browser.mjs` is single-photograph and can no longer drive the scan screen.**
+It destructures one `photo` argument and calls `setInputFiles` with it, which was right when
+one photograph was a scan. An observation is now two or three, the identify button stays
+disabled below two, and so the only harness that drives the real UI in a real browser cannot
+complete a scan. That is why step 8 above has no end-to-end player path in it. Taking two or
+three paths and submitting them together would restore the one check that sees what a player
+sees — and `scripts/crop_card_photo.py` already produces an honest pair for exactly this.

@@ -81,10 +81,10 @@ ROUTES: list[tuple[str, list[str]]] = [
     # is a nav label on every page, and a meta description proves only that the shell
     # rendered. These four strings appear nowhere else in the build.
     ("/start/", ["What happens when you find something", "Confirm the match and its Plantdex entry unlocks"]),
-    # The scan page carries TWO, and the second is the capture button itself. The first
+    # The scan page carries TWO, and the second is the capture control itself. The first
     # string also appears on /herbdex/ (which teases the scanner), so on its own it proves
     # the page rendered but says nothing about the control the whole page exists for.
-    # "Take a photo" is emitted nowhere else in the build.
+    # "Add 2 more photos" is emitted nowhere else in the build.
     #
     # THIS MARKER WENT STALE ONCE, AND THE CHECK DID ITS JOB BY FAILING. The intro read
     # "...see which cards it might be", which described the 45-card deck and so implied the
@@ -94,15 +94,28 @@ ROUTES: list[tuple[str, list[str]]] = [
     # re-states the claim. Do not soften one to a substring that would survive the next
     # rewrite: a marker that cannot go stale is a marker that cannot detect anything.
     #
-    # THE TRAILING FULL STOP IS LOAD-BEARING and this marker is stronger than the one it
-    # replaces. /herbdex/ teases the scanner with the same words and no period, so the old
-    # string matched both routes; with the period this is emitted on /scan/ alone. Verified
-    # against the real `out/`: one occurrence there, zero everywhere else in the build.
+    # THE TRAILING FULL STOP IS LOAD-BEARING on the first marker. /herbdex/ teases the
+    # scanner with the same words and no period, so without it the string matches both
+    # routes; with it this is emitted on /scan/ alone. Verified against the real `out/`: one
+    # occurrence there, zero everywhere else in the build.
+    #
+    # AND IT WENT STALE A SECOND TIME, for the same good reason. The capture control used to
+    # read "Take a photo" because one photograph was a scan; an observation is now two or
+    # three photographs of ONE plant, and the control counts down what is still needed. So
+    # that string is gone from the build entirely — 0 occurrences — and the identification
+    # release's own post-deploy check failed on it, which is the check working.
+    #
+    # RE-STATED, NOT SOFTENED. "Add 2 more photos" is the control in its empty state, which
+    # is how /scan/ is always first served, and it is the claim worth making: not merely
+    # that a capture control exists, but that it is the one that refuses a single
+    # photograph. Measured against the real `out/` of the deployed build: one occurrence,
+    # on /scan/ and nowhere else. It will go stale again if that copy is reworded, and that
+    # is the property being kept.
     (
         "/scan/",
         [
             "Photograph something growing and see what Plantdex thinks it might be.",
-            "Take a photo",
+            "Add 2 more photos",
         ],
     ),
     ("/account/", ["Your profile"]),
