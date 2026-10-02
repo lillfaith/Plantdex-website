@@ -70,8 +70,18 @@ export type MatchKind =
  * nothing.
  */
 export const ELIGIBILITIES = [
-  /** The card's own binomial, or a checked nomenclatural synonym of it. */
+  /** The card's OWN binomial, returned by the provider directly. */
   'exact',
+  /**
+   * A checked nomenclatural synonym of the anchor — the SAME PLANT under another name.
+   *
+   * Split out of `exact`, which used to carry both. They are two different facts: one is the
+   * card's own name, the other is a name that resolves to it, and the distinction was being
+   * discarded at the moment of recording where nothing could recover it afterwards. Nothing
+   * about the match changes — `kind` stays `exact`, because the UI's claim ("this is the
+   * card's species") is true either way — only the RECORD gains the thing it was losing.
+   */
+  'synonym',
   /** A researched member of the card's curated accepted group — a SUPRA-SPECIFIC concept. */
   'acceptedGroup',
   /**
@@ -502,10 +512,19 @@ export function matchScientificName(scientificName: string): PlantMatch {
   const exact = BY_BINOMIAL.get(name);
   if (exact) return withTaxon({ kind: 'exact', eligibility: 'exact', herbId: exact, confirmable: true });
 
-  // A different name for the same plant is the same plant: `exact`, and confirmable.
+  /*
+   * A different name for the same plant is the same plant — so `kind: 'exact'`, confirmable,
+   * and the card is reached exactly as if the anchor had been returned.
+   *
+   * THE BASIS IS `synonym`, NOT `exact`, AND THAT IS THE WHOLE FIX. Both branches wrote the
+   * same two literals, so the record could not tell a provider that named the card's own
+   * species from one that named an older name for it — two different facts, collapsed at the
+   * return statement rather than anywhere upstream. `observedTaxon` already carried the name
+   * the provider used; what was missing was WHY that name reached this card.
+   */
   const synonym = ACCEPTED_NAME_SYNONYMS[name];
   if (synonym) {
-    return withTaxon({ kind: 'exact', eligibility: 'exact', herbId: synonym, confirmable: true });
+    return withTaxon({ kind: 'exact', eligibility: 'synonym', herbId: synonym, confirmable: true });
   }
 
   const genus = genusOf(scientificName);

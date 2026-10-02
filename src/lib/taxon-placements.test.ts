@@ -231,14 +231,20 @@ describe('legitimate members of the same genera are unaffected', () => {
 });
 
 describe('Oxalis europaea is a synonym of the Wood Sorrel anchor', () => {
-  it('unlocks the card as `exact`, not as a curated equivalent', () => {
+  it('unlocks the card as `synonym`, not as a curated equivalent', () => {
     const match = matchScientificName('Oxalis europaea');
     expect(match.herbId).toBe('oxalis-stricta');
     expect(match.confirmable).toBe(true);
-    // `exact` is today's vocabulary for "the anchor or a checked synonym of it". Under the
-    // frozen model this is the row that becomes `synonym` when the two split; it must never
-    // become `acceptedGroup` or `curatedEquivalent`, which would assert a second species.
-    expect(match.eligibility).toBe('exact');
+    /*
+     * THE SPLIT HAS HAPPENED. This assertion read `exact` with a comment saying it was the row
+     * that would become `synonym` once the two were separated — and it is. The important half
+     * never moved: it must not be `acceptedGroup` or `curatedEquivalent`, either of which
+     * would assert a SECOND SPECIES where there is one plant under two names.
+     *
+     * The card's scope is still `species`. A synonym reaches the anchor through the name
+     * table and never widens the card, which is why Wood Sorrel appears in no scope audit.
+     */
+    expect(match.eligibility).toBe('synonym');
     expect(scopeFor('oxalis-stricta')?.type).toBe('species');
   });
 
