@@ -104,6 +104,45 @@ export default function HomePage() {
         </ul>
 
         {/*
+          THE BUY BUTTON LEADS, AND IT IS THE PAGE'S ONLY ONE.
+
+          It used to sit at the very bottom, under the note from the creator — the last thing
+          before the end of a long page. It is now the first action, above the two free ones.
+
+          MOVED, NOT DUPLICATED. The footer already carries a quiet second link to /shop on
+          every page, and `DeckCta`'s own note gives the reason a third would be wrong: a site
+          with 45 plant pages that puts a buy prompt on every panel reads as an advertisement,
+          which is the opposite of what makes somebody trust it enough to buy. The `home`
+          placement kept its single instance and its analytics goal; only its position changed.
+
+          THE LABEL STILL DERIVES FROM `isCommerceLive()`. This page used to carry a sentence
+          about the sale state and carries a button instead, so the honesty that sentence
+          provided has to come from the button: with the Stripe variables unset, or terms still
+          draft, it reads "See the deck" and offers to sell nothing. That is the failure this
+          repository has shipped three times in one direction or the other, and `shop.test.ts`
+          guards it.
+
+          WHAT WENT WITH THE SENTENCE. It also said the digital Plantdex is FREE — a fact a
+          stranger cannot otherwise tell from this page, and one now stated only on /shop,
+          which is the wrong side of the question. Raised with the owner rather than quietly
+          kept, and it matters more with the button leading than it did with it below.
+        */}
+        {/*
+          CENTRED ON THE BUTTON, NOT ON THE BLOCK, and the two are not the same thing here.
+          The CTA is a button with a line of copy under it, so an equal margin top and bottom
+          leaves the BUTTON high: measured at 24px above and 48px below, because the companion
+          line and its gap occupy 24 of that lower space before the next element starts.
+
+          40 above and 16 below puts 40px either side of the button itself. The lower figure is
+          the one doing the work and it cannot go much below 16 — the companion line belongs to
+          the button, and crowding it against the sentence underneath would group it with the
+          wrong element.
+        */}
+        <div className="mt-10">
+          <DeckCta placement="home" />
+        </div>
+
+        {/*
           THE LOOP, IN ONE SENTENCE, WHERE THE DECISION IS MADE.
 
           Everything below this explains the product properly — the three numbered steps, the
@@ -116,7 +155,7 @@ export default function HomePage() {
           busier", and a bordered explainer between the creatures and the call to action would
           be exactly that.
         */}
-        <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-violet-200">
+        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-violet-200">
           Find plants outside. Scan them. Build your collection. Learn each card and grow your
           Garden.
         </p>
@@ -141,34 +180,6 @@ export default function HomePage() {
 
           The classes are swapped between the two links; neither treatment is new.
         */}
-        {/*
-          THE BUY BUTTON LEADS, AND IT IS THE PAGE'S ONLY ONE.
-
-          It used to sit at the very bottom, under the note from the creator — the last thing
-          before the end of a long page. It is now the first action, above the two free ones.
-
-          MOVED, NOT DUPLICATED. The footer already carries a quiet second link to /shop on
-          every page, and `DeckCta`'s own note gives the reason a third would be wrong: a site
-          with 45 plant pages that puts a buy prompt on every panel reads as an advertisement,
-          which is the opposite of what makes somebody trust it enough to buy. The `home`
-          placement kept its single instance and its analytics goal; only its position changed.
-
-          THE LABEL STILL DERIVES FROM `isCommerceLive()`. This page used to carry a sentence
-          about the sale state and carries a button instead, so the honesty that sentence
-          provided has to come from the button: with the Stripe variables unset, or terms still
-          draft, it reads "See the deck" and offers to sell nothing. That is the failure this
-          repository has shipped three times in one direction or the other, and `shop.test.ts`
-          guards it.
-
-          WHAT WENT WITH THE SENTENCE. It also said the digital Plantdex is FREE — a fact a
-          stranger cannot otherwise tell from this page, and one now stated only on /shop,
-          which is the wrong side of the question. Raised with the owner rather than quietly
-          kept, and it matters more with the button leading than it did with it below.
-        */}
-        <div className="mt-6">
-          <DeckCta placement="home" />
-        </div>
-
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/scan"
