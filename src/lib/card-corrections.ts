@@ -33,8 +33,13 @@ export interface CardCorrection {
   /** The printed values this supersedes, exactly as the card spells them. */
   readonly supersededParts: readonly string[];
   /**
-   * The correction itself. It must say THREE things: what the card prints, that the card is
-   * WRONG about it, and what to do instead.
+   * The correction itself. It must say what the card prints, that the card is WRONG about
+   * it, and what to do instead.
+   *
+   * IT MUST NOT SAY WHAT PLANTDEX "NO LONGER RECOMMENDS". Any phrasing of that shape implies
+   * the printed text was once a valid recommendation that has since been revised, and these
+   * corrections exist for the opposite case: the card is simply mistaken, and was from the
+   * moment it was printed.
    */
   readonly message: string;
   /**
@@ -56,22 +61,25 @@ export const CARD_CORRECTIONS: Record<string, CardCorrection> = {
   /*
    * THE CARD IS WRONG, AND THE CORRECTION SAYS SO IN THOSE WORDS.
    *
-   * An earlier draft said only that Plantdex "no longer recommends" Leaf and Shoot, which
-   * reads as a change of preference about parts that were once fine. They were never fine:
-   * listing them was a printing mistake, elder leaves and green shoots are not edible, and
-   * the owner's instruction is that the site correct the card rather than soften it.
+   * TWO DRAFTS BOTH IMPLIED THE PARTS WERE ONCE VALID. The first said Plantdex "no longer
+   * recommends those parts"; the second named the error but still closed on "Plantdex no
+   * longer recommends them". Both describe a revised recommendation. There was never a
+   * recommendation to revise — elder leaves and green shoots are not edible, and their
+   * appearance on the card was a printing mistake from the moment it was printed.
    *
-   * So it names the error, forbids the use, and only then records the recommendation. It is
-   * the single authoritative statement of this mistake on the page: the `KNOWN_CARD_ISSUES`
-   * note is superseded on screen (see the flag), and the site caution below it no longer
-   * repeats the leaf-and-shoot half at all — that caution is about preparing the parts that
-   * ARE usable.
+   * So the message now does exactly two things: it names the error, and it forbids the use.
+   * Nothing about Plantdex's preferences, because the preference was never the point.
+   *
+   * It is the single authoritative statement of this mistake on the page: the
+   * `KNOWN_CARD_ISSUES` note is superseded on screen (see the flag), and the site caution
+   * below it no longer repeats the leaf-and-shoot half at all — that caution is about
+   * preparing the parts that ARE usable.
    */
   '31': {
     supersededParts: ['Leaf', 'Shoot'],
     message:
       'The printed Elderberry card incorrectly lists Leaf and Shoot as edible/usable parts. ' +
-      'Do not eat or use these parts. Plantdex no longer recommends them.',
+      'Do not eat or use these parts.',
     supersedesCardIssue: true,
   },
 };

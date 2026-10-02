@@ -18,14 +18,17 @@ describe('digital corrections', () => {
       // second half leaves a reader holding the deck unsure which text to follow.
       // `printed <Name> card` as well as a bare `printed card`.
       expect(correction.message, number).toMatch(/printed\s+(\w+\s+)?card/i);
-      expect(correction.message, number).toMatch(/no longer recommends/i);
       /*
-       * IT MUST SAY THE CARD IS WRONG, not merely that preference moved. An earlier draft
-       * read "Plantdex no longer recommends those parts", which describes a change of mind
-       * about parts that were once fine. Leaf and Shoot were never fine — listing them was a
-       * printing mistake — so a correction has to name the error as an error.
+       * IT MUST SAY THE CARD IS WRONG, and MUST NOT frame that as a revised recommendation.
+       * Two drafts failed the second half: "Plantdex no longer recommends those parts", then
+       * the same clause appended to a correct opening. Both imply the printed text was once
+       * valid advice. Leaf and Shoot were never valid — listing them was a printing mistake
+       * from the moment it was printed — so the assertion is pinned in both directions.
        */
       expect(correction.message, number).toMatch(/incorrectly lists/i);
+      expect(correction.message, number).toMatch(/do not eat or use/i);
+      expect(correction.message, number).not.toMatch(/no longer recommends?/i);
+      expect(correction.message, number).not.toMatch(/we (now )?(advise|suggest|prefer)/i);
     }
   });
 

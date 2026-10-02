@@ -200,7 +200,7 @@ export function DigitalCorrection({
         */}
         <span>Card correction:</span> {correction.message}{' '}
         <span className="font-normal text-violet-200">
-          The card&rsquo;s own text below is unchanged, and still reads as printed.
+          The card&rsquo;s own text below is unchanged and still reads as printed.
         </span>
       </span>
     </p>
