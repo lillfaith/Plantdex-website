@@ -42,12 +42,20 @@ import type { Herb } from './types';
  * #31 WAS WIDENED ONCE THE CARD'S SCOPE WAS AUDITED, because it addressed the wrong half of
  * the genus. It named Leaf and Shoot — correct, and the card's printed error — while saying
  * "the flowers and cooked ripe berries are the parts traditionally used", which reads as a
- * clearance for the berries. It is not one. The seeds of EVERY *Sambucus* carry a nauseant
- * resin destroyed by cooking, and the card prints `Cold soak` among its preparations, which
- * is uncooked. *S. racemosa* is the sharpest case — raw berries, leaves, twigs and seeds
- * cause nausea, vomiting and diarrhoea — and it is a legitimate find on this card, so the
- * caution carries it rather than the scope excluding it. (*S. ebulus* is excluded instead;
- * see `CONTENT_EXCLUSIONS`.)
+ * clearance for the berries. It is not one: the card prints `Cold soak` among its
+ * preparations, which is uncooked, and *S. racemosa* raw causes nausea, vomiting and
+ * diarrhoea. It is a legitimate find on this card, so the caution carries it rather than the
+ * scope excluding it. (*S. ebulus* is excluded instead; see `CONTENT_EXCLUSIONS`.)
+ *
+ * AND THEN THE WIDENED TEXT WAS ITSELF TOO BROAD. It said raw berries and seeds cause upset
+ * "in any elder", which the measurements do not support: cyanogenic glycosides in *Sambucus*
+ * vary by TISSUE (ripe berries lowest, stems and green berries highest), by CULTIVAR, and by
+ * POPULATION — some *S. canadensis* populations are essentially acyanogenic — and the
+ * American-elderberry survey concluded levels in all tissues were low enough to pose no
+ * threat to consumers of fresh and processed products. So the risk is real and it is NOT
+ * uniform across the genus. The text now warns about the PARTS and the PREPARATION, which is
+ * what a reader can act on, and says elderberries "can" cause upset rather than asserting
+ * that every species does.
  *
  * #41 PINE IS THE FIRST CAUTION HERE RESTING ON ANIMAL TOXICOLOGY, AND ITS WORDING IS BUILT
  * AROUND THAT. The controlled evidence is bovine: *Pinus ponderosa* is the only *Pinus* known
@@ -62,20 +70,33 @@ import type { Herb } from './types';
  * inventing a human claim out of a cattle study, which is the same class of error as
  * inventing botany. It clears the bar because the card prints the exact exposure the
  * caution is about: Needle, prepared as Tea.
+ *
+ * IT ALSO USED TO END "Other pines are not implicated", WHICH WAS FALSE. That sentence was
+ * written from a USDA framing about naturally-occurring field cases, and it reads as a
+ * clearance for the other eight species this card covers. Isocupressic acid is present
+ * across a range of North American gymnosperms, and lodgepole pine (*Pinus contorta*) has
+ * caused abortion in CONTROLLED feeding trials — cows dosed at 62-78 mg/kg aborted after 8
+ * and 10 days — as has common juniper. Ponderosa remains the species with the strongest and
+ * best-known evidence; it is not the only one. The caution now says so, because a reassurance
+ * is the most dangerous kind of sentence to get wrong: nobody acts on a warning they were
+ * told did not apply to them.
  */
 export const SITE_CAUTIONS: Record<string, string> = {
   '31':
-    'Beware: elder leaves and green shoots are not safe to use, despite this card listing ' +
-    'them. Use the flowers, and cook the ripe berries — raw berries and their seeds can ' +
-    'cause nausea, vomiting and stomach upset in any elder, and a cold soak does not make ' +
-    'them safe. Red elderberry (Sambucus racemosa) is the strongest example: cook it well ' +
-    'and strain the seeds out.',
+    'Beware: elder leaves, green shoots and unripe fruit are not safe to use, despite this ' +
+    'card listing leaf and shoot as usable parts. Use only properly identified and prepared ' +
+    'parts — the flowers, and ripe fruit that has been cooked. Raw or insufficiently ' +
+    'prepared elderberries can cause nausea, vomiting or stomach upset; a cold soak is not ' +
+    'an adequate preparation. Red elderberry (Sambucus racemosa) especially needs cooking, ' +
+    'with the seeds strained out.',
   '32': 'Beware: interacts with many prescription medicines.',
   '41':
-    'Beware: avoid ponderosa pine (Pinus ponderosa) needles in pregnancy. Its needles are ' +
-    'known to cause abortion in cattle; this has not been established in people, but ' +
-    'traditional guidance has long cautioned pregnant women against chewing the needles or ' +
-    'buds. Other pines are not implicated.',
+    'Pregnancy caution: avoid ponderosa pine (Pinus ponderosa) needles. They contain ' +
+    'diterpene acids well established to cause abortion in cattle. Human pregnancy risk ' +
+    'has not been established, though traditional guidance has long cautioned pregnant ' +
+    'women against chewing the needles or buds. The same compounds occur in other conifers ' +
+    '— lodgepole pine has caused abortion in cattle too — so do not assume other pine ' +
+    'needles are safe in pregnancy.',
 };
 
 /**

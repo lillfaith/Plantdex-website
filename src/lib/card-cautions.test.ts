@@ -35,10 +35,10 @@ describe('site cautions', () => {
 
     const elder = BY_NUMBER.get(31)!;
     expect(elder.commonName).toBe('Elderberry');
-    expect(siteCautionFor(elder)).toMatch(/leaves and green shoots are not safe/i);
-    // The widened half: the card prints `Cold soak`, so the caution has to say in words
-    // that an uncooked preparation does not clear the berries.
-    expect(siteCautionFor(elder)).toMatch(/cold soak does not make them safe/i);
+    expect(siteCautionFor(elder)).toMatch(/leaves, green shoots and unripe fruit are not safe/i);
+    // The card prints `Cold soak`, so the caution has to say in words that an uncooked
+    // preparation does not clear the berries.
+    expect(siteCautionFor(elder)).toMatch(/cold soak is not an adequate preparation/i);
     expect(siteCautionFor(elder)).toMatch(/sambucus racemosa/i);
 
     const pine = BY_NUMBER.get(41)!;
@@ -59,12 +59,29 @@ describe('site cautions', () => {
   it('keeps the Pine caution honest about whose evidence it is', () => {
     const pine = siteCautionFor(BY_NUMBER.get(41)!)!;
     expect(pine).toMatch(/cattle/i);
-    expect(pine).toMatch(/not been established in people/i);
+    expect(pine).toMatch(/not been established/i);
     // It must not state a human effect as fact.
     expect(pine).not.toMatch(/causes? (a )?miscarriage in (people|humans)/i);
     expect(pine).not.toMatch(/toxic to (people|humans)/i);
-    // And it must not smear onto the other eight species the card covers.
-    expect(pine).toMatch(/other pines are not implicated/i);
+  });
+
+  /*
+   * AND IT MUST NOT REASSURE ABOUT THE REST OF THE GENUS, which this caution originally did.
+   * It ended "Other pines are not implicated" — written from a framing about naturally
+   * occurring field cases, and false as a general statement: isocupressic acid occurs across
+   * a range of North American gymnosperms, and lodgepole pine has caused abortion in
+   * CONTROLLED feeding trials. The card covers nine species, so that sentence cleared eight
+   * of them on evidence that does not exist.
+   *
+   * A wrong reassurance is worse than a missing warning: nobody acts on a caution they have
+   * been told does not apply to them. Pinned in the negative as well as the positive, because
+   * the failure mode is a sentence being ADDED back for reassurance, not one going missing.
+   */
+  it('does not clear the other species the Pine card covers', () => {
+    const pine = siteCautionFor(BY_NUMBER.get(41)!)!;
+    expect(pine).toMatch(/do not assume other pine needles are safe/i);
+    expect(pine).not.toMatch(/other pines are (not implicated|safe|fine|unaffected)/i);
+    expect(pine).not.toMatch(/only pine/i);
   });
 
   it('leaves every other plant without one', () => {

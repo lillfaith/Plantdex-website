@@ -60,7 +60,16 @@ Infusion.
 
 | | |
 | --- | --- |
-| Animal evidence | **Strong and specific.** Ponderosa is **the only *Pinus* known to cause abortion in cattle** in the US and Canada. **Isocupressic acid** is the only compound isolated and shown to cause abortion in pregnant beef cattle; third-trimester abortion follows within 3-4 days. |
+| Animal evidence | **Strong.** **Isocupressic acid** is the compound isolated and shown to cause abortion in pregnant beef cattle; third-trimester abortion follows within 3-4 days. |
+
+> **CORRECTION, after this audit first shipped.** It said ponderosa was *"the only *Pinus* known
+> to cause abortion in cattle"*. That came from a USDA framing about naturally-occurring field
+> cases and is **not true as a general statement**: isocupressic acid occurs across a range of
+> North American gymnosperms, and **lodgepole pine (*Pinus contorta*) has caused abortion in
+> controlled feeding trials** — cows dosed at 62-78 mg ICA/kg bodyweight aborted after 8 and 10
+> days — as has common juniper (190-245 mg/kg, 3-4 days). Ponderosa has the strongest and
+> best-known evidence; it is not the only implicated species. The caution text was corrected
+> with it.
 | Human evidence | **Ethnobotanical and precautionary, not clinical.** Indigenous peoples used the inner bark and seeds **but knew that pregnant women should not chew the buds or needles, because it would cause a miscarriage.** Conifer teas are generally described as safe in moderation, **with ponderosa named as the exception.** |
 
 **The exposure route matches the card exactly: needle, as tea.** That is what moves this above a
@@ -132,3 +141,7 @@ species).
 - [Guide to Poisonous Plants — Colorado State University](https://poisonousplants.cvmbs.colostate.edu/plant/68)
 - [Red maple (*Acer rubrum*) leaf toxicosis in horses: a retrospective study of 32 cases — PubMed](https://pubmed.ncbi.nlm.nih.gov/17063716/)
 - [Red maple leaf poisoning of horses — Government of Ontario](https://www.ontario.ca/page/red-maple-leaf-poisoning-horses)
+- [Pine needle abortion in cattle: analysis of isocupressic acid in North American gymnosperms — *Phytochemical Analysis*](https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/10.1002/(SICI)1099-1565(199905/06)10:3%3C132::AID-PCA444%3E3.0.CO;2-B)
+- [Implication of agathic acid from Utah juniper bark as an abortifacient compound in cattle — *Journal of Applied Toxicology*](https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/10.1002/jat.1476)
+- [Cyanogenic Glycoside Analysis in American Elderberry — *Molecules*](https://doi.org/10.3390/molecules26051384)
+- [Sambunigrin and cyanogenic variability in populations of *Sambucus canadensis*](https://www.researchgate.net/publication/257154001_Sambunigrin_and_cyanogenic_variability_in_populations_of_Sambucus_canadensis_L_Caprifoliaceae)
