@@ -5,6 +5,7 @@ import { DISCLAIMER, PRINTED_CARDS } from '@/lib/deck';
 import { siteCautionFor } from '@/lib/card-cautions';
 import { citedCardCount } from '@/lib/card-sources';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
+import { CONTAMINATION_LABEL, CONTAMINATION_WARNING } from '@/lib/foraging-safety';
 
 export const metadata: Metadata = {
   title: 'Herbal safety',
@@ -63,8 +64,14 @@ const PRACTICE = [
     body: 'A plant that is fine for most people can still cause a reaction in you, including on skin contact alone. Reactions can also appear on a later exposure after an uneventful first one.',
   },
   {
+    // THE CONTAMINATION SENTENCE LIVES HERE AND NOT IN A SECTION OF ITS OWN. This item already
+    // existed and already made this point in general terms; adding a second block beside it
+    // saying the same thing more sharply is how the full disclaimer ended up on three pages
+    // and stopped being read. So the exact wording shown on /scan and on every plant profile
+    // is folded into the item whose subject it is, and `foraging-safety.test.ts` holds the
+    // three surfaces to that one text.
     title: 'Where you pick matters as much as what',
-    body: 'Roadsides, treated lawns, industrial edges and waterways downstream of them can leave residues on a plant that identification tells you nothing about. Foraging on land also carries rules that vary by country, state and site — check them, and leave enough that the patch is still there next year.',
+    body: `${CONTAMINATION_LABEL}: ${CONTAMINATION_WARNING} Roadsides, treated lawns, industrial edges and waterways downstream of them can leave residues that identification tells you nothing about, and a correctly identified, perfectly edible plant is not made safe by being correctly identified. Foraging on land also carries rules that vary by country, state and site — check them, and leave enough that the patch is still there next year.`,
   },
 ];
 

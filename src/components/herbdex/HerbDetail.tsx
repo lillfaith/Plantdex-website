@@ -56,6 +56,8 @@ import {
   SafetyNotice,
   SiteCaution,
 } from '../SafetyNotice';
+import { InvasiveBadge } from './InvasiveBadge';
+import { badgeFor } from '@/lib/invasive-status';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { SpeciesHero } from '../game/SpeciesHero';
 
@@ -111,6 +113,9 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
   const siteCaution = siteCautionFor(herb);
   const correction = cardCorrectionFor(herb);
+  // Null for all but one card in the deck today, and null is the correct rendering of
+  // "no verified regional listing" — see `src/lib/invasive-status.ts`.
+  const invasive = badgeFor(herb.id);
 
   /*
    * The celebration lives here rather than inside DiscoverPanel because discovering
@@ -378,6 +383,19 @@ export function HerbDetail({ herb }: { herb: Herb }) {
             unrelated misprint cannot be hidden by a correction about something else.
           */}
           {cardIssue && !correction?.supersedesCardIssue && <CardIssueNote issue={cardIssue} />}
+        </div>
+      )}
+
+      {/*
+        BELOW THE WARNINGS, ABOVE THE GAME. Being invasive is not a hazard to the reader, so it
+        must not sit among the blocks that are — but it IS a fact about the plant in front of
+        them that changes how they harvest, so it belongs before the collection machinery
+        rather than buried in a band further down. One compact block, and nothing on the 53
+        other cards.
+      */}
+      {invasive && (
+        <div className="mt-6">
+          <InvasiveBadge claim={invasive} />
         </div>
       )}
 

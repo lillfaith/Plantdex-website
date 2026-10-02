@@ -11,6 +11,7 @@ import { isFieldCard } from '@/lib/field-cards';
 import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
+import { ContaminationNote } from '../SafetyNotice';
 
 /**
  * The six sections printed on the back of every card.
@@ -92,6 +93,18 @@ export function UsablePartsSection({ herb }: { herb: Herb }) {
           </li>
         ))}
       </ul>
+      {/*
+        BELOW THE PARTS, NOT ABOVE THEM. This section's job is to print what the card names as
+        usable, and the heading plus the provenance chip is what says where that list came
+        from; a warning wedged in front of it would push the card's own content down on the one
+        section a reader opened the page for. Underneath, it reads as the last thing to think
+        about before acting on the list — which is exactly when "where did this grow" is the
+        unanswered question. Contamination is a property of the ground, so it belongs against
+        the parts a reader is about to eat rather than against the identification above.
+      */}
+      <div className="mt-3">
+        <ContaminationNote />
+      </div>
     </section>
   );
 }

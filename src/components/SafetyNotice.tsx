@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { DISCLAIMER } from '@/lib/deck';
+import { CONTAMINATION_LABEL, CONTAMINATION_WARNING } from '@/lib/foraging-safety';
 import { PlantdexIcon } from './icons/PlantdexIcon';
 
 /**
@@ -93,6 +94,41 @@ function SafetyLink() {
  */
 export function EncounterRateNote() {
   return <p className="text-xs leading-relaxed text-violet-400">{DISCLAIMER.encounterRate}</p>;
+}
+
+/**
+ * Where the plant GREW — contamination, not identification and not toxicity.
+ *
+ * IT IS GOLD, NOT RED, AND THAT IS THE WHOLE DESIGN DECISION HERE. The red
+ * `border-stat-temp` family is spent on four things, every one of them a hazard in the plant
+ * itself: a warning the card prints, a caution we add about the species, a withdrawn
+ * instruction, and a lookalike that could put somebody in hospital. A fifth red block on the
+ * same page would make all four cheaper, and this risk is a different kind — it is about the
+ * ground, it applies to every plant equally, and it is resolved by the reader looking around
+ * rather than by looking harder at the leaf. So it takes the gold "herbal safety" family,
+ * which is what frames the other general safety text on the page.
+ *
+ * Compact on purpose: two short sentences, no heading, no link. It sits against a list of
+ * parts to eat, where a reader is already deciding, and anything longer there gets skimmed.
+ * The full picture is at /safety, which every `SafetyNotice` on the page already links to —
+ * a second link to the same place from a block this size would be the repetition this
+ * codebase keeps having to undo.
+ */
+export function ContaminationNote() {
+  return (
+    <p
+      role="note"
+      className="flex items-start gap-2 rounded-xl border border-gold-500/30 bg-gold-500/[0.06] px-3 py-2.5 text-xs leading-relaxed text-violet-200"
+    >
+      <PlantdexIcon name="safety" className="mt-0.5 shrink-0 text-sm text-gold-400" />
+      <span>
+        <span className="font-bold tracking-wide text-gold-400 uppercase">
+          {CONTAMINATION_LABEL}:
+        </span>{' '}
+        {CONTAMINATION_WARNING}
+      </span>
+    </p>
+  );
 }
 
 /**

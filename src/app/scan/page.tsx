@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
 import { ScanScout } from '@/components/scan/ScanScout';
-import { SafetyNotice } from '@/components/SafetyNotice';
+import { ContaminationNote, SafetyNotice } from '@/components/SafetyNotice';
 
 export const metadata: Metadata = {
   title: 'Identify a plant',
@@ -81,11 +81,19 @@ export default function ScanPage() {
         <ScanPanel />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 space-y-3">
         <SafetyNotice
           variant="standard"
           context="An identification from a photograph is a starting point, not proof. Never eat, drink or apply a wild plant on one."
         />
+        {/*
+          THE TWO NOTES ANSWER DIFFERENT QUESTIONS, which is why this is not one longer block.
+          Above: the photograph might be wrong. Here: the photograph might be right and the
+          plant still not safe to eat, because of where it was growing. A scan cannot see
+          either, and this is the one screen in the app that is about where somebody is
+          standing — so it is the one screen where the ground is the live question.
+        */}
+        <ContaminationNote />
       </div>
     </main>
   );
