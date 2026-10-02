@@ -160,6 +160,44 @@ export function SiteCaution({ caution }: { caution: string }) {
  * so three cards show another plant's profile in good faith and nothing on screen said so.
  */
 /**
+ * A recommendation Plantdex has withdrawn from what the card prints.
+ *
+ * STYLED AS A CORRECTION, NOT A HAZARD, and that is deliberate. `CardWarning` and
+ * `SiteCaution` share one treatment because the reader's exposure is the same whichever
+ * printed it; spending that same alarm here would make a third thing look like a fourth
+ * warning, and the next real one is what pays for it. This says "the instruction changed",
+ * which the reader acts on by reading the caution directly beneath it.
+ *
+ * It names the superseded parts in their own line so the correction can be matched against
+ * the transcription at a glance — the printed list is still there, unedited, and a reader
+ * holding the deck can see exactly which two words it is about.
+ */
+export function DigitalCorrection({
+  correction,
+}: {
+  correction: { supersededParts: readonly string[]; message: string };
+}) {
+  return (
+    <p
+      role="note"
+      className="flex items-start gap-2 rounded-xl border border-violet-700 bg-violet-900/40 px-3 py-2.5 text-sm text-violet-100"
+    >
+      <PlantdexIcon name="revealed" className="mt-0.5 shrink-0 text-base" />
+      <span>
+        <span className="font-semibold">Digital correction:</span>{' '}
+        <span className="sr-only">
+          Plantdex has withdrawn a recommendation printed on this card.{' '}
+        </span>
+        {correction.message}{' '}
+        <span className="font-normal text-violet-200">
+          The card&rsquo;s own text below is unchanged, and still reads as printed.
+        </span>
+      </span>
+    </p>
+  );
+}
+
+/**
  * The risk attached to a lookalike pair.
  *
  * Same hazard weight as `CardWarning` and `SiteCaution` deliberately: a reader who
