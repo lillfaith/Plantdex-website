@@ -1,0 +1,35 @@
+name: Edge function identity (read-only)
+
+# Answers ONE question: did the deployed code change, or only the platform version counter?
+#
+# A step-0 checkpoint recorded 13/15/11/9 for the four production functions; 35 minutes later
+# they read 16/18/14/12, every one +3, with `updated_at` unchanged. The first checkpoint stored
+# no bundle hash, so there is nothing historical to diff — this asks the question the other way
+# round, by comparing what is deployed NOW against what the repository says should be.
+#
+# READ-ONLY: four GETs per function plus an audit-log read. It deploys nothing and prints no
+# secret. Defaults to production because that is the project under investigation.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which Supabase project to inspect
+        required: true
+        default: vygiamigomwlvnwkryyl
+        type: choice
+        options:
+          - vygiamigomwlvnwkryyl # production — real players
+          - vgjehmwcpavflbfhbbrp # test
+
+permissions:
+  contents: read
+
+jobs:
+  identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          PROJECT_REF: ${{ inputs.project_ref }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: python3 scripts/function_identity.py
