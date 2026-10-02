@@ -201,33 +201,52 @@ describe('the cards considered for widening and kept narrow', () => {
 describe('the goldenrod case, which is what this was built for', () => {
   const GOLDENROD = 'solidago-canadensis';
 
-  it('accepts every Solidago the real scan returned', () => {
-    for (const name of [
-      'Solidago altissima',
-      'Solidago canadensis',
-      'Solidago rugosa',
-      'Solidago juncea',
-    ]) {
+  /*
+   * THESE THREE TESTS RECORDED A GENUS-WIDE GOLDENROD, AND THE SCOPE HAS SINCE BEEN CURATED.
+   *
+   * They were written against the bug report that built this file: a 56% `S. altissima` was
+   * refused while a 12% `S. canadensis` was offered, and the fix was to declare the card
+   * broader. That was always explicitly TEMPORARY — `pendingCuration` said so — and the
+   * research has now been done: the European Pharmacopoeia accepts *S. canadensis* and
+   * *S. gigantea* as equivalent sources of *Solidaginis herba*, and nothing supports the rest
+   * of the genus.
+   *
+   * So the EXPECTATIONS move and the PROPERTIES they were protecting do not. The card still
+   * accepts more than its own binomial; the printed binomial is still `exact` and an accepted
+   * species still `acceptedScope`; and nothing anywhere sorts candidates. What changed is
+   * WHICH species qualify, which is a content decision this file exists to make reviewable.
+   */
+  it('accepts its anchor and its one curated equivalent', () => {
+    for (const name of ['Solidago canadensis', 'Solidago gigantea']) {
       const match = matchScientificName(name);
       expect(match.herbId, name).toBe(GOLDENROD);
       expect(match.confirmable, name).toBe(true);
     }
   });
 
-  it('still calls the printed binomial `exact`, and the others `acceptedScope`', () => {
-    // Two different reasons a name is accepted, and the UI says different things about them.
-    expect(matchScientificName('Solidago canadensis').kind).toBe('exact');
-    expect(matchScientificName('Solidago altissima').kind).toBe('acceptedScope');
+  it('refuses the Solidago species the genus override used to carry', () => {
+    // `S. altissima` is the very name from the original bug report. It is INSUFFICIENT
+    // EVIDENCE rather than rejected — see `docs/goldenrod-evidence-matrix.md` — so it is
+    // refused today and may return if the evidence does.
+    for (const name of ['Solidago altissima', 'Solidago rugosa', 'Solidago juncea']) {
+      expect(matchScientificName(name).confirmable, name).toBe(false);
+    }
   });
 
-  it('does not reorder candidates, so 56% still beats 12%', () => {
+  it('still calls the printed binomial `exact`, and an accepted species `acceptedScope`', () => {
+    // Two different reasons a name is accepted, and the UI says different things about them.
+    expect(matchScientificName('Solidago canadensis').kind).toBe('exact');
+    expect(matchScientificName('Solidago gigantea').kind).toBe('acceptedScope');
+  });
+
+  it('does not reorder candidates, so provider order survives end to end', () => {
     /*
      * The reported symptom was a 12% canonical species offered over a 56% one. Nothing in
      * the matcher or the panel sorts — provider order is preserved end to end — so this
      * asserts the property by construction: both are confirmable, and the caller's order is
      * the provider's.
      */
-    const ranked = ['Solidago altissima', 'Solidago canadensis'].map(matchScientificName);
+    const ranked = ['Solidago gigantea', 'Solidago canadensis'].map(matchScientificName);
     expect(ranked.every((m) => m.confirmable)).toBe(true);
     expect(ranked[0]!.herbId).toBe(GOLDENROD);
   });

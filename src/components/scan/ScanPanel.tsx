@@ -99,6 +99,13 @@ export function ScanPanel() {
    */
   const [confirmed, setConfirmed] = useState<{
     herbId: string;
+    /*
+     * The species the identifier named, when a `curatedEquivalent` unlocked the card.
+     *
+     * Taken from the candidate's OWN match at the moment of confirming, not recomputed later:
+     * the player chose that candidate, and `observedTaxon` on it is the provider's string.
+     */
+    equivalentObservedName?: string;
     xpAwarded: number;
     newAchievementIds: string[];
     /* Stamped at the tap so research feedback only claims what followed it. */
@@ -330,6 +337,14 @@ export function ScanPanel() {
       track('scan_confirmed');
       setConfirmed({
         herbId: herb.id,
+        equivalentObservedName:
+          candidate.match.eligibility === 'curatedEquivalent'
+            ? // `observedTaxon` arrived with migration 0006, so a candidate replayed from an
+              // older scan has none. `scientificName` is the provider's own string and is on
+              // every candidate ever recorded, which keeps this from blanking the one line
+              // that explains why a different species opened this card.
+              (candidate.match.observedTaxon?.name ?? candidate.scientificName)
+            : undefined,
         xpAwarded: outcome.xpAwarded,
         newAchievementIds: outcome.newAchievementIds,
         at: Date.now(),
@@ -1148,6 +1163,7 @@ export function ScanPanel() {
                   herbId={herb.id}
                   commonName={herb.commonName}
                   scientificName={herb.scientificName}
+                  equivalentObservedName={confirmed.equivalentObservedName}
                   href={`/herbdex/${herb.id}`}
                   xpAwarded={confirmed.xpAwarded}
                   newAchievementIds={confirmed.newAchievementIds}

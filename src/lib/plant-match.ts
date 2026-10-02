@@ -72,8 +72,17 @@ export type MatchKind =
 export const ELIGIBILITIES = [
   /** The card's own binomial, or a checked nomenclatural synonym of it. */
   'exact',
-  /** A researched member of the card's curated accepted group. */
+  /** A researched member of the card's curated accepted group — a SUPRA-SPECIFIC concept. */
   'acceptedGroup',
+  /**
+   * A DISTINCT accepted species the card has been researched to represent.
+   *
+   * Different from `acceptedGroup` in the one way that matters to a reader: there, the
+   * observation never resolved to a species, so nothing was equated. Here two species ARE
+   * being treated as one card, and the player must be told they are distinct — which is why
+   * this is the only basis that triggers the equivalent-species notice.
+   */
+  'curatedEquivalent',
   /** The card itself prints `Genus spp.`, so the genus is its stated scope. */
   'genusCard',
   /**
@@ -522,20 +531,32 @@ export function matchScientificName(scientificName: string): PlantMatch {
     // reader is owed that distinction from a card the owner widened after printing.
     const kind: MatchKind = GENUS_CARDS.get(genus) === herbId ? 'genusCard' : 'acceptedScope';
     /*
-     * THREE WAYS TO QUALIFY, AND THEY ARE NOT THE SAME CLAIM.
+     * FOUR WAYS TO QUALIFY, AND THEY ARE NOT THE SAME CLAIM.
      *
-     *   genusCard     the card prints `Genus spp.` — its own stated scope.
-     *   acceptedGroup a researched member of a curated list.
-     *   legacyGenus   a `pendingCuration` override. Temporary, and named so it can be
-     *                 found and removed rather than blending into the other two.
+     *   genusCard         the card prints `Genus spp.` — its own stated scope.
+     *   acceptedGroup     a supra-specific concept the card represents. NOTHING IS EQUATED:
+     *                     the observation never resolved to a species.
+     *   curatedEquivalent a DISTINCT accepted species researched to share this card. Two
+     *                     species ARE being treated as one card, so the player must be told.
+     *   legacyGenus       a `pendingCuration` override. Nothing issues it any more — the last
+     *                     card carrying one was Goldenrod — but it stays readable because
+     *                     stored sightings have it.
+     *
+     * THE MEMBER DECIDES, NOT THE SCOPE. Both kinds live in one `accepted` list, so reading
+     * the scope's type alone would collapse them back together and the notice would fire on
+     * a section, or fail to fire on a species.
      */
     const scope = scopeFor(herbId);
+    const member =
+      scope?.type === 'acceptedGroup'
+        ? scope.accepted.find(
+            (one) =>
+              normalizeName(one.scientificName) === name ||
+              one.synonyms?.some((alt) => normalizeName(alt) === name),
+          )
+        : undefined;
     const eligibility: Eligibility =
-      kind === 'genusCard'
-        ? 'genusCard'
-        : scope?.type === 'acceptedGroup'
-          ? 'acceptedGroup'
-          : 'legacyGenus';
+      kind === 'genusCard' ? 'genusCard' : (member?.basis ?? 'legacyGenus');
     return withTaxon({ kind, eligibility, herbId, confirmable: true });
   }
   if (claimants.length > 1) {

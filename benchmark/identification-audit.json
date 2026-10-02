@@ -270,9 +270,16 @@
       "rank": "species",
       "normalized": "solidago canadensis",
       "printed": true,
-      "scopeType": "genus",
-      "pendingCuration": "Prints a binomial, not `spp.`. Needs a researched list of accepted Solidago taxa; kept genus-wide meanwhile so live coverage does not narrow silently.",
-      "acceptedMembers": [],
+      "scopeType": "acceptedGroup",
+      "pendingCuration": null,
+      "acceptedMembers": [
+        {
+          "name": "Solidago gigantea",
+          "rank": "species",
+          "synonyms": [],
+          "source": "https://altmeyers.org/en/naturopathy/solidaginis-herba-143574"
+        }
+      ],
       "excluded": [],
       "synonyms": [],
       "sameGenusCards": [],
@@ -280,11 +287,7 @@
       "tracksMastery": true,
       "inPrintedDeck": true,
       "flags": [
-        "pendingScope",
-        "bareGenusUnlocks",
-        "congenerUnlocks",
-        "aboveSpecies",
-        "unresolvedRank",
+        "curatedBroader",
         "providerErrorExposed"
       ],
       "probes": [
@@ -314,45 +317,45 @@
           "id": "D",
           "what": "bare genus",
           "name": "Solidago",
-          "kind": "acceptedScope",
-          "eligibility": "legacyGenus",
+          "kind": "sameGenus",
+          "eligibility": "related",
           "herbId": "solidago-canadensis",
-          "confirmable": true,
+          "confirmable": false,
           "rank": "genus",
-          "outcome": "matched"
+          "outcome": "relatedOnly"
         },
         {
           "id": "E",
           "what": "arbitrary same-genus species",
           "name": "Solidago plantdexia",
-          "kind": "acceptedScope",
-          "eligibility": "legacyGenus",
+          "kind": "sameGenus",
+          "eligibility": "related",
           "herbId": "solidago-canadensis",
-          "confirmable": true,
+          "confirmable": false,
           "rank": "species",
-          "outcome": "matched"
+          "outcome": "relatedOnly"
         },
         {
           "id": "H",
           "what": "unresolved rank marker",
           "name": "Solidago sp.",
-          "kind": "acceptedScope",
-          "eligibility": "legacyGenus",
+          "kind": "sameGenus",
+          "eligibility": "related",
           "herbId": "solidago-canadensis",
-          "confirmable": true,
+          "confirmable": false,
           "rank": "genus",
-          "outcome": "matched"
+          "outcome": "relatedOnly"
         },
         {
           "id": "H",
           "what": "aggregate marker",
           "name": "Solidago plantdexia agg.",
-          "kind": "acceptedScope",
-          "eligibility": "legacyGenus",
+          "kind": "sameGenus",
+          "eligibility": "related",
           "herbId": "solidago-canadensis",
-          "confirmable": true,
+          "confirmable": false,
           "rank": "unknown",
-          "outcome": "matched"
+          "outcome": "relatedOnly"
         }
       ]
     },

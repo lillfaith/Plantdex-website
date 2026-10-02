@@ -112,8 +112,30 @@ export const TAXON_RANKS = [
 ] as const;
 export type TaxonRank = (typeof TAXON_RANKS)[number];
 
+/**
+ * THE SEVEN CRITERIA, each answered with its own citation.
+ *
+ * Required for a `curatedEquivalent` and for nothing else, which is the honest shape: these
+ * criteria exist to decide whether two DISTINCT ACCEPTED SPECIES may share one card. An
+ * `acceptedGroup` member is supra-specific — a section, an aggregate — so no two species are
+ * being equated and there is nothing for "compatible edibility" to compare. Demanding seven
+ * fields there would produce seven invented sentences, which is worse than demanding none.
+ *
+ * Seven named strings rather than one free-text blob, because a half-done addition can then
+ * be SEEN: you cannot satisfy the type by waving at the hard criterion.
+ */
+export interface EquivalenceEvidence {
+  readonly taxonomy: string;
+  readonly traditionalUse: string;
+  readonly part: string;
+  readonly phytochemistry: string;
+  readonly edibility: string;
+  readonly safety: string;
+  readonly noMisleadingImplication: string;
+}
+
 /** One researched member of a card's accepted group. */
-export interface AcceptedTaxon {
+interface AcceptedTaxonBase {
   /** As it should be DISPLAYED, rank word included: `Taraxacum sect. Ruderalia`. */
   readonly scientificName: string;
   readonly rank: TaxonRank;
@@ -135,6 +157,31 @@ export interface AcceptedTaxon {
    */
   readonly synonyms?: readonly string[];
 }
+
+/**
+ * A member that is a BROADER CONCEPT the card represents — a section, an aggregate.
+ *
+ * Nothing is equated: the observation never resolved to a species, so the card is reached
+ * without any claim that two plants are interchangeable.
+ */
+export interface AcceptedGroupTaxon extends AcceptedTaxonBase {
+  readonly basis: 'acceptedGroup';
+}
+
+/**
+ * A DISTINCT ACCEPTED SPECIES the card has been researched to represent.
+ *
+ * `source` is REQUIRED here and `evidence` with it. A test fails after somebody writes an
+ * unsourced line; a required field means the line cannot be written — which is the only
+ * version of "no equivalent without a source" that holds at three in the morning.
+ */
+export interface CuratedEquivalentTaxon extends AcceptedTaxonBase {
+  readonly basis: 'curatedEquivalent';
+  readonly source: string;
+  readonly evidence: EquivalenceEvidence;
+}
+
+export type AcceptedTaxon = AcceptedGroupTaxon | CuratedEquivalentTaxon;
 
 /**
  * OVERRIDES ONLY.
@@ -285,26 +332,83 @@ export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
    * NO COLLISION: Solidago is represented by exactly one printed card.
    */
   /*
-   * GOLDENROD IS TEMPORARY, AND IS THE ONLY ENTRY LIKE IT.
+   * ─────────────────────────────────────────────────────────────────────────
+   * GOLDENROD — THE FIRST CURATED EQUIVALENT, AND THE REASON IS PHARMACOPOEIAL.
    *
-   * Card #03 prints `Solidago canadensis` — not `Solidago spp.` — so under the curated model
-   * it has no business claiming its whole genus. It keeps genus scope here for exactly one
-   * reason: narrowing it now, before the accepted species have been researched, would
-   * silently remove coverage that is live today (`S. altissima` and `S. gigantea` both
-   * resolve to this card). Losing real coverage to tidy a model is the wrong trade.
+   * This card was genus-wide `pendingCuration` for one honest reason: narrowing it before
+   * the research existed would have silently removed live coverage. The research now exists,
+   * and it is not morphology and it is NOT that an identification provider confuses the two.
    *
-   * What it must NOT do meanwhile is pretend the observation was `S. canadensis`. It does
-   * not: a genus-scope match now reports `observedTaxon` as the species the provider
-   * actually named, at `speciesConfidence: 'moderate'`, and the card is what gets recorded.
+   * The European Pharmacopoeia recognises a herbal drug, *Solidaginis herba* ("goldenrod
+   * herb"), and accepts *Solidago canadensis* L. and *S. gigantea* Aiton as two EQUIVALENT
+   * SPECIES for it. That is an external authority stating, for the exact indication this card
+   * prints, that the two are interchangeable as the drug — a determination somebody else
+   * published, which is what `curatedEquivalent` is for.
    *
-   * Replace with `{ type: 'acceptedGroup', accepted: [...] }` once the botanical work is
-   * done. Do not populate that list by reading a flora and guessing.
+   * WHAT IS DELIBERATELY NOT HERE, and each for its own reason:
+   *
+   *   S. altissima  INSUFFICIENT EVIDENCE. Taxonomy passes; nothing else does. It is not
+   *                 named in *Solidaginis herba*, and the literature pairing it with
+   *                 canadensis is INVASION ECOLOGY, not therapeutics — a shared
+   *                 growth-inhibitory ester says nothing about a urinary indication.
+   *   S. virgaurea  REJECTED ON THE SAME AUTHORITY, pointing the other way: it is the source
+   *                 of a SEPARATE monograph, *Solidaginis virgaureae herba*. Being the
+   *                 best-studied goldenrod in Europe is why it must be refused — that depth
+   *                 of evidence is for a different drug.
+   *   S. rugosa     subsect. *Venosae*. S. juncea, subsect. *Junceae*. S. caesia, the
+   *                 original false unlock. None named in any goldenrod monograph; all three
+   *                 unlocked this card through the legacy override and nothing else.
+   *   bare Solidago A genus does not resolve a species, and this card prints a binomial.
+   *
+   * THE PRECEDENT DOES NOT GENERALISE. Every future `curatedEquivalent` passes all seven
+   * criteria independently; that a pharmacopoeia settled this one buys nothing for the next.
+   * ─────────────────────────────────────────────────────────────────────────
    */
   'solidago-canadensis': {
-    type: 'genus',
-    pendingCuration:
-      'Prints a binomial, not `spp.`. Needs a researched list of accepted Solidago taxa; ' +
-      'kept genus-wide meanwhile so live coverage does not narrow silently.',
+    type: 'acceptedGroup',
+    accepted: [
+      {
+        basis: 'curatedEquivalent',
+        scientificName: 'Solidago gigantea',
+        rank: 'species',
+        note:
+          'Accepted by the European Pharmacopoeia as an equivalent source species of ' +
+          '*Solidaginis herba* alongside the card\'s own *Solidago canadensis*. A distinct ' +
+          'accepted species, not a synonym — the player is told so.',
+        source: 'https://altmeyers.org/en/naturopathy/solidaginis-herba-143574',
+        evidence: {
+          taxonomy:
+            'GBIF backbone: `Solidago gigantea` Aiton, status ACCEPTED, rank species, ' +
+            'EXACT/98 — a distinct species, so this is an equivalence and never a renaming. ' +
+            'Resolved from CI via scripts/resolve_taxa.py.',
+          traditionalUse:
+            'Named with S. canadensis as a source of *Solidaginis herba*. Commission E ' +
+            'approves irrigation for inflammatory disease of the lower urinary tract, ' +
+            'urinary stones and renal gravel; ESCOP adds adjunct use in bacterial UTI. That ' +
+            "is the card's printed Urinary support, Mild diuretic and Anti-inflam.",
+          part:
+            'The pharmacopoeial drug is the dried FLOWERING AERIAL PARTS — flower, leaf and ' +
+            "stem, which is exactly the card's usable-parts list.",
+          phytochemistry:
+            'Ph. Eur. standardises on flavonoids (expressed as hyperoside). Chlorogenic ' +
+            'acid, rutin, hyperoside, quercitrin and isoquercitrin are reported from leaves ' +
+            'and inflorescences of goldenrods; quercetin, rutin, phenolic acids, terpenoids ' +
+            "and saponins in the profile. The card prints Quercetin, Flavonoids, Rutin, " +
+            'Saponins — the marker class the pharmacopoeia measures.',
+          edibility:
+            'The card claims no food use beyond Tea, Tincture and Infusion, which are the ' +
+            "drug's own preparations. Nothing contradicts them for S. gigantea.",
+          safety:
+            'IDENTICAL, because it is one drug rather than two profiles that agree: known ' +
+            'Asteraceae/Compositae hypersensitivity, and oedema from impaired cardiac or ' +
+            'renal function (irrigation therapy drives water rather than salt excretion). ' +
+            'No contraindication for S. gigantea is absent from S. canadensis.',
+          noMisleadingImplication:
+            'A reader who found S. gigantea and read this card is reading the monograph that ' +
+            'covers their plant. The equivalent-species notice states the two are distinct.',
+        },
+      },
+    ],
   },
 
   /*
@@ -325,6 +429,9 @@ export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
     type: 'acceptedGroup',
     accepted: [
       {
+        // The card concept IS the section; no two species are equated, so the seven
+        // equivalence criteria do not apply and are deliberately absent.
+        basis: 'acceptedGroup',
         scientificName: 'Taraxacum sect. Taraxacum',
         rank: 'section',
         synonyms: ['Taraxacum sect. Ruderalia'],

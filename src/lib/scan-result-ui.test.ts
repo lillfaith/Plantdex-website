@@ -204,15 +204,27 @@ describe('6. discovery eligibility is untouched', () => {
 });
 
 describe('7. historical results still render', () => {
-  it('reads nothing off a candidate that an older scan would not carry', () => {
+  it('never reads observedTaxon without a fallback', () => {
     /*
-     * `observedTaxon` arrived with migration 0006. A row that reached into it directly would
-     * throw or blank out on every scan recorded before that, and the summary's own fallback
-     * is covered in `scan-summary.test.ts`. The component must not add a second reader.
+     * `observedTaxon` arrived with migration 0006, so a candidate replayed from an older scan
+     * has none — reading it bare would blank out on every one of those rows.
+     *
+     * THE GUARD USED TO FORBID THE READ ENTIRELY, which held while nothing needed it. The
+     * equivalent-species notice does: it has to name the species the provider returned, and
+     * that is what `observedTaxon` is. Forbidding the field is a proxy for the property; the
+     * property is that a historical candidate still renders. So the rule is now the real one
+     * — every read is `?? candidate.scientificName`, which is on every candidate ever
+     * recorded — and it is strictly stronger, because it also catches a read that the old
+     * regex would have missed by being spelled differently.
      */
-    expect(PANEL, 'the row reads observedTaxon directly').not.toMatch(
-      /candidate\.match\.observedTaxon/,
-    );
+    const reads = [...PANEL.matchAll(/observedTaxon\??\.[A-Za-z]+/g)];
+    for (const [read] of reads) {
+      const at = PANEL.indexOf(read);
+      const following = PANEL.slice(at, at + 160);
+      expect(following, `bare read of ${read} with no fallback`).toMatch(
+        /\?\?\s*(\n\s*)?candidate\.scientificName/,
+      );
+    }
   });
 });
 

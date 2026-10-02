@@ -114,15 +114,19 @@ describe('what a confirmed candidate records', () => {
   it('logs the CARD while leaving an accepted-group species unchanged', async () => {
     const { observedTaxonFields } = await import('./scans');
     /*
-     * The Goldenrod card prints `Solidago canadensis`. `Solidago altissima` qualifies for it
+     * The Goldenrod card prints `Solidago canadensis`. `Solidago gigantea` qualifies for it
      * and IS NOT IT. This is the original bug: the card became the record of the plant.
+     *
+     * The SPECIES changed with the curated scope — `S. altissima` is non-confirmable now and
+     * `S. gigantea` is the researched equivalent — and the property under test did not. A
+     * card is reached by a species that is not its own, and the observation must survive it.
      */
-    const candidate = candidateFor('Solidago altissima', 0.6);
+    const candidate = candidateFor('Solidago gigantea', 0.6);
     expect(candidate.match.herbId).toBe('solidago-canadensis');
     const fields = observedTaxonFields(candidate);
-    expect(fields.observedTaxonName).toBe('Solidago altissima');
+    expect(fields.observedTaxonName).toBe('Solidago gigantea');
     expect(fields.observedTaxonName).not.toBe('Solidago canadensis');
-    expect(fields.eligibility).toBe('legacyGenus');
+    expect(fields.eligibility).toBe('curatedEquivalent');
     expect(fields.observedTaxonRank).toBe('species');
   });
 
@@ -256,17 +260,17 @@ describe('the signed-out journal keeps the observation', () => {
   it('stores every taxon field on a local sighting and reads them back', async () => {
     const { addSighting, getAllSightings } = await localSightings([]);
     const { observedTaxonFields } = await import('./scans');
-    const fields = observedTaxonFields(candidateFor('Solidago altissima', 0.6), 'plantnet');
+    const fields = observedTaxonFields(candidateFor('Solidago gigantea', 0.6), 'plantnet');
 
     addSighting({ herbId: 'solidago-canadensis', date: '2026-09-22', ...fields });
     const [stored] = getAllSightings();
 
     expect(stored!.herbId).toBe('solidago-canadensis');
-    expect(stored!.observedTaxonProviderName).toBe('Solidago altissima');
-    expect(stored!.observedTaxonName).toBe('Solidago altissima');
-    expect(stored!.observedTaxonKey).toBe('solidago altissima');
+    expect(stored!.observedTaxonProviderName).toBe('Solidago gigantea');
+    expect(stored!.observedTaxonName).toBe('Solidago gigantea');
+    expect(stored!.observedTaxonKey).toBe('solidago gigantea');
     expect(stored!.observedTaxonRank).toBe('species');
-    expect(stored!.eligibility).toBe('legacyGenus');
+    expect(stored!.eligibility).toBe('curatedEquivalent');
     expect(stored!.speciesConfidence).toBe('moderate');
     expect(stored!.identificationProvider).toBe('plantnet');
   });

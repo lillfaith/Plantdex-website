@@ -201,16 +201,32 @@ describe('no code path substitutes the card’s binomial for the observed taxon'
 });
 
 describe('the curated model cannot quietly widen', () => {
-  it('has exactly ONE pendingCuration entry, and it is Goldenrod', () => {
+  it('has NO pendingCuration entry left, and may never gain one', () => {
     /*
-     * Goldenrod keeps genus scope only so live coverage does not narrow before its accepted
-     * taxa are researched. That is temporary debt; this fails the build if a second
-     * species-specific card acquires the same escape hatch.
+     * THE DEBT IS PAID. Goldenrod was the only card carrying this, and it carried it for one
+     * stated reason: narrowing the scope before its accepted taxa were researched would have
+     * silently removed live coverage. The research is done — the European Pharmacopoeia
+     * accepts *S. canadensis* and *S. gigantea* as equivalent sources of *Solidaginis herba*
+     * — so the card is an `acceptedGroup` with one `curatedEquivalent` member and the
+     * override is gone.
+     *
+     * This used to assert the list was EXACTLY Goldenrod, which stopped a second card
+     * acquiring the escape hatch while one legitimately held it. It asserts EMPTY now, which
+     * is the same guard with the exception removed: no card may take genus scope on a printed
+     * binomial again, and there is no longer a precedent sitting in the data to point at.
      */
     const pending = allScopes().filter(
       ({ scope }) => scope.type === 'genus' && 'pendingCuration' in scope && scope.pendingCuration,
     );
-    expect(pending.map((one) => one.herbId)).toEqual(['solidago-canadensis']);
+    expect(pending.map((one) => one.herbId)).toEqual([]);
+  });
+
+  it('issues `legacyGenus` for no name at all, while keeping it readable', () => {
+    // Nothing can produce it now that the last override is gone. It stays in `ELIGIBILITIES`
+    // and in the CHECK because stored sightings carry it — readable forever, never issued.
+    for (const name of ['Solidago gigantea', 'Solidago altissima', 'Taraxacum sect. Taraxacum']) {
+      expect(matchScientificName(name).eligibility, name).not.toBe('legacyGenus');
+    }
   });
 
   it('requires every accepted-group member to be curated, not a bare genus', () => {

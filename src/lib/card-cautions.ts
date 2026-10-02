@@ -57,6 +57,23 @@ import type { Herb } from './types';
  * what a reader can act on, and says elderberries "can" cause upset rather than asserting
  * that every species does.
  *
+ * #3 GOLDENROD IS THE FIRST CAUTION ADDED BECAUSE A CARD'S OWN TRAIT POINTS AT ITS OWN
+ * CONTRAINDICATION. The card prints "Allergy support", and goldenrod carries an
+ * Asteraceae-hypersensitivity contraindication — so the reader most likely to act on that
+ * trait, a hay-fever sufferer, is disproportionately likely to be ragweed-sensitised, and
+ * ragweed is an Asteraceae. The trait is not false: traditional use for sinus and catarrhal
+ * complaints is real, and quercetin (which the card prints) has antihistamine activity in
+ * non-clinical work. But the approved indication — Commission E, ESCOP, Ph. Eur. — is
+ * URINARY, not allergic, so "Allergy support" printed beside the other three traits reads as
+ * though all four carry the same weight. They do not.
+ *
+ * It clears the bar on exactly the stated terms: a specific, well-documented risk the reader
+ * would not anticipate, on a card whose OWN TEXT points at the situation where it applies.
+ * The audit verdict was REWORD, and the transcription cannot be reworded — `healingTraits` is
+ * generated from the print master and must read as printed — so the reframing is delivered
+ * here, where it can say both halves: who must avoid it, and that the allergy use is
+ * traditional rather than approved.
+ *
  * #41 PINE IS THE FIRST CAUTION HERE RESTING ON ANIMAL TOXICOLOGY, AND ITS WORDING IS BUILT
  * AROUND THAT. The controlled evidence is bovine: *Pinus ponderosa* is the only *Pinus* known
  * to cause abortion in cattle in the US and Canada, and isocupressic acid is the only
@@ -82,6 +99,12 @@ import type { Herb } from './types';
  * told did not apply to them.
  */
 export const SITE_CAUTIONS: Record<string, string> = {
+  '3':
+    'Beware: goldenrod is in the daisy family, so avoid it if you react to ragweed, daisies ' +
+    'or chrysanthemums — which is the same group of people most likely to read "Allergy ' +
+    'support" and try it. Its traditional allergy use is for catarrh and sinus complaints ' +
+    'and is not an approved indication; the approved use is urinary. Not for use in ' +
+    'pregnancy, or where fluid is retained because of heart or kidney problems.',
   '31':
     'Beware: elder leaves, green shoots and unripe fruit are not safe to use, despite this ' +
     'card listing leaf and shoot as usable parts. Use only properly identified and prepared ' +

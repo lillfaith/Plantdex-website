@@ -23,11 +23,11 @@ describe('site cautions', () => {
     }
   });
 
-  it('cover Elderberry, St. John’s Wort and Pine, and nothing else', () => {
+  it('cover Goldenrod, Elderberry, St. John’s Wort and Pine, and nothing else', () => {
     // Deliberately exact. This is a high bar by design (see card-cautions.ts): a general
     // herbal caveat belongs on /safety, said once, not repeated onto card pages until
     // nobody reads any of them.
-    expect(Object.keys(SITE_CAUTIONS).sort()).toEqual(['31', '32', '41']);
+    expect(Object.keys(SITE_CAUTIONS).sort()).toEqual(['3', '31', '32', '41']);
 
     const wort = BY_NUMBER.get(32)!;
     expect(wort.commonName).toBe("St. John's Wort");
@@ -66,6 +66,23 @@ describe('site cautions', () => {
   });
 
   /*
+   * THE GOLDENROD CAUTION EXISTS BECAUSE THE CARD'S OWN TRAIT POINTS AT ITS OWN
+   * CONTRAINDICATION — "Allergy support" printed on a plant contraindicated in Asteraceae
+   * hypersensitivity. The audit verdict was REWORD, and `healingTraits` is generated from the
+   * print master and must read as printed, so the reframing lives here. Both halves are
+   * pinned: WHO must avoid it, and that the allergy use is traditional rather than approved.
+   */
+  it('reframes the Goldenrod allergy trait rather than denying it', () => {
+    const goldenrod = siteCautionFor(BY_NUMBER.get(3)!)!;
+    expect(goldenrod).toMatch(/ragweed/i);
+    expect(goldenrod).toMatch(/not an approved indication/i);
+    expect(goldenrod).toMatch(/urinary/i);
+    // It must not claim the trait is false — traditional use for catarrh is real, and the
+    // transcription stays as printed either way.
+    expect(goldenrod).not.toMatch(/does not (help|treat|work)/i);
+  });
+
+  /*
    * AND IT MUST NOT REASSURE ABOUT THE REST OF THE GENUS, which this caution originally did.
    * It ended "Other pines are not implicated" — written from a framing about naturally
    * occurring field cases, and false as a general statement: isocupressic acid occurs across
@@ -86,7 +103,7 @@ describe('site cautions', () => {
 
   it('leaves every other plant without one', () => {
     const withCaution = PRINTED_CARDS.filter((herb) => siteCautionFor(herb)).map((h) => h.cardNumber);
-    expect(withCaution).toEqual([31, 32, 41]);
+    expect(withCaution).toEqual([3, 31, 32, 41]);
   });
 
   /**

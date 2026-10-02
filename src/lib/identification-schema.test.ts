@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import { TAXON_RANKS } from './card-coverage';
@@ -26,6 +26,23 @@ import { ELIGIBILITIES, SPECIES_CONFIDENCES } from './plant-match';
 
 const MIGRATION = 'supabase/migrations/0006_identification.sql';
 const sql = readFileSync(MIGRATION, 'utf8');
+
+/*
+ * EVERY migration, in order, because a CHECK can be REPLACED by a later one.
+ *
+ * This file used to read 0006 alone, which was right while 0006 was the only migration that
+ * had ever touched these columns. It stopped being right the moment 0007 widened the
+ * eligibility constraint: the live database would admit the new value, this test would still
+ * be reading the superseded list, and it would fail while the schema was correct — reporting
+ * the opposite of the truth, which is the worst way for a schema guard to be wrong.
+ *
+ * The LAST definition wins, exactly as it does in Postgres after the migrations are applied.
+ */
+const ALL_MIGRATIONS = readdirSync('supabase/migrations')
+  .filter((name) => name.endsWith('.sql'))
+  .sort()
+  .map((name) => readFileSync(`supabase/migrations/${name}`, 'utf8'))
+  .join('\n');
 const remote = readFileSync('src/lib/remote-sightings.ts', 'utf8');
 const sightings = readFileSync('src/lib/sightings.ts', 'utf8');
 const exportSource = readFileSync('src/lib/export-account-data.ts', 'utf8');
@@ -98,7 +115,11 @@ describe('the observed taxon has somewhere to go', () => {
 describe('the rank and confidence checks match their unions exactly', () => {
   /** The quoted values inside one column's `in (...)` list. */
   function allowed(columnName: string): string[] {
-    const block = new RegExp(`${columnName} in \\(([^)]*)\\)`).exec(sql)?.[1] ?? '';
+    // The LAST match across all migrations: a later one replaces the constraint entirely.
+    const blocks = [
+      ...ALL_MIGRATIONS.matchAll(new RegExp(`${columnName} in \\(([^)]*)\\)`, 'g')),
+    ];
+    const block = blocks.at(-1)?.[1] ?? '';
     return [...block.matchAll(/'([^']+)'/g)].map(([, value]) => value!).sort();
   }
 
