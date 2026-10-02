@@ -365,3 +365,114 @@ which is a further small data point against the earlier +3 having been a deploym
 **Verification is clean. The schema is now ahead of the deployed code, which is the correct
 direction**: a CHECK wider than the application refuses nothing, where a CHECK narrower than
 it loses sightings.
+
+---
+
+## Steps 3-5 — the two edge functions, deployed and verified 2026-10-02 04:07-04:18 UTC
+
+### Step 3 · `seed-packet` (first, deliberately)
+
+`deploy-function.yml`, `project_ref=vygiamigomwlvnwkryyl`, `function=seed-packet`,
+`ref=claude/plantdex-v0-3-supabase-verify-iic8pz` — run 36963130464, all 14 steps success.
+The workflow's own gates passed on the way through: `deno check` on all four entrypoints,
+the token scoped to the project, `sync:edge-shared` regenerated with **no drift**, and the
+CORS preflight answering **204**.
+
+Verified by `function-identity.yml` run 36963371833: **only `seed-packet` moved.**
+
+| function | version | `ezbr_sha256` | |
+| --- | --- | --- | --- |
+| `delete-account` | 16 (unchanged) | `7cf16c54…` | `updated_at` identical |
+| `herbdex-action` | 18 (unchanged) | `71b0c99f…` | `updated_at` identical |
+| `identify-plant` | 14 (unchanged at this point) | `cb888321…` | `updated_at` identical |
+| `seed-packet` | **12 → 13** | `e10d9ce2…` → **`557162c5…`** | `updated_at` moved |
+
+Its `entrypoint_path` also stopped naming the `_9` extraction directory it had carried since
+version 9, which is a second independent sign that this deploy replaced real code — and, in
+passing, the last loose end of the earlier +3 version-counter question.
+
+### Step 4 · `identify-plant`
+
+Run 36963467774, all 14 steps success, preflight **204**. Verified by `function-identity.yml`
+run 36963642874: **`identify-plant` 14 → 15**, `ezbr_sha256` `cb888321…` →
+**`d829393a…`**, body 8,326,994 → 8,585,726 bytes. `delete-account` and `herbdex-action`
+untouched with identical hashes; `seed-packet` still 13 / `557162c5…`.
+
+**Production secrets, read by `check-function-secrets.yml` run 36963373934 — unchanged and
+exactly as this release requires:**
+
+```
+PLANT_IDENTIFICATION_PROVIDER  plantnet (default, unset)
+SPECIES_ATTESTATION_SECRET     set
+PLANTNET_API_KEY               set
+PLANT_ID_API_KEY               NOT SET
+SCAN_QUOTA_SALT                set
+IDENTIFICATION_COMPARISON      off
+IDENTIFICATION_COMPARISON_USER_IDS  NOT SET
+IDENTIFY_MIN_IMAGES            unset (floor is 2 — the product's own rule)
+```
+
+PlantNet only; plant.id has no key in production and cannot answer; comparison mode off; the
+two-photograph floor is the code's own default rather than an override.
+
+### Step 5 · post-function smoke, before the frontend
+
+`verify-plant-id.yml` run 36963907160 against PRODUCTION, three species chosen to exercise
+the three paths this release changed rather than to benchmark anything. Two photographs per
+observation, as the endpoint requires.
+
+| card | top candidates | what it demonstrates |
+| --- | --- | --- |
+| `taraxacum-officinale` | `Taraxacum campylodes` 0.444 **species**, `Taraxacum sect. Taraxacum` 0.209 **section** | a supra-specific rank surviving as `section`, not silently promoted |
+| `solidago-canadensis` | `Solidago canadensis` 0.587, **`Solidago gigantea` 0.162** | the curated equivalent arriving as a real candidate |
+| `oxalis-stricta` | **`Oxalis dillenii` 0.401**, `Oxalis stricta` 0.232 | the top candidate is NOT the card's species — the case `scans` stores both halves of |
+
+All three HTTP 200, `provider: plantnet` on every one, an `observationId` minted for each,
+and the quota decrementing 4 → 3 → 2. No `unconfigured`, no `tooFewImages`, no 429.
+
+### One failed verification, diagnosed before anything was done about it
+
+The first dispatch of that smoke test (run 36963645239) **FAILED**, with
+`check_live_scan.py` reporting *"The deployed bundle carries no Supabase project"*. It was
+run with the default `site_url` of `https://lillfaith.github.io/Plantdex-website`.
+
+**That failure was the input, not production.** The custom domain is already live (below), so
+Pages redirects the github.io project URL to `plantdex.online`: the HTML followed the
+redirect and passed every content check, while the script joins chunk paths against the
+ORIGIN of the URL it was given — `https://lillfaith.github.io` — and those hrefs no longer
+carry the `/Plantdex-website` base path. So all 16 chunk fetches hit the wrong host, were
+swallowed by the script's `except: continue`, and the ref set was empty. Re-run against
+`https://plantdex.online` it passes.
+
+**This is a real defect in `check_live_scan.py`** — handed a URL that redirects to a custom
+domain it reports a confident false negative about the backend — and it is recorded below as
+a post-release task rather than fixed here.
+
+### THE CUSTOM DOMAIN IS ALREADY CUT OVER, which this runbook said it was not
+
+Measured, not inferred. `check-live-site.yml` derives its target from `vars.SITE_DOMAIN`, and
+its run 36961534064 (automatic, after the 03:45 UTC deploy of `56ec2fc`) checked
+**`https://plantdex.online`** and passed: 13 routes HTTP 200, both stylesheets served with
+4/4 profile utilities, and `PASS backend production Supabase (vygiamigomwlvnwkryyl)`.
+
+So `SITE_DOMAIN` is set, the base path is off, `deploy.yml` is writing `out/CNAME`, and
+`check-auth-config.yml` run 36963891477 shows the fourth step — the one no test can reach —
+is in place too:
+
+```
+site_url: https://plantdex.online
+redirect allow list:
+  - https://lillfaith.github.io/Plantdex-website/**
+  - https://plantdex.online/account/
+  - https://plantdex.online/account/reset/
+confirm email: ON
+```
+
+Both auth redirect targets are listed, so password reset and signup confirmation are not in
+the silent-failure state `docs/custom-domain.md` warns about.
+
+**Nothing was changed for this, and nothing needs to be.** The standing decision was no
+domain or DNS change during this release; the cutover had already happened outside it, and
+`deploy.yml` has honoured `SITE_DOMAIN` on every deploy since. What is wrong is the written
+record: this runbook's line above saying `SITE_DOMAIN` is unset, and CLAUDE.md's "a bare
+hostname, unset today". Both are stale, and the live site is the authority.
