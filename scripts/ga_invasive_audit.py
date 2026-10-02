@@ -112,17 +112,35 @@ def catalogue() -> list[tuple[str, str, str]]:
     return rows
 
 
-def status_near(text: str, start: int, end: int, window: int = 400) -> list[str]:
-    """Status tokens within `window` characters of a match, in the authority's own words."""
-    chunk = text[max(0, start - window):min(len(text), end + window)]
-    found: list[str] = []
+def status_headings(text: str) -> list[tuple[int, str]]:
+    """Every status token in a document, with its offset, in document order.
+
+    THESE LISTS ARE SECTIONED, NOT LABELLED PER ROW, and the first version of this script got
+    that wrong. The GA-EPPC PDF carries only five "Category 1" tokens across 10,638 characters
+    — one heading, then the forty-odd species that fall under it. So looking for a status token
+    NEAR a species finds one only when the species happens to sit next to a heading, and
+    reports "none" for everything in the middle of a section. That is how the draft ended up
+    with no category for `Lonicera japonica` while asserting one for it from a search summary.
+    """
+    found: list[tuple[int, str]] = []
     for protocol, pattern in STATUS_TOKENS:
-        match = re.search(pattern, chunk, re.I)
-        if match:
-            label = f"{protocol}: {' '.join(match.group(0).split())}"
-            if label not in found:
-                found.append(label)
-    return found
+        for match in re.finditer(pattern, text, re.I):
+            found.append((match.start(), f"{protocol}: {' '.join(match.group(0).split())}"))
+    return sorted(found)
+
+
+def governing_status(headings: list[tuple[int, str]], position: int) -> str:
+    """The status heading a species falls under: the last one BEFORE it.
+
+    `Category 1 Alert` and `Category 1` both match at the same offset, so the longer, more
+    specific token wins at equal position — otherwise every Alert species reads as Category 1.
+    """
+    candidates = [(offset, label) for offset, label in headings if offset <= position]
+    if not candidates:
+        return "NO HEADING BEFORE THIS POINT"
+    last = max(offset for offset, _ in candidates)
+    at_last = [label for offset, label in candidates if offset == last]
+    return max(at_last, key=len)
 
 
 def main() -> int:
@@ -163,8 +181,15 @@ def main() -> int:
         print("\n::error::No source was readable. Nothing can be concluded.")
         return 1
 
+    # Indexed once rather than per match: a document is scanned 54 times below.
+    headings_by_doc = {label: status_headings(text) for label, text in documents}
+    for label, headings in headings_by_doc.items():
+        print(f"\n  {label}: {len(headings)} status heading(s) in document order")
+        for offset, heading in headings:
+            print(f"     @{offset:>7}  {heading}")
+
     print("\n" + "=" * 78)
-    print("PER-CARD HITS")
+    print("PER-CARD HITS — status is the SECTION HEADING the species falls under")
     print("=" * 78)
 
     hits = 0
@@ -179,8 +204,8 @@ def main() -> int:
                 start = text.rfind("\n", 0, match.start()) + 1
                 end = text.find("\n", match.end())
                 line = " ".join(text[start:end if end != -1 else len(text)].split())[:160]
-                status = status_near(text, match.start(), match.end())
-                entry = f"{label}\n         status: {status or 'NONE FOUND NEARBY'}\n         line:   {line}"
+                status = governing_status(headings_by_doc[label], match.start())
+                entry = f"{label}\n         status: {status}\n         line:   {line}"
                 found.setdefault(match.group(0), set()).add(entry)
         if not found:
             continue
