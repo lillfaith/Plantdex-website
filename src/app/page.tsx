@@ -141,6 +141,34 @@ export default function HomePage() {
 
           The classes are swapped between the two links; neither treatment is new.
         */}
+        {/*
+          THE BUY BUTTON LEADS, AND IT IS THE PAGE'S ONLY ONE.
+
+          It used to sit at the very bottom, under the note from the creator — the last thing
+          before the end of a long page. It is now the first action, above the two free ones.
+
+          MOVED, NOT DUPLICATED. The footer already carries a quiet second link to /shop on
+          every page, and `DeckCta`'s own note gives the reason a third would be wrong: a site
+          with 45 plant pages that puts a buy prompt on every panel reads as an advertisement,
+          which is the opposite of what makes somebody trust it enough to buy. The `home`
+          placement kept its single instance and its analytics goal; only its position changed.
+
+          THE LABEL STILL DERIVES FROM `isCommerceLive()`. This page used to carry a sentence
+          about the sale state and carries a button instead, so the honesty that sentence
+          provided has to come from the button: with the Stripe variables unset, or terms still
+          draft, it reads "See the deck" and offers to sell nothing. That is the failure this
+          repository has shipped three times in one direction or the other, and `shop.test.ts`
+          guards it.
+
+          WHAT WENT WITH THE SENTENCE. It also said the digital Plantdex is FREE — a fact a
+          stranger cannot otherwise tell from this page, and one now stated only on /shop,
+          which is the wrong side of the question. Raised with the owner rather than quietly
+          kept, and it matters more with the button leading than it did with it below.
+        */}
+        <div className="mt-6">
+          <DeckCta placement="home" />
+        </div>
+
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/scan"
@@ -154,32 +182,6 @@ export default function HomePage() {
           >
             Explore the collection
           </Link>
-        </div>
-        {/*
-          THE BUY BUTTON SITS HERE, AND IT IS THE PAGE'S ONLY ONE.
-
-          It used to sit at the very bottom, under the note from the creator and above the
-          safety notice — the last thing before the end of a long page, which is the weakest
-          position on it. Moved rather than duplicated: the footer already carries a quiet
-          second link to /shop on every page, and `DeckCta`'s own note gives the reason a third
-          would be wrong — a site with 45 plant pages that puts a buy prompt on every panel
-          reads as an advertisement, which is the opposite of what makes somebody trust it
-          enough to buy.
-
-          THE LABEL STILL DERIVES FROM `isCommerceLive()`. This page previously carried a
-          sentence about the sale state and now carries a button instead, so the honesty that
-          sentence provided has to come from the button: with the Stripe variables unset it
-          reads "See the deck" and never offers to sell anything. That is the rule this
-          repository has now shipped the wrong way round three times, and `shop.test.ts`
-          guards it.
-
-          WHAT WENT WITH THE SENTENCE. It also said the digital Plantdex is FREE — a fact a
-          stranger cannot otherwise tell from this page, and one that is now stated only on
-          /shop, which is the wrong side of the question. Raised with the owner rather than
-          quietly kept.
-        */}
-        <div className="mt-6">
-          <DeckCta placement="home" />
         </div>
       </section>
 

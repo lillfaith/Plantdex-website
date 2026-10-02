@@ -91,12 +91,31 @@ export function DeckCta({
     );
   }
 
+  /*
+   * LAVENDER ON HOME, GOLD EVERYWHERE ELSE, and the split is why it is per-placement rather
+   * than a change to the component.
+   *
+   * Home is the one placement that LEADS its page — it sits above the two free actions, where
+   * an outlined button would read as the quietest of three. The other three interrupt content
+   * somebody is already reading, and a filled button there would be the loudest thing on a
+   * plant page, which is the rule about never displacing what a reader came for.
+   *
+   * `violet-300` is the deck's existing lavender; no colour was added. Measured at 9.12:1
+   * against `violet-deep`, comfortably past AA, which is the whole reason the text goes dark
+   * on it rather than staying light — contrast is a property of the token, so a filled light
+   * button takes dark type or it takes a different token.
+   */
+  const button =
+    placement === 'home'
+      ? 'bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
+      : 'border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
+
   return (
     <div className={`flex flex-col items-center gap-2 text-center ${className}`}>
       <Link
         href="/shop"
         onClick={() => track(deckCtaEvent(placement))}
-        className="inline-flex min-h-12 items-center justify-center rounded-full border border-gold-400/70 px-6 text-sm font-bold text-gold-300 transition hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:outline-none"
+        className={`inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`}
       >
         {label}
       </Link>
