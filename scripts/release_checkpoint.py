@@ -59,6 +59,53 @@ QUERIES: dict[str, str] = {
          where conrelid = 'public.sightings'::regclass
            and conname = 'sightings_eligibility_check'
     """,
+    # 0007 VERIFICATION. The three questions below are deliberately answered from the
+    # DATABASE'S OWN rendering of the constraint rather than from a list typed here: a check
+    # that compares my transcription against my transcription proves nothing. `regexp_matches`
+    # pulls every quoted value out of `pg_get_constraintdef`, so the set reported is the set
+    # Postgres will actually enforce — which is what makes "no value was accidentally removed"
+    # and "legacyGenus is still accepted" measurements rather than readings of a diff.
+    "0007 — accepted eligibility values, extracted from the live constraint": """
+        with def as (
+          select pg_get_constraintdef(oid) as d
+            from pg_constraint
+           where conrelid = 'public.sightings'::regclass
+             and conname = 'sightings_eligibility_check'
+        ), vals as (
+          select (regexp_matches(d, $re$'([A-Za-z]+)'::text$re$, 'g'))[1] as v from def
+        )
+        select count(*) as value_count,
+               array_agg(v order by v) as accepted_values,
+               bool_or(v = 'exact') as has_exact,
+               bool_or(v = 'synonym') as has_synonym,
+               bool_or(v = 'acceptedGroup') as has_accepted_group,
+               bool_or(v = 'curatedEquivalent') as has_curated_equivalent,
+               bool_or(v = 'genusCard') as has_genus_card,
+               bool_or(v = 'legacyGenus') as has_legacy_genus,
+               bool_or(v = 'ambiguous') as has_ambiguous,
+               bool_or(v = 'related') as has_related,
+               bool_or(v = 'none') as has_none
+          from vals
+    """,
+    # READABILITY, not just row counts. A count can be answered from an index; this reads the
+    # columns themselves, including the ones 0006 added, and aggregates so a public workflow
+    # log carries no player's record. A null `eligibility` is the ordinary case for every
+    # sighting logged by hand from a card page and is reported as such rather than hidden.
+    "readable — eligibility distribution across existing sightings": """
+        select coalesce(eligibility, '(null)') as eligibility, count(*) as rows
+          from public.sightings group by 1 order by 1
+    """,
+    "readable — sightings aggregate": """
+        select count(*) as rows, count(herb_id) as with_herb_id,
+               count(observed_taxon_name) as with_observed_taxon,
+               min(created_at) as earliest, max(created_at) as latest
+          from public.sightings
+    """,
+    "readable — discoveries aggregate": """
+        select count(*) as rows, count(distinct herb_id) as distinct_cards,
+               min(discovered_at) as earliest, max(discovered_at) as latest
+          from public.discoveries
+    """,
     "data at risk — row counts": """
         select
           (select count(*) from public.sightings) as sightings,
