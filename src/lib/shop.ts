@@ -177,9 +177,15 @@ export const SHOWCASE_HERB_IDS = [
  * the object in a hand, outdoors, is the one claim a render structurally cannot make, and it
  * is the claim a buyer is actually weighing.
  *
- * Three, each saying something the other two do not: what you get, what it is for, and that
- * the backs are printed too. A fourth was shot indoors on fabric and is deliberately unused —
- * it broke the set, and the job it did (a legible full back) is done better by the render.
+ * Three, each saying something the other two do not: what you get, that it is a real object
+ * with heft, and that the backs are printed too.
+ *
+ * THE SET LOST ITS "WHAT IT IS FOR" FRAME and that is worth knowing rather than discovering.
+ * The photograph it replaced held three cards up beside a living red clover — the one image
+ * that showed the deck doing its job next to the plant it describes. It went because it was
+ * the weakest frame in the set by some distance: soft throughout, apparently a video still,
+ * with the cards themselves out of focus. A sharp photograph of the deck beside the plant it
+ * names would be the best single image on this page, and there is currently none.
  *
  * Dimensions are the built output, not the source, because `images.unoptimized` is forced by
  * `output: 'export'` and a wrong intrinsic size is a layout shift nothing corrects. Generated
@@ -196,33 +202,73 @@ export interface ProductPhoto {
 }
 
 export const PRODUCT_HERO: ProductPhoto = {
-  file: 'deck-in-hand',
+  file: 'deck-fanned',
   width: 1100,
-  height: 1154,
+  height: 954,
   alt:
-    'Six cards from the deck fanned out in a hand and held over grass, among them Wild Mint, ' +
-    'Catnip, Shepherd\u2019s Purse, Self-Heal and Mullein.',
+    'A fan of cards from the deck laid on grass with their fronts showing \u2014 among them ' +
+    'Purple Dead Nettle, Oak, Goldenrod, Wild Violet, Red Clover, Dandelion and Honeysuckle ' +
+    '\u2014 with a second stack of cards beside them.',
   caption: 'The printed deck, outdoors where it is meant to be used.',
 };
 
 export const PRODUCT_PHOTOS: readonly ProductPhoto[] = [
   {
-    file: 'card-and-plant',
+    file: 'deck-in-hand',
     width: 600,
-    height: 703,
+    height: 772,
     alt:
-      'Three cards \u2014 Red Clover, Self-Heal and Purple Dead Nettle \u2014 held up beside a ' +
-      'red clover flower growing in the ground behind them.',
-    caption: 'A card beside the plant it describes.',
+      'The deck held in one hand over grass, seen from the side so the stacked card edges are ' +
+      'visible with sunlight across them. The Dandelion card is on top.',
+    caption: 'The deck in hand, edges catching the sun.',
   },
   {
     file: 'card-backs',
     width: 600,
-    height: 604,
+    height: 842,
     alt:
-      'Five cards fanned with their backs showing, each printed with healing traits, signature ' +
-      'compounds, taste and aromatic profiles, preparations and usable parts.',
+      'Cards fanned with their backs showing, each printed with healing traits, signature ' +
+      'compounds, taste and aromatic profiles, preparations and usable parts. The deck\u2019s ' +
+      'disclaimer card is among them.',
     caption: 'The backs, as printed.',
+  },
+];
+
+/**
+ * Why somebody would want the deck, in three lines.
+ *
+ * THE OWNER'S WORDS, VERBATIM. These are the product's own claims about itself and they are
+ * not ours to rewrite; the only editing here is the split between an opening line and the
+ * sentence backing it, so the page can be skimmed down the leads.
+ *
+ * WHAT THEY MAY NEVER BECOME. Nothing here may drift into a health claim — "why people have
+ * paid attention to it for generations" is the deck's own non-claim framing of traditional
+ * use and is the furthest this page goes. `shop.test.ts` holds them to that, and to the
+ * standing prohibition on invented scarcity, stock and delivery claims.
+ */
+export interface SellingPoint {
+  readonly lead: string;
+  readonly body: string;
+}
+
+export const DECK_SELLING_POINTS: readonly SellingPoint[] = [
+  {
+    lead: 'Stop wondering what you\u2019re looking at.',
+    body:
+      'Plantdex helps you recognize the common wild plants you actually encounter, without ' +
+      'digging through dense field guides or endless search results.',
+  },
+  {
+    lead: 'Learn the plants around you without making it feel like homework.',
+    body:
+      'Illustrated, collectible cards make the information easier to remember \u2014 and way ' +
+      'more fun to use outside.',
+  },
+  {
+    lead: 'Built for real-world use.',
+    body:
+      'Learn what grows around you, what makes it distinct, and why people have paid ' +
+      'attention to it for generations.',
   },
 ];
 

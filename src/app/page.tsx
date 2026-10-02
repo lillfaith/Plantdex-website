@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
-import { isCommerceLive } from '@/lib/shop';
 import { PlantSprite } from '@/components/PlantSprite';
 import { RarityAura } from '@/components/game/RarityAura';
 import { assetPath } from '@/lib/asset-path';

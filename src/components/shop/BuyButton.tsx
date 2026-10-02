@@ -52,7 +52,7 @@ export function BuyButton({ href, price }: { href: string; price: string }) {
       onClick={record}
       className="inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-gold-400 px-8 text-base font-bold text-plum-900 transition hover:bg-gold-300 focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-plum-900 focus-visible:outline-none sm:w-auto"
     >
-      <span>Buy the deck</span>
+      <span>Buy the Plantdex</span>
       <span aria-hidden className="text-plum-800/70">
         &middot;
       </span>

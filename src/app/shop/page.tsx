@@ -5,7 +5,6 @@ import { BuyButton } from '@/components/shop/BuyButton';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { assetPath } from '@/lib/asset-path';
 import { CURRENT_COLLECTION } from '@/lib/collection';
-import { getPrintedCard } from '@/lib/deck';
 import {
   DECK_CARD_COUNT,
   INCLUDED,
@@ -13,7 +12,7 @@ import {
   PHYSICAL_CARD_COUNT,
   PRODUCT_HERO,
   PRODUCT_PHOTOS,
-  SHOWCASE_HERB_IDS,
+  DECK_SELLING_POINTS,
   displayPrice,
   isCommerceLive,
   checkoutLink,
@@ -49,13 +48,6 @@ export default function ShopPage() {
    * is false — the branch and the href cannot disagree.
    */
   const configured = isCommerceLive();
-
-  // The ids live in shop.ts so a test can assert they still resolve — see SHOWCASE_HERB_IDS.
-  const showcase = SHOWCASE_HERB_IDS.map((id) => getPrintedCard(id)).filter(
-    (herb): herb is NonNullable<typeof herb> => Boolean(herb),
-  );
-  // The back shown is the first card's own back, so the two always describe the same species.
-  const backCard = showcase[0];
 
   return (
     <main id="main" className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
@@ -118,45 +110,42 @@ export default function ShopPage() {
         </figcaption>
       </figure>
 
-      {/* ── The cards themselves ─────────────────────────────────────────────── */}
-      <section className="mt-10" aria-labelledby="cards-heading">
-        <h2 id="cards-heading" className="sr-only">
-          Cards from the deck
+      {/* ── What the deck is for ─────────────────────────────────────────────── */}
+      {/*
+        THE CARD ART CAME OUT OF THIS PAGE, and the reason is that it was the wrong argument
+        in the wrong place. Three card fronts and a back render sat here showing what a card
+        LOOKS like — which the hero photograph, the two photographs below and the whole of
+        /herbdex already do, several of them better and with the real printed object rather
+        than the source art. What the page had nowhere was a reason to want one.
+
+        Three reasons, in the owner's own words. Deliberately not a feature grid with icons:
+        this page is written as a page about a deck of cards rather than a storefront template,
+        and a three-up row of icons is the generic pattern it avoids everywhere else.
+
+        Each is an opening line and the sentence that backs it, so the page can be skimmed down
+        the leads alone — which is how anybody reads a product page on a phone.
+      */}
+      <section className="mt-10" aria-labelledby="why-heading">
+        <h2 id="why-heading" className="sr-only">
+          What the deck is for
         </h2>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {showcase.map((herb) => (
-            <li key={herb.id} className="contents">
-              <figure className="col-span-1">
-                <Image
-                  src={assetPath(`/cards/${herb.id}.webp`)}
-                  alt={`The front of the ${herb.commonName} card`}
-                  width={420}
-                  height={620}
-                  className="w-full rounded-xl border border-violet-800/60"
-                />
-                <figcaption className="mt-2 text-center text-xs text-violet-400">
-                  {herb.commonName} &middot; front
-                </figcaption>
-              </figure>
+        <ul className="space-y-5">
+          {DECK_SELLING_POINTS.map((point) => (
+            <li key={point.lead}>
+              <p className="text-sm font-bold text-gold-300">{point.lead}</p>
+              <p className="mt-1 text-sm leading-relaxed text-violet-200">{point.body}</p>
             </li>
           ))}
         </ul>
-        {backCard && (
-        <figure className="mt-4">
-          <Image
-            src={assetPath(`/cards/back/${backCard.id}.webp`)}
-            alt={`The back of the ${backCard.commonName} card, showing its written entry`}
-            width={420}
-            height={620}
-            className="mx-auto w-1/2 max-w-[220px] rounded-xl border border-violet-800/60"
-          />
-          <figcaption className="mt-2 text-center text-xs text-violet-400">
-            Every card is printed both sides — the back carries the written entry.
-          </figcaption>
-        </figure>
-        )}
+      </section>
+
+      {/* ── Photographs of the printed deck ──────────────────────────────────── */}
+      <section className="mt-10" aria-labelledby="photos-heading">
+        <h2 id="photos-heading" className="sr-only">
+          Photographs of the printed deck
+        </h2>
         {/*
-          Two more photographs, at the `thumb` variant because they are drawn at about half
+          Two photographs, at the `thumb` variant because they are drawn at about half
           width — 600px covers 390 CSS px at DPR 3 with room over. Naming the 1100px file here
           would ship four times the bytes to draw the same pixels, which is the one lever
           `unoptimized` leaves available.

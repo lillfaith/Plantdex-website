@@ -332,10 +332,24 @@ describe('no page denies the sale while configuration can turn it on', () => {
     expect(source, 'DeckCta must resolve its label from isCommerceLive()').toMatch(
       /isCommerceLive\(\)/,
     );
-    // And the purchase verb may only appear inside that branch, never as a bare default.
-    const labels = source.match(/'Get the deck'/g) ?? [];
-    expect(labels, 'DeckCta hard-codes a purchase label outside the sale branch').toHaveLength(
-      1,
-    );
+    /*
+     * And a purchase label may only appear inside that branch, never as a bare default.
+     *
+     * COUNTED ACROSS EVERY PURCHASE LABEL, not just one. This checked `'Get the deck'` alone,
+     * which was the whole vocabulary when it was written. A second label — `'Buy the Plantdex'`
+     * for the landing page, which leads with the button — would have been invisible to it, so
+     * a bare default spelled the new way could have shipped past a green test. The guard is
+     * about the SHAPE (one occurrence, inside the sale branch), so it has to see the shape
+     * whichever words fill it.
+     */
+    const purchaseLabels = source.match(/'(?:Get the deck|Buy the Plantdex)'/g) ?? [];
+    expect(
+      purchaseLabels.length,
+      'DeckCta hard-codes a purchase label outside the sale branch',
+    ).toBe(2);
+    // Both sit on the one line that `isCommerceLive()` guards.
+    const saleBranch = source.match(/if \(isCommerceLive\(\)\)[^\n]*/)?.[0] ?? '';
+    expect(saleBranch).toContain('Get the deck');
+    expect(saleBranch).toContain('Buy the Plantdex');
   });
 });
