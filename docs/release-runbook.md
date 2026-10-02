@@ -293,3 +293,75 @@ refused by Postgres and lost — so **0007 must be applied before any frontend t
 one reaches players**. The ordering in this runbook is that constraint, not a preference.
 
 **Verification is clean. Stopping here as instructed; 0007 not applied.**
+
+---
+
+## Migration 0007 — applied to production 2026-10-02 04:04 UTC
+
+Dispatched `run-migration.yml` with `project_ref=vygiamigomwlvnwkryyl`,
+`migration=0007_unlock_bases.sql`, `ref=claude/plantdex-v0-3-supabase-verify-iic8pz` — run
+36962922579, **HTTP 201**, all six steps success. Re-verified independently by
+`release-checkpoint.yml` run 36962979028 and `function-identity.yml` run 36962980912.
+
+### This is the runbook's one blocking gate, so it is MEASURED, not read
+
+A diff between my transcription of the vocabulary and my transcription of the constraint
+proves nothing, and "no pre-existing value was accidentally removed" is the question an
+eyeball is worst at. So the accepted values are pulled OUT of
+`pg_get_constraintdef` with `regexp_matches` and reported as a set. What follows is the
+database's own answer about itself.
+
+**1. The constraint exists**, and its live definition is:
+
+```
+CHECK (((eligibility IS NULL) OR (eligibility = ANY (ARRAY['exact'::text,
+  'synonym'::text, 'acceptedGroup'::text, 'curatedEquivalent'::text, 'genusCard'::text,
+  'legacyGenus'::text, 'ambiguous'::text, 'related'::text, 'none'::text]))))
+```
+
+**2. Nine values, and the set is EXACTLY `ELIGIBILITIES`.** Extracted from the live
+definition: `acceptedGroup, ambiguous, curatedEquivalent, exact, genusCard, legacyGenus,
+none, related, synonym` — `value_count: 9`, and one boolean per member of the application
+vocabulary, all nine `True`. Compared against `ELIGIBILITIES` in `src/lib/plant-match.ts`
+as sorted sets: **equal**. Neither side carries a value the other does not.
+
+**3. Nothing was removed.** The pre-0007 seven (`exact, acceptedGroup, genusCard,
+legacyGenus, ambiguous, related, none`) are all present; the added values are exactly
+`curatedEquivalent` and `synonym`. A widening, as the file claims to be.
+
+**`legacyGenus` IS STILL ACCEPTED**, measured as its own column (`has_legacy_genus: True`)
+off the database's own constraint text. It is the value nothing issues any more and stored
+sightings carry, so a widening that quietly dropped it would have made real history
+unwritable — and the only way to "fix" those rows afterwards would be to rewrite why a past
+observation reached a card. It goes quiet, not away.
+
+**4. Row counts unchanged.** `sightings 3 · discoveries 27 · profiles 2 · seed_shelf 16 ·
+species_packets 16` — identical to the pre-0006 baseline and to the post-0006 reading.
+
+**5. Existing rows are readable**, which a count cannot establish on its own — a count can be
+answered from an index. Reading the columns themselves, aggregated so the log carries no
+player's record: 3 sightings, all 3 with a `herb_id`, **0 with an observed taxon** (correct:
+nothing backfills, and all three predate the identification path), earliest
+`2026-09-14 20:52:20+00`, latest `2026-10-01 22:18:45+00`. Eligibility distribution: `(null)
+× 3` — also correct, since every existing sighting was logged by hand from a card page with
+no identifier involved. Discoveries: 27 rows across 21 distinct cards, earliest
+`2026-08-22 15:13:56+00`, latest `2026-10-01 22:17:20+00`.
+
+**6. Edge functions untouched.** Versions `delete-account 16 · herbdex-action 18 ·
+identify-plant 14 · seed-packet 12`, every `updated_at` byte-identical, and every
+`ezbr_sha256` equal to the baseline:
+
+| function | version | `ezbr_sha256` | vs baseline |
+| --- | --- | --- | --- |
+| `delete-account` | 16 | `7cf16c547bf7a804cfbaf49364e9773563f63fb0cfd18b610ed87743a7bb53e4` | first capture |
+| `herbdex-action` | 18 | `71b0c99f00f518e5fa4cbac6517f2677cfaf14c54772a472b71e8a15fe2db912` | unchanged |
+| `identify-plant` | 14 | `cb888321bc1a751ae4ce80cdf20ff7232898008d3835704c81eb9817f12a7ca2` | unchanged |
+| `seed-packet` | 12 | `e10d9ce23db6fb67a773881123e07a968b4cd50e4de4de1c8b8afc3c49b13901` | unchanged |
+
+`delete-account`'s hash was not captured at the step-0 reading and is recorded here so the
+baseline is complete for all four. The version counter did not move across either migration,
+which is a further small data point against the earlier +3 having been a deployment.
+
+**Verification is clean. The schema is now ahead of the deployed code, which is the correct
+direction**: a CHECK wider than the application refuses nothing, where a CHECK narrower than
+it loses sightings.
