@@ -130,7 +130,13 @@ ROUTES: list[tuple[str, list[str]]] = [
     # the same change that opened the checkout, or the check would assert the state the site
     # had just left. Both directions of that mistake are silent until somebody reads the run.
     #
-    # "Buy the deck" is the order CTA itself, not monitoring-only copy: it is the text inside
+    # RE-STATED WHEN THE BUTTON WAS RENAMED, and the check failed on the deploy that renamed
+    # it — correctly, and after a grep of `src/` that did not look in `scripts/`. A marker is a
+    # claim about what the live site says, so changing the copy is MEANT to break it until
+    # somebody re-states the claim. Same event as the /scan/ marker above, same remedy: rename
+    # the string here in the same change that renames it in the component.
+    #
+    # "Buy the Plantdex" is the order CTA itself, not monitoring-only copy: it is the text inside
     # the anchor whose href is the Stripe Payment Link, so it cannot render without the link
     # rendering too. That makes it a claim about the CHECKOUT rather than about the page.
     # Measured across two real builds of the same commit — one with the Stripe variables
@@ -146,7 +152,7 @@ ROUTES: list[tuple[str, list[str]]] = [
     # IF THE DECK EVER COMES OFF SALE, this line goes back to ["Not on sale yet"] in the same
     # change. Do not carry both markers "to be safe" — a check that passes in either state
     # asserts nothing, which is the lesson the /scan/ note above already records.
-    ("/shop/", ["Buy the deck"]),
+    ("/shop/", ["Buy the Plantdex"]),
 ]
 
 
