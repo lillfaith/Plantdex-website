@@ -202,3 +202,40 @@ changes while still deploying anything touching `src/`, `public/`, `next.config.
 `package.json` or the deploy workflow itself. **Not done now**, because changing the
 deployment mechanism immediately before a release is the wrong moment to find out the filter
 is too narrow — a missed deploy is harder to notice than an extra one.
+
+---
+
+## Pre-migration production baseline — recorded 2026-10-02, before migration 0006
+
+**Backup.** Local logical dump `~/plantdex-backup-20261002T033033Z` (owner's machine, off-repo).
+`roles.sql` 7.0K `c1e874aee5c139d29772555ab8a1f585e1e6c21bf073b04cb386c97eb4195d13` ·
+`schema.sql` 307K `b9e2dc23a4f9e9a14ea56ca68cc9afc77e1cb54dc130f7eea8804d0007e67853` ·
+`data.sql` 96K `5c52c328b897acfd32c2a3fda58a49f1479e9c80f5882e0462d8bac1a554fbeb`.
+**Logical dump, not PITR; database only, no Storage objects.** PITR is disabled by decision.
+
+**Rollback tag.** `pre-identification-20261002` → annotated `227805ca…` →
+commit `2943b438c32b3b585f2e0177cefcc45871aacef6`.
+App-content baseline, recorded separately: `5000daf13f4bfd24abb26bc939e51d1c68ffa02a`.
+
+**Edge functions.** A step-0 re-check found every version +3 against the first reading
+(13/15/11/9 → 16/18/14/12) with `updated_at` byte-identical on all four. Investigated
+read-only: no CI deploy in the window, function ids and `created_at` unchanged, and
+`seed-packet`'s entrypoint path still named its version-9 extraction directory. The dashboard
+then showed `identify-plant`'s last deployment as **19 days ago**, which settles it: the
+counter moved for a platform reason and the code did not.
+
+| function | baseline version | `ezbr_sha256` |
+| --- | --- | --- |
+| `delete-account` | 16 | (not captured at this reading) |
+| `herbdex-action` | 18 | `71b0c99f00f518e5fa4cbac6517f2677cfaf14c54772a472b71e8a15fe2db912` |
+| `identify-plant` | 14 | `cb888321bc1a751ae4ce80cdf20ff7232898008d3835704c81eb9817f12a7ca2` |
+| `seed-packet` | 12 | `e10d9ce23db6fb67a773881123e07a968b4cd50e4de4de1c8b8afc3c49b13901` |
+
+**A VERSION COUNTER IS NOT A DEPLOYMENT RECORD, and this cost an hour to establish.** The
+first checkpoint stored version, status and `updated_at` and no bundle hash, so when the
+counter moved there was nothing to diff and the question could only be answered sideways.
+`scripts/function_identity.py` captures `ezbr_sha256` for exactly this reason; the hashes above
+are the baseline, and any future drift is now provable rather than arguable.
+
+**Rows before 0006:** `sightings 3 · discoveries 27 · profiles 2 · seed_shelf 16 ·
+species_packets 16`.
