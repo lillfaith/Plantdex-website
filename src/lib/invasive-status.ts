@@ -34,8 +34,17 @@
  * card's taxonomy is settled elsewhere and this file only reads ids.
  */
 
-/** What a species is doing in a place. Three separate facts, never collapsed. */
-export type RangeStatus = 'native' | 'introduced' | 'invasive';
+/**
+ * What a species is doing in a place. Four separate facts, never collapsed.
+ *
+ * `watchlist` WAS ADDED BY THE PRIMARY AUDIT, not designed up front. GISC's current list ends
+ * with a "Species of Concern" section defined as a species **not yet found in Georgia**, and
+ * `Alliaria petiolata` is in it. None of native / introduced / invasive describes that: the
+ * plant is not established here at all, and the draft recorded it as `introduced` — which was
+ * the right non-badge outcome reached through a wrong fact. Collapsing a watch-for species
+ * into "introduced" would assert a presence the authority explicitly denies.
+ */
+export type RangeStatus = 'native' | 'introduced' | 'invasive' | 'watchlist';
 
 /**
  * How well a claim is evidenced.
@@ -87,26 +96,35 @@ const GA = {
 } as const;
 
 /**
- * GA-EPPC, now continuing as the Georgia Invasive Species Council. Its categories are what the
- * threshold below is built on, quoted so a reader can see why Category 3 does not qualify:
+ * WHAT THE AUTHORITY'S CURRENT LIST ACTUALLY PUBLISHES, read from the page itself by
+ * `scripts/ga_invasive_audit.py` rather than from a summary of it.
  *
- *   Category 1  a serious problem in Georgia natural areas, extensively invading native plant
- *               communities and displacing native species
- *   Category 2  a moderate problem, invading and displacing, to a lesser degree than 1
- *   Category 3  a MINOR problem in Georgia natural areas, OR NOT YET KNOWN TO BE A PROBLEM IN
- *               GEORGIA but known to be a problem in adjacent states
- *   Category 4  naturalized but generally not a problem in Georgia natural areas
+ * GISC has adopted the RIPSA protocol — Priority 1 / Priority 2 / Watchlist — and its list
+ * index explains those terms. But the PLANT LIST page does not print a priority against each
+ * species. It prints tiers as unlabelled blocks, and only the first tier's definition survives
+ * in the page text:
  *
- * Only 1 and 2 assert that the plant is actually invading Georgia. Category 3 explicitly
- * covers plants that are not known to be a problem here, and Category 4 says they are not —
- * so neither can carry a badge reading "invasive in Georgia" without the badge saying
- * something the source does not.
+ *   "Exotic plants that are a serious problem in Georgia natural areas by extensively
+ *    invading native plant communities and displacing native species."
+ *
+ * followed by a "Species of Concern" section: "A species that is not yet found in [Georgia]".
+ *
+ * SO THIS FILE RECORDS THE AUTHORITY'S SENTENCE, NOT A NUMBER. Writing "Category 1" or
+ * "Priority 1" here would be translating between two vocabularies the authority is itself
+ * mid-transition between, and asserting a classification its current page does not print.
+ * `category` holds the tier's definition verbatim where it is readable, and is ABSENT where
+ * it is not — which is also what withholds a badge, since an unreadable tier is ambiguous
+ * evidence by definition.
+ *
+ * THE OLD CATEGORY NUMBERS ARE DELIBERATELY GONE. The draft carried them from search
+ * summaries and two of them were wrong: `Alliaria petiolata` was recorded as Category 3 when
+ * GISC in fact lists it as not yet present in the state, and `Lonicera japonica` carried a
+ * Category 1 that no primary document confirmed. Neither number is replaced by a better
+ * number; both are replaced by what the source says.
  */
-const GA_EPPC: StatusSource = {
-  // SHORT ENOUGH TO BE ATTRIBUTION. The full title ran to two wrapped lines in the badge and
-  // became the loudest thing in it, which puts the citation above the claim it supports.
-  name: 'Georgia Invasive Species Council (GA-EPPC list)',
-  url: 'https://gainvasivespeciescouncil.org/list/',
+const GISC: StatusSource = {
+  name: 'Georgia Invasive Species Council invasive plant list',
+  url: 'https://gainvasivespeciescouncil.org/list/invasive-plants/',
   checkedOn: '2026-10-02',
 };
 
@@ -115,76 +133,134 @@ const GA_EPPC: StatusSource = {
  * which is the correct rendering of "we did not find evidence", and is most of the deck.
  */
 export const REGIONAL_STATUS: Record<string, readonly RegionalStatus[]> = {
-  // ── THE ONE BADGE IN THE DECK TODAY ──
-  // The card's taxon IS the listed taxon, the region is defined, and the listing is the
-  // strongest category Georgia publishes. Nothing else in the catalogue meets all three.
+  // ── THE ONE BADGE IN THE DECK ──
+  // The card's taxon IS the listed taxon, and it sits in the top tier — the one whose
+  // definition the page prints. Nothing else in the catalogue meets both.
   'lonicera-japonica': [
     {
       ...GA,
       status: 'invasive',
       taxon: 'Lonicera japonica',
-      category: 'Category 1 — a serious exotic plant problem in Georgia natural areas',
-      source: GA_EPPC,
-      verification: 'search-attested',
+      category:
+        'Exotic plants that are a serious problem in Georgia natural areas by extensively ' +
+        'invading native plant communities and displacing native species',
+      source: GISC,
+      verification: 'primary-source',
       note: 'Climbs and smothers saplings and shrubs, and spreads from both runners and bird-carried fruit.',
       appliesToCard: true,
     },
   ],
 
-  // ── RECORDED, AND DELIBERATELY NOT BADGED ──
-  // Each of these is here so the reason is findable. An empty entry would read as "nobody
-  // looked".
+  // ── GENUS CARDS: RECORDED, NEVER BADGED ──
+  // The listed species are real and the listings are top-tier in two cases. The CARD is wider
+  // than the listing, so badging it would tell somebody holding a native rose, mulberry,
+  // blackberry or oak that their plant is an invader.
   'rosa-spp': [
     {
       ...GA,
       status: 'invasive',
       taxon: 'Rosa multiflora',
-      // No category number: published copies of the list disagree between 1 and 2, and a
-      // number this file cannot verify is not one it should print.
-      source: GA_EPPC,
-      verification: 'search-attested',
+      category:
+        'Exotic plants that are a serious problem in Georgia natural areas by extensively ' +
+        'invading native plant communities and displacing native species',
+      source: GISC,
+      verification: 'primary-source',
       note: 'Forms impenetrable thickets in fields and forest edges.',
       appliesToCard: false,
       whyNotTheCard:
-        'The Wild Rose card is Rosa spp. and covers roses native to Georgia as well. Badging the card would tell somebody holding a native rose that their plant is an invader.',
+        'The Wild Rose card is Rosa spp. and covers roses native to Georgia. Badging the card would tell somebody holding a native rose that their plant is an invader.',
+    },
+    {
+      ...GA,
+      status: 'invasive',
+      taxon: 'Rosa laevigata',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'Cherokee rose. Listed in a lower tier whose definition the page does not print.',
+      appliesToCard: false,
+      whyNotTheCard: 'Same genus-card scope as Rosa multiflora above.',
     },
   ],
   'morus-spp': [
     {
       ...GA,
-      status: 'introduced',
+      status: 'invasive',
       taxon: 'Morus alba',
-      category: 'Category 3 — a minor problem, or not yet known to be a problem in Georgia',
-      source: GA_EPPC,
-      verification: 'search-attested',
-      note: 'Hybridises with the native red mulberry, which is the concern more than spread.',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'Hybridises with the native red mulberry, which is the concern more than spread. Listed in a lower tier whose definition the page does not print.',
       appliesToCard: false,
       whyNotTheCard:
-        'Category 3 does not assert that the plant is invading Georgia, and the Mulberry card covers the native Morus rubra as well.',
+        'The Mulberry card is Morus spp. and covers the native Morus rubra as well.',
     },
   ],
-  'alliaria-petiolata': [
+  'rubus-spp': [
     {
       ...GA,
-      status: 'introduced',
-      taxon: 'Alliaria petiolata',
-      category: 'Category 3 — a minor problem, or not yet known to be a problem in Georgia',
-      source: GA_EPPC,
-      verification: 'search-attested',
-      note: 'A serious invader further north. Georgia lists it at the category meaning "not yet known to be a problem here".',
-      appliesToCard: true,
-      // `appliesToCard` is true and there is STILL no badge, because the status is not
-      // `invasive`. The two conditions are independent on purpose.
+      status: 'invasive',
+      taxon: 'Rubus armeniacus',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'Himalayan blackberry. Found by the mechanical audit; the search-attested draft missed it entirely.',
+      appliesToCard: false,
+      whyNotTheCard:
+        'The Blackberry card is Rubus spp. and covers blackberries native to Georgia.',
+    },
+    {
+      ...GA,
+      status: 'invasive',
+      taxon: 'Rubus phoenicolasius',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'Wine raspberry.',
+      appliesToCard: false,
+      whyNotTheCard: 'Same genus-card scope as Rubus armeniacus above.',
     },
   ],
+  'quercus-spp': [
+    {
+      ...GA,
+      status: 'invasive',
+      taxon: 'Quercus acutissima',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'Sawtooth oak. Found by the mechanical audit; the draft missed it.',
+      appliesToCard: false,
+      whyNotTheCard:
+        'The Oak card is Quercus spp. and Georgia has many native oaks.',
+    },
+  ],
+
+  // ── ON THE LIST, CARD TAXON MATCHES, AND STILL NO BADGE ──
+  // `appliesToCard` is true here and the badge is still withheld, because the TIER is what is
+  // missing. The page prints no definition for the block this species sits in, so what the
+  // authority is asserting about it cannot be read — and an unreadable tier is ambiguous
+  // evidence, which is the one thing a badge may never be built on.
   'allium-vineale': [
     {
       ...GA,
       status: 'introduced',
       taxon: 'Allium vineale',
-      category: 'Category 3 — a minor problem, or not yet known to be a problem in Georgia',
-      source: GA_EPPC,
-      verification: 'search-attested',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'On the Georgia invasive plant list, in a lower tier whose definition the published page does not carry. Recorded as introduced rather than invasive for that reason.',
+      appliesToCard: true,
+    },
+  ],
+
+  // ── NOT ESTABLISHED IN GEORGIA AT ALL ──
+  // The draft had this as `introduced` with a Category 3 from a search summary. The primary
+  // list places it under "Species of Concern": a species NOT YET FOUND in Georgia. Right
+  // outcome, wrong fact — and the fact is the part that would have aged badly.
+  'alliaria-petiolata': [
+    {
+      ...GA,
+      status: 'watchlist',
+      taxon: 'Alliaria petiolata',
+      category: 'Species of Concern — a species that is not yet found in Georgia',
+      source: GISC,
+      verification: 'primary-source',
+      note: 'A serious invader further north. Georgia lists it as one to watch for rather than one that is here.',
       appliesToCard: true,
     },
   ],

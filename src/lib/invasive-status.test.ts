@@ -44,12 +44,12 @@ describe('the model refuses to be a universal boolean', () => {
   });
 
   it('keeps native, introduced and invasive as three separate statuses', () => {
-    const allowed: RangeStatus[] = ['native', 'introduced', 'invasive'];
+    const allowed: RangeStatus[] = ['native', 'introduced', 'invasive', 'watchlist'];
     for (const claims of Object.values(REGIONAL_STATUS)) {
       for (const claim of claims) expect(allowed).toContain(claim.status);
     }
     // And the type admits all three, so nothing can quietly collapse to a two-state field.
-    expect(CODE).toContain("'native' | 'introduced' | 'invasive'");
+    expect(CODE).toContain("'native' | 'introduced' | 'invasive' | 'watchlist'");
   });
 });
 
@@ -62,6 +62,30 @@ describe('every claim is evidenced', () => {
         expect(claim.source.checkedOn, `${herbId}: source has no date`).toMatch(
           /^\d{4}-\d{2}-\d{2}$/,
         );
+      }
+    }
+  });
+
+  it('is evidenced from the primary list, not from summaries of it', () => {
+    // The audit's purpose. A search summary got two of these wrong — `Alliaria petiolata`'s
+    // category, and a Category 1 for `Lonicera japonica` that no document carried.
+    for (const [herbId, claims] of Object.entries(REGIONAL_STATUS)) {
+      for (const claim of claims) {
+        expect(claim.verification, `${herbId} is not primary-source`).toBe('primary-source');
+      }
+    }
+  });
+
+  it('records the authority\u2019s own wording, never a translated category number', () => {
+    // GISC is mid-transition between RIPSA (Priority 1/2/Watchlist) and the older GA-EPPC
+    // categories, and its plant list prints neither against each species. Writing either here
+    // would assert a classification the current page does not publish.
+    for (const claims of Object.values(REGIONAL_STATUS)) {
+      for (const claim of claims) {
+        if (claim.category) {
+          expect(claim.category).not.toMatch(/Category\s*[1-4]\b/i);
+          expect(claim.category).not.toMatch(/Priority\s*[12]\b/i);
+        }
       }
     }
   });
@@ -104,6 +128,27 @@ describe('a plant without a verified invasive status gets no badge', () => {
     expect(badgeFor('')).toBeNull();
   });
 
+  it('never badges a species the authority says is not yet here', () => {
+    // `Alliaria petiolata` is under GISC's "Species of Concern": not yet found in Georgia.
+    // `appliesToCard` is TRUE for it, so only the status withholds the badge — which is the
+    // independence of the two conditions doing its job.
+    const [claim] = statusesFor('alliaria-petiolata');
+    expect(claim).toBeDefined();
+    expect(claim!.status).toBe('watchlist');
+    expect(claim!.appliesToCard).toBe(true);
+    expect(badgeFor('alliaria-petiolata')).toBeNull();
+  });
+
+  it('withholds a badge when the authority\u2019s tier cannot be read', () => {
+    // `Allium vineale` is on the list and the card taxon matches, but the page prints no
+    // definition for its tier. Ambiguous evidence, so no badge.
+    const [claim] = statusesFor('allium-vineale');
+    expect(claim).toBeDefined();
+    expect(claim!.appliesToCard).toBe(true);
+    expect(claim!.status).not.toBe('invasive');
+    expect(badgeFor('allium-vineale')).toBeNull();
+  });
+
   it('NEVER badges a plant merely for being introduced', () => {
     // The failure this test exists for. Most of this deck arrived with Europeans — dandelion,
     // plantain, chickweed, clover — and badging them invasive would put a marker on nine
@@ -120,14 +165,17 @@ describe('a plant without a verified invasive status gets no badge', () => {
     }
   });
 
-  it('does not badge a genus card for one invasive member', () => {
-    // `Rosa multiflora` is invasive in Georgia; the card is `Rosa spp.` and covers roses
-    // native to Georgia. The claim is recorded and must render nothing.
-    const rose = statusesFor('rosa-spp');
-    expect(rose.some((claim) => claim.status === 'invasive')).toBe(true);
-    expect(badgeFor('rosa-spp')).toBeNull();
-    for (const claim of rose.filter((one) => !one.appliesToCard)) {
-      expect(claim.whyNotTheCard, 'a withheld badge must say why').toBeTruthy();
+  it('does not badge any genus card for an invasive member', () => {
+    // Four of them, and the mechanical audit found two the search-attested draft had missed
+    // entirely: Rubus and Quercus. Every one records a real listing and must render nothing.
+    for (const herbId of ['rosa-spp', 'morus-spp', 'rubus-spp', 'quercus-spp']) {
+      const claims = statusesFor(herbId);
+      expect(claims.length, `${herbId} has no recorded claim`).toBeGreaterThan(0);
+      expect(claims.some((claim) => claim.status === 'invasive'), herbId).toBe(true);
+      expect(badgeFor(herbId), `${herbId} must not badge`).toBeNull();
+      for (const claim of claims.filter((one) => !one.appliesToCard)) {
+        expect(claim.whyNotTheCard, `${herbId}: a withheld badge must say why`).toBeTruthy();
+      }
     }
   });
 

@@ -49,9 +49,6 @@ export function InvasiveBadge({ claim }: { claim: RegionalStatus }) {
         <span className="whitespace-nowrap">
           Invasive &mdash; {claim.region}
         </span>
-        {claim.category && (
-          <span className="font-normal normal-case text-violet-300">{claim.category}</span>
-        )}
       </h2>
       <p className="mt-1.5 text-xs leading-relaxed text-violet-200">
         {badgeExplanation(claim)}
@@ -59,11 +56,16 @@ export function InvasiveBadge({ claim }: { claim: RegionalStatus }) {
       {claim.note && (
         <p className="mt-1 text-xs leading-relaxed text-violet-300">{claim.note}</p>
       )}
-      <p className="mt-1.5 text-xs text-violet-300">
+      <p className="mt-1.5 text-xs leading-relaxed text-violet-300">
         {/*
-          The taxon is printed when it is not simply the card, which on a genus card is the
-          difference between a true statement and a false one. It renders nothing in the
-          ordinary case so the line stays short.
+          PROVENANCE LAST, AND THE TIER DEFINITION BELONGS IN IT. Read back at 390px, the
+          definition had been sitting directly under the chip in the subtitle slot — three
+          lines of the authority's prose above the one sentence a forager can act on. It is
+          supporting evidence for the claim, not the claim, so it reads after the attribution
+          it qualifies.
+
+          The taxon is printed because on a genus card it is the difference between a true
+          statement and a false one, and it costs one word in the ordinary case.
         */}
         Listed as <span className="italic">{claim.taxon}</span> by{' '}
         <a
@@ -77,7 +79,14 @@ export function InvasiveBadge({ claim }: { claim: RegionalStatus }) {
         >
           {claim.source.name}
         </a>
-        .
+        {claim.category ? (
+          <>
+            , in the list&rsquo;s own words:{' '}
+            <span className="italic">{claim.category}</span>.
+          </>
+        ) : (
+          '.'
+        )}
       </p>
     </aside>
   );

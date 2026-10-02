@@ -55,81 +55,90 @@ a badge reading "invasive in Georgia" on either would say something the source d
 
 ---
 
-## What the audit found
+## What the primary audit found
 
-54 cards examined: 45 printed plus 9 Field Cards. **One qualifies.**
+`.github/workflows/ga-invasive-audit.yml` fetched GISC's current list from a runner and
+cross-referenced all 54 cards mechanically. **It did not confirm the search-attested draft; it
+corrected it in four places.**
 
-### Badged
+### The method had to be fixed twice before it could be trusted
 
-| Card | Scientific name | Region | Listing | Source |
-| --- | --- | --- | --- | --- |
-| #40 Honeysuckle | *Lonicera japonica* | Georgia | Category 1 — a serious exotic plant problem in Georgia natural areas | [GA-EPPC / Georgia Invasive Species Council invasive plant list](https://gainvasivespeciescouncil.org/list/) |
+Worth recording, because both failures produced confident wrong answers rather than errors.
 
-Exact wording shown in the UI:
+1. **Proximity.** The first run looked for a status token within 400 characters of a species
+   and reported "none" for most of them — including for the one species being badged. These
+   lists are **sectioned**: the GA-EPPC PDF carries five "Category 1" tokens across 10,638
+   characters, one heading and then forty species beneath it.
+2. **Sections.** Assigning the last heading before a species was right in principle and still
+   wrong in practice, for two reasons. A **multi-column PDF extracts out of reading order**, so
+   "the heading before" is whichever column fragment happened to come first — the 2006 list
+   shows 13 headings for about 5 sections. And the **Georgia DNR strategy is a 318,000-character
+   narrative with no sections at all**, which is how `Pinus species` acquired a Priority 1 from
+   a sentence about a beetle's symbiotic fungus, and `Rumex acetosella` a Watch List from a line
+   about seeds costing 200 per pound.
 
-> **INVASIVE — GEORGIA**  ·  Category 1 — a serious exotic plant problem in Georgia natural areas
->
-> This species is considered invasive in Georgia. Harvest responsibly where legal, and avoid
-> spreading seeds, roots, fruit, or other reproductive material.
->
-> Climbs and smothers saplings and shrubs, and spreads from both runners and bird-carried fruit.
->
-> Listed as *Lonicera japonica* by GA-EPPC / Georgia Invasive Species Council invasive plant list.
+**So no category was derived from a PDF at all.** What survives both failures is a binomial
+appearing in clean HTML on the authority's own page, and the page was printed verbatim and read.
 
-It says **"is considered invasive"** rather than "is invasive": the badge reports a listing by
-a named authority, it does not make its own determination. It says **"where legal"** rather
-than stating the law, because legality varies by land and site and is not ours to assert —
-the same reason `/safety` says foraging rules vary rather than summarising them.
+### What GISC's current page actually publishes
 
-### Recorded and deliberately NOT badged
+It is tiered, and the tier headings do not survive as text — the page carries **no per-species
+priority**. Only the first tier's definition is in the prose:
 
-Kept in the data with the reason attached, so the next reader finds a decision rather than an
-absence.
+> Exotic plants that are a serious problem in Georgia natural areas by extensively invading
+> native plant communities and displacing native species.
 
-| Card | Listed taxon | Why no badge |
+and a final section: **"Species of Concern — a species that is not yet found in [Georgia]"**.
+
+GISC's list *index* does use RIPSA — Priority 1, Priority 2, Watchlist — but the plant list
+itself does not apply those labels per species, and its own notes say the RIPSA migration is
+incomplete. **This file therefore records the authority's sentence and never a number.** Writing
+"Category 1" or "Priority 1" would translate between two vocabularies the authority is itself
+mid-transition between, and assert a classification its current page does not print.
+
+### The complete set of Plantdex taxa on the current primary list
+
+| Card | Listed taxon | Tier | Badge? |
+| --- | --- | --- | --- |
+| **#40 Honeysuckle** | ***Lonicera japonica*** | **Top tier** — the one whose definition the page prints | **YES** |
+| #37 Wild Rose | *Rosa multiflora* | Top tier | No — genus card |
+| #37 Wild Rose | *Rosa laevigata* | Lower tier, undefined on the page | No — genus card |
+| #42 Mulberry | *Morus alba* | Lower tier, undefined | No — genus card |
+| #18 Blackberry | *Rubus armeniacus* | Lower tier, undefined | No — genus card |
+| #18 Blackberry | *Rubus phoenicolasius* | Lower tier, undefined | No — genus card |
+| #45 Oak | *Quercus acutissima* | Lower tier, undefined | No — genus card |
+| #29 Field Garlic | *Allium vineale* | Lower tier, **undefined** | No — tier unreadable |
+| #07 Garlic Mustard | *Alliaria petiolata* | **Species of Concern — not yet found in Georgia** | No — not present here |
+
+**One badge: card #40, *Lonicera japonica*.** Its taxon is the listed taxon and it sits in the
+tier the page defines as a serious problem extensively invading and displacing natives.
+
+### Differences from the search-attested draft
+
+| | Draft said | Primary list says |
 | --- | --- | --- |
-| #37 Wild Rose | *Rosa multiflora* | **Genus card.** `Rosa spp.` covers roses native to Georgia. Badging the card would tell somebody holding a native rose that their plant is an invader. (Published copies of the list also disagree between Category 1 and 2, so no category number is printed.) |
-| #42 Mulberry | *Morus alba* | **Category 3**, which does not assert invasion in Georgia — and the card covers the native *Morus rubra* as well. Recorded as `introduced`. |
-| #07 Garlic Mustard | *Alliaria petiolata* | **Category 3.** A serious invader further north; Georgia lists it at the category meaning "not yet known to be a problem here". Recorded as `introduced`. |
-| #29 Field Garlic | *Allium vineale* | **Category 3.** Recorded as `introduced`. |
+| *Lonicera japonica* | "Category 1" | **No category published.** Top tier, definition recorded verbatim. The number was never in any document. |
+| *Alliaria petiolata* | "Category 3", recorded `introduced` | **"Species of Concern" — not yet found in Georgia.** Right outcome, wrong fact. Now `watchlist`. |
+| *Rosa multiflora* | Category "1 or 2", disputed | **Top tier**, same as honeysuckle. The dispute was an artefact of summaries. |
+| *Rubus armeniacus*, *Rubus phoenicolasius*, *Quercus acutissima*, *Rosa laevigata* | **absent** | On the list. The draft missed four taxa entirely. |
+| *Morus alba* | "Category 3" | On the list; tier undefined on the page. |
+| Evidence grade | `search-attested` | **`primary-source` throughout.** |
 
-Note that #07 and #29 have `appliesToCard: true` and still render nothing, because their
-status is not `invasive`. The two conditions are independent on purpose.
+A fourth status, **`watchlist`**, was added because the audit found a concept the model had no
+room for: a species the authority names and says is *not here*. Folding that into `introduced`
+would assert a presence the source explicitly denies.
 
-### Not found on Georgia's lists
+### What is still not knowable
 
-Checked and absent: chicory, burdock, mullein, St John's wort, ground ivy. The remaining
-cards — natives (*Solidago canadensis*, *Ambrosia artemisiifolia*, *Monarda fistulosa*,
-*Passiflora incarnata*, *Viola sororia*, *Fragaria virginiana*, *Geranium maculatum*,
-*Impatiens capensis*, all nine Field Cards) and the other introduced weeds — produced no hit.
+The page prints no definition for its lower tiers, so for seven of the nine listed taxa the
+authority's own severity claim cannot be read. For the genus cards that changes nothing — they
+would be suppressed regardless. For *Allium vineale* it is the whole reason there is no badge:
+the card's taxon matches and `appliesToCard` is true, and the badge is withheld because the
+evidence is ambiguous, which is the rule working rather than an omission.
 
----
-
-## Evidence grade, stated plainly
-
-**Every entry is `verification: 'search-attested'`, not `'primary-source'.**
-
-The sandbox this work was done in cannot reach `gainvasivespeciescouncil.org`,
-`se-eppc.org`, `invasive.org`, `bugwoodcloud.org`, `georgiawildlife.com` or `fs.usda.gov` —
-the egress proxy refuses all of them. So the listing documents were established through a
-search engine's summaries **with the primary documents' URLs recorded but not fetched**.
-
-That matters, and one finding shows exactly how much: **two searches disagreed about whether
-*Rosa multiflora* is Category 1 or Category 2.** Both cannot be right, and the disagreement is
-why no category number is printed for that entry and why `verification` is a per-claim field
-rather than a note at the top of the file.
-
-`scripts/ga_invasive_audit.py` and `.github/workflows/ga-invasive-audit.yml` close this. The
-script fetches the primary lists from a runner, where egress is open, and cross-references
-**every** catalogue name — expanding genus cards, since `Rosa spp.` has to be checked against
-every *Rosa* on the list. Its output is evidence for a human to read, not data: nothing in it
-reaches the UI, so a PDF layout change cannot put a badge on a plant.
-
-**It has not been run.** `workflow_dispatch` resolves a workflow only if the file is on the
-default branch, and on this repository pushing to the default branch *is* a production
-deployment. So running it is a decision about deploying, not a research step.
-
----
+Absence from the list is also weaker evidence than presence: the fetched page is 9,520
+characters and may be partial, so "not found" means "not found in what the page served", not
+"the authority has ruled on it".
 
 ## What this did not touch
 
