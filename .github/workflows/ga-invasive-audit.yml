@@ -1,0 +1,32 @@
+name: Georgia invasive-status audit (read-only)
+
+# Cross-references the whole Plantdex catalogue against Georgia's own published invasive-plant
+# lists. READ-ONLY: four HTTP GETs and a text search. It touches no project, no database and no
+# deployment, and it writes nothing back into the repository.
+#
+# IT RUNS HERE BECAUSE THE SOURCES ARE UNREACHABLE FROM A SESSION. The sandbox's egress proxy
+# refuses se-eppc.org, bugwoodcloud.org, invasive.org and gainvasivespeciescouncil.org, so the
+# authoritative documents cannot be read where the code is written — the same reason
+# `resolve-taxa.yml` exists. A search engine's summary of a list is not the list, and a badge
+# that tells a forager a plant is invasive in their state is not something to build on a
+# paraphrase.
+#
+# ITS OUTPUT IS EVIDENCE, NOT DATA. A human reads the log and curates
+# `src/lib/invasive-status.ts` by hand with the category and source per entry. Nothing here
+# feeds the UI, which is deliberate: a PDF layout change must not be able to put a badge on a
+# plant.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the Georgia lists and cross-reference the catalogue
+        run: |
+          python3 -m pip install --quiet --disable-pip-version-check pypdf
+          python3 scripts/ga_invasive_audit.py
