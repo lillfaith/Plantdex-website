@@ -105,17 +105,24 @@ export function DeckCta({
    * on it rather than staying light — contrast is a property of the token, so a filled light
    * button takes dark type or it takes a different token.
    */
+  // SIZE IS PER-PLACEMENT FOR THE SAME REASON THE COLOUR IS. Home leads its page and takes the
+  // wider padding and the larger type; the other three interrupt content somebody is already
+  // reading, and growing them there would make a buy prompt the biggest thing on a plant page.
+  //
+  // `min-h-12` is shared and unchanged, so the button's HEIGHT is identical at both sizes —
+  // which is what keeps the landing page's 40px-either-side centring true after this change
+  // rather than needing to be measured again.
   const button =
     placement === 'home'
-      ? 'bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
-      : 'border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
+      ? 'px-8 text-base bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
+      : 'px-6 text-sm border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
 
   return (
     <div className={`flex flex-col items-center gap-2 text-center ${className}`}>
       <Link
         href="/shop"
         onClick={() => track(deckCtaEvent(placement))}
-        className={`inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`}
+        className={`inline-flex min-h-12 items-center justify-center rounded-full font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`}
       >
         {label}
       </Link>
