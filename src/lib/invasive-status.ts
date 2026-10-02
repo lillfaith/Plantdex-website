@@ -123,7 +123,9 @@ const GA = {
  * number; both are replaced by what the source says.
  */
 const GISC: StatusSource = {
-  name: 'Georgia Invasive Species Council invasive plant list',
+  // SHORT ENOUGH TO BE ATTRIBUTION. "...invasive plant list" restated what the link already
+  // points at and cost the badge seven characters over its 250 budget.
+  name: 'Georgia Invasive Species Council',
   url: 'https://gainvasivespeciescouncil.org/list/invasive-plants/',
   checkedOn: '2026-10-02',
 };

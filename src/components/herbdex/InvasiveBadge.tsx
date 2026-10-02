@@ -53,16 +53,18 @@ export function InvasiveBadge({ claim }: { claim: RegionalStatus }) {
       <p className="mt-1.5 text-xs leading-relaxed text-violet-200">
         {badgeExplanation(claim)}
       </p>
-      {claim.note && (
-        <p className="mt-1 text-xs leading-relaxed text-violet-300">{claim.note}</p>
-      )}
       <p className="mt-1.5 text-xs leading-relaxed text-violet-300">
         {/*
-          PROVENANCE LAST, AND THE TIER DEFINITION BELONGS IN IT. Read back at 390px, the
-          definition had been sitting directly under the chip in the subtitle slot — three
-          lines of the authority's prose above the one sentence a forager can act on. It is
-          supporting evidence for the claim, not the claim, so it reads after the attribution
-          it qualifies.
+          PROVENANCE, AND NOTHING ELSE AFTER IT. The badge renders at most ~240 characters: the
+          chip, the sentence a forager can act on, and who says so. It previously also printed
+          the species note and the authority's full tier definition, which took it past 500 and
+          turned a marker into a passage.
+
+          BOTH ARE STILL IN THE DATA. `claim.note` and `claim.category` — the tier's wording
+          verbatim, which is the authority's current terminology and the thing that must not be
+          translated into a category number — are recorded in `invasive-status.ts` and pinned by
+          tests. What changed is how much of the evidence the badge prints, not how much of it
+          is kept. The link goes to the list itself.
 
           The taxon is printed because on a genus card it is the difference between a true
           statement and a false one, and it costs one word in the ordinary case.
@@ -72,21 +74,11 @@ export function InvasiveBadge({ claim }: { claim: RegionalStatus }) {
           href={claim.source.url}
           target="_blank"
           rel="noopener noreferrer"
-          // NOT BOLD. Read back in a browser at 390px, a semibold gold link was the heaviest
-          // element in the block — the citation shouting over the claim. A citation earns
-          // its weight by being checkable, not by being loud.
           className="text-gold-400 underline underline-offset-2 hover:text-gold-300"
         >
           {claim.source.name}
         </a>
-        {claim.category ? (
-          <>
-            , in the list&rsquo;s own words:{' '}
-            <span className="italic">{claim.category}</span>.
-          </>
-        ) : (
-          '.'
-        )}
+        .
       </p>
     </aside>
   );

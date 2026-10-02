@@ -59,6 +59,20 @@ describe('the contamination warning itself', () => {
     expect(CONTAMINATION_WARNING).toMatch(/don’t consume the plant/);
   });
 
+  it('fits the 250-character on-page budget, label included', () => {
+    // A HARD CEILING, not a style note. Every block this adds to a page is read standing up,
+    // one-handed, next to a plant — and the version of this item that ran past 600 characters
+    // on /safety was skimmed past in exactly the way the full disclaimer used to be.
+    const rendered = `${CONTAMINATION_LABEL}: ${CONTAMINATION_WARNING}`;
+    expect(rendered.length, `${rendered.length} characters`).toBeLessThanOrEqual(250);
+  });
+
+  it('is the WHOLE of the /safety item, not the opening of a longer one', () => {
+    // That item used to append two more sentences and ran to about 630 rendered characters.
+    const page = readFileSync('src/app/safety/page.tsx', 'utf8');
+    expect(page).toContain('body: `${CONTAMINATION_LABEL}: ${CONTAMINATION_WARNING}`');
+  });
+
   it('is two sentences, because a third would not be read where it is shown', () => {
     const sentences = CONTAMINATION_WARNING.split('. ').filter(Boolean);
     expect(sentences).toHaveLength(2);

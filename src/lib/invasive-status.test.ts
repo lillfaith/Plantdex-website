@@ -308,6 +308,34 @@ describe('how the badge renders', () => {
     expect(BADGE).toContain('claim.taxon');
   });
 
+  it('renders at most 250 characters in total', () => {
+    // THE BUDGET IS ON WHAT IS PRINTED, not on any one string, because the badge used to pass
+    // every per-field check and still render 523 characters: a chip, a sentence, a species
+    // note and the authority's full tier definition stacked into a passage.
+    for (const card of CATALOGUE) {
+      const claim = badgeFor(card.id);
+      if (!claim) continue;
+      const rendered = [
+        `Invasive \u2014 ${claim.region}`,
+        badgeExplanation(claim),
+        `Listed as ${claim.taxon} by ${claim.source.name}.`,
+      ].join(' ');
+      expect(rendered.length, `${card.id} renders ${rendered.length} characters`)
+        .toBeLessThanOrEqual(250);
+    }
+  });
+
+  it('keeps the note and the tier definition in the DATA while not printing them', () => {
+    // The budget trims what the badge SHOWS, never what is recorded. The tier wording is the
+    // authority's current terminology and is the one thing that must not be lost or
+    // translated into a category number.
+    const claim = badgeFor('lonicera-japonica')!;
+    expect(claim.category, 'the tier definition must still be recorded').toBeTruthy();
+    expect(claim.note, 'the species note must still be recorded').toBeTruthy();
+    expect(BADGE_MARKUP).not.toContain('claim.note');
+    expect(BADGE_MARKUP).not.toContain('claim.category');
+  });
+
   it('stays compact: no hero, no full-width panel, no heading above xs', () => {
     /*
      * "Compact and not dominating the page" as a property of the markup rather than a hope.

@@ -67,13 +67,16 @@ const PRACTICE = [
     // THE CONTAMINATION SENTENCE LIVES HERE AND NOT IN A SECTION OF ITS OWN. This item already
     // existed and already made this point in general terms; adding a second block beside it
     // saying the same thing more sharply is how the full disclaimer ended up on three pages
-    // and stopped being read. So the exact wording shown on /scan and on every plant profile
-    // is folded into the item whose subject it is, and `foraging-safety.test.ts` holds the
-    // three surfaces to that one text.
+    // and stopped being read.
+    //
+    // IT IS NOW THE WHOLE ITEM, at 203 characters against a 250 budget. It previously carried
+    // the warning PLUS two more sentences — roadsides and residues, then foraging rules and
+    // leaving enough of the patch — and ran past 600. What came out to meet the budget was the
+    // legality-and-etiquette half, which is a different subject from contamination and reads
+    // perfectly well as an item of its own if it is wanted back.
     title: 'Where you pick matters as much as what',
-    body: `${CONTAMINATION_LABEL}: ${CONTAMINATION_WARNING} Roadsides, treated lawns, industrial edges and waterways downstream of them can leave residues that identification tells you nothing about, and a correctly identified, perfectly edible plant is not made safe by being correctly identified. Foraging on land also carries rules that vary by country, state and site — check them, and leave enough that the patch is still there next year.`,
-  },
-];
+    body: `${CONTAMINATION_LABEL}: ${CONTAMINATION_WARNING}`,
+  },];
 
 export default function SafetyPage() {
   return (
