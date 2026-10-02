@@ -112,17 +112,23 @@ export function DeckCta({
   // `min-h-12` is shared and unchanged, so the button's HEIGHT is identical at both sizes —
   // which is what keeps the landing page's 40px-either-side centring true after this change
   // rather than needing to be measured again.
+  //
+  // WIDTH AND HEIGHT ARE PART OF IT. The home button sat at 188px beside two 320px buttons,
+  // all three the same height — so the landing page offered three actions at three different
+  // widths, and the one meant to lead was the smallest. It now takes the same 320 as its
+  // neighbours and one step more height, which is the whole of its size advantage: same
+  // width reads as one set, more height reads as first in it.
   const button =
     placement === 'home'
-      ? 'px-8 text-base bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
-      : 'px-6 text-sm border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
+      ? 'min-h-14 w-full max-w-xs px-8 text-base bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
+      : 'min-h-12 px-6 text-sm border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
 
   return (
     <div className={`flex flex-col items-center gap-2 text-center ${className}`}>
       <Link
         href="/shop"
         onClick={() => track(deckCtaEvent(placement))}
-        className={`inline-flex min-h-12 items-center justify-center rounded-full font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`}
+        className={`inline-flex items-center justify-center rounded-full font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`}
       >
         {label}
       </Link>

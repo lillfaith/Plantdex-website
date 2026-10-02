@@ -137,7 +137,7 @@ export default function HomePage() {
           the button, and crowding it against the sentence underneath would group it with the
           wrong element.
         */}
-        <div className="mt-10">
+        <div className="mt-12">
           <DeckCta placement="home" />
         </div>
 
@@ -154,7 +154,7 @@ export default function HomePage() {
           busier", and a bordered explainer between the creatures and the call to action would
           be exactly that.
         */}
-        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-violet-200">
+        <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-violet-200">
           Find plants outside. Scan them. Build your collection. Learn each card and grow your
           Garden.
         </p>
@@ -179,7 +179,22 @@ export default function HomePage() {
 
           The classes are swapped between the two links; neither treatment is new.
         */}
-        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        {/*
+          ONE SCALE THROUGH THE HERO, and the gaps shrink as the things either side of them get
+          more closely related:
+
+            32  subtitle to the creatures          a section change
+            48  creatures to BUY                   the largest gap on the page, and what
+                                                   isolates the buy signal
+             8  BUY to its line                    the line belongs to the button
+            24  that line to the loop sentence     leaving the buy group
+            16  loop sentence to the buttons       the sentence introduces them
+            12  between the two buttons            one pair
+
+          The 48 above and 8+16+24 below also keep the button optically centred between the
+          creatures and the sentence, which is where it was put deliberately.
+        */}
+        <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/scan"
             className="flex min-h-12 w-full max-w-xs items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-8 text-base font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:w-auto"
