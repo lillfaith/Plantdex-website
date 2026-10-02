@@ -15,7 +15,20 @@ name: Georgia invasive-status audit (read-only)
 # `src/lib/invasive-status.ts` by hand with the category and source per entry. Nothing here
 # feeds the UI, which is deliberate: a PDF layout change must not be able to put a badge on a
 # plant.
+#
+# IT RUNS ON A PUSH TO THE WORK BRANCH, NOT ONLY ON DISPATCH. `workflow_dispatch` resolves a
+# workflow only if the file is on the DEFAULT branch, and on this repository a push to the
+# default branch is a production Pages deploy — so making this dispatchable would mean
+# deploying in order to run a read-only audit. `deploy.yml` triggers on the default branch
+# alone, so a push here runs the audit and ships nothing.
 on:
+  push:
+    branches: [claude/plantdex-v0-3-supabase-verify-iic8pz]
+    paths:
+      - 'scripts/ga_invasive_audit.py'
+      - '.github/workflows/ga-invasive-audit.yml'
+      - 'src/data/herbs.json'
+      - 'src/lib/field-cards.ts'
   workflow_dispatch:
 
 permissions:

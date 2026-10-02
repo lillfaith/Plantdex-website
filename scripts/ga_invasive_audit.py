@@ -1,21 +1,31 @@
 #!/usr/bin/env python3
-"""Cross-reference the whole Plantdex catalogue against Georgia's own invasive-plant lists.
+"""Cross-reference the whole Plantdex catalogue against Georgia's CURRENT invasive-plant list.
 
-WHY THIS RUNS IN CI. The sandbox this repo is developed in cannot reach se-eppc.org,
-bugwoodcloud.org, invasive.org or gainvasivespeciescouncil.org — the egress proxy refuses the
-tunnel — so the authoritative lists are not readable from a session. Same reason
-`resolve_taxa.py` exists for GBIF. A search engine's SUMMARY of a list is not the list, and a
-badge that tells somebody a plant is invasive in their state needs the primary document.
+WHY THIS RUNS IN CI. The sandbox this repo is developed in cannot reach
+gainvasivespeciescouncil.org, se-eppc.org, bugwoodcloud.org, invasive.org or georgiawildlife.com
+— the egress proxy refuses the tunnel — so the authoritative lists are not readable from a
+session. Same reason `resolve_taxa.py` exists for GBIF. A search engine's SUMMARY of a list is
+not the list, and a badge that tells a forager a plant is invasive in their state needs the
+primary document.
+
+TWO VOCABULARIES ARE LIVE AT ONCE, AND THAT IS THE POINT OF THIS SCRIPT.
+GISC has adopted the RIPSA protocol — Priority 1 / Priority 2 / Watchlist — but its published
+plant list is mid-transition, and its own page says most species still carry the categories
+they were given under the older GA-EPPC system (Category 1 / 1 Alert / 2 / 3 / 4). So a given
+species may be described in EITHER vocabulary, and which one is not predictable from the
+species. This script therefore does not normalise: it captures whichever status token sits
+nearest each match, in the authority's own words, and says which vocabulary that token came
+from. Translating RIPSA back into category numbers — or forward — would be inventing a
+classification the authority did not publish.
 
 WHAT IT DOES NOT DO. It does not write the badge data. It prints what the sources say, and a
-human reads that and curates `src/lib/invasive-status.ts` by hand, with the category and the
-source recorded per entry — the same discipline as `taxon-placements.ts`. A scraper that fed
-the UI directly would put whatever a PDF layout change produced in front of a forager.
+human reads that and curates `src/lib/invasive-status.ts` by hand. A scraper feeding the UI
+would put whatever a page re-layout produced in front of a forager.
 
-IT SEARCHES FOR EVERY CATALOGUE NAME, not a shortlist, because "which of our plants are on
-this list" is the only question that cannot be answered by guessing which ones to check. Genus
-cards are expanded: the card says `Rosa spp.`, and what matters is whether ANY Rosa on the
-list is one a player could be holding the card for.
+IT SEARCHES FOR EVERY CATALOGUE NAME, not a shortlist, because "which of our plants are on this
+list" is the one question guessing cannot answer. Genus cards are expanded: the card says
+`Rosa spp.`, so what matters is whether ANY Rosa on the list is one a player could be holding
+that card for.
 """
 
 from __future__ import annotations
@@ -27,22 +37,38 @@ import sys
 import urllib.error
 import urllib.request
 
-# The published Georgia lists, newest first. GA-EPPC transitioned into the Georgia Invasive
-# Species Council (GISC), so GISC is the current body and the 2006 GA-EPPC list is the
-# canonical categorised document it inherited. Both are read; disagreement is reported rather
-# than resolved here.
+# Several candidate URLs per source: a list that has moved is a fact this run should REPORT
+# rather than something that makes it silently find nothing. Every one is fetched and its
+# outcome printed.
 SOURCES: list[tuple[str, str]] = [
-    ("GISC — Georgia Invasive Species Council, invasive plants",
+    ("GISC — invasive plants (current list page)",
      "https://gainvasivespeciescouncil.org/list/invasive-plants/"),
+    ("GISC — species list index",
+     "https://gainvasivespeciescouncil.org/list/"),
+    ("GISC — site root (in case the list moved)",
+     "https://gainvasivespeciescouncil.org/"),
+    ("GA-EPPC categorised list (Bugwood curriculum copy)",
+     "https://bugwoodcloud.org/gaeppc/assets/File/Curriculum/gaeppclist.pdf"),
     ("GA-EPPC list (Wildland Weeds, Fall 2006)",
      "https://www.se-eppc.org/wildlandweeds/pdf/fall2006-gaexoticslist-pp15-18.pdf"),
-    ("GA-EPPC list (Bugwood curriculum copy)",
-     "https://bugwoodcloud.org/gaeppc/assets/File/Curriculum/gaeppclist.pdf"),
     ("Georgia DNR — Georgia Invasive Species Strategy",
      "https://georgiawildlife.com/sites/default/files/wrd/pdf/management/GeorgiaInvasiveSpeciesStrategy.pdf"),
 ]
 
 AGENT = {"User-Agent": "plantdex-invasive-audit (one-off audit; contact via repo)"}
+
+# Both vocabularies, each labelled with which protocol it belongs to. Order matters only for
+# reporting; a line may legitimately carry one, both or neither.
+STATUS_TOKENS: list[tuple[str, str]] = [
+    ("RIPSA", r"Priority\s*1\b"),
+    ("RIPSA", r"Priority\s*2\b"),
+    ("RIPSA", r"Watch\s*-?\s*list\b"),
+    ("GA-EPPC", r"Category\s*1\s*Alert\b"),
+    ("GA-EPPC", r"Category\s*1\b"),
+    ("GA-EPPC", r"Category\s*2\b"),
+    ("GA-EPPC", r"Category\s*3\b"),
+    ("GA-EPPC", r"Category\s*4\b"),
+]
 
 
 def fetch(url: str) -> bytes:
@@ -62,7 +88,11 @@ def to_text(url: str, raw: bytes) -> str:
         return "\n".join((page.extract_text() or "") for page in reader.pages)
     text = raw.decode("utf-8", "replace")
     text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", text, flags=re.S | re.I)
+    # Keep block boundaries as newlines so "the line around a match" stays meaningful on HTML.
+    text = re.sub(r"</(p|div|li|tr|h[1-6]|td|th)>", "\n", text, flags=re.I)
+    text = re.sub(r"<br\s*/?>", "\n", text, flags=re.I)
     text = re.sub(r"<[^>]+>", " ", text)
+    text = text.replace("&nbsp;", " ").replace("&amp;", "&")
     return text
 
 
@@ -70,8 +100,6 @@ def catalogue() -> list[tuple[str, str, str]]:
     """(card id, scientific name, common name) for all 54 cards, genus cards included."""
     deck = json.load(open("src/data/herbs.json"))["herbs"]
     rows = [(h["id"], h["scientificName"], h["commonName"]) for h in deck]
-    # The nine Field Cards live in TypeScript, so they are read out of the source rather than
-    # imported. Three regexes over one file beats a build step for a one-off audit.
     src = open("src/lib/field-cards.ts").read()
     ids = re.findall(r"^\s*id: '([a-z-]+)',", src, re.M)
     commons = re.findall(r"^\s*commonName: '([^']+)',", src, re.M)
@@ -84,10 +112,25 @@ def catalogue() -> list[tuple[str, str, str]]:
     return rows
 
 
+def status_near(text: str, start: int, end: int, window: int = 400) -> list[str]:
+    """Status tokens within `window` characters of a match, in the authority's own words."""
+    chunk = text[max(0, start - window):min(len(text), end + window)]
+    found: list[str] = []
+    for protocol, pattern in STATUS_TOKENS:
+        match = re.search(pattern, chunk, re.I)
+        if match:
+            label = f"{protocol}: {' '.join(match.group(0).split())}"
+            if label not in found:
+                found.append(label)
+    return found
+
+
 def main() -> int:
     rows = catalogue()
     print("=" * 78)
     print(f"GEORGIA INVASIVE-STATUS AUDIT — {len(rows)} catalogue cards")
+    print("Captures BOTH vocabularies: RIPSA (Priority 1/2, Watchlist) and the older")
+    print("GA-EPPC categories. Nothing is translated between them.")
     print("=" * 78)
 
     documents: list[tuple[str, str]] = []
@@ -96,12 +139,23 @@ def main() -> int:
         try:
             text = to_text(url, fetch(url))
         except urllib.error.HTTPError as error:
-            print(f"  ::warning::HTTP {error.code}")
+            print(f"  ::warning::HTTP {error.code} — source unreachable, not used")
             continue
         except Exception as error:  # noqa: BLE001 — an unreachable source is a reportable fact
             print(f"  ::warning::{type(error).__name__}: {error}")
             continue
+        counts = {
+            f"{protocol} {pattern}": len(re.findall(pattern, text, re.I))
+            for protocol, pattern in STATUS_TOKENS
+        }
+        live = {k: v for k, v in counts.items() if v}
         print(f"  {len(text):,} characters of text")
+        print(f"  status tokens present: {live or 'NONE'}")
+        if not live and len(text) < 20000:
+            # A JS-rendered page returns a shell. Saying so is the useful output; pretending
+            # the species are absent would be the dangerous one.
+            print("  ::warning::no status vocabulary and very little text — this may be a "
+                  "client-rendered shell rather than the list itself")
         if text.strip():
             documents.append((label, text))
 
@@ -110,15 +164,13 @@ def main() -> int:
         return 1
 
     print("\n" + "=" * 78)
-    print("PER-CARD HITS. A hit is the binomial appearing in a source, with the surrounding")
-    print("line printed so the CATEGORY can be read rather than inferred.")
+    print("PER-CARD HITS")
     print("=" * 78)
 
+    hits = 0
     for card_id, science, common in rows:
         genus = science.split()[0]
         is_genus_card = science.endswith("spp.")
-        # A species card looks for its own binomial. A genus card looks for every binomial of
-        # that genus in the document, because the card's scope is the genus.
         pattern = (re.compile(rf"\b{re.escape(genus)}\s+[a-z][a-z-]+\b")
                    if is_genus_card else re.compile(rf"\b{re.escape(science)}\b", re.I))
         found: dict[str, set[str]] = {}
@@ -126,19 +178,23 @@ def main() -> int:
             for match in pattern.finditer(text):
                 start = text.rfind("\n", 0, match.start()) + 1
                 end = text.find("\n", match.end())
-                line = " ".join(text[start:end if end != -1 else len(text)].split())[:150]
-                found.setdefault(match.group(0), set()).add(f"{label}: {line}")
+                line = " ".join(text[start:end if end != -1 else len(text)].split())[:160]
+                status = status_near(text, match.start(), match.end())
+                entry = f"{label}\n         status: {status or 'NONE FOUND NEARBY'}\n         line:   {line}"
+                found.setdefault(match.group(0), set()).add(entry)
         if not found:
             continue
-        print(f"\n── {card_id}  ({science} — {common}){'   [GENUS CARD]' if is_genus_card else ''}")
+        hits += 1
+        print(f"\n── {card_id}  ({science} — {common})"
+              f"{'   [GENUS CARD — scope is wider than any one listed species]' if is_genus_card else ''}")
         for name in sorted(found):
             print(f"   • {name}")
-            for line in sorted(found[name]):
-                print(f"       {line}")
+            for entry in sorted(found[name]):
+                print(f"       {entry}")
 
     print("\n" + "=" * 78)
-    print("Cards with NO hit in any source are absent from the printout above, which is the")
-    print("intended reading: no evidence found, therefore no badge.")
+    print(f"{hits} of {len(rows)} cards produced a hit. Cards absent from the printout above")
+    print("have no evidence in any readable source, which is the intended reading: no badge.")
     print("=" * 78)
     return 0
 
