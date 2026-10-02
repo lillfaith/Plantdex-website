@@ -35,11 +35,17 @@ describe('site cautions', () => {
 
     const elder = BY_NUMBER.get(31)!;
     expect(elder.commonName).toBe('Elderberry');
-    expect(siteCautionFor(elder)).toMatch(/leaves, green shoots and unripe fruit are not safe/i);
-    // The card prints `Cold soak`, so the caution has to say in words that an uncooked
-    // preparation does not clear the berries.
+    /*
+     * THIS CAUTION IS NOW ABOUT PREPARATION ONLY. The card's printing error — Leaf and Shoot
+     * listed as usable — is stated once by `CARD_CORRECTIONS`, which names the mistake and
+     * forbids the use. Repeating it here was the third telling of one fact.
+     */
     expect(siteCautionFor(elder)).toMatch(/cold soak is not an adequate preparation/i);
     expect(siteCautionFor(elder)).toMatch(/sambucus racemosa/i);
+    expect(siteCautionFor(elder)).toMatch(/unripe fruit/i);
+    expect(siteCautionFor(elder), 'the leaf/shoot error belongs to the card correction').not.toMatch(
+      /green shoots/i,
+    );
 
     const pine = BY_NUMBER.get(41)!;
     expect(pine.commonName).toBe('Pine');

@@ -16,8 +16,16 @@ describe('digital corrections', () => {
       expect(correction.supersededParts.length, number).toBeGreaterThan(0);
       // "what the card says" AND "what Plantdex now recommends" — a message with only the
       // second half leaves a reader holding the deck unsure which text to follow.
-      expect(correction.message, number).toMatch(/printed card/i);
+      // `printed <Name> card` as well as a bare `printed card`.
+      expect(correction.message, number).toMatch(/printed\s+(\w+\s+)?card/i);
       expect(correction.message, number).toMatch(/no longer recommends/i);
+      /*
+       * IT MUST SAY THE CARD IS WRONG, not merely that preference moved. An earlier draft
+       * read "Plantdex no longer recommends those parts", which describes a change of mind
+       * about parts that were once fine. Leaf and Shoot were never fine — listing them was a
+       * printing mistake — so a correction has to name the error as an error.
+       */
+      expect(correction.message, number).toMatch(/incorrectly lists/i);
     }
   });
 
@@ -53,17 +61,35 @@ describe('digital corrections', () => {
     expect(cardCorrectionFor(elder)?.supersededParts).toEqual(['Leaf', 'Shoot']);
   });
 
-  it('is paired with the caution rather than replacing it', () => {
+  it('states the mistake ONCE, and keeps the caution for a different question', () => {
     /*
-     * Four layers, four questions, and none substitutes for another: the card's own warning,
-     * "this instruction is withdrawn", "here is the risk", "your card is misprinted". #31
-     * carries three of them, and a reader needs all three — which is why this test asserts
-     * the OTHERS still fire, not just that this one does.
+     * THIS TEST USED TO REQUIRE ALL THREE BLOCKS TO FIRE, on the reasoning that "your card is
+     * misprinted", "this is withdrawn" and "here is the risk" are three questions a reader
+     * needs all of. Two of those turned out to be one: a correction that names the printing
+     * error, forbids the use and records the recommendation leaves the `KNOWN_CARD_ISSUES`
+     * note nothing to add, and the caution was repeating the leaf-and-shoot half on top.
+     *
+     * So the DATA keeps all three — the card is still misprinted and the entry must say so,
+     * which `knownIssueFor` below asserts — and the PAGE shows the correction plus a caution
+     * that is now only about preparation.
      */
     const elder = BY_NUMBER.get(31)!;
     expect(cardCorrectionFor(elder)).toBeDefined();
+    expect(cardCorrectionFor(elder)?.supersedesCardIssue).toBe(true);
     expect(siteCautionFor(elder)).toBeDefined();
+    // Never removed: CLAUDE.md allows a KNOWN_CARD_ISSUES entry to go only when a reprint
+    // genuinely fixes the card. Suppressing it on screen is a presentation decision.
     expect(knownIssueFor(elder)).toBeDefined();
+  });
+
+  it('suppresses the duplicate note only where a correction declares it', () => {
+    const detail = readFileSync('src/components/herbdex/HerbDetail.tsx', 'utf8');
+    expect(detail).toContain('!correction?.supersedesCardIssue');
+    // A card with an unrelated misprint and no correction must still show its note.
+    for (const [number, correction] of Object.entries(CARD_CORRECTIONS)) {
+      if (correction.supersedesCardIssue) continue;
+      expect(knownIssueFor(BY_NUMBER.get(Number(number))!), number).toBeDefined();
+    }
   });
 
   it('renders above its caution, and only where a transcription exists', () => {

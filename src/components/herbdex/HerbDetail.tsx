@@ -369,7 +369,15 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           */}
           {correction && <DigitalCorrection correction={correction} />}
           {siteCaution && <SiteCaution caution={siteCaution} />}
-          {cardIssue && <CardIssueNote issue={cardIssue} />}
+          {/*
+            THE ISSUE NOTE IS SUPPRESSED WHERE A CORRECTION ALREADY STATES THE SAME MISTAKE.
+            `KNOWN_CARD_ISSUES` keeps its entry — the printed card is still wrong and the data
+            must say so — but a correction that names the error, forbids the use and records
+            the recommendation leaves the note with nothing to add, and a reader who meets one
+            fact twice trusts both tellings less. Declared per card, never inferred, so an
+            unrelated misprint cannot be hidden by a correction about something else.
+          */}
+          {cardIssue && !correction?.supersedesCardIssue && <CardIssueNote issue={cardIssue} />}
         </div>
       )}
 

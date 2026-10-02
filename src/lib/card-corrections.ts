@@ -32,16 +32,47 @@ import type { Herb } from './types';
 export interface CardCorrection {
   /** The printed values this supersedes, exactly as the card spells them. */
   readonly supersededParts: readonly string[];
-  /** One sentence. It must say what the card says AND what Plantdex now recommends. */
+  /**
+   * The correction itself. It must say THREE things: what the card prints, that the card is
+   * WRONG about it, and what to do instead.
+   */
   readonly message: string;
+  /**
+   * Whether this replaces the card's `KNOWN_CARD_ISSUES` note on screen.
+   *
+   * THE DATA ENTRY IS NEVER REMOVED — the printed card is still wrong, and CLAUDE.md allows
+   * an entry to go only when a reprint genuinely fixes it. This is a PRESENTATION decision:
+   * where a correction already states the error and the remedy in one authoritative block,
+   * rendering the note underneath explains the same mistake a second time, and a reader who
+   * meets the same fact twice trusts both tellings slightly less.
+   *
+   * Declared per card rather than inferred, because a card could carry an unrelated misprint
+   * that a correction about something else must not silently hide.
+   */
+  readonly supersedesCardIssue?: boolean;
 }
 
 export const CARD_CORRECTIONS: Record<string, CardCorrection> = {
+  /*
+   * THE CARD IS WRONG, AND THE CORRECTION SAYS SO IN THOSE WORDS.
+   *
+   * An earlier draft said only that Plantdex "no longer recommends" Leaf and Shoot, which
+   * reads as a change of preference about parts that were once fine. They were never fine:
+   * listing them was a printing mistake, elder leaves and green shoots are not edible, and
+   * the owner's instruction is that the site correct the card rather than soften it.
+   *
+   * So it names the error, forbids the use, and only then records the recommendation. It is
+   * the single authoritative statement of this mistake on the page: the `KNOWN_CARD_ISSUES`
+   * note is superseded on screen (see the flag), and the site caution below it no longer
+   * repeats the leaf-and-shoot half at all — that caution is about preparing the parts that
+   * ARE usable.
+   */
   '31': {
     supersededParts: ['Leaf', 'Shoot'],
     message:
-      'Leaf and Shoot are listed as usable on the printed card. Plantdex no longer ' +
-      'recommends those parts.',
+      'The printed Elderberry card incorrectly lists Leaf and Shoot as edible/usable parts. ' +
+      'Do not eat or use these parts. Plantdex no longer recommends them.',
+    supersedesCardIssue: true,
   },
 };
 

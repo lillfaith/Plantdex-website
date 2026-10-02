@@ -47,6 +47,12 @@ import type { Herb } from './types';
  * diarrhoea. It is a legitimate find on this card, so the caution carries it rather than the
  * scope excluding it. (*S. ebulus* is excluded instead; see `CONTENT_EXCLUSIONS`.)
  *
+ * AND THEN IT WAS SAYING THE LEAF-AND-SHOOT HALF A THIRD TIME. The card's printing error is
+ * now stated once, authoritatively, by `CARD_CORRECTIONS` — which names the mistake, forbids
+ * the use and supersedes the `KNOWN_CARD_ISSUES` note on screen. So this caution dropped that
+ * clause entirely and is what it should always have been: how to prepare the parts that ARE
+ * usable. Three blocks explaining one mistake is how a reader learns to skim all three.
+ *
  * AND THEN THE WIDENED TEXT WAS ITSELF TOO BROAD. It said raw berries and seeds cause upset
  * "in any elder", which the measurements do not support: cyanogenic glycosides in *Sambucus*
  * vary by TISSUE (ripe berries lowest, stems and green berries highest), by CULTIVAR, and by
@@ -106,12 +112,10 @@ export const SITE_CAUTIONS: Record<string, string> = {
     'and is not an approved indication; the approved use is urinary. Not for use in ' +
     'pregnancy, or where fluid is retained because of heart or kidney problems.',
   '31':
-    'Beware: elder leaves, green shoots and unripe fruit are not safe to use, despite this ' +
-    'card listing leaf and shoot as usable parts. Use only properly identified and prepared ' +
-    'parts — the flowers, and ripe fruit that has been cooked. Raw or insufficiently ' +
-    'prepared elderberries can cause nausea, vomiting or stomach upset; a cold soak is not ' +
-    'an adequate preparation. Red elderberry (Sambucus racemosa) especially needs cooking, ' +
-    'with the seeds strained out.',
+    'Beware: use only the flowers and ripe fruit, and cook the fruit. Unripe fruit, raw or ' +
+    'insufficiently prepared elderberries and their seeds can cause nausea, vomiting or ' +
+    'stomach upset; a cold soak is not an adequate preparation. Red elderberry (Sambucus ' +
+    'racemosa) especially needs cooking, with the seeds strained out.',
   '32': 'Beware: interacts with many prescription medicines.',
   '41':
     'Pregnancy caution: avoid ponderosa pine (Pinus ponderosa) needles. They contain ' +
