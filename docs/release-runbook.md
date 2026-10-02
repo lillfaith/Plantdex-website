@@ -184,3 +184,21 @@ gate.
 - *S. altissima* — insufficient evidence, non-confirmable, revisit only with new evidence.
 - Maple's **Leaf** claim and the four ambiguous `Pinus` strings — card-content and
   unresolvable-name questions respectively; neither is a scope or safety blocker.
+
+---
+
+## Post-release infrastructure tasks
+
+Recorded during step 0, deliberately **not** done during this release.
+
+**`deploy.yml` has no `paths` filter**, so every push to the default branch rebuilds and
+redeploys Pages — including commits that touch only CI workflows or scripts. Three such
+commits triggered production deploys during release preparation. No application source
+changed, so the deployed bundle was identical each time and `check-live-site` passed, but they
+were production deploys all the same.
+
+The fix is a `paths-ignore` (or a `paths` allowlist) that excludes workflow-and-script-only
+changes while still deploying anything touching `src/`, `public/`, `next.config.ts`,
+`package.json` or the deploy workflow itself. **Not done now**, because changing the
+deployment mechanism immediately before a release is the wrong moment to find out the filter
+is too narrow — a missed deploy is harder to notice than an extra one.
