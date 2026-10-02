@@ -239,3 +239,57 @@ are the baseline, and any future drift is now provable rather than arguable.
 
 **Rows before 0006:** `sightings 3 · discoveries 27 · profiles 2 · seed_shelf 16 ·
 species_packets 16`.
+
+---
+
+## Migration 0006 — applied to production 2026-10-02 03:54 UTC
+
+Dispatched `run-migration.yml` with `project_ref=vygiamigomwlvnwkryyl`,
+`migration=0006_identification.sql`, `ref=claude/plantdex-v0-3-supabase-verify-iic8pz`.
+**The migration files live only on the feature branch** — the default branch carries up to
+0005 — so the dispatch ref is not a detail: run it against the default branch and the
+workflow fails with "not in this repository".
+
+Run [36962217881](https://github.com/lillfaith/Plantdex-website/actions/runs/36962217881),
+`HTTP 201`, conclusion success. Re-verified independently afterwards by
+`release-checkpoint.yml` run
+[36962289001](https://github.com/lillfaith/Plantdex-website/actions/runs/36962289001), which
+is read-only and measures the three conditions directly rather than trusting the migration's
+own exit code — a file of `add column if not exists` returns 201 having done nothing at all.
+
+**1. The seven observed-taxon columns exist on `public.sightings`.** All seven, measured:
+`eligibility`, `identification_provider`, `observed_taxon_key`, `observed_taxon_name`,
+`observed_taxon_provider_name`, `observed_taxon_rank`, `species_confidence`. The table went
+from 10 columns to 17 and the pre-existing ten are unchanged in name, type and ordinal
+position.
+
+**2. `identification_comparisons` exists**, with its ten columns
+(`id`, `user_id`, `created_at`, `observation_id`, `provider`, `top_scientific_name`,
+`top_rank`, `top_probability`, `candidates` jsonb, `failure`). `public` now holds twelve
+tables, the eleven from 0001–0005 plus this one.
+
+**3. Data intact.** `sightings 3 · discoveries 27 · profiles 2 · seed_shelf 16 ·
+species_packets 16` — identical to the pre-migration reading above, every count unchanged.
+`scans` gained its six `confirmed_*`/`provider`/`identification_observation_id` columns on the
+same run.
+
+**Edge functions untouched**, as expected of a migration: `delete-account` 16,
+`herbdex-action` 18, `identify-plant` 14, `seed-packet` 12, every `updated_at` identical to
+the baseline. The counter did not move this time, which is also a small piece of evidence
+about the earlier +3.
+
+**The eligibility CHECK is still the seven-value one**, read back from `pg_constraint` exactly
+as the database holds it:
+
+```
+CHECK (((eligibility IS NULL) OR (eligibility = ANY (ARRAY['exact'::text,
+  'acceptedGroup'::text, 'genusCard'::text, 'legacyGenus'::text, 'ambiguous'::text,
+  'related'::text, 'none'::text]))))
+```
+
+`synonym` and `curatedEquivalent` are **absent**, which is correct at this point and is
+precisely what 0007 widens. Until 0007 runs, a sighting carrying either basis would be
+refused by Postgres and lost — so **0007 must be applied before any frontend that can emit
+one reaches players**. The ordering in this runbook is that constraint, not a preference.
+
+**Verification is clean. Stopping here as instructed; 0007 not applied.**
