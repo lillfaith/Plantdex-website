@@ -115,12 +115,20 @@ export function DeckCta({
   //
   // WIDTH AND HEIGHT ARE PART OF IT. The home button sat at 188px beside two 320px buttons,
   // all three the same height — so the landing page offered three actions at three different
-  // widths, and the one meant to lead was the smallest. It now takes the same 320 as its
-  // neighbours and one step more height, which is the whole of its size advantage: same
-  // width reads as one set, more height reads as first in it.
+  // widths, and the one meant to lead was the smallest.
+  //
+  // 256 WIDE AGAINST THEIR 320, AND 56 TALL AGAINST THEIR 48. Narrower and taller, which is a
+  // different thing from simply bigger: a button that matched their width and beat their
+  // height was the largest object in the hero and started to read as a banner. Pulling the
+  // width in makes it a distinct SHAPE rather than a bigger version of its neighbours, and
+  // the height is what keeps it first.
+  //
+  // 256 is exactly four fifths of 320 rather than a number that looked right. A proportion
+  // that can be stated is the difference between a deliberate relationship and an arbitrary
+  // one, and 188 was arbitrary — it was whatever the text happened to measure.
   const button =
     placement === 'home'
-      ? 'min-h-14 w-full max-w-xs px-8 text-base bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
+      ? 'min-h-14 w-full max-w-[16rem] px-8 text-base bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
       : 'min-h-12 px-6 text-sm border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
 
   return (
