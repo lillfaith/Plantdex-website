@@ -181,6 +181,19 @@ def main() -> int:
         print("\n::error::No source was readable. Nothing can be concluded.")
         return 1
 
+    # THE CURRENT LIST, PRINTED IN FULL, because every structural inference made about these
+    # documents so far has been wrong and the only way to stop guessing at the shape is to read
+    # it. Proximity failed (categories are section headings, not row labels); sections failed
+    # too (a multi-column PDF extracts out of reading order, and a 318k-character narrative
+    # strategy has no sections at all). Presence of a binomial in clean HTML is the one signal
+    # that survives both, so what the authority's own page actually says is worth the lines.
+    for label, text in documents:
+        if "GISC" in label and "invasive plants" in label:
+            print("\n" + "=" * 78)
+            print(f"VERBATIM: {label}")
+            print("=" * 78)
+            print(" ".join(text.split())[:6000])
+
     # Indexed once rather than per match: a document is scanned 54 times below.
     headings_by_doc = {label: status_headings(text) for label, text in documents}
     for label, headings in headings_by_doc.items():
