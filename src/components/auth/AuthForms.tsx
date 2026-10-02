@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { track } from '@/lib/analytics';
+import { cooldownSeconds, friendlyAuthError } from '@/lib/auth-errors';
 
 /**
  * Sign in / sign up. Two small forms rather than one with a mode toggle, so each can state
@@ -165,26 +166,53 @@ export function SignInForm({ onForgotPassword }: { onForgotPassword: () => void 
 export function ForgotPasswordForm({ onCancel }: { onCancel: () => void }) {
   const { requestPasswordReset } = useAuth();
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'saving' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'saving' | 'sent' | 'resending'>('idle');
   const [error, setError] = useState<string | null>(null);
+  /*
+   * Seconds left on Supabase's per-address cooldown, counted down locally.
+   *
+   * It exists so the resend button can be DISABLED rather than let somebody press it and be
+   * told off by a rate limiter. Seeded from the error Supabase returns, so the number is
+   * theirs rather than a guess at their policy — and it ticks in an interval owned by an
+   * effect, so leaving the page cannot leave a timer running.
+   */
+  const [waitSeconds, setWaitSeconds] = useState(0);
 
-  const onSubmit = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
-      setStatus('saving');
+  useEffect(() => {
+    if (waitSeconds <= 0) return;
+    const id = setInterval(() => setWaitSeconds((n) => Math.max(0, n - 1)), 1000);
+    return () => clearInterval(id);
+  }, [waitSeconds]);
+
+  const send = useCallback(
+    async (resending: boolean) => {
+      setStatus(resending ? 'resending' : 'saving');
       setError(null);
       const result = await requestPasswordReset(email);
       if (result.error) {
-        setError(result.error);
-        setStatus('idle');
+        setError(friendlyAuthError(result.error));
+        const wait = cooldownSeconds(result.error);
+        if (wait) setWaitSeconds(wait);
+        // A failed RESEND keeps the sent screen: the first link may well have arrived, and
+        // dropping somebody back to an empty form would lose the address they just typed.
+        setStatus(resending ? 'sent' : 'idle');
         return;
       }
+      setWaitSeconds(60);
       setStatus('sent');
     },
     [email, requestPasswordReset],
   );
 
-  if (status === 'sent') {
+  const onSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      void send(false);
+    },
+    [send],
+  );
+
+  if (status === 'sent' || status === 'resending') {
     return (
       <div className="space-y-3">
         <p className="text-sm text-violet-200">
@@ -192,6 +220,47 @@ export function ForgotPasswordForm({ onCancel }: { onCancel: () => void }) {
           <span className="font-semibold text-gold-300">{email}</span>, a link to set a new
           password is on its way. The link expires after an hour.
         </p>
+        {/*
+          THE FIRST THING TO CHECK, SAID BEFORE THE BUTTON THAT RESENDS. A reset mail is
+          exactly the shape a spam filter distrusts — transactional, link-bearing, from an
+          address nobody has written to — so "it never arrived" is far more often a filter
+          than a failure, and resending a second copy into the same folder helps nobody.
+        */}
+        <p className="text-xs text-violet-400">
+          Not there? Check your spam or junk folder before asking for another.
+        </p>
+        {error && <p className="text-sm text-stat-temp">{error}</p>}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <button
+            type="button"
+            onClick={() => void send(true)}
+            disabled={status === 'resending' || waitSeconds > 0}
+            className="min-h-11 text-sm font-semibold text-gold-300 underline underline-offset-4 hover:text-gold-200 disabled:text-violet-400 disabled:no-underline"
+          >
+            {status === 'resending'
+              ? 'Sending…'
+              : waitSeconds > 0
+                ? `Resend in ${waitSeconds}s`
+                : 'Resend the link'}
+          </button>
+          {/*
+            The address is the single likeliest thing to have been wrong, and this form
+            deliberately cannot say so — it answers the same way whether or not an account
+            exists, so that it is not a way to test which addresses are registered. Offering
+            a correction costs nothing and leaks nothing.
+          */}
+          <button
+            type="button"
+            onClick={() => {
+              setStatus('idle');
+              setError(null);
+              setWaitSeconds(0);
+            }}
+            className="min-h-11 text-sm font-semibold text-gold-300 underline underline-offset-4 hover:text-gold-200"
+          >
+            Use a different address
+          </button>
+        </div>
         <button
           type="button"
           onClick={onCancel}
@@ -252,7 +321,7 @@ export function NewPasswordForm({ onDone }: { onDone: () => void }) {
       const result = await updatePassword(password);
       setSaving(false);
       if (result.error) {
-        setError(result.error);
+        setError(friendlyAuthError(result.error));
         return;
       }
       onDone();

@@ -25,7 +25,7 @@ describe('every printed card has exactly one declared scope', () => {
     expect(PRINTED_CARDS).toHaveLength(45);
     for (const { herbId, scope } of scopes) {
       expect(scope, herbId).toBeDefined();
-      expect(['species', 'genus', 'custom']).toContain(scope.type);
+      expect(['species', 'genus', 'acceptedGroup']).toContain(scope.type);
     }
   });
 
@@ -43,11 +43,28 @@ describe('every printed card has exactly one declared scope', () => {
     );
   });
 
-  it('keeps the `spp.` cards out of the override table', () => {
-    // Their scope is printed on the card. Repeating it here would be two sources for one
-    // fact, free to disagree the day somebody edits one of them.
+  it('lets a `spp.` card be overridden only to NARROW it', () => {
+    /*
+     * THIS TEST USED TO REQUIRE NO OVERRIDE AT ALL, and the reason was sound: a `spp.`
+     * card's scope is printed on its face, so restating it here would be two sources for
+     * one fact, free to disagree the day somebody edits one of them.
+     *
+     * What it could not express is the case that arrived — an override carrying ONLY an
+     * `excluded` list, which adds a narrowing and restates no breadth. Three cards hold one
+     * now, because five historical `Rhus` combinations are names for poison ivy, oak and
+     * sumac. So the rule is no longer "absent" but "`genus` and nothing else": the single
+     * shape that cannot contradict the artwork, since it is what the artwork already says.
+     */
     for (const herb of PRINTED_CARDS.filter((h) => /\bspp?\.?$/i.test(h.scientificName))) {
-      expect(CARD_COVERAGE[herb.id], `${herb.id} restates its printed scope`).toBeUndefined();
+      const override = CARD_COVERAGE[herb.id];
+      if (!override) continue;
+      expect(override.type, `${herb.id} overrides its printed scope to ${override.type}`).toBe(
+        'genus',
+      );
+      // An exclusion is the only thing an override on such a card may add.
+      expect(override.type === 'genus' && (override.excluded?.length ?? 0) > 0, herb.id).toBe(
+        true,
+      );
     }
   });
 
@@ -109,7 +126,14 @@ describe('the cards considered for widening and kept narrow', () => {
    * exactly how a later "this common name sounds generic" pass would undo them.
    */
   const KEPT_NARROW = [
-    'taraxacum-officinale',
+    /*
+     * `taraxacum-officinale` USED TO BE ON THIS LIST AND HAS MOVED, WITHOUT THE DECISION
+     * CHANGING. What this block pins is that a card was considered for GENUS scope and
+     * refused; Dandelion still is, and is asserted so below. What it now also has is a
+     * curated accepted group of two section names — which is the opposite of genus widening,
+     * because a section is explicitly listed and every other Taraxacum, including every
+     * other section, stays unconfirmable.
+     */
     'arctium-lappa',
     'oxalis-stricta',
     'viola-sororia',
@@ -121,11 +145,18 @@ describe('the cards considered for widening and kept narrow', () => {
     'lonicera-japonica',
   ];
 
-  it('keeps all ten at species scope', () => {
+  it('keeps the remaining nine at species scope', () => {
     for (const id of KEPT_NARROW) {
       expect(scopeFor(id)?.type, id).toBe('species');
       expect(CARD_COVERAGE[id], `${id} was widened`).toBeUndefined();
     }
+  });
+
+  it('keeps Dandelion out of GENUS scope, which is what it was considered for', () => {
+    // A curated section group is not the genus. The refusal this block records still stands.
+    const scope = scopeFor('taraxacum-officinale');
+    expect(scope?.type).toBe('acceptedGroup');
+    expect(scope?.type, 'never widened to its genus').not.toBe('genus');
   });
 
   it('still refuses a different species in each of those genera', () => {
@@ -148,14 +179,21 @@ describe('the cards considered for widening and kept narrow', () => {
     }
   });
 
-  it('keeps Dandelion covering its SECTION but not its genus', () => {
+  it('keeps Dandelion covering CURATED sections, not every section and not its genus', () => {
     /*
-     * The distinction the #1 decision turns on. `taraxacum sect` is a supra-specific rank
-     * and maps to the card, so the card is already an aggregate — but sect. Erythrosperma,
-     * where T. erythrospermum sits, is a different section. Aggregate is not genus.
+     * The distinction the #1 decision turns on, now enforced per section rather than by a
+     * key that happened to swallow them all. Aggregate is not genus — and one section is not
+     * every section.
      */
-    expect(matchScientificName('Taraxacum sect. Taraxacum').herbId).toBe('taraxacum-officinale');
-    expect(matchScientificName('Taraxacum sect. Taraxacum').confirmable).toBe(true);
+    for (const accepted of ['Taraxacum sect. Taraxacum', 'Taraxacum sect. Ruderalia']) {
+      const match = matchScientificName(accepted);
+      expect(match.herbId, accepted).toBe('taraxacum-officinale');
+      expect(match.confirmable, accepted).toBe(true);
+      expect(match.eligibility, accepted).toBe('acceptedGroup');
+    }
+    for (const refused of ['Taraxacum sect. Erythrosperma', 'Taraxacum sect. Palustria']) {
+      expect(matchScientificName(refused).confirmable, refused).toBe(false);
+    }
     expect(matchScientificName('Taraxacum erythrospermum').confirmable).toBe(false);
   });
 });
@@ -163,33 +201,52 @@ describe('the cards considered for widening and kept narrow', () => {
 describe('the goldenrod case, which is what this was built for', () => {
   const GOLDENROD = 'solidago-canadensis';
 
-  it('accepts every Solidago the real scan returned', () => {
-    for (const name of [
-      'Solidago altissima',
-      'Solidago canadensis',
-      'Solidago rugosa',
-      'Solidago juncea',
-    ]) {
+  /*
+   * THESE THREE TESTS RECORDED A GENUS-WIDE GOLDENROD, AND THE SCOPE HAS SINCE BEEN CURATED.
+   *
+   * They were written against the bug report that built this file: a 56% `S. altissima` was
+   * refused while a 12% `S. canadensis` was offered, and the fix was to declare the card
+   * broader. That was always explicitly TEMPORARY — `pendingCuration` said so — and the
+   * research has now been done: the European Pharmacopoeia accepts *S. canadensis* and
+   * *S. gigantea* as equivalent sources of *Solidaginis herba*, and nothing supports the rest
+   * of the genus.
+   *
+   * So the EXPECTATIONS move and the PROPERTIES they were protecting do not. The card still
+   * accepts more than its own binomial; the printed binomial is still `exact` and an accepted
+   * species still `acceptedScope`; and nothing anywhere sorts candidates. What changed is
+   * WHICH species qualify, which is a content decision this file exists to make reviewable.
+   */
+  it('accepts its anchor and its one curated equivalent', () => {
+    for (const name of ['Solidago canadensis', 'Solidago gigantea']) {
       const match = matchScientificName(name);
       expect(match.herbId, name).toBe(GOLDENROD);
       expect(match.confirmable, name).toBe(true);
     }
   });
 
-  it('still calls the printed binomial `exact`, and the others `acceptedScope`', () => {
-    // Two different reasons a name is accepted, and the UI says different things about them.
-    expect(matchScientificName('Solidago canadensis').kind).toBe('exact');
-    expect(matchScientificName('Solidago altissima').kind).toBe('acceptedScope');
+  it('refuses the Solidago species the genus override used to carry', () => {
+    // `S. altissima` is the very name from the original bug report. It is INSUFFICIENT
+    // EVIDENCE rather than rejected — see `docs/goldenrod-evidence-matrix.md` — so it is
+    // refused today and may return if the evidence does.
+    for (const name of ['Solidago altissima', 'Solidago rugosa', 'Solidago juncea']) {
+      expect(matchScientificName(name).confirmable, name).toBe(false);
+    }
   });
 
-  it('does not reorder candidates, so 56% still beats 12%', () => {
+  it('still calls the printed binomial `exact`, and an accepted species `acceptedScope`', () => {
+    // Two different reasons a name is accepted, and the UI says different things about them.
+    expect(matchScientificName('Solidago canadensis').kind).toBe('exact');
+    expect(matchScientificName('Solidago gigantea').kind).toBe('acceptedScope');
+  });
+
+  it('does not reorder candidates, so provider order survives end to end', () => {
     /*
      * The reported symptom was a 12% canonical species offered over a 56% one. Nothing in
      * the matcher or the panel sorts — provider order is preserved end to end — so this
      * asserts the property by construction: both are confirmable, and the caller's order is
      * the provider's.
      */
-    const ranked = ['Solidago altissima', 'Solidago canadensis'].map(matchScientificName);
+    const ranked = ['Solidago gigantea', 'Solidago canadensis'].map(matchScientificName);
     expect(ranked.every((m) => m.confirmable)).toBe(true);
     expect(ranked[0]!.herbId).toBe(GOLDENROD);
   });
@@ -274,6 +331,20 @@ describe('scope is a claim about identity, never about reward', () => {
         new RegExp(`\\b${forbidden}`, 'i').test(source.replace(/\/\*[\s\S]*?\*\//g, '')),
         `card-coverage.ts references "${forbidden}"`,
       ).toBe(false);
+    }
+  });
+});
+
+describe('overrides on a card that prints `Genus spp.`', () => {
+  it('never carries `pendingCuration`, which is for cards printing a binomial', () => {
+    // `pendingCuration` means "this card prints a binomial and is held genus-wide until its
+    // accepted species are researched". On a card that PRINTS `spp.` it would be meaningless,
+    // and `observed-taxon.test.ts` counts those entries to keep that debt from spreading.
+    for (const herb of PRINTED_CARDS) {
+      if (!/\bspp?\.?$/i.test(herb.scientificName.trim())) continue;
+      const override = CARD_COVERAGE[herb.id];
+      if (override?.type !== 'genus') continue;
+      expect(override.pendingCuration, herb.id).toBeUndefined();
     }
   });
 });

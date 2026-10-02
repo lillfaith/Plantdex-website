@@ -1,0 +1,4864 @@
+{
+  "generated": "scripts: benchmark/identification-audit.bench.test.ts",
+  "cards": [
+    {
+      "id": "taraxacum-officinale",
+      "commonName": "Dandelion",
+      "scientificName": "Taraxacum officinale",
+      "rank": "species",
+      "normalized": "taraxacum officinale",
+      "printed": true,
+      "scopeType": "acceptedGroup",
+      "pendingCuration": null,
+      "acceptedMembers": [
+        {
+          "name": "Taraxacum sect. Taraxacum",
+          "rank": "section",
+          "synonyms": [
+            "Taraxacum sect. Ruderalia"
+          ],
+          "source": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1"
+        }
+      ],
+      "excluded": [],
+      "synonyms": [
+        "taraxacum campylodes",
+        "leontodon taraxacum",
+        "taraxacum vulgare"
+      ],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "aboveSpecies",
+        "providerErrorExposed",
+        "aggregateComplexity"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Taraxacum officinale",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Taraxacum officinale var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "B",
+          "what": "accepted synonym",
+          "name": "taraxacum campylodes",
+          "kind": "exact",
+          "eligibility": "synonym",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "B",
+          "what": "accepted synonym",
+          "name": "leontodon taraxacum",
+          "kind": "exact",
+          "eligibility": "synonym",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "B",
+          "what": "accepted synonym",
+          "name": "taraxacum vulgare",
+          "kind": "exact",
+          "eligibility": "synonym",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Taraxacum",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "taraxacum-officinale",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Taraxacum plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "taraxacum-officinale",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "F",
+          "what": "accepted section",
+          "name": "Taraxacum sect. Taraxacum",
+          "kind": "acceptedScope",
+          "eligibility": "acceptedGroup",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "section",
+          "outcome": "matched"
+        },
+        {
+          "id": "F",
+          "what": "accepted section synonym",
+          "name": "Taraxacum sect. Ruderalia",
+          "kind": "acceptedScope",
+          "eligibility": "acceptedGroup",
+          "herbId": "taraxacum-officinale",
+          "confirmable": true,
+          "rank": "section",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Taraxacum sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "taraxacum-officinale",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Taraxacum plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "taraxacum-officinale",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "rumex-obtusifolius",
+      "commonName": "Broadleaf Dock",
+      "scientificName": "Rumex obtusifolius",
+      "rank": "species",
+      "normalized": "rumex obtusifolius",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [
+        "rumex-acetosella"
+      ],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "sameGenusSibling",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Rumex obtusifolius",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Rumex obtusifolius var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Rumex",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Rumex plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Rumex sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Rumex plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "I",
+          "what": "another deck card, same genus",
+          "name": "Rumex acetosella",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "rumex-acetosella",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "solidago-canadensis",
+      "commonName": "Goldenrod",
+      "scientificName": "Solidago canadensis",
+      "rank": "species",
+      "normalized": "solidago canadensis",
+      "printed": true,
+      "scopeType": "acceptedGroup",
+      "pendingCuration": null,
+      "acceptedMembers": [
+        {
+          "name": "Solidago gigantea",
+          "rank": "species",
+          "synonyms": [],
+          "source": "https://altmeyers.org/en/naturopathy/solidaginis-herba-143574"
+        }
+      ],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Solidago canadensis",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "solidago-canadensis",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Solidago canadensis var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "solidago-canadensis",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Solidago",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "solidago-canadensis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Solidago plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "solidago-canadensis",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Solidago sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "solidago-canadensis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Solidago plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "solidago-canadensis",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "ambrosia-artemisiifolia",
+      "commonName": "Ragweed",
+      "scientificName": "Ambrosia artemisiifolia",
+      "rank": "species",
+      "normalized": "ambrosia artemisiifolia",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Ambrosia artemisiifolia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "ambrosia-artemisiifolia",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Ambrosia artemisiifolia var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "ambrosia-artemisiifolia",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Ambrosia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "ambrosia-artemisiifolia",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Ambrosia plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "ambrosia-artemisiifolia",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Ambrosia sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "ambrosia-artemisiifolia",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Ambrosia plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "ambrosia-artemisiifolia",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "chenopodium-album",
+      "commonName": "Lamb's Quarters",
+      "scientificName": "Chenopodium album",
+      "rank": "species",
+      "normalized": "chenopodium album",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Chenopodium album",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "chenopodium-album",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Chenopodium album var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "chenopodium-album",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Chenopodium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "chenopodium-album",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Chenopodium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "chenopodium-album",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Chenopodium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "chenopodium-album",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Chenopodium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "chenopodium-album",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "portulaca-oleracea",
+      "commonName": "Purslane",
+      "scientificName": "Portulaca oleracea",
+      "rank": "species",
+      "normalized": "portulaca oleracea",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Portulaca oleracea",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "portulaca-oleracea",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Portulaca oleracea var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "portulaca-oleracea",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Portulaca",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "portulaca-oleracea",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Portulaca plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "portulaca-oleracea",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Portulaca sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "portulaca-oleracea",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Portulaca plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "portulaca-oleracea",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "alliaria-petiolata",
+      "commonName": "Garlic Mustard",
+      "scientificName": "Alliaria petiolata",
+      "rank": "species",
+      "normalized": "alliaria petiolata",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Alliaria petiolata",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "alliaria-petiolata",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Alliaria petiolata var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "alliaria-petiolata",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Alliaria",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "alliaria-petiolata",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Alliaria plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "alliaria-petiolata",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Alliaria sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "alliaria-petiolata",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Alliaria plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "alliaria-petiolata",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "urtica-dioica",
+      "commonName": "Stinging Nettle",
+      "scientificName": "Urtica dioica",
+      "rank": "species",
+      "normalized": "urtica dioica",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Urtica dioica",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "urtica-dioica",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Urtica dioica var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "urtica-dioica",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Urtica",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "urtica-dioica",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Urtica plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "urtica-dioica",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Urtica sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "urtica-dioica",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Urtica plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "urtica-dioica",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "oxalis-stricta",
+      "commonName": "Wood Sorrel",
+      "scientificName": "Oxalis stricta",
+      "rank": "species",
+      "normalized": "oxalis stricta",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [
+        "oxalis europaea"
+      ],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Oxalis stricta",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "oxalis-stricta",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Oxalis stricta var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "oxalis-stricta",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "B",
+          "what": "accepted synonym",
+          "name": "oxalis europaea",
+          "kind": "exact",
+          "eligibility": "synonym",
+          "herbId": "oxalis-stricta",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Oxalis",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oxalis-stricta",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Oxalis plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oxalis-stricta",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Oxalis sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oxalis-stricta",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Oxalis plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oxalis-stricta",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "trifolium-pratense",
+      "commonName": "Red Clover",
+      "scientificName": "Trifolium pratense",
+      "rank": "species",
+      "normalized": "trifolium pratense",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Trifolium pratense",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "trifolium-pratense",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Trifolium pratense var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "trifolium-pratense",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Trifolium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "trifolium-pratense",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Trifolium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "trifolium-pratense",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Trifolium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "trifolium-pratense",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Trifolium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "trifolium-pratense",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "lamium-purpureum",
+      "commonName": "Purple Dead Nettle",
+      "scientificName": "Lamium purpureum",
+      "rank": "species",
+      "normalized": "lamium purpureum",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Lamium purpureum",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lamium-purpureum",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Lamium purpureum var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lamium-purpureum",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Lamium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lamium-purpureum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Lamium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lamium-purpureum",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Lamium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lamium-purpureum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Lamium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lamium-purpureum",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "viola-sororia",
+      "commonName": "Wild Violet",
+      "scientificName": "Viola sororia",
+      "rank": "species",
+      "normalized": "viola sororia",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [
+        "viola papilionacea"
+      ],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Viola sororia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "viola-sororia",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Viola sororia var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "viola-sororia",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "B",
+          "what": "accepted synonym",
+          "name": "viola papilionacea",
+          "kind": "exact",
+          "eligibility": "synonym",
+          "herbId": "viola-sororia",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Viola",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "viola-sororia",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Viola plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "viola-sororia",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Viola sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "viola-sororia",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Viola plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "viola-sororia",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "stellaria-media",
+      "commonName": "Chickweed",
+      "scientificName": "Stellaria media",
+      "rank": "species",
+      "normalized": "stellaria media",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Stellaria media",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "stellaria-media",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Stellaria media var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "stellaria-media",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Stellaria",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "stellaria-media",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Stellaria plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "stellaria-media",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Stellaria sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "stellaria-media",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Stellaria plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "stellaria-media",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "plantago-major",
+      "commonName": "Broad Leaf Plantain",
+      "scientificName": "Plantago major",
+      "rank": "species",
+      "normalized": "plantago major",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Plantago major",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "plantago-major",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Plantago major var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "plantago-major",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Plantago",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "plantago-major",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Plantago plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "plantago-major",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Plantago sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "plantago-major",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Plantago plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "plantago-major",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "galium-aparine",
+      "commonName": "Cleavers",
+      "scientificName": "Galium aparine",
+      "rank": "species",
+      "normalized": "galium aparine",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Galium aparine",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "galium-aparine",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Galium aparine var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "galium-aparine",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Galium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "galium-aparine",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Galium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "galium-aparine",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Galium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "galium-aparine",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Galium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "galium-aparine",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "glechoma-hederacea",
+      "commonName": "Ground Ivy",
+      "scientificName": "Glechoma hederacea",
+      "rank": "species",
+      "normalized": "glechoma hederacea",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Glechoma hederacea",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "glechoma-hederacea",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Glechoma hederacea var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "glechoma-hederacea",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Glechoma",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "glechoma-hederacea",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Glechoma plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "glechoma-hederacea",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Glechoma sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "glechoma-hederacea",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Glechoma plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "glechoma-hederacea",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "acer-spp",
+      "commonName": "Maple",
+      "scientificName": "Acer spp.",
+      "rank": "genus",
+      "normalized": "acer",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Acer",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "acer-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Acer plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "acer-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Acer sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "acer-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Acer plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "acer-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "rubus-spp",
+      "commonName": "Blackberry",
+      "scientificName": "Rubus spp.",
+      "rank": "genus",
+      "normalized": "rubus",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 100,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Rubus",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rubus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Rubus plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rubus-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Rubus sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rubus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Rubus plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rubus-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "rumex-acetosella",
+      "commonName": "Sheep's Sorrel",
+      "scientificName": "Rumex acetosella",
+      "rank": "species",
+      "normalized": "rumex acetosella",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [
+        "rumex-obtusifolius"
+      ],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "sameGenusSibling",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Rumex acetosella",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "rumex-acetosella",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Rumex acetosella var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "rumex-acetosella",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Rumex",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Rumex plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Rumex sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Rumex plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "I",
+          "what": "another deck card, same genus",
+          "name": "Rumex obtusifolius",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "rumex-obtusifolius",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "rhus-spp",
+      "commonName": "Sumac",
+      "scientificName": "Rhus spp.",
+      "rank": "genus",
+      "normalized": "rhus",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [
+        "Rhus vernix",
+        "Rhus radicans",
+        "Rhus toxicodendron",
+        "Rhus diversiloba",
+        "Rhus rydbergii"
+      ],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Rhus",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rhus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Rhus plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rhus-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus vernix",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus radicans",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus toxicodendron",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus diversiloba",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Rhus rydbergii",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Rhus sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rhus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Rhus plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rhus-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "cichorium-intybus",
+      "commonName": "Chicory",
+      "scientificName": "Cichorium intybus",
+      "rank": "species",
+      "normalized": "cichorium intybus",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Cichorium intybus",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "cichorium-intybus",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Cichorium intybus var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "cichorium-intybus",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Cichorium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "cichorium-intybus",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Cichorium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "cichorium-intybus",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Cichorium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "cichorium-intybus",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Cichorium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "cichorium-intybus",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "arctium-lappa",
+      "commonName": "Burdock",
+      "scientificName": "Arctium lappa",
+      "rank": "species",
+      "normalized": "arctium lappa",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Arctium lappa",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "arctium-lappa",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Arctium lappa var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "arctium-lappa",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Arctium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "arctium-lappa",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Arctium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "arctium-lappa",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Arctium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "arctium-lappa",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Arctium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "arctium-lappa",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "mentha-canadensis",
+      "commonName": "Wild Mint",
+      "scientificName": "Mentha canadensis",
+      "rank": "species",
+      "normalized": "mentha canadensis",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Mentha canadensis",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "mentha-canadensis",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Mentha canadensis var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "mentha-canadensis",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Mentha",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "mentha-canadensis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Mentha plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "mentha-canadensis",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Mentha sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "mentha-canadensis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Mentha plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "mentha-canadensis",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "nepeta-cataria",
+      "commonName": "Catnip",
+      "scientificName": "Nepeta cataria",
+      "rank": "species",
+      "normalized": "nepeta cataria",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Nepeta cataria",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "nepeta-cataria",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Nepeta cataria var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "nepeta-cataria",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Nepeta",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "nepeta-cataria",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Nepeta plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "nepeta-cataria",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Nepeta sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "nepeta-cataria",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Nepeta plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "nepeta-cataria",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "capsella-bursa-pastoris",
+      "commonName": "Shepherd's Purse",
+      "scientificName": "Capsella bursa-pastoris",
+      "rank": "species",
+      "normalized": "capsella bursa-pastoris",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Capsella bursa-pastoris",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "capsella-bursa-pastoris",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Capsella bursa-pastoris var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "capsella-bursa-pastoris",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Capsella",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "capsella-bursa-pastoris",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Capsella plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "capsella-bursa-pastoris",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Capsella sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "capsella-bursa-pastoris",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Capsella plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "capsella-bursa-pastoris",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "prunella-vulgaris",
+      "commonName": "Self-Heal",
+      "scientificName": "Prunella vulgaris",
+      "rank": "species",
+      "normalized": "prunella vulgaris",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Prunella vulgaris",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "prunella-vulgaris",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Prunella vulgaris var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "prunella-vulgaris",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Prunella",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "prunella-vulgaris",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Prunella plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "prunella-vulgaris",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Prunella sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "prunella-vulgaris",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Prunella plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "prunella-vulgaris",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "verbascum-thapsus",
+      "commonName": "Mullein",
+      "scientificName": "Verbascum thapsus",
+      "rank": "species",
+      "normalized": "verbascum thapsus",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Verbascum thapsus",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "verbascum-thapsus",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Verbascum thapsus var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "verbascum-thapsus",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Verbascum",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbascum-thapsus",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Verbascum plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbascum-thapsus",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Verbascum sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbascum-thapsus",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Verbascum plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbascum-thapsus",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "equisetum-arvense",
+      "commonName": "Horsetail",
+      "scientificName": "Equisetum arvense",
+      "rank": "species",
+      "normalized": "equisetum arvense",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Equisetum arvense",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "equisetum-arvense",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Equisetum arvense var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "equisetum-arvense",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Equisetum",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "equisetum-arvense",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Equisetum plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "equisetum-arvense",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Equisetum sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "equisetum-arvense",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Equisetum plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "equisetum-arvense",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "allium-vineale",
+      "commonName": "Field Garlic",
+      "scientificName": "Allium vineale",
+      "rank": "species",
+      "normalized": "allium vineale",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Allium vineale",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "allium-vineale",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Allium vineale var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "allium-vineale",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Allium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "allium-vineale",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Allium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "allium-vineale",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Allium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "allium-vineale",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Allium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "allium-vineale",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "fragaria-virginiana",
+      "commonName": "Wild Strawberry",
+      "scientificName": "Fragaria virginiana",
+      "rank": "species",
+      "normalized": "fragaria virginiana",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Fragaria virginiana",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "fragaria-virginiana",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Fragaria virginiana var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "fragaria-virginiana",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Fragaria",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "fragaria-virginiana",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Fragaria plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "fragaria-virginiana",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Fragaria sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "fragaria-virginiana",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Fragaria plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "fragaria-virginiana",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "sambucus-spp",
+      "commonName": "Elderberry",
+      "scientificName": "Sambucus spp.",
+      "rank": "genus",
+      "normalized": "sambucus",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [
+        "Sambucus ebulus"
+      ],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Sambucus",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "sambucus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Sambucus plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "sambucus-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Sambucus ebulus",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Sambucus sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "sambucus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Sambucus plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "sambucus-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "hypericum-perforatum",
+      "commonName": "St. John's Wort",
+      "scientificName": "Hypericum perforatum",
+      "rank": "species",
+      "normalized": "hypericum perforatum",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 175,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Hypericum perforatum",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "hypericum-perforatum",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Hypericum perforatum var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "hypericum-perforatum",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Hypericum",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hypericum-perforatum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Hypericum plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hypericum-perforatum",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Hypericum sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hypericum-perforatum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Hypericum plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hypericum-perforatum",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "achillea-millefolium",
+      "commonName": "Yarrow",
+      "scientificName": "Achillea millefolium",
+      "rank": "species",
+      "normalized": "achillea millefolium",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed",
+        "highStakesLookalike"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Achillea millefolium",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "achillea-millefolium",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Achillea millefolium var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "achillea-millefolium",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Achillea",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "achillea-millefolium",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Achillea plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "achillea-millefolium",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Achillea sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "achillea-millefolium",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Achillea plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "achillea-millefolium",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "impatiens-capensis",
+      "commonName": "Jewelweed",
+      "scientificName": "Impatiens capensis",
+      "rank": "species",
+      "normalized": "impatiens capensis",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Impatiens capensis",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "impatiens-capensis",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Impatiens capensis var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "impatiens-capensis",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Impatiens",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "impatiens-capensis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Impatiens plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "impatiens-capensis",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Impatiens sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "impatiens-capensis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Impatiens plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "impatiens-capensis",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "melissa-officinalis",
+      "commonName": "Lemon Balm",
+      "scientificName": "Melissa officinalis",
+      "rank": "species",
+      "normalized": "melissa officinalis",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Melissa officinalis",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "melissa-officinalis",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Melissa officinalis var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "melissa-officinalis",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Melissa",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "melissa-officinalis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Melissa plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "melissa-officinalis",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Melissa sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "melissa-officinalis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Melissa plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "melissa-officinalis",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "monarda-fistulosa",
+      "commonName": "Bee Balm",
+      "scientificName": "Monarda fistulosa",
+      "rank": "species",
+      "normalized": "monarda fistulosa",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Monarda fistulosa",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "monarda-fistulosa",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Monarda fistulosa var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "monarda-fistulosa",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Monarda",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "monarda-fistulosa",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Monarda plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "monarda-fistulosa",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Monarda sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "monarda-fistulosa",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Monarda plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "monarda-fistulosa",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "rosa-spp",
+      "commonName": "Wild Rose",
+      "scientificName": "Rosa spp.",
+      "rank": "genus",
+      "normalized": "rosa",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Rosa",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rosa-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Rosa plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rosa-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Rosa sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rosa-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Rosa plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "rosa-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "salix-spp",
+      "commonName": "Willow",
+      "scientificName": "Salix spp.",
+      "rank": "genus",
+      "normalized": "salix",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Salix",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "salix-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Salix plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "salix-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Salix sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "salix-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Salix plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "salix-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "geranium-maculatum",
+      "commonName": "Wild Geranium",
+      "scientificName": "Geranium maculatum",
+      "rank": "species",
+      "normalized": "geranium maculatum",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Geranium maculatum",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "geranium-maculatum",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Geranium maculatum var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "geranium-maculatum",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Geranium",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "geranium-maculatum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Geranium plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "geranium-maculatum",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Geranium sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "geranium-maculatum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Geranium plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "geranium-maculatum",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "lonicera-japonica",
+      "commonName": "Honeysuckle",
+      "scientificName": "Lonicera japonica",
+      "rank": "species",
+      "normalized": "lonicera japonica",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Lonicera japonica",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lonicera-japonica",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Lonicera japonica var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lonicera-japonica",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Lonicera",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lonicera-japonica",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Lonicera plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lonicera-japonica",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Lonicera sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lonicera-japonica",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Lonicera plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lonicera-japonica",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "pinus-spp",
+      "commonName": "Pine",
+      "scientificName": "Pinus spp.",
+      "rank": "genus",
+      "normalized": "pinus",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Pinus",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "pinus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Pinus plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "pinus-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Pinus sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "pinus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Pinus plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "pinus-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "morus-spp",
+      "commonName": "Mulberry",
+      "scientificName": "Morus spp.",
+      "rank": "genus",
+      "normalized": "morus",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [
+        "Morus papyrifera"
+      ],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 300,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Morus",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "morus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Morus plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "morus-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Morus papyrifera",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Morus sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "morus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Morus plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "morus-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "passiflora-incarnata",
+      "commonName": "Passion Flower",
+      "scientificName": "Passiflora incarnata",
+      "rank": "species",
+      "normalized": "passiflora incarnata",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 500,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Passiflora incarnata",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "passiflora-incarnata",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Passiflora incarnata var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "passiflora-incarnata",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Passiflora",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "passiflora-incarnata",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Passiflora plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "passiflora-incarnata",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Passiflora sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "passiflora-incarnata",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Passiflora plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "passiflora-incarnata",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "lactuca-serriola",
+      "commonName": "Prickly Lettuce",
+      "scientificName": "Lactuca serriola",
+      "rank": "species",
+      "normalized": "lactuca serriola",
+      "printed": true,
+      "scopeType": "species",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 500,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Lactuca serriola",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lactuca-serriola",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Lactuca serriola var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lactuca-serriola",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Lactuca",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lactuca-serriola",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Lactuca plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lactuca-serriola",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Lactuca sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lactuca-serriola",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Lactuca plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lactuca-serriola",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "quercus-spp",
+      "commonName": "Oak",
+      "scientificName": "Quercus spp.",
+      "rank": "genus",
+      "normalized": "quercus",
+      "printed": true,
+      "scopeType": "genus",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [
+        "Quercus densiflora"
+      ],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 500,
+      "tracksMastery": true,
+      "inPrintedDeck": true,
+      "flags": [
+        "curatedBroader",
+        "bareGenusUnlocks",
+        "congenerUnlocks",
+        "aboveSpecies",
+        "unresolvedRank"
+      ],
+      "probes": [
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Quercus",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "quercus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Quercus plantdexia",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "quercus-spp",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "G",
+          "what": "deliberately excluded",
+          "name": "Quercus densiflora",
+          "kind": "none",
+          "eligibility": "none",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "noMatch"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Quercus sp.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "quercus-spp",
+          "confirmable": true,
+          "rank": "genus",
+          "outcome": "matched"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Quercus plantdexia agg.",
+          "kind": "genusCard",
+          "eligibility": "genusCard",
+          "herbId": "quercus-spp",
+          "confirmable": true,
+          "rank": "unknown",
+          "outcome": "matched"
+        }
+      ]
+    },
+    {
+      "id": "echinacea-purpurea",
+      "commonName": "Purple Coneflower",
+      "scientificName": "Echinacea purpurea",
+      "rank": "species",
+      "normalized": "echinacea purpurea",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Echinacea purpurea",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "echinacea-purpurea",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Echinacea purpurea var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "echinacea-purpurea",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Echinacea",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "echinacea-purpurea",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Echinacea plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "echinacea-purpurea",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Echinacea sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "echinacea-purpurea",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Echinacea plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "echinacea-purpurea",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "typha-latifolia",
+      "commonName": "Broadleaf Cattail",
+      "scientificName": "Typha latifolia",
+      "rank": "species",
+      "normalized": "typha latifolia",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Typha latifolia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "typha-latifolia",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Typha latifolia var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "typha-latifolia",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Typha",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "typha-latifolia",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Typha plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "typha-latifolia",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Typha sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "typha-latifolia",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Typha plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "typha-latifolia",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "oenothera-biennis",
+      "commonName": "Evening Primrose",
+      "scientificName": "Oenothera biennis",
+      "rank": "species",
+      "normalized": "oenothera biennis",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Oenothera biennis",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "oenothera-biennis",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Oenothera biennis var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "oenothera-biennis",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Oenothera",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oenothera-biennis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Oenothera plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oenothera-biennis",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Oenothera sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oenothera-biennis",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Oenothera plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "oenothera-biennis",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "lindera-benzoin",
+      "commonName": "Spicebush",
+      "scientificName": "Lindera benzoin",
+      "rank": "species",
+      "normalized": "lindera benzoin",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Lindera benzoin",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lindera-benzoin",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Lindera benzoin var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "lindera-benzoin",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Lindera",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lindera-benzoin",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Lindera plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lindera-benzoin",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Lindera sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lindera-benzoin",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Lindera plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "lindera-benzoin",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "hamamelis-virginiana",
+      "commonName": "Witch Hazel",
+      "scientificName": "Hamamelis virginiana",
+      "rank": "species",
+      "normalized": "hamamelis virginiana",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Hamamelis virginiana",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "hamamelis-virginiana",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Hamamelis virginiana var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "hamamelis-virginiana",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Hamamelis",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hamamelis-virginiana",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Hamamelis plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hamamelis-virginiana",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Hamamelis sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hamamelis-virginiana",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Hamamelis plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "hamamelis-virginiana",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "malva-neglecta",
+      "commonName": "Common Mallow",
+      "scientificName": "Malva neglecta",
+      "rank": "species",
+      "normalized": "malva neglecta",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Malva neglecta",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "malva-neglecta",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Malva neglecta var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "malva-neglecta",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Malva",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "malva-neglecta",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Malva plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "malva-neglecta",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Malva sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "malva-neglecta",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Malva plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "malva-neglecta",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "silybum-marianum",
+      "commonName": "Milk Thistle",
+      "scientificName": "Silybum marianum",
+      "rank": "species",
+      "normalized": "silybum marianum",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Silybum marianum",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "silybum-marianum",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Silybum marianum var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "silybum-marianum",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Silybum",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "silybum-marianum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Silybum plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "silybum-marianum",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Silybum sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "silybum-marianum",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Silybum plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "silybum-marianum",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "verbena-hastata",
+      "commonName": "Blue Vervain",
+      "scientificName": "Verbena hastata",
+      "rank": "species",
+      "normalized": "verbena hastata",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Verbena hastata",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "verbena-hastata",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Verbena hastata var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "verbena-hastata",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Verbena",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbena-hastata",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Verbena plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbena-hastata",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Verbena sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbena-hastata",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Verbena plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "verbena-hastata",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    },
+    {
+      "id": "callicarpa-americana",
+      "commonName": "Beautyberry",
+      "scientificName": "Callicarpa americana",
+      "rank": "species",
+      "normalized": "callicarpa americana",
+      "printed": false,
+      "scopeType": "species (default)",
+      "pendingCuration": null,
+      "acceptedMembers": [],
+      "excluded": [],
+      "synonyms": [],
+      "sameGenusCards": [],
+      "awardsXp": 0,
+      "tracksMastery": false,
+      "inPrintedDeck": false,
+      "flags": [
+        "exactOnly",
+        "providerErrorExposed"
+      ],
+      "probes": [
+        {
+          "id": "A",
+          "what": "exact printed species",
+          "name": "Callicarpa americana",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "callicarpa-americana",
+          "confirmable": true,
+          "rank": "species",
+          "outcome": "matched"
+        },
+        {
+          "id": "C",
+          "what": "legitimate infraspecific name",
+          "name": "Callicarpa americana var. plantdexia",
+          "kind": "exact",
+          "eligibility": "exact",
+          "herbId": "callicarpa-americana",
+          "confirmable": true,
+          "rank": "variety",
+          "outcome": "matched"
+        },
+        {
+          "id": "D",
+          "what": "bare genus",
+          "name": "Callicarpa",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "callicarpa-americana",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "E",
+          "what": "arbitrary same-genus species",
+          "name": "Callicarpa plantdexia",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "callicarpa-americana",
+          "confirmable": false,
+          "rank": "species",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "unresolved rank marker",
+          "name": "Callicarpa sp.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "callicarpa-americana",
+          "confirmable": false,
+          "rank": "genus",
+          "outcome": "relatedOnly"
+        },
+        {
+          "id": "H",
+          "what": "aggregate marker",
+          "name": "Callicarpa plantdexia agg.",
+          "kind": "sameGenus",
+          "eligibility": "related",
+          "herbId": "callicarpa-americana",
+          "confirmable": false,
+          "rank": "unknown",
+          "outcome": "relatedOnly"
+        }
+      ]
+    }
+  ]
+}

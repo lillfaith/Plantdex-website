@@ -44,18 +44,155 @@ export type CardScope =
    * do not. Empty today; an entry here is a botanical claim and needs the same standard of
    * evidence as a synonym.
    */
-  | { readonly type: 'genus'; readonly excluded?: readonly string[] }
+  | {
+      readonly type: 'genus';
+      readonly excluded?: readonly string[];
+      /**
+       * TEMPORARY TECHNICAL DEBT, AND THE ONLY REASON THIS VARIANT STILL EXISTS AS AN
+       * OVERRIDE.
+       *
+       * Genus scope asserts that every species of a genus belongs to a card that prints ONE
+       * binomial — which is inference from genus membership, exactly what the curated model
+       * replaced. Goldenrod carries it only so that live coverage does not silently narrow
+       * before its accepted species have been botanically researched. When that list exists
+       * this becomes an `acceptedGroup` and this field goes with it.
+       *
+       * `observed-taxon.test.ts` fails if a SECOND card acquires it, so the debt cannot
+       * spread while it waits.
+       */
+      readonly pendingCuration?: string;
+    }
   /**
-   * An explicit list of binomials, for a card whose intended grouping does not correspond to
-   * one genus. Nothing uses this yet — no printed card has been established to need it —
-   * but the matcher handles it, so declaring one is a data change rather than a code change.
+   * AN EXPLICITLY RESEARCHED SET OF TAXA THE CARD'S IDENTIFICATION, USE AND SAFETY
+   * INFORMATION APPLIES TO.
+   *
+   * This is the curated relationship, and it replaces an unused `custom` variant that held
+   * bare strings. Every member carries its own `note` — why this card covers it — because a
+   * list of binomials with no reasons is indistinguishable from a guess six months later,
+   * and because these decisions touch what somebody might eat.
+   *
+   * A member may be SUPRA-SPECIFIC (a section). That is the point: an observation can
+   * qualify for a card without the species being resolved. It never becomes the card's own
+   * binomial — see `observedTaxon` in `plant-match.ts`.
    */
-  | { readonly type: 'custom'; readonly accepted: readonly string[] };
+  | { readonly type: 'acceptedGroup'; readonly accepted: readonly AcceptedTaxon[] };
 
 /**
- * OVERRIDES ONLY. The nine `Genus spp.` cards are not listed: their scope is already stated
- * on the card itself and is derived below, so repeating it here would be two sources of
- * truth for one fact and a chance for them to disagree.
+ * The rank a name claims. Lives here so `plant-match.ts` can import it without a cycle.
+ *
+ * DECLARED AS AN ARRAY, and the type derived from it, because the database has to repeat
+ * this list as a CHECK constraint and a union alone gives nothing to compare it against. A
+ * constraint narrower than the union does not degrade — it refuses the insert — so
+ * `identification-schema.test.ts` holds the two equal.
+ */
+export const TAXON_RANKS = [
+  // Above the species. None of these resolves WHICH species, whatever the provider's score.
+  'genus',
+  'subgenus',
+  'section',
+  'subsection',
+  'series',
+  'species',
+  // Below the species. Each of these RESOLVES the species and then narrows it further — a
+  // subspecies of Plantago major is Plantago major — so they are species-level for
+  // confidence and must still be stored at their own rank, or the narrowing is lost.
+  'subspecies',
+  'variety',
+  'form',
+  /*
+   * THE CONSERVATIVE FAILURE, and the reason this list has a member that is not a rank.
+   *
+   * A name carrying a qualifier the parser does not know — `agg.`, `convar.`, `grex`,
+   * `nothosubsp.`, a bare third epithet — used to fall through to `species`. That is a
+   * PROMOTION: it reports a confident species-level identification for a name that never
+   * claimed one. An unhandled marker lands here instead, which resolves to `unresolved`
+   * confidence, and the qualifier stays visible in the display name.
+   */
+  'unknown',
+] as const;
+export type TaxonRank = (typeof TAXON_RANKS)[number];
+
+/**
+ * THE SEVEN CRITERIA, each answered with its own citation.
+ *
+ * Required for a `curatedEquivalent` and for nothing else, which is the honest shape: these
+ * criteria exist to decide whether two DISTINCT ACCEPTED SPECIES may share one card. An
+ * `acceptedGroup` member is supra-specific — a section, an aggregate — so no two species are
+ * being equated and there is nothing for "compatible edibility" to compare. Demanding seven
+ * fields there would produce seven invented sentences, which is worse than demanding none.
+ *
+ * Seven named strings rather than one free-text blob, because a half-done addition can then
+ * be SEEN: you cannot satisfy the type by waving at the hard criterion.
+ */
+export interface EquivalenceEvidence {
+  readonly taxonomy: string;
+  readonly traditionalUse: string;
+  readonly part: string;
+  readonly phytochemistry: string;
+  readonly edibility: string;
+  readonly safety: string;
+  readonly noMisleadingImplication: string;
+}
+
+/** One researched member of a card's accepted group. */
+interface AcceptedTaxonBase {
+  /** As it should be DISPLAYED, rank word included: `Taraxacum sect. Ruderalia`. */
+  readonly scientificName: string;
+  readonly rank: TaxonRank;
+  /** Why this card's identification, use and safety information applies to this taxon. */
+  readonly note: string;
+  /** Citation. Same standard as a synonym: a checked fact, never a recollection. */
+  readonly source?: string;
+  /**
+   * ALTERNATE NAMES FOR THE SAME TAXON, for matching only.
+   *
+   * A second name is not a second member. `Taraxacum sect. Ruderalia` and
+   * `Taraxacum sect. Taraxacum` are one section under two names, so modelling them as two
+   * entries would say the card covers two sections — which is the inference this whole file
+   * exists to refuse, arriving by the back door.
+   *
+   * MATCHING ONLY. Whichever of these a provider returns is what gets RECORDED: the
+   * canonical name is how we find the card, never what we claim was observed. See
+   * `ObservedTaxon` in `plant-match.ts`.
+   */
+  readonly synonyms?: readonly string[];
+}
+
+/**
+ * A member that is a BROADER CONCEPT the card represents — a section, an aggregate.
+ *
+ * Nothing is equated: the observation never resolved to a species, so the card is reached
+ * without any claim that two plants are interchangeable.
+ */
+export interface AcceptedGroupTaxon extends AcceptedTaxonBase {
+  readonly basis: 'acceptedGroup';
+}
+
+/**
+ * A DISTINCT ACCEPTED SPECIES the card has been researched to represent.
+ *
+ * `source` is REQUIRED here and `evidence` with it. A test fails after somebody writes an
+ * unsourced line; a required field means the line cannot be written — which is the only
+ * version of "no equivalent without a source" that holds at three in the morning.
+ */
+export interface CuratedEquivalentTaxon extends AcceptedTaxonBase {
+  readonly basis: 'curatedEquivalent';
+  readonly source: string;
+  readonly evidence: EquivalenceEvidence;
+}
+
+export type AcceptedTaxon = AcceptedGroupTaxon | CuratedEquivalentTaxon;
+
+/**
+ * OVERRIDES ONLY.
+ *
+ * A `Genus spp.` card's BREADTH is stated on the card itself and derived below, so it is
+ * never restated here — repeating it would be two sources of truth for one fact and a chance
+ * for them to disagree. Three such cards now appear anyway, carrying `type: 'genus'` only
+ * because `excluded` has nowhere else to live: the entry adds a NARROWING, never the breadth.
+ * `card-coverage.test.ts` fails if an override on a card printing `spp.` is anything but
+ * `type: 'genus'`, which is what stops one of these entries quietly contradicting the artwork
+ * it was meant to leave alone.
  *
  * EVERY ENTRY IS AN OWNER DECISION ABOUT WHAT A CARD REPRESENTS, not a taxonomic lookup.
  * GBIF can say whether two names denote the same plant — that is what `check_synonyms.py`
@@ -69,6 +206,85 @@ export type CardScope =
  * their own right. Wild Violet therefore stays `species` despite a genus-level English name.
  */
 export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
+  /*
+   * ─────────────────────────────────────────────────────────────────────────
+   * HISTORICAL COMBINATIONS WHOSE ACCEPTED PLACEMENT IS IN ANOTHER GENUS.
+   *
+   * A `Genus spp.` card accepts any name whose FIRST WORD normalises to its genus, because
+   * that is what `genusOf()` reads. So a plant that has been moved OUT of the genus still
+   * reaches the card under its old name — and the current name, being in the new genus,
+   * matches nothing. The exposure therefore exists ONLY under the historical combination,
+   * which is why it is invisible unless somebody probes for it.
+   *
+   * EVERY NAME BELOW WAS RESOLVED AGAINST THE GBIF BACKBONE FROM A RUNNER, not recalled.
+   * `src/lib/taxon-placements.ts` carries the evidence and `taxon-placements.test.ts` fails
+   * if a verified out-of-genus name is ever not excluded here. Nothing is listed from memory:
+   * a Pine case was proposed and WITHDRAWN when GBIF reported `Pinus abies`, `P. larix` and
+   * `P. picea` as accepted *Pinus* homonyms rather than as names for spruce, larch and fir.
+   * ─────────────────────────────────────────────────────────────────────────
+   */
+
+  /*
+   * SUMAC — the one with teeth. Five historical `Rhus` combinations are names for poison
+   * sumac, poison ivy and poison oak, every one of which GBIF places in *Toxicodendron*.
+   * Card #20 lists BERRY and BARK as usable parts and prints no warning, so an unlock here
+   * would attach edible-part content to a plant whose contact causes urushiol dermatitis.
+   *
+   * The modern names are already refused — `Toxicodendron vernix` matches nothing — so this
+   * list closes the only door that was open.
+   *
+   * AN EXCLUDED NAME RETURNS `kind: 'none'`, NOT `sameGenus`. That was measured rather than
+   * assumed, and it matters: `sameGenus` would still have offered Sumac as a RELATED card for
+   * poison ivy. It falls out of `SPECIES_BY_GENUS` being built from cards' own binomials —
+   * `Rhus spp.` contributes none — so there is no same-genus card to fall back to.
+   */
+  'rhus-spp': {
+    type: 'genus',
+    excluded: [
+      // -> Toxicodendron (genus; GBIF cannot resolve the species from the bare string)
+      'Rhus vernix',
+      // -> Toxicodendron radicans subsp. radicans
+      'Rhus radicans',
+      // -> Toxicodendron (genus)
+      'Rhus toxicodendron',
+      // -> Toxicodendron diversilobum
+      'Rhus diversiloba',
+      // -> Toxicodendron rydbergii
+      'Rhus rydbergii',
+    ],
+  },
+
+  /*
+   * MULBERRY — `Morus papyrifera` is paper mulberry, GBIF-accepted as
+   * *Broussonetia papyrifera*. Not a poisoning risk: this is the "the card is about a
+   * different plant" problem rather than a safety one, and the card lists Fruit, Leaf, Bark.
+   */
+  /*
+   * ELDERBERRY — A CONTENT EXCLUSION, NOT A TAXONOMIC ONE, and the distinction is the point.
+   * `Sambucus ebulus` is genuinely a *Sambucus*; no backbone query would flag it. It is
+   * excluded because the CARD'S OWN CLAIMS fail for it on two counts: the card prints
+   * `Cold soak`, and cooking is the single documented mitigation for its lectins, so the
+   * card names the method that defeats the fix; and its four traits are the S. nigra /
+   * S. canadensis profile, a different medicinal tradition.
+   *
+   * `S. racemosa` is deliberately NOT here. Its raw berries and seeds cause GI upset and
+   * cooking plus straining removes it — a real elderberry with a real food use, so it gets
+   * the caution on card #31 rather than losing the card. Excluding it would deny a
+   * legitimate find.
+   *
+   * Evidence in `CONTENT_EXCLUSIONS`; `taxon-placements.test.ts` fails if an excluded name
+   * has no recorded reason.
+   */
+  'sambucus-spp': { type: 'genus', excluded: ['Sambucus ebulus'] },
+
+  'morus-spp': { type: 'genus', excluded: ['Morus papyrifera'] },
+
+  /*
+   * OAK — `Quercus densiflora` is tanoak, GBIF-accepted as *Notholithocarpus densiflorus*.
+   * Same shape as Mulberry; the card lists Bark, Nut, Leaf.
+   */
+  'quercus-spp': { type: 'genus', excluded: ['Quercus densiflora'] },
+
   /*
    * ─────────────────────────────────────────────────────────────────────────
    * CARDS CONSIDERED FOR GENUS SCOPE AND DELIBERATELY LEFT `species`.
@@ -115,7 +331,128 @@ export const CARD_COVERAGE: Readonly<Record<string, CardScope>> = {
    *
    * NO COLLISION: Solidago is represented by exactly one printed card.
    */
-  'solidago-canadensis': { type: 'genus' },
+  /*
+   * ─────────────────────────────────────────────────────────────────────────
+   * GOLDENROD — THE FIRST CURATED EQUIVALENT, AND THE REASON IS PHARMACOPOEIAL.
+   *
+   * This card was genus-wide `pendingCuration` for one honest reason: narrowing it before
+   * the research existed would have silently removed live coverage. The research now exists,
+   * and it is not morphology and it is NOT that an identification provider confuses the two.
+   *
+   * The European Pharmacopoeia recognises a herbal drug, *Solidaginis herba* ("goldenrod
+   * herb"), and accepts *Solidago canadensis* L. and *S. gigantea* Aiton as two EQUIVALENT
+   * SPECIES for it. That is an external authority stating, for the exact indication this card
+   * prints, that the two are interchangeable as the drug — a determination somebody else
+   * published, which is what `curatedEquivalent` is for.
+   *
+   * WHAT IS DELIBERATELY NOT HERE, and each for its own reason:
+   *
+   *   S. altissima  INSUFFICIENT EVIDENCE. Taxonomy passes; nothing else does. It is not
+   *                 named in *Solidaginis herba*, and the literature pairing it with
+   *                 canadensis is INVASION ECOLOGY, not therapeutics — a shared
+   *                 growth-inhibitory ester says nothing about a urinary indication.
+   *   S. virgaurea  REJECTED ON THE SAME AUTHORITY, pointing the other way: it is the source
+   *                 of a SEPARATE monograph, *Solidaginis virgaureae herba*. Being the
+   *                 best-studied goldenrod in Europe is why it must be refused — that depth
+   *                 of evidence is for a different drug.
+   *   S. rugosa     subsect. *Venosae*. S. juncea, subsect. *Junceae*. S. caesia, the
+   *                 original false unlock. None named in any goldenrod monograph; all three
+   *                 unlocked this card through the legacy override and nothing else.
+   *   bare Solidago A genus does not resolve a species, and this card prints a binomial.
+   *
+   * THE PRECEDENT DOES NOT GENERALISE. Every future `curatedEquivalent` passes all seven
+   * criteria independently; that a pharmacopoeia settled this one buys nothing for the next.
+   * ─────────────────────────────────────────────────────────────────────────
+   */
+  'solidago-canadensis': {
+    type: 'acceptedGroup',
+    accepted: [
+      {
+        basis: 'curatedEquivalent',
+        scientificName: 'Solidago gigantea',
+        rank: 'species',
+        note:
+          'Accepted by the European Pharmacopoeia as an equivalent source species of ' +
+          '*Solidaginis herba* alongside the card\'s own *Solidago canadensis*. A distinct ' +
+          'accepted species, not a synonym — the player is told so.',
+        source: 'https://altmeyers.org/en/naturopathy/solidaginis-herba-143574',
+        evidence: {
+          taxonomy:
+            'GBIF backbone: `Solidago gigantea` Aiton, status ACCEPTED, rank species, ' +
+            'EXACT/98 — a distinct species, so this is an equivalence and never a renaming. ' +
+            'Resolved from CI via scripts/resolve_taxa.py.',
+          traditionalUse:
+            'Named with S. canadensis as a source of *Solidaginis herba*. Commission E ' +
+            'approves irrigation for inflammatory disease of the lower urinary tract, ' +
+            'urinary stones and renal gravel; ESCOP adds adjunct use in bacterial UTI. That ' +
+            "is the card's printed Urinary support, Mild diuretic and Anti-inflam.",
+          part:
+            'The pharmacopoeial drug is the dried FLOWERING AERIAL PARTS — flower, leaf and ' +
+            "stem, which is exactly the card's usable-parts list.",
+          phytochemistry:
+            'Ph. Eur. standardises on flavonoids (expressed as hyperoside). Chlorogenic ' +
+            'acid, rutin, hyperoside, quercitrin and isoquercitrin are reported from leaves ' +
+            'and inflorescences of goldenrods; quercetin, rutin, phenolic acids, terpenoids ' +
+            "and saponins in the profile. The card prints Quercetin, Flavonoids, Rutin, " +
+            'Saponins — the marker class the pharmacopoeia measures.',
+          edibility:
+            'The card claims no food use beyond Tea, Tincture and Infusion, which are the ' +
+            "drug's own preparations. Nothing contradicts them for S. gigantea.",
+          safety:
+            'IDENTICAL, because it is one drug rather than two profiles that agree: known ' +
+            'Asteraceae/Compositae hypersensitivity, and oedema from impaired cardiac or ' +
+            'renal function (irrigation therapy drives water rather than salt excretion). ' +
+            'No contraindication for S. gigantea is absent from S. canadensis.',
+          noMisleadingImplication:
+            'A reader who found S. gigantea and read this card is reading the monograph that ' +
+            'covers their plant. The equivalent-species notice states the two are distinct.',
+        },
+      },
+    ],
+  },
+
+  /*
+   * DANDELION COVERS ONE RESEARCHED SECTION, AND UNTIL NOW COVERED ALL OF THEM BY ACCIDENT.
+   *
+   * The section entry used to live in `ACCEPTED_NAME_SYNONYMS` as the key `taraxacum sect`,
+   * which is not a synonym at all — a section is a RANK ABOVE the species, so calling it one
+   * asserted that `Taraxacum sect. <anything>` and `Taraxacum officinale` denote the same
+   * plant. Worse, `normalizeName` dropped the section's epithet, so all three of
+   * sect. Ruderalia, sect. Erythrosperma and sect. Palustria collapsed onto that one key and
+   * every one of them matched as an EXACT, confirmable `T. officinale` — including the
+   * section containing `Taraxacum erythrospermum`, a species this deck deliberately refuses.
+   *
+   * It is an accepted GROUP member now: the card is reachable, the observation stays a
+   * section, and no other section rides in with it.
+   */
+  'taraxacum-officinale': {
+    type: 'acceptedGroup',
+    accepted: [
+      {
+        // The card concept IS the section; no two species are equated, so the seven
+        // equivalence criteria do not apply and are deliberately absent.
+        basis: 'acceptedGroup',
+        scientificName: 'Taraxacum sect. Taraxacum',
+        rank: 'section',
+        synonyms: ['Taraxacum sect. Ruderalia'],
+        note:
+          'The section containing the common dandelion, and the name identification ' +
+          'providers return for an aggregate match rather than a microspecies. ONE section ' +
+          'under two names: POWO accepts `T. sect. Taraxacum` (IPNI 254151-1) and treats ' +
+          '`T. officinale` as a synonym of it; Flora of China describes modern usage as ' +
+          '`T. sect. Taraxacum (T. sect. Ruderalia)`; VicFlora treats `sect. Ruderalia` as ' +
+          'a synonym of it. Listed as one member with an alternate name, NOT as two ' +
+          'members — two entries would assert the card covers two sections.',
+        source: 'https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1',
+      },
+      /*
+       * sect. Erythrosperma and sect. Palustria are DELIBERATELY ABSENT. Erythrosperma
+       * contains `Taraxacum erythrospermum`, which this deck refuses as unconfirmable — so
+       * accepting its section would contradict that decision, which is exactly what the old
+       * collapsed `taraxacum sect` key did. Neither may be added without research.
+       */
+    ],
+  },
 };
 
 /**

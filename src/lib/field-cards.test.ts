@@ -214,7 +214,7 @@ describe('an XP unlock is not a discovery', () => {
      */
     for (const file of [
       'src/components/scan/ScanPanel.tsx',
-      'src/lib/scan-ambiguity.ts',
+      'src/lib/scan-summary.ts',
       'src/components/seedshelf/SeedShelfView.tsx',
       'src/components/journal/JournalView.tsx',
     ]) {

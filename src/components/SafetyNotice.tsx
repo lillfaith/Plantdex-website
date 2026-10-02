@@ -160,6 +160,54 @@ export function SiteCaution({ caution }: { caution: string }) {
  * so three cards show another plant's profile in good faith and nothing on screen said so.
  */
 /**
+ * A recommendation Plantdex has withdrawn from what the card prints.
+ *
+ * IT CARRIES HAZARD WEIGHT, AND IT DID NOT AT FIRST. The original styling was a quiet
+ * correction, on the reasoning that "the instruction changed" is not itself a hazard and that
+ * a third red block would make the next real warning cheaper. That reasoning assumed the
+ * printed instruction had once been valid. For the only correction that exists it had not:
+ * card #31 lists Leaf and Shoot by mistake, elder leaves and green shoots are not edible, and
+ * the correction now says **do not eat or use these parts** — which is an instruction about
+ * ingestion and belongs at the same weight as the warnings beside it.
+ *
+ * It is also the LOUDEST thing on that card by design, because it is the one block that tells
+ * a reader the object in their hand is wrong. The caution beneath it is preparation guidance
+ * for the parts that are fine.
+ *
+ * IF A CORRECTION IS EVER ADDED THAT IS NOT ABOUT SAFETY — a renamed habitat, a corrected
+ * season — this component needs a severity split rather than a quieter copy of itself. That
+ * is deliberately not built ahead of a second case: one correction, one treatment, and the
+ * decision visible here when the second arrives.
+ */
+export function DigitalCorrection({
+  correction,
+}: {
+  correction: { supersededParts: readonly string[]; message: string };
+}) {
+  return (
+    <p
+      role="note"
+      className="flex items-start gap-2 rounded-xl border border-stat-temp/70 bg-stat-temp/20 px-3 py-2.5 text-sm font-semibold text-violet-100"
+    >
+      <PlantdexIcon name="safety" className="mt-0.5 shrink-0 text-base" />
+      <span>
+        {/*
+          NO `sr-only` PREFIX HERE, unlike the warnings above. Those carry a styled icon and a
+          colour as their only signal of what they are, so a screen reader needs the word
+          "Warning" supplied. This block prints its own label in visible text, and the message
+          after it names the printed card again — adding a hidden third telling would be the
+          same duplication this correction was simplified to remove, just in the audio layer.
+        */}
+        <span>Card correction:</span> {correction.message}{' '}
+        <span className="font-normal text-violet-200">
+          The card&rsquo;s own text below is unchanged and still reads as printed.
+        </span>
+      </span>
+    </p>
+  );
+}
+
+/**
  * The risk attached to a lookalike pair.
  *
  * Same hazard weight as `CardWarning` and `SiteCaution` deliberately: a reader who

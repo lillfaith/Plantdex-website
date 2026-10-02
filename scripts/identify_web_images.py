@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run REAL photographs of a species through the live identifier and report what comes back.
+Run REAL photographs through the live identifier and report what comes back.
 
 WHY THIS EXISTS. The 45-card survey used studio card art, cropped to the photo panel. That
 is the easy case: one plant, filling the frame, lit properly. It reported 45/45 covered and
@@ -16,31 +16,96 @@ WHERE THE IMAGES COME FROM. Wikimedia Commons, resolved through its own API. Sta
 explicit licensing, no scraping of a search engine's result page, and reproducible — the
 same category returns the same files, so a run can be repeated and compared.
 
-COMPARING UPLOAD SIZES. Set SIZES (e.g. "1280x82,1024x75,800x75", as edge x quality) and
-each photograph is re-encoded at each setting and identified once per setting, with the
-answers printed side by side. That is the ONLY honest way to choose what `IDENTIFY_PROFILE`
-in `src/lib/image-prepare.ts` sends: the upload is usually the largest term in the wait on a
-phone, smaller is faster, and whether smaller is also WORSE is a question about PlantNet's
-model that nothing in this repository can answer by reasoning. Card art cannot answer it
-either — see above — so it is asked of real field photographs, through the real function.
+────────────────────────────────────────────────────────────────────────────────────────
+TWO MODES.
 
-WHAT IT COSTS. One identification per image per size, against the project's daily allowance.
-The anonymous bucket is 5/day per IP and a runner gets a fresh one per job, so keep batches
-small: with three sizes that is ONE photograph per job, repeated across species as separate
-runs.
+SIZE MODE (the original). Set CATEGORY and SIZES (e.g. "1280x82,1024x75,800x75", as edge x
+quality) and each photograph is re-encoded at each setting and identified once per setting,
+with the answers printed side by side. That is the ONLY honest way to choose what
+`IDENTIFY_PROFILE` in `src/lib/image-prepare.ts` sends: the upload is usually the largest
+term in the wait on a phone, smaller is faster, and whether smaller is also WORSE is a
+question about the provider's model that nothing in this repository can answer by reasoning.
+
+BENCHMARK MODE (new). Set MANIFEST to a JSON file of image SETS and this runs a condition
+matrix over each one, writing a JSONL record per (set, condition). It answers three
+questions the size mode cannot:
+
+  1 photo vs 2 vs 3   Does the second and third photograph actually buy accuracy? The UI
+                      requires two and offers three, and that was a design decision, not a
+                      measurement.
+  PlantNet vs plant.id  On the SAME images. Not two runs on two image sets, which measures
+                      the image sets.
+  Slot 3 tagged `auto` vs tagged with the real organ. The third slot is the only one the UI
+                      leaves as `auto`. Whether that costs accuracy is measurable.
+
+IT DOES NOT SCORE ANYTHING. This file talks to the network and writes down what came back.
+Deciding whether an answer was RIGHT means applying `matchScientificName` and `outcomeFor`,
+and a second implementation of those here would be free to disagree with the one that ships.
+`benchmark/report.bench.test.ts` reads this file's JSONL and applies the real ones.
+
+────────────────────────────────────────────────────────────────────────────────────────
+WHAT IT COSTS, AND WHY THAT IS PRINTED BEFORE ANYTHING IS SPENT.
+
+Every request is one PlantNet identification against the project's daily allowance. A
+request made with a SIGNED-IN token belonging to an account in
+`IDENTIFICATION_COMPARISON_USER_IDS` additionally costs one plant.id (Kindwise) credit,
+because comparison mode asks both providers — that is how the provider axis is measured
+without paying for two runs. Kindwise credits are bought, so `DRY_RUN=1` prints the exact
+budget and makes zero identification calls. Run it first, every time.
+
+Quotas are enforced by the function, not here: 5/day for an anonymous caller (per IP),
+30/day for a signed-in one, 450/day globally. A 429 stops the run and the JSONL written so
+far is still valid — re-running with ONLY set to what is missing resumes it.
+
+────────────────────────────────────────────────────────────────────────────────────────
+ENVIRONMENT.
+
+  Both modes      PROJECT_REF, ANON_KEY
+  Size mode       CATEGORY, LIMIT, SIZES
+  Benchmark mode  MANIFEST, OUT, CONDITIONS, SIGNED_IN, PILOT, ONLY, EDGE, QUALITY,
+                  ACCESS_TOKEN or (USER_EMAIL and USER_PASSWORD) for the comparison account,
+                  and optionally PLAIN_ACCESS_TOKEN or (PLAIN_USER_EMAIL and
+                  PLAIN_USER_PASSWORD) for a second, ordinary account
+  Field mode      FIELD=field/manifest.json, OUT, CONDITIONS, ONLY, EDGE, QUALITY,
+                  and a signed-in account. PlantNet only: SIGNED_IN is REFUSED, so no
+                  plant.id credit can be spent from this mode.
+  Read-back       COMPARISONS=1, OUT, COMPARISONS_OUT, and the same credentials
+  Either          DRY_RUN=1 (budget only), RESOLVE=1 (list Commons files, no calls)
+
+A full run is three commands and only the middle one costs anything:
+
+  DRY_RUN=1  MANIFEST=scripts/benchmark/sets.json  ...  python3 scripts/identify_web_images.py
+             MANIFEST=scripts/benchmark/sets.json  ...  python3 scripts/identify_web_images.py
+  COMPARISONS=1                                    ...  python3 scripts/identify_web_images.py
+  npx vitest run --config vitest.bench.config.ts
 """
 
 from __future__ import annotations
 
+import datetime
 import io
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 UA = "plantdex-field-realism-check (https://github.com/lillfaith/Plantdex-website)"
+
+# What `IDENTIFY_PROFILE` sends today. See the Performance notes in CLAUDE.md: 1024/0.75 is
+# where three measured photographs supported stopping, and 800 needs more evidence than three.
+DEFAULT_EDGE = 1024
+DEFAULT_QUALITY = 75
+
+# The function's own limits, repeated here only so the budget print can be honest about what
+# will stop a run. They are NOT enforced here.
+ANON_DAILY_LIMIT = 5
+USER_DAILY_LIMIT = 30
+
+
+# ── Commons ──────────────────────────────────────────────────────────────────
 
 
 def commons_images(category: str, limit: int) -> list[tuple[str, str]]:
@@ -56,6 +121,36 @@ def commons_images(category: str, limit: int) -> list[tuple[str, str]]:
         "iiurlwidth": "1200",
         "format": "json",
     }
+    return _commons_query(params, limit)
+
+
+def commons_files(titles: list[str]) -> list[tuple[str, str]]:
+    """(title, direct url) for explicitly named files, in the order given.
+
+    THE HONEST MODE. A category returns photographs of DIFFERENT INDIVIDUALS by different
+    people, which is a fine test of "does the deck find this species" and a poor test of
+    "do three views of one plant beat two". Naming the files is how a set becomes three views
+    of one specimen — and the manifest records which kind it is, because a benchmark that
+    cannot say that is one whose photo-count result means nothing.
+    """
+    params = {
+        "action": "query",
+        "titles": "|".join(f"File:{one.removeprefix('File:')}" for one in titles),
+        "prop": "imageinfo",
+        "iiprop": "url|mime",
+        "iiurlwidth": "1200",
+        "format": "json",
+    }
+    found = dict(_commons_query(params, len(titles)))
+    out: list[tuple[str, str]] = []
+    for title in titles:
+        want = f"File:{title.removeprefix('File:')}"
+        if want in found:
+            out.append((want, found[want]))
+    return out
+
+
+def _commons_query(params: dict[str, str], limit: int) -> list[tuple[str, str]]:
     request = urllib.request.Request(
         f"{COMMONS_API}?{urllib.parse.urlencode(params)}", headers={"User-Agent": UA}
     )
@@ -76,32 +171,136 @@ def commons_images(category: str, limit: int) -> list[tuple[str, str]]:
     return out[:limit]
 
 
-def identify(image: bytes, filename: str, project: str, key: str) -> dict:
+def download(url: str) -> bytes:
+    request = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(request, timeout=90) as response:
+        return response.read()
+
+
+# ── The function ─────────────────────────────────────────────────────────────
+
+
+def identify(
+    images: list[tuple[bytes, str]],
+    project: str,
+    key: str,
+    token: str | None = None,
+) -> dict:
+    """POST one observation — two or three photographs of one plant, each with an organ tag.
+
+    `images` is [(jpeg bytes, organ)]. The parts are appended in matching order and read back
+    with `getAll`, which is the shape `identify-plant` documents; an organ it does not
+    recognise becomes `auto` server-side rather than an error.
+
+    `token` is a user access token. Passing one is what makes the call SIGNED IN, which is
+    what puts it in the larger quota bucket and — for an account in the comparison list —
+    what makes the function ask plant.id as well and write both answers to
+    `identification_comparisons`. That is the only way to get the alternate provider's answer:
+    it is deliberately never returned in the response.
+    """
     boundary = "----plantdexfieldcheck"
-    body = b"".join(
-        [
+    parts: list[bytes] = []
+    for index, (blob, organ) in enumerate(images):
+        parts += [
             f"--{boundary}\r\n".encode(),
-            f'Content-Disposition: form-data; name="image"; filename="{filename}"\r\n'.encode(),
+            (
+                f'Content-Disposition: form-data; name="image"; '
+                f'filename="scan{index}.jpg"\r\n'
+            ).encode(),
             b"Content-Type: image/jpeg\r\n\r\n",
-            image,
-            f"\r\n--{boundary}--\r\n".encode(),
+            blob,
+            b"\r\n",
         ]
-    )
+    for _, organ in images:
+        parts += [
+            f"--{boundary}\r\n".encode(),
+            b'Content-Disposition: form-data; name="organ"\r\n\r\n',
+            organ.encode(),
+            b"\r\n",
+        ]
+    parts.append(f"--{boundary}--\r\n".encode())
+
     request = urllib.request.Request(
         f"https://{project}.supabase.co/functions/v1/identify-plant",
-        data=body,
+        data=b"".join(parts),
         headers={
             "Content-Type": f"multipart/form-data; boundary={boundary}",
             "apikey": key,
-            "Authorization": f"Bearer {key}",
+            "Authorization": f"Bearer {token or key}",
             "User-Agent": UA,
         },
     )
     try:
-        with urllib.request.urlopen(request, timeout=120) as response:
-            return json.load(response)
+        with urllib.request.urlopen(request, timeout=180) as response:
+            return {"http": response.status, "body": json.load(response)}
     except urllib.error.HTTPError as error:
-        return {"httpError": error.code, "body": error.read().decode("utf-8", "replace")[:300]}
+        raw = error.read().decode("utf-8", "replace")
+        try:
+            body = json.loads(raw)
+        except json.JSONDecodeError:
+            body = {"raw": raw[:400]}
+        return {"http": error.code, "body": body}
+
+
+def fetch_comparisons(project: str, key: str, token: str, observation_ids: list[str]) -> list[dict]:
+    """The alternate provider's answers, read back afterwards rather than during the run.
+
+    They cannot come back in the response — the alternate's answer is recorded and DROPPED,
+    deliberately, so that an allow-listed account is never silently using a different
+    identifier from everybody else. So they are fetched here, through PostgREST, under the
+    BENCHMARK ACCOUNT'S OWN TOKEN: `identification_comparisons` is user-scoped and its select
+    policy is `auth.uid() = user_id`, so this reads exactly the rows this run wrote and
+    nothing else. No service-role key is involved and none is needed.
+
+    Run this AFTER the matrix, not inside it. The function hands the insert to
+    `EdgeRuntime.waitUntil` and returns, so a row lands shortly after its response does;
+    reading during the run would race it.
+    """
+    out: list[dict] = []
+    for start in range(0, len(observation_ids), 40):
+        chunk = observation_ids[start : start + 40]
+        query = urllib.parse.urlencode(
+            {
+                "observation_id": f"in.({','.join(chunk)})",
+                "select": "observation_id,provider,top_scientific_name,top_rank,"
+                "top_probability,candidates,failure,created_at",
+            }
+        )
+        request = urllib.request.Request(
+            f"https://{project}.supabase.co/rest/v1/identification_comparisons?{query}",
+            headers={
+                "apikey": key,
+                "Authorization": f"Bearer {token}",
+                "Accept": "application/json",
+                "User-Agent": UA,
+            },
+        )
+        with urllib.request.urlopen(request, timeout=60) as response:
+            out += json.load(response)
+    return out
+
+
+def sign_in(project: str, key: str, email: str, password: str) -> str:
+    """Exchange a password for an access token, the same grant the app's client uses.
+
+    The benchmark needs a REAL user token rather than the anon key: the comparison gate is
+    `Boolean(userId) && COMPARISON_ON && COMPARISON_USER_IDS.has(userId)`, and the anon key
+    carries no user id at all, so a run made with it silently measures PlantNet alone.
+    """
+    request = urllib.request.Request(
+        f"https://{project}.supabase.co/auth/v1/token?grant_type=password",
+        data=json.dumps({"email": email, "password": password}).encode(),
+        headers={
+            "Content-Type": "application/json",
+            "apikey": key,
+            "User-Agent": UA,
+        },
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        return json.load(response)["access_token"]
+
+
+# ── Images ───────────────────────────────────────────────────────────────────
 
 
 def parse_sizes(raw: str) -> list[tuple[int, int]]:
@@ -137,18 +336,595 @@ def reencode(blob: bytes, edge: int, quality: int) -> bytes:
     return buffer.getvalue()
 
 
-def main() -> int:
+# ── Benchmark mode ───────────────────────────────────────────────────────────
+
+"""
+THE CONDITION MATRIX.
+
+Each entry is (how many photographs, how the organ tags are built). The organ tags matter as
+much as the count: PlantNet takes one per image and the deck's own UI leaves the THIRD slot
+as `auto`, so "three photographs" and "three photographs the way the app sends them" are not
+the same request.
+
+  p1       One photograph. Today the endpoint REFUSES this — `MIN_IMAGES` is 2 — so this
+           condition only runs against a deployment where that floor has been lowered. It is
+           in the matrix because "is the second photograph worth requiring?" is a question
+           about a requirement the product already imposes, and it cannot be answered by a
+           harness that is itself bound by it. NOT selected by default: against an unmodified
+           deployment every p1 request is a 400, and a run that spends its quota recording
+           the same refusal thirteen times has measured the floor, not the photographs.
+  p2       Two, tagged from the manifest. The app's minimum.
+  p3auto   Three, with the third tagged `auto`. EXACTLY what the app sends today.
+  p3tag    Three, with the third tagged with the organ the manifest says it really is. The
+           only difference from p3auto is that one word, which is what isolates it.
+"""
+CONDITIONS: dict[str, tuple[int, str]] = {
+    "p1": (1, "manifest"),
+    "p2": (2, "manifest"),
+    "p3auto": (3, "auto-third"),
+    "p3tag": (3, "manifest"),
+}
+DEFAULT_CONDITIONS = "p2,p3auto,p3tag"
+DEFAULT_SIGNED_IN = "p3auto"
+
+
+def organs_for(condition: str, manifest_organs: list[str]) -> list[str]:
+    count, style = CONDITIONS[condition]
+    tags = [(manifest_organs[i] if i < len(manifest_organs) else "auto") for i in range(count)]
+    if style == "auto-third" and count == 3:
+        tags[2] = "auto"
+    return tags
+
+
+def load_manifest(path: str) -> dict:
+    with open(path, encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def resolve_set(entry: dict, wanted: int) -> list[tuple[str, str]]:
+    """The photographs for one set: explicit files if the manifest names them, else category."""
+    files = entry.get("files") or []
+    if files:
+        return commons_files(files)[:wanted]
+    category = entry.get("category")
+    if not category:
+        return []
+    return commons_images(category, wanted)
+
+
+def budget(
+    sets: list[dict], conditions: list[str], signed_in: list[str], have_plain: bool
+) -> dict[str, int]:
+    """What the run will spend, before it spends any of it.
+
+    THE ASYMMETRY IS THE WHOLE REASON THE PROVIDER AXIS IS AFFORDABLE. A request made with
+    the COMPARISON account's token asks BOTH providers, so it costs one PlantNet
+    identification and one Kindwise credit; every other request costs a PlantNet
+    identification and nothing else. Running one condition per set as the comparison account
+    therefore buys the entire provider comparison for one credit per set.
+
+    THERE IS NO SIGNED-IN-WITHOUT-COMPARING FOR THAT ACCOUNT. The gate is
+    `Boolean(userId) && COMPARISON_ON && COMPARISON_USER_IDS.has(userId)` — no request
+    parameter, by design. So the unpaid conditions run either anonymously, at 5/day per IP,
+    or as a SECOND signed-in account that is not on the allow-list, at 30/day. The second
+    account is not a nicety: at 5/day a thirteen-set run takes the better part of a week.
+    """
+    paid = [one for one in conditions if one in signed_in]
+    unpaid = len(sets) * (len(conditions) - len(paid))
+    return {
+        "sets": len(sets),
+        "conditions": len(conditions),
+        "requests": len(sets) * len(conditions),
+        "plantnet": len(sets) * len(conditions),
+        "kindwise": len(sets) * len(paid),
+        "comparisonRequests": len(sets) * len(paid),
+        "plainRequests": unpaid if have_plain else 0,
+        "anonymousRequests": 0 if have_plain else unpaid,
+    }
+
+
+def print_budget(plan: dict[str, int]) -> None:
+    def days(count: int, limit: int) -> int:
+        return -(-count // limit) if count else 0
+
+    print("BUDGET")
+    print(f"  sets                 {plan['sets']}")
+    print(f"  conditions per set   {plan['conditions']}")
+    print(f"  total requests       {plan['requests']}")
+    print(f"  PlantNet ids         {plan['plantnet']}")
+    print(f"  Kindwise credits     {plan['kindwise']}   (paid; comparison-account requests only)")
+    print()
+    print("  against the function's quotas")
+    comparison = plan["comparisonRequests"]
+    plain = plan["plainRequests"]
+    anon = plan["anonymousRequests"]
+    print(
+        f"    comparison account {comparison:>4}  at {USER_DAILY_LIMIT}/day = "
+        f"{days(comparison, USER_DAILY_LIMIT)} day(s)"
+    )
+    if plain:
+        print(
+            f"    second account     {plain:>4}  at {USER_DAILY_LIMIT}/day = "
+            f"{days(plain, USER_DAILY_LIMIT)} day(s)"
+        )
+    if anon:
+        print(
+            f"    anonymous          {anon:>4}  at {ANON_DAILY_LIMIT}/day per IP = "
+            f"{days(anon, ANON_DAILY_LIMIT)} day(s) from one address"
+        )
+        print(
+            "      Set PLAIN_USER_EMAIL / PLAIN_USER_PASSWORD to a second account that is NOT\n"
+            "      on the comparison allow-list and these move to the 30/day bucket, for no\n"
+            "      extra credit."
+        )
+    print()
+
+
+# ── Field mode: photographs of ONE individual, taken on a phone ──────────────
+
+
+def run_field() -> int:
+    """FIELD=<manifest> — the same condition matrix, against local phone photographs.
+
+    WHY THIS EXISTS AND WHY IT IS A SEPARATE MODE. The Commons pilot recorded
+    `sameIndividual: 0 of 24` and said so in its own report: a category returns photographs
+    of DIFFERENT PLANTS by different people, so "do three views beat two" was being asked of
+    three specimens rather than three views. That is the weakest axis in the whole benchmark
+    and the only way to fix it is photographs somebody took of one plant, in one session, on
+    the device the app actually runs on.
+
+    So the images come from `field/manifest.json` — written by `check_field_set.py`, which
+    has already refused a mis-numbered file, a position-1 photograph that is not `habit`, an
+    organ outside PlantNet's vocabulary, and any specimen whose ground truth is missing.
+    Everything downstream is unchanged: the same `reencode`, the same `identify`, the same
+    JSONL, the same scorer.
+
+    PLANTNET ONLY, ENFORCED RATHER THAN INTENDED. This phase exists to test the EXISTING
+    production system against real photographs before it ships, and plant.id is deliberately
+    not part of it. A comparison request costs a paid credit and would answer a question this
+    phase is not asking, so `SIGNED_IN` is refused here outright rather than defaulted to
+    empty — a default is a thing somebody overrides by accident.
+
+    THE EXPECTED CARD IS NOT IN THE MANIFEST, AND MUST NOT BE. "Which card should this
+    species reach" is a question for `matchScientificName`, which the TypeScript scorer runs;
+    a column here would be somebody's opinion of the answer, free to disagree with the code
+    that actually decides it. The manifest carries the TRUTH (what the plant is) and the
+    scorer derives the expectation.
+    """
+    project = os.environ.get("PROJECT_REF", "").strip()
+    key = os.environ.get("ANON_KEY", "").strip()
+    manifest_path = os.environ.get("FIELD", "").strip()
+    out_path = os.environ.get("OUT", "field-results.jsonl").strip()
+    dry_run = os.environ.get("DRY_RUN", "").strip() == "1"
+    edge = int(os.environ.get("EDGE", str(DEFAULT_EDGE)))
+    quality = int(os.environ.get("QUALITY", str(DEFAULT_QUALITY)))
+    only = {one for one in os.environ.get("ONLY", "").replace(" ", "").split(",") if one}
+
+    if os.environ.get("SIGNED_IN", "").strip():
+        print(
+            "SIGNED_IN is refused in field mode. This phase tests the PlantNet system that is\n"
+            "about to ship; a comparison request costs a paid plant.id credit and answers a\n"
+            "question this phase is not asking. Nothing was sent."
+        )
+        return 2
+
+    conditions = [
+        one
+        for one in os.environ.get("CONDITIONS", "p1,p2,p3auto").replace(" ", "").split(",")
+        if one
+    ]
+    unknown = [one for one in conditions if one not in CONDITIONS]
+    if unknown:
+        print(f"unknown condition(s): {', '.join(unknown)}")
+        return 2
+
+    manifest = load_manifest(manifest_path)
+    root = os.path.dirname(os.path.abspath(manifest_path))
+    specimens = [
+        one for one in manifest.get("specimens", []) if not only or one.get("id") in only
+    ]
+    if not specimens:
+        print("manifest selected no specimens")
+        return 2
+
+    # A specimen with two photographs cannot run a three-photograph condition. Counted
+    # rather than assumed, because the budget has to be the number of requests that will
+    # actually go out.
+    planned: list[tuple[dict, str]] = []
+    for entry in specimens:
+        held = len(entry.get("photos", []))
+        for condition in conditions:
+            if CONDITIONS[condition][0] <= held:
+                planned.append((entry, condition))
+
+    print(f"manifest: {manifest_path}")
+    print(f"conditions: {', '.join(conditions)}")
+    print("provider: PlantNet only (comparison refused in this mode)")
+    print(f"upload profile: {edge}px q{quality}\n")
+    print("BUDGET")
+    print(f"  specimens            {len(specimens)}")
+    print(f"  total requests       {len(planned)}")
+    print(f"  PlantNet ids         {len(planned)}")
+    print("  Kindwise credits     0   (no comparison request is made in this mode)")
+    skipped = len(specimens) * len(conditions) - len(planned)
+    if skipped:
+        print(f"  skipped              {skipped}  (three-photo conditions on two-photo specimens)")
+    print(f"\n  at {USER_DAILY_LIMIT}/day signed in = "
+          f"{-(-len(planned) // USER_DAILY_LIMIT) if planned else 0} day(s)\n")
+
+    max_requests = int(os.environ.get("MAX_REQUESTS", "0"))
+    if max_requests and len(planned) > max_requests:
+        print(f"REFUSING TO RUN — {len(planned)} requests exceeds MAX_REQUESTS={max_requests}.")
+        return 2
+
+    if dry_run:
+        print("DRY_RUN=1 — nothing was sent and nothing was spent.")
+        return 0
+
+    # ── Load and re-encode every photograph before anything is sent ──────────
+    prepared: dict[str, list[tuple[str, str, bytes]]] = {}
+    for entry in specimens:
+        shots: list[tuple[str, str, bytes]] = []
+        for photo in sorted(entry.get("photos", []), key=lambda one: one["position"]):
+            path = os.path.join(root, photo["file"])
+            try:
+                with open(path, "rb") as handle:
+                    shots.append((photo["file"], photo["organ"], reencode(handle.read(), edge, quality)))
+            except Exception as error:  # noqa: BLE001
+                print(f"  {entry['id']}: could not prepare {photo['file']}: {error}")
+        if len(shots) < 2:
+            print(f"  {entry['id']}: fewer than 2 usable photographs — skipped")
+            continue
+        sizes = ", ".join(f"{len(blob) // 1024}KB" for _, _, blob in shots)
+        print(f"── {entry['id']}  {entry['truth']['scientificName']}  ({sizes})")
+        prepared[entry["id"]] = shots
+
+    token: str | None = os.environ.get("ACCESS_TOKEN", "").strip() or None
+    email = os.environ.get("USER_EMAIL", "").strip()
+    password = os.environ.get("USER_PASSWORD", "").strip()
+    if not token and email and password:
+        token = sign_in(project, key, email, password)
+
+    written = 0
+    stopped = False
+    with open(out_path, "w", encoding="utf-8") as handle:
+        for entry in specimens:
+            shots = prepared.get(entry["id"])
+            if not shots:
+                continue
+            for condition in conditions:
+                count, _ = CONDITIONS[condition]
+                if count > len(shots):
+                    continue
+                tags = organs_for(condition, [organ for _, organ, _ in shots])
+                payload = [(shots[i][2], tags[i]) for i in range(count)]
+                answer = identify(payload, project, key, token)
+                record = {
+                    "setId": entry["id"],
+                    "condition": condition,
+                    "truth": {
+                        "scientificName": entry["truth"]["scientificName"],
+                        "rank": entry["truth"].get("rank", "species"),
+                    },
+                    "certainty": entry.get("certainty"),
+                    "class": entry.get("class"),
+                    # READ, NEVER ASSUMED. This was hard-coded `true` while the only set was
+                    # photographs taken here, where it holds by construction. It stopped
+                    # holding the moment a second set arrived from documented internet
+                    # observations: an iNaturalist observation is one organism at one place
+                    # and time, so its photographs ARE one individual — but that is a fact
+                    # about the record, which the manifest carries, not about this mode. A
+                    # set that had to combine two plants says so, and the report then
+                    # excludes it from the photo-count question instead of letting it answer
+                    # one it cannot.
+                    "sameIndividual": bool(entry.get("sameIndividual", True)),
+                    # `field` is the phone set. Anything else names where the record came
+                    # from, and is what keeps the two datasets apart in the report rather
+                    # than averaged into one number.
+                    "source": entry.get("source") or "field",
+                    "sourceRef": entry.get("sourceRef", ""),
+                    "verification": entry.get("verification") or "self",
+                    "signedIn": bool(token),
+                    "comparing": False,
+                    "profile": {"edge": edge, "quality": quality},
+                    "images": [
+                        {"title": shots[i][0], "organ": tags[i], "bytes": len(shots[i][2])}
+                        for i in range(count)
+                    ],
+                    "http": answer["http"],
+                    "response": answer["body"],
+                    "at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                }
+                handle.write(json.dumps(record) + "\n")
+                handle.flush()
+                written += 1
+
+                body = answer["body"]
+                if answer["http"] != 200:
+                    note = body.get("code") or body.get("error") or body.get("raw", "")
+                    print(f"   {entry['id']:<12} {condition:<7} HTTP {answer['http']}  {note}")
+                    if answer["http"] == 429:
+                        print("     quota reached — stopping; re-run with ONLY to resume")
+                        stopped = True
+                        break
+                    continue
+                top = (body.get("candidates") or [{}])[0]
+                print(
+                    f"   {entry['id']:<12} {condition:<7} "
+                    f"{top.get('scientificName', '(nothing)'):<34} "
+                    f"{top.get('score', 0):.3f}  left {body.get('remaining')}"
+                )
+            if stopped:
+                break
+
+    print(f"\n{written} record(s) -> {out_path}")
+    print(f"Now: BENCH_RESULTS={out_path} npx vitest run --config vitest.bench.config.ts")
+    return 0
+
+
+def run_comparisons() -> int:
+    """COMPARISONS=1 — read the alternate provider's rows back for a finished run.
+
+    Spends nothing: no identification, no credit. It reads the observation ids out of the
+    JSONL the matrix wrote and fetches the rows those requests produced.
+    """
+    project = os.environ.get("PROJECT_REF", "").strip()
+    key = os.environ.get("ANON_KEY", "").strip()
+    source = os.environ.get("OUT", "benchmark-results.jsonl").strip()
+    target = os.environ.get("COMPARISONS_OUT", "benchmark-comparisons.json").strip()
+
+    token = os.environ.get("ACCESS_TOKEN", "").strip() or None
+    email = os.environ.get("USER_EMAIL", "").strip()
+    password = os.environ.get("USER_PASSWORD", "").strip()
+    if not token and email and password:
+        token = sign_in(project, key, email, password)
+    if not token:
+        print("set ACCESS_TOKEN or USER_EMAIL/USER_PASSWORD — the rows are read as their owner")
+        return 2
+
+    ids: list[str] = []
+    with open(source, encoding="utf-8") as handle:
+        for line in handle:
+            record = json.loads(line)
+            observation = (record.get("response") or {}).get("observationId")
+            if record.get("comparing") and observation:
+                ids.append(observation)
+    if not ids:
+        print(f"{source} holds no comparing request with an observation id")
+        return 0
+
+    rows = fetch_comparisons(project, key, token, ids)
+    with open(target, "w", encoding="utf-8") as handle:
+        json.dump(rows, handle, indent=1)
+
+    answered = {row["observation_id"] for row in rows}
+    print(f"{len(rows)} row(s) for {len(answered)} of {len(ids)} observation(s) -> {target}")
+    missing = [one for one in ids if one not in answered]
+    if missing:
+        print(
+            f"{len(missing)} observation(s) have no row. Comparison writes are "
+            "fire-and-forget; wait a moment and re-run, and if they stay missing the "
+            "alternate provider's key is probably unset on that deployment."
+        )
+    return 0
+
+
+def run_benchmark() -> int:
+    project = os.environ.get("PROJECT_REF", "").strip()
+    key = os.environ.get("ANON_KEY", "").strip()
+    manifest_path = os.environ.get("MANIFEST", "").strip()
+    out_path = os.environ.get("OUT", "benchmark-results.jsonl").strip()
+    dry_run = os.environ.get("DRY_RUN", "").strip() == "1"
+    resolve_only = os.environ.get("RESOLVE", "").strip() == "1"
+    edge = int(os.environ.get("EDGE", str(DEFAULT_EDGE)))
+    quality = int(os.environ.get("QUALITY", str(DEFAULT_QUALITY)))
+    only = {one for one in os.environ.get("ONLY", "").replace(" ", "").split(",") if one}
+
+    conditions = [
+        one
+        for one in os.environ.get("CONDITIONS", DEFAULT_CONDITIONS).replace(" ", "").split(",")
+        if one
+    ]
+    unknown = [one for one in conditions if one not in CONDITIONS]
+    if unknown:
+        print(f"unknown condition(s): {', '.join(unknown)}")
+        print(f"known: {', '.join(CONDITIONS)}")
+        return 2
+    signed_in = [
+        one
+        for one in os.environ.get("SIGNED_IN", DEFAULT_SIGNED_IN).replace(" ", "").split(",")
+        if one
+    ]
+
+    manifest = load_manifest(manifest_path)
+    sets = [one for one in manifest.get("sets", []) if not only or one.get("id") in only]
+    # PILOT=1 selects the sets the manifest itself marks, so which six ran is recorded in a
+    # file under version control rather than in whoever's shell history.
+    if os.environ.get("PILOT", "").strip() == "1":
+        sets = [one for one in sets if one.get("pilot")]
+    if not sets:
+        print("manifest selected no sets")
+        return 2
+
+    have_plain = bool(
+        os.environ.get("PLAIN_ACCESS_TOKEN", "").strip()
+        or (
+            os.environ.get("PLAIN_USER_EMAIL", "").strip()
+            and os.environ.get("PLAIN_USER_PASSWORD", "").strip()
+        )
+    )
+    plan = budget(sets, conditions, signed_in, have_plain)
+
+    """
+    THE CEILING IS CHECKED BEFORE ANYTHING IS SENT, AND IT IS NOT THE SAME AS THE PLAN.
+
+    `budget()` says what this configuration WOULD spend; MAX_REQUESTS and MAX_KINDWISE say
+    what the operator agreed to. They are separate on purpose: a manifest edit, a stray
+    condition in CONDITIONS or one more set marked `pilot` all change the first silently,
+    and the whole point of an approved budget is that it is a number somebody signed off
+    rather than a number recomputed from whatever the inputs happen to say today.
+
+    Kindwise credits are BOUGHT, so this refuses rather than truncating. Truncation would
+    produce a partial run that looks complete — the worst outcome, because the report would
+    be read as evidence.
+    """
+    max_requests = int(os.environ.get("MAX_REQUESTS", "0"))
+    max_kindwise = int(os.environ.get("MAX_KINDWISE", "0"))
+    over = []
+    if max_requests and plan["requests"] > max_requests:
+        over.append(f"{plan['requests']} requests exceeds MAX_REQUESTS={max_requests}")
+    if max_kindwise and plan["kindwise"] > max_kindwise:
+        over.append(f"{plan['kindwise']} Kindwise credits exceeds MAX_KINDWISE={max_kindwise}")
+    if over:
+        print("REFUSING TO RUN — the plan exceeds the approved ceiling:")
+        for line in over:
+            print(f"  {line}")
+        print("Nothing was sent and nothing was spent.")
+        return 2
+    print(f"manifest: {manifest_path}")
+    print(f"conditions: {', '.join(conditions)}")
+    print(f"signed in (and therefore comparing providers): {', '.join(signed_in) or 'none'}")
+    print(f"upload profile: {edge}px q{quality}\n")
+    print_budget(plan)
+
+    if dry_run:
+        print("DRY_RUN=1 — nothing was sent and nothing was spent.")
+        return 0
+
+    # ── Photographs, resolved before anything is spent ────────────────────────
+    wanted = max(CONDITIONS[one][0] for one in conditions)
+    resolved: dict[str, list[tuple[str, bytes]]] = {}
+    for entry in sets:
+        set_id = entry["id"]
+        picked = resolve_set(entry, wanted)
+        kind = "named files" if entry.get("files") else "category"
+        same = "one individual" if entry.get("sameIndividual") else "DIFFERENT individuals"
+        print(f"── {set_id}  ({kind}, {same})")
+        if len(picked) < wanted:
+            print(f"     only {len(picked)} of {wanted} photographs — set skipped")
+            continue
+        if resolve_only:
+            for title, _ in picked:
+                print(f"     {title}")
+            continue
+        blobs: list[tuple[str, bytes]] = []
+        for title, url in picked:
+            try:
+                blobs.append((title, reencode(download(url), edge, quality)))
+            except Exception as error:  # noqa: BLE001
+                print(f"     could not prepare {title}: {error}")
+        if len(blobs) < wanted:
+            print("     preparation failed — set skipped")
+            continue
+        sizes = ", ".join(f"{len(blob) // 1024}KB" for _, blob in blobs)
+        print(f"     prepared: {sizes}")
+        resolved[set_id] = blobs
+
+    if resolve_only:
+        print("\nRESOLVE=1 — nothing was sent and nothing was spent.")
+        return 0
+
+    # ── The tokens, once ──────────────────────────────────────────────────────
+    #
+    # TWO IDENTITIES, BECAUSE COMPARISON IS A PROPERTY OF THE ACCOUNT, NOT THE REQUEST. The
+    # first is the allow-listed one: every request it makes asks both providers and costs a
+    # credit. The second is an ordinary account, used for the conditions that are only
+    # measuring PlantNet — it buys the 30/day bucket instead of the anonymous 5/day, and
+    # spends nothing extra. Absent, those conditions simply go out anonymously.
+    def token_from(prefix: str) -> str | None:
+        direct = os.environ.get(f"{prefix}ACCESS_TOKEN", "").strip()
+        if direct:
+            return direct
+        email = os.environ.get(f"{prefix}USER_EMAIL", "").strip()
+        password = os.environ.get(f"{prefix}USER_PASSWORD", "").strip()
+        return sign_in(project, key, email, password) if email and password else None
+
+    token = token_from("")
+    plain_token = token_from("PLAIN_")
+    if signed_in and not token:
+        print(
+            "\nNo ACCESS_TOKEN and no USER_EMAIL/USER_PASSWORD, so the conditions listed in\n"
+            "SIGNED_IN would run ANONYMOUSLY — which spends no Kindwise credit and records no\n"
+            "comparison row, so the provider axis would silently be missing. Stopping."
+        )
+        return 2
+
+    # ── The matrix ────────────────────────────────────────────────────────────
+    written = 0
+    stopped = False
+    with open(out_path, "w", encoding="utf-8") as handle:
+        for entry in sets:
+            set_id = entry["id"]
+            blobs = resolved.get(set_id)
+            if not blobs:
+                continue
+            for condition in conditions:
+                count, _ = CONDITIONS[condition]
+                tags = organs_for(condition, entry.get("organs", []))
+                payload = [(blobs[i][1], tags[i]) for i in range(count)]
+                comparing = condition in signed_in
+                use_token = token if comparing else plain_token
+                answer = identify(payload, project, key, use_token)
+                record = {
+                    "setId": set_id,
+                    "condition": condition,
+                    "truth": entry.get("truth", {}),
+                    "sameIndividual": bool(entry.get("sameIndividual")),
+                    "source": "files" if entry.get("files") else "category",
+                    "signedIn": bool(use_token),
+                    "comparing": comparing,
+                    "profile": {"edge": edge, "quality": quality},
+                    "images": [
+                        {"title": blobs[i][0], "organ": tags[i], "bytes": len(blobs[i][1])}
+                        for i in range(count)
+                    ],
+                    "http": answer["http"],
+                    "response": answer["body"],
+                    "at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                }
+                handle.write(json.dumps(record) + "\n")
+                handle.flush()
+                written += 1
+
+                body = answer["body"]
+                if answer["http"] != 200:
+                    note = body.get("code") or body.get("error") or body.get("raw", "")
+                    print(f"   {set_id:<28} {condition:<7} HTTP {answer['http']}  {note}")
+                    if answer["http"] == 429:
+                        print("     quota reached — stopping; re-run with ONLY to resume")
+                        stopped = True
+                        break
+                    continue
+                top = (body.get("candidates") or [{}])[0]
+                print(
+                    f"   {set_id:<28} {condition:<7} "
+                    f"{top.get('scientificName', '(nothing)'):<34} "
+                    f"{top.get('score', 0):.3f}  left {body.get('remaining')}"
+                )
+            if stopped:
+                break
+
+    print(f"\n{written} record(s) -> {out_path}")
+    print("Now: npx vitest run --config vitest.bench.config.ts")
+    return 0
+
+
+# ── Size mode (unchanged) ────────────────────────────────────────────────────
+
+
+def run_sizes() -> int:
     category = os.environ.get("CATEGORY", "").strip()
     project = os.environ.get("PROJECT_REF", "").strip()
     key = os.environ.get("ANON_KEY", "").strip()
     limit = int(os.environ.get("LIMIT", "4"))
     sizes = parse_sizes(os.environ.get("SIZES", ""))
-    if not (category and project and key):
-        print("set CATEGORY, PROJECT_REF and ANON_KEY")
-        return 2
+    token = os.environ.get("ACCESS_TOKEN", "").strip() or None
     if sizes:
         print(f"comparing {len(sizes)} upload sizes: " + ", ".join(f"{e}px q{q}" for e, q in sizes))
-        print(f"budget: {limit} photograph(s) x {len(sizes)} sizes = {limit * len(sizes)} identifications\n")
+        print(
+            f"budget: {limit} photograph(s) x {len(sizes)} sizes = "
+            f"{limit * len(sizes)} identifications\n"
+        )
 
     images = commons_images(category, limit)
     print(f"{len(images)} photographs from Commons category '{category}'\n")
@@ -163,9 +939,7 @@ def main() -> int:
     for title, url in images:
         short = title.replace("File:", "")[:64]
         try:
-            request = urllib.request.Request(url, headers={"User-Agent": UA})
-            with urllib.request.urlopen(request, timeout=90) as response:
-                blob = response.read()
+            blob = download(url)
         except Exception as error:  # noqa: BLE001
             print(f"  SKIP  {short}: could not download ({error})")
             continue
@@ -184,23 +958,29 @@ def main() -> int:
 
         stopped = False
         for label, payload in variants:
-            answer = identify(payload, "scan.jpg", project, key)
+            # TWO PARTS OF THE SAME PHOTOGRAPH. The endpoint requires two images and treats
+            # the set as one individual, so sending one picture twice is the closest a
+            # SIZE comparison can get to its original one-image shape without a deployment
+            # that lowers `MIN_IMAGES`. It is a constant across every size, which is what
+            # this mode is comparing — see BENCHMARK MODE for the photo-count question,
+            # where a duplicated image would NOT be an honest answer.
+            answer = identify([(payload, "habit"), (payload, "auto")], project, key, token)
             print(f"   {label:<16} {len(payload) // 1024:>4} KB")
 
-            if "httpError" in answer:
-                print(f"     HTTP {answer['httpError']}: {answer['body']}")
-                if answer["httpError"] == 429:
+            if answer["http"] != 200:
+                print(f"     HTTP {answer['http']}: {json.dumps(answer['body'])[:300]}")
+                if answer["http"] == 429:
                     print("     quota reached — stopping")
                     stopped = True
                     break
                 continue
 
-            candidates = answer.get("candidates", [])
+            candidates = answer["body"].get("candidates", [])
             if not candidates:
                 print("     provider recognised nothing")
             for candidate in candidates:
                 print(f"     {candidate['scientificName']:<34} {candidate['score']:.3f}")
-            print(f"     remaining today: {answer.get('remaining')}")
+            print(f"     remaining today: {answer['body'].get('remaining')}")
             # Keyed by size as well as photograph, so two runs of the same species at
             # different settings can be diffed rather than overwriting each other.
             key_name = short if label == "as downloaded" else f"{short} @ {label}"
@@ -213,6 +993,24 @@ def main() -> int:
     print(json.dumps(replay, indent=1))
     print("REPLAY_JSON_END")
     return 0
+
+
+def main() -> int:
+    project = os.environ.get("PROJECT_REF", "").strip()
+    key = os.environ.get("ANON_KEY", "").strip()
+    if not (project and key):
+        print("set PROJECT_REF and ANON_KEY")
+        return 2
+    if os.environ.get("FIELD", "").strip():
+        return run_field()
+    if os.environ.get("COMPARISONS", "").strip() == "1":
+        return run_comparisons()
+    if os.environ.get("MANIFEST", "").strip():
+        return run_benchmark()
+    if not os.environ.get("CATEGORY", "").strip():
+        print("set MANIFEST (benchmark mode) or CATEGORY (upload-size mode)")
+        return 2
+    return run_sizes()
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ import {
   matchScientificName,
   normalizeName,
   outcomeFor,
+  speciesConfidenceFor,
   type ScanCandidate,
 } from './plant-match';
 
@@ -135,10 +136,38 @@ describe('names a real provider actually returned', () => {
     expect(outcomeFor(asCandidates())).toBe('matched');
   });
 
-  it('handles the section name the provider returns for the aggregate', () => {
+  it('handles the section name the provider returns, as a SECTION', () => {
+    /*
+     * This used to assert only that the section reached the card. It did — and so did every
+     * other section, because `normalizeName` dropped the epithet and collapsed
+     * sect. Taraxacum, sect. Ruderalia, sect. Erythrosperma and sect. Palustria onto the one
+     * key `taraxacum sect`, which sat in the synonym table as an EXACT match. A rank above
+     * species was being reported as the card's own binomial.
+     *
+     * The card is still reached. What changed is that it is reached as a curated accepted
+     * group, the observation stays a section, and species confidence is `unresolved` no
+     * matter how sure the provider was — a provider can be certain it sees a section and
+     * still have said nothing about which species within it.
+     */
     const section = matchScientificName('Taraxacum sect. Taraxacum');
     expect(section.herbId).toBe('taraxacum-officinale');
     expect(section.confirmable).toBe(true);
+    expect(section.eligibility).toBe('acceptedGroup');
+    expect(section.observedTaxon?.rank).toBe('section');
+    expect(section.observedTaxon?.name, 'never rewritten to the card binomial').toBe(
+      'Taraxacum sect. Taraxacum',
+    );
+    expect(speciesConfidenceFor(section.observedTaxon!.rank, 0.99)).toBe('unresolved');
+  });
+
+  it('does NOT let one section carry every other section into the card', () => {
+    // The bug, pinned from the other side. sect. Erythrosperma holds T. erythrospermum,
+    // which the test below refuses outright — accepting its section would contradict that.
+    for (const name of ['Taraxacum sect. Erythrosperma', 'Taraxacum sect. Palustria']) {
+      const match = matchScientificName(name);
+      expect(match.confirmable, `${name} must not be loggable as a Dandelion`).toBe(false);
+      expect(match.observedTaxon?.name, name).toBe(name);
+    }
   });
 
   it('still refuses the genuinely different species in the same response', () => {

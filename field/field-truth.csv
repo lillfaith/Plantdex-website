@@ -1,0 +1,9 @@
+specimen_id,date,truth_name,truth_rank,my_certainty,class,organ3,habitat,notes
+spec-001,2026-09-30,Parthenocissus,genus,probable,off-deck,leaf,leaf litter,palmate 5 leaflets + trailing runners; P. quinquefolia likely but tendril discs not visible
+spec-002,2026-09-30,Lonicera,genus,probable,deck,auto,leaf litter,opposite entire pubescent leaves; L. japonica likely; Ligustrum the main alternative
+spec-003,2026-09-30,Ambrosia artemisiifolia,species,certain,deck,flower,gravel verge,dissected leaves + nodding staminate racemes; the clearest specimen in the set
+spec-004,2026-09-30,Asteraceae,family,unsure,off-deck,flower,mulch bed,cylindric involucres with pale apical tuft; Erechtites hieraciifolius is the hypothesis not the label
+spec-005,2026-09-30,Chamaecrista,genus,unsure,off-deck,auto,river rock,even-pinnate small leaflets + small yellow flowers; Potentilla not excluded
+spec-006,2026-09-30,Magnolia grandiflora,species,certain,off-deck,leaf,fence base red clay,rusty-brown felted leaf undersides are diagnostic; M. virginiana excluded on indumentum colour
+spec-007,2026-09-30,Hemerocallis,genus,probable,off-deck,leaf,rough grass,keeled arching strap leaves from a crown; Iris excluded on leaf cross-section; OTHER SPECIES IN FRAME bottom-right
+spec-008,2026-09-30,Cryptomeria japonica,species,probable,off-deck,leaf,lawn edge,awl leaves spirally set on drooping branchlets; no scale foliage so not Juniperus

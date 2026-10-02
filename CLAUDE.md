@@ -18,6 +18,7 @@ Payment Link behind `/shop`, see "V0.4 commerce" below), and the **player profil
 ```bash
 npm run dev        # dev server
 npm run verify     # lint + typecheck + test + build — run before pushing
+npm run check:edge # deno check on supabase/functions — what verify structurally CANNOT do
 npm test           # vitest
 npm run build:deck -- --source /path/to/card-pdfs   # regenerate deck data + art (needs all 45)
 python3 scripts/build_deck.py --source deck-source --only 11,24,31   # patch a few reprinted cards
@@ -325,6 +326,16 @@ both generated — never hand-edit either, for the same reason `herbs.json` is o
   plant. Detached elements *during* a gesture are fine and often the point (flung seeds, a
   falling samara, shed snow), which is why the rule is frame 0 only: at rest a plant is
   one plant. `audit_sprites.py` flood-fills it.
+- **`audit_sprites.py` REWRITES the sheets it audits, so never run it beside anything that
+  reads them.** Its `stale()` check calls `compile_sprite()` IN PLACE and compares the bytes
+  before and after — that is how it detects a stale build, and it means every run genuinely
+  rewrites all 162 PNGs even when nothing changed. Run it concurrently with `npm test` and
+  `plant-sprites.test.ts` hashes a half-written file:
+  `oxalis-stricta: manifest version is stale: expected 'c4def14b' to be 'da39a3ee'`.
+  `da39a3ee` is the SHA-1 of the EMPTY STRING, and the message accuses the manifest, which is
+  the one thing that is not wrong — the file on disk is fine and the same test passes the
+  moment it is run on its own. Run the audit and the suite one after the other, never in
+  parallel.
 - **`--preview` renders without writing, so always run the plain build before committing.**
   It is entirely possible to tweak a sprite, preview it, and commit the *previous* PNG —
   which happened, and shipped a strawberry two pixels out of place. `npm run verify`
@@ -802,7 +813,11 @@ or was not made; re-measure before trusting any of them again.
   390px, DPR 3, on the built export; the layout is byte-for-byte identical — same 79 elements
   at the same rendered sizes). The four dailies deliberately keep `thumb`: they are drawn
   nearly twice as wide, there are only ever a handful, and they are meant to be looked at.
-  `/seasons` looks similar and is not: it pulls only 120KB. `/herbdex` carries no images at all.
+  `/seasons` looks similar and is not: it pulls only 120KB. `/herbdex` carries no CARD art —
+  but it is not imageless, and this line used to say it was: it pulls 55 sprite `still` PNGs
+  at roughly 1KB each, about 49KB in total. They are CSS backgrounds rather than `<img>`, so
+  counting `<img>` elements on that page returns ZERO and is the measurement that produced the
+  wrong sentence. Measure transferred bytes by request type, not by element count.
 - **Images are `unoptimized` because `output: 'export'` requires it**, so `sizes` and
   `quality` do nothing and whichever file a component names is the file that ships. Three
   variants exist: `/cards/*.webp` at 800px (~62KB), `/cards/thumb/*.webp` at 400px (~21KB) and
@@ -926,9 +941,15 @@ or was not made; re-measure before trusting any of them again.
 
 ## Field Cards and the XP reward loop
 
-Nine digital-only cards earned by XP. Four are finished (#48-51, transcribed from their
-artwork); five are approved thresholds with no card drawn yet. They close the loop the launch
-work left open: a find advances Field Research, research pays XP, XP unlocks a Field Card.
+Nine digital-only cards earned by XP, all nine now drawn (#48-56, transcribed from their
+artwork). They close the loop the launch work left open: a find advances Field Research,
+research pays XP, XP unlocks a Field Card.
+
+`FieldCardSlot.card` stays OPTIONAL even with the ladder full, and that is not an oversight:
+the type describes a slot with an approved threshold and no finished card, which is the state
+every one of these passed through and the state a tenth would start in. Nothing about nine
+being complete may be baked into a type — `FIELD_CARDS_TOTAL` is the number the UI counts
+against.
 
 - **An XP unlock is not a discovery, not ownership, and not mastery.** Those are four
   different facts and `field-cards.test.ts` attacks each separately. `discoveries` means
@@ -1128,9 +1149,11 @@ work left open: a find advances Field Research, research pays XP, XP unlocks a F
 - **Printed errors on Field Card artwork are transcribed, not corrected.** #49 prints
   "Hemeostatic", #50 "Campestrol", #51 "caryophyllene" unprefixed. `FIELD_CARD_ISSUES` states
   each correction; the transcription stays as printed, same contract as `KNOWN_CARD_ISSUES`.
-- **Slots 5-9 have thresholds and no card, and that is a real state.** The UI says "Field
-  Card 7" rather than naming a species nobody has drawn. Inventing botanical data for an
-  unfinished card is the one thing this file may never do.
+- **A slot with a threshold and no card is a real state, and the UI still handles it.** All
+  nine are drawn today, so nothing renders that branch — but it is kept rather than deleted,
+  because a tenth slot would start there and the handling is what stops the alternative:
+  inventing botanical data for an unfinished card, which is the one thing this file may never
+  do. The UI says "Field Card 7" rather than naming a species nobody has drawn.
 
 ## Motion
 
@@ -1282,10 +1305,12 @@ followers, comments, leaderboards or feed.
   deliberately no per-stage avatar to pick. The larger avatars keep the authored composition,
   ground line and all — they have the room.
 - **`FRAME_FILL` is measured, not chosen by eye.** 0.74 is the largest share at which not one
-  of the 135 sheets loses a pixel to the badge's circle; 0.82 costs twelve of them a leaf
-  tip. `audit_sprites.py` re-measures that against the real art — `npm run verify` cannot,
-  since the cropping only happens in a browser — so a plant redrawn wider, or a fill raised
-  without re-measuring, fails the audit instead of shipping cropped.
+  of the 162 sheets loses a pixel to the badge's circle; 0.82 costs twelve of them a leaf
+  tip. The count was 135 when that was first written — 45 species x 3 stages — and the nine
+  Field Cards took it to 54 x 3 without the fill needing to move. `audit_sprites.py`
+  re-measures it against the real art — `npm run verify` cannot, since the cropping only
+  happens in a browser — so a plant redrawn wider, or a fill raised without re-measuring,
+  fails the audit instead of shipping cropped, and it passes clean at 162 today.
 - **Signing in seeds the account profile from the device; it never overwrites and never
   clears.** A signed-in save writes the account only, so on a shared device signing in does
   not repaint the signed-out identity — the same reasoning that keys the collection import
@@ -1298,6 +1323,172 @@ followers, comments, leaderboards or feed.
   tables `export-account-data.ts` reads against `USER_TABLES` in the delete function in both
   directions, and checks the browser keys too — a table added to one and forgotten in the
   other is how a "deleted" account keeps a row.
+
+## Identification: the card, the plant, and how sure we are
+
+Three facts, and every bug this system has had was two of them being treated as one. See
+`docs/identification.md` for the runbook.
+
+- **A CARD IS NOT A TAXON.** `herbId` answers "which card did this qualify for";
+  `observedTaxon` answers "what was this plant". The Goldenrod card's binomial is *Solidago
+  canadensis* and an observation of *Solidago altissima* legitimately qualifies for it — and
+  before `observedTaxon` existed, that observation was RECORDED as `solidago-canadensis` and
+  the real name survived nowhere the player could see. The card had become the record of the
+  plant. `eligibility` is the third: WHY it qualified (`exact`, `genusCard`, `acceptedGroup`,
+  `legacyGenus`), which is what stops "a card matched" being read as "the species is settled".
+- **`discoveries` IS CARD-LEVEL AND STAYS CARD-LEVEL. EVIDENCE LIVES ON THE SIGHTING AND THE
+  SCAN.** A discovery asserts exactly one thing: *this Plantdex card is unlocked for this
+  player*. It is `{herbId: timestamp}` and it carries no taxon, no rank, no eligibility, no
+  confidence and no provider — DELIBERATELY, not as an omission waiting to be filled in.
+  - It is what XP, mastery, Field Research, the garden, the achievements and the collection
+    percentage all count, and every one of those counts CARDS. A confidence column here would
+    be a value those systems could start reading, which is how a card-level record quietly
+    becomes a second, weaker species claim.
+  - It is reachable without any identifier at all — `DiscoverPanel` records a find from two
+    taps and no camera (see "Progression is self-declared"). A taxon field on a discovery
+    would therefore be null for the majority of real rows and present for the rest, and a
+    field that means "we happened to come in through the scanner" is not evidence.
+  - The evidence exists and is already stored, one layer down. `sightings` holds the
+    observation — provider string, identity, key, rank, eligibility, species confidence,
+    provider — and `scans` holds the provider's leading candidate beside the one the player
+    selected. A card in the collection is a claim about the COLLECTION; what the plant was,
+    and how sure anyone is, is a question for the sighting that produced it.
+  - So: **do not add confidence or taxonomic columns to `discoveries`.** If a surface needs
+    to say how a card was earned, it reads the sightings for that `herbId` — where the answer
+    already is, with its provenance attached.
+- **`normalizeName` IS A LOOKUP KEY AND MUST NEVER BECOME THE RECORD.** It drops authorship,
+  folds synonymous section names onto one key, and its rules are free to change — so a column
+  derived from it would silently rewrite history the next time they moved.
+  `observed_taxon_provider_name` is the provider's string exactly as returned. The same reason
+  `scans.top_scientific_name` is untouched.
+- **THE IDENTITY AND THE KEY ARE TWO REPRESENTATIONS, AND REBUILDING ONE FROM THE OTHER
+  INVENTED NAMES.** `displayName` used to be rebuilt from the normalised key — which exists to
+  find cards, so it drops the hybrid sign and every infraspecific rank. That wrote
+  `Mentha piperita` and `Quercus leana` into the record. NEITHER IS A NAME: dropping a hybrid
+  sign does not generalise a name, it invents a species, in an app whose subject is telling
+  plants apart. `taxon-name.ts` parses the RAW string into the identity — authorship dropped,
+  everything that narrows the name kept — and `normalizeName` is untouched and still builds the
+  key. Both are stored, because the key is also the REASON a card was reached, and recomputing
+  it later would answer with that day's normaliser rules rather than the observation's.
+- **ASCII `x` IS A HYBRID SIGN ONLY AS A WHOLE WORD.** `Quercus xalapensis` is a real species,
+  so reading a glued `x` as a sign would invent a hybrid — the same failure as dropping one,
+  pointing the other way. The U+00D7 glyph is unambiguous and is read glued or free. Write both
+  glyphs as escapes in source: `no-emoji.test.ts` sweeps a range that includes U+2715.
+- **AN UNHANDLED RANK MARKER IS `unknown`, NEVER `species`.** `taxonRank` read the key, so
+  `Plantago major subsp. intermedia` reported `species` — a subspecies silently promoted, and
+  a confident species-level confidence for a name that never claimed one. Ranks now come from
+  the provider's own words. Above the species (`genus`, `subgenus`, `section`, `subsection`,
+  `series`) nothing resolves which species; at or below it (`species`, `subspecies`, `variety`,
+  `form`) all four DO, so refusing them would be the mirror bug — throwing away a more precise
+  identification for being unusual. A qualifier the parser does not know (`agg.`, `convar.`,
+  `grex`, a bare third epithet) lands on `unknown` and stays visible in the display name.
+  `f.` is *forma* after an epithet and *filius* after a name, so it is a rank only when a
+  lowercase epithet follows.
+- **A CONFIRMED SCAN WRITES THREE RECORDS AND THEY ARE NOT THE SAME FACT.** `discoveries` holds
+  the CARD; `sightings` holds the OBSERVATION; `scans` holds the provider's TOP candidate and,
+  separately, the one the player SELECTED. The scan path used to write only the first, so the
+  taxon reached none of the columns that exist for it — and `confirmScan` had NO CALLER AT ALL
+  while its own doc said "what the UI calls after an explicit tap". The sighting goes through
+  `sightings-store.ts`, so signed out is the same call writing localStorage; it does not master
+  the card by itself, because `qualifiesForMastery` still requires `learned`. A failed journal
+  write never fails the confirm — the discovery is already recorded — and the panel says so
+  rather than letting somebody believe the observation was kept.
+- **THE TOP CANDIDATE IS NOT THE CHOSEN ONE.** A player who scrolls past the leading answer and
+  confirms a lower one used to leave a row reading `top = Oxalis dillenii 0.41` beside
+  `confirmed = Wood Sorrel`, with nothing saying dillenii had been REJECTED — a row attributing
+  a taxon to somebody who explicitly declined it. The whole chosen candidate is written
+  alongside, and the leading answer is left exactly as it was.
+- **CARD MEMBERSHIP NEVER PROMOTES A CANDIDATE.** `outcomeFor` reads RANK — whether the
+  provider's own leading answer is confirmable — never a score and never "is one of these a
+  Plantdex card". A 0.09 deck species below a 0.41 non-deck one leaves the outcome `uncertain`.
+  Reversing that would let the collection overrule the identifier.
+- **`npm run verify` CANNOT TYPE-CHECK THE EDGE FUNCTIONS, AND THAT HID FOURTEEN ERRORS.**
+  `supabase/functions/**` is excluded from this project's tsconfig and ESLint because it is
+  Deno. `npm run check:edge` runs `deno check` over all four entrypoints; its first run found
+  `providers.ts`'s `failure()` helper typing its `kind` as
+  `IdentificationResult extends { kind: infer K } ? K : never` — which looks like it selects the
+  failure half of the union and does not, because a conditional type distributes over a naked
+  TYPE PARAMETER and never over a concrete union alias. It evaluated to `never`, so all
+  fourteen call sites were errors, and 1,084 green unit tests could not see one of them. It is
+  part of `npm run verify`, between `typecheck` and `test`, so an edge-function change cannot
+  pass verification without it. It fetches a Deno toolchain on first run and is cached after.
+  Deliberately WITHOUT `--node-modules-dir=auto`, which `deploy-function.yml`'s own copy
+  carries: that workflow restores an npm cache without running `npm ci`, so Deno finds no
+  `node_modules` to resolve `npm:` specifiers from. `verify` runs `next build` and `vitest`
+  and therefore cannot run at all on an uninstalled tree, so the flag would buy nothing there
+  and costs a `deno approve-scripts` warning on every run.
+- **A supra-specific taxon may qualify for a card and may NEVER become an exact species.**
+  `Taraxacum sect. Taraxacum` opens the Dandelion card; it is not rewritten to *T. officinale*,
+  and `speciesConfidenceFor` returns `unresolved` above species rank BEFORE it looks at the
+  score — a section named at 0.99 still has not said which species. The fix that made this
+  real was in `normalizeName`, which used to collapse every `Taraxacum sect. X` onto one key:
+  so *sect. Erythrosperma* — deliberately refused — became an `exact` confirmable Dandelion.
+  Sections stay distinguishable; `sect. Ruderalia` is carried as a SYNONYM of `sect.
+  Taraxacum` (IPNI/POWO 254151-1), not as a second group, and whichever name the provider
+  used is what gets stored.
+- **An accepted group is RESEARCH, never inference.** `acceptedGroup` members are curated
+  explicitly, each with a `note` saying why and a `source`. Nothing derives accepted taxa from
+  genus membership — that would quietly turn every card into a genus card and rewrite *Oxalis
+  dillenii* as *Oxalis stricta*.
+- **`pendingCuration` is a placeholder, there is exactly ONE, and it must stay that way.**
+  Goldenrod (`solidago-canadensis`) keeps genus-wide behaviour because *Solidago* is
+  taxonomically difficult and the accepted list is a botanical question — inventing it here
+  would be inventing botany. **It is TEMPORARY and still open.** Card #03 prints a binomial,
+  not `spp.`, so under the curated model it has no business claiming its whole genus; it holds
+  that scope only so live coverage does not narrow silently before the research is done.
+  Every match through it is tagged `eligibility: 'legacyGenus'` — never `acceptedGroup`, never
+  `genusCard` — precisely so the temporary rows are findable later by the reason they were
+  written, and the observation itself is never rewritten to *S. canadensis*. Curating it is a
+  content change with a zero-row migration: replace the scope with an `acceptedGroup` whose
+  members each carry a `note` and a `source`. Do not broaden it, do not narrow it, and do not
+  populate that list by reading a flora and guessing. `observed-taxon.test.ts` fails if a
+  second `pendingCuration` appears, which is the point: a compatibility state nothing stops
+  spreading is just a design.
+- **The provider is a SERVER-SIDE choice and neither key may reach the browser.**
+  `PLANT_IDENTIFICATION_PROVIDER` selects PlantNet or plant.id behind one normalised shape,
+  so swapping is a branch in `identify-plant` plus a normalizer in `_shared` — not a change to
+  the matcher, the scan UI or the reducer. Unset means `plantnet`, which reproduces today
+  exactly; an UNKNOWN value refuses, because falling back would let a typo look like a working
+  deployment answering from a provider nobody chose. The key gate follows the SELECTED
+  provider — it read `PLANTNET_API_KEY` unconditionally, which on a plant.id deployment would
+  have refused every scan and blamed a provider nobody was using.
+- **`isPlant` is `boolean | null`, and only an explicit `false` blocks.** PlantNet does not
+  answer that question, so `null` means "not asked" and must never be read as a yes. Parsing
+  is fail-closed: a response that does not match the expected shape is a `schema` failure, not
+  a partial result. No test spends a provider credit and no captured real response is
+  committed.
+- **An observation is TWO OR THREE PHOTOGRAPHS OF ONE PLANT, refused in both places.** Both
+  providers treat the set as one individual, so a caller sending two different plants gets a
+  confident blend. The browser disables its button below two; the endpoint refuses
+  independently, because it is reachable without the button. Every image goes through
+  `IDENTIFY_PROFILE`, which has no path returning original bytes.
+- **The observed-taxon columns are additive and nothing backfills them.** 0006 adds four
+  nullable columns to `sightings`; `isSighting` deliberately does NOT require them, because
+  every sighting logged by hand from a card page involves no identifier at all. Requiring one
+  would make `read()` filter out real history — the guard's own failure arriving from the
+  other direction. A sighting with no observed taxon means we never knew one, and inventing
+  one retroactively would be fabricating a botanical record.
+- **`TAXON_RANKS` and `SPECIES_CONFIDENCES` are ARRAYS with the types derived from them**,
+  because the database repeats both as CHECK constraints and a union gives nothing to compare
+  a migration against. A constraint NARROWER than the union does not degrade — Postgres
+  refuses the insert, so a subsection observation would be rejected outright and the sighting
+  lost. `identification-schema.test.ts` holds them equal, and also holds the remote adapter to
+  reading AND writing every field: a missing key in the insert object is a valid insert that
+  silently stores null.
+- **Comparison mode takes TWO switches plus a named account.** A flag alone would mean every
+  signed-in player is in an experiment — it doubles the shared API spend and keeps a record of
+  somebody's scans for a purpose they had no part in. The alternate provider's answer is
+  recorded and DROPPED; if it reached the response, an allow-listed account would silently be
+  using a different identifier from everybody else and the comparison would measure the wrong
+  thing. The write is detached and caught: telemetry that fails is a missing row, never an
+  error somebody standing in front of a plant is shown.
+- **`identification_comparisons` has no update policy, and confirmation is a JOIN.**
+  `scans.identification_observation_id` carries the id the function minted, and
+  `scans.confirmed_herb_id` already holds what the player confirmed — so "did this provider
+  agree?" needs no column anybody goes back and edits. Anything that would need one is the
+  wrong design here. It is user-scoped, so it is in `USER_TABLES` and in the export:
+  telemetry somebody cannot download or delete is not telemetry, it is a record kept about
+  them.
 
 ## V0.4 commerce
 

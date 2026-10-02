@@ -125,6 +125,26 @@ async function importSightings(userId: string): Promise<boolean> {
         found_again: sighting.foundAgain ?? null,
         photo_path: photoPath ?? null,
         created_at: sighting.createdAt,
+        /*
+         * THE OBSERVED TAXON TRAVELS, AND THIS IS THE PATH IT WAS NEAREST TO BEING LOST ON.
+         *
+         * A signed-out player scans plants for weeks and then makes an account; the import is
+         * the ONLY thing that carries those observations across. This object is built by hand
+         * rather than spread from the sighting, so every field added to `Sighting` has to be
+         * added here too — and a field left out is not an error, it is a successful upsert
+         * that stores null. That is the exact failure this whole pass is about: the card
+         * survives, the plant does not.
+         *
+         * `sightings-import.test.ts` compares this object's keys against `Sighting`'s own
+         * fields, so the next one cannot be forgotten quietly.
+         */
+        observed_taxon_provider_name: sighting.observedTaxonProviderName ?? null,
+        observed_taxon_name: sighting.observedTaxonName ?? null,
+        observed_taxon_key: sighting.observedTaxonKey ?? null,
+        observed_taxon_rank: sighting.observedTaxonRank ?? null,
+        eligibility: sighting.eligibility ?? null,
+        species_confidence: sighting.speciesConfidence ?? null,
+        identification_provider: sighting.identificationProvider ?? null,
       },
       { onConflict: 'id', ignoreDuplicates: true },
     );

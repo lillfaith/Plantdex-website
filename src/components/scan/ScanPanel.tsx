@@ -7,15 +7,31 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { getCatalogueEntry } from '@/lib/catalogue';
 import type { DiscoveryResult } from '@/lib/types';
 import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
-import { ambiguousCardNames, genusLabel } from '@/lib/scan-ambiguity';
-import { identifyPlant, isScanFailure, recordScan, type ScanResult } from '@/lib/scans';
+import { genusLabel, improvementHint, summariseScan } from '@/lib/scan-summary';
+import {
+  MIN_OBSERVATION_PHOTOS,
+  confirmScan,
+  identifyPlant,
+  isScanFailure,
+  observedTaxonFields,
+  recordScan,
+  type ObservationPhoto,
+  type ScanResult,
+} from '@/lib/scans';
+import { useSightingsStore } from '@/lib/sightings-store';
+import { localDateKey } from '@/lib/research';
+import { ObservationPhotos } from './ObservationPhotos';
 import { warmIdentifier } from '@/lib/scan-warmup';
-import { ACCEPT_ATTRIBUTE, ACCEPTED_LABEL } from '@/lib/photo-input';
+import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
+import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
+
+/** How many candidates the result list opens with; the rest are one tap away. */
+const VISIBLE_CANDIDATES = 3;
 
 /**
  * PLANT ID V1 — the scan screen.
@@ -42,8 +58,13 @@ function relatedGenus(candidates: readonly ScanCandidate[]): string {
 export function ScanPanel() {
   const { user } = useAuth();
   const { discover, isDiscovered, ready, progress } = useHerbdex();
+  /*
+   * THE FACADE, NOT EITHER ADAPTER. Signed in it writes the Supabase row; signed out it
+   * writes localStorage and IndexedDB — which is what makes "preserve the observation
+   * locally" the SAME code path rather than a second anonymous history to keep in step.
+   */
+  const { addSighting } = useSightingsStore();
 
-  const inputRef = useRef<HTMLInputElement>(null);
   /*
    * TWO STAGES, AND DELIBERATELY NOT THREE.
    *
@@ -78,6 +99,13 @@ export function ScanPanel() {
    */
   const [confirmed, setConfirmed] = useState<{
     herbId: string;
+    /*
+     * The species the identifier named, when a `curatedEquivalent` unlocked the card.
+     *
+     * Taken from the candidate's OWN match at the moment of confirming, not recomputed later:
+     * the player chose that candidate, and `observedTaxon` on it is the provider's string.
+     */
+    equivalentObservedName?: string;
     xpAwarded: number;
     newAchievementIds: string[];
     /* Stamped at the tap so research feedback only claims what followed it. */
@@ -91,6 +119,16 @@ export function ScanPanel() {
      * and the second telling is the flatter one.
      */
     celebrated: boolean;
+    /*
+     * WHETHER THE JOURNAL ENTRY ACTUALLY LANDED.
+     *
+     * The discovery is written by the reducer and is safe by the time this state is set; the
+     * sighting is a separate write that can fail on its own (a refused insert, an offline
+     * device). Saying nothing would be the worst of the three options: the player has a find
+     * in their collection and believes the observation was recorded with it. `false` prints
+     * one line saying it was not.
+     */
+    journalled: boolean;
   } | null>(null);
   // The history row this result was written to, so a Seed Shelf save can point back at the
   // scan it came from. Null signed out, where there is no history to point at.
@@ -127,6 +165,35 @@ export function ScanPanel() {
   // True once this scan's species has been put on the shelf, so the page can stop offering
   // an alternative to the one place it has just told the player their find went.
   const [shelved, setShelved] = useState(false);
+
+  /*
+   * WHICH CANDIDATE IS BEING CHECKED AGAINST ITS FIELD NOTES.
+   *
+   * The dialog itself is mounted once, far below, for the reason `HerbDetail` and
+   * `KnowledgeCheck` both record: confirming advances the collection and re-renders the row
+   * this was opened from, so a <dialog> living inside that row would be unmounted by the very
+   * action it reports. This holds only the subject.
+   */
+  const [checking, setChecking] = useState<{
+    herb: NonNullable<ReturnType<typeof getCatalogueEntry>>;
+    candidate: ScanCandidate;
+  } | null>(null);
+  const traitsRef = useRef<HTMLDialogElement>(null);
+
+  /*
+   * HOW MANY CANDIDATES THE LIST OPENS WITH.
+   *
+   * Five rows of equal weight is a list to work through, not a result to read, and the
+   * provider's fifth answer is routinely a 3% congener nobody is choosing. Three is the
+   * leader plus the two live alternatives — which is also what `plausibleField` tends to
+   * hold — and the rest are one tap away. NOTHING IS DISCARDED: `result.candidates` is
+   * untouched, the order is untouched, and every row renders the same way when opened.
+   */
+  const [showAllCandidates, setShowAllCandidates] = useState(false);
+  const listRef = useRef<HTMLHeadingElement>(null);
+
+  /** The organs of the photographs that produced the result currently on screen. */
+  const [sentOrgans, setSentOrgans] = useState<readonly ObservationPhoto['organ'][]>([]);
 
   const answerRef = useRef<HTMLDivElement>(null);
   const outcomeRef = useRef<HTMLDivElement>(null);
@@ -191,20 +258,30 @@ export function ScanPanel() {
   }, [result, problem, confirmed, busy]);
 
   const run = useCallback(
-    async (file: File) => {
+    async (photos: ObservationPhoto[]) => {
       setStage('preparing');
       // Created OUTSIDE the state updater, deliberately. An updater is not a place for a side
       // effect: React invokes it twice under StrictMode, so minting the URL in there would
       // create two and keep one, leaking the other and revoking a URL still being displayed.
       // The effect above owns releasing it, which is the only place that knows when it stops
       // being on screen.
-      setPreview(URL.createObjectURL(file));
+      // The whole-plant shot is the observation's face: it is the required first slot, so it
+      // is always present here, and it is the one a player recognises as "the plant I found".
+      setPreview(URL.createObjectURL(photos[0]!.file));
+      /*
+       * WHICH PARTS OF THE PLANT THIS OBSERVATION CARRIED, captured as it is sent rather than
+       * read back off `photos` later. The slots stay editable while the answer is on screen,
+       * so reading them afterwards would let "add a feature photo" appear beside a result that
+       * already had one — advice about a set that is no longer the set that was identified.
+       */
+      setSentOrgans(photos.map((photo) => photo.organ));
       setProblem(null);
       setRateLimited(null);
       setResult(null);
       setConfirmed(null);
       setScanId(null);
       setShelved(false);
+      setShowAllCandidates(false);
       track('scan_started');
 
       /*
@@ -214,7 +291,7 @@ export function ScanPanel() {
        * be drawn at all. A frame is what it costs to actually see the first stage.
        */
       await new Promise((resolve) => setTimeout(resolve, 0));
-      const answer = await identifyPlant(file, () => setStage('identifying'));
+      const answer = await identifyPlant(photos, () => setStage('identifying'));
 
       if (isScanFailure(answer)) {
         if (answer.kind === 'rateLimited') setRateLimited({ signedIn: answer.signedIn });
@@ -244,15 +321,93 @@ export function ScanPanel() {
     [user],
   );
 
-  const onPick = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      // Reset first, or picking the same file twice never fires a change event.
-      event.target.value = '';
-      if (file) void run(file);
+  /*
+   * ONE CONFIRM, TWO ENTRY POINTS.
+   *
+   * The leading candidate confirms in a single tap; a lower-ranked card candidate reaches the
+   * same call through the comparison panel. Extracted rather than duplicated, because this is
+   * what writes a discovery, a sighting and a scan row — three records that must not be free
+   * to drift apart depending on which button was pressed.
+   */
+  const confirmCandidate = useCallback(
+    (herb: NonNullable<ReturnType<typeof getCatalogueEntry>>, candidate: ScanCandidate) => {
+      // The player's decision, and the only thing that awards anything. `discover` is the same
+      // call the plant page makes, so a repeat awards nothing — idempotency is the reducer's.
+      const outcome = discover(herb);
+      track('scan_confirmed');
+      setConfirmed({
+        herbId: herb.id,
+        equivalentObservedName:
+          candidate.match.eligibility === 'curatedEquivalent'
+            ? // `observedTaxon` arrived with migration 0006, so a candidate replayed from an
+              // older scan has none. `scientificName` is the provider's own string and is on
+              // every candidate ever recorded, which keeps this from blanking the one line
+              // that explains why a different species opened this card.
+              (candidate.match.observedTaxon?.name ?? candidate.scientificName)
+            : undefined,
+        xpAwarded: outcome.xpAwarded,
+        newAchievementIds: outcome.newAchievementIds,
+        at: Date.now(),
+        celebrated: outcome.awarded,
+        journalled: true,
+      });
+      /*
+       * THE OBSERVATION, WHICH IS NOT THE DISCOVERY.
+       *
+       * `discover()` records THE CARD. `observedTaxonFields` is the one mapping, so the card
+       * and the plant cannot drift apart at this call site. Dated where the player is, never
+       * in UTC. IT DOES NOT MASTER THE CARD BY ITSELF: `qualifiesForMastery` needs `learned`.
+       */
+      void addSighting({
+        herbId: herb.id,
+        date: localDateKey(),
+        ...observedTaxonFields(candidate, result?.provider),
+      }).catch((error: unknown) => {
+        // Never throw out of the confirm: the discovery is already recorded and losing it
+        // would be the larger harm. The panel says the journal entry did not save.
+        console.warn('[plantdex] could not log the sighting', error);
+        setConfirmed((current) =>
+          current && current.herbId === herb.id ? { ...current, journalled: false } : current,
+        );
+      });
+      /*
+       * WHICH CANDIDATE, not just which card. The history row holds the provider's TOP answer;
+       * without this it would read as though that were what the player chose, even when they
+       * scrolled past it and picked the fourth one.
+       */
+      if (user && scanId) {
+        void confirmScan(user.id, scanId, herb.id, candidate);
+      }
+      /*
+       * THE MOMENT, AND ONLY WHEN ONE WAS EARNED. Gated on `awarded`: a repeat celebrates
+       * nothing.
+       */
+      if (outcome.awarded) {
+        setCelebrating({ herbId: herb.id, result: outcome });
+        celebrateRef.current?.showModal();
+      }
     },
-    [run],
+    [addSighting, discover, result?.provider, scanId, user],
   );
+
+  /*
+   * The observation lives here rather than inside `ObservationPhotos` so that the Identify
+   * button — which is part of the scanner frame, not of the photo list — can read how many
+   * photographs are held. One owner, and the button cannot disagree with the slots.
+   */
+  const [photos, setPhotos] = useState<ObservationPhoto[]>([]);
+  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS;
+
+  /*
+   * DERIVED ON RENDER, FROM THE RESULT ITSELF. No state and nothing stored: the summary is a
+   * reading of the candidate list, so it cannot fall out of step with the rows beneath it.
+   */
+  const summary = summariseScan(result?.candidates ?? [], result?.provider);
+  /*
+   * The third slot is the only one tagged `auto` — it is deliberately whatever the plant
+   * offered — so its presence is what "did they send an identifying feature" means here.
+   */
+  const hint = result ? improvementHint(summary.level, sentOrgans.includes('auto')) : undefined;
 
   return (
     <div className="space-y-5">
@@ -268,29 +423,14 @@ export function ScanPanel() {
         </h2>
         <div aria-hidden="true" className="pixel-rule mt-2 w-24" />
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Photograph a leaf, a flower or the whole plant. The clearer and closer the shot, the
-          better the suggestion.
+          Two or three photographs identify a plant far better than one. The clearer and
+          closer each shot, the better the suggestion.
         </p>
 
-        <input
-          ref={inputRef}
-          type="file"
-          accept={ACCEPT_ATTRIBUTE}
-          capture="environment"
-          onChange={onPick}
-          className="sr-only"
-          id="scan-photo"
-        />
-        {/*
-          "Take a photo", not "Take or choose a photo".
-          The input carries `capture="environment"`, which opens the camera directly on a
-          phone and is simply ignored on a desktop browser, where the same control opens a
-          file picker instead. The old label spelled out both paths — and in doing so made
-          the primary one, on the device this is actually used from, sound optional. This is
-          a field guide: the expected posture is standing in front of the plant. Choosing a
-          file still works exactly as it did; it is just no longer offered as a co-equal
-          option in six words on the loudest control of the page.
-        */}
+        <div className="mt-4">
+          <ObservationPhotos onChange={setPhotos} disabled={busy} />
+        </div>
+
         {/*
           THE ONE PIECE OF FRAMING ADVICE, BESIDE THE CONTROL IT IS ABOUT.
 
@@ -299,22 +439,40 @@ export function ScanPanel() {
           backgrounded for the whole of the capture. So the last moment Plantdex can say
           anything is the instant before the tap, which is here.
 
-          Short enough to be REMEMBERED through that handoff, which is the real constraint: the
-          paragraph above describes what makes a good photograph and this is the single
-          instruction to carry into a screen we do not control. Deliberately "one plant" rather
-          than a framing rectangle — nothing here implies the plant must fit a box.
+          Short enough to be REMEMBERED through that handoff, which is the real constraint.
+          Deliberately "one plant" rather than a framing rectangle — nothing here implies the
+          plant must fit a box — and it now carries the weight of the whole set, because every
+          photograph must be of that same one plant.
         */}
         <p className="mt-4 flex items-center gap-2 text-xs font-semibold text-mystery-pink">
           <span aria-hidden="true" className="pixel-rule w-4 shrink-0" />
           Fill the frame with one plant
         </p>
 
-        <label
-          htmlFor="scan-photo"
-          className="arcade-key mt-2 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 sm:w-auto"
+        {/*
+          A BUTTON, NOT A LABEL, AND THAT IS THE STRUCTURAL CHANGE.
+
+          Capture used to BE the submit: one `<label for>` opened the camera and the answer
+          followed whatever came back. With an observation there are two separate moments —
+          gathering photographs, then asking — so the control that asks has to be its own
+          button, and it can be DISABLED, which a label cannot meaningfully be.
+
+          Disabled below two photographs rather than hidden: a control that vanishes teaches
+          nothing, while one that is visibly not ready, beside a count saying why, tells
+          somebody exactly what remains.
+        */}
+        <button
+          type="button"
+          disabled={!canIdentify || busy}
+          onClick={() => void run(photos)}
+          className="arcade-key mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 disabled:cursor-not-allowed disabled:bg-violet-600 disabled:text-violet-300 sm:w-auto"
         >
-          {busy ? 'Identifying…' : 'Take a photo'}
-        </label>
+          {busy
+            ? 'Identifying…'
+            : canIdentify
+              ? `Identify this plant (${photos.length} photo${photos.length === 1 ? '' : 's'})`
+              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'}`}
+        </button>
         <p className="mt-2 text-xs text-violet-400">
           {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it
           leaves your device.
@@ -481,12 +639,33 @@ export function ScanPanel() {
                               href={`/herbdex/${herb.id}`}
                               className="block rounded-xl border-y border-r border-l-4 border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink p-3 transition-colors hover:bg-plum-600/40"
                             >
-                              <span className="block font-bold text-violet-100">
-                                {herb.commonName}
-                              </span>
-                              <span className="block text-xs italic text-violet-400">
-                                {herb.scientificName}
-                              </span>
+                              {/*
+                                THE GRID'S OWN RULE, APPLIED HERE. An undiscovered card is a
+                                number and a silhouette everywhere else in the app; naming it
+                                on the scan screen made this the one surface that gave it
+                                away. The link stays — it lands on the locked page, which
+                                spoils nothing — and a card already in the collection is named
+                                as usual, because there is nothing left to protect.
+                              */}
+                              {ready && isDiscovered(herb.id) ? (
+                                <>
+                                  <span className="block font-bold text-violet-100">
+                                    {herb.commonName}
+                                  </span>
+                                  <span className="block text-xs italic text-violet-400">
+                                    {herb.scientificName}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="block font-bold text-violet-100">
+                                    Card #{String(herb.cardNumber).padStart(2, '0')}
+                                  </span>
+                                  <span className="block text-xs text-violet-400">
+                                    Undiscovered
+                                  </span>
+                                </>
+                              )}
                             </Link>
                           </li>
                         ))}
@@ -542,25 +721,36 @@ export function ScanPanel() {
               </>
             ) : (
               <>
+                {/*
+                  WHAT THE EVIDENCE SUPPORTS, BEFORE THE LIST THAT SUPPORTS IT.
+
+                  The heading used to be "Possible matches" or "Not sure about this one" — a
+                  label for the SHAPE of the result rather than an answer to the question the
+                  player asked. Everything needed to draw the conclusion was on screen and
+                  nobody drew it: five Oxalis binomials mean the identifier agrees about the
+                  genus and disagrees about the species, and working that out was left to a
+                  person standing in a field.
+
+                  `summariseScan` is pure and lives beside the matcher, so the sentence here
+                  cannot disagree with the rows below it. It claims the highest level the
+                  result supports and no higher — and it NEVER reads card eligibility to
+                  decide what is true. See `scan-summary.ts`.
+                */}
                 <h3 className="font-display text-lg font-bold text-gold-plate">
-                  {result.outcome === 'matched' ? 'Possible matches' : 'Not sure about this one'}
+                  {summary.headline}
                 </h3>
                 <div aria-hidden="true" className="pixel-rule mt-2 w-16" />
-                <p className="mt-2 text-sm leading-relaxed text-violet-200">
-                  {result.outcome === 'matched'
-                    ? 'Check the card before you confirm. You are the one recording the find.'
-                    : "The identifier's best guess is not a card in this deck, but one below is. Open it and compare before you confirm anything."}
-                </p>
+                <p className="mt-2 text-sm font-semibold text-violet-200">{summary.qualifier}</p>
+                <p className="mt-1 text-sm leading-relaxed text-violet-300">{summary.detail}</p>
                 {/*
                   WHAT A FIND IS, SAID WHERE THE FIND IS MADE — and the case this closes is
                   not the cheat it looks like.
 
                   `DiscoverPanel` has always qualified its confirmation with "Only if you
                   actually found it outdoors", inside a dialog. The scanner had no equivalent:
-                  its paragraph above is about IDENTIFICATION ("check the card"), and its
-                  confirm button is one tap with no dialog in front of it. So the one route a
-                  stranger actually takes was the one route that never said what it was
-                  recording.
+                  its summary above is about IDENTIFICATION, and its confirm button is one tap
+                  with no dialog in front of it. So the one route a stranger actually takes was
+                  the one route that never said what it was recording.
 
                   The reason to fix it is the INNOCENT case, not the dishonest one. Somebody
                   holding the deck photographs a card to look the plant up — an entirely
@@ -584,76 +774,116 @@ export function ScanPanel() {
                   plant outdoors.
                 </p>
 
-                <ul className="mt-4 space-y-3">
-                  {(() => {
+                <h4
+                  ref={listRef}
+                  className="mt-5 scroll-mt-24 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase"
+                >
+                  Best matches
+                </h4>
+
+                <ul className="mt-2 space-y-3">
+                  {(showAllCandidates
+                    ? result.candidates
+                    : result.candidates.slice(0, VISIBLE_CANDIDATES)
+                  ).map((candidate, index) => {
                     /*
-                     * Computed ONCE for the list, not per row: it is a property of the result
-                     * set. Empty on an ordinary scan, so every branch below is a no-op there.
+                     * Which row gets the full "related, but a different species" explanation.
+                     * A property of the LIST rather than of a row, so it is resolved against
+                     * the whole list rather than carried in state.
                      */
-                    const ambiguous = ambiguousCardNames(result.candidates);
-                    return result.candidates.map((candidate) => {
+                    const firstRelated = result.candidates.findIndex(
+                      (one) => one.match.kind === 'sameGenus' && one.match.herbId,
+                    );
                     /*
-                     * THE CATALOGUE, NOT THE PRINTED DECK. `matchScientificName` resolves Field Cards now, so a
-                     * match can carry an id `getPrintedCard` cannot see — and every one of these sites drops a
-                     * row it cannot resolve. That is how scanning a witch hazel produced a "Possible matches"
-                     * panel with its heading, its caution and its quota line, and no candidates at all.
+                     * EVERY CANDIDATE RENDERS, IN THE PROVIDER'S ORDER.
                      *
-                     * Printed-only is still correct for XP, mastery, the garden, Field Research and the
-                     * collection stats, and those call sites are deliberately untouched. The rule is: resolve
-                     * through the catalogue wherever you are DISPLAYING a card, through the printed deck
-                     * wherever you are COUNTING or AWARDING one.
+                     * This list used to `return null` for any candidate the deck had no card
+                     * for — so the identifier's own leading answer could be invisible while a
+                     * lower-ranked relative sat at the top of the page wearing a gold border
+                     * and a confirm button. That is the strongest possible form of "the deck
+                     * decides what the plant is": not weighting the evidence, deleting it.
+                     *
+                     * The card is now METADATA ON A ROW rather than the row's reason to
+                     * exist. `herb` may be null and the row still renders, because what the
+                     * identifier said is true whether or not Plantdex has printed it.
                      */
-                    const herb = candidate.match.herbId ? getCatalogueEntry(candidate.match.herbId) : null;
-                    if (!herb) return null;
+                    const herb = candidate.match.herbId
+                      ? getCatalogueEntry(candidate.match.herbId)
+                      : null;
                     const band = confidenceBand(candidate.score);
-                    const already = ready && isDiscovered(herb.id);
-                    // This row prints a card name a sibling row prints too.
-                    const sharesName = ambiguous.has(herb.commonName);
+                    const already = ready && herb ? isDiscovered(herb.id) : false;
+                    /*
+                     * RANK IS THE ONLY THING THE EMPHASIS TRACKS. Gold marks the identifier's
+                     * leading answer — never "this one has a card", which is what it used to
+                     * mean and what made a 23% relative look like Plantdex's recommendation.
+                     */
+                    const leads = index === 0;
+                    /*
+                     * WHAT THIS ROW MAY CALL THE ENTRY. Discovered, its own name; undiscovered,
+                     * nothing that would spoil the reveal — the same rule `LockedHerb` states
+                     * and the same one the grid draws. It is deliberately not a card number
+                     * here: a number would be a fact about the collectible on a row that is
+                     * about a taxon, and the row has no use for one.
+                     */
+                    const entryName =
+                      herb && ready && isDiscovered(herb.id) ? herb.commonName : null;
+                    const rowKey = candidate.scientificName;
                     return (
                       <li
-                        key={candidate.scientificName}
+                        key={rowKey}
                         /*
-                         * Gold edge: this one can be logged. Hot pink: it cannot — a related species
-                         * the matcher deliberately refuses. The colour repeats what the sentence below
-                         * already says, for anyone scanning the list rather than reading it.
-                         */
-                        className={`rounded-xl border-y border-r border-l-4 p-3 ${
-                          candidate.match.confirmable
-                            ? 'border-y-gold-500/25 border-r-gold-500/25 border-l-gold-500'
-                            : 'border-y-violet-800/70 border-r-violet-800/70 border-l-mystery-pink'
+                          THE LEADER IS LIFTED, NOT DECORATED. A faint ground and a little
+                          more padding are enough to read as "this one first" at a glance —
+                          and neither says CORRECT, which is the line this row may not cross.
+                          The gold edge already marks rank; adding a second louder signal
+                          would start claiming certainty the score below it does not support.
+                        */
+                        className={`rounded-xl border-y border-r border-l-4 ${
+                          leads
+                            ? 'border-y-gold-500/25 border-r-gold-500/25 border-l-gold-500 bg-plum-700/30 p-3.5'
+                            : 'border-y-violet-800/70 border-r-violet-800/70 border-l-violet-600 p-3'
                         }`}
                       >
-                        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                          {/*
-                            WHICHEVER LINE ANSWERS "WHICH PLANT IS THIS" LEADS.
+                        {/*
+                          THE NAME GETS ITS OWN LINE, AND THE META LINE GETS THE FULL WIDTH.
 
-                            Normally that is the card's common name and the binomial below is
-                            a detail. When a sibling row prints the SAME card name, the common
-                            name has stopped distinguishing anything and the binomial is the
-                            only thing that does — so the two swap, and the card becomes the
-                            supporting line rather than the heading. Same two facts either
-                            way; no row gains or loses information, and nothing is collapsed.
+                          These shared one `justify-between` baseline row. That was fine while
+                          the right-hand side was just a score, and broke the moment "Closest
+                          suggestion" joined it: at 390px the leader's meta wrapped onto two
+                          ragged lines beside the binomial, which is taller and worse than the
+                          three separate lines it replaced. Stacking them is what makes the
+                          compaction actually compact.
+                        */}
+                        <div className="flex flex-col gap-y-1">
+                          {/*
+                            THE BINOMIAL LEADS, ALWAYS.
+
+                            The heading used to be the CARD's common name, which is how two
+                            Sambucus species came to print "Elderberry" twice and how a
+                            runner-up came to be headed by the deck's word for it. A row is a
+                            claim about a TAXON; the card it happens to unlock is a second
+                            fact, and it now sits underneath where a second fact belongs.
+                            Heading by the binomial also makes the duplicate-name case
+                            structurally impossible rather than handled.
                           */}
-                          {sharesName ? (
+                          <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                             <span className="font-bold break-words italic text-violet-100">
                               {candidate.scientificName}
                             </span>
-                          ) : (
-                            <Link
-                              href={`/herbdex/${herb.id}`}
-                              /*
-                               * A 44px hit area drawn by a pseudo-element rather than by
-                               * padding: this link sits on a baseline row beside the score
-                               * meter, so growing the box would shift the meter off the name it
-                               * belongs to. Measured at 24px before this — a real sub-target in
-                               * the launch loop's own critical path. Same pattern
-                               * `GlossaryTermLink` uses, and invisible to layout.
-                               */
-                              className="relative font-bold text-violet-100 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
-                            >
-                              {herb.commonName}
-                            </Link>
-                          )}
+                            {/*
+                              THE LEADER MARK IS A CHIP BESIDE THE NAME, NOT A THIRD ITEM IN
+                              THE SCORE LINE. Folded in there it made the leader's meta wrap
+                              three ways at 390px — "Closest" over "suggestion", "Match" over
+                              "score: 45%" — which is taller than the separate line it was
+                              meant to replace. Up here it sits on the name's own row, and the
+                              score line stays ONE line on every row including this one.
+                            */}
+                            {leads && (
+                              <span className="rounded-full border border-gold-500/60 bg-gold-500/12 px-2 py-0.5 text-[0.72rem] font-bold tracking-[0.08em] text-gold-300 uppercase">
+                                Closest suggestion
+                              </span>
+                            )}
+                          </span>
                           <span className="flex items-center gap-2 text-xs tabular-nums text-violet-300">
                             <span
                               aria-hidden="true"
@@ -661,187 +891,236 @@ export function ScanPanel() {
                               style={
                                 {
                                   '--fill': `${Math.round(candidate.score * 100)}%`,
-                                  '--meter-colour': candidate.match.confirmable
+                                  '--meter-colour': leads
                                     ? 'var(--color-gold-500)'
-                                    : 'var(--color-mystery-pink)',
+                                    : 'var(--color-violet-400)',
                                 } as React.CSSProperties
                               }
                             />
-                            {Math.round(candidate.score * 100)}% &middot; {band}
+                            {/*
+                              "MATCH SCORE", NOT A PROBABILITY.
+
+                              It read "45% · moderate", which invites exactly one reading:
+                              a 45% chance of being right. Neither provider documents the
+                              number that way — `identification-types.ts` says in as many
+                              words that the semantics differ between them — and the five
+                              shown here do not add up to 100. So the label says what it is,
+                              a score used to rank suggestions against each other, and the
+                              qualitative band steps down to a secondary note beside it.
+                            */}
+                            {/*
+                              ONE META LINE, NOT THREE. "Closest suggestion" used to be its
+                              own paragraph under the row, the score its own cluster and the
+                              band a third element — three lines saying three short things.
+                              They are one dot-separated line now, which is the same
+                              information at roughly a third of the height.
+                            */}
+                            <span>
+                              Match score:{' '}
+                              <span className="font-bold text-violet-100">
+                                {Math.round(candidate.score * 100)}%
+                              </span>
+                            </span>
+                            <span aria-hidden="true" className="text-violet-600">&middot;</span>
+                            <span className="text-violet-400">{band}</span>
                           </span>
                         </div>
+
                         {/*
-                          THE CARD RELATION, STATED AS A RELATION. "Matches the Elderberry
-                          card" is a claim about this app's own mapping — `matchScientificName`
-                          is a pure function of the name, so it is deterministic and checkable —
-                          and NOT a claim that the photograph is an elder. That uncertainty is
-                          carried by the score beside it and by the caution above every result,
-                          neither of which this touches.
+                          THAT AN ENTRY EXISTS, WITHOUT SAYING WHICH ONE.
 
-                          A GENUS CARD SAYS SO OUT LOUD, because "one card covers the whole
-                          genus" is the actual reason two elders offer the same card, and a
-                          player who reads it once is not surprised by the next one.
+                          This printed "Has a Plantdex card: Wood Sorrel" and linked to it —
+                          on a card the player has not discovered. `LockedHerb` states the
+                          opposite rule outright: an undiscovered card shows "nothing that
+                          would spoil the reveal — no name, no artwork, no card-back content".
+                          So the scan screen was handing over the reward in order to ask
+                          whether to award it, and the flip at the end had nothing left to
+                          turn over.
 
-                          `sameGenus` names the card without claiming a match: the sentence
-                          below it already explains the refusal, so this only has to keep the
-                          route to the card that the promoted binomial took away.
+                          IT STILL SAYS WHY THE MATCH HAPPENED, because that is about the
+                          TAXON rather than the collectible: a `spp.` card covering a whole
+                          genus is the actual reason two of these rows can offer the same
+                          entry, and the genus is already printed on the row above. What goes
+                          is the card's own name and the route to it.
+
+                          A DRAWN CHIP, NOT A GLYPH. `no-emoji.test.ts` forbids one, for the
+                          reason the sprites exist: this interface is pixel art, and a font's
+                          idea of a card is neither drawn by us nor the same on two platforms.
                         */}
-                        {sharesName ? (
-                          <p className="mt-1 text-xs leading-relaxed text-violet-300">
-                            <Link
-                              href={`/herbdex/${herb.id}`}
-                              className="relative font-semibold text-violet-200 underline underline-offset-2 before:absolute before:top-1/2 before:left-1/2 before:h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-gold-400"
-                            >
+                        {herb && candidate.match.confirmable && (
+                          <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-relaxed text-violet-300">
+                            {/*
+                              PLANTDEX STATUS IS VIOLET; GOLD IS THE IDENTIFIER'S LEADER AND
+                              THE COMMIT. This chip was gold, so a 23% relative carrying a card
+                              wore the same accent as the 45% answer above it — the ranking
+                              competing with the collection for one colour. Violet says
+                              "Plantdex has something here" without claiming rank.
+                            */}
+                            <span
+                              aria-hidden="true"
+                              className="inline-block h-2.5 w-2.5 shrink-0 border-2 border-violet-400 bg-violet-400"
+                            />
+                            <span className="font-semibold text-violet-200">
                               {candidate.match.kind === 'genusCard'
-                                ? `The ${herb.commonName} card covers the whole ${genusLabel(herb.scientificName)} genus`
+                                ? `Plantdex entry available \u2014 one covers the whole ${genusLabel(herb.scientificName)} genus`
                                 : candidate.match.kind === 'acceptedScope'
-                                  ? /*
-                                     * ACCEPTED, AND SAID AS ACCEPTANCE. This species is not
-                                     * the binomial the card prints, but the card's declared
-                                     * coverage includes it — so the sentence has to read as
-                                     * a match rather than as the near-miss the old
-                                     * `sameGenus` wording gave it. Deliberately distinct
-                                     * from the `genusCard` line above: that card SAYS
-                                     * `Genus spp.`, this one prints a species and was
-                                     * widened, and a reader is owed the difference.
-                                     */
-                                    `The ${herb.commonName} card covers this ${genusLabel(herb.scientificName)} species`
-                                  : candidate.match.confirmable
-                                    ? `Matches the ${herb.commonName} card`
-                                    : `The deck\u2019s nearest card: ${herb.commonName}`}
-                            </Link>
-                          </p>
-                        ) : (
-                          <p className="mt-0.5 text-xs italic text-violet-400">
-                            {candidate.scientificName}
+                                  ? `Plantdex entry available \u2014 it covers this ${genusLabel(herb.scientificName)} species`
+                                  : 'Plantdex entry available'}
+                            </span>
                           </p>
                         )}
 
-                        {/* A card-printed warning belongs BEFORE the confirm button, not after it. */}
-                        {herb.warning && (
+                        {/* A card-printed warning belongs BEFORE any action, not after it. */}
+                        {herb?.warning && (
                           <p className="mt-2 rounded-lg border border-pink-accent/50 bg-plum-800/60 p-2 text-xs leading-relaxed text-violet-100">
                             <span className="font-bold text-pink-accent">Card warning: </span>
                             {herb.warning}
                           </p>
                         )}
 
-                        {candidate.match.kind === 'ambiguous' ? (
+                        {!herb ? (
+                          /*
+                           * NO CARD, AND THAT IS NOT A FAILURE. Previously this row did not
+                           * render at all. Saying so plainly is what keeps the ranking honest:
+                           * the identifier's best answer is often a plant the deck has never
+                           * printed, and the Seed Shelf below is where that goes.
+                           */
+                          <p className="mt-2 text-xs leading-relaxed text-violet-400">
+                            No Plantdex card for this species.
+                          </p>
+                        ) : candidate.match.kind === 'ambiguous' ? (
                           /*
                            * MORE THAN ONE CARD CLAIMS THIS SPECIES, so the app refuses to
                            * choose and says why. Awarding the wrong card is worse than
                            * awarding none, and picking silently would make the wrongness
-                           * invisible to everyone including us. `coverage.test.ts` fails the
-                           * build on overlapping scope, so this should be unreachable — it
-                           * renders because "unreachable" is a property of today's data.
+                           * invisible to everyone including us.
                            */
                           <p className="mt-2 text-xs leading-relaxed text-violet-300">
                             More than one card in the deck covers this species, so it cannot
                             be logged as any of them without guessing which you found.
                           </p>
                         ) : candidate.match.kind === 'sameGenus' ? (
+                          /*
+                           * SAID IN FULL ONCE, THEN SHORT — which only became a problem when
+                           * this list stopped hiding rows. A wood sorrel returns five
+                           * congeners and four of them are relatives, so the full refusal
+                           * printed four times down one screen. Repetition is how a caution
+                           * stops being read, and the rule it teaches is the same every
+                           * time: the first row explains it, the rest name it.
+                           *
+                           * The distinction itself is untouched — no row here carries a
+                           * confirm button, whichever sentence it prints.
+                           */
                           <p className="mt-2 text-xs leading-relaxed text-violet-300">
-                            {(candidate.match.relatedHerbIds?.length ?? 1) > 1
-                              ? `Related to the deck\u2019s ${candidate.match.relatedHerbIds?.length} cards in this group, but a different species \u2014 so it cannot be logged as any of them.`
-                              : `Related to this card, but a different species \u2014 so it cannot be logged as ${herb.commonName}.`}
+                            {/*
+                              TWO WORDS AND A CONSEQUENCE, REPEATED CHEAPLY. The full sentence
+                              — "Related to a Plantdex entry, but a different species, so it
+                              cannot be logged under it" — is correct and was printed on up to
+                              four rows of one screen. The distinction it carries is RELATED and
+                              NOT LOGGABLE, and both survive here; what goes is the fourth
+                              reading of the same clause.
+
+                              The old wording also counted the deck's cards in the group, which
+                              existed to disambiguate a NAMED card. No row names one any more,
+                              so the count had nothing left to disambiguate.
+                            */}
+                            {index === firstRelated
+                              ? `Related${entryName ? ` to ${entryName}` : ' species'} \u00b7 not collectible`
+                              : 'Related species'}
                           </p>
                         ) : already ? (
                           /*
-                           * TWO DIFFERENT FACTS WEARING ONE SENTENCE.
-                           *
-                           * `already` is `isDiscovered`, which flips true the instant the
-                           * confirm button is tapped — so the row that had offered the find
-                           * re-rendered as "Already in your collection", one line above a
-                           * panel saying the plant "is in your collection NOW". Both true,
-                           * and together they read as a contradiction: ALREADY means before
-                           * this scan, and for the species just confirmed that is false.
-                           *
-                           * So the just-confirmed card gets its own wording. Everything else
-                           * — a species genuinely held before today's scan — keeps the
-                           * original sentence, which is the only case it was ever about.
-                           *
-                           * A MARKER, NOT A SENTENCE. The receipt below already says
-                           * "Dandelion added to your Herbdex" in full; spelling it out here
-                           * too put the same line on screen twice about 200px apart. The
-                           * species name sits directly above this, so one word and a tick is
-                           * the whole of what this row still has to say.
+                           * TWO DIFFERENT FACTS WEARING ONE SENTENCE. `already` is
+                           * `isDiscovered`, which flips true the instant the confirm button is
+                           * tapped — so the row that had offered the find re-rendered as
+                           * "Already in your collection", one line above a panel saying the
+                           * plant is in your collection NOW. ALREADY means before this scan,
+                           * and for the species just confirmed that is false.
                            */
                           <p className="mt-2 text-xs font-semibold text-gold-300">
-                            {/*
-                              THE CARD IS WHAT WAS ADDED, AND WITH TWO ELDERS ON SCREEN THAT
-                              STOPS BEING PEDANTIC. Confirming Sambucus canadensis records the
-                              Elderberry CARD, and `already` is keyed on that card — so the
-                              Sambucus nigra row turns to "Added" at the same moment, and a
-                              bare tick under that binomial reads as "we recorded nigra".
-                              Naming the card is true of both rows and claims nothing about
-                              either species. Unambiguous rows keep the shorter marker, where
-                              the species and the card are the same thing anyway.
-                            */}
                             {confirmed?.herbId === herb.id
-                              ? sharesName
-                                ? `${herb.commonName} card added \u2713`
-                                : 'Added \u2713'
-                              : sharesName
-                                ? `${herb.commonName} card already in your collection.`
-                                : 'Already in your collection.'}
+                              ? 'Added \u2713'
+                              : 'Already in your collection.'}
                           </p>
                         ) : (
+                          /*
+                           * INSPECT, THEN DECIDE — AND NOTHING IS NAMED UNTIL IT IS EARNED.
+                           *
+                           * This button used to read "Yes, I found Wood Sorrel", which spent
+                           * the reveal in order to ask for it: `LockedHerb` withholds the name,
+                           * the artwork and the card back precisely so the flip at the end has
+                           * something to turn over, and the one route that actually ends in a
+                           * discovery was giving it away first.
+                           *
+                           * So the label names no card, and the panel it opens is NOT the
+                           * collectible — it is the site's own field notes, which are what a
+                           * person standing in front of a plant needs and which reveal nothing
+                           * they have not earned. The confirmation lives inside it, so the
+                           * deliberate tap comes AFTER the comparison rather than instead of it.
+                           */
                           <button
                             type="button"
                             onClick={() => {
-                              // The player's decision, and the only thing that awards anything.
-                              // `discover` is the same call the plant page makes, so a repeat
-                              // awards nothing — idempotency is the reducer's, not ours.
-                              const outcome = discover(herb);
-                              track('scan_confirmed');
-                              setConfirmed({
-                                herbId: herb.id,
-                                xpAwarded: outcome.xpAwarded,
-                                newAchievementIds: outcome.newAchievementIds,
-                                at: Date.now(),
-                                celebrated: outcome.awarded,
-                              });
-                              /*
-                               * THE MOMENT, AND ONLY WHEN ONE WAS EARNED.
-                               *
-                               * The card page has celebrated a discovery since the beginning;
-                               * the scanner — the route a stranger from a vendor table
-                               * actually takes — recorded the identical reward and rendered it
-                               * as two static chips under a paragraph. Same event, same data,
-                               * no moment. This is the card page's own celebration, reading
-                               * the same `DiscoveryResult`, with an onward step that suits
-                               * this screen instead of a mastery track that is not on it.
-                               *
-                               * Gated on `awarded`: a repeat find celebrates nothing.
-                               */
-                              if (outcome.awarded) {
-                                setCelebrating({ herbId: herb.id, result: outcome });
-                                celebrateRef.current?.showModal();
-                              }
+                              setChecking({ herb, candidate });
+                              traitsRef.current?.showModal();
                             }}
-                            className="arcade-key mt-3 min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/12 px-4 text-sm font-bold text-gold-300 transition-colors hover:bg-gold-500/20"
+                            className="mt-2.5 min-h-11 w-full rounded-full border border-violet-500 bg-violet-600/15 px-4 text-sm font-bold text-violet-100 transition-colors hover:bg-violet-600/30"
                           >
-                            {/*
-                              TWO ROWS MUST NOT OFFER THE SAME SENTENCE. "Yes, I found
-                              Elderberry" under each of two elders is a choice with no
-                              choosing in it — whichever is tapped, the button said the same
-                              words, so the player cannot know which species they agreed to.
-                              Naming the species makes the two buttons differ from each other,
-                              directly under the binomial they name.
-
-                              The ordinary wording is untouched: where one row prints a name,
-                              "Yes, I found Dandelion" is the plainer sentence and there is
-                              nothing to disambiguate.
-                            */}
-                            {sharesName
-                              ? `Confirm ${candidate.scientificName}`
-                              : `Yes, I found ${herb.commonName}`}
+                            Check traits <span aria-hidden="true">&rarr;</span>
                           </button>
                         )}
                       </li>
                     );
-                    });
-                  })()}
+                  })}
                 </ul>
+
+                {result.candidates.length > VISIBLE_CANDIDATES && (
+                  <button
+                    type="button"
+                    aria-expanded={showAllCandidates}
+                    onClick={() => {
+                      setShowAllCandidates((open) => !open);
+                      /*
+                       * COLLAPSING FROM BELOW THE FOLD WOULD LEAVE THE READER IN THE FOOTER.
+                       * The list shortens under them, so the page scrolls up by however many
+                       * rows just left — which reads as the app jumping. Bringing the heading
+                       * back puts them at the top of the thing they just collapsed; expanding
+                       * grows downwards from where they are and needs nothing.
+                       */
+                      if (showAllCandidates) {
+                        listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                    className="mt-2 min-h-11 w-full rounded-full border border-violet-700 px-4 text-xs font-bold tracking-[0.08em] text-violet-300 uppercase transition-colors hover:border-violet-500 hover:text-violet-100"
+                  >
+                    {showAllCandidates
+                      ? 'Show fewer'
+                      : `Show ${result.candidates.length - VISIBLE_CANDIDATES} more`}
+                  </button>
+                )}
+
+                {/*
+                  WHAT THE NUMBERS ARE, SAID ONCE UNDER THE LIST THEY QUALIFY.
+
+                  Five scores that read 45, 23, 20, 12 and 3 invite a reader to add them up
+                  and wonder why they make 103. They are a ranking, not a partition of
+                  certainty, and neither provider publishes a calibration for them — so this
+                  says what they are rather than quietly normalising them into a shape they
+                  were never in.
+                */}
+                <p className="mt-3 text-xs leading-relaxed text-violet-400">
+                  Match scores rank the identifier&rsquo;s suggestions against each other. They
+                  are not calibrated probabilities and need not add up to 100%.
+                </p>
+
+                {hint && (
+                  <div className="mt-4 rounded-xl border border-violet-700 bg-plum-800/40 p-3">
+                    <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
+                      Want a stronger match?
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-violet-200">{hint}</p>
+                  </div>
+                )}
               </>
             )}
 
@@ -884,12 +1163,24 @@ export function ScanPanel() {
                   herbId={herb.id}
                   commonName={herb.commonName}
                   scientificName={herb.scientificName}
+                  equivalentObservedName={confirmed.equivalentObservedName}
                   href={`/herbdex/${herb.id}`}
                   xpAwarded={confirmed.xpAwarded}
                   newAchievementIds={confirmed.newAchievementIds}
                   confirmedAt={confirmed.at}
                   celebrated={confirmed.celebrated}
                 />
+                {/*
+                  ONLY WHEN IT FAILED, and never as reassurance when it worked. A line saying
+                  "saved to your journal" after every single find is noise that teaches people
+                  to stop reading the place a real failure would appear.
+                */}
+                {!confirmed.journalled && (
+                  <p className="mt-3 text-xs leading-relaxed text-mystery-pink">
+                    The card is in your collection, but this observation could not be saved to
+                    your field journal. You can log it from the card page.
+                  </p>
+                )}
               </div>
             );
           })()}
@@ -902,6 +1193,35 @@ export function ScanPanel() {
           scan history is kept &mdash; signed out, nothing is saved anywhere.
         </p>
       )}
+
+      {/*
+        THE TRAITS PANEL IS MOUNTED HERE, NOT IN THE ROW THAT OPENS IT.
+
+        Same rule as the celebration below and as `KnowledgeCheck`: confirming from inside it
+        writes a discovery, which re-renders the candidate list — so a <dialog> living in the
+        row would be torn out from under the action it is reporting. It sits at a fixed
+        position at the end of the tree and `checking` decides what is inside it.
+      */}
+      <IdentifyTraitsPanel
+        dialogRef={traitsRef}
+        herb={checking?.herb ?? null}
+        scientificName={checking?.candidate.scientificName ?? null}
+        onConfirm={() => {
+          /*
+           * CAPTURED BEFORE CLOSING. `close()` fires `onClose`, which clears `checking` — so
+           * reading it after would hand `confirmCandidate` an empty subject. The celebration
+           * is opened by that call, and this dialog must be out of the way before it is.
+           */
+          const subject = checking;
+          traitsRef.current?.close();
+          if (subject) confirmCandidate(subject.herb, subject.candidate);
+        }}
+        onDismiss={() => {
+          traitsRef.current?.close();
+          setChecking(null);
+        }}
+      />
+
 
       {/*
         THE DIALOG ELEMENT IS ALWAYS HERE; ONLY ITS CONTENTS ARE CONDITIONAL.

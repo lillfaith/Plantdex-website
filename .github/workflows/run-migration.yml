@@ -138,15 +138,41 @@ jobs:
         # Proof rather than assumption: a 200 from the query endpoint means the statement ran,
         # not that the objects are there — a migration full of `if not exists` returns 200
         # having done nothing at all.
+        #
+        # COLUMNS AS WELL AS TABLES, because a migration need not create a table. 0006 is
+        # almost entirely `alter table ... add column if not exists`, and against a table list
+        # alone its output is indistinguishable from a migration that did nothing — while the
+        # columns it adds are exactly what the client writes to. An `insert` naming a column
+        # that is not there is rejected outright: signed-in sightings would start failing, and
+        # this step would have said the migration was fine.
+        #
+        # The tables are read out of the migration FILE rather than listed here, so this stays
+        # generic: whatever `public.<name>` the migration touches is what gets reported.
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           PROJECT_REF: ${{ inputs.project_ref }}
+          MIGRATION: ${{ inputs.migration }}
         run: |
           set -euo pipefail
-          SQL="select table_name from information_schema.tables where table_schema='public' order by table_name"
-          python3 -c "import json,sys;print(json.dumps({'query':sys.argv[1]}))" "$SQL" > /tmp/q.json
+          query() {
+            python3 -c "import json,sys;print(json.dumps({'query':sys.argv[1]}))" "$1" > /tmp/q.json
+            curl -sS --fail-with-body -X POST \
+              "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              -H "Content-Type: application/json" --data @/tmp/q.json
+            echo
+          }
+
           echo "Tables in public:"
-          curl -sS -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
-            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-            -H "Content-Type: application/json" --data @/tmp/q.json
-          echo
+          query "select table_name from information_schema.tables where table_schema='public' order by table_name"
+
+          # Every `public.<table>` the migration names, de-duplicated, in file order. One
+          # line deliberately: an indented heredoc inside a YAML block feeds Python its own
+          # indentation and dies on it, which is a trap this repository has already hit.
+          TABLES=$(python3 -c "import re,sys;seen=[];[seen.append(n) for n in re.findall(r'public\.([a-z_]+)', open(sys.argv[1]).read()) if n not in seen];print(','.join(seen))" "supabase/migrations/$MIGRATION")
+          echo "Tables this migration names: $TABLES"
+
+          for t in $(echo "$TABLES" | tr ',' ' '); do
+            echo "Columns of $t:"
+            query "select column_name, data_type from information_schema.columns where table_schema='public' and table_name='$t' order by ordinal_position"
+          done

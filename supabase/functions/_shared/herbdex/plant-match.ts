@@ -1,6 +1,7 @@
 import { PRINTED_CARDS } from './deck.ts';
 import { CATALOGUE } from './catalogue.ts';
-import { scopeFor } from './card-coverage.ts';
+import { scopeFor, type TaxonRank } from './card-coverage.ts';
+import { parseScientificName } from './taxon-name.ts';
 
 /**
  * MAPPING AN IDENTIFICATION RESULT ONTO THE DECK.
@@ -49,8 +50,109 @@ export type MatchKind =
   | 'sameGenus'
   | 'none';
 
+/**
+ * WHY AN OBSERVATION QUALIFIES FOR A CARD — which is a different question from what the
+ * plant is, and a different question again from how sure we are of the species.
+ */
+/**
+ * DECLARED AS AN ARRAY, and the type derived from it — the same rule as `TAXON_RANKS` and
+ * `SPECIES_CONFIDENCES`, and for the same reason, which this type did not follow.
+ *
+ * `sightings.eligibility` repeats these values as a CHECK constraint in migration 0006. A
+ * bare union gives a test nothing to compare that constraint against, so adding a member to
+ * the type and forgetting the migration used to fail NOTHING: the build stays green, the app
+ * emits the new value, and Postgres refuses the insert — which loses the sighting, because a
+ * constraint NARROWER than the type does not degrade gracefully.
+ * `identification-schema.test.ts` now holds the two equal, so the migration is what fails
+ * first.
+ *
+ * ORDER IS THE VOCABULARY'S, NOT A RANKING: the unlocking bases, then the ones that unlock
+ * nothing.
+ */
+export const ELIGIBILITIES = [
+  /** The card's OWN binomial, returned by the provider directly. */
+  'exact',
+  /**
+   * A checked nomenclatural synonym of the anchor — the SAME PLANT under another name.
+   *
+   * Split out of `exact`, which used to carry both. They are two different facts: one is the
+   * card's own name, the other is a name that resolves to it, and the distinction was being
+   * discarded at the moment of recording where nothing could recover it afterwards. Nothing
+   * about the match changes — `kind` stays `exact`, because the UI's claim ("this is the
+   * card's species") is true either way — only the RECORD gains the thing it was losing.
+   */
+  'synonym',
+  /** A researched member of the card's curated accepted group — a SUPRA-SPECIFIC concept. */
+  'acceptedGroup',
+  /**
+   * A DISTINCT accepted species the card has been researched to represent.
+   *
+   * Different from `acceptedGroup` in the one way that matters to a reader: there, the
+   * observation never resolved to a species, so nothing was equated. Here two species ARE
+   * being treated as one card, and the player must be told they are distinct — which is why
+   * this is the only basis that triggers the equivalent-species notice.
+   */
+  'curatedEquivalent',
+  /** The card itself prints `Genus spp.`, so the genus is its stated scope. */
+  'genusCard',
+  /**
+   * Inside a `pendingCuration` genus override. Temporary — see `card-coverage.ts`.
+   *
+   * READABLE FOREVER, AND THE PLAN IS THAT IT STOPS BEING ISSUED. Stored sightings carry it,
+   * so removing it from this list would make real rows unreadable and the only way to "fix"
+   * them would be to rewrite why a past observation reached a card. It goes quiet, not away.
+   */
+  'legacyGenus',
+  'ambiguous',
+  'related',
+  'none',
+] as const;
+
+export type Eligibility = (typeof ELIGIBILITIES)[number];
+
+/**
+ * Strength of the SPECIES-level identification. Independent of card eligibility.
+ *
+ * An array for the same reason `TAXON_RANKS` is one: `sightings.species_confidence` repeats
+ * it as a CHECK, and a union cannot be compared to a migration.
+ */
+export const SPECIES_CONFIDENCES = ['high', 'moderate', 'low', 'unresolved'] as const;
+export type SpeciesConfidence = (typeof SPECIES_CONFIDENCES)[number];
+
+/**
+ * WHAT THE PROVIDER ACTUALLY SAID.
+ *
+ * Never rewritten to the card's primary binomial. An observation of `Solidago altissima`
+ * that qualifies for the Goldenrod card is `Solidago altissima` for ever; the card is
+ * recorded separately, in `herbId`.
+ *
+ * `providerName` is the provider's ORIGINAL string, authorship and all. `name` is the
+ * cleaned display form and `key` the lookup form — normalisation is for finding things, and
+ * must never become the historical record of what was returned.
+ */
+export interface ObservedTaxon {
+  readonly providerName: string;
+  readonly name: string;
+  readonly key: string;
+  readonly rank: TaxonRank;
+  /**
+   * Whether the name carries a hybrid sign.
+   *
+   * Stored as a flag as well as printed in `name`, because the KEY cannot carry it:
+   * `Mentha × piperita` and a hypothetical `Mentha piperita` normalise identically, so
+   * anything reading the key alone has no way to tell a nothospecies from a species. Nothing
+   * in the deck turns on it today; it exists so that a reader of the record is never left
+   * inferring a hybrid from punctuation inside a display string.
+   */
+  readonly hybrid: boolean;
+}
+
 export interface PlantMatch {
   kind: MatchKind;
+  /** Why this observation qualifies for `herbId`. */
+  eligibility: Eligibility;
+  /** What the provider named. Absent only when nothing was supplied. */
+  observedTaxon?: ObservedTaxon;
   /** The card this maps to. Absent only for `none`. */
   herbId?: string;
   /**
@@ -74,7 +176,7 @@ export interface PlantMatch {
   relatedHerbIds?: string[];
 }
 
-const NO_MATCH: PlantMatch = { kind: 'none', confirmable: false };
+const NO_MATCH: PlantMatch = { kind: 'none', eligibility: 'none', confirmable: false };
 
 /**
  * NAMES THAT MEAN A DECK CARD, SPELT DIFFERENTLY.
@@ -106,9 +208,14 @@ const ACCEPTED_NAME_SYNONYMS: Record<string, string> = {
   // POWO treats Taraxacum campylodes G.E.Haglund as a synonym of T. officinale.
   // https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:252973-1
   'taraxacum campylodes': 'taraxacum-officinale',
-  // The section containing the common dandelion; PlantNet returns it for aggregate matches.
-  // https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:254151-1
-  'taraxacum sect': 'taraxacum-officinale',
+  /*
+   * `taraxacum sect` USED TO LIVE HERE AND DID NOT BELONG. A synonym says two names denote
+   * THE SAME PLANT; a section is a rank ABOVE the species, so the entry was asserting that
+   * `Taraxacum sect. <anything>` and `Taraxacum officinale` are the same taxon. It is now an
+   * accepted-group member on the Dandelion card in `card-coverage.ts`, where breadth is
+   * curated and where a section can stay a section. Taxonomic synonyms and accepted-card
+   * taxa are two different ideas and this table holds only the first.
+   */
   // Older basionym and a long-used synonym, both for the same plant.
   'leontodon taraxacum': 'taraxacum-officinale',
   'taraxacum vulgare': 'taraxacum-officinale',
@@ -123,6 +230,22 @@ const ACCEPTED_NAME_SYNONYMS: Record<string, string> = {
    * That is the point of asking rather than pattern-matching on "it is also a violet".
    */
   'viola papilionacea': 'viola-sororia',
+  /*
+   * GBIF backbone: Oxalis europaea Jord. is a SYNONYM whose accepted name is
+   * Oxalis stricta L. (matchType EXACT, confidence 98), resolved from a runner via
+   * scripts/resolve_taxa.py — not recalled. *O. stricta* is the Wood Sorrel card's own
+   * anchor, so this is the SAME PLANT under an older name.
+   *
+   * THAT IS WHY IT BELONGS HERE AND NOT IN AN ACCEPTED GROUP. A synonym needs no equivalence
+   * argument: there is no second species to weigh the card's use, part, chemistry, edibility
+   * or safety content against. It was first proposed as a `curatedEquivalent` candidate for
+   * Wood Sorrel, and the taxonomy check reclassified it — which is the cheaper answer by six
+   * criteria.
+   *
+   * The sibling candidates stay out: *Oxalis dillenii* and *O. corniculata* are both
+   * GBIF-ACCEPTED species in their own right, so neither is a synonym of anything here.
+   */
+  'oxalis europaea': 'oxalis-stricta',
 };
 
 /**
@@ -152,9 +275,48 @@ export function normalizeName(raw: string): string {
    * No epithet. An infrageneric name like "Taraxacum sect. Taraxacum" keeps its rank word so
    * the synonym table can address it — collapsing it to the bare genus would make it
    * indistinguishable from the genus card "Quercus spp.", which means something different.
+   *
+   * IT ALSO HAS TO KEEP THE SECTION'S OWN EPITHET, AND FOR A WHILE IT DID NOT. This returned
+   * `genus + rank word`, so `Taraxacum sect. Ruderalia`, `sect. Erythrosperma` and
+   * `sect. Palustria` ALL became the single key `taraxacum sect` — and that key sat in the
+   * synonym table pointing at Dandelion as an `exact`, confirmable match. Three different
+   * sections, one of them containing `Taraxacum erythrospermum`, a species this deck
+   * deliberately REFUSES as unconfirmable. The species was refused and its own section was
+   * accepted as an exact match for the card's primary binomial: the table contradicting
+   * itself, and a supra-specific name silently promoted to a species identification.
+   *
+   * The epithet is capitalised (`Ruderalia`), which is exactly why the lowercase-epithet
+   * finder above skips it — so it has to be picked up here, by position: the word after the
+   * rank marker. `taraxacum sect ruderalia` is now distinct from `taraxacum sect palustria`,
+   * and a section can only reach a card by being curated into that card's accepted group.
+   *
+   * A rank marker with nothing after it ("Taraxacum sect.") names no section, so it stays
+   * `genus rank` — a key that identifies nothing and therefore matches nothing, which is the
+   * honest outcome for a name that did not say which section it meant.
    */
-  const group = words.slice(1).find((word) => INFRAGENERIC.has(word.replace(/\.$/, '')));
-  return group ? `${genus.toLowerCase()} ${group.replace(/\.$/, '')}` : genus.toLowerCase();
+  const groupAt = words
+    .slice(1)
+    .findIndex((word) => INFRAGENERIC.has(word.replace(/\.$/, '').toLowerCase()));
+  if (groupAt === -1) return genus.toLowerCase();
+  const rank = words[groupAt + 1]!.replace(/\.$/, '').toLowerCase();
+  const sectionEpithet = words[groupAt + 2];
+  return sectionEpithet
+    ? `${genus.toLowerCase()} ${rank} ${sectionEpithet.replace(/\.$/, '').toLowerCase()}`
+    : `${genus.toLowerCase()} ${rank}`;
+}
+
+/**
+ * The RANK a provider's name actually claims — which is not always species.
+ *
+ * READS THE RAW STRING, NOT THE KEY, AND THAT IS THE WHOLE FIX. This used to call
+ * `normalizeName` and inspect the result — but the key has already thrown away everything
+ * that distinguishes a rank: `Plantago major subsp. intermedia` becomes `plantago major`,
+ * so the rank it reported was `species` for an observation that had named a subspecies.
+ * `taxon-name.ts` reads the provider's own words instead, and answers `unknown` rather than
+ * guessing when it meets a marker it does not know.
+ */
+export function taxonRank(raw: string): TaxonRank {
+  return parseScientificName(raw).rank;
 }
 
 const RANKS = new Set(['subsp', 'ssp', 'var', 'subvar', 'f', 'forma', 'cv', 'sp', 'spp', 'agg']);
@@ -168,6 +330,54 @@ const RANKS = new Set(['subsp', 'ssp', 'var', 'subvar', 'f', 'forma', 'cv', 'sp'
  * addressed by name in the synonym table.
  */
 const INFRAGENERIC = new Set(['sect', 'subg', 'subgen', 'ser', 'subsect']);
+
+/**
+ * The name as it should be SHOWN — the provider's identity, tidied but never generalised.
+ *
+ * IT USED TO BE REBUILT FROM THE NORMALISED KEY, and that quietly manufactured names. The key
+ * exists to find cards, so it drops the hybrid sign and every infraspecific rank — and
+ * rebuilding from it turned `Mentha × piperita` into `Mentha piperita` and `Quercus x leana`
+ * into `Quercus leana`, NEITHER OF WHICH IS A NAME. Dropping a hybrid sign does not
+ * generalise a name, it invents a species, which is the one thing this app may never do.
+ *
+ * Authorship is still dropped: it is not part of the name a player reads, and the provider's
+ * exact original survives untouched in `ObservedTaxon.providerName`.
+ */
+export function displayName(raw: string): string {
+  return parseScientificName(raw).display;
+}
+
+/**
+ * How sure we are of the SPECIES, which is not how sure we are of the card.
+ *
+ * A supra-specific name is `unresolved` WHATEVER its score: a provider can be entirely
+ * confident that it is looking at a section and still have said nothing about which species
+ * within it. Collapsing that into a high species confidence is precisely the rewrite this
+ * model exists to prevent — so rank is checked before the number is even read.
+ *
+ * Reuses `confidenceBand` rather than restating its thresholds, so species confidence and
+ * the confidence shown beside a candidate can never drift apart.
+ */
+/**
+ * Ranks at which the SPECIES is settled.
+ *
+ * A subspecies, variety or form names a species and then narrows it further, so all three
+ * resolve the species exactly as `species` does — treating them as `unresolved` would be the
+ * mirror of the bug above, throwing away a MORE precise identification for being unusual.
+ * Everything above the species, and `unknown`, resolves nothing.
+ */
+const SPECIES_RESOLVING: ReadonlySet<TaxonRank> = new Set<TaxonRank>([
+  'species',
+  'subspecies',
+  'variety',
+  'form',
+]);
+
+export function speciesConfidenceFor(rank: TaxonRank, score: number): SpeciesConfidence {
+  if (!SPECIES_RESOLVING.has(rank)) return 'unresolved';
+  const band = confidenceBand(score);
+  return band === 'strong' ? 'high' : band === 'moderate' ? 'moderate' : 'low';
+}
 
 /** `Taraxacum officinale` -> `taraxacum`. */
 export function genusOf(raw: string): string {
@@ -243,7 +453,19 @@ function cardsCoveringByScope(name: string, genus: string): string[] {
       if (genusOf(herb.scientificName) !== genus) continue;
       if (scope.excluded?.some((one) => normalizeName(one) === name)) continue;
       claimed.push(herb.id);
-    } else if (scope.accepted.some((one) => normalizeName(one) === name)) {
+    } else if (
+      /*
+       * A member matches by its canonical name OR any of its alternate names. The alternates
+       * are how the card is FOUND; what the provider returned is what gets recorded, so
+       * canonicalising here cannot rewrite the observation — `observedTaxon` is built from
+       * the raw string before any of this runs.
+       */
+      scope.accepted.some(
+        (one) =>
+          normalizeName(one.scientificName) === name ||
+          one.synonyms?.some((alt) => normalizeName(alt) === name),
+      )
+    ) {
       claimed.push(herb.id);
     }
   }
@@ -266,12 +488,44 @@ export function matchScientificName(scientificName: string): PlantMatch {
   const name = normalizeName(scientificName);
   if (!name) return NO_MATCH;
 
-  const exact = BY_BINOMIAL.get(name);
-  if (exact) return { kind: 'exact', herbId: exact, confirmable: true };
+  /*
+   * BUILT ONCE, AT THE TOP, AND ATTACHED TO EVERY OUTCOME BELOW — including the ones that
+   * match nothing. What the provider said is true regardless of whether Plantdex has a card
+   * for it, and the branch that finds no card is exactly the one a Seed Shelf entry is built
+   * from, so dropping the taxon there would lose it where it is most needed.
+   */
+  // ONE parse, so the display name, the rank and the hybrid flag cannot describe different
+  // readings of the same string.
+  const parsed = parseScientificName(scientificName);
+  const observedTaxon: ObservedTaxon = {
+    providerName: scientificName,
+    name: parsed.display,
+    key: name,
+    rank: parsed.rank,
+    hybrid: parsed.hybrid,
+  };
+  const withTaxon = (match: Omit<PlantMatch, 'observedTaxon'>): PlantMatch => ({
+    ...match,
+    observedTaxon,
+  });
 
-  // A different name for the same plant is the same plant: `exact`, and confirmable.
+  const exact = BY_BINOMIAL.get(name);
+  if (exact) return withTaxon({ kind: 'exact', eligibility: 'exact', herbId: exact, confirmable: true });
+
+  /*
+   * A different name for the same plant is the same plant — so `kind: 'exact'`, confirmable,
+   * and the card is reached exactly as if the anchor had been returned.
+   *
+   * THE BASIS IS `synonym`, NOT `exact`, AND THAT IS THE WHOLE FIX. Both branches wrote the
+   * same two literals, so the record could not tell a provider that named the card's own
+   * species from one that named an older name for it — two different facts, collapsed at the
+   * return statement rather than anywhere upstream. `observedTaxon` already carried the name
+   * the provider used; what was missing was WHY that name reached this card.
+   */
   const synonym = ACCEPTED_NAME_SYNONYMS[name];
-  if (synonym) return { kind: 'exact', herbId: synonym, confirmable: true };
+  if (synonym) {
+    return withTaxon({ kind: 'exact', eligibility: 'synonym', herbId: synonym, confirmable: true });
+  }
 
   const genus = genusOf(scientificName);
 
@@ -295,25 +549,59 @@ export function matchScientificName(scientificName: string): PlantMatch {
     // The nine `Genus spp.` cards keep their own kind: the card says what it covers, and a
     // reader is owed that distinction from a card the owner widened after printing.
     const kind: MatchKind = GENUS_CARDS.get(genus) === herbId ? 'genusCard' : 'acceptedScope';
-    return { kind, herbId, confirmable: true };
+    /*
+     * FOUR WAYS TO QUALIFY, AND THEY ARE NOT THE SAME CLAIM.
+     *
+     *   genusCard         the card prints `Genus spp.` — its own stated scope.
+     *   acceptedGroup     a supra-specific concept the card represents. NOTHING IS EQUATED:
+     *                     the observation never resolved to a species.
+     *   curatedEquivalent a DISTINCT accepted species researched to share this card. Two
+     *                     species ARE being treated as one card, so the player must be told.
+     *   legacyGenus       a `pendingCuration` override. Nothing issues it any more — the last
+     *                     card carrying one was Goldenrod — but it stays readable because
+     *                     stored sightings have it.
+     *
+     * THE MEMBER DECIDES, NOT THE SCOPE. Both kinds live in one `accepted` list, so reading
+     * the scope's type alone would collapse them back together and the notice would fire on
+     * a section, or fail to fire on a species.
+     */
+    const scope = scopeFor(herbId);
+    const member =
+      scope?.type === 'acceptedGroup'
+        ? scope.accepted.find(
+            (one) =>
+              normalizeName(one.scientificName) === name ||
+              one.synonyms?.some((alt) => normalizeName(alt) === name),
+          )
+        : undefined;
+    const eligibility: Eligibility =
+      kind === 'genusCard' ? 'genusCard' : (member?.basis ?? 'legacyGenus');
+    return withTaxon({ kind, eligibility, herbId, confirmable: true });
   }
   if (claimants.length > 1) {
-    return { kind: 'ambiguous', herbId: claimants[0], relatedHerbIds: claimants, confirmable: false };
+    return withTaxon({
+      kind: 'ambiguous',
+      eligibility: 'ambiguous',
+      herbId: claimants[0],
+      relatedHerbIds: claimants,
+      confirmable: false,
+    });
   }
 
   // A different species in a genus the deck covers. Related, and worth showing so the player
   // can see why it came up — but never confirmable as that card.
   const related = SPECIES_BY_GENUS.get(genus);
   if (related?.length) {
-    return {
+    return withTaxon({
       kind: 'sameGenus',
+      eligibility: 'related',
       herbId: related[0],
       relatedHerbIds: related,
       confirmable: false,
-    };
+    });
   }
 
-  return NO_MATCH;
+  return withTaxon({ kind: 'none', eligibility: 'none', confirmable: false });
 }
 
 /** One ranked result from the provider, after matching. */

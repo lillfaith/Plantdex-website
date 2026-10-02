@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { knownIssueFor } from '@/lib/card-issues';
 import { siteCautionFor } from '@/lib/card-cautions';
+import { cardCorrectionFor } from '@/lib/card-corrections';
 import { GARDEN_STAGE_BY_MASTERY, type GardenStage } from '@/lib/garden';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { usePrevious } from '@/lib/use-previous';
@@ -48,7 +49,13 @@ import { DeckCta } from '../shop/DeckCta';
 import { LocalProgressNotice } from '../auth/LocalProgressNotice';
 import { ResearchTeaser } from '../research/ResearchTeaser';
 import { MySightings } from '../journal/MySightings';
-import { CardIssueNote, CardWarning, SafetyNotice, SiteCaution } from '../SafetyNotice';
+import {
+  CardIssueNote,
+  CardWarning,
+  DigitalCorrection,
+  SafetyNotice,
+  SiteCaution,
+} from '../SafetyNotice';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { SpeciesHero } from '../game/SpeciesHero';
 
@@ -103,6 +110,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   const cardIssue = knownIssueFor(herb);
 
   const siteCaution = siteCautionFor(herb);
+  const correction = cardCorrectionFor(herb);
 
   /*
    * The celebration lives here rather than inside DiscoverPanel because discovering
@@ -350,11 +358,26 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
       {/* Warnings sit directly under the hero and above everything else, exactly as before:
           a printed warning must never be reached by scrolling past a game panel. */}
-      {(herb.warning || siteCaution || cardIssue) && (
+      {(herb.warning || correction || siteCaution || cardIssue) && (
         <div className="mt-6 space-y-3">
           {herb.warning && <CardWarning warning={herb.warning} />}
+          {/*
+            THE CORRECTION SITS ABOVE ITS OWN CAUTION, which is the one ordering that reads
+            correctly: it says the printed instruction has been withdrawn, and the caution
+            under it says why. Reversed, a reader meets the risk before learning that the
+            thing it is about is no longer recommended at all.
+          */}
+          {correction && <DigitalCorrection correction={correction} />}
           {siteCaution && <SiteCaution caution={siteCaution} />}
-          {cardIssue && <CardIssueNote issue={cardIssue} />}
+          {/*
+            THE ISSUE NOTE IS SUPPRESSED WHERE A CORRECTION ALREADY STATES THE SAME MISTAKE.
+            `KNOWN_CARD_ISSUES` keeps its entry — the printed card is still wrong and the data
+            must say so — but a correction that names the error, forbids the use and records
+            the recommendation leaves the note with nothing to add, and a reader who meets one
+            fact twice trusts both tellings less. Declared per card, never inferred, so an
+            unrelated misprint cannot be hidden by a correction about something else.
+          */}
+          {cardIssue && !correction?.supersedesCardIssue && <CardIssueNote issue={cardIssue} />}
         </div>
       )}
 

@@ -6,6 +6,7 @@ import { SeedPacket } from '@/components/seedshelf/SeedPacket';
 import { track } from '@/lib/analytics';
 import { getAchievement } from '@/lib/achievements';
 import { ScanResearchFeedback } from './ScanResearchFeedback';
+import { EquivalentSpeciesNotice } from '../EquivalentSpeciesNotice';
 import type { PacketRecipe } from '@/lib/seed-packet';
 
 /**
@@ -46,6 +47,13 @@ export type ScanOutcomeProps =
       herbId: string;
       commonName: string;
       scientificName: string;
+      /**
+       * The species the identifier named, when it is NOT this card's own.
+       *
+       * Present only for a `curatedEquivalent` unlock. Absent for every other basis, which is
+       * what keeps the notice from firing where nothing was equated.
+       */
+      equivalentObservedName?: string;
       /** What the discovery paid. Zero on a repeat — the reducer is idempotent. */
       xpAwarded: number;
       /** Achievement ids that unlocked on THIS discovery, from `discover()` itself. */
@@ -117,6 +125,13 @@ export function ScanOutcome(props: ScanOutcomeProps) {
         >
           Open its card &rarr;
         </Link>
+        {props.equivalentObservedName && (
+          <EquivalentSpeciesNotice
+            observedName={props.equivalentObservedName}
+            cardName={props.commonName}
+            anchorName={props.scientificName}
+          />
+        )}
         <ScanResearchFeedback herbId={props.herbId} since={props.confirmedAt} />
       </section>
     );

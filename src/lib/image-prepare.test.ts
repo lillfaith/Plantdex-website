@@ -44,7 +44,17 @@ describe('prepare profiles', () => {
   });
 
   it('asks for the smaller profile only on the path that transmits and discards', () => {
-    expect(SCANS).toContain('prepareImage(file, IDENTIFY_PROFILE)');
+    /*
+     * Now once per photograph in the observation, which is the property that had to survive
+     * the change from one image to two or three: every photo takes the transmit profile, and
+     * more importantly every photo goes through `prepareImage` at all — the re-encode is what
+     * strips EXIF and its GPS, so a path that added images without it would have added images
+     * carrying coordinates.
+     */
+    expect(SCANS).toContain('prepareImage(photo.file, IDENTIFY_PROFILE)');
+    expect(SCANS, 'every photo must be prepared, not just the first').toContain(
+      'photos.map((photo) => prepareImage(photo.file, IDENTIFY_PROFILE))',
+    );
     for (const source of [PHOTO_STORE, REMOTE_SIGHTINGS]) {
       expect(source).not.toContain('IDENTIFY_PROFILE');
     }
@@ -158,7 +168,7 @@ describe('the scan status', () => {
     // signal, because `fetch` does not give one — a third stage could only be invented.
     expect(SCANS).toContain('onPrepared?.();');
     expect(SCANS).not.toMatch(/onUploaded|setTimeout\(/);
-    expect(SCAN_PANEL).toContain("identifyPlant(file, () => setStage('identifying'))");
+    expect(SCAN_PANEL).toContain("identifyPlant(photos, () => setStage('identifying'))");
   });
 
   it('shows the chosen photograph before any work starts', () => {
@@ -168,7 +178,9 @@ describe('the scan status', () => {
       SCAN_PANEL.indexOf("setStage('preparing')"),
       SCAN_PANEL.indexOf('await identifyPlant'),
     );
-    expect(pick).toContain('URL.createObjectURL(file)');
+    // The whole-plant shot is the observation's face and is the required first slot, so it
+    // is always present at this point.
+    expect(pick).toContain('URL.createObjectURL(photos[0]!.file)');
     expect(SCAN_PANEL).toContain('URL.revokeObjectURL');
   });
 

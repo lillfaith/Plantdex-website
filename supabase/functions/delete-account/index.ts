@@ -69,6 +69,11 @@ const USER_TABLES = [
   // Added with the Seed Shelf. Species somebody photographed, with the dates they found
   // them — a record of where a person has been looking, and unmistakably theirs.
   'seed_shelf',
+  // Added with the provider comparison mode. Almost every account has none — the mode is
+  // off unless the account is on the evaluation allow-list — but a row here records what an
+  // identifier said about a photograph this person took, so it goes with the account like
+  // any other scan record.
+  'identification_comparisons',
 ] as const;
 
 const CORS_HEADERS: Record<string, string> = {

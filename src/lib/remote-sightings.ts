@@ -57,6 +57,37 @@ function rowToSighting(row: Record<string, unknown>): Sighting | null {
     // <SightingPhoto> only when it actually needs to render one.
     photoId: typeof row.photo_path === 'string' ? row.photo_path : undefined,
     createdAt,
+    /*
+     * WHAT THE IDENTIFIER SAID, kept beside the card rather than folded into it.
+     *
+     * All four are optional on both sides — 0006 adds them as nullable columns and every row
+     * written before it has null in each. They are read back individually rather than through
+     * the guard above for exactly that reason: requiring one would make a legacy sighting
+     * fail `rowToSighting` and vanish from somebody's journal, which is the failure the guard
+     * exists to prevent arriving from the other direction.
+     */
+    observedTaxonProviderName:
+      typeof row.observed_taxon_provider_name === 'string'
+        ? row.observed_taxon_provider_name
+        : undefined,
+    observedTaxonName:
+      typeof row.observed_taxon_name === 'string' ? row.observed_taxon_name : undefined,
+    observedTaxonKey:
+      typeof row.observed_taxon_key === 'string' ? row.observed_taxon_key : undefined,
+    eligibility:
+      typeof row.eligibility === 'string'
+        ? (row.eligibility as Sighting['eligibility'])
+        : undefined,
+    identificationProvider:
+      typeof row.identification_provider === 'string' ? row.identification_provider : undefined,
+    observedTaxonRank:
+      typeof row.observed_taxon_rank === 'string'
+        ? (row.observed_taxon_rank as Sighting['observedTaxonRank'])
+        : undefined,
+    speciesConfidence:
+      typeof row.species_confidence === 'string'
+        ? (row.species_confidence as Sighting['speciesConfidence'])
+        : undefined,
   };
 }
 
@@ -239,6 +270,13 @@ export async function addRemoteSighting(
     foundAgain: input.foundAgain,
     photoId: photoPath,
     createdAt,
+    observedTaxonProviderName: input.observedTaxonProviderName,
+    observedTaxonName: input.observedTaxonName,
+    observedTaxonKey: input.observedTaxonKey,
+    observedTaxonRank: input.observedTaxonRank,
+    eligibility: input.eligibility,
+    speciesConfidence: input.speciesConfidence,
+    identificationProvider: input.identificationProvider,
   };
 
   if (supabase) {
@@ -253,6 +291,16 @@ export async function addRemoteSighting(
       found_again: sighting.foundAgain ?? null,
       photo_path: photoPath ?? null,
       created_at: createdAt,
+      // Nulls, not omissions: an explicit null is what an unidentified sighting IS, and
+      // leaving the keys out would make a column added later look like a column nothing
+      // writes.
+      observed_taxon_provider_name: sighting.observedTaxonProviderName ?? null,
+      observed_taxon_name: sighting.observedTaxonName ?? null,
+      observed_taxon_key: sighting.observedTaxonKey ?? null,
+      observed_taxon_rank: sighting.observedTaxonRank ?? null,
+      eligibility: sighting.eligibility ?? null,
+      species_confidence: sighting.speciesConfidence ?? null,
+      identification_provider: sighting.identificationProvider ?? null,
     });
     // THROW rather than warn. This used to log to a console nobody has open and then add
     // the sighting to the local cache anyway, so the journal showed an entry the server
