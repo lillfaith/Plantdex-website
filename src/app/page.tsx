@@ -156,33 +156,31 @@ export default function HomePage() {
           </Link>
         </div>
         {/*
-          THE SALE STATE IS DERIVED, NOT TYPED.
+          THE BUY BUTTON SITS HERE, AND IT IS THE PAGE'S ONLY ONE.
 
-          This line used to be an unconditional sentence reading "the physical deck is not on
-          sale yet", while `/shop` has always resolved the same fact from configuration. So the
-          day the owner sets the Payment Link and the price, the deck goes on sale, `/shop`
-          renders an Order panel — and the LANDING PAGE goes on telling every visitor it is not
-          for sale. The first page a buyer from a vendor table sees, contradicting the checkout.
+          It used to sit at the very bottom, under the note from the creator and above the
+          safety notice — the last thing before the end of a long page, which is the weakest
+          position on it. Moved rather than duplicated: the footer already carries a quiet
+          second link to /shop on every page, and `DeckCta`'s own note gives the reason a third
+          would be wrong — a site with 45 plant pages that puts a buy prompt on every panel
+          reads as an advertisement, which is the opposite of what makes somebody trust it
+          enough to buy.
 
-          This repository has been bitten by exactly this shape twice already: `/terms` claiming
-          "there is no shop, no checkout and no payment processing anywhere in the application"
-          after `/shop` shipped, and `/privacy` denying analytics after Plausible was wired in.
-          `legal.test.ts` guards both. A hard-coded denial of something configuration can turn on
-          is a lie with a timer on it, so this one reads the configuration too.
+          THE LABEL STILL DERIVES FROM `isCommerceLive()`. This page previously carried a
+          sentence about the sale state and now carries a button instead, so the honesty that
+          sentence provided has to come from the button: with the Stripe variables unset it
+          reads "See the deck" and never offers to sell anything. That is the rule this
+          repository has now shipped the wrong way round three times, and `shop.test.ts`
+          guards it.
+
+          WHAT WENT WITH THE SENTENCE. It also said the digital Plantdex is FREE — a fact a
+          stranger cannot otherwise tell from this page, and one that is now stated only on
+          /shop, which is the wrong side of the question. Raised with the owner rather than
+          quietly kept.
         */}
-        {/*
-          AND IT NOW CARRIES THE TWO FACTS A STRANGER CANNOT OTHERWISE TELL: that the thing
-          they are about to tap costs nothing, and that the deck is not a prerequisite for
-          it. Both were true and stated only on /shop — a page somebody reaches by deciding
-          to buy something, which is the wrong side of the question. Folded into this line
-          rather than added beside it, because a second grey sentence under the buttons is
-          the "busier homepage" the brief rules out.
-        */}
-        <p className="mt-3 text-xs text-violet-400">
-          {isCommerceLive()
-            ? 'The digital Plantdex is free. The physical deck is an optional field companion.'
-            : 'The digital Plantdex is free. The physical deck is optional — and not on sale yet.'}
-        </p>
+        <div className="mt-6">
+          <DeckCta placement="home" />
+        </div>
       </section>
 
       <section aria-labelledby="cards-heading" className="mt-14">
@@ -316,10 +314,6 @@ export default function HomePage() {
           and these gifts from God.
         </p>
       </section>
-
-      <div className="mt-14">
-        <DeckCta placement="home" />
-      </div>
 
       <div className="mt-14">
         <SafetyNotice variant="brief" />

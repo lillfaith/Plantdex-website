@@ -57,7 +57,13 @@ const COPY: Record<CtaPlacement, { line: string }> = {
  * verb there would make it the only instruction in a list of destinations.
  */
 function ctaLabel(placement: CtaPlacement): string {
-  if (isCommerceLive()) return 'Get the deck';
+  // THE HOME BUTTON NAMES THE PRODUCT, the others name the object. It is the one placement a
+  // stranger meets before they know what any of this is, and it replaced a sentence rather
+  // than a button — so it says what tapping it does. The rest keep "Get the deck", which is
+  // the right words on a page that has already shown somebody a card.
+  if (isCommerceLive()) return placement === 'home' ? 'Buy the Plantdex' : 'Get the deck';
+  // OFF, NOTHING SAYS BUY. Identical to before: a label asserting a sale the checkout refuses
+  // is the bug this file documents three times, and it greets a buyer on the first tap.
   return placement === 'footer' ? 'The deck' : 'See the deck';
 }
 
