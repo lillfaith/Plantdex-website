@@ -1,0 +1,49 @@
+name: Release checkpoint (read-only)
+
+# STEP 0 of docs/release-runbook.md. Records what production looks like BEFORE anything is
+# changed — the one step that cannot be done afterwards, because once a migration has run,
+# "what did this look like before" is no longer a question anybody can answer.
+#
+# READ-ONLY, and the script is the guarantee: four GETs plus SELECTs through the Management
+# API's query endpoint, with every statement listed in one block of `release_checkpoint.py`
+# so a reviewer reads them as a set. It creates, alters and deletes nothing.
+#
+# IT PRINTS NO SECRET VALUE. The access token is sent in a header and never echoed; function
+# SECRETS are a separate question answered by `check-function-secrets.yml`, which prints
+# names and a yes/no.
+#
+# It defaults to PRODUCTION on purpose — unlike every other workflow here, reading production
+# is the entire point of this one — and the script refuses any ref that is not one of the two
+# known projects.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which Supabase project to record
+        required: true
+        default: vygiamigomwlvnwkryyl
+        type: choice
+        options:
+          - vygiamigomwlvnwkryyl # production — real players
+          - vgjehmwcpavflbfhbbrp # test
+
+permissions:
+  contents: read
+
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set."; exit 1
+          fi
+      - name: Record the checkpoint
+        env:
+          PROJECT_REF: ${{ inputs.project_ref }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: python3 scripts/release_checkpoint.py
