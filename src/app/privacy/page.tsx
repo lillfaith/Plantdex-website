@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage, LegalSection, LegalTable, OwnerGap } from '@/components/legal/LegalPage';
+import { donationDestination, isDonationConfigured } from '@/lib/support';
 
 export const metadata: Metadata = {
   title: 'Privacy',
@@ -325,7 +326,35 @@ export default function PrivacyPage() {
           click through to checkout; browsing Plantdex, including the shop page, contacts them
           not at all.
         </p>
-        <p>Signed out and not buying anything, only GitHub Pages and Plausible are involved.</p>
+        {/*
+          THE DONATION HOST IS NAMED ONLY IF ONE IS CONFIGURED, and the exhaustive sentence
+          below bends around it for the same reason.
+
+          A donation host is NOT a processor: this site makes no request to it, receives
+          nothing back and connects nothing to an account — tapping Donate leaves the site
+          exactly as tapping a POWO citation does, and those hosts are not listed either.
+          Stripe is listed because an ORDER returns a name and an address to the owner.
+
+          But the closing sentence is an EXHAUSTIVE claim, and this repository has shipped a
+          page denying something configuration had switched on three times: /terms denying
+          the shop, /privacy denying analytics, the landing page denying the sale. So it is
+          resolved from `isDonationConfigured()` rather than written once and left — with no
+          destination set there is no Donate button anywhere, and the sentence stands as it
+          always did.
+        */}
+        {isDonationConfigured() && (
+          <p>
+            <strong className="text-violet-100">{donationDestination()!.name}</strong> receives
+            a donation if you choose to make one, on their own pages. Nothing about a donation
+            reaches this site, it is not connected to a Plantdex account, and it unlocks
+            nothing — the same separation an order has.
+          </p>
+        )}
+        <p>
+          Signed out, not buying anything
+          {isDonationConfigured() ? ' and not donating' : ''}, only GitHub Pages and Plausible
+          are involved.
+        </p>
       </LegalSection>
 
       <LegalSection id="plant-id" heading="If you identify a plant from a photo">

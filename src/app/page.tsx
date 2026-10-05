@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
+import { DonateButton } from '@/components/support/DonateButton';
 import { PlantSprite } from '@/components/PlantSprite';
 import { RarityAura } from '@/components/game/RarityAura';
 import { assetPath } from '@/lib/asset-path';
@@ -340,6 +341,13 @@ export default function HomePage() {
           growing your Plantdex collection, slowly growing more familiar with your surroundings
           and these gifts from God.
         </p>
+        {/*
+          THE ONLY PLACE ON THE SITE THAT ASKS FOR A DONATION, and it renders nothing until a
+          destination is configured — see `src/lib/support.ts`. It belongs under the note
+          rather than in the hero: the hero's job is the one dominant action, and a second
+          money prompt up there would split it.
+        */}
+        <DonateButton />
       </section>
 
       <div className="mt-14">

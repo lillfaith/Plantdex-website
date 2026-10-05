@@ -179,6 +179,16 @@ export const EVENT_NAMES = [
   'deck_cta_plant',
   'deck_cta_footer',
   'checkout_started',
+
+  /*
+   * THE DONATION PROMPT, which is one event because there is one placement.
+   *
+   * No amount travels and none could: `track()` has no second parameter, and the amount is
+   * chosen on the donation host's own page after the click. What this counts is how often
+   * somebody reaches that page from the creator's note — the only question this site can
+   * answer about a donation at all.
+   */
+  'donate_clicked',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];
