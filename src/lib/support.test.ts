@@ -95,6 +95,30 @@ describe('donationDestination()', () => {
     }
   });
 
+  it('refuses the deck\u2019s own Payment Link', () => {
+    /*
+     * Both links live on buy.stripe.com, are made in the same dashboard and are pasted into
+     * two fields on one settings page. Swapped, a button labelled Donate charges the full
+     * price of a deck \u2014 a mis-set variable that looks like it worked. The button must
+     * vanish instead, because a missing button is noticed by the owner and a wrong charge is
+     * noticed by the person charged.
+     */
+    const deckLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
+    try {
+      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_deck';
+      process.env[VAR] = 'https://buy.stripe.com/test_deck';
+      expect(donationDestination()).toBeNull();
+
+      // A DIFFERENT Stripe link is still a perfectly good donation destination \u2014 the guard
+      // is about collision, not about Stripe.
+      process.env[VAR] = 'https://buy.stripe.com/test_donate';
+      expect(donationDestination()).not.toBeNull();
+    } finally {
+      if (deckLink === undefined) delete process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
+      else process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK = deckLink;
+    }
+  });
+
   it('names every host from the list rather than from the URL', () => {
     // The printed name is what /privacy discloses. Deriving it from the hostname would print
     // "Ko-fi.com" on a legal page; deriving it from the list keeps one spelling of each.

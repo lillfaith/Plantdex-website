@@ -36,6 +36,8 @@
  * this module, so the page cannot deny something configuration has turned on.
  */
 
+import { paymentLink } from './shop';
+
 /**
  * A host that may receive a donation, and the name a page prints for it.
  *
@@ -90,6 +92,20 @@ export function donationDestination(): DonationDestination | null {
   const match = DONATION_HOSTS.find((candidate) => candidate.host === parsed.hostname);
   if (!match) return null;
   if (match.pathPrefix && !parsed.pathname.startsWith(match.pathPrefix)) return null;
+
+  /*
+   * THE DECK'S OWN PAYMENT LINK IS NOT A DONATION LINK.
+   *
+   * A donation Payment Link and the deck's are both `https://buy.stripe.com/...`, created in
+   * the same dashboard, pasted into two fields on the same settings page. Swap them and a
+   * button labelled Donate quietly charges somebody the full price of a deck — a mis-set
+   * variable that LOOKS like it worked, which is the worst shape this bug has.
+   *
+   * It fails closed, like every other check on this value: the button disappears rather than
+   * taking money under the wrong label. A missing button is noticed; a wrong charge is
+   * noticed by the person charged.
+   */
+  if (raw === paymentLink()) return null;
 
   return { url: raw, host: match.host, name: match.name };
 }
