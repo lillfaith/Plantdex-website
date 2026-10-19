@@ -4,6 +4,26 @@ Migration 0008, `supabase/functions/redeem-deck-code`, `scripts/mint_deck_codes.
 
 **The cap is DISABLED. Phase 2 is backend only. Do not enable it — see the interlock below.**
 
+## Applied state
+
+| | |
+|---|---|
+| Migration 0008 — test (`vgjehmwcpavflbfhbbrp`) | **applied** 2026-10-19 (run 21) |
+| Migration 0008 — production (`vygiamigomwlvnwkryyl`) | **applied** 2026-10-19 (run 22) |
+| `collection_paywall_enabled` | **false** on both |
+| Edge functions | deployed to production with `function: all` |
+| Frontend | merged to the default branch |
+
+Verify any of that at any time with the **Check the collection entitlements** workflow,
+which is read-only and asserts the whole posture (RLS flags, policy counts, function ACLs,
+the trigger's shape, the flag, and the grandfather counts).
+
+A note for whoever applies this next: the test project was PAUSED, and a paused free-tier
+project answers the Management API's metadata calls perfectly while every database query
+times out after about 15 seconds with `HTTP 544`. Two identical failures at the same
+duration is the signature; resume the project in the dashboard rather than debugging the
+SQL.
+
 ---
 
 ## 🔴 INTERLOCK: THE CAP MUST NOT BE ENABLED YET
