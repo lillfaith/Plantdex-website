@@ -63,6 +63,24 @@ server in that path. That is a deliberate consequence of the owner's decision th
 identification and exploration stay free; it also means the cap is a property of *cloud
 collections*, not of the app.
 
+## 🔴 ORDER MATTERS: THE MIGRATION GOES FIRST
+
+Two shipped-but-unmerged changes **read the new table unconditionally**, and both FAIL
+rather than degrade if it does not exist yet:
+
+| | |
+|---|---|
+| `src/lib/export-account-data.ts` | Reads `entitlements` and **throws on any read error** — by design, because a partial export presented as complete is worse than a failed one. Against a database without the table, every account export fails. |
+| `supabase/functions/delete-account` | `entitlements` is in `USER_TABLES`, and the loop returns an error on a failed delete. Against a database without the table, **account deletion fails**. |
+
+Neither is a bug: both are the correct fail-loud behaviour for the thing they do. But it
+means **apply 0008 before merging the frontend branch or redeploying `delete-account`.**
+Doing it the other way round breaks export and deletion for everybody until the migration
+lands — with the paywall flag still false, so nothing would look like it had changed.
+
+This is the one ordering dependency in the change. The trigger, the redemption function and
+the flag have none: they are inert while `collection_paywall_enabled` is false.
+
 ## Order of operations
 
 1. **Test locally.** `./scripts/test_migration.sh` — needs `postgresql-16`, touches no

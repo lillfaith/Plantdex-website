@@ -113,5 +113,38 @@ else
   echo "FAIL  concurrent redemption entitled $E accounts, expected 1"; exit 1
 fi
 
+# MULTI-USER BATCH DEADLOCK. Two concurrent statements, each inserting for the SAME two
+# accounts, are the case that deadlocks when the per-user lock order is not deterministic:
+# `select distinct` may answer from a HashAggregate in any order, so one side can take A
+# then B while the other takes B then A. `order by 1` imposes one global order. Run
+# repeatedly, because a deadlock that depends on timing will not show up once.
+echo "── multi-user batch deadlock ──"
+X=$(psql -h /tmp -p "$PORT" -U postgres -d "$DB" -tAc "select t_user();" | tr -d ' ')
+Y=$(psql -h /tmp -p "$PORT" -U postgres -d "$DB" -tAc "select t_user();" | tr -d ' ')
+DEADLOCKS=0
+for round in $(seq 1 12); do
+  for side in 1 2; do
+    ( psql -h /tmp -p "$PORT" -U postgres -d "$DB" -tA -c "
+        begin;
+        insert into public.discoveries (user_id, herb_id)
+        select '$X', 'dl${round}_${side}' union all select '$Y', 'dl${round}_${side}';
+        select pg_sleep(0.05);
+        commit;" 2>&1 | grep -c "deadlock detected" > "/tmp/dl-$round-$side.n" || true ) &
+  done
+  wait
+  for side in 1 2; do
+    DEADLOCKS=$(( DEADLOCKS + $(cat "/tmp/dl-$round-$side.n" 2>/dev/null || echo 0) ))
+    rm -f "/tmp/dl-$round-$side.n"
+  done
+done
+if [ "$DEADLOCKS" = "0" ]; then
+  # Note what this does and does not establish: a build with the `order by` REMOVED also
+  # passes it, because at two users the planner returns a stable order anyway. It is a
+  # regression guard, not the evidence that the clause is necessary.
+  echo "PASS  24 concurrent multi-user batches over the same two accounts, no deadlock"
+else
+  echo "FAIL  $DEADLOCKS deadlock(s) across 24 concurrent multi-user batches"; exit 1
+fi
+
 echo
 echo "All migration tests passed."

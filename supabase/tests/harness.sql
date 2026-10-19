@@ -66,6 +66,17 @@ begin
   else raise exception 'FAIL  %', label; end if;
 end $$;
 
+-- COUNTS GET THEIR OWN ASSERTION. `count(*)` is `bigint` while a literal is `integer`, so
+-- one `anyelement` function forces every call site to carry a cast, and two overloads make
+-- `t_assert_eq(int, int, ...)` ambiguous. Widening both sides to `numeric` under a distinct
+-- name settles it, and a counting assertion reads as a count at the call site.
+create or replace function t_assert_count(actual numeric, expected numeric, label text)
+returns void language plpgsql as $$
+begin
+  if actual is not distinct from expected then perform t_pass(label);
+  else raise exception 'FAIL  %  (got %L, expected %L)', label, actual, expected; end if;
+end $$;
+
 create or replace function t_assert_eq(actual anyelement, expected anyelement, label text)
 returns void language plpgsql as $$
 begin

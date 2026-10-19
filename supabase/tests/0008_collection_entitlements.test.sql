@@ -16,7 +16,7 @@ begin
   insert into public.discoveries (user_id, herb_id)
   select u, 'a' || i from generate_series(1, 25) i;
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 25, 'flag off: 25 discoveries allowed, no behaviour change');
+  perform t_assert_count(n, 25, 'flag off: 25 discoveries allowed, no behaviour change');
 end $$;
 
 update public.app_settings set collection_paywall_enabled = true where id;
@@ -30,7 +30,7 @@ begin
     insert into public.discoveries (user_id, herb_id) values (u, 'b' || i);
   end loop;
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 10, 'the 10th discovery is allowed');
+  perform t_assert_count(n, 10, 'the 10th discovery is allowed');
 
   begin
     insert into public.discoveries (user_id, herb_id) values (u, 'b11');
@@ -40,7 +40,7 @@ begin
   end;
 
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 10, 'the refused insert left the collection intact');
+  perform t_assert_count(n, 10, 'the refused insert left the collection intact');
 end $$;
 
 -- ─── C. A HELD CARD RE-SENT AT THE CAP MUST BE ALLOWED ───────────────────────
@@ -69,7 +69,7 @@ begin
   perform t_pass('ON CONFLICT DO UPDATE of a held card is allowed at the cap');
 
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 10, 'no re-send changed the count');
+  perform t_assert_count(n, 10, 'no re-send changed the count');
 end $$;
 
 -- ─── D. A BATCH MUST NOT BYPASS THE CAP ──────────────────────────────────────
@@ -90,12 +90,12 @@ begin
     perform t_pass('a 15-row batch is refused in one statement');
   end;
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 0, 'the refused batch inserted nothing at all');
+  perform t_assert_count(n, 0, 'the refused batch inserted nothing at all');
 
   insert into public.discoveries (user_id, herb_id)
   select u, 'd' || i from generate_series(1, 10) i;
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 10, 'a batch exactly at the headroom is allowed');
+  perform t_assert_count(n, 10, 'a batch exactly at the headroom is allowed');
 end $$;
 
 -- ─── E. Entitlement lifts the cap, with no re-login ──────────────────────────
@@ -109,7 +109,7 @@ begin
   insert into public.discoveries (user_id, herb_id)
   select u, 'e' || i from generate_series(1, 40) i;
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 50, 'collector entitlement lifts the cap mid-session');
+  perform t_assert_count(n, 50, 'collector entitlement lifts the cap mid-session');
 end $$;
 
 -- ─── F. The cap is per account ───────────────────────────────────────────────
@@ -128,8 +128,8 @@ begin
   exception when check_violation then
     perform t_pass('one account''s entitlement does not lift another''s cap');
   end;
-  perform t_assert_eq(
-    (select count(*) from public.discoveries where user_id = alice), 0::bigint,
+  perform t_assert_count(
+    (select count(*) from public.discoveries where user_id = alice), 0,
     'the other account''s refused batch wrote nothing');
 end $$;
 
@@ -264,7 +264,7 @@ begin
 
   -- entitlements: own row readable, nothing writable.
   select count(*) into n from public.entitlements;
-  perform t_assert_eq(n, 1, 'a client reads only its own entitlement');
+  perform t_assert_count(n, 1, 'a client reads only its own entitlement');
 
   begin
     insert into public.entitlements (user_id, tier, granted_by)
@@ -299,6 +299,70 @@ begin
   reset role;
 end $$;
 
+-- ─── L. MULTI-USER BATCHES ───────────────────────────────────────────────────
+--
+-- Only the service role can insert for several accounts in one statement (RLS pins a
+-- client to `auth.uid()`), but when it does, the cap must apply to each account
+-- separately — and the statement must be refused if ANY of them would exceed it.
+do $$
+declare a uuid; b uuid; c uuid;
+begin
+  a := t_user(); b := t_user(); c := t_user();
+  insert into public.entitlements (user_id, tier, granted_by) values (c, 'collector', 'manual');
+
+  -- A legal mixed batch: two free accounts at their headroom, one collector well past it.
+  insert into public.discoveries (user_id, herb_id)
+  select a, 'L' || i from generate_series(1, 10) i
+  union all select b, 'L' || i from generate_series(1, 10) i
+  union all select c, 'L' || i from generate_series(1, 30) i;
+  perform t_assert_count(
+    (select count(*) from public.discoveries where user_id in (a, b, c)), 50,
+    'a mixed multi-user batch inserts for each account under its own rule');
+
+  -- One account over the line fails the whole statement, and the others are not written
+  -- either: an all-or-nothing statement is the correct semantics for a limit.
+  begin
+    insert into public.discoveries (user_id, herb_id)
+    select a, 'M1' union all select b, 'M1' union all select c, 'M1';
+    raise exception 'FAIL  a multi-user batch bypassed one account''s cap';
+  exception when check_violation then
+    perform t_pass('one account over the cap refuses the whole multi-user statement');
+  end;
+  perform t_assert_count(
+    (select count(*) from public.discoveries where herb_id = 'M1'), 0,
+    'and no account in that statement was written');
+end $$;
+
+-- ─── M. THE LOCK IS TAKEN BEFORE THE COUNT ───────────────────────────────────
+--
+-- The ordering is the entire concurrency guarantee: counting first and locking afterwards
+-- would serialize nothing, because both transactions would already have read the same
+-- stale count. It is asserted against the function's own source rather than inferred from
+-- behaviour, because a passing race is weak evidence — it can pass by timing.
+do $$
+declare body text; lock_at integer; count_at integer; distinct_at integer; order_at integer;
+begin
+  -- COMMENTS STRIPPED FIRST. `prosrc` is the whole body, prose included, and this file's
+  -- comments discuss both the lock and the count at length — so measuring the raw source
+  -- asserts where an explanation sits rather than where the code does. That is the same
+  -- trap `analytics.test.ts` records: a guard its own documentation can trip.
+  select regexp_replace(prosrc, '--[^\n]*', '', 'g') into body
+    from pg_proc where proname = 'enforce_discovery_limit';
+
+  lock_at  := position('pg_advisory_xact_lock' in body);
+  count_at := position('count(*)' in body);
+  perform t_assert(lock_at > 0, 'the trigger takes an advisory lock');
+  perform t_assert(count_at > 0, 'the trigger counts the held discoveries');
+  perform t_assert(lock_at < count_at, 'the lock is acquired BEFORE the count');
+
+  -- And the lock order is deterministic, which is what rules out a deadlock between two
+  -- concurrent multi-user batches touching the same accounts in different orders.
+  distinct_at := position('distinct' in body);
+  order_at    := position('order by' in body);
+  perform t_assert(distinct_at > 0 and order_at > distinct_at,
+    'the per-user loop is ORDERED, so lock acquisition has one global order');
+end $$;
+
 -- ─── K. Rollback ─────────────────────────────────────────────────────────────
 do $$
 declare u uuid; n integer;
@@ -312,7 +376,7 @@ begin
   insert into public.discoveries (user_id, herb_id)
   select u, 'k2_' || i from generate_series(1, 35) i;
   select count(*) into n from public.discoveries where user_id = u;
-  perform t_assert_eq(n, 45, 'ROLLBACK: one UPDATE lifts the cap for everybody, no deploy');
+  perform t_assert_count(n, 45, 'ROLLBACK: one UPDATE lifts the cap for everybody, no deploy');
 
   update public.app_settings set collection_paywall_enabled = true where id;
   begin
