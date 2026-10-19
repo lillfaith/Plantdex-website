@@ -1,0 +1,67 @@
+name: Check the collection entitlements
+
+# Asserts the collection-cap posture of a live project: the three tables exist, RLS is
+# ENABLED on each, `deck_claims` carries no policy at all, nothing grants a client a write,
+# both functions are SECURITY DEFINER with a pinned search_path and are not executable by
+# `anon` or `authenticated`, and the trigger is an enabled AFTER INSERT FOR EACH STATEMENT
+# with a transition table.
+#
+# WHY IT IS SEPARATE FROM THE MIGRATION TESTS. `scripts/test_migration.sh` proves the SQL
+# behaves, against a throwaway cluster where every one of these checks is trivially true.
+# What it cannot prove is that the posture survived reaching a real project — Supabase grants
+# the client roles table privileges by default, a dashboard edit can drop a policy, and a
+# migration full of `if not exists` returns success having done nothing.
+#
+# READ ONLY, and every assertion is about CONFIGURATION rather than anybody's data, so the
+# log is safe to read. Run it before and after applying 0008, and before any activation.
+on:
+  workflow_dispatch:
+    inputs:
+      project_ref:
+        description: Which Supabase project to check
+        required: true
+        default: vygiamigomwlvnwkryyl
+        type: choice
+        options:
+          - vygiamigomwlvnwkryyl # production — real players
+          - vgjehmwcpavflbfhbbrp # test
+          - both
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Create one at" \
+                 "https://supabase.com/dashboard/account/tokens and add it under" \
+                 "Settings -> Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - name: Check the posture
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          CHOICE: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          if [ "$CHOICE" = "both" ]; then
+            REFS="vygiamigomwlvnwkryyl vgjehmwcpavflbfhbbrp"
+          else
+            REFS="$CHOICE"
+          fi
+          STATUS=0
+          for ref in $REFS; do
+            echo "::group::$ref"
+            python3 scripts/check_collection_entitlements.py "$ref" || STATUS=1
+            echo "::endgroup::"
+          done
+          exit $STATUS
