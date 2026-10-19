@@ -7,10 +7,13 @@ import {
   PLAUSIBLE_GOALS,
   REQUIRED_PLAN,
   UNEMITTED_EVENTS,
-  analyticsDomain,
+  analyticsScriptId,
+  analyticsScriptSrc,
   deckCtaEvent,
   discoveryEvent,
   isAnalyticsConfigured,
+  initAnalytics,
+  resetAnalyticsInitForTests,
   plantViewedEvent,
   researchEvent,
   track,
@@ -167,13 +170,13 @@ describe('analytics schema', () => {
 
 describe('track()', () => {
   const originalWindow = (globalThis as { window?: unknown }).window;
-  const originalDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+  const originalScriptId = process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID;
 
   afterEach(() => {
     if (originalWindow === undefined) delete (globalThis as { window?: unknown }).window;
     else (globalThis as { window?: unknown }).window = originalWindow;
-    if (originalDomain === undefined) delete process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
-    else process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = originalDomain;
+    if (originalScriptId === undefined) delete process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID;
+    else process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = originalScriptId;
   });
 
   function withWindow(): { calls: [string, unknown][] } {
@@ -184,23 +187,49 @@ describe('track()', () => {
     return { calls };
   }
 
-  it('does nothing at all when no domain is configured', () => {
-    delete process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+  it('does nothing at all when no script id is configured', () => {
+    delete process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID;
     const { calls } = withWindow();
     expect(isAnalyticsConfigured()).toBe(false);
-    expect(analyticsDomain()).toBeNull();
+    expect(analyticsScriptId()).toBeNull();
     track('garden_opened');
     // Local development, CI and any fork must not send traffic to somebody's dashboard.
     expect(calls).toEqual([]);
   });
 
-  it('treats a blank domain as unconfigured', () => {
-    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = '   ';
-    expect(analyticsDomain()).toBeNull();
+  it('treats a blank script id as unconfigured', () => {
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = '   ';
+    expect(analyticsScriptId()).toBeNull();
+  });
+
+  /*
+   * THE ID BECOMES A `<script src>` ON EVERY PAGE, so it is validated rather than trusted.
+   * A malformed value must switch analytics OFF, never load something else — the same rule
+   * `shop.ts` applies to the Payment Link and `support.ts` to the donation host. Every case
+   * here is a real way to mistype or tamper with a copy-pasted snippet.
+   */
+  it.each([
+    ['qDpEHKteTJVJ91pUe0yvE', 'the pa- prefix left off'],
+    ['pa-qDpEHKteTJVJ91pUe0yvE.js', 'the .js extension left on'],
+    ['pa-short', 'implausibly short'],
+    ['pa-../../evil', 'a path traversal'],
+    ['https://evil.test/js/pa-abcdefghij.js', 'a whole URL'],
+    ['pa-abcdefghij"></script><script>', 'an attempted tag break-out'],
+    ['pa-abcdefghij onerror=alert(1)', 'an attribute injection'],
+  ])('refuses %s (%s)', (value) => {
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = value;
+    expect(analyticsScriptId()).toBeNull();
+    expect(analyticsScriptSrc()).toBeNull();
+    expect(isAnalyticsConfigured()).toBe(false);
+  });
+
+  it('builds the provider URL from a well-formed id', () => {
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
+    expect(analyticsScriptSrc()).toBe('https://plausible.io/js/pa-qDpEHKteTJVJ91pUe0yvE.js');
   });
 
   it('sends the bare event name once configured', () => {
-    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
     const { calls } = withWindow();
     track(plantViewedEvent('discovered'));
     // One argument reaching the provider, and it is the name. Nothing rides alongside.
@@ -214,7 +243,7 @@ describe('track()', () => {
      * they fired into a `window.plausible` that did not exist yet and were dropped, silently
      * and completely. `track()` now creates the queue itself; the real script replays it.
      */
-    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
     (globalThis as { window?: unknown }).window = {}; // no provider, as on first paint
     track('herbdex_opened');
     track(plantViewedEvent('locked'));
@@ -224,14 +253,14 @@ describe('track()', () => {
   });
 
   it('leaves a real provider in place rather than shadowing it', () => {
-    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
     const { calls } = withWindow();
     track('garden_opened');
     expect(calls).toEqual([['garden_opened', undefined]]);
   });
 
   it('creates no global at all when unconfigured', () => {
-    delete process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+    delete process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID;
     (globalThis as { window?: unknown }).window = {};
     track('herbdex_opened');
     expect((globalThis as { window?: { plausible?: unknown } }).window!.plausible).toBeUndefined();
@@ -244,7 +273,7 @@ describe('track()', () => {
      * found a truthy value, called it, threw, and swallowed it — `plant_viewed` recorded
      * nothing on any page where the tag was already in the DOM.
      */
-    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
     (globalThis as { window?: unknown }).window = { plausible: { nodeName: 'SCRIPT' } };
     track('card_mastered');
     const value = (globalThis as { window?: { plausible?: { q?: unknown[] } } }).window!.plausible!;
@@ -257,7 +286,7 @@ describe('track()', () => {
      * An analytics failure must never break a discovery. This is the reason for the catch —
      * a blocked script, an ad blocker replacing the global, a provider outage.
      */
-    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN = 'example.test';
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
     (globalThis as { window?: unknown }).window = {
       plausible: () => {
         throw new Error('blocked');
@@ -272,9 +301,9 @@ describe('track()', () => {
 });
 
 describe('the provider itself', () => {
-  it('loads no script unless a domain is set', () => {
+  it('loads no script unless a script id is set', () => {
     const script = readFileSync('src/components/analytics/PlausibleScript.tsx', 'utf8');
-    expect(script).toContain('if (!domain) return null;');
+    expect(script).toContain('if (!src) return null;');
   });
 
   it('uses a provider that needs no consent banner', () => {
@@ -301,6 +330,75 @@ describe('the provider itself', () => {
   it('sets no cookie and stores no identifier of its own', () => {
     const analytics = SOURCE + readFileSync('src/components/analytics/PlausibleScript.tsx', 'utf8');
     expect(analytics).not.toMatch(/document\.cookie|localStorage|sessionStorage|crypto\.randomUUID/);
+  });
+
+  /*
+   * THE SITE ID MUST COME FROM CONFIGURATION, NEVER FROM THIS REPOSITORY.
+   *
+   * It is a public value and ships in the HTML, so this is not about secrecy — it is about a
+   * fork. Hard-code one id and any fork that switched analytics on would report its traffic
+   * into the original owner's dashboard, which is exactly what `isAnalyticsConfigured()`
+   * returning false by default exists to prevent.
+   */
+  it('hard-codes no Plausible site id anywhere in the app', () => {
+    const files = [
+      'src/lib/analytics.ts',
+      'src/components/analytics/PlausibleScript.tsx',
+      '.github/workflows/deploy.yml',
+    ];
+    for (const file of files) {
+      const source = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*|#[^\n]*/g, '');
+      expect(source, `${file} must not carry a literal pa- script id`).not.toMatch(
+        /['"`]pa-[A-Za-z0-9_-]{8,}/,
+      );
+    }
+  });
+
+  /*
+   * `init()` STARTS AUTOMATIC PAGEVIEW TRACKING, so calling it twice is how a site reports
+   * double the traffic it has — and a mount effect runs again on every remount, which React
+   * does deliberately under StrictMode. The guard is module-scoped for that reason, and this
+   * is the test that keeps it there.
+   */
+  it('calls init once, however many times it is asked', () => {
+    process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID = 'pa-qDpEHKteTJVJ91pUe0yvE';
+    resetAnalyticsInitForTests();
+    let inits = 0;
+    const plausible = Object.assign(() => {}, { init: () => void inits++ });
+    (globalThis as { window?: unknown }).window = { plausible };
+
+    initAnalytics();
+    initAnalytics();
+    initAnalytics();
+    expect(inits).toBe(1);
+  });
+
+  it('does not initialise the provider when analytics is unconfigured', () => {
+    delete process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID;
+    resetAnalyticsInitForTests();
+    let inits = 0;
+    const plausible = Object.assign(() => {}, { init: () => void inits++ });
+    (globalThis as { window?: unknown }).window = { plausible };
+
+    initAnalytics();
+    expect(inits).toBe(0);
+  });
+
+  /*
+   * The provider's copy-paste snippet puts the shim and `init()` in a second inline script
+   * after the tag, which assumes the two execute in order. Under `next/script` they need
+   * not, and this file records what that assumption already cost once: two events recording
+   * zero, silently. Both now live in `analytics.ts`, and a future paste of the official
+   * snippet into the component is what this test is here to catch.
+   */
+  it('keeps the queue shim and init out of the tag', () => {
+    const script = readFileSync('src/components/analytics/PlausibleScript.tsx', 'utf8').replace(
+      /\/\*[\s\S]*?\*\/|\/\/[^\n]*/g,
+      '',
+    );
+    expect(script).not.toMatch(/dangerouslySetInnerHTML|plausible\.q|window\.plausible/);
+    // It must still START analytics, via the one guarded entry point.
+    expect(script).toContain('initAnalytics()');
   });
 });
 

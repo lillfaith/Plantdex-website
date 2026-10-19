@@ -242,23 +242,57 @@ export function deckCtaEvent(placement: CtaPlacement): EventName {
 }
 
 /**
- * The site being measured, e.g. `plantdex.example`.
+ * The shape of a Plausible script id, and why it is validated rather than trusted.
  *
- * Absent means analytics is off — no script is loaded and `track()` does nothing. That is
- * the state in local development, in CI, and in any deployment that has not configured it.
+ * Plausible's current snippet carries the site's identity in the SCRIPT FILENAME —
+ * `https://plausible.io/js/pa-<id>.js` — where the older one carried it in a `data-domain`
+ * attribute. So the id is now the whole configuration, and a mistyped one would build a
+ * `<script src>` pointing at a URL that is not a Plausible site. This is the same posture
+ * `shop.ts` takes with the Payment Link and `support.ts` with the donation host: a value
+ * that becomes a URL in shipped HTML is pattern-checked, and a bad one turns the feature
+ * OFF rather than emitting something unintended. The id is a public identifier — it ships
+ * in the HTML of every page by design — so there is nothing secret here to protect; what is
+ * protected is the page.
  */
-export function analyticsDomain(): string | null {
-  const domain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN?.trim();
-  return domain ? domain : null;
+const SCRIPT_ID_PATTERN = /^pa-[A-Za-z0-9_-]{8,64}$/;
+
+/**
+ * The Plausible script id for the site being measured, e.g. `pa-qDpEHKteTJVJ91pUe0yvE`.
+ *
+ * Absent or malformed means analytics is off — no script is loaded and `track()` does
+ * nothing. That is the state in local development, in CI, and in any deployment that has
+ * not configured it. IT IS ALSO WHAT KEEPS A FORK HONEST: the id identifies one specific
+ * Plausible site, so it must never be hard-coded in this repository. Were it baked in, any
+ * fork that switched analytics on would silently report into somebody else's dashboard.
+ */
+export function analyticsScriptId(): string | null {
+  const id = process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID?.trim();
+  if (!id || !SCRIPT_ID_PATTERN.test(id)) return null;
+  return id;
+}
+
+/** The `src` for the provider tag, or null when analytics is not configured. */
+export function analyticsScriptSrc(): string | null {
+  const id = analyticsScriptId();
+  return id ? `https://plausible.io/js/${id}.js` : null;
 }
 
 export function isAnalyticsConfigured(): boolean {
-  return analyticsDomain() !== null;
+  return analyticsScriptId() !== null;
 }
 
 interface PlausibleFn {
   (event: string): void;
   q?: unknown[];
+  /**
+   * Plausible's own initialiser. The real script defines it; the shim below stands in for it
+   * so a call made before the script arrives is not lost. Nothing in this app passes options
+   * — `init()` with no argument is what the provider's snippet does, and an options object
+   * would be the one place a property could start travelling.
+   */
+  init?: (options?: Record<string, never>) => void;
+  /** Where the shim parks options for the real script to read. Never set by this app. */
+  o?: unknown;
 }
 
 /**
@@ -292,8 +326,59 @@ function plausibleQueue(): PlausibleFn {
   const queued: PlausibleFn = function (...args: unknown[]) {
     (queued.q = queued.q ?? []).push(args);
   } as unknown as PlausibleFn;
+  /*
+   * `init` is part of the shim because the current provider snippet calls it, and a call
+   * made before the real script has loaded has to land somewhere. The provider's own
+   * version stashes the options object on `plausible.o` for the script to read on arrival;
+   * this app passes no options, so it parks an empty one and the effect is simply that the
+   * call does not throw.
+   */
+  queued.init = (options?: Record<string, never>) => {
+    queued.o = options ?? {};
+  };
   target.plausible = queued;
   return queued;
+}
+
+/**
+ * Whether `init()` has already been called in this document.
+ *
+ * MODULE SCOPE, NOT COMPONENT STATE. `initAnalytics` is called from a mount effect, and a
+ * component can remount — React does so deliberately under StrictMode in development, and a
+ * route change can too. Plausible's `init()` is what starts automatic pageview tracking, so
+ * calling it twice is how a site reports double the traffic it has. The flag lives here so
+ * the guard survives any remount of any caller.
+ */
+let initialised = false;
+
+/**
+ * Install the queue and tell Plausible to start measuring.
+ *
+ * WHY THIS IS A FUNCTION AND NOT AN INLINE `<Script>`. The provider's copy-paste snippet is
+ * a second inline script placed after the tag, which assumes the two run in order. Under
+ * `next/script` that ordering is not guaranteed, and this file already records what an
+ * ordering assumption costs here: the queue shim used to live in a tag and the two events
+ * sent from a mount effect — `herbdex_opened` and `garden_opened` — recorded zero, silently.
+ * Calling `init()` from a mount effect instead removes the assumption in both directions: if
+ * the script has not loaded, the shim takes the call and the real script replays it; if it
+ * has, the real `init` runs immediately.
+ *
+ * Unconfigured, this does nothing, so no fork or local build can start a measurement it did
+ * not ask for. Deliberately unable to throw, same as `track()`.
+ */
+export function initAnalytics(): void {
+  if (typeof window === 'undefined' || !isAnalyticsConfigured() || initialised) return;
+  initialised = true;
+  try {
+    plausibleQueue().init?.();
+  } catch {
+    // Never let measurement break the page it is measuring.
+  }
+}
+
+/** Test-only: forget that `init()` has run, so a case can exercise it from scratch. */
+export function resetAnalyticsInitForTests(): void {
+  initialised = false;
 }
 
 /**

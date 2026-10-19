@@ -18,7 +18,7 @@ import { LEGAL_STATUS } from './legal';
  * currency and the real shipping countries — Stripe is the system of record for all three.
  * If no link exists there is no product to sell, so there is nothing truthful to print. One
  * environment variable therefore gates the entire commercial half of the page, exactly as
- * `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` gates analytics and the Supabase pair gates accounts.
+ * `NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID` gates analytics and the Supabase pair gates accounts.
  * ─────────────────────────────────────────────────────────────────────────────
  *
  * WHAT IS *NOT* A PLACEHOLDER. The deck's contents are real and verifiable from this

@@ -110,7 +110,7 @@ link.** That is the path step 2 breaks, and nothing else in the pipeline exercis
 
 ## Also worth doing, not required
 
-- **`NEXT_PUBLIC_PLAUSIBLE_DOMAIN`** is currently unset, so analytics loads nothing and
+- **`NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID`** is currently unset, so analytics loads nothing and
   nothing breaks today. When it is set, it must be the domain people actually visit, and the
   same string registered in Plausible.
 - **The `/start` QR codes.** Anything already printed points at the old URL. GitHub keeps

@@ -286,7 +286,18 @@ describe('legal pages', () => {
     expect(privacy, `privacy page does not name ${ANALYTICS_PROVIDER}`).toContain(
       ANALYTICS_PROVIDER,
     );
-    expect(read('src/components/analytics/PlausibleScript.tsx')).toContain('plausible.io');
+    /*
+     * And the host the code actually fetches the tag from. Read across BOTH analytics files
+     * rather than the component alone: the provider's current snippet carries the site id in
+     * the script filename, so `analytics.ts` builds the URL and the component only renders
+     * whatever it is handed. Asserting on the component by itself made this test a statement
+     * about which file holds a string, where what it means is which host is contacted.
+     */
+    const analyticsSource =
+      read('src/components/analytics/PlausibleScript.tsx') + read('src/lib/analytics.ts');
+    expect(analyticsSource, 'the app no longer loads its tag from plausible.io').toContain(
+      'plausible.io',
+    );
 
     // 2. No SECOND provider has appeared anywhere in the app.
     const appSource = readdirRecursive('src')

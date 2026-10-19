@@ -32,7 +32,10 @@ unusable, and the page report already answers it.
 
 ## Setting it up
 
-1. Add the site in Plausible and set `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` as a repo *variable*.
+1. Add the site in Plausible, then copy the `pa-...` id out of the snippet it shows you
+   (the script filename, without the `.js`) and set `NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID` as a
+   repo *variable*. There is no `data-domain` any more: the id is the whole configuration,
+   and a malformed one turns analytics off rather than loading a stray script URL.
    Unset, no script loads and no event is sent — the correct state for local dev and forks.
 2. **Create every goal.** A custom event with no matching goal records nothing visible. The
    exact list is `PLAUSIBLE_GOALS` in `src/lib/analytics.ts`; `analytics.test.ts` keeps it
