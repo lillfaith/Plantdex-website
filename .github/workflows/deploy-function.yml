@@ -48,6 +48,10 @@ on:
           - delete-account
           - identify-plant
           - seed-packet
+          # `all` already finds this by walking the directory; the enum is the one list
+          # GitHub will not let us derive, so a new function has to be added here by hand
+          # or it cannot be deployed on its own.
+          - redeem-deck-code
 
 permissions:
   contents: read
