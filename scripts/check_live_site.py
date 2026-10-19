@@ -20,6 +20,7 @@ the live site" is a claim that can only honestly be made from a runner.
 from __future__ import annotations
 
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -219,6 +220,43 @@ def check_backend(base: str, origin: str) -> int:
     return 1
 
 
+def check_analytics(base: str) -> int:
+    """Assert the deployed HTML carries the Plausible tag. Returns failures.
+
+    WHY THIS IS CHECKED HERE, ALONGSIDE THE BACKEND. It is the same class of claim: a value
+    inlined at build time from an Actions variable, where an unset or malformed one leaves a
+    site that renders perfectly and measures nothing. Analytics failing closed is the correct
+    behaviour and also completely invisible — there is no page that looks different — so the
+    only honest evidence is the served HTML.
+
+    The id is matched by SHAPE, not against a literal. Hard-coding this site's id in the repo
+    is what `analytics.test.ts` exists to prevent (a fork would report into this dashboard),
+    and a shape check is what the deploy can actually verify: that a well-formed script id
+    reached the page, from whatever variable the build was given.
+    """
+    print()
+    _, page = fetch(f"{base}/")
+    tag = re.search(r"https://plausible\.io/js/(pa-[A-Za-z0-9_-]{8,64})\.js", page)
+    if not tag:
+        if "plausible.io" in page:
+            print("FAIL  analytics     a plausible.io tag is present but its id is malformed")
+            print("      Check NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID: it must be the snippet's")
+            print("      script filename WITHOUT the .js, e.g. pa-xxxxxxxxxxxxxxxxxxxx.")
+            return 1
+        print("FAIL  analytics     no Plausible tag in the served HTML")
+        print("      NEXT_PUBLIC_PLAUSIBLE_SCRIPT_ID is unset or malformed in the Actions")
+        print("      variables, so no pageview and no conversion event is being recorded.")
+        return 1
+
+    # The tag alone is not enough: `init()` is what starts pageview tracking, and it is
+    # called from a mount effect compiled into the bundle rather than written in the HTML.
+    # So the tag proves configuration reached the page; only the dashboard proves delivery,
+    # which no check running here can see. Say so rather than implying otherwise.
+    print(f"PASS  analytics     Plausible tag served ({tag.group(1)})")
+    print("      Delivery itself is only observable in the Plausible dashboard.")
+    return 0
+
+
 def fetch(url: str) -> tuple[int, str]:
     request = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
@@ -278,6 +316,7 @@ def main() -> int:
             failures += 1
 
     failures += check_backend(base, origin)
+    failures += check_analytics(base)
 
     print(f"\n{failures} failure(s) across {len(ROUTES)} routes and {len(hrefs)} stylesheet(s)")
     return 1 if failures else 0
