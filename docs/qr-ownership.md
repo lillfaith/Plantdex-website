@@ -1,8 +1,61 @@
-# QR and ownership — a plan for the next print run
+# QR and ownership
 
-**Status: PLAN ONLY. Nothing here is implemented, and nothing should be until it is approved.**
+**Status: option C IS NOW BUILT (migration 0008, `supabase/functions/redeem-deck-code`,
+`scripts/mint_deck_codes.py`), and the policy below has been DELIBERATELY REVERSED by the
+owner. Read "What ownership unlocks — the 2026 reversal" before anything else: the rest of
+this document is the original design, kept because its mechanics are what shipped and its
+objections are still the right ones to weigh.**
+
 What exists today is `/start`: one generic URL, printed identically on every deck, which grants
-nothing. This document is about what the *next* print run could carry instead.
+nothing. That has not changed. What is new is a per-deck claim token, redeemed once, which
+grants a Collector entitlement.
+
+---
+
+## What ownership unlocks — the 2026 reversal
+
+This document used to state, in bold, that ownership **must never touch the collection** —
+not XP, not discoveries, not mastery, not research, not sightings — and that gating anything
+which already worked without a code "turns a field guide into a licence check".
+
+**The owner has reversed that, explicitly and with the argument heard.** The reasoning for
+the reversal: if the complete digital collection is free, the printed deck is merchandise
+rather than the key to anything, and the deck is the product that funds the project.
+
+What the reversal actually does, and what it deliberately leaves alone:
+
+| | |
+|---|---|
+| **Gated** | Adding a **permanent cloud discovery** beyond the free limit (10), for accounts created after the grandfather cutoff |
+| **Free, and staying free** | Plant identification. The whole public encyclopedia. Safety content. Sightings — **unlimited, at and beyond the cap**. Scans. The Seed Shelf. XP, Field Research, achievements, the garden, XP-earned Field Cards. Everything that works signed out. |
+
+So the original objection is answered rather than ignored on two of its three points: a
+stranger at a vendor table can still try the scanner, read any plant page, and keep a
+journal, and `/start` still works for somebody who typed it or borrowed a deck. The point it
+is NOT answered on is the collection itself, and that is the trade the owner has chosen.
+
+**The five trust levels in `src/lib/entry-point.ts` are untouched.** A generic printed QR
+still sits at level 1 and still grants nothing; `entry-point.test.ts` still fails if a
+generic grant acquires `ownership`. The claim token is what establishes level 2, which is
+exactly what this document always said it was for. Nothing grants level 3 or above — a code
+in a box is evidence of a purchase, never of having been outdoors, so **redemption writes no
+discovery, no XP and no mastery**. A Collector still has to go and find all 45 plants.
+
+### What is still true from the original warning
+
+- **Progression is still self-declared** (`CLAUDE.md`). The cap limits how many cards an
+  account may hold; it does not make any of them verified.
+- **Safety content may never go behind a code.** `KNOWN_CARD_ISSUES` and `SITE_CAUTIONS`
+  exist because a printed card is sometimes wrong, and the person holding the wrong card is
+  the one who most needs to read the correction.
+- **`/start` must keep working for somebody who has not bought a deck.** It does.
+
+---
+
+## The original design, as written before the reversal
+
+Everything from here down is the design that produced what shipped. Its mechanics are
+accurate; its policy section is the one overruled above.
 
 ---
 
@@ -77,6 +130,10 @@ Concretely:
 
 ### What ownership should unlock — and what it must not
 
+**⚠️ OVERRULED — see "the 2026 reversal" at the top. Kept verbatim because the argument is
+still worth re-reading before the next change of this kind, and because a document that
+quietly rewrites its own position leaves nobody able to see that a decision was made.**
+
 It must never touch the collection. Not XP, not discoveries, not mastery, not research, not
 sightings. Everything in that list means "somebody went outside", and a token that came in a box
 is evidence of a purchase.
@@ -144,10 +201,16 @@ A claimed token stays claimed. That is a deliberate decision with a real cost: s
 a second-hand deck finds its code already spent, and will be annoyed.
 
 The alternative — letting an owner release a claim — creates a claim that can be laundered: buy,
-claim, unlock, release, sell the code, repeat. Since ownership unlocks only cosmetics and errata
-notices, the cost of a permanent claim is small and the cost of a transferable one is a system
+claim, unlock, release, sell the code, repeat. Under the original design, where ownership unlocked only cosmetics and errata
+notices, the cost of a permanent claim was small and the cost of a transferable one is a system
 that has to be policed. **Print the constraint on the box** ("this code can be claimed once"), so
 a buyer of a used deck is not surprised, and handle disputes by hand. Do not build transfer.
+
+**That cost is now higher than this paragraph was written to describe.** Post-reversal a
+spent code means a second-hand buyer cannot collect past 10 cards, not merely that they
+miss a cosmetic — so the printed constraint is no longer a nicety and the support burden is
+real. `docs/collection-entitlements.md` names it as a live operational risk rather than a
+footnote.
 
 ---
 

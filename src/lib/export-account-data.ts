@@ -275,6 +275,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     scanRows,
     seedShelfRows,
     comparisonRows,
+    entitlementRow,
     profileRow,
   ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
@@ -308,6 +309,11 @@ export async function exportAccountData(userId: string, email?: string): Promise
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false }),
+      // Collector entitlement. `maybeSingle` for the same reason as the profile below: a
+      // free account has no row, and that is the ordinary case rather than an error. It is
+      // user-scoped, so it is downloadable and deletable like everything else — an
+      // entitlement somebody cannot see a record of is a claim made ABOUT them.
+      client.from('entitlements').select('*').eq('user_id', userId).maybeSingle(),
       // `maybeSingle`: a player who has never opened their profile has no row, and that is
       // the ordinary case rather than an error.
       client.from('profiles').select('*').eq('user_id', userId).maybeSingle(),
@@ -323,6 +329,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     scans: scanRows,
     'seed shelf': seedShelfRows,
     'identification comparisons': comparisonRows,
+    entitlement: entitlementRow,
     profile: profileRow,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting

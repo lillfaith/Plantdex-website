@@ -74,6 +74,19 @@ const USER_TABLES = [
   // identifier said about a photograph this person took, so it goes with the account like
   // any other scan record.
   'identification_comparisons',
+  // Added with the collection entitlement. It records that this account holds Collector
+  // access and how it got it, which is a fact about this person and goes with the account.
+  //
+  // NOTE WHAT THIS DOES NOT TAKE. `deck_claims` is deliberately absent, for the same
+  // reason the shared packet registry below is: that row records which physical deck was
+  // sold and spent, it is not the property of whoever redeemed it, and deleting it would
+  // make a spent code redeemable again. The FK nulls `claimed_by` instead, which is
+  // exactly why migration 0008 guards single use on `claimed_at`.
+  //
+  // (Named obliquely on purpose: a test reads this list as text and fails if the registry's
+  // name appears in it, so an explanation that spelled it out would trip the guard it is
+  // explaining — a shape this repo has been bitten by before.)
+  'entitlements',
 ] as const;
 
 const CORS_HEADERS: Record<string, string> = {
