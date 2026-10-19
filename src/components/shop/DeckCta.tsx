@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { useRef } from 'react';
 import { deckCtaEvent, track, type CtaPlacement } from '@/lib/analytics';
-import { isCommerceLive } from '@/lib/shop';
+import { checkoutLink, displayPrice, isCommerceLive } from '@/lib/shop';
 
 /**
  * The link from the educational site into the shop. Its label follows the sale state; see
@@ -76,6 +77,24 @@ export function DeckCta({
 }) {
   const { line } = COPY[placement];
   const label = ctaLabel(placement);
+  const sent = useRef(false);
+
+  /*
+   * THE HOME BUTTON GOES STRAIGHT TO STRIPE; THE OTHER THREE STILL GO TO `/shop`.
+   *
+   * A stranger on the landing page who taps a button saying "Buy the Plantdex" has made a
+   * decision, and `/shop` was a second page asking them to make it again. The other three
+   * placements interrupt content somebody came to read, so for them the product page is the
+   * right next step rather than a checkout they did not ask for.
+   *
+   * `null` WHENEVER COMMERCE IS OFF, which is what keeps this from becoming a fourth
+   * instance of the bug this file documents three times: `checkoutLink()` is already the
+   * predicate `/shop` resolves its own state from, so an unset Payment Link leaves the home
+   * button an ordinary internal link to a page that honestly says the deck is not on sale.
+   * Nothing here can offer a checkout the configuration has not switched on.
+   */
+  const direct = placement === 'home' ? checkoutLink() : null;
+  const price = displayPrice();
 
   // The footer's is a quiet text link — a footer is wayfinding, and a button there would be
   // the loudest thing on every page of the site.
@@ -131,13 +150,73 @@ export function DeckCta({
       ? 'min-h-14 w-full max-w-[16rem] px-8 text-base bg-violet-300 text-violet-deep shadow-card hover:bg-violet-200 focus-visible:ring-violet-200'
       : 'min-h-12 px-6 text-sm border border-gold-400/70 text-gold-300 hover:bg-gold-400 hover:text-plum-900 focus-visible:ring-gold-300';
 
+  const shared = `inline-flex items-center justify-center rounded-full font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`;
+
+  if (direct) {
+    /*
+     * AN OUTBOUND NAVIGATION NOW, SO IT TAKES `BuyButton`'S EVENT HANDLING AND NOT A PLAIN
+     * `onClick`. Read that component's note before changing this: a beacon fired in the
+     * click handler races the unload, and this is the most important number in the funnel.
+     * `pointerdown` buys the whole press-and-release before navigation starts; `click` is
+     * kept because pointerdown never fires for a keyboard activation; `sent` makes sure the
+     * two produce one event between them. Deliberately NOT `preventDefault` plus a callback
+     * — a blocked script would then strand somebody who is trying to pay.
+     *
+     * BOTH EVENTS FIRE, and that is correct rather than double-counting. They answer
+     * different questions and always did: `deck_cta_home` is "this placement earned a
+     * click", `checkout_started` is "somebody left for Stripe". Before this change the home
+     * path produced both, one per page; now it produces both on one tap. Dropping either
+     * would quietly break a funnel — without the first, the placement comparison loses its
+     * busiest entry; without the second, every sale that starts on the landing page becomes
+     * invisible.
+     */
+    const record = () => {
+      if (sent.current) return;
+      sent.current = true;
+      track(deckCtaEvent(placement));
+      track('checkout_started');
+    };
+
+    return (
+      <div className={`flex flex-col items-center gap-2 text-center ${className}`}>
+        <a href={direct} rel="noopener" onPointerDown={record} onClick={record} className={shared}>
+          {/*
+           * THE PRICE IS ON THE BUTTON NOW, because the page it used to lead to is where a
+           * buyer saw the amount. A control that goes straight to a checkout and does not
+           * name what it costs is a worse thing than a slower funnel — so if the price is
+           * somehow absent the label stands alone rather than the button inventing one.
+           */}
+          <span>{label}</span>
+          {price && (
+            <>
+              <span aria-hidden className="px-2 text-violet-deep/60">
+                &middot;
+              </span>
+              <span className="tabular-nums">{price}</span>
+            </>
+          )}
+        </a>
+        {line && <p className="text-xs text-violet-400">{line}</p>}
+        {/*
+         * AND THE PRODUCT PAGE STAYS ONE TAP AWAY. Skipping `/shop` skips where shipping,
+         * returns and what is actually in the box are stated, and a buyer who wants to read
+         * that before paying must not have to find it. Quiet, underneath, and it carries no
+         * CTA event: it is a request for information, not a step toward a purchase, and
+         * counting it as one would inflate the very number this change exists to measure.
+         */}
+        <Link
+          href="/shop"
+          className="text-xs text-violet-400 underline underline-offset-2 hover:text-violet-300"
+        >
+          What&rsquo;s in the deck, shipping and returns
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className={`flex flex-col items-center gap-2 text-center ${className}`}>
-      <Link
-        href="/shop"
-        onClick={() => track(deckCtaEvent(placement))}
-        className={`inline-flex items-center justify-center rounded-full font-bold transition focus-visible:ring-2 focus-visible:outline-none ${button}`}
-      >
+      <Link href="/shop" onClick={() => track(deckCtaEvent(placement))} className={shared}>
         {label}
       </Link>
       {line && <p className="text-xs text-violet-400">{line}</p>}

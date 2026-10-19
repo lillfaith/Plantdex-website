@@ -352,4 +352,80 @@ describe('no page denies the sale while configuration can turn it on', () => {
     expect(saleBranch).toContain('Get the deck');
     expect(saleBranch).toContain('Buy the Plantdex');
   });
+
+  /*
+   * THE HOME PLACEMENT LEAVES THE SITE; THE OTHER THREE DO NOT. That asymmetry is the whole
+   * of this change, and each half of it has a way of going wrong that these pin.
+   */
+  describe('the landing page goes straight to checkout', () => {
+    const source = () => strip(readFileSync('src/components/shop/DeckCta.tsx', 'utf8'));
+
+    it('offers a direct checkout only through the same gate /shop reads', () => {
+      // `checkoutLink()` already returns null unless commerce is live, so the home button
+      // cannot offer a checkout the configuration has not switched on — which is the fourth
+      // instance of this repository's recurring bug, and the one this guards against.
+      expect(source()).toMatch(/const direct = placement === 'home' \? checkoutLink\(\) : null/);
+      expect(source(), 'the raw Payment Link variable must not be read here').not.toContain(
+        'NEXT_PUBLIC_STRIPE_PAYMENT_LINK',
+      );
+    });
+
+    it('treats it as an outbound navigation, not a route change', () => {
+      /*
+       * THE REGRESSION THIS EXISTS FOR IS INVISIBLE AND EXPENSIVE. A beacon fired only in a
+       * click handler races the unload, so some fraction of every landing-page checkout
+       * would simply never be recorded — and the funnel would look like the change had made
+       * things worse. `BuyButton` carries the full argument; this keeps the two in step.
+       */
+      const direct = source().split('if (direct) {')[1] ?? '';
+      expect(direct, 'the direct button needs onPointerDown').toContain('onPointerDown={record}');
+      expect(direct, 'and onClick, for keyboard activation').toContain('onClick={record}');
+      expect(direct, 'and a ref, so the two fire once between them').toContain('sent.current');
+      // A plain <a>, never next/link: an internal router push would not leave the origin.
+      expect(direct).toMatch(/<a href=\{direct\}/);
+      expect(direct).toContain("rel=\"noopener\"");
+    });
+
+    it('records the placement AND the checkout, because they answer different questions', () => {
+      // Before this change the home path produced both, one per page. It now produces both on
+      // one tap. Dropping either silently breaks a funnel: without the first the placement
+      // comparison loses its busiest entry, without the second every sale that starts on the
+      // landing page becomes invisible.
+      const direct = source().split('if (direct) {')[1] ?? '';
+      expect(direct).toContain('track(deckCtaEvent(placement))');
+      expect(direct).toContain("track('checkout_started')");
+    });
+
+    it('names the price on the button that takes the money', () => {
+      // `/shop` was where a buyer saw the amount, and the home button now skips it. A control
+      // that goes straight to a checkout without naming what it costs is worse than a slower
+      // funnel — and the price comes from `displayPrice()`, so an unset one leaves the label
+      // alone rather than the button inventing a figure.
+      const src = source();
+      expect(src).toContain('displayPrice()');
+      const direct = src.split('if (direct) {')[1] ?? '';
+      expect(direct).toMatch(/\{price &&/);
+    });
+
+    it('keeps the product page one tap away, and does not count it as a CTA click', () => {
+      /*
+       * Skipping `/shop` skips where shipping, returns and the contents are stated, so a
+       * buyer who wants to read that before paying must not have to go looking. It carries no
+       * event on purpose: it is a request for information rather than a step toward a
+       * purchase, and counting it as one would inflate the number this change exists to move.
+       */
+      const direct = source().split('if (direct) {')[1] ?? '';
+      expect(direct).toContain('href="/shop"');
+      const infoLink = direct.match(/<Link\s+href="\/shop"[\s\S]*?<\/Link>/)?.[0] ?? '';
+      expect(infoLink, 'the information link must not fire a CTA event').not.toContain('track(');
+    });
+
+    it('leaves the other three placements on the product page', () => {
+      // They interrupt content somebody came to read, so a checkout there is a step nobody
+      // asked for. Only `home` may resolve a direct link.
+      const src = source();
+      expect(src.match(/checkoutLink\(\)/g) ?? []).toHaveLength(1);
+      expect(src).toMatch(/placement === 'home' \? checkoutLink\(\)/);
+    });
+  });
 });
