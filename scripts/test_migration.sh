@@ -68,6 +68,17 @@ echo "── tests ──"
 "${PSQL[@]}" -f "$TESTS" 2>&1 | sed -e 's/^psql.*NOTICE:  //' -e '/^$/d'
 
 # ── Concurrency, which needs genuinely parallel sessions ─────────────────────
+# 0008-specific: it races the discovery cap and the redemption claim, neither of which
+# exists for another migration. Skipped rather than failed, so this runner stays general.
+case "$MIGRATION" in
+  *0008_collection_entitlements.sql) ;;
+  *)
+    echo
+    echo "All migration tests passed (concurrency section is 0008-specific; skipped)."
+    exit 0
+    ;;
+esac
+
 # A `do $$ ... $$` block cannot race itself, so the boundary test lives here. A user one
 # slot below the cap; two overlapping transactions each claiming it. Exactly one may win.
 echo "── concurrency ──"

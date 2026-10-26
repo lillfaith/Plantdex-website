@@ -202,6 +202,55 @@ async function anonBucket(ip: string, day: string): Promise<string> {
 }
 
 /**
+ * The caller's address, taken only from headers the caller cannot write.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THIS USED TO READ THE LEFTMOST `X-Forwarded-For` ENTRY, WHICH IS ATTACKER-SUPPLIED, AND
+ * THAT MADE THE ANONYMOUS RATE LIMIT DECORATIVE.
+ *
+ * `X-Forwarded-For` is an append-only trail: `client, proxy1, proxy2`. Each hop appends the
+ * peer it heard from, so the entries on the LEFT are the ones nobody verified — a request
+ * arriving with `X-Forwarded-For: 203.0.113.9` already set has simply asserted that. Reading
+ * `[0]` therefore let a caller choose their own quota bucket, and a different value per
+ * request bought a fresh allowance every time: unlimited anonymous identifications, each one
+ * a real paid provider call, from a single machine with one extra header.
+ *
+ * So the order of preference is now by TRUSTWORTHINESS rather than by position:
+ *
+ *   1. `cf-connecting-ip` — set by the edge in front of these functions and OVERWRITTEN on
+ *      every request, so a client-supplied copy cannot survive. The strongest signal there
+ *      is here, and it is why it is first rather than a fallback.
+ *   2. The LAST `X-Forwarded-For` entry — the most recent hop, appended by infrastructure
+ *      rather than claimed by the caller. Still weaker than the above; used only if it
+ *      is absent.
+ *   3. `unknown` — one shared bucket. Deliberately the most restrictive outcome and not an
+ *      escape hatch: everybody who lands here shares one allowance, so a caller who
+ *      somehow strips both headers gets a smaller quota, never a larger one.
+ *
+ * Note what this does NOT try to be: a trustworthy audit of who somebody is. It is a
+ * rate-limit key. It must be hard to ROTATE, which is a weaker property than being hard to
+ * forge, and the fix above is exactly about rotation.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+function callerAddress(req: Request): string {
+  const edge = req.headers.get('cf-connecting-ip')?.trim();
+  if (edge) return edge;
+
+  const forwarded = req.headers.get('x-forwarded-for');
+  if (forwarded) {
+    const hops = forwarded
+      .split(',')
+      .map((hop) => hop.trim())
+      .filter(Boolean);
+    // The LAST hop, never the first. See above.
+    const nearest = hops[hops.length - 1];
+    if (nearest) return nearest;
+  }
+
+  return 'unknown';
+}
+
+/**
  * Strip anything key-shaped out of text that came from the provider.
  *
  * The API key travels as a query parameter, so an error body that quotes the request URL
@@ -307,48 +356,44 @@ Deno.serve(async (req: Request) => {
 
   // ── Quota ────────────────────────────────────────────────────────────────
   /*
-   * THE GLOBAL CLAIM DOES NOT DEPEND ON WHO IS CALLING, so it does not wait to find out.
+   * ONE ATOMIC CLAIM ACROSS BOTH BUCKETS, AND THE REASON IS A DENIAL OF SERVICE.
    *
-   * Resolving the caller is a network round trip to the auth service, and the global backstop
-   * is keyed on the literal bucket 'global' — nothing in it reads `userId`. Run serially they
-   * are two round trips in front of a provider call that is already the slow part of the
-   * request; run together they are one. The PER-CALLER claim below genuinely does depend on
-   * the answer and stays where it is.
+   * This was two `claim_scan` calls — the shared `global` bucket first, the caller's own
+   * bucket second, with the caller's refusal checked only afterwards. The comment here
+   * called the mismatch "a small accounting defect" and left it deliberately.
    *
-   * ORDER IS UNCHANGED. The global backstop is still claimed before the per-caller limit is
-   * checked, so a caller over their own quota still spends a unit of the shared 450 — a small
-   * accounting defect that predates this and is deliberately not fixed here, because merging
-   * the two claims into one atomic decision is a migration, not a latency change.
+   * It was not small. A caller already over their OWN allowance still spent a unit of the
+   * shared 450 on every further request, so one machine could issue 450 requests, with no
+   * account and no valid image, and take plant identification down for every user of the
+   * product until midnight. The per-caller limit protected nothing it sat in front of.
+   *
+   * `claim_scan_pair` (migration 0009) makes it one decision in one transaction: the
+   * caller's own allowance is claimed FIRST, a refusal there costs the shared pool nothing,
+   * and a shared exhaustion refunds the unit it just took. Two statements cannot express
+   * "spend a shared unit only if this caller may have one", because the decision spans both
+   * buckets.
+   *
+   * It is also one round trip instead of two, so the latency argument the old comment made
+   * for running them together is satisfied better rather than traded away. The caller still
+   * has to be resolved first, because the bucket depends on who they are — that is a real
+   * dependency, unlike the one the previous version parallelised.
    */
-  const [userId, { data: globalCount, error: globalError }] = await Promise.all([
-    resolveCaller(),
-    admin.rpc('claim_scan', { p_bucket: 'global', p_day: day, p_limit: GLOBAL_DAILY_LIMIT }),
-  ]);
-  if (globalError) return json({ error: 'Could not check the daily allowance.' }, 500);
-
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('cf-connecting-ip') ||
-    'unknown';
-  const bucket = userId ? `user:${userId}` : await anonBucket(ip, day);
+  const userId = await resolveCaller();
+  const bucket = userId ? `user:${userId}` : await anonBucket(callerAddress(req), day);
   const limit = userId ? USER_DAILY_LIMIT : ANON_DAILY_LIMIT;
-  if (globalCount === null) {
-    return json(
-      {
-        error: 'Plant identification has hit its limit for today. Please try again tomorrow.',
-        code: 'globalLimit',
-      },
-      429,
-    );
-  }
 
-  const { data: count, error: quotaError } = await admin.rpc('claim_scan', {
+  const { data: claimed, error: quotaError } = await admin.rpc('claim_scan_pair', {
     p_bucket: bucket,
     p_day: day,
     p_limit: limit,
+    p_global_limit: GLOBAL_DAILY_LIMIT,
   });
   if (quotaError) return json({ error: 'Could not check your daily allowance.' }, 500);
-  if (count === null) {
+
+  // -1 is this caller over their own allowance; -2 is the shared pool exhausted, with this
+  // caller's unit refunded. Both are 429s, and they must stay distinguishable: one is "come
+  // back tomorrow", the other is "this is not your fault".
+  if (claimed === -1) {
     return json(
       {
         error: userId
@@ -357,6 +402,15 @@ Deno.serve(async (req: Request) => {
         code: 'rateLimited',
         limit,
         signedIn: Boolean(userId),
+      },
+      429,
+    );
+  }
+  if (claimed === -2) {
+    return json(
+      {
+        error: 'Plant identification has hit its limit for today. Please try again tomorrow.',
+        code: 'globalLimit',
       },
       429,
     );
@@ -636,7 +690,9 @@ Deno.serve(async (req: Request) => {
 
   return json({
     candidates: attested.filter((candidate) => candidate.scientificName),
-    remaining: Math.max(0, limit - (count as number)),
+    // `claimed` is this caller's own post-increment count: every negative value returned
+    // a 429 above, so by here it is a positive number and the subtraction is meaningful.
+    remaining: Math.max(0, limit - (claimed as number)),
     limit,
     signedIn: Boolean(userId),
     /*

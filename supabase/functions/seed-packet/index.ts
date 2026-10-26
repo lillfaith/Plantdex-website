@@ -88,6 +88,27 @@ const ATTESTATION_SECRET = Deno.env.get(ATTESTATION_SECRET_ENV) ?? '';
 /** One request may introduce this many species. A shelf import is the big case. */
 const MAX_SPECIES = 100;
 
+/**
+ * Mint requests allowed per account per day.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THIS FUNCTION HAD NO RATE LIMIT AT ALL, AND IT IS THE ONLY WRITER TO A GLOBAL TABLE.
+ *
+ * `MAX_SPECIES` bounds one request to 100 species; nothing bounded the number of requests.
+ * So any signed-in account could issue them in a loop, and each one costs a canonicalisation
+ * pass, an HMAC verification per unseen species and up to 100 insert attempts against
+ * `species_packets` — a table every player reads. The attestation makes the CONTENT of a
+ * canonical row unforgeable, which is a different property from making the WRITE PATH
+ * affordable, and only the first was ever guarded.
+ *
+ * 40 a day is far above real use. Shelving is a rare act — a player meets a species the
+ * deck has no card for, taps save, and the import path mints in batches — so the ceiling is
+ * set to be invisible to anybody using the product and small enough that a loop stops being
+ * free. Per account, because the function already requires a session.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+const MINT_DAILY_LIMIT = 40;
+
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -158,6 +179,37 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
+
+  /*
+   * THE RATE LIMIT, CLAIMED BEFORE ANY SPECIES WORK HAPPENS.
+   *
+   * Reusing `claim_scan` rather than inventing a second limiter: it is the same
+   * shape of problem the scanner already solved, it is atomic, and it is already revoked
+   * from every client role. The bucket is per account and per day, like the scanner's
+   * signed-in bucket, and carries its own prefix so the two allowances cannot consume each
+   * other — somebody who has shelved all day must still be able to identify a plant.
+   *
+   * A failure to CHECK the limit is not a reason to refuse the write: the limiter is a
+   * backstop, and a transient database error on it would otherwise take the Seed Shelf down
+   * for everybody. Over-quota is refused; unable-to-tell proceeds, which is the same
+   * judgement `SCAN_QUOTA_SALT` makes about failing open on a rate-limit input rather than
+   * on the attestation secret that guards what may be written.
+   */
+  const day = new Date().toISOString().slice(0, 10);
+  const { data: mintCount, error: mintQuotaError } = await admin.rpc('claim_scan', {
+    p_bucket: `mint:${userData.user.id}`,
+    p_day: day,
+    p_limit: MINT_DAILY_LIMIT,
+  });
+  if (!mintQuotaError && mintCount === null) {
+    return json(
+      {
+        error: 'You have added a lot of species today. Please try again tomorrow.',
+        code: 'rateLimited',
+      },
+      429,
+    );
+  }
 
   const keys = [...wanted.keys()];
 
