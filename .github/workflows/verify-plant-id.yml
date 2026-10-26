@@ -29,23 +29,17 @@ on:
         default: taraxacum-officinale,urtica-dioica,achillea-millefolium,plantago-major,trifolium-pratense,quercus-spp
         type: string
       site_url:
-        description: Deployed site to check the player-facing path against (blank to skip)
+        description: Deployed site to check against (blank derives it from SITE_DOMAIN)
         required: false
-        # THE CUSTOM DOMAIN, NOT THE PROJECT PATH. This defaulted to
-        # https://lillfaith.github.io/Plantdex-website, which stopped being right the day
-        # SITE_DOMAIN was set: that variable drops the /Plantdex-website base path, so the
-        # bundle's chunk paths are root-relative and resolving them against the project URL
-        # finds nothing. The check then reported "the deployed bundle carries no Supabase
-        # project" — a loud, specific, completely false failure that masked everything after
-        # it, including the actual scan this workflow exists to perform.
-        #
-        # Deliberately a literal rather than `vars.SITE_DOMAIN`: that expression reads as
-        # EMPTY in this context (observed in check-live-site.yml, which falls back to the
-        # project URL for the same reason) even though the build plainly uses it, and a
-        # default that silently resolves to the wrong thing is what this comment is about.
-        # An explicit `site_url` input still wins, which is how a one-off run checks a
-        # different deployment.
-        default: https://plantdex.online
+        # BLANK, so the derivation in the step below is actually reachable. This used to
+        # default to https://lillfaith.github.io/Plantdex-website, where the site no longer
+        # lives: `SITE_DOMAIN` drops the /Plantdex-website base path, so the bundle's chunk
+        # paths are root-relative and resolving them against the project URL finds nothing.
+        # The check then reported "the deployed bundle carries no Supabase project" — loud,
+        # specific and false — and failed before reaching the live scan this workflow exists
+        # to perform, so a backend change could deploy and this would fail for reasons
+        # nothing to do with it. Which is precisely what happened once.
+        default: ''
         type: string
 
 permissions:
@@ -85,7 +79,18 @@ jobs:
         # straight into a shell line is a command-injection shape, and it costs nothing to
         # not write one.
         env:
-          SITE_URL: ${{ inputs.site_url }}
+          # Derived the same way `check-live-site.yml` does, and in the same order of
+          # preference: an explicit input wins (a one-off run against somewhere else), then
+          # the `SITE_DOMAIN` variable that drives the base path and the CNAME in deploy.yml,
+          # then the old project URL as a last resort for a deployment with no custom domain.
+          #
+          # The input DEFAULTS TO BLANK so this chain is reachable. A non-blank default is
+          # always truthy, short-circuits the whole expression, and makes the derivation dead
+          # code — which is the bug this replaces.
+          SITE_URL: >-
+            ${{ inputs.site_url
+                || (vars.SITE_DOMAIN != '' && format('https://{0}', vars.SITE_DOMAIN))
+                || 'https://lillfaith.github.io/Plantdex-website' }}
           PROJECT_REF: ${{ inputs.project_ref }}
         run: python3 scripts/check_live_scan.py "$SITE_URL" "$PROJECT_REF"
 

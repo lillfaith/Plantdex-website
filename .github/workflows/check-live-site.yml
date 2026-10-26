@@ -14,9 +14,25 @@ on:
   workflow_dispatch:
     inputs:
       site_url:
-        description: Base URL of the deployed site
-        required: true
-        default: https://lillfaith.github.io/Plantdex-website
+        description: Base URL of the deployed site (blank derives it from SITE_DOMAIN)
+        required: false
+        # DELIBERATELY BLANK, AND THAT IS A BUG FIX.
+        #
+        # This defaulted to https://lillfaith.github.io/Plantdex-website, which made the
+        # `SITE_DOMAIN` derivation below DEAD CODE on every manual run: `inputs.site_url`
+        # was always that literal, always truthy, so the `||` chain short-circuited before
+        # it ever looked at the variable. Every dispatch silently checked the old project
+        # URL — where the site no longer lives, since SITE_DOMAIN drops the base path — and
+        # reported the stylesheets and the Supabase ref as missing. Three loud, specific,
+        # entirely false failures, and the derivation written to prevent exactly that was
+        # never once consulted.
+        #
+        # It cost a wrong diagnosis too: the fallback was read as evidence that
+        # `vars.SITE_DOMAIN` resolves empty here. It does not, and never did — the build's
+        # own output proves it, since `next.config.ts` only drops the base path when
+        # SITE_DOMAIN is non-empty and the live site has no base path. A default that
+        # short-circuits a fallback chain hides the chain rather than seeding it.
+        default: ''
         type: string
   # After every Pages deploy, so a broken publish is reported rather than waiting to be
   # noticed. `completed` fires for failures too; the job skips those.
@@ -43,7 +59,8 @@ jobs:
       #
       # So it derives from the same `SITE_DOMAIN` variable that drives the base path and the
       # CNAME (see deploy.yml). Unset, it is exactly the literal it replaced. An explicit
-      # `site_url` input still wins, which is how a one-off run checks somewhere else.
+      # `site_url` input still wins, which is how a one-off run checks somewhere else —
+      # but it must DEFAULT TO BLANK, or it wins on every run and this chain is dead code.
       - name: Fetch every route and check what it contains
         env:
           SITE_URL: >-
