@@ -247,9 +247,20 @@ def check_buy_button(base: str) -> int:
 
     STRIPE_ANCHOR = r'<a\b[^>]*href="(https://[^"]*stripe\.com[^"]*)"[^>]*>(.*?)</a>'
 
+    # THE SERVED BUILD, because a stale CDN copy and a bad build fail identically here.
+    # Pages caches HTML for ten minutes and a check run straight after a deploy can read the
+    # previous build, which looks exactly like the change never landing.
+    build = re.search(r"/_next/static/([A-Za-z0-9_-]{8,})/_buildManifest|/_next/static/chunks/main-app-([a-f0-9]{8,})", home)
+    if build:
+        print(f"      served build: {build.group(1) or build.group(2)}")
+
     outbound = re.findall(STRIPE_ANCHOR, home, re.S)
     if outbound:
-        print(f"FAIL  home cta      the landing page links straight to {outbound[0][0].split('/')[2]}")
+        url, inner = outbound[0]
+        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", inner)).strip()
+        print(f"FAIL  home cta      the landing page links straight to {url.split('/')[2]}")
+        print(f"      the anchor reads \"{text}\" and points at {url}")
+        print(f"      {len(outbound)} outbound checkout anchor(s) on the page")
         print("      Every placement must be an internal route change to /shop, which is")
         print("      where the contents, the pack-ins and the guarantee are stated.")
         return 1
