@@ -72,6 +72,44 @@ export function displayPrice(): string | null {
 }
 
 /**
+ * The price divided by the number of cards, formatted like the price itself, e.g. `$0.53`.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ARITHMETIC ON THE OWNER'S OWN FIGURES, NEVER A FIGURE OF ITS OWN.
+ *
+ * A product page is asked to justify its price, and the honest way to do that here is to
+ * restate what the owner already set, divided by a count read from the deck. Both inputs
+ * are real: `displayPrice()` is the string the owner typed and must match Stripe, and
+ * `PHYSICAL_CARD_COUNT` comes from the deck data. So this cannot drift from the price being
+ * charged — change the Payment Link's price and this follows on the next build.
+ *
+ * IT RETURNS NULL RATHER THAN GUESSING, and that is the whole reason it parses so strictly.
+ * The price is deliberately a free-form string so the owner controls exactly what appears,
+ * which means it may be `$24.99`, `£24.99`, `24,99 €` or `CA$24.99`. Only a leading-symbol
+ * form with a dot decimal is understood; anything else gives null and the page simply omits
+ * the line. A per-card figure in the wrong currency, or built by assuming a decimal
+ * separator, would be a fabricated price claim — exactly what this module exists to
+ * prevent — and it would appear right beside a real one, which is worse than silence.
+ *
+ * Deliberately NOT rounded up to a prettier number, and not expressed in minor units: `53¢`
+ * is only correct for some of the currencies this could be, and a cent symbol on a pound
+ * price is the same class of error.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export function pricePerCard(): string | null {
+  const price = displayPrice();
+  if (!price) return null;
+  // One optional symbol or code, then a plain decimal amount. No thousands separators: a
+  // deck costing four figures is not a state to guess a grouping convention for.
+  const match = /^([^\d\s]{1,3})\s?(\d+(?:\.\d{1,2})?)$/.exec(price);
+  if (!match) return null;
+  const [, symbol, amount] = match;
+  const per = Number(amount) / PHYSICAL_CARD_COUNT;
+  if (!Number.isFinite(per) || per <= 0) return null;
+  return `${symbol}${per.toFixed(2)}`;
+}
+
+/**
  * True only when there is both something to sell and a price to print for it.
  *
  * CONFIGURED IS NOT LIVE. This answers one question — are the Stripe variables set and
@@ -311,16 +349,31 @@ export const PRODUCT_PHOTOS: readonly ProductPhoto[] = [
 ];
 
 /**
- * Why somebody would want the deck, in three lines.
+ * Why somebody would want the deck.
  *
- * THE OWNER'S WORDS, VERBATIM. These are the product's own claims about itself and they are
- * not ours to rewrite; the only editing here is the split between an opening line and the
- * sentence backing it, so the page can be skimmed down the leads.
+ * REWRITTEN AT THE OWNER'S REQUEST, and the previous note here said these were "the owner's
+ * words, verbatim" and "not ours to rewrite". That was true of the first draft and is not a
+ * standing rule: the owner asked for copy that argues the deck's value rather than listing
+ * its features. What IS standing is everything below.
  *
- * WHAT THEY MAY NEVER BECOME. Nothing here may drift into a health claim — "why people have
- * paid attention to it for generations" is the deck's own non-claim framing of traditional
- * use and is the furthest this page goes. `shop.test.ts` holds them to that, and to the
- * standing prohibition on invented scarcity, stock and delivery claims.
+ * EVERY CLAIM IS CHECKABLE AGAINST THIS REPOSITORY OR IS NOT MADE. The counts come from the
+ * deck data. What a card prints is what `herbs.json` holds — a portrait, both names, the
+ * season and rarity on the front; traits, compounds, taste, aroma, usable parts and
+ * traditional preparations on the back. The collection ladder is the real one
+ * (`mastery.ts`). Nothing here describes a card nobody printed.
+ *
+ * WHAT THEY MAY NEVER BECOME:
+ *   * A HEALTH CLAIM. "Healing Traits" is the deck's own heading for traditional use and
+ *     the furthest any of this goes — a plant treating, curing or relieving anything may
+ *     not be said here in any phrasing.
+ *   * A SAFETY CLAIM. This deck is not an identification authority and must never be sold
+ *     as one: no line may suggest it makes foraging, eating or preparing a wild plant safe,
+ *     or that a card confirms what something is. That is the one place value-oriented copy
+ *     could do real harm, so it is the one place the page understates rather than sells.
+ *   * A SCARCITY, STOCK OR DELIVERY CLAIM. Nobody has counted any stock.
+ *
+ * `shop.test.ts` enforces all three. It did not before this rewrite, although the note here
+ * claimed it did — a prohibition asserted in a comment and nowhere else.
  */
 export interface SellingPoint {
   readonly lead: string;
@@ -329,22 +382,38 @@ export interface SellingPoint {
 
 export const DECK_SELLING_POINTS: readonly SellingPoint[] = [
   {
-    lead: 'Stop wondering what you\u2019re looking at.',
+    lead: 'You walk past dozens of wild species a day and can probably name three.',
     body:
-      'Plantdex helps you recognize the common wild plants you actually encounter, without ' +
-      'digging through dense field guides or endless search results.',
+      'That is not ignorance, it is a missing index. The deck is built from the plants you ' +
+      'genuinely encounter rather than the rarities a field guide opens with \u2014 so the ' +
+      'first card you use is for something growing within a minute of your door, and the ' +
+      'walk you already take stops being scenery.',
   },
   {
-    lead: 'Learn the plants around you without making it feel like homework.',
+    lead: 'A field guide stays on the shelf. A deck goes in a pocket.',
     body:
-      'Illustrated, collectible cards make the information easier to remember \u2014 and way ' +
-      'more fun to use outside.',
+      'Six hundred indexed pages are for checking at home, afterwards, which is why they ' +
+      'are rarely in your hand at the moment you want them. ' +
+      `All ${DECK_CARD_COUNT + REFERENCE_CARD_COUNT} cards together weigh nothing, need no ` +
+      'signal and no battery, and can be handed to somebody else while you both look at the ' +
+      'same leaf.',
   },
   {
-    lead: 'Built for real-world use.',
+    lead: 'Printed on both sides, because recognising a plant is not the same as knowing it.',
     body:
-      'Learn what grows around you, what makes it distinct, and why people have paid ' +
-      'attention to it for generations.',
+      'The front carries the portrait, both names, and when and how often you can expect ' +
+      'to meet it. The back carries the traits it is known for, its signature compounds, ' +
+      'its taste and aroma, the parts people use and how it has traditionally been ' +
+      'prepared. That is the difference between naming a plant and having something to ' +
+      'say about it.',
+  },
+  {
+    lead: 'It gives an ordinary walk a point.',
+    body:
+      'The cards are collectible, and finding the plant outdoors is what makes one yours ' +
+      'here \u2014 discovered, then learned, then mastered. The deck is the reason to go ' +
+      'and look; the collection is what remembers that you did. It is the rare collectible ' +
+      'that can only be completed outdoors.',
   },
 ];
 

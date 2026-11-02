@@ -18,6 +18,7 @@ import {
   checkoutLink,
   displayPrice,
   isCommerceLive,
+  pricePerCard,
 } from '@/lib/shop';
 
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export const metadata: Metadata = {
 export default function ShopPage() {
   const link = checkoutLink();
   const price = displayPrice();
+  const perCard = pricePerCard();
   /*
    * LIVE, not merely configured. Setting the two Stripe variables is no longer enough to
    * open a checkout: the Terms of Sale have to be in force too. `checkoutLink()` returns
@@ -61,10 +63,11 @@ export default function ShopPage() {
           The Plantdex deck
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200">
-          {DECK_CARD_COUNT} illustrated species cards — plus an icon guide and a disclaimer
-          card, {PHYSICAL_CARD_COUNT} in all — covering the common wild plants of waysides,
-          lawns, hedges and waste ground. The ones you walk past, not the ones you have to
-          travel to find.
+          {DECK_CARD_COUNT} illustrated species cards &mdash; plus an icon guide and a disclaimer
+          card, {PHYSICAL_CARD_COUNT} in all &mdash; covering the common wild plants of waysides,
+          lawns, hedges and waste ground. The ones you walk past every day, not the ones you
+          travel to find. It is a deck meant to be carried and used, which is the only reason
+          a printed thing beats a website.
         </p>
 
         {/*
@@ -183,10 +186,8 @@ export default function ShopPage() {
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-violet-200">
           <strong className="text-violet-100">The deck is your field companion; Plantdex is
-          the world it connects to.</strong> Every one of the {DECK_CARD_COUNT} species pages
-          is transcribed from the physical card of the same number, and where a card contains
-          an error the site reproduces it faithfully and says so rather than quietly
-          correcting it.
+          the world it connects to.</strong> Every card in the box has a page here under the
+          same number, and every page has a card. Neither is a teaser for the other.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-violet-200">
           The cards are what you carry. The site is what you keep: find a plant outdoors, log
@@ -194,10 +195,16 @@ export default function ShopPage() {
           mastered.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-violet-300">
-          Plantdex is free to use, and it stays free whether or not you own the cards &mdash;
-          this is a world to explore, not a paywall to get past. What the deck adds is the
-          thing a website cannot: {DECK_CARD_COUNT} printed cards in your pocket, no signal
-          required, in the hedgerow where you actually need them.{' '}
+          {/*
+            THE FREE-TO-USE CLAIM USED TO BE MADE HERE TOO, AND IT IS MADE THREE TIMES ON
+            THIS PAGE: in `NOT_INCLUDED`, here, and in "What the price covers". A fact
+            repeated three times in one scroll reads as a thing being insisted on. It is
+            argued once now, where it does actual work — next to the price it justifies —
+            and this section goes back to answering only its own heading.
+          */}
+          What the deck adds is the thing a website cannot: {DECK_CARD_COUNT} printed cards
+          in your pocket, no signal required, in the hedgerow where you actually need
+          them.{' '}
           <Link href="/herbdex" className="underline underline-offset-2 hover:text-gold-400">
             Explore the collection
           </Link>{' '}
@@ -240,6 +247,59 @@ export default function ShopPage() {
             ))}
           </ul>
         </div>
+      </section>
+
+      {/* ── What the price covers ────────────────────────────────────────────── */}
+      {/*
+        THE PAGE IS ASKED TO JUSTIFY A PRICE, AND THE ONLY HONEST MATERIAL IS ARITHMETIC.
+
+        No comparison to a competitor's deck (nobody has priced one), no "normally X" anchor
+        against a number that never existed, no value stack adding up invented worth. What
+        there is: the owner's own price divided by a card count read from the deck, what a
+        card physically carries, and what the purchase does NOT oblige anybody to.
+
+        `pricePerCard()` returns null unless it can parse the owner's price string exactly,
+        so a currency it does not understand omits this line rather than printing a figure
+        in the wrong units beside a real one.
+
+        It sits after "What you get" and before the pack-ins: the deck earns the price, the
+        extras are a reason to feel good about it, and neither is the fine print below.
+      */}
+      <section className="panel mt-8 p-5 sm:p-6" aria-labelledby="value-heading">
+        <h2 id="value-heading" className="text-sm font-bold tracking-wide text-gold-400 uppercase">
+          {price ? `What ${price} covers` : 'What the price covers'}
+        </h2>
+
+        <p className="mt-3 text-sm leading-relaxed text-violet-200">
+          {perCard && (
+            <>
+              <strong className="text-violet-100">{perCard} a card.</strong>{' '}
+            </>
+          )}
+          {PHYSICAL_CARD_COUNT} cards, each printed on both sides &mdash; the portrait on one,
+          six fields of detail on the other. Nothing to charge, nothing to update, and no
+          version of this that stops working because a signal dropped or a company folded.
+        </p>
+
+        <p className="mt-3 text-sm leading-relaxed text-violet-200">
+          <strong className="text-violet-100">You are buying the object, not access.</strong>{' '}
+          Plantdex online is free for everyone with or without the cards, and nothing
+          here is gated behind owning one. A deck that only worked once you had paid twice
+          would be a worse deck.
+        </p>
+
+        <p className="mt-3 text-sm leading-relaxed text-violet-200">
+          <strong className="text-violet-100">Every card was transcribed, not scraped.</strong>{' '}
+          Each of the {DECK_CARD_COUNT} species pages on this site is typed out from the
+          printed card of the same number &mdash; and where a card carries an error, the site
+          reproduces it faithfully and says so instead of quietly correcting it. You can check
+          the whole deck before you buy any of it.
+        </p>
+
+        <p className="mt-3 text-xs leading-relaxed text-violet-400">
+          Postage and any tax are confirmed on Stripe&rsquo;s own page before you pay, so
+          nothing is added after the fact.
+        </p>
       </section>
 
       {/* ── Also in the box ──────────────────────────────────────────────────── */}

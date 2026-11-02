@@ -1,11 +1,12 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
-import { PRINTED_DECK_SIZE, getPrintedCard } from './deck';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { PRINTED_CARDS, PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import {
   BONUS_DISCLAIMER,
   BONUS_ITEMS,
   DECK_CARD_COUNT,
+  DECK_SELLING_POINTS,
   INCLUDED,
   NOT_INCLUDED,
   PHYSICAL_CARD_COUNT,
@@ -212,6 +213,97 @@ describe('what the product page claims', () => {
 
     const page = strip(readFileSync('src/app/shop/page.tsx', 'utf8'));
     expect(page).not.toMatch(/unlock the|redeem|premium|activation code/i);
+  });
+
+  /*
+   * THE VALUE COPY, WHICH IS THE ONE PLACE THIS PAGE COULD DO REAL HARM.
+   *
+   * `shop.ts` used to state these three prohibitions and claim this file enforced them. It
+   * did not — they existed only in a comment, which is the weakest place a safety rule can
+   * live, and the owner then asked for the copy to be rewritten to sell harder. Selling
+   * harder is a legitimate request; the three limits are not negotiable, so they are tests
+   * now rather than prose.
+   */
+  describe('the selling points', () => {
+    const copy = () => DECK_SELLING_POINTS.map((p) => `${p.lead} ${p.body}`).join(' ');
+
+    it('says something, in a shape the page can skim', () => {
+      expect(DECK_SELLING_POINTS.length).toBeGreaterThanOrEqual(3);
+      for (const point of DECK_SELLING_POINTS) {
+        expect(point.lead.length, 'a lead has to be a sentence').toBeGreaterThan(20);
+        expect(point.body.length, 'and the body has to back it').toBeGreaterThan(80);
+      }
+    });
+
+    it('makes no health claim in any phrasing', () => {
+      // "Healing Traits" is the deck's own non-claim heading for traditional use and is the
+      // furthest this page goes. A plant treating, curing, relieving or preventing anything
+      // may not be said while selling it — the same rule compounds.ts and trait-evidence.ts
+      // already hold the card content to.
+      expect(copy()).not.toMatch(
+        /\b(treats?|cures?|heals?|relieves?|prevents?|remed(y|ies)|medicinal|therapeutic)\b/i,
+      );
+    });
+
+    it('never sells the deck as making foraging safe', () => {
+      /*
+       * THE ONE THAT MATTERS. This deck is not an identification authority, and copy
+       * written to raise conversion is exactly where "know what's safe to eat" appears. A
+       * buyer who reads that and acts on it outdoors is the harm the whole safety apparatus
+       * of this codebase exists to prevent, so the page understates here by rule.
+       */
+      expect(copy()).not.toMatch(
+        /safe to (eat|forage|pick|use)|confidently (eat|forage|identify)|know what(?:'|\u2019)s edible|edible|forage safely|positive(?:ly)? identif/i,
+      );
+    });
+
+    it('invents no scarcity, stock or delivery claim', () => {
+      expect(copy()).not.toMatch(
+        /only \d+ left|limited edition|while stocks last|in stock|sold out|hurry|last chance|\d+\s*[-\u2013to]+\s*\d+\s*(business\s*)?(days|weeks)/i,
+      );
+    });
+
+    it('claims no card content the deck does not print', () => {
+      // The back's six fields are what a card really carries, and the page counts them. A
+      // deck reprinted with a seventh — or one fewer — makes that sentence false.
+      const backs = PRINTED_CARDS.map((card) => Object.keys(card.back).length);
+      expect(new Set(backs), 'every card back has the same fields').toEqual(new Set([6]));
+      const page = strip(readFileSync('src/app/shop/page.tsx', 'utf8'));
+      expect(page, 'the page names that count').toMatch(/six fields/);
+    });
+  });
+
+  describe('the per-card figure', () => {
+    /*
+     * It exists to justify the price, which means it must never BE a price. Every case here
+     * is a currency string an owner could plausibly type.
+     */
+    const withPrice = async (value: string | undefined) => {
+      const previous = process.env.NEXT_PUBLIC_DECK_PRICE;
+      if (value === undefined) delete process.env.NEXT_PUBLIC_DECK_PRICE;
+      else process.env.NEXT_PUBLIC_DECK_PRICE = value;
+      vi.resetModules();
+      const mod = await import('./shop');
+      const answer = mod.pricePerCard();
+      if (previous === undefined) delete process.env.NEXT_PUBLIC_DECK_PRICE;
+      else process.env.NEXT_PUBLIC_DECK_PRICE = previous;
+      return answer;
+    };
+
+    it("divides the owner's own price by the real card count", async () => {
+      // 24.99 / 47 = 0.5316..., and the figure keeps the owner's own symbol.
+      expect(await withPrice('$24.99')).toBe('$0.53');
+      expect(await withPrice('\u00a324.99')).toBe('\u00a30.53');
+      expect(PHYSICAL_CARD_COUNT).toBe(47);
+    });
+
+    it('returns null rather than guess a currency it cannot parse', async () => {
+      // A comma decimal, a trailing symbol, a grouped thousand, an empty price: each would
+      // need an assumption, and an assumed price beside a real one is worse than silence.
+      for (const bad of ['24,99 \u20ac', '24.99 USD', '1,024.99', 'free', '', undefined]) {
+        expect(await withPrice(bad), `"${bad}" must not produce a figure`).toBeNull();
+      }
+    });
   });
 
   it('makes no scarcity, stock or urgency claim', () => {
