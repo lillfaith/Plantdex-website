@@ -183,10 +183,11 @@ export interface BonusItem {
 
 export const BONUS_ITEMS: readonly BonusItem[] = [
   {
+    file: 'bonus-trading-card',
     title: 'A real trading card from the game that started it',
     detail:
       'Plantdex is a love letter to the Pokémon cards a lot of us grew up on, so every deck ships with a genuine one tucked inside. Which card it is depends on what is in the box that day.',
-    alt: 'A trading card included with the deck',
+    alt: 'Three fanned stacks of Pokémon trading cards from the collection they are drawn from',
   },
   {
     title: 'Two holographic pink pouches',

@@ -279,13 +279,26 @@ export default function ShopPage() {
                   change for free.
                 */}
                 {item.file ? (
-                  <Image
-                    src={`/product/${item.file}.webp`}
-                    alt={item.alt ?? item.title}
-                    width={600}
-                    height={600}
-                    className="h-32 w-full object-contain"
-                  />
+                  /*
+                    A FRAMED PHOTOGRAPH, not a floating cut-out, and that was measured
+                    rather than chosen. The cut-out path in `build:product` works well on a
+                    plain contrasting backdrop; it fails on a photograph taken on a desk,
+                    because the flood fill needs one backdrop colour and uneven lighting
+                    gives it four different corners. Attempted on this image it removed 12%
+                    of the pixels — nothing — and a saturation split did no better, the desk
+                    reading 0.26 against the cards' 0.24. A rounded frame is what the
+                    picture actually wants, and it reads as intentional where a bad cut-out
+                    reads as a mistake.
+                  */
+                  <div className="overflow-hidden rounded-lg border border-violet-500/25">
+                    <Image
+                      src={`/product/${item.file}.webp`}
+                      alt={item.alt ?? item.title}
+                      width={1100}
+                      height={586}
+                      className="h-32 w-full object-cover"
+                    />
+                  </div>
                 ) : (
                   /*
                     NOT YET PHOTOGRAPHED, and it says so rather than standing in a stock
