@@ -215,12 +215,18 @@ export const BONUS_ITEMS: readonly BonusItem[] = [
 /**
  * Stated wherever the trading card is mentioned.
  *
+ * IT SAID "unopened-from-pack" AND THAT WAS NOT TRUE. Caught by screenshotting the page
+ * rather than by reading it: the photograph directly above the sentence shows loose cards,
+ * sorted and sleeved, plainly out of their packs long ago. A disclaimer is the last place
+ * that can afford a detail nobody checked, and this one was contradicted by the picture it
+ * sits under.
+ *
  * Naming another company's product to say truthfully what is in the box is one thing;
  * letting a buyer infer that company had anything to do with this deck is another, and the
  * line between them is a sentence. `shop.test.ts` fails if the card is described without it.
  */
 export const BONUS_DISCLAIMER =
-  'Plantdex is not affiliated with, endorsed by or sponsored by Nintendo, Game Freak or The Pokémon Company. The included card is an authentic card bought at retail and passed on unopened-from-pack; no part of this deck reproduces their artwork.';
+  'Plantdex is not affiliated with, endorsed by or sponsored by Nintendo, Game Freak or The Pokémon Company. The included card is an authentic card from the owner\u2019s own collection, passed on as-is; no part of this deck reproduces their artwork.';
 
 /**
  * The cards shown as product photography, in order.

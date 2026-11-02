@@ -314,7 +314,11 @@ export default function ShopPage() {
                   </div>
                 )}
                 <div>
-                  <h3 className="text-sm font-bold text-violet-100">{item.title}</h3>
+                  {/* Two lines reserved: one title wraps and the others do not, and without this the
+    three bodies start at three different heights. */}
+                  <h3 className="min-h-[2.75rem] text-sm font-bold text-violet-100 sm:min-h-[3.25rem]">
+                    {item.title}
+                  </h3>
                   <p className="mt-1 text-sm leading-relaxed text-violet-300">{item.detail}</p>
                 </div>
               </li>
