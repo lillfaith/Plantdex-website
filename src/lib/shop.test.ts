@@ -490,6 +490,21 @@ describe('what else is in the box', () => {
     expect(page()).toMatch(/Photograph to come/);
   });
 
+  it('states a quantity in words, because the photograph shows more than ships', () => {
+    /*
+     * These are stock shots of multi-packs — twenty pouches, sixty stickers, a whole card
+     * collection — and two of each actually go in a box. The crops stop them reading as
+     * bulk, but a buyer counts the picture, and no crop carries "two" on its own. So the
+     * number has to be in the copy, and it has to stay there.
+     */
+    for (const item of BONUS_ITEMS) {
+      expect(
+        `${item.title} ${item.detail}`,
+        `"${item.title}" names no quantity, and its photograph shows a multi-pack`,
+      ).toMatch(/\b(one|two|a single|a real|a genuine)\b/i);
+    }
+  });
+
   it('promises no quantity or scarcity it cannot keep', () => {
     // Same rule the rest of this file enforces on the deck: no stock claims, and no
     // promise about WHICH card, since that depends on what is in the box that day.

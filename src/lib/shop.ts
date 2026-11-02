@@ -168,7 +168,14 @@ export const INCLUDED: readonly string[] = [
  * confirmed is the one that ships. Same reasoning as `FieldCardSlot.card` staying optional
  * with every card drawn — the type describes the state something passes through.
  *
- * A PRODUCT PHOTO HERE MUST BE THE OWNER'S OWN. Pulling a seller's image off a marketplace
+ * THE PHOTOGRAPH MAY SHOW MORE THAN SHIPS, AND THE COPY HAS TO SAY SO. These are stock
+ * shots of multi-packs: twenty pouches, sixty stickers, a whole card collection. Two of
+ * each go in a box. The images are cropped down so they do not read as a bulk pack, and
+ * every `detail` states the number in words — because a photograph is the thing a buyer
+ * actually counts, and no crop can carry "two" on its own. `shop.test.ts` fails if an
+ * item's copy stops naming its quantity.
+ *
+ * A PRODUCT PHOTO HERE SHOULD BE THE OWNER'S OWN. Pulling a seller's image off a marketplace
  * listing and republishing it on a storefront is someone else's copyrighted photograph doing
  * the selling, and `shop.test.ts` cannot detect that — only this comment and the person
  * adding the file can.
@@ -186,19 +193,22 @@ export const BONUS_ITEMS: readonly BonusItem[] = [
     file: 'bonus-trading-card',
     title: 'A real trading card from the game that started it',
     detail:
-      'Plantdex is a love letter to the Pokémon cards a lot of us grew up on, so every deck ships with a genuine one tucked inside. Which card it is depends on what is in the box that day.',
-    alt: 'Three fanned stacks of Pokémon trading cards from the collection they are drawn from',
+      'Plantdex is a love letter to the Pokémon cards a lot of us grew up on, so every deck ships with one genuine card tucked inside. The photograph is the collection it comes out of — which card you get depends on what is in the box that day.',
+    alt: 'Three fanned stacks of Pokémon trading cards, the collection the included card is drawn from',
   },
   {
-    title: 'Two holographic pink pouches',
+    file: 'bonus-pouches',
+    title: 'Two holographic pouches',
     detail:
-      'Small zip bags for seeds, petals, a pressed leaf — whatever comes home in a pocket. The start of a collection you keep off the screen.',
-    alt: 'Two small holographic pink zip pouches',
+      'Two of them, pink, about the size of a card. For seeds, petals, a pressed leaf — whatever comes home in a pocket. The start of a collection you keep off the screen.',
+    alt: 'A pink holographic zip pouch photographed beside others in the same range',
   },
   {
+    file: 'bonus-stickers',
     title: 'Two herbalism stickers',
-    detail: 'For a water bottle, a field notebook, the lid of a jar. Yours to put somewhere.',
-    alt: 'Two herbalism-themed stickers',
+    detail:
+      'Two, pulled from a sheet of designs like these. For a water bottle, a field notebook, the lid of a jar. Yours to put somewhere.',
+    alt: 'A cluster of botanical and herbalism stickers',
   },
 ];
 
