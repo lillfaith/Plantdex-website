@@ -153,6 +153,65 @@ export const INCLUDED: readonly string[] = [
 ];
 
 /**
+ * WHAT ELSE IS IN THE BOX, kept separate from `INCLUDED` on purpose.
+ *
+ * `INCLUDED` promises that every line is checkable against this repository — the card count
+ * comes from the deck data, the companion site is this codebase. A pack-in is not checkable
+ * that way: it is a physical object the owner puts in an envelope, and the only thing
+ * standing behind it is that they did. Folding these into that list would quietly weaken a
+ * guarantee the rest of the page depends on, so they get their own section and their own
+ * wording.
+ *
+ * THE PHOTOGRAPH IS OPTIONAL, AND THAT IS A REAL STATE RATHER THAN AN OVERSIGHT. An item
+ * with no `file` renders as text alone, which is what honesty looks like before the owner
+ * has photographed the thing: the alternative is a stock image of a product nobody has
+ * confirmed is the one that ships. Same reasoning as `FieldCardSlot.card` staying optional
+ * with every card drawn — the type describes the state something passes through.
+ *
+ * A PRODUCT PHOTO HERE MUST BE THE OWNER'S OWN. Pulling a seller's image off a marketplace
+ * listing and republishing it on a storefront is someone else's copyrighted photograph doing
+ * the selling, and `shop.test.ts` cannot detect that — only this comment and the person
+ * adding the file can.
+ */
+export interface BonusItem {
+  /** Basename under /product, without extension. Absent until it has been photographed. */
+  readonly file?: string;
+  readonly title: string;
+  readonly detail: string;
+  readonly alt?: string;
+}
+
+export const BONUS_ITEMS: readonly BonusItem[] = [
+  {
+    title: 'A real trading card from the game that started it',
+    detail:
+      'Plantdex is a love letter to the Pokémon cards a lot of us grew up on, so every deck ships with a genuine one tucked inside. Which card it is depends on what is in the box that day.',
+    alt: 'A trading card included with the deck',
+  },
+  {
+    title: 'Two holographic pink pouches',
+    detail:
+      'Small zip bags for seeds, petals, a pressed leaf — whatever comes home in a pocket. The start of a collection you keep off the screen.',
+    alt: 'Two small holographic pink zip pouches',
+  },
+  {
+    title: 'Two herbalism stickers',
+    detail: 'For a water bottle, a field notebook, the lid of a jar. Yours to put somewhere.',
+    alt: 'Two herbalism-themed stickers',
+  },
+];
+
+/**
+ * Stated wherever the trading card is mentioned.
+ *
+ * Naming another company's product to say truthfully what is in the box is one thing;
+ * letting a buyer infer that company had anything to do with this deck is another, and the
+ * line between them is a sentence. `shop.test.ts` fails if the card is described without it.
+ */
+export const BONUS_DISCLAIMER =
+  'Plantdex is not affiliated with, endorsed by or sponsored by Nintendo, Game Freak or The Pokémon Company. The included card is an authentic card bought at retail and passed on unopened-from-pack; no part of this deck reproduces their artwork.';
+
+/**
  * The cards shown as product photography, in order.
  *
  * Here rather than inline in the page so a test can assert they all still resolve. They are

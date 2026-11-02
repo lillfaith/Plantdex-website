@@ -3,17 +3,19 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { PRINTED_DECK_SIZE, getPrintedCard } from './deck';
 import {
+  BONUS_DISCLAIMER,
+  BONUS_ITEMS,
   DECK_CARD_COUNT,
   INCLUDED,
   NOT_INCLUDED,
   PHYSICAL_CARD_COUNT,
+  PRODUCT_HERO,
+  PRODUCT_PHOTOS,
   REFERENCE_CARD_COUNT,
   SHOWCASE_HERB_IDS,
   displayPrice,
   isShopConfigured,
   paymentLink,
-  PRODUCT_HERO,
-  PRODUCT_PHOTOS,
 } from './shop';
 
 /** Every .ts/.tsx file under src/, so a key cannot hide in a directory nobody listed. */
@@ -427,5 +429,71 @@ describe('no page denies the sale while configuration can turn it on', () => {
       expect(src.match(/checkoutLink\(\)/g) ?? []).toHaveLength(1);
       expect(src).toMatch(/placement === 'home' \? checkoutLink\(\)/);
     });
+  });
+});
+
+/**
+ * The pack-ins. Three things here can go wrong quietly, and each costs something real:
+ * borrowing the deck list's guarantee for claims it cannot cover, naming another
+ * company's product without saying you are unconnected to them, and putting a seller's
+ * photograph on your own storefront.
+ */
+describe('what else is in the box', () => {
+  const page = () => readFileSync('src/app/shop/page.tsx', 'utf8');
+
+  it('keeps the pack-ins out of INCLUDED', () => {
+    /*
+     * `INCLUDED` promises every line is checkable against this repository. A pack-in is
+     * checkable only against the owner's word, so folding it in would weaken a guarantee
+     * the rest of the page leans on. They are separate constants and separate sections.
+     */
+    const included = INCLUDED.join(' ').toLowerCase();
+    for (const word of ['sticker', 'pouch', 'bag', 'pokémon', 'pokemon', 'trading card']) {
+      expect(included, `INCLUDED must not promise a pack-in ("${word}")`).not.toContain(word);
+    }
+    expect(BONUS_ITEMS.length).toBeGreaterThan(0);
+  });
+
+  it('never describes the card without the non-affiliation line', () => {
+    // Naming another company's product to say what is in the box is one thing; letting a
+    // buyer infer they were involved is another, and the line between is one sentence.
+    const mentionsCard = BONUS_ITEMS.some((i) =>
+      /pok[eé]mon|trading card/i.test(`${i.title} ${i.detail}`),
+    );
+    if (mentionsCard) {
+      expect(BONUS_DISCLAIMER).toMatch(/not affiliated/i);
+      expect(BONUS_DISCLAIMER).toMatch(/nintendo|pok[eé]mon company/i);
+      // And it has to be ON the page, next to the claim — not only in the module.
+      expect(page(), 'the disclaimer must render').toContain('BONUS_DISCLAIMER');
+    }
+  });
+
+  it('reproduces no third-party artwork, and claims none', () => {
+    // The deck may contain someone else's card; this site may not contain their art.
+    expect(BONUS_DISCLAIMER).toMatch(/no part of this deck reproduces their artwork/i);
+    const art = BONUS_ITEMS.map((i) => i.file).filter(Boolean) as string[];
+    for (const file of art) {
+      expect(
+        existsSync(`public/product/${file}.webp`),
+        `BONUS_ITEMS names /product/${file}.webp, which does not exist`,
+      ).toBe(true);
+    }
+  });
+
+  it('renders text alone until an item has been photographed', () => {
+    /*
+     * An unphotographed item is a real state, not an oversight — the owner has the objects
+     * and has not pointed a camera at them. The page must handle it rather than reaching
+     * for a stock image of a product nobody has confirmed ships.
+     */
+    expect(page()).toMatch(/item\.file \?/);
+    expect(page()).toMatch(/Photograph to come/);
+  });
+
+  it('promises no quantity or scarcity it cannot keep', () => {
+    // Same rule the rest of this file enforces on the deck: no stock claims, and no
+    // promise about WHICH card, since that depends on what is in the box that day.
+    const prose = BONUS_ITEMS.map((i) => `${i.title} ${i.detail}`).join(' ');
+    expect(prose).not.toMatch(/limited|only \d+|while stocks|selling fast|rare card|holo(graphic)? pok/i);
   });
 });

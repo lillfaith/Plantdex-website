@@ -6,16 +6,18 @@ import { SafetyNotice } from '@/components/SafetyNotice';
 import { assetPath } from '@/lib/asset-path';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 import {
+  BONUS_DISCLAIMER,
+  BONUS_ITEMS,
   DECK_CARD_COUNT,
+  DECK_SELLING_POINTS,
   INCLUDED,
   NOT_INCLUDED,
   PHYSICAL_CARD_COUNT,
   PRODUCT_HERO,
   PRODUCT_PHOTOS,
-  DECK_SELLING_POINTS,
+  checkoutLink,
   displayPrice,
   isCommerceLive,
-  checkoutLink,
 } from '@/lib/shop';
 
 export const metadata: Metadata = {
@@ -237,6 +239,83 @@ export default function ShopPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* ── Also in the box ──────────────────────────────────────────────────── */}
+      {/*
+        A SEPARATE SECTION FROM "What you get", and the separation is the honest part.
+        That list promises things checkable against this repository; these are pack-ins
+        whose only guarantee is that the owner puts them in. Running them together would
+        borrow the first list's credibility for claims it cannot cover.
+
+        It sits AFTER the deck itself and before the order panel: a buyer should decide
+        about the deck on the deck, meet the extras as a reason to feel good about it, and
+        then be offered the button. Leading with the extras would sell the wrong product.
+      */}
+      <section className="mt-8" aria-labelledby="bonus-heading">
+        <div className="panel p-5 sm:p-6">
+          <h2
+            id="bonus-heading"
+            className="text-sm font-bold tracking-wide text-gold-400 uppercase"
+          >
+            Also in the box
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-violet-300">
+            Every deck ships with a few extras. They are not the product and they are not why
+            to buy it — they are what makes opening the envelope better than opening a box.
+          </p>
+
+          <ul className="mt-5 grid gap-5 sm:grid-cols-3">
+            {BONUS_ITEMS.map((item) => (
+              <li key={item.title} className="flex flex-col gap-3">
+                {/*
+                  TRANSPARENT ARTWORK, NOT A PURPLE RECTANGLE. The obvious way to make a
+                  cut-out "blend in" is to fill its background with the page purple, and it
+                  does not work here: `.panel` is a translucent color-mix sitting on a fixed
+                  radial gradient, so a flat fill lands as a visibly flatter block exactly
+                  where the item is. An alpha channel composites against whatever is actually
+                  behind it, on the panel and on the page ground alike, and survives a theme
+                  change for free.
+                */}
+                {item.file ? (
+                  <Image
+                    src={`/product/${item.file}.webp`}
+                    alt={item.alt ?? item.title}
+                    width={600}
+                    height={600}
+                    className="h-32 w-full object-contain"
+                  />
+                ) : (
+                  /*
+                    NOT YET PHOTOGRAPHED, and it says so rather than standing in a stock
+                    image of a product nobody has confirmed is the one that ships. It is a
+                    real state: the owner has the objects and has not pointed a camera at
+                    them. `aria-hidden` because the text underneath already carries it.
+                  */
+                  <div
+                    aria-hidden
+                    className="flex h-32 w-full items-center justify-center rounded-lg border border-dashed border-violet-500/50 text-xs text-violet-400"
+                  >
+                    Photograph to come
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-sm font-bold text-violet-100">{item.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-violet-300">{item.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {/*
+            The non-affiliation line travels WITH the mention rather than living in the
+            footer. A buyer reading "a real trading card from the game that started it" forms
+            an impression right there, and a disclaimer two pages away does not reach them.
+          */}
+          <p className="mt-5 border-t border-violet-500/25 pt-4 text-xs leading-relaxed text-violet-400">
+            {BONUS_DISCLAIMER}
+          </p>
         </div>
       </section>
 
