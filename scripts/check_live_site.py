@@ -236,58 +236,65 @@ def check_buy_button(base: str) -> int:
     Its button went straight to the Payment Link for a while; `/shop` now carries the
     pack-ins, the non-affiliation line and the guarantee covering each item, so a home
     button that skips it lands somebody on a card form having never been shown the
-    contents. A reinstated shortcut would look like a harmless diff and is checked for here
-    rather than only in the unit tests, because the deployed HTML is the thing buyers meet.
+    contents. Checked in the deployed HTML and not only in the unit tests, because a
+    reinstated shortcut is a small, plausible-looking diff and the served page is what
+    buyers meet.
+
+    ─────────────────────────────────────────────────────────────────────────────
+    "A STRIPE LINK ON THE LANDING PAGE" IS NOT THE QUESTION, AND ASKING IT FAILED.
+    The first version of this check matched any `stripe.com` anchor on `/` and reported the
+    CTA as broken. What it had found was the DONATE button, which is a Payment Link on the
+    same `buy.stripe.com` host and is supposed to be there. Host is not identity: the only
+    way to tell the two apart is the URL itself, so the deck's link is read off `/shop` —
+    the one page that is meant to carry it — and the landing page is then checked for THAT
+    url and nothing else. A donation link, a sponsor link or any other outbound Stripe
+    anchor is left alone.
+    ─────────────────────────────────────────────────────────────────────────────
 
     A GET of a Payment Link is just loading a public checkout page. It starts no session
     that costs anything, takes no payment, and is exactly what a visitor's browser does.
     """
     print()
-    _, home = fetch(f"{base}/")
 
     STRIPE_ANCHOR = r'<a\b[^>]*href="(https://[^"]*stripe\.com[^"]*)"[^>]*>(.*?)</a>'
 
-    # THE SERVED BUILD, because a stale CDN copy and a bad build fail identically here.
-    # Pages caches HTML for ten minutes and a check run straight after a deploy can read the
-    # previous build, which looks exactly like the change never landing.
-    build = re.search(r"/_next/static/([A-Za-z0-9_-]{8,})/_buildManifest|/_next/static/chunks/main-app-([a-f0-9]{8,})", home)
-    if build:
-        print(f"      served build: {build.group(1) or build.group(2)}")
+    def label_of(inner: str) -> str:
+        return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", inner)).strip()
 
-    outbound = re.findall(STRIPE_ANCHOR, home, re.S)
-    if outbound:
-        url, inner = outbound[0]
-        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", inner)).strip()
-        print(f"FAIL  home cta      the landing page links straight to {url.split('/')[2]}")
-        print(f"      the anchor reads \"{text}\" and points at {url}")
-        print(f"      {len(outbound)} outbound checkout anchor(s) on the page")
-        print("      Every placement must be an internal route change to /shop, which is")
-        print("      where the contents, the pack-ins and the guarantee are stated.")
-        return 1
-    if 'href="/shop' not in home and "href='/shop" not in home:
-        print("FAIL  home cta      the landing page offers no way to reach the shop at all")
-        return 1
-    print("PASS  home cta      lands on /shop, not an outbound checkout")
-
+    # THE DECK'S LINK IS WHATEVER `/shop` OFFERS. `BuyButton` is the only control that
+    # renders it, and its label is a literal in that component, so the anchor is identified
+    # by what it says rather than by being the first Stripe URL on the page.
     _, shop = fetch(f"{base}/shop")
-    anchors = re.findall(STRIPE_ANCHOR, shop, re.S)
-    if not anchors:
+    deck = [(u, label_of(i)) for u, i in re.findall(STRIPE_ANCHOR, shop, re.S)
+            if "Buy the Plantdex" in label_of(i)]
+    if not deck:
         # NOT A FAILURE BY ITSELF. With the Payment Link variable unset `/shop` legitimately
         # reports the deck as not on sale — a coherent state this check must not call broken.
-        print("SKIP  buy button    no Stripe link on /shop")
+        print("SKIP  buy button    no deck checkout on /shop")
         print("      NEXT_PUBLIC_STRIPE_PAYMENT_LINK is unset, so the page reports the deck")
         print("      as not on sale. Coherent, not broken.")
         return 0
 
+    url, label = deck[0]
     failures = 0
-    url, inner = anchors[0]
-    label = re.sub(r"<[^>]+>", " ", inner)
-    label = re.sub(r"\s+", " ", label).strip()
+
+    _, home = fetch(f"{base}/")
+    if f'href="{url}"' in home:
+        print("FAIL  home cta      the landing page links straight to the deck checkout")
+        print(f"      {url}")
+        print("      Every placement must be an internal route change to /shop, which is")
+        print("      where the contents, the pack-ins and the guarantee are stated.")
+        failures += 1
+    elif 'href="/shop' not in home and "href='/shop" not in home:
+        print("FAIL  home cta      the landing page offers no way to reach the shop at all")
+        failures += 1
+    else:
+        print("PASS  home cta      lands on /shop, not the deck checkout")
 
     host = url.split("/")[2]
     if host not in ("buy.stripe.com", "checkout.stripe.com"):
         print(f"FAIL  buy button    points at {host}, which is not a Stripe checkout host")
-        return 1
+        return failures + 1
 
     # THE PRICE MUST BE ON THE BUTTON. It is the last thing a buyer sees before Stripe's own
     # form, and a control that does not name what it costs is the regression here.
