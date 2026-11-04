@@ -43,19 +43,7 @@ jobs:
           python3 -I scripts/retrieve_evidence.py "${NAMES[@]}" --out evidence/out
 
       - name: Summarise what came back
-        run: |
-          for f in evidence/out/*.json; do
-            echo "--- $f"
-            python3 -I -c "
-import json,sys
-d=json.load(open(sys.argv[1]))
-print(' state      ', d['state'])
-print(' accepted   ', d['identity']['accepted_name'], '|', d['identity']['gbif_status'])
-print(' gbif_id    ', d['identity']['gbif_id'], 'rank', d['identity']['rank'])
-print(' iucn       ', d['conservation']['iucn_category'], 'promotable', d['conservation']['promotable'])
-print(' counts     ', d['counts'])
-" "$f"
-          done
+        run: python3 -I scripts/summarise_evidence.py evidence/out/*.json
 
       - uses: actions/upload-artifact@v4
         with:
