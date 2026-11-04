@@ -237,3 +237,72 @@ Card claims still needing a candidate: identification traits, habitat, the two *
 lookalikes, taste and aromatic profile, and the "Skin care" and "Fever aid" healing traits —
 the last two are exactly why `trait-evidence.ts` files them as traditional use rather than
 as laboratory evidence.
+
+---
+
+# The three unaudited cards (#11, #19, #21) — November 2026
+
+Retrieved by `scripts/literature_candidates.py` against Europe PMC, run in Actions
+(`Literature candidates` workflow). **Every entry below is UNVERIFIED** and none may be
+cited until somebody opens it.
+
+## What these three cards actually are
+
+`CARD_SOURCES` grades them `hold`, and I previously read that as "no evidence this plant is
+medicinal" and excluded all three from the Georgia quest plan. That was wrong, and card
+#11's own audit note says so in the file: the hold was a **print audit** — the card's
+printed back was Dandelion's, *"so there was no claim about Lamium purpureum to source"* —
+and after the August reprint *"the reason for excluding it is gone and the card is simply
+unaudited… this is now a queue rather than a refusal."*
+
+A queue is not a refusal. These are existing, published cards with existing artwork. The
+work below is a **documentation audit**, not an eligibility trial, and nothing here bears on
+whether the cards remain in the deck.
+
+## #11 Purple Dead Nettle — *Lamium purpureum*
+
+25 retrievable hits for documented use. The two that are species-specific, and therefore
+the fastest route to an eligibility determination:
+
+| Suggested id | Year | Access | Title |
+|---|---|---|---|
+| `pmc-13372050` | 2026 | paywalled | A Comprehensive Phytochemical Analysis, Antioxidant, and Antibacterial Properties of *Lamium purpureum* L. — *Chemistry & Biodiversity* |
+| `pmid-31259737` | 2019 | paywalled | Haemostatic activity of butanolic extracts of *Lamium album* and *Lamium purpureum* aerial parts — *Acta Pharmaceutica* |
+
+Ethnobotanical surveys that may record it — **check the species list in each before citing**:
+
+| Suggested id | Year | Access | Title |
+|---|---|---|---|
+| `pmc-9751085` | 2022 | open | Ethnobotanical study of medicinal plants in Güce district, north-eastern Turkey |
+| `pmc-11175058` | 2024 | open | Ethnobotanical survey of culturally important plants and mushrooms, north-western Croatia |
+| `pmc-11819796` | 2025 | open | Shifting herbal knowledge… Southern Occitan Alps |
+| `pmc-13185300` | 2026 | open | Wild food plant knowledge, Venice Lagoon |
+
+**Noise in the same result set, as a caution:** a powdery-mildew report on *Stachys
+japonica*, a *Lamium amplexicaule* transcriptome, and a Lamiaceae aerobiology review all
+matched. A hit measures retrievability, not support.
+
+**To make #11 the 13th launch species, one person needs to:** open `pmc-13372050` or
+`pmid-31259737`, confirm it is about *Lamium purpureum* and documents medicinal use or
+studied activity, add it to `sources.json` with `verified: true`, then record eligibility
+with `medicinal_relevance_kind = 'scientific-study'` (or `'traditional-use'` if the basis is
+an ethnobotanical survey). **Estimated: 20–30 minutes.**
+
+## #19 Sheep's Sorrel — *Rumex acetosella*
+
+25 hits. Promising starting points:
+
+| Suggested id | Year | Access | Title |
+|---|---|---|---|
+| `pmc-7191034` | 2020 | open | Turning meadow weeds into valuable species for Romanian ethnomedicine — *Frontiers in Pharmacology* |
+| `pmc-11667078` | 2025 | open | Polygonaceae species in veterinary pharmacology and livestock nutrition |
+| `pmc-12595648` | 2025 | open | Ethnobotanical investigation, Ergani district, Diyarbakır, Turkey |
+| `pmc-10001278` | 2023 | open | Valorization of wild edible plants as food ingredients |
+
+Note the last is about **food**, not medicine. Edibility is not medicinal relevance.
+
+## #21 Chicory — *Cichorium intybus*
+
+25 hits, and chicory is among the best-studied plants in the deck — eligibility should be
+quick. Candidates include `pmc-12566942`, `pmc-13479520`, `pmc-12952072`, `pmc-12693992`,
+`pmc-12944019`, `pmc-11644142`. Pick whichever is species-specific and open access.
