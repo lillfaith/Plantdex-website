@@ -134,14 +134,15 @@
     "healingTraits": [
       "Digestive",
       "Calming",
-      "Skin support",
       "Antimicrobial",
-      "Anti-inflammatory",
+      "Anti-inflam.",
       "Antioxidant"
     ],
     "compounds": [
-      "Germacrene",
-      "alpha-Curcumene"
+      "Apigenin",
+      "Luteolin",
+      "Bisabolol",
+      "Chamazulene"
     ],
     "taste": [],
     "aromatic": [],
@@ -167,38 +168,43 @@
     },
     {
       "field": "back.compounds",
-      "severity": "needs-decision",
-      "reason": "Written 'alpha-Curcumene'. The Greek alpha is genuinely absent from Avenir-Medium's cmap -- my first glyph check passed it because a .notdef TOFU BOX is ink, and a hollow rectangle shipped in the render. Either accept the spelled-out form or supply a face with Greek coverage."
-    },
-    {
-      "field": "front.environmental_indicators",
-      "severity": "blocker",
-      "reason": "No sourced water/sun/temperature values. Icons and exact slots are ready; rows empty."
-    },
-    {
-      "field": "front.encounter_rate",
-      "severity": "blocker",
-      "reason": "No sourced value; the slot now renders the PROVISIONAL value 'Common' so its placement and styling can be judged against the printed cards. `encounter_rate` itself is still null. Matricaria chamomilla is a widely naturalised ruderal, so Common is the defensible placeholder -- but the mapping from GBIF occurrence counts to Common/Uncommon/Rare/Epic is a product decision that has not been made, so this is not an answer."
-    },
-    {
-      "field": "front.season",
-      "severity": "blocker",
-      "reason": "All four icons exist. Eight CC0 observations spanning April-September across five countries is not phenology."
+      "severity": "resolved",
+      "reason": "Now Apigenin / Luteolin / Bisabolol / Chamazulene, each traced to c11 (Nutrients 2026 phytochemistry review) and c12 (Plant Cell Reports 2026). These are the characteristic constituents of German chamomile. The Greek alpha is dropped on the ARTWORK only -- Avenir-Medium has no alpha and a .notdef box is worse than the common name -- and 'alpha-bisabolol' is kept in full in the claims. 'Bisabolol' is the accepted common name of the compound, so this is a shortening, not a different substance."
     },
     {
       "field": "back.taste",
       "severity": "wont-fix",
-      "reason": "A taste note is an observation by somebody holding the plant, not a citation."
+      "reason": "Still no source. Searching the corpus for taste/bitter/sweet returns nothing for this species; one review mentions a 'sensory profile' without describing it. A taste note is an observation by somebody holding the plant."
     },
     {
       "field": "back.aromatic",
       "severity": "wont-fix",
-      "reason": "The same as taste."
+      "reason": "The same. 'aroma'/'odour'/'scent' hits in the corpus are about other species or about extraction method, not about how chamomile smells."
+    },
+    {
+      "field": "back.healingTraits",
+      "severity": "needs-decision",
+      "reason": "c3 records chamomile as the most frequently cited species for EYE complaints in Mexican ethnomedicinal records. It is sourced, and it is deliberately NOT printed: a trait line reading 'Eye complaints' on a card people take outdoors reads as an instruction to put a plant infusion in an eye. Your call, and the claim is kept either way."
+    },
+    {
+      "field": "front.environmental_indicators",
+      "severity": "blocker",
+      "reason": "Still empty, and deliberately. The evidence pipeline searches EuropePMC, which is a biomedical corpus: across 41 retrieved sources there is nothing about how this plant grows. The only 'temperature' hit is a supercritical-extraction parameter and the only 'semi-arid' hit says where a sample was collected, not what the species requires. docs/environmental-indicators.md proposes Ellenberg L/F/T via BiolFlor as the source and gives the banding onto the deck's five slots; the retrieval has to run in Actions and has not run."
+    },
+    {
+      "field": "front.season",
+      "severity": "blocker",
+      "reason": "All four icons exist and the slot is ready. Eight CC0 observations spanning April-September across five countries is a sample of where people photographed it, not phenology."
+    },
+    {
+      "field": "front.encounter_rate",
+      "severity": "needs-decision",
+      "reason": "RARITY IS A GAMEPLAY RATING AND IS NOT CONSERVATION STATUS. The two must not be wired together: GBIF reports this species as IUCN NOT_EVALUATED, and the retrieval already marks it `promotable: false` for that reason -- that is a statement about collecting pressure, not about how often a player meets the plant. The card renders the PROVISIONAL value 'Common' from `encounter_rate_provisional` so the slot's styling can be judged; the sourced `encounter_rate` is still null and the gameplay criteria are still unapproved."
     },
     {
       "field": "front.scientific_name capitalisation",
-      "severity": "needs-decision",
-      "reason": "All 45 printed fronts capitalise the specific epithet -- the Dandelion card reads 'Taraxacum Officinale' -- while herbs.json stores the botanically correct lowercase form. The renderer now follows the DECK on the artwork only; the stored scientific_name, the species key and every record keep 'Matricaria chamomilla'. This is the one place where matching the deck and being botanically correct disagree, so it is your call, not mine."
+      "severity": "resolved",
+      "reason": "Artwork follows the deck: all 45 printed fronts capitalise the specific epithet ('Taraxacum Officinale'), so deck_binomial() title-cases it for the RENDER only. The stored scientific_name, species_key, accepted_name and every claim keep the botanically correct 'Matricaria chamomilla'. Artwork styling and taxonomy are separate fields and neither is derived from the other."
     }
   ],
   "publishable": false,
@@ -245,6 +251,34 @@
         "superseded": "every earlier number was fitted to Pine #41 ALONE. 'Pinus spp.' is ten characters with almost no ascenders, so its ink box is unrepresentatively short; matching it forced the sizes up and the shapes narrow at the same time, which is exactly the 'too large' + 'squashed' pair reported.",
         "rarity_tiers": "each tier has its OWN ink, which one card could not show: Common dark teal, Uncommon mauve, Rare pink, Epic blue. Pine is Rare, so calibrating from it gave every tier Rare's pink."
       }
+    }
+  },
+  "back_provenance": {
+    "healingTraits": {
+      "Digestive": "c1",
+      "Calming": "c2",
+      "Antimicrobial": "c7",
+      "Anti-inflam.": "c10",
+      "Antioxidant": "c7, c10"
+    },
+    "compounds": {
+      "Apigenin": "c11",
+      "Luteolin": "c11",
+      "Bisabolol": "c11, c12",
+      "Chamazulene": "c11, c12"
+    },
+    "preparations": {
+      "Infusion": "c4",
+      "Essential oil": "c9"
+    },
+    "usableParts": {
+      "Flower": "c8",
+      "Leaf": "c8"
+    },
+    "removed": {
+      "Skin support": "NO CLAIM SUPPORTS IT. Searching the whole retrieved corpus for skin/dermat/wound returns nothing about this species, so it was printed without evidence.",
+      "Germacrene": "c6 is a single GC run on Moroccan-grown material. True of that sample, not characteristic of the species; superseded by c11/c12.",
+      "alpha-Curcumene": "NO CLAIM SUPPORTS IT. 'curcumene' appears zero times in the drafted claims and once in an undrafted passage, so it reached the card without ever becoming a claim."
     }
   }
 }

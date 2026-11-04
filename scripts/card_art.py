@@ -54,6 +54,26 @@ def grabcut(bgr: np.ndarray, margin: float, iterations: int) -> np.ndarray:
     return cv2.GaussianBlur(alpha, (3, 3), 0)
 
 
+def plant_blobs(alpha: np.ndarray, keep: float = 0.12) -> np.ndarray:
+    """Keep every piece at least `keep` of the biggest one.
+
+    `largest_blob` is right when the mask was built from a rectangle prior and everything
+    outside the subject is suspect. After region growing from a plant-colour core it is
+    too strict: the surviving pieces are already plant-coloured, and a stem pinched to a
+    few pixels by a shadow becomes its own component, so keeping only the largest throws
+    away the stem and the bud hanging off it -- the parts that make a photograph a
+    SPECIMEN rather than a close-up of one flower head.
+    """
+    count, labels, stats, _ = cv2.connectedComponentsWithStats((alpha > 127).astype(np.uint8), 8)
+    if count <= 1:
+        return alpha
+    areas = stats[1:, cv2.CC_STAT_AREA]
+    cutoff = areas.max() * keep
+    wanted = {i + 1 for i, a in enumerate(areas) if a >= cutoff}
+    mask = np.isin(labels, list(wanted))
+    return np.where(mask, alpha, 0).astype(np.uint8)
+
+
 def largest_blob(alpha: np.ndarray) -> np.ndarray:
     """Keep the biggest connected piece.
 
@@ -85,16 +105,37 @@ def plant_seed(bgr: np.ndarray) -> np.ndarray:
     and halates against a bright sky. GrabCut is good at the edge once it is told roughly
     where the subject is -- that was always the missing half.
     """
+    # REGION GROWING FROM A CONFIDENT CORE, because colour alone cannot separate a white
+    # ray floret from a white stone. The disc and the foliage are unambiguous -- nothing in
+    # a limestone bed is saturated yellow or saturated green -- so those are the core, and
+    # pale pixels join the plant ONLY if they are connected to that core. A petal is; a
+    # stone two inches away is not, however similar its colour.
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
     H, S, V = hsv[:, :, 0].astype(int), hsv[:, :, 1].astype(int), hsv[:, :, 2].astype(int)
     white = (V > 165) & (S < 60)                       # ray florets
     yellow = (H >= 18) & (H <= 38) & (S > 90) & (V > 110)   # the disc
     green = (H >= 35) & (H <= 90) & (S > 55) & (V > 45)     # foliage and stems
-    plant = white | yellow | green
-    # Skin is the specific failure this exists to stop: warm, mid-saturation, never green.
-    skin = (((H <= 25) | (H >= 170)) & (S > 35) & (S < 165) & (V > 90)) & ~plant
-    plant = cv2.morphologyEx(plant.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
-    plant = largest_blob(plant * 255) > 0
+    # Skin is a specific failure this exists to stop: warm, mid-saturation, never green.
+    # NOTE THE `white` IN THE EXCLUSION. Ray florets are not neutral white -- they pick up
+    # warm light and sit at S ~40-80 -- so a skin test that only spares yellow and green
+    # classifies the petals themselves as skin, and region growing then cannot reach them.
+    # That left one sprite as a bare yellow disc with every petal cut off.
+    skin = (((H <= 25) | (H >= 170)) & (S > 35) & (S < 165) & (V > 90)) & ~(yellow | green | white)
+
+    core = cv2.morphologyEx((yellow | green).astype(np.uint8), cv2.MORPH_CLOSE,
+                            np.ones((9, 9), np.uint8)).astype(bool)
+    core = (largest_blob(core.astype(np.uint8) * 255) > 0)
+    reachable = (core | white) & ~skin
+    grown = core.copy()
+    k3 = np.ones((3, 3), np.uint8)
+    for _ in range(220):                      # ~1 plant-width at the 1200px working size
+        nxt = (cv2.dilate(grown.astype(np.uint8), k3) > 0) & reachable
+        if nxt.sum() == grown.sum():
+            break
+        grown = nxt
+    plant = cv2.morphologyEx(grown.astype(np.uint8), cv2.MORPH_CLOSE,
+                             np.ones((9, 9), np.uint8)).astype(bool)
+    plant = largest_blob(plant.astype(np.uint8) * 255) > 0
     # Grow the seed a little: the true edge lies just outside a strict colour match.
     near = cv2.dilate(plant.astype(np.uint8), np.ones((25, 25), np.uint8)) > 0
 
@@ -131,7 +172,7 @@ def cutout(path: pathlib.Path, margin: float, iterations: int) -> Image.Image:
     if alpha is None:                  # fall back to the rectangle prior, visibly
         print(f"   {path.name}: no plant colour found, falling back to the rectangle prior")
         alpha = grabcut(bgr, margin, iterations)
-    alpha = largest_blob(alpha)
+    alpha = plant_blobs(alpha)
     rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
     out = np.dstack([rgb, alpha])
     im = Image.fromarray(out, "RGBA")

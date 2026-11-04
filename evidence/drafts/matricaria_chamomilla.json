@@ -231,6 +231,50 @@
         "ok": true,
         "reason": null
       }
+    },
+    {
+      "claim_id": "c11",
+      "kind": "compound",
+      "standing": "laboratory",
+      "body": "German chamomile is rich in apigenin-related flavonoids, luteolin derivatives, alpha-bisabolol and matricin-derived chamazulene.",
+      "passage_id": "pmc-13363751#abstract-3",
+      "quote": "German chamomile is more extensively characterised and is particularly rich in apigenin-related flavonoids, luteolin derivatives, \u03b1-bisabolol, and matricin-derived chamazulene",
+      "source_ids": [
+        "pmc-13363751"
+      ],
+      "review": {
+        "verdict": null,
+        "by": null,
+        "on": null,
+        "note": null
+      },
+      "high_risk": false,
+      "citation_check": {
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "claim_id": "c12",
+      "kind": "compound",
+      "standing": "laboratory",
+      "body": "The essential oil's sesquiterpenoids include chamazulene and alpha-bisabolol.",
+      "passage_id": "pmid-42154336#abstract-1",
+      "quote": "whose essential oil is rich in sesquiterpenoids, including (E)-\u03b2-farnesene (E\u03b2F), chamazulene, nerolidol and \u03b1-bisabolol",
+      "source_ids": [
+        "pmid-42154336"
+      ],
+      "review": {
+        "verdict": null,
+        "by": null,
+        "on": null,
+        "note": null
+      },
+      "high_risk": false,
+      "citation_check": {
+        "ok": true,
+        "reason": null
+      }
     }
   ],
   "citation_check": {

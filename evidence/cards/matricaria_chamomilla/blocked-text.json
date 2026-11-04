@@ -1,16 +1,1 @@
-[
-  {
-    "slot": "back.healingTraits",
-    "text": "Anti-inflammatory",
-    "issue": "too long for its column; scaled to fit",
-    "scaled_to": 0.803,
-    "deck_convention": "the printed cards abbreviate"
-  },
-  {
-    "slot": "back.compounds",
-    "text": "alpha-Curcumene",
-    "issue": "too long for its column; scaled to fit",
-    "scaled_to": 0.829,
-    "deck_convention": "the printed cards abbreviate"
-  }
-]
+[]
