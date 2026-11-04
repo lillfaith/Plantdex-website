@@ -254,6 +254,51 @@ describe('only documented medicinal species can be collectible', () => {
   });
 });
 
+describe('the database functions carry no privilege of their own', () => {
+  /** Every `create or replace function` body in the migration. */
+  const functions = [...sql.matchAll(/create or replace function public\.(\w+)[\s\S]*?\n\$\$;/g)]
+    .map((m) => ({ name: m[1] ?? '', body: m[0] }));
+
+  it('found the functions, so the assertions below are not vacuous', () => {
+    expect(functions.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it.each(['enforce_collectible_eligibility', 'protect_published_collectibles',
+           'withdraw_medicinal_eligibility', 'require_verified_sources',
+           'set_medicinal_claim_risk'])('%s is invoker-rights with a pinned search_path', (name) => {
+    const fn = functions.find((f) => f.name === name);
+    expect(fn, `${name} is missing from the migration`).toBeDefined();
+    /*
+     * SECURITY DEFINER WOULD MAKE EACH OF THESE A PRIVILEGE SURFACE. They run on tables no
+     * client may write, called by the service role, which bypasses RLS already — so definer
+     * rights would buy nothing and would have to be re-reasoned about every time a policy
+     * changed. An empty search_path plus fully-qualified names is what stops a schema
+     * earlier on the caller's path shadowing `public` and lending them the function's
+     * rights; it is the stronger form of the `search_path = public` the older migrations use.
+     */
+    expect(fn!.body, `${name} must not be SECURITY DEFINER`).not.toMatch(/security definer/i);
+    expect(fn!.body, `${name} must pin search_path`).toMatch(/set search_path = ''/);
+  });
+
+  it('keeps the admin withdrawal away from the client roles', () => {
+    expect(sql).toMatch(/revoke all on function public\.withdraw_medicinal_eligibility.*from public/);
+    expect(sql).toMatch(/from anon/);
+    expect(sql).toMatch(/from authenticated/);
+    // service_role does not exist in the local harness, so the grant has to be conditional
+    // or the migration cannot be tested anywhere except the one place it must not be.
+    expect(sql).toMatch(/rolname = 'service_role'/);
+  });
+
+  it('requires cited sources to exist AND be verified', () => {
+    // Without this, `eligible` is a value somebody types: an array cannot carry a foreign
+    // key, so the citation requirement is a trigger or it is decorative.
+    const fn = functions.find((f) => f.name === 'require_verified_sources');
+    expect(fn!.body).toMatch(/s\.id = wanted and s\.verified/);
+    expect(sql).toMatch(/create trigger catalog_species_verified_sources/);
+    expect(sql).toMatch(/create trigger medicinal_claims_verified_sources/);
+  });
+});
+
 describe('the ingestion script', () => {
   const script = readFileSync('scripts/ingest_species.py', 'utf8');
   /** The script with its module docstring and `#` comments removed, for the same reason

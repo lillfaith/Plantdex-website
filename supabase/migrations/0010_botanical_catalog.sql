@@ -409,6 +409,156 @@ create trigger catalog_species_protect_published
   before update on public.catalog_species
   for each row execute function public.protect_published_collectibles();
 
+-- ── Withdrawing eligibility, atomically ───────────────────────────────────────
+--
+-- THE GATE MAKES A TWO-STEP OPERATION OUT OF ONE DECISION, AND THAT IS WHERE MISTAKES LIVE.
+--
+-- An administrator who concludes a species should not be collectible has to unpublish its
+-- cards and then withdraw eligibility, in that order, because the reverse is refused. Two
+-- statements over PostgREST are two requests: the first can succeed and the second fail,
+-- leaving a species that is still `eligible` with its cards unpublished. That state is
+-- harmless — it fails SAFE, nothing medicinal is exposed — but it is silent, and the
+-- operator believes the withdrawal happened.
+--
+-- So the decision is one call. A function body is a single transaction: either both writes
+-- land or neither does, and no intermediate state is ever visible to another session.
+--
+-- NOT `security definer`, DELIBERATELY. A definer function would run as its owner and
+-- become a privilege surface that has to be reasoned about every time the policies change —
+-- the thing to avoid when the operation it performs is "make this plant not a medicine
+-- any more". It is `security invoker`, so it can only do what its caller could already do,
+-- and EXECUTE is revoked from the client roles below. The caller is therefore the service
+-- role, which bypasses RLS anyway. The function buys atomicity and ordering, not privilege.
+create or replace function public.withdraw_medicinal_eligibility(
+  p_species_key text,
+  p_reviewer    text,
+  p_reason      text
+)
+returns table (unpublished_cards integer)
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_count integer;
+begin
+  if p_reviewer is null or length(trim(p_reviewer)) = 0 then
+    raise exception 'a withdrawal names the person making it'
+      using errcode = 'check_violation';
+  end if;
+  if p_reason is null or length(trim(p_reason)) < 20 then
+    raise exception 'a withdrawal states why, in at least 20 characters'
+      using errcode = 'check_violation';
+  end if;
+
+  -- Cards first. The gate refuses the other order, which is the whole reason this exists.
+  update public.collectible_cards
+     set published = false
+   where species_key = p_species_key and published;
+  get diagnostics v_count = row_count;
+
+  update public.catalog_species
+     set medicinal_eligibility   = 'ineligible',
+         eligibility_basis       = p_reason,
+         eligibility_reviewed_by = p_reviewer,
+         eligibility_reviewed_on = current_date
+   where species_key = p_species_key;
+
+  if not found then
+    raise exception 'species % is not in the catalog', p_species_key
+      using errcode = 'no_data_found';
+  end if;
+
+  return query select v_count;
+end;
+$$;
+
+-- The client roles may not call it. They could not perform either write anyway — no table
+-- in this migration has a write policy — but an executable admin function is a thing people
+-- find, and the revoke says in the schema that it is not for them.
+revoke all on function public.withdraw_medicinal_eligibility(text, text, text) from public;
+do $$
+begin
+  if exists (select 1 from pg_roles where rolname = 'anon') then
+    execute 'revoke all on function public.withdraw_medicinal_eligibility(text, text, text) from anon';
+  end if;
+  if exists (select 1 from pg_roles where rolname = 'authenticated') then
+    execute 'revoke all on function public.withdraw_medicinal_eligibility(text, text, text) from authenticated';
+  end if;
+  -- service_role exists on Supabase and not in the local test harness, so the grant is
+  -- conditional rather than assumed. A migration that fails on a missing role cannot be
+  -- tested anywhere but production, which is the one place it must not be tested.
+  if exists (select 1 from pg_roles where rolname = 'service_role') then
+    execute 'grant execute on function public.withdraw_medicinal_eligibility(text, text, text) to service_role';
+  end if;
+end $$;
+
+-- ── Eligibility sources must be real, and verified ────────────────────────────
+--
+-- WITHOUT THIS, `eligible` IS A VALUE SOMEBODY TYPES.
+--
+-- The constraints above require a relevance kind, a basis, a reviewer and a non-empty
+-- `eligibility_sources`. None of that makes the sources REAL: `array['looks-medicinal']`
+-- satisfies every one of them. An array cannot carry a foreign key, so the reference has to
+-- be checked by a trigger or not at all — and "not at all" means the citation requirement is
+-- decorative, which is worse than absent because it reads as rigour.
+--
+-- VERIFIED, not merely present. `catalog_sources.verified` means a human opened the thing
+-- and confirmed it supports the claim; an unverified row is a candidate, and a candidate
+-- backing an eligibility decision is the AI-suggested-citation failure arriving one table
+-- to the left.
+--
+-- Applied to approved medicinal claims for the same reason and with the same words.
+create or replace function public.require_verified_sources()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_ids    text[];
+  v_label  text;
+  v_missing text[];
+begin
+  if tg_table_name = 'catalog_species' then
+    if new.medicinal_eligibility = 'pending' then
+      return new;
+    end if;
+    v_ids := new.eligibility_sources;
+    v_label := 'eligibility';
+  else
+    if new.review_status <> 'approved' then
+      return new;
+    end if;
+    v_ids := new.source_ids;
+    v_label := 'approved claim';
+  end if;
+
+  if v_ids is null or cardinality(v_ids) = 0 then
+    return new;   -- The CHECK constraints already decide whether empty is allowed.
+  end if;
+
+  select array_agg(wanted) into v_missing
+  from unnest(v_ids) as wanted
+  where not exists (
+    select 1 from public.catalog_sources s where s.id = wanted and s.verified
+  );
+
+  if v_missing is not null then
+    raise exception
+      '% cites source(s) % that are absent from catalog_sources or not verified',
+      v_label, v_missing
+      using errcode = 'foreign_key_violation';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists catalog_species_verified_sources on public.catalog_species;
+create trigger catalog_species_verified_sources
+  before insert or update on public.catalog_species
+  for each row execute function public.require_verified_sources();
+
 -- ── Layer C: medicinal evidence ────────────────────────────────────────────────
 --
 -- ONE CLAIM PER ROW, EACH WITH ITS OWN EVIDENCE AND ITS OWN REVIEW STATE.
@@ -462,6 +612,11 @@ create table if not exists public.medicinal_claims (
   constraint ai_drafts_are_never_self_approving
     check (not (drafted_by = 'ai-assisted' and review_status = 'approved'))
 );
+
+drop trigger if exists medicinal_claims_verified_sources on public.medicinal_claims;
+create trigger medicinal_claims_verified_sources
+  before insert or update on public.medicinal_claims
+  for each row execute function public.require_verified_sources();
 
 -- `high_risk` follows from `kind`, always, on insert and on update.
 create or replace function public.set_medicinal_claim_risk()

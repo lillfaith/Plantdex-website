@@ -76,6 +76,44 @@ rows, and `catalog_sources` to `verified`. A UI bug cannot leak a draft, and nei
 hand-written PostgREST query. No table in 0010 has an insert, update or delete policy for
 any client role.
 
+## Withdrawing eligibility
+
+One call, because the gate makes two statements out of one decision and two PostgREST
+requests can half-succeed:
+
+```sql
+select * from public.withdraw_medicinal_eligibility(
+  'mentha piperita', 'lillian', 'Species-level relevance could not be confirmed on review.');
+```
+
+It unpublishes every card for the species and sets eligibility to `ineligible`, in that
+order, inside one transaction — so no other session ever sees an intermediate state. It
+refuses a withdrawal with no named reviewer or no stated reason, and errors rather than
+silently doing nothing for a species that is not in the catalog. It returns how many cards
+it unpublished.
+
+`EXECUTE` is revoked from `anon` and `authenticated`; only the service role may call it. It
+is `security invoker`, so it holds no privilege of its own — it buys atomicity and ordering,
+nothing else.
+
+## Why `eligible` cannot just be typed
+
+Five things must be true at once, and the last is the one that makes the rest mean
+something:
+
+1. `medicinal_relevance_kind` is set — historical use, traditional use or scientific study.
+2. `eligibility_basis` says why, in at least 20 characters.
+3. `eligibility_sources` is non-empty.
+4. `eligibility_reviewed_by` and `eligibility_reviewed_on` name a person and a date.
+5. **Every cited source exists in `catalog_sources` and is `verified`** — checked by a
+   trigger, because an array cannot carry a foreign key. Without it `array['looks-medicinal']`
+   would satisfy 1–4, and the citation requirement would be decorative, which is worse than
+   absent because it reads as rigour.
+
+`verified` means a human opened the source and confirmed it supports the claim. An
+unverified row is a candidate, and a candidate backing an eligibility decision is the
+AI-suggested-citation failure arriving one table to the left.
+
 ## Running an ingestion
 
 ```bash

@@ -212,6 +212,117 @@ begin
   perform t_pass('a printed card publishes once its review gap is recorded in writing');
 end $$;
 
+-- ─── B6. ELIGIBILITY CITES REAL, VERIFIED SOURCES ──────────────────────────
+--
+-- Without this the citation requirement is decorative: `array['looks-medicinal']` satisfies
+-- every CHECK on the table. An array cannot carry a foreign key, so it is a trigger or it
+-- is nothing.
+do $$
+begin
+  begin
+    insert into public.catalog_species
+      (species_key, accepted_name, medicinal_eligibility, medicinal_relevance_kind,
+       eligibility_basis, eligibility_sources, eligibility_reviewed_by, eligibility_reviewed_on)
+    values ('mentha piperita', 'Mentha piperita', 'eligible', 'traditional-use',
+            'A basis long enough to satisfy the length constraint and nothing else.',
+            array['a-source-nobody-created'], 'test', current_date);
+    raise exception 'FAIL  eligibility cited a source that does not exist';
+  exception when foreign_key_violation then
+    perform t_pass('eligibility citing a nonexistent source is refused');
+  end;
+
+  begin
+    insert into public.catalog_species
+      (species_key, accepted_name, medicinal_eligibility, medicinal_relevance_kind,
+       eligibility_basis, eligibility_sources, eligibility_reviewed_by, eligibility_reviewed_on)
+    values ('mentha piperita', 'Mentha piperita', 'eligible', 'traditional-use',
+            'A basis long enough to satisfy the length constraint and nothing else.',
+            array['ai-candidate'], 'test', current_date);
+    raise exception 'FAIL  eligibility cited an UNVERIFIED source';
+  exception when foreign_key_violation then
+    perform t_pass('eligibility citing an unverified source is refused');
+  end;
+
+  insert into public.catalog_species
+    (species_key, accepted_name, medicinal_eligibility, medicinal_relevance_kind,
+     eligibility_basis, eligibility_sources, eligibility_reviewed_by, eligibility_reviewed_on)
+  values ('mentha piperita', 'Mentha piperita', 'eligible', 'traditional-use',
+          'A basis long enough to satisfy the length constraint and nothing else.',
+          array['gbif-backbone'], 'test', current_date);
+  perform t_pass('eligibility citing a verified source is accepted');
+
+  -- The same rule reaches approved medicinal claims.
+  begin
+    insert into public.medicinal_claims
+      (species_key, kind, body, standing, review_status, reviewed_by, reviewed_on, source_ids)
+    values ('mentha piperita', 'traditional-use', 'Something attributed to an unchecked reference.',
+            'traditional', 'approved', 'test', current_date, array['ai-candidate']);
+    raise exception 'FAIL  an approved claim cited an unverified source';
+  exception when foreign_key_violation then
+    perform t_pass('an approved claim citing an unverified source is refused');
+  end;
+end $$;
+
+-- ─── B7. WITHDRAWAL IS ONE CALL, AND IT IS ATOMIC ──────────────────────────
+--
+-- The gate makes two statements out of one decision, and two PostgREST requests can half
+-- succeed. A function body is one transaction.
+do $$
+declare n integer; published boolean; elig text;
+begin
+  insert into public.collectible_cards (species_key, tier, rarity, xp, published)
+  values ('mentha piperita', 'generated', 'Common', 100, true);
+  perform t_pass('an eligible species publishes a card, ready to be withdrawn');
+
+  -- A withdrawal names its author and says why.
+  begin
+    perform public.withdraw_medicinal_eligibility('mentha piperita', '', 'A reason long enough to pass.');
+    raise exception 'FAIL  a withdrawal was accepted with no reviewer';
+  exception when check_violation then
+    perform t_pass('a withdrawal with no named reviewer is refused');
+  end;
+  begin
+    perform public.withdraw_medicinal_eligibility('mentha piperita', 'test', 'too short');
+    raise exception 'FAIL  a withdrawal was accepted with no stated reason';
+  exception when check_violation then
+    perform t_pass('a withdrawal with no stated reason is refused');
+  end;
+
+  select unpublished_cards into n
+  from public.withdraw_medicinal_eligibility(
+    'mentha piperita', 'test', 'Species-level relevance could not be confirmed on review.');
+  perform t_assert_count(n, 1, 'the withdrawal unpublished exactly one card');
+
+  select c.published into published from public.collectible_cards c
+   where c.species_key = 'mentha piperita';
+  select s.medicinal_eligibility into elig from public.catalog_species s
+   where s.species_key = 'mentha piperita';
+  perform t_assert(not published, 'the card is unpublished');
+  perform t_assert_eq(elig, 'ineligible', 'and the species is ineligible, from one call');
+
+  -- An unknown species is an error, not a silent no-op.
+  begin
+    perform public.withdraw_medicinal_eligibility(
+      'nothing here', 'test', 'A reason long enough to pass the length check.');
+    raise exception 'FAIL  withdrawing from an unknown species succeeded';
+  exception when no_data_found then
+    perform t_pass('withdrawing from an unknown species is an error, not a no-op');
+  end;
+end $$;
+
+-- ─── B8. THE ADMIN FUNCTION IS NOT FOR CLIENTS ─────────────────────────────
+do $$
+begin
+  perform t_assert(
+    not has_function_privilege('anon',
+      'public.withdraw_medicinal_eligibility(text, text, text)', 'EXECUTE'),
+    'anon may not execute the withdrawal function');
+  perform t_assert(
+    not has_function_privilege('authenticated',
+      'public.withdraw_medicinal_eligibility(text, text, text)', 'EXECUTE'),
+    'authenticated may not execute the withdrawal function');
+end $$;
+
 -- ─── C. HISTORICAL USE IS RELEVANCE, NOT EFFICACY ──────────────────────────
 --
 -- The distinction the whole product rests on: a plant may be collectible BECAUSE people
