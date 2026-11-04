@@ -5,6 +5,7 @@ import { FIELD_CARDS } from '@/lib/field-cards';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
 import { FirstFindNote } from '@/components/herbdex/FirstFindNote';
+import { RegionTeaser } from '@/components/quests/RegionTeaser';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { RecentFindsStrip } from '@/components/herbdex/RecentFindsStrip';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
@@ -192,6 +193,15 @@ export default function HerbdexPage() {
       */}
       <div className="mt-3">
         <RecentFindsStrip />
+      </div>
+
+      {/*
+        The regional board, as a signpost rather than an eighth nav item — seven labels is
+        the measured ceiling at 390px. It sits beside Field Research because both answer
+        the same question a returning player has: what should I do next.
+      */}
+      <div className="mt-3">
+        <RegionTeaser />
       </div>
 
       <div className="mt-3">

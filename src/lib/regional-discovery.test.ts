@@ -202,6 +202,32 @@ describe('account switching', () => {
   });
 });
 
+describe('the way in from the Herbdex', () => {
+  it('is on the Herbdex, and does not take a nav slot', () => {
+    // Seven nav labels is the measured ceiling: at 390px each is 53px and an eighth
+    // truncates. The board is a signpost on the page a returning player already lands on.
+    expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).toContain('<RegionTeaser />');
+    expect(readFileSync('src/components/SiteNav.tsx', 'utf8'))
+      .not.toContain('/quests');
+  });
+
+  it('never adds confirmed and likely together', () => {
+    /*
+     * The teaser is exactly where the shorter, rounder, wronger number reappears. It must
+     * print the confirmed count and name the likely ones separately, as the board does.
+     */
+    const teaser = readFileSync('src/components/quests/RegionTeaser.tsx', 'utf8');
+    expect(teaser).toMatch(/counts\.confirmed/);
+    expect(teaser).toMatch(/recorded occasionally/);
+    expect(teaser, 'the teaser must not print a combined total').not.toMatch(/counts\.findable/);
+  });
+
+  it('is scoped like everything else that reads a region', () => {
+    expect(readFileSync('src/components/quests/RegionTeaser.tsx', 'utf8'))
+      .toMatch(/useRegion\(useRegionScope\(\)\)/);
+  });
+});
+
 describe('non-medicinal finds still go to the Seed Shelf', () => {
   it('a species with no card is shelf-eligible, region or no region', () => {
     /*
