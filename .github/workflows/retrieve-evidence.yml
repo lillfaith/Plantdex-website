@@ -18,8 +18,17 @@ on:
       - .github/workflows/retrieve-evidence.yml
       - evidence/species.txt
 
+# `contents: write` so the retrieved bundle is COMMITTED rather than only uploaded.
+# That is the design rather than a convenience: for the first species the artifact store
+# IS the git repository, so a retrieval that leaves nothing in the tree has produced
+# nothing reviewable. It also makes the bundle reachable from a sandbox that cannot fetch
+# an Actions artifact -- blob.core.windows.net is refused by the proxy the same way the
+# source hosts are.
+#
+# It writes ONLY under evidence/, only on this feature branch, and nothing it writes is
+# read by the app or by any build.
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   retrieve:
@@ -44,6 +53,20 @@ jobs:
 
       - name: Summarise what came back
         run: python3 -I scripts/summarise_evidence.py evidence/out/*.json
+
+      - name: Commit the bundle to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/out
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+            exit 0
+          fi
+          git commit -m "Retrieve evidence (state=retrieved, nothing reviewed)"
+          # The branch may have moved while this ran; rebase rather than force.
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - uses: actions/upload-artifact@v4
         with:
