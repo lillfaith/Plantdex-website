@@ -39,6 +39,35 @@ export const TAXONOMY_STATUSES = ['accepted', 'synonym', 'unresolved', 'conflict
 export type TaxonomyStatus = (typeof TAXONOMY_STATUSES)[number];
 
 /**
+ * WHETHER A SPECIES MAY BE A COLLECTIBLE AT ALL.
+ *
+ * Plantdex is a medicinal-plant deck, so this is the gate on Layer B — enforced by a
+ * trigger in 0010, in both directions, rather than by whoever remembers to filter.
+ *
+ * THREE STATES, BECAUSE A BOOLEAN COLLAPSES THE TWO THAT MATTER. "Nobody has looked" and
+ * "somebody looked and the answer is no" are different facts, and a boolean resolves the
+ * first into the second every time: unreviewed reads as false, false reads as a decision,
+ * and the species is never revisited. `pending` is the default and the only value the
+ * ingestion pipeline can produce.
+ */
+export const MEDICINAL_ELIGIBILITIES = ['pending', 'eligible', 'ineligible'] as const;
+export type MedicinalEligibility = (typeof MEDICINAL_ELIGIBILITIES)[number];
+
+/**
+ * WHAT KIND OF MEDICINAL RELEVANCE WAS FOUND — and the distinction the product rests on.
+ *
+ * Historical or traditional use is ENOUGH to make a species collectible, and is NEVER
+ * evidence that the use worked or that the plant is safe. A card may exist because people
+ * used a plant; it may not imply the plant does what they used it for. `scientific-study`
+ * means studied, not proven, which is the same hedge `trait-evidence.ts` holds the printed
+ * deck to. Efficacy is judged per claim in Layer C and has no field in Layer A at all.
+ */
+export const MEDICINAL_RELEVANCE_KINDS = [
+  'historical-use', 'traditional-use', 'scientific-study',
+] as const;
+export type MedicinalRelevanceKind = (typeof MEDICINAL_RELEVANCE_KINDS)[number];
+
+/**
  * THE FOUR OCCURRENCE CLASSES, AND THE ONE THAT CARRIES THE WHOLE IDEA.
  *
  * `insufficient` is the default and means "nobody knows". It is NOT `unlikely`, which is a
@@ -136,9 +165,14 @@ export interface CatalogSpecies {
   growthForm?: GrowthForm;
   habitatClasses: (typeof HABITATS)[number][];
   seasons: (typeof SEASONS)[number][];
-  medicinallyRelevant: boolean;
-  /** Required by the database whenever `medicinallyRelevant` is true. */
-  medicinalBasis?: string;
+  /** The gate on Layer B. `pending` until somebody reviews it; never set by ingestion. */
+  medicinalEligibility: MedicinalEligibility;
+  /** Required by the database whenever eligibility is `eligible`. Relevance, not efficacy. */
+  medicinalRelevanceKind?: MedicinalRelevanceKind;
+  eligibilityBasis?: string;
+  eligibilitySources: string[];
+  /** A genus-level source may be recorded, and can never make this species eligible. */
+  eligibilityFromGenusRecord: boolean;
   reviewStatus: ReviewStatus;
   sourceIds: string[];
 }
@@ -151,7 +185,10 @@ export interface CollectibleCard {
   rarity: (typeof RARITIES)[number];
   xp: number;
   unlockBasis: UnlockBasis;
+  /** Refused by the database unless the species is `eligible` — or this is a printed card
+   *  that names its outstanding review in `eligibilityReviewGap`. */
   published: boolean;
+  eligibilityReviewGap?: string;
 }
 
 /** Layer C. One claim, one evidence standing, one review decision. */

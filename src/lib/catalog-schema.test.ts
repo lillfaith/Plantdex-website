@@ -4,7 +4,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
   CARD_TIERS, CLAIM_KINDS, DRAFT_ORIGINS, ENCOUNTER_RATES, EVIDENCE_STANDINGS,
-  GROWTH_FORMS, HABITATS, HIGH_RISK_CLAIM_KINDS, INVASIVE_LISTINGS, NATIVITY_CLASSES,
+  GROWTH_FORMS, HABITATS, HIGH_RISK_CLAIM_KINDS, INVASIVE_LISTINGS,
+  MEDICINAL_ELIGIBILITIES, MEDICINAL_RELEVANCE_KINDS, NATIVITY_CLASSES,
   OCCURRENCE_CLASSES, RARITIES, REGION_KINDS, REVIEW_STATUSES, SEASONS, SOURCE_KINDS,
   TAXONOMY_STATUSES, UNLOCK_BASES,
 } from './catalog-schema';
@@ -35,6 +36,20 @@ import { canonicalBinomial } from './species-identity';
 
 const MIGRATION = 'supabase/migrations/0010_botanical_catalog.sql';
 const sql = readFileSync(MIGRATION, 'utf8');
+
+/**
+ * SQL with its comments removed.
+ *
+ * The guards below ask "does this table carry a column named X". Run against the raw file
+ * they also read the prose, and this migration's comments necessarily DISCUSS the things
+ * the columns may not be — "efficacy is a per-claim judgement and has no column here" is
+ * the sentence that documents the rule, and it tripped the test for the rule. A guard that
+ * cannot tell a column from a comment about columns fails on correct code, which is how
+ * guards get deleted rather than fixed.
+ */
+function withoutComments(text: string): string {
+  return text.replace(/--[^\n]*/g, '');
+}
 
 /** Every quoted literal in a fragment of SQL, sorted. */
 function captured(fragment: string): string[] {
@@ -70,6 +85,8 @@ const sorted = (values: readonly string[]) => [...values].sort();
 describe('the migration and the vocabularies agree', () => {
   it.each([
     ['review_status', REVIEW_STATUSES],
+    ['medicinal_eligibility', MEDICINAL_ELIGIBILITIES],
+    ['medicinal_relevance_kind', MEDICINAL_RELEVANCE_KINDS],
     ['taxonomy_status', TAXONOMY_STATUSES],
     ['occurrence', OCCURRENCE_CLASSES],
     ['nativity', NATIVITY_CLASSES],
@@ -135,7 +152,7 @@ describe('the three layers stay separate', () => {
      * somebody had reviewed its safety — which is the bottleneck the three layers exist to
      * remove.
      */
-    const layerA = table('catalog_species');
+    const layerA = withoutComments(table('catalog_species'));
     for (const forbidden of [
       'toxicity', 'contraindication', 'dosage', 'dose', 'preparation',
       'healing', 'treats', 'cures', 'remedy', 'compound',
@@ -147,7 +164,7 @@ describe('the three layers stay separate', () => {
 
   it('lets a card exist without any medicinal content', () => {
     // No NOT NULL reference from the card to a claim, and no claim count on the card.
-    const layerB = table('collectible_cards');
+    const layerB = withoutComments(table('collectible_cards'));
     expect(layerB).not.toMatch(/medicinal/i);
     expect(layerB).toMatch(/references public\.catalog_species/);
   });
@@ -171,8 +188,81 @@ describe('the three layers stay separate', () => {
   });
 });
 
+describe('only documented medicinal species can be collectible', () => {
+  /*
+   * PLANTDEX IS A MEDICINAL-PLANT DECK, AND STAGE 1 DID NOT KNOW THAT.
+   *
+   * 0010 shipped with `published` and `medicinally_relevant` in the same table and no
+   * relationship between them — and this suite's own SQL counterpart published a card for
+   * a species with no medicinal relevance and asserted that was correct. The gate is a
+   * trigger because a CHECK cannot query another table, and these read the migration to
+   * prove the trigger is still there and still fires on both sides.
+   */
+  it('refuses to publish a card for a species that is not eligible', () => {
+    expect(sql).toMatch(/create trigger collectible_cards_require_eligibility/);
+    expect(sql).toMatch(/before insert or update on public\.collectible_cards/);
+    // The early return must be on `not new.published` only. Any wider exemption here is a
+    // hole: `if new.tier = 'generated' then return new` would disable the whole gate.
+    const fn = /function public\.enforce_collectible_eligibility[\s\S]*?\n\$\$;/.exec(sql)?.[0] ?? '';
+    expect(fn).toMatch(/if not new\.published then[\s\S]*?return new;/);
+    expect(fn).toMatch(/v_eligibility = 'eligible'/);
+    expect(fn).toMatch(/errcode = 'check_violation'/);
+  });
+
+  it('refuses to withdraw eligibility out from under a published card', () => {
+    // Without this direction the gate holds for one instant and a later edit walks through.
+    expect(sql).toMatch(/create trigger catalog_species_protect_published/);
+    expect(sql).toMatch(/function public\.protect_published_collectibles/);
+  });
+
+  it('does not require approved medicinal CLAIMS for a card', () => {
+    /*
+     * The half of the original design that was right, and which the correction must not
+     * quietly undo. Eligibility is a species-level determination; Healing Traits,
+     * compounds and preparations arrive one at a time afterwards. If publication waited on
+     * claims, every card would wait on the slowest field it could ever carry.
+     */
+    const fn = /function public\.enforce_collectible_eligibility[\s\S]*?\n\$\$;/.exec(sql)?.[0] ?? '';
+    expect(fn).not.toMatch(/medicinal_claims/);
+  });
+
+  it('keeps a genus record from making a species eligible', () => {
+    expect(sql).toMatch(/medicinal_eligibility <> 'eligible' or not eligibility_from_genus_record/);
+  });
+
+  it('separates eligibility from efficacy by having nowhere to record efficacy', () => {
+    // Historical use makes a species collectible and is not evidence anything worked. There
+    // is deliberately no column on Layer A that could be read as "this works".
+    const layerA = withoutComments(
+      /create table if not exists public\.catalog_species \(([\s\S]*?)\n\);/.exec(sql)?.[1] ?? '',
+    );
+    for (const forbidden of ['efficacy', 'effective', 'proven', 'works', 'clinical']) {
+      expect(layerA, `catalog_species must not carry '${forbidden}'`)
+        .not.toMatch(new RegExp(forbidden, 'i'));
+    }
+  });
+
+  it('lets a printed card publish only by naming its outstanding review', () => {
+    /*
+     * The 45 printed cards are in buyers' hands and were not published by this table. The
+     * exemption is real, and it costs a sentence — otherwise "already shipped" becomes a
+     * silent permanent exemption nobody can audit.
+     */
+    expect(sql).toMatch(/eligibility_review_gap/);
+    const fn = /function public\.enforce_collectible_eligibility[\s\S]*?\n\$\$;/.exec(sql)?.[0] ?? '';
+    expect(fn).toMatch(/new\.tier = 'printed' and new\.eligibility_review_gap is not null/);
+  });
+});
+
 describe('the ingestion script', () => {
   const script = readFileSync('scripts/ingest_species.py', 'utf8');
+  /** The script with its module docstring and `#` comments removed, for the same reason
+   *  `withoutComments` exists: the comments necessarily name what the code may not do. */
+  const code = script
+    .replace(/^"""[\s\S]*?"""/m, '')
+    .split('\n')
+    .map((line) => line.replace(/#.*$/, ''))
+    .join('\n');
 
   it('cannot reach a database at all', () => {
     /*
@@ -189,7 +279,9 @@ describe('the ingestion script', () => {
   it('never promotes a record it ingested', () => {
     // Every emitted row is a draft, and the upsert must not reset an existing review.
     expect(script).toMatch(/"review_status": "draft"/);
-    expect(script).toMatch(/if c not in \("species_key", "review_status", "medicinally_relevant"\)/);
+    expect(script).toMatch(/if c not in \("species_key", "review_status"\)/);
+    // And it cannot make anything collectible: no eligibility column is emitted at all.
+    expect(code, 'ingestion must not write eligibility').not.toContain('medicinal_eligibility');
   });
 
   it('agrees with species-identity.ts on what a binomial is', () => {

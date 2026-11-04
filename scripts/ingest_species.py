@@ -147,7 +147,6 @@ def deck_rows(run: Run) -> None:
                 "common_names": [herb["commonName"]] if herb.get("commonName") else [],
                 "seasons": [herb["season"]] if herb.get("season") else [],
                 "review_status": "draft",
-                "medicinally_relevant": False,
                 "source_ids": ["plantdex-deck-01"],
                 "_origin": "deck",
             }
@@ -160,7 +159,7 @@ def deck_rows(run: Run) -> None:
                 "collection_id": herb.get("collectionId"),
                 "rarity": herb["rarity"],
                 "xp": herb["xp"],
-                "published": False,
+                "published": False,   # Only a reviewer publishes. The trigger refuses it anyway.
             }
         )
 
@@ -208,7 +207,6 @@ def gbif_rows(run: Run, names: list[str], pause: float = 0.2) -> None:
             "gbif_id": str(answer["usageKey"]) if answer.get("usageKey") else None,
             "taxonomy_status": taxonomy,
             "review_status": "draft",
-            "medicinally_relevant": False,
             "source_ids": ["gbif-backbone"],
             "_origin": "gbif",
             "_match_confidence": answer.get("confidence"),
@@ -242,9 +240,13 @@ def sql_literal(value) -> str:
     return "'" + str(value).replace("'", "''") + "'"
 
 
+# NOTE WHAT IS ABSENT: no eligibility column of any kind. Ingestion cannot make a species
+# collectible — `medicinal_eligibility` defaults to 'pending' and only a reviewer moves it.
+# A pipeline that could set it is a pipeline that would eventually set it wrongly, at scale,
+# for the species nobody read.
 SPECIES_COLUMNS = [
     "species_key", "accepted_name", "family", "gbif_id", "common_names",
-    "seasons", "taxonomy_status", "review_status", "medicinally_relevant", "source_ids",
+    "seasons", "taxonomy_status", "review_status", "source_ids",
 ]
 CARD_COLUMNS = ["species_key", "tier", "card_number", "collection_id", "rarity", "xp", "published"]
 
@@ -274,7 +276,7 @@ def emit_sql(run: Run) -> str:
         vals = ", ".join(sql_literal(row.get(c)) for c in present)
         updates = ", ".join(
             f"{c} = excluded.{c}" for c in present
-            if c not in ("species_key", "review_status", "medicinally_relevant")
+            if c not in ("species_key", "review_status")
         )
         lines.append(
             f"insert into public.catalog_species ({cols}, last_checked_on)\n"

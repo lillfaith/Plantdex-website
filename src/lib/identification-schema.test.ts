@@ -116,8 +116,15 @@ describe('the rank and confidence checks match their unions exactly', () => {
   /** The quoted values inside one column's `in (...)` list. */
   function allowed(columnName: string): string[] {
     // The LAST match across all migrations: a later one replaces the constraint entirely.
+    //
+    // THE NAME IS MATCHED AT A WORD BOUNDARY, and it was not always. `eligibility` matched
+    // the tail of any column ending in that word, so 0010's `medicinal_eligibility` — a
+    // different column in a different table about a different question — became the "last"
+    // match and this assertion started comparing the identification union against the
+    // catalog's three-state eligibility. The failure named the right test and the wrong
+    // cause, which is the expensive kind.
     const blocks = [
-      ...ALL_MIGRATIONS.matchAll(new RegExp(`${columnName} in \\(([^)]*)\\)`, 'g')),
+      ...ALL_MIGRATIONS.matchAll(new RegExp(`(?<![a-z_])${columnName} in \\(([^)]*)\\)`, 'g')),
     ];
     const block = blocks.at(-1)?.[1] ?? '';
     return [...block.matchAll(/'([^']+)'/g)].map(([, value]) => value!).sort();

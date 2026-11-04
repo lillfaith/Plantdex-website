@@ -17,10 +17,16 @@ A species carries three kinds of fact with three different evidence bars:
 | **B — collectible** | `collectible_cards`, `card_renders` | Our own decision; no external truth to get wrong | Minutes |
 | **C — medicinal** | `medicinal_claims` | A human opened a source and judged it | **Hours, per species** |
 
-**A species may be catalogued with no card, and made collectible with no medicinal content
-at all.** That is the entire point. Collapsed into one table, every one of 2,000 species
-would need a safety review before it could be listed, and the catalog would never grow past
-what one person can read.
+**A species may be catalogued with no card, and made collectible with no medicinal CLAIMS.**
+Collapsed into one table, every one of 2,000 species would need a full safety review before
+it could be listed at all, and the catalog would never grow past what one person can read.
+
+**But it may not be collectible without medicinal ELIGIBILITY**, and that distinction is the
+product. Plantdex is a medicinal-plant deck: a species with no documented medicinal relevance
+is a Seed Shelf find, not a card. Eligibility is one species-level determination with sources
+and a named reviewer; claims are the dozen individual Healing Traits, compounds and
+preparations that arrive afterwards, one review at a time. A card needs the first and can
+ship without any of the second.
 
 Measured, in this repository: `src/lib/trait-evidence.ts` holds trait-level medicinal
 evidence for **one species**; `src/data/sources.json` holds 154 references, 127 verified,
@@ -31,6 +37,26 @@ across 45. That is the real rate. Layer C is sized to it; Layers A and B are not
 These are constraints, not conventions. `supabase/tests/0010_botanical_catalog.test.sql`
 exercises each against a real PostgreSQL.
 
+**The eligibility gate** (`enforce_collectible_eligibility`, a trigger — a CHECK may not
+query another table):
+
+- **Publishing a card for a species that is not `eligible`.** Refused.
+- **Withdrawing eligibility from a species that has a published card.** Refused until the
+  card is unpublished. Without this direction the gate would hold for one instant.
+- **Making a genus-derived record eligible.** Refused. "Solidago has been used medicinally"
+  says nothing about *Solidago altissima*, and reasoning that way manufactures eligibility
+  for whole genera at a stroke — the cheapest possible route to a fabricated 2,000.
+- **An eligibility decision — either way — with no named reviewer and date.** `pending`
+  carries nothing, which is what makes it the honest default.
+- **`eligible` with no relevance kind, basis and source.**
+
+Historical or traditional use is **sufficient** for eligibility and is **never** evidence the
+use worked or that the plant is safe. `medicinal_relevance_kind` records which was found;
+there is deliberately no efficacy column on Layer A for anyone to fill in, and a test fails if
+one appears.
+
+Everything else:
+
 - **An approved claim with no named reviewer and date.**
 - **An approved claim with no citation.**
 - **An AI-drafted claim that is approved.** `drafted_by = 'ai-assisted'` and
@@ -38,8 +64,6 @@ exercises each against a real PostgreSQL.
   published state; a human has to re-author it. Agreement between models reaches nothing.
 - **A toxicity note that forgot to be high-risk.** `high_risk` is derived from `kind` by a
   trigger, because the row that most needs the flag is the one most likely to be missing it.
-- **`medicinally_relevant` with no stated basis and source.** A catalog that cannot say why
-  something is in it is a list somebody made up.
 - **`occurrence = 'unlikely'` with no source.** Absence of records is not absence of the
   plant; `insufficient` is the honest default and needs nothing.
 - **An image with no licence and attribution.**
@@ -73,6 +97,20 @@ no driver import — `catalog-schema.test.ts` fails if one appears. Applying `up
 separate human act, and the file is idempotent: applying it twice is a no-op, and it never
 downgrades a `review_status` a human has already set.
 
+### The printed 45, and the nine genus cards
+
+**The printed deck is preserved and is not re-litigated by this table.** Those cards are in
+buyers' hands and on the live site; the catalog did not publish them and cannot unpublish
+them. But "already shipped" is not a review. A `printed` card may be published while its
+species is still `pending` **only by naming the outstanding review in
+`eligibility_review_gap`** — a sentence somebody wrote, so the gap stays auditable instead of
+becoming a silent permanent exemption.
+
+**The nine genus cards are not catalog species at all.** `Rubus spp.` has no binomial, so
+ingestion records it in `failures.ndjson` rather than inventing one. Under the genus rule they
+are also exactly the thing that must not confer eligibility on their member species. A
+genus-level collectible concept is a later decision, not a gap to paper over now.
+
 ### What the deck run produces today
 
 36 species and 36 cards from the 45-card deck. The other **nine are genus cards**
@@ -91,6 +129,10 @@ dropped — a record that cannot be ingested is a row, never a warning that scro
 **No code change is needed per species.** What does not scale is review, so plan it
 explicitly:
 
+- **Eligibility is its own review and its own bottleneck**, separate from both. It is far
+  cheaper than full claim review — one determination per species, with a source saying the
+  plant has documented medicinal use — but it is still a human reading something, and it
+  gates every card. Estimate 10–20 minutes per species once a candidate list exists.
 - **Layer A** can be accepted in bulk from GBIF, spot-checked. Promotion `draft → approved`
   is a human decision, but it is a cheap one: the claim is "this name exists and GBIF says
   this about it".
@@ -100,12 +142,13 @@ explicitly:
 
 ### What requires a human, always
 
-1. Setting `review_status = 'approved'` on anything.
-2. Setting `verified = true` on a source — meaning *you opened it and it supports the claim*.
-3. Any `toxicity`, `contraindication` or `lookalike-hazard` claim.
-4. Setting `medicinally_relevant`, with a basis and a citation.
+1. Setting `medicinal_eligibility` to anything but `pending` — this is what makes a species
+   collectible, and no pipeline can do it.
+2. Setting `review_status = 'approved'` on anything.
+3. Setting `verified = true` on a source — meaning *you opened it and it supports the claim*.
+4. Any `toxicity`, `contraindication` or `lookalike-hazard` claim.
 5. Resolving a `conflicting` taxonomy status.
-6. Deciding a species becomes collectible.
+6. Publishing a card.
 
 ## What is deliberately not built yet
 

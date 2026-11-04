@@ -41,47 +41,207 @@ insert into public.catalog_species (species_key, accepted_name)
 values ('monarda fistulosa', 'Monarda fistulosa')
 on conflict (species_key) do nothing;
 
--- ─── B. A SPECIES MAY BE CATALOGUED, AND EVEN COLLECTIBLE, WITH NO MEDICINAL DATA ───
+-- ─── B. CLAIMS ARE NOT REQUIRED FOR A CARD; ELIGIBILITY IS ─────────────────
 --
--- This is the whole point of three layers. If this section fails, 2,000 species is
--- unreachable again, because every one of them would need a medicinal review first.
+-- THIS SECTION ASSERTED THE OPPOSITE AND WAS WRONG. It published a card for a species with
+-- `medicinally_relevant = false` and called it correct, on the reasoning that Layer C must
+-- not block Layer B. Half of that is right and is kept: individual Healing Traits,
+-- compounds and preparations are reviewed one at a time and a card may ship before any of
+-- them exist. The other half had no basis — Plantdex is a medicinal-plant deck, and a
+-- species with no documented medicinal relevance is a Seed Shelf find rather than a card.
+--
+-- So the property under test is now the precise one: ZERO APPROVED CLAIMS is fine, ZERO
+-- ELIGIBILITY is not.
 do $$
 declare n integer;
 begin
+  -- Unpublished, with nothing medicinal anywhere: a legitimate draft.
   insert into public.collectible_cards (species_key, tier, rarity, xp, published)
-  values ('monarda fistulosa', 'generated', 'Common', 100, true)
+  values ('monarda fistulosa', 'generated', 'Common', 100, false)
   on conflict (species_key) do nothing;
+  perform t_pass('an UNPUBLISHED card may exist for a merely catalogued species');
 
+  -- Publishing it is refused while the species is `pending`.
+  begin
+    update public.collectible_cards set published = true where species_key = 'monarda fistulosa';
+    raise exception 'FAIL  a pending species was published as a collectible';
+  exception when check_violation then
+    perform t_pass('a pending species cannot be published as a collectible');
+  end;
+
+  -- Make it eligible, properly: kind, basis, sources, reviewer, date.
+  update public.catalog_species set
+    medicinal_eligibility = 'eligible',
+    medicinal_relevance_kind = 'historical-use',
+    eligibility_basis = 'Documented in regional ethnobotanical literature as a traditional remedy.',
+    eligibility_sources = array['gbif-backbone'],
+    eligibility_reviewed_by = 'test',
+    eligibility_reviewed_on = current_date
+  where species_key = 'monarda fistulosa';
+
+  update public.collectible_cards set published = true where species_key = 'monarda fistulosa';
+  perform t_pass('an eligible species may be published');
+
+  -- And it got there with no medicinal claims at all, which is the half worth keeping.
   select count(*) into n from public.medicinal_claims where species_key = 'monarda fistulosa';
-  perform t_assert_count(n, 0, 'a card exists for a species with zero medicinal claims');
+  perform t_assert_count(n, 0, 'publication required ZERO approved medicinal claims');
 
   insert into public.card_renders (species_key, render_version, front_path, sprite_recipe, content_hash)
   values ('monarda fistulosa', 1, 'cards/monarda-fistulosa.webp', '{"shape":"tall"}'::jsonb,
           repeat('a', 64))
   on conflict do nothing;
-  perform t_pass('a render exists for a species with zero medicinal claims');
+  perform t_pass('a render exists for a card with no medicinal claims');
 end $$;
 
--- ─── C. "MEDICINALLY RELEVANT" MUST SAY WHY ──────────────────────────────────
+-- ─── B2. THE GATE HOLDS IN BOTH DIRECTIONS ──────────────────────────────────
 --
--- The brief's own requirement: record why a species qualifies. A flag with no basis is a
--- list somebody made up.
+-- A gate checked only when the card is written holds for one instant. Withdrawing
+-- eligibility afterwards would leave a published card for a species somebody has just
+-- decided is not medicinal, and nothing would notice.
 do $$
 begin
   begin
-    insert into public.catalog_species (species_key, accepted_name, medicinally_relevant)
-    values ('asimina triloba', 'Asimina triloba', true);
-    raise exception 'FAIL  a medicinally-relevant species was accepted with no basis';
+    update public.catalog_species
+      set medicinal_eligibility = 'ineligible',
+          eligibility_reviewed_by = 'test', eligibility_reviewed_on = current_date
+      where species_key = 'monarda fistulosa';
+    raise exception 'FAIL  eligibility was withdrawn from under a published card';
   exception when check_violation then
-    perform t_pass('medicinally_relevant without a basis is refused');
+    perform t_pass('eligibility cannot be withdrawn while a card is published');
   end;
 
+  -- Unpublish first, and the same edit is allowed. The order is the point.
+  update public.collectible_cards set published = false where species_key = 'monarda fistulosa';
+  update public.catalog_species
+    set medicinal_eligibility = 'ineligible',
+        eligibility_reviewed_by = 'test', eligibility_reviewed_on = current_date
+    where species_key = 'monarda fistulosa';
+  perform t_pass('unpublishing first permits the withdrawal');
+
+  -- Put it back for the sections that follow.
+  update public.catalog_species
+    set medicinal_eligibility = 'eligible', medicinal_relevance_kind = 'historical-use'
+    where species_key = 'monarda fistulosa';
+end $$;
+
+-- ─── B3. A GENUS RECORD DOES NOT MAKE A SPECIES ELIGIBLE ────────────────────
+--
+-- "Solidago has been used medicinally" says nothing about *Solidago altissima*. Reasoning
+-- that way would manufacture eligibility for whole genera at once, which is the cheapest
+-- possible route to a fabricated 2,000.
+do $$
+begin
   insert into public.catalog_species
-    (species_key, accepted_name, medicinally_relevant, medicinal_basis, medicinal_basis_sources)
-  values ('asimina triloba', 'Asimina triloba', true,
-          'Recorded in regional ethnobotanical literature; included for that reason alone.',
-          array['gbif-backbone']);
-  perform t_pass('medicinally_relevant with a basis and a source is accepted');
+    (species_key, accepted_name, medicinal_eligibility, medicinal_relevance_kind,
+     eligibility_basis, eligibility_sources, eligibility_from_genus_record,
+     eligibility_reviewed_by, eligibility_reviewed_on)
+  values ('solidago gigantea', 'Solidago gigantea', 'pending', 'traditional-use',
+          'The GENUS Solidago is recorded in traditional use; nothing species-level found yet.',
+          array['gbif-backbone'], true, 'test', current_date);
+  perform t_pass('a genus-derived record may be recorded as pending');
+
+  begin
+    update public.catalog_species set medicinal_eligibility = 'eligible'
+      where species_key = 'solidago gigantea';
+    raise exception 'FAIL  a genus-derived record was made eligible';
+  exception when check_violation then
+    perform t_pass('a genus-derived record cannot be made eligible');
+  end;
+end $$;
+
+-- ─── B4. AN ELIGIBILITY DECISION IS REVIEWED, AND SAYS WHAT KIND ────────────
+do $$
+begin
+  begin
+    insert into public.catalog_species (species_key, accepted_name, medicinal_eligibility)
+    values ('verbascum thapsus', 'Verbascum thapsus', 'eligible');
+    raise exception 'FAIL  eligible was accepted with no reviewer, basis or source';
+  exception when check_violation then
+    perform t_pass('eligible with no reviewer is refused');
+  end;
+
+  begin
+    insert into public.catalog_species
+      (species_key, accepted_name, medicinal_eligibility, eligibility_reviewed_by, eligibility_reviewed_on)
+    values ('verbascum thapsus', 'Verbascum thapsus', 'eligible', 'test', current_date);
+    raise exception 'FAIL  eligible was accepted with no relevance kind or source';
+  exception when check_violation then
+    perform t_pass('eligible with no documented relevance is refused');
+  end;
+
+  -- `ineligible` is a determination too, and names its reviewer.
+  begin
+    insert into public.catalog_species (species_key, accepted_name, medicinal_eligibility)
+    values ('verbascum thapsus', 'Verbascum thapsus', 'ineligible');
+    raise exception 'FAIL  ineligible was accepted with no reviewer';
+  exception when check_violation then
+    perform t_pass('ineligible with no reviewer is refused');
+  end;
+
+  -- `pending` carries nothing. That is what makes it the honest default.
+  insert into public.catalog_species (species_key, accepted_name)
+  values ('verbascum thapsus', 'Verbascum thapsus');
+  perform t_assert(
+    (select medicinal_eligibility = 'pending' from public.catalog_species
+     where species_key = 'verbascum thapsus'),
+    'a newly catalogued species is pending, carrying nothing');
+end $$;
+
+-- ─── B5. THE PRINTED DECK IS PRESERVED, AND ITS GAP IS WRITTEN DOWN ─────────
+--
+-- The 45 printed cards are in buyers' hands and on the live site. This table did not
+-- publish them and must not pretend to re-authorise them — but "already shipped" is not a
+-- review, and the gap must not vanish into an exemption nobody can see.
+do $$
+begin
+  insert into public.catalog_species (species_key, accepted_name)
+  values ('taraxacum erythrospermum', 'Taraxacum erythrospermum') on conflict do nothing;
+
+  begin
+    insert into public.collectible_cards (species_key, tier, card_number, rarity, xp, published)
+    values ('taraxacum erythrospermum', 'printed', 44, 'Common', 100, true);
+    raise exception 'FAIL  a printed card was published with no eligibility and no stated gap';
+  exception when check_violation then
+    perform t_pass('even a printed card cannot be published while silently unreviewed');
+  end;
+
+  insert into public.collectible_cards
+    (species_key, tier, card_number, rarity, xp, published, eligibility_review_gap)
+  values ('taraxacum erythrospermum', 'printed', 44, 'Common', 100, true,
+          'Printed deck 01, shipped before the catalog existed. Eligibility review outstanding.');
+  perform t_pass('a printed card publishes once its review gap is recorded in writing');
+end $$;
+
+-- ─── C. HISTORICAL USE IS RELEVANCE, NOT EFFICACY ──────────────────────────
+--
+-- The distinction the whole product rests on: a plant may be collectible BECAUSE people
+-- used it, and that is never a claim the use worked. The column records which kind of
+-- relevance was found, and Layer C holds efficacy separately, per claim.
+do $$
+declare kinds text[];
+begin
+  insert into public.catalog_species
+    (species_key, accepted_name, medicinal_eligibility, medicinal_relevance_kind,
+     eligibility_basis, eligibility_sources, eligibility_reviewed_by, eligibility_reviewed_on)
+  values ('asimina triloba', 'Asimina triloba', 'eligible', 'historical-use',
+          'Recorded in regional ethnobotanical literature; included on that basis alone.',
+          array['gbif-backbone'], 'test', current_date);
+  perform t_pass('historical use alone establishes eligibility');
+
+  select array_agg(distinct medicinal_relevance_kind) into kinds
+  from public.catalog_species where medicinal_relevance_kind is not null;
+  perform t_assert(
+    kinds <@ array['historical-use','traditional-use','scientific-study']::text[],
+    'relevance kinds stay within the three documented values');
+
+  -- There is deliberately no efficacy column on this table to set.
+  perform t_assert(
+    not exists (
+      select 1 from information_schema.columns
+      where table_schema = 'public' and table_name = 'catalog_species'
+        and column_name in ('efficacy', 'proven', 'effective', 'works')
+    ),
+    'Layer A carries no efficacy field for anybody to fill in');
 end $$;
 
 -- ─── D. THE MEDICINAL LAYER CANNOT PUBLISH ITSELF ────────────────────────────

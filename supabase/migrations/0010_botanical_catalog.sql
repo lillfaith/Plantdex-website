@@ -107,12 +107,45 @@ create table if not exists public.catalog_species (
   seasons           text[] not null default '{}'
     check (seasons <@ array['spring','summer','autumn','winter']::text[]),
 
-  -- WHY THIS SPECIES IS IN A "MEDICINALLY RELEVANT" CATALOG AT ALL, in words, with a
-  -- source. Required the moment the flag is set: a catalog that cannot say why something is
-  -- in it is a list somebody made up, which is the specific failure the brief rules out.
-  medicinally_relevant boolean not null default false,
-  medicinal_basis      text check (medicinal_basis is null or length(medicinal_basis) between 20 and 2000),
-  medicinal_basis_sources text[] not null default '{}',
+  -- ── MEDICINAL ELIGIBILITY ────────────────────────────────────────────────────
+  --
+  -- THIS IS WHAT MAKES A SPECIES COLLECTIBLE, AND IT IS NOT A BOOLEAN.
+  --
+  -- Plantdex is a deck of medicinal plants. A species with no documented medicinal
+  -- relevance belongs on the Seed Shelf, not in the collection — so eligibility is the gate
+  -- on Layer B, enforced by `enforce_collectible_eligibility` below rather than by a
+  -- convention somebody remembers.
+  --
+  -- THREE STATES, BECAUSE "NOT YET LOOKED AT" AND "LOOKED AT AND NO" ARE DIFFERENT FACTS.
+  -- A boolean collapses them, and the collapse always resolves the same way: unreviewed
+  -- reads as false, false reads as a decision, and nobody ever revisits it. `pending` is
+  -- the default and the only state ingestion can produce.
+  medicinal_eligibility text not null default 'pending' check (medicinal_eligibility in (
+                          'pending', 'eligible', 'ineligible'
+                        )),
+
+  -- WHAT KIND OF RELEVANCE, AND THE DISTINCTION THAT MATTERS MOST ON THIS WHOLE TABLE.
+  --
+  -- Historical or traditional use is SUFFICIENT to make a species collectible and is NOT
+  -- evidence that anything works or is safe. A card may exist because people used a plant;
+  -- it may never imply the plant does what they used it for. `scientific-study` means
+  -- studied, not proven — the same hedge `trait-evidence.ts` holds the printed deck to.
+  -- Efficacy is a per-claim judgement in Layer C and has no column here, deliberately.
+  medicinal_relevance_kind text check (medicinal_relevance_kind is null or medicinal_relevance_kind in (
+                          'historical-use', 'traditional-use', 'scientific-study'
+                        )),
+  eligibility_basis     text check (eligibility_basis is null or length(eligibility_basis) between 20 and 2000),
+  eligibility_sources   text[] not null default '{}',
+
+  -- RULE 7: A GENUS RECORD DOES NOT MAKE ITS SPECIES ELIGIBLE.
+  -- "Solidago has been used medicinally" says nothing about *Solidago altissima*
+  -- specifically, and a catalog that reasons that way manufactures eligibility for whole
+  -- genera at a stroke. A record derived from a genus-level source is marked, and a marked
+  -- record cannot be `eligible` — somebody has to find a species-level source.
+  eligibility_from_genus_record boolean not null default false,
+
+  eligibility_reviewed_by text,
+  eligibility_reviewed_on date,
 
   -- Image rights travel with the species or there is no image. Never a bare URL.
   image_url         text check (image_url is null or image_url ~ '^https://'),
@@ -131,11 +164,22 @@ create table if not exists public.catalog_species (
   first_ingested_at timestamptz not null default now(),
   last_checked_on   date,
 
-  constraint medicinal_relevance_states_its_basis
+  -- An eligibility DECISION — either way — names what it rests on and who made it.
+  -- `pending` carries nothing, which is what makes it the honest default.
+  constraint eligibility_decisions_are_reviewed
     check (
-      not medicinally_relevant
-      or (medicinal_basis is not null and cardinality(medicinal_basis_sources) > 0)
+      medicinal_eligibility = 'pending'
+      or (eligibility_reviewed_by is not null and eligibility_reviewed_on is not null)
     ),
+  constraint eligible_species_document_their_relevance
+    check (
+      medicinal_eligibility <> 'eligible'
+      or (medicinal_relevance_kind is not null
+          and eligibility_basis is not null
+          and cardinality(eligibility_sources) > 0)
+    ),
+  constraint genus_records_cannot_make_a_species_eligible
+    check (medicinal_eligibility <> 'eligible' or not eligibility_from_genus_record),
   constraint an_image_carries_its_licence
     check (image_url is null or (image_license is not null and image_attribution is not null)),
   constraint a_synonym_names_its_accepted_taxon
@@ -232,6 +276,17 @@ create table if not exists public.collectible_cards (
                     'field-discovery', 'xp-threshold', 'purchase'
                   )),
   published       boolean not null default false,
+
+  -- THE PRINTED 45 PREDATE THIS CATALOG AND ARE NOT RE-LITIGATED BY IT.
+  -- They are in buyers' hands and on the live site; this table did not publish them and
+  -- cannot unpublish them. But "already shipped" is not a review, and the gap must not
+  -- become invisible just because it is inherited — so a printed card may be published
+  -- while its species is not yet `eligible` ONLY by naming the gap in writing. The trigger
+  -- below requires it, so the exemption is a sentence somebody wrote, not a silence.
+  eligibility_review_gap text check (
+    eligibility_review_gap is null or length(eligibility_review_gap) between 20 and 1000
+  ),
+
   created_at      timestamptz not null default now(),
 
   -- A printed card's number is its identity in the physical deck; a generated one has none.
@@ -252,6 +307,107 @@ create table if not exists public.card_renders (
   minted_at      timestamptz not null default now(),
   primary key (species_key, render_version)
 );
+
+-- ── The eligibility gate ───────────────────────────────────────────────────────
+--
+-- ONLY A DOCUMENTED MEDICINAL SPECIES MAY BE A PUBLISHED COLLECTIBLE.
+--
+-- Plantdex is a medicinal-plant deck. A species with no documented medicinal relevance is a
+-- Seed Shelf find, not a card, and that is the product's identity rather than a filter
+-- applied at render time. So it is enforced here, in two directions, because one is not
+-- enough:
+--
+--   * publishing a card for a species that is not `eligible` is refused;
+--   * taking eligibility AWAY from a species that already has a published card is refused
+--     until somebody unpublishes the card. Without the second, the gate holds only at the
+--     instant of writing and a later edit walks straight through it.
+--
+-- A CHECK CONSTRAINT CANNOT DO THIS. It may not query another table, so the rule would have
+-- to live in application code — which is where rules like this get forgotten by the second
+-- caller. It is a trigger so that every path, including a hand-written SQL session and a
+-- future ingestion script nobody has written yet, meets the same refusal.
+--
+-- WHAT THIS DELIBERATELY DOES NOT REQUIRE: approved medicinal CLAIMS. Eligibility is a
+-- species-level determination that this plant has documented medicinal relevance;
+-- individual Healing Traits, compounds and preparations are reviewed one at a time in Layer
+-- C and arrive later. A card may ship with an eligibility review and no claims at all —
+-- otherwise every card would wait on the slowest field it could ever carry, and the three
+-- layers would have bought nothing.
+create or replace function public.enforce_collectible_eligibility()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_eligibility text;
+begin
+  if not new.published then
+    return new;   -- An unpublished card is a draft and may exist for anything catalogued.
+  end if;
+
+  select s.medicinal_eligibility into v_eligibility
+  from public.catalog_species s
+  where s.species_key = new.species_key;
+
+  if v_eligibility = 'eligible' then
+    return new;
+  end if;
+
+  -- The inherited exemption, and it costs a sentence. See `eligibility_review_gap`.
+  if new.tier = 'printed' and new.eligibility_review_gap is not null then
+    return new;
+  end if;
+
+  raise exception
+    'species % is % for medicinal eligibility; a % card may not be published (%)',
+    new.species_key,
+    coalesce(v_eligibility, 'absent from the catalog'),
+    new.tier,
+    case
+      when new.tier = 'printed'
+        then 'printed cards predating review must record an eligibility_review_gap'
+      else 'only documented medicinal species are collectible'
+    end
+    using errcode = 'check_violation';
+end;
+$$;
+
+drop trigger if exists collectible_cards_require_eligibility on public.collectible_cards;
+create trigger collectible_cards_require_eligibility
+  before insert or update on public.collectible_cards
+  for each row execute function public.enforce_collectible_eligibility();
+
+-- The other direction: eligibility may not be withdrawn out from under a published card.
+create or replace function public.protect_published_collectibles()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+begin
+  if new.medicinal_eligibility = 'eligible' or old.medicinal_eligibility <> 'eligible' then
+    return new;
+  end if;
+  if exists (
+    select 1 from public.collectible_cards c
+    where c.species_key = new.species_key
+      and c.published
+      and c.eligibility_review_gap is null
+  ) then
+    raise exception
+      'species % has a published card; unpublish it before withdrawing eligibility',
+      new.species_key
+      using errcode = 'check_violation';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists catalog_species_protect_published on public.catalog_species;
+create trigger catalog_species_protect_published
+  before update on public.catalog_species
+  for each row execute function public.protect_published_collectibles();
 
 -- ── Layer C: medicinal evidence ────────────────────────────────────────────────
 --
