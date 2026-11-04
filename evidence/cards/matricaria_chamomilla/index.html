@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chamomile card draft</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&display=swap">
+<style>
+  :root{
+    --gold:#ffe14a; --gold-deep:#f3c21a; --outline:#3d0a63;
+    --cyan:#6fd0ef; --sun:#ffd54a; --red:#e8342a;
+    --ink:#3d0a63; --ink-soft:#6b2a9e;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#17101c;color:#f6ebfd;padding:26px;
+    font:14px/1.5 ui-sans-serif,system-ui,sans-serif;}
+  h1{font:600 14px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;
+    text-transform:uppercase;color:#ddaaf7;margin:0 0 16px;}
+  .pair{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start;}
+  .card{position:relative;width:488px;height:788px;flex:0 0 auto;overflow:hidden;
+    border-radius:18px;}
+  .card>img.base{position:absolute;inset:0;width:488px;height:788px;}
+  .s{position:absolute;}
+
+  /* ── FRONT ─────────────────────────────────────────────────────── */
+  .name{left:40px;top:44px;width:330px;height:38px;display:flex;align-items:center;
+    font:800 italic 30px/1 "Playfair Display",Georgia,serif;color:var(--gold);
+    text-shadow:2px 2px 0 var(--outline),-1px -1px 0 var(--outline),
+      1px -1px 0 var(--outline),-1px 1px 0 var(--outline);}
+  .num{left:388px;top:46px;width:62px;height:30px;display:flex;align-items:center;
+    justify-content:center;font:700 17px "Playfair Display",Georgia,serif;
+    color:#f3e6ff;letter-spacing:.02em;}
+
+  /* The photograph sits on the supplied backdrop, inside the art window. */
+  .photo{left:84px;top:146px;width:318px;height:206px;border-radius:34px;
+    overflow:hidden;background:url(backdrop.png) center/cover;}
+  .photo img{width:100%;height:100%;object-fit:cover;}
+
+  .sci{left:40px;top:428px;width:300px;
+    font:700 italic 25px/1 "Playfair Display",Georgia,serif;color:var(--gold);
+    text-shadow:1.5px 1.5px 0 var(--outline);}
+  .uses{left:352px;top:420px;width:100px;display:flex;gap:9px;}
+  .uses span{width:40px;height:40px;border-radius:50%;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;}
+  .uses svg{width:24px;height:24px;}
+
+  .ind{left:40px;top:470px;width:260px;height:128px;}
+  .ind .row{display:flex;gap:9px;align-items:center;height:42px;}
+  .ind svg{width:30px;height:30px;}
+  .ind .none{font:600 12px ui-sans-serif,system-ui,sans-serif;color:#d9b9f5;
+    opacity:.75;letter-spacing:.04em;}
+
+  .habit{left:322px;top:466px;width:128px;height:128px;border-radius:16px;
+    overflow:hidden;background:#c9a2e8;}
+  .habit img{width:100%;height:100%;object-fit:cover;}
+
+  /* The value only; the base prints the label. Empty when nothing is sourced. */
+  .enc{left:264px;top:610px;width:150px;height:30px;display:flex;align-items:center;
+    font:700 21px "Playfair Display",Georgia,serif;color:#fff;
+    text-shadow:1.5px 1.5px 0 var(--outline);}
+
+  /* ── BACK ──────────────────────────────────────────────────────── */
+  .p{color:var(--ink);text-align:center;
+    font:700 15px/1.35 "Playfair Display",Georgia,serif;}
+  .p .cols{display:grid;grid-template-columns:1fr 1fr;column-gap:14px;row-gap:1px;}
+  .p .one{display:block;}
+  .healing{left:44px;top:112px;width:400px;height:78px;}
+  .compounds{left:44px;top:262px;width:400px;height:56px;}
+  .taste{left:40px;top:384px;width:150px;}
+  .aromatic{left:298px;top:384px;width:150px;}
+  .preps{left:40px;top:610px;width:150px;}
+  .parts{left:298px;top:610px;width:150px;}
+  .taste,.aromatic,.preps,.parts{font-size:15px;line-height:1.5;}
+</style></head><body>
+<h1>Chamomile &mdash; draft herbalism card, real CC0 photography</h1>
+<div class="pair">
+
+  <!-- FRONT -->
+  <div class="card">
+    <img class="base" src="base-1.png" alt="">
+    <div class="s name">Chamomile</div>
+    <div class="s num">#G01</div>
+    <div class="s photo"><img src="hero.jpg" alt="German chamomile flower heads"></div>
+    <div class="s sci">Matricaria chamomilla</div>
+    <div class="s uses">
+      <span title="Medicinal"><svg viewBox="0 0 24 24" fill="none"
+        stroke="#7016b4" stroke-width="2.1" stroke-linecap="round"
+        stroke-linejoin="round"><path d="M20.8 8.6a5 5 0 0 0-8.8-2.4A5 5 0 0 0 3.2 8.6c0 4.3 5.9 8 8.8 10.4 2.9-2.4 8.8-6.1 8.8-10.4Z"/><path d="M3.6 12h3.2l1.6-2.6L10.6 15l1.8-3h3.4"/></svg></span>
+      <span title="Edible"><svg viewBox="0 0 24 24" fill="none" stroke="#7016b4"
+        stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v7a2 2 0 0 0 4 0V3"/><path d="M8 10v11"/><path d="M16 3c-1.6 1.4-2 3.4-2 5.5 0 1.6.8 2.5 2 2.5s2-.9 2-2.5C18 6.4 17.6 4.4 16 3Z"/><path d="M16 11v10"/></svg></span>
+    </div>
+
+    <!-- Water / Sun / Temperature: no sourced value, so the rows are EMPTY. The gap is
+         flagged in the review package, never printed on the card. -->
+    <div class="s ind"></div>
+
+    <div class="s habit"><img src="habit.jpg" alt="Chamomile plant habit"></div>
+
+    <!-- The value slot only: the base already prints the "Encounter Rate:" label. -->
+    <div class="s enc"></div>
+  </div>
+
+  <!-- BACK -->
+  <div class="card">
+    <img class="base" src="base-2.png" alt="">
+    <div class="s p healing"><div class="cols">
+      <span>Digestive</span><span>Calming</span>
+      <span>Skin support</span><span>Antimicrobial</span>
+    </div></div>
+    <div class="s p compounds"><div class="cols">
+      <span>Germacrene</span><span>&alpha;-Curcumene</span>
+    </div></div>
+    <div class="s p taste"></div>
+    <div class="s p aromatic"></div>
+    <div class="s p preps">
+      <span class="one">Infusion</span>
+    </div>
+    <div class="s p parts"></div>
+  </div>
+
+</div></body></html>
