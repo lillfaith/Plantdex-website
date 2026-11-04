@@ -74,6 +74,26 @@ PT = 800 / 234
 # at size 47 / stretch 1.30, mean height error 1.8px.
 STROKE = {"common": 3, "scientific": 0, "encounter": 2}
 
+# WEIGHT is a SAME-COLOUR stroke that fattens the letterform without darkening it, and it
+# is a different thing from STROKE, which is the dark outline around it.
+#
+# THIS IS READ OUT OF THE PDF, NOT GUESSED. `cardbase.pdf` sets text render mode `Tr 1`
+# -- STROKE-ONLY text -- and carries line widths of 0.25/1/1.5/3/3.3/6pt, and it draws
+# 'Encounter Rate:' THREE TIMES at one identical origin in three colours (#6589a5,
+# #8ad6f5, #c7d2ec). So a deck string is a fill plus one or more stroked copies of the
+# same glyph, and a stroke centred on the outline fattens the glyph by its full width.
+#
+# A fill-only render therefore comes out systematically THIN, which is measurable rather
+# than a matter of taste: against the genuine Pine the Latin name carried 37% less ink
+# (1876 px vs 2974) with stems of 6.0/9.0 median/p90 against a genuine 7.0/12.0. The
+# common name needed none of this -- it measured 1.05 ink ratio and 13.0/13.0 stems -- so
+# the weight is per style and is NOT applied universally.
+# CALIBRATED PER STYLE AGAINST PINE'S OWN TEXT, and deliberately not shared. The common
+# name needs almost none (0.25 -> stem 13.0 against a genuine 13.0); the Latin name needs
+# three times that (0.75 -> stem 7.0/12.0 against a genuine 7.0/12.0). A single universal
+# weight would have to be wrong for one of them.
+WEIGHT = {"common": 0.25, "scientific": 0.75, "encounter": 0.0}
+
 # THE CARD STACKS EACH STRING IN THREE TONES, and the PDF names all three -- so these are
 # read, not eyedropped off a render, which would pick up whatever the JPEG did to them.
 # Dark below as an outline, the body colour, then a lighter copy riding one pixel high,
@@ -86,8 +106,8 @@ STROKE = {"common": 3, "scientific": 0, "encounter": 2}
 # it. So each slot names three stops and the fill is interpolated down the ink box.
 #   (top tone, mid tone, bottom tone, where the mid stop sits in the ink box)
 GRADIENT = {
-    "common": ("#f8f4ac", "#fee726", "#fee726", 0.45),
-    "scientific": ("#fff7be", "#fff200", "#e9d128", 0.50),
+    "common": ("#f8f4ac", "#fee726", "#fee726", 0.22, 0.55),
+    "scientific": ("#fcf1ae", "#e9d838", "#e9d838", 0.28, 0.30),
     "encounter": ("#fac6cc", "#d26e91", "#8e3a57", 0.45),      # overridden per tier
 }
 
@@ -96,11 +116,20 @@ GRADIENT = {
 # tight text band on all 45 shipped fronts separates them: Common is a dark teal under a
 # pale blue highlight, Uncommon cream over mauve, Rare the familiar pink, Epic blue under
 # lavender. All four sit at x 428, which is the slot already measured.
+# (top tone, mid tone, bottom tone, OUTLINE, hold)
+#
+# THE TIER COLOUR IS THE OUTLINE, NOT THE BODY, and reading it the other way round is why
+# a generated "Common" came out a solid dark teal beside a genuine one that reads pale.
+# Eroding the glyph mask separates the two populations: the INTERIOR of a genuine Rare is
+# #ffc3d1 (pale pink) and only its EDGE is #c865b2, Uncommon is cream inside and mauve at
+# the edge, and Epic inverts the usual relationship entirely -- a blue body inside a LIGHT
+# lavender outline. Sampling the whole glyph at once blends the two and reports the
+# darker one, which is the mistake the first version made.
 RARITY_TONES = {
-    "Common":   ("#d8e3f6", "#034c65", "#01323f", "#01323f"),
-    "Uncommon": ("#f9f2ae", "#c186c1", "#7a4a7d", "#7a4a7d"),
-    "Rare":     ("#fac6cc", "#d26e91", "#8e3a57", "#8e3a57"),
-    "Epic":     ("#cbb6ff", "#0393d7", "#05506f", "#05506f"),
+    "Common":   ("#f0ecf8", "#dfe7f0", "#9db6c6", 0.35, 0.55, "#0d446c"),
+    "Uncommon": ("#ffeac9", "#f8f6b0", "#e8d79a", 0.30, 0.45, "#c186c1"),
+    "Rare":     ("#ffd9e2", "#ffc3d1", "#f0a8bd", 0.30, 0.45, "#c865b2"),
+    "Epic":     ("#9bdcf8", "#2aa6e0", "#0393d7", 0.35, 0.45, "#cbb6ff"),
 }
 
 # HORIZONTAL STRETCH, and this is the single correction behind four of the complaints.
@@ -145,7 +174,7 @@ RARITY_TONES = {
 # landed near 1.41. The 45-card fit refutes it: Futura is naturally wide and Palatino
 # narrow, so the factor is a property of the FACE, not of the layout. Measurement over
 # theory -- the theory was two datapoints and a coincidence.
-STRETCH = {"common": 1.00, "scientific": 1.30, "encounter": 0.924}
+STRETCH = {"common": 1.00, "scientific": 1.15, "encounter": 0.924}
 
 TEXT_SLOTS = {
     # Sizes are HEIGHT-CALIBRATED: the size whose ink height equals the genuine glyph box
@@ -155,7 +184,7 @@ TEXT_SLOTS = {
     "common":     ("common",     68,  73.2,  125.0, "#fee726", "#696028"),
     "number_hash": ("number",    41, 630.0,  101.1, "#efc5f4", None),
     "number":     ("number",     58, 659.1,  118.2, "#efc5f4", None),
-    "scientific": ("scientific", 47,  75.3,  741.7, "#fff200", "#e9d128"),
+    "scientific": ("scientific", 53,  75.3,  741.7, "#fff200", "#e9d128"),
     "encounter":  ("encounter",  50, 429.2, 1049.9, "#d26e91", "#8e3a57"),
 }
 
@@ -301,13 +330,24 @@ def gradient_fill(size: tuple[int, int], stops: tuple[str, str, str, float]) -> 
     deeper tone at the foot. Interpolation is linear between stops and the ramp is built
     at the ink box's own height, so it does not drift when a name is longer or shorter.
     """
-    top, mid, bottom, at = stops
+    top, mid, bottom, at = stops[:4]
+    hold = stops[4] if len(stops) > 4 else 0.0
     top_rgb, mid_rgb, bottom_rgb = rgb(top), rgb(mid), rgb(bottom)
     h = max(1, size[1])
     ramp = Image.new("RGB", (1, h))
     px = ramp.load()
     for y in range(h):
         t = y / max(1, h - 1)
+        # HOLD: the genuine letterforms keep their cream FLAT across the top of the glyph
+        # and only then fall to gold -- measured on Pine, where the Latin name reads
+        # #fcf1ae / #fcf2af / #f3e676 / #e9d838 / #e9d637 / #e9d939 down six bands. A
+        # plain three-stop ramp starts falling from the very first row and is already
+        # saturated a third of the way down, which is the "highlight treatment is wrong"
+        # complaint. Everything below `hold` is the top tone unchanged.
+        if hold and t <= hold:
+            px[0, y] = top_rgb
+            continue
+        t = (t - hold) / max(1e-6, 1.0 - hold)
         if t <= at:
             a, b, f = top_rgb, mid_rgb, (t / at if at else 1.0)
         else:
@@ -319,7 +359,7 @@ def gradient_fill(size: tuple[int, int], stops: tuple[str, str, str, float]) -> 
 def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
                outline: str | None, width: int,
                stops: tuple[str, str, str, float] | None,
-               stretch: float) -> tuple[Image.Image, float, float]:
+               stretch: float, weight: float = 0.0) -> tuple[Image.Image, float, float]:
     """Compose one string as outline + gradient interior, then stretch it horizontally.
 
     THE WHOLE STACK IS COMPOSED ON ONE LAYER AND SCALED TOGETHER. Stepping the font size
@@ -329,13 +369,28 @@ def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
     Returns the cropped layer and the baseline's position inside it, so the caller can
     pivot the placement on the baseline rather than on a corner.
     """
-    pad = width * 2 + 16
-    box = (int(font.size * (len(text) + 2) * 2) + pad * 2, int(font.size * 3) + pad * 2)
-    baseline = (pad, pad + font.size * 1.5)
+    # SUPERSAMPLED, because the weight this needs is FRACTIONAL and PIL's stroke_width is
+    # an integer. The deck's own line widths are fractional points (0.25, 1.5, 3.3), and
+    # at 1x the only choices for the Latin name were 0 -> 37% too little ink and 1 -> stems
+    # half again too wide. Rendering at SS and scaling down also makes the edge ramp match:
+    # the genuine glyphs measure 1.98 px of softness, which a 1x bilevel raster cannot
+    # produce on its own.
+    SS = 4
+    big = ImageFont.truetype(font.path, round(font.size * SS))
+    w_px = int(round(weight * SS))
+    o_px = int(round(width * SS))
+    pad = (o_px + w_px) * 2 + 16 * SS
+    box = (int(big.size * (len(text) + 2) * 2) + pad * 2, int(big.size * 3) + pad * 2)
+    baseline = (pad, pad + big.size * 1.5)
+    font, width, weight = big, o_px, w_px
 
     # The glyph silhouette WITHOUT its outline -- this is what the gradient is poured into.
+    # The body mask carries the WEIGHT stroke, so the gradient is poured into the
+    # FATTENED letterform rather than leaving a same-colour rim outside the gradient.
     body_mask = Image.new("L", box, 0)
-    ImageDraw.Draw(body_mask).text(baseline, text, font=font, fill=255, anchor="ls")
+    ImageDraw.Draw(body_mask).text(baseline, text, font=font, fill=255, anchor="ls",
+                                   stroke_width=weight,
+                                   stroke_fill=255 if weight else None)
 
     layer = Image.new("RGBA", box, (0, 0, 0, 0))
     pen = ImageDraw.Draw(layer)
@@ -343,7 +398,8 @@ def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
     # shadow. The PDF reports every layer of a string on ONE baseline.
     pen.text(baseline, text, font=font, anchor="ls",
              fill=rgb(outline) if outline else rgb(fill),
-             stroke_width=width, stroke_fill=rgb(outline) if outline else None)
+             stroke_width=width + weight,
+             stroke_fill=rgb(outline) if outline else rgb(fill))
     if stops:
         ink = body_mask.getbbox()
         if ink:
@@ -360,10 +416,12 @@ def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
     layer = layer.crop(crop)
     bx, by = baseline[0] - crop[0], baseline[1] - crop[1]
 
-    if abs(stretch - 1.0) > 1e-3:
-        layer = layer.resize((max(1, round(layer.width * stretch)), layer.height),
-                             Image.LANCZOS)
-        bx *= stretch
+    # Down from the supersample and apply the horizontal stretch in the SAME resize, so
+    # the glyph is resampled once rather than twice.
+    layer = layer.resize((max(1, round(layer.width * stretch / SS)),
+                          max(1, round(layer.height / SS))), Image.LANCZOS)
+    bx = bx * stretch / SS
+    by = by / SS
     return layer, bx, by
 
 
@@ -396,10 +454,10 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
     if slot == "encounter":
         tier = RARITY_TONES.get(text.strip().title())
         if tier:
-            stops = (tier[0], tier[1], tier[2], 0.45)
-            fill, shadow = tier[1], tier[3]
+            stops = tier[:5]
+            fill, shadow = tier[1], tier[5]
     layer, bx, by = text_layer(font, text, fill, shadow, STROKE.get(slot, 0),
-                               stops, STRETCH.get(slot, 1.0))
+                               stops, STRETCH.get(slot, 1.0), WEIGHT.get(slot, 0))
 
     # Only now, after the stretch, is the width the one that has to fit the slot.
     limit = SLOT_LIMITS.get(slot)

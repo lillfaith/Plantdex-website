@@ -67,6 +67,57 @@ def largest_blob(alpha: np.ndarray) -> np.ndarray:
     return np.where(labels == biggest, alpha, 0).astype(np.uint8)
 
 
+def plant_seed(bgr: np.ndarray) -> np.ndarray:
+    """A GrabCut seed mask built from PLANT COLOUR, not from a rectangle.
+
+    THE RECTANGLE PRIOR IS WHY THE CUTOUTS FAILED. `GC_INIT_WITH_RECT` assumes the subject
+    fills a centred box and everything outside it is background -- which is false for a
+    field photograph. On the chamomile set it kept a fist-sized patch of gravel on one
+    photo and the PHOTOGRAPHER'S FINGER on another, and the finger survived because it is
+    central, large and nothing in the model said it was not the plant.
+
+    Colour does say so. A chamomile is white ray florets, a yellow disc and green foliage;
+    skin is none of those, and nor is limestone. So the seed marks those three families as
+    probable foreground, marks confidently-not-plant pixels as probable background, and
+    lets GrabCut refine the boundary from there instead of inventing one.
+
+    Deliberately SEED, not a final mask: a hard colour threshold alone cuts shadowed petals
+    and halates against a bright sky. GrabCut is good at the edge once it is told roughly
+    where the subject is -- that was always the missing half.
+    """
+    hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+    H, S, V = hsv[:, :, 0].astype(int), hsv[:, :, 1].astype(int), hsv[:, :, 2].astype(int)
+    white = (V > 165) & (S < 60)                       # ray florets
+    yellow = (H >= 18) & (H <= 38) & (S > 90) & (V > 110)   # the disc
+    green = (H >= 35) & (H <= 90) & (S > 55) & (V > 45)     # foliage and stems
+    plant = white | yellow | green
+    # Skin is the specific failure this exists to stop: warm, mid-saturation, never green.
+    skin = (((H <= 25) | (H >= 170)) & (S > 35) & (S < 165) & (V > 90)) & ~plant
+    plant = cv2.morphologyEx(plant.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+    plant = largest_blob(plant * 255) > 0
+    # Grow the seed a little: the true edge lies just outside a strict colour match.
+    near = cv2.dilate(plant.astype(np.uint8), np.ones((25, 25), np.uint8)) > 0
+
+    mask = np.full(bgr.shape[:2], cv2.GC_PR_BGD, np.uint8)
+    mask[near] = cv2.GC_PR_FGD
+    mask[plant] = cv2.GC_FGD
+    mask[skin] = cv2.GC_BGD
+    mask[~near] = cv2.GC_BGD
+    return mask
+
+
+def grabcut_seeded(bgr: np.ndarray, iterations: int) -> np.ndarray:
+    mask = plant_seed(bgr)
+    if (mask == cv2.GC_FGD).sum() < 200:          # no plant colour found; nothing to seed
+        return None
+    bgd, fgd = np.zeros((1, 65), np.float64), np.zeros((1, 65), np.float64)
+    cv2.grabCut(bgr, mask, None, bgd, fgd, iterations, cv2.GC_INIT_WITH_MASK)
+    alpha = np.where((mask == cv2.GC_FGD) | (mask == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
+    alpha = cv2.morphologyEx(alpha, cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8))
+    alpha = cv2.morphologyEx(alpha, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    return cv2.GaussianBlur(alpha, (3, 3), 0)
+
+
 def cutout(path: pathlib.Path, margin: float, iterations: int) -> Image.Image:
     bgr = cv2.imread(str(path))
     if bgr is None:
@@ -76,7 +127,11 @@ def cutout(path: pathlib.Path, margin: float, iterations: int) -> Image.Image:
     scale = 1200 / max(h, w)
     if scale < 1:
         bgr = cv2.resize(bgr, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
-    alpha = largest_blob(grabcut(bgr, margin, iterations))
+    alpha = grabcut_seeded(bgr, iterations)
+    if alpha is None:                  # fall back to the rectangle prior, visibly
+        print(f"   {path.name}: no plant colour found, falling back to the rectangle prior")
+        alpha = grabcut(bgr, margin, iterations)
+    alpha = largest_blob(alpha)
     rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
     out = np.dstack([rgb, alpha])
     im = Image.fromarray(out, "RGBA")

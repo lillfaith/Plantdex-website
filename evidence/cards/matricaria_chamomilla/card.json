@@ -12,14 +12,53 @@
       "back": "index.html#back",
       "photography": [
         {
-          "role": "front-hero (cut out, background removed with GrabCut)",
+          "role": "front-hero (cut out with COLOUR-SEEDED GrabCut; the rectangle prior kept the photographer's finger)",
           "file": "kit/hero.png",
           "derived_from": "inat-650137635.jpg",
           "photo_id": 650137635,
           "license_code": "cc0",
-          "observation_url": "https://www.inaturalist.org/observations/315640866",
+          "observation_url": "https://www.inaturalist.org/observations/356505021",
           "photographer": "no rights reserved",
-          "quality_grade": "research"
+          "quality_grade": "research",
+          "observed_on": "2026-04-29",
+          "license": "CC0 (public domain dedication)",
+          "observation_id": 356505021,
+          "source_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/650137635/original.jpg",
+          "segmentation": {
+            "method": "scripts/card_art.py plant_seed() -> cv2.GC_INIT_WITH_MASK",
+            "why": "the rectangle prior assumes the subject fills a centred box and everything outside it is background. On this set that kept a patch of gravel on one photo and the PHOTOGRAPHER'S FINGER on this one -- the finger survived because it is central, large, and nothing in the model said it was not the plant. The seed marks white ray florets, the yellow disc and green foliage as foreground and skin tones as background, then lets GrabCut find the edge.",
+            "subject": "complete flower head, stem and one bud; no clipped petals"
+          },
+          "selected_over": [
+            {
+              "photo_id": 306103593,
+              "reason": "only landscape frame, but segmentation retains pale limestone"
+            },
+            {
+              "photo_id": 275372296,
+              "reason": "a field, not a specimen; seed covers the frame (93% coverage = no cut)"
+            },
+            {
+              "photo_id": 50423922,
+              "reason": "sparse diagonal spray in grass; 100% coverage = no cut"
+            },
+            {
+              "photo_id": 650138623,
+              "reason": "deformed bloom, held in fingers"
+            },
+            {
+              "photo_id": 195560773,
+              "reason": "foliage mass, few open flowers"
+            },
+            {
+              "photo_id": 232055411,
+              "reason": "insect on the flower"
+            },
+            {
+              "photo_id": 232055418,
+              "reason": "small plant on bare soil, low subject fraction"
+            }
+          ]
         },
         {
           "role": "supporting panel -> TRUE PIXEL ICON (28x28 mosaic, nearest-neighbour to 360px)",
@@ -30,7 +69,12 @@
           "photographer": "no rights reserved",
           "quality_grade": "research",
           "grid": 28,
-          "measured_from": "docs/assets/card-kit/reference-pixel-icon.png (360px wide, 13px colour runs -> 28 squares)"
+          "measured_from": "docs/assets/card-kit/reference-pixel-icon.png (360px wide, 13px colour runs -> 28 squares)",
+          "observation_url": "https://www.inaturalist.org/observations/136004087",
+          "observed_on": "2022-09-22",
+          "license": "CC0 (public domain dedication)",
+          "observation_id": 136004087,
+          "source_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055411/original.jpeg"
         }
       ],
       "backdrop": "backdrop.png (supplied by the owner)"
