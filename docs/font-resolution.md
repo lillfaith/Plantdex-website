@@ -13,9 +13,24 @@ carries **live text**, so each string reports its own font, size, colour and bas
 |---|---|---|---|
 | Common name | **Futura Medium Italic** | 62.9px | `#fee726` over `#696028` |
 | Card number `#` / digits | **Baloo Bhaijaan** | 37.4px / 50.5px | `#efc5f4` |
+| Card number (some cards) | **Cambay Devanagari Regular** | — | — |
 | Scientific name | **Palatino Bold Italic** | 48.1px | `#fff200` over `#e9d128` |
 | Encounter value | **Palatino Bold** | 40.0px | `#d26e91` |
+| Back panel labels | **Palatino Bold** | 10.8–11.8pt | `#dc91d9` / `#d77fb4` |
 | Back body | **Avenir Medium** | 36.5px | three colours by panel |
+
+**Confirmed by the owner, 2026-11-04.** The roster matches what the PDF reports, with one
+addition I had no sample of: **Cambay Devanagari Regular** also sets the card number.
+It does not appear in Pine #41 — that card's number is Baloo throughout — so it must be
+used on other cards, and I have **no subset of it at all**, not even a partial one.
+
+That changes the digits-only proposal: `#1001` may need Cambay as well as Baloo, depending
+on which font sets which digit. One other unflattened card whose number uses Cambay would
+settle it; otherwise the full font does.
+
+The back panel labels are Palatino Bold, as the owner says — and they are **baked into
+`cardbase.pdf`**, so the renderer never sets them. That is why the back headings have
+always come out right.
 
 **That corrected four things I had inferred from the picture and got wrong:** the common
 name is Futura, not Baloo; the number is Baloo, not Palatino, and its `#` is a separate
