@@ -165,13 +165,79 @@
         "ok": true,
         "reason": null
       }
+    },
+    {
+      "claim_id": "c8",
+      "kind": "plant-part",
+      "standing": "traditional",
+      "body": "Flowers and leaves are the parts used.",
+      "passage_id": "pmc-12920616#abstract-0",
+      "quote": "Matricaria chamomilla (chamomile) leaves and flowers",
+      "source_ids": [
+        "pmc-12920616"
+      ],
+      "review": {
+        "verdict": null,
+        "by": null,
+        "on": null,
+        "note": null
+      },
+      "high_risk": false,
+      "citation_check": {
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "claim_id": "c9",
+      "kind": "preparation",
+      "standing": "laboratory",
+      "body": "Also prepared as an essential oil.",
+      "passage_id": "pmc-12698723#abstract-0",
+      "quote": "Matricaria chamomilla L.), a widely recognized medicinal plant, was investigated for its chemical composition, functional properties, and molecular characterization, focusing on samples cultivated in the Taounate region of Morocco. Essential oil (EO) was extracted using a Clevenger apparatus",
+      "source_ids": [
+        "pmc-12698723"
+      ],
+      "review": {
+        "verdict": null,
+        "by": null,
+        "on": null,
+        "note": null
+      },
+      "high_risk": false,
+      "citation_check": {
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "claim_id": "c10",
+      "kind": "studied-property",
+      "standing": "laboratory",
+      "body": "Studied for antioxidant and anti-inflammatory activity. Studied is not the same as shown to work in people.",
+      "passage_id": "pmc-13581436#abstract-2",
+      "quote": "Matricaria chamomilla L.), known for its antioxidant, anti-inflammatory, and antiparasitic activities",
+      "source_ids": [
+        "pmc-13581436"
+      ],
+      "review": {
+        "verdict": null,
+        "by": null,
+        "on": null,
+        "note": null
+      },
+      "high_risk": false,
+      "citation_check": {
+        "ok": true,
+        "reason": null
+      }
     }
   ],
   "citation_check": {
-    "checked_at": "2026-11-04T05:30:29+00:00",
+    "checked_at": "2026-11-04T05:56:49+00:00",
     "checker": "scripts/check_citations.py",
-    "claims_in": 7,
-    "claims_passed": 6,
+    "claims_in": 10,
+    "claims_passed": 9,
     "claims_refused": 1,
     "refused_ids": [
       "c5"

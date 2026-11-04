@@ -3,7 +3,7 @@
   "species_key": "matricaria chamomilla",
   "accepted_name": "Matricaria chamomilla",
   "common_name": "Chamomile",
-  "card_number": "#G01",
+  "card_number": "#G0001",
   "collection_id": "generated",
   "tier": "generated",
   "assets": {
@@ -12,34 +12,25 @@
       "back": "index.html#back",
       "photography": [
         {
-          "role": "front-hero",
-          "file": "inat-306103593.jpeg",
-          "photo_id": 306103593,
-          "observation_id": 176091519,
-          "observation_url": "https://www.inaturalist.org/observations/176091519",
-          "original_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/original.jpeg",
+          "role": "front-hero (cut out, background removed with GrabCut)",
+          "file": "kit/hero.png",
+          "derived_from": "inat-650137635.jpg",
+          "photo_id": 650137635,
           "license_code": "cc0",
-          "license": "CC0 (public domain dedication)",
+          "observation_url": "https://www.inaturalist.org/observations/315640866",
           "photographer": "no rights reserved",
-          "observed_on": "2023-08-01",
-          "place": "67046 Ovindoli, L'Aquila, Italie",
-          "identified_as": "Matricaria chamomilla",
           "quality_grade": "research"
         },
         {
-          "role": "front-habit",
-          "file": "inat-50423922.jpeg",
-          "photo_id": 50423922,
-          "observation_id": 32166626,
-          "observation_url": "https://www.inaturalist.org/observations/32166626",
-          "original_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/50423922/original.jpeg",
+          "role": "supporting panel -> TRUE PIXEL ICON (28x28 mosaic, nearest-neighbour to 360px)",
+          "file": "kit/pixel.png",
+          "derived_from": "inat-232055411.jpeg",
+          "photo_id": 232055411,
           "license_code": "cc0",
-          "license": "CC0 (public domain dedication)",
           "photographer": "no rights reserved",
-          "observed_on": "2019-09-05",
-          "place": "Alder Wood, Alderfield Drive, Speke, Liverpool, Merseyside",
-          "identified_as": "Matricaria chamomilla",
-          "quality_grade": "research"
+          "quality_grade": "research",
+          "grid": 28,
+          "measured_from": "docs/assets/card-kit/reference-pixel-icon.png (360px wide, 13px colour runs -> 28 squares)"
         }
       ],
       "backdrop": "backdrop.png (supplied by the owner)"
@@ -59,28 +50,65 @@
         "future battles"
       ],
       "never": "shown on the herbalism card in place of the photograph"
+    },
+    "typography": {
+      "source": "extracted from the unflattened Pine #41 PDF, not matched by eye",
+      "common_name": "BalooBhaijaan-Regular, skewed -9deg (the card has no italic cut)",
+      "scientific_name": "Palatino-BoldItalic",
+      "number_and_encounter_value": "Palatino-Bold",
+      "back_body": "Avenir-Medium",
+      "also_embedded": "Futura-MediumItalic"
+    },
+    "icons": {
+      "source": "extracted from the unflattened Pine #41 PDF",
+      "confirmed_mapping": "Pine #41 is water 2 / sun 5 / temperature 3, winter, uses lungs + wound -- and the PDF holds exactly 2 droplets, 5 suns, 3 thermometers, a snowflake, a lungs disc and a bandage disc.",
+      "have": [
+        "unit-water",
+        "unit-sun",
+        "unit-temperature",
+        "season-winter",
+        "use-lungs",
+        "use-wound"
+      ],
+      "missing": [
+        "use-digestive",
+        "use-edible",
+        "use-energy",
+        "use-tea",
+        "use-topical",
+        "use-calm",
+        "use-bone",
+        "use-heart",
+        "use-immune",
+        "use-urinary",
+        "season-spring",
+        "season-summer",
+        "season-autumn"
+      ]
     }
   },
   "front": {
     "common_name": "Chamomile",
     "scientific_name": "Matricaria chamomilla",
     "use_icons": [
-      "medicinal",
-      "edible"
+      "wound"
     ],
     "environmental_indicators": {
       "water": null,
       "sun": null,
       "temperature": null
     },
-    "encounter_rate": null
+    "encounter_rate": null,
+    "season": null
   },
   "back": {
     "healingTraits": [
       "Digestive",
       "Calming",
       "Skin support",
-      "Antimicrobial"
+      "Antimicrobial",
+      "Anti-inflammatory",
+      "Antioxidant"
     ],
     "compounds": [
       "Germacrene",
@@ -89,46 +117,54 @@
     "taste": [],
     "aromatic": [],
     "preparations": [
-      "Infusion"
+      "Infusion",
+      "Essential oil"
     ],
-    "usableParts": []
+    "usableParts": [
+      "Flower",
+      "Leaf"
+    ]
   },
   "review_flags": [
     {
-      "field": "front.environmental_indicators.water",
-      "reason": "No sourced value. Printed cards show a droplet count; nothing retrieved supports one. A horticultural flora is the obvious source for a later pass."
-    },
-    {
-      "field": "front.environmental_indicators.sun",
-      "reason": "No sourced value."
-    },
-    {
-      "field": "front.environmental_indicators.temperature",
-      "reason": "No sourced value."
+      "field": "front.environmental_indicators",
+      "severity": "blocker",
+      "reason": "No sourced water/sun/temperature values, so no droplet, sun or thermometer icons are drawn. The printed deck counts these off its own artwork; for a generated species they need a horticultural source. The icons exist and are ready."
     },
     {
       "field": "front.encounter_rate",
-      "reason": "No sourced value. GBIF occurrence counts are the obvious basis, and the mapping from a count to Common/Uncommon/Rare/Epic is a product decision nobody has made."
+      "severity": "blocker",
+      "reason": "No sourced value. GBIF occurrence counts are the obvious basis; the mapping from a count to Common/Uncommon/Rare/Epic is a product decision nobody has made."
+    },
+    {
+      "field": "front.season",
+      "severity": "blocker",
+      "reason": "Chamomile is a summer species, but only the WINTER snowflake has been extracted. The spring/summer/autumn icons are missing."
+    },
+    {
+      "field": "front.use_icons",
+      "severity": "needs-decision",
+      "reason": "Only `wound` is drawn, and that is my mapping of the approved skin-support claim. The icons for digestive, calm and tea -- which the claims arguably support -- have not been extracted. Card 46, the Icon Cheat Sheet, would supply all twelve in one file."
     },
     {
       "field": "back.taste",
-      "reason": "Structurally unobtainable from literature: a taste note is an observation by somebody holding the plant. Left blank rather than guessed."
+      "severity": "wont-fix",
+      "reason": "A taste note is an observation by somebody holding the plant, not a citation. Blank."
     },
     {
       "field": "back.aromatic",
+      "severity": "wont-fix",
       "reason": "The same as taste."
     },
     {
-      "field": "back.usableParts",
-      "reason": "Obtainable, but no plant-part claim cleared the citation check yet."
-    },
-    {
       "field": "back.compounds",
+      "severity": "review",
       "reason": "One claim refused: the sesquiterpenoid list (chamazulene, alpha-bisabolol) was drafted at laboratory standing but its source sits in the documented-use query group, which can only support traditional. Probably true; the rule still refuses it."
     },
     {
       "field": "assets.herbalism_card.photography",
-      "reason": "The reference card's photograph is CUT OUT and placed on the backdrop. These are rectangular crops. Background removal has not been attempted."
+      "severity": "review",
+      "reason": "The hero is a GrabCut cut-out and keeps a small artefact of stem at the upper right. No learned matte was used: a classical cut fails visibly, where a model can invent a plausible edge that is not the plant's."
     }
   ],
   "publishable": false,
@@ -137,5 +173,19 @@
     "artwork is not approved",
     "no cited source has been verified by a human"
   ],
-  "assembled_at": "2026-11-04T05:45:26+00:00"
+  "assembled_at": "2026-11-04T05:59:50+00:00",
+  "series": {
+    "id": "generated-01",
+    "prefix": "G",
+    "digits": 4,
+    "format": "#G0001",
+    "note": "Separate from Collection 01 (printed, #01-#47) and from field-cards."
+  },
+  "claims_summary": {
+    "drafted": 10,
+    "citation_checked_pass": 9,
+    "refused": 1,
+    "human_approved": 0,
+    "sources_verified_by_a_human": 0
+  }
 }
