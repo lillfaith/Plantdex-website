@@ -1,0 +1,893 @@
+{
+  "state": "retrieved",
+  "schema_version": 1,
+  "species_key": "matricaria chamomilla",
+  "retrieved_at": "2026-11-04T05:24:10+00:00",
+  "identity": {
+    "queried_name": "Matricaria chamomilla",
+    "match_type": "EXACT",
+    "match_confidence": 99,
+    "gbif_status": "ACCEPTED",
+    "taxonomy_status": "accepted",
+    "gbif_id": "8370958",
+    "accepted_name": "Matricaria chamomilla",
+    "name_authorship": "L.",
+    "family": "Asteraceae",
+    "genus": "Matricaria",
+    "rank": "species",
+    "synonyms": [
+      "Anthemis vulgaris L.",
+      "Anthemis vulgaris L. ex Steud.",
+      "Camomilla patens Gilib.",
+      "Chamaemelum chamomilla (L.) E.H.L.Krause",
+      "Chamaemelum suaveolens E.H.L.Krause",
+      "Chamaemelum vulgare (L. ex Steud.) Bubani",
+      "Chamomilla chamomilla (L.) Rydb.",
+      "Chamomilla chamomilla L.",
+      "Chamomilla chamomilla f. courrantiana (DC.) Fiori & Paol.",
+      "Chamomilla chamomilla f. kochiana (Sch.Bip.) Fiori & Paol.",
+      "Chamomilla chamomilla f. pusilla (Willd.) Fiori & Paol.",
+      "Chamomilla chamomilla f. suaveolens Fiori & Paol.",
+      "Chamomilla chamomilla subsp. pusilla (Willd.) Holmboe",
+      "Chamomilla chamomilla var. coronata Coss. & Germ.",
+      "Chamomilla chamomilla var. coronata J.Gay",
+      "Chamomilla chamomilla var. coronata J.Gay ex Boiss.",
+      "Chamomilla chamomilla var. pappulosa Margot & Reut.",
+      "Chamomilla chamomilla var. pusilla (Willd.) Fiori",
+      "Chamomilla chamomilla var. recutita (L.) Fiori",
+      "Chamomilla courrantiana (DC.) C.Koch",
+      "Chamomilla courrantiana (DC.) K.Koch",
+      "Chamomilla meridionalis K.Koch",
+      "Chamomilla officinalis K.Koch",
+      "Chamomilla patens Gilib.",
+      "Chamomilla recutita (L.) Rauschert",
+      "Chamomilla recutita subsp. bayeri",
+      "Chamomilla recutita subsp. recutita",
+      "Chamomilla recutita var. bayeri (Kanitz) Dostál",
+      "Chamomilla unilateralis K.Koch",
+      "Chamomilla vulgaris (L. ex Steud.) Gray",
+      "Chrysanthemum chamomilla (L.) Bernh.",
+      "Chrysanthemum suaveolens Cav.",
+      "Courrantia chamomilloides Sch.Bip.",
+      "Leucanthemum chamaemelum Lam.",
+      "Matricaria bayeri Kanitz",
+      "Matricaria capitellata Batt. & Pit.",
+      "Matricaria chamaemilla Hill",
+      "Matricaria chamaemilla Hill Veg.Syst.",
+      "Matricaria chamomilla f. courrantiana (DC.) Fiori",
+      "Matricaria chamomilla f. kochiana (Sch.Bip.) Fiori",
+      "Matricaria chamomilla f. pusilla (Willd.) Fiori & Paol., 1904",
+      "Matricaria chamomilla f. suaveolens Fiori",
+      "Matricaria chamomilla subsp. bayeri (Kanitz) H.Neumayer",
+      "Matricaria chamomilla subsp. courrantiana (DC.) Nyman",
+      "Matricaria chamomilla subsp. pusilla (Willd.) Holmboe",
+      "Matricaria chamomilla subsp. suaveolens (Wahlenb.) Hartm.",
+      "Matricaria chamomilla var. bipontina F.W.Schultz",
+      "Matricaria chamomilla var. coronata (J.Gay) Coss. & Germ.",
+      "Matricaria chamomilla var. coronata Boiss.",
+      "Matricaria chamomilla var. coronata J.Gay"
+    ],
+    "endpoint": "https://api.gbif.org/v1/species/match"
+  },
+  "conservation": {
+    "iucn_category": "NOT_EVALUATED",
+    "endpoint": "https://api.gbif.org/v1/species/8370958/iucnRedListCategory",
+    "at_risk": false,
+    "promotable": false,
+    "conservation_note": "No usable global assessment (category: NOT_EVALUATED). Treated as NOT promotable: the plant may be documented, but nothing may present it as something to go and collect until a human checks regional listings. Missing data is not evidence of abundance."
+  },
+  "literature": {
+    "groups": {
+      "documented-use": [
+        "pmc-13164646",
+        "pmc-12693993",
+        "pmc-13708605",
+        "pmc-13552283",
+        "pmid-42216861",
+        "pmid-42154336",
+        "pmc-13696899",
+        "pmc-13250185",
+        "pmc-12430341",
+        "pmc-12856596",
+        "pmc-12920616",
+        "pmc-13204971",
+        "pmc-13620397",
+        "epmc-6dbe2e00b7",
+        "epmc-b9069fa020",
+        "pmc-12914922",
+        "pmc-13164761",
+        "pmc-13142231",
+        "pmc-12619506",
+        "pmid-41289904",
+        "pmc-13404584",
+        "pmc-13074613",
+        "pmc-12729506",
+        "pmc-12936103",
+        "pmc-13363751"
+      ],
+      "laboratory-study": [
+        "pmc-13668604",
+        "pmc-13323515",
+        "pmc-13581436",
+        "pmid-42966239",
+        "pmc-13511730",
+        "pmid-42184206",
+        "pmid-42827196",
+        "pmc-12941530",
+        "pmc-13275630",
+        "pmc-13610124",
+        "pmc-12698723",
+        "pmc-13479437",
+        "pmc-13569960",
+        "pmc-13285536",
+        "pmc-13299215",
+        "pmc-13290721"
+      ]
+    },
+    "sources": [
+      {
+        "source_id": "pmc-13164646",
+        "title": "Medicinal Plants Traditionally Used to Treat Digestive System Disorders in Lithuania.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091390",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164646",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12693993",
+        "title": "Traditional Use of Medicinal Plants for Symptom Relief During the COVID-19 Pandemic in Bulgaria.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14233692",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12693993",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13708605",
+        "title": "Traditional Mexican Medicinal Plants for Ocular Diseases: Ethnomedicinal Evidence, Pharmacological Relevance, and Research Gaps from Unexplored Sources.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/ph19101555",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13708605",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13552283",
+        "title": "The complete sequence of chloroplast genome of an important medicinal plant, &lt;i&gt;Chamaemelum nobile&lt;/i&gt; Linaeus 1785 (Asteraceae).",
+        "journal": "Mitochondrial DNA. Part B, Resources",
+        "year": "2026",
+        "doi": "10.1080/23802359.2026.2728270",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13552283",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42216861",
+        "title": "Traditional Respiratory Remedies From Anatolia: Ethnobotanical Insights and Bioactive Properties.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2026",
+        "doi": "10.1002/cbdv.202503666",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42216861/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42154336",
+        "title": "Transcription factor McORA activates McHDR to enhance aphid-repelling (E)-β-farnesene biosynthesis in Matricaria chamomilla L.",
+        "journal": "Plant cell reports",
+        "year": "2026",
+        "doi": "10.1007/s00299-026-03861-2",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42154336/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13696899",
+        "title": "Phytochemical Profiling, Molecular Docking Study, and Gastroprotective Effect of Matricaria chamomilla L. Aqueous Extract in Ethanol-Induced Gastric Ulcer in Mice.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2026",
+        "doi": "10.1002/cbdv.71804",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13696899",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13250185",
+        "title": "Use of medicinal herbs in an Iranian population: cross-sectional findings from the Fasa PERSIAN Cohort Study.",
+        "journal": "BMJ open",
+        "year": "2026",
+        "doi": "10.1136/bmjopen-2025-104459",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13250185",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12430341",
+        "title": "Ethnobotany in a Modern City: The Persistence in the Use of Medicinal Plants in Guadalajara, Mexico.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14172788",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12430341",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12856596",
+        "title": "Integrative therapies for chronic insomnia: A randomized controlled trial of a traditional Thai Herbal Remedy and &lt;i&gt;Cannabis sativa&lt;/i&gt; oil.",
+        "journal": "Sleep medicine: X",
+        "year": "2026",
+        "doi": "10.1016/j.sleepx.2026.100173",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12856596",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12920616",
+        "title": "Phytochemical composition and antimicrobial activity of Matricaria chamomilla ethanolic extracts against clinical bacterial isolates in Ibb City, Yemen.",
+        "journal": "Scientific reports",
+        "year": "2026",
+        "doi": "10.1038/s41598-026-38001-z",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12920616",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13204971",
+        "title": "Wild Flora Species from Romania with Anxiolytic and Antidepressant Potential: A Global Perspective-Narrative Review.",
+        "journal": "Biomedicines",
+        "year": "2026",
+        "doi": "10.3390/biomedicines14051019",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13204971",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13620397",
+        "title": "Efficacy of an Herbal Cream on Patients with Hemorrhoids: a randomized triple-blind controlled trial.",
+        "journal": "Journal of pharmacopuncture",
+        "year": "2026",
+        "doi": "10.3831/kpi.2026.29.3.",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13620397",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-6dbe2e00b7",
+        "title": "First Report of Ageratum Enation Virus and Its Associated DNA Satellites Infecting Matricaria chamomilla L., in India",
+        "journal": "Journal of Phytopathology",
+        "year": "2026",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-b9069fa020",
+        "title": "Logistic Kinetic Modeling and Interpretation of Mass Transfer in Supercritical CO<sub>2</sub> Extraction in Oregano, Chamomile and Moringa",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.20944/preprints202605.1180.v1",
+        "open_access": false,
+        "url": "https://doi.org/10.20944/preprints202605.1180.v1",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12914922",
+        "title": "\"I know a lot about medicinal plants. I read, I watch, and I search\": towards hybrid knowledge systems in the modern era.",
+        "journal": "Journal of ethnobiology and ethnomedicine",
+        "year": "2026",
+        "doi": "10.1186/s13002-025-00844-7",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12914922",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13164761",
+        "title": "Comparative Antifungal Activity of Medicinal Plant Extracts and Essential Oils Against Clinical Isolates of &lt;i&gt;Candida albicans&lt;/i&gt; from Denture Stomatitis Patients.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091392",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164761",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13142231",
+        "title": "Green-synthesized &lt;i&gt;Matricaria chamomilla&lt;/i&gt; silver nanoparticles enhance anticonvulsant and neuroprotective effects through GABAergic and antioxidant pathways in an acute seizure rat model.",
+        "journal": "RSC advances",
+        "year": "2026",
+        "doi": "10.1039/d6ra01236a",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13142231",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12619506",
+        "title": "Optimizing biosynthesis: the role of LED light spectra in regulating phenolic and flavonoid accumulation in Matricaria chamomilla L. Root cultures.",
+        "journal": "BMC plant biology",
+        "year": "2025",
+        "doi": "10.1186/s12870-025-07609-0",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12619506",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41289904",
+        "title": "NiO-SnO&lt;sub&gt;2&lt;/sub&gt; nanocomposite as an adsorbent for the preconcentration of manganese ions in chamomile tea extract.",
+        "journal": "Food chemistry",
+        "year": "2026",
+        "doi": "10.1016/j.foodchem.2025.147252",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41289904/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13404584",
+        "title": "Natural Compounds in Pediatric Disease Treatment.",
+        "journal": "Biomedicines",
+        "year": "2026",
+        "doi": "10.3390/biomedicines14071528",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13404584",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13074613",
+        "title": "In Vitro Antimicrobial Potential of Medicinal Plant Extracts and Their Combinations Against Mastitis-Causing Bacteria in Dairy Cows.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31071089",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13074613",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12729506",
+        "title": "Medicinal Plants for Acne Vulgaris: An Evidence-Based Review of Treatments Promoted by Social Media.",
+        "journal": "Journal of cosmetic dermatology",
+        "year": "2026",
+        "doi": "10.1111/jocd.70628",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12729506",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12936103",
+        "title": "Prevalence of complementary and alternative medicine use among osteoarthritis patients in a developing country and their level of satisfaction.",
+        "journal": "Scientific reports",
+        "year": "2026",
+        "doi": "10.1038/s41598-026-37826-y",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12936103",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13363751",
+        "title": "German and Roman Chamomile: Species-Specific Phytochemical Profiles, Bioactive Potential, and Relevance for Functional Foods and Nutraceutical Development.",
+        "journal": "Nutrients",
+        "year": "2026",
+        "doi": "10.3390/nu18132181",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13363751",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13668604",
+        "title": "Editorial: Antioxidant activities and induction production approaches (Physical, chemical and biotechnological) of plant-based bioactive nutrients",
+        "journal": "Frontiers in nutrition",
+        "year": null,
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13668604",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13323515",
+        "title": "Chemical profiling and &lt;i&gt;in silico&lt;/i&gt; evaluation of a &lt;i&gt;Matricaria chamomilla&lt;/i&gt; L. extract: exploring its antioxidant, antibacterial, antidiabetic, anti-inflammatory, and anticholinergic activities.",
+        "journal": "Frontiers in nutrition",
+        "year": "2026",
+        "doi": "10.3389/fnut.2026.1852820",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13323515",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13581436",
+        "title": "Therapeutic Effects of Matricaria chamomilla Extract in an Immunosuppressed Mouse Model of Cryptosporidiosis.",
+        "journal": "Veterinary medicine and science",
+        "year": "2026",
+        "doi": "10.1002/vms3.71148",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13581436",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42966239",
+        "title": "Enhanced wound healing potential of a carboxymethyl cellulose/gelatin-based hydrogel containing decellularized amniotic membrane and Matricaria chamomilla extract: A multifunctional composite dressing.",
+        "journal": "Injury",
+        "year": "2026",
+        "doi": "10.1016/j.injury.2026.113831",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42966239/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13511730",
+        "title": "&lt;i&gt;Geranium robertianum&lt;/i&gt; L. in Oral Health: From Phytochemical Profile to Therapeutic Potential.",
+        "journal": "Dentistry journal",
+        "year": "2026",
+        "doi": "10.3390/dj14080505",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13511730",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42184206",
+        "title": "Enhanced Antimicrobial and Antidiabetic Activities of &lt;i&gt;Matricaria chamomilla&lt;/i&gt; and &lt;i&gt;Anastatica hierochuntica&lt;/i&gt; Extracts Toward Pathogenic Microorganisms: Phytochemical Profiling and Biomedical Applications.",
+        "journal": "Foodborne pathogens and disease",
+        "year": "2026",
+        "doi": "10.1177/15353141261451629",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42184206/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42827196",
+        "title": "Matricaria chamomilla L. Essential Oil: The Preparation and Characterization of the Self-microemulsion Drug Delivery System, and Repair Effect in Ulcerative Colitis.",
+        "journal": "Pharmaceutical research",
+        "year": "2026",
+        "doi": "10.1007/s11095-026-04140-1",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42827196/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12941530",
+        "title": "Collagen-Inducing Compounds from Chihuahuan Desert Plants for Potential Skin Bioink 3D Printing Applications: A Narrative Review.",
+        "journal": "Journal of functional biomaterials",
+        "year": "2026",
+        "doi": "10.3390/jfb17020074",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12941530",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13275630",
+        "title": "Medicinal plants as alternative and adjunct antimicrobial agents in ear, nose, and throat (ENT) Infections.",
+        "journal": "Inflammopharmacology",
+        "year": "2026",
+        "doi": "10.1007/s10787-026-02251-0",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13275630",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13610124",
+        "title": "A Systematic Review of Recent Developments in Wound Healing and Skin Regeneration Properties of Plant-Extract-Based Hydrogels for Skin Delivery: A Focus on Asteraceae and Lamiaceae Families.",
+        "journal": "Pharmaceutics",
+        "year": "2026",
+        "doi": "10.3390/pharmaceutics18091047",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13610124",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12698723",
+        "title": "Phytochemical profiling in vitro and in silico evaluation of antioxidant, antimicrobial, and insecticidal properties of Moroccan matricaria chamomilla essential oil.",
+        "journal": "Scientific reports",
+        "year": "2025",
+        "doi": "10.1038/s41598-025-27573-x",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12698723",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13479437",
+        "title": "Potential role of natural products in veterinary stem cell therapy.",
+        "journal": "Stem cell research & therapy",
+        "year": "2026",
+        "doi": "10.1186/s13287-026-05117-y",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13479437",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13569960",
+        "title": "Unani Herbal Vaginal Douche for Antibiotic‐Refractory Chronic Cervicitis: A Case Series",
+        "journal": "The journal of obstetrics and gynaecology research",
+        "year": "2026",
+        "doi": null,
+        "open_access": false,
+        "url": "https://europepmc.org/article/PMC/PMC13569960",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13285536",
+        "title": "In silico screening for safe and potent essential oils against mosquito neural targets.",
+        "journal": "Frontiers in zoology",
+        "year": "2026",
+        "doi": "10.1186/s12983-026-00620-7",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13285536",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13299215",
+        "title": "Multifunctional 3D-Printed Alginate Emulgel Patches Incorporating Plant Extracts for Potential Burn Wound Applications.",
+        "journal": "Gels (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/gels12060541",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13299215",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13290721",
+        "title": "Research progress and antibacterial mechanisms of plant essential oils as alternative therapies for periodontitis.",
+        "journal": "Frontiers in microbiology",
+        "year": "2026",
+        "doi": "10.3389/fmicb.2026.1802802",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13290721",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      }
+    ],
+    "passages": [
+      {
+        "passage_id": "pmc-13164646#abstract-4",
+        "source_id": "pmc-13164646",
+        "located_in": "abstract",
+        "text": "The most popular species for treatment of digestive disorders are <i>Artemisia absinthium</i> L. and <i>Matricaria chamomilla</i> L. The use of different taxa for the treatment of digestive disorders in Lithuania varies considerably for a number of reasons, one of which is the uneven distribution of medicinal plant species in the study areas."
+      },
+      {
+        "passage_id": "pmc-12693993#abstract-6",
+        "source_id": "pmc-12693993",
+        "located_in": "abstract",
+        "text": "The highest RFC and UVs were recorded for <i>Matricaria chamomilla</i> L., <i>Tilia</i> sp., <i>Thymus vulgaris</i> L., <i>Zingiber officinale</i> Roscoe, <i>Mentha</i> sp., <i>Citrus x limon</i> (L.) Osbeck, <i>Rosa canina</i> L., and <i>Sideritis scardica</i> Griseb. Culturally significant species identified were <i>Thymus vulgaris</i> L., <i>Matricaria chamomilla</i> L., <i>Tilia</i> sp., <i>Mentha</i> sp., <i>Sideritis scardica</i> Griseb, <i>Zingiber officinale</i> Roscoe, and <i>Citrus x limon</i> (L.) Osbeck."
+      },
+      {
+        "passage_id": "pmc-12693993#abstract-7",
+        "source_id": "pmc-12693993",
+        "located_in": "abstract",
+        "text": "Culturally significant species identified were <i>Thymus vulgaris</i> L., <i>Matricaria chamomilla</i> L., <i>Tilia</i> sp., <i>Mentha</i> sp., <i>Sideritis scardica</i> Griseb, <i>Zingiber officinale</i> Roscoe, and <i>Citrus x limon</i> (L.) Osbeck. This ethnobotanical survey in Bulgaria documents culturally important medicinal plants that may have potential applications in prophylaxis and complementary therapy for COVID-19."
+      },
+      {
+        "passage_id": "pmc-13708605#abstract-5",
+        "source_id": "pmc-13708605",
+        "located_in": "abstract",
+        "text": "Asteraceae represented the predominant family, while <i>Matricaria chamomilla</i> was identified as the most frequently cited species. Notably, 165 ethnomedicinal records corresponding to 142 species identified in this work were absent from previous analysis of Mexican medicinal plants for ocular diseases, demonstrating the value of these repositories."
+      },
+      {
+        "passage_id": "pmc-13552283#abstract-3",
+        "source_id": "pmc-13552283",
+        "located_in": "abstract",
+        "text": "By conducting phylogenetic analyses based on chloroplast genomes, we found that <i>C. nobile</i> was more closely related to <i>Matricaria chamomilla</i> var. <i>recutita</i> within the chamomile species. This finding contributes to a better understanding of the phylogenetic relationship between <i>C. nobile</i> and other species."
+      },
+      {
+        "passage_id": "pmid-42216861#abstract-5",
+        "source_id": "pmid-42216861",
+        "located_in": "abstract",
+        "text": "Key species include Cydonia oblonga, Glycyrrhiza glabra, Juniperus oxycedrus, Matricaria chamomilla, Pinus spp., Plantago spp., Rubus spp., Sambucus nigra, and Urtica dioica. A clear divergence in treatment strategies is evident."
+      },
+      {
+        "passage_id": "pmid-42154336#abstract-1",
+        "source_id": "pmid-42154336",
+        "located_in": "abstract",
+        "text": "German chamomile (Matricaria chamomilla L.) is an annual medicinal plant whose essential oil is rich in sesquiterpenoids, including (E)-β-farnesene (EβF), chamazulene, nerolidol and α-bisabolol, which collectively exhibit antibacterial, anti-inflammatory, hypoglycemic, hypolipidemic, spasmolytic, and sedative activities. However, German chamomile is highly susceptible to aphid infestation, resulting in stunted growth, leaf chlorosis and curling, and premature senescence."
+      },
+      {
+        "passage_id": "pmc-13696899#abstract-0",
+        "source_id": "pmc-13696899",
+        "located_in": "abstract",
+        "text": "While Matricaria chamomilla L. is renowned for its medicinal properties, most research has focused on its essential oils or organic extracts, neglecting the traditionally used aqueous preparation. This study investigated the chemical composition and the molecular interactions of phenolic compounds in chamomile aqueous extract (CAE), focusing on its unique water-soluble components."
+      },
+      {
+        "passage_id": "pmc-13250185#abstract-3",
+        "source_id": "pmc-13250185",
+        "located_in": "abstract",
+        "text": "The most frequently used herbs were <i>Zataria multiflora</i>, <i>Echium amoenum</i> and <i>Matricaria chamomilla</i>, most commonly for anxiety/neurasthenia (81.6%), gastric pain (59.6%) and common cold (49.8%).<h4>Conclusions</h4>Medicinal herb use is highly prevalent among adults in southern Iran. Educational level, but not chronic disease status, was associated with herb use."
+      },
+      {
+        "passage_id": "pmc-12430341#abstract-5",
+        "source_id": "pmc-12430341",
+        "located_in": "abstract",
+        "text": "An inventory of 137 medicinal plants was created, where the plant species most commonly used in the five old neighborhoods of Guadalajara City were muicle (<i>Justicia spicigera</i> Schltdl.), pirul (<i>Schinus molle</i> L.), manzanilla (<i>Matricaria chamomilla</i> L.), valeriana (<i>Valeriana</i> sp.), calabaza (<i>Cucurbita pepo</i> L.), cola de caballo (<i>Equisetum arvense</i> L.), tepezcohuite (<i>Mimosa tenuiflora</i> Poir.), salvia (<i>Salvia officinalis</i> L.), canela (<i>Cinnamomum verum</i> J. Presl.), tila estrella (<i>Tilia americana</i> var. <i>mexicana</i> (Schltdl.) Hardin), cedrón (<i>Aloysia citrodora</i> Paláu), uva (<i>Vitis vinifera</i> L.), jengibre (<i>Zingiber officinale</i> Roscoe) and gobernadora (<i>Larrea tridentata</i> (DC.) Coville)."
+      },
+      {
+        "passage_id": "pmc-12430341#abstract-8",
+        "source_id": "pmc-12430341",
+        "located_in": "abstract",
+        "text": "Moreover, <i>J. spicigera</i>, <i>M. chamomilla</i> and <i>L. tridentata</i> were used for eight medical purposes, followed by <i>Z. officinale</i> with five medicinal practices. In contrast, only two medicinal uses were recorded for <i>C. pepo</i>, <i>M. tenuiflora</i> and <i>S. officinale</i>."
+      },
+      {
+        "passage_id": "pmc-12920616#abstract-0",
+        "source_id": "pmc-12920616",
+        "located_in": "abstract",
+        "text": "This study aimed to analyze the phytochemical constituents and evaluate the antimicrobial effects of ethanolic extracts from Matricaria chamomilla (chamomile) leaves and flowers against clinical bacterial isolates collected from Ibb City, Yemen. Phytochemical screening revealed presence of alkaloids, tannins, sterols, and terpenoids in both leaves and flowers, while flavonoids, glycosides, saponins, and amino acids were absent."
+      },
+      {
+        "passage_id": "pmc-12920616#abstract-5",
+        "source_id": "pmc-12920616",
+        "located_in": "abstract",
+        "text": "These findings underscore the therapeutic potential of M. chamomilla as a natural antimicrobial agent relevant to combating bacterial infections, especially in the local Yemeni context. Further studies are recommended to isolate active compounds and evaluate mechanisms of action."
+      },
+      {
+        "passage_id": "pmc-13204971#abstract-3",
+        "source_id": "pmc-13204971",
+        "located_in": "abstract",
+        "text": "The approach aims to highlight the therapeutic relevance of these species in both regional and international contexts. <b>Relevant sections:</b> This narrative review integrates available data on seven species commonly used in traditional medicine: <i>Matricaria chamomilla</i> L., <i>Galium odoratum</i> L., <i>Melissa officinalis</i> L., <i>Leonurus cardiaca</i> L., <i>Hypericum perforatum</i> L., <i>Tilia</i> spp., and <i>Crataegus monogyna</i> Jacq. This review examines their geographical distribution, taxonomic classification, phytochemical composition, proposed mechanisms of action, and available preclinical and clinical evidence, as well as safety considerations and products currently available on the Romanian pharmaceutical sales. <b>Discussion:</b> Current evidence suggests that <i>Hypericum perforatum</i> L. and <i>Melissa officinalis</i> L. are supported by relatively robust clinical data regarding their efficacy in reducing anxiety and depressive symptoms."
+      },
+      {
+        "passage_id": "epmc-6dbe2e00b7#abstract-1",
+        "source_id": "epmc-6dbe2e00b7",
+        "located_in": "abstract",
+        "text": "This study presents the first report of Begomovirus agerati (Ageratum enation virus; AEV) infecting Matricaria chamomilla L. (German chamomile) in India. Field‐collected plants exhibited typical begomovirus symptoms, including stunted growth, chlorosis and leaf deformation."
+      },
+      {
+        "passage_id": "epmc-6dbe2e00b7#abstract-8",
+        "source_id": "epmc-6dbe2e00b7",
+        "located_in": "abstract",
+        "text": "This study provides the first evidence of AEV infecting M. chamomilla L., highlighting the expanding host range and genomic diversity of begomoviruses in medicinal plants. These findings underscore the need for strengthened surveillance and effective virus‐management strategies in medicinal plant cultivation."
+      },
+      {
+        "passage_id": "epmc-b9069fa020#abstract-0",
+        "source_id": "epmc-b9069fa020",
+        "located_in": "abstract",
+        "text": "The supercritical CO₂ extraction of essential oils from Origanum vulgare L., Matricaria chamomilla L., and Moringa oleifera Lam. was kinetically interpreted using a logistic mass transfer approach under different combinations of pressure and temperature. Extractions were performed in a fixed-bed SFE system operated for 210 min using high-purity CO₂ under pressures ranging from 100 to 500 bar and temperatures between 30 and 60 °C, depending on the vegetable matrix."
+      },
+      {
+        "passage_id": "pmc-13164761#abstract-0",
+        "source_id": "pmc-13164761",
+        "located_in": "abstract",
+        "text": "In this study, we investigated the antifungal potential of methanolic extracts and essential oils obtained from five medicinal plants (<i>Salvadora persica</i>, <i>Mentha spicata</i>, <i>Achillea millefolium</i>, <i>Matricaria chamomilla</i>, and <i>Zingiber officinale</i>) against 25 clinical isolates of <i>Candida albicans</i> collected from patients with denture stomatitis. Antifungal susceptibility was assessed using broth microdilution as the primary method, with agar diffusion assays performed to provide complementary visual confirmation."
+      },
+      {
+        "passage_id": "pmc-13142231#abstract-1",
+        "source_id": "pmc-13142231",
+        "located_in": "abstract",
+        "text": "This study investigates the anticonvulsant and neuroprotective effects of ethanolic extract of <i>Matricaria chamomilla</i> (German chamomile) and its green-synthesized silver nanoparticles (MC-AgNPs) in a pentylenetetrazole (PTZ)-induced rat model. The phytochemical analysis (TPC, TFC, GC-MS) showed high phenolic (18.64 mg GAE per g) and flavonoid (17.04 mg QE per g) content with apigenin and quercetin identified as major constituents."
+      },
+      {
+        "passage_id": "pmc-12619506#abstract-0",
+        "source_id": "pmc-12619506",
+        "located_in": "abstract",
+        "text": "Matricaria chamomilla L. is a medicinal plant valued for its high content of phenolic and flavonoid compounds. In vitro root cultures represent a promising alternative to field cultivation for controlled and sustainable metabolite production."
+      },
+      {
+        "passage_id": "pmc-12619506#abstract-5",
+        "source_id": "pmc-12619506",
+        "located_in": "abstract",
+        "text": "LED light spectra act as effective biochemical elicitors for optimizing metabolite production in M. chamomilla root cultures. Blue light is most effective for stimulating phenolic biosynthesis and biomass growth, while red light and darkness favor flavonoid and compound-specific responses."
+      },
+      {
+        "passage_id": "pmid-41289904#abstract-0",
+        "source_id": "pmid-41289904",
+        "located_in": "abstract",
+        "text": "Matricaria chamomilla L., referred to as chamomile, is a well-known medicinal plant that is widely distributed throughout the world. In this study, a novel NiO-SnO<sub>2</sub> nanocomposite- assisted preconcentration method was established for efficient extraction and separation of manganese ions from chamomile tea extract."
+      },
+      {
+        "passage_id": "pmc-13363751#abstract-0",
+        "source_id": "pmc-13363751",
+        "located_in": "abstract",
+        "text": "<b>Background:</b> German chamomile (<i>Matricaria chamomilla</i> L.) and Roman chamomile (<i>Chamaemelum nobile</i> (L.) All.) are widely consumed botanical materials increasingly used in nutraceuticals and functional foods. Although both are marketed as \"chamomile\", they differ in phytochemical composition, sensory profile, and potential health-promoting properties."
+      },
+      {
+        "passage_id": "pmc-13363751#abstract-2",
+        "source_id": "pmc-13363751",
+        "located_in": "abstract",
+        "text": "This review compares both species as dietary and functional ingredients. <b>Methods</b>: This narrative review summarises current evidence on the botanical characteristics, phytochemical profiles, dietary forms, biological activities, safety aspects, and functional food applications of <i>M. chamomilla</i> and <i>C. nobile</i>, with emphasis on species-specific differences relevant to nutritional use and formulation. <b>Results:</b> German chamomile is more extensively characterised and is particularly rich in apigenin-related flavonoids, luteolin derivatives, α-bisabolol, and matricin-derived chamazulene, which are associated with antioxidant, anti-inflammatory, calming, gastrointestinal, and metabolic effects. Roman chamomile is distinguished by an ester-rich essential oil profile and sesquiterpene lactones, including nobilin derivatives, which contribute to its characteristic aroma and complementary biological potential."
+      },
+      {
+        "passage_id": "pmc-13323515#abstract-0",
+        "source_id": "pmc-13323515",
+        "located_in": "abstract",
+        "text": "<h4>Introduction</h4>This study aimed to investigate the phytochemical composition and multifunctional therapeutic potential of a hydroethanolic extract of <i>Matricaria chamomilla L</i>. collected from the semi-arid region of Algeria. The research focused on evaluating its antioxidant, antimicrobial, antidiabetic, anti-inflammatory, neuroprotective, and potential anticancer activities.<h4>Methods</h4>Total polyphenol and flavonoid contents were determined using spectrophotometric methods."
+      },
+      {
+        "passage_id": "pmc-13323515#abstract-13",
+        "source_id": "pmc-13323515",
+        "located_in": "abstract",
+        "text": "Molecular docking revealed strong binding affinities of α-tocopherol and apigenin-7-O-glucoside toward ERα and HER2 receptors.<h4>Discussion</h4>The findings demonstrate that <i>Matricaria chamomilla L</i>. possesses significant pharmacological potential due to its rich phytochemical composition and broad-spectrum biological activities. The observed antioxidant, antimicrobial, enzyme inhibitory, anti-inflammatory, and molecular docking results suggest that this plant could serve as a promising natural source for the development of therapeutic agents targeting diabetes, neurodegenerative disorders, microbial infections, and breast cancer."
+      },
+      {
+        "passage_id": "pmc-13581436#abstract-2",
+        "source_id": "pmc-13581436",
+        "located_in": "abstract",
+        "text": "Chamomile (Matricaria chamomilla L.), known for its antioxidant, anti-inflammatory, and antiparasitic activities, has recently attracted attention as a potential phytotherapeutic agent.<h4>Methods</h4>This experimental study evaluated the therapeutic efficacy of a hydroalcoholic chamomile extract in immunosuppressed Swiss albino mice infected experimentally with C. parvum. Animals were divided into five groups: normal control, chamomile control, infected untreated, infected treated with paromomycin (100 mg/kg/day) and infected treated with chamomile extract (100 mg/kg/day)."
+      },
+      {
+        "passage_id": "pmc-13581436#abstract-6",
+        "source_id": "pmc-13581436",
+        "located_in": "abstract",
+        "text": "Although paromomycin showed a more rapid reduction in oocyst output, chamomile induced a gradual but sustained improvement with pronounced antioxidant and anti-inflammatory effects.<h4>Conclusion</h4>Hydroalcoholic extract of M. chamomilla was associated with reduced oocyst shedding, improved intestinal histopathology, and enhanced antioxidant status in immunosuppressed mice infected with C. parvum, supporting its potential as an adjunctive phytotherapeutic approach that warrants further mechanistic, pharmacological and long-term investigation."
+      },
+      {
+        "passage_id": "pmid-42966239#abstract-2",
+        "source_id": "pmid-42966239",
+        "located_in": "abstract",
+        "text": "This study sought to develop a composite hydrogel incorporating decellularized amniotic membrane (dAM)-derived extracellular matrix components alongside Matricaria chamomilla extract, with the goal of achieving enhanced regenerative and therapeutic outcomes.<h4>Methods</h4>A CMC/GEL-Chamomilla-dAM hydrogel was prepared using decellularized dAM and subsequently evaluated in terms of its physicochemical and biological characteristics. The effectiveness of the decellularization process and preservation of ECM components were first examined, followed by characterization of hydrogel morphology, rheological properties, swelling and degradation behavior, and pH stability."
+      },
+      {
+        "passage_id": "pmid-42184206#abstract-0",
+        "source_id": "pmid-42184206",
+        "located_in": "abstract",
+        "text": "This research examined the <i>in vitro</i> antibacterial, potential antioxidant, and antidiabetic activities of <i>Matricaria chamomilla</i> extract (MCE), <i>Anastatica hierochuntica</i> extract (AHE), and their combination against selected foodborne pathogens. Agar well diffusion, minimum inhibitory concentration (MIC), and minimum bactericidal/fungicidal concentration (MBC/MFC), as well as time-kill effect experiments, were applied to evaluate the antimicrobial characteristics."
+      },
+      {
+        "passage_id": "pmid-42827196#abstract-1",
+        "source_id": "pmid-42827196",
+        "located_in": "abstract",
+        "text": "Despite its anti-inflammatory properties, there are few reports on the Matricaria chamomilla L. essential oil (MEO) for the repair of UC. This study aims to extract natural MEO, prepare the self-microemulsion drug delivery system (SMEDDS) to improve the solubility and stability of MEO, and investigate its repair effects on UC.<h4>Methods</h4>The MEO was extracted using steam distillation."
+      },
+      {
+        "passage_id": "pmc-12941530#abstract-3",
+        "source_id": "pmc-12941530",
+        "located_in": "abstract",
+        "text": "Several species, among them <i>Larrea tridentata</i>, <i>Opuntia</i> spp., <i>Aloe</i> spp., <i>Matricaria chamomilla</i>, <i>Simmondsia chinensis</i>, <i>Prosopis glandulosa</i>, and <i>Artemisia ludoviciana</i>, repeatedly demonstrated the presence of bioactive metabolites such as lignans, flavonoids, phenolic acids, terpenoids, and polysaccharides. These compounds support pathways central to extracellular matrix repair, including stimulation of fibroblast migration and collagen I/III expression, modulation of inflammatory cascades, antioxidant protection, and stabilization of ECM structures."
+      },
+      {
+        "passage_id": "pmc-13275630#abstract-3",
+        "source_id": "pmc-13275630",
+        "located_in": "abstract",
+        "text": "Frequently used species include Lavandula angustifolia, Thymus vulgaris, Curcuma longa, Zingiber officinale, Origanum vulgare, Glycyrrhiza glabra, Mentha piperita, Matricaria chamomilla, and Syzygium aromaticum, many of which show In vitro antibacterial, antifungal, or antiviral activity relevant to upper airway and oral/ENT infections. Evidence indicates that selected medicinal plants and their extracts or essential oils inhibit key ENT-related pathogens, including multidrug-resistant respiratory and pharyngeal bacteria."
+      },
+      {
+        "passage_id": "pmc-12698723#abstract-0",
+        "source_id": "pmc-12698723",
+        "located_in": "abstract",
+        "text": "Chamomile (Matricaria chamomilla L.), a widely recognized medicinal plant, was investigated for its chemical composition, functional properties, and molecular characterization, focusing on samples cultivated in the Taounate region of Morocco. Essential oil (EO) was extracted using a Clevenger apparatus, and GC/MS analysis identified 26 compounds, with germacrene (19.46%), α-curcumene (19.00%), and caprinic acid (15.81%) as the major components."
+      },
+      {
+        "passage_id": "pmc-12698723#abstract-6",
+        "source_id": "pmc-12698723",
+        "located_in": "abstract",
+        "text": "DNA sequencing confirmed a 99.22% similarity with Matricaria chamomilla var. recutita (L.). Furthermore, molecular docking analysis revealed strong binding affinities between the major compounds of EO-MC and key microbial and antioxidant target proteins, supporting the observed biological activities."
+      },
+      {
+        "passage_id": "pmc-13285536#abstract-3",
+        "source_id": "pmc-13285536",
+        "located_in": "abstract",
+        "text": "Among these, German chamomile (Matricaria chamomilla) consistently appeared across multiple chemotypes. The Egyptian German chamomile essential oil was selected for experimental validation."
+      },
+      {
+        "passage_id": "pmc-13299215#abstract-2",
+        "source_id": "pmc-13299215",
+        "located_in": "abstract",
+        "text": "The formulation included sodium alginate, hyaluronic acid, and hydroglyceric extracts of <i>Calendula officinalis</i>, <i>Matricaria chamomilla</i>, and <i>Plantago major</i>, as well as oily extracts of <i>Hippophae rhamnoides</i> and <i>Hypericum perforatum</i>. The emulgel was evaluated for pH, rheological behaviour, spreadability, physical stability, apparent hydrodynamic size distribution, zeta potential, total polyphenol content, and antioxidant activity."
+      }
+    ]
+  },
+  "counts": {
+    "sources": 41,
+    "open_access_sources": 32,
+    "passages": 37
+  },
+  "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."
+}
