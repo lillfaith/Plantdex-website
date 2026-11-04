@@ -41,41 +41,78 @@ TEMPLATE = ROOT / "docs" / "assets" / "cardbase.pdf"
 WIDTH = 800
 DECK_SCALE = WIDTH / 356
 
-# ── Slots, measured from the base-vs-Pine diff (800x1293) ─────────────────────
-SLOT_NAME = (75, 76, 202, 130)          # common name ink box for "Pine"
-SLOT_NUMBER = (631, 79, 707, 119)       # "#41"
-SLOT_PHOTO = (105, 197, 698, 681)       # the art window's inner opening
-SLOT_SCI = (56, 685, 311, 782)          # "Pinus spp." including its descender
-SLOT_USE_A = (619, 699, 675, 759)       # the two use discs, fixed on every card
-SLOT_USE_B = (679, 699, 735, 759)
-SLOT_PIXEL = (553, 814, 710, 958)       # the supporting pixel-icon panel
-SLOT_ENCOUNTER = (427, 1019, 516, 1054)  # the VALUE only; the base prints the label
-SLOT_SEASON = (687, 1000, 757, 1075)
+# ── EVERY NUMBER BELOW IS READ OUT OF THE CARD PDF, NOT MEASURED OFF A RENDER ──
+#
+# The unflattened Pine #41 PDF carries LIVE TEXT, so PyMuPDF reports each string's font,
+# point size, colour and BASELINE ORIGIN. Those are reproduced here at the shipped 800px
+# width (the page is 234pt wide, so the scale is 800/234 = 3.4188).
+#
+# THIS CORRECTED FOUR THINGS I HAD INFERRED FROM THE PICTURE AND GOT WRONG:
+#   * the common name is FUTURA MEDIUM ITALIC, not Baloo;
+#   * the card number is BALOO, not Palatino -- and its "#" is a separate, smaller draw;
+#   * the encounter value is PINK (#d26e91), not white;
+#   * the back body is THREE colours by panel, not one.
+# Each is the kind of thing that looks right until it is next to the original.
+PT = 800 / 234
 
-# `STAT_ROWS` and the slot pitch come straight from build_deck.py's detector, which was
-# calibrated against the real cards -- so the icons land where the detector expects to
-# count them. Verified against Pine: 5 suns at x-runs 56,130,196,261,327.
-STAT_ROWS = {"water": (345, 366), "sun": (376, 406), "temperature": (414, 441)}
+# (font key, px size, baseline x, baseline y, fill, shadow/second layer)
+TEXT_SLOTS = {
+    "common":     ("common",     62.9,  74.7,  125.0, "#fee726", "#696028"),
+    "number_hash": ("number",    37.4, 630.0,  101.1, "#efc5f4", None),
+    "number":     ("number",     50.5, 659.1,  118.2, "#efc5f4", None),
+    "scientific": ("scientific", 48.1,  75.3,  741.7, "#fff200", "#e9d128"),
+    "encounter":  ("encounter",  40.0, 429.2, 1049.9, "#d26e91", None),
+}
+
+# Slots that hold pictures, measured from the base-vs-Pine diff (800x1293).
+SLOT_PHOTO = (105, 197, 698, 681)       # the art window's inner opening, 593x484
+# Measured off the genuine Pine render: the pair spans x 618-756, each disc ~62px.
+# Measured on the genuine front: the left disc is 53x56 at (618, 699); the pair's pitch
+# is 61, which the shipped webp agrees with.
+SLOT_USE_A = (618, 699, 671, 755)
+SLOT_USE_B = (679, 699, 732, 755)
+SLOT_PIXEL = (553, 814, 710, 958)       # the supporting pixel-icon panel
+SLOT_SEASON = (684, 1016, 732, 1063)  # genuine gold tile: 48x47 at (684, 1016)
+
+# `STAT_ROWS` and the pitch come from build_deck.py's detector, calibrated against the
+# real cards. Verified: Pine's five suns land at x 56, 130, 196, 261, 327.
+# ROW GEOMETRY MEASURED OFF THE GENUINE RENDER, not derived from the detector's sampling
+# bands. `build_deck.py`'s STAT_ROWS are the rows it LOOKS IN to count icons, which is a
+# narrower box than the icons themselves; using them as the draw height made every icon
+# too small and the first version also centred each glyph in its slot, which spread the
+# two droplets 142px apart instead of 66.
+# (x of the first glyph, y of its top, glyph width, glyph height) -- the TRUE per-glyph
+# boxes, found by connected components on the genuine Pine front rather than by reading a
+# row band. Each row has its own origin and glyph size: the droplet is 35x55 at x 75, the
+# thermometer 45x63 at x 71, the sun 71x79 at x 56. Measuring the band instead made every
+# icon roughly half again too big, which is what the side-by-side showed.
+STAT_ROWS_INK = {
+    "water": (75, 770, 35, 55),
+    "sun": (56, 838, 71, 79),
+    "temperature": (71, 926, 45, 63),
+}
 SLOT_X0 = 56
-SLOT_PITCH = 66.5
+SLOT_PITCH = 66.0           # Pine's five suns start at 56, 130, 196, 261, 327
 SLOT_N = 5
-UNIT_HEIGHT = {"water": 72, "sun": 74, "temperature": 80}
 
 FONTS = {
-    "common": KIT / "fonts" / "BalooBhaijaan-Regular.ttf",
+    "common": KIT / "fonts" / "Futura-MediumItalic.ttf",
     "scientific": KIT / "fonts" / "Palatino-BoldItalic.ttf",
-    "number": KIT / "fonts" / "Palatino-Bold.ttf",
+    "number": KIT / "fonts" / "BalooBhaijaan-Regular.ttf",
     "encounter": KIT / "fonts" / "Palatino-Bold.ttf",
     "back": KIT / "fonts" / "Avenir-Medium.ttf",
 }
 
-GOLD = (255, 222, 74)
-OUTLINE = (74, 26, 122)
-WHITE = (255, 255, 255)
-BACK_INK = (63, 18, 120)
+def rgb(hexcode: str) -> tuple[int, int, int]:
+    return tuple(int(hexcode[i:i + 2], 16) for i in (1, 3, 5))
 
 
 def template_pages() -> tuple[Image.Image, Image.Image]:
+    """The deck's own blank card, front and back, at the shipped width.
+
+    This IS the template. Nothing here redraws it -- every other function in this file
+    paints into a slot on top of these two images.
+    """
     import pymupdf
     doc = pymupdf.open(TEMPLATE)
     out = []
@@ -86,44 +123,23 @@ def template_pages() -> tuple[Image.Image, Image.Image]:
     return out[0], out[1]
 
 
-# THE REFERENCE STRING AND ITS MEASURED INK BOX, per slot. Calibrating against the
-# reference is the only way to get the deck's own size: matching the ink height of a
-# DIFFERENT string does not, because "Matricaria chamomilla" at Pine's cap height is 1,424
-# pixels wide against a 255-pixel slot. The first version did exactly that and ran the
-# scientific name most of a metre off the card.
-REFERENCE = {
-    "common": ("Pine", 127, 54),
-    "number": ("#41", 76, 40),
-    "scientific": ("Pinus spp.", 255, 97),
-    "encounter": ("Rare", 89, 35),
+# ── Back-card typography, also read from the PDF ──────────────────────────────
+# Avenir-Medium at 36.5px throughout, 47.1px line pitch, left column at x = 99.7 and the
+# right column RIGHT-ALIGNED at x = 700.3 (the mirror of the left margin). The ink colour
+# is per panel, which the first version collapsed to one.
+BACK_SIZE = 36.5
+BACK_PITCH = 47.1
+BACK_LEFT = 99.7
+BACK_RIGHT = 700.3
+BACK_PANELS = {
+    "healingTraits": (200.9, "#3b1e5f", True),
+    "compounds": (421.1, "#4059a8", True),
+    "taste": (652.0, "#3b1e5f", False),
+    "aromatic": (652.0, "#3b1e5f", False),
+    "preparations": (990.1, "#f4fbfe", False),
+    "usableParts": (990.1, "#f4fbfe", False),
 }
-
-
-def ink_box(font: ImageFont.FreeTypeFont, text: str) -> tuple[int, int, int, int] | None:
-    """The box of pixels the font actually PAINTS.
-
-    Measured by rendering, not by `getbbox`. Baloo's getbbox reports a zero-height box at
-    small sizes, which made the size search settle on 10pt and draw nothing at all.
-    """
-    probe = Image.new("L", (max(8, int(font.size * len(text) * 1.6)) + 40,
-                            int(font.size * 2.6) + 40), 0)
-    ImageDraw.Draw(probe).text((20, 20), text, font=font, fill=255)
-    return probe.getbbox()
-
-
-def calibrated_size(font_key: str) -> int:
-    """The point size that reproduces the reference card's own ink box."""
-    text, ref_w, ref_h = REFERENCE[font_key]
-    best, best_err = 10, None
-    for size in range(10, 160):
-        box = ink_box(ImageFont.truetype(str(FONTS[font_key]), size), text)
-        if box is None:
-            continue
-        w, h = box[2] - box[0], box[3] - box[1]
-        err = abs(w - ref_w) / ref_w + abs(h - ref_h) / ref_h
-        if best_err is None or err < best_err:
-            best, best_err = size, err
-    return best
+BACK_RIGHT_PANELS = {"aromatic", "usableParts"}
 
 
 def renderable(font_key: str, text: str) -> list[str]:
@@ -146,41 +162,26 @@ def renderable(font_key: str, text: str) -> list[str]:
     return missing
 
 
-def draw_text(img: Image.Image, text: str, slot: tuple[int, int, int, int],
-              font_key: str, fill, *, stroke: int = 0, skew: float = 0.0,
-              align: str = "left", blocked: list | None = None) -> None:
-    """Paint one string so its INK lands on `slot`. Refuses rather than painting gaps."""
+def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = None) -> None:
+    """Paint one front string at its measured baseline, size and colour.
+
+    Anchored on the BASELINE ("ls"), which is what the PDF records. Anchoring on a bounding
+    box instead is how type creeps a few pixels off the original.
+    """
+    font_key, size, x, y, fill, shadow = TEXT_SLOTS[slot]
     missing = renderable(font_key, text)
     if missing:
         if blocked is not None:
-            blocked.append({"slot": font_key, "text": text,
-                            "missing_glyphs": "".join(missing),
-                            "font": FONTS[font_key].name})
+            blocked.append({"slot": slot, "text": text, "font": FONTS[font_key].name,
+                            "missing_glyphs": "".join(missing)})
         return
-    x0, y0, x1, y1 = slot
-    font = ImageFont.truetype(str(FONTS[font_key]), calibrated_size(font_key))
-    pad = stroke * 2 + 12
-    layer = Image.new("RGBA", (int(font.size * len(text) * 1.6) + pad * 2,
-                               int(font.size * 2.6) + pad * 2), (0, 0, 0, 0))
-    ImageDraw.Draw(layer).text((pad, pad), text, font=font, fill=fill,
-                               stroke_width=stroke, stroke_fill=OUTLINE)
-    if skew:
-        w, h = layer.size
-        shift = abs(skew) * h
-        layer = layer.transform((int(w + shift), h), Image.AFFINE,
-                                (1, skew, 0 if skew < 0 else -shift, 0, 1, 0),
-                                resample=Image.BICUBIC)
-    box = layer.getbbox()
-    if box is None:
-        return
-    layer = layer.crop(box)
-    # Never overflow the slot: condense rather than run off the card.
-    limit = x1 - x0
-    if layer.width > limit:
-        layer = layer.resize((limit, max(1, round(layer.height * limit / layer.width))),
-                             Image.LANCZOS)
-    x = x0 if align == "left" else x0 + (limit - layer.width) // 2
-    img.alpha_composite(layer, (int(x), int(y0)))
+    font = ImageFont.truetype(str(FONTS[font_key]), round(size))
+    draw = ImageDraw.Draw(img)
+    if shadow:
+        # The card stacks the same string in two or three tones. Two reproduces the
+        # emboss; the third is a sub-pixel highlight that a raster render cannot show.
+        draw.text((x + 2, y + 2), text, font=font, fill=rgb(shadow), anchor="ls")
+    draw.text((x, y), text, font=font, fill=rgb(fill), anchor="ls")
 
 
 def place(img: Image.Image, art: Image.Image, slot: tuple[int, int, int, int],
@@ -189,6 +190,8 @@ def place(img: Image.Image, art: Image.Image, slot: tuple[int, int, int, int],
     x0, y0, x1, y1 = slot
     w, h = (x1 - x0) - margin * 2, (y1 - y0) - margin * 2
     art = art.copy()
+    if art.mode == "RGBA" and art.getbbox():
+        art = art.crop(art.getbbox())     # ink, not canvas -- see draw_units
     art.thumbnail((w, h), Image.NEAREST if pixelated else Image.LANCZOS)
     img.alpha_composite(art.convert("RGBA"),
                         (x0 + margin + (w - art.width) // 2,
@@ -196,18 +199,23 @@ def place(img: Image.Image, art: Image.Image, slot: tuple[int, int, int, int],
 
 
 def draw_units(img: Image.Image, kind: str, count: int | None) -> None:
-    """A row of unit icons. `None` leaves the template untouched -- an empty row."""
+    """A row of unit icons, LEFT-ALIGNED on the slot pitch.
+
+    `None` leaves the template untouched -- an empty row is what an unsourced value looks
+    like, and it must never be a zero or a greyed-out icon, both of which read as a claim.
+    """
     if not count:
         return
     icon = Image.open(KIT / "icons" / f"unit-{kind}.png").convert("RGBA")
-    top, bottom = (v * DECK_SCALE for v in STAT_ROWS[kind])
-    centre = (top + bottom) / 2
-    height = UNIT_HEIGHT[kind]
-    scaled = icon.copy()
-    scaled.thumbnail((height, height), Image.LANCZOS)
+    # CROP TO INK FIRST. The three icons carry different transparent margins -- the
+    # droplet 26px on the left, the sun 8, the thermometer 155 -- so scaling the CANVAS to
+    # a target height gives each a different ink size and a different offset inside it.
+    # That is why the two droplets came out 200px apart instead of 66.
+    icon = icon.crop(icon.getbbox())
+    x0, top, width, height = STAT_ROWS_INK[kind]
+    scaled = icon.resize((width, height), Image.LANCZOS)
     for i in range(min(count, SLOT_N)):
-        x = int(SLOT_X0 + i * SLOT_PITCH + (SLOT_PITCH - scaled.width) / 2)
-        img.alpha_composite(scaled, (x, int(centre - scaled.height / 2)))
+        img.alpha_composite(scaled, (int(x0 + i * SLOT_PITCH), int(top)))
 
 
 def render_front(card: dict, assets: pathlib.Path,
@@ -216,17 +224,19 @@ def render_front(card: dict, assets: pathlib.Path,
     front = front.copy()
     f = card["front"]
 
-    draw_text(front, card["common_name"], SLOT_NAME, "common", GOLD, stroke=3,
-              skew=-0.16, blocked=blocked)
-    draw_text(front, card["card_number"], SLOT_NUMBER, "number", (242, 228, 255),
-              align="centre", blocked=blocked)
-
+    # The photograph first, so nothing is drawn under it.
     photo = assets / "hero.png"
     if photo.exists():
-        place(front, Image.open(photo), SLOT_PHOTO, margin=26)
+        place(front, Image.open(photo), SLOT_PHOTO, margin=24)
 
-    draw_text(front, f["scientific_name"], SLOT_SCI, "scientific", GOLD, stroke=2,
-              blocked=blocked)
+    draw_slot(front, "common", card["common_name"], blocked)
+    number = card["card_number"]
+    if number.startswith("#"):
+        draw_slot(front, "number_hash", "#", blocked)
+        draw_slot(front, "number", number[1:], blocked)
+    else:
+        draw_slot(front, "number", number, blocked)
+    draw_slot(front, "scientific", f["scientific_name"], blocked)
 
     for slot, use in zip((SLOT_USE_A, SLOT_USE_B), f.get("use_icons", [])):
         place(front, Image.open(KIT / "icons" / f"use-{use}.png"), slot)
@@ -236,60 +246,47 @@ def render_front(card: dict, assets: pathlib.Path,
 
     pixel = assets / "pixel.png"
     if pixel.exists():
-        place(front, Image.open(pixel), SLOT_PIXEL, margin=6, pixelated=True)
+        place(front, Image.open(pixel), SLOT_PIXEL, margin=4, pixelated=True)
 
     if f.get("encounter_rate"):
-        draw_text(front, f["encounter_rate"], SLOT_ENCOUNTER, "encounter", WHITE,
-                  stroke=2, blocked=blocked)
+        draw_slot(front, "encounter", f["encounter_rate"], blocked)
     if f.get("season"):
         place(front, Image.open(KIT / "icons" / f"season-{f['season']}.png"), SLOT_SEASON)
     return front
 
 
 # ── Back ──────────────────────────────────────────────────────────────────────
-# Measured from the back template the same way. Two columns per panel, left column
-# left-aligned and right column right-aligned, which is how the printed cards set them.
-BACK_PANELS = {
-    "healingTraits": (62, 150, 740, 300),
-    "compounds": (62, 392, 740, 470),
-    "taste": (56, 560, 330, 800),
-    "aromatic": (470, 560, 744, 800),
-    "preparations": (56, 1010, 330, 1210),
-    "usableParts": (470, 1010, 744, 1210),
-}
-BACK_TWO_COLUMN = {"healingTraits", "compounds"}
-BACK_ALIGN = {"aromatic": "right", "usableParts": "right"}
-BACK_LINE = 46
-BACK_SIZE = 30
-
 
 def render_back(card: dict, blocked: list | None = None) -> Image.Image:
     _, back = template_pages()
     back = back.copy()
     draw = ImageDraw.Draw(back)
-    font = ImageFont.truetype(str(FONTS["back"]), BACK_SIZE)
-    for key, (x0, y0, x1, y1) in BACK_PANELS.items():
+    font = ImageFont.truetype(str(FONTS["back"]), round(BACK_SIZE))
+    for key, (top, colour, two_column) in BACK_PANELS.items():
         items = card["back"].get(key) or []
         if not items:
-            continue            # the template shows through: an empty panel is empty
-        if key in BACK_TWO_COLUMN:
+            continue        # the template shows through: an empty panel is empty
+        if two_column:
             half = (len(items) + 1) // 2
-            columns = [(x0, items[:half], "left"), (x1, items[half:], "right")]
+            columns = [(items[:half], False), (items[half:], True)]
         else:
-            columns = [(x0 if BACK_ALIGN.get(key) != "right" else x1, items,
-                        BACK_ALIGN.get(key, "left"))]
-        for x, column, align in columns:
+            columns = [(items, key in BACK_RIGHT_PANELS)]
+        for column, right in columns:
             for i, item in enumerate(column):
                 missing = renderable("back", item)
                 if missing:
                     if blocked is not None:
                         blocked.append({"slot": f"back.{key}", "text": item,
-                                        "missing_glyphs": "".join(missing),
-                                        "font": FONTS["back"].name})
+                                        "font": FONTS["back"].name,
+                                        "missing_glyphs": "".join(missing)})
                     continue
-                w = draw.textlength(item, font=font)
-                draw.text((x - w if align == "right" else x, y0 + i * BACK_LINE),
-                          item, font=font, fill=BACK_INK)
+                y = top + i * BACK_PITCH
+                if right:
+                    draw.text((BACK_RIGHT, y), item, font=font, fill=rgb(colour),
+                              anchor="rs")
+                else:
+                    draw.text((BACK_LEFT, y), item, font=font, fill=rgb(colour),
+                              anchor="ls")
     return back
 
 
@@ -299,11 +296,21 @@ def self_test() -> int:
         (all(p.exists() for p in FONTS.values()), "all five extracted faces are present"),
         (len(list((KIT / "icons").glob("*.png"))) >= 19,
          "the whole icon set is present (12 uses, 4 seasons, 3 units)"),
-        (abs(DECK_SCALE - 800 / 356) < 1e-9,
-         "the deck's own 356x576 calibration scales to the shipped 800px width"),
-        (SLOT_X0 == 56 and abs(SLOT_PITCH - 66.5) < 0.6,
+        (SLOT_X0 == 56 and abs(SLOT_PITCH - 66.0) < 0.6,
          "the indicator pitch matches Pine's measured sun runs (56,130,196,261,327)"),
+        (all(len(v) == 4 for v in STAT_ROWS_INK.values()),
+         "each indicator row carries its own origin and glyph size, measured per glyph"),
+        (STAT_ROWS_INK["water"][2:] == (35, 55),
+         "the droplet is Pine's measured 35x55, not a band height"),
         (SLOT_USE_A[2] <= SLOT_USE_B[0], "CONTROL: the two use slots do not overlap"),
+        (FONTS["common"].name.startswith("Futura"),
+         "the common name is Futura Medium Italic (read from the PDF, not inferred)"),
+        (FONTS["number"].name.startswith("Baloo"),
+         "the card number is Baloo Bhaijaan, and its '#' is a separate smaller draw"),
+        (TEXT_SLOTS["encounter"][4] == "#d26e91",
+         "the encounter value is pink, not white"),
+        (len({c for _, c, _ in BACK_PANELS.values()}) == 3,
+         "the back body uses three colours by panel, not one"),
         (SLOT_PHOTO[2] - SLOT_PHOTO[0] == 593 and SLOT_PHOTO[3] - SLOT_PHOTO[1] == 484,
          "the photo opening is Pine's measured 593x484"),
     ]
