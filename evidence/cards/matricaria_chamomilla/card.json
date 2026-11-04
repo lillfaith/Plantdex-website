@@ -110,34 +110,34 @@
   },
   "review_flags": [
     {
+      "field": "typography",
+      "severity": "blocker",
+      "reason": "ALL FIVE EMBEDDED FONTS ARE SUBSETTED to Pine #41's own glyphs. The cmap still lists 700-1400 entries, so counting it reports them complete -- my first check did that and passed. Rendering each glyph shows the outlines are empty: Baloo 65 blank, Palatino-BoldItalic 61, Palatino-Bold 42 (every digit), Avenir-Medium 34. Ten strings are therefore NOT PAINTED. The renderer refuses rather than printing gaps. Needs the full Palatino Bold Italic, Palatino Bold, Avenir Medium and Baloo Bhaijaan v1."
+    },
+    {
+      "field": "typography.baloo",
+      "severity": "needs-decision",
+      "reason": "Baloo Bhaijaan 2 is free, downloads cleanly and renders completely. NOT USED: it is a later redesign with different letterforms, and substituting visually similar type was ruled out. Approve it, or send the v1 cut."
+    },
+    {
       "field": "front.environmental_indicators",
       "severity": "blocker",
-      "reason": "No sourced water/sun/temperature values, so no droplet, sun or thermometer icons are drawn. The printed deck counts these off its own artwork; for a generated species they need a horticultural source. The icons exist and are ready."
+      "reason": "No sourced water/sun/temperature values. The icons and the exact slots are ready; the rows are left empty rather than assigned."
     },
     {
       "field": "front.encounter_rate",
       "severity": "blocker",
-      "reason": "No sourced value. GBIF occurrence counts are the obvious basis; the mapping from a count to Common/Uncommon/Rare/Epic is a product decision nobody has made."
+      "reason": "No sourced value. GBIF occurrence counts are the obvious basis; mapping a count to Common/Uncommon/Rare/Epic is a product decision not yet made."
     },
     {
       "field": "front.season",
       "severity": "blocker",
-      "reason": "All four season icons are now extracted, but NOTHING RETRIEVED SUPPORTS A SEASON for this species. The eight CC0 observations run April, April, May, May, August, September, September, September across Spain, Italy, Hungary, Russia and the UK -- too few, too scattered and too spread in latitude to call a season. Eight photos are not phenology. A flora or a GBIF phenology query would settle it."
-    },
-    {
-      "field": "front.use_icons",
-      "severity": "resolved",
-      "reason": "digestive and calm, both carried by approved-standing claims (the Lithuanian ethnobotany record and the Iranian survey's anxiety use). The deck gives every printed card exactly two."
-    },
-    {
-      "field": "front.season",
-      "severity": "blocker",
-      "reason": "Chamomile is a summer species, but only the WINTER snowflake has been extracted. The spring/summer/autumn icons are missing."
+      "reason": "All four season icons exist. The eight CC0 observations run April to September across Spain, Italy, Hungary, Russia and the UK -- too few and too scattered to call a season. Eight photos are not phenology."
     },
     {
       "field": "back.taste",
       "severity": "wont-fix",
-      "reason": "A taste note is an observation by somebody holding the plant, not a citation. Blank."
+      "reason": "A taste note is an observation by somebody holding the plant, not a citation."
     },
     {
       "field": "back.aromatic",
@@ -147,12 +147,12 @@
     {
       "field": "back.compounds",
       "severity": "review",
-      "reason": "One claim refused: the sesquiterpenoid list (chamazulene, alpha-bisabolol) was drafted at laboratory standing but its source sits in the documented-use query group, which can only support traditional. Probably true; the rule still refuses it."
+      "reason": "One claim refused: the sesquiterpenoid list was drafted at laboratory standing but its source sits in the documented-use query group, which can only support traditional."
     },
     {
-      "field": "assets.herbalism_card.photography",
-      "severity": "review",
-      "reason": "The hero is a GrabCut cut-out and keeps a small artefact of stem at the upper right. No learned matte was used: a classical cut fails visibly, where a model can invent a plausible edge that is not the plant's."
+      "field": "assets.missing",
+      "severity": "blocker",
+      "reason": "See docs/card-asset-inventory.md section 3 for the upload list."
     }
   ],
   "publishable": false,
@@ -161,7 +161,7 @@
     "artwork is not approved",
     "no cited source has been verified by a human"
   ],
-  "assembled_at": "2026-11-04T06:07:16+00:00",
+  "assembled_at": "2026-11-04T18:36:25+00:00",
   "series": {
     "id": "generated-01",
     "prefix": "G",
@@ -175,5 +175,14 @@
     "refused": 1,
     "human_approved": 0,
     "sources_verified_by_a_human": 0
+  },
+  "render": {
+    "method": "composited onto docs/assets/cardbase.pdf by scripts/render_generated_card.py",
+    "template_reused_exactly": true,
+    "proof": "cardbase.pdf vs the unflattened Pine #41 PDF at identical geometry: 83% of pixels identical, and every differing pixel is per-card content.",
+    "template_agreement_with_purslane": "89.7% with content slots excluded; the residual is a 1-2px resample halo (Purslane ships 800x1295, the template renders 800x1293) plus Purslane's own text outside the slot rectangles.",
+    "front": "front.png",
+    "back": "back.png",
+    "blocked_text": "blocked-text.json"
   }
 }
