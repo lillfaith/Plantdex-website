@@ -1,0 +1,7 @@
+# Species to retrieve evidence for. One accepted binomial per line.
+#
+# THE FIRST END-TO-END DEMONSTRATION USES ONE SAFE, WELL-DOCUMENTED SPECIES.
+# Toxic species stay out of this file until the safety path has been validated on a
+# controlled fixture — a pipeline whose first run is a hepatotoxin is a pipeline whose
+# first mistake is a hepatotoxin.
+Matricaria chamomilla

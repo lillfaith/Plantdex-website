@@ -1,0 +1,64 @@
+name: Retrieve species evidence
+
+# Stage 1 of the card-generation pipeline, run here because it cannot run anywhere else:
+# api.gbif.org and www.ebi.ac.uk are both refused by the sandbox proxy with a 403 to
+# CONNECT, so a retrieval "run" from a session would be a fabrication.
+#
+# A PUSH TRIGGER SCOPED TO THIS BRANCH, NOT workflow_dispatch. A dispatchable workflow has
+# to exist on the DEFAULT branch, and the default branch is what deploy.yml publishes — so
+# making this dispatchable would mean shipping the pipeline to production to run research.
+# Pushing to the feature branch runs it and deploys nothing.
+#
+# Read-only, keyless, free. It writes a build artifact and never a commit.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/retrieve_evidence.py
+      - .github/workflows/retrieve-evidence.yml
+      - evidence/species.txt
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test before spending a single request
+        run: python3 -I scripts/retrieve_evidence.py --self-test
+
+      - name: Retrieve
+        run: |
+          # One species per line; blank lines and # comments ignored. Keeping the list in
+          # a file rather than in this workflow means changing it is a data change.
+          mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
+          printf 'retrieving %d species\n' "${#NAMES[@]}"
+          python3 -I scripts/retrieve_evidence.py "${NAMES[@]}" --out evidence/out
+
+      - name: Summarise what came back
+        run: |
+          for f in evidence/out/*.json; do
+            echo "--- $f"
+            python3 -I -c "
+import json,sys
+d=json.load(open(sys.argv[1]))
+print(' state      ', d['state'])
+print(' accepted   ', d['identity']['accepted_name'], '|', d['identity']['gbif_status'])
+print(' gbif_id    ', d['identity']['gbif_id'], 'rank', d['identity']['rank'])
+print(' iucn       ', d['conservation']['iucn_category'], 'promotable', d['conservation']['promotable'])
+print(' counts     ', d['counts'])
+" "$f"
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidence
+          path: evidence/out/
+          retention-days: 14
