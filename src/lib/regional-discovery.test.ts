@@ -6,9 +6,12 @@ import { applyDiscovery } from './herbdex-reducer';
 import { emptyState } from './herbdex-state';
 import { isShelfEligible } from './seed-shelf';
 import { matchScientificName } from './plant-match';
-import { boardProgress, questBoard, regionalCollection } from './quest-board';
+import {
+  boardProgress, occurrenceCounts, occurrenceOf, questBoard, regionalCollection,
+} from './quest-board';
 import { featuredForRegion, speciesForRegion } from './region-species';
-import { REGION_STORAGE_KEY, readRegion, writeRegion } from './region-store';
+import { ANONYMOUS_SCOPE, REGION_STORAGE_KEY, readRegion, writeRegion } from './region-store';
+import { getPrintedCard } from './deck';
 
 /**
  * The seams between the regional board and everything that already existed.
@@ -101,6 +104,101 @@ describe('changing region', () => {
     // The key must sit under `plantdex.`, which is the prefix delete-account.ts clears.
     expect(REGION_STORAGE_KEY.startsWith('plantdex.')).toBe(true);
     expect(readFileSync('src/lib/delete-account.ts', 'utf8')).toContain("startsWith('plantdex.')");
+  });
+});
+
+describe('confirmed and likely are never added together', () => {
+  it('counts them separately', () => {
+    /*
+     * THE DEFECT THIS EXISTS FOR. The page said "35 plants are recorded growing in
+     * Georgia", which is 31 confirmed PLUS 4 that are only `likely` — recorded, at the
+     * edge of their range, not reliably met. Printing one number told a player all 35 are
+     * documented there, which the survey does not say.
+     */
+    const counts = occurrenceCounts(speciesForRegion('us-ga'));
+    expect(counts.confirmed).toBe(31);
+    expect(counts.likely).toBe(4);
+    expect(counts.findable).toBe(35);
+    expect(counts.confirmed).not.toBe(counts.findable);
+  });
+
+  it('the page prints the confirmed count, not the total', () => {
+    const panel = readFileSync('src/components/quests/QuestBoardPanel.tsx', 'utf8');
+    expect(panel).toMatch(/counts\.confirmed/);
+    expect(panel).toMatch(/recorded occasionally/);
+    // The old wording claimed the sum. It must not come back.
+    expect(panel).not.toMatch(/\{collection\.length\} plants from the deck are recorded/);
+  });
+
+  it('marks a likely species on its own chip', () => {
+    expect(occurrenceOf('urtica-dioica', speciesForRegion('us-ga'))).toBe('likely');
+    expect(occurrenceOf('taraxacum-officinale', speciesForRegion('us-ga'))).toBe('confirmed');
+    expect(occurrenceOf('not-listed', speciesForRegion('us-ga'))).toBeNull();
+    expect(readFileSync('src/components/quests/QuestBoardPanel.tsx', 'utf8'))
+      .toMatch(/Rarely recorded here/);
+  });
+});
+
+describe('every link opens a real card', () => {
+  it('resolves all 35 findable Georgia plants to printed cards', () => {
+    /*
+     * A board entry whose id does not resolve renders nothing and links nowhere, and the
+     * only symptom is a gap in a grid. Checked against the deck rather than assumed.
+     */
+    const collection = regionalCollection(speciesForRegion('us-ga'));
+    expect(collection).toHaveLength(35);
+    for (const card of collection) {
+      expect(getPrintedCard(card.id), `${card.id} is not a printed card`).toBeDefined();
+      expect(card.id).toMatch(/^[a-z][a-z0-9-]+$/);
+    }
+  });
+
+  it('resolves all 13 featured plants, including Purple Dead Nettle', () => {
+    const board = questBoard('us-ga', 'spring', 2026, featuredForRegion('us-ga'));
+    for (const entry of board.entries) {
+      expect(getPrintedCard(entry.herbId), `${entry.herbId} has no card`).toBeDefined();
+    }
+    expect(featuredForRegion('us-ga').map((e) => e.herbId)).toContain('lamium-purpureum');
+    // It is an EXISTING printed card, with a deck number and its own artwork.
+    expect(getPrintedCard('lamium-purpureum')?.cardNumber).toBe(11);
+  });
+});
+
+describe('account switching', () => {
+  it('gives each account its own region, and the device its own', () => {
+    const store = new Map<string, string>();
+    vi.stubGlobal('window', {
+      localStorage: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => void store.set(k, v),
+        removeItem: (k: string) => void store.delete(k),
+      },
+      addEventListener() {}, removeEventListener() {},
+    });
+
+    writeRegion('account-alice', 'us-ga');
+    // Bob signs in on the same browser. He must not inherit Alice's region.
+    expect(readRegion('account-bob')).toBeNull();
+    // And the signed-out device is a third player again.
+    expect(readRegion(ANONYMOUS_SCOPE)).toBeNull();
+    // Bob choosing his own leaves Alice's alone.
+    writeRegion('account-bob', 'us-ga');
+    writeRegion('account-bob', null);
+    expect(readRegion('account-alice')?.id).toBe('us-ga');
+    vi.unstubAllGlobals();
+  });
+
+  it('derives the scope from the session rather than defaulting', () => {
+    /*
+     * THE LEAK THIS CLOSES. `useRegion()` defaults to the device scope, and both the picker
+     * and the board used the default — so every account on one browser shared a single key.
+     * The per-scope storage was defending against a leak that nothing was preventing.
+     */
+    for (const file of ['RegionPicker.tsx', 'QuestBoardPanel.tsx']) {
+      const source = readFileSync(`src/components/quests/${file}`, 'utf8');
+      expect(source, `${file} must scope the region`).toMatch(/useRegion\(useRegionScope\(\)\)/);
+    }
+    expect(readFileSync('src/lib/region-scope.ts', 'utf8')).toMatch(/user\?\.id \?\? ANONYMOUS_SCOPE/);
   });
 });
 

@@ -8,9 +8,10 @@ import { assetPath } from '@/lib/asset-path';
 import { chipArt } from '@/lib/card-art';
 import { getPrintedCard } from '@/lib/deck';
 import {
-  QUEST_TIERS, boardProgress, questBoard, regionalCollection,
+  QUEST_TIERS, boardProgress, occurrenceCounts, occurrenceOf, questBoard, regionalCollection,
   type BoardSeason, type QuestTier,
 } from '@/lib/quest-board';
+import { useRegionScope } from '@/lib/region-scope';
 import { useRegion } from '@/lib/region-store';
 import { featuredForRegion, speciesForRegion } from '@/lib/region-species';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -57,9 +58,22 @@ export function seasonOf(date: Date): BoardSeason {
   return 'autumn';
 }
 
-function PlantChip({ herbId, found }: { herbId: string; found: boolean }) {
+function PlantChip({
+  herbId, found, occurrence,
+}: {
+  herbId: string;
+  found: boolean;
+  occurrence: 'confirmed' | 'likely' | 'insufficient' | 'unlikely' | null;
+}) {
   const card = getPrintedCard(herbId);
   if (!card) return null;
+  /*
+   * A `likely` plant SAYS SO, on the chip. It is recorded here and at the edge of its
+   * range, and presenting it beside a confirmed species with no qualifier is the same
+   * error as adding the two counts together: it turns "we found a couple of records" into
+   * "this grows here".
+   */
+  const qualifier = occurrence === 'likely' ? 'Rarely recorded here' : null;
   return (
     <li>
       <Link
@@ -86,6 +100,7 @@ function PlantChip({ herbId, found }: { herbId: string; found: boolean }) {
           </span>
           <span className="block truncate text-xs text-violet-400">
             {found ? 'Found' : 'Not yet found'}
+            {qualifier && <span className="text-violet-500"> &middot; {qualifier}</span>}
           </span>
         </span>
       </Link>
@@ -94,7 +109,7 @@ function PlantChip({ herbId, found }: { herbId: string; found: boolean }) {
 }
 
 export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
-  const { region, ready: regionReady } = useRegion();
+  const { region, ready: regionReady } = useRegion(useRegionScope());
   const { state, ready } = useHerbdex();
 
   const season = seasonOf(now);
@@ -133,6 +148,8 @@ export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
   }
 
   const progress = boardProgress(board, state.discoveries);
+  const counts = occurrenceCounts(speciesForRegion(region.id));
+  const regional = speciesForRegion(region.id);
   const byTier = (tier: QuestTier) => board.entries.filter((entry) => entry.tier === tier);
 
   return (
@@ -142,10 +159,38 @@ export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
           {region.name}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          {collection.length} plants from the deck are recorded growing in {region.name}.
-          These are the ones to start with.
+          {/*
+            TWO NUMBERS, NOT ONE. 31 species are confirmed in Georgia and 4 are only
+            `likely`; printing 35 said all of them are documented there, which the survey
+            does not support.
+          */}
+          <strong className="text-violet-100">{counts.confirmed} plants</strong> from the
+          deck are confirmed growing in {region.name}
+          {counts.likely > 0 && (
+            <>
+              , and {counts.likely} more have been recorded occasionally
+            </>
+          )}
+          . These are the ones to start with.
+        </p>
+        <p className="mt-2 text-xs leading-relaxed text-violet-400">
+          Confirmed means herbarium specimens or many verified observations from this state.
+          Recorded occasionally means a handful of records &mdash; the plant is here, but
+          you may not meet it. No record at all is not proof a plant is absent.
         </p>
       </div>
+
+      {/*
+        SAID ONCE, WHERE THE TIERS ARE. A card's rarity is printed on it and never changes;
+        these three groups are about how hard the plant is to find in THIS region, which is
+        a different question with a different answer in a different state. Without this
+        line a player meets an Epic card in a tier called "the collection" and reasonably
+        concludes one of the two is wrong.
+      */}
+      <p className="text-xs leading-relaxed text-violet-400">
+        These groups are about finding plants <em>here</em>, not about how rare the card is.
+        A card keeps the rarity printed on it wherever you are.
+      </p>
 
       {QUEST_TIERS.map((tier) => {
         const entries = byTier(tier);
@@ -161,12 +206,39 @@ export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
                 {found} of {total} found
               </p>
             </div>
+            {/*
+              THE REWARD FOR FINISHING A TIER, AND IT IS DELIBERATELY NOT XP.
+              The only XP tiers are 25 (daily) and 250/500, both sized for Field Research;
+              a new award would devalue the tier `Backyard Collection` sits in and hand
+              every existing player a retroactive total. So completion is a VISUAL state,
+              derived from `discoveries` at render time — no new table, no flag to migrate,
+              and a player who found these last year sees it the first time they open the
+              page. Losing a discovery is impossible, so this cannot be taken back.
+            */}
+            {found === total && total > 0 && (
+              <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold-400/60 px-3 py-1 text-xs font-bold text-gold-300">
+                <span aria-hidden>&#9733;</span>
+                {TIER_COPY[tier].title} complete
+              </p>
+            )}
             <p className="mt-1 text-xs leading-relaxed text-violet-400">
               {TIER_COPY[tier].blurb}
             </p>
             {/* `path-fill` is the same 800ms width transition every other meter uses. */}
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-plum-800">
+            {/*
+              The bar restates the "N of M found" line above it, so it carries the numbers
+              for a screen reader rather than a second, differently-worded announcement.
+            */}
+            <div
+              role="progressbar"
+              aria-valuenow={found}
+              aria-valuemin={0}
+              aria-valuemax={total}
+              aria-label={`${TIER_COPY[tier].title}: ${found} of ${total} found`}
+              className="mt-3 h-1.5 overflow-hidden rounded-full bg-plum-800"
+            >
               <div
+                aria-hidden
                 className="path-fill h-full rounded-full bg-gold-400"
                 style={{ width: `${total === 0 ? 0 : (found / total) * 100}%` }}
               />
@@ -177,6 +249,7 @@ export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
                   key={entry.herbId}
                   herbId={entry.herbId}
                   found={Boolean(state.discoveries[entry.herbId])}
+                  occurrence={occurrenceOf(entry.herbId, regional)}
                 />
               ))}
             </ul>
@@ -204,6 +277,7 @@ export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
                 key={card.id}
                 herbId={card.id}
                 found={Boolean(state.discoveries[card.id])}
+                occurrence={occurrenceOf(card.id, regional)}
               />
             ))}
         </ul>
