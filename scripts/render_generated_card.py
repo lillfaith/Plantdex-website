@@ -56,12 +56,31 @@ DECK_SCALE = WIDTH / 356
 PT = 800 / 234
 
 # (font key, px size, baseline x, baseline y, fill, shadow/second layer)
+# SIZES ARE CALIBRATED, NOT CONVERTED. The PDF's point sizes do not survive the layout's
+# text transform -- converting 14.1pt at 800/234 gives 48px, and the string then renders
+# two thirds of its true width. Each size below is the one that reproduces the span's OWN
+# measured width, all within a pixel: Pine 127, Pinus spp. 238, 41 -> 52, # -> 28,
+# Rare -> 84. Baselines are the PDF's `origin`, which IS exact.
+# Outline weight per slot, read off the genuine render at 800px.
+STROKE = {"common": 3, "scientific": 1, "encounter": 1}
+
+# THE CARD STACKS EACH STRING IN THREE TONES, and the PDF names all three -- so these are
+# read, not eyedropped off a render, which would pick up whatever the JPEG did to them.
+# Dark below as an outline, the body colour, then a lighter copy riding one pixel high,
+# which is the highlight that gives the letters their bevel.
+HIGHLIGHT = {
+    "common": "#f8f4ac",        # over #fee726, outlined #696028
+    "scientific": "#fff7be",    # over #fff200, outlined #e9d128
+    "encounter": "#fac6cc",     # over #d26e91
+}
+HIGHLIGHT_DY = -2
+
 TEXT_SLOTS = {
-    "common":     ("common",     62.9,  74.7,  125.0, "#fee726", "#696028"),
-    "number_hash": ("number",    37.4, 630.0,  101.1, "#efc5f4", None),
-    "number":     ("number",     50.5, 659.1,  118.2, "#efc5f4", None),
-    "scientific": ("scientific", 48.1,  75.3,  741.7, "#fff200", "#e9d128"),
-    "encounter":  ("encounter",  40.0, 429.2, 1049.9, "#d26e91", None),
+    "common":     ("common",     70,  74.7,  125.0, "#fee726", "#696028"),
+    "number_hash": ("number",    41, 630.0,  101.1, "#efc5f4", None),
+    "number":     ("number",     58, 659.1,  118.2, "#efc5f4", None),
+    "scientific": ("scientific", 62,  75.3,  741.7, "#fff200", "#e9d128"),
+    "encounter":  ("encounter",  46, 429.2, 1049.9, "#d26e91", None),
 }
 
 # Slots that hold pictures, measured from the base-vs-Pine diff (800x1293).
@@ -72,7 +91,7 @@ SLOT_PHOTO = (105, 197, 698, 681)       # the art window's inner opening, 593x48
 SLOT_USE_A = (618, 699, 671, 755)
 SLOT_USE_B = (679, 699, 732, 755)
 SLOT_PIXEL = (553, 814, 710, 958)       # the supporting pixel-icon panel
-SLOT_SEASON = (684, 1016, 732, 1063)  # genuine gold tile: 48x47 at (684, 1016)
+SLOT_SEASON = (688, 1016, 736, 1064)  # genuine gold tile: 48x48
 
 # `STAT_ROWS` and the pitch come from build_deck.py's detector, calibrated against the
 # real cards. Verified: Pine's five suns land at x 56, 130, 196, 261, 327.
@@ -96,7 +115,7 @@ SLOT_PITCH = 66.0           # Pine's five suns start at 56, 130, 196, 261, 327
 SLOT_N = 5
 
 FONTS = {
-    "common": KIT / "fonts" / "Futura-MediumItalic.ttf",
+    "common": KIT / "fonts" / "Futura-MediumItalic.otf",
     "scientific": KIT / "fonts" / "Palatino-BoldItalic.ttf",
     "number": KIT / "fonts" / "BalooBhaijaan-Regular.ttf",
     "encounter": KIT / "fonts" / "Palatino-Bold.ttf",
@@ -142,6 +161,23 @@ BACK_PANELS = {
 BACK_RIGHT_PANELS = {"aromatic", "usableParts"}
 
 
+# How much room each string has before it reaches the next element. The scientific name
+# stops short of the first use disc at x = 618, with a gap.
+# Room before the next element. The scientific name stops short of the first use disc at
+# x = 618; the digits stop inside the number pill; the common name stops inside its bar.
+SLOT_LIMITS = {"scientific": 520, "common": 480, "number": 64}
+
+
+def draw_width(font: ImageFont.FreeTypeFont, text: str) -> int:
+    probe = Image.new("L", (int(font.size * len(text) * 2) + 80, int(font.size * 3) + 80), 0)
+    ImageDraw.Draw(probe).text((40, 40), text, font=font, fill=255)
+    box = probe.getbbox()
+    return (box[2] - box[0]) if box else 0
+
+
+_GLYPH_CACHE: dict[str, set] = {}
+
+
 def renderable(font_key: str, text: str) -> list[str]:
     """Characters this font paints NOTHING for.
 
@@ -150,23 +186,38 @@ def renderable(font_key: str, text: str) -> list[str]:
     outlines behind most of them are empty. Rendering each character is the only test that
     catches it -- and the first check I wrote counted the cmap and passed.
     """
-    font = ImageFont.truetype(str(FONTS[font_key]), 48)
-    missing = []
-    for ch in dict.fromkeys(text):
-        if ch.isspace():
-            continue
-        probe = Image.new("L", (96, 96), 0)
-        ImageDraw.Draw(probe).text((16, 16), ch, font=font, fill=255)
-        if probe.getbbox() is None:
-            missing.append(ch)
-    return missing
+    # A .notdef BOX IS INK. The first version drew each character and asked whether
+    # anything appeared, so every missing glyph "passed" as a hollow rectangle -- which is
+    # exactly what shipped as a tofu box where alpha-Curcumene's alpha should be. The cmap
+    # and the outline together are the real test.
+    from fontTools.ttLib import TTFont
+    path = str(FONTS[font_key])
+    if path not in _GLYPH_CACHE:
+        tt = TTFont(path, fontNumber=0)
+        cmap = tt.getBestCmap()
+        glyphs = tt.getGlyphSet()
+        drawable = set()
+        for code, name in cmap.items():
+            try:
+                pen_empty = glyphs[name].width == 0 and name == ".notdef"
+            except Exception:
+                pen_empty = False
+            if not pen_empty:
+                drawable.add(chr(code))
+        _GLYPH_CACHE[path] = drawable
+    have = _GLYPH_CACHE[path]
+    return [ch for ch in dict.fromkeys(text) if not ch.isspace() and ch not in have]
 
 
 def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = None) -> None:
     """Paint one front string at its measured baseline, size and colour.
 
-    Anchored on the BASELINE ("ls"), which is what the PDF records. Anchoring on a bounding
-    box instead is how type creeps a few pixels off the original.
+    THE WHOLE STACK IS COMPOSED ON ITS OWN LAYER FIRST, then scaled if it is too wide.
+    Stepping the FONT SIZE down instead would shrink the letterforms while leaving the
+    highlight offset and the outline weight where they were, so the bevel would thicken
+    as the name got longer. Scaling the composed layer keeps every part in proportion --
+    and it only ever trims by 5-10% a step, so a long name reads slightly smaller rather
+    than visibly squashed.
     """
     font_key, size, x, y, fill, shadow = TEXT_SLOTS[slot]
     missing = renderable(font_key, text)
@@ -175,13 +226,47 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
             blocked.append({"slot": slot, "text": text, "font": FONTS[font_key].name,
                             "missing_glyphs": "".join(missing)})
         return
+
     font = ImageFont.truetype(str(FONTS[font_key]), round(size))
-    draw = ImageDraw.Draw(img)
-    if shadow:
-        # The card stacks the same string in two or three tones. Two reproduces the
-        # emboss; the third is a sub-pixel highlight that a raster render cannot show.
-        draw.text((x + 2, y + 2), text, font=font, fill=rgb(shadow), anchor="ls")
-    draw.text((x, y), text, font=font, fill=rgb(fill), anchor="ls")
+    width = STROKE.get(slot, 0)
+    highlight = HIGHLIGHT.get(slot)
+    pad = width * 2 + abs(HIGHLIGHT_DY) + 12
+
+    layer = Image.new("RGBA", (int(font.size * len(text) * 2) + pad * 2,
+                               int(font.size * 3) + pad * 2), (0, 0, 0, 0))
+    pen = ImageDraw.Draw(layer)
+    baseline = (pad, pad + font.size * 1.5)
+    # Highlight first, riding high; then the body colour on the baseline. The light tone
+    # survives along the top edge of every stroke, which is the bevel the printed cards
+    # have. A STROKE, NOT AN OFFSET SHADOW: the PDF reports every layer on ONE baseline,
+    # so the dark tone is an outline round the letterform, not a ghost beside it.
+    if highlight:
+        pen.text((baseline[0], baseline[1] + HIGHLIGHT_DY), text, font=font,
+                 fill=rgb(highlight), anchor="ls", stroke_width=width,
+                 stroke_fill=rgb(shadow) if shadow else None)
+    pen.text(baseline, text, font=font, fill=rgb(fill), anchor="ls",
+             stroke_width=width if (shadow and not highlight) else 0,
+             stroke_fill=rgb(shadow) if shadow else None)
+
+    box = layer.getbbox()
+    if box is None:
+        return
+    layer = layer.crop(box)
+    # The baseline's position inside the cropped layer, so the scale pivots on it.
+    baseline_y = baseline[1] - box[1]
+    baseline_x = baseline[0] - box[0]
+
+    limit = SLOT_LIMITS.get(slot)
+    scale = 1.0
+    while limit and layer.width * scale > limit and scale > 0.5:
+        scale *= 0.93                      # ~7% a step, inside the 5-10% band
+    if scale < 1.0:
+        layer = layer.resize((max(1, round(layer.width * scale)),
+                              max(1, round(layer.height * scale))), Image.LANCZOS)
+        baseline_x *= scale
+        baseline_y *= scale
+
+    img.alpha_composite(layer, (int(round(x - baseline_x)), int(round(y - baseline_y))))
 
 
 def place(img: Image.Image, art: Image.Image, slot: tuple[int, int, int, int],
@@ -293,7 +378,9 @@ def render_back(card: dict, blocked: list | None = None) -> Image.Image:
 def self_test() -> int:
     checks = [
         (TEMPLATE.exists(), "the card template PDF is present"),
-        (all(p.exists() for p in FONTS.values()), "all five extracted faces are present"),
+        (all(p.exists() for p in FONTS.values()), "all five faces are present"),
+        (not any("subset" in str(p) for p in FONTS.values()),
+         "CONTROL: the renderer uses the FULL faces, not the subsets pulled from the PDF"),
         (len(list((KIT / "icons").glob("*.png"))) >= 19,
          "the whole icon set is present (12 uses, 4 seasons, 3 units)"),
         (SLOT_X0 == 56 and abs(SLOT_PITCH - 66.0) < 0.6,

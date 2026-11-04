@@ -3,7 +3,7 @@
   "species_key": "matricaria chamomilla",
   "accepted_name": "Matricaria chamomilla",
   "common_name": "Chamomile",
-  "card_number": "#G0001",
+  "card_number": "#1001",
   "collection_id": "generated",
   "tier": "generated",
   "assets": {
@@ -95,7 +95,7 @@
     ],
     "compounds": [
       "Germacrene",
-      "α-Curcumene"
+      "alpha-Curcumene"
     ],
     "taste": [],
     "aromatic": [],
@@ -111,28 +111,33 @@
   "review_flags": [
     {
       "field": "typography",
-      "severity": "blocker",
-      "reason": "ALL FIVE EMBEDDED FONTS ARE SUBSETTED to Pine #41's own glyphs. The cmap still lists 700-1400 entries, so counting it reports them complete -- my first check did that and passed. Rendering each glyph shows the outlines are empty: Baloo 65 blank, Palatino-BoldItalic 61, Palatino-Bold 42 (every digit), Avenir-Medium 34. Ten strings are therefore NOT PAINTED. The renderer refuses rather than printing gaps. Needs the full Palatino Bold Italic, Palatino Bold, Avenir Medium and Baloo Bhaijaan v1."
+      "severity": "resolved",
+      "reason": "All five faces supplied and complete. Validated by rendering PINE #41 from the template and comparing with the genuine card: every indicator glyph box matches exactly, and name, number, scientific name and encounter value sit on their measured baselines."
     },
     {
-      "field": "typography.baloo",
+      "field": "assets.cambay",
+      "severity": "open",
+      "reason": "CambayDevanagari-Regular was named as a second card-number face and has not been supplied. It is absent from Pine #41, so I have no sample of it at all. The number renders in Baloo; if some printed cards set digits in Cambay, I cannot tell which."
+    },
+    {
+      "field": "back.compounds",
       "severity": "needs-decision",
-      "reason": "Baloo Bhaijaan 2 is free, downloads cleanly and renders completely. NOT USED: it is a later redesign with different letterforms, and substituting visually similar type was ruled out. Approve it, or send the v1 cut."
+      "reason": "Written 'alpha-Curcumene'. The Greek alpha is genuinely absent from Avenir-Medium's cmap -- my first glyph check passed it because a .notdef TOFU BOX is ink, and a hollow rectangle shipped in the render. Either accept the spelled-out form or supply a face with Greek coverage."
     },
     {
       "field": "front.environmental_indicators",
       "severity": "blocker",
-      "reason": "No sourced water/sun/temperature values. The icons and the exact slots are ready; the rows are left empty rather than assigned."
+      "reason": "No sourced water/sun/temperature values. Icons and exact slots are ready; rows empty."
     },
     {
       "field": "front.encounter_rate",
       "severity": "blocker",
-      "reason": "No sourced value. GBIF occurrence counts are the obvious basis; mapping a count to Common/Uncommon/Rare/Epic is a product decision not yet made."
+      "reason": "No sourced value. GBIF occurrence counts are the obvious basis; the mapping to Common/Uncommon/Rare/Epic is a product decision not yet made."
     },
     {
       "field": "front.season",
       "severity": "blocker",
-      "reason": "All four season icons exist. The eight CC0 observations run April to September across Spain, Italy, Hungary, Russia and the UK -- too few and too scattered to call a season. Eight photos are not phenology."
+      "reason": "All four icons exist. Eight CC0 observations spanning April-September across five countries is not phenology."
     },
     {
       "field": "back.taste",
@@ -143,16 +148,6 @@
       "field": "back.aromatic",
       "severity": "wont-fix",
       "reason": "The same as taste."
-    },
-    {
-      "field": "back.compounds",
-      "severity": "review",
-      "reason": "One claim refused: the sesquiterpenoid list was drafted at laboratory standing but its source sits in the documented-use query group, which can only support traditional."
-    },
-    {
-      "field": "assets.missing",
-      "severity": "blocker",
-      "reason": "See docs/card-asset-inventory.md section 3 for the upload list."
     }
   ],
   "publishable": false,
@@ -161,13 +156,13 @@
     "artwork is not approved",
     "no cited source has been verified by a human"
   ],
-  "assembled_at": "2026-11-04T18:36:25+00:00",
+  "assembled_at": "2026-11-04T22:37:28+00:00",
   "series": {
     "id": "generated-01",
-    "prefix": "G",
+    "prefix": null,
     "digits": 4,
-    "format": "#G0001",
-    "note": "Separate from Collection 01 (printed, #01-#47) and from field-cards."
+    "format": "#1001",
+    "note": "DIGITS ONLY. Collection 01 is printed cards 1-47 and is closed; a four-digit series starting at 1001 never collides with it, and -- unlike a letter prefix -- it is settable in Baloo, which the deck uses for card numbers."
   },
   "claims_summary": {
     "drafted": 10,
@@ -183,6 +178,13 @@
     "template_agreement_with_purslane": "89.7% with content slots excluded; the residual is a 1-2px resample halo (Purslane ships 800x1295, the template renders 800x1293) plus Purslane's own text outside the slot rectangles.",
     "front": "front.png",
     "back": "back.png",
-    "blocked_text": "blocked-text.json"
+    "blocked_text": "blocked-text.json",
+    "typography": {
+      "status": "complete -- all five faces supplied by the owner, zero blocked strings",
+      "sizes": "CALIBRATED, not converted. The PDF's point sizes do not survive the layout's text transform (14.1pt x 800/234 gives 48px and renders two thirds of the true width). Each size reproduces the span's own measured width to within a pixel: Pine 127, Pinus spp. 238, 41 -> 52, # -> 28, Rare -> 84.",
+      "baselines": "the PDF's `origin` values, which are exact",
+      "layers": "three tones per string, all on ONE baseline: dark as an OUTLINE (not an offset shadow), the body colour, and a lighter highlight riding 2px high. Colours read from the PDF rather than eyedropped off a render.",
+      "overflow": "the whole composed stack -- outline, body and highlight together -- is scaled ~7% a step until it clears the next element. Stepping the FONT SIZE instead would shrink the letterforms while leaving the highlight offset and outline weight fixed, thickening the bevel as a name got longer."
+    }
   }
 }
