@@ -60,38 +60,21 @@
       "also_embedded": "Futura-MediumItalic"
     },
     "icons": {
-      "source": "extracted from the unflattened Pine #41 PDF",
-      "confirmed_mapping": "Pine #41 is water 2 / sun 5 / temperature 3, winter, uses lungs + wound -- and the PDF holds exactly 2 droplets, 5 suns, 3 thermometers, a snowflake, a lungs disc and a bandage disc.",
-      "have": [
-        "unit-water",
-        "unit-sun",
-        "unit-temperature",
-        "season-winter",
-        "use-lungs",
-        "use-wound"
-      ],
-      "missing": [
-        "use-digestive",
-        "use-edible",
-        "use-energy",
-        "use-tea",
-        "use-topical",
-        "use-calm",
-        "use-bone",
-        "use-heart",
-        "use-immune",
-        "use-urinary",
-        "season-spring",
-        "season-summer",
-        "season-autumn"
-      ]
+      "source": "scripts/extract_card_icons.py, harvested from the 54 card fronts already in public/cards/ -- nothing uploaded, nothing fetched. plantdex.online is proxy-blocked from this sandbox and did not need to be reached.",
+      "complete": true,
+      "use_icons": 12,
+      "season_icons": 4,
+      "unit_icons": 3,
+      "how_labelled": "Each front carries exactly two discs in two fixed slots, and herbs.json lists that card's two uses IN ORDER. Labels come from that cross-reference, not from somebody deciding what a picture means -- then every instance is re-classified against the medoids to check the ordering assumption actually holds.",
+      "agreement": "85/90 use discs and 45/45 season tiles land on their own label. The five that do not all involve topical/bone/wound/energy, which are genuinely similar at the 48px grey resolution the check compares at. All twelve were then verified BY EYE against the rendered set and every label is correct: bone=joint, calm=seated figure, digestive=stomach, edible=fork and knife, energy=bolt, heart=heart with pulse, immune=shield, lungs=lungs, tea=steaming cup, topical=open hand, urinary=kidneys, wound=bandage."
     }
   },
   "front": {
     "common_name": "Chamomile",
     "scientific_name": "Matricaria chamomilla",
     "use_icons": [
-      "wound"
+      "digestive",
+      "calm"
     ],
     "environmental_indicators": {
       "water": null,
@@ -139,12 +122,17 @@
     {
       "field": "front.season",
       "severity": "blocker",
-      "reason": "Chamomile is a summer species, but only the WINTER snowflake has been extracted. The spring/summer/autumn icons are missing."
+      "reason": "All four season icons are now extracted, but NOTHING RETRIEVED SUPPORTS A SEASON for this species. The eight CC0 observations run April, April, May, May, August, September, September, September across Spain, Italy, Hungary, Russia and the UK -- too few, too scattered and too spread in latitude to call a season. Eight photos are not phenology. A flora or a GBIF phenology query would settle it."
     },
     {
       "field": "front.use_icons",
-      "severity": "needs-decision",
-      "reason": "Only `wound` is drawn, and that is my mapping of the approved skin-support claim. The icons for digestive, calm and tea -- which the claims arguably support -- have not been extracted. Card 46, the Icon Cheat Sheet, would supply all twelve in one file."
+      "severity": "resolved",
+      "reason": "digestive and calm, both carried by approved-standing claims (the Lithuanian ethnobotany record and the Iranian survey's anxiety use). The deck gives every printed card exactly two."
+    },
+    {
+      "field": "front.season",
+      "severity": "blocker",
+      "reason": "Chamomile is a summer species, but only the WINTER snowflake has been extracted. The spring/summer/autumn icons are missing."
     },
     {
       "field": "back.taste",
@@ -173,7 +161,7 @@
     "artwork is not approved",
     "no cited source has been verified by a human"
   ],
-  "assembled_at": "2026-11-04T05:59:50+00:00",
+  "assembled_at": "2026-11-04T06:07:16+00:00",
   "series": {
     "id": "generated-01",
     "prefix": "G",
