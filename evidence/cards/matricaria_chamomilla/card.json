@@ -82,7 +82,9 @@
       "temperature": null
     },
     "encounter_rate": null,
-    "season": null
+    "season": null,
+    "encounter_rate_provisional": "Common",
+    "scientific_name_on_artwork": "Matricaria Chamomilla"
   },
   "back": {
     "healingTraits": [
@@ -132,7 +134,7 @@
     {
       "field": "front.encounter_rate",
       "severity": "blocker",
-      "reason": "No sourced value. GBIF occurrence counts are the obvious basis; the mapping to Common/Uncommon/Rare/Epic is a product decision not yet made."
+      "reason": "No sourced value; the slot now renders the PROVISIONAL value 'Common' so its placement and styling can be judged against the printed cards. `encounter_rate` itself is still null. Matricaria chamomilla is a widely naturalised ruderal, so Common is the defensible placeholder -- but the mapping from GBIF occurrence counts to Common/Uncommon/Rare/Epic is a product decision that has not been made, so this is not an answer."
     },
     {
       "field": "front.season",
@@ -148,6 +150,11 @@
       "field": "back.aromatic",
       "severity": "wont-fix",
       "reason": "The same as taste."
+    },
+    {
+      "field": "front.scientific_name capitalisation",
+      "severity": "needs-decision",
+      "reason": "All 45 printed fronts capitalise the specific epithet -- the Dandelion card reads 'Taraxacum Officinale' -- while herbs.json stores the botanically correct lowercase form. The renderer now follows the DECK on the artwork only; the stored scientific_name, the species key and every record keep 'Matricaria chamomilla'. This is the one place where matching the deck and being botanically correct disagree, so it is your call, not mine."
     }
   ],
   "publishable": false,
@@ -184,7 +191,16 @@
       "sizes": "CALIBRATED, not converted. The PDF's point sizes do not survive the layout's text transform (14.1pt x 800/234 gives 48px and renders two thirds of the true width). Each size reproduces the span's own measured width to within a pixel: Pine 127, Pinus spp. 238, 41 -> 52, # -> 28, Rare -> 84.",
       "baselines": "the PDF's `origin` values, which are exact",
       "layers": "three tones per string, all on ONE baseline: dark as an OUTLINE (not an offset shadow), the body colour, and a lighter highlight riding 2px high. Colours read from the PDF rather than eyedropped off a render.",
-      "overflow": "the whole composed stack -- outline, body and highlight together -- is scaled ~7% a step until it clears the next element. Stepping the FONT SIZE instead would shrink the letterforms while leaving the highlight offset and outline weight fixed, thickening the bevel as a name got longer."
+      "overflow": "the whole composed stack -- outline, body and highlight together -- is scaled ~7% a step until it clears the next element. Stepping the FONT SIZE instead would shrink the letterforms while leaving the highlight offset and outline weight fixed, thickening the bevel as a name got longer.",
+      "calibration": {
+        "method": "closed loop against ALL 45 shipped cards: each candidate (size, stretch, stroke) is rendered through this renderer and measured against the genuine card under ONE identical colour mask, so target and output share a measurement space",
+        "common": "size 68, stretch 1.00, stroke 3 -- 24 cards, mean height error 1.5px",
+        "scientific": "size 47, stretch 1.30, stroke 0 -- 19 cards, mean height error 1.8px",
+        "back": "size 45, stretch 1.40 -- 20 backs; widths 325/329, 251/257, 324/324",
+        "encounter": "size 50, stretch 0.924 -- 88x35 against a genuine 89x35",
+        "superseded": "every earlier number was fitted to Pine #41 ALONE. 'Pinus spp.' is ten characters with almost no ascenders, so its ink box is unrepresentatively short; matching it forced the sizes up and the shapes narrow at the same time, which is exactly the 'too large' + 'squashed' pair reported.",
+        "rarity_tiers": "each tier has its OWN ink, which one card could not show: Common dark teal, Uncommon mauve, Rare pink, Epic blue. Pine is Rare, so calibrating from it gave every tier Rare's pink."
+      }
     }
   }
 }

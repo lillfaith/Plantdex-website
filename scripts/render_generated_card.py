@@ -62,25 +62,101 @@ PT = 800 / 234
 # measured width, all within a pixel: Pine 127, Pinus spp. 238, 41 -> 52, # -> 28,
 # Rare -> 84. Baselines are the PDF's `origin`, which IS exact.
 # Outline weight per slot, read off the genuine render at 800px.
-STROKE = {"common": 3, "scientific": 1, "encounter": 1}
+# Outline weight in pixels, MEASURED by scanning colour runs through the genuine Pine
+# glyphs rather than chosen. At y=110 the common name reads `dark3 gold7 dark3` across
+# every stem: a 3px outline round a 7px stroke. The scientific name has NO dark pixels at
+# all -- its outline is a DEEPER GOLD (#e9d128), which is why a 1px version of it was
+# invisible and read as "the Latin name is missing its stroke". So the Latin name's
+# stroke is ZERO: its edge is the deep gold at the FOOT of the gradient, not an outline.
+# Adding a 2px one to "give it a stroke" is what made it read heavy and crowded beside the
+# genuine card -- the complaint was about the missing deep-gold edge, not a missing
+# outline, and the two are fixed in different places. With stroke 0 the 19-card fit lands
+# at size 47 / stretch 1.30, mean height error 1.8px.
+STROKE = {"common": 3, "scientific": 0, "encounter": 2}
 
 # THE CARD STACKS EACH STRING IN THREE TONES, and the PDF names all three -- so these are
 # read, not eyedropped off a render, which would pick up whatever the JPEG did to them.
 # Dark below as an outline, the body colour, then a lighter copy riding one pixel high,
 # which is the highlight that gives the letters their bevel.
-HIGHLIGHT = {
-    "common": "#f8f4ac",        # over #fee726, outlined #696028
-    "scientific": "#fff7be",    # over #fff200, outlined #e9d128
-    "encounter": "#fac6cc",     # over #d26e91
+# THE HIGHLIGHT IS A VERTICAL GRADIENT INSIDE THE GLYPH, NOT AN OFFSET COPY. Scanning
+# across the genuine `Pine` finds the light tone high in the letterform (`hi8 hi11 hi24`
+# at y=100) and the saturated body solid below it (y=110 and y=120 are pure `bo7`); the
+# scientific name runs light at y=725, body at y=733 and the DEEP gold at y=741. An
+# offset copy cannot produce that -- it leaves a rim above the stroke and nothing inside
+# it. So each slot names three stops and the fill is interpolated down the ink box.
+#   (top tone, mid tone, bottom tone, where the mid stop sits in the ink box)
+GRADIENT = {
+    "common": ("#f8f4ac", "#fee726", "#fee726", 0.45),
+    "scientific": ("#fff7be", "#fff200", "#e9d128", 0.50),
+    "encounter": ("#fac6cc", "#d26e91", "#8e3a57", 0.45),      # overridden per tier
 }
-HIGHLIGHT_DY = -2
+
+# EACH RARITY TIER HAS ITS OWN INK, which one card could not have shown. Pine is Rare, so
+# calibrating the encounter slot from Pine alone gave every tier Rare's pink. Sampling the
+# tight text band on all 45 shipped fronts separates them: Common is a dark teal under a
+# pale blue highlight, Uncommon cream over mauve, Rare the familiar pink, Epic blue under
+# lavender. All four sit at x 428, which is the slot already measured.
+RARITY_TONES = {
+    "Common":   ("#d8e3f6", "#034c65", "#01323f", "#01323f"),
+    "Uncommon": ("#f9f2ae", "#c186c1", "#7a4a7d", "#7a4a7d"),
+    "Rare":     ("#fac6cc", "#d26e91", "#8e3a57", "#8e3a57"),
+    "Epic":     ("#cbb6ff", "#0393d7", "#05506f", "#05506f"),
+}
+
+# HORIZONTAL STRETCH, and this is the single correction behind four of the complaints.
+# The deck's layout applies a text transform, so matching a genuine string's WIDTH with an
+# untransformed face makes the letters too TALL ("too large") and matching its HEIGHT makes
+# them too NARROW ("squashed"). Both halves were happening at once. Each factor below is
+# genuine_width / natural_width_at_the_height_matched_size, computed on Pine's own strings:
+#   common      'Pine'                121 / 120 = 1.008
+#   scientific  'Pinus spp.'          233 / 192 = 1.214
+#   encounter   'Rare'                 85 /  92 = 0.924
+#   back        'Respiratory support'  388 / 277 = 1.401
+# So the renderer now sets the size from the ink HEIGHT and stretches to the WIDTH.
+# CALIBRATED AGAINST ALL 45 SHIPPED CARDS IN A CLOSED LOOP, NOT AGAINST ONE.
+#
+# Every earlier number here was fitted to Pine #41 alone, and that is the single cause of
+# the "too large / squashed" complaints. `Pinus spp.` is ten characters with almost no
+# ascenders, so its ink box is unrepresentatively SHORT -- matching it drove the sizes up,
+# and then matching a width with an untransformed face drove the shapes narrow. Both at
+# once. One card cannot separate "this face is wide" from "this string has no ascenders".
+#
+# The fit below RENDERS each candidate (size, stretch) through this very renderer and
+# measures the result against the genuine card under ONE identical colour mask, so there
+# is no measurement-space mismatch between target and output:
+#   common      24 cards   size 68, stretch 1.00   mean |dh| 1.5px, |dw| 7.0px
+#   scientific  19 cards   size 47, stretch 1.30, stroke 0   mean |dh| 1.8px, |dw| 10.7px
+#     -- THE FIRST SCIENTIFIC FIT WAS MEASURED THROUGH A BAND THAT CLIPPED MY OWN RENDER.
+#        Sampling y 700-768 cut the ascenders off anything set large, so the search saw no
+#        height gain from a bigger size and chose small-and-stretched instead: 42/1.45,
+#        which came out 29px tall against a genuine 43 and read heavy and crowded. The
+#        band is y 688-800 now, generous on both sides. A fit is only as good as the
+#        window it measures through -- the same lesson as scoring a sprite on pixel count.
+#   back                   size 32, stretch 1.35
+#     -- fitted against three EXACTLY-KNOWN genuine strings on the Dandelion back rather
+#        than a band that might hold any line: 'Anti-inflam.' 223 vs 227 and 'Astringent'
+#        205 vs 207. An earlier fit said 45/1.40 because it matched each measured box to
+#        the WRONG string -- see BACK_COLUMN_ORDER -- and at 45 the two columns overlapped
+#        into each other, which is the state the back shipped in.
+#   encounter   'Rare'     size 50, stretch 0.924  -> 88x35 against a genuine 89x35
+#
+# NOTE THE COMMON NAME NEEDS NO STRETCH AT ALL. A tidy theory said the layout applies one
+# ~1.4x horizontal transform to every string, because the scientific and back factors both
+# landed near 1.41. The 45-card fit refutes it: Futura is naturally wide and Palatino
+# narrow, so the factor is a property of the FACE, not of the layout. Measurement over
+# theory -- the theory was two datapoints and a coincidence.
+STRETCH = {"common": 1.00, "scientific": 1.30, "encounter": 0.924}
 
 TEXT_SLOTS = {
-    "common":     ("common",     70,  74.7,  125.0, "#fee726", "#696028"),
+    # Sizes are HEIGHT-CALIBRATED: the size whose ink height equals the genuine glyph box
+    # measured off Pine #41 with the rails masked -- common 54px tall, scientific 46,
+    # encounter 35, each less the outline the font does not draw. The earlier 70/62/46
+    # were width-matched and therefore all three too tall.
+    "common":     ("common",     68,  73.2,  125.0, "#fee726", "#696028"),
     "number_hash": ("number",    41, 630.0,  101.1, "#efc5f4", None),
     "number":     ("number",     58, 659.1,  118.2, "#efc5f4", None),
-    "scientific": ("scientific", 62,  75.3,  741.7, "#fff200", "#e9d128"),
-    "encounter":  ("encounter",  46, 429.2, 1049.9, "#d26e91", None),
+    "scientific": ("scientific", 47,  75.3,  741.7, "#fff200", "#e9d128"),
+    "encounter":  ("encounter",  50, 429.2, 1049.9, "#d26e91", "#8e3a57"),
 }
 
 # Slots that hold pictures, measured from the base-vs-Pine diff (800x1293).
@@ -146,7 +222,12 @@ def template_pages() -> tuple[Image.Image, Image.Image]:
 # Avenir-Medium at 36.5px throughout, 47.1px line pitch, left column at x = 99.7 and the
 # right column RIGHT-ALIGNED at x = 700.3 (the mirror of the left margin). The ink colour
 # is per panel, which the first version collapsed to one.
-BACK_SIZE = 36.5
+# BACK_SIZE and BACK_STRETCH are fitted against 20 genuine BACKS (see STRETCH). The old
+# 36.5 unstretched was both too small and too narrow, which is what read as squashed.
+# Calibrated on each panel's SECOND line: the first line's ink merges with the heading
+# band, and the band clips descenders, so the widths are the trustworthy signal here.
+BACK_SIZE = 32
+BACK_STRETCH = 1.35
 BACK_PITCH = 47.1
 BACK_LEFT = 99.7
 BACK_RIGHT = 700.3
@@ -159,6 +240,9 @@ BACK_PANELS = {
     "usableParts": (990.1, "#f4fbfe", False),
 }
 BACK_RIGHT_PANELS = {"aromatic", "usableParts"}
+# Each column of a two-column panel owns half the text width less a gutter, measured from
+# the genuine backs: the left column starts at 99.7 and the right ends at 700.3.
+BACK_COLUMN = int((BACK_RIGHT - BACK_LEFT) / 2) - 18
 
 
 # How much room each string has before it reaches the next element. The scientific name
@@ -209,16 +293,96 @@ def renderable(font_key: str, text: str) -> list[str]:
     return [ch for ch in dict.fromkeys(text) if not ch.isspace() and ch not in have]
 
 
-def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = None) -> None:
-    """Paint one front string at its measured baseline, size and colour.
+def gradient_fill(size: tuple[int, int], stops: tuple[str, str, str, float]) -> Image.Image:
+    """A one-pixel-wide vertical ramp stretched to `size` -- the glyph interior's tones.
 
-    THE WHOLE STACK IS COMPOSED ON ITS OWN LAYER FIRST, then scaled if it is too wide.
-    Stepping the FONT SIZE down instead would shrink the letterforms while leaving the
-    highlight offset and the outline weight where they were, so the bevel would thicken
-    as the name got longer. Scaling the composed layer keeps every part in proportion --
-    and it only ever trims by 5-10% a step, so a long name reads slightly smaller rather
-    than visibly squashed.
+    Three stops, the middle one at a measured position, because the genuine letterforms
+    are light at the top, body colour through the middle and (on the scientific name) a
+    deeper tone at the foot. Interpolation is linear between stops and the ramp is built
+    at the ink box's own height, so it does not drift when a name is longer or shorter.
     """
+    top, mid, bottom, at = stops
+    top_rgb, mid_rgb, bottom_rgb = rgb(top), rgb(mid), rgb(bottom)
+    h = max(1, size[1])
+    ramp = Image.new("RGB", (1, h))
+    px = ramp.load()
+    for y in range(h):
+        t = y / max(1, h - 1)
+        if t <= at:
+            a, b, f = top_rgb, mid_rgb, (t / at if at else 1.0)
+        else:
+            a, b, f = mid_rgb, bottom_rgb, (t - at) / max(1e-6, 1.0 - at)
+        px[0, y] = tuple(round(a[i] + (b[i] - a[i]) * f) for i in range(3))
+    return ramp.resize(size, Image.BILINEAR)
+
+
+def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
+               outline: str | None, width: int,
+               stops: tuple[str, str, str, float] | None,
+               stretch: float) -> tuple[Image.Image, float, float]:
+    """Compose one string as outline + gradient interior, then stretch it horizontally.
+
+    THE WHOLE STACK IS COMPOSED ON ONE LAYER AND SCALED TOGETHER. Stepping the font size
+    instead would shrink the letterforms while leaving the outline weight where it was, so
+    the bevel would thicken as a name got longer.
+
+    Returns the cropped layer and the baseline's position inside it, so the caller can
+    pivot the placement on the baseline rather than on a corner.
+    """
+    pad = width * 2 + 16
+    box = (int(font.size * (len(text) + 2) * 2) + pad * 2, int(font.size * 3) + pad * 2)
+    baseline = (pad, pad + font.size * 1.5)
+
+    # The glyph silhouette WITHOUT its outline -- this is what the gradient is poured into.
+    body_mask = Image.new("L", box, 0)
+    ImageDraw.Draw(body_mask).text(baseline, text, font=font, fill=255, anchor="ls")
+
+    layer = Image.new("RGBA", box, (0, 0, 0, 0))
+    pen = ImageDraw.Draw(layer)
+    # Outline first, as a solid silhouette in the outline tone: an OUTLINE, not an offset
+    # shadow. The PDF reports every layer of a string on ONE baseline.
+    pen.text(baseline, text, font=font, anchor="ls",
+             fill=rgb(outline) if outline else rgb(fill),
+             stroke_width=width, stroke_fill=rgb(outline) if outline else None)
+    if stops:
+        ink = body_mask.getbbox()
+        if ink:
+            ramp = gradient_fill((ink[2] - ink[0], ink[3] - ink[1]), stops)
+            sheet = Image.new("RGB", box, rgb(fill))
+            sheet.paste(ramp, (ink[0], ink[1]))
+            layer.paste(sheet, (0, 0), body_mask)
+    else:
+        pen.text(baseline, text, font=font, fill=rgb(fill), anchor="ls")
+
+    crop = layer.getbbox()
+    if crop is None:
+        return layer, 0.0, 0.0
+    layer = layer.crop(crop)
+    bx, by = baseline[0] - crop[0], baseline[1] - crop[1]
+
+    if abs(stretch - 1.0) > 1e-3:
+        layer = layer.resize((max(1, round(layer.width * stretch)), layer.height),
+                             Image.LANCZOS)
+        bx *= stretch
+    return layer, bx, by
+
+
+def deck_binomial(name: str) -> str:
+    """The DECK capitalises the specific epithet -- `Taraxacum Officinale`, not
+    `Taraxacum officinale` -- on all 45 printed fronts, though `herbs.json` stores the
+    botanically correct lowercase form. This is a TYPOGRAPHIC convention of the printed
+    cards, so a generated card that belongs in the same deck follows it on the ARTWORK
+    only; the stored `scientific_name`, the species key and every record keep the correct
+    lowercase epithet. It is flagged for review rather than assumed, because it is the one
+    place matching the deck and being botanically right disagree.
+    """
+    return " ".join(w[:1].upper() + w[1:] if w[:1].islower() and w not in
+                    {"spp.", "sect.", "subsp.", "var.", "f."} else w
+                    for w in name.split())
+
+
+def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = None) -> None:
+    """Paint one front string at its measured baseline, size, stretch and tones."""
     font_key, size, x, y, fill, shadow = TEXT_SLOTS[slot]
     missing = renderable(font_key, text)
     if missing:
@@ -228,34 +392,16 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
         return
 
     font = ImageFont.truetype(str(FONTS[font_key]), round(size))
-    width = STROKE.get(slot, 0)
-    highlight = HIGHLIGHT.get(slot)
-    pad = width * 2 + abs(HIGHLIGHT_DY) + 12
+    stops = GRADIENT.get(slot)
+    if slot == "encounter":
+        tier = RARITY_TONES.get(text.strip().title())
+        if tier:
+            stops = (tier[0], tier[1], tier[2], 0.45)
+            fill, shadow = tier[1], tier[3]
+    layer, bx, by = text_layer(font, text, fill, shadow, STROKE.get(slot, 0),
+                               stops, STRETCH.get(slot, 1.0))
 
-    layer = Image.new("RGBA", (int(font.size * len(text) * 2) + pad * 2,
-                               int(font.size * 3) + pad * 2), (0, 0, 0, 0))
-    pen = ImageDraw.Draw(layer)
-    baseline = (pad, pad + font.size * 1.5)
-    # Highlight first, riding high; then the body colour on the baseline. The light tone
-    # survives along the top edge of every stroke, which is the bevel the printed cards
-    # have. A STROKE, NOT AN OFFSET SHADOW: the PDF reports every layer on ONE baseline,
-    # so the dark tone is an outline round the letterform, not a ghost beside it.
-    if highlight:
-        pen.text((baseline[0], baseline[1] + HIGHLIGHT_DY), text, font=font,
-                 fill=rgb(highlight), anchor="ls", stroke_width=width,
-                 stroke_fill=rgb(shadow) if shadow else None)
-    pen.text(baseline, text, font=font, fill=rgb(fill), anchor="ls",
-             stroke_width=width if (shadow and not highlight) else 0,
-             stroke_fill=rgb(shadow) if shadow else None)
-
-    box = layer.getbbox()
-    if box is None:
-        return
-    layer = layer.crop(box)
-    # The baseline's position inside the cropped layer, so the scale pivots on it.
-    baseline_y = baseline[1] - box[1]
-    baseline_x = baseline[0] - box[0]
-
+    # Only now, after the stretch, is the width the one that has to fit the slot.
     limit = SLOT_LIMITS.get(slot)
     scale = 1.0
     while limit and layer.width * scale > limit and scale > 0.5:
@@ -263,10 +409,10 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
     if scale < 1.0:
         layer = layer.resize((max(1, round(layer.width * scale)),
                               max(1, round(layer.height * scale))), Image.LANCZOS)
-        baseline_x *= scale
-        baseline_y *= scale
+        bx *= scale
+        by *= scale
 
-    img.alpha_composite(layer, (int(round(x - baseline_x)), int(round(y - baseline_y))))
+    img.alpha_composite(layer, (int(round(x - bx)), int(round(y - by))))
 
 
 def place(img: Image.Image, art: Image.Image, slot: tuple[int, int, int, int],
@@ -321,7 +467,7 @@ def render_front(card: dict, assets: pathlib.Path,
         draw_slot(front, "number", number[1:], blocked)
     else:
         draw_slot(front, "number", number, blocked)
-    draw_slot(front, "scientific", f["scientific_name"], blocked)
+    draw_slot(front, "scientific", deck_binomial(f["scientific_name"]), blocked)
 
     for slot, use in zip((SLOT_USE_A, SLOT_USE_B), f.get("use_icons", [])):
         place(front, Image.open(KIT / "icons" / f"use-{use}.png"), slot)
@@ -333,8 +479,15 @@ def render_front(card: dict, assets: pathlib.Path,
     if pixel.exists():
         place(front, Image.open(pixel), SLOT_PIXEL, margin=4, pixelated=True)
 
-    if f.get("encounter_rate"):
-        draw_slot(front, "encounter", f["encounter_rate"], blocked)
+    # THE RARITY TIER RENDERS FROM A PROVISIONAL VALUE WHEN THERE IS NO SOURCED ONE, and
+    # the two are SEPARATE FIELDS on purpose. `encounter_rate` stays null until the
+    # occurrence-count mapping is a made product decision; `encounter_rate_provisional`
+    # exists so the slot's placement, size, stretch and tones can be judged against the
+    # printed cards now. It never promotes itself -- the review flag stays a blocker and
+    # the review page prints the value as provisional.
+    rate = f.get("encounter_rate") or f.get("encounter_rate_provisional")
+    if rate:
+        draw_slot(front, "encounter", rate, blocked)
     if f.get("season"):
         place(front, Image.open(KIT / "icons" / f"season-{f['season']}.png"), SLOT_SEASON)
     return front
@@ -345,15 +498,25 @@ def render_front(card: dict, assets: pathlib.Path,
 def render_back(card: dict, blocked: list | None = None) -> Image.Image:
     _, back = template_pages()
     back = back.copy()
-    draw = ImageDraw.Draw(back)
     font = ImageFont.truetype(str(FONTS["back"]), round(BACK_SIZE))
     for key, (top, colour, two_column) in BACK_PANELS.items():
         items = card["back"].get(key) or []
         if not items:
             continue        # the template shows through: an empty panel is empty
         if two_column:
-            half = (len(items) + 1) // 2
-            columns = [(items[:half], False), (items[half:], True)]
+            # THE DECK FILLS A TWO-COLUMN PANEL ROW-MAJOR, NOT IN HALVES. Dandelion's
+            # healing traits are stored Anti-inflam. / Liver support / Digestive support /
+            # Diuretic / Astringent / Antimicrob., and the printed card reads
+            #     Anti-inflam.        Liver support
+            #     Digestive support   Diuretic
+            #     Astringent          Antimicrob.
+            # -- so entry 2 is the RIGHT column's first line, not the left column's second.
+            # Splitting in halves put the wrong string on every row below the first, which
+            # also silently poisoned the size calibration: it was matching measured boxes
+            # against strings that were never in them. Confirmed by width: with row-major,
+            # the left column reads 227 / 299 / 207 px, which is exactly the descending
+            # order of 'Anti-inflam.' / 'Digestive support' / 'Astringent'.
+            columns = [(items[0::2], False), (items[1::2], True)]
         else:
             columns = [(items, key in BACK_RIGHT_PANELS)]
         for column, right in columns:
@@ -366,12 +529,27 @@ def render_back(card: dict, blocked: list | None = None) -> Image.Image:
                                         "missing_glyphs": "".join(missing)})
                     continue
                 y = top + i * BACK_PITCH
-                if right:
-                    draw.text((BACK_RIGHT, y), item, font=font, fill=rgb(colour),
-                              anchor="rs")
-                else:
-                    draw.text((BACK_LEFT, y), item, font=font, fill=rgb(colour),
-                              anchor="ls")
+                # Stretched the same way the fronts are, which is what un-squashes it.
+                layer, bx, by = text_layer(font, item, colour, None, 0, None,
+                                           BACK_STRETCH)
+                # A COLUMN HAS A HARD WIDTH AND AN OVERLONG ENTRY SHRINKS INTO IT. The
+                # printed deck abbreviates instead ('Anti-inflam.', 'Antimicrob.'), which
+                # is an editorial decision this renderer must not make on its own -- so an
+                # entry that does not fit is scaled down and REPORTED, and the shortening
+                # stays a human call. Without this the two columns simply drew over each
+                # other, which is what 'Digestiv|Antimicrobial' was.
+                if two_column and layer.width > BACK_COLUMN:
+                    k = BACK_COLUMN / layer.width
+                    layer = layer.resize((BACK_COLUMN, max(1, round(layer.height * k))),
+                                         Image.LANCZOS)
+                    by *= k
+                    if blocked is not None:
+                        blocked.append({"slot": f"back.{key}", "text": item,
+                                        "issue": "too long for its column; scaled to fit",
+                                        "scaled_to": round(k, 3),
+                                        "deck_convention": "the printed cards abbreviate"})
+                left = BACK_RIGHT - layer.width if right else BACK_LEFT
+                back.alpha_composite(layer, (int(round(left)), int(round(y - by))))
     return back
 
 
@@ -430,10 +608,14 @@ def main() -> int:
     (out / "blocked-text.json").write_text(json.dumps(blocked, indent=2) + "\n")
     print(f"wrote {out/'front.png'} and {out/'back.png'}")
     if blocked:
-        print(f"\n{len(blocked)} string(s) NOT PAINTED -- the embedded faces are subsetted "
-              f"to Pine's glyphs and cannot spell them:")
+        print(f"\n{len(blocked)} string(s) NEED A HUMAN DECISION "
+              f"(unspellable, or too long for the deck's column width):")
         for b in blocked[:6]:
-            print(f"   {b['slot']:22} {b['text'][:34]!r} missing {b['missing_glyphs']!r}")
+            if "missing_glyphs" in b:
+                print(f"   {b['slot']:22} {b['text'][:34]!r} missing {b['missing_glyphs']!r}")
+            else:
+                print(f"   {b['slot']:22} {b['text'][:34]!r} {b.get('issue','')} "
+                      f"(x{b.get('scaled_to','?')})")
         if len(blocked) > 6:
             print(f"   ... and {len(blocked)-6} more; see {out/'blocked-text.json'}")
     return 0
