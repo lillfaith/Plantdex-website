@@ -117,18 +117,21 @@ SPLIT = {
 # tight text band on all 45 shipped fronts separates them: Common is a dark teal under a
 # pale blue highlight, Uncommon cream over mauve, Rare the familiar pink, Epic blue under
 # lavender. All four sit at x 428, which is the slot already measured.
-# (upper tone, lower tone, split, OUTLINE) -- the same cut as SPLIT above.
+# (body tone, OUTLINE) -- A RARITY TIER HAS NO HIGHLIGHT. It is one flat colour inside
+# one outline, which is what separates it from the two names above: those really are cut
+# in half, this is not. Histogramming the interior with the outline tone excluded gives a
+# tight single cluster per tier rather than two populations -- Common #e5def0/#e5deee/
+# #e1dcf0, Rare #ffc1d0/#ffc3d1/#ffc0d1, Uncommon #f9f2ac/#fbf1b0, Epic #0393d7 -- and a
+# spread that narrow is a flat fill plus resampling noise, not a split.
 #
-# THE TIER COLOUR IS THE OUTLINE, NOT THE BODY. Eroding the glyph separates them: a
-# genuine Rare is pale pink inside with only #c865b2 at its edge, Uncommon is cream in a
-# mauve edge, and Epic inverts the relation with a blue body in a LIGHT lavender outline.
-# Sampling a whole glyph blends the two and reports the darker, which is why a generated
-# "Common" came out solid teal beside a genuine one that reads pale.
+# THE TIER COLOUR IS THE OUTLINE, NOT THE BODY. Sampling a whole glyph blends the two and
+# reports the darker, which is why a generated "Common" first came out solid teal beside a
+# genuine one that reads pale.
 RARITY_TONES = {
-    "Common":   ("#eae9ff", "#c8cce2", 0.55, "#034c65"),
-    "Uncommon": ("#ffedc5", "#f9f2ae", 0.30, "#b770d1"),
-    "Rare":     ("#ffd0dd", "#ffc3cf", 0.50, "#c865b2"),
-    "Epic":     ("#b8e3ff", "#0393d7", 0.30, "#05506f"),
+    "Common":   ("#e3ddf0", "#034c65"),
+    "Uncommon": ("#f9f2ae", "#b770d1"),
+    "Rare":     ("#ffc2d0", "#c865b2"),
+    "Epic":     ("#0393d7", "#cbb6ff"),
 }
 
 # HORIZONTAL STRETCH, and this is the single correction behind four of the complaints.
@@ -192,8 +195,15 @@ SLOT_PHOTO = (105, 197, 698, 681)       # the art window's inner opening, 593x48
 # Measured off the genuine Pine render: the pair spans x 618-756, each disc ~62px.
 # Measured on the genuine front: the left disc is 53x56 at (618, 699); the pair's pitch
 # is 61, which the shipped webp agrees with.
-SLOT_USE_A = (618, 699, 671, 755)
-SLOT_USE_B = (679, 699, 732, 755)
+# THE TWO USE DISCS, AVERAGED OVER ALL 45 SHIPPED FRONTS rather than read off one card.
+# Diffing each front against the template inside a window that EXCLUDES the gauge rail
+# (x >= 735) and the Latin name's descenders resolves both discs on all 45, and they agree
+# to within half a pixel: A at x 619, B at x 680, both y 699 and both 54 x 57, pitch 61.
+# (A first pass put B at 54 x 68 because its window caught a fixed template element above
+# it -- a y standard deviation of EXACTLY 0.0 is the tell that a measurement has locked
+# onto furniture rather than content.)
+SLOT_USE_A = (619, 699, 673, 756)
+SLOT_USE_B = (680, 699, 734, 756)
 SLOT_PIXEL = (553, 814, 710, 958)       # the supporting pixel-icon panel
 SLOT_SEASON = (688, 1016, 736, 1064)  # genuine gold tile: 48x48
 
@@ -435,8 +445,8 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
     if slot == "encounter":
         tier = RARITY_TONES.get(text.strip().title())
         if tier:
-            stops = tier[:3]
-            fill, shadow = tier[1], tier[3]
+            stops = None                 # flat: no split, no highlight
+            fill, shadow = tier[0], tier[1]
     layer, bx, by = text_layer(font, text, fill, shadow, STROKE.get(slot, 0),
                                stops, STRETCH.get(slot, 1.0), WEIGHT.get(slot, 0))
 
@@ -455,14 +465,33 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
 
 
 def place(img: Image.Image, art: Image.Image, slot: tuple[int, int, int, int],
-          *, margin: int = 0, pixelated: bool = False) -> None:
-    """Fit `art` inside `slot`, preserving its proportions and cutting nothing off."""
+          *, margin: int = 0, pixelated: bool = False, fill: bool = False) -> None:
+    """Fit `art` inside `slot`, preserving its proportions and cutting nothing off.
+
+    `fill` scales to the slot in BOTH axes instead, which is only correct where the slot
+    is itself a measurement of the thing being drawn. The use discs are that case: the
+    genuine disc is an ELLIPSE, 54 wide and 57 tall, which a row-by-row profile shows
+    directly -- the width rises symmetrically to 54 at mid-height and falls away again
+    over rows 699-755, on every card checked. The harvested icons are square 200x200, so
+    fitting them by proportion draws a 54x54 circle and loses the deck's own 5% oval.
+    """
     x0, y0, x1, y1 = slot
     w, h = (x1 - x0) - margin * 2, (y1 - y0) - margin * 2
     art = art.copy()
     if art.mode == "RGBA" and art.getbbox():
         art = art.crop(art.getbbox())     # ink, not canvas -- see draw_units
-    art.thumbnail((w, h), Image.NEAREST if pixelated else Image.LANCZOS)
+    # SCALE TO FIT, NOT `thumbnail`. `Image.thumbnail` only ever SHRINKS -- it returns the
+    # image untouched when it already fits -- so a harvested 52x51 use disc sat at 52x51
+    # inside a 54x57 slot and every generated card's icons came out a little small and a
+    # little high. Scaling to the slot in both directions is what makes the measured deck
+    # average (54 x 57) the size that actually gets drawn.
+    if fill:
+        art = art.resize((max(1, w), max(1, h)),
+                         Image.NEAREST if pixelated else Image.LANCZOS)
+    else:
+        k = min(w / art.width, h / art.height)
+        art = art.resize((max(1, round(art.width * k)), max(1, round(art.height * k))),
+                         Image.NEAREST if pixelated else Image.LANCZOS)
     img.alpha_composite(art.convert("RGBA"),
                         (x0 + margin + (w - art.width) // 2,
                          y0 + margin + (h - art.height) // 2))
@@ -509,7 +538,7 @@ def render_front(card: dict, assets: pathlib.Path,
     draw_slot(front, "scientific", deck_binomial(f["scientific_name"]), blocked)
 
     for slot, use in zip((SLOT_USE_A, SLOT_USE_B), f.get("use_icons", [])):
-        place(front, Image.open(KIT / "icons" / f"use-{use}.png"), slot)
+        place(front, Image.open(KIT / "icons" / f"use-{use}.png"), slot, fill=True)
 
     for kind in ("water", "sun", "temperature"):
         draw_units(front, kind, (f.get("environmental_indicators") or {}).get(kind))
