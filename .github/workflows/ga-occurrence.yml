@@ -10,7 +10,19 @@ name: Georgia occurrence research
 # IT DECIDES NOTHING. The output is a table and a JSON artifact carrying GBIF's counts and a
 # PROPOSED classification under a stated rule. A human reads it and decides what goes on a
 # quest board. Nothing here sets medicinal eligibility, which no pipeline may do.
+#
+# IT ALSO RUNS ON PUSH TO THE RESEARCH BRANCH, and that is not a convenience. A
+# `workflow_dispatch` workflow can only be dispatched once its file is on the DEFAULT
+# branch, and on this repository the default branch is what GitHub Pages deploys — so
+# dispatching a research job would have meant shipping the site to get a table of plant
+# counts. A push trigger scoped to this file and its script runs from the branch it is
+# pushed to, with no deploy and nothing published.
 on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/ga_occurrence.py
+      - .github/workflows/ga-occurrence.yml
   workflow_dispatch:
     inputs:
       limit:
@@ -35,7 +47,7 @@ jobs:
       - name: Survey
         run: |
           python3 scripts/ga_occurrence.py \
-            ${{ inputs.limit && format('--limit {0}', inputs.limit) || '' }} \
+            ${{ github.event_name == 'workflow_dispatch' && inputs.limit && format('--limit {0}', inputs.limit) || '' }} \
             --out build/georgia-occurrence.json
 
       - uses: actions/upload-artifact@v4
