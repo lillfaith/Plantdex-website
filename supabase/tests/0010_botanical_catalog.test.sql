@@ -212,6 +212,51 @@ begin
   perform t_pass('a printed card publishes once its review gap is recorded in writing');
 end $$;
 
+-- ─── B5b. THE EXEMPTION IS FINITE, AND THE DATABASE IS WHAT MAKES IT FINITE ──
+--
+-- The exemption was previously defended by saying the printed set cannot grow because its
+-- artwork comes from a designer's PDF. That is a description of how we work, not a rule —
+-- and nothing stopped an arbitrary species being inserted as `printed` with an invented
+-- number and published with no review at all. These three close it.
+do $$
+begin
+  insert into public.catalog_species (species_key, accepted_name)
+  values ('impatiens capensis', 'Impatiens capensis') on conflict do nothing;
+
+  -- 1. A number outside Collection 01's range is refused.
+  begin
+    insert into public.collectible_cards
+      (species_key, tier, card_number, rarity, xp, published, eligibility_review_gap)
+    values ('impatiens capensis', 'printed', 999, 'Common', 100, true,
+            'An invented printed card claiming an exemption it has no right to.');
+    raise exception 'FAIL  a printed card was accepted outside the 1-47 range';
+  exception when check_violation then
+    perform t_pass('a printed card outside Collection 01 numbering is refused');
+  end;
+
+  -- 2. A number already taken is refused, so the exemption cannot exceed 47 rows.
+  begin
+    insert into public.collectible_cards
+      (species_key, tier, card_number, rarity, xp, published, eligibility_review_gap)
+    values ('impatiens capensis', 'printed', 44, 'Common', 100, true,
+            'A second species claiming a printed number that is already spoken for.');
+    raise exception 'FAIL  two printed cards share card number 44';
+  exception when unique_violation then
+    perform t_pass('two printed cards cannot share a number: the exemption is finite');
+  end;
+
+  -- 3. A FUTURE printed deck declares a collection and inherits no exemption.
+  begin
+    insert into public.collectible_cards
+      (species_key, tier, card_number, collection_id, rarity, xp, published, eligibility_review_gap)
+    values ('impatiens capensis', 'printed', 12, 'collection-02', 'Common', 100, true,
+            'A Collection 02 card trying to inherit Collection 01 grandfathering.');
+    raise exception 'FAIL  a Collection 02 printed card inherited the exemption';
+  exception when check_violation then
+    perform t_pass('a future printed collection inherits no exemption');
+  end;
+end $$;
+
 -- ─── B6. ELIGIBILITY CITES REAL, VERIFIED SOURCES ──────────────────────────
 --
 -- Without this the citation requirement is decorative: `array['looks-medicinal']` satisfies

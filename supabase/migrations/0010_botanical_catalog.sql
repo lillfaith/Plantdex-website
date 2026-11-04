@@ -291,7 +291,22 @@ create table if not exists public.collectible_cards (
 
   -- A printed card's number is its identity in the physical deck; a generated one has none.
   constraint printed_cards_carry_a_number
-    check (tier <> 'printed' or card_number is not null)
+    check (tier <> 'printed' or card_number is not null),
+
+  -- ── THE EXEMPTION IS CAPPED BY THE DATABASE, NOT BY THE ARTWORK WORKFLOW ────
+  --
+  -- I previously defended the printed-tier publication exemption by saying the printed set
+  -- "cannot grow, because printed artwork comes from a designer's PDF and no program
+  -- produces one". That is true and it is NOT a database rule — it is a description of how
+  -- we happen to work. Nothing here stopped somebody inserting any species at all as
+  -- `tier = 'printed'` with an invented card number and a sentence in the gap column, and
+  -- publishing it with no eligibility review whatsoever. The bypass was unbounded.
+  --
+  -- Collection 01 is 45 species plus the icon sheet and the disclaimer: numbers 1 to 47.
+  -- Bounding the number, and making it unique within the pre-catalog deck, caps the whole
+  -- exemption at 47 rows that the database itself will not exceed.
+  constraint printed_cards_are_collection_01_numbers
+    check (tier <> 'printed' or card_number between 1 and 47)
 );
 
 -- Mint-once render registry, modelled directly on `species_packets`: a render is created
@@ -355,7 +370,12 @@ begin
   end if;
 
   -- The inherited exemption, and it costs a sentence. See `eligibility_review_gap`.
-  if new.tier = 'printed' and new.eligibility_review_gap is not null then
+  -- Collection 01 only. A future printed deck declares a `collection_id`, so it is reviewed
+  -- like everything else rather than inheriting an exemption written for cards that shipped
+  -- before this table existed.
+  if new.tier = 'printed'
+     and new.collection_id is null
+     and new.eligibility_review_gap is not null then
     return new;
   end if;
 
@@ -507,6 +527,16 @@ end $$;
 -- and confirmed it supports the claim; an unverified row is a candidate, and a candidate
 -- backing an eligibility decision is the AI-suggested-citation failure arriving one table
 -- to the left.
+--
+-- WHAT THIS CANNOT CHECK, AND MUST NOT BE READ AS CHECKING: RELEVANCE.
+-- A verified source about a different plant entirely satisfies this trigger. "Exists and
+-- somebody has verified it" is a property of the source row; "supports THIS species'
+-- medicinal relevance" is a judgement about a pairing, and no constraint can make it. The
+-- database can only ensure a named human signed the determination — which is what
+-- `eligibility_reviewed_by` and the 20-character `eligibility_basis` are for: the basis is
+-- where the reviewer says what each source actually says about this species. Treating a
+-- green trigger as evidence of relevance is precisely the false confidence this whole
+-- layer exists to avoid. See docs/botanical-catalog.md, "What review means".
 --
 -- Applied to approved medicinal claims for the same reason and with the same words.
 create or replace function public.require_verified_sources()
@@ -718,6 +748,15 @@ begin
       for select using (review_status = 'approved');
   end if;
 end $$;
+
+-- AT MOST ONE PRINTED CARD PER NUMBER IN THE PRE-CATALOG DECK. With the 1..47 range check
+-- above, this is what makes the publication exemption finite: 47 numbers, one row each, and
+-- no 48th. `collection_id is null` is Collection 01 — `Herb.collectionId` is absent on the
+-- original deck by design (see src/lib/types.ts), so a future printed Collection 02 declares
+-- an id, falls outside this index, and gets no exemption at all.
+create unique index if not exists collectible_cards_printed_number_idx
+  on public.collectible_cards (card_number)
+  where tier = 'printed' and collection_id is null;
 
 -- ── Indexes ────────────────────────────────────────────────────────────────────
 -- The regional board is the hot query: "approved, collectible, in this region, this season".

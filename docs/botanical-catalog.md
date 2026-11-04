@@ -114,6 +114,33 @@ something:
 unverified row is a candidate, and a candidate backing an eligibility decision is the
 AI-suggested-citation failure arriving one table to the left.
 
+## What review means — and what the database cannot check
+
+The triggers check that a cited source **exists** and is **verified**. They cannot check
+that it is **about this species**, or that it supports a *medicinal* determination. A
+verified reference about a different plant entirely satisfies every constraint in the
+schema.
+
+That is not a gap to be closed by a better constraint. Existence and verification are
+properties of a source row; relevance is a judgement about a *pairing*, and no database can
+make it. Treating a green check as proof of relevance would be exactly the false confidence
+this layer exists to prevent.
+
+**So the human step is load-bearing, and these are its rules:**
+
+1. Open every source. Not the abstract, not a search summary — the source.
+2. Confirm it is about **this accepted species**, not its genus, not a relative. A
+   genus-level source is recorded with `eligibility_from_genus_record = true` and cannot
+   make the species eligible.
+3. Confirm it documents **medicinal use** — not that the plant is edible, not that it
+   contains an interesting compound.
+4. Write what each source actually says into `eligibility_basis`. That field is the record
+   of the judgement; a reviewer who cannot write the sentence has not made it.
+5. Sign it: `eligibility_reviewed_by`, `eligibility_reviewed_on`.
+
+A reviewer who sets `eligible` because the trigger let them has not reviewed anything. The
+constraint is a floor, not a verdict.
+
 ## Running an ingestion
 
 ```bash

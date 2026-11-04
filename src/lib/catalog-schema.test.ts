@@ -242,6 +242,33 @@ describe('only documented medicinal species can be collectible', () => {
     }
   });
 
+  it('caps the printed exemption in the schema, not in the artwork workflow', () => {
+    /*
+     * This was previously defended with "the printed set cannot grow, because its artwork
+     * comes from a designer's PDF". True, and not a rule — nothing stopped an arbitrary
+     * species being inserted as `printed` with an invented number and published unreviewed.
+     * Three things bound it now, all in the database: the number range, uniqueness within
+     * the pre-catalog deck, and the exemption applying only to that deck.
+     */
+    expect(sql).toMatch(/tier <> 'printed' or card_number between 1 and 47/);
+    expect(sql).toMatch(/create unique index if not exists collectible_cards_printed_number_idx/);
+    expect(sql).toMatch(/where tier = 'printed' and collection_id is null/);
+    const fn = /function public\.enforce_collectible_eligibility[\s\S]*?\n\$\$;/.exec(sql)?.[0] ?? '';
+    expect(fn, 'the exemption must be limited to the pre-catalog collection')
+      .toMatch(/new\.collection_id is null/);
+  });
+
+  it('does not claim the source check establishes relevance', () => {
+    /*
+     * A verified source about a different plant satisfies `require_verified_sources`.
+     * Existence and verification are properties of the source row; relevance is a
+     * judgement about a pairing, and no constraint can make it. The migration has to say
+     * so where somebody reading the trigger will see it, or a green check reads as proof.
+     */
+    expect(sql, 'the relevance limit must be documented at the trigger')
+      .toMatch(/CANNOT CHECK, AND MUST NOT BE READ AS CHECKING: RELEVANCE/);
+  });
+
   it('lets a printed card publish only by naming its outstanding review', () => {
     /*
      * The 45 printed cards are in buyers' hands and were not published by this table. The
@@ -250,7 +277,7 @@ describe('only documented medicinal species can be collectible', () => {
      */
     expect(sql).toMatch(/eligibility_review_gap/);
     const fn = /function public\.enforce_collectible_eligibility[\s\S]*?\n\$\$;/.exec(sql)?.[0] ?? '';
-    expect(fn).toMatch(/new\.tier = 'printed' and new\.eligibility_review_gap is not null/);
+    expect(fn).toMatch(/new\.tier = 'printed'[\s\S]*?new\.eligibility_review_gap is not null/);
   });
 });
 
