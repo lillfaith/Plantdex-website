@@ -2,6 +2,7 @@
 
 import { track } from '@/lib/analytics';
 import { launchedRegions } from '@/lib/regions';
+import { useRegionScope } from '@/lib/region-scope';
 import { useRegion } from '@/lib/region-store';
 
 /**
@@ -17,7 +18,8 @@ import { useRegion } from '@/lib/region-store';
  * testers a region plus a timestamp is close to a name.
  */
 export function RegionPicker({ className = '' }: { className?: string }) {
-  const { region, ready, setRegion } = useRegion();
+  // Scoped to the signed-in account, or the device when signed out. Never the default.
+  const { region, ready, setRegion } = useRegion(useRegionScope());
   const regions = launchedRegions();
 
   return (

@@ -122,6 +122,33 @@ export function regionalCollection(species: readonly RegionalSpecies[]): Herb[] 
     .sort((a, b) => a.cardNumber - b.cardNumber);
 }
 
+/**
+ * How many species of each occurrence class a region holds.
+ *
+ * EXISTS BECAUSE THE PAGE SAID "35 RECORDED" AND MEANT TWO DIFFERENT THINGS. 31 species
+ * are `confirmed` in Georgia and 4 are only `likely` — recorded, but at the edge of their
+ * range and not reliably met. Adding them and printing one number told a player that four
+ * plants are documented there when the survey says no such thing, which is the precise
+ * failure the four-class model exists to prevent.
+ */
+export function occurrenceCounts(species: readonly RegionalSpecies[]): {
+  confirmed: number;
+  likely: number;
+  findable: number;
+} {
+  const confirmed = species.filter((entry) => entry.occurrence === 'confirmed').length;
+  const likely = species.filter((entry) => entry.occurrence === 'likely').length;
+  return { confirmed, likely, findable: confirmed + likely };
+}
+
+/** The occurrence class for one species in a region, or null when it is not listed. */
+export function occurrenceOf(
+  herbId: string,
+  species: readonly RegionalSpecies[],
+): RegionalSpecies['occurrence'] | null {
+  return species.find((entry) => entry.herbId === herbId)?.occurrence ?? null;
+}
+
 /** A deterministic sample: same pool and same seed give the same answer, always. */
 function sample<T>(pool: readonly T[], count: number, rand: () => number): T[] {
   // Fisher-Yates over a copy, drawing from the supplied generator so the whole board is one
