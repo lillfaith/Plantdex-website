@@ -295,18 +295,32 @@ CHAMOMILE_PALETTE = {
 # centred on the face is a picture frame, an inner organ the face sits LOW in is a dome —
 # and chamomile's receptacle is a hollow CONE standing proud, which is the whole difference
 # between this plant and a scentless mayweed.
-RAY_W, RAY_H = 29, 15
-RAY_LOBES, RAY_AMP = 7, 0.24
+# ── GEOMETRY MEASURED TWICE, BECAUSE THE FIRST OBJECTIVE WAS WRONG ─────────────
+#
+# Round one guessed the numbers and produced a ONE-ROW FACE with the eyes and mouth
+# hanging in the air below the flower: `trim_tail` defaults to True and had cut the bottom
+# of the face off, which the parameters give no hint of.
+#
+# Round two swept 8,640 geometries and scored them on WHITE PIXEL COUNT. That passed the
+# audit and looked wrong: 7 fat lobes over 29px rendered as two solid rectangular slabs
+# either side of the cone -- sleeves, not ray florets. The objective was the defect. Only
+# looking at the render against the coneflower already in this deck showed it, which is
+# the same way the coneflower's own composition bug was found.
+#
+# Round three scores PETAL SEPARATION: distinct white components outside the cone's box,
+# none wider than 16px, with white appearing both above and below the cone so the mane is
+# a ring rather than a pair of wings. 697 of 5,120 qualify; this is the best of them, at
+# 13 separate rays.
+RAY_W, RAY_H = 27, 21
+RAY_LOBES, RAY_AMP = 11, 0.44
 CONE_W, CONE_H = 11, 15
 
-CONE_RX, CONE_RY = 5.5, 7.5
+CONE_RX, CONE_RY = 5.5, 7.0
 CONE_FRX, CONE_FRY = 5.0, 4.5
 CONE_FDY = 1.5
 
-# The mane sits at the cone's WAIST, centred on the face's own middle row -- not at its
-# foot, where it would read as a collar.
-RAYS_AT = (2, 3)
-CONE_AT = (11, 2)
+RAYS_AT = (3, 1)
+CONE_AT = (11, 3)
 
 
 def _rays(amp: float = RAY_AMP, squash: float = 0.0) -> list[str]:
@@ -317,7 +331,7 @@ def _rays(amp: float = RAY_AMP, squash: float = 0.0) -> list[str]:
     """
     return flower_head(
         RAY_W, RAY_H, RAY_W / 2, RAY_H / 2 + squash,
-        RAY_W / 2 - 1.5, RAY_H / 2 - 1.2 - squash * 0.55,
+        RAY_W / 2 - 1.5, RAY_H / 2 - 1.5 - squash * 0.55,
         RAY_LOBES, amp, 0, 0, trim_tail=False, chars="RrrrFo",
     )
 
@@ -345,11 +359,16 @@ def method_b(species_key: str) -> dict:
         # one connected piece — the rule `audit_sprites.py` flood-fills for.
         # The stem starts INSIDE the head block (the cone's last row is 16) so frame 0 is
         # one connected piece -- the rule `audit_sprites.py` flood-fills for.
-        {"name": "stem", "origin": (14, 15), "rows": ["  M  ", "  M  ", "  D  ",
-                                                      "  D  ", "  D  ", "  S  "]},
-        {"name": "frondLeft", "origin": (9, 20), "rows": frond,
+        # The mane reaches row 21, so the fronds tuck straight under it with no visible
+        # stem -- which is how the coneflower already in this deck is composed, and what
+        # keeps frame 0 one connected piece on a canvas this full.
+        # Placement SEARCHED, not chosen: 311 of 486 positions keep frame 0 one connected
+        # piece with a clean face audit, and the first attempt was not one of them -- the
+        # left frond hung 16px free under the mane. This is the lowest and widest that
+        # works, which is what a plant's leaves do.
+        {"name": "frondLeft", "origin": (8, 21), "rows": frond,
          "variants": {"tall": frond_tall}},
-        {"name": "frondRight", "origin": (16, 20), "rows": frond,
+        {"name": "frondRight", "origin": (22, 21), "rows": frond,
          "variants": {"tall": frond_tall}},
         {"name": "rays", "origin": rays_at, "rows": rays,
          "variants": {"reflexed": rays_reflexed}},

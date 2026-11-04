@@ -366,7 +366,7 @@ def self_test() -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("species", nargs="*")
-    parser.add_argument("--out", default="evidence")
+    parser.add_argument("--out", default="evidence/retrieved")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if args.self_test:

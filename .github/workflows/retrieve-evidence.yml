@@ -49,16 +49,20 @@ jobs:
           # a file rather than in this workflow means changing it is a data change.
           mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
           printf 'retrieving %d species\n' "${#NAMES[@]}"
-          python3 -I scripts/retrieve_evidence.py "${NAMES[@]}" --out evidence/out
+          python3 -I scripts/retrieve_evidence.py "${NAMES[@]}" --out evidence/retrieved
 
       - name: Summarise what came back
-        run: python3 -I scripts/summarise_evidence.py evidence/out/*.json
+        run: python3 -I scripts/summarise_evidence.py evidence/retrieved/*.json
 
+      # `evidence/out` was the first name and it silently collided with `out/` in
+      # .gitignore -- the Next.js static export directory. `git add` refused it, the step
+      # failed, and the retrieval before it had already succeeded. Named `retrieved/` so
+      # the directory says which of the five states it holds.
       - name: Commit the bundle to this branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add evidence/out
+          git add evidence/retrieved
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0
@@ -71,5 +75,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: evidence
-          path: evidence/out/
+          path: evidence/retrieved/
           retention-days: 14
