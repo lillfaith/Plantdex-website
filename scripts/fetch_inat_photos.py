@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+"""Find CC0 botanical photographs on iNaturalist, record their provenance, download them.
+
+────────────────────────────────────────────────────────────────────────────────
+A PHOTOGRAPH IS SOMEBODY'S WORK, AND THE LICENCE TRAVELS WITH IT OR IT IS NOT USED.
+
+Every photo this writes carries the observation id, the photographer's name, the licence
+code and the original URL. `catalog_species` already refuses an image without them --
+`an_image_carries_its_licence` -- and this produces the record that constraint wants.
+
+CC0 ONLY, BY DEFAULT AND ON PURPOSE. CC-BY and CC-BY-NC are perfectly usable with
+attribution, and mixing them into the same pipeline means one day shipping a card whose
+attribution was dropped by a layout change. `--licenses` can widen it deliberately; the
+default cannot drift.
+
+ONLY RESEARCH-GRADE OBSERVATIONS. A casual observation is one person's guess at what they
+photographed. Research grade means the community agreed on the identification, which is the
+closest thing available to "this really is that plant" -- and a card built on a
+misidentified photograph teaches the wrong species to somebody standing in a field.
+
+api.inaturalist.org is refused by the sandbox proxy like every other source host, so this
+runs in Actions.
+
+    python3 scripts/fetch_inat_photos.py "Matricaria chamomilla" --out evidence/photos
+    python3 scripts/fetch_inat_photos.py --self-test
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import pathlib
+import re
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from datetime import datetime, timezone
+
+API = "https://api.inaturalist.org/v1"
+UA = "plantdex-card-pipeline (https://github.com/lillfaith/Plantdex-website)"
+
+# The only licence that needs no attribution line. Everything else is opt-in.
+DEFAULT_LICENSES = ("cc0",)
+
+LICENSE_LABEL = {
+    "cc0": "CC0 (public domain dedication)",
+    "cc-by": "CC BY",
+    "cc-by-nc": "CC BY-NC",
+    "cc-by-sa": "CC BY-SA",
+}
+
+# iNaturalist serves several sizes from one base name.
+SIZES = ("original", "large", "medium")
+
+
+def get(url: str, *, raw: bool = False, timeout: int = 60):
+    request = urllib.request.Request(url, headers={"User-Agent": UA})
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                body = response.read()
+                return body if raw else json.loads(body)
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                return None
+            if attempt == 2:
+                raise RuntimeError(f"{url} -> HTTP {error.code}") from error
+        except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError) as error:
+            if attempt == 2:
+                raise RuntimeError(f"{url} unreachable: {error}") from error
+        time.sleep(2 ** attempt)
+    return None
+
+
+def resolve_taxon(name: str) -> dict | None:
+    """The iNat taxon whose name matches EXACTLY. A near match is a different plant."""
+    params = {"q": name, "rank": "species", "is_active": "true", "per_page": 10}
+    answer = get(f"{API}/taxa?{urllib.parse.urlencode(params)}") or {}
+    for row in answer.get("results", []):
+        if (row.get("name") or "").strip().lower() == name.strip().lower():
+            return row
+    return None
+
+
+def photo_url(photo: dict, size: str) -> str | None:
+    """Rewrite iNat's square URL to another size. The base name is shared."""
+    url = photo.get("url") or ""
+    if not url:
+        return None
+    return re.sub(r"/(square|small|medium|large|original)\.", f"/{size}.", url)
+
+
+def harvest(name: str, licenses: tuple[str, ...], want: int) -> dict:
+    taxon = resolve_taxon(name)
+    if taxon is None:
+        return {"taxon": None, "photos": [],
+                "note": f"no exactly-matching active species taxon for {name!r}"}
+
+    photos: list[dict] = []
+    seen: set[int] = set()
+    for licence in licenses:
+        params = {
+            "taxon_id": taxon["id"],
+            "photo_license": licence,
+            "quality_grade": "research",
+            "photos": "true",
+            "order_by": "votes",
+            "per_page": 30,
+        }
+        answer = get(f"{API}/observations?{urllib.parse.urlencode(params)}") or {}
+        for obs in answer.get("results", []):
+            # The observation's taxon must still be the one asked for: a research-grade
+            # observation can be research grade for a DIFFERENT species.
+            if (obs.get("taxon") or {}).get("id") != taxon["id"]:
+                continue
+            for photo in obs.get("photos", []):
+                if photo["id"] in seen:
+                    continue
+                if (photo.get("license_code") or "").lower() != licence:
+                    continue
+                seen.add(photo["id"])
+                photos.append({
+                    "photo_id": photo["id"],
+                    "observation_id": obs["id"],
+                    "observation_url": f"https://www.inaturalist.org/observations/{obs['id']}",
+                    "license_code": licence,
+                    "license": LICENSE_LABEL.get(licence, licence),
+                    "photographer": (photo.get("attribution") or "").strip() or None,
+                    "observed_on": obs.get("observed_on"),
+                    "place": obs.get("place_guess"),
+                    "urls": {s: photo_url(photo, s) for s in SIZES},
+                    "dimensions": photo.get("original_dimensions"),
+                    "taxon_name": (obs.get("taxon") or {}).get("name"),
+                })
+                if len(photos) >= want:
+                    break
+            if len(photos) >= want:
+                break
+        time.sleep(0.6)
+        if len(photos) >= want:
+            break
+
+    return {
+        "taxon": {"id": taxon["id"], "name": taxon["name"],
+                  "rank": taxon.get("rank"), "wikipedia": taxon.get("wikipedia_url")},
+        "photos": photos,
+        "note": None,
+    }
+
+
+def download(photos: list[dict], out: pathlib.Path) -> None:
+    out.mkdir(parents=True, exist_ok=True)
+    for photo in photos:
+        for size in ("large", "medium", "original"):
+            url = (photo["urls"] or {}).get(size)
+            if not url:
+                continue
+            body = get(url, raw=True)
+            if not body:
+                continue
+            ext = pathlib.Path(urllib.parse.urlparse(url).path).suffix or ".jpg"
+            path = out / f"inat-{photo['photo_id']}{ext}"
+            path.write_bytes(body)
+            photo["file"] = path.name
+            photo["bytes"] = len(body)
+            photo["downloaded_size"] = size
+            break
+        time.sleep(0.3)
+
+
+def self_test() -> int:
+    sample = {"url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/square.jpg"}
+    checks = [
+        (photo_url(sample, "large").endswith("/large.jpg"), "square -> large rewrite"),
+        (photo_url(sample, "original").endswith("/original.jpg"), "square -> original"),
+        (photo_url({}, "large") is None, "a photo with no url yields none"),
+        (DEFAULT_LICENSES == ("cc0",),
+         "the DEFAULT is CC0 only -- widening it has to be deliberate"),
+        ("cc-by" not in DEFAULT_LICENSES,
+         "CONTROL: an attribution licence is NOT in the default set"),
+        (all(k in LICENSE_LABEL for k in DEFAULT_LICENSES),
+         "every default licence has a human-readable label to print"),
+    ]
+    bad = sum(1 for ok, _ in checks if not ok)
+    for ok, label in checks:
+        print(f"{'PASS' if ok else 'FAIL'}  {label}")
+    print("\nALL SELF-TESTS PASSED" if not bad else f"\n{bad} FAILURE(S)")
+    return 1 if bad else 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("species", nargs="*")
+    parser.add_argument("--out", default="evidence/photos")
+    parser.add_argument("--want", type=int, default=6)
+    parser.add_argument("--licenses", default=",".join(DEFAULT_LICENSES))
+    parser.add_argument("--self-test", action="store_true")
+    args = parser.parse_args()
+    if args.self_test:
+        return self_test()
+    if not args.species:
+        print("name at least one species", file=sys.stderr)
+        return 2
+
+    licenses = tuple(part.strip().lower() for part in args.licenses.split(",") if part.strip())
+    out = pathlib.Path(args.out)
+    for name in args.species:
+        result = harvest(name, licenses, args.want)
+        key = name.lower().replace(" ", "_")
+        folder = out / key
+        if result["photos"]:
+            download(result["photos"], folder)
+        record = {
+            "species": name,
+            "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "source": "iNaturalist",
+            "licenses_requested": list(licenses),
+            "quality_grade": "research",
+            **result,
+            "warning": "Each photo's licence, photographer and original URL travel with "
+                       "it. A card that shows one of these without its provenance record "
+                       "is using somebody's work without saying so.",
+        }
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / "photos.json").write_text(
+            json.dumps(record, indent=2, ensure_ascii=False) + "\n")
+        got = len(result["photos"])
+        print(f"{name}: taxon={result['taxon']['id'] if result['taxon'] else None} "
+              f"photos={got} licensed={licenses} -> {folder}")
+        for photo in result["photos"]:
+            print(f"    {photo.get('file', '(not downloaded)')}  "
+                  f"{photo['license_code']}  {str(photo['photographer'])[:60]}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

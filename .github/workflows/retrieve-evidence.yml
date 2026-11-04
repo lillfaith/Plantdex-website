@@ -15,6 +15,7 @@ on:
     branches: [claude/botanical-catalog-stage-1]
     paths:
       - scripts/retrieve_evidence.py
+      - scripts/fetch_inat_photos.py
       - .github/workflows/retrieve-evidence.yml
       - evidence/species.txt
 
@@ -41,7 +42,9 @@ jobs:
           python-version: '3.12'
 
       - name: Self-test before spending a single request
-        run: python3 -I scripts/retrieve_evidence.py --self-test
+        run: |
+          python3 -I scripts/retrieve_evidence.py --self-test
+          python3 -I scripts/fetch_inat_photos.py --self-test
 
       - name: Retrieve
         run: |
@@ -50,6 +53,15 @@ jobs:
           mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
           printf 'retrieving %d species\n' "${#NAMES[@]}"
           python3 -I scripts/retrieve_evidence.py "${NAMES[@]}" --out evidence/retrieved
+
+      # CC0 BOTANICAL PHOTOGRAPHY, because the herbalism card uses a real photograph and
+      # the pixel sprite is a SEPARATE asset that never stands in for one. Research grade
+      # only, CC0 only, and every photo's licence, photographer and original URL are
+      # recorded beside it.
+      - name: Fetch CC0 photographs
+        run: |
+          mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
+          python3 -I scripts/fetch_inat_photos.py "${NAMES[@]}" --out evidence/photos --want 8
 
       - name: Summarise what came back
         run: python3 -I scripts/summarise_evidence.py evidence/retrieved/*.json
@@ -62,12 +74,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add evidence/retrieved
+          git add evidence/retrieved evidence/photos
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0
           fi
-          git commit -m "Retrieve evidence (state=retrieved, nothing reviewed)"
+          git commit -m "Retrieve evidence and CC0 photos (state=retrieved, nothing reviewed)"
           # The branch may have moved while this ran; rebase rather than force.
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
@@ -75,5 +87,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: evidence
-          path: evidence/retrieved/
+          path: |
+            evidence/retrieved/
+            evidence/photos/
           retention-days: 14
