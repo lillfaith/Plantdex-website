@@ -1,4 +1,5 @@
 import { PRINTED_CARDS } from './deck';
+import { boardTierFor, findabilityIn } from './findability';
 import { habitatOf } from './habitat';
 import { seeded, hash } from './rng';
 import type { Herb } from './types';
@@ -154,23 +155,52 @@ export function questBoard(
     // Sorted before sampling so the pool's order never depends on the caller's array order.
     .sort((a, b) => a.card.cardNumber - b.card.cardNumber);
 
+  /*
+   * THE TIER COMES FROM THE DOCUMENTED RULE, not from the printed rarity directly.
+   * `findabilityIn` is where "how hard is this to find HERE" is decided — printed Encounter
+   * Rate, adjusted at most one step for occurrence and habitat access — and `boardTierFor`
+   * maps that onto the three tiers. Reading `card.rarity` here instead would mean two
+   * places decided difficulty and could disagree.
+   */
+  const tierOf = (row: { entry: RegionalSpecies; card: Herb }) => {
+    const findability = findabilityIn(row.card.id, row.entry);
+    return findability ? boardTierFor(findability) : null;
+  };
+
+  /*
+   * EACH TIER DRAWS FROM ITS OWN TIER, AND THAT IS A BUG FIX.
+   *
+   * The first version filled `main` from everything still unused, which STARVED `stretch`:
+   * with thirteen featured plants, five went to starter and main took the remaining eight —
+   * including both scarce ones — so the board rendered two tiers and the "worth going out
+   * for" section silently vanished. Found by rendering the page, not by a unit test, which
+   * is why there is now one asserting all three tiers are populated.
+   *
+   * Drawing per tier also makes the documented rule actually decide placement, rather than
+   * deciding it only for whatever sampling order happened to leave behind.
+   */
   const starterPool = available.filter(
     (row) =>
-      row.card.rarity === 'Common' &&
-      // `habitatOf` is undefined for a card with no classification. That species is not
-      // excluded from the board — only from the STARTER tier, whose whole promise is that
-      // the place is easy to reach. An unclassified plant cannot make that promise.
+      tierOf(row) === 'starter' &&
+      // The starter tier asks one thing beyond difficulty: that the place is easy to reach.
+      // `habitatOf` is undefined for an unclassified card, which cannot make that promise,
+      // so it is excluded from THIS tier and from no other.
       (STARTER_HABITATS as readonly string[]).includes(habitatOf(row.card.id)?.primary ?? ''),
   );
   const starter = sample(starterPool, TIER_SIZE.starter, rand);
   const taken = new Set(starter.map((row) => row.card.id));
 
-  const mainPool = available.filter((row) => !taken.has(row.card.id));
+  // `main` takes the middle tier PLUS any starter-tier plant that did not fit or whose
+  // habitat is a walk rather than a verge. Nothing findable is dropped from the board for
+  // want of a slot in the tier it would have preferred.
+  const mainPool = available.filter(
+    (row) => !taken.has(row.card.id) && tierOf(row) !== 'stretch',
+  );
   const main = sample(mainPool, TIER_SIZE.main, rand);
   main.forEach((row) => taken.add(row.card.id));
 
   const stretchPool = available.filter(
-    (row) => !taken.has(row.card.id) && (row.card.rarity === 'Rare' || row.card.rarity === 'Epic'),
+    (row) => !taken.has(row.card.id) && tierOf(row) === 'stretch',
   );
   const stretch = sample(stretchPool, TIER_SIZE.stretch, rand);
 
