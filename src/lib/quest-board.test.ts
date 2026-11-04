@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-import { PRINTED_CARDS } from './deck';
+import { boardTierFor, findabilityIn } from './findability';
 import { habitatOf } from './habitat';
 import {
   QUEST_TIERS, STARTER_HABITATS, boardProgress, inSeason, isFindable, questBoard,
@@ -135,10 +135,29 @@ describe('the tiers', () => {
     }
   });
 
-  it('keeps the stretch tier to genuinely scarce cards', () => {
+  it('keeps the stretch tier to cards that are scarce HERE', () => {
+    /*
+     * Asserted through `findabilityIn`, not through the printed rarity, because the tier is
+     * decided by the regional rule — a printed Uncommon in a wetland is scarce here, and a
+     * printed Uncommon on a verge is not. Checking the printed value would pass today and
+     * silently stop testing the rule the moment the two legitimately diverge.
+     */
     for (const entry of board.entries.filter((e) => e.tier === 'stretch')) {
-      const card = PRINTED_CARDS.find((c) => c.id === entry.herbId);
-      expect(['Rare', 'Epic']).toContain(card?.rarity);
+      const species = georgia.find((s) => s.herbId === entry.herbId);
+      expect(boardTierFor(findabilityIn(entry.herbId, species)!)).toBe('stretch');
+    }
+  });
+
+  it('fills all three tiers, not just the first two', () => {
+    /*
+     * THE BUG THIS EXISTS FOR, found by rendering the page. `main` used to draw from
+     * everything still unused, so with thirteen featured plants it swallowed both scarce
+     * ones and the stretch tier rendered as nothing at all — a whole section of the board
+     * silently absent, with every unit test green.
+     */
+    for (const tier of QUEST_TIERS) {
+      expect(board.entries.filter((e) => e.tier === tier).length,
+        `the ${tier} tier is empty`).toBeGreaterThan(0);
     }
   });
 
