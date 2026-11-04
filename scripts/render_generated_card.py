@@ -72,7 +72,7 @@ PT = 800 / 234
 # genuine card -- the complaint was about the missing deep-gold edge, not a missing
 # outline, and the two are fixed in different places. With stroke 0 the 19-card fit lands
 # at size 47 / stretch 1.30, mean height error 1.8px.
-STROKE = {"common": 3, "scientific": 0, "encounter": 2}
+STROKE = {"common": 3, "scientific": 0, "encounter": 3}
 
 # WEIGHT is a SAME-COLOUR stroke that fattens the letterform without darkening it, and it
 # is a different thing from STROKE, which is the dark outline around it.
@@ -98,17 +98,18 @@ WEIGHT = {"common": 0.25, "scientific": 0.75, "encounter": 0.0}
 # read, not eyedropped off a render, which would pick up whatever the JPEG did to them.
 # Dark below as an outline, the body colour, then a lighter copy riding one pixel high,
 # which is the highlight that gives the letters their bevel.
-# THE HIGHLIGHT IS A VERTICAL GRADIENT INSIDE THE GLYPH, NOT AN OFFSET COPY. Scanning
-# across the genuine `Pine` finds the light tone high in the letterform (`hi8 hi11 hi24`
-# at y=100) and the saturated body solid below it (y=110 and y=120 are pure `bo7`); the
-# scientific name runs light at y=725, body at y=733 and the DEEP gold at y=741. An
-# offset copy cannot produce that -- it leaves a rim above the stroke and nothing inside
-# it. So each slot names three stops and the fill is interpolated down the ink box.
-#   (top tone, mid tone, bottom tone, where the mid stop sits in the ink box)
-GRADIENT = {
-    "common": ("#f8f4ac", "#fee726", "#fee726", 0.22, 0.55),
-    "scientific": ("#fcf1ae", "#e9d838", "#e9d838", 0.28, 0.30),
-    "encounter": ("#fac6cc", "#d26e91", "#8e3a57", 0.45),      # overridden per tier
+# THE HIGHLIGHT IS THE LETTERFORM CUT IN HALF, NOT A GRADIENT. Reading the modal
+# interior colour ROW BY ROW down a genuine glyph shows one flat tone, a single hard
+# boundary, then a second flat tone -- no ramp anywhere:
+#   'Pine'        #f8f4ac for rows 2-29 of 47, then #fde725 from row 30 (split 0.64)
+#   'Pinus spp.'  #fff7bd for rows 2-17 of 58, then #e9e046 from row 18 (split 0.31)
+# A ramp was wrong twice over: it put intermediate tones through the middle of every
+# stroke, and it made the boundary soft where the deck's is a clean edge. Both tones are
+# eyedropped from the card, not mixed.
+#   (upper tone, lower tone, where the cut falls down the ink box)
+SPLIT = {
+    "common": ("#f8f4ac", "#fde725", 0.64),
+    "scientific": ("#fff7bd", "#e9e046", 0.39),  # 0.39 renders AS 0.32: the weight stroke extends the mask box above the glyph
 }
 
 # EACH RARITY TIER HAS ITS OWN INK, which one card could not have shown. Pine is Rare, so
@@ -116,20 +117,18 @@ GRADIENT = {
 # tight text band on all 45 shipped fronts separates them: Common is a dark teal under a
 # pale blue highlight, Uncommon cream over mauve, Rare the familiar pink, Epic blue under
 # lavender. All four sit at x 428, which is the slot already measured.
-# (top tone, mid tone, bottom tone, OUTLINE, hold)
+# (upper tone, lower tone, split, OUTLINE) -- the same cut as SPLIT above.
 #
-# THE TIER COLOUR IS THE OUTLINE, NOT THE BODY, and reading it the other way round is why
-# a generated "Common" came out a solid dark teal beside a genuine one that reads pale.
-# Eroding the glyph mask separates the two populations: the INTERIOR of a genuine Rare is
-# #ffc3d1 (pale pink) and only its EDGE is #c865b2, Uncommon is cream inside and mauve at
-# the edge, and Epic inverts the usual relationship entirely -- a blue body inside a LIGHT
-# lavender outline. Sampling the whole glyph at once blends the two and reports the
-# darker one, which is the mistake the first version made.
+# THE TIER COLOUR IS THE OUTLINE, NOT THE BODY. Eroding the glyph separates them: a
+# genuine Rare is pale pink inside with only #c865b2 at its edge, Uncommon is cream in a
+# mauve edge, and Epic inverts the relation with a blue body in a LIGHT lavender outline.
+# Sampling a whole glyph blends the two and reports the darker, which is why a generated
+# "Common" came out solid teal beside a genuine one that reads pale.
 RARITY_TONES = {
-    "Common":   ("#f0ecf8", "#dfe7f0", "#9db6c6", 0.35, 0.55, "#0d446c"),
-    "Uncommon": ("#ffeac9", "#f8f6b0", "#e8d79a", 0.30, 0.45, "#c186c1"),
-    "Rare":     ("#ffd9e2", "#ffc3d1", "#f0a8bd", 0.30, 0.45, "#c865b2"),
-    "Epic":     ("#9bdcf8", "#2aa6e0", "#0393d7", 0.35, 0.45, "#cbb6ff"),
+    "Common":   ("#eae9ff", "#c8cce2", 0.55, "#034c65"),
+    "Uncommon": ("#ffedc5", "#f9f2ae", 0.30, "#b770d1"),
+    "Rare":     ("#ffd0dd", "#ffc3cf", 0.50, "#c865b2"),
+    "Epic":     ("#b8e3ff", "#0393d7", 0.30, "#05506f"),
 }
 
 # HORIZONTAL STRETCH, and this is the single correction behind four of the complaints.
@@ -181,7 +180,7 @@ TEXT_SLOTS = {
     # measured off Pine #41 with the rails masked -- common 54px tall, scientific 46,
     # encounter 35, each less the outline the font does not draw. The earlier 70/62/46
     # were width-matched and therefore all three too tall.
-    "common":     ("common",     68,  73.2,  125.0, "#fee726", "#696028"),
+    "common":     ("common",     68,  73.2,  125.0, "#fde725", "#695f28"),
     "number_hash": ("number",    41, 630.0,  101.1, "#efc5f4", None),
     "number":     ("number",     58, 659.1,  118.2, "#efc5f4", None),
     "scientific": ("scientific", 53,  75.3,  741.7, "#fff200", "#e9d128"),
@@ -322,38 +321,20 @@ def renderable(font_key: str, text: str) -> list[str]:
     return [ch for ch in dict.fromkeys(text) if not ch.isspace() and ch not in have]
 
 
-def gradient_fill(size: tuple[int, int], stops: tuple[str, str, str, float]) -> Image.Image:
-    """A one-pixel-wide vertical ramp stretched to `size` -- the glyph interior's tones.
+def split_fill(size: tuple[int, int], stops: tuple[str, str, float]) -> Image.Image:
+    """Two flat tones with ONE hard boundary -- the deck's actual highlight treatment.
 
-    Three stops, the middle one at a measured position, because the genuine letterforms
-    are light at the top, body colour through the middle and (on the scientific name) a
-    deeper tone at the foot. Interpolation is linear between stops and the ramp is built
-    at the ink box's own height, so it does not drift when a name is longer or shorter.
+    No interpolation: every row above the cut is the upper tone exactly, every row below
+    it the lower tone exactly. Measured row by row on the genuine cards, where the modal
+    interior colour is constant, changes once, and is then constant again.
     """
-    top, mid, bottom, at = stops[:4]
-    hold = stops[4] if len(stops) > 4 else 0.0
-    top_rgb, mid_rgb, bottom_rgb = rgb(top), rgb(mid), rgb(bottom)
-    h = max(1, size[1])
-    ramp = Image.new("RGB", (1, h))
-    px = ramp.load()
-    for y in range(h):
-        t = y / max(1, h - 1)
-        # HOLD: the genuine letterforms keep their cream FLAT across the top of the glyph
-        # and only then fall to gold -- measured on Pine, where the Latin name reads
-        # #fcf1ae / #fcf2af / #f3e676 / #e9d838 / #e9d637 / #e9d939 down six bands. A
-        # plain three-stop ramp starts falling from the very first row and is already
-        # saturated a third of the way down, which is the "highlight treatment is wrong"
-        # complaint. Everything below `hold` is the top tone unchanged.
-        if hold and t <= hold:
-            px[0, y] = top_rgb
-            continue
-        t = (t - hold) / max(1e-6, 1.0 - hold)
-        if t <= at:
-            a, b, f = top_rgb, mid_rgb, (t / at if at else 1.0)
-        else:
-            a, b, f = mid_rgb, bottom_rgb, (t - at) / max(1e-6, 1.0 - at)
-        px[0, y] = tuple(round(a[i] + (b[i] - a[i]) * f) for i in range(3))
-    return ramp.resize(size, Image.BILINEAR)
+    upper, lower, at = stops
+    w, h = max(1, size[0]), max(1, size[1])
+    cut = max(0, min(h, int(round(h * at))))
+    im = Image.new("RGB", (w, h), rgb(lower))
+    if cut:
+        im.paste(Image.new("RGB", (w, cut), rgb(upper)), (0, 0))
+    return im
 
 
 def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
@@ -403,7 +384,7 @@ def text_layer(font: ImageFont.FreeTypeFont, text: str, fill: str,
     if stops:
         ink = body_mask.getbbox()
         if ink:
-            ramp = gradient_fill((ink[2] - ink[0], ink[3] - ink[1]), stops)
+            ramp = split_fill((ink[2] - ink[0], ink[3] - ink[1]), stops)
             sheet = Image.new("RGB", box, rgb(fill))
             sheet.paste(ramp, (ink[0], ink[1]))
             layer.paste(sheet, (0, 0), body_mask)
@@ -450,12 +431,12 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
         return
 
     font = ImageFont.truetype(str(FONTS[font_key]), round(size))
-    stops = GRADIENT.get(slot)
+    stops = SPLIT.get(slot)
     if slot == "encounter":
         tier = RARITY_TONES.get(text.strip().title())
         if tier:
-            stops = tier[:5]
-            fill, shadow = tier[1], tier[5]
+            stops = tier[:3]
+            fill, shadow = tier[1], tier[3]
     layer, bx, by = text_layer(font, text, fill, shadow, STROKE.get(slot, 0),
                                stops, STRETCH.get(slot, 1.0), WEIGHT.get(slot, 0))
 
