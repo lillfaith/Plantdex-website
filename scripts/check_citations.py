@@ -31,6 +31,18 @@ Six refusals, each with a control in --self-test:
      used it" becoming "it works" — that the whole three-way standing exists to stop.
   6. Any source marked `verified`, or any claim marked `approved`, at this stage. Both
      mirror constraints 0010 already carries.
+  7. A quote that does not NAME THE SPECIES. Found by reading the rendered review page:
+     two drafts quoted "The most frequently used herbs were Zataria multiflora" and "was
+     identified as the most frequently cited species" -- both verbatim, both from passages
+     that do mention chamomile, and NEITHER QUOTE SAYS SO. A reader checking the claim
+     against the quote alone cannot tell which plant it is about.
+
+WHAT THIS CHECKER STRUCTURALLY CANNOT DO, AND THE REASON HUMAN REVIEW IS NOT OPTIONAL.
+It verifies PROVENANCE -- this sentence came from that document -- and it cannot verify
+ENTAILMENT: that the sentence actually supports the claim written beside it. A perfectly
+quoted passage can be attached to a body that overstates it, inverts it, or describes a
+different finding in the same paper, and every check here would pass. That judgement is
+the reviewer's, and no amount of machine checking moves it.
 
     python3 scripts/check_citations.py evidence/out/x.json drafts/x.json
     python3 scripts/check_citations.py --self-test
@@ -135,6 +147,16 @@ def check(retrieved: dict, draft: dict) -> dict:
             problems.append(cid)
             continue
 
+        # (7) The quote has to name the plant it is about.
+        key = draft["species_key"]
+        genus, epithet = key.split()
+        names = (key, f"{genus[0]}. {epithet}", f"{genus[0].upper()}. {epithet}")
+        if not any(n.lower() in quote.lower() for n in names):
+            fail(claim, "the quote does not name the species; a reader checking the claim "
+                        "against this quote alone cannot tell which plant it is about")
+            problems.append(cid)
+            continue
+
         ceiling = GROUP_CEILING.get(group_of.get(passage["source_id"], ""), set(STANDINGS))
         if claim["standing"] not in ceiling:
             fail(claim, f"standing {claim['standing']!r} exceeds what a "
@@ -195,14 +217,14 @@ def _one(claim: dict) -> dict:
 
 
 def self_test() -> int:
-    good_quote = "used as an infusion in European folk medicine"
+    good_quote = "Matricaria chamomilla is used as an infusion in European folk medicine"
     base = {"claim_id": "c1", "kind": "traditional-use", "standing": "traditional",
             "body": "Used traditionally as an infusion.", "quote": good_quote,
             "passage_id": "pmc-1#abstract-0", "source_ids": ["pmc-1"]}
 
     checks = [
         (_one(dict(base))["ok"] is True, "a correctly cited claim passes"),
-        (_one({**base, "quote": "used as a tincture in European folk medicine"})["ok"] is False,
+        (_one({**base, "quote": "Matricaria chamomilla is used as a tincture in European folk"})["ok"] is False,
          "CONTROL 1: a quote that is not verbatim is refused"),
         (_one({**base, "passage_id": "pmc-9#abstract-0"})["ok"] is False,
          "CONTROL 2: an unretrieved passage_id is refused"),
@@ -212,10 +234,14 @@ def self_test() -> int:
          "CONTROL 5: an ethnobotany passage cannot support a clinical standing"),
         (_one({"claim_id": "c2", "kind": "studied-property", "standing": "laboratory",
                "body": "Antioxidant activity has been measured in vitro.",
-               "quote": "showed antioxidant activity in vitro",
+               "quote": "An extract of Matricaria chamomilla showed antioxidant activity in vitro",
                "passage_id": "pmc-2#abstract-0", "source_ids": ["pmc-2"]})["ok"] is True,
          "...while a laboratory-study passage can support a laboratory standing"),
         (_one({**base, "quote": ""})["ok"] is False, "an empty quote is refused"),
+        (_one({**base, "quote": "used as an infusion in European folk medicine"})["ok"] is False,
+         "CONTROL 7: a verbatim quote that does not NAME the species is refused"),
+        (_one({**base, "quote": "Matricaria chamomilla is used as an infusion"})["ok"] is True,
+         "...and one that names it in full is kept"),
         (_one({**base, "kind": "invented"})["ok"] is False, "an unknown kind is refused"),
     ]
 
