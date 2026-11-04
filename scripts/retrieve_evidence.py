@@ -216,7 +216,13 @@ def passages_for(row: dict, species: str) -> list[dict]:
     bodies: list[tuple[str, str]] = []
     abstract = (row.get("abstractText") or "").strip()
     if abstract:
-        bodies.append(("abstract", re.sub(r"\s+", " ", abstract)))
+        # THE ABSTRACT CARRIES MARKUP TOO, and only the full text was being stripped.
+        # Europe PMC returns `<i>Matricaria chamomilla</i>` and `<h4>Conclusions</h4>`
+        # inside abstractText, so every quote drawn from an abstract arrived with tags
+        # embedded -- and because the citation check requires a VERBATIM substring, the
+        # tags would have had to survive into the card to pass it. Caught by reading the
+        # retrieved passages rather than by any test.
+        bodies.append(("abstract", strip_xml(abstract.encode("utf-8"))))
 
     if row.get("pmcid") and row.get("isOpenAccess") == "Y":
         xml = get(f"{EPMC}/{row.get('source', 'MED')}/{row['pmcid']}/fullTextXML", raw=True)
@@ -345,6 +351,15 @@ def self_test() -> int:
     row = {"abstractText": "The genus is large. " + "Filler sentence about soil. " * 12}
     checks.append((passages_for(row, "Matricaria chamomilla") == [],
                    "CONTROL: a passage that does not name the species is refused"))
+    # CONTROL: an abstract's own markup must not survive into a quotable passage.
+    marked = {"abstractText": "<i>Matricaria chamomilla</i> L. is used widely. "
+              "<h4>Methods</h4> Its dried flower heads are prepared as an infusion across "
+              "European folk traditions, and the practice is recorded in regional surveys."}
+    marked_out = passages_for(marked, "Matricaria chamomilla")
+    checks.append((bool(marked_out) and "<i>" not in marked_out[0]["text"]
+                   and "<h4>" not in marked_out[0]["text"],
+                   "CONTROL: markup in an ABSTRACT is stripped, not just in full text"))
+
     named = ("Matricaria chamomilla is widely used. "
              "Its dried flower heads are prepared as an infusion across European folk "
              "traditions, and the practice is recorded in several regional surveys. "

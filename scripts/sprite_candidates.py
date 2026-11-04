@@ -473,14 +473,44 @@ def ink_box(sprite: dict) -> tuple[int, int, int, int]:
 def measure(sprite: dict) -> dict:
     """Only what a machine can actually decide. Recognizability is not on this list."""
     problems = auditor.audit(sprite)
+    bx, by, bw, bh = ink_box(sprite)
     grid = render_frame(sprite, 0)
     blobs = auditor.pieces(grid)
     palette_keys = set(sprite["palette"])
     used = {c for row in grid for c in row if c != " "}
     bx, by, bw, bh = ink_box(sprite)
+    fx, fy, fw, fh = face_box(
+        next(part for part in sprite["parts"] if part["name"] in ("head", "cone"))["rows"]
+    )
+    face_part = next(part for part in sprite["parts"] if part["name"] in ("head", "cone"))
     return {
         "herb_id": sprite["herbId"],
         "method": sprite["method"],
+        # ── REQUIREMENT 6: ANCHOR METADATA, SO A LATER SYSTEM CAN POSE THIS ──────
+        #
+        # A garden tile, a profile sidekick and anything that one day animates a card need
+        # to know where the creature IS on its canvas, and a part list says what was drawn,
+        # not where it ended up once gutters and shading had their say. Same rule `_face.py`
+        # and the existing manifest's ink box already follow: MEASURE the assembled art.
+        #
+        # Deliberately NOT a battle system, and not a schema for one. These are the three
+        # facts any poser needs -- what the canvas is, where the plant sits in it, and where
+        # its face is -- keyed by a stable `species_key`. Nothing here encodes a stat, a
+        # move, a matchup or a turn order, because none of that exists.
+        "anchors": {
+            "species_key": SPECIES_KEY,
+            "canvas": {"w": SIZE[0], "h": SIZE[1]},
+            "frames": sprite["frames"],
+            "fps": sprite["fps"],
+            "frame_gutter": FRAME_GUTTER,
+            "scale": SCALE,
+            # Frame 0 only: a gesture may legitimately fling a seed off the canvas, and
+            # sizing a portrait around that shrinks the plant to make room for nothing.
+            "ink_box_frame0": {"x": bx, "y": by, "w": bw, "h": bh},
+            "face_box": {"x": face_part["origin"][0] + fx, "y": face_part["origin"][1] + fy,
+                         "w": fw, "h": fh},
+            "ground_y": by + bh - 1,
+        },
         "frames": sprite["frames"],
         "face_audit": "pass" if not problems else f"{len(problems)} problem(s)",
         "face_audit_detail": problems,
