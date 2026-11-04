@@ -27,7 +27,7 @@ const MIGRATION = readFileSync(
 function pythonList(name: string): string[] {
   const match = new RegExp(`^${name} = \\[([\\s\\S]*?)\\]`, 'm').exec(CHECKER);
   if (!match) throw new Error(`${name} not found in check_citations.py`);
-  return [...match[1].matchAll(/"([^"]+)"/g)].map((one) => one[1]!);
+  return [...match[1]!.matchAll(/"([^"]+)"/g)].map((one) => one[1]!);
 }
 
 describe('the five pipeline states', () => {
