@@ -174,10 +174,20 @@ def harvest(name: str, licenses: tuple[str, ...], want: int,
     }
 
 
-def download(photos: list[dict], out: pathlib.Path) -> None:
+def download(photos: list[dict], out: pathlib.Path, prefer: str = "original") -> None:
+    """Fetch each photograph, preferring `prefer` and falling back down the ladder.
+
+    THE ORDER MATTERS AND USED TO BE WRONG. `large` was tried first, so every photograph
+    arrived at 1024px on its long edge however big the original was. The card's art window
+    is 593px wide and a subject occupying a third of a 1024px frame is ~300px, which then
+    has to be UPSCALED about 1.7x to fill the window -- soft, on the one element of the card
+    a buyer looks at closest. The chosen chamomile candidate is 1536x2048 at source and was
+    downloaded at 768x1024 for exactly this reason.
+    """
     out.mkdir(parents=True, exist_ok=True)
+    ladder = [prefer] + [s for s in ("original", "large", "medium") if s != prefer]
     for photo in photos:
-        for size in ("large", "medium", "original"):
+        for size in ladder:
             url = (photo["urls"] or {}).get(size)
             if not url:
                 continue
@@ -219,6 +229,9 @@ def main() -> int:
     parser.add_argument("species", nargs="*")
     parser.add_argument("--out", default="evidence/photos")
     parser.add_argument("--want", type=int, default=32)
+    parser.add_argument("--size", default="large",
+                        choices=("original", "large", "medium"),
+                        help="which rendition to download. `large` is 1024px on the long\n                              edge; `original` is whatever the photographer uploaded and is\n                              what a card needs -- the art window is 593px wide and a\n                              subject occupying a third of a 1024px frame has to be\n                              UPSCALED to fill it.")
     parser.add_argument("--min-edge", type=int, default=900,
                         help="skip photos whose longest original edge is smaller")
     parser.add_argument("--licenses", default=",".join(DEFAULT_LICENSES))
@@ -237,7 +250,7 @@ def main() -> int:
         key = name.lower().replace(" ", "_")
         folder = out / key
         if result["photos"]:
-            download(result["photos"], folder)
+            download(result["photos"], folder, args.size)
         record = {
             "species": name,
             "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

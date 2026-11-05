@@ -196,20 +196,43 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
     # each; a specimen shows one or two of several thousand. The deck's cards are
     # specimens, so the biggest reproductive structure in the frame should be a real
     # fraction of it.
-    heads = cv2.morphologyEx(m["yellow"].astype(np.uint8), cv2.MORPH_OPEN,
-                             np.ones((5, 5), np.uint8))
+    # MEASURED ON THE SATURATED DISC, NOT ON ANYTHING YELLOWISH. The loose yellow mask
+    # includes a yellow-green receptacle, so it scored a flower photographed from BEHIND as
+    # highly as one facing the camera -- and the disc is the single most recognisable thing
+    # about a chamomile. The largest saturated-gold region separates the three failures
+    # cleanly: a bloom facing the viewer measures 7.7% of frame, one facing away 0.77%, and
+    # a spray of tiny flowers 0.09%.
+    hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+    Hh, Ss, Vv = hsv[:, :, 0].astype(int), hsv[:, :, 1].astype(int), hsv[:, :, 2].astype(int)
+    gold = (Hh >= 18) & (Hh <= 32) & (Ss > 130) & (Vv > 120)
+    heads = cv2.morphologyEx(gold.astype(np.uint8), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
     nh, _, hstats, _ = cv2.connectedComponentsWithStats(heads, 8)
     if nh > 1:
         areas = np.sort(hstats[1:, cv2.CC_STAT_AREA])[::-1]
         big = float(areas[0] / (h * w))
         count = int((areas >= areas[0] * 0.25).sum())
-        pts["specimen_scale"] = round(min(1.0, big / 0.045) * 16, 1)
-        out["measured_heads"] = {"largest_frac": round(big, 4), "comparable_heads": count}
+        pts["specimen_scale"] = round(min(1.0, big / 0.05) * 18, 1)
+        # ORIENTATION. A disc facing the viewer is deeply saturated; the pale green-yellow
+        # receptacle on the back of a flower is not. Median saturation inside the gold
+        # separates them: 249 on a bloom facing the camera, 153 on one facing away.
+        sat = float(np.median(Ss[gold])) if gold.sum() > 50 else 0.0
+        pts["disc_facing"] = round(max(0.0, min(1.0, (sat - 140) / 100)) * 12, 1)
+        out["measured_heads"] = {"largest_disc_frac": round(big, 4),
+                                 "comparable_heads": count, "disc_saturation": round(sat, 1)}
+        if sat < 180:
+            out["flags"].append(
+                f"flower may be facing away: disc saturation {sat:.0f} suggests a receptacle "
+                f"rather than the open yellow centre")
+        if big < 0.01:
+            out["flags"].append(
+                f"largest flower head is {100*big:.2f}% of the frame: too small to read as "
+                f"a specimen on a card")
         if count > 8:
             out["flags"].append(
                 f"{count} similarly sized flower heads: reads as a colony, not a specimen")
     else:
-        pts["specimen_scale"] = 0.0
+        pts["specimen_scale"] = pts["disc_facing"] = 0.0
+        out["flags"].append("no saturated flower disc found")
     pts["identification"] = 6.0 if (meta.get("identification_agreements") or 0) >= 2 else 3.0
     if (meta.get("identification_agreements") or 0) < 2:
         out["flags"].append("only one agreeing identification; research grade is not proof")
@@ -249,6 +272,63 @@ def compose_score(front: Image.Image, prof: dict) -> tuple[float, dict]:
     }
     return round(sum(pts.values()), 1), {"placed_fill": round(fill, 3),
                                          "placed_centroid_x": round(cx, 3), "points": pts}
+
+
+def stem_support(cut: Image.Image, band: float = 0.15) -> dict:
+    """Is there enough stem at the foot of the cutout to crop against the bottom edge?
+
+    A bottom crop only reads as ROOTED when something narrow continues to the cut. Crop a
+    photograph that ends at the flower and the plant does not look planted, it looks
+    beheaded -- so this is measured rather than assumed, and the caller is expected to
+    refuse rather than force it.
+    """
+    a = np.array(cut.getchannel("A")) > 127
+    h, w = a.shape
+    foot = a[int(h * (1 - band)):]
+    xs = np.nonzero(foot.any(axis=0))[0]
+    return {"foot_ink": round(float(foot.mean()), 4),
+            "foot_width_frac": round((len(xs) and (xs.max() - xs.min() + 1) / w) or 0.0, 3),
+            "has_stem": bool(foot.mean() > 0.01)}
+
+
+def place_rooted(cut: Image.Image, prof: dict, overshoot: float = 1.06
+                 ) -> tuple[Image.Image, dict]:
+    """Seat the plant so its stem runs OFF the bottom edge, the way the deck does.
+
+    44 of the 45 printed cards crop at the bottom. `place_like_the_deck` seats the subject
+    so its lowest pixel lands exactly ON the bottom edge, which is a different thing: the
+    plant stops at the line instead of passing through it, and reads as floating in the
+    window. Here the subject is scaled slightly taller than the window and seated at the
+    top, so the FLOWER keeps its margin and only the stem is cut.
+
+    The guards are what keep that from becoming a distortion: width is capped so the sides
+    are never cropped (the deck crops them on fewer than one card in four), the top margin
+    is held so petals cannot be clipped, and nothing is stretched -- one scale, both axes.
+    """
+    box = cut.getbbox()
+    if box is None:
+        raise Unplaceable("the cutout is empty")
+    cut = cut.crop(box)
+    iw, ih = cut.size
+    if max(iw, ih) < MIN_CUTOUT_EDGE:
+        raise Unplaceable(f"cutout is only {iw}x{ih}px; segmentation kept almost nothing")
+    x0, y0, x1, y1 = R.SLOT_PHOTO
+    W, H = x1 - x0, y1 - y0
+    top_margin = round(H * 0.02)
+    k_w = (prof["bbox_w_frac"]["p90"] * W) / iw
+    k_h = (overshoot * H) / ih
+    k = min(k_w, k_h)
+    if k > MAX_UPSCALE:
+        raise Unplaceable(f"would need {k:.1f}x upscaling; the photograph is too small")
+    nw, nh = max(1, round(iw * k)), max(1, round(ih * k))
+    art = cut.resize((nw, nh), Image.LANCZOS)
+    left = round(prof["centroid_x"]["median"] * W - nw / 2)
+    top = top_margin if nh + top_margin > H else H - nh
+    return art, {"scale": round(k, 4), "size": [nw, nh], "offset": [left, top],
+                 "rooted": True, "crops_bottom": bool(top + nh > H),
+                 "bottom_overflow_px": max(0, top + nh - H),
+                 "crops_sides": bool(left < 0 or left + nw > W),
+                 "top_margin_px": top}
 
 
 def place_like_the_deck(cut: Image.Image, prof: dict) -> tuple[Image.Image, dict]:
@@ -393,6 +473,22 @@ def main() -> int:
                   f"(solidity {solidity:.2f})")
             continue
         s["cutout_solidity"] = round(solidity, 3)
+        # DID SEGMENTATION KEEP THE STEMS? A blurred stem is low-contrast and matting drops
+        # it, so a cutout can be clean and still be a flower head floating with nothing
+        # holding it up. Comparing the green surviving in the cutout against the green in
+        # the source catches exactly that: one candidate kept 0.1% of its foliage.
+        src_bgr = cv2.imread(str(src))
+        cut_bgr = cv2.cvtColor(np.array(cut.convert("RGB")), cv2.COLOR_RGB2BGR)
+        src_green = masks(src_bgr)["green"].sum() * (alpha.size / max(1, src_bgr[:, :, 0].size))
+        kept_green = (masks(cut_bgr)["green"] & alpha).sum()
+        retention = float(kept_green / max(1.0, src_green))
+        s["green_retention"] = round(retention, 3)
+        s["points"]["structure_retention"] = round(min(1.0, retention / 0.25) * 14, 1)
+        s["score"] = round(s["score"] + s["points"]["structure_retention"], 1)
+        if retention < 0.10:
+            s["flags"].append(
+                f"segmentation kept only {100*retention:.0f}% of the foliage: stems and "
+                f"leaves have been cut away")
         # A PLANT SILHOUETTE IS OPEN; A COLONY IS A SLAB. Across the 45 printed cards the
         # subject fills only ~39% of its own bounding box -- light passes between leaves and
         # around petals. A photograph of a dense stand fills 80-100% of its box and still
@@ -404,7 +500,21 @@ def main() -> int:
             max(0.0, 1 - abs(solidity - want) / want) * 18, 1)
         s["score"] = round(s["score"] + s["points"]["silhouette_openness"], 1)
         try:
-            art, plan = place_like_the_deck(cut, prof)
+            # ROOTED WHERE THE PHOTOGRAPH SUPPORTS IT, SEATED WHERE IT DOES NOT. A bottom
+            # crop only reads as planted when something narrow continues through the cut;
+            # crop a photograph that ends at the flower and it reads as beheaded. So the
+            # stem is measured and the composition follows the photograph rather than the
+            # photograph being forced into the composition.
+            support = stem_support(cut)
+            s["stem_support"] = support
+            if support["has_stem"]:
+                art, plan = place_rooted(cut, prof)
+            else:
+                art, plan = place_like_the_deck(cut, prof)
+                s["flags"].append(
+                    "no stem reaches the foot of the cutout, so the plant is seated on the "
+                    "bottom edge rather than cropped through it; it will read as standing "
+                    "in the window rather than rooted")
         except Unplaceable as exc:
             s["reject"].append(f"unplaceable after segmentation: {exc}")
             print(f"   {s['photo_id']}: {exc}")
