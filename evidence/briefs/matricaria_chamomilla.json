@@ -1,0 +1,37 @@
+{
+  "species_key": "matricaria_chamomilla",
+  "card": null,
+  "edited": true,
+  "family_prior": "Asteraceae",
+  "kin_cards": [
+    "taraxacum-officinale",
+    "solidago-canadensis",
+    "ambrosia-artemisiifolia",
+    "cichorium-intybus",
+    "arctium-lappa",
+    "achillea-millefolium",
+    "lactuca-serriola"
+  ],
+  "derived_from": "median structure shares across 7 Asteraceae cards",
+  "card_shares": {
+    "flower_yellow": 0.0053,
+    "flower_white": 0.0859,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.1169
+  },
+  "mandatory": [
+    "flower_white",
+    "flower_yellow"
+  ],
+  "preferred": [
+    "foliage"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  },
+  "edited_by": "human review, 2026-11-05",
+  "edited_why": "The Asteraceae family prior asked for foliage + white flower. Chamomile's identifier is the combination of WHITE RAYS around a LARGE YELLOW DISC, and the disc is what distinguishes it at a glance -- a candidate showing the flower from behind hides it. Foliage is feathery and fine and is often a thin stem in a good close-up, so it is preferred rather than required. Stem presence is enforced separately by stem_support, which is a shape question rather than a colour one."
+}

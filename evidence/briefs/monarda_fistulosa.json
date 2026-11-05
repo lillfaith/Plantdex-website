@@ -1,0 +1,25 @@
+{
+  "species_key": "monarda_fistulosa",
+  "card": "monarda-fistulosa",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0377,
+    "flower_white": 0.0899,
+    "berry_dark": 0.0161,
+    "berry_red": 0.012,
+    "foliage": 0.303
+  },
+  "mandatory": [
+    "foliage",
+    "flower_white"
+  ],
+  "preferred": [
+    "flower_yellow"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "species_key": "lamium_purpureum",
+  "card": "lamium-purpureum",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0,
+    "flower_white": 0.0355,
+    "berry_dark": 0.0078,
+    "berry_red": 0.0057,
+    "foliage": 0.5465
+  },
+  "mandatory": [
+    "foliage"
+  ],
+  "preferred": [
+    "flower_white"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

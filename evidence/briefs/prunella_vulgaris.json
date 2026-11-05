@@ -1,0 +1,26 @@
+{
+  "species_key": "prunella_vulgaris",
+  "card": "prunella-vulgaris",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0,
+    "flower_white": 0.2321,
+    "berry_dark": 0.069,
+    "berry_red": 0.0275,
+    "foliage": 0.1764
+  },
+  "mandatory": [
+    "flower_white",
+    "foliage"
+  ],
+  "preferred": [
+    "berry_dark",
+    "berry_red"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

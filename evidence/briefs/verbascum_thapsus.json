@@ -1,0 +1,25 @@
+{
+  "species_key": "verbascum_thapsus",
+  "card": "verbascum-thapsus",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0804,
+    "flower_white": 0.0271,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.8315
+  },
+  "mandatory": [
+    "foliage",
+    "flower_yellow"
+  ],
+  "preferred": [
+    "flower_white"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

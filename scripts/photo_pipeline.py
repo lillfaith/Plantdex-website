@@ -21,6 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import card_art                                     # noqa: E402  (segmentation lives there)
 import segment_plant                                # noqa: E402  (BiRefNet, colour fallback)
+import visual_brief                                 # noqa: E402  (species requirements)
 import render_generated_card as R                   # noqa: E402  (template + slot geometry)
 
 STYLE = ROOT / "docs" / "plantdex-photo-style.json"
@@ -490,6 +491,36 @@ def main() -> int:
     pdir = ROOT / "evidence" / "photos" / a.species
     meta = json.loads((pdir / "photos.json").read_text())
     expected = (meta.get("taxon") or {}).get("name")
+    # THE SPECIES' OWN BRIEF, loaded before anything is ranked. Derived from its printed card
+    # where the deck has one, otherwise from the median of its family's cards, and an edited
+    # brief is used verbatim. Nothing universal: a brief may require no flower at all.
+    fams = json.loads((ROOT / "evidence" / "card-families.json").read_text())
+    herbs = json.loads((ROOT / "src" / "data" / "herbs.json").read_text())["herbs"]
+    card_id = next((h["id"] for h in herbs if h["id"].replace("-", "_") == a.species), None)
+    if card_id is None:
+        # RESOLVE BY GENUS. The deck names some cards at genus level -- Elderberry is
+        # `sambucus-spp` -- so an exact key match misses them and the species silently gets
+        # no brief at all, which is the worst outcome: it reverts to the species-blind
+        # ranking that picked foliage for a Dandelion. A genus card is the right reference
+        # for its own genus, so it is used when there is no species-level card.
+        genus = a.species.split("_")[0].lower()
+        card_id = next((h["id"] for h in herbs
+                        if h["scientificName"].split()[0].lower() == genus), None)
+        if card_id:
+            print(f"brief: no card for {a.species}; using the genus card {card_id}")
+    family = None
+    retrieved = ROOT / "evidence" / "retrieved" / f"{a.species}.json"
+    if retrieved.exists():
+        family = ((json.loads(retrieved.read_text()).get("identity") or {}).get("family"))
+    if family is None and card_id:
+        family = fams.get(card_id)
+    brief = visual_brief.load(a.species, card_id, family)
+    if brief:
+        print(f"brief: mandatory={brief['mandatory']} preferred={brief['preferred']}"
+              + (f"  [family prior: {brief['family_prior']}]" if brief.get("family_prior") else "")
+              + ("  [edited]" if brief.get("edited") else ""))
+    else:
+        print("brief: NONE -- no card and no family match; nothing species-specific is enforced")
     out = pathlib.Path(a.out) if a.out else ROOT / "evidence" / "candidates" / a.species
     out.mkdir(parents=True, exist_ok=True)
 
@@ -546,6 +577,24 @@ def main() -> int:
             print(f"   {s['photo_id']}: rejected, hand survives the cutout "
                   f"({100*skin_left:.1f}%)")
             continue
+        # DOES THE ISOLATED PLANT CARRY WHAT THE BRIEF REQUIRES? Measured on the CUTOUT,
+        # not the source: a structure that did not survive segmentation is not on the card,
+        # whatever the photograph contained. A candidate missing a mandatory structure is
+        # rejected however sharp and however cleanly it cut.
+        if brief:
+            sh = visual_brief.structures(cut_bgr0, alpha)
+            verdict_b = visual_brief.check(brief, sh)
+            s["brief_structures"] = sh
+            s["brief_check"] = verdict_b
+            if not verdict_b["ok"]:
+                s["reject"].append(
+                    "missing structures the species' brief requires: "
+                    + ", ".join(verdict_b["missing_mandatory"]))
+                print(f"   {s['photo_id']}: rejected, lacks "
+                      f"{verdict_b['missing_mandatory']}")
+                continue
+            s["points"]["brief_preferred"] = round(verdict_b["preferred_score"] * 8, 1)
+            s["score"] = round(s["score"] + s["points"]["brief_preferred"], 1)
         # DID SEGMENTATION KEEP THE STEMS? A blurred stem is low-contrast and matting drops
         # it, so a cutout can be clean and still be a flower head floating with nothing
         # holding it up. Comparing the green surviving in the cutout against the green in

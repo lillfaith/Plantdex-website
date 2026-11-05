@@ -1,0 +1,24 @@
+{
+  "species_key": "morus_spp",
+  "card": "morus-spp",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0065,
+    "flower_white": 0.0647,
+    "berry_dark": 0.0135,
+    "berry_red": 0.0128,
+    "foliage": 0.5513
+  },
+  "mandatory": [
+    "foliage"
+  ],
+  "preferred": [
+    "flower_white"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "species_key": "alliaria_petiolata",
+  "card": "alliaria-petiolata",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0581,
+    "flower_white": 0.2449,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.2141
+  },
+  "mandatory": [
+    "flower_white",
+    "foliage"
+  ],
+  "preferred": [
+    "flower_yellow"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

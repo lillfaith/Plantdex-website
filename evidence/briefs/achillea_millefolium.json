@@ -1,0 +1,22 @@
+{
+  "species_key": "achillea_millefolium",
+  "card": "achillea-millefolium",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0053,
+    "flower_white": 0.6678,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.0044
+  },
+  "mandatory": [
+    "flower_white"
+  ],
+  "preferred": [],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "species_key": "rhus_spp",
+  "card": "rhus-spp",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0,
+    "flower_white": 0.1458,
+    "berry_dark": 0.0539,
+    "berry_red": 0.274,
+    "foliage": 0.5682
+  },
+  "mandatory": [
+    "foliage",
+    "berry_red",
+    "flower_white"
+  ],
+  "preferred": [
+    "berry_dark"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

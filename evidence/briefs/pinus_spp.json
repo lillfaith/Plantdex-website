@@ -1,0 +1,24 @@
+{
+  "species_key": "pinus_spp",
+  "card": "pinus-spp",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0,
+    "flower_white": 0.1152,
+    "berry_dark": 0.1054,
+    "berry_red": 0.0,
+    "foliage": 0.1651
+  },
+  "mandatory": [
+    "foliage",
+    "flower_white",
+    "berry_dark"
+  ],
+  "preferred": [],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}
