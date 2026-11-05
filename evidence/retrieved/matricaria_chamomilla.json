@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "matricaria chamomilla",
-  "retrieved_at": "2026-11-05T01:41:10+00:00",
+  "retrieved_at": "2026-11-05T03:22:12+00:00",
   "identity": {
     "queried_name": "Matricaria chamomilla",
     "match_type": "EXACT",
@@ -112,8 +112,8 @@
         "pmid-42966239",
         "pmc-13511730",
         "pmid-42184206",
-        "pmid-42827196",
         "pmc-12941530",
+        "pmid-42827196",
         "pmc-13275630",
         "pmc-13610124",
         "pmc-12698723",
@@ -529,19 +529,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmid-42827196",
-        "title": "Matricaria chamomilla L. Essential Oil: The Preparation and Characterization of the Self-microemulsion Drug Delivery System, and Repair Effect in Ulcerative Colitis.",
-        "journal": "Pharmaceutical research",
-        "year": "2026",
-        "doi": "10.1007/s11095-026-04140-1",
-        "open_access": false,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/42827196/",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12941530",
         "title": "Collagen-Inducing Compounds from Chihuahuan Desert Plants for Potential Skin Bioink 3D Printing Applications: A Narrative Review.",
         "journal": "Journal of functional biomaterials",
@@ -549,6 +536,19 @@
         "doi": "10.3390/jfb17020074",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12941530",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42827196",
+        "title": "Matricaria chamomilla L. Essential Oil: The Preparation and Characterization of the Self-microemulsion Drug Delivery System, and Repair Effect in Ulcerative Colitis.",
+        "journal": "Pharmaceutical research",
+        "year": "2026",
+        "doi": "10.1007/s11095-026-04140-1",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42827196/",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -841,16 +841,16 @@
         "text": "This research examined the in vitro antibacterial, potential antioxidant, and antidiabetic activities of Matricaria chamomilla extract (MCE), Anastatica hierochuntica extract (AHE), and their combination against selected foodborne pathogens. Agar well diffusion, minimum inhibitory concentration (MIC), and minimum bactericidal/fungicidal concentration (MBC/MFC), as well as time-kill effect experiments, were applied to evaluate the antimicrobial characteristics."
       },
       {
-        "passage_id": "pmid-42827196#abstract-1",
-        "source_id": "pmid-42827196",
-        "located_in": "abstract",
-        "text": "Despite its anti-inflammatory properties, there are few reports on the Matricaria chamomilla L. essential oil (MEO) for the repair of UC. This study aims to extract natural MEO, prepare the self-microemulsion drug delivery system (SMEDDS) to improve the solubility and stability of MEO, and investigate its repair effects on UC."
-      },
-      {
         "passage_id": "pmc-12941530#abstract-3",
         "source_id": "pmc-12941530",
         "located_in": "abstract",
         "text": "Several species, among them Larrea tridentata , Opuntia spp., Aloe spp., Matricaria chamomilla , Simmondsia chinensis , Prosopis glandulosa , and Artemisia ludoviciana , repeatedly demonstrated the presence of bioactive metabolites such as lignans, flavonoids, phenolic acids, terpenoids, and polysaccharides. These compounds support pathways central to extracellular matrix repair, including stimulation of fibroblast migration and collagen I/III expression, modulation of inflammatory cascades, antioxidant protection, and stabilization of ECM structures."
+      },
+      {
+        "passage_id": "pmid-42827196#abstract-1",
+        "source_id": "pmid-42827196",
+        "located_in": "abstract",
+        "text": "Despite its anti-inflammatory properties, there are few reports on the Matricaria chamomilla L. essential oil (MEO) for the repair of UC. This study aims to extract natural MEO, prepare the self-microemulsion drug delivery system (SMEDDS) to improve the solubility and stability of MEO, and investigate its repair effects on UC."
       },
       {
         "passage_id": "pmc-13275630#abstract-3",

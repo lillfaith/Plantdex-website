@@ -1,6 +1,6 @@
 {
   "species": "Verbascum thapsus",
-  "fetched_at": "2026-11-05T01:45:26+00:00",
+  "fetched_at": "2026-11-05T03:26:45+00:00",
   "source": "iNaturalist",
   "licenses_requested": [
     "cc0"
@@ -608,168 +608,6 @@
       "downloaded_size": "original"
     },
     {
-      "photo_id": 677433012,
-      "observation_id": 370799490,
-      "observation_url": "https://www.inaturalist.org/observations/370799490",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-11",
-      "place": "Stillwater River, Englewood, OH, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/677433012/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/677433012/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/677433012/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Verbascum thapsus",
-      "taxon_id": 59029,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-677433012.jpg",
-      "bytes": 1129385,
-      "downloaded_size": "original"
-    },
-    {
-      "photo_id": 677433052,
-      "observation_id": 370799490,
-      "observation_url": "https://www.inaturalist.org/observations/370799490",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-11",
-      "place": "Stillwater River, Englewood, OH, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/677433052/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/677433052/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/677433052/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Verbascum thapsus",
-      "taxon_id": 59029,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-677433052.jpg",
-      "bytes": 1691650,
-      "downloaded_size": "original"
-    },
-    {
-      "photo_id": 686160646,
-      "observation_id": 375345182,
-      "observation_url": "https://www.inaturalist.org/observations/375345182",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-22",
-      "place": "Akron, OH, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160646/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160646/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160646/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Verbascum thapsus",
-      "taxon_id": 59029,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-686160646.jpg",
-      "bytes": 3103078,
-      "downloaded_size": "original"
-    },
-    {
-      "photo_id": 686160686,
-      "observation_id": 375345182,
-      "observation_url": "https://www.inaturalist.org/observations/375345182",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-22",
-      "place": "Akron, OH, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160686/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160686/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160686/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Verbascum thapsus",
-      "taxon_id": 59029,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-686160686.jpg",
-      "bytes": 4564184,
-      "downloaded_size": "original"
-    },
-    {
-      "photo_id": 686160666,
-      "observation_id": 375345182,
-      "observation_url": "https://www.inaturalist.org/observations/375345182",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-22",
-      "place": "Akron, OH, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160666/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160666/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/686160666/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Verbascum thapsus",
-      "taxon_id": 59029,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-686160666.jpg",
-      "bytes": 5275252,
-      "downloaded_size": "original"
-    },
-    {
-      "photo_id": 684426632,
-      "observation_id": 374450824,
-      "observation_url": "https://www.inaturalist.org/observations/374450824",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-22",
-      "place": "Jamestown Township, MI, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/684426632/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/684426632/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/684426632/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Verbascum thapsus",
-      "taxon_id": 59029,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-684426632.jpg",
-      "bytes": 3174755,
-      "downloaded_size": "original"
-    },
-    {
       "photo_id": 692219087,
       "observation_id": 378481774,
       "observation_url": "https://www.inaturalist.org/observations/378481774",
@@ -797,18 +635,18 @@
       "downloaded_size": "original"
     },
     {
-      "photo_id": 647046432,
-      "observation_id": 354714564,
-      "observation_url": "https://www.inaturalist.org/observations/354714564",
+      "photo_id": 694615366,
+      "observation_id": 379720355,
+      "observation_url": "https://www.inaturalist.org/observations/379720355",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2026-04-25",
-      "place": "Kamloops, BC, CA",
+      "observed_on": "2026-07-09",
+      "place": "Dutchess County, US-NY, US",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/647046432/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/647046432/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/647046432/medium.jpg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/694615366/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/694615366/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/694615366/medium.jpg"
       },
       "dimensions": {
         "width": 1536,
@@ -819,23 +657,185 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-647046432.jpg",
-      "bytes": 4284149,
+      "file": "inat-694615366.jpg",
+      "bytes": 1744412,
       "downloaded_size": "original"
     },
     {
-      "photo_id": 24809941,
-      "observation_id": 16484516,
-      "observation_url": "https://www.inaturalist.org/observations/16484516",
+      "photo_id": 58933235,
+      "observation_id": 37199460,
+      "observation_url": "https://www.inaturalist.org/observations/37199460",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2018-09-13",
-      "place": "CF14, Cardiff, Wales, GB",
+      "observed_on": "2020-01-02",
+      "place": "Concession Road 3, Adjala-Tosorontio, ON, CA",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24809941/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24809941/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24809941/medium.jpg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/58933235/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/58933235/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/58933235/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-58933235.jpg",
+      "bytes": 1669541,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 194361694,
+      "observation_id": 115153864,
+      "observation_url": "https://www.inaturalist.org/observations/115153864",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-04-30",
+      "place": "North Okanagan, British Columbia, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/194361694/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/194361694/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/194361694/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-194361694.jpeg",
+      "bytes": 2763804,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 194361720,
+      "observation_id": 115153864,
+      "observation_url": "https://www.inaturalist.org/observations/115153864",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-04-30",
+      "place": "North Okanagan, British Columbia, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/194361720/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/194361720/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/194361720/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-194361720.jpeg",
+      "bytes": 1999835,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 194497662,
+      "observation_id": 115226238,
+      "observation_url": "https://www.inaturalist.org/observations/115226238",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-02",
+      "place": "Kamloops, BC V1S 1X8, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/194497662/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/194497662/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/194497662/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-194497662.jpeg",
+      "bytes": 2526252,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 194531039,
+      "observation_id": 115244522,
+      "observation_url": "https://www.inaturalist.org/observations/115244522",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-02",
+      "place": "Kamloops, BC V1S 1X8, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/194531039/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/194531039/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/194531039/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-194531039.jpeg",
+      "bytes": 2240287,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 198652666,
+      "observation_id": 117614738,
+      "observation_url": "https://www.inaturalist.org/observations/117614738",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-18",
+      "place": "Kamloops, BC V2E 2E3, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/198652666/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/198652666/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/198652666/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-198652666.jpeg",
+      "bytes": 2091997,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 66526651,
+      "observation_id": 41922372,
+      "observation_url": "https://www.inaturalist.org/observations/41922372",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-04-11",
+      "place": "Worcester, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/66526651/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/66526651/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/66526651/medium.jpeg"
       },
       "dimensions": {
         "width": 2048,
@@ -846,35 +846,35 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-24809941.jpg",
-      "bytes": 887486,
+      "file": "inat-66526651.jpeg",
+      "bytes": 954781,
       "downloaded_size": "original"
     },
     {
-      "photo_id": 24809921,
-      "observation_id": 16484516,
-      "observation_url": "https://www.inaturalist.org/observations/16484516",
+      "photo_id": 192321015,
+      "observation_id": 113859120,
+      "observation_url": "https://www.inaturalist.org/observations/113859120",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2018-09-13",
-      "place": "CF14, Cardiff, Wales, GB",
+      "observed_on": "2022-04-30",
+      "place": "Jermyn, PA 18433, USA",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24809921/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24809921/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24809921/medium.jpg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/192321015/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/192321015/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/192321015/medium.jpeg"
       },
       "dimensions": {
-        "width": 2048,
-        "height": 1536
+        "width": 1536,
+        "height": 2048
       },
       "taxon_name": "Verbascum thapsus",
       "taxon_id": 59029,
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-24809921.jpg",
-      "bytes": 1010393,
+      "file": "inat-192321015.jpeg",
+      "bytes": 2398121,
       "downloaded_size": "original"
     }
   ],

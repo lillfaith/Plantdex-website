@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "taraxacum officinale",
-  "retrieved_at": "2026-11-05T01:41:41+00:00",
+  "retrieved_at": "2026-11-05T03:22:44+00:00",
   "identity": {
     "queried_name": "Taraxacum officinale",
     "match_type": "EXACT",
@@ -84,8 +84,8 @@
         "epmc-0596edce24",
         "pmc-13666699",
         "pmc-13441918",
-        "pmc-13514139",
         "pmc-13074846",
+        "pmc-13514139",
         "pmc-13107122",
         "pmc-13605521",
         "pmc-13707946",
@@ -589,19 +589,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13514139",
-        "title": "Integrated Phytochemical, Network Pharmacology, and Molecular Docking Analyses of Triphala Extract Reveal Protective Effects Against H&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;2&lt;/sub&gt;-Induced Oxidative Hemolysis in G6PD-Deficient Erythrocytes.",
-        "journal": "Life (Basel, Switzerland)",
-        "year": "2026",
-        "doi": "10.3390/life16081359",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13514139",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13074846",
         "title": "Chemical Compositions, Traditional Applications, and Biological Activities of &lt;i&gt;Gnaphalium affine&lt;/i&gt; D. Don: A Comprehensive Review.",
         "journal": "Molecules (Basel, Switzerland)",
@@ -609,6 +596,19 @@
         "doi": "10.3390/molecules31071199",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13074846",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13514139",
+        "title": "Integrated Phytochemical, Network Pharmacology, and Molecular Docking Analyses of Triphala Extract Reveal Protective Effects Against H&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;2&lt;/sub&gt;-Induced Oxidative Hemolysis in G6PD-Deficient Erythrocytes.",
+        "journal": "Life (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/life16081359",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13514139",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,

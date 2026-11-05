@@ -1,6 +1,6 @@
 {
   "species": "Taraxacum officinale",
-  "fetched_at": "2026-11-05T01:44:52+00:00",
+  "fetched_at": "2026-11-05T03:26:14+00:00",
   "source": "iNaturalist",
   "licenses_requested": [
     "cc0"
@@ -281,6 +281,33 @@
       "identification_disagreements": 0,
       "file": "inat-486847203.jpeg",
       "bytes": 1604928,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 17811106,
+      "observation_id": 12364475,
+      "observation_url": "https://www.inaturalist.org/observations/12364475",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-11",
+      "place": "Calvert Vaux Park, New York, NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17811106/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17811106/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17811106/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Taraxacum officinale",
+      "taxon_id": 47602,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-17811106.jpg",
+      "bytes": 1784228,
       "downloaded_size": "original"
     },
     {
@@ -608,33 +635,6 @@
       "downloaded_size": "original"
     },
     {
-      "photo_id": 17811106,
-      "observation_id": 12364475,
-      "observation_url": "https://www.inaturalist.org/observations/12364475",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2018-05-11",
-      "place": "Calvert Vaux Park, New York, NY, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17811106/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17811106/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17811106/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Taraxacum officinale",
-      "taxon_id": 47602,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-17811106.jpg",
-      "bytes": 1784228,
-      "downloaded_size": "original"
-    },
-    {
       "photo_id": 28741178,
       "observation_id": 18767420,
       "observation_url": "https://www.inaturalist.org/observations/18767420",
@@ -770,21 +770,48 @@
       "downloaded_size": "original"
     },
     {
-      "photo_id": 677310848,
-      "observation_id": 370737458,
-      "observation_url": "https://www.inaturalist.org/observations/370737458",
+      "photo_id": 754573598,
+      "observation_id": 410300247,
+      "observation_url": "https://www.inaturalist.org/observations/410300247",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2026-06-11",
-      "place": "Douglas County, US-CO, US",
+      "observed_on": "2026-10-23",
+      "place": "District of Columbia County, US-DC, US",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/677310848/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/677310848/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/677310848/medium.jpg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/754573598/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/754573598/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/754573598/medium.jpg"
       },
       "dimensions": {
-        "width": 1152,
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Taraxacum officinale",
+      "taxon_id": 47602,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-754573598.jpg",
+      "bytes": 2964404,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 291600968,
+      "observation_id": 168287543,
+      "observation_url": "https://www.inaturalist.org/observations/168287543",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-15",
+      "place": "Hunter's Chase, Trearddur Bay, Anglesey, North Wales, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/291600968/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/291600968/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/291600968/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
         "height": 2048
       },
       "taxon_name": "Taraxacum officinale",
@@ -792,53 +819,26 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-677310848.jpg",
-      "bytes": 2248564,
+      "file": "inat-291600968.jpeg",
+      "bytes": 994868,
       "downloaded_size": "original"
     },
     {
-      "photo_id": 688496591,
-      "observation_id": 376646632,
-      "observation_url": "https://www.inaturalist.org/observations/376646632",
+      "photo_id": 124598492,
+      "observation_id": 76161510,
+      "observation_url": "https://www.inaturalist.org/observations/76161510",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2026-06-20",
-      "place": "Beach Road, Benllech, Anglesey, North Wales, Wales, UK",
+      "observed_on": "2021-04-30",
+      "place": "Waterloo, UK",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/688496591/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/688496591/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/688496591/medium.jpg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/124598492/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/124598492/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/124598492/medium.jpg"
       },
       "dimensions": {
-        "width": 2048,
-        "height": 1365
-      },
-      "taxon_name": "Taraxacum officinale",
-      "taxon_id": 47602,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-688496591.jpg",
-      "bytes": 1226048,
-      "downloaded_size": "original"
-    },
-    {
-      "photo_id": 688530944,
-      "observation_id": 376570638,
-      "observation_url": "https://www.inaturalist.org/observations/376570638",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-06-28",
-      "place": "Middleville Township, MN, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/688530944/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/688530944/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/688530944/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1152,
+        "width": 1536,
         "height": 2048
       },
       "taxon_name": "Taraxacum officinale",
@@ -846,35 +846,35 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-688530944.jpg",
-      "bytes": 1501888,
+      "file": "inat-124598492.jpg",
+      "bytes": 922053,
       "downloaded_size": "original"
     },
     {
-      "photo_id": 698641756,
-      "observation_id": 381798649,
-      "observation_url": "https://www.inaturalist.org/observations/381798649",
+      "photo_id": 124802545,
+      "observation_id": 76299438,
+      "observation_url": "https://www.inaturalist.org/observations/76299438",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2026-07-13",
-      "place": "Maple Lake Township, MN, USA",
+      "observed_on": "2021-05-01",
+      "place": "Butler County, PA, USA",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/698641756/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/698641756/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/698641756/medium.jpg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/124802545/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/124802545/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/124802545/medium.jpg"
       },
       "dimensions": {
-        "width": 1153,
+        "width": 1536,
         "height": 2048
       },
       "taxon_name": "Taraxacum officinale",
       "taxon_id": 47602,
       "quality_grade": "research",
-      "identification_agreements": 1,
+      "identification_agreements": 2,
       "identification_disagreements": 0,
-      "file": "inat-698641756.jpg",
-      "bytes": 1742351,
+      "file": "inat-124802545.jpg",
+      "bytes": 1404872,
       "downloaded_size": "original"
     }
   ],

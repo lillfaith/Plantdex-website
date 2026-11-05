@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "verbascum thapsus",
-  "retrieved_at": "2026-11-05T01:42:09+00:00",
+  "retrieved_at": "2026-11-05T03:23:10+00:00",
   "identity": {
     "queried_name": "Verbascum thapsus",
     "match_type": "EXACT",
@@ -55,8 +55,8 @@
         "pmc-12137565",
         "pmc-12291726",
         "pmc-11232275",
-        "pmc-9032843",
         "pmc-13203402",
+        "pmc-9032843",
         "pmc-11396795",
         "pmc-12608489",
         "pmc-13659225",
@@ -291,19 +291,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-9032843",
-        "title": "Diverse in Local, Overlapping in Official Medical Botany: Critical Analysis of Medicinal Plant Records from the Historic Regions of Livonia and Courland in Northeast Europe, 1829-1895.",
-        "journal": "Plants (Basel, Switzerland)",
-        "year": "2022",
-        "doi": "10.3390/plants11081065",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC9032843",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13203402",
         "title": "Transcriptomic and Proteomic Analysis of the Skeletal Muscle Revealed the Effects and Mechanism of Mulberry Leaf Flavonoids on Alleviating Exercise-Induced Muscle Damage in Mongolian Horses.",
         "journal": "Animals : an open access journal from MDPI",
@@ -311,6 +298,19 @@
         "doi": "10.3390/ani16101548",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13203402",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-9032843",
+        "title": "Diverse in Local, Overlapping in Official Medical Botany: Critical Analysis of Medicinal Plant Records from the Historic Regions of Livonia and Courland in Northeast Europe, 1829-1895.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2022",
+        "doi": "10.3390/plants11081065",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC9032843",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
