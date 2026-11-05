@@ -1,0 +1,989 @@
+{
+  "state": "retrieved",
+  "schema_version": 1,
+  "species_key": "plantago major",
+  "retrieved_at": "2026-11-05T01:43:10+00:00",
+  "identity": {
+    "queried_name": "Plantago major",
+    "match_type": "EXACT",
+    "match_confidence": 98,
+    "gbif_status": "ACCEPTED",
+    "taxonomy_status": "accepted",
+    "gbif_id": "3189767",
+    "accepted_name": "Plantago major",
+    "name_authorship": "L.",
+    "family": "Plantaginaceae",
+    "genus": "Plantago",
+    "rank": "species",
+    "synonyms": [
+      "Plantago adriatica Campana",
+      "Plantago altissima Loisel.",
+      "Plantago angustata Schur",
+      "Plantago borysthenica (Rogow.) Wissjul.",
+      "Plantago bracteata Moench",
+      "Plantago compressiscapa Opiz",
+      "Plantago crenata Blanco",
+      "Plantago dentata Mazziari",
+      "Plantago dilatata Opiz",
+      "Plantago dostalii Domin",
+      "Plantago dregeana C.Presl",
+      "Plantago dregeana Decne.",
+      "Plantago exaltata Hornem.",
+      "Plantago fonticola Kom.",
+      "Plantago gigas H.Lév.",
+      "Plantago gouanii J.F.Gmel.",
+      "Plantago gracilis Schult. & Schult.fil.",
+      "Plantago humifusa Bernh.",
+      "Plantago humifusa Bernh. ex Rchb.",
+      "Plantago jehohlensis Koidz.",
+      "Plantago jepohlensis Koidz.",
+      "Plantago laciniosa Domin",
+      "Plantago latifolia L.",
+      "Plantago latifolia Salisb.",
+      "Plantago limosa Kit.",
+      "Plantago limosa Kit. ex Roem. & Schult.",
+      "Plantago limosa Kit. ex Sloboda",
+      "Plantago longiscapa Jacquem.",
+      "Plantago longiscapa Jacquem. ex Decne.",
+      "Plantago loureiroi Roem. & Schult.",
+      "Plantago majo subsp. fma L.",
+      "Plantago major Lour.",
+      "Plantago major f. bifida Bolzon",
+      "Plantago major f. bracteata (Moench) Hayek",
+      "Plantago major f. brevipedicellata (Pilg.) Pilg.",
+      "Plantago major f. crispa (Bubela ex Formánek) Domin",
+      "Plantago major f. dilatata (Opiz) Domin",
+      "Plantago major f. dostalii (Domin) Tacik",
+      "Plantago major f. dura (Pilg.) Domin",
+      "Plantago major f. erecta Pilg.",
+      "Plantago major f. lancifolia Lepage",
+      "Plantago major f. latissima Pilg.",
+      "Plantago major f. major",
+      "Plantago major f. maxima (Schltdl.) Domin",
+      "Plantago major f. megasperma (Domin) Tacik",
+      "Plantago major f. megastachya Domin",
+      "Plantago major f. minima (DC.) Domin",
+      "Plantago major f. minima (DC.) Vollm.",
+      "Plantago major f. minor Pilg.",
+      "Plantago major f. nervata A.T.Szabó"
+    ],
+    "endpoint": "https://api.gbif.org/v1/species/match"
+  },
+  "conservation": {
+    "iucn_category": "LEAST_CONCERN",
+    "endpoint": "https://api.gbif.org/v1/species/3189767/iucnRedListCategory",
+    "at_risk": false,
+    "promotable": false,
+    "conservation_note": "No usable global assessment (category: LEAST_CONCERN). Treated as NOT promotable: the plant may be documented, but nothing may present it as something to go and collect until a human checks regional listings. Missing data is not evidence of abundance."
+  },
+  "literature": {
+    "groups": {
+      "documented-use": [
+        "pmc-13165265",
+        "pmc-13164646",
+        "pmc-12299724",
+        "pmc-11644142",
+        "pmc-12348216",
+        "pmc-13666791",
+        "pmc-13708605",
+        "epmc-68013e5b6b",
+        "pmc-11769276",
+        "pmc-12914922",
+        "pmc-12394104",
+        "pmc-13074613",
+        "pmc-13417562",
+        "epmc-e26d9b4304",
+        "pmc-13314007",
+        "pmc-13250185",
+        "pmc-11478695",
+        "pmc-13120872",
+        "pmc-12592042",
+        "pmc-11819796",
+        "pmc-13277164",
+        "pmc-13092156",
+        "pmid-40601286",
+        "epmc-6c3b33bf8e",
+        "pmid-40068925"
+      ],
+      "laboratory-study": [
+        "pmc-13659225",
+        "pmc-13290503",
+        "pmc-13708942",
+        "pmc-13625141",
+        "pmc-12788403",
+        "pmc-13299215",
+        "pmc-13666830",
+        "pmc-13689166",
+        "pmc-13512109",
+        "pmc-13464917",
+        "pmc-13125976",
+        "pmc-13390053",
+        "pmc-12716007",
+        "pmc-13514308",
+        "pmc-13514616",
+        "pmc-13170992",
+        "pmc-12430101",
+        "pmc-13269524",
+        "pmc-12299115"
+      ]
+    },
+    "sources": [
+      {
+        "source_id": "pmc-13165265",
+        "title": "Medicinal Plants for Dermatological and Cosmetic Applications: Ethnobotanical Study from Northern Lithuania.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091389",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13165265",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13164646",
+        "title": "Medicinal Plants Traditionally Used to Treat Digestive System Disorders in Lithuania.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091390",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164646",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12299724",
+        "title": "Plants from Bulgarian Botanical Gardens: Some Selected Species with Potential for Health Food and Medical Applications.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14142176",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12299724",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11644142",
+        "title": "Traditionally Used Medicinal Plants of Armenia.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2024",
+        "doi": "10.3390/plants13233411",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11644142",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12348216",
+        "title": "Medicinal Plants for Skin Disorders: Phytochemistry and Pharmacological Insights.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30153281",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12348216",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13666791",
+        "title": "Traditional Medicinal Plant Knowledge in the Guba District of Azerbaijan: An Ethnobotanical Study",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13666791",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13708605",
+        "title": "Traditional Mexican Medicinal Plants for Ocular Diseases: Ethnomedicinal Evidence, Pharmacological Relevance, and Research Gaps from Unexplored Sources.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/ph19101555",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13708605",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-68013e5b6b",
+        "title": "First report of Colletotrichum destructivum causing anthracnose on Plantago major in Brazil",
+        "journal": "Crop Protection",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11769276",
+        "title": "Medicinal Plant Use in North Karelia, Finland, in the 2010s.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14020226",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11769276",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12914922",
+        "title": "\"I know a lot about medicinal plants. I read, I watch, and I search\": towards hybrid knowledge systems in the modern era.",
+        "journal": "Journal of ethnobiology and ethnomedicine",
+        "year": "2026",
+        "doi": "10.1186/s13002-025-00844-7",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12914922",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12394104",
+        "title": "Time-resolved analysis of UV-B-induced secondary metabolite biosynthesis and gene expression in &lt;i&gt;Plantago major&lt;/i&gt; L.",
+        "journal": "Physiology and molecular biology of plants : an international journal of functional plant biology",
+        "year": "2025",
+        "doi": "10.1007/s12298-025-01632-z",
+        "open_access": false,
+        "url": "https://europepmc.org/article/PMC/PMC12394104",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13074613",
+        "title": "In Vitro Antimicrobial Potential of Medicinal Plant Extracts and Their Combinations Against Mastitis-Causing Bacteria in Dairy Cows.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31071089",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13074613",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13417562",
+        "title": "Ethnobotanical Inventory on the Vernacular Names of Useful Plants: Data of over 120 Years for the Ligurian Region (Northern Italy).",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15142193",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13417562",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-e26d9b4304",
+        "title": "Time-resolved analysis of UV-B-induced secondary metabolite biosynthesis and gene expression in Plantago major L.",
+        "journal": "Physiol Mol Biol Plants",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13314007",
+        "title": "The laxative efficacy of a mixed extract of &lt;i&gt;Cassia alata&lt;/i&gt; with &lt;i&gt;Plantago major&lt;/i&gt; in rats.",
+        "journal": "Open veterinary journal",
+        "year": "2026",
+        "doi": "10.5455/ovj.2026.v16.i4.31",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13314007",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13250185",
+        "title": "Use of medicinal herbs in an Iranian population: cross-sectional findings from the Fasa PERSIAN Cohort Study.",
+        "journal": "BMJ open",
+        "year": "2026",
+        "doi": "10.1136/bmjopen-2025-104459",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13250185",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11478695",
+        "title": "Medicinal Plants Used to Treat Skin Diseases and for Cosmetic Purposes in Norway.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2024",
+        "doi": "10.3390/plants13192821",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11478695",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13120872",
+        "title": "Impact of flavonoid-rich herbal medicines on idiopathic heavy menstrual bleeding: A systematic review and meta-analysis of randomized controlled trials",
+        "journal": "Avicenna Journal of Phytomedicine",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13120872",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12592042",
+        "title": "Herbal medicine in chronic wounds in Calabria region of Italy: an ethnographic study.",
+        "journal": "Frontiers in sociology",
+        "year": "2025",
+        "doi": "10.3389/fsoc.2025.1638784",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12592042",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11819796",
+        "title": "Shifting Herbal Knowledge: The Ecological and Cultural Dynamics Behind Plant Use Changes in the Southern Occitan Alps.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14030367",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11819796",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13277164",
+        "title": "Phytochemical investigation and evaluation of anti-inflammatory and wound healing activities of Plantago major subsp. intermedia (Gilib.) Lange.",
+        "journal": "BMC complementary medicine and therapies",
+        "year": "2026",
+        "doi": "10.1186/s12906-026-05393-4",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13277164",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13092156",
+        "title": "Possible therapeutic effects of &lt;i&gt;Plantago major&lt;/i&gt; in women with high menstrual bleeding: A systematic review of randomized clinical trials.",
+        "journal": "Avicenna journal of phytomedicine",
+        "year": "2026",
+        "doi": "10.22038/ajp.2025.26360",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13092156",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40601286",
+        "title": "Assessment of Trace and Macro Elements in Medicinal Plants: Implications for Safety and Phytoremediation.",
+        "journal": "Biological trace element research",
+        "year": "2026",
+        "doi": "10.1007/s12011-025-04714-x",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40601286/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-6c3b33bf8e",
+        "title": "Fractional composition of Cd, Pb, and Zn in medicinal plants at the impact territories of a coal-fired power station",
+        "journal": "Environ Sci Pollut Res",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40068925",
+        "title": "Anticancer effects of &lt;i&gt;Plantago major&lt;/i&gt; extract on colorectal and gastric cancer cell lines: an &lt;i&gt;in vitro&lt;/i&gt; study and molecular docking analysis.",
+        "journal": "Journal of complementary & integrative medicine",
+        "year": "2025",
+        "doi": "10.1515/jcim-2024-0340",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40068925/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13659225",
+        "title": "Plant-derived modulators of the hemostasis-wound healing axis: mechanisms, evidence, and translational potential",
+        "journal": "Frontiers in pharmacology",
+        "year": null,
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13659225",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13290503",
+        "title": "Nanocarrier-Mediated Delivery Systems of Phytochemicals to Enhance and Accelerate Diabetic Wound Healing Processes.",
+        "journal": "Drug design, development and therapy",
+        "year": "2026",
+        "doi": "10.2147/dddt.s607020",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13290503",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13708942",
+        "title": "Metabolomic Fingerprinting and UHPLC-ESI-HRMS/MS Profiling of Five Medicinal Plants Associated with Wound Care.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15203164",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13708942",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13625141",
+        "title": "Evaluation of Wound-Healing Potential of Plant Extracts via Picture Fuzzy Multi-Attribute Decision-Making.",
+        "journal": "ACS omega",
+        "year": "2026",
+        "doi": "10.1021/acsomega.6c08040",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13625141",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12788403",
+        "title": "Antimicrobial effect of plantago major extract against streptococcus mutans in dental caries formation.",
+        "journal": "Brazilian dental journal",
+        "year": "2026",
+        "doi": "10.1590/0103-644020256538",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12788403",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13299215",
+        "title": "Multifunctional 3D-Printed Alginate Emulgel Patches Incorporating Plant Extracts for Potential Burn Wound Applications.",
+        "journal": "Gels (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/gels12060541",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13299215",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13666830",
+        "title": "Dual-Component Nanoemulsion Containing Brugmansia suaveolens Leaf Extract and Copaiba Oil: Antimicrobial Activity and Preclinical Wound-Healing Potential",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13666830",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13689166",
+        "title": "Phytochemical Fraction-Mediated Synthesis of Ag and ZnO Nanoparticles: Exploring Reactivity Limits and Broad-Spectrum Antimicrobial Properties.",
+        "journal": "ACS omega",
+        "year": "2026",
+        "doi": "10.1021/acsomega.6c09063",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13689166",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13512109",
+        "title": "Physicochemical and Microbiological Properties of Yoghurt Made Form Defatted Milk Mixtures and Concentrated Buttermilk Fortified with Herbal Extract.",
+        "journal": "Foods (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/foods15162768",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13512109",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13464917",
+        "title": "Seed Mucilage Polysaccharides: A Comprehensive Review of Molecular Architecture, Green Extraction Technologies, Bioactivities, and Industrial Applications.",
+        "journal": "Foods (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/foods15152616",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13464917",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13125976",
+        "title": "Phenolic Compounds: From Traditional Uses to Innovative Applications and Everything in Between.",
+        "journal": "Molecular nutrition & food research",
+        "year": "2026",
+        "doi": "10.1002/mnfr.70478",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13125976",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13390053",
+        "title": "&lt;i&gt;Plantago&lt;/i&gt; mechanisms for enhanced wound healing: A review on bioactive phytoconstituents.",
+        "journal": "Chinese herbal medicines",
+        "year": "2026",
+        "doi": "10.1016/j.chmed.2026.05.015",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13390053",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12716007",
+        "title": "A Workflow for Selecting, Profiling, and Optimizing Plant Extracts for Cosmetic Applications.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2025",
+        "doi": "10.1002/cbdv.202502397",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12716007",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13514308",
+        "title": "Ethnomedicinal Uses, Phytochemistry and Bioactivities of Halophytes and Salt-Tolerant Plants with Potential Against Metabolic Syndrome: A Comprehensive Review.",
+        "journal": "Marine drugs",
+        "year": "2026",
+        "doi": "10.3390/md24080262",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13514308",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13514616",
+        "title": "Effects of a Phytogenic Water Supplement on Selected Cultivable Bacterial Populations and Intestinal Histomorphology in Ross 308 Broiler Chickens Challenged with &lt;i&gt;Salmonella&lt;/i&gt; Typhimurium.",
+        "journal": "Life (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/life16081341",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13514616",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13170992",
+        "title": "Mapping the Technological and Pharmacological Landscape of Casearia sylvestris: An Evidence-Based Prospection for Wound Healing and Pain Management.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2026",
+        "doi": "10.1002/cbdv.71292",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13170992",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12430101",
+        "title": "Targeting Inflammation with Natural Products: A Mechanistic Review of Iridoids from Bulgarian Medicinal Plants.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30173456",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12430101",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13269524",
+        "title": "Antimicrobial and antibiofilm actions of iridoids: a comprehensive mechanistic review.",
+        "journal": "Naunyn-Schmiedeberg's archives of pharmacology",
+        "year": "2026",
+        "doi": "10.1007/s00210-026-05063-9",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13269524",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12299115",
+        "title": "Intraspecific Variability of Wormwood (&lt;i&gt;Artemisia absinthium&lt;/i&gt; L.) Occurring in Poland in Respect of Developmental and Chemical Traits.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30142915",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12299115",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      }
+    ],
+    "passages": [
+      {
+        "passage_id": "pmc-13165265#abstract-6",
+        "source_id": "pmc-13165265",
+        "located_in": "abstract",
+        "text": "The medicinal plants most frequently mentioned for the treatment of skin diseases and cosmetic purposes were Aloe vera (L.) Burm. f. and Plantago major L. The most popular preparation method was topical application (32.4%) for treating skin diseases and decoction (38.5%) for cosmetic purposes."
+      },
+      {
+        "passage_id": "pmc-12348216#abstract-2",
+        "source_id": "pmc-12348216",
+        "located_in": "abstract",
+        "text": "This article presents the phytochemical composition and pharmacological potential of several medicinal plants traditionally used in the treatment of skin diseases, including Rubus vulgaris , Plantago major , Artemisia terrae-albae , and Eryngium planum . Based on an analysis of scientific literature, the presence of bioactive compounds-including flavonoids, anthocyanins, phenolic acids, tannins, and sesquiterpenes-is summarized, along with their antioxidant, anti-inflammatory, and antimicrobial effects."
+      },
+      {
+        "passage_id": "epmc-68013e5b6b#abstract-0",
+        "source_id": "epmc-68013e5b6b",
+        "located_in": "abstract",
+        "text": "Plantago major, commonly known as common plantain, is a medicinal plant of considerable importance due to the therapeutic properties of its leaves, which exhibit diuretic, cicatrizing, expectorant, depurative, and anti-inflammatory activities. During a phytosanitary inspection in a medicinal plant nursery, anthracnose symptoms were observed on P. major plants, leading to progressive decline."
+      },
+      {
+        "passage_id": "epmc-68013e5b6b#abstract-1",
+        "source_id": "epmc-68013e5b6b",
+        "located_in": "abstract",
+        "text": "During a phytosanitary inspection in a medicinal plant nursery, anthracnose symptoms were observed on P. major plants, leading to progressive decline. Despite the phytopathological relevance of this disease, there are no prior reports of Colletotrichum species associated with this host."
+      },
+      {
+        "passage_id": "epmc-68013e5b6b#abstract-3",
+        "source_id": "epmc-68013e5b6b",
+        "located_in": "abstract",
+        "text": "This study aimed to identify the Colletotrichum species responsible for anthracnose in P. major through morphological characterization and multilocus phylogenetic analysis. A fungal isolate was obtained from symptomatic leaf tissue and characterized based on morphological traits and sequencing of four genomic regions: act, gapdh, his3, and ITS."
+      },
+      {
+        "passage_id": "epmc-68013e5b6b#abstract-6",
+        "source_id": "epmc-68013e5b6b",
+        "located_in": "abstract",
+        "text": "Pathogenicity was confirmed by inoculating P. major seedlings with conidial suspensions, which induced brown, depressed lesions characteristic of anthracnose. This study represents the first report of C. destructivum causing anthracnose in P. major worldwide, and its first record in Brazil."
+      },
+      {
+        "passage_id": "pmc-12394104#abstract-0",
+        "source_id": "pmc-12394104",
+        "located_in": "abstract",
+        "text": "The medicinal plant Plantago major L. is known for its rich secondary metabolite content, which plays a critical role in its therapeutic properties. This study investigates the impact of UV-B radiation on the biosynthesis of secondary metabolites, including phenolic compounds, flavonoids, terpenes, carotenoids, and lycopene, as well as the expression of key biosynthetic genes ( PAL , DAHP synthase , HMGR , COMT , and Epoxidase ) in Plantago major ."
+      },
+      {
+        "passage_id": "pmc-12394104#abstract-1",
+        "source_id": "pmc-12394104",
+        "located_in": "abstract",
+        "text": "This study investigates the impact of UV-B radiation on the biosynthesis of secondary metabolites, including phenolic compounds, flavonoids, terpenes, carotenoids, and lycopene, as well as the expression of key biosynthetic genes ( PAL , DAHP synthase , HMGR , COMT , and Epoxidase ) in Plantago major . Plants were exposed to UV-B radiation for 1 and 2 h, and metabolite content and gene expression were measured at intervals of 3, 6, 9, and 12 h post-exposure."
+      },
+      {
+        "passage_id": "pmc-12394104#abstract-5",
+        "source_id": "pmc-12394104",
+        "located_in": "abstract",
+        "text": "These findings suggest that controlled UV-B exposure can be used to enhance the production of valuable secondary metabolites in Plantago major , potentially benefiting medicinal plant cultivation and pharmaceutical applications."
+      },
+      {
+        "passage_id": "epmc-e26d9b4304#abstract-0",
+        "source_id": "epmc-e26d9b4304",
+        "located_in": "abstract",
+        "text": "The medicinal plant Plantago major L. is known for its rich secondary metabolite content, which plays a critical role in its therapeutic properties. This study investigates the impact of UV-B radiation on the biosynthesis of secondary metabolites, including phenolic compounds, flavonoids, terpenes, carotenoids, and lycopene, as well as the expression of key biosynthetic genes (PAL, DAHP synthase, HMGR, COMT, and Epoxidase) in Plantago major."
+      },
+      {
+        "passage_id": "epmc-e26d9b4304#abstract-1",
+        "source_id": "epmc-e26d9b4304",
+        "located_in": "abstract",
+        "text": "This study investigates the impact of UV-B radiation on the biosynthesis of secondary metabolites, including phenolic compounds, flavonoids, terpenes, carotenoids, and lycopene, as well as the expression of key biosynthetic genes (PAL, DAHP synthase, HMGR, COMT, and Epoxidase) in Plantago major. Plants were exposed to UV-B radiation for 1 and 2 h, and metabolite content and gene expression were measured at intervals of 3, 6, 9, and 12 h post-exposure."
+      },
+      {
+        "passage_id": "epmc-e26d9b4304#abstract-5",
+        "source_id": "epmc-e26d9b4304",
+        "located_in": "abstract",
+        "text": "These findings suggest that controlled UV-B exposure can be used to enhance the production of valuable secondary metabolites in Plantago major, potentially benefiting medicinal plant cultivation and pharmaceutical applications."
+      },
+      {
+        "passage_id": "pmc-13314007#abstract-1",
+        "source_id": "pmc-13314007",
+        "located_in": "abstract",
+        "text": "Aim This study evaluated the combined efficacy of the ethanolic leaf extract of Cassia alata with Plantago major in alleviating loperamide-induced constipation in rats. Methods Rats had constipation induced by an oral administration of loperamide (3 mg/kg BW) for 6 days, followed by three control groups assessment (normal, negative, positive which treated bisacodyl), and three treatment groups of the leaf extract of C. alata with P. major (50, 75, and 100 mg/kg BW) for 6 days."
+      },
+      {
+        "passage_id": "pmc-13314007#abstract-2",
+        "source_id": "pmc-13314007",
+        "located_in": "abstract",
+        "text": "Methods Rats had constipation induced by an oral administration of loperamide (3 mg/kg BW) for 6 days, followed by three control groups assessment (normal, negative, positive which treated bisacodyl), and three treatment groups of the leaf extract of C. alata with P. major (50, 75, and 100 mg/kg BW) for 6 days. The alterations in quantity, mass, and hydration of feces, motility, and gastrointestinal transit ratio were calculated."
+      },
+      {
+        "passage_id": "pmc-13314007#abstract-5",
+        "source_id": "pmc-13314007",
+        "located_in": "abstract",
+        "text": "Conclusion The leaf extract combination of C. alata with P. major, with dosages of 50-100 mg/kg, has potential laxative properties. This combination at the minimum dosage of 50 mg/kg is more favorable, potentially due to a synergistic interaction between the two extracts."
+      },
+      {
+        "passage_id": "pmc-13277164#abstract-0",
+        "source_id": "pmc-13277164",
+        "located_in": "abstract",
+        "text": "Background Plantago major subsp. intermedia has been traditionally used in Türkiye for the treatment of wounds, abscesses, constipation, pain, ulcers, hemorrhoids and gynecological diseases. In the present study, the phytochemical composition of P. major subsp. intermedia (Gilib.) Lange was investigated and its anti-inflammatory and wound healing effects were examined in light of existing experimental evidence from related Plantago species."
+      },
+      {
+        "passage_id": "pmc-13277164#abstract-1",
+        "source_id": "pmc-13277164",
+        "located_in": "abstract",
+        "text": "In the present study, the phytochemical composition of P. major subsp. intermedia (Gilib.) Lange was investigated and its anti-inflammatory and wound healing effects were examined in light of existing experimental evidence from related Plantago species. Methods MeOH, 80% EtOH and water extracts of the plant were prepared."
+      },
+      {
+        "passage_id": "pmc-13277164#abstract-7",
+        "source_id": "pmc-13277164",
+        "located_in": "abstract",
+        "text": "Results A total of six compounds were isolated from P. major subsp. intermedia: Isotachioside (1), aucubin (2), 10-hydroxymajoroside (3), 10-acetoxymajoroside (4), martynoside (5) and acteoside (6). All tested compounds significantly inhibited NO production at concentrations of 25, 50 and 100 µM (12.68%-61.89%)."
+      },
+      {
+        "passage_id": "pmc-13277164#abstract-10",
+        "source_id": "pmc-13277164",
+        "located_in": "abstract",
+        "text": "Conclusions The results of this study indicate the in vitro anti-inflammatory and wound healing activities of P. major subsp. intermedia and are consistent with previously reported biological activities of P. major."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-2",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "This systematic review aims to evaluate the therapeutic effects of Plantago major on women with high menstrual bleeding, focusing on randomized clinical trials. Materials and methods A comprehensive literature search was conducted in various databases such as, PubMed, ScienceDirect, Cochrane Library, and Google Scholar to identify relevant randomized clinical trials assessing the efficacy of Plantago major in reducing menstrual bleeding until July 2024."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-3",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "Materials and methods A comprehensive literature search was conducted in various databases such as, PubMed, ScienceDirect, Cochrane Library, and Google Scholar to identify relevant randomized clinical trials assessing the efficacy of Plantago major in reducing menstrual bleeding until July 2024. Various preparations of P. major were utilized in the included studies."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-4",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "Various preparations of P. major were utilized in the included studies. Results Administration of P. major leaf and seed extract significantly reduced both the duration and severity of bleeding."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-5",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "Results Administration of P. major leaf and seed extract significantly reduced both the duration and severity of bleeding. These extracts also led to a decrease in hemoglobin (Hb) and hematocrit (HTC) levels in the intervention group compared to the control group."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-7",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "The rectal suppository of P. major seed extract significantly decreased bleeding during the first 4 hours postpartum compared to the control group. Additionally, vaginal suppositories of P. major leaf extract notably reduced the mean in the pictorial blood loss assessment chart (PBAC) and improved the duration of bleeding in the intervention group."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-8",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "Additionally, vaginal suppositories of P. major leaf extract notably reduced the mean in the pictorial blood loss assessment chart (PBAC) and improved the duration of bleeding in the intervention group. Conclusion The extracts of P. major seeds and leaves may enhance hematological parameters and reduce both the mean and severity of menstrual bleeding; however, the clinical significance of these findings necessitates further assessment in future trials."
+      },
+      {
+        "passage_id": "pmc-13092156#abstract-9",
+        "source_id": "pmc-13092156",
+        "located_in": "abstract",
+        "text": "Conclusion The extracts of P. major seeds and leaves may enhance hematological parameters and reduce both the mean and severity of menstrual bleeding; however, the clinical significance of these findings necessitates further assessment in future trials."
+      },
+      {
+        "passage_id": "pmid-40601286#abstract-7",
+        "source_id": "pmid-40601286",
+        "located_in": "abstract",
+        "text": "The Alcea kurdica, Plantago major, and Urtica dioica may be considered in phytoremediation due to the higher Cd and Ni accumulation. Among studied trace elements, Cd had the highest hazard quotient."
+      },
+      {
+        "passage_id": "epmc-6c3b33bf8e#abstract-5",
+        "source_id": "epmc-6c3b33bf8e",
+        "located_in": "abstract",
+        "text": "Achillea setacea Waldst & Kit, Artemisia absinthium L., Matricaria chamomilla L., Plantago major L., Chelidonium majus L., Urtica dioica L., Taraxacum officinale, and Tanacetum vulgare L. were analyzed for metal fractionation using a stepwise extraction scheme to differentiate between bioavailable and strongly bound metal forms: (I) water-soluble, (II) aqueous-alcoholic, (III) hydrochloric acid, (IV) acid-soluble, and (V) silicate-bound fractions. In plants from the impact territory, a proportional rise in metal concentrations is observed across all fractions."
+      },
+      {
+        "passage_id": "epmc-6c3b33bf8e#abstract-9",
+        "source_id": "epmc-6c3b33bf8e",
+        "located_in": "abstract",
+        "text": "The highest extraction rates with water (FI) and ethanol (FII) were observed in P. major and M. chamomilla, while the silicate fraction (FV) dominated in the roots and aboveground parts of A. absinthium (Cd, Pb) and M. chamomilla (Zn). Excess HM binding in plants primarily occurs in the aqueous-alcoholic (FII) and hydrochloric acid (FIII) fractions, which exhibit the highest concentrations and variability."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-3",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "Plantago major ( P. major ) is a medicinal plant that has been investigated for medical research for cancer therapy owing to its rich phytochemical composition. Methods This study aims to evaluate the antiproliferative activity of P. major leaf extract on NIH/3T3 fibroblast cells, AGS gastric, and Caco-2 colorectal cancer cell lines for 24 h using XTT cell viability assay."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-4",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "Methods This study aims to evaluate the antiproliferative activity of P. major leaf extract on NIH/3T3 fibroblast cells, AGS gastric, and Caco-2 colorectal cancer cell lines for 24 h using XTT cell viability assay. The apoptotic activity of P. major was examined by detecting caspase 3/7 level in cells."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-5",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "The apoptotic activity of P. major was examined by detecting caspase 3/7 level in cells. The ROS levels in cells were measured using the DCFH-DA dye. Additionally, it assesses the interaction and binding affinities of the active compounds of P. major with the overexpressed EPCAM through molecular docking."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-7",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "Additionally, it assesses the interaction and binding affinities of the active compounds of P. major with the overexpressed EPCAM through molecular docking. Results The results demonstrate a dose-dependent anticancer effect of P. major on AGS and Caco-2 cell lines by reducing cell proliferation, increasing intracellular ROS accumulation and activating the caspase 3/7 apoptosis pathway."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-8",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "Results The results demonstrate a dose-dependent anticancer effect of P. major on AGS and Caco-2 cell lines by reducing cell proliferation, increasing intracellular ROS accumulation and activating the caspase 3/7 apoptosis pathway. P. major exhibited no significant cytotoxic effects on non-cancerous NIH/3T3 fibroblast cells."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-9",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "P. major exhibited no significant cytotoxic effects on non-cancerous NIH/3T3 fibroblast cells. Molecular docking analysis confirmed the high binding affinity of active compounds in P. major , such as apigenin, aucubin, baicalein, caffeic acid, and luteolin, towards the EpCAM protein overexpressed in gastric and colorectal cancer."
+      },
+      {
+        "passage_id": "pmid-40068925#abstract-10",
+        "source_id": "pmid-40068925",
+        "located_in": "abstract",
+        "text": "Molecular docking analysis confirmed the high binding affinity of active compounds in P. major , such as apigenin, aucubin, baicalein, caffeic acid, and luteolin, towards the EpCAM protein overexpressed in gastric and colorectal cancer. Conclusions In conclusion, the P. major can be a promising effective therapeutic strategy for gastrointestinal cancers."
+      },
+      {
+        "passage_id": "pmc-13708942#abstract-3",
+        "source_id": "pmc-13708942",
+        "located_in": "abstract",
+        "text": "The phytochemical composition of five medicinal plants, Verbena officinalis , Plantago major , Achillea millefolium , Hypericum perforatum , and Calendula officinalis , was investigated using ultra-high-performance liquid chromatography coupled with high-resolution electrospray ionization tandem mass spectrometry (UHPLC-ESI-HRMS/MS). A total of 162 metabolites were identified across the investigated extracts, representing diverse classes including flavonoids, phenolic acids, phenylethanoid glycosides, xanthones, naphthodianthrones, acylphloroglucinols and iridoid glycosides."
+      },
+      {
+        "passage_id": "pmc-12788403#abstract-0",
+        "source_id": "pmc-12788403",
+        "located_in": "abstract",
+        "text": "This study evaluated the efficacy of Plantago major extract against Streptococcus mutans, a bacterium associated with biofilm formation and the development of dental caries, in search of natural alternatives to conventional methods of caries control. An experimental design was conducted using bioautography and broth microdilution techniques to assess the antimicrobial activity of the extract, with chlorhexidine serving as the comparative substance."
+      },
+      {
+        "passage_id": "pmc-12788403#abstract-2",
+        "source_id": "pmc-12788403",
+        "located_in": "abstract",
+        "text": "The results demonstrated that Plantago major consistently produced inhibition zones with a mean diameter of 9.95 ± 0.41 mm, although smaller than those observed for chlorhexidine (CHX 1%) and CHX 0.12%, which averaged 14.98 ± 0.22 mm. Statistical analysis confirmed the significance of the antimicrobial effect of the extract (p < 0.05), suggesting its potential as a natural therapeutic agent."
+      },
+      {
+        "passage_id": "pmc-12788403#abstract-4",
+        "source_id": "pmc-12788403",
+        "located_in": "abstract",
+        "text": "In conclusion, Plantago major extract showed promise as an alternative strategy for controlling dental caries, presenting a lower risk of side effects. These findings encourage further investigation into phytotherapeutic approaches and support the advancement of clinical research aimed at improving oral health and addressing the growing challenge of antimicrobial resistance."
+      },
+      {
+        "passage_id": "pmc-13299215#abstract-2",
+        "source_id": "pmc-13299215",
+        "located_in": "abstract",
+        "text": "The formulation included sodium alginate, hyaluronic acid, and hydroglyceric extracts of Calendula officinalis , Matricaria chamomilla , and Plantago major , as well as oily extracts of Hippophae rhamnoides and Hypericum perforatum . The emulgel was evaluated for pH, rheological behaviour, spreadability, physical stability, apparent hydrodynamic size distribution, zeta potential, total polyphenol content, and antioxidant activity."
+      },
+      {
+        "passage_id": "pmc-13689166#abstract-2",
+        "source_id": "pmc-13689166",
+        "located_in": "abstract",
+        "text": "Silver (Ag) and zinc oxide (ZnO) nanoparticles were successfully synthesized using the n -butanol fraction of Plantago major leaf extract, while identical protocols failed to yield copper phases. Characterized via Fourier-transform infrared, X-ray diffraction, scanning electron microscopy, transmission electron microscopy, energy-dispersive spectroscopy, UV-vis, dynamic light scattering, and zeta potential, the annealed Ag and ZnO NPs exhibited average grain sizes of 20-37 nm (λ max = 428 nm) and 6-22 nm (λ max = 338 nm) and band gaps at 2.90 and 3.23 eV, respectively."
+      },
+      {
+        "passage_id": "pmc-13512109#abstract-0",
+        "source_id": "pmc-13512109",
+        "located_in": "abstract",
+        "text": "This study evaluates the impact of plant-derived additives ( Melissa officinalis L., Plantago major L., and Inula helenium L.) on the physicochemical, microbiological, and antimicrobial properties of yoghurt formulated with a combined base of milk and buttermilk concentrate (solid content 8-10%). Over 14 days of refrigerated storage, all fortified yoghurts maintained pH within acceptable limits, while Plantago and Inula slightly enhanced post-acidification without compromising quality."
+      },
+      {
+        "passage_id": "pmc-13512109#abstract-2",
+        "source_id": "pmc-13512109",
+        "located_in": "abstract",
+        "text": "Notably, the buttermilk concentrate significantly boosted initial lactic acid bacteria (LAB) viability, and the yoghurt with Plantago major L. extract showed a 314% higher viable LAB count during storage compared with the control. In contrast, Inula helenium L. reduced LAB viability by 67.6%, indicating a trade-off between bioactivity and starter compatibility."
+      },
+      {
+        "passage_id": "pmc-13512109#abstract-6",
+        "source_id": "pmc-13512109",
+        "located_in": "abstract",
+        "text": "The combination of Plantago major L. with buttermilk concentrate emerged as optimal for functional yoghurt, enhancing higher viability of lactic acid bacteria during refrigerated storage. These findings support the use of compatible plant-dairy combinations to develop yoghurt products with improved physicochemical properties, LAB viability and microbiological stability under the tested conditions."
+      },
+      {
+        "passage_id": "pmc-13390053#abstract-5",
+        "source_id": "pmc-13390053",
+        "located_in": "abstract",
+        "text": "Our analysis emphasizes the significant wound healing potential in 25 Plantago species, notably Plantago major , Plantago lanceolata , Plantago australis , Plantago asiatica , and Plantago ovata . These plant species contain a diverse array of 57 phytoconstituents that collectively contribute to these activities."
+      }
+    ]
+  },
+  "counts": {
+    "sources": 44,
+    "open_access_sources": 38,
+    "passages": 46
+  },
+  "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."
+}

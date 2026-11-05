@@ -1,0 +1,938 @@
+{
+  "state": "retrieved",
+  "schema_version": 1,
+  "species_key": "taraxacum officinale",
+  "retrieved_at": "2026-11-05T01:41:41+00:00",
+  "identity": {
+    "queried_name": "Taraxacum officinale",
+    "match_type": "EXACT",
+    "match_confidence": 99,
+    "gbif_status": "ACCEPTED",
+    "taxonomy_status": "accepted",
+    "gbif_id": "5394163",
+    "accepted_name": "Taraxacum officinale",
+    "name_authorship": "Weber ex F.H.Wigg.",
+    "family": "Asteraceae",
+    "genus": "Taraxacum",
+    "rank": "species",
+    "synonyms": [
+      "Chondrilla taraxacum (L.) Stokes",
+      "Crepis taraxacum (L.) Stokes",
+      "Leontodon officinalis (F.H.Wigg.) J.F.Gmel.",
+      "Leontodon taraxacum L.",
+      "Leontodon taraxacum var. vulgare Benth.",
+      "Leontodon vulgaris Lam.",
+      "Taraxacum dens-leonis Desf.",
+      "Taraxacum dens-leonis subsp. officinale (Lyons) R.C.V.Douin",
+      "Taraxacum officinale subsp. dens-leonis (Desf.) Cout.",
+      "Taraxacum officinale subsp. vulgare Schinz & R.Keller",
+      "Taraxacum officinale var. angustifolium Gray",
+      "Taraxacum palustre var. vulgare (Benth.) Fernald",
+      "Taraxacum taraxacum (L.) H.Karst.",
+      "Taraxacum vulgare Schrank",
+      "Taraxacum vulgare var. dens-leonis (Desf.) Samp."
+    ],
+    "endpoint": "https://api.gbif.org/v1/species/match"
+  },
+  "conservation": {
+    "iucn_category": "NOT_EVALUATED",
+    "endpoint": "https://api.gbif.org/v1/species/5394163/iucnRedListCategory",
+    "at_risk": false,
+    "promotable": false,
+    "conservation_note": "No usable global assessment (category: NOT_EVALUATED). Treated as NOT promotable: the plant may be documented, but nothing may present it as something to go and collect until a human checks regional listings. Missing data is not evidence of abundance."
+  },
+  "literature": {
+    "groups": {
+      "documented-use": [
+        "pmid-42883333",
+        "pmc-13164646",
+        "pmid-40832870",
+        "pmc-13666731",
+        "pmid-41554454",
+        "pmc-12844958",
+        "pmc-13435289",
+        "pmc-13617134",
+        "pmc-12736102",
+        "pmc-12819242",
+        "pmc-12334242",
+        "pmc-13552283",
+        "epmc-8492172eaa",
+        "pmc-12752310",
+        "pmc-12693992",
+        "pmc-12299503",
+        "pmid-40700821",
+        "pmc-12348216",
+        "pmc-13073622",
+        "pmc-13567065",
+        "epmc-93c9ece0db",
+        "pmc-11723127",
+        "epmc-6c3b33bf8e",
+        "pmid-40615747",
+        "epmc-8512364bdf"
+      ],
+      "laboratory-study": [
+        "pmc-13416477",
+        "pmc-13025498",
+        "pmc-13307164",
+        "pmc-12652186",
+        "pmc-13203521",
+        "pmc-13296276",
+        "pmid-42583850",
+        "pmc-13207219",
+        "epmc-9cab8e5f77",
+        "pmc-13515138",
+        "epmc-0596edce24",
+        "pmc-13666699",
+        "pmc-13441918",
+        "pmc-13514139",
+        "pmc-13074846",
+        "pmc-13107122",
+        "pmc-13605521",
+        "pmc-13707946",
+        "pmc-12939864",
+        "pmc-12693188"
+      ]
+    },
+    "sources": [
+      {
+        "source_id": "pmid-42883333",
+        "title": "Analysis of Mercury Content in Medicinal Plants Popular in Poland.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31193569",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42883333/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13164646",
+        "title": "Medicinal Plants Traditionally Used to Treat Digestive System Disorders in Lithuania.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091390",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164646",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40832870",
+        "title": "Phytochemical composition and bioactivity of edible &lt;i&gt;Taraxacum officinale&lt;/i&gt;: potential as an ingredient in brain health-oriented functional foods.",
+        "journal": "Food & function",
+        "year": "2025",
+        "doi": "10.1039/d5fo02646f",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40832870/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13666731",
+        "title": "Analysis of Mercury Content in Medicinal Plants Popular in Poland",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13666731",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41554454",
+        "title": "Unveiling the genus Taraxacum: From folk medicine to chemodiversity-driven pharmacological and toxicological outcomes-A systematic review.",
+        "journal": "Journal of ethnopharmacology",
+        "year": "2026",
+        "doi": "10.1016/j.jep.2026.121231",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41554454/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12844958",
+        "title": "Current Knowledge and Utilization of Medicinal Plants and Fungi in Northeastern Croatia.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15020325",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12844958",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13435289",
+        "title": "Morphological and Multilocus Phylogenetic Characterization of &lt;i&gt;Septoria&lt;/i&gt; Species from &lt;i&gt;Dioscorea&lt;/i&gt;, &lt;i&gt;Eclipta&lt;/i&gt;, and &lt;i&gt;Taraxacum&lt;/i&gt; in East Asia.",
+        "journal": "Mycobiology",
+        "year": "2026",
+        "doi": "10.1080/12298093.2026.2705054",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13435289",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13617134",
+        "title": "Editorial: Advances in plant-derived pharmaceuticals: exploring secondary metabolites for therapeutic innovation.",
+        "journal": "Frontiers in plant science",
+        "year": "2026",
+        "doi": "10.3389/fpls.2026.1976207",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13617134",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12736102",
+        "title": "Supercritical CO&lt;sub&gt;2&lt;/sub&gt; Extraction and Tandem Mass Spectrometry of the Medicinal Plant Sagan Dalya (&lt;i&gt;Rhododendron adamsii&lt;/i&gt;).",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/ph18121823",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12736102",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12819242",
+        "title": "&lt;i&gt;Taraxacum officinale&lt;/i&gt; L. in leukemia and lymphoma: current knowledge and prospects for horticulture.",
+        "journal": "Frontiers in plant science",
+        "year": "2025",
+        "doi": "10.3389/fpls.2025.1740142",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12819242",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12334242",
+        "title": "New prospects in oncotherapy: bioactive compounds from &lt;i&gt;Taraxacum officinale&lt;/i&gt;.",
+        "journal": "Medicine and pharmacy reports",
+        "year": "2025",
+        "doi": "10.15386/mpr-2875",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12334242",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13552283",
+        "title": "The complete sequence of chloroplast genome of an important medicinal plant, &lt;i&gt;Chamaemelum nobile&lt;/i&gt; Linaeus 1785 (Asteraceae).",
+        "journal": "Mitochondrial DNA. Part B, Resources",
+        "year": "2026",
+        "doi": "10.1080/23802359.2026.2728270",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13552283",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-8492172eaa",
+        "title": "A contemporary inventory of gathered wild food plants in Liguria and Piedmont (NW Italy) and its implications for the in-situ conservation of plant genetic resources",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.21203/rs.3.rs-10555515/v1",
+        "open_access": false,
+        "url": "https://doi.org/10.21203/rs.3.rs-10555515/v1",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12752310",
+        "title": "Documenting traditional knowledge of the Trans-Himalaya: ethnic uses of plants in Drass valley, Ladakh.",
+        "journal": "Journal of ethnobiology and ethnomedicine",
+        "year": "2025",
+        "doi": "10.1186/s13002-025-00785-1",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12752310",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12693992",
+        "title": "Medicinal Plants in Food Supplements for Gastrointestinal Disorders: Critical Assessment of Health Claims on Gastric Acid Regulation.",
+        "journal": "Nutrients",
+        "year": "2025",
+        "doi": "10.3390/nu17233674",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12693992",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12299503",
+        "title": "The Role of Dandelion (&lt;i&gt;Taraxacum officinale&lt;/i&gt;) in Liver Health and Hepatoprotective Properties.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/ph18070990",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12299503",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40700821",
+        "title": "Transcriptomic, metabolomic, and proteomic analyses reveal UVB-stimulated biosynthesis of flavonoids, terpenoids, and alkaloids in dandelion (Taraxacum officinale).",
+        "journal": "Plant physiology and biochemistry : PPB",
+        "year": "2025",
+        "doi": "10.1016/j.plaphy.2025.110270",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40700821/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12348216",
+        "title": "Medicinal Plants for Skin Disorders: Phytochemistry and Pharmacological Insights.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30153281",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12348216",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13073622",
+        "title": "The Influence of Monosaccharide Composition on the Bioactivity of Medicinal Plant Polysaccharides.",
+        "journal": "International journal of molecular sciences",
+        "year": "2026",
+        "doi": "10.3390/ijms27073075",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13073622",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13567065",
+        "title": "Comparative Structural Characterisation and In Vitro Bioactivities of Crude and Purified Polysaccharides from Dandelion (&lt;i&gt;Taraxacum officinale&lt;/i&gt;) Root Using Microwave-Assisted Enzymatic Extraction.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31172966",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13567065",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-93c9ece0db",
+        "title": "A contemporary inventory of gathered wild food plants in Liguria and Piedmont (NW Italy) and its implications for the in situ conservation of plant genetic resources",
+        "journal": "Genetic resources and crop evolution",
+        "year": "2026",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11723127",
+        "title": "Multilateral Use of Dandelion in Folk Medicine of Central-Eastern Europe.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2024",
+        "doi": "10.3390/plants14010084",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11723127",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-6c3b33bf8e",
+        "title": "Fractional composition of Cd, Pb, and Zn in medicinal plants at the impact territories of a coal-fired power station",
+        "journal": "Environ Sci Pollut Res",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40615747",
+        "title": "Fractional composition of Cd, Pb, and Zn in medicinal plants at the impact territories of a coal-fired power station.",
+        "journal": "Environmental science and pollution research international",
+        "year": "2025",
+        "doi": "10.1007/s11356-025-36718-4",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40615747/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-8512364bdf",
+        "title": "Transcriptomic, metabolomic, and proteomic analyses reveal UVB-stimulated biosynthesis of flavonoids, terpenoids, and alkaloids in dandelion (Taraxacum officinale)",
+        "journal": "Plant physiology and biochemistry",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13416477",
+        "title": "Phytochemical Dynamics and Antimicrobial Efficacy of Dandelion (&lt;i&gt;Taraxacum officinale&lt;/i&gt; L.) from Central Plateau of Moldova, Romania.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31142549",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13416477",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13025498",
+        "title": "The Wild Plants from the Family Asteraceae That Are Traditionally Used for Food in Sicily and Bulgaria and Their Health Benefits.",
+        "journal": "Foods (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/foods15060988",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13025498",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13307164",
+        "title": "Mechanisms and Therapeutic Targets of Botanicals Derived from Asteraceae Plant Species.",
+        "journal": "Pharmaceutics",
+        "year": "2026",
+        "doi": "10.3390/pharmaceutics18060759",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13307164",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12652186",
+        "title": "Medicinal Plants for a Healthy Gut Microbiome: Scientific Insights into Modern Herbal Applications.",
+        "journal": "International journal of molecular sciences",
+        "year": "2025",
+        "doi": "10.3390/ijms262210875",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12652186",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13203521",
+        "title": "Phytochemical Profile and Antioxidant Potential of &lt;i&gt;Montanoa bipinnatifida&lt;/i&gt; C. Koch Leaf Extract: Promising Bioactives for Pharmaceutical Applications.",
+        "journal": "Antioxidants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/antiox15050598",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13203521",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13296276",
+        "title": "Fraction-Dependent Polyphenolic Profile and Biological Activities of Juniperus communis Pseudo-Fruit Extracts: Antioxidant, Antimicrobial and Selective Antimelanoma Effects",
+        "journal": "Antioxidants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13296276",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42583850",
+        "title": "[Determination of Antibacterial Activity of Taraxacum officinale Extracts Against Bacterial Isolates Obtained from Clinical Samples and Comparison of Their Antioxidant Properties].",
+        "journal": "Mikrobiyoloji bulteni",
+        "year": "2026",
+        "doi": "10.5578/mb.202603159",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42583850/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13207219",
+        "title": "Evaluation of Chemical Composition, Anticancer, Antioxidant, Antibacterial, and Antidiabetic Activities of &lt;i&gt;Peucephyllum schottii&lt;/i&gt;.",
+        "journal": "International journal of molecular sciences",
+        "year": "2026",
+        "doi": "10.3390/ijms27104497",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13207219",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-9cab8e5f77",
+        "title": "Maceration Time Modulates the In Vitro Antibacterial Activity of Ethanolic Dandelion (<em>Taraxacum officinale</em>) Extracts Against <em>Escherichia coli</em> and <em>Staphylococcus aureus</em> Isolates from Clinical Bovine Mastitis, with GC–MS Profiling of the Most Active Extract",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.20944/preprints202610.0768.v1",
+        "open_access": false,
+        "url": "https://doi.org/10.20944/preprints202610.0768.v1",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13515138",
+        "title": "Anti-Androgenic Potential of Plant Extracts: Molecular Mechanisms, Synergistic Effects, and Nutritional Interventions.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31162849",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13515138",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-0596edce24",
+        "title": "A droplet-to-data workflow for antimicrobial screening of complex matrices",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.64898/2026.10.28.762405",
+        "open_access": false,
+        "url": "https://doi.org/10.64898/2026.10.28.762405",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13666699",
+        "title": "Insights into the Health-Promoting Properties and Nutraceutical and Food Applications of Lonicera japonica Thunb.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13666699",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13441918",
+        "title": "Ultrasound-engineered chitosan nanocarriers improve the anticancer activity of dandelion phytochemicals in hepatocellular carcinoma cells.",
+        "journal": "Frontiers in pharmacology",
+        "year": "2026",
+        "doi": "10.3389/fphar.2026.1871616",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13441918",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13514139",
+        "title": "Integrated Phytochemical, Network Pharmacology, and Molecular Docking Analyses of Triphala Extract Reveal Protective Effects Against H&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;2&lt;/sub&gt;-Induced Oxidative Hemolysis in G6PD-Deficient Erythrocytes.",
+        "journal": "Life (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/life16081359",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13514139",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13074846",
+        "title": "Chemical Compositions, Traditional Applications, and Biological Activities of &lt;i&gt;Gnaphalium affine&lt;/i&gt; D. Don: A Comprehensive Review.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31071199",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13074846",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13107122",
+        "title": "Natural Remedies for Gut Health: The Role of Plant Extracts in Combating Inflammatory Bowel Disease and Colon Cancer.",
+        "journal": "Food science & nutrition",
+        "year": "2026",
+        "doi": "10.1002/fsn3.71403",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13107122",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13605521",
+        "title": "Antibacterial Activity and Cellular Effects of Huai Chrysanthemum Polyphenol Extract Against Foodborne Pathogens.",
+        "journal": "Foods (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/foods15183210",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13605521",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13707946",
+        "title": "Optimization of Supercritical CO&lt;sub&gt;2&lt;/sub&gt; Extraction Conditions and Metabolite Composition of &lt;i&gt;Chamaepericlymenum suecicum&lt;/i&gt; L. Berries from Two Locations in the Magadan Region.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31203658",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13707946",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12939864",
+        "title": "Bioactive Compounds from Dandelion (&lt;i&gt;Taraxacum officinale&lt;/i&gt;): Advances in Extraction Techniques and Applications.",
+        "journal": "Foods (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/foods15040782",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12939864",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12693188",
+        "title": "Composition of Volatiles, Phytochemical Analysis, Antioxidant and Anticancer Activity of &lt;i&gt;Euryops floribundus&lt;/i&gt; Ne.Br. Leaves (Asteraceae).",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30234555",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12693188",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      }
+    ],
+    "passages": [
+      {
+        "passage_id": "pmid-42883333#abstract-5",
+        "source_id": "pmid-42883333",
+        "located_in": "abstract",
+        "text": "For the study, five medicinal plant species commonly used in Poland were selected: wild rose ( Rosa canina L.), common hawthorn ( Crataegus monogyna L.), dandelion ( Taraxacum officinale ), common nettle ( Urtica dioica L.) and silver birch ( Betula pendula ). The determination of Hg concentrations was carried out using an AMA 254 (Altec, Prague, Czech Republic) atomic absorption spectrometer."
+      },
+      {
+        "passage_id": "pmid-42883333#abstract-10",
+        "source_id": "pmid-42883333",
+        "located_in": "abstract",
+        "text": "Statistically significant differences in Hg content were detected among the studied plant species ( p Urtica dioica ), dandelion ( Taraxacum officinale ), and silver birch ( Betula pendula ), may pose a risk associated with Hg contamination. Given the continuously increasing demand for and market value of herbal medicines, ensuring the safety, quality, and efficacy of medicinal plants and herbal products is of great importance."
+      },
+      {
+        "passage_id": "pmid-40832870#abstract-0",
+        "source_id": "pmid-40832870",
+        "located_in": "abstract",
+        "text": "Taraxacum officinale (dandelion) is a widely recognised medicinal plant that is entirely edible and nutritionally rich. Traditionally consumed raw and cooked, it is used in cuisine and in food industry as a healthy ingredient, thanks to its high content of bioactive compounds."
+      },
+      {
+        "passage_id": "pmid-40832870#abstract-3",
+        "source_id": "pmid-40832870",
+        "located_in": "abstract",
+        "text": "While the biological activities of Taraxacum species have been extensively studied, the specific role of T. officinale in modulating neuroinflammation remains underexplored. This study investigated the chemical composition and neuroprotective potential of hydroalcoholic extracts from dandelion leaves (Dan L) and roots (Dan R), derived from three ecotypes: Land Spontaneous (LSE), Mountain Spontaneous (MSE), and Organically grown (OE)."
+      },
+      {
+        "passage_id": "pmid-40832870#abstract-9",
+        "source_id": "pmid-40832870",
+        "located_in": "abstract",
+        "text": "Taraxacum officinale thus emerges not only as a traditional edible plant but also as a functional candidate and polyphenol source for nutraceutical applications targeting neurodegeneration and cognitive decline."
+      },
+      {
+        "passage_id": "pmid-41554454#abstract-11",
+        "source_id": "pmid-41554454",
+        "located_in": "abstract",
+        "text": "Building on the 197 compounds reported from T. officinale, this review highlights over 180 newly identified compounds from 19 Taraxacum species, expanding the genus-wide catalog to more than 380 constituents. Recent toxicological and safety evaluations corroborate that T. officinale F.H.Wigg., T. mongolicum Hand.-Mazz., and T. lacistrum Sahlin possess a favorable safety profile."
+      },
+      {
+        "passage_id": "pmid-41554454#abstract-12",
+        "source_id": "pmid-41554454",
+        "located_in": "abstract",
+        "text": "Recent toxicological and safety evaluations corroborate that T. officinale F.H.Wigg., T. mongolicum Hand.-Mazz., and T. lacistrum Sahlin possess a favorable safety profile. Conclusions The genus Taraxacum is a promising medicinal and edible plant, exhibiting a range of biological activities, including anti-cancer, anti-inflammatory, and antioxidant effects."
+      },
+      {
+        "passage_id": "pmc-12844958#abstract-2",
+        "source_id": "pmc-12844958",
+        "located_in": "abstract",
+        "text": "Rosaceae, Lamiaceae, and Asteraceae were the families with the most species, while Sambucus nigra , Chamomilla recutita , and Taraxacum officinale were the most frequently mentioned species. Leaves, fruits, and flowers were the most commonly used plant parts, predominantly prepared as infusions, syrups, and tinctures."
+      },
+      {
+        "passage_id": "pmc-13435289#abstract-2",
+        "source_id": "pmc-13435289",
+        "located_in": "abstract",
+        "text": "The concatenated dataset resolved three well-supported lineages corresponding to Septoria dioscoreicola on Dioscorea polystachya , S. eclipticola on Eclipta prostrata , and S. miurae on Taraxacum officinale , of which S. dioscoreicola and S. eclipticola are newly recorded in Korea, whereas Korean materials previously reported as S. taraxaci on Taraxacum are re-identified here as S. miurae . Multilocus analyses further demonstrated that S. taraxaci and S. miurae represent two distinct species associated with Taraxacum , with Korean and Japanese isolates corresponding to S. miurae , whereas the third Taraxacum -associated taxon, S. taraxacicola , is regarded as a synonym of S. miurae ."
+      },
+      {
+        "passage_id": "pmc-12819242#abstract-0",
+        "source_id": "pmc-12819242",
+        "located_in": "abstract",
+        "text": "Dandelion ( Taraxacum officinale L.) is a globally distributed medicinal plant rich in phenolic acids, flavonoids, sesquiterpene lactones and pentacyclic triterpenoids. Preclinical studies indicate that dandelion extracts and isolated constituents exert selective cytotoxic and pro-apoptotic effects against various hematological malignancies, including leukemia and lymphoma, via mechanisms such as ROS generation, mitochondrial apoptosis, cell-cycle arrest and inhibition of oncogenic signaling (e.g., PI3K/AKT, STAT3)."
+      },
+      {
+        "passage_id": "pmc-12819242#abstract-2",
+        "source_id": "pmc-12819242",
+        "located_in": "abstract",
+        "text": "This mini-review synthesizes current in vitro and in vivo evidence on the antileukemic and antilymphoma potential of T. officinale , emphasizing the phytochemical classes most consistently implicated (notably triterpenoids like taraxasterol and pentacyclic acids) and highlighting methodological limitations of existing studies-dose relevance, lack of pharmacokinetic data and sparse safety profiling. Building on these pharmacological insights, horticultural strategies that can modulate bioactive profiles-controlled environment agriculture, hydroponics, elicitation, light spectral management and targeted nutrient fortification- are evaluated and a practical cultivation-to-clinic roadmap to produce standardized, high-value plant material suitable for translational research is proposed."
+      },
+      {
+        "passage_id": "pmc-12334242#abstract-1",
+        "source_id": "pmc-12334242",
+        "located_in": "abstract",
+        "text": "Traditional medicine has long used Taraxacum officinale H.Wigg , commonly known as dandelion, for its diverse pharmacological properties. Recent studies have highlighted its potential anticancer effects attributed to a rich phytochemical profile containing flavonoids, terpenoids, phenolic acids, polysaccharides, and sterols."
+      },
+      {
+        "passage_id": "pmc-12334242#abstract-3",
+        "source_id": "pmc-12334242",
+        "located_in": "abstract",
+        "text": "This review systematically examines the available scientific literature regarding Taraxacum officinale , focusing on its ethnomedical application, phytochemical composition, and anticancer mechanism demonstrated in vitro and in vivo models. Key bioactive compounds, such as taraxasterol, chlorogenic acid, chicoric acid, and taraxinic acid, have been identified as promising agents capable of inhibiting tumor cell proliferation and modulating oncogenic pathways."
+      },
+      {
+        "passage_id": "pmc-12334242#abstract-6",
+        "source_id": "pmc-12334242",
+        "located_in": "abstract",
+        "text": "Given its multi-target biological activity and low toxicity, Taraxacum officinale holds significant potential for integration into oncotherapy as an adjuvant treatment. However, further preclinical and clinical investigations remain essential to validate its efficacy and mechanism of action, paving the way for the development of cost-effective, plant-based cancer therapeutics."
+      },
+      {
+        "passage_id": "epmc-8492172eaa#abstract-6",
+        "source_id": "epmc-8492172eaa",
+        "located_in": "abstract",
+        "text": "Only Urtica dioica L. and Taraxacum officinale F.H.Wigg. were recorded in all four areas, and just under 70% of taxa in one only. In-field transmission has collapsed almost everywhere, and three cases of incipient domestication were documented."
+      },
+      {
+        "passage_id": "pmc-12693992#abstract-6",
+        "source_id": "pmc-12693992",
+        "located_in": "abstract",
+        "text": "The most frequently used plants were peppermint ( Mentha piperita ), artichoke ( Cynara cardunculus ), fennel ( Foeniculum vulgare ), Milk thistle ( Silybum marianum ), dandelion ( Taraxacum officinale ), chamomile ( Matricaria chamomilla ), psyllium ( Plantago ovata ), licorice ( Glycyrrhiza glabra ), caraway ( Carum carvi ), lemon balm ( Melissa officinalis ), and chicory ( Cichorium intybus ). Label claims most often referred to supporting digestion, relieving bloating, and maintaining normal GI function."
+      },
+      {
+        "passage_id": "pmc-12299503#abstract-0",
+        "source_id": "pmc-12299503",
+        "located_in": "abstract",
+        "text": "Background: Taraxacum officinale ( T. officinale ), commonly known as dandelion, is a plant with recognized therapeutic properties in both traditional and modern medicine. Historically, it has been used to treat various conditions, particularly liver disorders, owing to its antioxidant and anti-inflammatory activities."
+      },
+      {
+        "passage_id": "pmc-12299503#abstract-3",
+        "source_id": "pmc-12299503",
+        "located_in": "abstract",
+        "text": "Methods: We performed a compilation and analysis of published studies on the effects of T. officinale in animal models and its potential application in liver diseases. Results: Preclinical studies have reported that extracts of this plant protect against liver damage induced by toxic agents such as alcohol, carbon tetrachloride, and paracetamol."
+      },
+      {
+        "passage_id": "pmc-12299503#abstract-5",
+        "source_id": "pmc-12299503",
+        "located_in": "abstract",
+        "text": "Among the most relevant and predominant bioactive compounds of T. officinale is taraxasterol, which modulates inflammatory and oxidative stress pathways, helping to prevent liver damage. Conclusions: While preclinical studies are promising, further clinical trials are essential to confirm the safety and efficacy of T. officinale in the treatment of liver diseases."
+      },
+      {
+        "passage_id": "pmc-12299503#abstract-6",
+        "source_id": "pmc-12299503",
+        "located_in": "abstract",
+        "text": "Conclusions: While preclinical studies are promising, further clinical trials are essential to confirm the safety and efficacy of T. officinale in the treatment of liver diseases. Determining the optimal dosing, evaluating its potential as an adjuvant in pharmacological treatments, as well as evaluating possible interactions with conventional drugs, is necessary for the potential use of T. officinale as an adjuvant agent in the treatment of liver diseases."
+      },
+      {
+        "passage_id": "pmc-12299503#abstract-7",
+        "source_id": "pmc-12299503",
+        "located_in": "abstract",
+        "text": "Determining the optimal dosing, evaluating its potential as an adjuvant in pharmacological treatments, as well as evaluating possible interactions with conventional drugs, is necessary for the potential use of T. officinale as an adjuvant agent in the treatment of liver diseases."
+      },
+      {
+        "passage_id": "pmid-40700821#abstract-1",
+        "source_id": "pmid-40700821",
+        "located_in": "abstract",
+        "text": "Taraxacum officinale is a medicinal plant and dietary component that is notable for its abundance of bioactive secondary metabolites. To elucidate the response of secondary metabolites to UVB in T. officinale, we performed integrated transcriptomic, proteomic, and metabolomic analyses on leaf tissues following exposure to UVB for seven days."
+      },
+      {
+        "passage_id": "pmid-40700821#abstract-2",
+        "source_id": "pmid-40700821",
+        "located_in": "abstract",
+        "text": "To elucidate the response of secondary metabolites to UVB in T. officinale, we performed integrated transcriptomic, proteomic, and metabolomic analyses on leaf tissues following exposure to UVB for seven days. Transcriptomic analysis revealed a significant upregulation of genes associated with photosynthesis, flavonoid biosynthesis, and stress responses."
+      },
+      {
+        "passage_id": "pmid-40700821#abstract-7",
+        "source_id": "pmid-40700821",
+        "located_in": "abstract",
+        "text": "Functional validation through transgenic overexpression in T. officinale demonstrated that ToMYB111, ToMYB113, and ToNAC068 act as positive regulators of flavonoid hyperaccumulation. Specifically, ToMYB113 and ToNAC068 transactivate the ToUGT1 promoter through direct binding, thereby enhancing flavonoid accumulation."
+      },
+      {
+        "passage_id": "pmid-40700821#abstract-9",
+        "source_id": "pmid-40700821",
+        "located_in": "abstract",
+        "text": "These findings provide novel insights into the molecular basis of UVB-induced secondary metabolite accumulation in T. officinale, with potential applications in crop improvement and pharmaceutical development."
+      },
+      {
+        "passage_id": "pmc-13567065#abstract-1",
+        "source_id": "pmc-13567065",
+        "located_in": "abstract",
+        "text": "Dandelion root polysaccharide (DRP), a key bioactive component of Taraxacum officinale, has anti-inflammatory, antioxidant, hypoglycemic and hypolipidemic activities. This study extracted DRP via microwave-assisted enzymatic extraction (MAEE) to obtain mDRP, and isolated acidic polysaccharide mDRP-1 (7.548 kDa) by column chromatography."
+      },
+      {
+        "passage_id": "epmc-93c9ece0db#abstract-6",
+        "source_id": "epmc-93c9ece0db",
+        "located_in": "abstract",
+        "text": "Only Urtica dioica L. and Taraxacum officinale F.H.Wigg. were recorded in all four areas, and just under 70% of taxa in one only. In-field transmission has collapsed almost everywhere, and we documented three cases of incipient domestication."
+      },
+      {
+        "passage_id": "pmc-11723127#abstract-1",
+        "source_id": "pmc-11723127",
+        "located_in": "abstract",
+        "text": "Taraxacum , also referred to as Taraxacum officinale F.H. Wiggers coll.), a collective species of perennial herbaceous plants of the Asteraceae family, is commonly considered weed; however, in the traditional societies of Central-Eastern Europe, it is a source of food and medicinal raw materials."
+      },
+      {
+        "passage_id": "epmc-6c3b33bf8e#abstract-5",
+        "source_id": "epmc-6c3b33bf8e",
+        "located_in": "abstract",
+        "text": "Achillea setacea Waldst & Kit, Artemisia absinthium L., Matricaria chamomilla L., Plantago major L., Chelidonium majus L., Urtica dioica L., Taraxacum officinale, and Tanacetum vulgare L. were analyzed for metal fractionation using a stepwise extraction scheme to differentiate between bioavailable and strongly bound metal forms: (I) water-soluble, (II) aqueous-alcoholic, (III) hydrochloric acid, (IV) acid-soluble, and (V) silicate-bound fractions. In plants from the impact territory, a proportional rise in metal concentrations is observed across all fractions."
+      },
+      {
+        "passage_id": "pmid-40615747#abstract-5",
+        "source_id": "pmid-40615747",
+        "located_in": "abstract",
+        "text": "Achillea setacea Waldst & Kit, Artemisia absinthium L., Matricaria chamomilla L., Plantago major L., Chelidonium majus L., Urtica dioica L., Taraxacum officinale, and Tanacetum vulgare L. were analyzed for metal fractionation using a stepwise extraction scheme to differentiate between bioavailable and strongly bound metal forms: (I) water-soluble, (II) aqueous-alcoholic, (III) hydrochloric acid, (IV) acid-soluble, and (V) silicate-bound fractions. In plants from the impact territory, a proportional rise in metal concentrations is observed across all fractions."
+      },
+      {
+        "passage_id": "epmc-8512364bdf#abstract-1",
+        "source_id": "epmc-8512364bdf",
+        "located_in": "abstract",
+        "text": "Taraxacum officinale is a medicinal plant and dietary component that is notable for its abundance of bioactive secondary metabolites. To elucidate the response of secondary metabolites to UVB in T. officinale, we performed integrated transcriptomic, proteomic, and metabolomic analyses on leaf tissues following exposure to UVB for seven days."
+      },
+      {
+        "passage_id": "epmc-8512364bdf#abstract-2",
+        "source_id": "epmc-8512364bdf",
+        "located_in": "abstract",
+        "text": "To elucidate the response of secondary metabolites to UVB in T. officinale, we performed integrated transcriptomic, proteomic, and metabolomic analyses on leaf tissues following exposure to UVB for seven days. Transcriptomic analysis revealed a significant upregulation of genes associated with photosynthesis, flavonoid biosynthesis, and stress responses."
+      },
+      {
+        "passage_id": "epmc-8512364bdf#abstract-7",
+        "source_id": "epmc-8512364bdf",
+        "located_in": "abstract",
+        "text": "Functional validation through transgenic overexpression in T. officinale demonstrated that ToMYB111, ToMYB113, and ToNAC068 act as positive regulators of flavonoid hyperaccumulation. Specifically, ToMYB113 and ToNAC068 transactivate the ToUGT1 promoter through direct binding, thereby enhancing flavonoid accumulation."
+      },
+      {
+        "passage_id": "epmc-8512364bdf#abstract-9",
+        "source_id": "epmc-8512364bdf",
+        "located_in": "abstract",
+        "text": "These findings provide novel insights into the molecular basis of UVB-induced secondary metabolite accumulation in T. officinale, with potential applications in crop improvement and pharmaceutical development."
+      },
+      {
+        "passage_id": "pmc-13416477#abstract-0",
+        "source_id": "pmc-13416477",
+        "located_in": "abstract",
+        "text": "The therapeutic use of Taraxacum officinale L. remains a challenge due to its chemical profile shifting dramatically, markedly with seasonal variation and processing techniques. To address this, the paper evaluated how the plant organ, harvest season, and extraction technique as ultrasound-assisted extraction (UAE) and solid-liquid extraction in a Soxhlet system (both using hydroalcoholic solvent concentrations of 70:30 ( v / v ) ethanol) and conventional cold maceration, at solvent concentration 50:50 ( v / v ) ethanol, respectively 70:30 ( v / v ) ethanol, could have impact both metabolite yield and biological activity."
+      },
+      {
+        "passage_id": "pmc-13025498#abstract-1",
+        "source_id": "pmc-13025498",
+        "located_in": "abstract",
+        "text": "Some taxa, such as Cichorium intybus , Silybum marianum , Artemisia vulgaris , Taraxacum officinale , and Tussilago farfara , are integral to the Mediterranean and Balkan diets, enhancing nutrition through their fiber, minerals, and bioactive compounds. This ethnobotanical survey revealed a clear geographic pattern in species usage: 13 species were found to be consumed solely in Bulgaria, 18 solely in Sicily, and five species in both regions."
+      },
+      {
+        "passage_id": "pmid-42583850#abstract-1",
+        "source_id": "pmid-42583850",
+        "located_in": "abstract",
+        "text": "It is known that Taraxacum officinale (dandelion) extracts have antimicrobial effects. This study aimed to investigate the antibacterial activities of different parts of T.officinale extracted through the Soxhlet device, against bacteria with various resistance patterns that cause hospital-acquired infections."
+      },
+      {
+        "passage_id": "epmc-9cab8e5f77#abstract-1",
+        "source_id": "epmc-9cab8e5f77",
+        "located_in": "abstract",
+        "text": "This preliminary in vitro study examined whether maceration time, a process variable rarely controlled in studies of Taraxacum officinale, modifies the antibacterial activity of ethanolic extracts against clinical mastitis isolates. Leaves and flowers were macerated in 96% ethanol for 1, 2, 4 and 6 days under otherwise constant conditions, and the extracts were screened by disc diffusion against one E. coli and one S. aureus isolate in a randomised complete block design (nine treatments, six replicate discs each, n = 54)."
+      },
+      {
+        "passage_id": "epmc-0596edce24#abstract-5",
+        "source_id": "epmc-0596edce24",
+        "located_in": "abstract",
+        "text": "As proof of concept, we applied this workflow to assess the antibacterial and aggregation-modulating effects of chemically distinct extracts of Taraxacum officinale, Rhodiola rosea , and Lonicera caerulea against Escherichia coli . Extracts were chemically characterized by HPLC-MS and evaluated using both standard 96-well plate microdilution and droplet-based assays."
+      },
+      {
+        "passage_id": "epmc-0596edce24#abstract-8",
+        "source_id": "epmc-0596edce24",
+        "located_in": "abstract",
+        "text": "The droplet-based assay reached minimal inhibitory concentration (MIC) at lower extract concentrations than 96-well plate microdilution and revealed extract-specific aggregation effects: L. caerulea reduced E. coli aggregation, whereas T. officinale did not. R. rosea reduced growth in the 96-well plate microdilution assay, but high concentrations caused droplet gelation that prevented droplet-based analysis, showing that sample components must be checked for compatibility with droplet formation."
+      },
+      {
+        "passage_id": "pmc-13441918#abstract-1",
+        "source_id": "pmc-13441918",
+        "located_in": "abstract",
+        "text": "Although dandelion ( Taraxacum officinale )-derived phytochemicals show anticancer potential, their clinical use is restricted by poor solubility, instability, and low intracellular bioavailability. Ultrasound-engineered chitosan nanocarriers represent a promising strategy to overcome these limitations and enhance intracellular delivery."
+      }
+    ]
+  },
+  "counts": {
+    "sources": 45,
+    "open_access_sources": 33,
+    "passages": 41
+  },
+  "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."
+}

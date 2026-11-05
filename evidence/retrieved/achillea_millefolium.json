@@ -1,0 +1,895 @@
+{
+  "state": "retrieved",
+  "schema_version": 1,
+  "species_key": "achillea millefolium",
+  "retrieved_at": "2026-11-05T01:42:37+00:00",
+  "identity": {
+    "queried_name": "Achillea millefolium",
+    "match_type": "EXACT",
+    "match_confidence": 99,
+    "gbif_status": "ACCEPTED",
+    "taxonomy_status": "accepted",
+    "gbif_id": "3120060",
+    "accepted_name": "Achillea millefolium",
+    "name_authorship": "L.",
+    "family": "Asteraceae",
+    "genus": "Achillea",
+    "rank": "species",
+    "synonyms": [
+      "Achillea borealis subsp. arenicola J.T.Howell",
+      "Achillea ceretanica Sennen, 1916",
+      "Achillea intermedia Schleich., 1821",
+      "Achillea lanulosa subsp. alpicola (Rydb.) Rydb.",
+      "Achillea lanulosa subsp. arachnoidea Lunell",
+      "Achillea lanulosa subsp. eradiata (Piper) M.Peck",
+      "Achillea lanulosa subsp. peroutkyi F.Seym.",
+      "Achillea lanulosa subsp. rubicunda Farw.",
+      "Achillea laxiflora A.Nelson, 1902",
+      "Achillea millefolium f. millefolium",
+      "Achillea millefolium subsp. albiflora Dabrowska",
+      "Achillea millefolium subsp. alpicola (Rydb.) Garrett",
+      "Achillea millefolium subsp. asplenifolia (Vent.) Farw.",
+      "Achillea millefolium subsp. asplenifolia (Vent.) J.Weiss, 1895",
+      "Achillea millefolium subsp. borealis (Bong.) Farw.",
+      "Achillea millefolium subsp. colliniformis Dabrowska",
+      "Achillea millefolium subsp. dipetala Dabrowska",
+      "Achillea millefolium subsp. discolor B.Boivin",
+      "Achillea millefolium subsp. dissecta Dabrowska",
+      "Achillea millefolium subsp. fulva",
+      "Achillea millefolium subsp. iserana Podp.",
+      "Achillea millefolium subsp. litoralis Ehrenb.",
+      "Achillea millefolium subsp. litoralis Ehrenb. ex Nobs",
+      "Achillea millefolium subsp. lobata Dabrowska",
+      "Achillea millefolium subsp. maritima Jeps.",
+      "Achillea millefolium subsp. megacephala (Raup) B.Boivin",
+      "Achillea millefolium subsp. nigrescens E.Mey.",
+      "Achillea millefolium subsp. pacifica (Rydb.) G.N.Jones",
+      "Achillea millefolium subsp. parviligula",
+      "Achillea millefolium subsp. parvula",
+      "Achillea millefolium subsp. puberula (Rydb.) Ferris",
+      "Achillea millefolium subsp. rhodantha Lepage",
+      "Achillea millefolium subsp. rosea (Desf.) E.L.Rand & Redfield",
+      "Achillea millefolium subsp. roseiflora B.Boivin",
+      "Achillea millefolium subsp. roseoides Breitung",
+      "Achillea millefolium subsp. rubicunda (Farw.) Farw.",
+      "Achillea millefolium subsp. russeolata",
+      "Achillea millefolium subsp. sordida W.D.J.Koch",
+      "Achillea millefolium subsp. spathulata Dabrowska",
+      "Achillea millefolium var. occidentale DC.",
+      "Achillea nabalekii Heimerl, 1925",
+      "Achillea pseudotanitifolia Wierzb.",
+      "Achillea pseudotanitifolia Wierzb. ex Rchb.",
+      "Achillea rosea Desf. ex Poir., 1810",
+      "Achillea serpentini H.J.Coste & Soulié, 1897",
+      "Achillea setacea var. setacea",
+      "Achillea stricta Schleich. ex Heimerl",
+      "Anthemis millefolium (L.) Schrank, 1789"
+    ],
+    "endpoint": "https://api.gbif.org/v1/species/match"
+  },
+  "conservation": {
+    "iucn_category": "LEAST_CONCERN",
+    "endpoint": "https://api.gbif.org/v1/species/3120060/iucnRedListCategory",
+    "at_risk": false,
+    "promotable": false,
+    "conservation_note": "No usable global assessment (category: LEAST_CONCERN). Treated as NOT promotable: the plant may be documented, but nothing may present it as something to go and collect until a human checks regional listings. Missing data is not evidence of abundance."
+  },
+  "literature": {
+    "groups": {
+      "documented-use": [
+        "pmc-13164646",
+        "pmc-13288361",
+        "pmc-13164594",
+        "pmc-13254121",
+        "pmc-12927844",
+        "pmc-13210741",
+        "pmc-13209759",
+        "pmc-13417562",
+        "pmc-12299724",
+        "pmc-13165265",
+        "pmc-13208160",
+        "pmc-13164761",
+        "pmc-13517077",
+        "pmc-12914922",
+        "pmc-13516345",
+        "pmc-13074613",
+        "pmc-12654173",
+        "pmc-12639085",
+        "epmc-a9e9bc9555",
+        "pmc-12774671",
+        "pmc-12592042",
+        "pmid-42316569",
+        "pmid-40601286",
+        "pmc-13250260",
+        "pmc-12996529"
+      ],
+      "laboratory-study": [
+        "pmid-42725524",
+        "pmid-42348360",
+        "pmc-13708942",
+        "pmc-13495121",
+        "pmc-13405582",
+        "pmc-13569960",
+        "pmc-13659225",
+        "pmc-13021974",
+        "pmc-13207219",
+        "pmc-13664000",
+        "pmc-13119106",
+        "pmc-13363466"
+      ]
+    },
+    "sources": [
+      {
+        "source_id": "pmc-13164646",
+        "title": "Medicinal Plants Traditionally Used to Treat Digestive System Disorders in Lithuania.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091390",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164646",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13288361",
+        "title": "Bioactive Profiling of &lt;i&gt;Achillea millefolium&lt;/i&gt; L. Growing in Kashmir: A Study on Its Phytochemical and LC-MS Analysis, Antioxidant Properties, and Antimicrobial and Molecular Docking Analysis.",
+        "journal": "The Canadian journal of infectious diseases & medical microbiology = Journal canadien des maladies infectieuses et de la microbiologie medicale",
+        "year": "2026",
+        "doi": "10.1155/cjid/9925080",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13288361",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13164594",
+        "title": "Evaluation of Phytochemical Constituents, Antioxidant Potential, and Toxicological Profile of Selected Medicinal Plants from Romania's Spontaneous Flora.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31091527",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164594",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13254121",
+        "title": "Trends and Patterns for the Use of Herbal Medicinal Products for Gynaecological Ailments.",
+        "journal": "Phytotherapy research : PTR",
+        "year": "2026",
+        "doi": "10.1002/ptr.70321",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13254121",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12927844",
+        "title": "Cytotoxicity and Coagulation Effects of Methanolic Extracts of &lt;i&gt;Punica granatum, Quercus infectoria, and Achillea millefolium&lt;/i&gt;: an in vitro Study.",
+        "journal": "Journal of experimental pharmacology",
+        "year": "2026",
+        "doi": "10.2147/jep.s580084",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12927844",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13210741",
+        "title": "Unveiling the Bioactive Potential of the Aerial Parts of Balkan &lt;i&gt;Achillea clypeolata&lt;/i&gt;: Comparison with Officinal &lt;i&gt;Achillea millefolium&lt;/i&gt;.",
+        "journal": "Pharmaceutics",
+        "year": "2026",
+        "doi": "10.3390/pharmaceutics18050591",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13210741",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13209759",
+        "title": "Chemical Composition and Synergistic Antimicrobial Activity of &lt;i&gt;Hypericum perforatum&lt;/i&gt; and &lt;i&gt;Achillea millefolium&lt;/i&gt; Essential Oils Against Wound-Associated Microorganisms.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31101594",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13209759",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13417562",
+        "title": "Ethnobotanical Inventory on the Vernacular Names of Useful Plants: Data of over 120 Years for the Ligurian Region (Northern Italy).",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15142193",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13417562",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12299724",
+        "title": "Plants from Bulgarian Botanical Gardens: Some Selected Species with Potential for Health Food and Medical Applications.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14142176",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12299724",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13165265",
+        "title": "Medicinal Plants for Dermatological and Cosmetic Applications: Ethnobotanical Study from Northern Lithuania.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091389",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13165265",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13208160",
+        "title": "Polyphenol-Driven Interfacial Control: How &lt;i&gt;Achillea millefolium&lt;/i&gt; Extract Modulates Mild Carbon Steel Corrosion in Acid and Neutral Media.",
+        "journal": "Materials (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/ma19102008",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13208160",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13164761",
+        "title": "Comparative Antifungal Activity of Medicinal Plant Extracts and Essential Oils Against Clinical Isolates of &lt;i&gt;Candida albicans&lt;/i&gt; from Denture Stomatitis Patients.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15091392",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13164761",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13517077",
+        "title": "Biological and Phytochemical Profile of Volatile Oils from Romanian Mountain Flora.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/ph19081293",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13517077",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12914922",
+        "title": "\"I know a lot about medicinal plants. I read, I watch, and I search\": towards hybrid knowledge systems in the modern era.",
+        "journal": "Journal of ethnobiology and ethnomedicine",
+        "year": "2026",
+        "doi": "10.1186/s13002-025-00844-7",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12914922",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13516345",
+        "title": "Anti-Biofilm Activity of (+)-Endo-Borneol Against &lt;i&gt;Streptococcus mutans&lt;/i&gt;: Experimental Evaluation, Virulence Gene Expression Analysis, and Molecular Docking.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15162417",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13516345",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13074613",
+        "title": "In Vitro Antimicrobial Potential of Medicinal Plant Extracts and Their Combinations Against Mastitis-Causing Bacteria in Dairy Cows.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31071089",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13074613",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12654173",
+        "title": "Metabolome and Essential Element Analyses of Five Underutilized European Crops Reveal Their Nutritional Properties and Potential to Diversify the European Food System.",
+        "journal": "Metabolites",
+        "year": "2025",
+        "doi": "10.3390/metabo15110720",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12654173",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12639085",
+        "title": "Antioxidant properties and antibacterial activity of selected herbal teas.",
+        "journal": "Scientific reports",
+        "year": "2025",
+        "doi": "10.1038/s41598-025-26960-8",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12639085",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-a9e9bc9555",
+        "title": "Morphotaxonomical and anatomical characterisation of Achillea millefolium L. : A therapeutic medicinal plant",
+        "journal": null,
+        "year": "2025",
+        "doi": "10.21203/rs.3.rs-6304753/v1",
+        "open_access": false,
+        "url": "https://doi.org/10.21203/rs.3.rs-6304753/v1",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12774671",
+        "title": "Latvian herbal medicines under the infrared lens: An FTIR-ATR dataset.",
+        "journal": "Data in brief",
+        "year": "2026",
+        "doi": "10.1016/j.dib.2025.112378",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12774671",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12592042",
+        "title": "Herbal medicine in chronic wounds in Calabria region of Italy: an ethnographic study.",
+        "journal": "Frontiers in sociology",
+        "year": "2025",
+        "doi": "10.3389/fsoc.2025.1638784",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12592042",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42316569",
+        "title": "Pharmacological Potential of &lt;i&gt;Achillea millefolium&lt;/i&gt;: A Review of its Anti-inflammatory, Antioxidant, Antispasmodic, and Antimicrobial Properties.",
+        "journal": "Mini reviews in medicinal chemistry",
+        "year": "2026",
+        "doi": "10.2174/0113895575447575260330091228",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42316569/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40601286",
+        "title": "Assessment of Trace and Macro Elements in Medicinal Plants: Implications for Safety and Phytoremediation.",
+        "journal": "Biological trace element research",
+        "year": "2026",
+        "doi": "10.1007/s12011-025-04714-x",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40601286/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13250260",
+        "title": "Exploring the Nutraceutical Potential of &lt;i&gt;Achillea millefolium&lt;/i&gt; L.: Phytochemical Composition, Biological Activities, and Industrial Applications.",
+        "journal": "Food science & nutrition",
+        "year": "2026",
+        "doi": "10.1002/fsn3.72002",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13250260",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12996529",
+        "title": "Effect of the biologically synthesized rGO NPs and Fe&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;3&lt;/sub&gt;/rGO NCs on phytochemical assay, toxicity, and metabolism of Achillea millefolium plant.",
+        "journal": "Scientific reports",
+        "year": "2026",
+        "doi": "10.1038/s41598-026-37200-y",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12996529",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42725524",
+        "title": "Phytochemical-Mediated Redox Synthesis of Selenium Nanoparticles Under Sunlight: Mechanistic and Bioactivity Insights.",
+        "journal": "Current organic synthesis",
+        "year": "2026",
+        "doi": "10.2174/0115701794464927260818110458",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42725524/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42348360",
+        "title": "Mechanistic Insights Into ROS-Mediated Apoptotic Toxicity of Achillea millefolium L. Fabricated Manganese Oxide Nanoparticles in Human Neuroblastoma Cells.",
+        "journal": "Journal of applied toxicology : JAT",
+        "year": "2026",
+        "doi": "10.1002/jat.70301",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42348360/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13708942",
+        "title": "Metabolomic Fingerprinting and UHPLC-ESI-HRMS/MS Profiling of Five Medicinal Plants Associated with Wound Care.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15203164",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13708942",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13495121",
+        "title": "Developmental Dynamics of Bioactive Compound Accumulation During Vegetative Growth in Thymus daenensis Čelak.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2026",
+        "doi": "10.1002/cbdv.71601",
+        "open_access": false,
+        "url": "https://europepmc.org/article/PMC/PMC13495121",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13405582",
+        "title": "Phytochemical Analysis, Antimicrobial, and Antioxidant Activities of North Macedonia &lt;i&gt;Achillea setacea&lt;/i&gt; Essential Oil.",
+        "journal": "Antioxidants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/antiox15070820",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13405582",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13569960",
+        "title": "Unani Herbal Vaginal Douche for Antibiotic‐Refractory Chronic Cervicitis: A Case Series",
+        "journal": "The journal of obstetrics and gynaecology research",
+        "year": "2026",
+        "doi": null,
+        "open_access": false,
+        "url": "https://europepmc.org/article/PMC/PMC13569960",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13659225",
+        "title": "Plant-derived modulators of the hemostasis-wound healing axis: mechanisms, evidence, and translational potential",
+        "journal": "Frontiers in pharmacology",
+        "year": null,
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13659225",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13021974",
+        "title": "Ethnobotanical importance and bioactivity of wild herbal teas from District Poonch Azad Jammu and Kashmir.",
+        "journal": "Scientific reports",
+        "year": "2026",
+        "doi": "10.1038/s41598-026-39177-0",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13021974",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13207219",
+        "title": "Evaluation of Chemical Composition, Anticancer, Antioxidant, Antibacterial, and Antidiabetic Activities of &lt;i&gt;Peucephyllum schottii&lt;/i&gt;.",
+        "journal": "International journal of molecular sciences",
+        "year": "2026",
+        "doi": "10.3390/ijms27104497",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13207219",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13664000",
+        "title": "An Innovative Blend of Cinnamon Essential Oil, Roselle, and Moringa Flower Powders as a Natural Alternative to Sodium Nitrite in Chicken Sausage Processing",
+        "journal": "Foods (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13664000",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13119106",
+        "title": "Plant Bioactive Compounds at the Interface of Extraction Science, Green Nanoparticles and Applied Biotechnology: A Narrative Review.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31081351",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13119106",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13363466",
+        "title": "Probiotic-Plant Bioactive Synergy in Gut Health: Mechanisms, Antimicrobial Activity, and Translational Challenges.",
+        "journal": "Nutrients",
+        "year": "2026",
+        "doi": "10.3390/nu18132112",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13363466",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      }
+    ],
+    "passages": [
+      {
+        "passage_id": "pmc-13288361#abstract-0",
+        "source_id": "pmc-13288361",
+        "located_in": "abstract",
+        "text": "Background Achillea millefolium L. (yarrow) is one of the oldest known medicinal plants recognized for properties, such as wound healing, fever, common cold, liver problems, nosebleeding, toothache, and headache."
+      },
+      {
+        "passage_id": "pmc-13288361#abstract-3",
+        "source_id": "pmc-13288361",
+        "located_in": "abstract",
+        "text": "Objectives This study aimed to investigate the antioxidant and antimicrobial properties of Achillea millefolium L. (AM), focusing on its ethanolic extract and its fractions (hexane and ethyl acetate)."
+      },
+      {
+        "passage_id": "pmc-13288361#abstract-11",
+        "source_id": "pmc-13288361",
+        "located_in": "abstract",
+        "text": "Conclusion In summary, this study highlights the antioxidant and antimicrobial capabilities of Achillea millefolium L. These findings will establish the groundwork for bioassay-guided separation of bioactive components that could serve as leads for future research to combat diseases caused by microbes that are resistant to drugs."
+      },
+      {
+        "passage_id": "pmc-13164594#abstract-0",
+        "source_id": "pmc-13164594",
+        "located_in": "abstract",
+        "text": "The aim of this study was to analyze the composition and dual beneficial and toxic effects of Achillea millefolium L., Mentha longifolia L., and Thymus serpyllum L. extracts. The phenolic profile, total phenolic content (TPC), antioxidant activity, and drosopterin eye content (DEC) were determined by modern methods."
+      },
+      {
+        "passage_id": "pmc-13164594#abstract-6",
+        "source_id": "pmc-13164594",
+        "located_in": "abstract",
+        "text": "In the case of D. melanogaster fed with a normal diet supplement with different concentrations of the plant A. millefolium L. extract, a biphasic effect was observed. A more complex effect was recorded for the M. longifolia L. and T. serpyllum L. extracts."
+      },
+      {
+        "passage_id": "pmc-12927844#abstract-0",
+        "source_id": "pmc-12927844",
+        "located_in": "abstract",
+        "text": "Objective Considering the historical use of three plant species Punica granatum, Quercus infectoria , and Achillea millefolium in traditional medicine for hemostatic purposes, along with the variation observed in some experimental research, the aim of this study was to comparatively evaluate the effect of methanol extracts derived from these three medicinal plants on blood clotting time in vitro. Methods Methanolic (70%) extracts of P. granatum flower, Q. infectoria galls and A. millefolium aerial parts were prepared by maceration method."
+      },
+      {
+        "passage_id": "pmc-12927844#abstract-1",
+        "source_id": "pmc-12927844",
+        "located_in": "abstract",
+        "text": "Methods Methanolic (70%) extracts of P. granatum flower, Q. infectoria galls and A. millefolium aerial parts were prepared by maceration method. The total tannin and phenolic content were determined using a colorimetric method."
+      },
+      {
+        "passage_id": "pmc-12927844#abstract-5",
+        "source_id": "pmc-12927844",
+        "located_in": "abstract",
+        "text": "Results Q. infectoria had the highest phenolic content at 287.18 mg gal/g, followed by P. granatum and A. millefolium. P. granatum exhibited the highest tannin content (119.21 mg catechin/g DW), followed by Q. infectoria (109.30 mg catechin/g DW) and A. millefolium (54.35mg catechin/g DW)."
+      },
+      {
+        "passage_id": "pmc-12927844#abstract-6",
+        "source_id": "pmc-12927844",
+        "located_in": "abstract",
+        "text": "P. granatum exhibited the highest tannin content (119.21 mg catechin/g DW), followed by Q. infectoria (109.30 mg catechin/g DW) and A. millefolium (54.35mg catechin/g DW). The highest total flavonoid content was found in P. granatum, A. millefolium , and Q. infectoria with 98, 85.5, 5.22 mg Rutin/g DW, respectively."
+      },
+      {
+        "passage_id": "pmc-12927844#abstract-7",
+        "source_id": "pmc-12927844",
+        "located_in": "abstract",
+        "text": "The highest total flavonoid content was found in P. granatum, A. millefolium , and Q. infectoria with 98, 85.5, 5.22 mg Rutin/g DW, respectively. Non-toxic concentrations were selected to perform coagulation experiments."
+      },
+      {
+        "passage_id": "pmc-12927844#abstract-12",
+        "source_id": "pmc-12927844",
+        "located_in": "abstract",
+        "text": "Conclusion Methanolic extracts of P. granatum show promise as procoagulants, while Q. infectoria acts as an anticoagulant, and A. millefolium remains neutral in this context."
+      },
+      {
+        "passage_id": "pmc-13210741#abstract-0",
+        "source_id": "pmc-13210741",
+        "located_in": "abstract",
+        "text": "Background/Objectives : Achillea millefolium is a well-known medicinal plant recognized in several pharmacopeias, while the Balkan endemic species Achillea clypeolata lacks a pharmacopeial monograph and remains insufficiently studied despite its traditional use. This study aimed to comparatively evaluate the phytochemical composition and biological potential of both species."
+      },
+      {
+        "passage_id": "pmc-13210741#abstract-5",
+        "source_id": "pmc-13210741",
+        "located_in": "abstract",
+        "text": "Extracts exhibited marked anti-inflammatory activity, where A. millefolium provided greater protection under heat-induced hemolysis, and both extracts showed comparable efficacy under osmotic stress. Concentration-dependent inhibition of collagenase, elastase, hyaluronidase, and tyrosinase (concentration from 62.5 to 1000 µg/mL), along with significant antioxidant activity in ABTS and DPPH assays, was observed."
+      },
+      {
+        "passage_id": "pmc-13209759#abstract-2",
+        "source_id": "pmc-13209759",
+        "located_in": "abstract",
+        "text": "This study evaluated the chemical composition, antimicrobial activity, and interaction effects of Hypericum perforatum (HP) and Achillea millefolium (AM) EOs, tested individually and in fixed-ratio combinations. Chemical profiling by GC-MS revealed that HP EO is dominated by caryophyllene (20.74%) and β-thujone (18.47%), while AM EO is characterized by aromadendrene (19.12%), caryophyllene (12.97%), and chamazulene (10.13%)."
+      },
+      {
+        "passage_id": "pmc-13208160#abstract-1",
+        "source_id": "pmc-13208160",
+        "located_in": "abstract",
+        "text": "Four extracts obtained from Achillea millefolium were biochemically characterized through spectrophotometric and chromatographic analyses, confirming a substantial polyphenolic content and associated antioxidant capacity. In addition, the hydroethanolic extract (1:1) was examined for its ability to inhibit the corrosion of S235 mild steel in 1 M HCl and neutral medium of 3.5% NaCl by gravimetry, potentiodynamic polarization, open-circuit potential, and electrochemical impedance spectroscopy methods, suggesting that its antioxidant molecules may contribute to the passivation of the metal surface, but in different mechanistic ways."
+      },
+      {
+        "passage_id": "pmc-13208160#abstract-3",
+        "source_id": "pmc-13208160",
+        "located_in": "abstract",
+        "text": "The inhibitory efficiency determined by both the gravimetric method and the Taffel polarization curve method reaches values of 78.53% in HCl 1 M and of 79.65% in NaCl 3.5%, thus demonstrating the contribution of polyphenols from the Achillea millefolium extracts to the inhibition of corrosion."
+      },
+      {
+        "passage_id": "pmc-13164761#abstract-0",
+        "source_id": "pmc-13164761",
+        "located_in": "abstract",
+        "text": "In this study, we investigated the antifungal potential of methanolic extracts and essential oils obtained from five medicinal plants ( Salvadora persica , Mentha spicata , Achillea millefolium , Matricaria chamomilla , and Zingiber officinale ) against 25 clinical isolates of Candida albicans collected from patients with denture stomatitis. Antifungal susceptibility was assessed using broth microdilution as the primary method, with agar diffusion assays performed to provide complementary visual confirmation."
+      },
+      {
+        "passage_id": "pmc-13517077#abstract-1",
+        "source_id": "pmc-13517077",
+        "located_in": "abstract",
+        "text": "The aim of this study was to evaluate the chemical composition, antioxidant and antimicrobial properties, as well as in vivo toxicity against Drosophila melanogaster of the EOs extracted from Achillea millefolium L. (AM), Mentha longifolia L."
+      },
+      {
+        "passage_id": "pmc-13516345#abstract-2",
+        "source_id": "pmc-13516345",
+        "located_in": "abstract",
+        "text": "The present study investigated the antibiofilm activity and possible mechanism of action of (+)-endo-borneol isolated from the essential oil of Achillea millefolium against S. mutans . The chemical composition of the essential oil was characterized by gas chromatography-mass spectrometry (GC-MS), and (+)-endo-borneol was isolated by chromatographic separation."
+      },
+      {
+        "passage_id": "pmc-12654173#abstract-3",
+        "source_id": "pmc-12654173",
+        "located_in": "abstract",
+        "text": "Methods: In order to elucidate the beneficial potential of alternative food sources, we employed state-of-the-art UHPLC-MS and ICP-MS technologies to perform comprehensive metabolome and metallome analyses of five edible European plants, some of which are known as underutilized crops: Achillea millefolium , Agastache rugosa , Cercis siliquastrum , Crithmum maritimum , and Mespilus germanica . Results: This study reveals valuable nutritional properties such as high levels of essential amino acids, sugars, organic acids, health-promoting secondary metabolites, and essential microelements that are important for human diet."
+      },
+      {
+        "passage_id": "pmc-12654173#abstract-5",
+        "source_id": "pmc-12654173",
+        "located_in": "abstract",
+        "text": "The analyzed samples indicate that A. millefolium , C. siliquastrum , and M. germanica could be marked as a viable source of beneficial flavonoids. In turn, both leaves and fruits of A. rugosa had elevated abundances of organic acids, along with A. millefolium and C. siliquastrum ."
+      },
+      {
+        "passage_id": "pmc-12654173#abstract-6",
+        "source_id": "pmc-12654173",
+        "located_in": "abstract",
+        "text": "In turn, both leaves and fruits of A. rugosa had elevated abundances of organic acids, along with A. millefolium and C. siliquastrum . Similar results were observed for amino acids."
+      },
+      {
+        "passage_id": "pmc-12654173#abstract-10",
+        "source_id": "pmc-12654173",
+        "located_in": "abstract",
+        "text": "The leaves of C. maritimum and A. millefolium are also a good source of K and Mn. Interestingly, the sampled leaves of C. maritimum contained a very high amount of B, representing more than three times the reference nutrient value for 100 g of plant material."
+      },
+      {
+        "passage_id": "pmc-12639085#abstract-4",
+        "source_id": "pmc-12639085",
+        "located_in": "abstract",
+        "text": "The research material was composed of eight herbal infusions: Cistus incanus L., Camellia sinensis L., Achillea millefolium L., Centaurium erythraea Rafn, Leonurus cardiaca L., Salvia officinalis L., Melissa officinalis L., Mentha piperita L. Antioxidant capacity (DPPH, ABTS), total polyphenol (TP, FBBB) and total flavonoid (TF) content were determined."
+      },
+      {
+        "passage_id": "pmc-12639085#abstract-8",
+        "source_id": "pmc-12639085",
+        "located_in": "abstract",
+        "text": "The lowest values were determined for Achillea millefolium and Centaurium erythraea teas. All tested herbal infusions presented varied antibacterial activity, although all of them were more efficacious against Gram-positive than Gram-negative bacteria."
+      },
+      {
+        "passage_id": "epmc-a9e9bc9555#abstract-0",
+        "source_id": "epmc-a9e9bc9555",
+        "located_in": "abstract",
+        "text": "Abstract Yarrow, or Achillea millefolium L., a species belonging to the family Asteraceae, it is the most important angiospermic family in the world. Native to temperate zones of the northern hemisphere."
+      },
+      {
+        "passage_id": "epmc-a9e9bc9555#abstract-4",
+        "source_id": "epmc-a9e9bc9555",
+        "located_in": "abstract",
+        "text": "This study provides the morphological and anatomical features of A. millefolium , and focuses on various parts of plant, such as root, rhizome, stem, leaves, and petiole, and includes macroscopic and powdered investigations also. Morphological identification features were observed, such as feathery leaves and unique inflorescences."
+      },
+      {
+        "passage_id": "epmc-a9e9bc9555#abstract-11",
+        "source_id": "epmc-a9e9bc9555",
+        "located_in": "abstract",
+        "text": "This study provides the key role of taxonomical and anatomical characteristics for identification and standardisation of A. millefolium . This is essential to ensure the efficacy, safety, and quality of herbal based medicines formed from this plant."
+      },
+      {
+        "passage_id": "epmc-a9e9bc9555#abstract-13",
+        "source_id": "epmc-a9e9bc9555",
+        "located_in": "abstract",
+        "text": "By effectively distinguishing A. millefolium from possible adulterants and substitutes, this study will be helpful for the pharmaceutical and herbal formulations, and provides a therapeutic outcomes."
+      },
+      {
+        "passage_id": "pmc-12592042#abstract-5",
+        "source_id": "pmc-12592042",
+        "located_in": "abstract",
+        "text": "Remedies such as Achillea millefolium poultices and Citrus bergamia decoctions are employed to treat various types of chronic wounds, including venous, arterial, and diabetic ulcers. These treatments are adapted to a vernacular taxonomy of wound severity and are often accompanied by symbolic or ritual meanings."
+      },
+      {
+        "passage_id": "pmid-42316569#abstract-0",
+        "source_id": "pmid-42316569",
+        "located_in": "abstract",
+        "text": "Achillea millefolium, a perennial herb, is commonly found in Europe and Asia, particularly in the Northern Hemisphere. It is a member of the Asteraceae family, the Achillea genus, and the kingdom Plantae."
+      },
+      {
+        "passage_id": "pmid-42316569#abstract-2",
+        "source_id": "pmid-42316569",
+        "located_in": "abstract",
+        "text": "Due to its wide range of pharmacological characteristics, A. millefolium attracts significant scientific research. It has long been used in medicinal systems to treat digestive problems, wound healing, and pain relief."
+      },
+      {
+        "passage_id": "pmid-42316569#abstract-4",
+        "source_id": "pmid-42316569",
+        "located_in": "abstract",
+        "text": "Both in vivo and in vitro investigations highlight Achillea millefolium's anti-inflammatory, antioxidant, antispasmodic, and antimicrobial qualities. This review integrates traditional ethnobotanical knowledge with current pharmacological research."
+      },
+      {
+        "passage_id": "pmid-42316569#abstract-9",
+        "source_id": "pmid-42316569",
+        "located_in": "abstract",
+        "text": "The general public is increasingly using A. millefolium because of its broad-spectrum efficacy and desirable safety profile, which have shown significant herbal lead compounds for medical treatment. A. millefolium multitarget pharmacological activity is associated with a range of bioactive substances, including terpenoids, flavonoids, alkaloids, and phenolic acids, according to phytochemical studies."
+      },
+      {
+        "passage_id": "pmid-42316569#abstract-10",
+        "source_id": "pmid-42316569",
+        "located_in": "abstract",
+        "text": "A. millefolium multitarget pharmacological activity is associated with a range of bioactive substances, including terpenoids, flavonoids, alkaloids, and phenolic acids, according to phytochemical studies. The information acquired in this study provides credibility to its potential as an herbal treatment for oxidative stress, inflammation, microbial infections, and spasms."
+      },
+      {
+        "passage_id": "pmid-40601286#abstract-5",
+        "source_id": "pmid-40601286",
+        "located_in": "abstract",
+        "text": "Relative to adult RDAs, Marrubium vulgare is a key source of Ca (64%) and K (22%), Achillea millefolium provides Mg (98%), Fe (54%), and Mn (97%), and Matricaria chamomilla contributes Cu (86%). The bioaccumulation factor (BCF) averaged 0.68 for Cd, 0.27 for Cu, 0.005 for Fe, 0.26 for Mn, 0.05 for Ni, and 0.44 for Zn, with the highest BCF for Cd (0.92 in Urtica dioica) and lowest for Fe (0.0031 in Marrubium vulgare)."
+      },
+      {
+        "passage_id": "pmc-13250260#abstract-0",
+        "source_id": "pmc-13250260",
+        "located_in": "abstract",
+        "text": "Medicinal plants, including Achillea millefolium Linn., have been used for centuries because of their health benefits. Various parts, such as flowers, leaves, and stems, are used for different purposes due to the presence of different bioactive compounds that have the potential for disease prevention and management."
+      },
+      {
+        "passage_id": "pmc-13250260#abstract-2",
+        "source_id": "pmc-13250260",
+        "located_in": "abstract",
+        "text": "The present review article provides an insight into A. millefolium L., including its morphological description, phytochemistry, pharmacological properties, synergistic interactions with other therapeutics, nanoparticles formulation, and commercial and industrial uses. A. millefolium L. possesses a wide range of therapeutic applications because it can decrease oxidative stress and has strong antimicrobial activity."
+      },
+      {
+        "passage_id": "pmc-13250260#abstract-3",
+        "source_id": "pmc-13250260",
+        "located_in": "abstract",
+        "text": "A. millefolium L. possesses a wide range of therapeutic applications because it can decrease oxidative stress and has strong antimicrobial activity. It is also involved in the treatment of metabolic diseases, such as diabetes, inflammation, and cancer, by modulating signaling pathways (NF-κB, PI3K/AKT/mTOR, RAS/RAF) and inflammatory markers (IL-6, IL-1β, TNF-α)."
+      },
+      {
+        "passage_id": "pmc-13250260#abstract-5",
+        "source_id": "pmc-13250260",
+        "located_in": "abstract",
+        "text": "The synergistic effects of A. millefolium L. with other medicinal plants, drugs, and nano-formulations are important factors for its clinical applications. In addition, it has been used in commercial cosmetics, the food sector, and other products because it is considered safe and has wound-healing properties."
+      },
+      {
+        "passage_id": "pmc-13250260#abstract-7",
+        "source_id": "pmc-13250260",
+        "located_in": "abstract",
+        "text": "Finally, the wide range of phytochemicals and the essential oil composition of A. millefolium L. indicate broad therapeutic potential and warrant further studies into its additional benefits. Sophisticated technologies and approaches are required to design and test drug formulations and delivery systems."
+      },
+      {
+        "passage_id": "pmc-12996529#abstract-0",
+        "source_id": "pmc-12996529",
+        "located_in": "abstract",
+        "text": "Biologically synthesized reduced graphene oxide nanoparticles (rGO NPs) and Fe₂O₃/rGO nanocomposites (NCs) were evaluated for their effects on growth and phytochemical responses of Achillea millefolium regenerated shoot cultures. rGO NPs exhibited in vitro cytotoxicity but did not significantly affect overall growth parameters. In contrast, Fe₂O₃/rGO NCs selectively enhanced root elongation at 20 mg/L, indicating a dose-dependent stimulatory response."
+      },
+      {
+        "passage_id": "pmc-12996529#abstract-5",
+        "source_id": "pmc-12996529",
+        "located_in": "abstract",
+        "text": "These findings suggest that Fe₂O₃/rGO NCs, at optimized concentrations, can function as effective elicitors for in vitro enhancement of secondary metabolite production in A. millefolium."
+      },
+      {
+        "passage_id": "pmid-42725524#abstract-2",
+        "source_id": "pmid-42725524",
+        "located_in": "abstract",
+        "text": "This study aimed to establish a green, sunlight-assisted biosynthesis route for SeNPs using dual extracts of Achillea millefolium and Echinops spp., optimized through response surface methodology. Methods Synthesis conditions were optimized using a central composite design."
+      },
+      {
+        "passage_id": "pmid-42348360#abstract-1",
+        "source_id": "pmid-42348360",
+        "located_in": "abstract",
+        "text": "In this study, manganese oxide nanoparticles (MnO NPs) were biosynthesised using Achillea millefolium L. leaf methanolic extract and evaluated for their antioxidant and anticancer activities against human neuroblastoma IMR-32 cells. Phytochemical screening and GC-MS analysis of the extract revealed the presence of diverse bioactive compounds, with major constituents including stigmast-5-en-3-ol (23.64%), 2-hexadecen-1-ol, 3,7,11,15-tetramethyl- (6.81%), 2,6,10-trimethyl,14-ethylene-14-pentadecne (5.95%) and 9-octadecenoic acid (5.70%), and terpenoid derivatives (~6.81%)."
+      },
+      {
+        "passage_id": "pmid-42348360#abstract-8",
+        "source_id": "pmid-42348360",
+        "located_in": "abstract",
+        "text": "Taken together, these findings suggest that A. millefolium-mediated MnO NPs exhibit notable antioxidant properties along with ROS-mediated anticancer activity. This indicates their potential as a promising and environmentally friendly nanotherapeutic approach for the treatment of neuroblastoma, although further investigation is needed to confirm their efficacy and safety."
+      },
+      {
+        "passage_id": "pmc-13708942#abstract-3",
+        "source_id": "pmc-13708942",
+        "located_in": "abstract",
+        "text": "The phytochemical composition of five medicinal plants, Verbena officinalis , Plantago major , Achillea millefolium , Hypericum perforatum , and Calendula officinalis , was investigated using ultra-high-performance liquid chromatography coupled with high-resolution electrospray ionization tandem mass spectrometry (UHPLC-ESI-HRMS/MS). A total of 162 metabolites were identified across the investigated extracts, representing diverse classes including flavonoids, phenolic acids, phenylethanoid glycosides, xanthones, naphthodianthrones, acylphloroglucinols and iridoid glycosides."
+      }
+    ]
+  },
+  "counts": {
+    "sources": 37,
+    "open_access_sources": 30,
+    "passages": 47
+  },
+  "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."
+}

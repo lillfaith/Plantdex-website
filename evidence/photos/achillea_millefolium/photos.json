@@ -1,0 +1,883 @@
+{
+  "species": "Achillea millefolium",
+  "fetched_at": "2026-11-05T01:46:00+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 52821,
+    "name": "Achillea millefolium",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Achillea_millefolium"
+  },
+  "photos": [
+    {
+      "photo_id": 126222917,
+      "observation_id": 77191642,
+      "observation_url": "https://www.inaturalist.org/observations/77191642",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-03",
+      "place": "Bronx, NY, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/126222917/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/126222917/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/126222917/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-126222917.jpeg",
+      "bytes": 1745143,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144230937,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230937/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230937/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230937/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1806,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144230937.jpg",
+      "bytes": 717395,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144230961,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230961/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230961/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230961/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2013
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144230961.jpg",
+      "bytes": 733473,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144230995,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230995/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230995/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144230995/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144230995.jpg",
+      "bytes": 1774056,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144231035,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231035/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231035/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231035/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144231035.jpg",
+      "bytes": 1462987,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144231067,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231067/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231067/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231067/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2014
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144231067.jpg",
+      "bytes": 819560,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144231095,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231095/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231095/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231095/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1949,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144231095.jpg",
+      "bytes": 634442,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144231137,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231137/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231137/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231137/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1762,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144231137.jpg",
+      "bytes": 652238,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144231179,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231179/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231179/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231179/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2040
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144231179.jpg",
+      "bytes": 2556213,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 144231195,
+      "observation_id": 87477776,
+      "observation_url": "https://www.inaturalist.org/observations/87477776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-17",
+      "place": "Hardman Farm Rd, Sautee, GA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231195/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231195/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/144231195/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1946
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-144231195.jpg",
+      "bytes": 676100,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 79131805,
+      "observation_id": 49768063,
+      "observation_url": "https://www.inaturalist.org/observations/49768063",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-15",
+      "place": "High Park, Toronto, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/79131805/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/79131805/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/79131805/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-79131805.jpg",
+      "bytes": 1173990,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 657339603,
+      "observation_id": 360246750,
+      "observation_url": "https://www.inaturalist.org/observations/360246750",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-10",
+      "place": "F9RG+23, Gatineau, QC J8P 1G5, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/657339603/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/657339603/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/657339603/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-657339603.jpg",
+      "bytes": 2517802,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 39468463,
+      "observation_id": 25479241,
+      "observation_url": "https://www.inaturalist.org/observations/25479241",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-05-20",
+      "place": "Point Reyes National Seashore, Marin County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/39468463/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/39468463/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/39468463/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-39468463.jpeg",
+      "bytes": 2361128,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 39468475,
+      "observation_id": 25479241,
+      "observation_url": "https://www.inaturalist.org/observations/25479241",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-05-20",
+      "place": "Point Reyes National Seashore, Marin County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/39468475/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/39468475/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/39468475/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-39468475.jpeg",
+      "bytes": 2716109,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 592777144,
+      "observation_id": 327222795,
+      "observation_url": "https://www.inaturalist.org/observations/327222795",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-16",
+      "place": "North Okanagan, BC, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/592777144/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/592777144/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/592777144/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-592777144.jpg",
+      "bytes": 3258618,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 592777148,
+      "observation_id": 327222795,
+      "observation_url": "https://www.inaturalist.org/observations/327222795",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-16",
+      "place": "North Okanagan, BC, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/592777148/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/592777148/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/592777148/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-592777148.jpg",
+      "bytes": 3294628,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70766249,
+      "observation_id": 44636458,
+      "observation_url": "https://www.inaturalist.org/observations/44636458",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-02",
+      "place": "William Howard Way, Tall Timbers, MD, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70766249/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70766249/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70766249/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-70766249.jpg",
+      "bytes": 1257850,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 616389103,
+      "observation_id": 338896854,
+      "observation_url": "https://www.inaturalist.org/observations/338896854",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-16",
+      "place": "Grand Portland, Oklahoma City, OK, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389103/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389103/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389103/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 946
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-616389103.jpg",
+      "bytes": 1507661,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 616389124,
+      "observation_id": 338896854,
+      "observation_url": "https://www.inaturalist.org/observations/338896854",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-16",
+      "place": "Grand Portland, Oklahoma City, OK, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389124/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389124/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389124/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 946
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-616389124.jpg",
+      "bytes": 1472979,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 616389139,
+      "observation_id": 338896854,
+      "observation_url": "https://www.inaturalist.org/observations/338896854",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-16",
+      "place": "Grand Portland, Oklahoma City, OK, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389139/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389139/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389139/medium.jpg"
+      },
+      "dimensions": {
+        "width": 946,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-616389139.jpg",
+      "bytes": 1867511,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 616389166,
+      "observation_id": 338896854,
+      "observation_url": "https://www.inaturalist.org/observations/338896854",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-16",
+      "place": "Grand Portland, Oklahoma City, OK, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389166/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389166/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389166/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 946
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-616389166.jpg",
+      "bytes": 1906067,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 616389188,
+      "observation_id": 338896854,
+      "observation_url": "https://www.inaturalist.org/observations/338896854",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-16",
+      "place": "Grand Portland, Oklahoma City, OK, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389188/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389188/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/616389188/medium.jpg"
+      },
+      "dimensions": {
+        "width": 946,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-616389188.jpg",
+      "bytes": 1860170,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 532166462,
+      "observation_id": 295599589,
+      "observation_url": "https://www.inaturalist.org/observations/295599589",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-05",
+      "place": "Cowell-Purisima Trail, Half Moon Bay, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/532166462/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/532166462/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/532166462/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1395,
+        "height": 1952
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-532166462.jpg",
+      "bytes": 994314,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13749694,
+      "observation_id": 10000650,
+      "observation_url": "https://www.inaturalist.org/observations/10000650",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-02-14",
+      "place": "Auckland, Mt Albert, Unitec Institute of Technology Campus Grounds",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13749694/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13749694/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13749694/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1856
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13749694.jpg",
+      "bytes": 3168051,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13749697,
+      "observation_id": 10000650,
+      "observation_url": "https://www.inaturalist.org/observations/10000650",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-02-14",
+      "place": "Auckland, Mt Albert, Unitec Institute of Technology Campus Grounds",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13749697/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13749697/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13749697/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1493,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13749697.jpg",
+      "bytes": 2803815,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 442966304,
+      "observation_id": 247962794,
+      "observation_url": "https://www.inaturalist.org/observations/247962794",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-18",
+      "place": "Frick Park, Pittsburgh, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/442966304/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/442966304/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/442966304/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-442966304.jpeg",
+      "bytes": 1807420,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 233744406,
+      "observation_id": 136914665,
+      "observation_url": "https://www.inaturalist.org/observations/136914665",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-28",
+      "place": "Coyote Point Recreation Area, San Mateo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744406/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744406/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744406/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-233744406.jpg",
+      "bytes": 803814,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 233744339,
+      "observation_id": 136914665,
+      "observation_url": "https://www.inaturalist.org/observations/136914665",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-28",
+      "place": "Coyote Point Recreation Area, San Mateo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744339/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744339/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744339/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-233744339.jpg",
+      "bytes": 1276877,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 233744355,
+      "observation_id": 136914665,
+      "observation_url": "https://www.inaturalist.org/observations/136914665",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-28",
+      "place": "Coyote Point Recreation Area, San Mateo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744355/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744355/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744355/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-233744355.jpg",
+      "bytes": 1059235,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 233744374,
+      "observation_id": 136914665,
+      "observation_url": "https://www.inaturalist.org/observations/136914665",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-28",
+      "place": "Coyote Point Recreation Area, San Mateo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744374/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744374/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744374/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-233744374.jpg",
+      "bytes": 845802,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 233744392,
+      "observation_id": 136914665,
+      "observation_url": "https://www.inaturalist.org/observations/136914665",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-28",
+      "place": "Coyote Point Recreation Area, San Mateo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744392/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744392/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/233744392/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-233744392.jpg",
+      "bytes": 2187360,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 589971183,
+      "observation_id": 325812714,
+      "observation_url": "https://www.inaturalist.org/observations/325812714",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-11-08",
+      "place": "Montgomery County, MD, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/589971183/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/589971183/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/589971183/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Achillea millefolium",
+      "taxon_id": 52821,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-589971183.jpg",
+      "bytes": 815309,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}
