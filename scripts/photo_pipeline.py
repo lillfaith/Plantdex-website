@@ -161,7 +161,13 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
     # ── positive scoring, each term named ────────────────────────────────────────────
     pts = out["points"]
     pts["resolution"] = round(min(1.0, orig_edge / 2048) * 10, 1)
-    pts["sharpness"] = round(min(1.0, sharp / 25) * 10, 1)
+    # SHARPNESS IS SCORED ON THE ISOLATED SUBJECT, AFTER SEGMENTATION, not here. Even
+    # masked to plant colour this is measured over the whole frame, so it still counts the
+    # out-of-focus foliage BEHIND the plant -- and shallow depth of field is the property
+    # that makes a botanical close-up good and separable in the first place. Measured this
+    # way the best chamomile in the set scored 2.5 out of 10 for being sharp. What survives
+    # here is only the reject gate above, which catches a photograph that is soft all over.
+    pts["sharpness_prefilter"] = 0.0
     # reproductive structures, foliage, and whether BOTH are present
     flower = float((m["white"] | m["yellow"]).mean())
     foliage = float(m["green"].mean())
@@ -223,7 +229,7 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
         areas = np.sort(hstats[1:, cv2.CC_STAT_AREA])[::-1]
         big = float(areas[0] / (h * w))
         count = int((areas >= areas[0] * 0.25).sum())
-        pts["specimen_scale"] = round(min(1.0, big / 0.05) * 24, 1)
+        pts["disc_scale"] = round(min(1.0, big / 0.05) * 14, 1)
         # ORIENTATION. A disc facing the viewer is deeply saturated; the pale green-yellow
         # receptacle on the back of a flower is not. Median saturation inside the gold
         # separates them: 249 on a bloom facing the camera, 153 on one facing away.
@@ -243,8 +249,32 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
             out["flags"].append(
                 f"{count} similarly sized flower heads: reads as a colony, not a specimen")
     else:
-        pts["specimen_scale"] = pts["disc_facing"] = 0.0
-        out["flags"].append("no saturated flower disc found")
+        pts["disc_facing"] = 0.0
+        pts["specimen_scale"] = 0.0
+    # SPECIMEN SCALE, GENERALISED. The disc terms above are specific to a composite, and a
+    # pine, a shrub or a grass has no disc at all -- for those every candidate would score
+    # zero and the term would rank nothing. So scale is measured on the largest COHERENT
+    # SUBJECT REGION, which exists for any growth form: one plant filling a reasonable share
+    # of the frame scores well, a distant stand of many small ones does not. The disc bonus
+    # is added on top where a disc exists, rather than being the only way to earn the points.
+    sub_u8 = cv2.morphologyEx(subject.astype(np.uint8), cv2.MORPH_OPEN,
+                              np.ones((7, 7), np.uint8))
+    ns, _, sstats, _ = cv2.connectedComponentsWithStats(sub_u8, 8)
+    if ns > 1:
+        sa = np.sort(sstats[1:, cv2.CC_STAT_AREA])[::-1]
+        biggest = float(sa[0] / (h * w))
+        # PEAKED, NOT MONOTONIC. "Bigger is better" is the same bias that kept promoting
+        # colony photographs: a plant covering 90% of the frame is either a stand or a crop
+        # so tight there is nothing to place. The deck's subjects cover about a third of the
+        # art window, so the target here is a subject that occupies a comparable share of
+        # its own photograph, and both too small and too large lose points.
+        target = 0.35
+        pts["specimen_scale"] = round(
+            max(0.0, 1 - abs(biggest - target) / target) * 16, 1)
+        out["measured_subject"] = {"largest_region_frac": round(biggest, 4),
+                                   "regions": int((sa >= sa[0] * 0.2).sum())}
+    else:
+        pts["specimen_scale"] = 0.0
     pts["identification"] = 6.0 if (meta.get("identification_agreements") or 0) >= 2 else 3.0
     if (meta.get("identification_agreements") or 0) < 2:
         out["flags"].append("only one agreeing identification; research grade is not proof")
@@ -506,7 +536,18 @@ def main() -> int:
         retention = float(kept_green / max(1.0, src_green))
         s["green_retention"] = round(retention, 3)
         s["points"]["structure_retention"] = round(min(1.0, retention / 0.25) * 14, 1)
-        s["score"] = round(s["score"] + s["points"]["structure_retention"], 1)
+        # SUBJECT SHARPNESS: gradient energy inside the cutout's own alpha, so the blurred
+        # background is not in the measurement at all. This is the term the pre-filter
+        # could not compute honestly, and it is why it waits until after segmentation.
+        gcut = cv2.cvtColor(cut_bgr, cv2.COLOR_BGR2GRAY).astype(float)
+        gx = np.abs(np.diff(gcut, axis=0))[:, :-1]
+        gy = np.abs(np.diff(gcut, axis=1))[:-1, :]
+        inside = alpha[:-1, :-1]
+        subj_sharp = float(np.mean(gx[inside] + gy[inside])) if inside.sum() > 500 else 0.0
+        s["subject_sharpness"] = round(subj_sharp, 1)
+        s["points"]["subject_sharpness"] = round(min(1.0, subj_sharp / 18) * 14, 1)
+        s["score"] = round(s["score"] + s["points"]["structure_retention"]
+                           + s["points"]["subject_sharpness"], 1)
         if retention < 0.10:
             s["flags"].append(
                 f"segmentation kept only {100*retention:.0f}% of the foliage: stems and "
