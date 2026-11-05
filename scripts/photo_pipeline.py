@@ -20,6 +20,7 @@ from PIL import Image
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import card_art                                     # noqa: E402  (segmentation lives there)
+import segment_plant                                # noqa: E402  (BiRefNet, colour fallback)
 import render_generated_card as R                   # noqa: E402  (template + slot geometry)
 
 STYLE = ROOT / "docs" / "plantdex-photo-style.json"
@@ -371,10 +372,17 @@ def main() -> int:
     # candidate can fail it after scoring well, so taking the first `top` and stopping
     # returns fewer previews than asked for and silently skips candidates that would have
     # passed. Reject, then evaluate the next one.
+    # SEGMENT ONLY WHAT WE MIGHT SHOW. BiRefNet costs ~25s an image against ~2s for the
+    # colour method, so segmenting all 32 candidates to show 3 would spend thirteen minutes
+    # to throw most of it away. Scoring is cheap and ranks first; this takes the ranked list
+    # and works down it, stopping once enough have survived segmentation. At 2,000 species
+    # that is the difference between a few CPU-hours and a few hundred.
+    budget = a.top * 3
     results = []
-    for s in usable:
+    for s in usable[:budget]:
         src = pdir / s["file"]
-        cut = card_art.cutout(src, margin=0.06, iterations=6)
+        cut, how = segment_plant.cutout(src)
+        s["segmented_by"] = how
         alpha = np.array(cut.getchannel("A")) > 127
         solidity = float(alpha.mean())
         if solidity > MAX_CUTOUT_SOLIDITY:

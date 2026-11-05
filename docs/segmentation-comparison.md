@@ -93,3 +93,31 @@ on availability grounds.
 `Mentha piperita` resolves to no exactly-matching active species taxon, because it is the
 hybrid *M. × piperita*. That is the matcher behaving correctly, and a reminder that hybrid
 species need explicit handling before the programme scales.
+
+## Correction: BiRefNet beats the colour method, and the earlier conclusion was too broad
+
+"The AI models lose" was measured on U²-Net, ISNet and SAM, and it holds for those. It does
+**not** generalise to **BiRefNet-general-lite**, which is a different kind of model: a
+dichotomous-segmentation network built for fine, high-frequency boundaries rather than a
+salient-object detector.
+
+On the same photograph where U²-Net kept only the yellow disc, BiRefNet keeps the petals,
+the stem, the leaves and the bud — and removes the background foliage that colour
+segmentation cannot, because it separates figure from ground instead of matching hues. That
+was the one limitation this document recorded as unsolved.
+
+| | U²-Net | colour | BiRefNet-lite |
+|---|---|---|---|
+| alpha kept on the test photo | 0.078 | 0.446 | 0.403 |
+| petals | discarded | kept | kept |
+| stem and bud | discarded | kept | kept |
+| background foliage | removed | **kept** | **removed** |
+| seconds per image | 0.6 | 2.1 | 24.5 |
+
+BiRefNet is therefore the primary method (`scripts/segment_plant.py`), with colour
+segmentation as a **loud** fallback — it prints which method ran, because a silent downgrade
+would ship a worse cutout under the better method's name.
+
+It costs ~25s an image, so the pipeline scores cheaply and segments only the candidates it
+is going to show (`budget = top * 3`). At 2,000 species that is the difference between a few
+CPU-hours and a few hundred.
