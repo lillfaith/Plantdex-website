@@ -136,9 +136,16 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
     # amount of masking brings it back. Rejecting on presence alone threw out the best
     # chamomile photograph in the set, whose finger sits entirely behind the bloom.
     if skin_frac > MAX_SKIN and skin_smooth < SKIN_SMOOTH and obstructs:
-        out["reject"].append(
-            f"a hand or finger crosses the plant itself ({100*skin_frac:.1f}% of frame, "
-            f"internal gradient {skin_smooth:.1f})")
+        # JUDGED ON THE CUTOUT, NOT ON THE SOURCE. This was a hard rejection, written when
+        # segmentation could not remove a hand -- colour matting kept the finger, so a
+        # photograph containing one was unusable whatever else it had going for it. With
+        # BiRefNet the finger comes out cleanly, and rejecting on the SOURCE threw away the
+        # best-composed chamomile in the set: a bloom facing the camera, 7.7% of frame at
+        # disc saturation 249, with stem, leaves and bud intact. The check now survives as
+        # a flag, and `skin_survives` below rejects the cutout if the hand is still in it.
+        out["flags"].append(
+            f"a hand crosses the plant in the source ({100*skin_frac:.1f}% of frame); the "
+            f"cutout is checked afterwards and rejected if any of it survives")
     elif skin_frac > MAX_SKIN and skin_smooth < SKIN_SMOOTH:
         out["flags"].append(
             f"a hand is present behind the subject ({100*skin_frac:.1f}% of frame) but does "
@@ -158,9 +165,14 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
     # reproductive structures, foliage, and whether BOTH are present
     flower = float((m["white"] | m["yellow"]).mean())
     foliage = float(m["green"].mean())
-    pts["flowers_visible"] = round(min(1.0, flower / 0.12) * 12, 1)
-    pts["foliage_visible"] = round(min(1.0, foliage / 0.25) * 12, 1)
-    pts["whole_plant"] = 14.0 if (flower > 0.02 and foliage > 0.05) else 0.0
+    pts["flowers_visible"] = round(min(1.0, flower / 0.12) * 10, 1)
+    # FOLIAGE IS WORTH LESS THAN IT WAS, AND `whole_plant` IS GONE. Both measured green as
+    # a share of the FRAME, which is maximised by a photograph of a meadow and minimised by
+    # a close-up of one bloom on a thin stem -- the second being what a card wants. Together
+    # they were 26 points, and they kept pushing colony photographs over single specimens.
+    # Whether the plant actually has its stems is now checked where it can be checked
+    # honestly: on the CUTOUT, by `structure_retention`, after segmentation.
+    pts["foliage_visible"] = round(min(1.0, foliage / 0.25) * 6, 1)
     # NO frame-fill term here. How much of the CARD a plant ends up covering is a property
     # of the PLACEMENT, not of the photograph: a bloom filling 60% of its own frame can be
     # seated to occupy the deck's usual 31% of the window. Scoring the raw photograph
@@ -211,12 +223,12 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
         areas = np.sort(hstats[1:, cv2.CC_STAT_AREA])[::-1]
         big = float(areas[0] / (h * w))
         count = int((areas >= areas[0] * 0.25).sum())
-        pts["specimen_scale"] = round(min(1.0, big / 0.05) * 18, 1)
+        pts["specimen_scale"] = round(min(1.0, big / 0.05) * 24, 1)
         # ORIENTATION. A disc facing the viewer is deeply saturated; the pale green-yellow
         # receptacle on the back of a flower is not. Median saturation inside the gold
         # separates them: 249 on a bloom facing the camera, 153 on one facing away.
         sat = float(np.median(Ss[gold])) if gold.sum() > 50 else 0.0
-        pts["disc_facing"] = round(max(0.0, min(1.0, (sat - 140) / 100)) * 12, 1)
+        pts["disc_facing"] = round(max(0.0, min(1.0, (sat - 140) / 100)) * 18, 1)
         out["measured_heads"] = {"largest_disc_frac": round(big, 4),
                                  "comparable_heads": count, "disc_saturation": round(sat, 1)}
         if sat < 180:
@@ -457,7 +469,7 @@ def main() -> int:
     # to throw most of it away. Scoring is cheap and ranks first; this takes the ranked list
     # and works down it, stopping once enough have survived segmentation. At 2,000 species
     # that is the difference between a few CPU-hours and a few hundred.
-    budget = a.top * 3
+    budget = a.top * 5
     results = []
     for s in usable[:budget]:
         src = pdir / s["file"]
@@ -473,6 +485,16 @@ def main() -> int:
                   f"(solidity {solidity:.2f})")
             continue
         s["cutout_solidity"] = round(solidity, 3)
+        # DID THE HAND SURVIVE? The source check is only a flag now, so this is the gate.
+        cut_bgr0 = cv2.cvtColor(np.array(cut.convert("RGB")), cv2.COLOR_RGB2BGR)
+        skin_left = float((masks(cut_bgr0)["skin"] & alpha).sum() / max(1, alpha.sum()))
+        s["skin_in_cutout"] = round(skin_left, 4)
+        if skin_left > 0.04:
+            s["reject"].append(
+                f"a hand survives segmentation: {100*skin_left:.1f}% of the cutout is skin")
+            print(f"   {s['photo_id']}: rejected, hand survives the cutout "
+                  f"({100*skin_left:.1f}%)")
+            continue
         # DID SEGMENTATION KEEP THE STEMS? A blurred stem is low-contrast and matting drops
         # it, so a cutout can be clean and still be a flower head floating with nothing
         # holding it up. Comparing the green surviving in the cutout against the green in
