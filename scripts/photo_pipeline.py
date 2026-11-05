@@ -169,7 +169,21 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
     # here is only the reject gate above, which catches a photograph that is soft all over.
     pts["sharpness_prefilter"] = 0.0
     # reproductive structures, foliage, and whether BOTH are present
-    flower = float((m["white"] | m["yellow"]).mean())
+    # FLOWERS, NOT BRIGHT PIXELS. `white | yellow` over the frame is a brightness test: on
+    # a Dandelion photograph showing nothing but a leaf rosette it returned the MAXIMUM
+    # score, because sunlit leaf edges and pale background are "white". A bloom is a
+    # COMPACT region, so the mask is opened and only pieces of real size count -- scattered
+    # highlights do not survive that, and a petal or a disc does.
+    bloom_raw = (m["white"] | m["yellow"]).astype(np.uint8)
+    bloom = cv2.morphologyEx(bloom_raw, cv2.MORPH_OPEN, np.ones((9, 9), np.uint8))
+    nb, blab, bstats, _ = cv2.connectedComponentsWithStats(bloom, 8)
+    if nb > 1:
+        ba = bstats[1:, cv2.CC_STAT_AREA]
+        floor = max(200, int(0.0008 * bloom.size))
+        bloom = np.isin(blab, [i + 1 for i, v in enumerate(ba) if v >= floor])
+    else:
+        bloom = np.zeros(bloom.shape, bool)
+    flower = float(bloom.mean())
     foliage = float(m["green"].mean())
     pts["flowers_visible"] = round(min(1.0, flower / 0.12) * 10, 1)
     # FOLIAGE IS WORTH LESS THAN IT WAS, AND `whole_plant` IS GONE. Both measured green as
@@ -234,7 +248,14 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
         # receptacle on the back of a flower is not. Median saturation inside the gold
         # separates them: 249 on a bloom facing the camera, 153 on one facing away.
         sat = float(np.median(Ss[gold])) if gold.sum() > 50 else 0.0
-        pts["disc_facing"] = round(max(0.0, min(1.0, (sat - 140) / 100)) * 18, 1)
+        # GATED ON THERE BEING A DISC TO FACE. This is the median saturation of the gold
+        # pixels, and with only a handful of them -- a sunlit leaf edge, a speck of dead
+        # grass -- the median is meaningless but can still be high. A Dandelion photograph
+        # showing nothing but a leaf rosette collected 15.5 of 18 points for the
+        # orientation of a flower it does not contain. The score now scales with how much
+        # disc is actually present, so no disc earns no orientation points.
+        present = min(1.0, big / 0.01)
+        pts["disc_facing"] = round(max(0.0, min(1.0, (sat - 140) / 100)) * present * 18, 1)
         out["measured_heads"] = {"largest_disc_frac": round(big, 4),
                                  "comparable_heads": count, "disc_saturation": round(sat, 1)}
         if sat < 180:
