@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "matricaria chamomilla",
-  "retrieved_at": "2026-11-04T05:41:28+00:00",
+  "retrieved_at": "2026-11-05T00:07:40+00:00",
   "identity": {
     "queried_name": "Matricaria chamomilla",
     "match_type": "EXACT",
@@ -98,9 +98,9 @@
         "pmc-13164761",
         "pmc-13142231",
         "pmc-12619506",
-        "pmid-41289904",
         "pmc-13404584",
         "pmc-13074613",
+        "pmid-41289904",
         "pmc-12729506",
         "pmc-12936103",
         "pmc-13363751"
@@ -373,19 +373,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmid-41289904",
-        "title": "NiO-SnO&lt;sub&gt;2&lt;/sub&gt; nanocomposite as an adsorbent for the preconcentration of manganese ions in chamomile tea extract.",
-        "journal": "Food chemistry",
-        "year": "2026",
-        "doi": "10.1016/j.foodchem.2025.147252",
-        "open_access": false,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/41289904/",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13404584",
         "title": "Natural Compounds in Pediatric Disease Treatment.",
         "journal": "Biomedicines",
@@ -406,6 +393,19 @@
         "doi": "10.3390/molecules31071089",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13074613",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41289904",
+        "title": "NiO-SnO&lt;sub&gt;2&lt;/sub&gt; nanocomposite as an adsorbent for the preconcentration of manganese ions in chamomile tea extract.",
+        "journal": "Food chemistry",
+        "year": "2026",
+        "doi": "10.1016/j.foodchem.2025.147252",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41289904/",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,

@@ -1,6 +1,6 @@
 {
   "species": "Matricaria chamomilla",
-  "fetched_at": "2026-11-04T05:41:37+00:00",
+  "fetched_at": "2026-11-05T00:07:50+00:00",
   "source": "iNaturalist",
   "licenses_requested": [
     "cc0"
@@ -32,6 +32,10 @@
         "height": 2048
       },
       "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
       "file": "inat-232055411.jpeg",
       "bytes": 285631,
       "downloaded_size": "large"
@@ -55,6 +59,10 @@
         "height": 2048
       },
       "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
       "file": "inat-232055418.jpeg",
       "bytes": 422691,
       "downloaded_size": "large"
@@ -78,6 +86,10 @@
         "height": 2048
       },
       "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
       "file": "inat-650137635.jpg",
       "bytes": 430622,
       "downloaded_size": "large"
@@ -101,6 +113,10 @@
         "height": 2048
       },
       "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
       "file": "inat-650138623.jpg",
       "bytes": 358102,
       "downloaded_size": "large"
@@ -124,8 +140,66 @@
         "height": 2048
       },
       "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
       "file": "inat-50423922.jpeg",
       "bytes": 447511,
+      "downloaded_size": "large"
+    },
+    {
+      "photo_id": 682309814,
+      "observation_id": 373359357,
+      "observation_url": "https://www.inaturalist.org/observations/373359357",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-06-19",
+      "place": "Whipsnade, Dunstable, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/682309814/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/682309814/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/682309814/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1274
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-682309814.jpg",
+      "bytes": 517048,
+      "downloaded_size": "large"
+    },
+    {
+      "photo_id": 107920971,
+      "observation_id": 66881934,
+      "observation_url": "https://www.inaturalist.org/observations/66881934",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-01",
+      "place": "Donkseweg, Brandwijk, South Holland, NL",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/107920971/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/107920971/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/107920971/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-107920971.jpg",
+      "bytes": 272049,
       "downloaded_size": "large"
     },
     {
@@ -147,54 +221,12 @@
         "height": 2048
       },
       "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
       "file": "inat-275372296.jpeg",
       "bytes": 878413,
-      "downloaded_size": "large"
-    },
-    {
-      "photo_id": 306103593,
-      "observation_id": 176091519,
-      "observation_url": "https://www.inaturalist.org/observations/176091519",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2023-08-01",
-      "place": "67046 Ovindoli, L'Aquila, Italie",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Matricaria chamomilla",
-      "file": "inat-306103593.jpeg",
-      "bytes": 513564,
-      "downloaded_size": "large"
-    },
-    {
-      "photo_id": 195560773,
-      "observation_id": 115868998,
-      "observation_url": "https://www.inaturalist.org/observations/115868998",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2022-05-07",
-      "place": "08272 Sant Fruitós de Bages, Barcelona, Espanya",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Matricaria chamomilla",
-      "file": "inat-195560773.jpeg",
-      "bytes": 528241,
       "downloaded_size": "large"
     }
   ],
