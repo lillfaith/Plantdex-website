@@ -61,7 +61,11 @@ jobs:
       - name: Fetch CC0 photographs
         run: |
           mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
-          python3 -I scripts/fetch_inat_photos.py "${NAMES[@]}" --out evidence/photos --want 8
+          # --want 32, NOT 8. The 8 here was read as evidence that the CC0 pool was too
+          # thin to support the programme, and it was a flag nobody had re-read: the audit
+          # counts 484 CC0 research-grade observations for Matricaria chamomilla and a
+          # median of 963 across 17 medicinal species. The selector needs real choice.
+          python3 -I scripts/fetch_inat_photos.py "${NAMES[@]}" --out evidence/photos --want 32
 
       - name: Summarise what came back
         run: python3 -I scripts/summarise_evidence.py evidence/retrieved/*.json
