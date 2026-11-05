@@ -112,11 +112,22 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
     if meta.get("taxon_name") and meta.get("expected_name") and \
             meta["taxon_name"] != meta["expected_name"]:
         out["reject"].append(f"observation taxon {meta['taxon_name']!r} is not the species asked for")
+    # SHARPNESS IS MEASURED INSIDE THE SUBJECT, NOT OVER THE WHOLE FRAME. A good botanical
+    # close-up has a deliberately blurred background -- shallow depth of field is what
+    # separates the plant from its surroundings and makes it segmentable -- so whole-frame
+    # gradient energy scores the best photographs WORST. The best single specimen in the
+    # chamomile set measured 5.5 over the frame and 2.2/10 points, behind three colony
+    # photographs whose every leaf was in focus. Measured on the subject it is sharp.
     g = bgr[:, :, 1].astype(float)
-    sharp = float(np.mean(np.abs(np.diff(g, axis=0))[:, :-1] + np.abs(np.diff(g, axis=1))[:-1, :]))
+    gx = np.abs(np.diff(g, axis=0))[:, :-1]
+    gy = np.abs(np.diff(g, axis=1))[:-1, :]
+    m0 = masks(bgr)
+    subj0 = (m0["white"] | m0["yellow"] | m0["green"])[:-1, :-1]
+    sharp = float(np.mean(gx[subj0] + gy[subj0])) if subj0.sum() > 500 \
+        else float(np.mean(gx + gy))
     if sharp < MIN_SHARPNESS:
         out["reject"].append(f"too soft: gradient energy {sharp:.1f} < {MIN_SHARPNESS}")
-    m = masks(bgr)
+    m = m0
     skin_frac, skin_smooth, obstructs = skin_blob(bgr, m["skin"],
                                                   m["white"] | m["yellow"] | m["green"])
     # OBSTRUCTION, NOT PRESENCE. A hand holding a stem BEHIND the flower is background and
@@ -175,6 +186,29 @@ def score(path: pathlib.Path, meta: dict, prof: dict) -> dict:
                 f"subject fills the frame and runs off {touched} edges; little room to crop")
     else:
         pts["clean_subject"] = pts["breathing_room"] = 0.0
+    # SPECIMEN SCALE: few LARGE reproductive structures, not many tiny ones.
+    #
+    # This is what separates a portrait of a plant from a photograph of a meadow, and no
+    # other term here does it: "flowers visible", "foliage visible", "whole plant" and
+    # "silhouette openness" are all satisfied -- often maximised -- by a dense stand. A
+    # colony photographed from standing height shows fifty flower heads of a dozen pixels
+    # each; a specimen shows one or two of several thousand. The deck's cards are
+    # specimens, so the biggest reproductive structure in the frame should be a real
+    # fraction of it.
+    heads = cv2.morphologyEx(m["yellow"].astype(np.uint8), cv2.MORPH_OPEN,
+                             np.ones((5, 5), np.uint8))
+    nh, _, hstats, _ = cv2.connectedComponentsWithStats(heads, 8)
+    if nh > 1:
+        areas = np.sort(hstats[1:, cv2.CC_STAT_AREA])[::-1]
+        big = float(areas[0] / (h * w))
+        count = int((areas >= areas[0] * 0.25).sum())
+        pts["specimen_scale"] = round(min(1.0, big / 0.045) * 16, 1)
+        out["measured_heads"] = {"largest_frac": round(big, 4), "comparable_heads": count}
+        if count > 8:
+            out["flags"].append(
+                f"{count} similarly sized flower heads: reads as a colony, not a specimen")
+    else:
+        pts["specimen_scale"] = 0.0
     pts["identification"] = 6.0 if (meta.get("identification_agreements") or 0) >= 2 else 3.0
     if (meta.get("identification_agreements") or 0) < 2:
         out["flags"].append("only one agreeing identification; research grade is not proof")
@@ -351,6 +385,16 @@ def main() -> int:
                   f"(solidity {solidity:.2f})")
             continue
         s["cutout_solidity"] = round(solidity, 3)
+        # A PLANT SILHOUETTE IS OPEN; A COLONY IS A SLAB. Across the 45 printed cards the
+        # subject fills only ~39% of its own bounding box -- light passes between leaves and
+        # around petals. A photograph of a dense stand fills 80-100% of its box and still
+        # scores well on "flowers visible" and "foliage visible", which is how three colony
+        # photographs outranked the one good single specimen. Scoring the DISTANCE from the
+        # deck's own solidity is what tells those two apart.
+        want = prof["bbox_fill"]["median"]
+        s["points"]["silhouette_openness"] = round(
+            max(0.0, 1 - abs(solidity - want) / want) * 18, 1)
+        s["score"] = round(s["score"] + s["points"]["silhouette_openness"], 1)
         try:
             art, plan = place_like_the_deck(cut, prof)
         except Unplaceable as exc:
