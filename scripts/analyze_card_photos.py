@@ -35,6 +35,18 @@ WIDTH, HEIGHT = 800, 1293
 SLOT_PHOTO = (105, 197, 698, 681)          # the art window's inner opening, 593x484
 DIFF = 40                                   # a pixel differs from the template by this much
 
+# "Touches an edge" means within 1% of the opening, not exactly on it. A card whose subject
+# stops 8px short of a 484px window has been cropped at the bottom by any reading a person
+# would give it; requiring margin <= 1px called that card untouched and turned a rule into a
+# 96% tendency. Measured with this tolerance, 44 of the 45 printed cards crop at the bottom.
+TOUCH_TOL = 0.02
+
+# THE STANDARD IS THE PRINTED 45. The nine Field Cards are digital-only, were drawn later,
+# and follow a different convention -- they touch top AND bottom on 100% of cards and the
+# sides on none, where the printed deck crops the sides on roughly one in ten. Averaging the
+# two sets together would blur a real distinction into a meaningless middle.
+FIELD_CARD_PREFIX = None        # resolved from herbs.json at run time
+
 
 def template_front() -> np.ndarray:
     import pymupdf
@@ -110,8 +122,10 @@ def measure(name: str, front: np.ndarray, tpl: np.ndarray) -> dict | None:
         "bbox_h_frac": round(bh / H, 3),
         "centroid_x": round(float(xs.mean() / W), 3),
         "centroid_y": round(float(ys.mean() / H), 3),
-        "touch_left": bool(bx0 <= 1), "touch_right": bool(bx1 >= W - 2),
-        "touch_top": bool(by0 <= 1), "touch_bottom": bool(by1 >= H - 2),
+        "touch_left": bool(bx0 <= W * TOUCH_TOL),
+        "touch_right": bool(bx1 >= W - 1 - W * TOUCH_TOL),
+        "touch_top": bool(by0 <= H * TOUCH_TOL),
+        "touch_bottom": bool(by1 >= H - 1 - H * TOUCH_TOL),
         "margin_left": int(bx0), "margin_right": int(W - 1 - bx1),
         "margin_top": int(by0), "margin_bottom": int(H - 1 - by1),
         "edge_softness": round(edge_softness(m), 2),
@@ -172,15 +186,23 @@ def main() -> int:
         return self_test()
     tpl = template_front()
     rows = [r for r in (measure(n, f, tpl) for n, f in card_fronts()) if r]
+    printed_ids = {h["id"] for h in
+                   json.loads((ROOT / "src" / "data" / "herbs.json").read_text())["herbs"]}
+    printed = [r for r in rows if r["card"] in printed_ids]
+    others = [r for r in rows if r["card"] not in printed_ids]
     doc = {"generated_from": "public/cards/*.webp vs docs/assets/cardbase.pdf",
            "slot_photo": list(SLOT_PHOTO), "diff_threshold": DIFF,
            "limitation": ("the shipped cards are flattened; this measures the photograph's "
                           "FOOTPRINT and its composited colour, not the source photograph"),
-           "cards": rows, "profile": summarise(rows)}
+           "touch_tolerance": TOUCH_TOL,
+           "cards": rows,
+           "profile": summarise(printed),              # THE STANDARD: the printed 45
+           "field_cards_profile": summarise(others) if others else None}
     out = ROOT / a.out
     out.write_text(json.dumps(doc, indent=2) + "\n")
     p = doc["profile"]
-    print(f"measured {p['_n']} cards -> {a.out}\n")
+    print(f"measured {len(rows)} fronts; the profile is the {p['_n']} PRINTED cards "
+          f"-> {a.out}\n")
     for k in ("frame_fill", "bbox_w_frac", "bbox_h_frac", "centroid_x", "centroid_y",
               "edge_softness", "max_brightness", "foliage_fraction", "bbox_fill"):
         s = p[k]

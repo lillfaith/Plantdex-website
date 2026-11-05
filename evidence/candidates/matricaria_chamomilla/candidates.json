@@ -1,0 +1,512 @@
+{
+  "species": "matricaria_chamomilla",
+  "opacity": 0.95,
+  "profile_source": "plantdex-photo-style.json",
+  "all_scores": [
+    {
+      "photo_id": 682309814,
+      "file": "inat-682309814.jpg",
+      "reject": [
+        "cannot be cleanly segmented: the cutout fills 88% of its own bounding box, so it is a rectangle of vegetation, not a plant"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 10.0,
+        "flowers_visible": 12.0,
+        "foliage_visible": 12.0,
+        "whole_plant": 14.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 73.0,
+      "_fill": 0.561074249411303,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 46.6,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.2408,
+        "foliage_fraction": 0.3708,
+        "subject_fraction": 0.5611
+      }
+    },
+    {
+      "photo_id": 107920971,
+      "file": "inat-107920971.jpg",
+      "reject": [
+        "cannot be cleanly segmented: the cutout fills 96% of its own bounding box, so it is a rectangle of vegetation, not a plant"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 4.2,
+        "flowers_visible": 12.0,
+        "foliage_visible": 12.0,
+        "whole_plant": 14.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 67.2,
+      "_fill": 0.7565358479817709,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.4,
+        "skin_fraction": 0.0012,
+        "flower_fraction": 0.3785,
+        "foliage_fraction": 0.4556,
+        "subject_fraction": 0.7565
+      }
+    },
+    {
+      "photo_id": 50423922,
+      "file": "inat-50423922.jpeg",
+      "reject": [
+        "cannot be cleanly segmented: the cutout fills 100% of its own bounding box, so it is a rectangle of vegetation, not a plant"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 5.3,
+        "flowers_visible": 9.6,
+        "foliage_visible": 12.0,
+        "whole_plant": 14.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 65.9,
+      "_fill": 0.9394431163067349,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 13.2,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0965,
+        "foliage_fraction": 0.8725,
+        "subject_fraction": 0.9394
+      }
+    },
+    {
+      "photo_id": 232055411,
+      "file": "inat-232055411.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 2.3,
+        "flowers_visible": 12.0,
+        "foliage_visible": 12.0,
+        "whole_plant": 14.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 104.1,
+      "_fill": 0.5403673361522199,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.9,
+        "skin_fraction": 0.0227,
+        "flower_fraction": 0.1989,
+        "foliage_fraction": 0.3487,
+        "subject_fraction": 0.5404
+      },
+      "cutout_solidity": 0.644,
+      "composition": {
+        "placed_fill": 0.301,
+        "placed_centroid_x": 0.52,
+        "points": {
+          "frame_fill_match": 15.3,
+          "centred": 7.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 275372296,
+      "file": "inat-275372296.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 10.0,
+        "flowers_visible": 12.0,
+        "foliage_visible": 4.9,
+        "whole_plant": 14.0,
+        "clean_subject": 11.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 98.8,
+      "_fill": 0.41303761800130206,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 43.4,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.3107,
+        "foliage_fraction": 0.1025,
+        "subject_fraction": 0.413
+      },
+      "cutout_solidity": 0.681,
+      "composition": {
+        "placed_fill": 0.403,
+        "placed_centroid_x": 0.48,
+        "points": {
+          "frame_fill_match": 11.5,
+          "centred": 6.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 232055418,
+      "file": "inat-232055418.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 7.4,
+        "flowers_visible": 12.0,
+        "foliage_visible": 7.3,
+        "whole_plant": 14.0,
+        "clean_subject": 11.1,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 98.2,
+      "_fill": 0.41450639204545453,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 18.4,
+        "skin_fraction": 0.0039,
+        "flower_fraction": 0.2779,
+        "foliage_fraction": 0.1525,
+        "subject_fraction": 0.4145
+      },
+      "cutout_solidity": 0.373,
+      "composition": {
+        "placed_fill": 0.204,
+        "placed_centroid_x": 0.529,
+        "points": {
+          "frame_fill_match": 10.4,
+          "centred": 7.0,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 650138623,
+      "file": "inat-650138623.jpg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (31.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 1.4,
+        "flowers_visible": 12.0,
+        "foliage_visible": 3.2,
+        "whole_plant": 14.0,
+        "clean_subject": 9.9,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 84.0,
+      "_fill": 0.3709062905317769,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 3.4,
+        "skin_fraction": 0.3158,
+        "flower_fraction": 0.3122,
+        "foliage_fraction": 0.0667,
+        "subject_fraction": 0.3709
+      },
+      "cutout_solidity": 0.37,
+      "composition": {
+        "placed_fill": 0.238,
+        "placed_centroid_x": 0.615,
+        "points": {
+          "frame_fill_match": 12.1,
+          "centred": 2.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 650137635,
+      "file": "inat-650137635.jpg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (19.0% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 2.2,
+        "flowers_visible": 12.0,
+        "foliage_visible": 1.7,
+        "whole_plant": 0.0,
+        "clean_subject": 11.5,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 61.1,
+      "_fill": 0.432413261997406,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.5,
+        "skin_fraction": 0.1897,
+        "flower_fraction": 0.4026,
+        "foliage_fraction": 0.0356,
+        "subject_fraction": 0.4324
+      },
+      "cutout_solidity": 0.601,
+      "composition": {
+        "placed_fill": 0.501,
+        "placed_centroid_x": 0.544,
+        "points": {
+          "frame_fill_match": 6.5,
+          "centred": 6.2,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    }
+  ],
+  "selected": [
+    {
+      "photo_id": 232055411,
+      "file": "inat-232055411.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 2.3,
+        "flowers_visible": 12.0,
+        "foliage_visible": 12.0,
+        "whole_plant": 14.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 104.1,
+      "_fill": 0.5403673361522199,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.9,
+        "skin_fraction": 0.0227,
+        "flower_fraction": 0.1989,
+        "foliage_fraction": 0.3487,
+        "subject_fraction": 0.5404
+      },
+      "cutout_solidity": 0.644,
+      "composition": {
+        "placed_fill": 0.301,
+        "placed_centroid_x": 0.52,
+        "points": {
+          "frame_fill_match": 15.3,
+          "centred": 7.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.6027,
+        "size": [
+          285,
+          479
+        ],
+        "offset": [
+          160,
+          5
+        ],
+        "height_driven": true,
+        "crops_bottom": false,
+        "crops_sides": false
+      },
+      "cutout": "232055411-cutout.png",
+      "preview": "232055411-front.png",
+      "provenance": {
+        "photo_id": 232055411,
+        "observation_id": 136004087,
+        "observation_url": "https://www.inaturalist.org/observations/136004087",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 945,
+          "height": 2048
+        },
+        "taxon_name": "Matricaria chamomilla",
+        "taxon_id": 77965
+      },
+      "retrieved_at": "2026-11-05T00:07:50+00:00"
+    },
+    {
+      "photo_id": 275372296,
+      "file": "inat-275372296.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 10.0,
+        "flowers_visible": 12.0,
+        "foliage_visible": 4.9,
+        "whole_plant": 14.0,
+        "clean_subject": 11.0,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 98.8,
+      "_fill": 0.41303761800130206,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 43.4,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.3107,
+        "foliage_fraction": 0.1025,
+        "subject_fraction": 0.413
+      },
+      "cutout_solidity": 0.681,
+      "composition": {
+        "placed_fill": 0.403,
+        "placed_centroid_x": 0.48,
+        "points": {
+          "frame_fill_match": 11.5,
+          "centred": 6.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.4712,
+        "size": [
+          362,
+          479
+        ],
+        "offset": [
+          121,
+          5
+        ],
+        "height_driven": true,
+        "crops_bottom": false,
+        "crops_sides": false
+      },
+      "cutout": "275372296-cutout.png",
+      "preview": "275372296-front.png",
+      "provenance": {
+        "photo_id": 275372296,
+        "observation_id": 159383888,
+        "observation_url": "https://www.inaturalist.org/observations/159383888",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Matricaria chamomilla",
+        "taxon_id": 77965
+      },
+      "retrieved_at": "2026-11-05T00:07:50+00:00"
+    },
+    {
+      "photo_id": 232055418,
+      "file": "inat-232055418.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness": 7.4,
+        "flowers_visible": 12.0,
+        "foliage_visible": 7.3,
+        "whole_plant": 14.0,
+        "clean_subject": 11.1,
+        "breathing_room": 0.0,
+        "identification": 3.0
+      },
+      "score": 98.2,
+      "_fill": 0.41450639204545453,
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 18.4,
+        "skin_fraction": 0.0039,
+        "flower_fraction": 0.2779,
+        "foliage_fraction": 0.1525,
+        "subject_fraction": 0.4145
+      },
+      "cutout_solidity": 0.373,
+      "composition": {
+        "placed_fill": 0.204,
+        "placed_centroid_x": 0.529,
+        "points": {
+          "frame_fill_match": 10.4,
+          "centred": 7.0,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.7779,
+        "size": [
+          342,
+          479
+        ],
+        "offset": [
+          131,
+          5
+        ],
+        "height_driven": true,
+        "crops_bottom": false,
+        "crops_sides": false
+      },
+      "cutout": "232055418-cutout.png",
+      "preview": "232055418-front.png",
+      "provenance": {
+        "photo_id": 232055418,
+        "observation_id": 136004087,
+        "observation_url": "https://www.inaturalist.org/observations/136004087",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 945,
+          "height": 2048
+        },
+        "taxon_name": "Matricaria chamomilla",
+        "taxon_id": 77965
+      },
+      "retrieved_at": "2026-11-05T00:07:50+00:00"
+    }
+  ],
+  "seconds": 18.4
+}
