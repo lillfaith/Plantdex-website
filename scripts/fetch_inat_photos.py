@@ -92,7 +92,8 @@ def photo_url(photo: dict, size: str) -> str | None:
     return re.sub(r"/(square|small|medium|large|original)\.", f"/{size}.", url)
 
 
-def harvest(name: str, licenses: tuple[str, ...], want: int) -> dict:
+def harvest(name: str, licenses: tuple[str, ...], want: int,
+            min_edge: int = 900) -> dict:
     taxon = resolve_taxon(name)
     if taxon is None:
         return {"taxon": None, "photos": [],
@@ -109,8 +110,19 @@ def harvest(name: str, licenses: tuple[str, ...], want: int) -> dict:
             "order_by": "votes",
             "per_page": 30,
         }
-        answer = get(f"{API}/observations?{urllib.parse.urlencode(params)}") or {}
-        for obs in answer.get("results", []):
+        # PAGINATE. One page of 30 observations is not 30 usable photographs: most are
+        # dropped by the per-photo licence re-check and the taxon re-check below, so a
+        # single page returned six. A selection system needs 20-40 to choose from.
+        pages = []
+        for page in range(1, 6):
+            answer = get(f"{API}/observations?"
+                         f"{urllib.parse.urlencode({**params, 'page': page})}") or {}
+            got = answer.get("results", [])
+            pages.extend(got)
+            if len(got) < params["per_page"] or len(pages) >= want * 4:
+                break
+            time.sleep(0.6)
+        for obs in pages:
             # The observation's taxon must still be the one asked for: a research-grade
             # observation can be research grade for a DIFFERENT species.
             if (obs.get("taxon") or {}).get("id") != taxon["id"]:
@@ -118,7 +130,13 @@ def harvest(name: str, licenses: tuple[str, ...], want: int) -> dict:
             for photo in obs.get("photos", []):
                 if photo["id"] in seen:
                     continue
+                # THE OBSERVATION'S LICENCE IS NOT THE PHOTO'S LICENCE. They are set
+                # separately on iNaturalist, so a CC0 observation can carry an all-rights-
+                # reserved photograph. This checks the PHOTO.
                 if (photo.get("license_code") or "").lower() != licence:
+                    continue
+                dims = photo.get("original_dimensions") or {}
+                if max(dims.get("width", 0), dims.get("height", 0)) < min_edge:
                     continue
                 seen.add(photo["id"])
                 photos.append({
@@ -133,6 +151,12 @@ def harvest(name: str, licenses: tuple[str, ...], want: int) -> dict:
                     "urls": {s: photo_url(photo, s) for s in SIZES},
                     "dimensions": photo.get("original_dimensions"),
                     "taxon_name": (obs.get("taxon") or {}).get("name"),
+                    "taxon_id": (obs.get("taxon") or {}).get("id"),
+                    "quality_grade": obs.get("quality_grade"),
+                    # Research grade does NOT guarantee a correct identification; it means
+                    # enough people agreed. Recording the count lets a scorer weigh it.
+                    "identification_agreements": obs.get("num_identification_agreements"),
+                    "identification_disagreements": obs.get("num_identification_disagreements"),
                 })
                 if len(photos) >= want:
                     break
@@ -194,7 +218,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("species", nargs="*")
     parser.add_argument("--out", default="evidence/photos")
-    parser.add_argument("--want", type=int, default=6)
+    parser.add_argument("--want", type=int, default=32)
+    parser.add_argument("--min-edge", type=int, default=900,
+                        help="skip photos whose longest original edge is smaller")
     parser.add_argument("--licenses", default=",".join(DEFAULT_LICENSES))
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
@@ -207,7 +233,7 @@ def main() -> int:
     licenses = tuple(part.strip().lower() for part in args.licenses.split(",") if part.strip())
     out = pathlib.Path(args.out)
     for name in args.species:
-        result = harvest(name, licenses, args.want)
+        result = harvest(name, licenses, args.want, args.min_edge)
         key = name.lower().replace(" ", "_")
         folder = out / key
         if result["photos"]:
