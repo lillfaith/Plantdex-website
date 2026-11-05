@@ -1,0 +1,39 @@
+name: Audit CC0 photo availability
+
+# Counts, per species, how many iNaturalist photographs survive each gate the photo pipeline
+# applies. It DOWNLOADS NOTHING: counting is cheap and the decision it informs -- whether a
+# CC0-only policy can supply 2,000 species -- needs counts, not images.
+#
+# Runs here because the sandbox is proxy-blocked from api.inaturalist.org, and commits the
+# result for the same reason the evidence workflow does: an artifact this branch cannot
+# fetch is not reviewable.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/cc0_audit.py
+      - evidence/audit-species.txt
+      - .github/workflows/cc0-audit.yml
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-test
+        run: python3 -I scripts/cc0_audit.py --self-test
+      - name: Audit
+        run: python3 -I scripts/cc0_audit.py --species-file evidence/audit-species.txt
+      - name: Commit the counts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/cc0-audit.json
+          git diff --staged --quiet || git commit -m "CC0 photo-availability audit (counts only, nothing downloaded)"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

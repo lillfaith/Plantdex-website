@@ -124,7 +124,7 @@ def plant_seed(bgr: np.ndarray) -> np.ndarray:
 
     core = cv2.morphologyEx((yellow | green).astype(np.uint8), cv2.MORPH_CLOSE,
                             np.ones((9, 9), np.uint8)).astype(bool)
-    core = (largest_blob(core.astype(np.uint8) * 255) > 0)
+    core = (plant_blobs(core.astype(np.uint8) * 255, keep=0.05) > 0)
     reachable = (core | white) & ~skin
     grown = core.copy()
     k3 = np.ones((3, 3), np.uint8)
@@ -135,7 +135,13 @@ def plant_seed(bgr: np.ndarray) -> np.ndarray:
         grown = nxt
     plant = cv2.morphologyEx(grown.astype(np.uint8), cv2.MORPH_CLOSE,
                              np.ones((9, 9), np.uint8)).astype(bool)
-    plant = largest_blob(plant.astype(np.uint8) * 255) > 0
+    # NOT `largest_blob`. On the best chamomile photograph in the set the plant-coloured
+    # core breaks into 41 components, because the photographer's finger passes BEHIND the
+    # stem and interrupts the green: the flower head is one component, the stem another,
+    # the bud a third. Keeping only the largest discarded 61% of the plant-coloured pixels
+    # and produced a cutout of a flower head with no stem and no bud -- the parts that make
+    # the photograph a specimen. Every substantial plant-coloured piece seeds the grow.
+    plant = plant_blobs(plant.astype(np.uint8) * 255, keep=0.05) > 0
     # Grow the seed a little: the true edge lies just outside a strict colour match.
     near = cv2.dilate(plant.astype(np.uint8), np.ones((25, 25), np.uint8)) > 0
 
