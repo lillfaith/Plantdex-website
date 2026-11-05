@@ -16,3 +16,4 @@ Verbascum thapsus
 Achillea millefolium
 Plantago major
 Sambucus canadensis
+Pinus strobus

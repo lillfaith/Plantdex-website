@@ -1,0 +1,20 @@
+{
+  "common": "Pine",
+  "card": "pinus-spp",
+  "description": "Evergreen conifer. Needles borne in fascicles, persisting several years. Reproduction by woody seed cones; there are NO flowers, no petals and no fruit of any kind.",
+  "source": "Flora of North America vol. 2 (Pinaceae); card #41",
+  "mandatory": [
+    "needles"
+  ],
+  "preferred": [],
+  "notes": "A conifer has no flowers. Any requirement for petals or fruit is botanically wrong for this species and must never be inferred from a colour signature -- sunlit needles against sky previously registered as 'white flowers'. Cones are welcome but are absent for much of the year.",
+  "species_key": "pinus_strobus",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

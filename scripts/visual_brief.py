@@ -66,6 +66,14 @@ def structures(bgr: np.ndarray, mask: np.ndarray | None = None) -> dict:
         "berry_red": (((H <= 10) | (H >= 170)) & (S > 120) & (V > 70) & (V < 200)),
         "foliage": (H >= 35) & (H <= 90) & (S > 55),
     }
+    # NEEDLES: long, thin, green-to-blue-green. A conifer has no flower and no fruit, and
+    # without this the only structure a pine could register is "white" -- which is what
+    # made sunlit needles read as white flowers. Thinness is measured by erosion survival:
+    # a needle disappears under a small erosion, a petal or a leaf does not.
+    green_any = (H >= 35) & (H <= 100) & (S > 40) & (V > 35)
+    eroded = cv2.erode(green_any.astype(np.uint8), np.ones((7, 7), np.uint8)) > 0
+    raw["needles"] = green_any & ~cv2.dilate(eroded.astype(np.uint8),
+                                             np.ones((5, 5), np.uint8)).astype(bool)
     n = max(1, int(mask.sum()))
     for key, m in raw.items():
         m = m & mask
@@ -86,6 +94,17 @@ def structures(bgr: np.ndarray, mask: np.ndarray | None = None) -> dict:
             o = np.isin(lab, keep)
         else:
             o = np.zeros(m.shape, bool)
+        # BERRIES MUST BE ROUND-ISH CLUSTERS, NOT RIBBONS. Elderberry's red PEDICELS are
+        # the same hue as unripe fruit and are long and thin, so a colour-only test read
+        # the stems as berries. A drupe cluster is bulky: it survives erosion, a pedicel
+        # does not.
+        if key.startswith("berry") and o.any():
+            solid = cv2.erode(o.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+            o = cv2.dilate(solid.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool) & o
+        # NEEDLES ARE THIN BY DEFINITION, so the compactness filter above would delete
+        # them; they are measured on the raw thin-structure mask instead.
+        if key == "needles":
+            o = m
         out[key] = round(float(o.sum() / n), 4)
     return out
 

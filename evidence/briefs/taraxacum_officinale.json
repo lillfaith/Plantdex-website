@@ -1,20 +1,18 @@
 {
-  "species_key": "taraxacum_officinale",
+  "common": "Dandelion",
   "card": "taraxacum-officinale",
-  "edited": false,
-  "derived_from": "structure shares inside the printed card's art window",
-  "card_shares": {
-    "flower_yellow": 0.4187,
-    "flower_white": 0.0041,
-    "berry_dark": 0.0,
-    "berry_red": 0.0,
-    "foliage": 0.4007
-  },
+  "description": "Perennial from a taproot. Basal rosette of runcinate, backward-lobed leaves. Solitary yellow ligulate head on a hollow, leafless, unbranched scape. No leafy flowering stem.",
+  "source": "Flora of North America vol. 19 (Taraxacum); card #01",
   "mandatory": [
     "flower_yellow",
     "foliage"
   ],
   "preferred": [],
+  "notes": "A rosette of leaves alone is NOT acceptable -- the yellow head is what identifies it on a card. A seed head alone is also not acceptable for this reference style.",
+  "species_key": "taraxacum_officinale",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
   "thresholds": {
     "mandatory_at": 0.08,
     "preferred_at": 0.02,

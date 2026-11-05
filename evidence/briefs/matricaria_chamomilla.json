@@ -1,37 +1,23 @@
 {
-  "species_key": "matricaria_chamomilla",
+  "common": "Chamomile",
   "card": null,
-  "edited": true,
-  "family_prior": "Asteraceae",
-  "kin_cards": [
-    "taraxacum-officinale",
-    "solidago-canadensis",
-    "ambrosia-artemisiifolia",
-    "cichorium-intybus",
-    "arctium-lappa",
-    "achillea-millefolium",
-    "lactuca-serriola"
-  ],
-  "derived_from": "median structure shares across 7 Asteraceae cards",
-  "card_shares": {
-    "flower_yellow": 0.0053,
-    "flower_white": 0.0859,
-    "berry_dark": 0.0,
-    "berry_red": 0.0,
-    "foliage": 0.1169
-  },
+  "description": "Annual herb. Solitary heads on branched, leafy stems. 10-20 white ray florets, usually reflexed downward as the head ages, around a PROMINENT HOLLOW CONICAL yellow disc that stands proud of the rays. Leaves finely bipinnate into thread-like segments.",
+  "source": "Flora of North America vol. 19 (Matricaria); POWO taxon profile",
   "mandatory": [
-    "flower_white",
-    "flower_yellow"
+    "flower_yellow",
+    "flower_white"
   ],
   "preferred": [
     "foliage"
   ],
+  "notes": "The raised yellow disc is the identifying feature and must FACE THE VIEWER; a head photographed from behind shows only the green receptacle and is not acceptable however sharp. A stem must be visible. Feathery foliage is welcome but is often reduced to a thin stem in a good close-up, so it is preferred, not required.",
+  "species_key": "matricaria_chamomilla",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
   "thresholds": {
     "mandatory_at": 0.08,
     "preferred_at": 0.02,
     "present_at": 0.015
-  },
-  "edited_by": "human review, 2026-11-05",
-  "edited_why": "The Asteraceae family prior asked for foliage + white flower. Chamomile's identifier is the combination of WHITE RAYS around a LARGE YELLOW DISC, and the disc is what distinguishes it at a glance -- a candidate showing the flower from behind hides it. Foliage is feathery and fine and is often a thin stem in a good close-up, so it is preferred rather than required. Stem presence is enforced separately by stem_support, which is a shape question rather than a colour one."
+  }
 }
