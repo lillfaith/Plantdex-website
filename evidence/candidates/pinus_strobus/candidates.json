@@ -40,6 +40,12 @@
         "subject_fraction": 0.4571
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.526,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.508,
       "skin_in_cutout": 0.0002,
       "brief_structures": {
@@ -112,6 +118,7 @@
         "subject_fraction": 0.6054
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.733,
       "skin_in_cutout": 0.0016,
       "brief_structures": {
@@ -184,6 +191,7 @@
         "subject_fraction": 0.5629
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.776,
       "skin_in_cutout": 0.0001,
       "brief_structures": {
@@ -262,6 +270,12 @@
         "subject_fraction": 0.3542
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.105,
+        "left": 0.0,
+        "right": 0.001
+      },
       "cutout_solidity": 0.466,
       "skin_in_cutout": 0.092
     },
@@ -311,6 +325,12 @@
         "subject_fraction": 0.5403
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.005,
+        "bottom": 0.007,
+        "left": 0.017,
+        "right": 0.021
+      },
       "cutout_solidity": 0.17,
       "skin_in_cutout": 0.0144,
       "brief_structures": {
@@ -383,6 +403,12 @@
         "subject_fraction": 0.4236
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.127
+      },
       "cutout_solidity": 0.555,
       "skin_in_cutout": 0.0,
       "brief_structures": {
@@ -452,6 +478,12 @@
         "subject_fraction": 0.4206
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.419,
       "skin_in_cutout": 0.3687
     },
@@ -499,6 +531,12 @@
         "subject_fraction": 0.4711
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.303
+      },
       "cutout_solidity": 0.667,
       "skin_in_cutout": 0.063
     },
@@ -540,6 +578,7 @@
         "subject_fraction": 0.6584
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.747,
       "skin_in_cutout": 0.0,
       "brief_structures": {
@@ -620,6 +659,7 @@
         "subject_fraction": 0.6823
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.787,
       "skin_in_cutout": 0.0196,
       "brief_structures": {
@@ -700,6 +740,7 @@
         "subject_fraction": 0.3998
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.515,
       "skin_in_cutout": 0.0049,
       "brief_structures": {
@@ -769,6 +810,7 @@
         "subject_fraction": 0.4229
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.13,
       "skin_in_cutout": 0.0001,
       "brief_structures": {
@@ -839,6 +881,7 @@
         "subject_fraction": 0.6581
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.65,
       "skin_in_cutout": 0.1624
     },
@@ -879,6 +922,7 @@
         "subject_fraction": 0.3227
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.313,
       "skin_in_cutout": 0.0058,
       "brief_structures": {
@@ -952,6 +996,12 @@
         "subject_fraction": 0.6094
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.216,
       "skin_in_cutout": 0.0007,
       "brief_structures": {
@@ -989,7 +1039,9 @@
     {
       "photo_id": 165255301,
       "file": "inat-165255301.jpg",
-      "reject": [],
+      "reject": [
+        "a hand survives segmentation: 13.1% of the cutout is skin"
+      ],
       "flags": [
         "only one agreeing identification; research grade is not proof"
       ],
@@ -1017,7 +1069,16 @@
         "flower_fraction": 0.0358,
         "foliage_fraction": 0.254,
         "subject_fraction": 0.3296
-      }
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.534,
+        "bottom": 0.0,
+        "left": 0.006,
+        "right": 0.098
+      },
+      "cutout_solidity": 0.235,
+      "skin_in_cutout": 0.1311
     },
     {
       "photo_id": 390305665,
@@ -1036,9 +1097,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 0.0,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 14.3
       },
-      "score": 41.0,
+      "score": 118.3,
       "_fill": 0.9287017186482748,
       "measured_subject": {
         "largest_region_frac": 0.8757,
@@ -1051,6 +1116,46 @@
         "flower_fraction": 0.5475,
         "foliage_fraction": 0.3483,
         "subject_fraction": 0.9287
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.464,
+      "skin_in_cutout": 0.0004,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0895,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.867,
+        "needles": 0.1621
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.364,
+      "subject_sharpness": 19.8,
+      "stem_support": {
+        "foot_ink": 0.197,
+        "foot_width_frac": 0.794,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.374,
+        "placed_centroid_x": 0.548,
+        "points": {
+          "frame_fill_match": 13.0,
+          "centred": 6.0,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
       }
     },
     {
@@ -1069,9 +1174,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 7.5,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 17.6
       },
-      "score": 39.7,
+      "score": 122.0,
       "_fill": 0.3969370524088542,
       "measured_subject": {
         "largest_region_frac": 0.163,
@@ -1084,12 +1193,54 @@
         "flower_fraction": 0.0284,
         "foliage_fraction": 0.2792,
         "subject_fraction": 0.3969
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.53,
+        "left": 0.168,
+        "right": 0.066
+      },
+      "cutout_solidity": 0.392,
+      "skin_in_cutout": 0.0074,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0848,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8786,
+        "needles": 0.304
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.946,
+      "subject_sharpness": 38.1,
+      "stem_support": {
+        "foot_ink": 0.6888,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.259,
+        "placed_centroid_x": 0.501,
+        "points": {
+          "frame_fill_match": 13.2,
+          "centred": 7.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
       }
     },
     {
       "photo_id": 172827545,
       "file": "inat-172827545.jpg",
-      "reject": [],
+      "reject": [
+        "a hand survives segmentation: 7.9% of the cutout is skin"
+      ],
       "flags": [],
       "points": {
         "resolution": 10.0,
@@ -1115,7 +1266,16 @@
         "flower_fraction": 0.0696,
         "foliage_fraction": 0.0935,
         "subject_fraction": 0.3492
-      }
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.516,
+      "skin_in_cutout": 0.0795
     },
     {
       "photo_id": 712664972,
@@ -1125,7 +1285,8 @@
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 153 suggests a receptacle rather than the open yellow centre",
         "largest flower head is 0.15% of the frame: too small to read as a specimen on a card",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "segmentation kept only 3% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
         "resolution": 10.0,
@@ -1137,9 +1298,13 @@
         "disc_scale": 0.4,
         "disc_facing": 0.3,
         "specimen_scale": 0.0,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 1.6,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 9.8
       },
-      "score": 34.9,
+      "score": 90.7,
       "_fill": 0.9435106913248698,
       "measured_heads": {
         "largest_disc_frac": 0.0015,
@@ -1157,6 +1322,46 @@
         "flower_fraction": 0.0387,
         "foliage_fraction": 0.8711,
         "subject_fraction": 0.9435
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.211,
+      "skin_in_cutout": 0.0,
+      "brief_structures": {
+        "flower_yellow": 0.158,
+        "flower_white": 0.0156,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 1.2262,
+        "needles": 0.0969
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.028,
+      "subject_sharpness": 41.6,
+      "stem_support": {
+        "foot_ink": 0.0429,
+        "foot_width_frac": 0.652,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.129,
+        "placed_centroid_x": 0.505,
+        "points": {
+          "frame_fill_match": 6.6,
+          "centred": 7.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
       }
     },
     {
@@ -1630,6 +1835,12 @@
         "subject_fraction": 0.4571
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.526,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.508,
       "skin_in_cutout": 0.0002,
       "brief_structures": {
@@ -1698,6 +1909,227 @@
       "retrieved_at": "2026-11-06T18:48:21+00:00"
     },
     {
+      "photo_id": 221242744,
+      "file": "inat-221242744.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.4,
+        "foliage_visible": 6.0,
+        "clean_subject": 10.8,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 7.5,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 17.6
+      },
+      "score": 122.0,
+      "_fill": 0.3969370524088542,
+      "measured_subject": {
+        "largest_region_frac": 0.163,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 23.3,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.0284,
+        "foliage_fraction": 0.2792,
+        "subject_fraction": 0.3969
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.53,
+        "left": 0.168,
+        "right": 0.066
+      },
+      "cutout_solidity": 0.392,
+      "skin_in_cutout": 0.0074,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0848,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8786,
+        "needles": 0.304
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.946,
+      "subject_sharpness": 38.1,
+      "stem_support": {
+        "foot_ink": 0.6888,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.259,
+        "placed_centroid_x": 0.501,
+        "points": {
+          "frame_fill_match": 13.2,
+          "centred": 7.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.4639,
+        "size": [
+          417,
+          513
+        ],
+        "offset": [
+          94,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "221242744-cutout.png",
+      "preview": "221242744-front.png",
+      "provenance": {
+        "photo_id": 221242744,
+        "observation_id": 130125388,
+        "observation_url": "https://www.inaturalist.org/observations/130125388",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T18:48:21+00:00"
+    },
+    {
+      "photo_id": 390305665,
+      "file": "inat-390305665.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 14.3
+      },
+      "score": 118.3,
+      "_fill": 0.9287017186482748,
+      "measured_subject": {
+        "largest_region_frac": 0.8757,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.6,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.5475,
+        "foliage_fraction": 0.3483,
+        "subject_fraction": 0.9287
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.464,
+      "skin_in_cutout": 0.0004,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0895,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.867,
+        "needles": 0.1621
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.364,
+      "subject_sharpness": 19.8,
+      "stem_support": {
+        "foot_ink": 0.197,
+        "foot_width_frac": 0.794,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.374,
+        "placed_centroid_x": 0.548,
+        "points": {
+          "frame_fill_match": 13.0,
+          "centred": 6.0,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.7762,
+        "size": [
+          463,
+          513
+        ],
+        "offset": [
+          71,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "390305665-cutout.png",
+      "preview": "390305665-front.png",
+      "provenance": {
+        "photo_id": 390305665,
+        "observation_id": 220448830,
+        "observation_url": "https://www.inaturalist.org/observations/220448830",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 2048,
+          "height": 1536
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T18:48:21+00:00"
+    },
+    {
       "photo_id": 36667264,
       "file": "inat-36667264.jpeg",
       "reject": [],
@@ -1743,6 +2175,12 @@
         "subject_fraction": 0.5403
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.005,
+        "bottom": 0.007,
+        "left": 0.017,
+        "right": 0.021
+      },
       "cutout_solidity": 0.17,
       "skin_in_cutout": 0.0144,
       "brief_structures": {
@@ -1809,111 +2247,7 @@
         "taxon_id": 52391
       },
       "retrieved_at": "2026-11-06T18:48:21+00:00"
-    },
-    {
-      "photo_id": 141313870,
-      "file": "inat-141313870.jpeg",
-      "reject": [],
-      "flags": [
-        "only one agreeing identification; research grade is not proof"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 7.4,
-        "foliage_visible": 5.7,
-        "clean_subject": 8.6,
-        "breathing_room": 0.0,
-        "disc_facing": 0.0,
-        "specimen_scale": 7.6,
-        "identification": 3.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 14.0,
-        "subject_sharpness": 14.0,
-        "silhouette_openness": 14.6
-      },
-      "score": 110.8,
-      "_fill": 0.3226725260416667,
-      "measured_subject": {
-        "largest_region_frac": 0.1668,
-        "regions": 2
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 18.4,
-        "skin_fraction": 0.0006,
-        "flower_fraction": 0.0894,
-        "foliage_fraction": 0.2373,
-        "subject_fraction": 0.3227
-      },
-      "segmented_by": "colour-fallback",
-      "cutout_solidity": 0.313,
-      "skin_in_cutout": 0.0058,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.7249,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.8406,
-        "needles": 0.2252
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.886,
-      "subject_sharpness": 23.9,
-      "stem_support": {
-        "foot_ink": 0.1349,
-        "foot_width_frac": 0.941,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.252,
-        "placed_centroid_x": 0.564,
-        "points": {
-          "frame_fill_match": 12.8,
-          "centred": 5.1,
-          "crops_bottom": 8.0,
-          "keeps_sides": 0.0
-        }
-      },
-      "placement": {
-        "scale": 0.4818,
-        "size": [
-          578,
-          421
-        ],
-        "offset": [
-          13,
-          63
-        ],
-        "rooted": true,
-        "crops_bottom": false,
-        "bottom_overflow_px": 0,
-        "crops_sides": false,
-        "top_margin_px": 63
-      },
-      "cutout": "141313870-cutout.png",
-      "preview": "141313870-front.png",
-      "provenance": {
-        "photo_id": 141313870,
-        "observation_id": 85847761,
-        "observation_url": "https://www.inaturalist.org/observations/85847761",
-        "license_code": "cc0",
-        "license": "CC0 (public domain dedication)",
-        "photographer": "no rights reserved",
-        "dimensions": {
-          "width": 2048,
-          "height": 1536
-        },
-        "taxon_name": "Pinus strobus",
-        "taxon_id": 52391
-      },
-      "retrieved_at": "2026-11-06T18:48:21+00:00"
     }
   ],
-  "seconds": 154.9
+  "seconds": 194.9
 }

@@ -1,87 +1,60 @@
 {
   "species": "pinus_strobus",
+  "verdict": "NEEDS_REVIEW",
+  "any_genuine_api_vision": false,
+  "selected": null,
   "candidates": [
     {
       "photo_id": 390760300,
       "score": 135.0,
+      "status": "NEEDS_REVIEW",
       "senescence": 0.004,
       "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "vision quality 5/10: whole tree at card size: individual needles are not resolvable"
-          ]
-        }
-      ],
-      "selectable": false
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "vision quality 5/10"
+      ]
+    },
+    {
+      "photo_id": 221242744,
+      "score": 122.0,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.216,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "touches the left edge of the source photograph; vision must confirm no identifying structure was lost"
+      ]
+    },
+    {
+      "photo_id": 390305665,
+      "score": 118.3,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.029,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "vision quality 5/10"
+      ]
     },
     {
       "photo_id": 36667264,
       "score": 113.8,
+      "status": "NEEDS_REVIEW",
       "senescence": 0.055,
       "vision_source": "none",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "subject covers 0.11 of the window; the deck sits 0.20-0.42",
-            "silhouette is 0.17 solid: too sparse to read as a specimen"
-          ]
-        }
-      ],
-      "selectable": false
-    },
-    {
-      "photo_id": 141313870,
-      "score": 110.8,
-      "senescence": 0.11,
-      "vision_source": "none",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": true,
-          "reasons": []
-        }
-      ],
-      "selectable": true
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "subject covers 0.11; the deck usually sits 0.20-0.42"
+      ]
     }
-  ],
-  "verdict": "PASS",
-  "selected": 141313870
+  ]
 }

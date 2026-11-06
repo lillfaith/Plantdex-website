@@ -45,6 +45,12 @@
         "subject_fraction": 0.8989
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.388,
       "skin_in_cutout": 0.1386
     },
@@ -92,6 +98,7 @@
         "subject_fraction": 0.7138
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.714,
       "skin_in_cutout": 0.0094,
       "brief_structures": {
@@ -157,6 +164,12 @@
         "subject_fraction": 0.5517
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.051,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.21
+      },
       "cutout_solidity": 0.327,
       "skin_in_cutout": 0.0401
     },
@@ -207,6 +220,12 @@
         "subject_fraction": 0.6214
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.013
+      },
       "cutout_solidity": 0.263,
       "skin_in_cutout": 0.0305,
       "brief_structures": {
@@ -286,6 +305,12 @@
         "subject_fraction": 0.8572
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.447,
       "skin_in_cutout": 0.1596
     },
@@ -333,6 +358,12 @@
         "subject_fraction": 0.9374
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.304,
       "skin_in_cutout": 0.0049,
       "brief_structures": {
@@ -398,6 +429,12 @@
         "subject_fraction": 0.9395
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.178,
+        "left": 0.0,
+        "right": 0.005
+      },
       "cutout_solidity": 0.36,
       "skin_in_cutout": 0.0,
       "brief_structures": {
@@ -464,6 +501,12 @@
         "subject_fraction": 0.925
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.126,
       "skin_in_cutout": 0.0012,
       "brief_structures": {
@@ -528,6 +571,12 @@
         "subject_fraction": 0.4098
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.288,
+        "right": 0.0
+      },
       "cutout_solidity": 0.587,
       "skin_in_cutout": 0.2442
     },
@@ -575,6 +624,12 @@
         "subject_fraction": 0.8635
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.01,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.421,
       "skin_in_cutout": 0.0656
     },
@@ -614,6 +669,12 @@
         "subject_fraction": 0.9607
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.011,
+        "right": 0.0
+      },
       "cutout_solidity": 0.376,
       "skin_in_cutout": 0.0011,
       "brief_structures": {
@@ -671,6 +732,12 @@
         "subject_fraction": 0.9787
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.226,
+        "right": 0.0
+      },
       "cutout_solidity": 0.383,
       "skin_in_cutout": 0.005,
       "brief_structures": {
@@ -727,6 +794,12 @@
         "subject_fraction": 0.8721
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.211,
+        "bottom": 0.301,
+        "left": 0.27,
+        "right": 0.0
+      },
       "cutout_solidity": 0.606,
       "skin_in_cutout": 0.0104,
       "brief_structures": {
@@ -791,7 +864,8 @@
         "foliage_fraction": 0.7783,
         "subject_fraction": 0.8787
       },
-      "segmented_by": "colour-fallback"
+      "segmented_by": "colour-fallback",
+      "source_edges": {}
     },
     {
       "photo_id": 309523788,
@@ -836,7 +910,8 @@
         "foliage_fraction": 0.6737,
         "subject_fraction": 0.7846
       },
-      "segmented_by": "colour-fallback"
+      "segmented_by": "colour-fallback",
+      "source_edges": {}
     },
     {
       "photo_id": 709286218,
@@ -882,6 +957,12 @@
         "subject_fraction": 0.8764
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.172,
       "skin_in_cutout": 0.004,
       "brief_structures": {
@@ -947,6 +1028,12 @@
         "subject_fraction": 0.779
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.077
+      },
       "cutout_solidity": 0.419,
       "skin_in_cutout": 0.2947
     },
@@ -985,6 +1072,12 @@
         "subject_fraction": 0.9101
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.105,
+        "bottom": 0.234,
+        "left": 0.09,
+        "right": 0.0
+      },
       "cutout_solidity": 0.363,
       "skin_in_cutout": 0.0001,
       "brief_structures": {
@@ -1051,6 +1144,7 @@
         "subject_fraction": 0.731
       },
       "segmented_by": "colour-fallback",
+      "source_edges": {},
       "cutout_solidity": 0.781,
       "skin_in_cutout": 0.0167,
       "brief_structures": {
@@ -1116,15 +1210,19 @@
         "subject_fraction": 0.8704
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
       "cutout_solidity": 0.229,
       "skin_in_cutout": 0.1719
     },
     {
       "photo_id": 222609376,
       "file": "inat-222609376.jpeg",
-      "reject": [
-        "a hand survives segmentation: 6.1% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 144 suggests a receptacle rather than the open yellow centre",
@@ -1161,17 +1259,12 @@
         "flower_fraction": 0.038,
         "foliage_fraction": 0.7948,
         "subject_fraction": 0.8403
-      },
-      "segmented_by": "birefnet-general-lite",
-      "cutout_solidity": 0.168,
-      "skin_in_cutout": 0.0612
+      }
     },
     {
       "photo_id": 561387654,
       "file": "inat-561387654.jpg",
-      "reject": [
-        "cannot be cleanly segmented: the cutout fills 94% of its own bounding box, so it is a rectangle of vegetation, not a plant"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
@@ -1208,15 +1301,12 @@
         "flower_fraction": 0.0293,
         "foliage_fraction": 0.8868,
         "subject_fraction": 0.9221
-      },
-      "segmented_by": "colour-fallback"
+      }
     },
     {
       "photo_id": 709286214,
       "file": "inat-709286214.jpg",
-      "reject": [
-        "missing structures the species' brief requires: berry_dark"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "largest flower head is 0.03% of the frame: too small to read as a specimen on a card",
@@ -1252,35 +1342,12 @@
         "flower_fraction": 0.0204,
         "foliage_fraction": 0.8862,
         "subject_fraction": 0.9284
-      },
-      "segmented_by": "birefnet-general-lite",
-      "cutout_solidity": 0.264,
-      "skin_in_cutout": 0.0152,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.0238,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.9319,
-        "needles": 0.0219
-      },
-      "brief_check": {
-        "missing_mandatory": [
-          "berry_dark"
-        ],
-        "preferred_present": [
-          "foliage"
-        ],
-        "ok": false,
-        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 325326261,
       "file": "inat-325326261.jpg",
-      "reject": [
-        "cannot be cleanly segmented: the cutout fills 93% of its own bounding box, so it is a rectangle of vegetation, not a plant"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "only one agreeing identification; research grade is not proof"
@@ -1309,15 +1376,12 @@
         "flower_fraction": 0.0061,
         "foliage_fraction": 0.7362,
         "subject_fraction": 0.8319
-      },
-      "segmented_by": "colour-fallback"
+      }
     },
     {
       "photo_id": 553899362,
       "file": "inat-553899362.jpg",
-      "reject": [
-        "a hand survives segmentation: 30.5% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 161 suggests a receptacle rather than the open yellow centre",
@@ -1354,17 +1418,12 @@
         "flower_fraction": 0.0216,
         "foliage_fraction": 0.8685,
         "subject_fraction": 0.892
-      },
-      "segmented_by": "birefnet-general-lite",
-      "cutout_solidity": 0.283,
-      "skin_in_cutout": 0.3046
+      }
     },
     {
       "photo_id": 709286206,
       "file": "inat-709286206.jpg",
-      "reject": [
-        "cannot be cleanly segmented: the cutout fills 93% of its own bounding box, so it is a rectangle of vegetation, not a plant"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 146 suggests a receptacle rather than the open yellow centre",
@@ -1401,15 +1460,12 @@
         "flower_fraction": 0.0181,
         "foliage_fraction": 0.8888,
         "subject_fraction": 0.9128
-      },
-      "segmented_by": "colour-fallback"
+      }
     },
     {
       "photo_id": 709286215,
       "file": "inat-709286215.jpg",
-      "reject": [
-        "cannot be cleanly segmented: the cutout fills 88% of its own bounding box, so it is a rectangle of vegetation, not a plant"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 166 suggests a receptacle rather than the open yellow centre",
@@ -1447,15 +1503,12 @@
         "flower_fraction": 0.0153,
         "foliage_fraction": 0.8067,
         "subject_fraction": 0.8449
-      },
-      "segmented_by": "colour-fallback"
+      }
     },
     {
       "photo_id": 709286217,
       "file": "inat-709286217.jpg",
-      "reject": [
-        "cannot be cleanly segmented: the cutout fills 94% of its own bounding box, so it is a rectangle of vegetation, not a plant"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "only one agreeing identification; research grade is not proof"
@@ -1484,15 +1537,12 @@
         "flower_fraction": 0.0114,
         "foliage_fraction": 0.9266,
         "subject_fraction": 0.9481
-      },
-      "segmented_by": "colour-fallback"
+      }
     },
     {
       "photo_id": 556586373,
       "file": "inat-556586373.jpg",
-      "reject": [
-        "a hand survives segmentation: 26.3% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 153 suggests a receptacle rather than the open yellow centre",
@@ -1529,17 +1579,12 @@
         "flower_fraction": 0.0045,
         "foliage_fraction": 0.8473,
         "subject_fraction": 0.8615
-      },
-      "segmented_by": "birefnet-general-lite",
-      "cutout_solidity": 0.341,
-      "skin_in_cutout": 0.2628
+      }
     },
     {
       "photo_id": 563420582,
       "file": "inat-563420582.jpg",
-      "reject": [
-        "missing structures the species' brief requires: berry_dark"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "only one agreeing identification; research grade is not proof"
@@ -1568,27 +1613,6 @@
         "flower_fraction": 0.0071,
         "foliage_fraction": 0.7951,
         "subject_fraction": 0.8058
-      },
-      "segmented_by": "birefnet-general-lite",
-      "cutout_solidity": 0.367,
-      "skin_in_cutout": 0.0052,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.0082,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.9845,
-        "needles": 0.0229
-      },
-      "brief_check": {
-        "missing_mandatory": [
-          "berry_dark"
-        ],
-        "preferred_present": [
-          "foliage"
-        ],
-        "ok": false,
-        "preferred_score": 1.0
       }
     },
     {
@@ -1721,6 +1745,12 @@
         "subject_fraction": 0.6214
       },
       "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.013
+      },
       "cutout_solidity": 0.263,
       "skin_in_cutout": 0.0305,
       "brief_structures": {
@@ -1791,5 +1821,5 @@
       "retrieved_at": "2026-11-06T18:47:49+00:00"
     }
   ],
-  "seconds": 258.4
+  "seconds": 174.1
 }

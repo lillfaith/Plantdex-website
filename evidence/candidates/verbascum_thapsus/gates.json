@@ -1,89 +1,73 @@
 {
   "species": "verbascum_thapsus",
+  "verdict": "NEEDS_REVIEW",
+  "any_genuine_api_vision": false,
+  "selected": null,
   "candidates": [
     {
       "photo_id": 44345492,
-      "score": 143.0,
+      "score": 139.7,
+      "status": "REJECTED",
       "senescence": 0.27,
       "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "subject covers 0.17 of the window; the deck sits 0.20-0.42"
-          ]
-        }
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [
+        "SEGMENTATION: straight alpha edges (rows 0.0, cols 0.182); an uncut rectangle survived"
       ],
-      "selectable": false
-    },
-    {
-      "photo_id": 143207510,
-      "score": 136.7,
-      "senescence": 0.066,
-      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": false,
-          "reasons": [
-            "vision: Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.",
-            "vision: not identifiable as the species"
-          ]
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "vision quality 5/10: cropped so close that the identifying spike is not visible"
-          ]
-        }
-      ],
-      "selectable": false
+      "soft_notes": [
+        "touches the top edge of the source photograph; vision must confirm no identifying structure was lost",
+        "subject covers 0.17; the deck usually sits 0.20-0.42"
+      ]
     },
     {
       "photo_id": 89496614,
-      "score": 132.7,
+      "score": 134.0,
+      "status": "REJECTED",
       "senescence": 0.081,
       "vision_source": "none",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": true,
-          "reasons": []
-        }
+      "genuine_api_vision": false,
+      "human_decision": {
+        "species": "verbascum_thapsus",
+        "decision": "rejected",
+        "by": "owner, 2026-11-06",
+        "reason": "The flowering spike is cut off at the top. The identifying structure must be complete with headroom; this is clipped in the source photograph, so no placement can recover it."
+      },
+      "hard_failures": [
+        "SEGMENTATION: straight alpha edges (rows 0.0, cols 0.186); an uncut rectangle survived"
       ],
-      "selectable": true
+      "soft_notes": [
+        "touches the top edge of the source photograph; vision must confirm no identifying structure was lost"
+      ]
+    },
+    {
+      "photo_id": 143207510,
+      "score": 129.8,
+      "status": "REJECTED",
+      "senescence": 0.066,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [
+        "BOTANY (vision): Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.",
+        "BOTANY (vision): not identifiable as the species"
+      ],
+      "soft_notes": [
+        "vision quality 5/10"
+      ]
+    },
+    {
+      "photo_id": 44345476,
+      "score": 128.1,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.083,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "subject covers 0.14; the deck usually sits 0.20-0.42"
+      ]
     }
-  ],
-  "verdict": "PASS",
-  "selected": 89496614
+  ]
 }

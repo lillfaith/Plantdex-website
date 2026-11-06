@@ -1,88 +1,64 @@
 {
   "species": "taraxacum_officinale",
+  "verdict": "NEEDS_REVIEW",
+  "any_genuine_api_vision": false,
+  "selected": null,
   "candidates": [
     {
       "photo_id": 557941881,
       "score": 136.9,
+      "status": "NEEDS_REVIEW",
       "senescence": 0.095,
       "vision_source": "none",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "subject covers 0.46 of the window; the deck sits 0.20-0.42"
-          ]
-        }
-      ],
-      "selectable": false
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "subject covers 0.46; the deck usually sits 0.20-0.42"
+      ]
     },
     {
       "photo_id": 403970862,
       "score": 133.2,
+      "status": "REJECTED",
       "senescence": 0.075,
       "vision_source": "none",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "subject covers 0.12 of the window; the deck sits 0.20-0.42"
-          ]
-        }
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [
+        "COHERENCE: largest piece is only 36% across 4 fragments; not one substantial specimen"
       ],
-      "selectable": false
+      "soft_notes": [
+        "subject covers 0.12; the deck usually sits 0.20-0.42"
+      ]
     },
     {
       "photo_id": 390303714,
       "score": 107.5,
+      "status": "NEEDS_REVIEW",
       "senescence": 0.52,
       "vision_source": "none",
-      "human_rejected": null,
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": false,
-          "reasons": [
-            "52% of the subject is brown or yellowed: not a healthy specimen"
-          ]
-        }
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "52% brown or yellowed tissue"
+      ]
+    },
+    {
+      "photo_id": 557939990,
+      "score": 98.0,
+      "status": "REJECTED",
+      "senescence": 0.263,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [
+        "COHERENCE: largest piece is only 44% across 4 fragments; not one substantial specimen"
       ],
-      "selectable": false
+      "soft_notes": [
+        "subject covers 0.06; the deck usually sits 0.20-0.42"
+      ]
     }
-  ],
-  "verdict": "NEEDS_REVIEW",
-  "selected": null
+  ]
 }

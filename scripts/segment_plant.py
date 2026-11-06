@@ -61,24 +61,46 @@ def tidy(alpha: np.ndarray) -> np.ndarray:
     return cv2.GaussianBlur(out, (3, 3), 0)
 
 
-def cutout(path: pathlib.Path, work_edge: int = WORK_EDGE) -> tuple[Image.Image, str]:
-    """Returns the RGBA cutout and the method that produced it."""
+def edge_contact(alpha: np.ndarray) -> dict:
+    """How much of each frame edge the SEGMENTED subject occupies, before cropping.
+
+    This has to be measured here and nowhere else. Once the cutout is cropped to its
+    bounding box the information is gone, and measuring it on the colour mask instead --
+    which is what the first version did -- answers a different question entirely: in any
+    field photograph background vegetation touches all four edges, so every candidate
+    looked clipped and the gate rejected the whole set.
+    """
+    a = alpha > 127
+    h, w = a.shape
+    t = max(1, int(h * 0.02))
+    return {"top": round(float(a[:t].mean()), 3),
+            "bottom": round(float(a[-t:].mean()), 3),
+            "left": round(float(a[:, :max(1, int(w * 0.02))].mean()), 3),
+            "right": round(float(a[:, -max(1, int(w * 0.02)):].mean()), 3)}
+
+
+def cutout(path: pathlib.Path, work_edge: int = WORK_EDGE
+           ) -> tuple[Image.Image, str, dict]:
+    """Returns the RGBA cutout, the method that produced it, and its frame-edge contact."""
     im = Image.open(path).convert("RGB")
     im.thumbnail((work_edge, work_edge), Image.LANCZOS)
     try:
         from rembg import remove
         a = np.array(remove(im, session=_session()).convert("RGBA").getchannel("A"))
         if (a > 127).mean() >= MIN_KEEP:
-            rgba = Image.fromarray(np.dstack([np.array(im), tidy(a)]), "RGBA")
+            tidied = tidy(a)
+            edges = edge_contact(tidied)
+            rgba = Image.fromarray(np.dstack([np.array(im), tidied]), "RGBA")
             box = rgba.getbbox()
-            return (rgba.crop(box) if box else rgba), MODEL
+            return (rgba.crop(box) if box else rgba), MODEL, edges
         reason = f"{MODEL} kept {(a > 127).mean():.3f}, below {MIN_KEEP}"
     except Exception as exc:                            # model missing, no network, OOM
         reason = f"{type(exc).__name__}: {exc}"[:120]
     # FALLBACK IS LOUD. A silent downgrade would ship a visibly worse cutout under the
     # name of the better method, and nobody reviewing the card would know which ran.
     print(f"   [segment] falling back to colour segmentation -- {reason}", file=sys.stderr)
-    return card_art.cutout(path, margin=0.06, iterations=6), "colour-fallback"
+    fb = card_art.cutout(path, margin=0.06, iterations=6)
+    return fb, "colour-fallback", {}
 
 
 def self_test() -> int:
@@ -118,7 +140,7 @@ def main() -> int:
         return self_test()
     if not a.photo:
         ap.error("a photo is required")
-    cut, how = cutout(pathlib.Path(a.photo))
+    cut, how, _ = cutout(pathlib.Path(a.photo))
     out = a.out or (pathlib.Path(a.photo).stem + "-cutout.png")
     cut.save(out)
     print(f"{out}  {cut.size}  via {how}")

@@ -63,73 +63,217 @@ def senescence(bgr: np.ndarray, alpha: np.ndarray) -> float:
     return float(dead.sum() / max(1, alpha.sum()))
 
 
-def gate_botanical(brief: dict, shares: dict, vision: dict | None) -> dict:
-    reasons = []
+def clipping(front_png: pathlib.Path) -> dict:
+    """Is the subject cut off by the ART WINDOW, checked on the FINISHED card?
+
+    The source photograph can be perfectly framed and the CARD still amputate the plant:
+    placement scales and seats the subject, and a spike taller than the window loses its
+    tip. That is what happened to the mullein -- a complete flowering spike in the
+    photograph, beheaded on the card -- so this is measured after composition, not before.
+    The BOTTOM is exempt: 44 of the 45 printed cards crop there deliberately.
+    """
+    import render_generated_card as R
+    tpl, _ = R.template_pages()
+    x0, y0, x1, y1 = R.SLOT_PHOTO
+    a = np.array(Image.open(front_png).convert("RGB")).astype(int)[y0:y1, x0:x1]
+    b = np.array(tpl.convert("RGB")).astype(int)[y0:y1, x0:x1]
+    m = np.abs(a - b).max(axis=2) > 40
+    m = cv2.morphologyEx(m.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8)).astype(bool)
+    H, W = m.shape
+    if m.sum() < 500:
+        return {"clipped": [], "touch": {}}
+    edges = {"top": float(m[0:2].mean()), "left": float(m[:, 0:2].mean()),
+             "right": float(m[:, W - 2:].mean()), "bottom": float(m[H - 2:].mean())}
+    # A few pixels brushing an edge is contact; a wide band is a cut through the plant.
+    clipped = [k for k in ("top", "left", "right") if edges[k] > 0.08]
+    return {"clipped": clipped, "touch": {k: round(v, 3) for k, v in edges.items()}}
+
+
+def contamination(cut_png: pathlib.Path) -> dict:
+    """Did background survive segmentation? Straight alpha edges are the giveaway.
+
+    A plant silhouette is irregular everywhere. A failed cutout keeps a RECTANGLE -- the
+    photograph's own border -- so its alpha has long perfectly straight runs that no leaf
+    produces. Pine 141313870 kept sky and a treeline exactly this way and still passed
+    every numerical gate, which is the failure this function exists for.
+    """
+    im = Image.open(cut_png).convert("RGBA")
+    a = np.array(im.getchannel("A")) > 127
+    H, W = a.shape
+    if a.sum() < 500:
+        return {"straight_rows": 0.0, "straight_cols": 0.0, "fragments": 0, "suspect": True}
+    # rows/columns that are almost entirely opaque: a rectangle has many, a plant few
+    rows = float((a.mean(axis=1) > 0.92).mean())
+    cols = float((a.mean(axis=0) > 0.92).mean())
+    n, lab, st, _ = cv2.connectedComponentsWithStats(a.astype(np.uint8), 8)
+    frags = 0
+    if n > 1:
+        areas = st[1:, cv2.CC_STAT_AREA]
+        frags = int((areas >= areas.max() * 0.05).sum())
+    return {"straight_rows": round(rows, 3), "straight_cols": round(cols, 3),
+            "fragments": frags, "suspect": bool(rows > 0.12 or cols > 0.12)}
+
+
+def scenery_split(cut_png: pathlib.Path) -> dict:
+    """Two slabs at opposite edges with a void between them is scenery, not a plant.
+
+    Pine 141313870 survived every other test as "one subject, 61% in its largest piece":
+    what it actually is, is two vertical strips of BACKGROUND FOREST at the left and right
+    margins with the middle correctly removed. No plant is shaped like that. The signal is
+    the void -- a wide empty corridor through the middle while both outer edges are full.
+    """
+    im = Image.open(cut_png).convert("RGBA")
+    a = np.array(im.getchannel("A")) > 127
+    H, W = a.shape
+    if a.sum() < 500:
+        return {"split": False, "void": 0.0}
+    colfill = a.mean(axis=0)
+    rowfill = a.mean(axis=1)
+    def worst(fill: np.ndarray) -> float:
+        n = len(fill)
+        edge = max(1, int(n * 0.12))
+        if fill[:edge].mean() < 0.25 or fill[-edge:].mean() < 0.25:
+            return 0.0                       # the outer edges are not both occupied
+        mid = fill[edge:-edge]
+        return float((mid < 0.04).mean()) if len(mid) else 0.0
+    void = max(worst(colfill), worst(rowfill))
+    return {"split": bool(void > 0.35), "void": round(void, 3)}
+
+
+def source_clipping(row: dict) -> dict:
+    """Did the plant already run off the EDGE OF THE PHOTOGRAPH?
+
+    Card-level clipping cannot see this. The mullein's spike is complete in neither sense:
+    the photographer cropped it, so the tip never existed in the file, and the card then
+    shows a spike with no apex. The bottom is exempt as always -- a stem leaving the frame
+    at the foot is how the deck's own cards look.
+    """
+    t = row.get("source_edges") or {}
+    bad = [k for k in ("top", "left", "right") if (t.get(k) or 0) > 0.08]
+    return {"clipped_in_source": bad, "edges": t}
+
+
+def coherence(cut_png: pathlib.Path) -> dict:
+    """Do the surviving parts read as ONE substantial plant, or as leftovers?
+
+    Berries with no branch behind them are botanically correct and artistically useless.
+    A coherent specimen is mostly one connected mass; a scatter of fragments is not.
+    """
+    im = Image.open(cut_png).convert("RGBA")
+    a = np.array(im.getchannel("A")) > 127
+    if a.sum() < 500:
+        return {"largest_share": 0.0, "pieces": 0, "coherent": False}
+    n, lab, st, _ = cv2.connectedComponentsWithStats(a.astype(np.uint8), 8)
+    if n <= 1:
+        return {"largest_share": 1.0, "pieces": 1, "coherent": True}
+    areas = st[1:, cv2.CC_STAT_AREA]
+    share = float(areas.max() / areas.sum())
+    pieces = int((areas >= areas.max() * 0.05).sum())
+    return {"largest_share": round(share, 3), "pieces": pieces,
+            "coherent": bool(share >= 0.55 and pieces <= 6)}
+
+
+DECISIONS = ROOT / "evidence" / "human-decisions.json"
+
+
+def human_decisions() -> dict:
+    """Decisions a person made, honoured as the final word and preserved across runs.
+
+    A reviewer's judgement is evidence the pipeline cannot derive -- the elderberry's
+    senescence measured BELOW the deck's own p90, so no threshold was ever going to catch
+    it. Storing the decisions here means a re-run cannot quietly re-select something
+    already rejected, and the reason travels with the photo id instead of living in a chat
+    message that the next run has never read.
+    """
+    return json.loads(DECISIONS.read_text()) if DECISIONS.exists() else {}
+
+
+# ── HARD FAILURES vs SOFT PREFERENCES ────────────────────────────────────────────────────
+#
+# A hard failure means the image cannot be used whatever else is true of it: the wrong
+# species, a missing identifying structure, severe clipping, failed segmentation, retained
+# background. A soft preference is a departure from the deck's habits -- a subject a little
+# small, a little off centre -- which costs points and blocks nothing.
+#
+# Keeping them apart is the correction for two opposite mistakes made here. Treating the
+# deck's 20-42% fill band as a hard limit rejected attractive specimens for being 0.17; and
+# treating everything as a score let a cutout of two strips of background forest "pass".
+
+
+def hard_failures(brief, shares, row, vision, cutf, frontf) -> list[str]:
+    bad = []
     if brief:
         v = visual_brief.check(brief, shares)
         if not v["ok"]:
-            reasons.append("missing required structures: " + ", ".join(v["missing_mandatory"]))
+            bad.append("BOTANY: missing required structures: " + ", ".join(v["missing_mandatory"]))
     if vision:
         if vision.get("meets_brief") is False:
-            reasons.append("vision: " + vision.get("why", "does not meet the brief"))
+            bad.append("BOTANY (vision): " + vision.get("why", "does not meet the brief"))
         if vision.get("identifiable") is False:
-            reasons.append("vision: not identifiable as the species")
+            bad.append("BOTANY (vision): not identifiable as the species")
         if vision.get("orientation") == "back":
-            reasons.append("vision: the identifying structure faces away from the camera")
-    return {"gate": "botanical", "pass": not reasons, "reasons": reasons}
-
-
-def gate_segmentation(row: dict, vision: dict | None) -> dict:
-    reasons = []
-    sol = row.get("cutout_solidity")
-    if sol is not None and sol > MAX_SOLIDITY:
-        reasons.append(f"cutout fills {100*sol:.0f}% of its box: a rectangle, not a plant")
-    ret = row.get("green_retention")
-    if ret is not None and ret < MIN_RETENTION:
-        reasons.append(f"only {100*ret:.0f}% of the foliage survived: stems cut away")
-    skin = row.get("skin_in_cutout")
-    if skin is not None and skin > 0.04:
-        reasons.append(f"{100*skin:.0f}% of the cutout is still skin")
-    if vision:
+            bad.append("BOTANY (vision): the identifying structure faces away")
+        q = vision.get("quality")
+        if q is not None and q <= 3:
+            bad.append(f"ART (vision): quality {q}/10")
         for d in vision.get("defects", []):
             if any(w in d.lower() for w in ("background", "sky", "remnant", "rectangul")):
-                reasons.append("vision: " + d)
-    return {"gate": "segmentation", "pass": not reasons, "reasons": reasons}
+                bad.append("SEGMENTATION (vision): " + d)
+    sol = row.get("cutout_solidity")
+    if sol is not None and sol > MAX_SOLIDITY:
+        bad.append(f"SEGMENTATION: cutout fills {100*sol:.0f}% of its box; a rectangle")
+    skin = row.get("skin_in_cutout")
+    if skin is not None and skin > 0.04:
+        bad.append(f"SEGMENTATION: {100*skin:.0f}% of the cutout is still skin")
+    if cutf.exists():
+        sp = scenery_split(cutf)
+        if sp["split"]:
+            bad.append(f"SEGMENTATION: separated slabs with a {100*sp['void']:.0f}% void "
+                       f"between them; retained scenery, not a plant")
+        con = contamination(cutf)
+        if con["suspect"]:
+            bad.append(f"SEGMENTATION: straight alpha edges "
+                       f"(rows {con['straight_rows']}, cols {con['straight_cols']}); "
+                       f"an uncut rectangle survived")
+        coh = coherence(cutf)
+        if not coh["coherent"]:
+            bad.append(f"COHERENCE: largest piece is only {100*coh['largest_share']:.0f}% "
+                       f"across {coh['pieces']} fragments; not one substantial specimen")
+    if frontf.exists():
+        cl = clipping(frontf)
+        if cl["clipped"]:
+            bad.append("CLIPPING: the card cuts the subject at the "
+                       + "/".join(cl["clipped"]) + " of the art window")
+    return bad
 
 
-def gate_art(row: dict, comp: dict, dead: float, vision: dict | None) -> dict:
-    reasons = []
+def soft_notes(row, comp, dead, vision) -> list[str]:
+    soft = []
+    # EDGE CONTACT IS A FLAG FOR THE VISION PASS, NOT A VERDICT, and the measurements say
+    # why plainly: the preferred chamomile touches 95% of its top edge and its bloom is
+    # COMPLETE -- a large flower simply fills the frame -- while the mullein whose spike is
+    # genuinely beheaded touches only 41%. The harmful case scores LOWER than the benign
+    # one, so no threshold on this number can separate them. Whether a clipped edge cost
+    # the plant an identifying structure is a question about morphology, and only the
+    # vision step can answer it. Card-level clipping stays hard: there the card itself cuts
+    # the subject, which is unambiguous.
+    sc = source_clipping(row)
+    if sc["clipped_in_source"]:
+        soft.append("touches the " + "/".join(sc["clipped_in_source"])
+                    + " edge of the source photograph; vision must confirm no identifying "
+                      "structure was lost")
     fill = (comp or {}).get("placed_fill")
     if fill is not None and not (FILL_LO <= fill <= FILL_HI):
-        reasons.append(f"subject covers {fill:.2f} of the window; the deck sits "
-                       f"{FILL_LO:.2f}-{FILL_HI:.2f}")
+        soft.append(f"subject covers {fill:.2f}; the deck usually sits {FILL_LO:.2f}-{FILL_HI:.2f}")
     cx = (comp or {}).get("placed_centroid_x")
     if cx is not None and abs(cx - STYLE["centroid_x"]["median"]) > CENTRE_TOL:
-        reasons.append(f"off centre: {cx:.2f} against the deck's {STYLE['centroid_x']['median']:.2f}")
-    sol = row.get("cutout_solidity")
-    if sol is not None and sol < OPENNESS_LO:
-        reasons.append(f"silhouette is {sol:.2f} solid: too sparse to read as a specimen")
+        soft.append(f"off centre at {cx:.2f}")
     if dead > MAX_SENESCENCE:
-        reasons.append(f"{100*dead:.0f}% of the subject is brown or yellowed: not a healthy "
-                       f"specimen")
-    if vision:
-        q = vision.get("quality")
-        if q is not None and q < 6:
-            reasons.append(f"vision quality {q}/10: " + (vision.get("defects") or ["unattractive"])[0])
-    return {"gate": "art_direction", "pass": not reasons, "reasons": reasons}
-
-
-REJECTED = ROOT / "evidence" / "rejected-photos.json"
-
-
-def rejected_photos() -> dict:
-    """Photographs a human has ruled out, with the reason, honoured as a hard gate.
-
-    A reviewer's decision is evidence the pipeline cannot derive. Recording it here means a
-    re-run cannot quietly re-select something already rejected, and the reason travels with
-    it instead of living in a chat message.
-    """
-    return json.loads(REJECTED.read_text()) if REJECTED.exists() else {}
+        soft.append(f"{100*dead:.0f}% brown or yellowed tissue")
+    q = (vision or {}).get("quality")
+    if q is not None and 3 < q < 6:
+        soft.append(f"vision quality {q}/10")
+    return soft
 
 
 def evaluate(species: str) -> dict:
@@ -137,48 +281,85 @@ def evaluate(species: str) -> dict:
     doc = json.loads((base / "candidates.json").read_text())
     vis = {}
     vf = base / "vision.json"
+    genuine_api = False
     if vf.exists():
-        vis = {r["photo_id"]: r for r in json.loads(vf.read_text())["rows"]}
+        vdoc = json.loads(vf.read_text())
+        vis = {r["photo_id"]: r for r in vdoc["rows"]}
+        genuine_api = any(r.get("source") == "vision" for r in vdoc["rows"])
     brief = visual_brief.load(species) or {}
+    decisions = human_decisions()
     out = []
     for s in doc["selected"]:
-        cutf = base / s["cutout"]
+        pid = str(s["photo_id"])
+        cutf, frontf = base / s["cutout"], base / s["preview"]
         dead = 0.0
         if cutf.exists():
             cut = Image.open(cutf).convert("RGBA")
             a = np.array(cut.getchannel("A")) > 127
             dead = senescence(cv2.cvtColor(np.array(cut.convert("RGB")), cv2.COLOR_RGB2BGR), a)
         v = vis.get(s["photo_id"])
-        rej = rejected_photos().get(str(s["photo_id"]))
-        gates = [gate_botanical(brief, s.get("brief_structures", {}), v),
-                 gate_segmentation(s, v),
-                 gate_art(s, s.get("composition", {}), dead, v)]
-        out.append({"photo_id": s["photo_id"], "score": s["score"],
+        hard = hard_failures(brief, s.get("brief_structures", {}), s, v, cutf, frontf)
+        soft = soft_notes(s, s.get("composition", {}), dead, v)
+        human = decisions.get(pid)
+
+        # STATUS. AUTO_APPROVED REQUIRES A GENUINE API VERDICT. Numerical metrics cannot
+        # authorize an approval -- that is the whole lesson of the pine, which passed every
+        # number while being two strips of forest. A manually supplied verdict is evidence
+        # and can never promote past NEEDS_REVIEW, because a human judgement recorded by
+        # hand is not the automated system working.
+        if human and human.get("decision") == "rejected":
+            status = "REJECTED"
+        elif human and human.get("decision") == "approved":
+            status = "HUMAN_APPROVED"
+        elif hard:
+            status = "REJECTED"
+        elif v and v.get("source") == "vision" and v.get("meets_brief"):
+            status = "AUTO_APPROVED"
+        else:
+            status = "NEEDS_REVIEW"
+
+        out.append({"photo_id": s["photo_id"], "score": s["score"], "status": status,
                     "senescence": round(dead, 3),
                     "vision_source": (v or {}).get("source", "none"),
-                    "human_rejected": rej,
-                    "gates": gates,
-                    "selectable": all(g["pass"] for g in gates) and not rej})
-    passed = [r for r in out if r["selectable"]]
-    return {"species": species, "candidates": out,
-            "verdict": "PASS" if passed else "NEEDS_REVIEW",
-            "selected": passed[0]["photo_id"] if passed else None}
+                    "genuine_api_vision": bool(v and v.get("source") == "vision"),
+                    "human_decision": human, "hard_failures": hard, "soft_notes": soft})
+    approved = [r for r in out if r["status"] in ("AUTO_APPROVED", "HUMAN_APPROVED")]
+    reviewable = [r for r in out if r["status"] == "NEEDS_REVIEW"]
+    verdict = ("APPROVED" if approved else
+               "NEEDS_REVIEW" if reviewable else "REJECTED")
+    return {"species": species, "verdict": verdict,
+            "any_genuine_api_vision": genuine_api,
+            "selected": approved[0]["photo_id"] if approved else None,
+            "candidates": out}
 
 
 def self_test() -> int:
     checks = [(FILL_LO < FILL_HI, "the art-direction fill band comes from the 45 cards")]
-    # CONTROL: a candidate failing one gate is NOT selectable however well it does elsewhere.
-    row = {"cutout_solidity": 0.95, "green_retention": 0.9, "skin_in_cutout": 0.0}
-    g = [gate_botanical({}, {}, None), gate_segmentation(row, None),
-         gate_art(row, {"placed_fill": STYLE["frame_fill"]["median"],
-                        "placed_centroid_x": STYLE["centroid_x"]["median"]}, 0.0, None)]
-    checks.append((g[0]["pass"] and not g[1]["pass"],
-                   "CONTROL: a rectangular cutout fails segmentation while botany passes"))
-    checks.append((not all(x["pass"] for x in g),
-                   "CONTROL: passing two gates does not make a candidate selectable"))
-    # CONTROL: vision saying the flower faces away fails botany on its own.
-    gb = gate_botanical({}, {}, {"orientation": "back", "meets_brief": True})
-    checks.append((not gb["pass"], "CONTROL: a back-facing flower fails the botanical gate"))
+    base = {"cutout_solidity": 0.4, "skin_in_cutout": 0.0, "source_edges": {}}
+    missing = pathlib.Path("/nonexistent.png")
+    # CONTROL: clean numbers alone must NOT authorize approval.
+    hard = hard_failures({}, {}, base, None, missing, missing)
+    checks.append((not hard, "a clean candidate has no hard failures"))
+    # CONTROL: a rectangle fails on segmentation however good everything else is.
+    hard2 = hard_failures({}, {}, {**base, "cutout_solidity": 0.95}, None, missing, missing)
+    checks.append((any("rectangle" in h for h in hard2),
+                   "CONTROL: a rectangular cutout is a HARD failure"))
+    # CONTROL: edge contact in the SOURCE is a SOFT flag, never a hard failure. The
+    # preferred chamomile touches 95% of its top edge with a complete bloom; the mullein
+    # whose spike is cut touches 41%. The harmful case scores lower than the benign one.
+    hard3 = hard_failures({}, {}, {**base, "source_edges": {"top": 0.95}}, None,
+                          missing, missing)
+    soft3 = soft_notes({**base, "source_edges": {"top": 0.95}}, {}, 0.0, None)
+    checks.append((not hard3 and any("source photograph" in x for x in soft3),
+                   "CONTROL: source edge contact is a soft flag for vision, not a failure"))
+    # CONTROL: being a little small or off centre is SOFT, never blocking.
+    soft = soft_notes(base, {"placed_fill": 0.17, "placed_centroid_x": 0.70}, 0.0, None)
+    checks.append((len(soft) >= 2 and not hard_failures({}, {}, base, None, missing, missing),
+                   "CONTROL: small and off-centre are soft preferences, not failures"))
+    # CONTROL: a back-facing flower is hard.
+    hb = hard_failures({}, {}, base, {"orientation": "back", "meets_brief": True},
+                       missing, missing)
+    checks.append((bool(hb), "CONTROL: a back-facing flower is a HARD failure"))
     ok = True
     for good, label in checks:
         print(("PASS  " if good else "FAIL  ") + label)
@@ -202,14 +383,19 @@ def main() -> int:
             continue
         print(f"\n=== {sp} ===  {r['verdict']}"
               + (f" -> {r['selected']}" if r["selected"] else ""))
+        if not r["any_genuine_api_vision"]:
+            print("   (no genuine API vision for this species, so nothing here can be "
+                  "AUTO_APPROVED)")
         for c in r["candidates"]:
-            marks = " ".join(("OK " if g["pass"] else "FAIL") + "=" + g["gate"][:4]
-                             for g in c["gates"])
-            print(f"   {c['photo_id']:>10} {c['score']:6.1f}  {marks}"
-                  f"  senescence={c['senescence']}  vision={c['vision_source'][:9]}")
-            for g in c["gates"]:
-                for why in g["reasons"]:
-                    print(f"        {g['gate']}: {why}")
+            print(f"   {c['photo_id']:>10} {c['score']:6.1f}  {c['status']:14}"
+                  f" vision={c['vision_source'][:34]}")
+            if c["human_decision"]:
+                print(f"        HUMAN {c['human_decision']['decision'].upper()}: "
+                      f"{c['human_decision']['reason'][:150]}")
+            for why in c["hard_failures"]:
+                print(f"        HARD  {why}")
+            for why in c["soft_notes"]:
+                print(f"        soft  {why}")
         (ROOT / "evidence" / "candidates" / sp / "gates.json").write_text(
             json.dumps(r, indent=2) + "\n")
     return 0

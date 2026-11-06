@@ -1,36 +1,24 @@
 {
   "species": "sambucus_canadensis",
+  "verdict": "REJECTED",
+  "any_genuine_api_vision": false,
+  "selected": null,
   "candidates": [
     {
       "photo_id": 577065025,
       "score": 110.7,
+      "status": "REJECTED",
       "senescence": 0.285,
       "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "human_rejected": {
+      "genuine_api_vision": false,
+      "human_decision": {
         "species": "sambucus_canadensis",
-        "by": "owner review, 2026-11-06",
-        "reason": "Rejected for visual quality. The drupes are correct and the phenology is right, but the foliage has already turned and the cyme is partly stripped, so the specimen does not look healthy. Senescence measured 0.285, which is BELOW the deck's own p90 of 0.388 -- the metric did not catch this and a person did, which is why the decision is recorded rather than inferred."
+        "decision": "rejected",
+        "by": "owner, 2026-11-06",
+        "reason": "Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- berry fragments without supporting structure. Senescence measured 0.285, BELOW the deck's own p90 of 0.388, so no metric caught this."
       },
-      "gates": [
-        {
-          "gate": "botanical",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "segmentation",
-          "pass": true,
-          "reasons": []
-        },
-        {
-          "gate": "art_direction",
-          "pass": true,
-          "reasons": []
-        }
-      ],
-      "selectable": false
+      "hard_failures": [],
+      "soft_notes": []
     }
-  ],
-  "verdict": "NEEDS_REVIEW",
-  "selected": null
+  ]
 }

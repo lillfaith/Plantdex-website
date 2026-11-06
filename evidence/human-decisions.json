@@ -1,0 +1,20 @@
+{
+  "577065025": {
+    "species": "sambucus_canadensis",
+    "decision": "rejected",
+    "by": "owner, 2026-11-06",
+    "reason": "Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- berry fragments without supporting structure. Senescence measured 0.285, BELOW the deck's own p90 of 0.388, so no metric caught this."
+  },
+  "141313870": {
+    "species": "pinus_strobus",
+    "decision": "rejected",
+    "by": "owner, 2026-11-06",
+    "reason": "Not a pine branch. The cutout is two vertical strips of background forest at the left and right margins with the middle removed; the specimen is indistinguishable. Rejected regardless of numerical score."
+  },
+  "89496614": {
+    "species": "verbascum_thapsus",
+    "decision": "rejected",
+    "by": "owner, 2026-11-06",
+    "reason": "The flowering spike is cut off at the top. The identifying structure must be complete with headroom; this is clipped in the source photograph, so no placement can recover it."
+  }
+}

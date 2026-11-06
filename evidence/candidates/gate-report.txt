@@ -1,36 +1,59 @@
 
-=== matricaria_chamomilla ===  PASS -> 650137635
-    650137635  156.2  OK =bota OK =segm OK =art_  senescence=0.06  vision=vision (m
-     74694819  126.4  OK =bota FAIL=segm FAIL=art_  senescence=0.007  vision=none
-        segmentation: only 0% of the foliage survived: stems cut away
-        art_direction: off centre: 0.36 against the deck's 0.51
-     74694772  126.0  OK =bota FAIL=segm OK =art_  senescence=0.028  vision=none
-        segmentation: only 2% of the foliage survived: stems cut away
+=== matricaria_chamomilla ===  NEEDS_REVIEW
+   (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+    650137635  156.2  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+        soft  touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost
+     74694819  126.4  NEEDS_REVIEW   vision=none
+        soft  touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost
+        soft  off centre at 0.36
+     74694772  126.0  NEEDS_REVIEW   vision=none
+        soft  touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost
+     91282063  123.8  NEEDS_REVIEW   vision=none
+        soft  touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost
+        soft  subject covers 0.18; the deck usually sits 0.20-0.42
 
 === taraxacum_officinale ===  NEEDS_REVIEW
-    557941881  136.9  OK =bota OK =segm FAIL=art_  senescence=0.095  vision=none
-        art_direction: subject covers 0.46 of the window; the deck sits 0.20-0.42
-    403970862  133.2  OK =bota OK =segm FAIL=art_  senescence=0.075  vision=none
-        art_direction: subject covers 0.12 of the window; the deck sits 0.20-0.42
-    390303714  107.5  OK =bota OK =segm FAIL=art_  senescence=0.52  vision=none
-        art_direction: 52% of the subject is brown or yellowed: not a healthy specimen
+   (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+    557941881  136.9  NEEDS_REVIEW   vision=none
+        soft  subject covers 0.46; the deck usually sits 0.20-0.42
+    403970862  133.2  REJECTED       vision=none
+        HARD  COHERENCE: largest piece is only 36% across 4 fragments; not one substantial specimen
+        soft  subject covers 0.12; the deck usually sits 0.20-0.42
+    390303714  107.5  NEEDS_REVIEW   vision=none
+        soft  52% brown or yellowed tissue
+    557939990   98.0  REJECTED       vision=none
+        HARD  COHERENCE: largest piece is only 44% across 4 fragments; not one substantial specimen
+        soft  subject covers 0.06; the deck usually sits 0.20-0.42
 
-=== verbascum_thapsus ===  PASS -> 89496614
-     44345492  143.0  OK =bota OK =segm FAIL=art_  senescence=0.27  vision=vision (m
-        art_direction: subject covers 0.17 of the window; the deck sits 0.20-0.42
-    143207510  136.7  FAIL=bota OK =segm FAIL=art_  senescence=0.066  vision=vision (m
-        botanical: vision: Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.
-        botanical: vision: not identifiable as the species
-        art_direction: vision quality 5/10: cropped so close that the identifying spike is not visible
-     89496614  132.7  OK =bota OK =segm OK =art_  senescence=0.081  vision=none
+=== verbascum_thapsus ===  NEEDS_REVIEW
+   (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+     44345492  139.7  REJECTED       vision=vision (model in the loop; no ANTH
+        HARD  SEGMENTATION: straight alpha edges (rows 0.0, cols 0.182); an uncut rectangle survived
+        soft  touches the top edge of the source photograph; vision must confirm no identifying structure was lost
+        soft  subject covers 0.17; the deck usually sits 0.20-0.42
+     89496614  134.0  REJECTED       vision=none
+        HUMAN REJECTED: The flowering spike is cut off at the top. The identifying structure must be complete with headroom; this is clipped in the source photograph, so no p
+        HARD  SEGMENTATION: straight alpha edges (rows 0.0, cols 0.186); an uncut rectangle survived
+        soft  touches the top edge of the source photograph; vision must confirm no identifying structure was lost
+    143207510  129.8  REJECTED       vision=vision (model in the loop; no ANTH
+        HARD  BOTANY (vision): Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.
+        HARD  BOTANY (vision): not identifiable as the species
+        soft  vision quality 5/10
+     44345476  128.1  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+        soft  subject covers 0.14; the deck usually sits 0.20-0.42
 
-=== sambucus_canadensis ===  NEEDS_REVIEW
-    577065025  110.7  OK =bota OK =segm OK =art_  senescence=0.285  vision=vision (m
+=== sambucus_canadensis ===  REJECTED
+   (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+    577065025  110.7  REJECTED       vision=vision (model in the loop; no ANTH
+        HUMAN REJECTED: Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- ber
 
-=== pinus_strobus ===  PASS -> 141313870
-    390760300  135.0  OK =bota OK =segm FAIL=art_  senescence=0.004  vision=vision (m
-        art_direction: vision quality 5/10: whole tree at card size: individual needles are not resolvable
-     36667264  113.8  OK =bota OK =segm FAIL=art_  senescence=0.055  vision=none
-        art_direction: subject covers 0.11 of the window; the deck sits 0.20-0.42
-        art_direction: silhouette is 0.17 solid: too sparse to read as a specimen
-    141313870  110.8  OK =bota OK =segm OK =art_  senescence=0.11  vision=none
+=== pinus_strobus ===  NEEDS_REVIEW
+   (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+    390760300  135.0  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+        soft  vision quality 5/10
+    221242744  122.0  NEEDS_REVIEW   vision=none
+        soft  touches the left edge of the source photograph; vision must confirm no identifying structure was lost
+    390305665  118.3  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+        soft  vision quality 5/10
+     36667264  113.8  NEEDS_REVIEW   vision=none
+        soft  subject covers 0.11; the deck usually sits 0.20-0.42

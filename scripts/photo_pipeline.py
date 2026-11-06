@@ -561,8 +561,9 @@ def main() -> int:
     results = []
     for s in usable[:budget]:
         src = pdir / s["file"]
-        cut, how = segment_plant.cutout(src)
+        cut, how, src_edges = segment_plant.cutout(src)
         s["segmented_by"] = how
+        s["source_edges"] = src_edges
         alpha = np.array(cut.getchannel("A")) > 127
         solidity = float(alpha.mean())
         if solidity > MAX_CUTOUT_SOLIDITY:
