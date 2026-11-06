@@ -138,91 +138,6 @@
       }
     },
     {
-      "photo_id": 557941881,
-      "file": "inat-557941881.jpg",
-      "reject": [],
-      "flags": [
-        "8.3% warm-toned background (gradient 11.5); read as soil or dry vegetation rather than skin",
-        "subject fills the frame and runs off 4 edges; little room to crop",
-        "only one agreeing identification; research grade is not proof"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 10.0,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_scale": 14.0,
-        "disc_facing": 10.4,
-        "specimen_scale": 11.6,
-        "identification": 3.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 6.9,
-        "subject_sharpness": 9.8,
-        "silhouette_openness": 10.8
-      },
-      "score": 136.9,
-      "_fill": 0.47476281060112846,
-      "measured_heads": {
-        "largest_disc_frac": 0.1268,
-        "comparable_heads": 1,
-        "disc_saturation": 198.0
-      },
-      "measured_subject": {
-        "largest_region_frac": 0.2533,
-        "regions": 2
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 9.9,
-        "skin_fraction": 0.0827,
-        "flower_fraction": 0.1554,
-        "foliage_fraction": 0.2536,
-        "subject_fraction": 0.4748
-      },
-      "segmented_by": "birefnet-general-lite",
-      "source_edges": {
-        "top": 0.0,
-        "bottom": 0.0,
-        "left": 0.0,
-        "right": 0.0
-      },
-      "cutout_solidity": 0.539,
-      "skin_in_cutout": 0.007,
-      "brief_structures": {
-        "flower_yellow": 0.8213,
-        "flower_white": 0.0025,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.1925,
-        "needles": 0.0239
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.122,
-      "subject_sharpness": 12.6,
-      "stem_support": {
-        "foot_ink": 0.1986,
-        "foot_width_frac": 0.501,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.463,
-        "placed_centroid_x": 0.51,
-        "points": {
-          "frame_fill_match": 8.4,
-          "centred": 8.0,
-          "crops_bottom": 8.0,
-          "keeps_sides": 8.0
-        }
-      }
-    },
-    {
       "photo_id": 403970862,
       "file": "inat-403970862.jpeg",
       "reject": [],
@@ -1262,7 +1177,9 @@
     {
       "photo_id": 311373506,
       "file": "inat-311373506.jpeg",
-      "reject": [],
+      "reject": [
+        "missing structures the species' brief requires: flower_yellow"
+      ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
@@ -1299,6 +1216,31 @@
         "flower_fraction": 0.0121,
         "foliage_fraction": 0.5883,
         "subject_fraction": 0.6518
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.076,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.39,
+      "skin_in_cutout": 0.0057,
+      "brief_structures": {
+        "flower_yellow": 0.0034,
+        "flower_white": 0.015,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9967,
+        "needles": 0.0584
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "flower_yellow"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
       }
     },
     {
@@ -1739,124 +1681,6 @@
   ],
   "selected": [
     {
-      "photo_id": 557941881,
-      "file": "inat-557941881.jpg",
-      "reject": [],
-      "flags": [
-        "8.3% warm-toned background (gradient 11.5); read as soil or dry vegetation rather than skin",
-        "subject fills the frame and runs off 4 edges; little room to crop",
-        "only one agreeing identification; research grade is not proof"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 10.0,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_scale": 14.0,
-        "disc_facing": 10.4,
-        "specimen_scale": 11.6,
-        "identification": 3.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 6.9,
-        "subject_sharpness": 9.8,
-        "silhouette_openness": 10.8
-      },
-      "score": 136.9,
-      "_fill": 0.47476281060112846,
-      "measured_heads": {
-        "largest_disc_frac": 0.1268,
-        "comparable_heads": 1,
-        "disc_saturation": 198.0
-      },
-      "measured_subject": {
-        "largest_region_frac": 0.2533,
-        "regions": 2
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 9.9,
-        "skin_fraction": 0.0827,
-        "flower_fraction": 0.1554,
-        "foliage_fraction": 0.2536,
-        "subject_fraction": 0.4748
-      },
-      "segmented_by": "birefnet-general-lite",
-      "source_edges": {
-        "top": 0.0,
-        "bottom": 0.0,
-        "left": 0.0,
-        "right": 0.0
-      },
-      "cutout_solidity": 0.539,
-      "skin_in_cutout": 0.007,
-      "brief_structures": {
-        "flower_yellow": 0.8213,
-        "flower_white": 0.0025,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.1925,
-        "needles": 0.0239
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.122,
-      "subject_sharpness": 12.6,
-      "stem_support": {
-        "foot_ink": 0.1986,
-        "foot_width_frac": 0.501,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.463,
-        "placed_centroid_x": 0.51,
-        "points": {
-          "frame_fill_match": 8.4,
-          "centred": 8.0,
-          "crops_bottom": 8.0,
-          "keeps_sides": 8.0
-        }
-      },
-      "placement": {
-        "scale": 0.9943,
-        "size": [
-          480,
-          513
-        ],
-        "offset": [
-          62,
-          10
-        ],
-        "rooted": true,
-        "crops_bottom": true,
-        "bottom_overflow_px": 39,
-        "crops_sides": false,
-        "top_margin_px": 10
-      },
-      "cutout": "557941881-cutout.png",
-      "preview": "557941881-front.png",
-      "provenance": {
-        "photo_id": 557941881,
-        "observation_id": 309203334,
-        "observation_url": "https://www.inaturalist.org/observations/309203334",
-        "license_code": "cc0",
-        "license": "CC0 (public domain dedication)",
-        "photographer": "no rights reserved",
-        "dimensions": {
-          "width": 1152,
-          "height": 2048
-        },
-        "taxon_name": "Taraxacum officinale",
-        "taxon_id": 47602
-      },
-      "retrieved_at": "2026-11-06T18:45:34+00:00"
-    },
-    {
       "photo_id": 403970862,
       "file": "inat-403970862.jpeg",
       "reject": [],
@@ -2210,7 +2034,120 @@
         "taxon_id": 47602
       },
       "retrieved_at": "2026-11-06T18:45:34+00:00"
+    },
+    {
+      "photo_id": 134659891,
+      "file": "inat-134659891.jpeg",
+      "reject": [],
+      "flags": [
+        "5.5% warm-toned background (gradient 11.8); read as soil or dry vegetation rather than skin",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 2.8,
+        "disc_facing": 7.6,
+        "specimen_scale": 3.6,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 10.2,
+        "silhouette_openness": 2.3
+      },
+      "score": 87.2,
+      "_fill": 0.670194169535284,
+      "measured_heads": {
+        "largest_disc_frac": 0.01,
+        "comparable_heads": 1,
+        "disc_saturation": 182.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.6204,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.7,
+        "skin_fraction": 0.0549,
+        "flower_fraction": 0.0146,
+        "foliage_fraction": 0.6399,
+        "subject_fraction": 0.6702
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.722,
+      "skin_in_cutout": 0.0194,
+      "brief_structures": {
+        "flower_yellow": 0.0172,
+        "flower_white": 0.0074,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9278,
+        "needles": 0.0988
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.975,
+      "subject_sharpness": 13.2,
+      "stem_support": {
+        "foot_ink": 0.5467,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.704,
+        "placed_centroid_x": 0.538,
+        "points": {
+          "frame_fill_match": 0.0,
+          "centred": 6.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      },
+      "placement": {
+        "scale": 0.4818,
+        "size": [
+          578,
+          492
+        ],
+        "offset": [
+          13,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 18,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "134659891-cutout.png",
+      "preview": "134659891-front.png",
+      "provenance": {
+        "photo_id": 134659891,
+        "observation_id": 82067187,
+        "observation_url": "https://www.inaturalist.org/observations/82067187",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 2048,
+          "height": 1743
+        },
+        "taxon_name": "Taraxacum officinale",
+        "taxon_id": 47602
+      },
+      "retrieved_at": "2026-11-06T18:45:34+00:00"
     }
   ],
-  "seconds": 174.0
+  "seconds": 191.6
 }
