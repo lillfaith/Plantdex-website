@@ -1,10 +1,51 @@
 {
   "species": "verbascum_thapsus",
-  "verdict": "REJECTED",
+  "verdict": "NEEDS_REVIEW",
   "any_genuine_api_vision": false,
   "art_direction": "Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.",
   "selected": null,
   "candidates": [
+    {
+      "photo_id": 210580027,
+      "score": 145.2,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.219,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "touches the top edge of the source photograph; vision must confirm no identifying structure was lost"
+      ],
+      "owner_preferred": false
+    },
+    {
+      "photo_id": 143588661,
+      "score": 144.3,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.498,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "subject covers 0.12; the deck usually sits 0.20-0.42",
+        "50% brown or yellowed tissue"
+      ],
+      "owner_preferred": false
+    },
+    {
+      "photo_id": 21260078,
+      "score": 142.5,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.13,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false
+    },
     {
       "photo_id": 44345492,
       "score": 139.7,
@@ -19,64 +60,6 @@
       "soft_notes": [
         "touches the top edge of the source photograph; vision must confirm no identifying structure was lost",
         "subject covers 0.17; the deck usually sits 0.20-0.42"
-      ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 89496614,
-      "score": 134.0,
-      "status": "REJECTED",
-      "senescence": 0.081,
-      "vision_source": "none",
-      "genuine_api_vision": false,
-      "human_decision": {
-        "species": "verbascum_thapsus",
-        "decision": "rejected",
-        "by": "owner, 2026-11-06",
-        "reason": "The flowering spike is cut off at the top. The identifying structure must be complete with headroom; this is clipped in the source photograph, so no placement can recover it."
-      },
-      "hard_failures": [
-        "SEGMENTATION: straight alpha edges (rows 0.0, cols 0.186); an uncut rectangle survived"
-      ],
-      "soft_notes": [
-        "touches the top edge of the source photograph; vision must confirm no identifying structure was lost"
-      ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 143207510,
-      "score": 129.8,
-      "status": "REJECTED",
-      "senescence": 0.066,
-      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "genuine_api_vision": false,
-      "human_decision": null,
-      "hard_failures": [
-        "BOTANY (vision): Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.",
-        "BOTANY (vision): not identifiable as the species"
-      ],
-      "soft_notes": [
-        "vision quality 5/10"
-      ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 44345476,
-      "score": 128.1,
-      "status": "REJECTED",
-      "senescence": 0.083,
-      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "genuine_api_vision": false,
-      "human_decision": {
-        "species": "verbascum_thapsus",
-        "decision": "rejected",
-        "reason": "Owner: 'Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.' The clipping fix held -- this is a specimen-quality rejection, not a cropping one.",
-        "by": "owner, 2026-11-06",
-        "at": "2026-11-06"
-      },
-      "hard_failures": [],
-      "soft_notes": [
-        "subject covers 0.14; the deck usually sits 0.20-0.42"
       ],
       "owner_preferred": false
     }

@@ -97,6 +97,37 @@ def leading(species: str) -> dict | None:
     }
 
 
+def every(species: str, limit: int) -> list[dict]:
+    """Every candidate for one species, best first -- the 20-25 preview sheet.
+
+    `leading` shows one cell per species, which is the right sheet for scanning a catalogue.
+    This is the right sheet for CHOOSING: five species at four candidates each is nineteen
+    previews, and the question "which of these four" cannot be asked of a sheet that shows
+    one of them.
+    """
+    gf, cf = BASE / species / "gates.json", BASE / species / "candidates.json"
+    if not gf.exists() or not cf.exists():
+        return []
+    g = json.loads(gf.read_text())
+    cands = {str(c["photo_id"]): c for c in json.loads(cf.read_text())["selected"]}
+    out = []
+    for row in g["candidates"][:limit]:
+        src = cands.get(str(row["photo_id"]))
+        if not src:
+            continue
+        out.append({
+            "species": species, "photo_id": row["photo_id"], "status": row["status"],
+            "preview": BASE / species / src["preview"],
+            "why": (row["hard_failures"] or row["soft_notes"] or [""])[0],
+            "had_alternatives": len(g["candidates"]),
+            "any_passing": any(r["status"] != "REJECTED" for r in g["candidates"]),
+            "genuine_api_vision": g["any_genuine_api_vision"],
+            "owner_preferred": bool(row.get("owner_preferred")),
+            "art_direction": g.get("art_direction", ""),
+        })
+    return out
+
+
 def draw(cells: list[dict], out: Path) -> None:
     card_h = int(CELL_W * 1293 / 800)
     cell_h = LABEL + card_h + BAND
@@ -107,7 +138,10 @@ def draw(cells: list[dict], out: Path) -> None:
     sheet = Image.new("RGB", (W, H), PAPER)
     d = ImageDraw.Draw(sheet)
     n_api = sum(1 for c in cells if c["genuine_api_vision"])
-    d.text((PAD, PAD), f"PlantDex photo review - {len(cells)} species", font=font(22), fill=INK)
+    n_sp = len({c["species"] for c in cells})
+    d.text((PAD, PAD),
+           f"PlantDex photo review - {len(cells)} previews across {n_sp} species",
+           font=font(22), fill=INK)
     d.text((PAD, PAD + 26),
            f"genuine API vision on {n_api}/{len(cells)}; nothing auto-approves without it",
            font=font(13), fill=(96, 92, 104))
@@ -208,6 +242,8 @@ def main() -> int:
     a.add_argument("--out", default="evidence/candidates/contact-sheet.png")
     a.add_argument("--record", metavar="TEMPLATE")
     a.add_argument("--history", metavar="PHOTO_ID")
+    a.add_argument("--per-species", type=int, default=0,
+                   help="show this many candidates per species instead of only the leader")
     args = a.parse_args()
     if args.history:
         return show_history(args.history)
@@ -215,10 +251,18 @@ def main() -> int:
         return record(Path(args.record))
     names = args.species or sorted(p.name for p in BASE.iterdir()
                                    if (p / "gates.json").exists())
+    if args.per_species and len(names) * args.per_species > 25:
+        keep = max(1, 25 // max(1, args.per_species))
+        print(f"{len(names)} species x {args.per_species} is over 25 cells -- showing the "
+              f"first {keep} species; review in batches", file=sys.stderr)
+        names = names[:keep]
     if len(names) > 25:
         print(f"{len(names)} species; a sheet holds 25 -- review in batches", file=sys.stderr)
         names = names[:25]
-    cells = [c for c in (leading(n) for n in names) if c]
+    if args.per_species:
+        cells = [c for n in names for c in every(n, args.per_species)]
+    else:
+        cells = [c for c in (leading(n) for n in names) if c]
     if not cells:
         print("nothing to review", file=sys.stderr)
         return 1

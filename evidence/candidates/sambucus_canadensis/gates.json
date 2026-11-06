@@ -1,23 +1,56 @@
 {
   "species": "sambucus_canadensis",
-  "verdict": "REJECTED",
+  "verdict": "NEEDS_REVIEW",
   "any_genuine_api_vision": false,
   "art_direction": "Elderberry: preserve my rejection and continue searching for a healthy-looking fruiting specimen with dark berries, branching stems and leaves.",
   "selected": null,
   "candidates": [
     {
-      "photo_id": 577065025,
-      "score": 110.7,
-      "status": "REJECTED",
-      "senescence": 0.285,
-      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "photo_id": 424182823,
+      "score": 115.1,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.068,
+      "vision_source": "none",
       "genuine_api_vision": false,
-      "human_decision": {
-        "species": "sambucus_canadensis",
-        "decision": "rejected",
-        "by": "owner, 2026-11-06",
-        "reason": "Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- berry fragments without supporting structure. Senescence measured 0.285, BELOW the deck's own p90 of 0.388, so no metric caught this."
-      },
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false
+    },
+    {
+      "photo_id": 424182835,
+      "score": 114.3,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.023,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false
+    },
+    {
+      "photo_id": 309523755,
+      "score": 112.4,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.006,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "touches the right edge of the source photograph; vision must confirm no identifying structure was lost"
+      ],
+      "owner_preferred": false
+    },
+    {
+      "photo_id": 554726092,
+      "score": 110.4,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.124,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
       "hard_failures": [],
       "soft_notes": [],
       "owner_preferred": false

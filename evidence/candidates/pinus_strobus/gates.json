@@ -6,30 +6,34 @@
   "selected": null,
   "candidates": [
     {
-      "photo_id": 390760300,
-      "score": 135.0,
-      "status": "REJECTED",
-      "senescence": 0.004,
-      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "photo_id": 111407747,
+      "score": 133.2,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.291,
+      "vision_source": "none",
       "genuine_api_vision": false,
-      "human_decision": {
-        "species": "pinus_strobus",
-        "decision": "rejected",
-        "reason": "Owner: 'Pine: reject the whole-tree composition for this card. Search for a recognizable, attractive branch showing distinct needle clusters.' An art-direction rejection: the cutout is clean and the species is identifiable, but no card in the deck is a tree portrait, and a whole-tree habit shot cannot show distinct needle clusters at card size.",
-        "by": "owner, 2026-11-06",
-        "at": "2026-11-06"
-      },
+      "human_decision": null,
       "hard_failures": [],
-      "soft_notes": [
-        "vision quality 5/10"
-      ],
+      "soft_notes": [],
       "owner_preferred": false
     },
     {
-      "photo_id": 221242744,
-      "score": 122.0,
+      "photo_id": 340372052,
+      "score": 132.3,
       "status": "NEEDS_REVIEW",
-      "senescence": 0.216,
+      "senescence": 0.117,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false
+    },
+    {
+      "photo_id": 306725928,
+      "score": 129.2,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.025,
       "vision_source": "none",
       "genuine_api_vision": false,
       "human_decision": null,
@@ -40,31 +44,15 @@
       "owner_preferred": false
     },
     {
-      "photo_id": 390305665,
-      "score": 118.3,
+      "photo_id": 354857174,
+      "score": 128.9,
       "status": "NEEDS_REVIEW",
-      "senescence": 0.029,
-      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
-      "genuine_api_vision": false,
-      "human_decision": null,
-      "hard_failures": [],
-      "soft_notes": [
-        "vision quality 5/10"
-      ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 36667264,
-      "score": 113.8,
-      "status": "NEEDS_REVIEW",
-      "senescence": 0.055,
+      "senescence": 0.143,
       "vision_source": "none",
       "genuine_api_vision": false,
       "human_decision": null,
       "hard_failures": [],
-      "soft_notes": [
-        "subject covers 0.11; the deck usually sits 0.20-0.42"
-      ],
+      "soft_notes": [],
       "owner_preferred": false
     }
   ]

@@ -6,22 +6,16 @@
   "selected": null,
   "candidates": [
     {
-      "photo_id": 557941881,
-      "score": 136.9,
-      "status": "REJECTED",
-      "senescence": 0.095,
+      "photo_id": 133194303,
+      "score": 137.4,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.007,
       "vision_source": "none",
       "genuine_api_vision": false,
-      "human_decision": {
-        "species": "taraxacum_officinale",
-        "decision": "rejected",
-        "reason": "Owner: 'Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.' Applied to this candidate as the current leader (placed fill 0.46, above the deck's 0.20-0.42 band) because it is the oversized bloom the directive describes; the owner did not name an id, so revise this entry if the reading is wrong.",
-        "by": "owner, 2026-11-06",
-        "at": "2026-11-06"
-      },
+      "human_decision": null,
       "hard_failures": [],
       "soft_notes": [
-        "subject covers 0.46; the deck usually sits 0.20-0.42"
+        "subject covers 0.55; the deck usually sits 0.20-0.42"
       ],
       "owner_preferred": false
     },
@@ -42,30 +36,28 @@
       "owner_preferred": false
     },
     {
-      "photo_id": 390303714,
-      "score": 107.5,
+      "photo_id": 152340494,
+      "score": 131.1,
       "status": "NEEDS_REVIEW",
-      "senescence": 0.52,
+      "senescence": 0.091,
       "vision_source": "none",
       "genuine_api_vision": false,
       "human_decision": null,
       "hard_failures": [],
       "soft_notes": [
-        "52% brown or yellowed tissue"
+        "subject covers 0.15; the deck usually sits 0.20-0.42"
       ],
       "owner_preferred": false
     },
     {
-      "photo_id": 557939990,
-      "score": 98.0,
-      "status": "REJECTED",
-      "senescence": 0.263,
+      "photo_id": 924120,
+      "score": 117.3,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.085,
       "vision_source": "none",
       "genuine_api_vision": false,
       "human_decision": null,
-      "hard_failures": [
-        "COHERENCE: largest piece is only 44% across 4 fragments; not one substantial specimen"
-      ],
+      "hard_failures": [],
       "soft_notes": [
         "subject covers 0.06; the deck usually sits 0.20-0.42"
       ],

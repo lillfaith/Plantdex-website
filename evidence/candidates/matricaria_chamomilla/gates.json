@@ -20,53 +20,31 @@
         "at": "2026-11-06"
       },
       "hard_failures": [],
-      "soft_notes": [
-        "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost"
-      ],
+      "soft_notes": [],
       "owner_preferred": true
     },
     {
-      "photo_id": 74694819,
-      "score": 126.4,
+      "photo_id": 18365261,
+      "score": 139.3,
       "status": "NEEDS_REVIEW",
-      "senescence": 0.007,
+      "senescence": 0.138,
       "vision_source": "none",
       "genuine_api_vision": false,
       "human_decision": null,
       "hard_failures": [],
-      "soft_notes": [
-        "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost",
-        "off centre at 0.36"
-      ],
+      "soft_notes": [],
       "owner_preferred": false
     },
     {
-      "photo_id": 74694772,
-      "score": 126.0,
+      "photo_id": 293002707,
+      "score": 127.2,
       "status": "NEEDS_REVIEW",
-      "senescence": 0.028,
+      "senescence": 0.365,
       "vision_source": "none",
       "genuine_api_vision": false,
       "human_decision": null,
       "hard_failures": [],
-      "soft_notes": [
-        "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost"
-      ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 91282063,
-      "score": 123.8,
-      "status": "NEEDS_REVIEW",
-      "senescence": 0.035,
-      "vision_source": "none",
-      "genuine_api_vision": false,
-      "human_decision": null,
-      "hard_failures": [],
-      "soft_notes": [
-        "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost",
-        "subject covers 0.18; the deck usually sits 0.20-0.42"
-      ],
+      "soft_notes": [],
       "owner_preferred": false
     }
   ]

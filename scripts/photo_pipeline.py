@@ -649,10 +649,22 @@ def main() -> int:
             print(f"   {s['photo_id']}: rejected, hand survives the cutout "
                   f"(blob {100*sfrac:.1f}%, gradient {sgrad:.1f})")
             continue
+        # REPORT THE MEASUREMENT, DO NOT ASSERT THE CONCLUSION. The first wording of this
+        # flag read "texture, not skin" whenever the gate let a candidate through, and pine
+        # 306725928 is a photograph of a HAND holding a fascicle: its largest warm region
+        # is 3.6% of the subject at gradient 3.3, which is smooth, and it passed only
+        # because it sits at the edge rather than across the plant. Loosening the gate was
+        # right -- it was rejecting every fruiting elderberry -- and this is its cost. The
+        # pass that settles it is the vision review, which is shown the cutout and can say
+        # "a hand is holding the branch"; a hue threshold never could. Until then the flag
+        # must not tell a reader the opposite of what it measured.
         if skin_left > 0.04:
+            verdict = ("SMOOTH, so it may be skin: the vision pass decides"
+                       if sgrad < SKIN_SMOOTH else "textured, so it is not skin")
             s["flags"].append(
-                f"{100*skin_left:.1f}% of the cutout is warm-hued, but the largest smooth "
-                f"region is {100*sfrac:.1f}% at gradient {sgrad:.1f} -- texture, not skin")
+                f"{100*skin_left:.1f}% of the cutout is warm-hued; its largest connected "
+                f"region is {100*sfrac:.1f}% of the subject at gradient {sgrad:.1f} -- "
+                f"{verdict}")
         # DOES THE ISOLATED PLANT CARRY WHAT THE BRIEF REQUIRES? Measured on the CUTOUT,
         # not the source: a structure that did not survive segmentation is not on the card,
         # whatever the photograph contained. A candidate missing a mandatory structure is
