@@ -65,7 +65,16 @@ jobs:
           # thin to support the programme, and it was a flag nobody had re-read: the audit
           # counts 484 CC0 research-grade observations for Matricaria chamomilla and a
           # median of 963 across 17 medicinal species. The selector needs real choice.
-          python3 -I scripts/fetch_inat_photos.py "${NAMES[@]}" --out evidence/photos --want 32 --size original
+          # --want 96, RAISED FROM 32 BECAUSE THE POOL RAN OUT RATHER THAN THE SCORER
+          # FAILING. Four species were asked for a better specimen this round -- a fuller
+          # mullein spike, a dandelion with stems and foliage, a pine branch rather than a
+          # tree, a healthy fruiting elderberry -- and with the rejected photographs
+          # excluded, elderberry had NOTHING left to offer: 33 retrieved, every one of them
+          # refused by segmentation or by its own brief. That is a supply problem, and no
+          # amount of re-ranking 33 photographs fixes it. The phenology window makes it
+          # worse for fruit: elderberry is restricted to its fruiting months, so its 33 are
+          # drawn from a fraction of the year.
+          python3 -I scripts/fetch_inat_photos.py "${NAMES[@]}" --out evidence/photos --want 96 --size original
 
       - name: Summarise what came back
         run: python3 -I scripts/summarise_evidence.py evidence/retrieved/*.json
