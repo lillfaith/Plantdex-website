@@ -100,7 +100,7 @@
       "flags": [
         "a hand is present behind the subject (16.8% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "only one agreeing identification; research grade is not proof",
-        "7.0% of the cutout is warm-hued, but the largest smooth region is 3.9% at gradient 2.7 -- texture, not skin",
+        "7.0% of the cutout is warm-hued; its largest connected region is 3.9% of the subject at gradient 2.7 -- SMOOTH, so it may be skin: the vision pass decides",
         "segmentation kept only 1% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
@@ -678,7 +678,7 @@
         "a hand crosses the plant in the source (22.6% of frame); the cutout is checked afterwards and rejected if any of it survives",
         "subject fills the frame and runs off 4 edges; little room to crop",
         "only one agreeing identification; research grade is not proof",
-        "5.7% of the cutout is warm-hued, but the largest smooth region is 0.7% at gradient 14.6 -- texture, not skin"
+        "5.7% of the cutout is warm-hued; its largest connected region is 0.7% of the subject at gradient 14.6 -- textured, so it is not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -1022,7 +1022,7 @@
         "a hand is present behind the subject (8.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "subject fills the frame and runs off 4 edges; little room to crop",
         "only one agreeing identification; research grade is not proof",
-        "10.1% of the cutout is warm-hued, but the largest smooth region is 3.8% at gradient 3.4 -- texture, not skin",
+        "10.1% of the cutout is warm-hued; its largest connected region is 3.8% of the subject at gradient 3.4 -- SMOOTH, so it may be skin: the vision pass decides",
         "segmentation kept only 2% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
@@ -1116,7 +1116,7 @@
         "a hand is present behind the subject (21.8% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "subject fills the frame and runs off 4 edges; little room to crop",
         "largest flower head is 0.20% of the frame: too small to read as a specimen on a card",
-        "6.3% of the cutout is warm-hued, but the largest smooth region is 0.3% at gradient 6.2 -- texture, not skin"
+        "6.3% of the cutout is warm-hued; its largest connected region is 0.3% of the subject at gradient 6.2 -- SMOOTH, so it may be skin: the vision pass decides"
       ],
       "points": {
         "resolution": 10.0,
@@ -1187,7 +1187,7 @@
       "flags": [
         "a hand is present behind the subject (13.0% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "only one agreeing identification; research grade is not proof",
-        "11.0% of the cutout is warm-hued, but the largest smooth region is 6.9% at gradient 3.6 -- texture, not skin",
+        "11.0% of the cutout is warm-hued; its largest connected region is 6.9% of the subject at gradient 3.6 -- SMOOTH, so it may be skin: the vision pass decides",
         "segmentation kept only 4% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
@@ -4908,7 +4908,7 @@
         "a hand is present behind the subject (8.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "subject fills the frame and runs off 4 edges; little room to crop",
         "only one agreeing identification; research grade is not proof",
-        "10.1% of the cutout is warm-hued, but the largest smooth region is 3.8% at gradient 3.4 -- texture, not skin",
+        "10.1% of the cutout is warm-hued; its largest connected region is 3.8% of the subject at gradient 3.4 -- SMOOTH, so it may be skin: the vision pass decides",
         "segmentation kept only 2% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
@@ -5026,5 +5026,5 @@
       "retrieved_at": "2026-11-06T20:51:32+00:00"
     }
   ],
-  "seconds": 166.5
+  "seconds": 138.6
 }
