@@ -174,95 +174,6 @@
       "skin_in_cutout": 0.0401
     },
     {
-      "photo_id": 577065025,
-      "file": "inat-577065025.jpg",
-      "reject": [],
-      "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop",
-        "flower may be facing away: disc saturation 136 suggests a receptacle rather than the open yellow centre",
-        "largest flower head is 0.02% of the frame: too small to read as a specimen on a card",
-        "only one agreeing identification; research grade is not proof",
-        "segmentation kept only 7% of the foliage: stems and leaves have been cut away"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 9.1,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_scale": 0.1,
-        "disc_facing": 0.0,
-        "specimen_scale": 6.6,
-        "identification": 3.0,
-        "brief_preferred": 8.0,
-        "structure_retention": 3.8,
-        "subject_sharpness": 14.0,
-        "silhouette_openness": 12.3
-      },
-      "score": 110.7,
-      "_fill": 0.621357282002767,
-      "measured_heads": {
-        "largest_disc_frac": 0.0002,
-        "comparable_heads": 5,
-        "disc_saturation": 136.0
-      },
-      "measured_subject": {
-        "largest_region_frac": 0.1452,
-        "regions": 4
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 7.2,
-        "skin_fraction": 0.0007,
-        "flower_fraction": 0.109,
-        "foliage_fraction": 0.4909,
-        "subject_fraction": 0.6214
-      },
-      "segmented_by": "birefnet-general-lite",
-      "source_edges": {
-        "top": 0.0,
-        "bottom": 0.0,
-        "left": 0.0,
-        "right": 0.013
-      },
-      "cutout_solidity": 0.263,
-      "skin_in_cutout": 0.0305,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.7864,
-        "berry_dark": 0.0343,
-        "berry_red": 0.0,
-        "foliage": 0.2855,
-        "needles": 0.0655
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [
-          "foliage"
-        ],
-        "ok": true,
-        "preferred_score": 1.0
-      },
-      "green_retention": 0.069,
-      "subject_sharpness": 24.0,
-      "stem_support": {
-        "foot_ink": 0.0307,
-        "foot_width_frac": 0.142,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.237,
-        "placed_centroid_x": 0.467,
-        "points": {
-          "frame_fill_match": 12.1,
-          "centred": 5.7,
-          "crops_bottom": 8.0,
-          "keeps_sides": 0.0
-        }
-      }
-    },
-    {
       "photo_id": 420991401,
       "file": "inat-420991401.jpeg",
       "reject": [
@@ -1222,7 +1133,9 @@
     {
       "photo_id": 222609376,
       "file": "inat-222609376.jpeg",
-      "reject": [],
+      "reject": [
+        "a hand survives segmentation: 6.1% of the cutout is skin"
+      ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 144 suggests a receptacle rather than the open yellow centre",
@@ -1259,7 +1172,16 @@
         "flower_fraction": 0.038,
         "foliage_fraction": 0.7948,
         "subject_fraction": 0.8403
-      }
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.042,
+        "bottom": 0.019,
+        "left": 0.0,
+        "right": 0.126
+      },
+      "cutout_solidity": 0.168,
+      "skin_in_cutout": 0.0612
     },
     {
       "photo_id": 561387654,
@@ -1697,129 +1619,6 @@
       }
     }
   ],
-  "selected": [
-    {
-      "photo_id": 577065025,
-      "file": "inat-577065025.jpg",
-      "reject": [],
-      "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop",
-        "flower may be facing away: disc saturation 136 suggests a receptacle rather than the open yellow centre",
-        "largest flower head is 0.02% of the frame: too small to read as a specimen on a card",
-        "only one agreeing identification; research grade is not proof",
-        "segmentation kept only 7% of the foliage: stems and leaves have been cut away"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 9.1,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_scale": 0.1,
-        "disc_facing": 0.0,
-        "specimen_scale": 6.6,
-        "identification": 3.0,
-        "brief_preferred": 8.0,
-        "structure_retention": 3.8,
-        "subject_sharpness": 14.0,
-        "silhouette_openness": 12.3
-      },
-      "score": 110.7,
-      "_fill": 0.621357282002767,
-      "measured_heads": {
-        "largest_disc_frac": 0.0002,
-        "comparable_heads": 5,
-        "disc_saturation": 136.0
-      },
-      "measured_subject": {
-        "largest_region_frac": 0.1452,
-        "regions": 4
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 7.2,
-        "skin_fraction": 0.0007,
-        "flower_fraction": 0.109,
-        "foliage_fraction": 0.4909,
-        "subject_fraction": 0.6214
-      },
-      "segmented_by": "birefnet-general-lite",
-      "source_edges": {
-        "top": 0.0,
-        "bottom": 0.0,
-        "left": 0.0,
-        "right": 0.013
-      },
-      "cutout_solidity": 0.263,
-      "skin_in_cutout": 0.0305,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.7864,
-        "berry_dark": 0.0343,
-        "berry_red": 0.0,
-        "foliage": 0.2855,
-        "needles": 0.0655
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [
-          "foliage"
-        ],
-        "ok": true,
-        "preferred_score": 1.0
-      },
-      "green_retention": 0.069,
-      "subject_sharpness": 24.0,
-      "stem_support": {
-        "foot_ink": 0.0307,
-        "foot_width_frac": 0.142,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.237,
-        "placed_centroid_x": 0.467,
-        "points": {
-          "frame_fill_match": 12.1,
-          "centred": 5.7,
-          "crops_bottom": 8.0,
-          "keeps_sides": 0.0
-        }
-      },
-      "placement": {
-        "scale": 0.7017,
-        "size": [
-          578,
-          469
-        ],
-        "offset": [
-          13,
-          15
-        ],
-        "rooted": true,
-        "crops_bottom": false,
-        "bottom_overflow_px": 0,
-        "crops_sides": false,
-        "top_margin_px": 15
-      },
-      "cutout": "577065025-cutout.png",
-      "preview": "577065025-front.png",
-      "provenance": {
-        "photo_id": 577065025,
-        "observation_id": 319246617,
-        "observation_url": "https://www.inaturalist.org/observations/319246617",
-        "license_code": "cc0",
-        "license": "CC0 (public domain dedication)",
-        "photographer": "no rights reserved",
-        "dimensions": {
-          "width": 1536,
-          "height": 2048
-        },
-        "taxon_name": "Sambucus canadensis",
-        "taxon_id": 84300
-      },
-      "retrieved_at": "2026-11-06T18:47:49+00:00"
-    }
-  ],
-  "seconds": 174.1
+  "selected": [],
+  "seconds": 168.1
 }
