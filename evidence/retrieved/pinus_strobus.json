@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "pinus strobus",
-  "retrieved_at": "2026-11-05T03:25:11+00:00",
+  "retrieved_at": "2026-11-06T18:44:30+00:00",
   "identity": {
     "queried_name": "Pinus strobus",
     "match_type": "EXACT",
@@ -80,8 +80,8 @@
         "pmc-11483095",
         "pmc-10967410",
         "pmc-13061383",
-        "pmc-13591347",
         "pmc-11922845",
+        "pmc-13591347",
         "pmc-12299008",
         "pmc-13412462",
         "pmid-38695444",
@@ -549,19 +549,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13591347",
-        "title": "Underground Signals: The Ecological Power of Root Volatiles.",
-        "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
-        "year": "2026",
-        "doi": "10.1002/advs.202522148",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13591347",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-11922845",
         "title": "Contrasting levels of transcriptome-wide SNP diversity and adaptive molecular variation among conifers.",
         "journal": "Frontiers in plant science",
@@ -569,6 +556,19 @@
         "doi": "10.3389/fpls.2025.1500759",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC11922845",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13591347",
+        "title": "Underground Signals: The Ecological Power of Root Volatiles.",
+        "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
+        "year": "2026",
+        "doi": "10.1002/advs.202522148",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13591347",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,

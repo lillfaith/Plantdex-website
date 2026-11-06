@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "verbascum thapsus",
-  "retrieved_at": "2026-11-05T03:23:10+00:00",
+  "retrieved_at": "2026-11-06T18:41:59+00:00",
   "identity": {
     "queried_name": "Verbascum thapsus",
     "match_type": "EXACT",
@@ -55,15 +55,15 @@
         "pmc-12137565",
         "pmc-12291726",
         "pmc-11232275",
-        "pmc-13203402",
         "pmc-9032843",
+        "pmc-13203402",
         "pmc-11396795",
         "pmc-12608489",
-        "pmc-13659225",
         "pmc-11184722",
+        "pmc-13659225",
         "pmc-12274356",
-        "pmc-12992903",
-        "pmc-12472671"
+        "pmc-12472671",
+        "pmc-12992903"
       ],
       "laboratory-study": [
         "pmc-13192076",
@@ -291,19 +291,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13203402",
-        "title": "Transcriptomic and Proteomic Analysis of the Skeletal Muscle Revealed the Effects and Mechanism of Mulberry Leaf Flavonoids on Alleviating Exercise-Induced Muscle Damage in Mongolian Horses.",
-        "journal": "Animals : an open access journal from MDPI",
-        "year": "2026",
-        "doi": "10.3390/ani16101548",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13203402",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-9032843",
         "title": "Diverse in Local, Overlapping in Official Medical Botany: Critical Analysis of Medicinal Plant Records from the Historic Regions of Livonia and Courland in Northeast Europe, 1829-1895.",
         "journal": "Plants (Basel, Switzerland)",
@@ -311,6 +298,19 @@
         "doi": "10.3390/plants11081065",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC9032843",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13203402",
+        "title": "Transcriptomic and Proteomic Analysis of the Skeletal Muscle Revealed the Effects and Mechanism of Mulberry Leaf Flavonoids on Alleviating Exercise-Induced Muscle Damage in Mongolian Horses.",
+        "journal": "Animals : an open access journal from MDPI",
+        "year": "2026",
+        "doi": "10.3390/ani16101548",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13203402",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -343,19 +343,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13659225",
-        "title": "Plant-derived modulators of the hemostasis-wound healing axis: mechanisms, evidence, and translational potential",
-        "journal": "Frontiers in pharmacology",
-        "year": null,
-        "doi": null,
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13659225",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-11184722",
         "title": "Modulation of innate immunity related genes resulting in prophylactic antimicrobial and antiviral properties.",
         "journal": "Journal of translational medicine",
@@ -363,6 +350,19 @@
         "doi": "10.1186/s12967-024-05378-2",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC11184722",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13659225",
+        "title": "Plant-derived modulators of the hemostasis-wound healing axis: mechanisms, evidence, and translational potential",
+        "journal": "Frontiers in pharmacology",
+        "year": null,
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13659225",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -382,19 +382,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-12992903",
-        "title": "Ethnobotanical heritage and conservation priorities of medicinal flora in a remote Himalayan border region of Azad Kashmir, Pakistan.",
-        "journal": "Scientific reports",
-        "year": "2026",
-        "doi": "10.1038/s41598-026-39964-9",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12992903",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12472671",
         "title": "Evaluation of Proliferative Activity of Hawaiian Plants on PC-12 and Neuro-2a Cells and Their Effect on the TPH and TH Genes.",
         "journal": "Pharmaceuticals (Basel, Switzerland)",
@@ -402,6 +389,19 @@
         "doi": "10.3390/ph18091403",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12472671",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12992903",
+        "title": "Ethnobotanical heritage and conservation priorities of medicinal flora in a remote Himalayan border region of Azad Kashmir, Pakistan.",
+        "journal": "Scientific reports",
+        "year": "2026",
+        "doi": "10.1038/s41598-026-39964-9",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12992903",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,

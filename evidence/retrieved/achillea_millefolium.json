@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "achillea millefolium",
-  "retrieved_at": "2026-11-05T03:23:36+00:00",
+  "retrieved_at": "2026-11-06T18:42:27+00:00",
   "identity": {
     "queried_name": "Achillea millefolium",
     "match_type": "EXACT",
@@ -92,8 +92,8 @@
         "pmc-13517077",
         "pmc-12914922",
         "pmc-13516345",
-        "pmc-13074613",
         "pmc-12654173",
+        "pmc-13074613",
         "pmc-12639085",
         "epmc-a9e9bc9555",
         "pmc-12774671",
@@ -315,19 +315,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13074613",
-        "title": "In Vitro Antimicrobial Potential of Medicinal Plant Extracts and Their Combinations Against Mastitis-Causing Bacteria in Dairy Cows.",
-        "journal": "Molecules (Basel, Switzerland)",
-        "year": "2026",
-        "doi": "10.3390/molecules31071089",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13074613",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12654173",
         "title": "Metabolome and Essential Element Analyses of Five Underutilized European Crops Reveal Their Nutritional Properties and Potential to Diversify the European Food System.",
         "journal": "Metabolites",
@@ -335,6 +322,19 @@
         "doi": "10.3390/metabo15110720",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12654173",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13074613",
+        "title": "In Vitro Antimicrobial Potential of Medicinal Plant Extracts and Their Combinations Against Mastitis-Causing Bacteria in Dairy Cows.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31071089",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13074613",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,

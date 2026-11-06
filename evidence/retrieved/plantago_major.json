@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "plantago major",
-  "retrieved_at": "2026-11-05T03:24:08+00:00",
+  "retrieved_at": "2026-11-06T18:42:58+00:00",
   "identity": {
     "queried_name": "Plantago major",
     "match_type": "EXACT",
@@ -91,8 +91,8 @@
         "pmc-12914922",
         "pmc-12394104",
         "pmc-13074613",
-        "pmc-13417562",
         "epmc-e26d9b4304",
+        "pmc-13417562",
         "pmc-13314007",
         "pmc-13250185",
         "pmc-11478695",
@@ -285,19 +285,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13417562",
-        "title": "Ethnobotanical Inventory on the Vernacular Names of Useful Plants: Data of over 120 Years for the Ligurian Region (Northern Italy).",
-        "journal": "Plants (Basel, Switzerland)",
-        "year": "2026",
-        "doi": "10.3390/plants15142193",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13417562",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "epmc-e26d9b4304",
         "title": "Time-resolved analysis of UV-B-induced secondary metabolite biosynthesis and gene expression in Plantago major L.",
         "journal": "Physiol Mol Biol Plants",
@@ -305,6 +292,19 @@
         "doi": null,
         "open_access": false,
         "url": null,
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13417562",
+        "title": "Ethnobotanical Inventory on the Vernacular Names of Useful Plants: Data of over 120 Years for the Ligurian Region (Northern Italy).",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15142193",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13417562",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,

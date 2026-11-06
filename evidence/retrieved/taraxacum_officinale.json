@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "taraxacum officinale",
-  "retrieved_at": "2026-11-05T03:22:44+00:00",
+  "retrieved_at": "2026-11-06T18:41:26+00:00",
   "identity": {
     "queried_name": "Taraxacum officinale",
     "match_type": "EXACT",
@@ -58,11 +58,11 @@
         "pmc-13552283",
         "epmc-8492172eaa",
         "pmc-12752310",
-        "pmc-12693992",
         "pmc-12299503",
+        "pmc-12693992",
         "pmid-40700821",
-        "pmc-12348216",
         "pmc-13073622",
+        "pmc-12348216",
         "pmc-13567065",
         "epmc-93c9ece0db",
         "pmc-11723127",
@@ -84,8 +84,8 @@
         "epmc-0596edce24",
         "pmc-13666699",
         "pmc-13441918",
-        "pmc-13074846",
         "pmc-13514139",
+        "pmc-13074846",
         "pmc-13107122",
         "pmc-13605521",
         "pmc-13707946",
@@ -277,19 +277,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-12693992",
-        "title": "Medicinal Plants in Food Supplements for Gastrointestinal Disorders: Critical Assessment of Health Claims on Gastric Acid Regulation.",
-        "journal": "Nutrients",
-        "year": "2025",
-        "doi": "10.3390/nu17233674",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12693992",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12299503",
         "title": "The Role of Dandelion (&lt;i&gt;Taraxacum officinale&lt;/i&gt;) in Liver Health and Hepatoprotective Properties.",
         "journal": "Pharmaceuticals (Basel, Switzerland)",
@@ -297,6 +284,19 @@
         "doi": "10.3390/ph18070990",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12299503",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12693992",
+        "title": "Medicinal Plants in Food Supplements for Gastrointestinal Disorders: Critical Assessment of Health Claims on Gastric Acid Regulation.",
+        "journal": "Nutrients",
+        "year": "2025",
+        "doi": "10.3390/nu17233674",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12693992",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -316,19 +316,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-12348216",
-        "title": "Medicinal Plants for Skin Disorders: Phytochemistry and Pharmacological Insights.",
-        "journal": "Molecules (Basel, Switzerland)",
-        "year": "2025",
-        "doi": "10.3390/molecules30153281",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12348216",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13073622",
         "title": "The Influence of Monosaccharide Composition on the Bioactivity of Medicinal Plant Polysaccharides.",
         "journal": "International journal of molecular sciences",
@@ -336,6 +323,19 @@
         "doi": "10.3390/ijms27073075",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13073622",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12348216",
+        "title": "Medicinal Plants for Skin Disorders: Phytochemistry and Pharmacological Insights.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30153281",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12348216",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -589,19 +589,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13074846",
-        "title": "Chemical Compositions, Traditional Applications, and Biological Activities of &lt;i&gt;Gnaphalium affine&lt;/i&gt; D. Don: A Comprehensive Review.",
-        "journal": "Molecules (Basel, Switzerland)",
-        "year": "2026",
-        "doi": "10.3390/molecules31071199",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13074846",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13514139",
         "title": "Integrated Phytochemical, Network Pharmacology, and Molecular Docking Analyses of Triphala Extract Reveal Protective Effects Against H&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;2&lt;/sub&gt;-Induced Oxidative Hemolysis in G6PD-Deficient Erythrocytes.",
         "journal": "Life (Basel, Switzerland)",
@@ -609,6 +596,19 @@
         "doi": "10.3390/life16081359",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13514139",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13074846",
+        "title": "Chemical Compositions, Traditional Applications, and Biological Activities of &lt;i&gt;Gnaphalium affine&lt;/i&gt; D. Don: A Comprehensive Review.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31071199",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13074846",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -772,12 +772,6 @@
         "text": "Only Urtica dioica L. and Taraxacum officinale F.H.Wigg. were recorded in all four areas, and just under 70% of taxa in one only. In-field transmission has collapsed almost everywhere, and three cases of incipient domestication were documented."
       },
       {
-        "passage_id": "pmc-12693992#abstract-6",
-        "source_id": "pmc-12693992",
-        "located_in": "abstract",
-        "text": "The most frequently used plants were peppermint ( Mentha piperita ), artichoke ( Cynara cardunculus ), fennel ( Foeniculum vulgare ), Milk thistle ( Silybum marianum ), dandelion ( Taraxacum officinale ), chamomile ( Matricaria chamomilla ), psyllium ( Plantago ovata ), licorice ( Glycyrrhiza glabra ), caraway ( Carum carvi ), lemon balm ( Melissa officinalis ), and chicory ( Cichorium intybus ). Label claims most often referred to supporting digestion, relieving bloating, and maintaining normal GI function."
-      },
-      {
         "passage_id": "pmc-12299503#abstract-0",
         "source_id": "pmc-12299503",
         "located_in": "abstract",
@@ -806,6 +800,12 @@
         "source_id": "pmc-12299503",
         "located_in": "abstract",
         "text": "Determining the optimal dosing, evaluating its potential as an adjuvant in pharmacological treatments, as well as evaluating possible interactions with conventional drugs, is necessary for the potential use of T. officinale as an adjuvant agent in the treatment of liver diseases."
+      },
+      {
+        "passage_id": "pmc-12693992#abstract-6",
+        "source_id": "pmc-12693992",
+        "located_in": "abstract",
+        "text": "The most frequently used plants were peppermint ( Mentha piperita ), artichoke ( Cynara cardunculus ), fennel ( Foeniculum vulgare ), Milk thistle ( Silybum marianum ), dandelion ( Taraxacum officinale ), chamomile ( Matricaria chamomilla ), psyllium ( Plantago ovata ), licorice ( Glycyrrhiza glabra ), caraway ( Carum carvi ), lemon balm ( Melissa officinalis ), and chicory ( Cichorium intybus ). Label claims most often referred to supporting digestion, relieving bloating, and maintaining normal GI function."
       },
       {
         "passage_id": "pmid-40700821#abstract-1",

@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "sambucus canadensis",
-  "retrieved_at": "2026-11-05T03:24:38+00:00",
+  "retrieved_at": "2026-11-06T18:43:34+00:00",
   "identity": {
     "queried_name": "Sambucus canadensis",
     "match_type": "EXACT",
@@ -110,8 +110,8 @@
         "pmc-13312144",
         "pmc-12298474",
         "pmc-12397182",
-        "pmc-12821889",
         "pmc-10358679",
+        "pmc-12821889",
         "pmc-11206911",
         "pmc-9369847",
         "pmc-11510010",
@@ -562,19 +562,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-12821889",
-        "title": "Update of the &lt;i&gt;Xylella&lt;/i&gt; spp. host plant database - Systematic literature search up to 30 June 2025.",
-        "journal": "EFSA journal. European Food Safety Authority",
-        "year": "2026",
-        "doi": "10.2903/j.efsa.2026.9840",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12821889",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-10358679",
         "title": "The role of natural flavonoids on neuroinflammation as a therapeutic target for Alzheimer's disease: a narrative review.",
         "journal": "Neural regeneration research",
@@ -582,6 +569,19 @@
         "doi": "10.4103/1673-5374.373680",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC10358679",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12821889",
+        "title": "Update of the &lt;i&gt;Xylella&lt;/i&gt; spp. host plant database - Systematic literature search up to 30 June 2025.",
+        "journal": "EFSA journal. European Food Safety Authority",
+        "year": "2026",
+        "doi": "10.2903/j.efsa.2026.9840",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12821889",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
