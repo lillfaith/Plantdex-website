@@ -8,7 +8,20 @@ name: Vision review of photo candidates
 # REQUIRES the repository secret ANTHROPIC_API_KEY. Without it the job fails loudly rather
 # than falling back, because a run that silently graded on colour thresholds and committed
 # the result would be indistinguishable from a real one.
+# A PUSH TRIGGER AS WELL, AND IT IS NOT A CONVENIENCE. GitHub will not dispatch a workflow
+# it has never seen run, and it lists in the Actions "Run workflow" menu only what is on the
+# DEFAULT branch -- which this repo's is not. So with workflow_dispatch alone this file was
+# unrunnable by anybody, from the API (404) or from the UI, and the one step that most needs
+# running was the one nothing could start. The paths are narrow: the vision scripts and this
+# file. Until ANTHROPIC_API_KEY exists the run FAILS at the key check, loudly, by design --
+# that failure is the guard working, not the workflow being broken.
 on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/vision_review.py
+      - scripts/vision_agreement.py
+      - .github/workflows/vision-review.yml
   workflow_dispatch:
     inputs:
       species:
@@ -65,12 +78,12 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          for sp in ${{ inputs.species }}; do
+          for sp in ${{ inputs.species || 'matricaria_chamomilla taraxacum_officinale verbascum_thapsus sambucus_canadensis pinus_strobus' }}; do
             echo "::group::$sp"
             python3 scripts/vision_review.py \
               --species "$sp" \
-              --limit "${{ inputs.limit }}" \
-              --max-calls "${{ inputs.max_calls }}"
+              --limit "${{ inputs.limit || '4' }}" \
+              --max-calls "${{ inputs.max_calls || '4' }}"
             echo "::endgroup::"
           done
 
@@ -82,7 +95,7 @@ jobs:
         run: python3 scripts/vision_agreement.py
 
       - name: Re-run the gates on the new verdicts
-        run: python3 scripts/gates.py --species ${{ inputs.species }}
+        run: python3 scripts/gates.py --species ${{ inputs.species || 'matricaria_chamomilla taraxacum_officinale verbascum_thapsus sambucus_canadensis pinus_strobus' }}
 
       - name: Rebuild the review sheet
         run: python3 scripts/contact_sheet.py
@@ -100,7 +113,7 @@ jobs:
           # diff returns 1 when there IS something to commit, and a failing `&&` chain as a
           # statement is exactly what -e kills the job for.
           if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "Vision verdicts for ${{ inputs.species }}"
+          git commit -m "Vision verdicts for ${{ inputs.species || 'the five review species' }}"
           for i in 1 2 3 4 5; do
             git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
             if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
