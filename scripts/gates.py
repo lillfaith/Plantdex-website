@@ -236,9 +236,19 @@ def hard_failures(brief, shares, row, vision, cutf, frontf) -> list[str]:
     sol = row.get("cutout_solidity")
     if sol is not None and sol > MAX_SOLIDITY:
         bad.append(f"SEGMENTATION: cutout fills {100*sol:.0f}% of its box; a rectangle")
-    skin = row.get("skin_in_cutout")
-    if skin is not None and skin > 0.04:
-        bad.append(f"SEGMENTATION: {100*skin:.0f}% of the cutout is still skin")
+    # A HAND IS A LARGE SMOOTH REGION ACROSS THE PLANT, NOT A WARM HUE. This read the raw
+    # warm-hue share and rejected 13 of 20 elderberry candidates as hands -- every fruiting
+    # one among them -- because ripe pedicels are red and cropping to the plant inflates
+    # the share of a smaller frame. It now reads the blob measurement the pipeline records,
+    # and a row that carries only the old raw share is NOT rejected on it: that number is
+    # demonstrably wrong for red-stemmed and brown-barked species, and a gate is worth
+    # nothing if it refuses the only photographs that show the fruit.
+    sfrac = row.get("skin_blob_in_cutout")
+    if (sfrac is not None and sfrac > 0.045
+            and (row.get("skin_blob_gradient") or 99.0) < 9.0
+            and row.get("skin_obstructs")):
+        bad.append(f"SEGMENTATION: a smooth skin region covers {100*sfrac:.0f}% of the "
+                   f"subject and sits across it; a hand survived")
     if cutf.exists():
         sp = scenery_split(cutf)
         if sp["split"]:
@@ -371,6 +381,10 @@ def evaluate(species: str) -> dict:
 def self_test() -> int:
     checks = [(FILL_LO < FILL_HI, "the art-direction fill band comes from the 45 cards")]
     base = {"cutout_solidity": 0.4, "skin_in_cutout": 0.0, "source_edges": {}}
+    warm = {**base, "skin_in_cutout": 0.22, "skin_blob_in_cutout": 0.01,
+            "skin_blob_gradient": 14.9, "skin_obstructs": False}
+    hand = {**base, "skin_in_cutout": 0.22, "skin_blob_in_cutout": 0.30,
+            "skin_blob_gradient": 3.1, "skin_obstructs": True}
     missing = pathlib.Path("/nonexistent.png")
     # CONTROL: clean numbers alone must NOT authorize approval.
     hard = hard_failures({}, {}, base, None, missing, missing)
@@ -395,6 +409,12 @@ def self_test() -> int:
     hb = hard_failures({}, {}, base, {"orientation": "back", "meets_brief": True},
                        missing, missing)
     checks.append((bool(hb), "CONTROL: a back-facing flower is a HARD failure"))
+    # CONTROL: a warm-stemmed cutout is not a hand; a smooth obstructing blob is. The raw
+    # share is identical in both rows, which is exactly why it cannot be the test.
+    checks.append((not hard_failures({}, {}, warm, None, missing, missing)
+                   and any("hand survived" in h for h in
+                           hard_failures({}, {}, hand, None, missing, missing)),
+                   "CONTROL: red stems are not a hand; a smooth slab across the plant is"))
     # CONTROL: cropping lost in the SOURCE is hard -- that is the mullein, and it is the one
     # failure a finished card cannot show you.
     hc = hard_failures({}, {}, base,

@@ -75,17 +75,23 @@ def masks(bgr: np.ndarray) -> dict:
     return {"white": white, "yellow": yellow, "green": green, "skin": skin}
 
 
-def skin_blob(bgr: np.ndarray, skin: np.ndarray,
-              subject: np.ndarray) -> tuple[float, float, bool]:
-    """Largest connected skin region: its frame fraction, its smoothness, and whether it
-    OBSTRUCTS the subject rather than merely sitting behind it."""
+def skin_blob(bgr: np.ndarray, skin: np.ndarray, subject: np.ndarray,
+              denom: np.ndarray | None = None) -> tuple[float, float, bool]:
+    """Largest connected skin region: its fraction, its smoothness, and whether it
+    OBSTRUCTS the subject rather than merely sitting behind it.
+
+    `denom` is what the fraction is measured against -- the whole frame by default, or the
+    subject mask when this is run on a CUTOUT, where the frame is mostly transparent and a
+    share of it means nothing.
+    """
     m = cv2.morphologyEx(skin.astype(np.uint8), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
     count, labels, stats, _ = cv2.connectedComponentsWithStats(m, 8)
     if count <= 1:
         return 0.0, 99.0, False
     i = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
     blob = labels == i
-    frac = float(blob.mean())
+    frac = (float(blob.mean()) if denom is None
+            else float(blob.sum() / max(1, int(denom.sum()))))
     g = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY).astype(float)
     gx = np.abs(np.diff(g, axis=1))[:-1, :]          # trim both to (h-1, w-1)
     gy = np.abs(np.diff(g, axis=0))[:, :-1]
@@ -464,6 +470,22 @@ def self_test() -> int:
         (prof["touch_left_pct"] < 30 and prof["touch_right_pct"] < 30,
          "CONTROL: the deck rarely crops the sides, so placement must not"),
     ]
+    # CONTROL: WARM TEXTURE IS NOT A HAND. A cutout whose warm pixels are scattered,
+    # textured stems must pass, and one smooth warm slab across the subject must not. This
+    # is the elderberry failure: every fruiting candidate was rejected as a hand because
+    # ripe pedicels are red and the test was a raw hue share.
+    rng = np.random.default_rng(7)
+    subj = np.ones((200, 200), bool)
+    noisy = np.zeros((200, 200, 3), np.uint8)
+    noisy[..., 2] = rng.integers(90, 240, (200, 200))      # red, high internal gradient
+    noisy[..., 1] = rng.integers(40, 120, (200, 200))
+    warm = np.ones((200, 200), bool)
+    f1, g1, _ = skin_blob(noisy, warm, subj, denom=subj)
+    smooth = np.zeros((200, 200, 3), np.uint8)
+    smooth[..., 2], smooth[..., 1], smooth[..., 0] = 200, 150, 130   # flat skin tone
+    f2, g2, o2 = skin_blob(smooth, warm, subj, denom=subj)
+    checks.append((g1 > SKIN_SMOOTH and g2 < SKIN_SMOOTH and f2 > MAX_SKIN and o2,
+                   "CONTROL: warm TEXTURE is not a hand; a smooth warm slab is"))
     # CONTROL: a fully transparent cutout must not be scored as a usable subject.
     blank = Image.new("RGBA", (400, 400), (0, 0, 0, 0))
     blank.putpixel((0, 0), (255, 255, 255, 255))
@@ -595,16 +617,42 @@ def main() -> int:
                   f"(solidity {solidity:.2f})")
             continue
         s["cutout_solidity"] = round(solidity, 3)
-        # DID THE HAND SURVIVE? The source check is only a flag now, so this is the gate.
+        # DID THE HAND SURVIVE? The source check is only a flag now, so this is the gate --
+        # AND IT HAD THE EXACT BUG THIS FILE ALREADY RECORDS FIXING ONE GATE EARLIER. It
+        # tested the RAW skin-hue share of the cutout, and warm hues are not a hand: bare
+        # earth, dry grass, bark and red stems all sit in the same band, which is why the
+        # source check measures the LARGEST CONNECTED SMOOTH blob instead.
+        #
+        # Measured, on elderberry: 13 of 20 candidates were rejected as hands, INCLUDING
+        # ALL THREE that carried fruit, and the pool returned nothing. Candidate 424182835
+        # was reported at "7.5% skin" while its largest smooth skin blob is 0.000 of the
+        # frame -- the warm pixels are the cyme's own red pedicels, and cropping to the
+        # plant made a 2.5% share of the photograph into 7.5% of the cutout. The raw share
+        # rises simply because the frame shrinks.
+        #
+        # So the cutout now gets the same three-part test as the source, normalised to the
+        # SUBJECT rather than to a frame that is mostly transparent: large, SMOOTH, and
+        # sitting in the middle of the plant. A palm has almost no internal gradient; a
+        # berry cluster and its stems have plenty.
         cut_bgr0 = cv2.cvtColor(np.array(cut.convert("RGB")), cv2.COLOR_RGB2BGR)
-        skin_left = float((masks(cut_bgr0)["skin"] & alpha).sum() / max(1, alpha.sum()))
-        s["skin_in_cutout"] = round(skin_left, 4)
-        if skin_left > 0.04:
+        cut_skin = masks(cut_bgr0)["skin"] & alpha
+        skin_left = float(cut_skin.sum() / max(1, alpha.sum()))
+        sfrac, sgrad, sobstr = skin_blob(cut_bgr0, cut_skin, alpha, denom=alpha)
+        s["skin_in_cutout"] = round(skin_left, 4)          # kept for the record only
+        s["skin_blob_in_cutout"] = round(sfrac, 4)
+        s["skin_blob_gradient"] = round(sgrad, 1)
+        s["skin_obstructs"] = bool(sobstr)
+        if sfrac > MAX_SKIN and sgrad < SKIN_SMOOTH and sobstr:
             s["reject"].append(
-                f"a hand survives segmentation: {100*skin_left:.1f}% of the cutout is skin")
+                f"a hand survives segmentation: one smooth skin region covers "
+                f"{100*sfrac:.1f}% of the subject (gradient {sgrad:.1f}) and sits across it")
             print(f"   {s['photo_id']}: rejected, hand survives the cutout "
-                  f"({100*skin_left:.1f}%)")
+                  f"(blob {100*sfrac:.1f}%, gradient {sgrad:.1f})")
             continue
+        if skin_left > 0.04:
+            s["flags"].append(
+                f"{100*skin_left:.1f}% of the cutout is warm-hued, but the largest smooth "
+                f"region is {100*sfrac:.1f}% at gradient {sgrad:.1f} -- texture, not skin")
         # DOES THE ISOLATED PLANT CARRY WHAT THE BRIEF REQUIRES? Measured on the CUTOUT,
         # not the source: a structure that did not survive segmentation is not on the card,
         # whatever the photograph contained. A candidate missing a mandatory structure is
