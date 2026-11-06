@@ -6,12 +6,11 @@
     {
       "photo_id": 111407747,
       "file": "inat-111407747.jpg",
-      "reject": [
-        "a hand survives segmentation: 8.0% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "4.5% warm-toned background (gradient 14.6); read as soil or dry vegetation rather than skin",
-        "subject fills the frame and runs off 4 edges; little room to crop"
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "8.0% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 18.8 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -22,9 +21,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 15.0,
-        "identification": 6.0
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.6
       },
-      "score": 58.5,
+      "score": 133.2,
       "_fill": 0.5641215642293295,
       "measured_subject": {
         "largest_region_frac": 0.3726,
@@ -41,17 +44,50 @@
       "segmented_by": "colour-fallback",
       "source_edges": {},
       "cutout_solidity": 0.543,
-      "skin_in_cutout": 0.08
+      "skin_in_cutout": 0.08,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 18.8,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.5458,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.6292,
+        "needles": 0.2017
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.879,
+      "subject_sharpness": 26.9,
+      "stem_support": {
+        "foot_ink": 0.5159,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.345,
+        "placed_centroid_x": 0.467,
+        "points": {
+          "frame_fill_match": 14.4,
+          "centred": 5.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
     },
     {
       "photo_id": 306725928,
       "file": "inat-306725928.jpeg",
-      "reject": [
-        "a hand survives segmentation: 15.6% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "15.6% of the cutout is warm-hued, but the largest smooth region is 3.6% at gradient 3.3 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -62,9 +98,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 13.8,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 10.2,
+        "silhouette_openness": 16.6
       },
-      "score": 54.3,
+      "score": 129.2,
       "_fill": 0.6298449834187826,
       "measured_subject": {
         "largest_region_frac": 0.3026,
@@ -86,7 +126,41 @@
         "right": 0.005
       },
       "cutout_solidity": 0.355,
-      "skin_in_cutout": 0.1558
+      "skin_in_cutout": 0.1558,
+      "skin_blob_in_cutout": 0.0359,
+      "skin_blob_gradient": 3.3,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0487,
+        "berry_dark": 0.0913,
+        "berry_red": 0.0,
+        "foliage": 0.3098,
+        "needles": 0.1309
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.291,
+      "subject_sharpness": 13.1,
+      "stem_support": {
+        "foot_ink": 0.0795,
+        "foot_width_frac": 0.523,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.327,
+        "placed_centroid_x": 0.412,
+        "points": {
+          "frame_fill_match": 15.3,
+          "centred": 2.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
     },
     {
       "photo_id": 666510115,
@@ -129,6 +203,9 @@
       "source_edges": {},
       "cutout_solidity": 0.734,
       "skin_in_cutout": 0.0017,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.5967,
@@ -164,11 +241,10 @@
     {
       "photo_id": 352673401,
       "file": "inat-352673401.jpeg",
-      "reject": [
-        "a hand survives segmentation: 6.1% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop"
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "6.1% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 31.6 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -179,9 +255,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 12.7,
-        "identification": 6.0
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.6
       },
-      "score": 52.7,
+      "score": 114.9,
       "_fill": 0.7095108032226562,
       "measured_subject": {
         "largest_region_frac": 0.4219,
@@ -198,7 +278,41 @@
       "segmented_by": "colour-fallback",
       "source_edges": {},
       "cutout_solidity": 0.543,
-      "skin_in_cutout": 0.0613
+      "skin_in_cutout": 0.0613,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 31.6,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0309,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9361,
+        "needles": 0.1686
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.835,
+      "subject_sharpness": 22.8,
+      "stem_support": {
+        "foot_ink": 0.0711,
+        "foot_width_frac": 0.13,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.444,
+        "placed_centroid_x": 0.544,
+        "points": {
+          "frame_fill_match": 9.4,
+          "centred": 6.2,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
     },
     {
       "photo_id": 666510116,
@@ -241,6 +355,9 @@
       "source_edges": {},
       "cutout_solidity": 0.775,
       "skin_in_cutout": 0.0001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.6327,
@@ -322,6 +439,9 @@
       "source_edges": {},
       "cutout_solidity": 0.488,
       "skin_in_cutout": 0.0082,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 9.7,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.1324,
@@ -400,6 +520,9 @@
       },
       "cutout_solidity": 0.426,
       "skin_in_cutout": 0.0294,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 19.2,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.1073,
@@ -435,14 +558,13 @@
     {
       "photo_id": 127829336,
       "file": "inat-127829336.jpeg",
-      "reject": [
-        "a hand survives segmentation: 9.2% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "flower may be facing away: disc saturation 140 suggests a receptacle rather than the open yellow centre",
         "largest flower head is 0.08% of the frame: too small to read as a specimen on a card",
         "16 similarly sized flower heads: reads as a colony, not a specimen",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "9.2% of the cutout is warm-hued, but the largest smooth region is 0.1% at gradient 37.7 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -454,9 +576,13 @@
         "disc_scale": 0.2,
         "disc_facing": 0.0,
         "specimen_scale": 11.8,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 14.2
       },
-      "score": 49.7,
+      "score": 121.9,
       "_fill": 0.3541989329965252,
       "measured_heads": {
         "largest_disc_frac": 0.0008,
@@ -483,7 +609,41 @@
         "right": 0.001
       },
       "cutout_solidity": 0.466,
-      "skin_in_cutout": 0.092
+      "skin_in_cutout": 0.092,
+      "skin_blob_in_cutout": 0.0009,
+      "skin_blob_gradient": 37.7,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.074,
+        "flower_white": 0.0929,
+        "berry_dark": 0.022,
+        "berry_red": 0.0031,
+        "foliage": 0.6305,
+        "needles": 0.0558
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.801,
+      "subject_sharpness": 25.4,
+      "stem_support": {
+        "foot_ink": 0.3279,
+        "foot_width_frac": 0.573,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.347,
+        "placed_centroid_x": 0.504,
+        "points": {
+          "frame_fill_match": 14.3,
+          "centred": 7.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
     },
     {
       "photo_id": 711813007,
@@ -526,6 +686,9 @@
       "source_edges": {},
       "cutout_solidity": 0.682,
       "skin_in_cutout": 0.0001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.251,
@@ -604,6 +767,9 @@
       },
       "cutout_solidity": 0.391,
       "skin_in_cutout": 0.0259,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 11.6,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.0531,
@@ -682,6 +848,9 @@
       },
       "cutout_solidity": 0.555,
       "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.0,
@@ -718,7 +887,7 @@
       "photo_id": 510460858,
       "file": "inat-510460858.jpg",
       "reject": [
-        "a hand survives segmentation: 32.5% of the cutout is skin"
+        "a hand survives segmentation: one smooth skin region covers 26.5% of the subject (gradient 3.1) and sits across it"
       ],
       "flags": [
         "a hand is present behind the subject (27.4% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
@@ -766,20 +935,22 @@
         "right": 0.125
       },
       "cutout_solidity": 0.213,
-      "skin_in_cutout": 0.3246
+      "skin_in_cutout": 0.3246,
+      "skin_blob_in_cutout": 0.2652,
+      "skin_blob_gradient": 3.1,
+      "skin_obstructs": true
     },
     {
       "photo_id": 269595869,
       "file": "inat-269595869.jpeg",
-      "reject": [
-        "a hand survives segmentation: 7.3% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 138 suggests a receptacle rather than the open yellow centre",
         "largest flower head is 0.02% of the frame: too small to read as a specimen on a card",
         "11 similarly sized flower heads: reads as a colony, not a specimen",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "7.3% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 26.6 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -791,9 +962,13 @@
         "disc_scale": 0.1,
         "disc_facing": 0.0,
         "specimen_scale": 11.4,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 4.9
       },
-      "score": 47.5,
+      "score": 112.5,
       "_fill": 0.7000560760498047,
       "measured_heads": {
         "largest_disc_frac": 0.0002,
@@ -815,20 +990,54 @@
       "segmented_by": "colour-fallback",
       "source_edges": {},
       "cutout_solidity": 0.664,
-      "skin_in_cutout": 0.0727
+      "skin_in_cutout": 0.0727,
+      "skin_blob_in_cutout": 0.0002,
+      "skin_blob_gradient": 26.6,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.2991,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8163,
+        "needles": 0.1068
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.861,
+      "subject_sharpness": 26.1,
+      "stem_support": {
+        "foot_ink": 0.6067,
+        "foot_width_frac": 0.837,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.415,
+        "placed_centroid_x": 0.46,
+        "points": {
+          "frame_fill_match": 10.8,
+          "centred": 5.3,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
     },
     {
       "photo_id": 116844267,
       "file": "inat-116844267.jpeg",
-      "reject": [
-        "a hand survives segmentation: 23.0% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "a hand is present behind the subject (17.0% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 150 suggests a receptacle rather than the open yellow centre",
         "largest flower head is 0.19% of the frame: too small to read as a specimen on a card",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "23.0% of the cutout is warm-hued, but the largest smooth region is 16.8% at gradient 4.1 -- texture, not skin",
+        "segmentation kept only 4% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
         "resolution": 10.0,
@@ -840,9 +1049,13 @@
         "disc_scale": 0.5,
         "disc_facing": 0.3,
         "specimen_scale": 5.6,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 2.5,
+        "subject_sharpness": 5.0,
+        "silhouette_openness": 13.5
       },
-      "score": 47.4,
+      "score": 98.1,
       "_fill": 0.6275806427001953,
       "measured_heads": {
         "largest_disc_frac": 0.0019,
@@ -869,7 +1082,41 @@
         "right": 0.0
       },
       "cutout_solidity": 0.289,
-      "skin_in_cutout": 0.2299
+      "skin_in_cutout": 0.2299,
+      "skin_blob_in_cutout": 0.1678,
+      "skin_blob_gradient": 4.1,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.649,
+        "berry_dark": 0.0,
+        "berry_red": 0.0136,
+        "foliage": 0.1396,
+        "needles": 0.0408
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.045,
+      "subject_sharpness": 6.5,
+      "stem_support": {
+        "foot_ink": 0.4905,
+        "foot_width_frac": 0.577,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.197,
+        "placed_centroid_x": 0.428,
+        "points": {
+          "frame_fill_match": 10.1,
+          "centred": 3.6,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
     },
     {
       "photo_id": 335413067,
@@ -921,6 +1168,9 @@
       "source_edges": {},
       "cutout_solidity": 0.19,
       "skin_in_cutout": 0.0255,
+      "skin_blob_in_cutout": 0.001,
+      "skin_blob_gradient": 6.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.0,
@@ -1005,6 +1255,9 @@
       },
       "cutout_solidity": 0.716,
       "skin_in_cutout": 0.0044,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0018,
         "flower_white": 0.5441,
@@ -1084,6 +1337,9 @@
       },
       "cutout_solidity": 0.045,
       "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.0,
@@ -1169,6 +1425,9 @@
       },
       "cutout_solidity": 0.541,
       "skin_in_cutout": 0.0179,
+      "skin_blob_in_cutout": 0.0001,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.021,
@@ -1250,6 +1509,9 @@
       "source_edges": {},
       "cutout_solidity": 0.649,
       "skin_in_cutout": 0.0048,
+      "skin_blob_in_cutout": 0.0001,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0051,
         "flower_white": 0.0869,
@@ -1286,13 +1548,14 @@
       "photo_id": 347206622,
       "file": "inat-347206622.jpg",
       "reject": [
-        "a hand survives segmentation: 6.3% of the cutout is skin"
+        "missing structures the species' brief requires: needles"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
         "29 similarly sized flower heads: reads as a colony, not a specimen",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "6.3% of the cutout is warm-hued, but the largest smooth region is 1.0% at gradient 9.3 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -1333,7 +1596,26 @@
         "right": 0.303
       },
       "cutout_solidity": 0.667,
-      "skin_in_cutout": 0.063
+      "skin_in_cutout": 0.063,
+      "skin_blob_in_cutout": 0.0096,
+      "skin_blob_gradient": 9.3,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0013,
+        "flower_white": 0.0235,
+        "berry_dark": 0.1606,
+        "berry_red": 0.0,
+        "foliage": 0.0216,
+        "needles": 0.0143
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "needles"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
+      }
     },
     {
       "photo_id": 141314903,
@@ -4135,6 +4417,116 @@
   ],
   "selected": [
     {
+      "photo_id": 111407747,
+      "file": "inat-111407747.jpg",
+      "reject": [],
+      "flags": [
+        "4.5% warm-toned background (gradient 14.6); read as soil or dry vegetation rather than skin",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "8.0% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 18.8 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 9.5,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 15.0,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.6
+      },
+      "score": 133.2,
+      "_fill": 0.5641215642293295,
+      "measured_subject": {
+        "largest_region_frac": 0.3726,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 20.5,
+        "skin_fraction": 0.0454,
+        "flower_fraction": 0.1136,
+        "foliage_fraction": 0.3137,
+        "subject_fraction": 0.5641
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.543,
+      "skin_in_cutout": 0.08,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 18.8,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.5458,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.6292,
+        "needles": 0.2017
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.879,
+      "subject_sharpness": 26.9,
+      "stem_support": {
+        "foot_ink": 0.5159,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.345,
+        "placed_centroid_x": 0.467,
+        "points": {
+          "frame_fill_match": 14.4,
+          "centred": 5.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.4489,
+        "size": [
+          404,
+          513
+        ],
+        "offset": [
+          100,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "111407747-cutout.png",
+      "preview": "111407747-front.png",
+      "provenance": {
+        "photo_id": 111407747,
+        "observation_id": 68753563,
+        "observation_url": "https://www.inaturalist.org/observations/68753563",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T21:00:50+00:00"
+    },
+    {
       "photo_id": 340372052,
       "file": "inat-340372052.jpeg",
       "reject": [],
@@ -4180,6 +4572,9 @@
       },
       "cutout_solidity": 0.391,
       "skin_in_cutout": 0.0259,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 11.6,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.0531,
@@ -4246,6 +4641,121 @@
       "retrieved_at": "2026-11-06T21:00:50+00:00"
     },
     {
+      "photo_id": 306725928,
+      "file": "inat-306725928.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof",
+        "15.6% of the cutout is warm-hued, but the largest smooth region is 3.6% at gradient 3.3 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 5.5,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.8,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 10.2,
+        "silhouette_openness": 16.6
+      },
+      "score": 129.2,
+      "_fill": 0.6298449834187826,
+      "measured_subject": {
+        "largest_region_frac": 0.3026,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.0,
+        "skin_fraction": 0.0301,
+        "flower_fraction": 0.3667,
+        "foliage_fraction": 0.2286,
+        "subject_fraction": 0.6298
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.314,
+        "right": 0.005
+      },
+      "cutout_solidity": 0.355,
+      "skin_in_cutout": 0.1558,
+      "skin_blob_in_cutout": 0.0359,
+      "skin_blob_gradient": 3.3,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0487,
+        "berry_dark": 0.0913,
+        "berry_red": 0.0,
+        "foliage": 0.3098,
+        "needles": 0.1309
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.291,
+      "subject_sharpness": 13.1,
+      "stem_support": {
+        "foot_ink": 0.0795,
+        "foot_width_frac": 0.523,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.327,
+        "placed_centroid_x": 0.412,
+        "points": {
+          "frame_fill_match": 15.3,
+          "centred": 2.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.5804,
+        "size": [
+          519,
+          513
+        ],
+        "offset": [
+          43,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "306725928-cutout.png",
+      "preview": "306725928-front.png",
+      "provenance": {
+        "photo_id": 306725928,
+        "observation_id": 176424963,
+        "observation_url": "https://www.inaturalist.org/observations/176424963",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T21:00:50+00:00"
+    },
+    {
       "photo_id": 354857174,
       "file": "inat-354857174.jpeg",
       "reject": [],
@@ -4291,6 +4801,9 @@
       },
       "cutout_solidity": 0.426,
       "skin_in_cutout": 0.0294,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 19.2,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.1073,
@@ -4355,227 +4868,7 @@
         "taxon_id": 52391
       },
       "retrieved_at": "2026-11-06T21:00:50+00:00"
-    },
-    {
-      "photo_id": 711813220,
-      "file": "inat-711813220.jpg",
-      "reject": [],
-      "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop",
-        "flower may be facing away: disc saturation 151 suggests a receptacle rather than the open yellow centre",
-        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
-        "only one agreeing identification; research grade is not proof"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 0.1,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_scale": 0.0,
-        "disc_facing": 0.0,
-        "specimen_scale": 15.3,
-        "identification": 3.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 14.0,
-        "subject_sharpness": 14.0,
-        "silhouette_openness": 5.7
-      },
-      "score": 117.0,
-      "_fill": 0.6255471971299913,
-      "measured_heads": {
-        "largest_disc_frac": 0.0,
-        "comparable_heads": 3,
-        "disc_saturation": 151.0
-      },
-      "measured_subject": {
-        "largest_region_frac": 0.3661,
-        "regions": 1
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 25.0,
-        "skin_fraction": 0.0001,
-        "flower_fraction": 0.0009,
-        "foliage_fraction": 0.5795,
-        "subject_fraction": 0.6255
-      },
-      "segmented_by": "colour-fallback",
-      "source_edges": {},
-      "cutout_solidity": 0.649,
-      "skin_in_cutout": 0.0048,
-      "brief_structures": {
-        "flower_yellow": 0.0051,
-        "flower_white": 0.0869,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.9298,
-        "needles": 0.2188
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.811,
-      "subject_sharpness": 24.9,
-      "stem_support": {
-        "foot_ink": 0.3869,
-        "foot_width_frac": 1.0,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.359,
-        "placed_centroid_x": 0.525,
-        "points": {
-          "frame_fill_match": 13.7,
-          "centred": 7.2,
-          "crops_bottom": 8.0,
-          "keeps_sides": 8.0
-        }
-      },
-      "placement": {
-        "scale": 0.4746,
-        "size": [
-          320,
-          513
-        ],
-        "offset": [
-          142,
-          10
-        ],
-        "rooted": true,
-        "crops_bottom": true,
-        "bottom_overflow_px": 39,
-        "crops_sides": false,
-        "top_margin_px": 10
-      },
-      "cutout": "711813220-cutout.png",
-      "preview": "711813220-front.png",
-      "provenance": {
-        "photo_id": 711813220,
-        "observation_id": 388639637,
-        "observation_url": "https://www.inaturalist.org/observations/388639637",
-        "license_code": "cc0",
-        "license": "CC0 (public domain dedication)",
-        "photographer": "no rights reserved",
-        "dimensions": {
-          "width": 1152,
-          "height": 2048
-        },
-        "taxon_name": "Pinus strobus",
-        "taxon_id": 52391
-      },
-      "retrieved_at": "2026-11-06T21:00:50+00:00"
-    },
-    {
-      "photo_id": 711813007,
-      "file": "inat-711813007.jpg",
-      "reject": [],
-      "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop",
-        "only one agreeing identification; research grade is not proof"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 2.2,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_facing": 0.0,
-        "specimen_scale": 15.3,
-        "identification": 3.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 14.0,
-        "subject_sharpness": 14.0,
-        "silhouette_openness": 4.1
-      },
-      "score": 112.5,
-      "_fill": 0.5748769972059462,
-      "measured_subject": {
-        "largest_region_frac": 0.3345,
-        "regions": 1
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 23.0,
-        "skin_fraction": 0.0001,
-        "flower_fraction": 0.0262,
-        "foliage_fraction": 0.5117,
-        "subject_fraction": 0.5749
-      },
-      "segmented_by": "colour-fallback",
-      "source_edges": {},
-      "cutout_solidity": 0.682,
-      "skin_in_cutout": 0.0001,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.251,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.8572,
-        "needles": 0.1645
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.712,
-      "subject_sharpness": 21.9,
-      "stem_support": {
-        "foot_ink": 0.1147,
-        "foot_width_frac": 0.533,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.464,
-        "placed_centroid_x": 0.501,
-        "points": {
-          "frame_fill_match": 8.4,
-          "centred": 7.5,
-          "crops_bottom": 8.0,
-          "keeps_sides": 8.0
-        }
-      },
-      "placement": {
-        "scale": 0.5897,
-        "size": [
-          385,
-          513
-        ],
-        "offset": [
-          110,
-          10
-        ],
-        "rooted": true,
-        "crops_bottom": true,
-        "bottom_overflow_px": 39,
-        "crops_sides": false,
-        "top_margin_px": 10
-      },
-      "cutout": "711813007-cutout.png",
-      "preview": "711813007-front.png",
-      "provenance": {
-        "photo_id": 711813007,
-        "observation_id": 388639637,
-        "observation_url": "https://www.inaturalist.org/observations/388639637",
-        "license_code": "cc0",
-        "license": "CC0 (public domain dedication)",
-        "photographer": "no rights reserved",
-        "dimensions": {
-          "width": 1152,
-          "height": 2048
-        },
-        "taxon_name": "Pinus strobus",
-        "taxon_id": 52391
-      },
-      "retrieved_at": "2026-11-06T21:00:50+00:00"
     }
   ],
-  "seconds": 142.0
+  "seconds": 236.7
 }
