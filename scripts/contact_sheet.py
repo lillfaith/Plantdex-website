@@ -93,6 +93,7 @@ def leading(species: str) -> dict | None:
         "any_passing": bool(passing),
         "genuine_api_vision": g["any_genuine_api_vision"],
         "owner_preferred": bool(row.get("owner_preferred")),
+        "owner_alternative": bool(row.get("owner_alternative")),
         "art_direction": g.get("art_direction", ""),
     }
 
@@ -123,6 +124,7 @@ def every(species: str, limit: int) -> list[dict]:
             "any_passing": any(r["status"] != "REJECTED" for r in g["candidates"]),
             "genuine_api_vision": g["any_genuine_api_vision"],
             "owner_preferred": bool(row.get("owner_preferred")),
+            "owner_alternative": bool(row.get("owner_alternative")),
             "art_direction": g.get("art_direction", ""),
         })
     return out
@@ -150,7 +152,8 @@ def draw(cells: list[dict], out: Path) -> None:
         cx = PAD + (i % cols) * (CELL_W + PAD)
         cy = PAD + 46 + (i // cols) * (cell_h + PAD)
         d.text((cx, cy), c["species"].replace("_", " "), font=font(14), fill=INK)
-        pin = "  * owner's preferred" if c["owner_preferred"] else ""
+        pin = ("  * owner's preferred" if c["owner_preferred"]
+               else "  + owner's alternative" if c.get("owner_alternative") else "")
         d.text((cx, cy + 17), f"#{c['photo_id']}{pin}", font=font(12),
                fill=(18, 86, 140) if pin else (110, 106, 118))
         art = Image.open(c["preview"]).convert("RGB").resize((CELL_W, card_h), Image.LANCZOS)
@@ -274,7 +277,8 @@ def main() -> int:
     print(f"{tpl}")
     for c in cells:
         mark = "" if c["any_passing"] else "   <- needs another photo search"
-        pin = "  [owner's preferred]" if c["owner_preferred"] else ""
+        pin = ("  [owner's preferred]" if c["owner_preferred"]
+               else "  [owner's alternative]" if c.get("owner_alternative") else "")
         print(f"  {c['status']:15} {c['species']:24} #{c['photo_id']}{pin}{mark}")
         if c["art_direction"]:
             print(f"                  art direction: {c['art_direction'][:96]}")

@@ -15,7 +15,8 @@
       "human_decision": null,
       "hard_failures": [],
       "soft_notes": [],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 340372052,
@@ -27,21 +28,29 @@
       "human_decision": null,
       "hard_failures": [],
       "soft_notes": [],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 306725928,
       "score": 129.2,
-      "status": "NEEDS_REVIEW",
+      "status": "REJECTED",
       "senescence": 0.025,
       "vision_source": "none",
       "genuine_api_vision": false,
-      "human_decision": null,
+      "human_decision": {
+        "species": "pinus_strobus",
+        "decision": "rejected",
+        "reason": "Owner: 'Reject the hand-held specimen.' A hand holding a fascicle. It passed the skin gate because its largest warm region sits at the edge rather than across the plant; the gate is not being re-tuned for it, the vision pass is what should catch it.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
       "hard_failures": [],
       "soft_notes": [
         "touches the left edge of the source photograph; vision must confirm no identifying structure was lost"
       ],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 354857174,
@@ -53,7 +62,8 @@
       "human_decision": null,
       "hard_failures": [],
       "soft_notes": [],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     }
   ]
 }

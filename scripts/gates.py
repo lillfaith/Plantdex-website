@@ -351,7 +351,7 @@ def evaluate(species: str) -> dict:
             status = "REJECTED"
         elif human and human.get("decision") == "approved":
             status = "HUMAN_APPROVED"
-        elif human and human.get("decision") == "preferred":
+        elif human and human.get("decision") in ("preferred", "alternative"):
             status = "NEEDS_REVIEW"
         elif hard:
             status = "REJECTED"
@@ -365,8 +365,11 @@ def evaluate(species: str) -> dict:
                     "vision_source": (v or {}).get("source", "none"),
                     "genuine_api_vision": bool(v and v.get("source") == "vision"),
                     "human_decision": human, "hard_failures": hard, "soft_notes": soft,
-                    "owner_preferred": bool(human and human.get("decision") == "preferred")})
-    out.sort(key=lambda r: (not r["owner_preferred"],))   # stable: pinned first, else rank
+                    "owner_preferred": bool(human and human.get("decision") == "preferred"),
+                    "owner_alternative": bool(human and
+                                              human.get("decision") == "alternative")})
+    # STABLE: the owner's leader first, then the alternative he named, then the ranking.
+    out.sort(key=lambda r: (not r["owner_preferred"], not r["owner_alternative"]))
     approved = [r for r in out if r["status"] in ("AUTO_APPROVED", "HUMAN_APPROVED")]
     reviewable = [r for r in out if r["status"] == "NEEDS_REVIEW"]
     verdict = ("APPROVED" if approved else

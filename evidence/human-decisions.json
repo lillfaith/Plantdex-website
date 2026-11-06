@@ -82,6 +82,66 @@
           "at": "2026-11-06"
         }
       ]
+    },
+    "424182823": {
+      "species": "sambucus_canadensis",
+      "history": [
+        {
+          "species": "sambucus_canadensis",
+          "decision": "preferred",
+          "reason": "Owner: 'Elderberry 424182823: preferred.' Still needs visual review for healthy foliage, connected branches and final composition. NOT an approval.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "424182835": {
+      "species": "sambucus_canadensis",
+      "history": [
+        {
+          "species": "sambucus_canadensis",
+          "decision": "alternative",
+          "reason": "Owner: 'Elderberry 424182835: alternative.' Kept in view behind 424182823; same open questions -- healthy foliage, connected branches, final composition.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "152340494": {
+      "species": "taraxacum_officinale",
+      "history": [
+        {
+          "species": "taraxacum_officinale",
+          "decision": "preferred",
+          "reason": "Owner: 'Dandelion 152340494: preferred for review. Seek more substantial foliage if possible.' Preferred for review, not approved; a fuller-foliage specimen may supersede it.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "21260078": {
+      "species": "verbascum_thapsus",
+      "history": [
+        {
+          "species": "verbascum_thapsus",
+          "decision": "preferred",
+          "reason": "Owner: 'Mullein 21260078: preferred for review, but inspect whether the upper flowering spike is clipped and whether its tilted composition works on the card.' Two open questions for the vision pass: apex clipping, and whether the tilt reads on a card.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "306725928": {
+      "species": "pinus_strobus",
+      "history": [
+        {
+          "species": "pinus_strobus",
+          "decision": "rejected",
+          "reason": "Owner: 'Reject the hand-held specimen.' A hand holding a fascicle. It passed the skin gate because its largest warm region sits at the edge rather than across the plant; the gate is not being re-tuned for it, the vision pass is what should catch it.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
     }
   }
 }

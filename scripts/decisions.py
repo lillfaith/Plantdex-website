@@ -24,6 +24,11 @@ this card":
                 do NOT call it approved. It stays NEEDS_REVIEW. This is what "keep it as my
                 preferred candidate" means, and collapsing it into `approved` would quietly
                 promote a photograph the owner has not signed off on.
+  alternative -- the second one he wants kept in view. Also NEEDS_REVIEW, ranked below the
+                preferred candidate and above everything unjudged. It exists because he
+                named one, and folding it into `preferred` would lose which of the two he
+                leads with -- while folding it into nothing would let the next re-rank drop
+                a photograph he explicitly asked to keep.
 """
 from __future__ import annotations
 
@@ -33,7 +38,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PATH = ROOT / "evidence" / "human-decisions.json"
-VALUES = ("approved", "rejected", "preferred")
+VALUES = ("approved", "rejected", "preferred", "alternative")
 
 
 def _migrate(raw: dict) -> dict:
@@ -76,6 +81,12 @@ def rejected_ids() -> set[str]:
 
 def preferred_ids() -> set[str]:
     return {p for p, v in current().items() if v.get("decision") == "preferred"}
+
+
+def kept_ids() -> set[str]:
+    """Everything the owner asked to keep in view, whichever rank he gave it."""
+    return {p for p, v in current().items()
+            if v.get("decision") in ("preferred", "alternative", "approved")}
 
 
 def record(photo_id: str | int, species: str, decision: str, reason: str, *,
@@ -140,6 +151,11 @@ def self_test() -> int:
         checks.append((current()["3"]["decision"] == "preferred"
                        and "3" not in rejected_ids() and "3" in preferred_ids(),
                        "CONTROL: preferred is neither an approval nor a rejection"))
+        record("4", "s", "alternative", "the other one worth keeping")
+        checks.append((current()["4"]["decision"] == "alternative"
+                       and "4" not in preferred_ids() and "4" in kept_ids()
+                       and "4" not in rejected_ids(),
+                       "CONTROL: alternative is kept and ranked, but is not the leader"))
         # CONTROL: the live v1 file must migrate without losing a verdict.
         mig = _migrate({"9": {"species": "x", "decision": "rejected", "reason": "r"}})
         checks.append((mig["decisions"]["9"]["history"][0]["reason"] == "r",

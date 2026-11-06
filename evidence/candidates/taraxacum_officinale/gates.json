@@ -6,6 +6,27 @@
   "selected": null,
   "candidates": [
     {
+      "photo_id": 152340494,
+      "score": 131.1,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.091,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": {
+        "species": "taraxacum_officinale",
+        "decision": "preferred",
+        "reason": "Owner: 'Dandelion 152340494: preferred for review. Seek more substantial foliage if possible.' Preferred for review, not approved; a fuller-foliage specimen may supersede it.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
+      "hard_failures": [],
+      "soft_notes": [
+        "subject covers 0.15; the deck usually sits 0.20-0.42"
+      ],
+      "owner_preferred": true,
+      "owner_alternative": false
+    },
+    {
       "photo_id": 133194303,
       "score": 137.4,
       "status": "NEEDS_REVIEW",
@@ -17,7 +38,8 @@
       "soft_notes": [
         "subject covers 0.55; the deck usually sits 0.20-0.42"
       ],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 403970862,
@@ -33,21 +55,8 @@
       "soft_notes": [
         "subject covers 0.12; the deck usually sits 0.20-0.42"
       ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 152340494,
-      "score": 131.1,
-      "status": "NEEDS_REVIEW",
-      "senescence": 0.091,
-      "vision_source": "none",
-      "genuine_api_vision": false,
-      "human_decision": null,
-      "hard_failures": [],
-      "soft_notes": [
-        "subject covers 0.15; the deck usually sits 0.20-0.42"
-      ],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 924120,
@@ -61,7 +70,8 @@
       "soft_notes": [
         "subject covers 0.06; the deck usually sits 0.20-0.42"
       ],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     }
   ]
 }

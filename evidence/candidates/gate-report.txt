@@ -10,25 +10,27 @@
 === taraxacum_officinale ===  NEEDS_REVIEW
    art direction: Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+    152340494  131.1  NEEDS_REVIEW   vision=none
+        HUMAN PREFERRED: Owner: 'Dandelion 152340494: preferred for review. Seek more substantial foliage if possible.' Preferred for review, not approved; a fuller-foliage sp
+        soft  subject covers 0.15; the deck usually sits 0.20-0.42
     133194303  137.4  NEEDS_REVIEW   vision=none
         soft  subject covers 0.55; the deck usually sits 0.20-0.42
     403970862  133.2  REJECTED       vision=none
         HARD  COHERENCE: largest piece is only 36% across 4 fragments; not one substantial specimen
         soft  subject covers 0.12; the deck usually sits 0.20-0.42
-    152340494  131.1  NEEDS_REVIEW   vision=none
-        soft  subject covers 0.15; the deck usually sits 0.20-0.42
        924120  117.3  NEEDS_REVIEW   vision=none
         soft  subject covers 0.06; the deck usually sits 0.20-0.42
 
 === verbascum_thapsus ===  NEEDS_REVIEW
    art direction: Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
+     21260078  142.5  NEEDS_REVIEW   vision=none
+        HUMAN PREFERRED: Owner: 'Mullein 21260078: preferred for review, but inspect whether the upper flowering spike is clipped and whether its tilted composition works on t
     210580027  145.2  NEEDS_REVIEW   vision=none
         soft  touches the top edge of the source photograph; vision must confirm no identifying structure was lost
     143588661  144.3  NEEDS_REVIEW   vision=none
         soft  subject covers 0.12; the deck usually sits 0.20-0.42
         soft  50% brown or yellowed tissue
-     21260078  142.5  NEEDS_REVIEW   vision=none
      44345492  139.7  REJECTED       vision=vision (model in the loop; no ANTH
         HARD  SEGMENTATION: straight alpha edges (rows 0.0, cols 0.182); an uncut rectangle survived
         soft  touches the top edge of the source photograph; vision must confirm no identifying structure was lost
@@ -38,7 +40,9 @@
    art direction: Elderberry: preserve my rejection and continue searching for a healthy-looking fruiting specimen with dark berries, branching stems and leaves.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
     424182823  115.1  NEEDS_REVIEW   vision=none
+        HUMAN PREFERRED: Owner: 'Elderberry 424182823: preferred.' Still needs visual review for healthy foliage, connected branches and final composition. NOT an approval.
     424182835  114.3  NEEDS_REVIEW   vision=none
+        HUMAN ALTERNATIVE: Owner: 'Elderberry 424182835: alternative.' Kept in view behind 424182823; same open questions -- healthy foliage, connected branches, final compositi
     309523755  112.4  NEEDS_REVIEW   vision=none
         soft  touches the right edge of the source photograph; vision must confirm no identifying structure was lost
     554726092  110.4  NEEDS_REVIEW   vision=none
@@ -48,6 +52,7 @@
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
     111407747  133.2  NEEDS_REVIEW   vision=none
     340372052  132.3  NEEDS_REVIEW   vision=none
-    306725928  129.2  NEEDS_REVIEW   vision=none
+    306725928  129.2  REJECTED       vision=none
+        HUMAN REJECTED: Owner: 'Reject the hand-held specimen.' A hand holding a fascicle. It passed the skin gate because its largest warm region sits at the edge rather tha
         soft  touches the left edge of the source photograph; vision must confirm no identifying structure was lost
     354857174  128.9  NEEDS_REVIEW   vision=none

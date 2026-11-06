@@ -6,6 +6,25 @@
   "selected": null,
   "candidates": [
     {
+      "photo_id": 21260078,
+      "score": 142.5,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.13,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": {
+        "species": "verbascum_thapsus",
+        "decision": "preferred",
+        "reason": "Owner: 'Mullein 21260078: preferred for review, but inspect whether the upper flowering spike is clipped and whether its tilted composition works on the card.' Two open questions for the vision pass: apex clipping, and whether the tilt reads on a card.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": true,
+      "owner_alternative": false
+    },
+    {
       "photo_id": 210580027,
       "score": 145.2,
       "status": "NEEDS_REVIEW",
@@ -17,7 +36,8 @@
       "soft_notes": [
         "touches the top edge of the source photograph; vision must confirm no identifying structure was lost"
       ],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 143588661,
@@ -32,19 +52,8 @@
         "subject covers 0.12; the deck usually sits 0.20-0.42",
         "50% brown or yellowed tissue"
       ],
-      "owner_preferred": false
-    },
-    {
-      "photo_id": 21260078,
-      "score": 142.5,
-      "status": "NEEDS_REVIEW",
-      "senescence": 0.13,
-      "vision_source": "none",
-      "genuine_api_vision": false,
-      "human_decision": null,
-      "hard_failures": [],
-      "soft_notes": [],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 44345492,
@@ -61,7 +70,8 @@
         "touches the top edge of the source photograph; vision must confirm no identifying structure was lost",
         "subject covers 0.17; the deck usually sits 0.20-0.42"
       ],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     }
   ]
 }

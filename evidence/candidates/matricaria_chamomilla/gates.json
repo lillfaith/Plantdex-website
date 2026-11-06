@@ -21,7 +21,8 @@
       },
       "hard_failures": [],
       "soft_notes": [],
-      "owner_preferred": true
+      "owner_preferred": true,
+      "owner_alternative": false
     },
     {
       "photo_id": 18365261,
@@ -33,7 +34,8 @@
       "human_decision": null,
       "hard_failures": [],
       "soft_notes": [],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     },
     {
       "photo_id": 293002707,
@@ -45,7 +47,8 @@
       "human_decision": null,
       "hard_failures": [],
       "soft_notes": [],
-      "owner_preferred": false
+      "owner_preferred": false,
+      "owner_alternative": false
     }
   ]
 }
