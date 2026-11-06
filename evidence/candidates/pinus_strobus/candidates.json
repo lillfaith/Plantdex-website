@@ -4,83 +4,6 @@
   "profile_source": "plantdex-photo-style.json",
   "all_scores": [
     {
-      "photo_id": 390760300,
-      "file": "inat-390760300.jpeg",
-      "reject": [],
-      "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 10.0,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_facing": 0.0,
-        "specimen_scale": 15.8,
-        "identification": 6.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 14.0,
-        "subject_sharpness": 11.6,
-        "silhouette_openness": 12.2
-      },
-      "score": 135.0,
-      "_fill": 0.4571189880371094,
-      "measured_subject": {
-        "largest_region_frac": 0.3459,
-        "regions": 1
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 9.5,
-        "skin_fraction": 0.0,
-        "flower_fraction": 0.1305,
-        "foliage_fraction": 0.3111,
-        "subject_fraction": 0.4571
-      },
-      "segmented_by": "birefnet-general-lite",
-      "source_edges": {
-        "top": 0.0,
-        "bottom": 0.526,
-        "left": 0.0,
-        "right": 0.0
-      },
-      "cutout_solidity": 0.508,
-      "skin_in_cutout": 0.0002,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.0126,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.9019,
-        "needles": 0.1853
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.708,
-      "subject_sharpness": 14.9,
-      "stem_support": {
-        "foot_ink": 0.8379,
-        "foot_width_frac": 0.922,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.357,
-        "placed_centroid_x": 0.518,
-        "points": {
-          "frame_fill_match": 13.8,
-          "centred": 7.6,
-          "crops_bottom": 8.0,
-          "keeps_sides": 8.0
-        }
-      }
-    },
-    {
       "photo_id": 666510115,
       "file": "inat-666510115.jpg",
       "reject": [],
@@ -886,78 +809,6 @@
       "skin_in_cutout": 0.1624
     },
     {
-      "photo_id": 141313870,
-      "file": "inat-141313870.jpeg",
-      "reject": [],
-      "flags": [
-        "only one agreeing identification; research grade is not proof"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 7.4,
-        "foliage_visible": 5.7,
-        "clean_subject": 8.6,
-        "breathing_room": 0.0,
-        "disc_facing": 0.0,
-        "specimen_scale": 7.6,
-        "identification": 3.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 14.0,
-        "subject_sharpness": 14.0,
-        "silhouette_openness": 14.6
-      },
-      "score": 110.8,
-      "_fill": 0.3226725260416667,
-      "measured_subject": {
-        "largest_region_frac": 0.1668,
-        "regions": 2
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 18.4,
-        "skin_fraction": 0.0006,
-        "flower_fraction": 0.0894,
-        "foliage_fraction": 0.2373,
-        "subject_fraction": 0.3227
-      },
-      "segmented_by": "colour-fallback",
-      "source_edges": {},
-      "cutout_solidity": 0.313,
-      "skin_in_cutout": 0.0058,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.7249,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.8406,
-        "needles": 0.2252
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.886,
-      "subject_sharpness": 23.9,
-      "stem_support": {
-        "foot_ink": 0.1349,
-        "foot_width_frac": 0.941,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.252,
-        "placed_centroid_x": 0.564,
-        "points": {
-          "frame_fill_match": 12.8,
-          "centred": 5.1,
-          "crops_bottom": 8.0,
-          "keeps_sides": 0.0
-        }
-      }
-    },
-    {
       "photo_id": 108514455,
       "file": "inat-108514455.jpeg",
       "reject": [],
@@ -1380,9 +1231,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 2.8,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 14.9
       },
-      "score": 34.6,
+      "score": 112.1,
       "_fill": 0.43521976470947266,
       "measured_subject": {
         "largest_region_frac": 0.0614,
@@ -1395,6 +1250,41 @@
         "flower_fraction": 0.014,
         "foliage_fraction": 0.2779,
         "subject_fraction": 0.4352
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.319,
+      "skin_in_cutout": 0.0116,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.1356,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9275,
+        "needles": 0.2812
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.725,
+      "subject_sharpness": 34.1,
+      "stem_support": {
+        "foot_ink": 0.1906,
+        "foot_width_frac": 0.552,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.221,
+        "placed_centroid_x": 0.522,
+        "points": {
+          "frame_fill_match": 11.2,
+          "centred": 7.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
       }
     },
     {
@@ -1402,7 +1292,8 @@
       "file": "inat-127829266.jpeg",
       "reject": [],
       "flags": [
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "segmentation kept only 4% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
         "resolution": 10.0,
@@ -1413,9 +1304,13 @@
         "breathing_room": 0.0,
         "disc_facing": 0.0,
         "specimen_scale": 2.0,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 2.4,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 17.7
       },
-      "score": 34.2,
+      "score": 107.1,
       "_fill": 0.3565217515544989,
       "measured_subject": {
         "largest_region_frac": 0.0437,
@@ -1428,6 +1323,46 @@
         "flower_fraction": 0.0445,
         "foliage_fraction": 0.2953,
         "subject_fraction": 0.3565
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.378,
+      "skin_in_cutout": 0.0051,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.1953,
+        "berry_dark": 0.2016,
+        "berry_red": 0.0,
+        "foliage": 0.4517,
+        "needles": 0.1889
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.044,
+      "subject_sharpness": 34.4,
+      "stem_support": {
+        "foot_ink": 0.4186,
+        "foot_width_frac": 0.634,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.32,
+        "placed_centroid_x": 0.527,
+        "points": {
+          "frame_fill_match": 15.7,
+          "centred": 7.1,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
       }
     },
     {
@@ -1799,116 +1734,6 @@
   ],
   "selected": [
     {
-      "photo_id": 390760300,
-      "file": "inat-390760300.jpeg",
-      "reject": [],
-      "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop"
-      ],
-      "points": {
-        "resolution": 10.0,
-        "sharpness_prefilter": 0.0,
-        "flowers_visible": 10.0,
-        "foliage_visible": 6.0,
-        "clean_subject": 12.0,
-        "breathing_room": 0.0,
-        "disc_facing": 0.0,
-        "specimen_scale": 15.8,
-        "identification": 6.0,
-        "brief_preferred": 0.0,
-        "structure_retention": 14.0,
-        "subject_sharpness": 11.6,
-        "silhouette_openness": 12.2
-      },
-      "score": 135.0,
-      "_fill": 0.4571189880371094,
-      "measured_subject": {
-        "largest_region_frac": 0.3459,
-        "regions": 1
-      },
-      "measured": {
-        "orig_edge": 2048,
-        "sharpness": 9.5,
-        "skin_fraction": 0.0,
-        "flower_fraction": 0.1305,
-        "foliage_fraction": 0.3111,
-        "subject_fraction": 0.4571
-      },
-      "segmented_by": "birefnet-general-lite",
-      "source_edges": {
-        "top": 0.0,
-        "bottom": 0.526,
-        "left": 0.0,
-        "right": 0.0
-      },
-      "cutout_solidity": 0.508,
-      "skin_in_cutout": 0.0002,
-      "brief_structures": {
-        "flower_yellow": 0.0,
-        "flower_white": 0.0126,
-        "berry_dark": 0.0,
-        "berry_red": 0.0,
-        "foliage": 0.9019,
-        "needles": 0.1853
-      },
-      "brief_check": {
-        "missing_mandatory": [],
-        "preferred_present": [],
-        "ok": true,
-        "preferred_score": 0.0
-      },
-      "green_retention": 0.708,
-      "subject_sharpness": 14.9,
-      "stem_support": {
-        "foot_ink": 0.8379,
-        "foot_width_frac": 0.922,
-        "has_stem": true
-      },
-      "composition": {
-        "placed_fill": 0.357,
-        "placed_centroid_x": 0.518,
-        "points": {
-          "frame_fill_match": 13.8,
-          "centred": 7.6,
-          "crops_bottom": 8.0,
-          "keeps_sides": 8.0
-        }
-      },
-      "placement": {
-        "scale": 0.6174,
-        "size": [
-          444,
-          513
-        ],
-        "offset": [
-          80,
-          10
-        ],
-        "rooted": true,
-        "crops_bottom": true,
-        "bottom_overflow_px": 39,
-        "crops_sides": false,
-        "top_margin_px": 10
-      },
-      "cutout": "390760300-cutout.png",
-      "preview": "390760300-front.png",
-      "provenance": {
-        "photo_id": 390760300,
-        "observation_id": 220693666,
-        "observation_url": "https://www.inaturalist.org/observations/220693666",
-        "license_code": "cc0",
-        "license": "CC0 (public domain dedication)",
-        "photographer": "no rights reserved",
-        "dimensions": {
-          "width": 2048,
-          "height": 1536
-        },
-        "taxon_name": "Pinus strobus",
-        "taxon_id": 52391
-      },
-      "retrieved_at": "2026-11-06T18:48:21+00:00"
-    },
-    {
       "photo_id": 221242744,
       "file": "inat-221242744.jpg",
       "reject": [],
@@ -2247,7 +2072,112 @@
         "taxon_id": 52391
       },
       "retrieved_at": "2026-11-06T18:48:21+00:00"
+    },
+    {
+      "photo_id": 108514445,
+      "file": "inat-108514445.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 11.6,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.8,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 14.9
+      },
+      "score": 112.1,
+      "_fill": 0.43521976470947266,
+      "measured_subject": {
+        "largest_region_frac": 0.0614,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 33.9,
+        "skin_fraction": 0.0041,
+        "flower_fraction": 0.014,
+        "foliage_fraction": 0.2779,
+        "subject_fraction": 0.4352
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.319,
+      "skin_in_cutout": 0.0116,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.1356,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9275,
+        "needles": 0.2812
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.725,
+      "subject_sharpness": 34.1,
+      "stem_support": {
+        "foot_ink": 0.1906,
+        "foot_width_frac": 0.552,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.221,
+        "placed_centroid_x": 0.522,
+        "points": {
+          "frame_fill_match": 11.2,
+          "centred": 7.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.4681,
+        "size": [
+          393,
+          513
+        ],
+        "offset": [
+          106,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "108514445-cutout.png",
+      "preview": "108514445-front.png",
+      "provenance": {
+        "photo_id": 108514445,
+        "observation_id": 67200572,
+        "observation_url": "https://www.inaturalist.org/observations/67200572",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T18:48:21+00:00"
     }
   ],
-  "seconds": 194.9
+  "seconds": 183.9
 }
