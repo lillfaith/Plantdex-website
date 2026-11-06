@@ -6,8 +6,10 @@
   "mandatory": [
     "needles"
   ],
-  "preferred": [],
-  "notes": "A conifer has no flowers. Any requirement for petals or fruit is botanically wrong for this species and must never be inferred from a colour signature -- sunlit needles against sky previously registered as 'white flowers'. Cones are welcome but are absent for much of the year.",
+  "preferred": [
+    "cones"
+  ],
+  "notes": "A conifer has no flowers. Any requirement for petals or fruit is botanically wrong for this species and must never be inferred from a colour signature -- sunlit needles against sky previously registered as 'white flowers'. Cones are welcome but are absent for much of the year. FRAMING: card #41 shows a BRANCH with needles at close range, not a whole tree. A habit shot of an entire pine is correct botany and the wrong scale -- at 593px wide the needles become canopy texture. Prefer a branch or shoot.",
   "species_key": "pinus_strobus",
   "edited": true,
   "edited_by": "botanical description, 2026-11-05",

@@ -1,0 +1,87 @@
+{
+  "model": "human-in-the-loop vision pass",
+  "prompt_version": "2026-11-05.1",
+  "calls": 3,
+  "usd": 0.0,
+  "note": "Same rubric and schema as vision_review.ask_model(); needs ANTHROPIC_API_KEY to automate.",
+  "rows": [
+    {
+      "photo_id": 390760300,
+      "structures_present": [
+        "needles",
+        "branches",
+        "trunk"
+      ],
+      "structures_absent": [
+        "cones"
+      ],
+      "orientation": "side",
+      "identifiable": true,
+      "quality": 5,
+      "defects": [
+        "whole tree at card size: individual needles are not resolvable",
+        "card #41 shows a branch close-up, not a habit shot"
+      ],
+      "meets_brief": true,
+      "why": "Needles are present but only as canopy texture; the card's reference style is a branch.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 390305665,
+      "structures_present": [
+        "needles",
+        "branches",
+        "trunk"
+      ],
+      "structures_absent": [
+        "cones"
+      ],
+      "orientation": "side",
+      "identifiable": true,
+      "quality": 5,
+      "defects": [
+        "same habit-shot scale problem"
+      ],
+      "meets_brief": true,
+      "why": "A clean whole-tree cutout, but too distant for the needle detail a card shows.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 666510115,
+      "structures_present": [
+        "needles"
+      ],
+      "structures_absent": [
+        "cones"
+      ],
+      "orientation": "unclear",
+      "identifiable": false,
+      "quality": 2,
+      "defects": [
+        "segmentation kept sky and a background treeline",
+        "rectangular block of untouched background"
+      ],
+      "meets_brief": false,
+      "why": "The cutout retains sky and background trees, so the subject is not isolated.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    }
+  ]
+}

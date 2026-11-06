@@ -1,0 +1,37 @@
+{
+  "model": "human-in-the-loop vision pass",
+  "prompt_version": "2026-11-05.1",
+  "calls": 1,
+  "usd": 0.0,
+  "note": "Same rubric and schema as vision_review.ask_model(); needs ANTHROPIC_API_KEY to automate.",
+  "rows": [
+    {
+      "photo_id": 577065025,
+      "structures_present": [
+        "berry_dark",
+        "foliage",
+        "pedicels",
+        "compound_leaves"
+      ],
+      "structures_absent": [
+        "flowers"
+      ],
+      "orientation": "side",
+      "identifiable": true,
+      "quality": 7,
+      "defects": [
+        "leaves are autumn-yellowed where the card's are green",
+        "cyme is partly stripped, fewer drupes than the card shows"
+      ],
+      "meets_brief": true,
+      "why": "Dark ripe drupes on a compound cyme with pinnate leaves: the fruiting stage the card shows.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    }
+  ]
+}

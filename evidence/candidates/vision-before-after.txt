@@ -1,0 +1,46 @@
+
+=== matricaria_chamomilla ===
+  BEFORE (pixels only):
+     1.  136.3  322802617
+     2.  130.8  650137635
+     3.  129.6  91282083
+  AFTER (vision applied):
+     1.  184.8  650137635  q=9 orientation=front
+     2.  165.6  91282083  q=6 orientation=front
+     --  DROPPED 322802617: REJECTED by vision: The head is photographed from behind, so the yellow disc that identifies chamomile is not visible.
+
+=== taraxacum_officinale ===
+  BEFORE (pixels only):
+     1.  135.7  17811106
+     2.  123.7  486847133
+  AFTER (vision applied):
+     1.  177.7  17811106  q=7 orientation=front
+     2.  153.7  486847133  q=5 orientation=front
+
+=== verbascum_thapsus ===
+  BEFORE (pixels only):
+     1.  143.0  44345492
+     2.  136.7  143207510
+     3.  129.8  44345476
+  AFTER (vision applied):
+     1.  191.0  44345492  q=8 orientation=front
+     2.  171.8  44345476  q=7 orientation=front
+     --  DROPPED 143207510: REJECTED by vision: Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.
+
+=== sambucus_canadensis ===
+  BEFORE (pixels only):
+     1.  104.3  577065025
+  AFTER (vision applied):
+     1.  146.3  577065025  q=7 orientation=side
+
+=== pinus_strobus ===
+  BEFORE (pixels only):
+     1.  121.4  390760300
+     2.  118.3  390305665
+     3.  103.6  666510115
+  AFTER (vision applied):
+     1.  151.4  390760300  q=5 orientation=side
+     2.  148.3  390305665  q=5 orientation=side
+     --  DROPPED 666510115: REJECTED by vision: The cutout retains sky and background trees, so the subject is not isolated.
+
+total vision spend across 5 species: $0.0000
