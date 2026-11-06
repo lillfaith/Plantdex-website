@@ -60,10 +60,25 @@ jobs:
             --species "${{ inputs.species || 'matricaria_chamomilla' }}" \
             --top "${{ inputs.top || '3' }}"
 
+      # PUSH AFTER REBASING, AND RETRY. Run 7 of this workflow did all the work and then
+      # threw it away: the branch had moved on while BiRefNet was segmenting, so the push
+      # was a non-fast-forward and the previews were lost with it. Two runs of this workflow
+      # on one branch is the ordinary case, not the exception -- one per species.
       - name: Commit the previews
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add evidence/candidates
-          git diff --staged --quiet || git commit -m "Photo candidates for review (nothing selected, nothing published)"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # NOT `git diff --staged --quiet && exit 0`: the step runs under `bash -e`, the
+          # diff returns 1 when there IS something to commit, and a failing `&&` chain as a
+          # statement is exactly what -e kills the job for.
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Photo candidates for review (nothing selected, nothing published)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            echo "push rejected; the branch moved. retrying in $((i * 5))s"
+            sleep $((i * 5))
+          done
+          echo "::error::could not push after 5 attempts"
+          exit 1
