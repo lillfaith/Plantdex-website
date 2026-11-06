@@ -7,10 +7,11 @@
       "photo_id": 48867959,
       "file": "inat-48867959.jpg",
       "reject": [
-        "a hand survives segmentation: 10.3% of the cutout is skin"
+        "missing structures the species' brief requires: foliage"
       ],
       "flags": [
-        "subject fills the frame and runs off 4 edges; little room to crop"
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "10.3% of the cutout is warm-hued, but the largest smooth region is 0.5% at gradient 27.9 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -51,7 +52,26 @@
         "right": 0.0
       },
       "cutout_solidity": 0.35,
-      "skin_in_cutout": 0.1029
+      "skin_in_cutout": 0.1029,
+      "skin_blob_in_cutout": 0.0051,
+      "skin_blob_gradient": 27.9,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.855,
+        "flower_white": 0.0479,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.0065,
+        "needles": 0.0006
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "foliage"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
+      }
     },
     {
       "photo_id": 415926940,
@@ -103,6 +123,9 @@
       },
       "cutout_solidity": 0.612,
       "skin_in_cutout": 0.0044,
+      "skin_blob_in_cutout": 0.0021,
+      "skin_blob_gradient": 19.1,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0239,
         "flower_white": 0.0017,
@@ -170,6 +193,9 @@
       },
       "cutout_solidity": 0.547,
       "skin_in_cutout": 0.0002,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.9943,
         "flower_white": 0.0,
@@ -238,6 +264,9 @@
       },
       "cutout_solidity": 0.606,
       "skin_in_cutout": 0.0001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.9885,
         "flower_white": 0.0,
@@ -320,6 +349,9 @@
       },
       "cutout_solidity": 0.625,
       "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0228,
         "flower_white": 0.0,
@@ -341,12 +373,13 @@
       "photo_id": 87856207,
       "file": "inat-87856207.jpg",
       "reject": [
-        "a hand survives segmentation: 4.0% of the cutout is skin"
+        "missing structures the species' brief requires: foliage"
       ],
       "flags": [
         "a hand is present behind the subject (5.4% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
         "subject fills the frame and runs off 4 edges; little room to crop",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "4.0% of the cutout is warm-hued, but the largest smooth region is 3.9% at gradient 4.5 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -387,7 +420,26 @@
         "right": 0.0
       },
       "cutout_solidity": 0.396,
-      "skin_in_cutout": 0.0403
+      "skin_in_cutout": 0.0403,
+      "skin_blob_in_cutout": 0.0394,
+      "skin_blob_gradient": 4.5,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.955,
+        "flower_white": 0.0,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.0083,
+        "needles": 0.0
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "foliage"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
+      }
     },
     {
       "photo_id": 86404398,
@@ -439,6 +491,9 @@
       },
       "cutout_solidity": 0.557,
       "skin_in_cutout": 0.0012,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0115,
         "flower_white": 0.0,
@@ -507,6 +562,9 @@
       },
       "cutout_solidity": 0.59,
       "skin_in_cutout": 0.0003,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0002,
         "flower_white": 0.0,
@@ -574,6 +632,9 @@
       },
       "cutout_solidity": 0.601,
       "skin_in_cutout": 0.0017,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 10.7,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.9775,
         "flower_white": 0.0,
@@ -646,6 +707,9 @@
       },
       "cutout_solidity": 0.634,
       "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.9924,
         "flower_white": 0.1311,
@@ -720,6 +784,9 @@
       },
       "cutout_solidity": 0.256,
       "skin_in_cutout": 0.001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.4734,
         "flower_white": 0.114,
@@ -802,6 +869,9 @@
       },
       "cutout_solidity": 0.593,
       "skin_in_cutout": 0.0019,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0011,
         "flower_white": 0.0,
@@ -871,6 +941,9 @@
       },
       "cutout_solidity": 0.225,
       "skin_in_cutout": 0.0025,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.2726,
         "flower_white": 0.0,
@@ -906,11 +979,11 @@
     {
       "photo_id": 395846570,
       "file": "inat-395846570.jpg",
-      "reject": [
-        "a hand survives segmentation: 6.8% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "6.8% of the cutout is warm-hued, but the largest smooth region is 0.3% at gradient 10.7 -- texture, not skin",
+        "segmentation kept only 1% of the foliage: stems and leaves have been cut away"
       ],
       "points": {
         "resolution": 10.0,
@@ -922,9 +995,13 @@
         "disc_scale": 11.8,
         "disc_facing": 12.4,
         "specimen_scale": 10.2,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 0.8,
+        "subject_sharpness": 7.1,
+        "silhouette_openness": 5.9
       },
-      "score": 70.0,
+      "score": 107.1,
       "_fill": 0.4097890853881836,
       "measured_heads": {
         "largest_disc_frac": 0.042,
@@ -951,7 +1028,41 @@
         "right": 0.04
       },
       "cutout_solidity": 0.127,
-      "skin_in_cutout": 0.0685
+      "skin_in_cutout": 0.0685,
+      "skin_blob_in_cutout": 0.0028,
+      "skin_blob_gradient": 10.7,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.7024,
+        "flower_white": 0.0,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.0492,
+        "needles": 0.0077
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.015,
+      "subject_sharpness": 9.1,
+      "stem_support": {
+        "foot_ink": 0.0536,
+        "foot_width_frac": 0.194,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.077,
+        "placed_centroid_x": 0.424,
+        "points": {
+          "frame_fill_match": 3.9,
+          "centred": 3.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
     },
     {
       "photo_id": 86394780,
@@ -1006,6 +1117,9 @@
       },
       "cutout_solidity": 0.562,
       "skin_in_cutout": 0.0017,
+      "skin_blob_in_cutout": 0.0001,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.9829,
         "flower_white": 0.0,
@@ -1042,11 +1156,12 @@
       "photo_id": 404892887,
       "file": "inat-404892887.jpg",
       "reject": [
-        "a hand survives segmentation: 25.9% of the cutout is skin"
+        "missing structures the species' brief requires: foliage"
       ],
       "flags": [
         "a hand is present behind the subject (21.1% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "25.9% of the cutout is warm-hued, but the largest smooth region is 16.2% at gradient 4.0 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -1087,7 +1202,26 @@
         "right": 0.0
       },
       "cutout_solidity": 0.287,
-      "skin_in_cutout": 0.2594
+      "skin_in_cutout": 0.2594,
+      "skin_blob_in_cutout": 0.1617,
+      "skin_blob_gradient": 4.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.3923,
+        "flower_white": 0.1454,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.0,
+        "needles": 0.0
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "foliage"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
+      }
     },
     {
       "photo_id": 699980513,
@@ -1139,6 +1273,9 @@
       },
       "cutout_solidity": 0.651,
       "skin_in_cutout": 0.0012,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0343,
         "flower_white": 0.0,
@@ -1207,6 +1344,9 @@
       },
       "cutout_solidity": 0.19,
       "skin_in_cutout": 0.0055,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.3207,
         "flower_white": 0.0,
@@ -1290,6 +1430,9 @@
       },
       "cutout_solidity": 0.645,
       "skin_in_cutout": 0.0005,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.0224,
         "flower_white": 0.0,
@@ -1357,6 +1500,9 @@
       },
       "cutout_solidity": 0.561,
       "skin_in_cutout": 0.0008,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 1.048,
         "flower_white": 0.0,
@@ -4580,6 +4726,9 @@
       },
       "cutout_solidity": 0.606,
       "skin_in_cutout": 0.0001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.9885,
         "flower_white": 0.0,
@@ -4697,6 +4846,9 @@
       },
       "cutout_solidity": 0.225,
       "skin_in_cutout": 0.0025,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.2726,
         "flower_white": 0.0,
@@ -4814,6 +4966,9 @@
       },
       "cutout_solidity": 0.256,
       "skin_in_cutout": 0.001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.4734,
         "flower_white": 0.114,
@@ -4930,6 +5085,9 @@
       },
       "cutout_solidity": 0.19,
       "skin_in_cutout": 0.0055,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.3207,
         "flower_white": 0.0,
@@ -4996,5 +5154,5 @@
       "retrieved_at": "2026-11-06T20:53:03+00:00"
     }
   ],
-  "seconds": 118.1
+  "seconds": 177.5
 }
