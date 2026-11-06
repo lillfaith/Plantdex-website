@@ -1,7 +1,8 @@
 {
   "species": "verbascum_thapsus",
-  "verdict": "NEEDS_REVIEW",
+  "verdict": "REJECTED",
   "any_genuine_api_vision": false,
+  "art_direction": "Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.",
   "selected": null,
   "candidates": [
     {
@@ -18,7 +19,8 @@
       "soft_notes": [
         "touches the top edge of the source photograph; vision must confirm no identifying structure was lost",
         "subject covers 0.17; the deck usually sits 0.20-0.42"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 89496614,
@@ -38,7 +40,8 @@
       ],
       "soft_notes": [
         "touches the top edge of the source photograph; vision must confirm no identifying structure was lost"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 143207510,
@@ -54,20 +57,28 @@
       ],
       "soft_notes": [
         "vision quality 5/10"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 44345476,
       "score": 128.1,
-      "status": "NEEDS_REVIEW",
+      "status": "REJECTED",
       "senescence": 0.083,
       "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
       "genuine_api_vision": false,
-      "human_decision": null,
+      "human_decision": {
+        "species": "verbascum_thapsus",
+        "decision": "rejected",
+        "reason": "Owner: 'Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.' The clipping fix held -- this is a specimen-quality rejection, not a cropping one.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
       "hard_failures": [],
       "soft_notes": [
         "subject covers 0.14; the deck usually sits 0.20-0.42"
-      ]
+      ],
+      "owner_preferred": false
     }
   ]
 }

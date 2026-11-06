@@ -12,9 +12,16 @@ whose best candidate failed is exactly the one that needs another photo search, 
 omitting it would make the sheet look complete when a species has nothing.
 
 It also writes a decisions TEMPLATE -- one row per cell, pre-filled with the current
-status -- so a reviewer edits a file rather than typing ids. Accepting a row writes a
-HUMAN_APPROVED into evidence/human-decisions.json, which gates.py reads and which
-nothing in the pipeline may overwrite.
+status -- so a reviewer edits a file rather than typing ids. A row's verdict is appended to
+the ledger in scripts/decisions.py, which gates.py reads and which nothing in the pipeline
+may overwrite.
+
+THE OWNER MAY CHANGE HIS MIND, AND THE OLD READING IS KEPT. A row that would overwrite an
+existing verdict is refused unless it also carries "revise": true, in which case the new
+verdict takes effect and the previous one stays in that photo id's history. Both halves
+matter: without the guard, a re-run or a stale template could silently flip a decision;
+without the revision, a judgement made from a thumbnail could never be corrected once the
+finished card was on a sheet, which is the whole purpose of a contact sheet.
 """
 from __future__ import annotations
 
@@ -24,6 +31,9 @@ import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import decisions  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "evidence" / "candidates"
@@ -82,6 +92,8 @@ def leading(species: str) -> dict | None:
         "had_alternatives": len(rows),
         "any_passing": bool(passing),
         "genuine_api_vision": g["any_genuine_api_vision"],
+        "owner_preferred": bool(row.get("owner_preferred")),
+        "art_direction": g.get("art_direction", ""),
     }
 
 
@@ -104,7 +116,9 @@ def draw(cells: list[dict], out: Path) -> None:
         cx = PAD + (i % cols) * (CELL_W + PAD)
         cy = PAD + 46 + (i // cols) * (cell_h + PAD)
         d.text((cx, cy), c["species"].replace("_", " "), font=font(14), fill=INK)
-        d.text((cx, cy + 17), f"#{c['photo_id']}", font=font(12), fill=(110, 106, 118))
+        pin = "  * owner's preferred" if c["owner_preferred"] else ""
+        d.text((cx, cy + 17), f"#{c['photo_id']}{pin}", font=font(12),
+               fill=(18, 86, 140) if pin else (110, 106, 118))
         art = Image.open(c["preview"]).convert("RGB").resize((CELL_W, card_h), Image.LANCZOS)
         sheet.paste(art, (cx, cy + LABEL))
         colour = STATUS_COLOUR[c["status"]]
@@ -130,41 +144,61 @@ def draw(cells: list[dict], out: Path) -> None:
 
 
 def template(cells: list[dict], out: Path) -> None:
+    have = decisions.current()
     out.write_text(json.dumps({
-        "_how": "Set decision to approved or rejected and give a reason, then run "
-                "scripts/contact_sheet.py --record. Rows left as 'open' change nothing.",
+        "_how": "Set decision to approved, rejected or preferred and give a reason, then "
+                "run scripts/contact_sheet.py --record FILE. Rows left as 'open' change "
+                "nothing.",
+        "_decisions": {
+            "approved": "you approve this card; gates.py reports HUMAN_APPROVED",
+            "rejected": "never use this photograph; needs a reason",
+            "preferred": "pin it as the leader WITHOUT approving the card; stays "
+                         "NEEDS_REVIEW",
+        },
+        "_revising": "To change a verdict you already gave, set \"revise\": true and give "
+                     "the new reason. The previous verdict is kept in that photo id's "
+                     "history and is never deleted.",
         "rows": [{"species": c["species"], "photo_id": c["photo_id"],
-                  "current_status": c["status"], "decision": "open", "reason": ""}
+                  "current_status": c["status"],
+                  "existing_decision": have.get(str(c["photo_id"]), {}).get("decision", ""),
+                  "decision": "open", "reason": "", "revise": False}
                  for c in cells],
     }, indent=2) + "\n")
 
 
 def record(tpl: Path) -> int:
-    """Fold a reviewed template into evidence/human-decisions.json.
+    """Fold a reviewed template into the ledger.
 
-    ADDITIVE ONLY. An existing decision is never rewritten and never deleted by this
-    script: the owner's verdicts are the one input in this pipeline that no automated
-    step may overturn, which is the whole reason they live in a file of their own.
+    APPEND-ONLY, NOT IMMUTABLE. scripts/decisions.py keeps every verdict ever given for a
+    photo id and treats the newest as the one in force, so a revision supersedes without
+    erasing. This function therefore never has to choose between protecting the owner's
+    judgement and letting him change it: it passes `revise` through and the ledger keeps
+    the trail.
     """
     doc = json.loads(tpl.read_text())
-    hf = ROOT / "evidence" / "human-decisions.json"
-    have = json.loads(hf.read_text()) if hf.exists() else {}
-    added = 0
+    changed = 0
     for r in doc["rows"]:
-        if r["decision"] not in ("approved", "rejected"):
+        if r.get("decision") not in decisions.VALUES:
             continue
-        key = str(r["photo_id"])
-        if key in have:
-            print(f"  kept existing decision for {key} ({have[key]['decision']})")
-            continue
-        if r["decision"] == "rejected" and not r.get("reason", "").strip():
-            print(f"  SKIPPED {key}: a rejection needs a reason")
-            continue
-        have[key] = {"species": r["species"], "decision": r["decision"],
-                     "by": "owner, batch review", "reason": r.get("reason", "")}
-        added += 1
-    hf.write_text(json.dumps(have, indent=2) + "\n")
-    print(f"recorded {added} new decision(s); {len(have)} total")
+        ok, msg = decisions.record(r["photo_id"], r.get("species", ""), r["decision"],
+                                   r.get("reason", ""), by="owner, batch review",
+                                   revise=bool(r.get("revise")))
+        print(("  " if ok else "  SKIPPED ") + msg)
+        changed += int(ok)
+    print(f"{changed} verdict(s) applied; {len(decisions.current())} in force")
+    return 0
+
+
+def show_history(photo_id: str) -> int:
+    trail = decisions.history(photo_id)
+    if not trail:
+        print(f"no verdict has ever been recorded for {photo_id}")
+        return 0
+    for i, h in enumerate(trail, 1):
+        mark = "  (in force)" if i == len(trail) else "  (superseded)"
+        print(f"{i}. {h.get('at', '?')}  {h['decision'].upper():10} by "
+              f"{h.get('by', '?')}{mark}")
+        print(f"   {h['reason']}")
     return 0
 
 
@@ -173,7 +207,10 @@ def main() -> int:
     a.add_argument("--species", nargs="*")
     a.add_argument("--out", default="evidence/candidates/contact-sheet.png")
     a.add_argument("--record", metavar="TEMPLATE")
+    a.add_argument("--history", metavar="PHOTO_ID")
     args = a.parse_args()
+    if args.history:
+        return show_history(args.history)
     if args.record:
         return record(Path(args.record))
     names = args.species or sorted(p.name for p in BASE.iterdir()
@@ -193,7 +230,10 @@ def main() -> int:
     print(f"{tpl}")
     for c in cells:
         mark = "" if c["any_passing"] else "   <- needs another photo search"
-        print(f"  {c['status']:15} {c['species']:24} #{c['photo_id']}{mark}")
+        pin = "  [owner's preferred]" if c["owner_preferred"] else ""
+        print(f"  {c['status']:15} {c['species']:24} #{c['photo_id']}{pin}{mark}")
+        if c["art_direction"]:
+            print(f"                  art direction: {c['art_direction'][:96]}")
     return 0
 
 

@@ -2,6 +2,7 @@
   "species": "matricaria_chamomilla",
   "verdict": "NEEDS_REVIEW",
   "any_genuine_api_vision": false,
+  "art_direction": "Keep Chamomile 650137635 as my preferred candidate.",
   "selected": null,
   "candidates": [
     {
@@ -11,11 +12,18 @@
       "senescence": 0.06,
       "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
       "genuine_api_vision": false,
-      "human_decision": null,
+      "human_decision": {
+        "species": "matricaria_chamomilla",
+        "decision": "preferred",
+        "reason": "Owner: 'Keep Chamomile 650137635 as my preferred candidate.' Recorded as PREFERRED, not approved: the owner has pinned the photograph, not signed off on the finished card, and an earlier message in this review explicitly separated those two for another candidate.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
       "hard_failures": [],
       "soft_notes": [
         "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost"
-      ]
+      ],
+      "owner_preferred": true
     },
     {
       "photo_id": 74694819,
@@ -29,7 +37,8 @@
       "soft_notes": [
         "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost",
         "off centre at 0.36"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 74694772,
@@ -42,7 +51,8 @@
       "hard_failures": [],
       "soft_notes": [
         "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 91282063,
@@ -56,7 +66,8 @@
       "soft_notes": [
         "touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost",
         "subject covers 0.18; the deck usually sits 0.20-0.42"
-      ]
+      ],
+      "owner_preferred": false
     }
   ]
 }

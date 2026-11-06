@@ -1,7 +1,9 @@
 
 === matricaria_chamomilla ===  NEEDS_REVIEW
+   art direction: Keep Chamomile 650137635 as my preferred candidate.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
     650137635  156.2  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+        HUMAN PREFERRED: Owner: 'Keep Chamomile 650137635 as my preferred candidate.' Recorded as PREFERRED, not approved: the owner has pinned the photograph, not signed off 
         soft  touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost
      74694819  126.4  NEEDS_REVIEW   vision=none
         soft  touches the top/left/right edge of the source photograph; vision must confirm no identifying structure was lost
@@ -13,8 +15,10 @@
         soft  subject covers 0.18; the deck usually sits 0.20-0.42
 
 === taraxacum_officinale ===  NEEDS_REVIEW
+   art direction: Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
-    557941881  136.9  NEEDS_REVIEW   vision=none
+    557941881  136.9  REJECTED       vision=none
+        HUMAN REJECTED: Owner: 'Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.' Applied to t
         soft  subject covers 0.46; the deck usually sits 0.20-0.42
     403970862  133.2  REJECTED       vision=none
         HARD  COHERENCE: largest piece is only 36% across 4 fragments; not one substantial specimen
@@ -25,7 +29,8 @@
         HARD  COHERENCE: largest piece is only 44% across 4 fragments; not one substantial specimen
         soft  subject covers 0.06; the deck usually sits 0.20-0.42
 
-=== verbascum_thapsus ===  NEEDS_REVIEW
+=== verbascum_thapsus ===  REJECTED
+   art direction: Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
      44345492  139.7  REJECTED       vision=vision (model in the loop; no ANTH
         HARD  SEGMENTATION: straight alpha edges (rows 0.0, cols 0.182); an uncut rectangle survived
@@ -39,17 +44,21 @@
         HARD  BOTANY (vision): Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.
         HARD  BOTANY (vision): not identifiable as the species
         soft  vision quality 5/10
-     44345476  128.1  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+     44345476  128.1  REJECTED       vision=vision (model in the loop; no ANTH
+        HUMAN REJECTED: Owner: 'Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.' The clippi
         soft  subject covers 0.14; the deck usually sits 0.20-0.42
 
 === sambucus_canadensis ===  REJECTED
+   art direction: Elderberry: preserve my rejection and continue searching for a healthy-looking fruiting specimen with dark berries, branching stems and leaves.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
     577065025  110.7  REJECTED       vision=vision (model in the loop; no ANTH
         HUMAN REJECTED: Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- ber
 
 === pinus_strobus ===  NEEDS_REVIEW
+   art direction: Pine: reject the whole-tree composition for this card. Search for a recognizable, attractive branch showing distinct needle clusters.
    (no genuine API vision for this species, so nothing here can be AUTO_APPROVED)
-    390760300  135.0  NEEDS_REVIEW   vision=vision (model in the loop; no ANTH
+    390760300  135.0  REJECTED       vision=vision (model in the loop; no ANTH
+        HUMAN REJECTED: Owner: 'Pine: reject the whole-tree composition for this card. Search for a recognizable, attractive branch showing distinct needle clusters.' An art-
         soft  vision quality 5/10
     221242744  122.0  NEEDS_REVIEW   vision=none
         soft  touches the left edge of the source photograph; vision must confirm no identifying structure was lost

@@ -2,20 +2,28 @@
   "species": "taraxacum_officinale",
   "verdict": "NEEDS_REVIEW",
   "any_genuine_api_vision": false,
+  "art_direction": "Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.",
   "selected": null,
   "candidates": [
     {
       "photo_id": 557941881,
       "score": 136.9,
-      "status": "NEEDS_REVIEW",
+      "status": "REJECTED",
       "senescence": 0.095,
       "vision_source": "none",
       "genuine_api_vision": false,
-      "human_decision": null,
+      "human_decision": {
+        "species": "taraxacum_officinale",
+        "decision": "rejected",
+        "reason": "Owner: 'Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.' Applied to this candidate as the current leader (placed fill 0.46, above the deck's 0.20-0.42 band) because it is the oversized bloom the directive describes; the owner did not name an id, so revise this entry if the reading is wrong.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
       "hard_failures": [],
       "soft_notes": [
         "subject covers 0.46; the deck usually sits 0.20-0.42"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 403970862,
@@ -30,7 +38,8 @@
       ],
       "soft_notes": [
         "subject covers 0.12; the deck usually sits 0.20-0.42"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 390303714,
@@ -43,7 +52,8 @@
       "hard_failures": [],
       "soft_notes": [
         "52% brown or yellowed tissue"
-      ]
+      ],
+      "owner_preferred": false
     },
     {
       "photo_id": 557939990,
@@ -58,7 +68,8 @@
       ],
       "soft_notes": [
         "subject covers 0.06; the deck usually sits 0.20-0.42"
-      ]
+      ],
+      "owner_preferred": false
     }
   ]
 }

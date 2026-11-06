@@ -2,6 +2,7 @@
   "species": "sambucus_canadensis",
   "verdict": "REJECTED",
   "any_genuine_api_vision": false,
+  "art_direction": "Elderberry: preserve my rejection and continue searching for a healthy-looking fruiting specimen with dark berries, branching stems and leaves.",
   "selected": null,
   "candidates": [
     {
@@ -18,7 +19,8 @@
         "reason": "Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- berry fragments without supporting structure. Senescence measured 0.285, BELOW the deck's own p90 of 0.388, so no metric caught this."
       },
       "hard_failures": [],
-      "soft_notes": []
+      "soft_notes": [],
+      "owner_preferred": false
     }
   ]
 }

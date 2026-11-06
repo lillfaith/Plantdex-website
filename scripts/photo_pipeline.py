@@ -19,7 +19,9 @@ from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+import art_direction                                # noqa: E402  (owner's preferences)
 import card_art                                     # noqa: E402  (segmentation lives there)
+import decisions                                    # noqa: E402  (the owner's verdicts)
 import segment_plant                                # noqa: E402  (BiRefNet, colour fallback)
 import visual_brief                                 # noqa: E402  (species requirements)
 import render_generated_card as R                   # noqa: E402  (template + slot geometry)
@@ -530,8 +532,27 @@ def main() -> int:
     out = pathlib.Path(a.out) if a.out else ROOT / "evidence" / "candidates" / a.species
     out.mkdir(parents=True, exist_ok=True)
 
+    # A PHOTOGRAPH THE OWNER REJECTED IS NOT A CANDIDATE, and filtering it here rather
+    # than at the gate is the difference between a re-run that offers something new and one
+    # that re-renders the same rejected leader with a REJECTED band under it. The gates
+    # still carry the rejection -- this only stops the pipeline spending 25 seconds of
+    # segmentation and a slot in the shortlist on an answer already given.
+    refused = decisions.rejected_ids()
+    art = art_direction.as_prompt(a.species)
+    if art:
+        print(f"art direction (soft; judged by the vision pass, never by a threshold):\n{art}")
+    pool = [p for p in meta["photos"] if str(p.get("photo_id")) not in refused]
+    skipped = len(meta["photos"]) - len(pool)
+    if skipped:
+        print(f"excluding {skipped} photograph(s) the owner has rejected: "
+              + ", ".join(str(p["photo_id"]) for p in meta["photos"]
+                          if str(p.get("photo_id")) in refused))
+    if not pool:
+        print("every photograph in the pool has been rejected; a wider retrieval is needed")
+        return 1
+
     scored = []
-    for p in meta["photos"]:
+    for p in pool:
         f = pdir / p["file"]
         if not f.exists():
             continue

@@ -1,20 +1,87 @@
 {
-  "577065025": {
-    "species": "sambucus_canadensis",
-    "decision": "rejected",
-    "by": "owner, 2026-11-06",
-    "reason": "Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- berry fragments without supporting structure. Senescence measured 0.285, BELOW the deck's own p90 of 0.388, so no metric caught this."
-  },
-  "141313870": {
-    "species": "pinus_strobus",
-    "decision": "rejected",
-    "by": "owner, 2026-11-06",
-    "reason": "Not a pine branch. The cutout is two vertical strips of background forest at the left and right margins with the middle removed; the specimen is indistinguishable. Rejected regardless of numerical score."
-  },
-  "89496614": {
-    "species": "verbascum_thapsus",
-    "decision": "rejected",
-    "by": "owner, 2026-11-06",
-    "reason": "The flowering spike is cut off at the top. The identifying structure must be complete with headroom; this is clipped in the source photograph, so no placement can recover it."
+  "version": 2,
+  "_what": "The owner's verdicts. history is oldest-first; the LAST entry is current. Nothing here is ever deleted.",
+  "decisions": {
+    "577065025": {
+      "species": "sambucus_canadensis",
+      "history": [
+        {
+          "species": "sambucus_canadensis",
+          "decision": "rejected",
+          "by": "owner, 2026-11-06",
+          "reason": "Visual quality. Drupes correct and phenology right, but the foliage has turned, the cyme is partly stripped, and there is no substantial branch -- berry fragments without supporting structure. Senescence measured 0.285, BELOW the deck's own p90 of 0.388, so no metric caught this."
+        }
+      ]
+    },
+    "141313870": {
+      "species": "pinus_strobus",
+      "history": [
+        {
+          "species": "pinus_strobus",
+          "decision": "rejected",
+          "by": "owner, 2026-11-06",
+          "reason": "Not a pine branch. The cutout is two vertical strips of background forest at the left and right margins with the middle removed; the specimen is indistinguishable. Rejected regardless of numerical score."
+        }
+      ]
+    },
+    "89496614": {
+      "species": "verbascum_thapsus",
+      "history": [
+        {
+          "species": "verbascum_thapsus",
+          "decision": "rejected",
+          "by": "owner, 2026-11-06",
+          "reason": "The flowering spike is cut off at the top. The identifying structure must be complete with headroom; this is clipped in the source photograph, so no placement can recover it."
+        }
+      ]
+    },
+    "650137635": {
+      "species": "matricaria_chamomilla",
+      "history": [
+        {
+          "species": "matricaria_chamomilla",
+          "decision": "preferred",
+          "reason": "Owner: 'Keep Chamomile 650137635 as my preferred candidate.' Recorded as PREFERRED, not approved: the owner has pinned the photograph, not signed off on the finished card, and an earlier message in this review explicitly separated those two for another candidate.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "390760300": {
+      "species": "pinus_strobus",
+      "history": [
+        {
+          "species": "pinus_strobus",
+          "decision": "rejected",
+          "reason": "Owner: 'Pine: reject the whole-tree composition for this card. Search for a recognizable, attractive branch showing distinct needle clusters.' An art-direction rejection: the cutout is clean and the species is identifiable, but no card in the deck is a tree portrait, and a whole-tree habit shot cannot show distinct needle clusters at card size.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "44345476": {
+      "species": "verbascum_thapsus",
+      "history": [
+        {
+          "species": "verbascum_thapsus",
+          "decision": "rejected",
+          "reason": "Owner: 'Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage.' The clipping fix held -- this is a specimen-quality rejection, not a cropping one.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    },
+    "557941881": {
+      "species": "taraxacum_officinale",
+      "history": [
+        {
+          "species": "taraxacum_officinale",
+          "decision": "rejected",
+          "reason": "Owner: 'Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom.' Applied to this candidate as the current leader (placed fill 0.46, above the deck's 0.20-0.42 band) because it is the oversized bloom the directive describes; the owner did not name an id, so revise this entry if the reading is wrong.",
+          "by": "owner, 2026-11-06",
+          "at": "2026-11-06"
+        }
+      ]
+    }
   }
 }

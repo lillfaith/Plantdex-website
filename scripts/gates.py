@@ -27,6 +27,8 @@ from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+import art_direction                                  # noqa: E402
+import decisions                                      # noqa: E402
 import visual_brief                                   # noqa: E402
 
 STYLE = json.loads((ROOT / "docs" / "plantdex-photo-style.json").read_text())["profile"]
@@ -173,19 +175,17 @@ def coherence(cut_png: pathlib.Path) -> dict:
             "coherent": bool(share >= 0.55 and pieces <= 6)}
 
 
-DECISIONS = ROOT / "evidence" / "human-decisions.json"
-
-
 def human_decisions() -> dict:
-    """Decisions a person made, honoured as the final word and preserved across runs.
+    """{photo_id: the owner's verdict in force}, from scripts/decisions.py.
 
     A reviewer's judgement is evidence the pipeline cannot derive -- the elderberry's
     senescence measured BELOW the deck's own p90, so no threshold was ever going to catch
-    it. Storing the decisions here means a re-run cannot quietly re-select something
-    already rejected, and the reason travels with the photo id instead of living in a chat
-    message that the next run has never read.
+    it. The ledger lives in its own module because it has one property no other input has:
+    it is append-only and REVISABLE. The owner may supersede his own verdict, and the
+    superseded reading stays readable, so this function always returns the newest entry and
+    never the whole trail -- a gate decides on what is in force, not on what once was.
     """
-    return json.loads(DECISIONS.read_text()) if DECISIONS.exists() else {}
+    return decisions.current()
 
 
 # ── HARD FAILURES vs SOFT PREFERENCES ────────────────────────────────────────────────────
@@ -216,6 +216,20 @@ def hard_failures(brief, shares, row, vision, cutf, frontf) -> list[str]:
         q = vision.get("quality")
         if q is not None and q <= 3:
             bad.append(f"ART (vision): quality {q}/10")
+        # THE THREE STAGES ARE JUDGED SEPARATELY AND TWO OF THEM ARE HARD. Cropping is a
+        # property of the SOURCE frame: a structure that ran off the edge of the original
+        # photograph is unrecoverable, which is exactly what happened to the mullein, and
+        # no placement can put it back. Segmentation is a property of the CUTOUT. Both
+        # decide whether the image is usable at all, so both are hard. Art direction is the
+        # owner's preference and is handled in soft_notes -- never here.
+        crop = vision.get("cropping") or {}
+        if crop.get("complete") is False:
+            lost = ", ".join(crop.get("lost", [])) or crop.get("why", "")
+            bad.append(f"CROPPING (vision): the source photograph cuts the plant: {lost}")
+        seg = vision.get("segmentation") or {}
+        if seg.get("clean") is False:
+            bad.append("SEGMENTATION (vision): "
+                       + (", ".join(seg.get("defects", [])) or seg.get("why", "")))
         for d in vision.get("defects", []):
             if any(w in d.lower() for w in ("background", "sky", "remnant", "rectangul")):
                 bad.append("SEGMENTATION (vision): " + d)
@@ -273,6 +287,17 @@ def soft_notes(row, comp, dead, vision) -> list[str]:
     q = (vision or {}).get("quality")
     if q is not None and 3 < q < 6:
         soft.append(f"vision quality {q}/10")
+    # ART DIRECTION IS A PREFERENCE AND STAYS ONE. A whole-tree pine is a real problem with
+    # a real card and it is still not a safety or a botany failure: the species is correct
+    # and the cutout is clean. It belongs here, where it costs the candidate its place in
+    # the ranking and blocks nothing -- and where the owner can overrule it, which is the
+    # one thing a hard failure does not allow.
+    ad = (vision or {}).get("art_direction") or {}
+    if ad.get("meets") is False:
+        comp = ad.get("composition")
+        soft.append("ART DIRECTION (vision): "
+                    + (f"{comp}; " if comp else "")
+                    + (ad.get("why") or "does not match the owner's directive"))
     return soft
 
 
@@ -307,10 +332,17 @@ def evaluate(species: str) -> dict:
         # number while being two strips of forest. A manually supplied verdict is evidence
         # and can never promote past NEEDS_REVIEW, because a human judgement recorded by
         # hand is not the automated system working.
+        # `preferred` IS NOT AN APPROVAL. "Keep this one as my preferred candidate" pins a
+        # photograph; it does not sign off on the finished card. Collapsing the two would
+        # promote art the owner has not approved, so a preferred candidate stays
+        # NEEDS_REVIEW -- it is merely protected from being ranked away, and from a hard
+        # failure quietly rejecting the one photograph he asked to keep looking at.
         if human and human.get("decision") == "rejected":
             status = "REJECTED"
         elif human and human.get("decision") == "approved":
             status = "HUMAN_APPROVED"
+        elif human and human.get("decision") == "preferred":
+            status = "NEEDS_REVIEW"
         elif hard:
             status = "REJECTED"
         elif v and v.get("source") == "vision" and v.get("meets_brief"):
@@ -322,13 +354,16 @@ def evaluate(species: str) -> dict:
                     "senescence": round(dead, 3),
                     "vision_source": (v or {}).get("source", "none"),
                     "genuine_api_vision": bool(v and v.get("source") == "vision"),
-                    "human_decision": human, "hard_failures": hard, "soft_notes": soft})
+                    "human_decision": human, "hard_failures": hard, "soft_notes": soft,
+                    "owner_preferred": bool(human and human.get("decision") == "preferred")})
+    out.sort(key=lambda r: (not r["owner_preferred"],))   # stable: pinned first, else rank
     approved = [r for r in out if r["status"] in ("AUTO_APPROVED", "HUMAN_APPROVED")]
     reviewable = [r for r in out if r["status"] == "NEEDS_REVIEW"]
     verdict = ("APPROVED" if approved else
                "NEEDS_REVIEW" if reviewable else "REJECTED")
     return {"species": species, "verdict": verdict,
             "any_genuine_api_vision": genuine_api,
+            "art_direction": art_direction.summary(species),
             "selected": approved[0]["photo_id"] if approved else None,
             "candidates": out}
 
@@ -360,6 +395,30 @@ def self_test() -> int:
     hb = hard_failures({}, {}, base, {"orientation": "back", "meets_brief": True},
                        missing, missing)
     checks.append((bool(hb), "CONTROL: a back-facing flower is a HARD failure"))
+    # CONTROL: cropping lost in the SOURCE is hard -- that is the mullein, and it is the one
+    # failure a finished card cannot show you.
+    hc = hard_failures({}, {}, base,
+                       {"meets_brief": True, "cropping": {"complete": False,
+                                                          "lost": ["the top of the spike"]}},
+                       missing, missing)
+    checks.append((any("CROPPING" in h for h in hc),
+                   "CONTROL: a structure cut off in the source photograph is HARD"))
+    # CONTROL: art direction is SOFT in both directions -- it must never reject, and it must
+    # still be reported. A whole-tree pine is the case: right species, clean cutout, wrong
+    # picture for a card.
+    av = {"meets_brief": True, "identifiable": True,
+          "art_direction": {"meets": False, "composition": "whole_tree",
+                            "why": "a tree portrait, not a branch"}}
+    checks.append((not hard_failures({}, {}, base, av, missing, missing)
+                   and any("ART DIRECTION" in x for x in soft_notes(base, {}, 0.0, av)),
+                   "CONTROL: an art-direction failure is soft, never hard"))
+    # CONTROL: a clean three-stage verdict must not become a hard failure for lacking the
+    # older flat `defects` key.
+    checks.append((not hard_failures({}, {}, base,
+                                     {"meets_brief": True,
+                                      "cropping": {"complete": True},
+                                      "segmentation": {"clean": True}}, missing, missing),
+                   "CONTROL: a passing three-stage verdict has no hard failures"))
     ok = True
     for good, label in checks:
         print(("PASS  " if good else "FAIL  ") + label)
@@ -383,6 +442,8 @@ def main() -> int:
             continue
         print(f"\n=== {sp} ===  {r['verdict']}"
               + (f" -> {r['selected']}" if r["selected"] else ""))
+        if r.get("art_direction"):
+            print(f"   art direction: {r['art_direction']}")
         if not r["any_genuine_api_vision"]:
             print("   (no genuine API vision for this species, so nothing here can be "
                   "AUTO_APPROVED)")
