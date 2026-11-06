@@ -1,0 +1,36 @@
+
+=== matricaria_chamomilla ===  PASS -> 650137635
+    650137635  156.2  OK =bota OK =segm OK =art_  senescence=0.06  vision=vision (m
+     74694819  126.4  OK =bota FAIL=segm FAIL=art_  senescence=0.007  vision=none
+        segmentation: only 0% of the foliage survived: stems cut away
+        art_direction: off centre: 0.36 against the deck's 0.51
+     74694772  126.0  OK =bota FAIL=segm OK =art_  senescence=0.028  vision=none
+        segmentation: only 2% of the foliage survived: stems cut away
+
+=== taraxacum_officinale ===  NEEDS_REVIEW
+    557941881  136.9  OK =bota OK =segm FAIL=art_  senescence=0.095  vision=none
+        art_direction: subject covers 0.46 of the window; the deck sits 0.20-0.42
+    403970862  133.2  OK =bota OK =segm FAIL=art_  senescence=0.075  vision=none
+        art_direction: subject covers 0.12 of the window; the deck sits 0.20-0.42
+    390303714  107.5  OK =bota OK =segm FAIL=art_  senescence=0.52  vision=none
+        art_direction: 52% of the subject is brown or yellowed: not a healthy specimen
+
+=== verbascum_thapsus ===  PASS -> 89496614
+     44345492  143.0  OK =bota OK =segm FAIL=art_  senescence=0.27  vision=vision (m
+        art_direction: subject covers 0.17 of the window; the deck sits 0.20-0.42
+    143207510  136.7  FAIL=bota OK =segm FAIL=art_  senescence=0.066  vision=vision (m
+        botanical: vision: Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.
+        botanical: vision: not identifiable as the species
+        art_direction: vision quality 5/10: cropped so close that the identifying spike is not visible
+     89496614  132.7  OK =bota OK =segm OK =art_  senescence=0.081  vision=none
+
+=== sambucus_canadensis ===  NEEDS_REVIEW
+    577065025  110.7  OK =bota OK =segm OK =art_  senescence=0.285  vision=vision (m
+
+=== pinus_strobus ===  PASS -> 141313870
+    390760300  135.0  OK =bota OK =segm FAIL=art_  senescence=0.004  vision=vision (m
+        art_direction: vision quality 5/10: whole tree at card size: individual needles are not resolvable
+     36667264  113.8  OK =bota OK =segm FAIL=art_  senescence=0.055  vision=none
+        art_direction: subject covers 0.11 of the window; the deck sits 0.20-0.42
+        art_direction: silhouette is 0.17 solid: too sparse to read as a specimen
+    141313870  110.8  OK =bota OK =segm OK =art_  senescence=0.11  vision=none

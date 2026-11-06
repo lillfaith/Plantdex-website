@@ -1,0 +1,74 @@
+name: Vision review of photo candidates
+
+# Runs the model-based review of the top photo candidates for one species and commits the
+# verdicts. This is where the vision step BELONGS even once a key exists locally: every card
+# in the catalogue is then graded by the same model version under the same rubric, and the
+# key lives in one place rather than on anybody's laptop.
+#
+# REQUIRES the repository secret ANTHROPIC_API_KEY. Without it the job fails loudly rather
+# than falling back, because a run that silently graded on colour thresholds and committed
+# the result would be indistinguishable from a real one.
+on:
+  workflow_dispatch:
+    inputs:
+      species:
+        description: Species key, as the directory name under evidence/candidates/
+        required: true
+        default: matricaria_chamomilla
+        type: string
+      limit:
+        description: How many top candidates to review (each costs one call)
+        required: true
+        default: '3'
+        type: string
+      max_calls:
+        description: Hard ceiling on model calls for this run
+        required: true
+        default: '5'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fail early if the key is missing
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::ANTHROPIC_API_KEY is not set. Add it under Settings > Secrets and"
+            echo "::error::variables > Actions. The vision step will NOT fall back here:"
+            echo "::error::a committed verdict must say truthfully how it was produced."
+            exit 1
+          fi
+
+      - name: Install
+        run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+
+      - name: Self-test
+        run: python3 scripts/vision_review.py --self-test
+
+      - name: Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3 scripts/vision_review.py \
+            --species "${{ inputs.species }}" \
+            --limit "${{ inputs.limit }}" \
+            --max-calls "${{ inputs.max_calls }}"
+
+      - name: Commit the verdicts and the cache
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/candidates evidence/vision-cache
+          git diff --staged --quiet || git commit -m "Vision verdicts for ${{ inputs.species }}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

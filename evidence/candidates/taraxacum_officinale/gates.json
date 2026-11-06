@@ -1,0 +1,88 @@
+{
+  "species": "taraxacum_officinale",
+  "candidates": [
+    {
+      "photo_id": 557941881,
+      "score": 136.9,
+      "senescence": 0.095,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": false,
+          "reasons": [
+            "subject covers 0.46 of the window; the deck sits 0.20-0.42"
+          ]
+        }
+      ],
+      "selectable": false
+    },
+    {
+      "photo_id": 403970862,
+      "score": 133.2,
+      "senescence": 0.075,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": false,
+          "reasons": [
+            "subject covers 0.12 of the window; the deck sits 0.20-0.42"
+          ]
+        }
+      ],
+      "selectable": false
+    },
+    {
+      "photo_id": 390303714,
+      "score": 107.5,
+      "senescence": 0.52,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": false,
+          "reasons": [
+            "52% of the subject is brown or yellowed: not a healthy specimen"
+          ]
+        }
+      ],
+      "selectable": false
+    }
+  ],
+  "verdict": "NEEDS_REVIEW",
+  "selected": null
+}

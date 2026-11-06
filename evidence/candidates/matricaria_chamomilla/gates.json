@@ -1,0 +1,88 @@
+{
+  "species": "matricaria_chamomilla",
+  "candidates": [
+    {
+      "photo_id": 650137635,
+      "score": 156.2,
+      "senescence": 0.06,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": true,
+          "reasons": []
+        }
+      ],
+      "selectable": true
+    },
+    {
+      "photo_id": 74694819,
+      "score": 126.4,
+      "senescence": 0.007,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": false,
+          "reasons": [
+            "only 0% of the foliage survived: stems cut away"
+          ]
+        },
+        {
+          "gate": "art_direction",
+          "pass": false,
+          "reasons": [
+            "off centre: 0.36 against the deck's 0.51"
+          ]
+        }
+      ],
+      "selectable": false
+    },
+    {
+      "photo_id": 74694772,
+      "score": 126.0,
+      "senescence": 0.028,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": false,
+          "reasons": [
+            "only 2% of the foliage survived: stems cut away"
+          ]
+        },
+        {
+          "gate": "art_direction",
+          "pass": true,
+          "reasons": []
+        }
+      ],
+      "selectable": false
+    }
+  ],
+  "verdict": "PASS",
+  "selected": 650137635
+}

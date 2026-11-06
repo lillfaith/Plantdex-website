@@ -1,0 +1,36 @@
+{
+  "species": "sambucus_canadensis",
+  "candidates": [
+    {
+      "photo_id": 577065025,
+      "score": 110.7,
+      "senescence": 0.285,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "human_rejected": {
+        "species": "sambucus_canadensis",
+        "by": "owner review, 2026-11-06",
+        "reason": "Rejected for visual quality. The drupes are correct and the phenology is right, but the foliage has already turned and the cyme is partly stripped, so the specimen does not look healthy. Senescence measured 0.285, which is BELOW the deck's own p90 of 0.388 -- the metric did not catch this and a person did, which is why the decision is recorded rather than inferred."
+      },
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": true,
+          "reasons": []
+        }
+      ],
+      "selectable": false
+    }
+  ],
+  "verdict": "NEEDS_REVIEW",
+  "selected": null
+}

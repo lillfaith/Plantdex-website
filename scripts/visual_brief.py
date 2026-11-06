@@ -64,7 +64,8 @@ def structures(bgr: np.ndarray, mask: np.ndarray | None = None) -> dict:
         # V < 125 and a violet-blue hue: elderberries read H~137, S~98, V~61.
         "berry_dark": (V < 125) & (S > 55) & (H >= 110) & (H <= 175),
         "berry_red": (((H <= 10) | (H >= 170)) & (S > 120) & (V > 70) & (V < 200)),
-        "foliage": (H >= 35) & (H <= 90) & (S > 55),
+        "foliage": ((H >= 25) & (H <= 95) & (S > 35) & (V > 35)
+                    & ~((H <= 32) & (S > 130) & (V > 120))),
     }
     # NEEDLES: long, thin, green-to-blue-green. A conifer has no flower and no fruit, and
     # without this the only structure a pine could register is "white" -- which is what

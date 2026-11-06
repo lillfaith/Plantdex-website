@@ -1,0 +1,87 @@
+{
+  "species": "pinus_strobus",
+  "candidates": [
+    {
+      "photo_id": 390760300,
+      "score": 135.0,
+      "senescence": 0.004,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": false,
+          "reasons": [
+            "vision quality 5/10: whole tree at card size: individual needles are not resolvable"
+          ]
+        }
+      ],
+      "selectable": false
+    },
+    {
+      "photo_id": 36667264,
+      "score": 113.8,
+      "senescence": 0.055,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": false,
+          "reasons": [
+            "subject covers 0.11 of the window; the deck sits 0.20-0.42",
+            "silhouette is 0.17 solid: too sparse to read as a specimen"
+          ]
+        }
+      ],
+      "selectable": false
+    },
+    {
+      "photo_id": 141313870,
+      "score": 110.8,
+      "senescence": 0.11,
+      "vision_source": "none",
+      "human_rejected": null,
+      "gates": [
+        {
+          "gate": "botanical",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "segmentation",
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "gate": "art_direction",
+          "pass": true,
+          "reasons": []
+        }
+      ],
+      "selectable": true
+    }
+  ],
+  "verdict": "PASS",
+  "selected": 141313870
+}

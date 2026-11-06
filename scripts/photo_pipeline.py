@@ -62,7 +62,13 @@ def masks(bgr: np.ndarray) -> dict:
     H, S, V = hsv[:, :, 0].astype(int), hsv[:, :, 1].astype(int), hsv[:, :, 2].astype(int)
     white = (V > 165) & (S < 60)
     yellow = (H >= 18) & (H <= 38) & (S > 90) & (V > 110)
-    green = (H >= 35) & (H <= 90) & (S > 55) & (V > 45)
+    # H >= 25, NOT 35. Stems and petioles are OLIVE -- the chamomile stem
+    # measures H~30 -- so a window starting at 35 found 0.0005 of the
+    # subject where a sane one finds 0.086, and the segmentation gate then
+    # failed a cutout that plainly kept its stem. The saturated gold disc
+    # is excluded so the two cannot overlap at the shared hues.
+    green = ((H >= 25) & (H <= 95) & (S > 35) & (V > 35)
+             & ~((H <= 32) & (S > 130) & (V > 120)))
     skin = (((H <= 25) | (H >= 170)) & (S > 35) & (S < 165) & (V > 90)) & ~(yellow | green | white)
     return {"white": white, "yellow": yellow, "green": green, "skin": skin}
 
@@ -599,11 +605,19 @@ def main() -> int:
         # it, so a cutout can be clean and still be a flower head floating with nothing
         # holding it up. Comparing the green surviving in the cutout against the green in
         # the source catches exactly that: one candidate kept 0.1% of its foliage.
-        src_bgr = cv2.imread(str(src))
+        # BOTH IMAGES AT THE SAME SCALE. This compared a full-resolution source against a
+        # downscaled cutout and corrected with an area ratio, which is not a correction at
+        # all: the cutout is cropped to the subject as well as resized, so the factor was
+        # meaningless. It reported that 1% of the foliage survived on a cutout that plainly
+        # kept its stem, and the segmentation gate then failed the best chamomile in the
+        # set. The source is now read at the cutout's own working size.
+        src_im = Image.open(src).convert("RGB")
+        src_im.thumbnail((segment_plant.WORK_EDGE, segment_plant.WORK_EDGE), Image.LANCZOS)
+        src_bgr = cv2.cvtColor(np.array(src_im), cv2.COLOR_RGB2BGR)
         cut_bgr = cv2.cvtColor(np.array(cut.convert("RGB")), cv2.COLOR_RGB2BGR)
-        src_green = masks(src_bgr)["green"].sum() * (alpha.size / max(1, src_bgr[:, :, 0].size))
-        kept_green = (masks(cut_bgr)["green"] & alpha).sum()
-        retention = float(kept_green / max(1.0, src_green))
+        src_green = int(masks(src_bgr)["green"].sum())
+        kept_green = int((masks(cut_bgr)["green"] & alpha).sum())
+        retention = float(kept_green / max(1, src_green))
         s["green_retention"] = round(retention, 3)
         s["points"]["structure_retention"] = round(min(1.0, retention / 0.25) * 14, 1)
         # SUBJECT SHARPNESS: gradient energy inside the cutout's own alpha, so the blurred
