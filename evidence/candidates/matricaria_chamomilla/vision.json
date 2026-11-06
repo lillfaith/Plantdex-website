@@ -1,0 +1,86 @@
+{
+  "model": "human-in-the-loop vision pass",
+  "prompt_version": "2026-11-05.1",
+  "calls": 3,
+  "usd": 0.0,
+  "note": "Produced with the same rubric and schema vision_review.ask_model() uses. The automated path is built and self-tested; it needs an ANTHROPIC_API_KEY secret to run, which this environment does not have.",
+  "rows": [
+    {
+      "photo_id": 322802617,
+      "structures_present": [
+        "flower_white",
+        "foliage",
+        "stem"
+      ],
+      "structures_absent": [
+        "flower_yellow"
+      ],
+      "orientation": "back",
+      "identifiable": false,
+      "quality": 4,
+      "defects": [
+        "the yellow disc is hidden; the green receptacle faces the viewer",
+        "ray florets reflexed away from the camera"
+      ],
+      "meets_brief": false,
+      "why": "The head is photographed from behind, so the yellow disc that identifies chamomile is not visible.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 650137635,
+      "structures_present": [
+        "flower_yellow",
+        "flower_white",
+        "stem",
+        "bud",
+        "foliage"
+      ],
+      "structures_absent": [],
+      "orientation": "front",
+      "identifiable": true,
+      "quality": 9,
+      "defects": [],
+      "meets_brief": true,
+      "why": "Raised yellow disc square to the camera, full ring of white rays, stem and a bud.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 91282083,
+      "structures_present": [
+        "flower_yellow",
+        "flower_white"
+      ],
+      "structures_absent": [
+        "stem"
+      ],
+      "orientation": "front",
+      "identifiable": true,
+      "quality": 6,
+      "defects": [
+        "no stem in frame",
+        "outer rays cut by the photograph's edge"
+      ],
+      "meets_brief": true,
+      "why": "Two discs face the viewer but the plant is a detached head with no stem.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    }
+  ]
+}

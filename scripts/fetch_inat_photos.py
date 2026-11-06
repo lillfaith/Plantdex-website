@@ -93,7 +93,7 @@ def photo_url(photo: dict, size: str) -> str | None:
 
 
 def harvest(name: str, licenses: tuple[str, ...], want: int,
-            min_edge: int = 900) -> dict:
+            min_edge: int = 900, months: str | None = None) -> dict:
     taxon = resolve_taxon(name)
     if taxon is None:
         return {"taxon": None, "photos": [],
@@ -110,6 +110,13 @@ def harvest(name: str, licenses: tuple[str, ...], want: int,
             "order_by": "votes",
             "per_page": 30,
         }
+        # MONTH FILTER, because phenology is not a colour. Elderberry's card shows FRUIT,
+        # and the CC0 set ordered by votes returned 32 photographs of the flower umbel and
+        # not one of the drupes -- people photograph elders in bloom. iNaturalist can
+        # restrict by observation month, so a species whose card shows fruit is retrieved
+        # from the fruiting months rather than hoping fruit turns up.
+        if months:
+            params["month"] = months
         # PAGINATE. One page of 30 observations is not 30 usable photographs: most are
         # dropped by the per-photo licence re-check and the taxon re-check below, so a
         # single page returned six. A selection system needs 20-40 to choose from.
@@ -229,6 +236,8 @@ def main() -> int:
     parser.add_argument("species", nargs="*")
     parser.add_argument("--out", default="evidence/photos")
     parser.add_argument("--want", type=int, default=32)
+    parser.add_argument("--months", default=None,
+                        help="comma-separated observation months, e.g. 8,9,10 for\n                              autumn fruit. Phenology cannot be recovered from a\n                              hue, so it is selected at retrieval.")
     parser.add_argument("--size", default="large",
                         choices=("original", "large", "medium"),
                         help="which rendition to download. `large` is 1024px on the long\n                              edge; `original` is whatever the photographer uploaded and is\n                              what a card needs -- the art window is 593px wide and a\n                              subject occupying a third of a 1024px frame has to be\n                              UPSCALED to fill it.")
@@ -246,7 +255,18 @@ def main() -> int:
     licenses = tuple(part.strip().lower() for part in args.licenses.split(",") if part.strip())
     out = pathlib.Path(args.out)
     for name in args.species:
-        result = harvest(name, licenses, args.want, args.min_edge)
+        # PER-SPECIES MONTHS. One --months for a whole run is wrong: each species has its
+        # own phenology and the deck already records which season its card shows.
+        months = args.months
+        if months is None:
+            cfg = pathlib.Path("evidence/retrieval-months.json")
+            if cfg.exists():
+                key = re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+                entry = json.loads(cfg.read_text()).get(key)
+                if entry:
+                    months = entry["months"]
+                    print(f"   {name}: restricting to months {months} ({entry['season']})")
+        result = harvest(name, licenses, args.want, args.min_edge, months)
         key = name.lower().replace(" ", "_")
         folder = out / key
         if result["photos"]:

@@ -1,0 +1,233 @@
+{
+  "taraxacum_officinale": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "taraxacum-officinale"
+  },
+  "rumex_obtusifolius": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "rumex-obtusifolius"
+  },
+  "solidago_canadensis": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "solidago-canadensis"
+  },
+  "ambrosia_artemisiifolia": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "ambrosia-artemisiifolia"
+  },
+  "chenopodium_album": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "chenopodium-album"
+  },
+  "portulaca_oleracea": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "portulaca-oleracea"
+  },
+  "alliaria_petiolata": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "alliaria-petiolata"
+  },
+  "urtica_dioica": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "urtica-dioica"
+  },
+  "oxalis_stricta": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "oxalis-stricta"
+  },
+  "trifolium_pratense": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "trifolium-pratense"
+  },
+  "lamium_purpureum": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "lamium-purpureum"
+  },
+  "viola_sororia": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "viola-sororia"
+  },
+  "stellaria_media": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "stellaria-media"
+  },
+  "plantago_major": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "plantago-major"
+  },
+  "galium_aparine": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "galium-aparine"
+  },
+  "glechoma_hederacea": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "glechoma-hederacea"
+  },
+  "acer_spp": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "acer-spp"
+  },
+  "rubus_spp": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "rubus-spp"
+  },
+  "rumex_acetosella": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "rumex-acetosella"
+  },
+  "rhus_spp": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "rhus-spp"
+  },
+  "cichorium_intybus": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "cichorium-intybus"
+  },
+  "arctium_lappa": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "arctium-lappa"
+  },
+  "mentha_canadensis": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "mentha-canadensis"
+  },
+  "nepeta_cataria": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "nepeta-cataria"
+  },
+  "capsella_bursa_pastoris": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "capsella-bursa-pastoris"
+  },
+  "prunella_vulgaris": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "prunella-vulgaris"
+  },
+  "verbascum_thapsus": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "verbascum-thapsus"
+  },
+  "equisetum_arvense": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "equisetum-arvense"
+  },
+  "allium_vineale": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "allium-vineale"
+  },
+  "fragaria_virginiana": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "fragaria-virginiana"
+  },
+  "sambucus_spp": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "sambucus-spp"
+  },
+  "hypericum_perforatum": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "hypericum-perforatum"
+  },
+  "achillea_millefolium": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "achillea-millefolium"
+  },
+  "impatiens_capensis": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "impatiens-capensis"
+  },
+  "melissa_officinalis": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "melissa-officinalis"
+  },
+  "monarda_fistulosa": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "monarda-fistulosa"
+  },
+  "rosa_spp": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "rosa-spp"
+  },
+  "salix_spp": {
+    "season": "spring",
+    "months": "3,4,5",
+    "card": "salix-spp"
+  },
+  "geranium_maculatum": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "geranium-maculatum"
+  },
+  "lonicera_japonica": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "lonicera-japonica"
+  },
+  "pinus_spp": {
+    "season": "winter",
+    "months": "12,1,2",
+    "card": "pinus-spp"
+  },
+  "morus_spp": {
+    "season": "autumn",
+    "months": "9,10,11",
+    "card": "morus-spp"
+  },
+  "passiflora_incarnata": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "passiflora-incarnata"
+  },
+  "lactuca_serriola": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "lactuca-serriola"
+  },
+  "quercus_spp": {
+    "season": "summer",
+    "months": "6,7,8",
+    "card": "quercus-spp"
+  },
+  "sambucus_canadensis": {
+    "season": "autumn",
+    "months": "8,9,10",
+    "card": "sambucus-spp",
+    "why": "the card shows ripe drupes; the unfiltered CC0 set returned 32 photographs of the flower umbel and not one of the fruit, because people photograph elders in bloom"
+  }
+}

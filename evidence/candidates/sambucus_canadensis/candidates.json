@@ -7,7 +7,7 @@
       "photo_id": 139034030,
       "file": "inat-139034030.jpeg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -54,23 +54,25 @@
         "flower_white": 0.2012,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.6833
+        "foliage": 0.6833,
+        "needles": 0.2747
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 679966159,
       "file": "inat-679966159.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -117,23 +119,25 @@
         "flower_white": 0.5107,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.3494
+        "foliage": 0.3494,
+        "needles": 0.16
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 81994364,
       "file": "inat-81994364.jpeg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -180,16 +184,18 @@
         "flower_white": 0.6387,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.3455
+        "foliage": 0.3455,
+        "needles": 0.1284
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
@@ -292,7 +298,7 @@
       "photo_id": 283781832,
       "file": "inat-283781832.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -338,16 +344,18 @@
         "flower_white": 0.0865,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.5718
+        "foliage": 0.5718,
+        "needles": 0.1316
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
@@ -439,7 +447,7 @@
       "photo_id": 677629793,
       "file": "inat-677629793.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -486,23 +494,25 @@
         "flower_white": 0.8888,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.1217
+        "foliage": 0.1217,
+        "needles": 0.0891
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 325326199,
       "file": "inat-325326199.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -549,23 +559,25 @@
         "flower_white": 0.7323,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.3651
+        "foliage": 0.3651,
+        "needles": 0.0792
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 224075018,
       "file": "inat-224075018.jpeg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -613,23 +625,25 @@
         "flower_white": 0.0107,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 1.0014
+        "foliage": 1.0014,
+        "needles": 0.1373
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 9489465,
       "file": "inat-9489465.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -677,16 +691,18 @@
         "flower_white": 0.7287,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.2323
+        "foliage": 0.2323,
+        "needles": 0.1918
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
@@ -740,7 +756,7 @@
       "photo_id": 325326158,
       "file": "inat-325326158.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -779,23 +795,25 @@
         "flower_white": 0.0091,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.99
+        "foliage": 0.99,
+        "needles": 0.0048
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
       "photo_id": 325326095,
       "file": "inat-325326095.jpg",
       "reject": [
-        "missing structures the species' brief requires: berry_dark, berry_red"
+        "missing structures the species' brief requires: berry_dark"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
@@ -834,16 +852,18 @@
         "flower_white": 0.9344,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.3172
+        "foliage": 0.3172,
+        "needles": 0.1642
       },
       "brief_check": {
         "missing_mandatory": [
-          "berry_dark",
-          "berry_red"
+          "berry_dark"
         ],
-        "preferred_present": [],
+        "preferred_present": [
+          "foliage"
+        ],
         "ok": false,
-        "preferred_score": 0.0
+        "preferred_score": 1.0
       }
     },
     {
@@ -1492,5 +1512,5 @@
     }
   ],
   "selected": [],
-  "seconds": 164.3
+  "seconds": 166.8
 }

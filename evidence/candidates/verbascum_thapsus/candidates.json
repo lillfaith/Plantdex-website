@@ -22,12 +22,12 @@
         "disc_facing": 10.3,
         "specimen_scale": 13.6,
         "identification": 6.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
         "subject_sharpness": 5.6,
         "silhouette_openness": 16.6
       },
-      "score": 151.0,
+      "score": 143.0,
       "_fill": 0.5263126062122356,
       "measured_heads": {
         "largest_disc_frac": 0.0236,
@@ -54,15 +54,14 @@
         "flower_white": 0.0155,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.6943
+        "foliage": 0.6943,
+        "needles": 0.0894
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.928,
       "subject_sharpness": 7.2,
@@ -135,7 +134,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.0684
+        "foliage": 0.0684,
+        "needles": 0.0432
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -181,12 +181,12 @@
         "disc_facing": 3.1,
         "specimen_scale": 10.5,
         "identification": 3.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
         "subject_sharpness": 4.8,
         "silhouette_openness": 17.0
       },
-      "score": 144.7,
+      "score": 136.7,
       "_fill": 0.5862611134847006,
       "measured_heads": {
         "largest_disc_frac": 0.0596,
@@ -213,15 +213,14 @@
         "flower_white": 0.0549,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.5182
+        "foliage": 0.5182,
+        "needles": 0.0242
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.396,
       "subject_sharpness": 6.2,
@@ -292,7 +291,8 @@
         "flower_white": 0.0062,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.229
+        "foliage": 0.229,
+        "needles": 0.1042
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -370,7 +370,8 @@
         "flower_white": 0.0071,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.022
+        "foliage": 0.022,
+        "needles": 0.0117
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -448,7 +449,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.6906
+        "foliage": 0.6906,
+        "needles": 0.1009
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -526,7 +528,8 @@
         "flower_white": 0.0136,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.9452
+        "foliage": 0.9452,
+        "needles": 0.0449
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -604,7 +607,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.0377
+        "foliage": 0.0377,
+        "needles": 0.0204
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -695,12 +699,12 @@
         "disc_facing": 6.3,
         "specimen_scale": 0.0,
         "identification": 3.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
         "subject_sharpness": 11.0,
         "silhouette_openness": 5.0
       },
-      "score": 131.8,
+      "score": 123.8,
       "_fill": 0.8716182708740234,
       "measured_heads": {
         "largest_disc_frac": 0.0297,
@@ -727,15 +731,14 @@
         "flower_white": 0.1776,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.759
+        "foliage": 0.759,
+        "needles": 0.064
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.613,
       "subject_sharpness": 14.1,
@@ -775,12 +778,12 @@
         "disc_facing": 5.6,
         "specimen_scale": 0.0,
         "identification": 3.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
         "subject_sharpness": 10.2,
         "silhouette_openness": 3.2
       },
-      "score": 128.7,
+      "score": 120.7,
       "_fill": 0.8923412958780924,
       "measured_heads": {
         "largest_disc_frac": 0.0272,
@@ -807,15 +810,14 @@
         "flower_white": 0.1646,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.7533
+        "foliage": 0.7533,
+        "needles": 0.0564
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.663,
       "subject_sharpness": 13.1,
@@ -889,7 +891,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.0289
+        "foliage": 0.0289,
+        "needles": 0.0461
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -968,7 +971,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.9533
+        "foliage": 0.9533,
+        "needles": 0.033
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -1014,12 +1018,12 @@
         "disc_facing": 2.7,
         "specimen_scale": 8.7,
         "identification": 3.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 11.9,
         "subject_sharpness": 11.6,
         "silhouette_openness": 10.2
       },
-      "score": 126.0,
+      "score": 118.0,
       "_fill": 0.5687071482340494,
       "measured_heads": {
         "largest_disc_frac": 0.0121,
@@ -1046,15 +1050,14 @@
         "flower_white": 0.0437,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.2225
+        "foliage": 0.2225,
+        "needles": 0.0423
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.212,
       "subject_sharpness": 14.9,
@@ -1128,7 +1131,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.1135
+        "foliage": 0.1135,
+        "needles": 0.0454
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -1859,12 +1863,12 @@
         "disc_facing": 10.3,
         "specimen_scale": 13.6,
         "identification": 6.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
         "subject_sharpness": 5.6,
         "silhouette_openness": 16.6
       },
-      "score": 151.0,
+      "score": 143.0,
       "_fill": 0.5263126062122356,
       "measured_heads": {
         "largest_disc_frac": 0.0236,
@@ -1891,15 +1895,14 @@
         "flower_white": 0.0155,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.6943
+        "foliage": 0.6943,
+        "needles": 0.0894
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.928,
       "subject_sharpness": 7.2,
@@ -1972,12 +1975,12 @@
         "disc_facing": 3.1,
         "specimen_scale": 10.5,
         "identification": 3.0,
-        "brief_preferred": 8.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
         "subject_sharpness": 4.8,
         "silhouette_openness": 17.0
       },
-      "score": 144.7,
+      "score": 136.7,
       "_fill": 0.5862611134847006,
       "measured_heads": {
         "largest_disc_frac": 0.0596,
@@ -2004,15 +2007,14 @@
         "flower_white": 0.0549,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.5182
+        "foliage": 0.5182,
+        "needles": 0.0242
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
       "green_retention": 0.396,
       "subject_sharpness": 6.2,
@@ -2066,92 +2068,91 @@
       "retrieved_at": "2026-11-05T01:45:26+00:00"
     },
     {
-      "photo_id": 683647767,
-      "file": "inat-683647767.jpg",
+      "photo_id": 44345476,
+      "file": "inat-44345476.jpeg",
       "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
-        "flower may be facing away: disc saturation 175 suggests a receptacle rather than the open yellow centre",
-        "only one agreeing identification; research grade is not proof"
+        "flower may be facing away: disc saturation 173 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.37% of the frame: too small to read as a specimen on a card"
       ],
       "points": {
         "resolution": 10.0,
         "sharpness_prefilter": 0.0,
-        "flowers_visible": 10.0,
+        "flowers_visible": 9.4,
         "foliage_visible": 6.0,
         "clean_subject": 12.0,
         "breathing_room": 0.0,
-        "disc_scale": 8.3,
-        "disc_facing": 6.3,
-        "specimen_scale": 0.0,
-        "identification": 3.0,
-        "brief_preferred": 8.0,
+        "disc_scale": 1.0,
+        "disc_facing": 2.2,
+        "specimen_scale": 13.9,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
         "structure_retention": 14.0,
-        "subject_sharpness": 11.0,
-        "silhouette_openness": 5.0
+        "subject_sharpness": 8.8,
+        "silhouette_openness": 16.7
       },
-      "score": 131.8,
-      "_fill": 0.8716182708740234,
+      "score": 129.8,
+      "_fill": 0.5300192781452484,
       "measured_heads": {
-        "largest_disc_frac": 0.0297,
+        "largest_disc_frac": 0.0037,
         "comparable_heads": 2,
-        "disc_saturation": 175.0
+        "disc_saturation": 173.0
       },
       "measured_subject": {
-        "largest_region_frac": 0.8164,
+        "largest_region_frac": 0.395,
         "regions": 1
       },
       "measured": {
         "orig_edge": 2048,
-        "sharpness": 6.1,
-        "skin_fraction": 0.0006,
-        "flower_fraction": 0.1521,
-        "foliage_fraction": 0.7447,
-        "subject_fraction": 0.8716
+        "sharpness": 11.8,
+        "skin_fraction": 0.0155,
+        "flower_fraction": 0.1127,
+        "foliage_fraction": 0.3587,
+        "subject_fraction": 0.53
       },
       "segmented_by": "birefnet-general-lite",
-      "cutout_solidity": 0.663,
-      "skin_in_cutout": 0.001,
+      "cutout_solidity": 0.412,
+      "skin_in_cutout": 0.0002,
       "brief_structures": {
-        "flower_yellow": 0.0692,
-        "flower_white": 0.1776,
+        "flower_yellow": 0.0238,
+        "flower_white": 0.0136,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.759
+        "foliage": 0.9452,
+        "needles": 0.0449
       },
       "brief_check": {
         "missing_mandatory": [],
-        "preferred_present": [
-          "flower_white"
-        ],
+        "preferred_present": [],
         "ok": true,
-        "preferred_score": 1.0
+        "preferred_score": 0.0
       },
-      "green_retention": 0.613,
-      "subject_sharpness": 14.1,
+      "green_retention": 1.062,
+      "subject_sharpness": 11.3,
       "stem_support": {
-        "foot_ink": 0.752,
-        "foot_width_frac": 0.855,
+        "foot_ink": 0.4967,
+        "foot_width_frac": 0.932,
         "has_stem": true
       },
       "composition": {
-        "placed_fill": 0.283,
-        "placed_centroid_x": 0.513,
+        "placed_fill": 0.139,
+        "placed_centroid_x": 0.486,
         "points": {
-          "frame_fill_match": 14.4,
-          "centred": 7.8,
+          "frame_fill_match": 7.1,
+          "centred": 6.7,
           "crops_bottom": 8.0,
           "keeps_sides": 8.0
         }
       },
       "placement": {
-        "scale": 0.4881,
+        "scale": 0.4552,
         "size": [
-          262,
+          200,
           513
         ],
         "offset": [
-          171,
+          202,
           10
         ],
         "rooted": true,
@@ -2160,17 +2161,17 @@
         "crops_sides": false,
         "top_margin_px": 10
       },
-      "cutout": "683647767-cutout.png",
-      "preview": "683647767-front.png",
+      "cutout": "44345476-cutout.png",
+      "preview": "44345476-front.png",
       "provenance": {
-        "photo_id": 683647767,
-        "observation_id": 374048335,
-        "observation_url": "https://www.inaturalist.org/observations/374048335",
+        "photo_id": 44345476,
+        "observation_id": 28447309,
+        "observation_url": "https://www.inaturalist.org/observations/28447309",
         "license_code": "cc0",
         "license": "CC0 (public domain dedication)",
         "photographer": "no rights reserved",
         "dimensions": {
-          "width": 1536,
+          "width": 926,
           "height": 2048
         },
         "taxon_name": "Verbascum thapsus",
@@ -2179,5 +2180,5 @@
       "retrieved_at": "2026-11-05T01:45:26+00:00"
     }
   ],
-  "seconds": 176.6
+  "seconds": 165.2
 }

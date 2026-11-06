@@ -51,7 +51,8 @@
         "flower_white": 0.0,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.0
+        "foliage": 0.0,
+        "needles": 0.0
       },
       "brief_check": {
         "missing_mandatory": [
@@ -153,7 +154,8 @@
         "flower_white": 0.1127,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.9801
+        "foliage": 0.9801,
+        "needles": 0.0662
       },
       "brief_check": {
         "missing_mandatory": [
@@ -300,7 +302,8 @@
         "flower_white": 0.1311,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.0
+        "foliage": 0.0,
+        "needles": 0.0124
       },
       "brief_check": {
         "missing_mandatory": [
@@ -409,7 +412,8 @@
         "flower_white": 0.0341,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.9077
+        "foliage": 0.9077,
+        "needles": 0.0476
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -652,7 +656,8 @@
         "flower_white": 0.0031,
         "berry_dark": 0.0244,
         "berry_red": 0.0,
-        "foliage": 0.8802
+        "foliage": 0.8802,
+        "needles": 0.0489
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -1517,7 +1522,8 @@
         "flower_white": 0.0341,
         "berry_dark": 0.0,
         "berry_red": 0.0,
-        "foliage": 0.9077
+        "foliage": 0.9077,
+        "needles": 0.0476
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -1626,7 +1632,8 @@
         "flower_white": 0.0031,
         "berry_dark": 0.0244,
         "berry_red": 0.0,
-        "foliage": 0.8802
+        "foliage": 0.8802,
+        "needles": 0.0489
       },
       "brief_check": {
         "missing_mandatory": [],
@@ -1686,5 +1693,5 @@
       "retrieved_at": "2026-11-05T01:44:52+00:00"
     }
   ],
-  "seconds": 187.6
+  "seconds": 167.4
 }

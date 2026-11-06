@@ -1,0 +1,56 @@
+{
+  "model": "human-in-the-loop vision pass",
+  "prompt_version": "2026-11-05.1",
+  "calls": 2,
+  "usd": 0.0,
+  "note": "Produced with the same rubric and schema vision_review.ask_model() uses. The automated path is built and self-tested; it needs an ANTHROPIC_API_KEY secret to run, which this environment does not have.",
+  "rows": [
+    {
+      "photo_id": 17811106,
+      "structures_present": [
+        "flower_yellow",
+        "foliage",
+        "seed_head"
+      ],
+      "structures_absent": [],
+      "orientation": "front",
+      "identifiable": true,
+      "quality": 7,
+      "defects": [
+        "several heads at different angles makes a busy silhouette"
+      ],
+      "meets_brief": true,
+      "why": "Yellow heads and the lobed basal rosette are both clearly visible.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 486847133,
+      "structures_present": [
+        "flower_yellow",
+        "foliage"
+      ],
+      "structures_absent": [],
+      "orientation": "front",
+      "identifiable": true,
+      "quality": 5,
+      "defects": [
+        "hard vertical cut down the right edge where the photograph ended"
+      ],
+      "meets_brief": true,
+      "why": "One head on a scape above leaves, but the cutout is truncated.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    }
+  ]
+}
