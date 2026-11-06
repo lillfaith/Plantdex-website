@@ -1,0 +1,40 @@
+{
+  "_how": "Set decision to approved or rejected and give a reason, then run scripts/contact_sheet.py --record. Rows left as 'open' change nothing.",
+  "rows": [
+    {
+      "species": "matricaria_chamomilla",
+      "photo_id": 650137635,
+      "current_status": "NEEDS_REVIEW",
+      "decision": "open",
+      "reason": ""
+    },
+    {
+      "species": "taraxacum_officinale",
+      "photo_id": 557941881,
+      "current_status": "NEEDS_REVIEW",
+      "decision": "open",
+      "reason": ""
+    },
+    {
+      "species": "verbascum_thapsus",
+      "photo_id": 44345476,
+      "current_status": "NEEDS_REVIEW",
+      "decision": "open",
+      "reason": ""
+    },
+    {
+      "species": "sambucus_canadensis",
+      "photo_id": 577065025,
+      "current_status": "REJECTED",
+      "decision": "open",
+      "reason": ""
+    },
+    {
+      "species": "pinus_strobus",
+      "photo_id": 390760300,
+      "current_status": "NEEDS_REVIEW",
+      "decision": "open",
+      "reason": ""
+    }
+  ]
+}
