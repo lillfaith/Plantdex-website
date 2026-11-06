@@ -57,6 +57,9 @@
       },
       "cutout_solidity": 0.498,
       "skin_in_cutout": 0.0086,
+      "skin_blob_in_cutout": 0.0013,
+      "skin_blob_gradient": 6.8,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.8958,
         "flower_white": 0.0,
@@ -142,6 +145,9 @@
       },
       "cutout_solidity": 0.398,
       "skin_in_cutout": 0.0087,
+      "skin_blob_in_cutout": 0.0012,
+      "skin_blob_gradient": 5.5,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.3177,
         "flower_white": 0.3162,
@@ -226,6 +232,9 @@
       },
       "cutout_solidity": 0.536,
       "skin_in_cutout": 0.0085,
+      "skin_blob_in_cutout": 0.0018,
+      "skin_blob_gradient": 6.6,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.7722,
         "flower_white": 0.004,
@@ -310,6 +319,9 @@
       },
       "cutout_solidity": 0.391,
       "skin_in_cutout": 0.0002,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.6332,
         "flower_white": 0.0,
@@ -394,6 +406,9 @@
       },
       "cutout_solidity": 0.394,
       "skin_in_cutout": 0.0024,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.4532,
         "flower_white": 0.1124,
@@ -477,6 +492,9 @@
       },
       "cutout_solidity": 0.539,
       "skin_in_cutout": 0.0056,
+      "skin_blob_in_cutout": 0.0006,
+      "skin_blob_gradient": 2.8,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.7177,
         "flower_white": 0.0084,
@@ -561,6 +579,9 @@
       },
       "cutout_solidity": 0.415,
       "skin_in_cutout": 0.001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.1159,
         "flower_white": 0.0155,
@@ -596,12 +617,11 @@
     {
       "photo_id": 153986711,
       "file": "inat-153986711.jpeg",
-      "reject": [
-        "a hand survives segmentation: 4.0% of the cutout is skin"
-      ],
+      "reject": [],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "4.0% of the cutout is warm-hued, but the largest smooth region is 0.4% at gradient 14.9 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -613,9 +633,13 @@
         "disc_scale": 5.5,
         "disc_facing": 7.4,
         "specimen_scale": 11.3,
-        "identification": 3.0
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 8.7,
+        "silhouette_openness": 4.1
       },
-      "score": 64.7,
+      "score": 126.2,
       "_fill": 0.6312204996744791,
       "measured_heads": {
         "largest_disc_frac": 0.0195,
@@ -642,7 +666,41 @@
         "right": 0.0
       },
       "cutout_solidity": 0.682,
-      "skin_in_cutout": 0.0402
+      "skin_in_cutout": 0.0402,
+      "skin_blob_in_cutout": 0.0044,
+      "skin_blob_gradient": 14.9,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.3297,
+        "flower_white": 0.0062,
+        "berry_dark": 0.0011,
+        "berry_red": 0.0,
+        "foliage": 0.468,
+        "needles": 0.0683
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.617,
+      "subject_sharpness": 11.2,
+      "stem_support": {
+        "foot_ink": 0.7359,
+        "foot_width_frac": 0.81,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.211,
+        "placed_centroid_x": 0.509,
+        "points": {
+          "frame_fill_match": 10.8,
+          "centred": 7.9,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
     },
     {
       "photo_id": 143207510,
@@ -697,6 +755,9 @@
       },
       "cutout_solidity": 0.364,
       "skin_in_cutout": 0.0003,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.2976,
         "flower_white": 0.0549,
@@ -782,6 +843,9 @@
       },
       "cutout_solidity": 0.426,
       "skin_in_cutout": 0.0052,
+      "skin_blob_in_cutout": 0.0002,
+      "skin_blob_gradient": 12.4,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.018,
         "flower_white": 0.7162,
@@ -867,6 +931,9 @@
       },
       "cutout_solidity": 0.287,
       "skin_in_cutout": 0.0212,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 40.4,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0847,
         "flower_white": 0.0547,
@@ -903,13 +970,14 @@
       "photo_id": 312395278,
       "file": "inat-312395278.jpg",
       "reject": [
-        "a hand survives segmentation: 33.7% of the cutout is skin"
+        "missing structures the species' brief requires: foliage, flower_yellow"
       ],
       "flags": [
         "subject fills the frame and runs off 4 edges; little room to crop",
         "flower may be facing away: disc saturation 164 suggests a receptacle rather than the open yellow centre",
         "largest flower head is 0.86% of the frame: too small to read as a specimen on a card",
-        "only one agreeing identification; research grade is not proof"
+        "only one agreeing identification; research grade is not proof",
+        "33.7% of the cutout is warm-hued, but the largest smooth region is 0.1% at gradient 99.0 -- texture, not skin"
       ],
       "points": {
         "resolution": 10.0,
@@ -950,7 +1018,27 @@
         "right": 0.0
       },
       "cutout_solidity": 0.173,
-      "skin_in_cutout": 0.3374
+      "skin_in_cutout": 0.3374,
+      "skin_blob_in_cutout": 0.0013,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0055,
+        "flower_white": 0.0,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.0,
+        "needles": 0.0
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "foliage",
+          "flower_yellow"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
+      }
     },
     {
       "photo_id": 143274275,
@@ -1005,6 +1093,9 @@
       },
       "cutout_solidity": 0.493,
       "skin_in_cutout": 0.0005,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.6989,
         "flower_white": 0.0,
@@ -1089,6 +1180,9 @@
       },
       "cutout_solidity": 0.632,
       "skin_in_cutout": 0.004,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 3.6,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.1972,
         "flower_white": 0.0071,
@@ -1174,6 +1268,9 @@
       },
       "cutout_solidity": 0.663,
       "skin_in_cutout": 0.0007,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0692,
         "flower_white": 0.1776,
@@ -1259,6 +1356,9 @@
       },
       "cutout_solidity": 0.339,
       "skin_in_cutout": 0.006,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 34.3,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0136,
         "flower_white": 0.0635,
@@ -1329,6 +1429,9 @@
       },
       "cutout_solidity": 0.702,
       "skin_in_cutout": 0.0006,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0643,
         "flower_white": 0.1646,
@@ -1412,6 +1515,9 @@
       },
       "cutout_solidity": 0.542,
       "skin_in_cutout": 0.0056,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 15.6,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.0,
         "flower_white": 0.489,
@@ -1485,6 +1591,9 @@
       },
       "cutout_solidity": 0.524,
       "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.6567,
         "flower_white": 0.0,
@@ -1569,6 +1678,9 @@
       },
       "cutout_solidity": 0.583,
       "skin_in_cutout": 0.0004,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.2729,
         "flower_white": 0.0062,
@@ -4737,6 +4849,9 @@
       },
       "cutout_solidity": 0.391,
       "skin_in_cutout": 0.0002,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.6332,
         "flower_white": 0.0,
@@ -4855,6 +4970,9 @@
       },
       "cutout_solidity": 0.398,
       "skin_in_cutout": 0.0087,
+      "skin_blob_in_cutout": 0.0012,
+      "skin_blob_gradient": 5.5,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.3177,
         "flower_white": 0.3162,
@@ -4974,6 +5092,9 @@
       },
       "cutout_solidity": 0.498,
       "skin_in_cutout": 0.0086,
+      "skin_blob_in_cutout": 0.0013,
+      "skin_blob_gradient": 6.8,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.8958,
         "flower_white": 0.0,
@@ -5091,6 +5212,9 @@
       },
       "cutout_solidity": 0.415,
       "skin_in_cutout": 0.001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
       "brief_structures": {
         "flower_yellow": 0.1159,
         "flower_white": 0.0155,
@@ -5157,5 +5281,5 @@
       "retrieved_at": "2026-11-06T20:54:36+00:00"
     }
   ],
-  "seconds": 182.8
+  "seconds": 116.7
 }
