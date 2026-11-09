@@ -51,8 +51,25 @@ export default function HomePage() {
         <p className="text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
           {PRINTED_DECK_SIZE} illustrated species
         </p>
-        <h1 className="font-display mt-3 text-4xl leading-tight font-extrabold text-gold-plate sm:text-6xl">
-          Plantdex
+        {/*
+          THE LOGO IS THE HEADING, not a picture above one. The badge already carries the
+          word, so rendering both would print "Plantdex" twice at the top of the page and
+          leave a screen reader hearing it twice as well. The <h1> keeps its place in the
+          document outline and the alt text carries the name; `priority` because this is
+          the largest element in the first viewport and lazy-loading it would hand a
+          visitor an empty hero for a beat.
+        */}
+        <h1 className="mt-3">
+          <span className="sr-only">Plantdex</span>
+          <Image
+            src={assetPath('/plantdex-logo.png')}
+            alt=""
+            aria-hidden="true"
+            width={640}
+            height={683}
+            priority
+            className="mx-auto h-auto w-56 sm:w-72"
+          />
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
           Common wild medicinal plants around you, as a collectible deck.
