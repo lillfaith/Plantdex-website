@@ -68,7 +68,7 @@ export default function HomePage() {
             width={640}
             height={683}
             priority
-            className="mx-auto h-auto w-56 sm:w-72"
+            className="mx-auto h-auto w-40 sm:w-52"
           />
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
