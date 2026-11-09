@@ -48,7 +48,45 @@ function Sparkle({ x, y, r, o }: { x: number; y: number; r: number; o: number })
   );
 }
 
-/** A small five-petal blossom with a gold eye, the shape the deck's own art uses. */
+/**
+ * ONE LEAF: a pointed lens with a midrib, not an ellipse.
+ *
+ * The ellipse is why three rounds of this looked like beans on a string. A real leaf comes
+ * to a POINT at both ends and carries a vein down its middle, and those two details are
+ * most of what makes a green shape read as foliage — at 24px, more than the colour does.
+ * Drawn from the origin along +x so the caller places it with one rotation.
+ */
+function Leaf({ x, y, len, rot, tone, slim = 0.36 }: {
+  x: number; y: number; len: number; rot: number; tone: 'dark' | 'light'; slim?: number;
+}) {
+  /*
+   * `slim` IS WHAT KEEPS A RADIATING CLUMP FROM BECOMING A DISC, and it has to be a prop
+   * because the two arrangements need different blades. Two leaves `d` degrees apart clear
+   * each other only while the blade is narrower than the gap between them, and that gap
+   * grows along the leaf while the blade does not: at 24 degrees and 36% width they touch
+   * for most of their length, which is the cabbage that shipped twice. The vine's paired
+   * leaves sit back to back and can afford to be round; the clump cannot.
+   */
+  const w = 32 * slim;
+  const fill = tone === 'light' ? 'var(--color-band-moss)' : 'var(--color-band-leaf)';
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${len / 32})`}>
+      <path d={`M 0 0 C 9 ${-w} 23 ${-w} 32 0 C 23 ${w} 9 ${w} 0 0 Z`} fill={fill} />
+      {/* The midrib, in the ground's own colour rather than a darker green: a vein is a
+          shadow between two halves of a leaf, and borrowing the background keeps the
+          palette closed. */}
+      <path
+        d="M 3 0 L 28 0"
+        stroke="var(--color-plum-950)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        opacity="0.25"
+      />
+    </g>
+  );
+}
+
+/** A five-petal blossom with a gold eye, the shape the deck's own art uses. */
 function Bloom({ x, y, r, petal }: { x: number; y: number; r: number; petal: string }) {
   return (
     <g transform={`translate(${x} ${y})`}>
@@ -56,108 +94,110 @@ function Bloom({ x, y, r, petal }: { x: number; y: number; r: number; petal: str
         <ellipse
           key={a}
           cx={0}
-          cy={-r * 0.62}
-          rx={r * 0.42}
-          ry={r * 0.58}
+          cy={-r * 0.64}
+          rx={r * 0.44}
+          ry={r * 0.6}
           transform={`rotate(${a})`}
           fill={petal}
         />
       ))}
-      <circle cx={0} cy={0} r={r * 0.3} fill="var(--color-gold-400)" />
+      <circle cx={0} cy={0} r={r * 0.32} fill="var(--color-gold-400)" />
     </g>
   );
 }
 
 /**
- * A TOP CORNER: a vine that runs along the edge, not a frond that dives into the page.
+ * A TOP CORNER: an ivy run along the edge — PAIRED leaves on a thin stem.
  *
- * The mockup's top corners are horizontal — a stem hugging the top edge with rounded leaves
- * set either side of it and a blossom or two along its length. That is a different plant
- * from the diagonal fern that was here, and the difference is structural rather than a
- * matter of size: a frond angled at 45° points AT the content and the eye follows it
- * inward, while a vine along the edge frames the page and stays out of the way. The leaves
- * are round rather than lance-shaped for the same reason the sprites are blunt: this world
- * is drawn soft.
+ * The mockup's top corners are a vine, and a vine's leaves come in opposite pairs off one
+ * stem rather than scattered along it. Pairing them is what turns a line of green blobs
+ * into a plant, and it costs nothing: one list of points on the stem, each drawn twice at
+ * mirrored angles. They taper toward the tip, which is the direction growth runs.
  */
 function VineCorner({ className }: { className: string }) {
-  /** [x, y, radius, rotation] — alternating above and below a stem that sags gently. */
-  const leaves: [number, number, number, number][] = [
-    [14, 24, 9, -28], [22, 34, 8, 34], [31, 22, 9, -24], [40, 33, 8, 30],
-    [49, 24, 8, -22], [58, 34, 7, 28], [67, 27, 7, -20], [76, 35, 6, 24],
-    [85, 30, 5, -18],
+  /** [x, y, length, angle of the pair] — walking the stem from the corner outward. */
+  const pairs: [number, number, number, number][] = [
+    [10, 20, 17, 18], [23, 26, 16, 10], [36, 28, 15, 2],
+    [49, 28, 14, -4], [61, 26, 12, -10], [72, 25, 11, -14], [83, 26, 9, -16],
   ];
   return (
-    <svg viewBox="0 0 100 60" className={className} aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 100 56" className={className} aria-hidden="true" focusable="false">
       <path
-        d="M -2 20 Q 24 34 52 28 Q 76 23 96 32"
+        d="M -4 16 Q 20 30 50 29 Q 76 28 100 32"
         fill="none"
         stroke="var(--color-band-leaf)"
-        strokeWidth="2.2"
+        strokeWidth="2"
         strokeLinecap="round"
-        opacity="0.8"
       />
-      {leaves.map(([cx, cy, r, rot], i) => (
-        <ellipse
-          key={i}
-          cx={cx}
-          cy={cy}
-          rx={r}
-          ry={r * 0.74}
-          transform={`rotate(${rot} ${cx} ${cy})`}
-          fill={i % 2 ? 'var(--color-band-moss)' : 'var(--color-band-leaf)'}
-          opacity="0.85"
-        />
+      {pairs.map(([x, y, len, a], i) => (
+        <g key={i}>
+          <Leaf x={x} y={y} len={len} rot={a - 52} tone={i % 2 ? 'light' : 'dark'} />
+          <Leaf x={x} y={y} len={len} rot={a + 52} tone={i % 2 ? 'dark' : 'light'} />
+        </g>
       ))}
-      <Bloom x={9} y={13} r={5} petal="var(--color-violet-100)" />
-      <Bloom x={44} y={18} r={4} petal="var(--color-pink-accent)" />
+      <Bloom x={6} y={9} r={5} petal="var(--color-violet-100)" />
+      <Bloom x={40} y={16} r={4} petal="var(--color-pink-accent)" />
+      <Bloom x={78} y={16} r={3.5} petal="var(--color-mystery-lilac)" />
     </svg>
   );
 }
 
 /**
- * A BOTTOM CORNER: a clump growing up off the hills, with flowers in it.
+ * A BOTTOM CORNER: a clump, every leaf radiating from ONE point.
  *
- * The foot of the mockup is not a vine — it is undergrowth: broad leaves fanning upward out
- * of the corner, pink and white blossoms sitting among them. It reads as the ground the
- * hills already imply, which is why it belongs at the bottom and the vine does not.
+ * This is the correction that mattered. The leaves were scattered across the box at
+ * assorted angles, so the clump had no base and read as leaves lying on the floor. A plant
+ * grows from somewhere: every leaf here starts at the same root and its rotation IS the
+ * direction it grows, which is also why the long ones go up and the short ones go out
+ * rather than the reverse. Flowers rise from that same point on thin stems.
  */
 function LeafCluster({ className }: { className: string }) {
+  /* The root sits in from the edge, not on it: the outermost leaf and the first blossom
+     both reach back past x=0 from a root at 20, and the clump shipped clipped against the
+     left margin. 30 clears both. */
+  const root: [number, number] = [30, 102];
   /*
-   * [x, y, radius, rotation]. UPRIGHT, NOT SPLAYED. The first draw ran from -70° to +62°,
-   * which fans the leaves out near-horizontal at the edges and reads as a crab rather than
-   * a plant. Undergrowth grows UP: the spread is now ±42°, the clump is narrower than it is
-   * tall, and the back row sits higher than the front so it reads as depth.
+   * [angle from the root, length, tone]. ELEVEN LEAVES AT 8-24 DEGREES APART FUSED INTO A
+   * BALL. Each leaf is 46% as wide as it is long, so leaves closer together than about 25
+   * degrees overlap along their whole length and the clump renders as one green disc —
+   * which is what shipped and what this fixes. Seven leaves, ~24 degrees apart, and the
+   * gaps between them are what makes it read as separate leaves at all.
    */
-  const leaves: [number, number, number, number][] = [
-    [16, 70, 14, -42], [27, 56, 15, -28], [39, 46, 15, -12], [51, 44, 14, 4],
-    [62, 50, 14, 20], [73, 60, 12, 34], [83, 72, 10, 42],
-    [23, 82, 12, -34], [48, 76, 12, 2], [70, 80, 11, 28],
+  const leaves: [number, number, 'dark' | 'light'][] = [
+    [-132, 30, 'light'], [-100, 40, 'dark'], [-68, 46, 'light'],
+    [-36, 40, 'dark'], [-6, 32, 'light'],
+  ];
+  /* [angle, stem length, blossom radius, petal colour]. The colour rides in the tuple
+     rather than being looked up by index: `noUncheckedIndexedAccess` types a parallel
+     array's element as possibly undefined, and a petal with no colour is a real bug the
+     compiler is right to refuse. */
+  const stems: [number, number, number, string][] = [
+    [-112, 46, 5, 'var(--color-pink-accent)'],
+    [-84, 54, 4.5, 'var(--color-violet-100)'],
+    [-52, 48, 4, 'var(--color-mystery-lilac)'],
   ];
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden="true" focusable="false">
-      {leaves.map(([cx, cy, r, rot], i) => (
-        <ellipse
-          key={i}
-          cx={cx}
-          cy={cy}
-          rx={r}
-          ry={r * 0.52}
-          transform={`rotate(${rot} ${cx} ${cy})`}
-          fill={i % 3 === 0 ? 'var(--color-band-moss)' : 'var(--color-band-leaf)'}
-          opacity={i >= 7 ? 0.65 : 0.85}
-        />
+      {leaves.map(([a, len, tone], i) => (
+        <Leaf key={i} x={root[0]} y={root[1]} len={len} rot={a} tone={tone} slim={0.26} />
       ))}
-      {/* Short stems, so a blossom is attached to the clump rather than floating over it. */}
-      <path
-        d="M 31 68 L 28 44 M 60 62 L 64 40 M 46 70 L 46 52"
-        stroke="var(--color-band-leaf)"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        opacity="0.8"
-      />
-      <Bloom x={28} y={42} r={6} petal="var(--color-pink-accent)" />
-      <Bloom x={64} y={38} r={5} petal="var(--color-violet-100)" />
-      <Bloom x={46} y={50} r={4.5} petal="var(--color-mystery-lilac)" />
+      {stems.map(([a, len, r, petal], i) => {
+        const rad = (a * Math.PI) / 180;
+        const tx = root[0] + Math.cos(rad) * len;
+        const ty = root[1] + Math.sin(rad) * len;
+        return (
+          <g key={i}>
+            <path
+              d={`M ${root[0]} ${root[1]} Q ${(root[0] + tx) / 2 - 3} ${(root[1] + ty) / 2} ${tx} ${ty}`}
+              fill="none"
+              stroke="var(--color-band-leaf)"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
+            <Bloom x={tx} y={ty} r={r} petal={petal} />
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -205,10 +245,10 @@ export function SiteDecor() {
 
       {/* THE CORNERS. Hidden below `sm`: on a 390px phone the margins these sit in do not
           exist, and a sprig would be underneath the text rather than beside it. */}
-      <VineCorner className="absolute top-0 left-0 hidden h-20 w-36 opacity-80 sm:block lg:h-24 lg:w-44" />
-      <VineCorner className="absolute top-0 right-0 hidden h-20 w-36 scale-x-[-1] opacity-80 sm:block lg:h-24 lg:w-44" />
-      <LeafCluster className="absolute bottom-0 left-0 hidden h-28 w-32 opacity-85 sm:block lg:h-32 lg:w-40" />
-      <LeafCluster className="absolute right-0 bottom-0 hidden h-28 w-32 scale-x-[-1] opacity-85 sm:block lg:h-32 lg:w-40" />
+      <VineCorner className="absolute top-0 left-0 hidden h-20 w-40 sm:block lg:h-24 lg:w-52" />
+      <VineCorner className="absolute top-0 right-0 hidden h-20 w-40 scale-x-[-1] sm:block lg:h-24 lg:w-52" />
+      <LeafCluster className="absolute bottom-0 left-0 hidden h-28 w-32 sm:block lg:h-32 lg:w-36" />
+      <LeafCluster className="absolute right-0 bottom-0 hidden h-28 w-32 scale-x-[-1] sm:block lg:h-32 lg:w-36" />
     </div>
   );
 }
