@@ -24,14 +24,26 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-/** x%, y%, radius in px, opacity. Hand-placed: scattered, denser high, clear of centre. */
+/*
+ * x%, y%, radius in px, opacity. Hand-placed: scattered, denser high, clear of centre.
+ *
+ * BRIGHTER THAN THE FIRST SKY AND CLEAR OF THE CONTENT COLUMN. Twenty-four stars at
+ * 0.2-0.4 over a ground this dark is a sky you have to look for. But the brighter version
+ * put specks THROUGH the headings — one sat inside "My Collection" and another inside the
+ * back link — because the field ran edge to edge while the text sits in a centred column.
+ * Every star is now outside 28-72%, which is the margin either side of that column, and
+ * the sky is hidden below `sm` for the same reason the foliage is: at 390px the column IS
+ * the page and there is no margin for a star to live in.
+ */
 const STARS: [number, number, number, number][] = [
-  [4, 12, 2, 0.4], [9, 31, 1, 0.3], [14, 7, 1.5, 0.35], [19, 22, 1, 0.25],
-  [23, 44, 2, 0.3], [28, 9, 1, 0.3], [33, 27, 1.5, 0.25], [38, 5, 1, 0.3],
-  [44, 17, 1, 0.22], [52, 8, 1.5, 0.3], [58, 20, 1, 0.25], [63, 6, 2, 0.35],
-  [68, 29, 1, 0.3], [73, 13, 1.5, 0.3], [79, 24, 1, 0.25], [84, 9, 2, 0.4],
-  [88, 34, 1, 0.3], [92, 16, 1.5, 0.35], [96, 27, 1, 0.3], [6, 52, 1, 0.22],
-  [11, 68, 1.5, 0.25], [90, 55, 1.5, 0.25], [95, 71, 1, 0.22], [3, 83, 1, 0.2],
+  [3, 11, 2, 0.7], [7, 30, 1, 0.5], [12, 7, 1.5, 0.6], [16, 22, 1, 0.42],
+  [20, 44, 2, 0.5], [24, 9, 1, 0.5], [9, 55, 1.5, 0.45], [26, 60, 1, 0.42],
+  [5, 68, 1.5, 0.42], [14, 80, 1, 0.34], [22, 72, 1, 0.3], [18, 36, 1, 0.34],
+  [27, 26, 1.5, 0.38], [11, 44, 1, 0.3], [2, 86, 1, 0.3], [24, 88, 1, 0.26],
+  [76, 24, 1, 0.42], [80, 9, 2, 0.7], [84, 34, 1, 0.5], [88, 16, 1.5, 0.6],
+  [93, 27, 1, 0.5], [97, 12, 1.5, 0.6], [90, 55, 1.5, 0.42], [95, 71, 1, 0.38],
+  [74, 50, 1, 0.34], [82, 44, 1, 0.3], [78, 66, 1, 0.3], [86, 80, 1, 0.3],
+  [98, 46, 1, 0.34], [73, 36, 1.5, 0.34], [92, 88, 1, 0.26], [79, 88, 1, 0.26],
 ];
 
 /** A four-point sparkle, the shape the deck already uses for its gold accents. */
@@ -208,6 +220,21 @@ export function SiteDecor() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
     >
+      {/* THE CLOUD BANKS. Soft mounds either side at mid height, LIGHTER than the ground
+          rather than darker — they are the lit haze the warm bloom implies, and without
+          them the glow has no shape and reads as a vignette somebody forgot to finish.
+          4% and 3%: enough to see an edge, nowhere near enough to change what a panel's
+          text is composited against. */}
+      <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+      >
+        <ellipse cx="12" cy="62" rx="34" ry="26" fill="var(--color-mystery-violet)" opacity="0.04" />
+        <ellipse cx="90" cy="56" rx="30" ry="24" fill="var(--color-mystery-violet)" opacity="0.035" />
+        <ellipse cx="50" cy="82" rx="46" ry="22" fill="var(--color-mystery-violet)" opacity="0.03" />
+      </svg>
+
       {/* THE HILLS. Two soft mounds in plum, darker than the ground they sit on, so the
           foot of the page reads as a horizon rather than as a lighter panel behind text. */}
       <svg
@@ -233,7 +260,7 @@ export function SiteDecor() {
           key={i}
           viewBox="-10 -10 20 20"
           style={{ left: `${x}%`, top: `${y}%`, width: r * 7, height: r * 7, opacity: o }}
-          className="absolute -translate-x-1/2 -translate-y-1/2"
+          className="absolute hidden -translate-x-1/2 -translate-y-1/2 sm:block"
         >
           {r >= 2 ? (
             <Sparkle x={0} y={0} r={9} o={1} />
