@@ -251,14 +251,26 @@ body {
   isolation: isolate;
 
   /*
-   * Two washes rather than one. The old single violet-800 bloom was a stage light: bright,
-   * centred, and the first thing the eye landed on. These are atmosphere — a cool violet
-   * high up and a warmer plum low down, both far enough below the cards' own brightness
-   * that the page reads as depth rather than as a light source.
+   * FOUR WASHES, AND THE WARM ONE IS THE POINT. The page was two cool washes over a
+   * plum-black ground — violet high, plum low — and it read as a night sky with the lights
+   * off. The mockup's ground is warm: a magenta-leaning bloom behind the hero with the
+   * corners falling away to near-black, so the middle of the page feels lit and the edges
+   * frame it.
+   *
+   * The warmth comes from `mystery-violet`, the palette's own warm orchid, at 20%. It is
+   * the lightest thing in this stack by a long way and it is also the one with the smallest
+   * share: a warm tint reads at a fraction of the alpha a cool one needs, and at 25% this
+   * went straight past "lit" into a pink stage light with the cards sitting in it.
+   *
+   * ORDER MATTERS AND THE LAST ENTRY IS THE GROUND. The corner darkening is a vignette
+   * layered OVER the washes rather than a darker page colour underneath them, because the
+   * washes are what it has to bite into — `page-bg` is already almost black.
    */
   background:
-    radial-gradient(ellipse 120% 60% at 50% -15%, color-mix(in srgb, var(--color-violet-800) 42%, transparent) 0%, transparent 62%),
-    radial-gradient(ellipse 90% 45% at 50% 108%, color-mix(in srgb, var(--color-plum-700) 70%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 85% 58% at 50% 32%, color-mix(in srgb, var(--color-mystery-violet) 20%, transparent) 0%, transparent 72%),
+    radial-gradient(ellipse 120% 65% at 50% -10%, color-mix(in srgb, var(--color-violet-800) 62%, transparent) 0%, transparent 66%),
+    radial-gradient(ellipse 90% 45% at 50% 108%, color-mix(in srgb, var(--color-plum-700) 78%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 45%, color-mix(in srgb, var(--color-plum-950) 58%, transparent) 100%),
     var(--page-bg);
   background-attachment: fixed;
   color: var(--page-fg);
