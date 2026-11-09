@@ -240,6 +240,17 @@ body {
 
 body {
   /*
+   * A STACKING CONTEXT, SO THE SCENERY CAN SIT BEHIND THE CONTENT AND IN FRONT OF THE
+   * GROUND. Without it the painting order is: canvas, then negative z-index descendants,
+   * then block-level descendants' BACKGROUNDS -- so body's own gradient painted straight
+   * over `SiteDecor`'s fixed -z-10 layer and the hills, stars and sprigs rendered into
+   * nothing. The element was in the DOM at full size with 29 svgs in it, which is what made
+   * this look like a colour problem for two rounds. `isolation` rather than
+   * `position: relative`: it makes the stacking context and moves nothing.
+   */
+  isolation: isolate;
+
+  /*
    * Two washes rather than one. The old single violet-800 bloom was a stage light: bright,
    * centred, and the first thing the eye landed on. These are atmosphere — a cool violet
    * high up and a warmer plum low down, both far enough below the cards' own brightness

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Outfit, Fraunces } from 'next/font/google';
 import { HerbdexProvider } from '@/state/HerbdexProvider';
 import { AuthProvider } from '@/state/AuthProvider';
+import { SiteDecor } from '@/components/SiteDecor';
 import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { PlausibleScript } from '@/components/analytics/PlausibleScript';
@@ -47,6 +48,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${outfit.variable} ${fraunces.variable}`}>
       <body>
+        {/* Before the skip link in the DOM but behind everything on screen: it is fixed at
+            -z-10 and aria-hidden, so it is never a tab stop and never read aloud. */}
+        <SiteDecor />
         <a href="#main" className="skip-link">
           Skip to main content
         </a>

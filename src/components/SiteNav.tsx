@@ -54,9 +54,16 @@ export function SiteNav() {
   return (
     <nav
       aria-label="Primary"
-      className="panel-raised fixed inset-x-0 bottom-0 z-50 rounded-none border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)] sm:static sm:border-x-0 sm:border-t-0 sm:bg-transparent sm:backdrop-blur-none"
+      /*
+        A BAR ON A PHONE, A FLOATING PILL ABOVE IT. The phone case is unchanged and
+        deliberately so: edge-to-edge along the bottom, inside the safe area, every pixel of
+        a 390px row spent on six thumb targets. Above `sm` it stops being a bar — it has
+        margins, a radius and a gold hairline, so it reads as an object laid on the scenery
+        rather than as a strip cut out of it.
+      */
+      className="panel-raised fixed inset-x-0 bottom-0 z-50 rounded-none border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)] sm:static sm:mx-auto sm:mt-3 sm:w-[min(64rem,calc(100%-2rem))] sm:rounded-full sm:border sm:border-[color-mix(in_srgb,var(--color-gold-500)_22%,transparent)] sm:shadow-card"
     >
-      <ul className="mx-auto flex max-w-4xl items-stretch justify-between gap-0.5 px-1 py-1 sm:justify-start sm:gap-1 sm:px-4 sm:py-2">
+      <ul className="mx-auto flex max-w-4xl items-stretch justify-between gap-0.5 px-1 py-1 sm:justify-start sm:gap-1 sm:px-3 sm:py-1.5">
         {LINKS.map((link) => {
           const active = isActive(pathname, link.href);
           return (
@@ -66,8 +73,8 @@ export function SiteNav() {
                 aria-current={active ? 'page' : undefined}
                 className={`relative flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[0.72rem] font-semibold transition-colors sm:min-h-10 sm:flex-row sm:gap-1.5 sm:px-3 sm:text-sm ${
                   active
-                    ? 'bg-plum-600/70 text-gold-300'
-                    : 'text-violet-300 hover:bg-plum-600/40 hover:text-violet-100'
+                    ? 'bg-plum-600/70 text-gold-300 sm:rounded-full sm:ring-1 sm:ring-gold-500/45'
+                    : 'text-violet-300 hover:bg-plum-600/40 hover:text-violet-100 sm:rounded-full'
                 }`}
               >
                 {/*
@@ -79,7 +86,7 @@ export function SiteNav() {
                 {active && (
                   <span
                     aria-hidden="true"
-                    className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-gold-500 sm:inset-x-2 sm:top-auto sm:bottom-0"
+                    className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-gold-500 sm:hidden"
                   />
                 )}
                 <PlantdexIcon name={link.icon} className="text-[1.35rem] leading-none sm:text-base" />
