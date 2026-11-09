@@ -48,8 +48,21 @@ export default function HomePage() {
         {/* Species count, not card count: the printed deck is 47 cards because it also
             carries an icon guide and a disclaimer. /shop states both; saying "45-card deck"
             here and "47 in all" there is the kind of small inconsistency a buyer notices. */}
-        <p className="text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
+        {/*
+          THE RULES ARE PART OF THE EYEBROW, not a separate ornament. They fade out at the
+          far end rather than stopping, so the line reads as light catching an edge instead
+          of as a border somebody drew. `aria-hidden` on both: the sentence is the content.
+        */}
+        <p className="flex items-center justify-center gap-3 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
+          <span
+            aria-hidden="true"
+            className="hidden h-px w-16 bg-gradient-to-r from-transparent to-gold-500/50 sm:block"
+          />
           {PRINTED_DECK_SIZE} illustrated species
+          <span
+            aria-hidden="true"
+            className="hidden h-px w-16 bg-gradient-to-l from-transparent to-gold-500/50 sm:block"
+          />
         </p>
         {/*
           THE LOGO IS THE HEADING, not a picture above one. The badge already carries the
@@ -59,8 +72,18 @@ export default function HomePage() {
           the largest element in the first viewport and lazy-loading it would hand a
           visitor an empty hero for a beat.
         */}
-        <h1 className="mt-3">
+        {/*
+          THE GLOW IS BEHIND THE BADGE, NOT ON IT. A drop-shadow on the image would trace the
+          crest's own outline and read as a sticker; a soft radial behind it reads as the
+          thing being lit. Blurred, gold, and well under the badge's own brightness so the
+          art stays the brightest thing on the page.
+        */}
+        <h1 className="relative mt-3">
           <span className="sr-only">Plantdex</span>
+          <span
+            aria-hidden="true"
+            className="absolute top-1/2 left-1/2 -z-10 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-2xl sm:h-56 sm:w-56"
+          />
           <Image
             src={assetPath('/plantdex-logo.png')}
             alt=""
@@ -74,6 +97,13 @@ export default function HomePage() {
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
           Common wild medicinal plants around you, as a collectible deck.
         </p>
+
+        {/* A rule with a sparkle on it: the break between the promise and the characters. */}
+        <div aria-hidden="true" className="mx-auto mt-5 flex max-w-sm items-center gap-3">
+          <span className="h-px flex-1 bg-gradient-to-r from-transparent to-band-leaf/45" />
+          <PlantdexIcon name="sprout" className="text-sm text-gold-400" />
+          <span className="h-px flex-1 bg-gradient-to-l from-transparent to-band-leaf/45" />
+        </div>
 
         {/*
           The creatures, at full size and full growth.
@@ -105,13 +135,33 @@ export default function HomePage() {
                   href={`/herbdex/${herb.id}`}
                   className="flex flex-col items-center rounded-2xl px-1 py-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
                 >
-                  <PlantSprite
-                    herbId={herb.id}
-                    alt={`Pixel-art character for ${herb.commonName}`}
-                    fit
-                    className="w-full drop-shadow-[0_6px_16px_rgba(23,16,28,0.6)]"
-                  />
-                  <span className="mt-1 truncate text-center text-[0.72rem] font-semibold text-violet-300 sm:text-xs">
+                  {/*
+                    A LIT PATCH OF GROUND UNDER EACH CREATURE. Every sprite is authored on a
+                    shared ground line, so they were already standing on something; the page
+                    just did not draw it, and four characters floating on a gradient read as
+                    stickers. An ellipse behind the feet is the cheapest way to say "this one
+                    is standing here" — green, because the ground in this world is.
+                  */}
+                  <span className="relative block w-full">
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-[4%] -bottom-1 -z-10 h-6 rounded-[50%] bg-band-leaf/35 blur-md sm:h-8"
+                    />
+                    <PlantSprite
+                      herbId={herb.id}
+                      alt={`Pixel-art character for ${herb.commonName}`}
+                      fit
+                      className="w-full drop-shadow-[0_6px_16px_rgba(23,16,28,0.6)]"
+                    />
+                  </span>
+                  {/*
+                    THE NAME IS A PLATE FROM `sm` UP, AND A BARE LABEL BELOW IT. The plate's
+                    padding and border cost about 22px, and at 390px four columns have none
+                    to spare: it shipped reading "Dandeli...", "Red Clo...", "Wild Vio...".
+                    A decoration that eats the word it decorates is not a decoration, so on a
+                    phone the label goes back to what it was.
+                  */}
+                  <span className="mt-2 max-w-full truncate text-center text-[0.72rem] font-semibold text-violet-200 sm:mt-2 sm:rounded-full sm:border sm:border-gold-500/35 sm:bg-plum-800/70 sm:px-2.5 sm:py-0.5 sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>
