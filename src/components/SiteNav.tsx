@@ -1,9 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { assetPath } from '@/lib/asset-path';
 import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 
 /**
@@ -34,14 +32,6 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
  * Six gives every target about 62px and clears 320px with room. Treat that as the budget
  * rather than the slot count — a seventh short label is not obviously wrong, a seventh long
  * one is, and the measurement is the thing to re-run.
- *
- * THE BADGE IS IN THE DESKTOP BAR ONLY, AND THAT IS THE SAME BUDGET TALKING. On a phone this
- * is a fixed BOTTOM bar of six equal thumb targets spending every pixel of a 390px row; a
- * brand mark there is not a destination, it is a seventh cell taken from six that have none
- * to give. Above `sm` the bar moves to the top, the links go left-aligned with `flex-none`,
- * and the space it takes was empty. Home stays in the list rather than being replaced by the
- * badge: a logo is a convention, a labelled target is a guarantee, and the phone bar would
- * otherwise lose its Home link altogether.
  */
 
 const LINKS: { href: string; label: string; icon: IconName }[] = [
@@ -66,21 +56,7 @@ export function SiteNav() {
       aria-label="Primary"
       className="panel-raised fixed inset-x-0 bottom-0 z-50 rounded-none border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)] sm:static sm:border-x-0 sm:border-t-0 sm:bg-transparent sm:backdrop-blur-none"
     >
-      <div className="mx-auto flex max-w-4xl items-center sm:gap-2 sm:px-4">
-        {/*
-          aria-hidden and out of the tab order: the Home link two pixels to its right goes to
-          the same place and carries a label. A second "Plantdex, link" before it is noise.
-        */}
-        <Link href="/" aria-hidden="true" tabIndex={-1} className="hidden shrink-0 sm:block">
-          <Image
-            src={assetPath('/plantdex-logo.png')}
-            alt=""
-            width={640}
-            height={683}
-            className="h-11 w-auto"
-          />
-        </Link>
-        <ul className="flex flex-1 items-stretch justify-between gap-0.5 px-1 py-1 sm:justify-start sm:gap-1 sm:py-2">
+      <ul className="mx-auto flex max-w-4xl items-stretch justify-between gap-0.5 px-1 py-1 sm:justify-start sm:gap-1 sm:px-4 sm:py-2">
         {LINKS.map((link) => {
           const active = isActive(pathname, link.href);
           return (
@@ -110,10 +86,9 @@ export function SiteNav() {
                 {link.label}
               </Link>
             </li>
-            );
-          })}
-        </ul>
-      </div>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
