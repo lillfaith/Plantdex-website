@@ -204,3 +204,55 @@ Nothing is uploaded anywhere until you pick one. No large batch goes up regardle
   can be recovered by querying iNaturalist by photo id, which needs a CI run, not a cleanup.
 * No change to the printed 45. No regeneration, no overwrite, ever.
 * No catalogue-scale run. The pilot is five species.
+
+---
+
+## 9. Blockers to the FIRST complete, human-approved generated card
+
+Measured against `evidence/drafts/matricaria_chamomilla.json` and the renderer's own
+requirements, as of this commit. Chamomile is the furthest-along species and is the one
+this list is about.
+
+### Front — artwork
+| # | Blocker | Owner | Unblocked by |
+|---|---|---|---|
+| 1 | Photograph is `preferred`, not `photo_selected`. A leaning is not a selection and does not trigger a render. | owner | one gallery decision |
+| 2 | No genuine vision verdict exists for any candidate, so nothing can pass the botanical, cropping, segmentation or orientation checks automatically | owner | `ANTHROPIC_API_KEY` secret |
+| 3 | Orientation is deferred to the vision pass by design; with no vision it is simply unanswered | follows #2 | — |
+| 4 | The pipeline now fails closed with no asset backend, so no species can be processed at all | owner | R2 secrets |
+
+### Front — printed data (every field below is ABSENT from the draft)
+| # | Field | Why it is not filled in |
+|---|---|---|
+| 5 | `card_number` | The printed deck is 01–47. A generated card must not claim a printed number, and no numbering scheme for generated cards has been decided. |
+| 6 | `scientific_name` styling | Title Case on artwork versus lowercase in the database is still an open decision from earlier in this work. |
+| 7 | `environmental_indicators` (water, sun, temperature) | No credible source chosen. The renderer draws these from the field; inventing them is prohibited. |
+| 8 | `season` | Same: unsourced. |
+| 9 | `encounter_rate` | Deliberately null until the occurrence-count mapping is a made product decision. Only `encounter_rate_provisional` renders, and its review flag stays a blocker. |
+| 10 | `use_icons` | An icon asserts a use. Cannot be chosen before the back content is approved. |
+| 11 | `rarity` | A designer's judgement, not derivable from data. |
+| 12 | `pixel.png` | Every one of the 45 sprites is an authored module in `scripts/sprite_sources/`. A generated species has none, and this is the steepest per-species cost in the whole programme. |
+
+### Back — content
+| # | Blocker |
+|---|---|
+| 13 | 12 claims sit at `citation-checked` with **0 human-reviewed**. `approved` additionally requires the cited source to be `verified: true` — a person having opened the document. Nothing may print until both happen, per `generated-card.ts`. |
+| 14 | Migration 0010 and the medicinal eligibility system are excluded from the Georgia release by instruction, so the database path for claims is parked. |
+
+### Provenance — largely solved
+| # | State |
+|---|---|
+| 15 | Licence, photographer, observation URL, dimensions and retrieval date are recorded per photograph; sha256 is recorded for retained originals. |
+| 16 | The decision ledger is append-only with full history and is never rewritten. |
+| 17 | Open: five orphan files under `pinus_strobus` have no manifest entry. Provenance is recoverable by querying iNaturalist by photo id, which needs a CI run. |
+
+### Storage
+| # | State |
+|---|---|
+| 18 | R2 architecture approved and implemented; `evidence/assets.json` is empty until the first verified upload. |
+| 19 | Pending: bucket, four repository secrets, then a one-species `--roundtrip` test. |
+
+### The shortest path to card one
+Items 1, 2, 4, 13 and the front-data decisions 5–11. Of these, **#13 is the only one that
+cannot be shortened by tooling** — a person has to read twelve claims beside their quotes.
+Everything else is a decision or a secret.
