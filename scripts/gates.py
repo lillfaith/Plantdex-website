@@ -88,7 +88,27 @@ def clipping(front_png: pathlib.Path) -> dict:
              "right": float(m[:, W - 2:].mean()), "bottom": float(m[H - 2:].mean())}
     # A few pixels brushing an edge is contact; a wide band is a cut through the plant.
     clipped = [k for k in ("top", "left", "right") if edges[k] > 0.08]
-    return {"clipped": clipped, "touch": {k: round(v, 3) for k, v in edges.items()}}
+    # THREE OUTCOMES, NOT TWO. A photograph used to be refused outright for any clipping
+    # above the threshold, which threw away otherwise excellent specimens over a leaf tip
+    # leaving the frame -- and the owner's own reference photographs are full of exactly
+    # that. MINOR means a narrow band on one edge: a tip, a petal edge, the continuation of
+    # a stem already in frame, which can be reconstructed conservatively. SEVERE means a
+    # wide cut or several edges at once, where whatever is missing is structural.
+    #
+    # THIS IS A PROPOSAL, NOT A VERDICT. Geometry can measure HOW MUCH is cut and cannot
+    # know WHAT: a 10% band across the top is a leaf tip on one plant and a beheaded
+    # flowering spike on another, which is the mullein exactly. So the classification is
+    # offered to the vision pass and to the owner, and `extendable` never means "extend it",
+    # it means "a person may decide this is worth extending".
+    worst = max((edges[k] for k in ("top", "left", "right")), default=0.0)
+    if not clipped:
+        verdict = "USABLE_AS_IS"
+    elif len(clipped) == 1 and worst <= 0.22:
+        verdict = "EXTENDABLE"
+    else:
+        verdict = "UNSUITABLE"
+    return {"clipped": clipped, "verdict": verdict, "worst_edge": round(worst, 3),
+            "touch": {k: round(v, 3) for k, v in edges.items()}}
 
 
 def contamination(cut_png: pathlib.Path) -> dict:
@@ -265,14 +285,26 @@ def hard_failures(brief, shares, row, vision, cutf, frontf) -> list[str]:
                        f"across {coh['pieces']} fragments; not one substantial specimen")
     if frontf.exists():
         cl = clipping(frontf)
-        if cl["clipped"]:
+        # Only SEVERE clipping is a hard failure now. A single edge cut by a narrow band is
+        # EXTENDABLE and belongs in soft_notes, where the owner can choose to extend it.
+        if cl["verdict"] == "UNSUITABLE":
             bad.append("CLIPPING: the card cuts the subject at the "
-                       + "/".join(cl["clipped"]) + " of the art window")
+                       + "/".join(cl["clipped"]) + " of the art window, across "
+                       f"{len(cl['clipped'])} edge(s) at up to {100*cl['worst_edge']:.0f}% "
+                       "-- too much to reconstruct without inventing structure")
     return bad
 
 
 def soft_notes(row, comp, dead, vision) -> list[str]:
     soft = []
+    cl = row.get("card_clipping") or {}
+    if cl.get("verdict") == "EXTENDABLE":
+        soft.append("EXTENDABLE: the card cuts the subject at the "
+                    + "/".join(cl.get("clipped", []))
+                    + f" by {100*cl.get('worst_edge', 0):.0f}% of that edge. Minor enough to "
+                      "reconstruct conservatively IF what is missing is a tip, an edge or "
+                      "the continuation of something already in frame -- which geometry "
+                      "cannot tell and the vision pass must")
     if "grow-rescue" in str(row.get("segmented_by", "")):
         soft.append("EXPERIMENTAL grow-rescue cutout: the baseline found nothing usable "
                     "and the mask was grown back out. Recovered structures and added "
@@ -337,6 +369,8 @@ def evaluate(species: str) -> dict:
             a = np.array(cut.getchannel("A")) > 127
             dead = senescence(cv2.cvtColor(np.array(cut.convert("RGB")), cv2.COLOR_RGB2BGR), a)
         v = vis.get(s["photo_id"])
+        if frontf.exists():
+            s["card_clipping"] = clipping(frontf)
         hard = hard_failures(brief, s.get("brief_structures", {}), s, v, cutf, frontf)
         soft = soft_notes(s, s.get("composition", {}), dead, v)
         human = decisions.get(pid)
@@ -424,6 +458,16 @@ def self_test() -> int:
     hb = hard_failures({}, {}, base, {"orientation": "back", "meets_brief": True},
                        missing, missing)
     checks.append((bool(hb), "CONTROL: a back-facing flower is a HARD failure"))
+    # CONTROL: the three clipping outcomes. A narrow cut on one edge is EXTENDABLE and
+    # must not be a hard failure -- the owner's own reference photographs are full of
+    # leaf tips leaving the frame. Several edges, or a wide band, stays UNSUITABLE.
+    minor = {**base, "card_clipping": {"verdict": "EXTENDABLE", "clipped": ["top"],
+                                       "worst_edge": 0.12}}
+    severe = {"clipped": ["top", "left"], "verdict": "UNSUITABLE", "worst_edge": 0.4}
+    checks.append((any("EXTENDABLE" in x for x in soft_notes(minor, {}, 0.0, None)),
+                   "CONTROL: minor single-edge clipping is EXTENDABLE, not a failure"))
+    checks.append((severe["verdict"] == "UNSUITABLE",
+                   "severe clipping across several edges stays UNSUITABLE"))
     # CONTROL: an experimental grow-rescue cutout may never be approved by a machine, even
     # with a clean genuine vision verdict. It is the one method whose failure mode reads as
     # success to every retention metric.

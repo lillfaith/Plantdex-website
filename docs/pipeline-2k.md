@@ -256,3 +256,80 @@ this list is about.
 Items 1, 2, 4, 13 and the front-data decisions 5–11. Of these, **#13 is the only one that
 cannot be shortened by tooling** — a person has to read twelve claims beside their quotes.
 Everything else is a decision or a secret.
+
+---
+
+## 10. Art direction learned from the owner's references (2026-11-10)
+
+Fifteen photographs, five each for Dandelion, Elderberry and Pine, approved by the owner as
+positive examples **for the main card photo only**. Recorded in
+`evidence/reference-photos.json`. They are examples of a preferred aesthetic, not
+requirements every species must meet: different growth forms need different compositions.
+
+### What they have in common
+
+1. **The whole functional unit, not an isolated organ.** Flower with its stem and rosette;
+   fruit cyme with its pedicels and pinnate leaves; a branch with needle fascicles. Never a
+   bloom cropped away from what holds it up.
+2. **Diagnostic structures legible** — the dandelion's lobed leaves and involucral bracts,
+   the elderberry's red pedicels and compound leaves, the pine's needle length and fascicle.
+3. **Working distance, not macro.** The subject reads at arm's length, with context.
+4. **A HAND IS ACCEPTABLE AND APPEARS IN THREE OF FIFTEEN.** It gives scale and holds the
+   specimen steady. This directly contradicts a rule the pipeline already carries.
+5. **Natural grounds** — litter, soil, other vegetation. No studio isolation in the source.
+6. **Shallow depth of field is tolerated**, which is why enhancement was asked for.
+
+### THE REFERENCES REFUTE THE PIPELINE'S OWN SCORING, AND THAT IS THE HEADLINE
+
+Run through the current rules, with the licence artefact of local files removed:
+
+| | suitability | ranking score |
+|---|---|---|
+| The owner's 15 references | **7 refused**, 8 deferred | **23 - 80** |
+| What the pipeline chose for the same species | — | **110 - 156** |
+
+Every reference scores below everything the pipeline picked. The ranking is not merely
+imperfect, it is **anti-correlated with the owner's taste on his own examples**.
+
+And the refusals have ONE cause. Presence is measured as a share of the WHOLE FRAME, while
+coherence is measured on the structure itself:
+
+| reference | structure share | largest piece |
+|---|---|---|
+| elderberry2 (cyme, pedicels, compound leaves) | 0.013 — refused | 0.86 |
+| elderberry3 | 0.014 — refused | 0.75 |
+| dandelion1 | 0.010 — refused | 0.99 |
+| dandelion5 | 0.022 — refused | 0.99 |
+
+A perfect, coherent cyme occupying 1.3% of a wide frame fails the same test as a frame with
+no fruit in it. **`largest_piece` agrees with the owner; the frame share does not.** This is
+the same class of error as the cutout-stretch bug: a denominator that is not the thing being
+measured.
+
+Thresholds are NOT changed here. The proposal, for the owner's decision, is an escape hatch
+rather than a looser floor: a structure whose largest piece holds a high share passes to
+`needs_vision` regardless of frame share. On these fifteen that recovers every refusal
+except elderberry5 (largest piece 0.10, genuinely scattered).
+
+### Three asset types, three art directions
+
+| Asset | Wants | These references apply? |
+|---|---|---|
+| **Main card photo** | a beautiful, recognisable specimen: substantial coherent stems, leaves, flowers or fruit, naturally composed, cleanly isolated | **yes, exclusively** |
+| **Botanical preview** | a wider view showing growth habit; tall species generally tall and upright | no |
+| **Pixel-art icon** | the single most recognisable characteristic — flower, cone, fruit, leaf — never a whole plant pixelated into a green mass | no |
+
+Each may need its own source photograph and its own retrieval brief.
+
+### Minor clipping: three outcomes instead of two
+
+`clipping()` returns `USABLE_AS_IS`, `EXTENDABLE` or `UNSUITABLE` and only the last is a
+hard failure. EXTENDABLE is one edge cut by a narrow band — a leaf tip, a petal edge, the
+continuation of a stem already in frame. Several edges, or a wide band, stays UNSUITABLE.
+
+**It is a proposal, not a verdict.** Geometry measures HOW MUCH is cut and cannot know WHAT:
+a 10% band across the top is a leaf tip on one plant and a beheaded flowering spike on
+another, which is the mullein exactly. The classification goes to the vision pass and to the
+owner, and `EXTENDABLE` never means "extend it" — it means a person may decide it is worth
+extending. Any extended image is a new asset requiring its own approval; the original is
+never modified.
