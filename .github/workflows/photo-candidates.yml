@@ -24,12 +24,10 @@ on:
         required: false
         default: 'false'
         type: string
-  push:
-    branches: [claude/botanical-catalog-stage-1]
-    paths:
-      - scripts/segment_plant.py
-      - scripts/photo_pipeline.py
-      - .github/workflows/photo-candidates.yml
+  # NO PUSH TRIGGER. This workflow segments, writes and (when authorized) deletes, and it
+  # used to run on pushes to its own path -- so editing the workflow ran it, which is how a
+  # retention step shipped and deleted a species' pool in the same push. A job with side
+  # effects is started by a person, deliberately, with inputs.
 
 permissions:
   contents: write
@@ -87,10 +85,12 @@ jobs:
           elif [ -n "$PLANTDEX_DROPBOX_TOKEN" ]; then
             python3 scripts/asset_store.py --species "$SP" --put --backend dropbox
           else
-            echo "::warning::No durable asset backend configured. The shortlisted originals"
-            echo "::warning::are being committed to git as an INTERIM fallback. Configure"
-            echo "::warning::R2 or Dropbox secrets before scaling past the pilot."
-            python3 scripts/asset_store.py --species "$SP" --plan
+            echo "::error::No durable asset backend is configured, so this job has nowhere"
+            echo "::error::to put the shortlisted originals. It FAILS CLOSED rather than"
+            echo "::error::committing image binaries to git: that fallback kept CI durable"
+            echo "::error::by recreating the repository growth the store exists to end."
+            echo "::error::Set PLANTDEX_ASSET_ENDPOINT, _BUCKET, _KEY_ID and _SECRET."
+            exit 1
           fi
 
       # DURABLE BEFORE THE RUNNER DIES, NOT AFTER. The shortlisted originals are the one
@@ -109,9 +109,13 @@ jobs:
       # explicit input that defaults to false.
       - name: Preserve the shortlisted originals and their provenance
         run: |
-          python3 scripts/retain_assets.py \
-            --species "${{ inputs.species || 'matricaria_chamomilla' }}" \
-            ${{ inputs.discard_pool == 'true' && '--apply' || '' }}
+          SP="${{ inputs.species || 'matricaria_chamomilla' }}"
+          if [ "${{ inputs.discard_pool }}" = "true" ]; then
+            python3 scripts/retain_assets.py --species "$SP" --apply \
+              --authorize "DELETE $SP"
+          else
+            python3 scripts/retain_assets.py --species "$SP"
+          fi
 
       - name: Verify every shortlisted original survived before committing
         run: |
@@ -146,7 +150,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add evidence/candidates evidence/photos evidence/assets.json
+          # TEXT ONLY. evidence/photos is deliberately absent: the binaries live in R2 and
+          # evidence/assets.json is how they are found. Adding the directory here is what
+          # the fail-closed step above exists to prevent.
+          git add evidence/candidates evidence/assets.json
           # NOT `git diff --staged --quiet && exit 0`: the step runs under `bash -e`, the
           # diff returns 1 when there IS something to commit, and a failing `&&` chain as a
           # statement is exactly what -e kills the job for.

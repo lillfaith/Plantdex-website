@@ -7,11 +7,8 @@ name: Diagnose segmentation quality
 # Runs here because rembg's model weights cannot be fetched from the sandbox, and because
 # every card in the catalogue should be cut by the same model version.
 on:
-  push:
-    branches: [claude/botanical-catalog-stage-1]
-    paths:
-      - scripts/segment_diagnose.py
-      - .github/workflows/segment-diagnose.yml
+  # Dispatch only. It commits to the branch, and a workflow that both commits and triggers
+  # on commits is one bad path away from a loop.
   workflow_dispatch:
     inputs:
       models:

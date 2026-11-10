@@ -62,10 +62,19 @@ def save(doc: dict) -> None:
     INDEX.write_text(json.dumps(doc, indent=2, sort_keys=True) + "\n")
 
 
-def key_for(species: str, photo_id: str, kind: str, suffix: str) -> str:
-    """A key a person can read: species / kind / photo id. Content-addressed storage would
-    be tidier and unreadable, and this archive is meant to be browsable."""
-    return f"{species}/{kind}/{photo_id}{suffix}"
+def key_for(digest: str, suffix: str) -> str:
+    """CONTENT-ADDRESSED: the object's name IS the hash of its bytes.
+
+    Three properties fall out of that and all three are requirements rather than niceties.
+    IDEMPOTENT -- re-uploading identical bytes writes the same key, so a retried job is a
+    no-op instead of a duplicate. IMMUTABLE -- a key can never be silently overwritten with
+    different content, because different content is a different key. VERIFIABLE -- anything
+    downloaded can be checked against the name it was stored under, with no index needed.
+
+    Readability is not lost; it moves. `evidence/assets.json` maps species, photo id and
+    kind onto these keys, and that file is in git where a person can read it.
+    """
+    return f"objects/{digest[:2]}/{digest}{suffix.lower()}"
 
 
 def assets_for(species: str) -> list[dict]:
@@ -90,7 +99,6 @@ def assets_for(species: str) -> list[dict]:
                 continue
             out.append({
                 "species": species, "photo_id": pid, "kind": kind, "path": path,
-                "key": key_for(species, pid, kind, path.suffix),
                 "bytes": path.stat().st_size,
                 "licence": e.get("license_code"), "photographer": e.get("photographer"),
                 "source_url": (e.get("urls") or {}).get("original"),
@@ -101,17 +109,46 @@ def assets_for(species: str) -> list[dict]:
     return out
 
 
-def put_r2(data: bytes, key: str) -> str:
-    """Any S3-compatible store. Cloudflare R2, Backblaze B2 and S3 all speak this."""
+def _r2_client():
     import boto3                                       # only needed on this path
-    bucket = os.environ["PLANTDEX_ASSET_BUCKET"]
-    client = boto3.client(
+    return boto3.client(
         "s3",
         endpoint_url=os.environ["PLANTDEX_ASSET_ENDPOINT"],
         aws_access_key_id=os.environ["PLANTDEX_ASSET_KEY_ID"],
         aws_secret_access_key=os.environ["PLANTDEX_ASSET_SECRET"])
-    client.put_object(Bucket=bucket, Key=key, Body=data)
-    return f"s3://{bucket}/{key}"
+
+
+def put_r2(data: bytes, key: str) -> str:
+    """Cloudflare R2 over the S3 API. Idempotent, and verified by reading back.
+
+    NOTHING IS TRUSTED TO HAVE ARRIVED BECAUSE A PUT RETURNED. The object is fetched again
+    and hashed, and a mismatch raises rather than being recorded -- an index entry that
+    claims an upload that did not land is worse than no entry, because the next step is
+    deleting the local copy on the strength of it.
+
+    No credential is printed, interpolated into a message, or written to the index.
+    """
+    import botocore.exceptions
+    bucket = os.environ["PLANTDEX_ASSET_BUCKET"]
+    client = _r2_client()
+    digest = hashlib.sha256(data).hexdigest()
+    try:
+        head = client.head_object(Bucket=bucket, Key=key)
+        if head["ContentLength"] == len(data):
+            return f"r2://{bucket}/{key}"              # already there, same bytes by key
+    except botocore.exceptions.ClientError:
+        pass
+    client.put_object(Bucket=bucket, Key=key, Body=data,
+                      Metadata={"sha256": digest})
+    back = client.get_object(Bucket=bucket, Key=key)["Body"].read()
+    if hashlib.sha256(back).hexdigest() != digest:
+        raise RuntimeError(f"read-back of {key} does not match the bytes that were sent")
+    return f"r2://{bucket}/{key}"
+
+
+def fetch_r2(key: str) -> bytes:
+    bucket = os.environ["PLANTDEX_ASSET_BUCKET"]
+    return _r2_client().get_object(Bucket=bucket, Key=key)["Body"].read()
 
 
 def put_dropbox(data: bytes, key: str) -> str:
@@ -131,6 +168,15 @@ def put_dropbox(data: bytes, key: str) -> str:
 
 
 BACKENDS = {"r2": put_r2, "dropbox": put_dropbox}
+FETCHERS = {"r2": fetch_r2}
+
+
+def is_backed_up(doc: dict, digest: str) -> bool:
+    """Is this exact content durably stored AND verified? The precondition for deleting."""
+    for rec in doc.get("assets", {}).values():
+        if rec.get("sha256") == digest and rec.get("uploaded_at") and rec.get("verified"):
+            return True
+    return False
 
 
 def plan(names: list[str]) -> list[dict]:
@@ -147,6 +193,8 @@ def main() -> int:
     a.add_argument("--plan", action="store_true", help="offline; uploads nothing")
     a.add_argument("--put", action="store_true")
     a.add_argument("--verify", action="store_true")
+    a.add_argument("--roundtrip", action="store_true",
+                   help="upload, fetch back, hash-compare. The one-species acceptance test.")
     a.add_argument("--backend", choices=sorted(BACKENDS), default="r2")
     a.add_argument("--self-test", action="store_true")
     args = a.parse_args()
@@ -155,8 +203,15 @@ def main() -> int:
         checks = [
             (not INDEX.exists() or "assets" in index(), "the index parses"),
             (set(BACKENDS) == {"r2", "dropbox"}, "both backends are available"),
-            (key_for("x_y", "12", "original", ".jpg") == "x_y/original/12.jpg",
-             "keys are readable: species / kind / photo id"),
+            (key_for("ab" + "c" * 62, ".JPG") == f"objects/ab/{'ab' + 'c' * 62}.jpg",
+             "keys are content-addressed and the extension is normalised"),
+            (key_for("ab" + "c" * 62, ".jpg") == key_for("ab" + "c" * 62, ".JPG"),
+             "CONTROL: identical bytes produce one key, so a retry is idempotent"),
+            (not is_backed_up({"assets": {"k": {"sha256": "x", "uploaded_at": "now"}}}, "x"),
+             "CONTROL: an upload with no verification does not count as a backup"),
+            (is_backed_up({"assets": {"k": {"sha256": "x", "uploaded_at": "n",
+                                            "verified": True}}}, "x"),
+             "a verified upload counts as a durable backup"),
             # CONTROL: nothing in this module writes an image into git.
             ("evidence/assets.json" in open(__file__).read()
              and "INDEX = ROOT" in open(__file__).read(),
@@ -170,6 +225,24 @@ def main() -> int:
 
     names = args.species or (sorted(d.name for d in PHOTOS.iterdir() if d.is_dir())
                              if args.all else [])
+    if args.roundtrip:
+        doc = index()
+        names = args.species or []
+        if not names:
+            a.error("--roundtrip needs --species")
+        rows = plan(names)
+        bad = 0
+        for r in rows:
+            digest = sha256(r["path"])
+            key = key_for(digest, r["path"].suffix)
+            BACKENDS[args.backend](r["path"].read_bytes(), key)
+            back = FETCHERS[args.backend](key)
+            good = hashlib.sha256(back).hexdigest() == digest
+            bad += 0 if good else 1
+            print(f"   {'OK ' if good else 'FAIL'} {key}  {len(back)/1e6:.2f} MB")
+        print(f"{len(rows)} asset(s) round-tripped, {bad} failure(s)")
+        return 1 if bad else 0
+
     if args.verify:
         doc = index()
         bad = 0
@@ -189,6 +262,8 @@ def main() -> int:
     for r in rows:
         by_kind.setdefault(r["kind"], []).append(r["bytes"])
     print(f"{len(rows)} asset(s) across {len(names)} species, {total/1e6:.2f} MB")
+    print(f"   content-addressed keys, e.g. {key_for(sha256(rows[0]['path']), rows[0]['path'].suffix)}"
+          if rows else "")
     for kind, sizes in sorted(by_kind.items()):
         print(f"   {kind:10} {len(sizes):3} files  {sum(sizes)/1e6:7.2f} MB")
     if not args.put:
@@ -203,21 +278,23 @@ def main() -> int:
     sent = 0
     for r in rows:
         digest = sha256(r["path"])
-        rec = doc["assets"].get(r["key"])
-        if rec and rec.get("sha256") == digest and rec.get("uploaded_at"):
-            continue                                   # identical bytes already up there
-        where = BACKENDS[args.backend](r["path"].read_bytes(), r["key"])
-        doc["assets"][r["key"]] = {
+        key = key_for(digest, r["path"].suffix)
+        rec = doc["assets"].get(key)
+        if rec and rec.get("sha256") == digest and rec.get("verified"):
+            continue                                   # identical bytes, already verified
+        where = BACKENDS[args.backend](r["path"].read_bytes(), key)
+        doc["assets"][key] = {
             "sha256": digest, "bytes": r["bytes"], "species": r["species"],
             "photo_id": r["photo_id"], "kind": r["kind"], "licence": r["licence"],
             "photographer": r["photographer"], "source_url": r["source_url"],
             "observation_url": r["observation_url"], "verdict": r["verdict"],
-            "backend": args.backend, "remote": where,
+            "backend": args.backend, "remote": where, "verified": True,
             "uploaded_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
             "local": str(r["path"].relative_to(ROOT)),
         }
         sent += 1
-        print(f"   uploaded {r['key']}  {r['bytes']/1e6:.2f} MB")
+        print(f"   uploaded {r['species']}/{r['photo_id']}/{r['kind']} -> {key}  "
+              f"{r['bytes']/1e6:.2f} MB  verified")
     save(doc)
     print(f"{sent} uploaded, {len(doc['assets'])} indexed in {INDEX.relative_to(ROOT)}")
     return 0

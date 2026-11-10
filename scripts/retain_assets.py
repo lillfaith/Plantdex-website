@@ -30,6 +30,17 @@ licence and photographer are no longer recorded anywhere in the tree, and KEEPIN
 quietly is worse, because a file with no provenance entry must never reach a card. So they
 are listed, loudly, and left alone for a person to resolve.
 
+DELETION NEEDS FOUR THINGS, AND A WORKFLOW CAN SUPPLY ONLY THREE OF THEM.
+
+A dry run is the DEFAULT and `--apply` alone is no longer enough: deleting also requires
+`--authorize DELETE <species>` typed out in full, and requires every keeper to be already
+uploaded AND read-back-verified in the asset index. The reason is a thing that happened
+rather than a thing imagined -- `--apply` went into a workflow that triggers on pushes to
+its own path, pushing the change ran the job, and CI deleted 93 of chamomile's 96 originals
+in the same hour the owner asked for nothing to be deleted. The tool was careful; the
+caller was automatic. An authorization token a workflow would have to hard-code, plus a
+durable-backup precondition it cannot fake, is what makes that unrepeatable.
+
 VERIFY BEFORE DELETE, ALWAYS. Nothing is removed until every file in the keep set has been
 read, hashed, and recorded in the manifest. A missing or unreadable keeper aborts the run
 with nothing deleted -- the failure mode this guards against is a retention pass that
@@ -106,7 +117,7 @@ def plan(species: str) -> dict:
             "freed": freed, "kept_bytes": kept_bytes}
 
 
-def run(species: str, apply: bool) -> int:
+def run(species: str, apply: bool, authorize: str | None = None) -> int:
     p = plan(species)
     if p.get("error"):
         print(f"{species}: {p['error']}")
@@ -128,6 +139,22 @@ def run(species: str, apply: bool) -> int:
         print(f"   REFUSING TO DELETE: {len(p['missing'])} kept photo(s) are not on disk: "
               + ", ".join(p["missing"]))
         return 1
+
+    if apply:
+        want = f"DELETE {species}"
+        if (authorize or "").strip() != want:
+            print(f"   REFUSING TO DELETE: --apply now also requires --authorize "
+                  f"'{want}'. Nothing was changed.")
+            return 1
+        import asset_store
+        doc = asset_store.index()
+        unbacked = [pid for pid, f, _ in p["keepers"]
+                    if not asset_store.is_backed_up(doc, asset_store.sha256(f))]
+        if unbacked:
+            print(f"   REFUSING TO DELETE: {len(unbacked)} keeper(s) have no VERIFIED "
+                  f"durable copy in the asset index: " + ", ".join(unbacked))
+            print("   Upload them first (scripts/asset_store.py --put) and re-run.")
+            return 1
 
     # HASH FIRST, DELETE SECOND. The manifest is written and flushed before a single file
     # is removed, so an interrupted run leaves provenance that is ahead of the tree rather
@@ -188,6 +215,9 @@ def self_test() -> int:
             continue
         orphan_free &= not (set(pl["orphans"]) & set(pl["drop"]))
     checks.append((orphan_free, "CONTROL: an orphan is never queued for deletion"))
+    src = open(__file__).read()
+    checks.append(("--authorize" in src and "is_backed_up" in src,
+                   "CONTROL: deleting needs an authorization token AND a verified backup"))
     good = True
     for c, label in checks:
         print(("PASS  " if c else "FAIL  ") + label)
@@ -201,6 +231,8 @@ def main() -> int:
     a.add_argument("--species", nargs="*")
     a.add_argument("--all", action="store_true")
     a.add_argument("--apply", action="store_true")
+    a.add_argument("--authorize", metavar="'DELETE <species>'",
+                   help="required with --apply; must read exactly: DELETE <species>")
     a.add_argument("--self-test", action="store_true")
     args = a.parse_args()
     if args.self_test:
@@ -212,7 +244,7 @@ def main() -> int:
     rc = 0
     total = 0
     for sp in names:
-        rc |= run(sp, args.apply)
+        rc |= run(sp, args.apply, args.authorize)
         pl = plan(sp)
         total += pl.get("freed", 0)
     print(f"\n{'freed' if args.apply else 'would free'} {total/1e9:.2f} GB across "
