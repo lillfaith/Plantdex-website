@@ -30,6 +30,8 @@ import card_art                                       # noqa: E402
 MODEL = os.environ.get("PLANTDEX_SEGMENT_MODEL", "birefnet-general-lite")
 WORK_EDGE = 1200
 MIN_KEEP = 0.02          # below this the model found nothing and the fallback is used
+SHATTERED = 6            # this many substantial pieces is not one specimen
+MAX_RESCUE_SOLIDITY = 0.80   # measured: a grow above this returned the whole photograph
 KEEP_COMPONENT = 0.04    # keep pieces at least this fraction of the largest
 _SESSION = {}
 
@@ -79,6 +81,37 @@ def edge_contact(alpha: np.ndarray) -> dict:
             "right": round(float(a[:, -max(1, int(w * 0.02)):].mean()), 3)}
 
 
+def _grow_rescue(rgb: np.ndarray, seed: np.ndarray) -> np.ndarray | None:
+    """Grow the seed into plant-coloured regions connected to it. None if it over-grows.
+
+    The over-growth check is the point and it is measured, not chosen: on the pilot the
+    grown masks that returned the photograph scored 0.86-0.97 for fill of their own
+    bounding box, and the ones that were genuine cutouts scored 0.27-0.52. Above 0.80 this
+    refuses and the ordinary fallback path runs instead.
+    """
+    bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+    hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+    h, s_, v = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    plant = ((h >= 22) & (h <= 95) & (s_ >= 40) & (v >= 25)) | seed
+    n, lab = cv2.connectedComponents(plant.astype(np.uint8), 8)
+    near = cv2.dilate(seed.astype(np.uint8), np.ones((9, 9), np.uint8), 2).astype(bool)
+    out = seed.copy()
+    for i in range(1, n):
+        comp = lab == i
+        size = int(comp.sum())
+        if size < 200:
+            continue
+        if int((comp & near).sum()) >= min(150, max(20, int(size * 0.02))):
+            out |= comp
+    if not out.any():
+        return None
+    ys, xs = np.nonzero(out)
+    box = max(1, (ys.max() - ys.min() + 1) * (xs.max() - xs.min() + 1))
+    if out.sum() / box > MAX_RESCUE_SOLIDITY:
+        return None
+    return out
+
+
 def cutout(path: pathlib.Path, work_edge: int = WORK_EDGE
            ) -> tuple[Image.Image, str, dict]:
     """Returns the RGBA cutout, the method that produced it, and its frame-edge contact."""
@@ -93,7 +126,38 @@ def cutout(path: pathlib.Path, work_edge: int = WORK_EDGE
             rgba = Image.fromarray(np.dstack([np.array(im), tidied]), "RGBA")
             box = rgba.getbbox()
             return (rgba.crop(box) if box else rgba), MODEL, edges
-        reason = f"{MODEL} kept {(a > 127).mean():.3f}, below {MIN_KEEP}"
+        # EXPERIMENTAL GROW, AND ONLY WHERE THE BASELINE PRODUCED NOTHING USABLE.
+        #
+        # The pilot settled that the seeded grow is not a production step: on five of eight
+        # photographs it returned something close to the original frame (solidity up to
+        # 0.967, which is a rectangle of vegetation, not a cutout). It is kept for the one
+        # case it demonstrably rescued -- pine 111407747, where BiRefNet Lite returned an
+        # EMPTY mask in ten fragments and the grow recovered a clean branch because the
+        # leaf litter behind it is brown rather than green.
+        #
+        # That is the whole gate: empty, or shattered. Where the baseline found a coherent
+        # subject the grow is never consulted, because where it fails it fails by keeping
+        # too much, and too much looks like success to every metric that counts retention.
+        #
+        # The result is MARKED. `birefnet-general-lite+grow-rescue` travels with the
+        # candidate into candidates.json and gates.py, which refuses to let any
+        # grow-rescued cutout reach an approval: a recovered structure and an added
+        # background look identical to a number and must be looked at.
+        kept = (a > 127).mean()
+        n, _, st, _ = cv2.connectedComponentsWithStats((a > 127).astype(np.uint8), 8)
+        shards = int((st[1:, cv2.CC_STAT_AREA] >= st[1:, cv2.CC_STAT_AREA].max() * 0.05).sum()) if n > 1 else 1
+        if kept < MIN_KEEP or shards >= SHATTERED:
+            grown = _grow_rescue(np.array(im), a > 127)
+            if grown is not None:
+                tidied = tidy((grown * 255).astype(np.uint8))
+                edges = edge_contact(tidied)
+                rgba = Image.fromarray(np.dstack([np.array(im), tidied]), "RGBA")
+                box = rgba.getbbox()
+                print(f"   [segment] GROW RESCUE: baseline kept {kept:.3f} in {shards} "
+                      f"piece(s); recovered {grown.mean():.3f}. Needs visual review.",
+                      file=sys.stderr)
+                return (rgba.crop(box) if box else rgba), f"{MODEL}+grow-rescue", edges
+        reason = f"{MODEL} kept {kept:.3f}, below {MIN_KEEP}"
     except Exception as exc:                            # model missing, no network, OOM
         reason = f"{type(exc).__name__}: {exc}"[:120]
     # FALLBACK IS LOUD. A silent downgrade would ship a visibly worse cutout under the

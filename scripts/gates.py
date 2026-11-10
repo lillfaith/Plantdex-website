@@ -273,6 +273,10 @@ def hard_failures(brief, shares, row, vision, cutf, frontf) -> list[str]:
 
 def soft_notes(row, comp, dead, vision) -> list[str]:
     soft = []
+    if "grow-rescue" in str(row.get("segmented_by", "")):
+        soft.append("EXPERIMENTAL grow-rescue cutout: the baseline found nothing usable "
+                    "and the mask was grown back out. Recovered structures and added "
+                    "background must be looked at; this can never auto-approve")
     # EDGE CONTACT IS A FLAG FOR THE VISION PASS, NOT A VERDICT, and the measurements say
     # why plainly: the preferred chamomile touches 95% of its top edge and its bloom is
     # COMPLETE -- a large flower simply fills the frame -- while the mullein whose spike is
@@ -359,7 +363,8 @@ def evaluate(species: str) -> dict:
             status = "NEEDS_REVIEW"
         elif hard:
             status = "REJECTED"
-        elif v and v.get("source") == "vision" and v.get("meets_brief"):
+        elif (v and v.get("source") == "vision" and v.get("meets_brief")
+              and "grow-rescue" not in str(s.get("segmented_by", ""))):
             status = "AUTO_APPROVED"
         else:
             status = "NEEDS_REVIEW"
@@ -419,6 +424,15 @@ def self_test() -> int:
     hb = hard_failures({}, {}, base, {"orientation": "back", "meets_brief": True},
                        missing, missing)
     checks.append((bool(hb), "CONTROL: a back-facing flower is a HARD failure"))
+    # CONTROL: an experimental grow-rescue cutout may never be approved by a machine, even
+    # with a clean genuine vision verdict. It is the one method whose failure mode reads as
+    # success to every retention metric.
+    rescued = soft_notes({**base, "segmented_by": "birefnet-general-lite+grow-rescue"},
+                         {}, 0.0, None)
+    src = open(__file__).read()
+    checks.append((any("grow-rescue" in x for x in rescued)
+                   and 'grow-rescue" not in str(s.get("segmented_by"' in src,
+                   "CONTROL: a grow-rescued cutout is flagged and cannot AUTO_APPROVE"))
     # CONTROL: a warm-stemmed cutout is not a hand; a smooth obstructing blob is. The raw
     # share is identical in both rows, which is exactly why it cannot be the test.
     checks.append((not hard_failures({}, {}, warm, None, missing, missing)
