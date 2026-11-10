@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import art_direction                                # noqa: E402  (owner's preferences)
 import card_art                                     # noqa: E402  (segmentation lives there)
 import decisions                                    # noqa: E402  (the owner's verdicts)
+import suitability                                  # noqa: E402  (screen before cutting)
 import segment_plant                                # noqa: E402  (BiRefNet, colour fallback)
 import visual_brief                                 # noqa: E402  (species requirements)
 import render_generated_card as R                   # noqa: E402  (template + slot geometry)
@@ -590,6 +591,39 @@ def main() -> int:
             print(f"            reject: {r}")
         for fl in s["flags"]:
             print(f"            flag:   {fl}")
+
+    # SCREEN BEFORE CUTTING. A photograph that does not contain the species' defining
+    # structure, or contains it scattered across the frame, or shows it with nothing to
+    # attach it to, cannot become the card however it is segmented -- and elderberry is the
+    # proof: four models and a hand-guided GrabCut all failed to give 424182823 its own
+    # leaves, because they are not separably in the photograph. Rejecting it here costs
+    # nothing; rejecting it after segmentation costs 25 seconds and offers an art director
+    # a choice that was never a choice.
+    #
+    # This runs on the SOURCE and only ever rules candidates out.
+    if brief:
+        kept, refused = [], []
+        for cand in usable:
+            v = suitability.screen(pdir / cand["file"], brief)
+            cand["suitability"] = v["verdict"]
+            cand["suitability_reasons"] = v["reasons"]
+            (refused if v["verdict"] == "unsuitable" else kept).append(cand)
+        if refused:
+            print(f"\nunsuitable before segmentation: {len(refused)} of {len(usable)}")
+            for cand in refused[:8]:
+                print(f"   {cand['photo_id']}: {cand['suitability_reasons'][0][:88]}")
+            if len(refused) > 8:
+                print(f"   ... and {len(refused) - 8} more")
+        usable = kept
+        if not usable:
+            print("\nNO SUITABLE PHOTOGRAPH IN THE POOL. The species is NEEDS_REVIEW and "
+                  "wants a wider retrieval, not a different segmentation method.")
+            (out / "candidates.json").write_text(json.dumps(
+                {"species": a.species, "selected": [], "all_scores": scored,
+                 "unsuitable": len(refused),
+                 "note": "every candidate was refused by the pre-segmentation suitability "
+                         "screen; nothing was cut"}, indent=2) + "\n")
+            return 0
 
     # WORK DOWN THE RANKED LIST UNTIL `top` SURVIVE. Segmentation is the second gate and a
     # candidate can fail it after scoring well, so taking the first `top` and stopping
