@@ -1,0 +1,88 @@
+{
+  "_how": "Set decision per species. Then: python3 scripts/review_gallery.py --record FILE",
+  "_decisions": {
+    "approve": "choose ONE option by photo_id; the card is yours to sign off",
+    "prefer": "pin ONE option as the leader without signing off the card",
+    "reject": "list photo_ids never to offer again; the rest stand",
+    "more_options": "re-run retrieval for this species, excluding every rejected id",
+    "open": "changes nothing"
+  },
+  "species": [
+    {
+      "species": "matricaria_chamomilla",
+      "decision": "open",
+      "photo_id": "",
+      "reject": [],
+      "reason": "",
+      "revise": false,
+      "options": [
+        "650137635",
+        "18365261",
+        "293002707"
+      ],
+      "notes": []
+    },
+    {
+      "species": "pinus_strobus",
+      "decision": "open",
+      "photo_id": "",
+      "reject": [],
+      "reason": "",
+      "revise": false,
+      "options": [
+        "111407747",
+        "340372052",
+        "354857174"
+      ],
+      "notes": [
+        "306725928: rejected by the owner"
+      ]
+    },
+    {
+      "species": "sambucus_canadensis",
+      "decision": "open",
+      "photo_id": "",
+      "reject": [],
+      "reason": "",
+      "revise": false,
+      "options": [
+        "424182823",
+        "309523755",
+        "554726092"
+      ],
+      "notes": [
+        "424182835: same observation (238274705) as an option already shown"
+      ]
+    },
+    {
+      "species": "taraxacum_officinale",
+      "decision": "open",
+      "photo_id": "",
+      "reject": [],
+      "reason": "",
+      "revise": false,
+      "options": [
+        "133194303",
+        "152340494",
+        "924120"
+      ],
+      "notes": [
+        "403970862: COHERENCE: largest piece is only 36% across 4 fragments; not one subst"
+      ]
+    },
+    {
+      "species": "verbascum_thapsus",
+      "decision": "open",
+      "photo_id": "",
+      "reject": [],
+      "reason": "",
+      "revise": false,
+      "options": [
+        "210580027",
+        "143588661",
+        "21260078"
+      ],
+      "notes": []
+    }
+  ]
+}
