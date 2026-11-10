@@ -17,7 +17,7 @@ on:
       models:
         description: Comma-separated rembg models to compare
         required: false
-        default: birefnet-general-lite,birefnet-general,isnet-general-use,u2net
+        default: birefnet-general-lite,birefnet-general-lite+grow,birefnet-general,birefnet-general+grow
         type: string
 
 permissions:
@@ -39,10 +39,10 @@ jobs:
         run: pip install --quiet rembg onnxruntime opencv-python-headless pillow numpy
       - name: Self-test
         run: python3 scripts/segment_diagnose.py --self-test
-      - name: Compare models on the pinned candidates
+      - name: Compare methods on the pilot species and the pinned candidates
         env:
-          PLANTDEX_DIAGNOSE_MODELS: ${{ inputs.models || 'birefnet-general-lite,birefnet-general,isnet-general-use,u2net' }}
-        run: python3 scripts/segment_diagnose.py --pinned
+          PLANTDEX_DIAGNOSE_MODELS: ${{ inputs.models || 'birefnet-general-lite,birefnet-general-lite+grow,birefnet-general,birefnet-general+grow' }}
+        run: python3 scripts/segment_diagnose.py --pilot --pinned
       - name: Commit the comparison
         run: |
           git config user.name "github-actions[bot]"

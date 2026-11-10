@@ -54,6 +54,10 @@ MODELS = os.environ.get(
     "birefnet-general-lite,birefnet-general,isnet-general-use,u2net",
 ).split(",")
 
+# A method is a model plus an optional post-step. `+grow` runs the seeded region grow below
+# on that model's mask. Written as a suffix so the comparison stays one flat table.
+GROW_SUFFIX = "+grow"
+
 
 def masks(bgr: np.ndarray) -> dict:
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
@@ -78,6 +82,46 @@ def pieces(alpha: np.ndarray) -> int:
     return int((areas >= areas.max() * 0.05).sum())
 
 
+def grow_to_plant(bgr: np.ndarray, alpha: np.ndarray) -> np.ndarray:
+    """Take the model's mask as a SEED and grow it into the rest of the same plant.
+
+    THIS IS THE FIX THE COMPARISON POINTS AT, and the comparison is why it is this and not a
+    different model. Four architecturally different networks -- birefnet-general-lite,
+    birefnet-general, isnet-general-use, u2net -- all kept mullein 21260078's flower
+    clusters and all discarded its entire woolly rosette, which is the same plant, attached,
+    in focus, in the middle of the frame. They agree because they are all SALIENT-object
+    detectors answering "what is the subject of this photograph", and the subject of a
+    photograph of a flowering plant is the flower. Swapping among them cannot help; that
+    half of the hypothesis is refuted and the other half is confirmed.
+
+    So the mask is treated as a seed rather than an answer. Plant-coloured regions that are
+    CONNECTED to what the model found are part of the same plant; plant-coloured regions
+    that touch it nowhere are a different plant, which is what the model was right about.
+    Contact has to be substantial -- a few pixels of overlap is a leaf passing behind, and
+    growing on that would swallow the background the model correctly removed.
+    """
+    import cv2
+    g = masks(bgr)["green"]
+    plant = g | alpha
+    n, lab = cv2.connectedComponents(plant.astype(np.uint8), 8)
+    # A band around the seed: contact is measured here rather than against the raw mask, so
+    # a leaf whose stalk is one pixel wide still counts as attached.
+    near = cv2.dilate(alpha.astype(np.uint8), np.ones((9, 9), np.uint8), 2).astype(bool)
+    out = alpha.copy()
+    for i in range(1, n):
+        comp = lab == i
+        touch = int((comp & near).sum())
+        size = int(comp.sum())
+        if size < 200:
+            continue
+        # Substantial contact: 2% of the component's own pixels, or 150 pixels, whichever
+        # is smaller -- a big leaf meets the seed along a short join, a big background bush
+        # meets it nowhere.
+        if touch >= min(150, max(20, int(size * 0.02))):
+            out |= comp
+    return out
+
+
 def run_model(model: str, im: Image.Image) -> tuple[np.ndarray, float]:
     from rembg import new_session, remove
     t0 = time.time()
@@ -94,16 +138,22 @@ def diagnose(src: pathlib.Path, label: str) -> dict:
     src_green = m["green"]
     src_thin = thin(src_green)
     rows, strips = [], [np.array(im)]
-    for model in MODELS:
+    for method in MODELS:
+        grow = method.endswith(GROW_SUFFIX)
+        model = method[:-len(GROW_SUFFIX)] if grow else method
         try:
             alpha, secs = run_model(model, im)
+            if grow:
+                t1 = time.time()
+                alpha = grow_to_plant(bgr, alpha)
+                secs += time.time() - t1
         except Exception as exc:                        # a missing model must not kill the run
-            rows.append({"model": model, "error": str(exc)[:120]})
+            rows.append({"model": method, "error": str(exc)[:120]})
             continue
         gk = float((src_green & alpha).sum() / max(1, src_green.sum()))
         tk = float((src_thin & alpha).sum() / max(1, src_thin.sum()))
         sk = float(alpha.mean())
-        rows.append({"model": model, "green_kept": round(gk, 3), "thin_kept": round(tk, 3),
+        rows.append({"model": method, "green_kept": round(gk, 3), "thin_kept": round(tk, 3),
                      "frame_kept": round(sk, 3), "pieces": pieces(alpha),
                      "seconds": round(secs, 1)})
         shown = np.array(im).copy()
@@ -114,6 +164,24 @@ def diagnose(src: pathlib.Path, label: str) -> dict:
     strip = np.hstack([cv2.resize(s, (int(s.shape[1] * h / s.shape[0]), h)) for s in strips])
     Image.fromarray(strip).save(OUT / f"{label}-models.jpg", quality=86)
     return {"photo": label, "source": str(src.relative_to(ROOT)), "rows": rows}
+
+
+def pilot() -> list[tuple[str, str]]:
+    """One photograph per pilot species -- the gallery's leading distinct option.
+
+    `--pinned` covers only what the owner has picked, and pine has no pick: its one
+    candidate with a verdict was REJECTED. A comparison that silently omits a species is a
+    comparison of four species.
+    """
+    import review_gallery
+    out = []
+    for d in sorted((ROOT / "evidence" / "candidates").iterdir()):
+        if not (d.is_dir() and (d / "candidates.json").exists()):
+            continue
+        opts, _ = review_gallery.distinct_three(d.name, want=1)
+        if opts:
+            out.append((d.name, opts[0]["photo_id"]))
+    return out
 
 
 def pinned() -> list[tuple[str, str]]:
@@ -140,6 +208,8 @@ def main() -> int:
     a.add_argument("--species")
     a.add_argument("--photo")
     a.add_argument("--pinned", action="store_true")
+    a.add_argument("--pilot", action="store_true",
+                   help="the leading distinct option of every species with candidates")
     a.add_argument("--self-test", action="store_true")
     args = a.parse_args()
     if args.self_test:
@@ -152,10 +222,12 @@ def main() -> int:
             print(("PASS  " if c else "FAIL  ") + l); good &= bool(c)
         print("\n" + ("ALL SELF-TESTS PASSED" if good else "SELF-TESTS FAILED"))
         return 0 if good else 1
-    jobs = pinned() if args.pinned else ([(args.species, args.photo)]
-                                         if args.species and args.photo else [])
+    jobs = (pilot() if args.pilot else pinned() if args.pinned else
+            ([(args.species, args.photo)] if args.species and args.photo else []))
+    if args.pilot and args.pinned:
+        jobs = sorted(set(pilot()) | set(pinned()))
     if not jobs:
-        a.error("give --species and --photo, or --pinned")
+        a.error("give --species and --photo, or --pinned, or --pilot")
     report = []
     for sp, pid in jobs:
         src = find_source(sp, pid)
