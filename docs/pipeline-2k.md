@@ -50,9 +50,23 @@ preserves them *before* it commits, and a verification step fails the job if any
 shortlisted original is missing, unhashed, or does not match its recorded hash. A retry or
 a later session finds the three originals, their provenance and their hashes already there.
 
-Until a bucket is chosen (§7) the durable store is the repository itself. At the pilot's
-measured 8 MB per species in flight that is comfortable; it is not the answer at 2,000, and
-§7 is the decision that replaces it.
+**The repository is the interim fallback, not the destination.** Committing originals keeps
+CI durable and recreates the growth it was meant to solve: 8 MB a species in flight is 16 GB
+of git at 2,000, and git keeps every version forever — this repo already carries 1.41 GB of
+photo blobs across 963 versions from the pool-in-git era.
+
+`scripts/asset_store.py` is the destination. The split is the whole design:
+
+* **in git** — `evidence/assets.json`: for every asset its sha256, size, species, photo id,
+  licence, photographer, source URL, which backend holds it and under what key. Text,
+  diffable, a few hundred bytes an asset. This is the half that cannot be regenerated.
+* **outside git** — the bytes.
+
+An asset is identified by the sha256 of its contents, so a re-upload of identical bytes is
+a no-op, a corrupted download is detectable, and the index can be checked against the store
+without either being authoritative about the other. The candidates workflow uploads when a
+backend is configured and falls back to committing with a loud warning when none is — losing
+the originals is worse than committing them, so the fallback does not fail the job.
 
 ## 3. "Three distinct originals" — what distinct means
 
@@ -164,6 +178,10 @@ deciding factor. What differs is how it is reached.
 | **Backblaze B2** | $0 (10 GB free, then $0.006/GB-mo) | S3 API, one key | web UI |
 | **Dropbox** | $0 only if an existing paid plan has room; 2 GB free tier does not fit | OAuth app + refresh token, more moving parts | **yes, natively in Finder** |
 | Supabase Storage | ~$0.08/mo beyond the 1 GB free tier | already configured in this project | web UI |
+
+Both are implemented behind one interface and neither is configured. R2 needs four
+repository secrets (`PLANTDEX_ASSET_ENDPOINT`, `_BUCKET`, `_KEY_ID`, `_SECRET`) and boto3;
+Dropbox needs one (`PLANTDEX_DROPBOX_TOKEN`) and no dependency.
 
 **Recommendation: Dropbox if you want to open the archive like a folder, R2 otherwise.**
 Dropbox's advantage is real and not technical — an art director flipping through approved

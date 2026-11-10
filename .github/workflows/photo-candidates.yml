@@ -60,6 +60,34 @@ jobs:
             --species "${{ inputs.species || 'matricaria_chamomilla' }}" \
             --top "${{ inputs.top || '3' }}"
 
+      # THE EXTERNAL STORE IS THE DESTINATION; THE COMMIT BELOW IS AN INTERIM FALLBACK.
+      # Committing originals keeps CI durable and recreates the growth it was meant to
+      # solve -- 8 MB a species in flight is 16 GB of git at 2,000, and git keeps every
+      # version forever. So when a backend is configured the bytes go there and only the
+      # index comes back; with no backend configured the step says so and the fallback
+      # carries the pilot. It does NOT fail the job: losing the originals is worse than
+      # committing them.
+      - name: Upload the shortlisted assets to the durable store
+        env:
+          PLANTDEX_ASSET_ENDPOINT: ${{ secrets.PLANTDEX_ASSET_ENDPOINT }}
+          PLANTDEX_ASSET_BUCKET: ${{ secrets.PLANTDEX_ASSET_BUCKET }}
+          PLANTDEX_ASSET_KEY_ID: ${{ secrets.PLANTDEX_ASSET_KEY_ID }}
+          PLANTDEX_ASSET_SECRET: ${{ secrets.PLANTDEX_ASSET_SECRET }}
+          PLANTDEX_DROPBOX_TOKEN: ${{ secrets.PLANTDEX_DROPBOX_TOKEN }}
+        run: |
+          SP="${{ inputs.species || 'matricaria_chamomilla' }}"
+          if [ -n "$PLANTDEX_ASSET_KEY_ID" ]; then
+            pip install --quiet boto3
+            python3 scripts/asset_store.py --species "$SP" --put --backend r2
+          elif [ -n "$PLANTDEX_DROPBOX_TOKEN" ]; then
+            python3 scripts/asset_store.py --species "$SP" --put --backend dropbox
+          else
+            echo "::warning::No durable asset backend configured. The shortlisted originals"
+            echo "::warning::are being committed to git as an INTERIM fallback. Configure"
+            echo "::warning::R2 or Dropbox secrets before scaling past the pilot."
+            python3 scripts/asset_store.py --species "$SP" --plan
+          fi
+
       # DURABLE BEFORE THE RUNNER DIES, NOT AFTER. The shortlisted originals are the one
       # artefact that cannot be regenerated from anything else in the tree: the cutout and
       # the card are derived from them, the 96-photo pool is thrown away at the end of this
@@ -106,7 +134,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add evidence/candidates evidence/photos
+          git add evidence/candidates evidence/photos evidence/assets.json
           # NOT `git diff --staged --quiet && exit 0`: the step runs under `bash -e`, the
           # diff returns 1 when there IS something to commit, and a failing `&&` chain as a
           # statement is exactly what -e kills the job for.

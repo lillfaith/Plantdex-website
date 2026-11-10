@@ -49,9 +49,13 @@ WORK = 1200
 
 # The candidates to compare. `birefnet-general` is the full model the `-lite` in use is a
 # distillation of, and is the first thing to try if the hypothesis above is right.
+# BIREFNET LITE IS THE BASELINE AND STAYS THE BASELINE. The four-model comparison settled
+# that question: lite, full, u2net and isnet all discard the same foliage, so there is
+# nothing to gain by swapping and 2.5x the runtime to lose. What is still open is whether
+# the seeded grow is an improvement, so the default compares exactly that pair.
 MODELS = os.environ.get(
     "PLANTDEX_DIAGNOSE_MODELS",
-    "birefnet-general-lite,birefnet-general,isnet-general-use,u2net",
+    "birefnet-general-lite,birefnet-general-lite+grow",
 ).split(",")
 
 # A method is a model plus an optional post-step. `+grow` runs the seeded region grow below
@@ -130,39 +134,117 @@ def run_model(model: str, im: Image.Image) -> tuple[np.ndarray, float]:
     return np.array(out.getchannel("A")) > 127, time.time() - t0
 
 
+def contamination(bgr: np.ndarray, base: np.ndarray, grown: np.ndarray) -> dict:
+    """What the grow ADDED, and how much of it looks like background rather than plant.
+
+    RETENTION ALONE IS THE WRONG TARGET AND OPTIMISING IT WOULD BE EASY AND WRONG: a mask
+    that keeps everything scores 1.000 on green_kept and is a photograph, not a cutout. So
+    every recovered pixel is also asked what it is.
+
+      recovered_share   -- recovered pixels as a share of the baseline mask. The size of
+                           the claim being made.
+      recovered_green   -- of the recovered pixels, how many are foliage-coloured. Low is
+                           the alarm: the grow has pulled in fence, soil or sky.
+      recovered_edge    -- how much of the recovery sits in the outer 2% of the frame.
+                           Background runs to the edge; a plant usually does not.
+      grown_solidity    -- the grown mask's fill of its own bounding box. Rising toward 1
+                           is the rectangle-of-vegetation failure the pipeline already
+                           rejects elsewhere.
+    """
+    rec = grown & ~base
+    if not rec.any():
+        return {"recovered_share": 0.0, "recovered_green": None, "recovered_edge": 0.0,
+                "grown_solidity": round(float(grown.mean()), 3)}
+    g = masks(bgr)["green"]
+    h, w = rec.shape
+    bx, by = max(1, int(w * 0.02)), max(1, int(h * 0.02))
+    border = np.zeros_like(rec)
+    border[:by, :] = border[-by:, :] = border[:, :bx] = border[:, -bx:] = True
+    ys, xs = np.nonzero(grown)
+    box = max(1, (ys.max() - ys.min() + 1) * (xs.max() - xs.min() + 1)) if len(ys) else 1
+    return {"recovered_share": round(float(rec.sum() / max(1, base.sum())), 3),
+            "recovered_green": round(float((rec & g).sum() / rec.sum()), 3),
+            "recovered_edge": round(float((rec & border).sum() / rec.sum()), 3),
+            "grown_solidity": round(float(grown.sum() / box), 3)}
+
+
+def on_grey(rgb: np.ndarray, alpha: np.ndarray) -> np.ndarray:
+    out = rgb.copy()
+    out[~alpha] = (128, 128, 128)
+    return out
+
+
+def recovery_map(rgb: np.ndarray, base: np.ndarray, grown: np.ndarray) -> np.ndarray:
+    """What the baseline had, what the grow added, and what neither kept -- in one picture.
+
+    Kept-by-baseline stays as the photograph. RECOVERED is tinted magenta, which is the one
+    hue no plant in this deck wears, so a recovered pixel can never be mistaken for a leaf
+    that was always there. Everything else is flattened to grey.
+    """
+    out = on_grey(rgb, grown)
+    rec = grown & ~base
+    tint = out[rec].astype(np.float32)
+    tint[:, 0] = np.minimum(255, tint[:, 0] * 0.55 + 255 * 0.45)
+    tint[:, 2] = np.minimum(255, tint[:, 2] * 0.55 + 200 * 0.45)
+    out[rec] = tint.astype(np.uint8)
+    return out
+
+
+def label_strip(panes: list[tuple[str, np.ndarray]]) -> np.ndarray:
+    import cv2
+    h = min(p.shape[0] for _, p in panes)
+    resized = [cv2.resize(p, (int(p.shape[1] * h / p.shape[0]), h)) for _, p in panes]
+    strip = np.hstack(resized)
+    x = 0
+    for (name, _), r in zip(panes, resized):
+        cv2.rectangle(strip, (x, 0), (x + r.shape[1], 34), (20, 18, 26), -1)
+        cv2.putText(strip, name, (x + 10, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.62,
+                    (245, 243, 240), 1, cv2.LINE_AA)
+        x += r.shape[1]
+    return strip
+
+
 def diagnose(src: pathlib.Path, label: str) -> dict:
     im = Image.open(src).convert("RGB")
     im.thumbnail((WORK, WORK), Image.LANCZOS)
-    bgr = cv2.cvtColor(np.array(im), cv2.COLOR_RGB2BGR)
+    rgb = np.array(im)
+    bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
     m = masks(bgr)
     src_green = m["green"]
     src_thin = thin(src_green)
-    rows, strips = [], [np.array(im)]
+
+    rows, panes, alphas = [], [("source", rgb)], {}
     for method in MODELS:
         grow = method.endswith(GROW_SUFFIX)
         model = method[:-len(GROW_SUFFIX)] if grow else method
         try:
-            alpha, secs = run_model(model, im)
+            if model in alphas:
+                alpha, secs = alphas[model], 0.0
+            else:
+                alpha, secs = run_model(model, im)
+                alphas[model] = alpha
+            base = alpha
             if grow:
                 t1 = time.time()
-                alpha = grow_to_plant(bgr, alpha)
+                alpha = grow_to_plant(bgr, base)
                 secs += time.time() - t1
         except Exception as exc:                        # a missing model must not kill the run
             rows.append({"model": method, "error": str(exc)[:120]})
             continue
-        gk = float((src_green & alpha).sum() / max(1, src_green.sum()))
-        tk = float((src_thin & alpha).sum() / max(1, src_thin.sum()))
-        sk = float(alpha.mean())
-        rows.append({"model": method, "green_kept": round(gk, 3), "thin_kept": round(tk, 3),
-                     "frame_kept": round(sk, 3), "pieces": pieces(alpha),
-                     "seconds": round(secs, 1)})
-        shown = np.array(im).copy()
-        shown[~alpha] = (128, 128, 128)
-        strips.append(shown)
+        row = {"model": method,
+               "green_kept": round(float((src_green & alpha).sum() / max(1, src_green.sum())), 3),
+               "thin_kept": round(float((src_thin & alpha).sum() / max(1, src_thin.sum())), 3),
+               "frame_kept": round(float(alpha.mean()), 3),
+               "pieces": pieces(alpha), "seconds": round(secs, 1)}
+        if grow:
+            row.update(contamination(bgr, base, alpha))
+        rows.append(row)
+        panes.append((method, on_grey(rgb, alpha)))
+        if grow:
+            panes.append((f"recovered by {method}", recovery_map(rgb, base, alpha)))
+
     OUT.mkdir(parents=True, exist_ok=True)
-    h = min(s.shape[0] for s in strips)
-    strip = np.hstack([cv2.resize(s, (int(s.shape[1] * h / s.shape[0]), h)) for s in strips])
-    Image.fromarray(strip).save(OUT / f"{label}-models.jpg", quality=86)
+    Image.fromarray(label_strip(panes)).save(OUT / f"{label}-models.jpg", quality=86)
     return {"photo": label, "source": str(src.relative_to(ROOT)), "rows": rows}
 
 
@@ -240,9 +322,15 @@ def main() -> int:
             if "error" in row:
                 print(f"   {row['model']:24} ERROR {row['error']}")
             else:
-                print(f"   {row['model']:24} green_kept={row['green_kept']:.3f} "
-                      f"thin_kept={row['thin_kept']:.3f} frame={row['frame_kept']:.3f} "
-                      f"pieces={row['pieces']} {row['seconds']}s")
+                line = (f"   {row['model']:28} green={row['green_kept']:.3f} "
+                        f"thin={row['thin_kept']:.3f} frame={row['frame_kept']:.3f} "
+                        f"pieces={row['pieces']}")
+                if "recovered_share" in row:
+                    line += (f"\n      recovered +{row['recovered_share']:.3f} of the mask, "
+                             f"{row['recovered_green']} of it green, "
+                             f"{row['recovered_edge']} at the frame edge, "
+                             f"solidity {row['grown_solidity']}")
+                print(line)
         report.append(r)
     (OUT / "model-comparison.json").write_text(json.dumps(report, indent=2) + "\n")
     print(f"\n{OUT / 'model-comparison.json'}")
