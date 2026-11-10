@@ -33,13 +33,26 @@ never leave the runner except as the three that survive.
 | Decision history (`human-decisions.json`) | git | forever, append-only |
 | Processing status | git (JSON) | forever |
 | 96 retrieved originals | CI runner tmp | one job |
-| **3 shortlisted originals** | durable archive | **until the card is approved — never discarded early** |
+| **3 shortlisted originals** | durable store, written **inside the job that made them** | **until the card is approved — never discarded early** |
 | Approved original, cutout, rendered card | durable archive | forever |
 | Review gallery images | git (small JPEG) | until superseded |
 
 Rule 8 of the brief, restated as the thing the layout enforces: **text and image bytes never
 share a store.** Every JSON file above is readable, diffable and small; no binary over
 ~200 KB is committed except a gallery sheet.
+
+### Durability is a step in the job, not a later tidy-up
+
+The shortlisted originals are the one artefact nothing else can regenerate: the cutout and
+the card are derived from them, the 96-photo pool is discarded at the end of the same job,
+and the runner's disk does not outlive it. So `photo-candidates.yml` now hashes and
+preserves them *before* it commits, and a verification step fails the job if any
+shortlisted original is missing, unhashed, or does not match its recorded hash. A retry or
+a later session finds the three originals, their provenance and their hashes already there.
+
+Until a bucket is chosen (§7) the durable store is the repository itself. At the pilot's
+measured 8 MB per species in flight that is comfortable; it is not the answer at 2,000, and
+§7 is the decision that replaces it.
 
 ## 3. "Three distinct originals" — what distinct means
 
@@ -48,8 +61,11 @@ Distinctness is checked in this order, and each rule exists because of a case al
 1. **One photograph per observation.** Elderberry's current shortlist offers 424182823 and
    424182835 as separate options; they are the same observation, same day, same place in
    Mississauga — two photographs of one plant. That is one option, not two.
-2. **One photograph per photographer per species**, where provenance names one. Three
-   frames of the same specimen from one visit is one angle on one plant.
+2. **A different photographer is preferred, not required.** One contributor often uploads
+   the best several photographs of a species — different specimens, different growth stages
+   — and a hard rule throws those away for a tidiness nobody asked for. A same-photographer
+   candidate is taken only after every distinct-photographer one has been, and the gallery
+   marks which options share a contributor.
 3. **Perceptual distance.** A difference hash over the downscaled source, rejecting any
    candidate within a small Hamming radius of one already chosen, which catches near
    duplicates uploaded as separate observations.
@@ -77,12 +93,21 @@ and was invisible at contact-sheet size.
 
 The gallery writes one row per species. Four verdicts, all append-only, all revisable:
 
+**Choosing the photograph and approving the card are two decisions**, made at different
+times on different evidence, and they can disagree: the right photograph can still render
+into a card that does not work, and rendering is how you find that out. Collapsing them
+would make every photo pick a silent sign-off on art nobody has seen.
+
 | Verdict | Effect |
 |---|---|
-| `approved` | render, archive, discard the two alternatives, species done |
-| `preferred` | pin as leader, keep all three, card not signed off |
+| `photo_selected` | **triggers segmentation and rendering. Approves no artwork.** The species stays under review; all three originals are still held. |
+| `card_approved` | signs off the RENDERED CARD. Only this reaches `HUMAN_APPROVED`, archives the card, and releases the two alternatives. |
+| `preferred` | a leaning short of a selection: pin it, render nothing |
 | `rejected` (one option) | that photograph is never offered again, the other two stand |
 | `more_options` | re-run retrieval for this species EXCLUDING every id ever rejected |
+
+`approved` is the legacy spelling of `card_approved`: still read, no longer offered, because
+a verdict already in the ledger may never be rewritten.
 
 A retry is not a re-run of the same thing: `photo_pipeline.py` already excludes rejected ids
 from the pool, so "more options" genuinely offers new photographs or reports that the CC0
@@ -96,19 +121,31 @@ person or not at all.
 
 ## 6. Storage and cost, measured
 
-Per species, from the five species with real shortlists:
+**Measured on the pilot — five species, three options each — not projected.**
 
 | | measured |
 |---|---|
 | Retrieved pool (discarded) | 194 MB |
-| Three shortlisted originals (held) | 4.8 MB |
-| Archive after approval (original + cutout + card) | **2.53 MB** |
+| 3 shortlisted originals | 3.69 MB |
+| 3 cutouts | 3.33 MB |
+| 3 card renders | 0.75 MB |
+| Manifest + gates + candidate JSON | 0.26 MB |
+| **Working set per species in flight** | **8.03 MB** |
+| **Archive after approval** (1 original + 1 cutout + 1 card + JSON) | **2.85 MB** |
 
-| Scale | Durable archive | In flight (3 originals × batch) | Vision |
+Pilot total on disk: **50.5 MB** for five species, which includes 1.6 MB of shared review
+sheets, 6.7 MB of three-stage strips and 2.1 MB of segmentation diagnostics — the last of
+which is deletable once the model question is settled.
+
+| Scale | Archive | In flight | Vision |
 |---|---|---|---|
-| 5 species (pilot) | 13 MB | 24 MB | $0.25 |
-| 100 species | 0.25 GB | 0.38 GB | $5 |
-| 2,000 species | **5.1 GB** | bounded by batch size, not catalogue | **~$101** |
+| 5 species (pilot) | 14 MB | 40 MB | $0.25 |
+| 100 species | 0.29 GB | 0.80 GB | $5 |
+| 2,000 species | **5.7 GB** | bounded by batch, not catalogue | **~$101** |
+
+An earlier draft of this document said 2.53 MB per species and 5.1 GB at 2,000. That figure
+was the ARCHIVE only and was quietly standing in for the working set, which is three times
+larger while a species is in review. Both numbers are above, named.
 
 In-flight storage is bounded by how many species are awaiting review at once, not by the
 catalogue: a 25-species review batch holds ~95 MB.

@@ -349,9 +349,13 @@ def evaluate(species: str) -> dict:
         # failure quietly rejecting the one photograph he asked to keep looking at.
         if human and human.get("decision") == "rejected":
             status = "REJECTED"
-        elif human and human.get("decision") == "approved":
+        elif human and human.get("decision") in decisions.CARD_APPROVALS:
             status = "HUMAN_APPROVED"
-        elif human and human.get("decision") in ("preferred", "alternative"):
+        elif human and human.get("decision") in ("preferred", "alternative",
+                                                 "photo_selected"):
+            # SELECTING THE PHOTOGRAPH IS NOT APPROVING THE CARD. A selection sends the
+            # candidate to be segmented and rendered; the card it produces is a separate
+            # judgement, and until that judgement exists the species is under review.
             status = "NEEDS_REVIEW"
         elif hard:
             status = "REJECTED"
@@ -365,7 +369,10 @@ def evaluate(species: str) -> dict:
                     "vision_source": (v or {}).get("source", "none"),
                     "genuine_api_vision": bool(v and v.get("source") == "vision"),
                     "human_decision": human, "hard_failures": hard, "soft_notes": soft,
-                    "owner_preferred": bool(human and human.get("decision") == "preferred"),
+                    "owner_selected": bool(human and
+                                           human.get("decision") == "photo_selected"),
+                    "owner_preferred": bool(human and human.get("decision")
+                                            in ("preferred", "photo_selected")),
                     "owner_alternative": bool(human and
                                               human.get("decision") == "alternative")})
     # STABLE: the owner's leader first, then the alternative he named, then the ranking.

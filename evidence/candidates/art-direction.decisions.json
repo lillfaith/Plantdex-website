@@ -1,8 +1,9 @@
 {
   "_how": "Set decision per species. Then: python3 scripts/review_gallery.py --record FILE",
   "_decisions": {
-    "approve": "choose ONE option by photo_id; the card is yours to sign off",
-    "prefer": "pin ONE option as the leader without signing off the card",
+    "select_photo": "choose ONE option by photo_id. This triggers segmentation and rendering and approves NO artwork.",
+    "approve_card": "sign off the RENDERED CARD for the photo_id given. Separate decision, made after looking at the render.",
+    "prefer": "a leaning, short of a selection: pin it without triggering a render",
     "reject": "list photo_ids never to offer again; the rest stand",
     "more_options": "re-run retrieval for this species, excluding every rejected id",
     "open": "changes nothing"
@@ -82,7 +83,9 @@
         "143588661",
         "21260078"
       ],
-      "notes": []
+      "notes": [
+        "44345492: SEGMENTATION: straight alpha edges (rows 0.0, cols 0.182); an uncut re"
+      ]
     }
   ]
 }

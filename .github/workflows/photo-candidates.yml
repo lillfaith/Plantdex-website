@@ -60,6 +60,44 @@ jobs:
             --species "${{ inputs.species || 'matricaria_chamomilla' }}" \
             --top "${{ inputs.top || '3' }}"
 
+      # DURABLE BEFORE THE RUNNER DIES, NOT AFTER. The shortlisted originals are the one
+      # artefact that cannot be regenerated from anything else in the tree: the cutout and
+      # the card are derived from them, the 96-photo pool is thrown away at the end of this
+      # job, and a runner's disk does not survive it. So retention runs HERE -- it hashes
+      # every shortlisted original, records the hash in the manifest, and refuses to delete
+      # anything if one is missing -- and the commit below carries evidence/photos as well
+      # as evidence/candidates. A retry or a later session finds the three originals, their
+      # provenance and their hashes already in the repository.
+      - name: Preserve the shortlisted originals and their provenance
+        run: |
+          python3 scripts/retain_assets.py \
+            --species "${{ inputs.species || 'matricaria_chamomilla' }}" --apply
+
+      - name: Verify every shortlisted original survived before committing
+        run: |
+          python3 - <<'EOF'
+          import json, hashlib, pathlib, sys
+          sp = "${{ inputs.species || 'matricaria_chamomilla' }}"
+          cand = json.loads(pathlib.Path(f"evidence/candidates/{sp}/candidates.json").read_text())
+          mf = pathlib.Path(f"evidence/photos/{sp}/photos.json")
+          prov = {str(e["photo_id"]): e for e in json.loads(mf.read_text())["photos"]}
+          bad = []
+          for row in cand.get("selected", []):
+              pid = str(row["photo_id"])
+              e = prov.get(pid)
+              f = mf.parent / (e or {}).get("file", "")
+              if not e:
+                  bad.append(f"{pid}: no provenance entry")
+              elif not f.exists():
+                  bad.append(f"{pid}: original missing from disk")
+              elif e.get("sha256") != hashlib.sha256(f.read_bytes()).hexdigest():
+                  bad.append(f"{pid}: hash does not match the manifest")
+          for b in bad:
+              print(f"::error::{b}")
+          print(f"{len(cand.get('selected', []))} shortlisted original(s) checked")
+          sys.exit(1 if bad else 0)
+          EOF
+
       # PUSH AFTER REBASING, AND RETRY. Run 7 of this workflow did all the work and then
       # threw it away: the branch had moved on while BiRefNet was segmenting, so the push
       # was a non-fast-forward and the previews were lost with it. Two runs of this workflow
@@ -68,7 +106,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add evidence/candidates
+          git add evidence/candidates evidence/photos
           # NOT `git diff --staged --quiet && exit 0`: the step runs under `bash -e`, the
           # diff returns 1 when there IS something to commit, and a failing `&&` chain as a
           # statement is exactly what -e kills the job for.

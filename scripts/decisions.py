@@ -16,14 +16,19 @@ the previous reading is still readable afterwards -- which is the part that matt
 the reason a candidate was once rejected is evidence about the species even after the
 verdict changes.
 
-Three decision values, and the third exists because "I prefer this one" is not "I approve
-this card":
+CHOOSING THE PHOTOGRAPH AND APPROVING THE CARD ARE TWO DECISIONS, AND THE LEDGER KEEPS THEM
+APART. They happen at different times, on different evidence, and they can disagree: the
+right photograph can still render into a card that does not work, and the whole point of
+rendering is to find that out. Collapsing them would make every photo pick a silent sign-off
+on art nobody has seen yet.
+
+  photo_selected -- the owner picks this photograph. It TRIGGERS segmentation and rendering,
+                and it approves no artwork. Stays NEEDS_REVIEW until the card is judged.
+  card_approved  -- the owner signs off the RENDERED CARD. Only this reaches
+                HUMAN_APPROVED, and only this ends the species' review.
   rejected   -- never use this photograph. Final: gates.py makes it REJECTED.
-  approved   -- the owner approves this card. gates.py makes it HUMAN_APPROVED.
-  preferred  -- pin this candidate as the leader and keep it out of the rejected pile, but
-                do NOT call it approved. It stays NEEDS_REVIEW. This is what "keep it as my
-                preferred candidate" means, and collapsing it into `approved` would quietly
-                promote a photograph the owner has not signed off on.
+  preferred  -- a leaning, short of a selection: pin it without triggering a render.
+  alternative -- the one kept in view behind the leader.
   alternative -- the second one he wants kept in view. Also NEEDS_REVIEW, ranked below the
                 preferred candidate and above everything unjudged. It exists because he
                 named one, and folding it into `preferred` would lose which of the two he
@@ -38,7 +43,14 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PATH = ROOT / "evidence" / "human-decisions.json"
-VALUES = ("approved", "rejected", "preferred", "alternative")
+VALUES = ("photo_selected", "card_approved", "approved", "rejected", "preferred",
+          "alternative")
+
+# `approved` is the legacy spelling of `card_approved` and is read as one everywhere. It is
+# kept because a verdict already in the ledger may never be rewritten, and dropped from the
+# vocabulary a reviewer is offered so nothing new is recorded under it.
+OFFERED = ("photo_selected", "card_approved", "rejected", "preferred", "alternative")
+CARD_APPROVALS = ("card_approved", "approved")
 
 
 def _migrate(raw: dict) -> dict:
@@ -83,10 +95,21 @@ def preferred_ids() -> set[str]:
     return {p for p, v in current().items() if v.get("decision") == "preferred"}
 
 
+def selected_ids() -> set[str]:
+    """Photographs the owner has CHOSEN -- these are what gets segmented and rendered."""
+    return {p for p, v in current().items() if v.get("decision") == "photo_selected"}
+
+
+def card_approved_ids() -> set[str]:
+    """Photographs whose rendered card the owner has signed off."""
+    return {p for p, v in current().items() if v.get("decision") in CARD_APPROVALS}
+
+
 def kept_ids() -> set[str]:
     """Everything the owner asked to keep in view, whichever rank he gave it."""
     return {p for p, v in current().items()
-            if v.get("decision") in ("preferred", "alternative", "approved")}
+            if v.get("decision") in ("preferred", "alternative", "photo_selected")
+            or v.get("decision") in CARD_APPROVALS}
 
 
 def record(photo_id: str | int, species: str, decision: str, reason: str, *,
@@ -151,6 +174,16 @@ def self_test() -> int:
         checks.append((current()["3"]["decision"] == "preferred"
                        and "3" not in rejected_ids() and "3" in preferred_ids(),
                        "CONTROL: preferred is neither an approval nor a rejection"))
+        # CONTROL: selecting a photograph must not approve a card.
+        record("5", "s", "photo_selected", "this is the photograph")
+        checks.append((current()["5"]["decision"] == "photo_selected"
+                       and "5" in selected_ids() and "5" not in card_approved_ids(),
+                       "CONTROL: photo_selected is a selection, never a card approval"))
+        record("6", "s", "card_approved", "the rendered card is right")
+        checks.append(("6" in card_approved_ids() and "6" not in selected_ids(),
+                       "card_approved is its own, separate verdict"))
+        checks.append(("approved" in CARD_APPROVALS and "approved" not in OFFERED,
+                       "CONTROL: the legacy `approved` is still READ and no longer OFFERED"))
         record("4", "s", "alternative", "the other one worth keeping")
         checks.append((current()["4"]["decision"] == "alternative"
                        and "4" not in preferred_ids() and "4" in kept_ids()

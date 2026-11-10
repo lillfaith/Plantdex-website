@@ -51,7 +51,7 @@ PHOTOS = ROOT / "evidence" / "photos"
 CANDS = ROOT / "evidence" / "candidates"
 # Verdicts whose source photograph is kept for good. `rejected` is deliberately absent:
 # the DECISION is permanent and lives in the ledger, the bytes are not needed again.
-KEEP_VERDICTS = ("approved", "preferred", "alternative")
+KEEP_VERDICTS = ("photo_selected", "card_approved", "approved", "preferred", "alternative")
 
 
 def sha256(path: pathlib.Path) -> str:
@@ -162,8 +162,9 @@ def self_test() -> int:
     # CONTROL: a rejected photograph is not a keeper, and the owner's own picks are.
     checks.append(("rejected" not in KEEP_VERDICTS,
                    "CONTROL: a rejected photograph's bytes are not retained"))
-    checks.append((set(KEEP_VERDICTS) == {"approved", "preferred", "alternative"},
-                   "the owner's approved, preferred and alternative picks are all kept"))
+    checks.append(({"photo_selected", "card_approved", "preferred", "alternative"}
+                   <= set(KEEP_VERDICTS),
+                   "a selected, approved, preferred or alternative photograph is kept"))
     # CONTROL: the keep set must include the current shortlist, or a species awaiting
     # review loses the alternatives the review is FOR.
     names = [d.name for d in CANDS.iterdir() if (d / "candidates.json").exists()]

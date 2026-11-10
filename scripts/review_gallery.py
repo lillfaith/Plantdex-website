@@ -11,7 +11,11 @@ THREE DISTINCT ORIGINALS, AND DISTINCT IS CHECKED RATHER THAN HOPED FOR:
   1. ONE PHOTOGRAPH PER OBSERVATION. Elderberry's shortlist offered 424182823 and 424182835
      as two options; they are the same observation, same day, same place. Two frames of one
      plant from one visit is ONE option, and offering it as two quietly halves the choice.
-  2. ONE PER PHOTOGRAPHER, where provenance names one.
+  2. A DIFFERENT PHOTOGRAPHER IS PREFERRED, NOT REQUIRED. One contributor often uploads
+     the best several photographs of a species, at different growth stages and of different
+     specimens, and a hard rule throws those away to satisfy a tidiness nobody asked for.
+     So a same-photographer candidate is taken only after every distinct-photographer one
+     has been, and the gallery says which options share a contributor.
   3. PERCEPTUALLY DIFFERENT -- a difference hash over the downscaled source, rejecting any
      candidate within a small Hamming radius of one already taken. This catches the same
      specimen uploaded as two observations, which rule 1 cannot see.
@@ -134,9 +138,6 @@ def distinct_three(species: str, want: int = 3) -> tuple[list[dict], list[str]]:
         if obs and obs in seen_obs:
             notes.append(f"{pid}: same observation ({obs}) as an option already shown")
             continue
-        if who and who not in ("no rights reserved", None) and who in seen_who:
-            notes.append(f"{pid}: same photographer as an option already shown")
-            continue
         src = PHOTOS / species / row.get("file", "")
         if not (src.name and src.exists()):
             notes.append(f"{pid}: source original not retained; re-download needed")
@@ -149,7 +150,9 @@ def distinct_three(species: str, want: int = 3) -> tuple[list[dict], list[str]]:
         cut = CANDS / species / row.get("cutout", "")
         prev = CANDS / species / row.get("preview", "")
         q = seg_quality(src, cut) if cut.exists() else {"green_kept": None, "thin_kept": None}
-        taken.append({"species": species, "photo_id": pid, "src": src, "cutout": cut,
+        shared = bool(who and who not in ("no rights reserved", None) and who in seen_who)
+        taken.append({"species": species, "shared_photographer": shared,
+                      "photo_id": pid, "src": src, "cutout": cut,
                       "preview": prev, "observation": obs, "when": e.get("observed_on"),
                       "place": (e.get("place") or "")[:30], "licence": e.get("license_code"),
                       "status": st.get("status", "NEEDS_REVIEW"),
@@ -157,8 +160,19 @@ def distinct_three(species: str, want: int = 3) -> tuple[list[dict], list[str]]:
         seen_obs.add(obs); hashes.append(hv)
         if who:
             seen_who.add(who)
-        if len(taken) == want:
+        if len(taken) >= want + 2:
             break
+    # THE SOFT RULE IS APPLIED AS AN ORDERING, NOT A FILTER. Everything that passed the
+    # hard rules is still a candidate; a shared contributor only costs an option its place
+    # in the queue, so a same-photographer photograph is shown when there is room and
+    # dropped when a distinct one would otherwise be displaced.
+    taken.sort(key=lambda o: o["shared_photographer"])
+    for o in taken[want:]:
+        notes.append(f"{o['photo_id']}: held back -- shares a photographer and the three "
+                     f"slots are filled")
+    taken = taken[:want]
+    if any(o["shared_photographer"] for o in taken):
+        notes.append("some options share a photographer; distinct ones were preferred first")
     if len(taken) < want:
         notes.append(f"needs_more_options: {len(taken)} distinct option(s), wanted {want}")
     return taken, notes
@@ -215,7 +229,9 @@ def draw(rows: list[tuple[str, list[dict], list[str]]], out: pathlib.Path) -> No
                    font=font(11), fill=(160, 40, 40) if warn else DIM)
             d.text((x, ty + 30), f"obs {o['observation']}  {o['when'] or ''}",
                    font=font(10), fill=DIM)
-            d.text((x, ty + 43), f"{o['place']}  {o['licence'] or ''}",
+            d.text((x, ty + 43),
+                   f"{o['place']}  {o['licence'] or ''}"
+                   + ("  shared photographer" if o["shared_photographer"] else ""),
                    font=font(10), fill=DIM)
         y += row_h + PAD
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -226,8 +242,11 @@ def template(rows, out: pathlib.Path) -> None:
     out.write_text(json.dumps({
         "_how": "Set decision per species. Then: python3 scripts/review_gallery.py --record FILE",
         "_decisions": {
-            "approve": "choose ONE option by photo_id; the card is yours to sign off",
-            "prefer": "pin ONE option as the leader without signing off the card",
+            "select_photo": "choose ONE option by photo_id. This triggers segmentation and "
+                            "rendering and approves NO artwork.",
+            "approve_card": "sign off the RENDERED CARD for the photo_id given. Separate "
+                            "decision, made after looking at the render.",
+            "prefer": "a leaning, short of a selection: pin it without triggering a render",
             "reject": "list photo_ids never to offer again; the rest stand",
             "more_options": "re-run retrieval for this species, excluding every rejected id",
             "open": "changes nothing",
@@ -249,12 +268,16 @@ def record(path: pathlib.Path) -> int:
                                        row.get("reason") or "rejected in the art-direction gallery",
                                        by="owner, gallery", revise=bool(row.get("revise")))
             print(("  " if ok else "  -- ") + msg); changed += int(ok)
-        if dec in ("approve", "prefer") and row.get("photo_id"):
+        verdict = {"select_photo": "photo_selected", "approve_card": "card_approved",
+                   "prefer": "preferred"}.get(dec)
+        if verdict and row.get("photo_id"):
             ok, msg = decisions.record(
-                row["photo_id"], sp,
-                "approved" if dec == "approve" else "preferred",
+                row["photo_id"], sp, verdict,
                 row.get("reason", ""), by="owner, gallery", revise=bool(row.get("revise")))
             print(("  " if ok else "  -- ") + msg); changed += int(ok)
+            if ok and verdict == "photo_selected":
+                print(f"     -> segment and render {sp} #{row['photo_id']}; the CARD is a "
+                      f"separate approval")
         elif dec == "more_options":
             print(f"  {sp}: more options requested -- re-run photo-candidates for it; "
                   f"rejected ids are already excluded from the pool")
