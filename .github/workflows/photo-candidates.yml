@@ -19,6 +19,11 @@ on:
         required: true
         default: '3'
         type: string
+      discard_pool:
+        description: Delete the unselected source pool after retention (destructive)
+        required: false
+        default: 'false'
+        type: string
   push:
     branches: [claude/botanical-catalog-stage-1]
     paths:
@@ -96,10 +101,17 @@ jobs:
       # anything if one is missing -- and the commit below carries evidence/photos as well
       # as evidence/candidates. A retry or a later session finds the three originals, their
       # provenance and their hashes already in the repository.
+      # RETENTION REPORTS; IT DOES NOT DELETE UNLESS ASKED. This step ran with --apply and
+      # a push to this workflow file re-triggered the job, so CI deleted a pool the owner
+      # had explicitly asked to leave alone -- 93 of chamomile's 96 originals, restored
+      # from history afterwards. A destructive default inside a workflow that self-triggers
+      # on its own path is a loaded gun pointed at the repository; deletion is now an
+      # explicit input that defaults to false.
       - name: Preserve the shortlisted originals and their provenance
         run: |
           python3 scripts/retain_assets.py \
-            --species "${{ inputs.species || 'matricaria_chamomilla' }}" --apply
+            --species "${{ inputs.species || 'matricaria_chamomilla' }}" \
+            ${{ inputs.discard_pool == 'true' && '--apply' || '' }}
 
       - name: Verify every shortlisted original survived before committing
         run: |
