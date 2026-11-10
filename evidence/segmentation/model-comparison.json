@@ -9,7 +9,15 @@
         "thin_kept": 0.705,
         "frame_kept": 0.403,
         "pieces": 1,
-        "seconds": 16.9
+        "seconds": 16.4
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.996,
+        "thin_kept": 0.985,
+        "frame_kept": 0.515,
+        "pieces": 1,
+        "seconds": 13.3
       },
       {
         "model": "birefnet-general",
@@ -17,23 +25,53 @@
         "thin_kept": 0.599,
         "frame_kept": 0.376,
         "pieces": 1,
-        "seconds": 42.6
+        "seconds": 41.3
       },
       {
-        "model": "isnet-general-use",
-        "green_kept": 0.292,
-        "thin_kept": 0.317,
-        "frame_kept": 0.078,
+        "model": "birefnet-general+grow",
+        "green_kept": 0.996,
+        "thin_kept": 0.981,
+        "frame_kept": 0.508,
         "pieces": 1,
-        "seconds": 5.0
+        "seconds": 27.8
+      }
+    ]
+  },
+  {
+    "photo": "pinus_strobus-111407747",
+    "source": "evidence/photos/pinus_strobus/inat-111407747.jpg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.0,
+        "thin_kept": 0.0,
+        "frame_kept": 0.0,
+        "pieces": 10,
+        "seconds": 13.1
       },
       {
-        "model": "u2net",
-        "green_kept": 0.292,
-        "thin_kept": 0.317,
-        "frame_kept": 0.078,
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.84,
+        "thin_kept": 0.797,
+        "frame_kept": 0.272,
         "pieces": 1,
-        "seconds": 4.0
+        "seconds": 14.5
+      },
+      {
+        "model": "birefnet-general",
+        "green_kept": 0.598,
+        "thin_kept": 0.504,
+        "frame_kept": 0.241,
+        "pieces": 1,
+        "seconds": 27.6
+      },
+      {
+        "model": "birefnet-general+grow",
+        "green_kept": 0.861,
+        "thin_kept": 0.824,
+        "frame_kept": 0.326,
+        "pieces": 1,
+        "seconds": 29.0
       }
     ]
   },
@@ -47,7 +85,15 @@
         "thin_kept": 0.07,
         "frame_kept": 0.221,
         "pieces": 1,
-        "seconds": 12.1
+        "seconds": 13.0
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.985,
+        "thin_kept": 0.957,
+        "frame_kept": 0.861,
+        "pieces": 1,
+        "seconds": 13.2
       },
       {
         "model": "birefnet-general",
@@ -55,23 +101,15 @@
         "thin_kept": 0.095,
         "frame_kept": 0.229,
         "pieces": 1,
-        "seconds": 26.8
+        "seconds": 28.3
       },
       {
-        "model": "isnet-general-use",
-        "green_kept": 0.022,
-        "thin_kept": 0.068,
-        "frame_kept": 0.218,
+        "model": "birefnet-general+grow",
+        "green_kept": 0.986,
+        "thin_kept": 0.962,
+        "frame_kept": 0.865,
         "pieces": 1,
-        "seconds": 1.9
-      },
-      {
-        "model": "u2net",
-        "green_kept": 0.016,
-        "thin_kept": 0.042,
-        "frame_kept": 0.048,
-        "pieces": 2,
-        "seconds": 0.9
+        "seconds": 27.5
       }
     ]
   },
@@ -85,7 +123,15 @@
         "thin_kept": 0.052,
         "frame_kept": 0.229,
         "pieces": 1,
-        "seconds": 12.8
+        "seconds": 12.9
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.997,
+        "thin_kept": 0.991,
+        "frame_kept": 0.914,
+        "pieces": 1,
+        "seconds": 13.2
       },
       {
         "model": "birefnet-general",
@@ -93,23 +139,53 @@
         "thin_kept": 0.043,
         "frame_kept": 0.226,
         "pieces": 1,
+        "seconds": 27.6
+      },
+      {
+        "model": "birefnet-general+grow",
+        "green_kept": 0.997,
+        "thin_kept": 0.991,
+        "frame_kept": 0.912,
+        "pieces": 1,
+        "seconds": 28.4
+      }
+    ]
+  },
+  {
+    "photo": "taraxacum_officinale-133194303",
+    "source": "evidence/photos/taraxacum_officinale/inat-133194303.jpeg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.634,
+        "thin_kept": 0.498,
+        "frame_kept": 0.322,
+        "pieces": 1,
+        "seconds": 12.9
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.849,
+        "thin_kept": 0.734,
+        "frame_kept": 0.422,
+        "pieces": 1,
+        "seconds": 13.4
+      },
+      {
+        "model": "birefnet-general",
+        "green_kept": 0.634,
+        "thin_kept": 0.497,
+        "frame_kept": 0.322,
+        "pieces": 1,
         "seconds": 28.0
       },
       {
-        "model": "isnet-general-use",
-        "green_kept": 0.012,
-        "thin_kept": 0.039,
-        "frame_kept": 0.213,
+        "model": "birefnet-general+grow",
+        "green_kept": 0.849,
+        "thin_kept": 0.734,
+        "frame_kept": 0.422,
         "pieces": 1,
-        "seconds": 2.1
-      },
-      {
-        "model": "u2net",
-        "green_kept": 0.01,
-        "thin_kept": 0.043,
-        "frame_kept": 0.146,
-        "pieces": 1,
-        "seconds": 0.9
+        "seconds": 27.5
       }
     ]
   },
@@ -123,7 +199,15 @@
         "thin_kept": 0.202,
         "frame_kept": 0.183,
         "pieces": 1,
-        "seconds": 12.9
+        "seconds": 13.2
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.998,
+        "thin_kept": 0.979,
+        "frame_kept": 0.74,
+        "pieces": 1,
+        "seconds": 13.6
       },
       {
         "model": "birefnet-general",
@@ -131,23 +215,53 @@
         "thin_kept": 0.199,
         "frame_kept": 0.164,
         "pieces": 1,
+        "seconds": 27.5
+      },
+      {
+        "model": "birefnet-general+grow",
+        "green_kept": 0.998,
+        "thin_kept": 0.979,
+        "frame_kept": 0.721,
+        "pieces": 1,
         "seconds": 28.1
+      }
+    ]
+  },
+  {
+    "photo": "verbascum_thapsus-210580027",
+    "source": "evidence/photos/verbascum_thapsus/inat-210580027.jpeg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.318,
+        "thin_kept": 0.147,
+        "frame_kept": 0.309,
+        "pieces": 1,
+        "seconds": 13.2
       },
       {
-        "model": "isnet-general-use",
-        "green_kept": 0.228,
-        "thin_kept": 0.21,
-        "frame_kept": 0.187,
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 1.0,
+        "thin_kept": 0.988,
+        "frame_kept": 0.967,
         "pieces": 1,
-        "seconds": 2.1
+        "seconds": 13.2
       },
       {
-        "model": "u2net",
-        "green_kept": 0.233,
-        "thin_kept": 0.218,
-        "frame_kept": 0.189,
+        "model": "birefnet-general",
+        "green_kept": 0.317,
+        "thin_kept": 0.149,
+        "frame_kept": 0.308,
         "pieces": 1,
-        "seconds": 0.9
+        "seconds": 28.2
+      },
+      {
+        "model": "birefnet-general+grow",
+        "green_kept": 1.0,
+        "thin_kept": 0.988,
+        "frame_kept": 0.967,
+        "pieces": 1,
+        "seconds": 27.9
       }
     ]
   },
@@ -161,7 +275,15 @@
         "thin_kept": 0.245,
         "frame_kept": 0.138,
         "pieces": 1,
-        "seconds": 12.6
+        "seconds": 13.0
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.946,
+        "thin_kept": 0.844,
+        "frame_kept": 0.482,
+        "pieces": 1,
+        "seconds": 13.4
       },
       {
         "model": "birefnet-general",
@@ -169,23 +291,15 @@
         "thin_kept": 0.244,
         "frame_kept": 0.137,
         "pieces": 1,
-        "seconds": 27.2
+        "seconds": 28.4
       },
       {
-        "model": "isnet-general-use",
-        "green_kept": 0.0,
-        "thin_kept": 0.0,
-        "frame_kept": 0.0,
+        "model": "birefnet-general+grow",
+        "green_kept": 0.946,
+        "thin_kept": 0.844,
+        "frame_kept": 0.482,
         "pieces": 1,
-        "seconds": 2.1
-      },
-      {
-        "model": "u2net",
-        "green_kept": 0.251,
-        "thin_kept": 0.242,
-        "frame_kept": 0.133,
-        "pieces": 1,
-        "seconds": 0.9
+        "seconds": 27.9
       }
     ]
   }
