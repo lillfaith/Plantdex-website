@@ -135,7 +135,10 @@ describe('evidenceLabelFor', () => {
     // #04 Ragweed: the audit found the card's own claims outrun their evidence. The card
     // is printed and transcribed by rule, so saying so is the only correction available.
     expect(CARD_SOURCES['4']!.evidence).toBe('revise');
-    expect(evidenceLabelFor(BY_NUMBER.get(4)!)).toBe('Card needs review');
+    // `revise` IS NOT SHOWN TO A READER. It is an internal audit state; printed beside a
+    // card's references it reads as a disclaimer about the plant rather than a note about
+    // our backlog. The state itself is still there and `cardsNeedingReview()` lists it.
+    expect(evidenceLabelFor(BY_NUMBER.get(4)!)).toBeNull();
   });
 
   /**
