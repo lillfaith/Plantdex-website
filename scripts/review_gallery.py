@@ -45,6 +45,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import decisions                                      # noqa: E402
+import orient                                         # noqa: E402
 
 CANDS = ROOT / "evidence" / "candidates"
 PHOTOS = ROOT / "evidence" / "photos"
@@ -52,7 +53,7 @@ PHOTOS = ROOT / "evidence" / "photos"
 CARD_W, CARD_H = 190, 307          # the rendered card, the thing being chosen
 THUMB = 92                          # source and cutout, beside it
 COL_W = CARD_W + THUMB + 26
-TEXT = 76
+TEXT = 90
 PAD = 16
 INK, PAPER, DIM = (26, 22, 34), (247, 245, 241), (108, 104, 116)
 GREY, CHEQ = (128, 128, 128), (112, 112, 112)
@@ -150,13 +151,17 @@ def distinct_three(species: str, want: int = 3) -> tuple[list[dict], list[str]]:
         cut = CANDS / species / row.get("cutout", "")
         prev = CANDS / species / row.get("preview", "")
         q = seg_quality(src, cut) if cut.exists() else {"green_kept": None, "thin_kept": None}
+        o = orient.orientation(cut) if cut.exists() else {}
         shared = bool(who and who not in ("no rights reserved", None) and who in seen_who)
         taken.append({"species": species, "shared_photographer": shared,
                       "photo_id": pid, "src": src, "cutout": cut,
                       "preview": prev, "observation": obs, "when": e.get("observed_on"),
                       "place": (e.get("place") or "")[:30], "licence": e.get("license_code"),
                       "status": st.get("status", "NEEDS_REVIEW"),
-                      "verdict": v.get("decision", ""), **q})
+                      "verdict": v.get("decision", ""),
+                      "orient_rotate": o.get("rotate", 0),
+                      "orient_flagged": bool(o.get("flagged_for_review")),
+                      "orient_vision": bool(o.get("needs_vision", True)), **q})
         seen_obs.add(obs); hashes.append(hv)
         if who:
             seen_who.add(who)
@@ -191,7 +196,7 @@ def on_chequer(im: Image.Image, box: int) -> Image.Image:
 
 
 def draw(rows: list[tuple[str, list[dict], list[str]]], out: pathlib.Path) -> None:
-    row_h = max(CARD_H, THUMB * 2 + 8) + TEXT + 30
+    row_h = max(CARD_H, THUMB * 2 + 8) + TEXT + 44
     W = PAD + 3 * (COL_W + PAD)
     H = PAD + 44 + len(rows) * (row_h + PAD)
     sheet = Image.new("RGB", (W, H), PAPER)
@@ -227,9 +232,14 @@ def draw(rows: list[tuple[str, list[dict], list[str]]], out: pathlib.Path) -> No
             d.text((x, ty + 15),
                    f"green_kept {gk}   thin_kept {tk}" + ("   LOST STEMS?" if warn else ""),
                    font=font(11), fill=(160, 40, 40) if warn else DIM)
-            d.text((x, ty + 30), f"obs {o['observation']}  {o['when'] or ''}",
+            ori = ("ORIENTATION: flagged for review" if o["orient_flagged"]
+                   else f"ORIENTATION: rotate {o['orient_rotate']}" if o["orient_rotate"]
+                   else "orientation: for the vision pass")
+            d.text((x, ty + 30), ori, font=font(10),
+                   fill=(160, 90, 20) if o["orient_flagged"] else DIM)
+            d.text((x, ty + 43), f"obs {o['observation']}  {o['when'] or ''}",
                    font=font(10), fill=DIM)
-            d.text((x, ty + 43),
+            d.text((x, ty + 56),
                    f"{o['place']}  {o['licence'] or ''}"
                    + ("  shared photographer" if o["shared_photographer"] else ""),
                    font=font(10), fill=DIM)

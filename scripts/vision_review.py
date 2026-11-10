@@ -58,7 +58,7 @@ from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CACHE = ROOT / "evidence" / "vision-cache"
-PROMPT_VERSION = "2026-11-06.1"
+PROMPT_VERSION = "2026-11-10.1"
 MODEL = os.environ.get("PLANTDEX_VISION_MODEL", "claude-sonnet-5-5")
 SEND_EDGE = 768                # what the model sees; the questions do not need more
 CUTOUT_GROUND = (128, 128, 128)  # see _b64: a cutout needs a ground that is not black
@@ -90,6 +90,10 @@ Answer ONLY with JSON matching exactly this shape:
   "art_direction": {{"meets": true|false,
                     "composition": "branch|single_plant|clump|whole_tree|habitat_scene|close_up|other",
                     "why": "one sentence"}},
+  "orientation": {{"natural": true|false,
+                  "needed_rotation": 0|90|180|270,
+                  "base_at_bottom": true|false,
+                  "why": "one sentence"}},
   "structures_present": ["..."], "structures_absent": ["..."],
   "orientation": "front|side|back|unclear",
   "identifiable": true|false,
@@ -107,6 +111,14 @@ Rules:
   the plant itself was cut into disconnected fragments. Ignore the flat grey ground.
 - "art_direction" is about the CARD PREVIEW and the directive above. It is a PREFERENCE:
   answer it honestly but never let it change `identifiable` or `meets_brief`.
+- "orientation" is about the CARD PREVIEW, not the photograph: a plant can sit correctly in
+  its source frame and be wrong once placed. `natural` means the specimen grows the way the
+  species grows -- base or stem low, structure rising -- and `needed_rotation` is the
+  quarter turn that would fix it, anticlockwise, 0 if none is needed. Judge the GROWTH
+  HABIT, not a rule: a rosette has no stem, a branch may hang, a root specimen is
+  legitimately inverted, and a trailing vine is neither. If the species' natural
+  orientation is genuinely unclear from this image, say `natural: false` with
+  `needed_rotation: 0` and say so in `why` -- that is a flag for a person, not a guess.
 - "orientation" describes the main reproductive structure: `front` means its face is toward
   the viewer, `back` means you are looking at the underside or the receptacle.
 - A structure counts as present only if a reader could identify it; a hint of green at the
@@ -251,8 +263,12 @@ def self_test() -> int:
     c = cache_key([("S", pkg), ("P", pkg)], "prompt A")
     checks.append((c != a, "CONTROL: a different set of images produces a different key"))
     # CONTROL: the rubric must ask for all three axes by name.
-    checks.append((all(k in RUBRIC for k in ("cropping", "segmentation", "art_direction")),
-                   "the rubric asks for cropping, segmentation and art direction separately"))
+    checks.append((all(k in RUBRIC for k in ("cropping", "segmentation", "art_direction",
+                                             "orientation")),
+                   "the rubric asks cropping, segmentation, art direction and orientation "
+                   "separately"))
+    checks.append(("is about the CARD PREVIEW, not the photograph" in RUBRIC,
+                   "CONTROL: orientation is judged on the finished card, not the source"))
     # CONTROL: art direction must be told, in the rubric itself, that it cannot veto botany.
     checks.append(("never let it change" in RUBRIC,
                    "CONTROL: the rubric forbids art direction overruling identifiability"))
