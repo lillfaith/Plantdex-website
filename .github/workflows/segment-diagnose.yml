@@ -1,0 +1,58 @@
+name: Diagnose segmentation quality
+
+# Compares background-removal models on the photographs the owner pinned, and commits the
+# measurements plus a side-by-side strip per photograph. It SELECTS NOTHING and changes no
+# candidate: the output is a comparison for a person to read.
+#
+# Runs here because rembg's model weights cannot be fetched from the sandbox, and because
+# every card in the catalogue should be cut by the same model version.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/segment_diagnose.py
+      - .github/workflows/segment-diagnose.yml
+  workflow_dispatch:
+    inputs:
+      models:
+        description: Comma-separated rembg models to compare
+        required: false
+        default: birefnet-general-lite,birefnet-general,isnet-general-use,u2net
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: rembg-models-diagnose-v1
+      - name: Install
+        run: pip install --quiet rembg onnxruntime opencv-python-headless pillow numpy
+      - name: Self-test
+        run: python3 scripts/segment_diagnose.py --self-test
+      - name: Compare models on the pinned candidates
+        env:
+          PLANTDEX_DIAGNOSE_MODELS: ${{ inputs.models || 'birefnet-general-lite,birefnet-general,isnet-general-use,u2net' }}
+        run: python3 scripts/segment_diagnose.py --pinned
+      - name: Commit the comparison
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/segmentation
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Segmentation model comparison on the pinned candidates"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
