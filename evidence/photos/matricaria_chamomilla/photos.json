@@ -21,7 +21,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2022-09-22",
-      "place": "Москва, Россия, 117513",
+      "place": "\u041c\u043e\u0441\u043a\u0432\u0430, \u0420\u043e\u0441\u0441\u0438\u044f, 117513",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055411/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055411/large.jpeg",
@@ -38,7 +38,8 @@
       "identification_disagreements": 0,
       "file": "inat-232055411.jpeg",
       "bytes": 993864,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 232055418,
@@ -48,7 +49,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2022-09-22",
-      "place": "Москва, Россия, 117513",
+      "place": "\u041c\u043e\u0441\u043a\u0432\u0430, \u0420\u043e\u0441\u0441\u0438\u044f, 117513",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055418/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055418/large.jpeg",
@@ -65,7 +66,8 @@
       "identification_disagreements": 0,
       "file": "inat-232055418.jpeg",
       "bytes": 1396784,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 650137635,
@@ -92,7 +94,10 @@
       "identification_disagreements": 0,
       "file": "inat-650137635.jpg",
       "bytes": 1303692,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "sha256": "78b50aaf959d40f2b4782084b34dc8de4a3ebb7a95ac00e1029f0bf50d31710c",
+      "retained": true,
+      "retained_bytes": 1303692
     },
     {
       "photo_id": 650138623,
@@ -119,7 +124,8 @@
       "identification_disagreements": 0,
       "file": "inat-650138623.jpg",
       "bytes": 1100570,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 50423922,
@@ -146,7 +152,8 @@
       "identification_disagreements": 0,
       "file": "inat-50423922.jpeg",
       "bytes": 1363111,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 107920971,
@@ -173,7 +180,8 @@
       "identification_disagreements": 0,
       "file": "inat-107920971.jpg",
       "bytes": 880485,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 275372296,
@@ -183,7 +191,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2023-05-03",
-      "place": "Jászberény, 5100 Magyarország",
+      "place": "J\u00e1szber\u00e9ny, 5100 Magyarorsz\u00e1g",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/275372296/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/275372296/large.jpeg",
@@ -200,7 +208,8 @@
       "identification_disagreements": 0,
       "file": "inat-275372296.jpeg",
       "bytes": 3086356,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 513077738,
@@ -210,7 +219,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-05-30",
-      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "place": "\u041c\u043e\u0442\u043e\u0432\u0438\u043b\u0456\u0432\u043a\u0430, \u041a\u0438\u0457\u0432\u0441\u044c\u043a\u0430 \u043e\u0431\u043b\u0430\u0441\u0442\u044c, \u0423\u043a\u0440\u0430\u0457\u043d\u0430, 08522",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077738/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077738/large.jpg",
@@ -227,7 +236,8 @@
       "identification_disagreements": 0,
       "file": "inat-513077738.jpg",
       "bytes": 1867222,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 513077813,
@@ -237,7 +247,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-05-30",
-      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "place": "\u041c\u043e\u0442\u043e\u0432\u0438\u043b\u0456\u0432\u043a\u0430, \u041a\u0438\u0457\u0432\u0441\u044c\u043a\u0430 \u043e\u0431\u043b\u0430\u0441\u0442\u044c, \u0423\u043a\u0440\u0430\u0457\u043d\u0430, 08522",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077813/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077813/large.jpg",
@@ -254,7 +264,8 @@
       "identification_disagreements": 0,
       "file": "inat-513077813.jpg",
       "bytes": 1859481,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 421572885,
@@ -281,7 +292,8 @@
       "identification_disagreements": 0,
       "file": "inat-421572885.jpeg",
       "bytes": 1566457,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 421572897,
@@ -308,7 +320,8 @@
       "identification_disagreements": 0,
       "file": "inat-421572897.jpeg",
       "bytes": 1280179,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 511506802,
@@ -318,7 +331,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-05-27",
-      "place": "Přísečná",
+      "place": "P\u0159\u00edse\u010dn\u00e1",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/511506802/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/511506802/large.jpg",
@@ -335,7 +348,8 @@
       "identification_disagreements": 0,
       "file": "inat-511506802.jpg",
       "bytes": 3107537,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 517719208,
@@ -362,7 +376,8 @@
       "identification_disagreements": 0,
       "file": "inat-517719208.jpg",
       "bytes": 2729282,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 517719258,
@@ -389,7 +404,8 @@
       "identification_disagreements": 0,
       "file": "inat-517719258.jpg",
       "bytes": 1672260,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 517719259,
@@ -416,7 +432,8 @@
       "identification_disagreements": 0,
       "file": "inat-517719259.jpg",
       "bytes": 2324372,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 517726252,
@@ -426,7 +443,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-06-08",
-      "place": "Rákóczifalva, 5085 Magyarország",
+      "place": "R\u00e1k\u00f3czifalva, 5085 Magyarorsz\u00e1g",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/517726252/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/517726252/large.jpg",
@@ -443,7 +460,8 @@
       "identification_disagreements": 0,
       "file": "inat-517726252.jpg",
       "bytes": 2750809,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 373796900,
@@ -470,7 +488,8 @@
       "identification_disagreements": 0,
       "file": "inat-373796900.jpeg",
       "bytes": 1696535,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 195560773,
@@ -480,7 +499,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2022-05-07",
-      "place": "08272 Sant Fruitós de Bages, Barcelona, Espanya",
+      "place": "08272 Sant Fruit\u00f3s de Bages, Barcelona, Espanya",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/large.jpeg",
@@ -497,7 +516,8 @@
       "identification_disagreements": 0,
       "file": "inat-195560773.jpeg",
       "bytes": 1788663,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 91282063,
@@ -524,7 +544,8 @@
       "identification_disagreements": 0,
       "file": "inat-91282063.jpeg",
       "bytes": 1734325,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 91282083,
@@ -551,7 +572,8 @@
       "identification_disagreements": 0,
       "file": "inat-91282083.jpeg",
       "bytes": 1504748,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 91282109,
@@ -578,7 +600,8 @@
       "identification_disagreements": 0,
       "file": "inat-91282109.jpeg",
       "bytes": 1833533,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 682309814,
@@ -605,7 +628,8 @@
       "identification_disagreements": 0,
       "file": "inat-682309814.jpg",
       "bytes": 1764040,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 612855131,
@@ -615,7 +639,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2026-02-01",
-      "place": "Paraje Pavón, Provincia de Buenos Aires, Argentina",
+      "place": "Paraje Pav\u00f3n, Provincia de Buenos Aires, Argentina",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/612855131/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/612855131/large.jpg",
@@ -632,7 +656,8 @@
       "identification_disagreements": 0,
       "file": "inat-612855131.jpg",
       "bytes": 413239,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 444752236,
@@ -659,7 +684,8 @@
       "identification_disagreements": 0,
       "file": "inat-444752236.jpeg",
       "bytes": 625982,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 437028276,
@@ -686,7 +712,8 @@
       "identification_disagreements": 0,
       "file": "inat-437028276.jpeg",
       "bytes": 708487,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 322802135,
@@ -696,7 +723,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2023-09-25",
-      "place": "Münster, Germany",
+      "place": "M\u00fcnster, Germany",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802135/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802135/large.jpg",
@@ -713,7 +740,8 @@
       "identification_disagreements": 0,
       "file": "inat-322802135.jpg",
       "bytes": 847493,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 322802617,
@@ -723,7 +751,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2023-09-25",
-      "place": "Münster, Germany",
+      "place": "M\u00fcnster, Germany",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802617/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802617/large.jpg",
@@ -740,7 +768,8 @@
       "identification_disagreements": 0,
       "file": "inat-322802617.jpg",
       "bytes": 822215,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 322802145,
@@ -750,7 +779,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2023-09-25",
-      "place": "Münster, Germany",
+      "place": "M\u00fcnster, Germany",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802145/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802145/large.jpg",
@@ -767,7 +796,8 @@
       "identification_disagreements": 0,
       "file": "inat-322802145.jpg",
       "bytes": 1012442,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 322802186,
@@ -777,7 +807,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2023-09-25",
-      "place": "Münster, Germany",
+      "place": "M\u00fcnster, Germany",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802186/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802186/large.jpg",
@@ -794,7 +824,8 @@
       "identification_disagreements": 0,
       "file": "inat-322802186.jpg",
       "bytes": 1408461,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 322802142,
@@ -804,7 +835,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2023-09-25",
-      "place": "Münster, Germany",
+      "place": "M\u00fcnster, Germany",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802142/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802142/large.jpg",
@@ -821,7 +852,8 @@
       "identification_disagreements": 0,
       "file": "inat-322802142.jpg",
       "bytes": 1492874,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 632612033,
@@ -831,7 +863,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-08-31",
-      "place": "Зоопарк, 04105 Leipzig, Германия",
+      "place": "\u0417\u043e\u043e\u043f\u0430\u0440\u043a, 04105 Leipzig, \u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/632612033/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/632612033/large.jpg",
@@ -848,7 +880,8 @@
       "identification_disagreements": 0,
       "file": "inat-632612033.jpg",
       "bytes": 2720340,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 78117631,
@@ -875,7 +908,8 @@
       "identification_disagreements": 0,
       "file": "inat-78117631.jpg",
       "bytes": 1333863,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 81472570,
@@ -902,7 +936,8 @@
       "identification_disagreements": 0,
       "file": "inat-81472570.jpeg",
       "bytes": 1173457,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 81472573,
@@ -929,7 +964,8 @@
       "identification_disagreements": 0,
       "file": "inat-81472573.jpeg",
       "bytes": 1195999,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 74694772,
@@ -956,7 +992,8 @@
       "identification_disagreements": 0,
       "file": "inat-74694772.jpeg",
       "bytes": 1123235,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 74694790,
@@ -983,7 +1020,8 @@
       "identification_disagreements": 0,
       "file": "inat-74694790.jpeg",
       "bytes": 923957,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 74694806,
@@ -1010,7 +1048,8 @@
       "identification_disagreements": 0,
       "file": "inat-74694806.jpeg",
       "bytes": 929791,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 74694819,
@@ -1037,7 +1076,8 @@
       "identification_disagreements": 0,
       "file": "inat-74694819.jpeg",
       "bytes": 1060567,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 74694831,
@@ -1064,7 +1104,8 @@
       "identification_disagreements": 0,
       "file": "inat-74694831.jpeg",
       "bytes": 1983631,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 211461455,
@@ -1091,7 +1132,8 @@
       "identification_disagreements": 0,
       "file": "inat-211461455.jpg",
       "bytes": 1328561,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 73911615,
@@ -1118,7 +1160,8 @@
       "identification_disagreements": 0,
       "file": "inat-73911615.jpg",
       "bytes": 1834226,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 73911647,
@@ -1145,7 +1188,8 @@
       "identification_disagreements": 0,
       "file": "inat-73911647.jpg",
       "bytes": 1007097,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 73911603,
@@ -1172,7 +1216,8 @@
       "identification_disagreements": 0,
       "file": "inat-73911603.jpg",
       "bytes": 782250,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 73911633,
@@ -1199,7 +1244,8 @@
       "identification_disagreements": 0,
       "file": "inat-73911633.jpg",
       "bytes": 671687,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 489831993,
@@ -1226,7 +1272,8 @@
       "identification_disagreements": 0,
       "file": "inat-489831993.jpeg",
       "bytes": 1477244,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 489832060,
@@ -1253,7 +1300,8 @@
       "identification_disagreements": 0,
       "file": "inat-489832060.jpeg",
       "bytes": 1205490,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 489832117,
@@ -1280,7 +1328,8 @@
       "identification_disagreements": 0,
       "file": "inat-489832117.jpeg",
       "bytes": 1548786,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 489832186,
@@ -1307,7 +1356,8 @@
       "identification_disagreements": 0,
       "file": "inat-489832186.jpeg",
       "bytes": 1920538,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 157695614,
@@ -1334,7 +1384,8 @@
       "identification_disagreements": 0,
       "file": "inat-157695614.jpeg",
       "bytes": 977966,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 306103593,
@@ -1361,7 +1412,8 @@
       "identification_disagreements": 0,
       "file": "inat-306103593.jpeg",
       "bytes": 1738542,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 293002667,
@@ -1388,7 +1440,8 @@
       "identification_disagreements": 0,
       "file": "inat-293002667.jpeg",
       "bytes": 1516524,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 293002741,
@@ -1415,7 +1468,8 @@
       "identification_disagreements": 0,
       "file": "inat-293002741.jpeg",
       "bytes": 1785958,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 293002707,
@@ -1442,7 +1496,10 @@
       "identification_disagreements": 0,
       "file": "inat-293002707.jpeg",
       "bytes": 1299830,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "sha256": "b2d50cb3ecda67bdd05503ccebf14821da99e9b0a5261bba3042311754a4bb19",
+      "retained": true,
+      "retained_bytes": 1299830
     },
     {
       "photo_id": 297485404,
@@ -1469,7 +1526,8 @@
       "identification_disagreements": 0,
       "file": "inat-297485404.jpeg",
       "bytes": 335775,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 674132551,
@@ -1496,7 +1554,8 @@
       "identification_disagreements": 0,
       "file": "inat-674132551.jpg",
       "bytes": 2798375,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 674132630,
@@ -1523,7 +1582,8 @@
       "identification_disagreements": 0,
       "file": "inat-674132630.jpg",
       "bytes": 3316691,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 534293168,
@@ -1550,7 +1610,8 @@
       "identification_disagreements": 0,
       "file": "inat-534293168.jpg",
       "bytes": 4007502,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 540359311,
@@ -1577,7 +1638,8 @@
       "identification_disagreements": 0,
       "file": "inat-540359311.jpg",
       "bytes": 1446950,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 552837462,
@@ -1587,7 +1649,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-08-15",
-      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "place": "\u041c\u043e\u0442\u043e\u0432\u0438\u043b\u0456\u0432\u043a\u0430, \u041a\u0438\u0457\u0432\u0441\u044c\u043a\u0430 \u043e\u0431\u043b\u0430\u0441\u0442\u044c, \u0423\u043a\u0440\u0430\u0457\u043d\u0430, 08522",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837462/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837462/large.jpg",
@@ -1604,7 +1666,8 @@
       "identification_disagreements": 0,
       "file": "inat-552837462.jpg",
       "bytes": 1337898,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 552837729,
@@ -1614,7 +1677,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2025-08-15",
-      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "place": "\u041c\u043e\u0442\u043e\u0432\u0438\u043b\u0456\u0432\u043a\u0430, \u041a\u0438\u0457\u0432\u0441\u044c\u043a\u0430 \u043e\u0431\u043b\u0430\u0441\u0442\u044c, \u0423\u043a\u0440\u0430\u0457\u043d\u0430, 08522",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837729/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837729/large.jpg",
@@ -1631,7 +1694,8 @@
       "identification_disagreements": 0,
       "file": "inat-552837729.jpg",
       "bytes": 1460302,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 395372635,
@@ -1658,7 +1722,8 @@
       "identification_disagreements": 0,
       "file": "inat-395372635.jpeg",
       "bytes": 1917384,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 395372732,
@@ -1685,7 +1750,8 @@
       "identification_disagreements": 0,
       "file": "inat-395372732.jpeg",
       "bytes": 1977797,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 512748965,
@@ -1712,7 +1778,8 @@
       "identification_disagreements": 0,
       "file": "inat-512748965.jpg",
       "bytes": 3901065,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 84145859,
@@ -1739,7 +1806,8 @@
       "identification_disagreements": 0,
       "file": "inat-84145859.jpeg",
       "bytes": 660155,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 78106767,
@@ -1749,7 +1817,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2020-06-11",
-      "place": "V Kotlině, Olomouc, Olomoucký, CZ",
+      "place": "V Kotlin\u011b, Olomouc, Olomouck\u00fd, CZ",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/78106767/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/78106767/large.jpg",
@@ -1766,7 +1834,8 @@
       "identification_disagreements": 0,
       "file": "inat-78106767.jpg",
       "bytes": 1178944,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 204694390,
@@ -1776,7 +1845,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2022-06-09",
-      "place": "87-140 Chełmża, Polska",
+      "place": "87-140 Che\u0142m\u017ca, Polska",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/204694390/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/204694390/large.jpg",
@@ -1793,7 +1862,8 @@
       "identification_disagreements": 0,
       "file": "inat-204694390.jpg",
       "bytes": 3308885,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 40521770,
@@ -1820,7 +1890,8 @@
       "identification_disagreements": 0,
       "file": "inat-40521770.jpeg",
       "bytes": 2900756,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 40521775,
@@ -1847,7 +1918,8 @@
       "identification_disagreements": 0,
       "file": "inat-40521775.jpeg",
       "bytes": 1424463,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 562621252,
@@ -1874,7 +1946,8 @@
       "identification_disagreements": 0,
       "file": "inat-562621252.jpg",
       "bytes": 1717788,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 551438337,
@@ -1901,7 +1974,8 @@
       "identification_disagreements": 0,
       "file": "inat-551438337.jpg",
       "bytes": 1820541,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 551438371,
@@ -1928,7 +2002,8 @@
       "identification_disagreements": 0,
       "file": "inat-551438371.jpg",
       "bytes": 1403372,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 551438417,
@@ -1955,7 +2030,8 @@
       "identification_disagreements": 0,
       "file": "inat-551438417.jpg",
       "bytes": 1028542,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 662149674,
@@ -1982,7 +2058,8 @@
       "identification_disagreements": 0,
       "file": "inat-662149674.jpg",
       "bytes": 1875411,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 662149709,
@@ -2009,7 +2086,8 @@
       "identification_disagreements": 0,
       "file": "inat-662149709.jpg",
       "bytes": 2230617,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 662149708,
@@ -2036,7 +2114,8 @@
       "identification_disagreements": 0,
       "file": "inat-662149708.jpg",
       "bytes": 2079447,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 662149715,
@@ -2063,7 +2142,8 @@
       "identification_disagreements": 0,
       "file": "inat-662149715.jpg",
       "bytes": 2050493,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 21684003,
@@ -2090,7 +2170,8 @@
       "identification_disagreements": 0,
       "file": "inat-21684003.jpg",
       "bytes": 1431886,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 21684012,
@@ -2117,7 +2198,8 @@
       "identification_disagreements": 0,
       "file": "inat-21684012.jpg",
       "bytes": 1487381,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 21683998,
@@ -2144,7 +2226,8 @@
       "identification_disagreements": 0,
       "file": "inat-21683998.jpg",
       "bytes": 1406799,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 18365261,
@@ -2154,7 +2237,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2018-05-21",
-      "place": "Weende, Göttingen, Deutschland",
+      "place": "Weende, G\u00f6ttingen, Deutschland",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/18365261/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/18365261/large.jpg",
@@ -2171,7 +2254,10 @@
       "identification_disagreements": 0,
       "file": "inat-18365261.jpg",
       "bytes": 166244,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "sha256": "90ea891d575ad5e218ca6d0656d95497cf18903b103c732b790a8befd3c7901d",
+      "retained": true,
+      "retained_bytes": 166244
     },
     {
       "photo_id": 122329162,
@@ -2198,7 +2284,8 @@
       "identification_disagreements": 0,
       "file": "inat-122329162.jpeg",
       "bytes": 1767819,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 283633755,
@@ -2225,7 +2312,8 @@
       "identification_disagreements": 0,
       "file": "inat-283633755.jpeg",
       "bytes": 1564912,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 283633817,
@@ -2252,7 +2340,8 @@
       "identification_disagreements": 0,
       "file": "inat-283633817.jpeg",
       "bytes": 1558033,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 283633776,
@@ -2279,7 +2368,8 @@
       "identification_disagreements": 0,
       "file": "inat-283633776.jpeg",
       "bytes": 2071070,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 283633795,
@@ -2306,7 +2396,8 @@
       "identification_disagreements": 0,
       "file": "inat-283633795.jpeg",
       "bytes": 1436786,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 394404806,
@@ -2333,7 +2424,8 @@
       "identification_disagreements": 0,
       "file": "inat-394404806.jpeg",
       "bytes": 2935691,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 402392355,
@@ -2343,7 +2435,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2024-07-03",
-      "place": "Marburg Kantstraße, 35039 Marburg, Deutschland",
+      "place": "Marburg Kantstra\u00dfe, 35039 Marburg, Deutschland",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/402392355/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/402392355/large.jpeg",
@@ -2360,7 +2452,8 @@
       "identification_disagreements": 0,
       "file": "inat-402392355.jpeg",
       "bytes": 1682921,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 402435852,
@@ -2370,7 +2463,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2024-07-03",
-      "place": "Marburg Kantstraße, 35039 Marburg, Deutschland",
+      "place": "Marburg Kantstra\u00dfe, 35039 Marburg, Deutschland",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/402435852/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/402435852/large.jpeg",
@@ -2387,7 +2480,8 @@
       "identification_disagreements": 0,
       "file": "inat-402435852.jpeg",
       "bytes": 1673351,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 398255486,
@@ -2414,7 +2508,8 @@
       "identification_disagreements": 0,
       "file": "inat-398255486.jpeg",
       "bytes": 774153,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 405042263,
@@ -2441,7 +2536,8 @@
       "identification_disagreements": 0,
       "file": "inat-405042263.jpeg",
       "bytes": 2174565,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 409702751,
@@ -2468,7 +2564,8 @@
       "identification_disagreements": 0,
       "file": "inat-409702751.jpeg",
       "bytes": 839087,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 409702749,
@@ -2495,7 +2592,8 @@
       "identification_disagreements": 0,
       "file": "inat-409702749.jpeg",
       "bytes": 604152,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 669645473,
@@ -2505,7 +2603,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2026-05-30",
-      "place": "Mihai Bravu, Románia",
+      "place": "Mihai Bravu, Rom\u00e1nia",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645473/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645473/large.jpg",
@@ -2522,7 +2620,8 @@
       "identification_disagreements": 0,
       "file": "inat-669645473.jpg",
       "bytes": 2638655,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 669645567,
@@ -2532,7 +2631,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2026-05-30",
-      "place": "Mihai Bravu, Románia",
+      "place": "Mihai Bravu, Rom\u00e1nia",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645567/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645567/large.jpg",
@@ -2549,7 +2648,8 @@
       "identification_disagreements": 0,
       "file": "inat-669645567.jpg",
       "bytes": 2397710,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 706234496,
@@ -2576,7 +2676,8 @@
       "identification_disagreements": 0,
       "file": "inat-706234496.jpg",
       "bytes": 4334105,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     },
     {
       "photo_id": 705330355,
@@ -2603,7 +2704,8 @@
       "identification_disagreements": 0,
       "file": "inat-705330355.jpg",
       "bytes": 2952700,
-      "downloaded_size": "original"
+      "downloaded_size": "original",
+      "retained": false
     }
   ],
   "note": null,
