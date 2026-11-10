@@ -88,18 +88,40 @@ def green_mask(rgb: np.ndarray) -> np.ndarray:
 def seg_quality(src: pathlib.Path, cut: pathlib.Path) -> dict:
     """What the cut kept, measured on the pair. No model, no network, no cost."""
     import cv2
+    # MEASURE AT THE SIZE THE CUT WAS MADE AT. segment_plant works at WORK_EDGE and the
+    # saved cutout is a crop of that, so a source thumbnailed to any other size cannot be
+    # matched against it -- the first version used 700 and the template match failed on 16
+    # of 19 candidates, reporting None where the answer was simply at another scale.
+    import segment_plant
     im = Image.open(src).convert("RGB")
-    im.thumbnail((700, 700), Image.LANCZOS)
+    im.thumbnail((segment_plant.WORK_EDGE, segment_plant.WORK_EDGE), Image.LANCZOS)
     s_rgb = np.array(im)
     g = green_mask(s_rgb)
     k = np.ones((7, 7), np.uint8)
     thin = g & ~cv2.erode(g.astype(np.uint8), k).astype(bool)
 
+    # PUT THE CUTOUT BACK WHERE IT CAME FROM, DO NOT STRETCH IT TO FIT.
+    #
+    # The saved cutout is cropped to its own bounding box. Resizing it to the source's
+    # dimensions -- which is what this did -- scales a mask covering a third of the frame up
+    # to cover all of it, and every retention number comes out inflated. Measured on
+    # elderberry 424182823: 0.358 green_kept stretched, 0.015 placed correctly. The first
+    # figure was reported as evidence and was wrong by a factor of twenty.
+    #
+    # The crop is LOCATED instead, by matching its pixels against the source. That is exact
+    # rather than approximate: the cutout's RGB is a literal copy of that region.
     c = Image.open(cut).convert("RGBA")
-    # The cutout is cropped to the subject; put it back where it came from by matching the
-    # source's size, which is the only honest way to compare the two masks pixel for pixel.
-    c = c.resize(im.size, Image.LANCZOS)
-    alpha = np.array(c.getchannel("A")) > 127
+    arr = np.array(c)
+    if arr.shape[0] > s_rgb.shape[0] or arr.shape[1] > s_rgb.shape[1]:
+        return {"green_kept": None, "thin_kept": None}
+    hit = cv2.matchTemplate(s_rgb, arr[:, :, :3], cv2.TM_CCOEFF_NORMED)
+    _, confidence, _, loc = cv2.minMaxLoc(hit)
+    alpha = np.zeros(s_rgb.shape[:2], bool)
+    if confidence >= 0.5:
+        x, y = loc
+        alpha[y:y + arr.shape[0], x:x + arr.shape[1]] = arr[:, :, 3] > 127
+    else:
+        return {"green_kept": None, "thin_kept": None}   # cannot place it honestly
     return {"green_kept": round(float((g & alpha).sum() / max(1, g.sum())), 3),
             "thin_kept": round(float((thin & alpha).sum() / max(1, thin.sum())), 3)}
 
