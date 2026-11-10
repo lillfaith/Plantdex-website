@@ -333,3 +333,75 @@ another, which is the mullein exactly. The classification goes to the vision pas
 owner, and `EXTENDABLE` never means "extend it" — it means a person may decide it is worth
 extending. Any extended image is a new asset requiring its own approval; the original is
 never modified.
+
+---
+
+## 11. Art-directed editing: what exists, what needs integrating, what costs what
+
+Four optional, human-approved stages, for the MAIN CARD PHOTO only. The untouched original
+is kept beside every edited version and every edit is a separate derivative asset requiring
+its own approval.
+
+### Capability matrix
+
+| Stage | Status | Tool | Cost |
+|---|---|---|---|
+| **Rotation** — quarter turns | **exists, local** | `scripts/orient.py` | free, lossless |
+| Rotation — arbitrary angle | exists, local | PIL | free, but resamples every pixel |
+| **Background removal** | **exists, CI** | BiRefNet Lite | free |
+| **Mask correction** (box + include/exclude) | **exists, local** | `scripts/guided_cutout.py` | free |
+| **Image extension / outpainting** | **exists, this session** | Higgsfield `outpaint_image` | credits, per job |
+| **Upscaling** to 2K/4K | **exists, this session** | Higgsfield `upscale_image` | credits, per job |
+| Alternative background removal | exists, this session | Higgsfield `remove_background` | credits, per job |
+| **Focus recovery (true deblur)** | **NOT AVAILABLE** | — | needs integration |
+| **Repositioning existing structures** | **NOT AVAILABLE** | — | needs integration, and see the warning below |
+
+Account state at the time of writing: 269.88 credits, starter plan. Exact per-job costs are
+available from a `get_cost` preflight, which requires one image to be uploaded first.
+
+### UPSCALING IS NOT REFOCUSING, AND THE DIFFERENCE MATTERS HERE
+
+An upscaler increases resolution and sharpens what is already resolved. A photograph with
+shallow depth of field has *no information* about the blurred petal's edge, and an upscaler
+asked to sharpen it will synthesise a plausible edge — which on a diagnostic margin or vein
+pattern is fabrication that looks like detail. True defocus deblurring is a different model
+class (Restormer, NAFNet, DeblurGANv2), none of which is available here; self-hosting one is
+CPU-feasible for a handful of images and would need its own integration.
+
+So: upscaling is offered for presentation quality on structures already in focus, and is
+refused on structures a determination depends on. That restriction is the honest version of
+"enhancement cannot recover what the camera never captured".
+
+### THE FOLIAGE-REPOSITIONING REQUEST CONTAINS A CONTRADICTION WORTH NAMING
+
+"Bring existing leaves visually closer to the flower" and "never change leaf arrangements"
+cannot both hold in the general case. Where a leaf sits relative to the stem IS the leaf
+arrangement: internode length, whether leaves are opposite or alternate, how far the
+cauline leaves sit below the inflorescence. These are diagnostic characters for a great many
+species, and moving a leaf up the stem changes them while looking entirely natural.
+
+The safe subset, offered for the owner's decision rather than assumed:
+
+* **Crop and scale instead of moving.** Tightening the frame brings foliage and flower
+  closer in the COMPOSITION without moving anything on the plant. This achieves most of
+  what the request wants and invents nothing.
+* **Move only what is already detached** in the frame — a fallen leaf, a separate stem
+  lying beside the specimen — where no attachment is being misrepresented.
+* **Never move a leaf along its own stem**, which is the case that changes the botany.
+
+Any repositioning at all is flagged for review with the original beside it, and the vision
+pass is asked whether the arrangement still reads as the species.
+
+### Outpainting, used conservatively
+
+`outpaint_image` expands the canvas to a target aspect ratio and fills the new edges. That
+suits "a stem continuing just out of frame" and "a clipped leaf tip" well, and suits nothing
+near a diagnostic structure at all: a generative fill WILL invent, and the only control is
+how little it is asked to invent. The rules:
+
+* modest expansions only, never a large canvas change;
+* never applied where the clipped region carries an identifying structure — which is what
+  the EXTENDABLE / UNSUITABLE classification in §10 is for;
+* original and extended shown side by side, approved before use;
+* the extended image is a derivative asset with its own provenance record, never
+  overwriting the source.
