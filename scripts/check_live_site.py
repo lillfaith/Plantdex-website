@@ -54,6 +54,25 @@ ROUTES: list[tuple[str, list[str]]] = [
         ],
     ),
     ("/journal/", ["Journal"]),
+    # THE FIELD BOARD, AND IT IS HERE AS A COMMIT CHECK AS WELL AS A ROUTE CHECK.
+    #
+    # /leaderboard is the newest route in the build, so it is the one page whose presence
+    # distinguishes this deploy from the one before it. That mattered immediately: deploy
+    # #152 uploaded a perfectly good 13MB artifact and then failed at `deploy-pages`
+    # because the artifacts API had not yet indexed it ("Found 0 artifact(s)", 400ms after
+    # a successful finalize) — so Pages kept serving the PREVIOUS commit while the repo,
+    # the branch and the build log all said the new one. Every route in this list passed
+    # throughout, because every one of them existed in both commits. A list that only
+    # checks pages the last deploy also had cannot tell a stale publish from a fresh one.
+    #
+    # The marker is the provisional-scores disclosure rather than the heading, for the
+    # reason the /scan/ note below gives: a title is boilerplate a layout could supply,
+    # while this sentence is load-bearing product copy that may not quietly disappear.
+    # Plantdex verifies nothing, so a board that stopped saying its scores are provisional
+    # would be claiming something this product cannot — which makes it worth asserting on
+    # the deployed page and not only in a unit test. Measured unique: it appears in exactly
+    # one HTML file of the built export.
+    ("/leaderboard/", ["These scores are provisional"]),
     # The Seed Shelf shipped after this list was written, and its absence here is exactly
     # the gap this file exists to close: run 5 passed green on the deploy that introduced
     # the feature, without ever fetching it.
