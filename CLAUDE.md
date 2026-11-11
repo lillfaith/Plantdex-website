@@ -668,12 +668,23 @@ written down because it looks like an oversight and is a decision.
   growth, Field Research — is reachable without ever opening the scanner. Photographing a
   trading card is strictly MORE work than the shortcut already sitting beside it, which is
   the first thing to weigh before building anything to stop it.
-- **A false record cheats nobody but its author.** There is no leaderboard, no public
-  profile, no feed, no followers and no economy — `/profile` is owner-only by design. A
-  scan of a card returns a deck species, so `isShelfEligible` is false and the global
-  `species_packets` registry cannot be reached from it either. What is at stake is one
-  person's own collection meaning what it says, and that caps what is proportionate to
+- **A false record cheats nobody but its author — WITH ONE EXCEPTION, AND IT IS NEW.**
+  There is no public profile, no feed, no followers and no economy; `/profile` is owner-only
+  by design. A scan of a card returns a deck species, so `isShelfEligible` is false and the
+  global `species_packets` registry cannot be reached from it either. What is at stake is
+  one person's own collection meaning what it says, and that caps what is proportionate to
   spend here.
+  **THE FIELD BOARD IS THE EXCEPTION AND THIS LINE USED TO DENY IT.** `/leaderboard` ranks
+  players against each other, so a false record now moves a number other people can see.
+  That does not change the verdict — the board publishes the SAME unchecked records in the
+  same words, marked provisional on the page itself — but it changes what the argument
+  rests on. What bounds a false record now is structural rather than detective: a species
+  pays once by primary key, a journal entry pays once per species, and a daily cap limits
+  the rest (`src/lib/leaderboard.ts`). Nothing tries to tell a real find from an invented
+  one, because nothing here can.
+  **AND THE BOARD IS OPT-IN.** A row in `leaderboard_participants` is the consent; no row
+  and the account appears nowhere and is not readable through the standings function at
+  all. `/privacy` says so, and `legal.test.ts` fails if the old denial comes back.
 - **So the words are what is load-bearing.** Each surface that writes a discovery states
   what it is recording, and `scan-reward.test.ts` fails if either loses it. That is the
   whole mechanism. The scanner shipped without its sentence for long enough that the case
@@ -1192,6 +1203,53 @@ true the moment a keyframe is edited.
   concealed layers are spelled out separately now: two decisions that shared a number, and
   sharing it made them look like one.
 
+## The Field Board
+
+`/leaderboard` ranks players on field work: species found, Field Journal entries written,
+Field Research challenges completed. It is the FIRST public surface in this product, and
+every rule below exists because of that.
+
+- **No table in the schema holds a score, and that is the security model.** A standing is
+  computed at read time by `leaderboard_standings()` (migration 0011) from `discoveries`,
+  `sightings` and `research_completions` — tables that already have no update policy and
+  already enforce one row per (user, species) by primary key. There is no statement in this
+  schema, callable by anybody, that raises a score. Do not add a cached `points` column:
+  it is the same column `profile-schema.test.ts` bans from `profiles`, for the same reason,
+  and `leaderboard-schema.test.ts` bans it here.
+- **Derived scoring is stronger than idempotent awards, and that is why there is no ledger.**
+  Every anti-farming rule falls out of set membership rather than being enforced. A repeat
+  find adds nothing because `discoveries` has one row per species. An edit adds nothing
+  because the score counts SPECIES with a qualifying entry, not entries. Delete-and-relog
+  adds nothing because the set is the same size afterwards. There is no award to replay
+  because nothing is awarded.
+- **`leaderboard.ts` is the client's MIRROR of the SQL, and nothing syncs them.** Unlike
+  `herbdex-reducer.ts`, which `npm run sync:edge-shared` copies verbatim, this one is
+  hand-written SQL beside hand-written TypeScript. `leaderboard-schema.test.ts` reads every
+  number back out of the migration and compares it with the constant it came from — a drift
+  would have the save panel say "+15" while the board disagrees.
+- **Every point is PROVISIONAL and the page says so above the table.** Plantdex verifies
+  nothing (see "Progression is self-declared"), so a "verified" score would be a claim this
+  product cannot make. `PROVISIONAL` is in the type so a verified tier has to be built and
+  named rather than assumed. `photoBackedEntries` is reported beside the score and never
+  folded into it: a photograph is better evidence than a tap and still not proof.
+- **The board is opt-in, and the row IS the consent.** `leaderboard_participants` holds
+  exactly one decision — list me, in this region. No row, no listing, and nothing about the
+  account is readable through the standings function. It has no update policy, like every
+  table but `profiles`: changing region is a delete and an insert.
+- **What is published is exhaustive and small:** a display name the player chose, a
+  launched region id at state scale, and counts. Never `sightings.region` (free text that
+  could name a patch), never notes, photographs, dates, herb ids or scans. The return
+  signature of the function is pinned by a test for exactly that reason.
+- **The daily cap is the only thing in the app that names a UTC day.** It has to be a window
+  everybody on one board shares, and a player must not be able to widen it by changing the
+  clock on their phone. It is written with `getUTCDate()` rather than
+  `toISOString().slice(0, 10)` so a reader can tell the choice from the mistake, and
+  `local-date.test.ts` stays absolute.
+- **Daily Field Research tasks pay XP, not board points.** A daily is a 25 XP nudge; paying
+  100 board points for one would make the board a measure of how often somebody opened the
+  app. The regional QUEST BOARD pays nothing at all and cannot — it is a seeded client-side
+  lens with no completion record, and making it scorable would mean a client asserting one.
+
 ## Analytics, deletion and export
 
 - **`track()` takes an event name and has no second parameter.** That is the privacy
@@ -1244,7 +1302,9 @@ true the moment a keyframe is edited.
 
 `/profile` is the collectible identity page — a field-naturalist card assembled from records
 the game already holds, plus seven chosen settings. Owner-only: no public profiles,
-followers, comments, leaderboards or feed.
+followers, comments or feed. The one thing it can feed outward is the display name, which
+the opt-in Field Board publishes — see "The Field Board" below; the page itself stays
+private and prints no standing.
 
 - **The profile row holds only choices, and no numbers.** Seven fields: a display name and
   six ids (`src/lib/player-profile.ts`). Level, XP, counts, completion, achievements earned,

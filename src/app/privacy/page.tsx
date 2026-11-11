@@ -114,7 +114,21 @@ export default function PrivacyPage() {
           nothing else. There is no username and no date of birth, because the application has
           no such fields. You may give yourself a display name and pick an avatar on your
           profile, but both are optional, neither is asked for at sign-up, and your profile is
-          visible only to you — there are no public profiles, followers or leaderboards here.
+          visible only to you. There are no public profiles, no followers and no feed.
+        </p>
+        <p>
+          There is <strong className="text-violet-100">one</strong> place where other players
+          can see anything of yours, and you have to ask to be in it. The{' '}
+          <Link href="/leaderboard" className="underline underline-offset-2">
+            Field Board
+          </Link>{' '}
+          lists players who joined it, and nothing joins you to it automatically. If you do
+          join, signed-in players can see the display name you chose (or no name, if you chose
+          none), the region you picked when joining, and counts: your points, how many species
+          you have found, how many Field Journal entries qualified, and how many of those had a
+          photograph. They cannot see which plants, the dates, your notes, your photographs, or
+          the free-text place you may have typed into a sighting. Leaving the board removes the
+          listing, and so does deleting your account.
         </p>
         <p>Signed in, these things are stored on our behalf by Supabase:</p>
         <LegalTable
@@ -143,6 +157,11 @@ export default function PrivacyPage() {
               term: 'Your Seed Shelf',
               detail:
                 'One row per save: the scientific name an identifier suggested, its common name and taxonomy ids where the provider gave them, the date, the score, and a reference to the scan it came from. A shelf entry records a plant you photographed that has no Plantdex card. It is not a discovery, earns nothing, and says nothing about whether a plant is safe.',
+            },
+            {
+              term: 'Field Board listing',
+              detail:
+                'Only if you join it: a row saying that you asked to be ranked, and the region you picked. It holds no score — a standing is added up at the moment the board is read, from the rows above. Leaving the board deletes the row.',
             },
             {
               term: 'Profile settings',

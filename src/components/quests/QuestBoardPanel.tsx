@@ -81,19 +81,23 @@ function PlantChip({
         onClick={() => track('quest_plant_opened')}
         className="flex min-h-11 items-center gap-3 rounded-lg border border-violet-800/60 p-2 transition hover:border-gold-400/60"
       >
-        <Image
-          src={assetPath(chipArt(card))}
-          alt=""
-          width={112}
-          height={179}
-          loading="lazy"
-          /*
-            The chip variant, 112px, is what `/herbdex/research` uses for a strip this size.
-            Naming the 400px thumbnail here would ship four times the bytes to draw the same
-            pixels, which is the one lever `images.unoptimized` leaves available.
-          */
-          className={`h-14 w-9 shrink-0 rounded object-cover ${found ? '' : 'opacity-40 grayscale'}`}
-        />
+        {/* The frame needs a host of its own here: this Link is a flex row carrying the
+            chip AND the name, so `card-frame` on it would gild the whole row. */}
+        <span className="card-frame block h-14 w-9 shrink-0 overflow-hidden rounded">
+          <Image
+            src={assetPath(chipArt(card))}
+            alt=""
+            width={112}
+            height={179}
+            loading="lazy"
+            /*
+              The chip variant, 112px, is what `/herbdex/research` uses for a strip this
+              size. Naming the 400px thumbnail here would ship four times the bytes to draw
+              the same pixels, which is the one lever `images.unoptimized` leaves available.
+            */
+            className={`h-full w-full object-cover ${found ? '' : 'opacity-40 grayscale'}`}
+          />
+        </span>
         <span className="min-w-0">
           <span className="block truncate text-sm font-semibold text-violet-100">
             {card.commonName}

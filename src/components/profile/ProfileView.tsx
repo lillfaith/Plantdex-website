@@ -87,6 +87,23 @@ export function ProfileView() {
         <FieldCardsHeld />
       </div>
 
+      {/*
+        THE FIELD BOARD, FROM THE PAGE THAT OWNS THE DISPLAY NAME IT WOULD PUBLISH.
+
+        One line, not a panel, and deliberately not a standing: this page is owner-only and
+        printing a rank on it would make the profile a scoreboard — the thing CLAUDE.md says
+        it is not. It is here because the profile is where the display name is set, and the
+        display name is the only part of a person the board ever shows.
+      */}
+      <p className="mt-7 text-xs text-violet-400">
+        Your collection also adds up to a field score. The{' '}
+        <Link href="/leaderboard" className="underline underline-offset-2 hover:text-violet-200">
+          Field Board
+        </Link>{' '}
+        ranks players who ask to be listed — it shows the display name you set above, and
+        never your notes, photographs or places.
+      </p>
+
       {/* The trophies float on the page ground, so they get air on both sides rather than a
           border to separate them. */}
       <div className="mt-7">

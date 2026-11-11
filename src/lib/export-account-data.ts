@@ -91,6 +91,15 @@ export interface AccountExport {
    * scans, so it is exported rather than quietly held back.
    */
   identificationComparisons: Record<string, unknown>[];
+  /**
+   * The Field Board listing: whether this account asked to be ranked, and in which region.
+   *
+   * ONE DECISION, NOT A SCORE. There is no points column anywhere in the schema — a standing
+   * is computed at read time from the discovery, sighting and research rows already in this
+   * file — so what an export can honestly hand over is the membership itself. `null` for an
+   * account that never joined, which is every account by default.
+   */
+  leaderboardListing: Record<string, unknown> | null;
   photos: {
     included: ExportedPhoto[];
     omitted: { sightingId: string; reference: string; reason: string }[];
@@ -247,6 +256,8 @@ export async function exportLocalData(): Promise<AccountExport> {
     // and no comparison rows either — both are written server-side against an account.
     scans: [],
     identificationComparisons: [],
+    // The Field Board needs an account, so a signed-out device has no listing to export.
+    leaderboardListing: null,
     // The shelf, however, is kept on the device when signed out — so it is here.
     seedShelf: mergeFinds(getLocalFinds()),
     seedShelfFinds: getLocalFinds(),
@@ -277,6 +288,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     comparisonRows,
     entitlementRow,
     profileRow,
+    leaderboardRow,
   ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
       client.from('learned').select('herb_id, learned_at').eq('user_id', userId),
@@ -317,6 +329,13 @@ export async function exportAccountData(userId: string, email?: string): Promise
       // `maybeSingle`: a player who has never opened their profile has no row, and that is
       // the ordinary case rather than an error.
       client.from('profiles').select('*').eq('user_id', userId).maybeSingle(),
+      // The Field Board listing. `maybeSingle` for the same reason: no row is the ordinary
+      // case, because the board is opt-in and nothing joins an account to it automatically.
+      client
+        .from('leaderboard_participants')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle(),
     ]);
 
   for (const [name, result] of Object.entries({
@@ -331,6 +350,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     'identification comparisons': comparisonRows,
     entitlement: entitlementRow,
     profile: profileRow,
+    'Field Board listing': leaderboardRow,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
     // their account afterwards would believe they had kept a copy.
@@ -420,6 +440,7 @@ export async function exportAccountData(userId: string, email?: string): Promise
     seedShelf: mergeFinds(seedShelfFinds),
     seedShelfFinds,
     identificationComparisons: (comparisonRows.data ?? []) as Record<string, unknown>[],
+    leaderboardListing: (leaderboardRow.data as Record<string, unknown> | null) ?? null,
     photos: await collectPhotos(sightings, async (path) => {
       const { data, error } = await client.storage.from('sighting-photos').download(path);
       if (error) return null;

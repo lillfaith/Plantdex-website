@@ -89,6 +89,16 @@ export function HerbCard({
       The wrapper exists for the aura and nothing else. The <Link> below clips to a rounded
       card, so a glow placed inside it is drawn entirely in the part that gets clipped away
       — it has to sit around the card, not in it.
+
+      THE GILT FRAME GOES THE OTHER WAY, ON THE LINK ITSELF. `card-frame` (globals.css) is a
+      `::after` at `inset: 0`, so the clip is exactly where it wants to be: on the card's own
+      edge. It is a pseudo-element rather than a border or a ring because the link already
+      owns `box-shadow` through `shadow-card`, and the div inside already owns `outline` for
+      the hover neon — this file has paid for both of those collisions once already.
+
+      A SILHOUETTE IS FRAMED TOO. An undiscovered card is still one of the deck's own, and
+      gilding only the found ones would make the frame a second discovery signal on a tile
+      that already carries two.
     */
     <div className="relative">
       <RarityAura rarity={herb.rarity} concealed={!showFace} />
@@ -103,7 +113,7 @@ export function HerbCard({
                 ? `${herb.commonName}, card ${number}, ${herb.rarity}. ${stageLabel}.`
                 : `Card ${number}. Not discovered.`
         }
-        className="group relative z-10 block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
+        className="group card-frame relative z-10 block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-card-lift focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0"
       >
         {/*
           THE NEON IS A REWARD, SO ONLY A FOUND CARD LIGHTS UP. `violet-600` is the deck's

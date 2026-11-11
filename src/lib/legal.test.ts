@@ -415,6 +415,45 @@ describe('legal pages', () => {
     );
   });
 
+  it('keeps the privacy disclosure in step with the leaderboard that exists', () => {
+    /*
+     * THE SAME FAILURE, FIFTH TIME OF ASKING — and the one with the highest stakes so far.
+     *
+     * /privacy said your profile is "visible only to you — there are no public profiles,
+     * followers or leaderboards here." Every word was true, and the Field Board made the last
+     * one false. The others on this list were a page under-describing a feature; this one
+     * would be a page telling somebody nothing about them is ever visible to another player
+     * while a page in the same app published their name and their counts.
+     *
+     * So: the route's existence is checked against the denial, AND against the three things
+     * the disclosure has to carry — that it is opt-in, what it publishes, and what it does
+     * not.
+     */
+    const boardExists = existsSync('src/app/leaderboard/page.tsx');
+    expect(
+      boardExists,
+      'this test assumes /leaderboard — update it if the board was removed',
+    ).toBe(true);
+
+    const privacy = read(PRIVACY).replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+    for (const denial of [
+      /no public profiles, followers or leaderboards/i,
+      /there are no leaderboards/i,
+    ]) {
+      expect(privacy, `Privacy still denies the board that exists: ${denial}`).not.toMatch(denial);
+    }
+
+    // Opt-in is the whole consent model, so the page has to say it rather than imply it.
+    expect(privacy, 'privacy page does not say the board is opt-in').toMatch(
+      /you have to ask to be in it|nothing joins you to it automatically/i,
+    );
+    expect(privacy, 'privacy page does not name the Field Board').toMatch(/Field Board/);
+    // And what it withholds. This is the sentence a player needs in order to judge joining.
+    expect(privacy, 'privacy page does not say what the board withholds').toMatch(
+      /cannot see which plants[\s\S]{0,200}notes/i,
+    );
+  });
+
   it('keeps the commerce disclosure in step with the commerce that exists', () => {
     /*
      * THE SAME FAILURE, THIRD TIME OF ASKING.

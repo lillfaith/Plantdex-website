@@ -107,13 +107,15 @@ export function FieldCardReward() {
           {revealed.map((slot) => (
             <div key={slot.ordinal} className="flex items-center gap-3">
               {slot.card && (
-                <Image
-                  src={assetPath(slot.card.thumb)}
-                  alt={`${FIELD_CARDS_NAME} ${slot.ordinal}: ${slot.card.commonName}`}
-                  width={178}
-                  height={288}
-                  className="w-14 shrink-0 rounded-lg shadow-card"
-                />
+                <span className="card-frame block w-14 shrink-0 overflow-hidden rounded-lg shadow-card">
+                  <Image
+                    src={assetPath(slot.card.thumb)}
+                    alt={`${FIELD_CARDS_NAME} ${slot.ordinal}: ${slot.card.commonName}`}
+                    width={178}
+                    height={288}
+                    className="w-full"
+                  />
+                </span>
               )}
               <div className="min-w-0">
                 <p className="text-[0.72rem] font-bold tracking-[0.12em] text-gold-300 uppercase">
@@ -213,14 +215,14 @@ export function FieldCardReward() {
                       href={`/herbdex/${slot.card.id}`}
                       onClick={() => track('xp_card_opened')}
                       title={slot.card.commonName}
-                      className="block"
+                      className="card-frame block overflow-hidden rounded"
                     >
                       <Image
                         src={assetPath(chipArt(slot.card))}
                         alt={slot.card.commonName}
                         width={CHIP_WIDTH}
                         height={Math.round((CHIP_WIDTH * 576) / 356)}
-                        className="h-14 w-[2.2rem] rounded object-cover transition-transform hover:scale-105"
+                        className="h-14 w-[2.2rem] object-cover transition-transform hover:scale-105"
                       />
                     </Link>
                   </li>

@@ -97,16 +97,92 @@ describe('the wall never gets lighter than the text can survive', () => {
     return found;
   };
 
-  it('mixes toward the dark ground rather than toward transparency', () => {
+  it('mixes toward opaque tokens rather than toward transparency', () => {
     // A mix toward `transparent` composites against whatever is behind the wall, so the wall
     // would end up lighter than it reads here by an amount nobody measured. Mixing toward an
     // opaque token keeps the result computable, which is what the ceiling above depends on.
+    //
+    // TWO DESTINATIONS ARE LEGITIMATE, AND ONLY TWO. `plum-950` is the darkening the grain
+    // and the seams are built from — it can only ever help the text. `violet-600` is the 5%
+    // purple cast on the base plank, which is the one mix here that moves the wall the other
+    // way; it is allowed because the composite it produces was measured (see the block's own
+    // comment) rather than because purple is harmless. Anything else is a third shade nobody
+    // has put a number on.
     const mixes = colorMixes(shelfWall());
     expect(mixes.length, 'the wall stopped mixing its shades').toBeGreaterThan(0);
     for (const mix of mixes) {
       expect(mix, 'a wall shade mixes toward transparent').not.toContain('transparent');
-      expect(mix).toContain('--color-plum-950');
+      expect(
+        mix.includes('--color-plum-950') || mix.includes('--color-violet-600'),
+        `a wall shade mixes toward something unmeasured: ${mix}`,
+      ).toBe(true);
     }
+  });
+
+  /*
+   * THE TWO NUMBERS THE SOFTENING RESTS ON.
+   *
+   * Both were measured against the real composite before they were written down, and the
+   * margin they bought is half a point of contrast on the safety note — so a later nudge to
+   * either is a change to whether this page passes AA, not a change to how it looks. Pinned
+   * here so that nudge has to come past a failing test and re-measure.
+   */
+  it('keeps the wall at the opacity its contrast was measured at', () => {
+    expect(shelfWall()).toMatch(/opacity:\s*0\.85\b/);
+  });
+
+  it('keeps the purple cast at the share its contrast was measured at', () => {
+    // 5% of violet-600. Raising it lightens the wall further, in the one direction the
+    // ceiling has no room for.
+    expect(shelfWall()).toMatch(
+      /--plank-wood:\s*color-mix\(in srgb, var\(--color-wood-700\) 95%, var\(--color-violet-600\)\)/,
+    );
+  });
+
+  it('prints no text shade the softened wall cannot carry', () => {
+    /*
+     * THE OTHER HALF OF THE CEILING, AND IT ONLY BECAME NECESSARY WHEN THE WALL WENT
+     * TRANSLUCENT.
+     *
+     * While the wall was opaque `wood-700`, `violet-400` cleared AA on it at 5.35 and the
+     * ceiling alone was enough. At 85% over this page's violet washes the wall samples
+     * between #513247 and #533848 on the rendered page, and `violet-400` falls to 4.44 — a
+     * fail, by six hundredths, on the sentence saying a packet is not a confirmed
+     * identification. `violet-300` measures 5.51 in the same place.
+     *
+     * The fix was to move the text up the ramp rather than to make the wall darker, which is
+     * what the palette note in globals.css says to do. This is what stops it coming back: the
+     * shade is banned from the page rather than merely absent from it today.
+     */
+    const view = readFileSync(
+      join(import.meta.dirname, '..', 'components', 'seedshelf', 'SeedShelfView.tsx'),
+      'utf8',
+    );
+    for (const shade of ['text-violet-400', 'text-violet-500']) {
+      expect(view, `the Seed Shelf prints ${shade}, which fails AA on the softened wall`).not.toContain(
+        shade,
+      );
+    }
+  });
+
+  it('fades the wall and nothing standing in front of it', () => {
+    /*
+     * The opacity belongs to the wall layer, which is a `pointer-events-none` sibling of the
+     * content. On the shelf's own wrapper it would dim the packets, the labels and the
+     * safety note by 15% as well — the exact failure the brief for this change called out,
+     * and one that no contrast measurement of the WALL would catch.
+     */
+    const view = readFileSync(
+      join(import.meta.dirname, '..', 'components', 'seedshelf', 'SeedShelfView.tsx'),
+      'utf8',
+    );
+    const wallLine = view.split('\n').find((line) => line.includes('shelf-wall'));
+    expect(wallLine, 'the wall layer is gone').toBeDefined();
+    expect(wallLine!, 'the wall layer stopped being inert').toContain('pointer-events-none');
+    // No opacity utility on any element in the view: the fade is the utility's own.
+    expect(view, 'the shelf view sets an opacity of its own').not.toMatch(
+      /className="[^"]*\bopacity-\d/,
+    );
   });
 
   it('snaps every gradient stop to a whole pixel, which is what makes it read as pixel art', () => {
