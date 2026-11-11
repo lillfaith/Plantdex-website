@@ -1,0 +1,22 @@
+{
+  "common": "Elderberry",
+  "card": "sambucus-spp",
+  "description": "Shrub with pinnately compound leaves of 5-11 serrate leaflets. Flat-topped compound cymes bearing many small DARK PURPLE-BLACK DRUPES when fruiting, carried on conspicuously RED-PURPLE PEDICELS.",
+  "source": "Flora of North America vol. 18 (Sambucus); card #31, which shows fruit",
+  "mandatory": [
+    "berry_dark"
+  ],
+  "preferred": [
+    "foliage"
+  ],
+  "notes": "The card shows FRUIT, so a flowering umbel is the wrong phenological stage and must not be substituted. CRITICAL: the red-purple PEDICELS are not fruit. The drupes are round, dark and clustered; the pedicels are thin and radiating. A photograph showing only red stalks with no dark drupes does not meet this brief.",
+  "species_key": "sambucus_canadensis",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

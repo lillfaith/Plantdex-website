@@ -1,0 +1,745 @@
+{
+  "state": "retrieved",
+  "schema_version": 1,
+  "species_key": "verbascum thapsus",
+  "retrieved_at": "2026-11-06T20:47:18+00:00",
+  "identity": {
+    "queried_name": "Verbascum thapsus",
+    "match_type": "EXACT",
+    "match_confidence": 98,
+    "gbif_status": "ACCEPTED",
+    "taxonomy_status": "accepted",
+    "gbif_id": "3171949",
+    "accepted_name": "Verbascum thapsus",
+    "name_authorship": "L.",
+    "family": "Scrophulariaceae",
+    "genus": "Verbascum",
+    "rank": "species",
+    "synonyms": [
+      "Thapsus barbatus Bedevian",
+      "Verbascum bicolle F.W.Schmidt, 1794",
+      "Verbascum blattaria J.A.Schmidt",
+      "Verbascum indicum Wall. ex Roxb., 1832",
+      "Verbascum linnaei Bercht., 1843",
+      "Verbascum phlomoides Spreng.",
+      "Verbascum simplex var. dyris Litard. & Maire",
+      "Verbascum subviride J.Lloyd & Foucaud",
+      "Verbascum thapsiforme Guss.",
+      "Verbascum thapsus var. subviride"
+    ],
+    "endpoint": "https://api.gbif.org/v1/species/match"
+  },
+  "conservation": {
+    "iucn_category": "NOT_EVALUATED",
+    "endpoint": "https://api.gbif.org/v1/species/3171949/iucnRedListCategory",
+    "at_risk": false,
+    "promotable": false,
+    "conservation_note": "No usable global assessment (category: NOT_EVALUATED). Treated as NOT promotable: the plant may be documented, but nothing may present it as something to go and collect until a human checks regional listings. Missing data is not evidence of abundance."
+  },
+  "literature": {
+    "groups": {
+      "documented-use": [
+        "pmc-12566942",
+        "pmc-13374249",
+        "pmc-12752310",
+        "pmid-40601286",
+        "pmc-13277388",
+        "pmc-13380996",
+        "pmc-13133430",
+        "pmc-13417562",
+        "pmc-12976496",
+        "pmid-38279434",
+        "pmc-13666791",
+        "pmc-11819796",
+        "pmc-13713865",
+        "pmc-12137565",
+        "pmc-12291726",
+        "pmc-11232275",
+        "pmc-9032843",
+        "pmc-13203402",
+        "pmc-11396795",
+        "pmc-12608489",
+        "pmc-11184722",
+        "pmc-13659225",
+        "pmc-12274356",
+        "pmc-12472671",
+        "pmc-12992903"
+      ],
+      "laboratory-study": [
+        "pmc-13192076",
+        "pmid-41337662",
+        "pmc-13257683",
+        "pmid-41481338",
+        "pmc-13610762",
+        "pmid-42599172",
+        "pmid-41166753",
+        "epmc-5e9fe2abad",
+        "pmc-12299115",
+        "epmc-21e6a1a18c",
+        "pmc-11341329",
+        "pmc-12030741",
+        "pmc-12154366"
+      ]
+    },
+    "sources": [
+      {
+        "source_id": "pmc-12566942",
+        "title": "A Review and Survey of Local Eastern Kentucky Medicinal Plants and Their Pharmacological Benefits.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14203182",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12566942",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13374249",
+        "title": "Assembly and comparative analysis of the initial complete mitochondrial genome of Verbascum thapsus (Scrophulariaceae): a medicinally and ecologically significant species.",
+        "journal": "BMC plant biology",
+        "year": "2026",
+        "doi": "10.1186/s12870-026-08964-2",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13374249",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12752310",
+        "title": "Documenting traditional knowledge of the Trans-Himalaya: ethnic uses of plants in Drass valley, Ladakh.",
+        "journal": "Journal of ethnobiology and ethnomedicine",
+        "year": "2025",
+        "doi": "10.1186/s13002-025-00785-1",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12752310",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-40601286",
+        "title": "Assessment of Trace and Macro Elements in Medicinal Plants: Implications for Safety and Phytoremediation.",
+        "journal": "Biological trace element research",
+        "year": "2026",
+        "doi": "10.1007/s12011-025-04714-x",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40601286/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13277388",
+        "title": "Preliminary Phytoconstituent Analysis and In Vitro Evaluation of Antibacterial and Antioxidant Activities of &lt;i&gt;Verbascum sinaiticum&lt;/i&gt; Benth Leaf Extracts.",
+        "journal": "Journal of tropical medicine",
+        "year": "2026",
+        "doi": "10.1155/jotm/6626328",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13277388",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13380996",
+        "title": "Phytochemical Profiling and Antifungal Activity of Mullein (Verbascum thapsus) Tissue Oils.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2026",
+        "doi": "10.1002/cbdv.71342",
+        "open_access": false,
+        "url": "https://europepmc.org/article/PMC/PMC13380996",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13133430",
+        "title": "Chemico-biological evaluation of carpachromene against key antimicrobial protein targets: an integrated &lt;i&gt;in-silico, in-vitro&lt;/i&gt; approach for mechanistic insights.",
+        "journal": "Frontiers in pharmacology",
+        "year": "2026",
+        "doi": "10.3389/fphar.2026.1785267",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13133430",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13417562",
+        "title": "Ethnobotanical Inventory on the Vernacular Names of Useful Plants: Data of over 120 Years for the Ligurian Region (Northern Italy).",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/plants15142193",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13417562",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12976496",
+        "title": "Acteoside exerts neuroprotective effects by preventing α-synuclein aggregation and oxidative stress in models of Parkinson's disease.",
+        "journal": "Neurotherapeutics : the journal of the American Society for Experimental NeuroTherapeutics",
+        "year": "2026",
+        "doi": "10.1016/j.neurot.2025.e00825",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12976496",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-38279434",
+        "title": "Antioxidant, AChE inhibitory, and anticancer effects of Verbascum thapsus extract.",
+        "journal": "Cellular and molecular biology (Noisy-le-Grand, France)",
+        "year": "2023",
+        "doi": "10.14715/cmb/2023.69.14.35",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38279434/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13666791",
+        "title": "Traditional Medicinal Plant Knowledge in the Guba District of Azerbaijan: An Ethnobotanical Study",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13666791",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11819796",
+        "title": "Shifting Herbal Knowledge: The Ecological and Cultural Dynamics Behind Plant Use Changes in the Southern Occitan Alps.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14030367",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11819796",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13713865",
+        "title": "Phytochemistry, pharmacology, safety, and applications of &lt;i&gt;Buddleja globosa&lt;/i&gt; Hope [Scrophulariaceae]: a systematic review from bioactive metabolites and mechanisms to translational perspectives.",
+        "journal": "Frontiers in pharmacology",
+        "year": "2026",
+        "doi": "10.3389/fphar.2026.1940132",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13713865",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12137565",
+        "title": "Harnessing the application of halophytic flora biomass in the management of healthcare of local people in the Salt Range of Punjab.",
+        "journal": "Scientific reports",
+        "year": "2025",
+        "doi": "10.1038/s41598-025-00961-z",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12137565",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12291726",
+        "title": "Multifaceted Biological Properties of Verbascoside/Acteoside: Antimicrobial, Cytotoxic, Anti-Inflammatory, and Immunomodulatory Effects.",
+        "journal": "Antibiotics (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/antibiotics14070697",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12291726",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11232275",
+        "title": "Standard medical ethnobotany of Kohistan, North Pakistan.",
+        "journal": "Journal of ethnobiology and ethnomedicine",
+        "year": "2024",
+        "doi": "10.1186/s13002-024-00704-w",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11232275",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-9032843",
+        "title": "Diverse in Local, Overlapping in Official Medical Botany: Critical Analysis of Medicinal Plant Records from the Historic Regions of Livonia and Courland in Northeast Europe, 1829-1895.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2022",
+        "doi": "10.3390/plants11081065",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC9032843",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13203402",
+        "title": "Transcriptomic and Proteomic Analysis of the Skeletal Muscle Revealed the Effects and Mechanism of Mulberry Leaf Flavonoids on Alleviating Exercise-Induced Muscle Damage in Mongolian Horses.",
+        "journal": "Animals : an open access journal from MDPI",
+        "year": "2026",
+        "doi": "10.3390/ani16101548",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13203402",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11396795",
+        "title": "Survey on the Traditional Use of Medicinal Herbs in Haiti: A Study on Knowledge, Practices, and Efficacy Prevention.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2024",
+        "doi": "10.3390/plants13172383",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11396795",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12608489",
+        "title": "&lt;i&gt;FIAT LUX&lt;/i&gt;: The Mullein's (&lt;i&gt;Verbascum&lt;/i&gt; sp.) Image and Its Symbology Through History Within the Euro-Mediterranean Culture.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/plants14213294",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12608489",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11184722",
+        "title": "Modulation of innate immunity related genes resulting in prophylactic antimicrobial and antiviral properties.",
+        "journal": "Journal of translational medicine",
+        "year": "2024",
+        "doi": "10.1186/s12967-024-05378-2",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11184722",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13659225",
+        "title": "Plant-derived modulators of the hemostasis-wound healing axis: mechanisms, evidence, and translational potential",
+        "journal": "Frontiers in pharmacology",
+        "year": null,
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13659225",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12274356",
+        "title": "Conservation of Verbascum sinaiticum Benth using innovative tissue culture technique and DNA barcoding.",
+        "journal": "Scientific reports",
+        "year": "2025",
+        "doi": "10.1038/s41598-025-10968-1",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12274356",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12472671",
+        "title": "Evaluation of Proliferative Activity of Hawaiian Plants on PC-12 and Neuro-2a Cells and Their Effect on the TPH and TH Genes.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/ph18091403",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12472671",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12992903",
+        "title": "Ethnobotanical heritage and conservation priorities of medicinal flora in a remote Himalayan border region of Azad Kashmir, Pakistan.",
+        "journal": "Scientific reports",
+        "year": "2026",
+        "doi": "10.1038/s41598-026-39964-9",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12992903",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13192076",
+        "title": "Investigation of antioxidant, antimicrobial, cytotoxic, wound-healing properties, bio element levels and phytochemical profiles of aqueous extracts of Verbascum splendidum leaf and aboveground parts.",
+        "journal": "BMC complementary medicine and therapies",
+        "year": "2026",
+        "doi": "10.1186/s12906-026-05373-8",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13192076",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41337662",
+        "title": "Metabolic Profiling, Antioxidant, and Antibacterial Potential of Himalayan Verbascum thapsus L.",
+        "journal": "Chemistry & biodiversity",
+        "year": "2026",
+        "doi": "10.1002/cbdv.202501856",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41337662/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13257683",
+        "title": "Phytochemical Characterization and Evaluation of Antioxidant and Tyrosinase Inhibitory Activities of &lt;i&gt;Verbascum wiedemannianum&lt;/i&gt; Essential Oil and Methanolic Extract.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31111783",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13257683",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41481338",
+        "title": "Comparative analysis of phytochemicals in different plant organs of &lt;i&gt;Verbascum thapsus&lt;/i&gt; L. by using UPLC/MS-QToF and analytical standardization of bioactive compounds, verbascoside and luteolin, on HPLC platform.",
+        "journal": "Natural product research",
+        "year": "2026",
+        "doi": "10.1080/14786419.2025.2601253",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41481338/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13610762",
+        "title": "Role of arbutin and acetoside against Parkinson's disease.",
+        "journal": "Indian journal of pharmacology",
+        "year": "2026",
+        "doi": "10.4103/ijp.ijp_68_26",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13610762",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42599172",
+        "title": "Declining rates of bloodstream infections among haemodialysis patients and the temporal association with changes in infection, prevention and control bundles of care between 2009 and 2023.",
+        "journal": "Journal of nephrology",
+        "year": "2026",
+        "doi": "10.1093/joneph/aajag171",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42599172/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41166753",
+        "title": "A potential hemostatic chitosan/gelatin cryogel impregnated with&lt;i&gt;Verbascum thapsus&lt;/i&gt;leaf extract for noncompressible hemorrhage management.",
+        "journal": "Biomedical materials (Bristol, England)",
+        "year": "2025",
+        "doi": "10.1088/1748-605x/ae19b7",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41166753/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-5e9fe2abad",
+        "title": "Natural Antioxidant Enrichment of Linseed Oil: Ultrasound-Assisted Maceration with Mullein Flowers (Verbascum thapsus L.)",
+        "journal": "Food Biophysics",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12299115",
+        "title": "Intraspecific Variability of Wormwood (&lt;i&gt;Artemisia absinthium&lt;/i&gt; L.) Occurring in Poland in Respect of Developmental and Chemical Traits.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30142915",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12299115",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-21e6a1a18c",
+        "title": "The MicroTron: a microfluidic platform for single cell studies in  <i>P. patens</i>",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.64898/2026.06.30.735479",
+        "open_access": false,
+        "url": "https://doi.org/10.64898/2026.06.30.735479",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11341329",
+        "title": "Bioassay-guided fractionation of <i>Verbascum thapsus</i> extract and its combination with polyvinyl alcohol in the form electrospun nanofibrous membrane for efficient wound dressing application.",
+        "journal": "Heliyon",
+        "year": "2024",
+        "doi": "10.1016/j.heliyon.2024.e32717",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11341329",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12030741",
+        "title": "Vesicular Carriers for Phytochemical Delivery: A Comprehensive Review of Techniques and Applications.",
+        "journal": "Pharmaceutics",
+        "year": "2025",
+        "doi": "10.3390/pharmaceutics17040464",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12030741",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12154366",
+        "title": "Evaluation of Antibacterial, Antifungal, Antiviral, and Anticancer Potential of Extract from the Fern &lt;i&gt;Dryopteris erythrosora&lt;/i&gt;.",
+        "journal": "International journal of molecular sciences",
+        "year": "2025",
+        "doi": "10.3390/ijms26115182",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12154366",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      }
+    ],
+    "passages": [
+      {
+        "passage_id": "pmc-12566942#abstract-5",
+        "source_id": "pmc-12566942",
+        "located_in": "abstract",
+        "text": "The results of the survey identified 14 locally used medicinal plants ( Asimina triloba , Callicarpa americana , Chimaphila umbellate , Cichorium intybus , Eupatorium perfoliatum , Monotropa uniflora , Paulownia tomentosa , Phytolacca americana , Portulaca oleracea , Sassafras albidum , Ampelopsis glandulosa , Ulmus rubra , Verbascum thapsus , and Xanthorhiza simplicissima ) belonging to different families, plant types and used for a wide variety of purposes. Most plants belonged to the Ericaceae and Asteraceae families, were mostly herb type, while the most common plant part was berries, leaves and roots."
+      },
+      {
+        "passage_id": "pmc-13374249#abstract-0",
+        "source_id": "pmc-13374249",
+        "located_in": "abstract",
+        "text": "Background Verbascum thapsus belongs to Scrophulariaceae (a family with ~ 62 genera and ~ 1830 species) and has significant medicinal and ecological value. However, its mitochondrial genome (mtDNA) has not been reported previously."
+      },
+      {
+        "passage_id": "pmc-13374249#abstract-2",
+        "source_id": "pmc-13374249",
+        "located_in": "abstract",
+        "text": "This study aimed to sequence, assemble, and annotate the complete mtDNA of V. thapsus, to clarify its structural characteristics, evolutionary dynamics, and phylogenetic relationships. Results The assembled V. thapsus mtDNA is a circular molecule of 478,020 bp, with a GC content of 45.02%."
+      },
+      {
+        "passage_id": "pmc-13374249#abstract-3",
+        "source_id": "pmc-13374249",
+        "located_in": "abstract",
+        "text": "Results The assembled V. thapsus mtDNA is a circular molecule of 478,020 bp, with a GC content of 45.02%. It contains 36 protein-coding genes (PCGs), 21 tRNA genes, and 3 rRNA genes."
+      },
+      {
+        "passage_id": "pmc-13374249#abstract-7",
+        "source_id": "pmc-13374249",
+        "located_in": "abstract",
+        "text": "Phylogenetic analysis (based on 14 conserved mitochondrial PCGs) placed V. thapsus within the order Lamiales, supporting its taxonomic position. Conclusions This study presents the first complete mtDNA of V. thapsus, which sheds light on mitochondrial genome evolution in Scrophulariaceae."
+      },
+      {
+        "passage_id": "pmc-13374249#abstract-8",
+        "source_id": "pmc-13374249",
+        "located_in": "abstract",
+        "text": "Conclusions This study presents the first complete mtDNA of V. thapsus, which sheds light on mitochondrial genome evolution in Scrophulariaceae. The identified genomic rearrangements, codon usage biases, and RNA editing events form a foundation for future phylogenetic and functional research on V. thapsus and related species."
+      },
+      {
+        "passage_id": "pmc-13374249#abstract-9",
+        "source_id": "pmc-13374249",
+        "located_in": "abstract",
+        "text": "The identified genomic rearrangements, codon usage biases, and RNA editing events form a foundation for future phylogenetic and functional research on V. thapsus and related species."
+      },
+      {
+        "passage_id": "pmid-40601286#abstract-4",
+        "source_id": "pmid-40601286",
+        "located_in": "abstract",
+        "text": "For macro elements, the highest values were Ca in Urtica dioica (27,800 mg kg -1 ), K in Echium amoenum (34,600 mg kg -1 ), Mg in Verbascum thapsus (9080 mg kg -1 ), and Na in Borago officinalis (10,500 mg kg -1 ). Relative to adult RDAs, Marrubium vulgare is a key source of Ca (64%) and K (22%), Achillea millefolium provides Mg (98%), Fe (54%), and Mn (97%), and Matricaria chamomilla contributes Cu (86%)."
+      },
+      {
+        "passage_id": "pmc-13380996#abstract-0",
+        "source_id": "pmc-13380996",
+        "located_in": "abstract",
+        "text": "Mullein (Verbascum thapsus) is a medicinal plant known for its traditional uses and health benefits; however, the composition and bioactivity of its tissue oils from the leaf, stem, and root are underexplored. This study investigated the phytoconstituents, fatty acid profiles, and antifungal activities of mullein oils."
+      },
+      {
+        "passage_id": "pmc-13133430#abstract-0",
+        "source_id": "pmc-13133430",
+        "located_in": "abstract",
+        "text": "Ethnopharmacological relevance Verbascum thapsus L. is a prized medicinal plant from the Kashmir Himalaya traditionally utilized to treat many ailments, yet its active metabolites against antimicrobial mechanisms remain unclear. Aim of the study This work envisages an integrated in-silico and in-vitro approach to mechanistically investigate broad-spectrum antimicrobial activity of carpachromene, a supradecorated phytochemical from V . thapsus ."
+      },
+      {
+        "passage_id": "pmc-12976496#abstract-2",
+        "source_id": "pmc-12976496",
+        "located_in": "abstract",
+        "text": "The integration of these approaches led to the identification of four plants, Allium lusitanicum, Salvia pratensis, Verbascum thapsus and Glaucium flavum, whose extracts, characterized by a metabolomic analysis, exhibit robust inhibitory activity against the amyloid aggregation of α-synuclein in vitro, as well as in neuroblastoma cells overexpressing the protein. By employing a size exclusion chromatography affinity approach coupled to mass spectrometry, we identified the phenylpropanoid glycoside acteoside from the extract of the edible plant V. thapsus as the metabolite that directly binds α-synuclein and effectively inhibits its fibril formation."
+      },
+      {
+        "passage_id": "pmc-12976496#abstract-3",
+        "source_id": "pmc-12976496",
+        "located_in": "abstract",
+        "text": "By employing a size exclusion chromatography affinity approach coupled to mass spectrometry, we identified the phenylpropanoid glycoside acteoside from the extract of the edible plant V. thapsus as the metabolite that directly binds α-synuclein and effectively inhibits its fibril formation. In addition, acteoside reduces oxidative stress in neuroblastoma cells exposed to α-synuclein fibrils and activates the NRF2 pathway."
+      },
+      {
+        "passage_id": "pmid-38279434#abstract-0",
+        "source_id": "pmid-38279434",
+        "located_in": "abstract",
+        "text": "Verbascum thapsus (VT) is a medicinal plant that is used in folk medicine to treat a variety of ailments. For this study, the biological functions of VT methanol extract were determined in vitro."
+      },
+      {
+        "passage_id": "pmc-12608489#abstract-3",
+        "source_id": "pmc-12608489",
+        "located_in": "abstract",
+        "text": "Based on key morphological traits, V. thapsus and V. sinuatum emerged as the most frequently depicted species, particularly through their basal leaves and inflorescences (especially in modern ages). In archaeological contexts, Verbascum overall appears as a symbol of Athena/Minerva, bringers of light, and in funerary settings, such as Apulian vases and tombs, symbolizing new life in the afterlife."
+      },
+      {
+        "passage_id": "pmc-11184722#abstract-8",
+        "source_id": "pmc-11184722",
+        "located_in": "abstract",
+        "text": "Results Here, we have tested the combination of natural products containing higher amounts of polyphenols (i.e., propolis, Verbascum thapsus L., and Thymus vulgaris L.), together with the inorganic long chain polyphosphates 'polyPs' with antiviral, antibacterial, and antifungal behaviours, against SARS-CoV-2, FLU-A, RSV-A, Gram positive/ negative bacteria and fungi (i.e., Candida albicans). These components synergistically exert an immunomodulatory action by enhancing those processes involved in innate immune response (e.g., cytokines: IFNγ, TNFα, IL-10, IL-6/12; chemokines: CXCL1; antimicrobial peptides: HBD-2, LL-37; complement system: C3)."
+      },
+      {
+        "passage_id": "pmid-41337662#abstract-0",
+        "source_id": "pmid-41337662",
+        "located_in": "abstract",
+        "text": "This study investigates the phytochemical composition and pharmacological potential of Verbascum thapsus L. leaf extracts. Cold maceration with solvents of increasing polarity (hexane, ethyl acetate, ethanol, and methanol) yielded extracts rich in phenolics, flavonoids, and tannins, as confirmed by phytochemical screening and Fourier-transform infrared (FTIR) detection of aldehydes, ketones, and aliphatic and aromatic groups."
+      },
+      {
+        "passage_id": "pmid-41337662#abstract-6",
+        "source_id": "pmid-41337662",
+        "located_in": "abstract",
+        "text": "Taken together, these findings demonstrate that the remarkable bioactivities of V. thapsus are directly linked to its rich profile of antioxidant and antimicrobial phytochemicals, strongly supporting its potential as a valuable source of natural therapeutic agents."
+      },
+      {
+        "passage_id": "pmid-41481338#abstract-0",
+        "source_id": "pmid-41481338",
+        "located_in": "abstract",
+        "text": "Verbascum thapsus L., commonly called Mullein, is widely used in Ayurveda for the treatment of numerous ailments. The major objective of the present study is to analyse the phytochemical composition of different plant organs of V. thapsus ."
+      },
+      {
+        "passage_id": "pmid-41481338#abstract-1",
+        "source_id": "pmid-41481338",
+        "located_in": "abstract",
+        "text": "The major objective of the present study is to analyse the phytochemical composition of different plant organs of V. thapsus . UPLC/MS-QToF analysis of methanol extracts from different plant organs (inflorescence, leaf, stem, and root) of V. thapsus displayed 61 active biomarkers."
+      },
+      {
+        "passage_id": "pmid-41481338#abstract-2",
+        "source_id": "pmid-41481338",
+        "located_in": "abstract",
+        "text": "UPLC/MS-QToF analysis of methanol extracts from different plant organs (inflorescence, leaf, stem, and root) of V. thapsus displayed 61 active biomarkers. Among those, 48 compounds were found in the inflorescence, 40 in the leaf, 32 in the stem, and 29 in the root of V. thapsus ."
+      },
+      {
+        "passage_id": "pmid-41481338#abstract-3",
+        "source_id": "pmid-41481338",
+        "located_in": "abstract",
+        "text": "Among those, 48 compounds were found in the inflorescence, 40 in the leaf, 32 in the stem, and 29 in the root of V. thapsus . The distribution of these compounds was further evaluated statistically using Venn and Heat map diagrams."
+      },
+      {
+        "passage_id": "pmid-41481338#abstract-5",
+        "source_id": "pmid-41481338",
+        "located_in": "abstract",
+        "text": "Moreover, a novel reverse-phase HPLC method was developed and validated as per ICH Q2(R1) guidelines to quantify verbascoside and luteolin of V. thapsus . The method was found suitable, specific, linear ( R 2 > 0.999), precise, accurate, and robust."
+      },
+      {
+        "passage_id": "pmid-41166753#abstract-0",
+        "source_id": "pmid-41166753",
+        "located_in": "abstract",
+        "text": "In this study, we prepared a series of chitosan/gelatin (CS/GEL) cryogels containing Verbascum thapsus ( V. thapsus ) leaf extract and identified a lead formulation for noncompressible hemorrhage (NCH). Cryogels with average pore diameters ranging from 225 to 478 µm were fabricated through cryogelation at various CS/GEL ratios."
+      },
+      {
+        "passage_id": "epmc-5e9fe2abad#abstract-0",
+        "source_id": "epmc-5e9fe2abad",
+        "located_in": "abstract",
+        "text": "This study investigated the effect of natural antioxidants from mullein flowers (Verbascum thapsus L.) on the quality and oxidative stability of linseed oil (Linum usitatissimum L.). Ultrasonic-assisted maceration was optimized by evaluating the effects of extraction time, ultrasonic power, and flower concentration."
+      },
+      {
+        "passage_id": "pmc-11341329#abstract-0",
+        "source_id": "pmc-11341329",
+        "located_in": "abstract",
+        "text": "Verbascum thapsus ( V. thpsus ), family Scrophulariaceae, has considerable importance in traditional medicine worldwide because of its antioxidant and anti-inflammatory activities . V. thpsus was used in traditional medicines as a useful drug for lung disease, sore throat, wound healing, and treatment of whooping cough."
+      },
+      {
+        "passage_id": "pmc-11341329#abstract-2",
+        "source_id": "pmc-11341329",
+        "located_in": "abstract",
+        "text": "The aim of this study was to extract of V. thpsus bioactive fraction using antibacterial assay guided fractionation methodology and develop a system based on electrospun nanofibrous membrane (NFM) that can be effective by releasing the extract of V. thapsus for antibacterial and wound healing applications. For this purpose, the fractionation of total extract was done using Liquid-Liquid extraction method."
+      }
+    ]
+  },
+  "counts": {
+    "sources": 38,
+    "open_access_sources": 29,
+    "passages": 26
+  },
+  "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."
+}

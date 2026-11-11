@@ -1,0 +1,24 @@
+{
+  "species_key": "viola_sororia",
+  "card": "viola-sororia",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0,
+    "flower_white": 0.002,
+    "berry_dark": 0.045,
+    "berry_red": 0.0,
+    "foliage": 0.6405
+  },
+  "mandatory": [
+    "foliage"
+  ],
+  "preferred": [
+    "berry_dark"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

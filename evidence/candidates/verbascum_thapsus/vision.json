@@ -1,0 +1,80 @@
+{
+  "model": "human-in-the-loop vision pass",
+  "prompt_version": "2026-11-05.1",
+  "calls": 3,
+  "usd": 0.0,
+  "note": "Produced with the same rubric and schema vision_review.ask_model() uses. The automated path is built and self-tested; it needs an ANTHROPIC_API_KEY secret to run, which this environment does not have.",
+  "rows": [
+    {
+      "photo_id": 44345492,
+      "structures_present": [
+        "flower_yellow",
+        "flowering_spike",
+        "foliage"
+      ],
+      "structures_absent": [],
+      "orientation": "front",
+      "identifiable": true,
+      "quality": 8,
+      "defects": [],
+      "meets_brief": true,
+      "why": "Dense cylindrical spike with open yellow flowers; reads exactly like card #27.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 143207510,
+      "structures_present": [
+        "flower_yellow",
+        "foliage"
+      ],
+      "structures_absent": [
+        "flowering_spike"
+      ],
+      "orientation": "front",
+      "identifiable": false,
+      "quality": 5,
+      "defects": [
+        "cropped so close that the identifying spike is not visible"
+      ],
+      "meets_brief": false,
+      "why": "Flowers and woolly leaves are present but the dense spike that identifies mullein is out of frame.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    },
+    {
+      "photo_id": 44345476,
+      "structures_present": [
+        "flower_yellow",
+        "flowering_spike",
+        "foliage"
+      ],
+      "structures_absent": [],
+      "orientation": "front",
+      "identifiable": true,
+      "quality": 7,
+      "defects": [
+        "flowers sparse and scattered along the spike"
+      ],
+      "meets_brief": true,
+      "why": "Whole flowering plant with the spike clearly shown.",
+      "source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "_usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "usd": 0.0
+      },
+      "cached": false
+    }
+  ]
+}

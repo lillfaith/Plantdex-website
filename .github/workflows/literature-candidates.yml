@@ -1,0 +1,45 @@
+name: Literature candidates
+
+# Finds retrievable references for a species, as CANDIDATES for a human to check.
+#
+# It produces nothing citable. `src/data/sources.json` renders only entries a human has
+# opened and marked verified, and this workflow writes to neither that file nor any
+# database. Its output belongs in docs/source-candidates.md.
+#
+# Push-triggered on this branch for the same reason the Georgia survey is: a
+# workflow_dispatch workflow can only be dispatched once its file is on the default branch,
+# and this repository's default branch is what GitHub Pages deploys — so dispatching a
+# read-only literature search would have meant shipping the site to run one.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/literature_candidates.py
+      - .github/workflows/literature-candidates.yml
+  workflow_dispatch:
+    inputs:
+      species:
+        description: Space-separated, quoted binomials
+        required: true
+        default: '"Lamium purpureum"'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/literature_candidates.py --self-test
+      - name: Search
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            eval "python3 scripts/literature_candidates.py ${{ inputs.species }}"
+          else
+            # The three cards graded `hold` in CARD_SOURCES — which means UNAUDITED, a
+            # queue rather than a refusal, and not a judgement about the plant.
+            python3 scripts/literature_candidates.py \
+              "Lamium purpureum" "Rumex acetosella" "Cichorium intybus"
+          fi

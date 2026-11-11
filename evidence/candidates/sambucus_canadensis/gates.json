@@ -1,0 +1,75 @@
+{
+  "species": "sambucus_canadensis",
+  "verdict": "NEEDS_REVIEW",
+  "any_genuine_api_vision": false,
+  "art_direction": "Elderberry: preserve my rejection and continue searching for a healthy-looking fruiting specimen with dark berries, branching stems and leaves.",
+  "selected": null,
+  "candidates": [
+    {
+      "photo_id": 424182823,
+      "score": 115.1,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.068,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": {
+        "species": "sambucus_canadensis",
+        "decision": "preferred",
+        "reason": "Owner: 'Elderberry 424182823: preferred.' Still needs visual review for healthy foliage, connected branches and final composition. NOT an approval.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": true,
+      "owner_alternative": false
+    },
+    {
+      "photo_id": 424182835,
+      "score": 114.3,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.023,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": {
+        "species": "sambucus_canadensis",
+        "decision": "alternative",
+        "reason": "Owner: 'Elderberry 424182835: alternative.' Kept in view behind 424182823; same open questions -- healthy foliage, connected branches, final composition.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false,
+      "owner_alternative": true
+    },
+    {
+      "photo_id": 309523755,
+      "score": 112.4,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.006,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [
+        "touches the right edge of the source photograph; vision must confirm no identifying structure was lost"
+      ],
+      "owner_preferred": false,
+      "owner_alternative": false
+    },
+    {
+      "photo_id": 554726092,
+      "score": 110.4,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.124,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false,
+      "owner_alternative": false
+    }
+  ]
+}

@@ -40,7 +40,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
         {cards.length === 1 && cards[0] && (
           <Link
             href={`/herbdex/${cards[0].id}`}
-            className="shrink-0"
+            className="card-frame shrink-0 overflow-hidden rounded-md"
             aria-label={`Open card ${cards[0].cardNumber}`}
           >
             <Image
@@ -49,7 +49,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
               aria-hidden="true"
               width={356}
               height={576}
-              className={`h-24 w-[3.7rem] rounded-md object-cover ${
+              className={`h-24 w-[3.7rem] object-cover ${
                 isDiscovered(cards[0].id)
                   ? ''
                   : 'blur-[2.5px] brightness-[0.62] saturate-0'
@@ -145,7 +145,7 @@ export function TaskCard({ progress }: { progress: TaskProgress }) {
                 <Link
                   href={`/herbdex/${herb.id}`}
                   title={found ? herb.commonName : `Card #${herb.cardNumber}`}
-                  className="block"
+                  className="card-frame block overflow-hidden rounded"
                 >
                   {/*
                     THE CHIP VARIANT, and this is the page that made it necessary. These are

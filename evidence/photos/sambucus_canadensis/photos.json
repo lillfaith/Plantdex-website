@@ -1,0 +1,2611 @@
+{
+  "species": "Sambucus canadensis",
+  "fetched_at": "2026-11-06T20:59:17+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 84300,
+    "name": "Sambucus canadensis",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Sambucus_canadensis"
+  },
+  "photos": [
+    {
+      "photo_id": 325326095,
+      "observation_id": 186190311,
+      "observation_url": "https://www.inaturalist.org/observations/186190311",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-04",
+      "place": "Pines Blvd, Pembroke Pines, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326095/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326095/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326095/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325326095.jpg",
+      "bytes": 994138,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 325326158,
+      "observation_id": 186190311,
+      "observation_url": "https://www.inaturalist.org/observations/186190311",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-04",
+      "place": "Pines Blvd, Pembroke Pines, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326158/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326158/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326158/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325326158.jpg",
+      "bytes": 892902,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 325326199,
+      "observation_id": 186190311,
+      "observation_url": "https://www.inaturalist.org/observations/186190311",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-04",
+      "place": "Pines Blvd, Pembroke Pines, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326199/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326199/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326199/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325326199.jpg",
+      "bytes": 842461,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 325326261,
+      "observation_id": 186190311,
+      "observation_url": "https://www.inaturalist.org/observations/186190311",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-04",
+      "place": "Pines Blvd, Pembroke Pines, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326261/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326261/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325326261/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325326261.jpg",
+      "bytes": 1800636,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224075018,
+      "observation_id": 131655656,
+      "observation_url": "https://www.inaturalist.org/observations/131655656",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Worcester, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224075018/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224075018/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224075018/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224075018.jpeg",
+      "bytes": 782988,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 166271292,
+      "observation_id": 99706463,
+      "observation_url": "https://www.inaturalist.org/observations/99706463",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-10-27",
+      "place": "Sunrise, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/166271292/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/166271292/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/166271292/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1348
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-166271292.jpg",
+      "bytes": 830107,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 166271302,
+      "observation_id": 99706463,
+      "observation_url": "https://www.inaturalist.org/observations/99706463",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-10-27",
+      "place": "Sunrise, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/166271302/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/166271302/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/166271302/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1339
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-166271302.jpg",
+      "bytes": 624381,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 162446858,
+      "observation_id": 97655496,
+      "observation_url": "https://www.inaturalist.org/observations/97655496",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-10-09",
+      "place": "Winn County, US-LA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/162446858/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/162446858/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/162446858/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-162446858.jpg",
+      "bytes": 1103963,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 420991401,
+      "observation_id": 236624986,
+      "observation_url": "https://www.inaturalist.org/observations/236624986",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-18",
+      "place": "Holly, MI, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/420991401/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/420991401/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/420991401/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-420991401.jpeg",
+      "bytes": 918625,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 420991573,
+      "observation_id": 236624986,
+      "observation_url": "https://www.inaturalist.org/observations/236624986",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-18",
+      "place": "Holly, MI, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/420991573/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/420991573/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/420991573/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-420991573.jpeg",
+      "bytes": 1508348,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 309523755,
+      "observation_id": 177928213,
+      "observation_url": "https://www.inaturalist.org/observations/177928213",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Windsor Forest, Savannah, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523755/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523755/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523755/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-309523755.jpeg",
+      "bytes": 783423,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 309523765,
+      "observation_id": 177928213,
+      "observation_url": "https://www.inaturalist.org/observations/177928213",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Windsor Forest, Savannah, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523765/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523765/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523765/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-309523765.jpeg",
+      "bytes": 975305,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 309523788,
+      "observation_id": 177928213,
+      "observation_url": "https://www.inaturalist.org/observations/177928213",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Windsor Forest, Savannah, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523788/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523788/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523788/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-309523788.jpeg",
+      "bytes": 1206491,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 309523850,
+      "observation_id": 177928213,
+      "observation_url": "https://www.inaturalist.org/observations/177928213",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Windsor Forest, Savannah, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523850/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523850/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/309523850/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-309523850.jpeg",
+      "bytes": 1009694,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 334140574,
+      "observation_id": 190584610,
+      "observation_url": "https://www.inaturalist.org/observations/190584610",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-23",
+      "place": "Richmond Hill, GA 31324, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/334140574/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/334140574/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/334140574/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-334140574.jpeg",
+      "bytes": 2142210,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 334140586,
+      "observation_id": 190584610,
+      "observation_url": "https://www.inaturalist.org/observations/190584610",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-23",
+      "place": "Richmond Hill, GA 31324, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/334140586/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/334140586/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/334140586/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-334140586.jpeg",
+      "bytes": 1980010,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 219729256,
+      "observation_id": 129310658,
+      "observation_url": "https://www.inaturalist.org/observations/129310658",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-02",
+      "place": "Georgetown, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729256/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729256/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729256/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-219729256.jpeg",
+      "bytes": 1024224,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 219729289,
+      "observation_id": 129310658,
+      "observation_url": "https://www.inaturalist.org/observations/129310658",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-02",
+      "place": "Georgetown, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729289/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729289/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729289/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-219729289.jpeg",
+      "bytes": 680033,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 219729231,
+      "observation_id": 129310658,
+      "observation_url": "https://www.inaturalist.org/observations/129310658",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-02",
+      "place": "Georgetown, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729231/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729231/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729231/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-219729231.jpeg",
+      "bytes": 875945,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 219729201,
+      "observation_id": 129310658,
+      "observation_url": "https://www.inaturalist.org/observations/129310658",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-02",
+      "place": "Georgetown, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729201/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729201/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/219729201/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-219729201.jpeg",
+      "bytes": 1501520,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 237708469,
+      "observation_id": 139026046,
+      "observation_url": "https://www.inaturalist.org/observations/139026046",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-10-16",
+      "place": "6W7W+JW Fort King Pavilion, Silver Springs, FL 34488, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/237708469/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/237708469/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/237708469/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-237708469.jpeg",
+      "bytes": 1429757,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 237708504,
+      "observation_id": 139026046,
+      "observation_url": "https://www.inaturalist.org/observations/139026046",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-10-16",
+      "place": "6W7W+JW Fort King Pavilion, Silver Springs, FL 34488, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/237708504/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/237708504/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/237708504/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-237708504.jpeg",
+      "bytes": 2164863,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286215,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286215/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286215/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286215/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286215.jpg",
+      "bytes": 4227562,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286214,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286214/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286214/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286214/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286214.jpg",
+      "bytes": 3461239,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286218,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286218/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286218/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286218/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286218.jpg",
+      "bytes": 3750902,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286217,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286217/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286217/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286217/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286217.jpg",
+      "bytes": 3523292,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286206,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286206/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286206/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286206/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286206.jpg",
+      "bytes": 3485049,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286213,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286213/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286213/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286213/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286213.jpg",
+      "bytes": 3540394,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286268,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286268/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286268/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286268/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286268.jpg",
+      "bytes": 2981663,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286299,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286299/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286299/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286299/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286299.jpg",
+      "bytes": 3441118,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 709286296,
+      "observation_id": 387346252,
+      "observation_url": "https://www.inaturalist.org/observations/387346252",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-01",
+      "place": "Hudson, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286296/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286296/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/709286296/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-709286296.jpg",
+      "bytes": 3396666,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 147812711,
+      "observation_id": 89503923,
+      "observation_url": "https://www.inaturalist.org/observations/89503923",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-01",
+      "place": "Garden River, ON P6A, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/147812711/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/147812711/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/147812711/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-147812711.jpeg",
+      "bytes": 2317147,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 553899362,
+      "observation_id": 307165367,
+      "observation_url": "https://www.inaturalist.org/observations/307165367",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-17",
+      "place": "Franklin, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/553899362/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/553899362/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/553899362/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-553899362.jpg",
+      "bytes": 1856558,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 548697626,
+      "observation_id": 304371742,
+      "observation_url": "https://www.inaturalist.org/observations/304371742",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-06",
+      "place": "Windsor Forest, Savannah, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/548697626/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/548697626/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/548697626/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-548697626.jpg",
+      "bytes": 1939587,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 552445375,
+      "observation_id": 306345576,
+      "observation_url": "https://www.inaturalist.org/observations/306345576",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-14",
+      "place": "North Willow Farms, Indianapolis, IN 46260, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/552445375/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/552445375/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/552445375/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-552445375.jpg",
+      "bytes": 1284355,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 561387654,
+      "observation_id": 311012933,
+      "observation_url": "https://www.inaturalist.org/observations/311012933",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-01",
+      "place": "Kawartha Lakes, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/561387654/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/561387654/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/561387654/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-561387654.jpg",
+      "bytes": 822842,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 561387664,
+      "observation_id": 311012933,
+      "observation_url": "https://www.inaturalist.org/observations/311012933",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-01",
+      "place": "Kawartha Lakes, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/561387664/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/561387664/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/561387664/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-561387664.jpg",
+      "bytes": 207690,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 563420582,
+      "observation_id": 312082665,
+      "observation_url": "https://www.inaturalist.org/observations/312082665",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-06",
+      "place": "Marina Rv Dr, Lake Placid, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/563420582/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/563420582/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/563420582/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-563420582.jpg",
+      "bytes": 3611569,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 556586373,
+      "observation_id": 308504492,
+      "observation_url": "https://www.inaturalist.org/observations/308504492",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-23",
+      "place": "Collingwood",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/556586373/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/556586373/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/556586373/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-556586373.jpg",
+      "bytes": 3458947,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 577065025,
+      "observation_id": 319246617,
+      "observation_url": "https://www.inaturalist.org/observations/319246617",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-06",
+      "place": "Miramichi, NB, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/577065025/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/577065025/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/577065025/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-577065025.jpg",
+      "bytes": 3298144,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 222608802,
+      "observation_id": 130862352,
+      "observation_url": "https://www.inaturalist.org/observations/130862352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-14",
+      "place": "Bella Vista, AR, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/222608802/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/222608802/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/222608802/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1371
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-222608802.jpeg",
+      "bytes": 572284,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 222609376,
+      "observation_id": 130862352,
+      "observation_url": "https://www.inaturalist.org/observations/130862352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-14",
+      "place": "Bella Vista, AR, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/222609376/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/222609376/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/222609376/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1371
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-222609376.jpeg",
+      "bytes": 919426,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 94980332,
+      "observation_id": 59442639,
+      "observation_url": "https://www.inaturalist.org/observations/59442639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-09-07",
+      "place": "School St, Polkton, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/94980332/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/94980332/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/94980332/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-94980332.jpg",
+      "bytes": 1110629,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 94980271,
+      "observation_id": 59442639,
+      "observation_url": "https://www.inaturalist.org/observations/59442639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-09-07",
+      "place": "School St, Polkton, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/94980271/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/94980271/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/94980271/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-94980271.jpg",
+      "bytes": 1705870,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252558447,
+      "observation_id": 146844027,
+      "observation_url": "https://www.inaturalist.org/observations/146844027",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-26",
+      "place": "W7480 Prairie Ln, Lake Mills, WI 53551, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558447/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558447/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558447/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252558447.jpeg",
+      "bytes": 1721140,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252558455,
+      "observation_id": 146844027,
+      "observation_url": "https://www.inaturalist.org/observations/146844027",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-26",
+      "place": "W7480 Prairie Ln, Lake Mills, WI 53551, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558455/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558455/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558455/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252558455.jpeg",
+      "bytes": 1442192,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252558478,
+      "observation_id": 146844027,
+      "observation_url": "https://www.inaturalist.org/observations/146844027",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-26",
+      "place": "W7480 Prairie Ln, Lake Mills, WI 53551, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558478/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558478/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252558478/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252558478.jpeg",
+      "bytes": 1657447,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 565658401,
+      "observation_id": 313255718,
+      "observation_url": "https://www.inaturalist.org/observations/313255718",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-10",
+      "place": "Richmond Hill, GA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/565658401/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/565658401/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/565658401/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-565658401.jpg",
+      "bytes": 690312,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 150939761,
+      "observation_id": 91268942,
+      "observation_url": "https://www.inaturalist.org/observations/91268942",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-13",
+      "place": "Texas, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/150939761/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/150939761/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/150939761/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-150939761.jpeg",
+      "bytes": 2780199,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 150939793,
+      "observation_id": 91268942,
+      "observation_url": "https://www.inaturalist.org/observations/91268942",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-13",
+      "place": "Texas, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/150939793/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/150939793/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/150939793/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-150939793.jpeg",
+      "bytes": 2064317,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148170837,
+      "observation_id": 89709149,
+      "observation_url": "https://www.inaturalist.org/observations/89709149",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-02",
+      "place": "Hollywood/Gulf Power, Fort Walton Beach, FL 32548, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148170837/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148170837/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148170837/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148170837.jpeg",
+      "bytes": 2252645,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 728043236,
+      "observation_id": 396976679,
+      "observation_url": "https://www.inaturalist.org/observations/396976679",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-09-03",
+      "place": "Lewisville-Clemmons Rd, Lewisville, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/728043236/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/728043236/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/728043236/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-728043236.jpg",
+      "bytes": 3463856,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 728043238,
+      "observation_id": 396976679,
+      "observation_url": "https://www.inaturalist.org/observations/396976679",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-09-03",
+      "place": "Lewisville-Clemmons Rd, Lewisville, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/728043238/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/728043238/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/728043238/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-728043238.jpg",
+      "bytes": 3609558,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 718817038,
+      "observation_id": 392247288,
+      "observation_url": "https://www.inaturalist.org/observations/392247288",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-17",
+      "place": "Vincennes, IN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817038/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817038/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817038/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-718817038.jpg",
+      "bytes": 1102442,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 718817077,
+      "observation_id": 392247288,
+      "observation_url": "https://www.inaturalist.org/observations/392247288",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-17",
+      "place": "Vincennes, IN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817077/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817077/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817077/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-718817077.jpg",
+      "bytes": 627977,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 718817122,
+      "observation_id": 392247288,
+      "observation_url": "https://www.inaturalist.org/observations/392247288",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-17",
+      "place": "Vincennes, IN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817122/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817122/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/718817122/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-718817122.jpg",
+      "bytes": 1308045,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 430731078,
+      "observation_id": 241664546,
+      "observation_url": "https://www.inaturalist.org/observations/241664546",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-09-14",
+      "place": "Penikese Island, Gosnold, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731078/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731078/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731078/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-430731078.jpeg",
+      "bytes": 1346511,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 430731151,
+      "observation_id": 241664546,
+      "observation_url": "https://www.inaturalist.org/observations/241664546",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-09-14",
+      "place": "Penikese Island, Gosnold, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731151/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731151/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731151/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-430731151.jpeg",
+      "bytes": 1228372,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 430731325,
+      "observation_id": 241664546,
+      "observation_url": "https://www.inaturalist.org/observations/241664546",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-09-14",
+      "place": "Penikese Island, Gosnold, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731325/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731325/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731325/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-430731325.jpeg",
+      "bytes": 1246594,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 430731413,
+      "observation_id": 241664546,
+      "observation_url": "https://www.inaturalist.org/observations/241664546",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-09-14",
+      "place": "Penikese Island, Gosnold, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731413/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731413/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/430731413/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-430731413.jpeg",
+      "bytes": 847453,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 716766977,
+      "observation_id": 391190277,
+      "observation_url": "https://www.inaturalist.org/observations/391190277",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-14",
+      "place": "Medina, MN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766977/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766977/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766977/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1620,
+        "height": 1080
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-716766977.jpg",
+      "bytes": 950026,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 716766978,
+      "observation_id": 391190277,
+      "observation_url": "https://www.inaturalist.org/observations/391190277",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-14",
+      "place": "Medina, MN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766978/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766978/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766978/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1620,
+        "height": 1080
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-716766978.jpg",
+      "bytes": 946637,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 716766979,
+      "observation_id": 391190277,
+      "observation_url": "https://www.inaturalist.org/observations/391190277",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-14",
+      "place": "Medina, MN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766979/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766979/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766979/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1620,
+        "height": 1080
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-716766979.jpg",
+      "bytes": 878168,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 716766980,
+      "observation_id": 391190277,
+      "observation_url": "https://www.inaturalist.org/observations/391190277",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-14",
+      "place": "Medina, MN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766980/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766980/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/716766980/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1620,
+        "height": 1080
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-716766980.jpg",
+      "bytes": 868983,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 310384240,
+      "observation_id": 178376929,
+      "observation_url": "https://www.inaturalist.org/observations/178376929",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-14",
+      "place": "Laurel Township, OH, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/310384240/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/310384240/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/310384240/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-310384240.jpeg",
+      "bytes": 2538980,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 310384284,
+      "observation_id": 178376929,
+      "observation_url": "https://www.inaturalist.org/observations/178376929",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-14",
+      "place": "Laurel Township, OH, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/310384284/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/310384284/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/310384284/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-310384284.jpeg",
+      "bytes": 2109610,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 150914364,
+      "observation_id": 91254355,
+      "observation_url": "https://www.inaturalist.org/observations/91254355",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-15",
+      "place": "Grovetown, GA 30813, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/150914364/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/150914364/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/150914364/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-150914364.jpeg",
+      "bytes": 1952115,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 423234348,
+      "observation_id": 237783621,
+      "observation_url": "https://www.inaturalist.org/observations/237783621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-24",
+      "place": "Sherwood, WI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234348/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234348/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234348/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-423234348.jpeg",
+      "bytes": 2043910,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 423234365,
+      "observation_id": 237783621,
+      "observation_url": "https://www.inaturalist.org/observations/237783621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-24",
+      "place": "Sherwood, WI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234365/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234365/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234365/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-423234365.jpeg",
+      "bytes": 1568899,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 423234393,
+      "observation_id": 237783621,
+      "observation_url": "https://www.inaturalist.org/observations/237783621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-24",
+      "place": "Sherwood, WI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234393/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234393/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/423234393/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-423234393.jpeg",
+      "bytes": 1893471,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 319584212,
+      "observation_id": 183202269,
+      "observation_url": "https://www.inaturalist.org/observations/183202269",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-14",
+      "place": "Road 146, North Perth, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/319584212/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/319584212/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/319584212/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-319584212.jpg",
+      "bytes": 1396597,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 565688229,
+      "observation_id": 313260940,
+      "observation_url": "https://www.inaturalist.org/observations/313260940",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-11",
+      "place": "Des Plaines River Trail N, Waukegan, IL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/565688229/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/565688229/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/565688229/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-565688229.jpg",
+      "bytes": 3622019,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 93796203,
+      "observation_id": 58737053,
+      "observation_url": "https://www.inaturalist.org/observations/58737053",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-09-06",
+      "place": "Markham, ON L3T, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/93796203/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/93796203/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/93796203/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 995
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-93796203.jpeg",
+      "bytes": 1779975,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 240465514,
+      "observation_id": 140473990,
+      "observation_url": "https://www.inaturalist.org/observations/140473990",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-10-29",
+      "place": "Airlie, Cape Town, 7806, South Africa",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/240465514/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/240465514/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/240465514/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 1,
+      "file": "inat-240465514.jpeg",
+      "bytes": 2180146,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 566147133,
+      "observation_id": 313499427,
+      "observation_url": "https://www.inaturalist.org/observations/313499427",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-12",
+      "place": "State St, Bennington, NE, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/566147133/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/566147133/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/566147133/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-566147133.jpg",
+      "bytes": 1503095,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 47164199,
+      "observation_id": 30197634,
+      "observation_url": "https://www.inaturalist.org/observations/30197634",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-04",
+      "place": "76513, Belton, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164199/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164199/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164199/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-47164199.jpg",
+      "bytes": 1187796,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 47164186,
+      "observation_id": 30197634,
+      "observation_url": "https://www.inaturalist.org/observations/30197634",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-04",
+      "place": "76513, Belton, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164186/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164186/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164186/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-47164186.jpg",
+      "bytes": 2188212,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 47164152,
+      "observation_id": 30197634,
+      "observation_url": "https://www.inaturalist.org/observations/30197634",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-04",
+      "place": "76513, Belton, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164152/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164152/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/47164152/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-47164152.jpg",
+      "bytes": 2064495,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 152072218,
+      "observation_id": 91895451,
+      "observation_url": "https://www.inaturalist.org/observations/91895451",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-20",
+      "place": "Franklin, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/152072218/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/152072218/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/152072218/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-152072218.jpeg",
+      "bytes": 677088,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 152072560,
+      "observation_id": 91895451,
+      "observation_url": "https://www.inaturalist.org/observations/91895451",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-20",
+      "place": "Franklin, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/152072560/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/152072560/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/152072560/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-152072560.jpeg",
+      "bytes": 654643,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 152736081,
+      "observation_id": 92261752,
+      "observation_url": "https://www.inaturalist.org/observations/92261752",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-22",
+      "place": "The Morton Arboretum, Lisle, IL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/152736081/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/152736081/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/152736081/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-152736081.jpg",
+      "bytes": 1335393,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 712200018,
+      "observation_id": 388838692,
+      "observation_url": "https://www.inaturalist.org/observations/388838692",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-06",
+      "place": "Lewisville-Clemmons Rd, Lewisville, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/712200018/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/712200018/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/712200018/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-712200018.jpg",
+      "bytes": 3705367,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 749167870,
+      "observation_id": 407650768,
+      "observation_url": "https://www.inaturalist.org/observations/407650768",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-02",
+      "place": "Pierrefonds, Montréal, QC, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/749167870/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/749167870/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/749167870/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1153,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-749167870.jpg",
+      "bytes": 854024,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 554726092,
+      "observation_id": 307539612,
+      "observation_url": "https://www.inaturalist.org/observations/307539612",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-19",
+      "place": "Glen Ellyn, IL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/554726092/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/554726092/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/554726092/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-554726092.jpg",
+      "bytes": 771634,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 554726125,
+      "observation_id": 307539612,
+      "observation_url": "https://www.inaturalist.org/observations/307539612",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-19",
+      "place": "Glen Ellyn, IL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/554726125/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/554726125/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/554726125/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-554726125.jpg",
+      "bytes": 1365525,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 546080500,
+      "observation_id": 302990552,
+      "observation_url": "https://www.inaturalist.org/observations/302990552",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-01",
+      "place": "Maple Grove, MN 55369, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080500/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080500/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080500/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-546080500.jpg",
+      "bytes": 2199851,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 546080722,
+      "observation_id": 302990552,
+      "observation_url": "https://www.inaturalist.org/observations/302990552",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-01",
+      "place": "Maple Grove, MN 55369, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080722/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080722/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080722/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-546080722.jpg",
+      "bytes": 1621699,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 546080942,
+      "observation_id": 302990552,
+      "observation_url": "https://www.inaturalist.org/observations/302990552",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-01",
+      "place": "Maple Grove, MN 55369, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080942/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080942/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/546080942/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-546080942.jpg",
+      "bytes": 1195694,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 546081518,
+      "observation_id": 302990552,
+      "observation_url": "https://www.inaturalist.org/observations/302990552",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-01",
+      "place": "Maple Grove, MN 55369, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/546081518/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/546081518/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/546081518/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-546081518.jpg",
+      "bytes": 1366899,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 421041733,
+      "observation_id": 236649348,
+      "observation_url": "https://www.inaturalist.org/observations/236649348",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-17",
+      "place": "Lincoln, NH, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/421041733/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/421041733/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/421041733/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-421041733.jpeg",
+      "bytes": 3295960,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 421041765,
+      "observation_id": 236649348,
+      "observation_url": "https://www.inaturalist.org/observations/236649348",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-17",
+      "place": "Lincoln, NH, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/421041765/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/421041765/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/421041765/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-421041765.jpeg",
+      "bytes": 2567134,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 559950797,
+      "observation_id": 310265971,
+      "observation_url": "https://www.inaturalist.org/observations/310265971",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-30",
+      "place": "Des Plaines River Trail N, Gurnee, IL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/559950797/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/559950797/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/559950797/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-559950797.jpg",
+      "bytes": 3866925,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 308850146,
+      "observation_id": 177568909,
+      "observation_url": "https://www.inaturalist.org/observations/177568909",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-08",
+      "place": "Narragansett, RI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/308850146/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/308850146/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/308850146/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-308850146.jpg",
+      "bytes": 862616,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 424182823,
+      "observation_id": 238274705,
+      "observation_url": "https://www.inaturalist.org/observations/238274705",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-14",
+      "place": "Mississauga, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182823/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182823/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182823/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 923
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-424182823.jpg",
+      "bytes": 583201,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 424182842,
+      "observation_id": 238274705,
+      "observation_url": "https://www.inaturalist.org/observations/238274705",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-14",
+      "place": "Mississauga, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182842/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182842/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182842/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 923
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-424182842.jpg",
+      "bytes": 1181362,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 424182835,
+      "observation_id": 238274705,
+      "observation_url": "https://www.inaturalist.org/observations/238274705",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-14",
+      "place": "Mississauga, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182835/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182835/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/424182835/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 923
+      },
+      "taxon_name": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-424182835.jpg",
+      "bytes": 543987,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

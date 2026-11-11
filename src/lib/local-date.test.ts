@@ -48,6 +48,20 @@ function sourceFiles(dir: string): string[] {
   return out;
 }
 
+/**
+ * THERE IS EXACTLY ONE DELIBERATE UTC DAY IN THIS APP, and it is not an exception to the rule
+ * below — it is outside what the rule is about.
+ *
+ * `utcDayOf` in `leaderboard.ts` partitions the Field Board's daily journal cap. That window
+ * has to mean the same thing for every player on one board, and a player must not be able to
+ * widen it by changing the clock on their phone, so it is a SERVER fact rather than a date
+ * anybody reads — and the SQL in migration 0011 partitions on the same boundary.
+ *
+ * It is written with `getUTCFullYear()`/`getUTCMonth()`/`getUTCDate()` rather than a slice,
+ * which is why the sweep below still finds nothing. That is deliberate on both sides: the
+ * guard stays absolute, and the one place that genuinely wants UTC says so in code a reader
+ * can tell apart from the mistake.
+ */
 describe('nothing else derives a calendar day from UTC', () => {
   it('never slices a date out of an ISO string', () => {
     // Full ISO timestamps are fine and used everywhere — `createdAt`, `discoveredAt`. It is

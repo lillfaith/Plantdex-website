@@ -114,7 +114,7 @@ export function SeedShelfView() {
           <p aria-live="polite" className="mt-4 text-xs font-semibold text-violet-200">
             {counts.species} species on the shelf
             {counts.encounters > counts.species && (
-              <span className="text-violet-400">
+              <span className="text-violet-300">
                 {' '}
                 · {counts.encounters} encounters
               </span>
@@ -123,7 +123,7 @@ export function SeedShelfView() {
               <span className="text-gold-300"> · {counts.sprouted} ready to claim</span>
             )}
             {counts.grown > 0 && (
-              <span className="text-violet-400">
+              <span className="text-violet-300">
                 {' '}
                 · {counts.grown} grown into {counts.grown === 1 ? 'a card' : 'cards'}
               </span>
@@ -195,16 +195,18 @@ export function SeedShelfView() {
         )}
 
         {!signedIn && entries.length > 0 && (
-          <p className="mt-6 text-xs leading-relaxed text-violet-400">
+          <p className="mt-6 text-xs leading-relaxed text-violet-300">
             This shelf is saved in this browser. Sign in and you&apos;ll be offered the chance to
             bring it with you — after that it follows your account to any device.
           </p>
         )}
 
-        <p className="mt-6 text-xs leading-relaxed text-violet-400">
+        <p className="mt-6 text-xs leading-relaxed text-violet-300">
           A packet records what an identifier suggested from a photograph. It is not a confirmed
           identification and never a statement that a plant is safe to touch, pick or eat.{' '}
-          <Link href="/safety" className="underline underline-offset-2 hover:text-violet-300">
+          {/* The hover shade had to move with the base one: both were violet-300 for a moment,
+              which is a link that does not respond. */}
+          <Link href="/safety" className="underline underline-offset-2 hover:text-violet-100">
             Read the safety notes
           </Link>
           .
@@ -420,7 +422,7 @@ function Packet({
       {status === 'grown' && herb && (
         <Link
           href={`/herbdex/${herb.id}`}
-          className="mt-1 flex min-h-11 w-full items-center justify-center text-center text-[0.72rem] font-semibold text-violet-400 underline-offset-2 hover:text-violet-200 hover:underline"
+          className="mt-1 flex min-h-11 w-full items-center justify-center text-center text-[0.72rem] font-semibold text-violet-300 underline-offset-2 hover:text-violet-200 hover:underline"
         >
           In your collection
         </Link>

@@ -1,0 +1,106 @@
+name: Retrieve species evidence
+
+# Stage 1 of the card-generation pipeline, run here because it cannot run anywhere else:
+# api.gbif.org and www.ebi.ac.uk are both refused by the sandbox proxy with a 403 to
+# CONNECT, so a retrieval "run" from a session would be a fabrication.
+#
+# A PUSH TRIGGER SCOPED TO THIS BRANCH, NOT workflow_dispatch. A dispatchable workflow has
+# to exist on the DEFAULT branch, and the default branch is what deploy.yml publishes — so
+# making this dispatchable would mean shipping the pipeline to production to run research.
+# Pushing to the feature branch runs it and deploys nothing.
+#
+# Read-only, keyless, free. It writes a build artifact and never a commit.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/retrieve_evidence.py
+      - scripts/fetch_inat_photos.py
+      - .github/workflows/retrieve-evidence.yml
+      - evidence/species.txt
+
+# `contents: write` so the retrieved bundle is COMMITTED rather than only uploaded.
+# That is the design rather than a convenience: for the first species the artifact store
+# IS the git repository, so a retrieval that leaves nothing in the tree has produced
+# nothing reviewable. It also makes the bundle reachable from a sandbox that cannot fetch
+# an Actions artifact -- blob.core.windows.net is refused by the proxy the same way the
+# source hosts are.
+#
+# It writes ONLY under evidence/, only on this feature branch, and nothing it writes is
+# read by the app or by any build.
+permissions:
+  contents: write
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test before spending a single request
+        run: |
+          python3 -I scripts/retrieve_evidence.py --self-test
+          python3 -I scripts/fetch_inat_photos.py --self-test
+
+      - name: Retrieve
+        run: |
+          # One species per line; blank lines and # comments ignored. Keeping the list in
+          # a file rather than in this workflow means changing it is a data change.
+          mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
+          printf 'retrieving %d species\n' "${#NAMES[@]}"
+          python3 -I scripts/retrieve_evidence.py "${NAMES[@]}" --out evidence/retrieved
+
+      # CC0 BOTANICAL PHOTOGRAPHY, because the herbalism card uses a real photograph and
+      # the pixel sprite is a SEPARATE asset that never stands in for one. Research grade
+      # only, CC0 only, and every photo's licence, photographer and original URL are
+      # recorded beside it.
+      - name: Fetch CC0 photographs
+        run: |
+          mapfile -t NAMES < <(grep -vE '^\s*(#|$)' evidence/species.txt)
+          # --want 32, NOT 8. The 8 here was read as evidence that the CC0 pool was too
+          # thin to support the programme, and it was a flag nobody had re-read: the audit
+          # counts 484 CC0 research-grade observations for Matricaria chamomilla and a
+          # median of 963 across 17 medicinal species. The selector needs real choice.
+          # --want 96, RAISED FROM 32 BECAUSE THE POOL RAN OUT RATHER THAN THE SCORER
+          # FAILING. Four species were asked for a better specimen this round -- a fuller
+          # mullein spike, a dandelion with stems and foliage, a pine branch rather than a
+          # tree, a healthy fruiting elderberry -- and with the rejected photographs
+          # excluded, elderberry had NOTHING left to offer: 33 retrieved, every one of them
+          # refused by segmentation or by its own brief. That is a supply problem, and no
+          # amount of re-ranking 33 photographs fixes it. The phenology window makes it
+          # worse for fruit: elderberry is restricted to its fruiting months, so its 33 are
+          # drawn from a fraction of the year.
+          python3 -I scripts/fetch_inat_photos.py "${NAMES[@]}" --out evidence/photos --want 96 --size original
+
+      - name: Summarise what came back
+        run: python3 -I scripts/summarise_evidence.py evidence/retrieved/*.json
+
+      # `evidence/out` was the first name and it silently collided with `out/` in
+      # .gitignore -- the Next.js static export directory. `git add` refused it, the step
+      # failed, and the retrieval before it had already succeeded. Named `retrieved/` so
+      # the directory says which of the five states it holds.
+      - name: Commit the bundle to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/retrieved evidence/photos
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+            exit 0
+          fi
+          git commit -m "Retrieve evidence and CC0 photos (state=retrieved, nothing reviewed)"
+          # The branch may have moved while this ran; rebase rather than force.
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidence
+          path: |
+            evidence/retrieved/
+            evidence/photos/
+          retention-days: 14

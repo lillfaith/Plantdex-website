@@ -1,0 +1,89 @@
+name: Ingest species into the catalog
+
+# Runs `scripts/ingest_species.py` where there is a network.
+#
+# WHY IT IS A WORKFLOW AND NOT A LOCAL COMMAND. api.gbif.org is blocked from the sandbox
+# this repository is edited in — measured, not assumed (see scripts/resolve_taxa.py, which
+# recorded the 403). The `deck` source needs no network and runs anywhere; the `gbif` source
+# only works here.
+#
+# IT CHANGES NOTHING. No Supabase project is contacted, no secret is read, no identification
+# provider is called, and nothing is committed. The run uploads artifacts — NDJSON for review
+# and an idempotent .sql of upserts — and a human decides whether to apply them. That is the
+# whole safety model: the pipeline cannot write a database because it has no way to reach one
+# (`catalog-schema.test.ts` fails if a driver or a connection string ever appears in it).
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Where the records come from
+        required: true
+        default: deck
+        type: choice
+        options: [deck, gbif]
+      names:
+        description: 'gbif only: newline- or semicolon-separated scientific names'
+        required: false
+        type: string
+      limit:
+        description: 'gbif only: process at most N names this run (batching)'
+        required: false
+        default: '50'
+        type: string
+      dry_run:
+        description: Report what would be written, write nothing
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The identity rules the whole catalog keys on, checked before anything is ingested
+      # under them. A canonicaliser that has drifted would mint duplicate species keys, and
+      # the cheapest moment to find that out is before the run rather than after.
+      - name: Self-test the identity rules
+        run: python3 scripts/ingest_species.py --self-test
+
+      - name: Write the names file
+        if: inputs.source == 'gbif'
+        env:
+          NAMES: ${{ inputs.names }}
+        run: |
+          if [ -z "${NAMES:-}" ]; then
+            echo "::error::--source gbif needs a names list"; exit 1
+          fi
+          printf '%s' "$NAMES" | tr ';' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' \
+            | grep -v '^$' > names.txt
+          echo "::notice::$(wc -l < names.txt) name(s) queued"
+
+      - name: Ingest
+        run: |
+          python3 scripts/ingest_species.py \
+            --source "${{ inputs.source }}" \
+            --out build/catalog \
+            ${{ inputs.source == 'gbif' && '--names-file names.txt --limit' || '' }} \
+            ${{ inputs.source == 'gbif' && inputs.limit || '' }} \
+            ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      # Failures are a FILE, not a log line that scrolls past. At several hundred species the
+      # difference is whether anybody ever reads them.
+      - name: Report failures
+        if: ${{ !inputs.dry_run }}
+        run: |
+          count=$(wc -l < build/catalog/failures.ndjson | tr -d ' ')
+          echo "::notice::$count record(s) could not be ingested — see the artifact"
+          head -20 build/catalog/failures.ndjson || true
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !inputs.dry_run }}
+        with:
+          name: catalog-${{ inputs.source }}
+          path: build/catalog/
+          retention-days: 30

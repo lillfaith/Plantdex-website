@@ -1,0 +1,23 @@
+{
+  "species_key": "nepeta_cataria",
+  "card": "nepeta-cataria",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0,
+    "flower_white": 0.405,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.3901
+  },
+  "mandatory": [
+    "flower_white",
+    "foliage"
+  ],
+  "preferred": [],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

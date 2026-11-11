@@ -1,0 +1,25 @@
+{
+  "species_key": "stellaria_media",
+  "card": "stellaria-media",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0412,
+    "flower_white": 0.0688,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.7746
+  },
+  "mandatory": [
+    "foliage"
+  ],
+  "preferred": [
+    "flower_white",
+    "flower_yellow"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

@@ -82,6 +82,26 @@
   --color-gold-400: #ffe27a;
   --color-gold-300: #fff0b3;
 
+  /*
+   * THE GILT EDGE ROUND EVERY CARD PREVIEW — see `@utility card-frame`.
+   *
+   * NOT A NEW COLOUR, WHICH IS WHY IT IS A MIX AND NOT A HEX. The note at the top of this
+   * block is explicit that the palette is sampled from the printed cards and must not grow,
+   * so this is the deck's own gold walked three tenths of the way toward the shelf's wood:
+   * #ffd54a is the display type and is deliberately the brightest warm thing on the page,
+   * and a 1px line in it reads as a highlight rather than as a frame. The mix lands near
+   * #d3ab43 — the same hue, two thirds the saturation — which is the "warm, slightly muted
+   * golden-yellow" a gilt edge wants and which stops the border competing with the card
+   * number badge sitting a few pixels inside it.
+   *
+   * NO TEXT IS EVER SET IN THIS. It is a hairline on card art only, so it sits outside the
+   * contrast ramps every text token above is bound by.
+   *
+   * It is referenced from `card-frame` below, which is what keeps Tailwind from
+   * tree-shaking it the way it dropped the packet art tokens — see `@theme static`.
+   */
+  --color-gold-frame: color-mix(in srgb, var(--color-gold-500) 70%, var(--color-wood-500));
+
   --color-pink-accent: #f280b3;
   --color-cyan-accent: #4fc3f7;
 
@@ -332,6 +352,71 @@ body {
   box-shadow:
     0 24px 60px -18px rgb(0 0 0 / 0.7),
     0 0 0 1px color-mix(in srgb, var(--color-violet-600) 12%, transparent);
+}
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE GILT EDGE — one hairline, on every card preview in the app.
+ *
+ * EVERY BOTANICAL CARD IS SPECIAL, SO THE FRAME IS UNIVERSAL. It is deliberately NOT a
+ * rarity signal: rarity already has two of its own (the aura behind the card and the tier
+ * printed on it), and a gold edge that only some cards earned would make the other
+ * twenty-one read as seconds. Future rare treatments — holographics, animation, decorative
+ * corners — go on TOP of this, not instead of it.
+ *
+ * WHY A PSEUDO-ELEMENT AND NOT A BORDER, A RING OR A SHADOW. All three were wrong here for
+ * reasons this file has already paid for once:
+ *
+ *   `border`     is inside `box-sizing: border-box`, so on an `aspect-[356/576]` tile it
+ *                takes the pixel out of the ARTWORK. A frame that crops the picture it
+ *                frames is the one thing a card frame may not do.
+ *   `ring-*`     and an arbitrary inset `shadow-[...]` both compose into `box-shadow` —
+ *                the property `shadow-card` already owns on these exact elements. See
+ *                `HerbCard`: two attempts resolved to a fully transparent shadow and were
+ *                visible only by reading the computed style.
+ *   `outline`    works, and is what HerbCard's hover neon uses — which is precisely why
+ *                this cannot have it. A card would have one outline for its frame and
+ *                another for focus or hover, and the last one declared would win.
+ *
+ * An absolutely positioned `::after` collides with nothing. It costs no layout, so no tile
+ * shifts by a pixel; `border-radius: inherit` means it follows whatever radius the host
+ * card already has rather than restating `--radius-card` (the chips are smaller and rounder
+ * than the grid tiles, and both are right); and `pointer-events: none` keeps it clear of
+ * the link underneath. The host must establish a containing block, so the utility sets
+ * `position: relative` itself rather than trusting every call site to remember.
+ *
+ * IT SITS INSIDE THE CLIP, AND THAT IS DELIBERATE. These cards carry `overflow-hidden` to
+ * round their artwork; `inset: 0` puts the line on the clipped edge, where it reads as the
+ * card's own gilding. Anything drawn outside would simply be cut away — the same trap
+ * `RarityAura` documents from the other direction.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@utility card-frame {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    border: 1px solid color-mix(in srgb, var(--color-gold-frame) 78%, transparent);
+    border-radius: inherit;
+  }
+}
+
+/*
+ * The same edge at two pixels, for a card drawn large enough that one disappears.
+ *
+ * MEASURED RATHER THAN CHOSEN: a 1px line on a 112px chip is just under 1% of its width and
+ * reads as a crisp edge; on the 300px featured card in the homepage showcase it is a third
+ * of that proportion and vanishes into the artwork's own border. Two keeps the gilding
+ * visible at hero size without ever becoming a mount.
+ */
+@utility card-frame-lg {
+  &::after {
+    border-width: 2px;
+  }
 }
 
 /*
@@ -1460,11 +1545,67 @@ body {
  * the vertical seam between neighbouring planks, and a grain that is just irregular enough
  * (12px cycle against a 76px plank) not to line up with either.
  */
+/*
+ * SOFTER AND SLIGHTLY PURPLE, AND BOTH NUMBERS WERE MEASURED BEFORE THEY WERE WRITTEN.
+ *
+ * The wall shipped fully opaque and purely wood, so it read as a brown panel dropped into a
+ * violet page — correct as furniture, slightly foreign as a room in this app. Two changes,
+ * each the smallest that does the job:
+ *
+ *   1. `--plank-wood` is the wood walked 5% toward `violet-600`, the deck's own bright
+ *      purple. 5% of a DESATURATED token would have moved nothing a person could see, which
+ *      is why the most saturated purple in the palette is the one to mix with: it takes the
+ *      base from #402a22 to about #452a2d — the same brown, a plum cast over it.
+ *   2. `opacity: 0.85`, a 15% reduction on the 1.0 it had, which lets the page's own violet
+ *      washes come up through the grain instead of stopping dead at the wall.
+ *
+ * THE OPACITY COST THE PAGE ITS DIMMEST TEXT SHADE, AND THE ARITHMETIC DID NOT CATCH IT.
+ *
+ * Everything else in this block mixes DOWNWARD toward `plum-950`, so it can only get darker
+ * and text can only get safer. Letting the ground through does the opposite: the washes
+ * behind this page are LIGHTER than the wood, so a translucent wall gets lighter by an amount
+ * that depends on which wash is under it.
+ *
+ * That was predicted and it was predicted WRONG. Composited on paper against the brightest
+ * point the body gradient reaches, the wall came out at #492a39 and `violet-400` at 5.01 — a
+ * pass. Sampled off the rendered page at 390px, next to the safety note at the foot, the wall
+ * is #513247 and `violet-400` measures 4.44. That is a FAIL, by six hundredths, on the one
+ * sentence saying a packet is not a confirmed identification.
+ *
+ * The model was not wrong about the method, only about the inputs — the radials overlap more
+ * than the arithmetic assumed, and the grain stripes lighten the average. Which is the same
+ * lesson the contrast suite was built on and this comment nearly repeated: measure the
+ * composite from the page, not from the stylesheet.
+ *
+ *   sampled off the rendered page at 390px, beside the safety note. The wall is not one
+ *   colour — the grain and the radial behind it put the local average between #513247 and
+ *   #533848 — so these are the DARKER-TEXT-UNFRIENDLY end of what was measured:
+ *
+ *     violet-400   4.44   ← FAILS AA. No longer used on this page.
+ *     violet-300   5.51   ← the dimmest shade the Seed Shelf now prints
+ *     violet-200   7.59
+ *     violet-100   8.99
+ *
+ * So `SeedShelfView` moved every `violet-400` up one step, which is exactly what the palette
+ * note at the top of this file says to do when a shade is too dim for where it is being
+ * placed. The ceiling in this block is unchanged and still `wood-700`; what changed is that
+ * the floor under the TEXT moved up to meet it. `seed-shelf-decor.test.ts` pins both halves.
+ *
+ * The remaining margin on `violet-300` is 1.39, and it is the budget: a further opacity cut,
+ * or a lighter purple, has to be re-measured off a screenshot rather than reasoned about.
+ *
+ * ONLY THE WALL. The opacity is on this utility, which is a `pointer-events-none` sibling of
+ * the content (`SeedShelfView`), so nothing in front of it inherits the fade — not a packet,
+ * not a label, not the safety note. Putting it on the shelf container instead would have
+ * dimmed the whole page by 15%, which is the mistake this comment exists to prevent.
+ */
 @utility shelf-wall {
-  --plank: var(--color-wood-700);
-  --plank-grain: color-mix(in srgb, var(--color-wood-700) 84%, var(--color-plum-950));
-  --plank-seam: color-mix(in srgb, var(--color-wood-700) 42%, var(--color-plum-950));
+  --plank-wood: color-mix(in srgb, var(--color-wood-700) 95%, var(--color-violet-600));
+  --plank: var(--plank-wood);
+  --plank-grain: color-mix(in srgb, var(--plank-wood) 84%, var(--color-plum-950));
+  --plank-seam: color-mix(in srgb, var(--plank-wood) 42%, var(--color-plum-950));
 
+  opacity: 0.85;
   background-color: var(--plank);
   background-image:
     repeating-linear-gradient(0deg, var(--plank-seam) 0 3px, transparent 3px 168px),
@@ -1606,5 +1747,174 @@ body {
 
   .lift:hover {
     transform: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * THE LANDING PAGE'S CARD FAN.
+ *
+ * The homepage used to show four card thumbnails in a 2x4 grid: accurate, and it read as a
+ * product catalogue on a page whose whole job is to make somebody want to collect these.
+ * This is the same four cards plus one, arranged as a hand — one card held out, the rest
+ * fanned behind it, a creature standing in front of them, and the plant's own traditional
+ * uses dealt out underneath.
+ *
+ * WHY THESE LOOP WHEN THE FOUR ONE-SHOT MOMENTS DO NOT. CLAUDE.md's Motion rule is written
+ * against UI FEEDBACK — a bar, a crossfade, a readiness pip — where repetition is noise
+ * dressed as information, and it is right about those. It already carves out the one case
+ * this falls under: every plant sprite in the app loops forever because "a living thing that
+ * holds perfectly still is the strange one", and `.scan-scout` loops for the same reason.
+ * This showcase is a diorama in that sense rather than a control: a card held in the air and
+ * a lit halo around it are the hand and the light, not a progress reading. The two loops here
+ * are slow (5.6s and 4.2s), move at most eight pixels, and touch only `transform` and
+ * `opacity`, so they composite on the GPU and do no layout work while the page scrolls.
+ *
+ * Both are pinned in the reduced-motion block rather than left to the blanket 0.01ms
+ * collapse — the drift would strand the card mid-rise and the halo at an arbitrary opacity,
+ * and "it happens to end in the right place" is the reasoning this file keeps warning about.
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+/*
+ * The held card, breathing. Eight pixels over five and a half seconds, which at card size is
+ * slow enough that you notice it only once the page has settled — the point is that the hero
+ * feels alive, not that something is moving.
+ *
+ * TRANSFORM IS ENTIRELY THIS ANIMATION'S, which is why the featured card sits in normal flow
+ * and the fanned cards are the ones positioned by `transform`. Centring the featured card
+ * with a `-translate-x-1/2` would have put a layout decision and a loop on the same property,
+ * and the loop wins: the card drifts out of the middle of its own fan.
+ */
+@keyframes showcase-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+.showcase-drift {
+  animation: showcase-drift 5600ms ease-in-out infinite;
+}
+
+/*
+ * THE HALO IS A SELECTION SIGNAL, NOT A RARITY ONE, and keeping those apart is why this
+ * exists at all rather than reusing `RarityAura`. Common is 21 of the 45 cards and
+ * deliberately has NO aura — that absence is what makes the other three tiers mean anything
+ * — so a rarity glow cannot say "this is the card you are looking at", and borrowing one to
+ * do it would quietly promote every featured Common to Uncommon.
+ *
+ * Gold rather than a tier colour for the same reason: gold is the deck's earned/display
+ * colour and belongs to the frame already around every card here.
+ */
+@keyframes showcase-halo {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+
+.showcase-halo {
+  animation: showcase-halo 4200ms ease-in-out infinite;
+}
+
+/*
+ * The three traits, dealt rather than printed.
+ *
+ * `both` fill, so the blanket reduced-motion collapse already lands each row on its finished
+ * state — but see the named rule below, which removes the animation outright. The stagger is
+ * an inline `animation-delay` per row (130ms apart) rather than three classes: the delay is
+ * the row's index, which is data, and three near-identical utilities would drift.
+ *
+ * It replays on every change of featured card because the list is keyed by herb id, so React
+ * mounts a new `<ul>` rather than re-rendering the old one. That is the whole mechanism; there
+ * is no state tracking which traits have been shown.
+ */
+@keyframes showcase-trait {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.showcase-trait {
+  animation: showcase-trait 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * The card holds still at its resting height and the halo holds at its dimmer value — both
+   * are states the composition was designed around, so nothing moves and nothing is missing.
+   */
+  .showcase-drift,
+  .showcase-halo {
+    animation: none !important;
+  }
+
+  .showcase-halo {
+    opacity: 0.4 !important;
+  }
+
+  /*
+   * The traits are the CONTENT of this section, so they must be present and legible with no
+   * animation at all — not merely collapsed to 0.01ms, which would still leave them keyed off
+   * an `animation-delay` somebody could later lengthen into a visible blank.
+   */
+  .showcase-trait {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/*
+ * THE FIELD JOURNAL'S REWARD, AND WHY IT IS A ONE-SHOT.
+ *
+ * This one really is UI feedback rather than scenery — it reports that something was recorded
+ * — so it obeys the Motion rule exactly: one iteration, `both` fill, and a named entry in the
+ * reduced-motion block below so it lands on its finished state rather than on whatever a
+ * collapsed duration leaves behind.
+ *
+ * It rises and settles rather than scaling up from nothing: the panel carries a number
+ * somebody is meant to read, and a scale-in blurs text for the first frames of exactly the
+ * moment they are looking at it.
+ */
+@keyframes reward-pop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reward-pop {
+  animation: reward-pop 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * The panel is the ONLY place the award is reported, so it must be present and readable
+   * with no animation at all — not merely sped up. `role="status"` carries it to a screen
+   * reader either way.
+   */
+  .reward-pop {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

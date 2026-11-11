@@ -1,0 +1,4874 @@
+{
+  "species": "pinus_strobus",
+  "opacity": 0.95,
+  "profile_source": "plantdex-photo-style.json",
+  "all_scores": [
+    {
+      "photo_id": 111407747,
+      "file": "inat-111407747.jpg",
+      "reject": [],
+      "flags": [
+        "4.5% warm-toned background (gradient 14.6); read as soil or dry vegetation rather than skin",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "8.0% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 18.8 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 9.5,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 15.0,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.6
+      },
+      "score": 133.2,
+      "_fill": 0.5641215642293295,
+      "measured_subject": {
+        "largest_region_frac": 0.3726,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 20.5,
+        "skin_fraction": 0.0454,
+        "flower_fraction": 0.1136,
+        "foliage_fraction": 0.3137,
+        "subject_fraction": 0.5641
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.543,
+      "skin_in_cutout": 0.08,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 18.8,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.5458,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.6292,
+        "needles": 0.2017
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.879,
+      "subject_sharpness": 26.9,
+      "stem_support": {
+        "foot_ink": 0.5159,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.345,
+        "placed_centroid_x": 0.467,
+        "points": {
+          "frame_fill_match": 14.4,
+          "centred": 5.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 306725928,
+      "file": "inat-306725928.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof",
+        "15.6% of the cutout is warm-hued, but the largest smooth region is 3.6% at gradient 3.3 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 5.5,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.8,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 10.2,
+        "silhouette_openness": 16.6
+      },
+      "score": 129.2,
+      "_fill": 0.6298449834187826,
+      "measured_subject": {
+        "largest_region_frac": 0.3026,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.0,
+        "skin_fraction": 0.0301,
+        "flower_fraction": 0.3667,
+        "foliage_fraction": 0.2286,
+        "subject_fraction": 0.6298
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.314,
+        "right": 0.005
+      },
+      "cutout_solidity": 0.355,
+      "skin_in_cutout": 0.1558,
+      "skin_blob_in_cutout": 0.0359,
+      "skin_blob_gradient": 3.3,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0487,
+        "berry_dark": 0.0913,
+        "berry_red": 0.0,
+        "foliage": 0.3098,
+        "needles": 0.1309
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.291,
+      "subject_sharpness": 13.1,
+      "stem_support": {
+        "foot_ink": 0.0795,
+        "foot_width_frac": 0.523,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.327,
+        "placed_centroid_x": 0.412,
+        "points": {
+          "frame_fill_match": 15.3,
+          "centred": 2.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 666510115,
+      "file": "inat-666510115.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 4.3,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 14.4,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 12.9,
+        "silhouette_openness": 1.7
+      },
+      "score": 106.9,
+      "_fill": 0.6053816477457682,
+      "measured_subject": {
+        "largest_region_frac": 0.3158,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 19.6,
+        "skin_fraction": 0.0008,
+        "flower_fraction": 0.2819,
+        "foliage_fraction": 0.1799,
+        "subject_fraction": 0.6054
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.734,
+      "skin_in_cutout": 0.0017,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.5967,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.4251,
+        "needles": 0.121
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.906,
+      "subject_sharpness": 16.6,
+      "stem_support": {
+        "foot_ink": 0.2009,
+        "foot_width_frac": 0.789,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.409,
+        "placed_centroid_x": 0.557,
+        "points": {
+          "frame_fill_match": 11.1,
+          "centred": 5.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 352673401,
+      "file": "inat-352673401.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "6.1% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 31.6 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 6.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 12.7,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.6
+      },
+      "score": 114.9,
+      "_fill": 0.7095108032226562,
+      "measured_subject": {
+        "largest_region_frac": 0.4219,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 23.2,
+        "skin_fraction": 0.0092,
+        "flower_fraction": 0.0722,
+        "foliage_fraction": 0.5344,
+        "subject_fraction": 0.7095
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.543,
+      "skin_in_cutout": 0.0613,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 31.6,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0309,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9361,
+        "needles": 0.1686
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.835,
+      "subject_sharpness": 22.8,
+      "stem_support": {
+        "foot_ink": 0.0711,
+        "foot_width_frac": 0.13,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.444,
+        "placed_centroid_x": 0.544,
+        "points": {
+          "frame_fill_match": 9.4,
+          "centred": 6.2,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 666510116,
+      "file": "inat-666510116.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 2.8,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.9,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 11.7,
+        "silhouette_openness": 0.0
+      },
+      "score": 98.3,
+      "_fill": 0.5629170735677084,
+      "measured_subject": {
+        "largest_region_frac": 0.3033,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 17.0,
+        "skin_fraction": 0.0021,
+        "flower_fraction": 0.3019,
+        "foliage_fraction": 0.1147,
+        "subject_fraction": 0.5629
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.775,
+      "skin_in_cutout": 0.0001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.6327,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.3886,
+        "needles": 0.1142
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.837,
+      "subject_sharpness": 15.1,
+      "stem_support": {
+        "foot_ink": 0.6196,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.487,
+        "placed_centroid_x": 0.554,
+        "points": {
+          "frame_fill_match": 7.2,
+          "centred": 5.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 292756024,
+      "file": "inat-292756024.jpeg",
+      "reject": [],
+      "flags": [
+        "a hand crosses the plant in the source (11.5% of frame); the cutout is checked afterwards and rejected if any of it survives",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 6.5,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 5.9,
+        "silhouette_openness": 13.2
+      },
+      "score": 107.9,
+      "_fill": 0.6161565780639648,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 4,
+        "disc_saturation": 147.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.5573,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.0,
+        "skin_fraction": 0.115,
+        "flower_fraction": 0.1439,
+        "foliage_fraction": 0.4623,
+        "subject_fraction": 0.6162
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.488,
+      "skin_in_cutout": 0.0082,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 9.7,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.1324,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8636,
+        "needles": 0.0389
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.846,
+      "subject_sharpness": 7.5,
+      "stem_support": {
+        "foot_ink": 0.8128,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.4,
+        "placed_centroid_x": 0.572,
+        "points": {
+          "frame_fill_match": 11.6,
+          "centred": 4.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 354857174,
+      "file": "inat-354857174.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 2.3,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.0,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 13.8,
+        "silhouette_openness": 16.1
+      },
+      "score": 128.9,
+      "_fill": 0.4520088831583659,
+      "measured_subject": {
+        "largest_region_frac": 0.2837,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.2,
+        "skin_fraction": 0.0006,
+        "flower_fraction": 0.2867,
+        "foliage_fraction": 0.0945,
+        "subject_fraction": 0.452
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.046,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.426,
+      "skin_in_cutout": 0.0294,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 19.2,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.1073,
+        "berry_dark": 0.0097,
+        "berry_red": 0.0,
+        "foliage": 0.1489,
+        "needles": 0.0463
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.34,
+      "subject_sharpness": 17.7,
+      "stem_support": {
+        "foot_ink": 0.0797,
+        "foot_width_frac": 0.551,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.413,
+        "placed_centroid_x": 0.505,
+        "points": {
+          "frame_fill_match": 10.9,
+          "centred": 7.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 127829336,
+      "file": "inat-127829336.jpeg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 140 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.08% of the frame: too small to read as a specimen on a card",
+        "16 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof",
+        "9.2% of the cutout is warm-hued, but the largest smooth region is 0.1% at gradient 37.7 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 4.9,
+        "foliage_visible": 6.0,
+        "clean_subject": 10.5,
+        "breathing_room": 3.3,
+        "disc_scale": 0.2,
+        "disc_facing": 0.0,
+        "specimen_scale": 11.8,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 14.2
+      },
+      "score": 121.9,
+      "_fill": 0.3541989329965252,
+      "measured_heads": {
+        "largest_disc_frac": 0.0008,
+        "comparable_heads": 16,
+        "disc_saturation": 140.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.2589,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 13.5,
+        "skin_fraction": 0.0006,
+        "flower_fraction": 0.059,
+        "foliage_fraction": 0.2633,
+        "subject_fraction": 0.3542
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.105,
+        "left": 0.0,
+        "right": 0.001
+      },
+      "cutout_solidity": 0.466,
+      "skin_in_cutout": 0.092,
+      "skin_blob_in_cutout": 0.0009,
+      "skin_blob_gradient": 37.7,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.074,
+        "flower_white": 0.0929,
+        "berry_dark": 0.022,
+        "berry_red": 0.0031,
+        "foliage": 0.6305,
+        "needles": 0.0558
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.801,
+      "subject_sharpness": 25.4,
+      "stem_support": {
+        "foot_ink": 0.3279,
+        "foot_width_frac": 0.573,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.347,
+        "placed_centroid_x": 0.504,
+        "points": {
+          "frame_fill_match": 14.3,
+          "centred": 7.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 711813007,
+      "file": "inat-711813007.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 15.3,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 4.1
+      },
+      "score": 112.5,
+      "_fill": 0.5748769972059462,
+      "measured_subject": {
+        "largest_region_frac": 0.3345,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 23.0,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.0262,
+        "foliage_fraction": 0.5117,
+        "subject_fraction": 0.5749
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.682,
+      "skin_in_cutout": 0.0001,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.251,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8572,
+        "needles": 0.1645
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.712,
+      "subject_sharpness": 21.9,
+      "stem_support": {
+        "foot_ink": 0.1147,
+        "foot_width_frac": 0.533,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.464,
+        "placed_centroid_x": 0.501,
+        "points": {
+          "frame_fill_match": 8.4,
+          "centred": 7.5,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 340372052,
+      "file": "inat-340372052.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 3.5,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 9.9,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 17.7
+      },
+      "score": 132.3,
+      "_fill": 0.7111304601033529,
+      "measured_subject": {
+        "largest_region_frac": 0.4838,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.5,
+        "skin_fraction": 0.0014,
+        "flower_fraction": 0.5107,
+        "foliage_fraction": 0.1477,
+        "subject_fraction": 0.7111
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.391,
+      "skin_in_cutout": 0.0259,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 11.6,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0531,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.4687,
+        "needles": 0.1169
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.356,
+      "subject_sharpness": 19.1,
+      "stem_support": {
+        "foot_ink": 0.2475,
+        "foot_width_frac": 0.466,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.331,
+        "placed_centroid_x": 0.494,
+        "points": {
+          "frame_fill_match": 15.1,
+          "centred": 7.1,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 347206697,
+      "file": "inat-347206697.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof",
+        "segmentation kept only 1% of the foliage: stems and leaves have been cut away"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 4.5,
+        "clean_subject": 11.3,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 9.5,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 0.6,
+        "subject_sharpness": 5.3,
+        "silhouette_openness": 10.1
+      },
+      "score": 88.1,
+      "_fill": 0.42361993475274723,
+      "measured_subject": {
+        "largest_region_frac": 0.2077,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 9.2,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.216,
+        "foliage_fraction": 0.1878,
+        "subject_fraction": 0.4236
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.127
+      },
+      "cutout_solidity": 0.555,
+      "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.0108,
+        "needles": 0.0312
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.01,
+      "subject_sharpness": 6.8,
+      "stem_support": {
+        "foot_ink": 0.1736,
+        "foot_width_frac": 0.423,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.185,
+        "placed_centroid_x": 0.539,
+        "points": {
+          "frame_fill_match": 9.4,
+          "centred": 6.4,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 510460858,
+      "file": "inat-510460858.jpg",
+      "reject": [
+        "a hand survives segmentation: one smooth skin region covers 26.5% of the subject (gradient 3.1) and sits across it"
+      ],
+      "flags": [
+        "a hand is present behind the subject (27.4% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 145 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 7.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 10.1,
+        "identification": 3.0
+      },
+      "score": 48.2,
+      "_fill": 0.581745465596517,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 3,
+        "disc_saturation": 145.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.4786,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 3.5,
+        "skin_fraction": 0.2742,
+        "flower_fraction": 0.0846,
+        "foliage_fraction": 0.482,
+        "subject_fraction": 0.5817
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.044,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.125
+      },
+      "cutout_solidity": 0.213,
+      "skin_in_cutout": 0.3246,
+      "skin_blob_in_cutout": 0.2652,
+      "skin_blob_gradient": 3.1,
+      "skin_obstructs": true
+    },
+    {
+      "photo_id": 269595869,
+      "file": "inat-269595869.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 138 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.02% of the frame: too small to read as a specimen on a card",
+        "11 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof",
+        "7.3% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 26.6 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.0,
+        "specimen_scale": 11.4,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 4.9
+      },
+      "score": 112.5,
+      "_fill": 0.7000560760498047,
+      "measured_heads": {
+        "largest_disc_frac": 0.0002,
+        "comparable_heads": 11,
+        "disc_saturation": 138.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.2495,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 25.5,
+        "skin_fraction": 0.0016,
+        "flower_fraction": 0.0595,
+        "foliage_fraction": 0.5348,
+        "subject_fraction": 0.7001
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.664,
+      "skin_in_cutout": 0.0727,
+      "skin_blob_in_cutout": 0.0002,
+      "skin_blob_gradient": 26.6,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.2991,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8163,
+        "needles": 0.1068
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.861,
+      "subject_sharpness": 26.1,
+      "stem_support": {
+        "foot_ink": 0.6067,
+        "foot_width_frac": 0.837,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.415,
+        "placed_centroid_x": 0.46,
+        "points": {
+          "frame_fill_match": 10.8,
+          "centred": 5.3,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 116844267,
+      "file": "inat-116844267.jpeg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (17.0% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 150 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.19% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof",
+        "23.0% of the cutout is warm-hued, but the largest smooth region is 16.8% at gradient 4.1 -- texture, not skin",
+        "segmentation kept only 4% of the foliage: stems and leaves have been cut away"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.5,
+        "disc_facing": 0.3,
+        "specimen_scale": 5.6,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 2.5,
+        "subject_sharpness": 5.0,
+        "silhouette_openness": 13.5
+      },
+      "score": 98.1,
+      "_fill": 0.6275806427001953,
+      "measured_heads": {
+        "largest_disc_frac": 0.0019,
+        "comparable_heads": 6,
+        "disc_saturation": 150.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.5774,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 4.4,
+        "skin_fraction": 0.17,
+        "flower_fraction": 0.147,
+        "foliage_fraction": 0.4619,
+        "subject_fraction": 0.6276
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.242,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.289,
+      "skin_in_cutout": 0.2299,
+      "skin_blob_in_cutout": 0.1678,
+      "skin_blob_gradient": 4.1,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.649,
+        "berry_dark": 0.0,
+        "berry_red": 0.0136,
+        "foliage": 0.1396,
+        "needles": 0.0408
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.045,
+      "subject_sharpness": 6.5,
+      "stem_support": {
+        "foot_ink": 0.4905,
+        "foot_width_frac": 0.577,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.197,
+        "placed_centroid_x": 0.428,
+        "points": {
+          "frame_fill_match": 10.1,
+          "centred": 3.6,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 335413067,
+      "file": "inat-335413067.jpeg",
+      "reject": [],
+      "flags": [
+        "a hand crosses the plant in the source (10.1% of frame); the cutout is checked afterwards and rejected if any of it survives",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 140 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 4.8,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 7.1,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 2.9,
+        "silhouette_openness": 8.9
+      },
+      "score": 89.5,
+      "_fill": 0.45846907297770184,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 4,
+        "disc_saturation": 140.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.1547,
+        "regions": 4
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 3.6,
+        "skin_fraction": 0.1009,
+        "flower_fraction": 0.2158,
+        "foliage_fraction": 0.198,
+        "subject_fraction": 0.4585
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.19,
+      "skin_in_cutout": 0.0255,
+      "skin_blob_in_cutout": 0.001,
+      "skin_blob_gradient": 6.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.8743,
+        "needles": 0.1021
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.798,
+      "subject_sharpness": 3.8,
+      "stem_support": {
+        "foot_ink": 0.1754,
+        "foot_width_frac": 0.371,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.173,
+        "placed_centroid_x": 0.721,
+        "points": {
+          "frame_fill_match": 8.8,
+          "centred": 0.0,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 449507151,
+      "file": "inat-449507151.jpeg",
+      "reject": [],
+      "flags": [
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 1.9,
+        "clean_subject": 7.9,
+        "breathing_room": 3.3,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 10.7,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 9.4,
+        "silhouette_openness": 2.5
+      },
+      "score": 104.3,
+      "_fill": 0.2707107252661527,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 2,
+        "disc_saturation": 195.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.2341,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.6,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.1687,
+        "foliage_fraction": 0.0777,
+        "subject_fraction": 0.2707
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.233,
+        "bottom": 0.012,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.716,
+      "skin_in_cutout": 0.0044,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0018,
+        "flower_white": 0.5441,
+        "berry_dark": 0.0,
+        "berry_red": 0.0165,
+        "foliage": 0.1619,
+        "needles": 0.0583
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.884,
+      "subject_sharpness": 12.0,
+      "stem_support": {
+        "foot_ink": 0.6592,
+        "foot_width_frac": 0.714,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.477,
+        "placed_centroid_x": 0.508,
+        "points": {
+          "frame_fill_match": 7.7,
+          "centred": 7.9,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 130957491,
+      "file": "inat-130957491.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof",
+        "segmentation kept only 3% of the foliage: stems and leaves have been cut away"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 5.7,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 1.4,
+        "subject_sharpness": 12.2,
+        "silhouette_openness": 2.1
+      },
+      "score": 74.1,
+      "_fill": 0.6058438014356254,
+      "measured_subject": {
+        "largest_region_frac": 0.1257,
+        "regions": 4
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 7.3,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.2323,
+        "foliage_fraction": 0.3057,
+        "subject_fraction": 0.6058
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.006,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.045,
+      "skin_in_cutout": 0.0,
+      "skin_blob_in_cutout": 0.0,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.4923,
+        "needles": 0.3464
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.025,
+      "subject_sharpness": 15.7,
+      "stem_support": {
+        "foot_ink": 0.0282,
+        "foot_width_frac": 0.254,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.055,
+        "placed_centroid_x": 0.644,
+        "points": {
+          "frame_fill_match": 2.8,
+          "centred": 0.9,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 316779811,
+      "file": "inat-316779811.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 3 edges; little room to crop",
+        "flower may be facing away: disc saturation 139 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 12.3,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.7
+      },
+      "score": 110.3,
+      "_fill": 0.47254784901936847,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 2,
+        "disc_saturation": 139.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.4301,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 14.7,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.0022,
+        "foliage_fraction": 0.4526,
+        "subject_fraction": 0.4725
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.541,
+      "skin_in_cutout": 0.0179,
+      "skin_blob_in_cutout": 0.0001,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.021,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.909,
+        "needles": 0.2268
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.605,
+      "subject_sharpness": 21.8,
+      "stem_support": {
+        "foot_ink": 0.3809,
+        "foot_width_frac": 0.643,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.413,
+        "placed_centroid_x": 0.545,
+        "points": {
+          "frame_fill_match": 11.0,
+          "centred": 6.1,
+          "crops_bottom": 8.0,
+          "keeps_sides": 0.0
+        }
+      }
+    },
+    {
+      "photo_id": 711813220,
+      "file": "inat-711813220.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 151 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 15.3,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 5.7
+      },
+      "score": 117.0,
+      "_fill": 0.6255471971299913,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 3,
+        "disc_saturation": 151.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.3661,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 25.0,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.0009,
+        "foliage_fraction": 0.5795,
+        "subject_fraction": 0.6255
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.649,
+      "skin_in_cutout": 0.0048,
+      "skin_blob_in_cutout": 0.0001,
+      "skin_blob_gradient": 99.0,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0051,
+        "flower_white": 0.0869,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.9298,
+        "needles": 0.2188
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.811,
+      "subject_sharpness": 24.9,
+      "stem_support": {
+        "foot_ink": 0.3869,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.359,
+        "placed_centroid_x": 0.525,
+        "points": {
+          "frame_fill_match": 13.7,
+          "centred": 7.2,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      }
+    },
+    {
+      "photo_id": 347206622,
+      "file": "inat-347206622.jpg",
+      "reject": [
+        "missing structures the species' brief requires: needles"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "29 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof",
+        "6.3% of the cutout is warm-hued, but the largest smooth region is 1.0% at gradient 9.3 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 4.7,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.1,
+        "specimen_scale": 6.2,
+        "identification": 3.0
+      },
+      "score": 46.0,
+      "_fill": 0.4710504664606227,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 29,
+        "disc_saturation": 197.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.1351,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 24.3,
+        "skin_fraction": 0.0014,
+        "flower_fraction": 0.1996,
+        "foliage_fraction": 0.1951,
+        "subject_fraction": 0.4711
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.303
+      },
+      "cutout_solidity": 0.667,
+      "skin_in_cutout": 0.063,
+      "skin_blob_in_cutout": 0.0096,
+      "skin_blob_gradient": 9.3,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0013,
+        "flower_white": 0.0235,
+        "berry_dark": 0.1606,
+        "berry_red": 0.0,
+        "foliage": 0.0216,
+        "needles": 0.0143
+      },
+      "brief_check": {
+        "missing_mandatory": [
+          "needles"
+        ],
+        "preferred_present": [],
+        "ok": false,
+        "preferred_score": 0.0
+      }
+    },
+    {
+      "photo_id": 141314903,
+      "file": "inat-141314903.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.3,
+        "foliage_visible": 6.0,
+        "clean_subject": 11.2,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 10.5,
+        "identification": 3.0
+      },
+      "score": 46.0,
+      "_fill": 0.42058785756429035,
+      "measured_subject": {
+        "largest_region_frac": 0.2305,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 6.2,
+        "skin_fraction": 0.0259,
+        "flower_fraction": 0.0632,
+        "foliage_fraction": 0.3617,
+        "subject_fraction": 0.4206
+      }
+    },
+    {
+      "photo_id": 141315497,
+      "file": "inat-141315497.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.7,
+        "identification": 3.0
+      },
+      "score": 45.8,
+      "_fill": 0.6583566665649414,
+      "measured_subject": {
+        "largest_region_frac": 0.4001,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 21.4,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0138,
+        "foliage_fraction": 0.6104,
+        "subject_fraction": 0.6584
+      }
+    },
+    {
+      "photo_id": 351830949,
+      "file": "inat-351830949.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 5.2,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 5.1,
+        "identification": 3.0
+      },
+      "score": 45.3,
+      "_fill": 0.5498879750569662,
+      "measured_subject": {
+        "largest_region_frac": 0.1119,
+        "regions": 5
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.5,
+        "skin_fraction": 0.0025,
+        "flower_fraction": 0.1814,
+        "foliage_fraction": 0.2179,
+        "subject_fraction": 0.5499
+      }
+    },
+    {
+      "photo_id": 287252430,
+      "file": "inat-287252430.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 4.9,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 4.0,
+        "identification": 3.0
+      },
+      "score": 43.9,
+      "_fill": 0.7567370732625326,
+      "measured_subject": {
+        "largest_region_frac": 0.6129,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 3.1,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.538,
+        "foliage_fraction": 0.2022,
+        "subject_fraction": 0.7567
+      }
+    },
+    {
+      "photo_id": 351056159,
+      "file": "inat-351056159.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 9.8,
+        "identification": 6.0
+      },
+      "score": 43.9,
+      "_fill": 0.587614377339681,
+      "measured_subject": {
+        "largest_region_frac": 0.2146,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.7,
+        "skin_fraction": 0.0046,
+        "flower_fraction": 0.001,
+        "foliage_fraction": 0.5654,
+        "subject_fraction": 0.5876
+      }
+    },
+    {
+      "photo_id": 708715521,
+      "file": "inat-708715521.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 158 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.51% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 9.8,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 1.4,
+        "disc_facing": 1.6,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 43.8,
+      "_fill": 0.8265193303426107,
+      "measured_heads": {
+        "largest_disc_frac": 0.0051,
+        "comparable_heads": 3,
+        "disc_saturation": 158.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8051,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.2,
+        "skin_fraction": 0.0055,
+        "flower_fraction": 0.1178,
+        "foliage_fraction": 0.7322,
+        "subject_fraction": 0.8265
+      }
+    },
+    {
+      "photo_id": 172827567,
+      "file": "inat-172827567.jpg",
+      "reject": [],
+      "flags": [],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 2.3,
+        "clean_subject": 11.3,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 4.0,
+        "identification": 6.0
+      },
+      "score": 43.6,
+      "_fill": 0.4229244656032986,
+      "measured_subject": {
+        "largest_region_frac": 0.0871,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 35.0,
+        "skin_fraction": 0.0012,
+        "flower_fraction": 0.1365,
+        "foliage_fraction": 0.0938,
+        "subject_fraction": 0.4229
+      }
+    },
+    {
+      "photo_id": 108514461,
+      "file": "inat-108514461.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 10.3,
+        "identification": 3.0
+      },
+      "score": 43.4,
+      "_fill": 0.6581439971923828,
+      "measured_subject": {
+        "largest_region_frac": 0.2245,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 27.2,
+        "skin_fraction": 0.0022,
+        "flower_fraction": 0.025,
+        "foliage_fraction": 0.2872,
+        "subject_fraction": 0.6581
+      }
+    },
+    {
+      "photo_id": 116843902,
+      "file": "inat-116843902.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 142 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.4,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 11.0,
+        "identification": 3.0
+      },
+      "score": 43.4,
+      "_fill": 0.5715417861938477,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 2,
+        "disc_saturation": 142.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.24,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 53.7,
+        "skin_fraction": 0.0421,
+        "flower_fraction": 0.017,
+        "foliage_fraction": 0.3779,
+        "subject_fraction": 0.5715
+      }
+    },
+    {
+      "photo_id": 509428987,
+      "file": "inat-509428987.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 9.8,
+        "breathing_room": 3.3,
+        "disc_facing": 0.0,
+        "specimen_scale": 11.0,
+        "identification": 3.0
+      },
+      "score": 43.1,
+      "_fill": 0.26871776580810547,
+      "measured_subject": {
+        "largest_region_frac": 0.2416,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 17.0,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.2685,
+        "subject_fraction": 0.2687
+      }
+    },
+    {
+      "photo_id": 108514455,
+      "file": "inat-108514455.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 9.8,
+        "identification": 3.0
+      },
+      "score": 41.9,
+      "_fill": 0.6094255447387695,
+      "measured_subject": {
+        "largest_region_frac": 0.4863,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.3,
+        "skin_fraction": 0.0296,
+        "flower_fraction": 0.0132,
+        "foliage_fraction": 0.5766,
+        "subject_fraction": 0.6094
+      }
+    },
+    {
+      "photo_id": 459504734,
+      "file": "inat-459504734.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 3.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 3.6,
+        "identification": 3.0
+      },
+      "score": 41.6,
+      "_fill": 0.5845286051432291,
+      "measured_subject": {
+        "largest_region_frac": 0.0793,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 34.3,
+        "skin_fraction": 0.0006,
+        "flower_fraction": 0.1936,
+        "foliage_fraction": 0.124,
+        "subject_fraction": 0.5845
+      }
+    },
+    {
+      "photo_id": 435123881,
+      "file": "inat-435123881.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 166 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.03% of the frame: too small to read as a specimen on a card",
+        "12 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 41.2,
+      "_fill": 0.9086513519287109,
+      "measured_heads": {
+        "largest_disc_frac": 0.0003,
+        "comparable_heads": 12,
+        "disc_saturation": 166.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8222,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.0,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.488,
+        "foliage_fraction": 0.3657,
+        "subject_fraction": 0.9087
+      }
+    },
+    {
+      "photo_id": 390305665,
+      "file": "inat-390305665.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 41.0,
+      "_fill": 0.9287017186482748,
+      "measured_subject": {
+        "largest_region_frac": 0.8757,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.6,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.5475,
+        "foliage_fraction": 0.3483,
+        "subject_fraction": 0.9287
+      }
+    },
+    {
+      "photo_id": 130957459,
+      "file": "inat-130957459.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "10 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 41.0,
+      "_fill": 0.8440879034839064,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 10,
+        "disc_saturation": 147.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.702,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.2,
+        "skin_fraction": 0.0006,
+        "flower_fraction": 0.3394,
+        "foliage_fraction": 0.4623,
+        "subject_fraction": 0.8441
+      }
+    },
+    {
+      "photo_id": 459504725,
+      "file": "inat-459504725.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 142 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 41.0,
+      "_fill": 0.8889252344767252,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 3,
+        "disc_saturation": 142.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8799,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.2,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.1859,
+        "foliage_fraction": 0.7571,
+        "subject_fraction": 0.8889
+      }
+    },
+    {
+      "photo_id": 459504736,
+      "file": "inat-459504736.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 134 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 41.0,
+      "_fill": 0.9965133666992188,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 1,
+        "disc_saturation": 134.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.9953,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.3,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.2765,
+        "foliage_fraction": 0.8772,
+        "subject_fraction": 0.9965
+      }
+    },
+    {
+      "photo_id": 292650621,
+      "file": "inat-292650621.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 5.4,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 40.4,
+      "_fill": 0.8484792709350586,
+      "measured_subject": {
+        "largest_region_frac": 0.7248,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.3,
+        "skin_fraction": 0.0007,
+        "flower_fraction": 0.5882,
+        "foliage_fraction": 0.226,
+        "subject_fraction": 0.8485
+      }
+    },
+    {
+      "photo_id": 496961047,
+      "file": "inat-496961047.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 145 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.04% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.0,
+        "specimen_scale": 8.6,
+        "identification": 3.0
+      },
+      "score": 39.8,
+      "_fill": 0.703826904296875,
+      "measured_heads": {
+        "largest_disc_frac": 0.0004,
+        "comparable_heads": 2,
+        "disc_saturation": 145.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.5123,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 31.4,
+        "skin_fraction": 0.0021,
+        "flower_fraction": 0.0012,
+        "foliage_fraction": 0.5476,
+        "subject_fraction": 0.7038
+      }
+    },
+    {
+      "photo_id": 221242744,
+      "file": "inat-221242744.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.4,
+        "foliage_visible": 6.0,
+        "clean_subject": 10.8,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 7.5,
+        "identification": 3.0
+      },
+      "score": 39.7,
+      "_fill": 0.3969370524088542,
+      "measured_subject": {
+        "largest_region_frac": 0.163,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 23.3,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.0284,
+        "foliage_fraction": 0.2792,
+        "subject_fraction": 0.3969
+      }
+    },
+    {
+      "photo_id": 643886484,
+      "file": "inat-643886484.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 145 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.07% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 8.4,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.2,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 39.7,
+      "_fill": 0.8840036392211914,
+      "measured_heads": {
+        "largest_disc_frac": 0.0007,
+        "comparable_heads": 5,
+        "disc_saturation": 145.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8237,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 15.9,
+        "skin_fraction": 0.0011,
+        "flower_fraction": 0.1005,
+        "foliage_fraction": 0.8066,
+        "subject_fraction": 0.884
+      }
+    },
+    {
+      "photo_id": 459504726,
+      "file": "inat-459504726.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 142 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 8.6,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 39.6,
+      "_fill": 0.8991266886393229,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 5,
+        "disc_saturation": 142.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.7897,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 13.9,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.1033,
+        "foliage_fraction": 0.8433,
+        "subject_fraction": 0.8991
+      }
+    },
+    {
+      "photo_id": 286913454,
+      "file": "inat-286913454.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 140 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 7.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.8,
+        "identification": 3.0
+      },
+      "score": 38.8,
+      "_fill": 0.826502799987793,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 1,
+        "disc_saturation": 140.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.6824,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 25.7,
+        "skin_fraction": 0.0046,
+        "flower_fraction": 0.0844,
+        "foliage_fraction": 0.6447,
+        "subject_fraction": 0.8265
+      }
+    },
+    {
+      "photo_id": 64170186,
+      "file": "inat-64170186.jpg",
+      "reject": [],
+      "flags": [
+        "5.7% warm-toned background (gradient 12.7); read as soil or dry vegetation rather than skin",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.5,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.9,
+        "identification": 3.0
+      },
+      "score": 38.4,
+      "_fill": 0.5284042358398438,
+      "measured_subject": {
+        "largest_region_frac": 0.0407,
+        "regions": 8
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 15.9,
+        "skin_fraction": 0.0574,
+        "flower_fraction": 0.0666,
+        "foliage_fraction": 0.4125,
+        "subject_fraction": 0.5284
+      }
+    },
+    {
+      "photo_id": 708721976,
+      "file": "inat-708721976.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.05% of the frame: too small to read as a specimen on a card",
+        "13 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 7.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 38.4,
+      "_fill": 0.9737062454223633,
+      "measured_heads": {
+        "largest_disc_frac": 0.0005,
+        "comparable_heads": 13,
+        "disc_saturation": 147.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.9666,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 12.9,
+        "skin_fraction": 0.0009,
+        "flower_fraction": 0.0862,
+        "foliage_fraction": 0.9348,
+        "subject_fraction": 0.9737
+      }
+    },
+    {
+      "photo_id": 643977248,
+      "file": "inat-643977248.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 146 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.06% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 6.7,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.2,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 38.0,
+      "_fill": 0.7409785588582357,
+      "measured_heads": {
+        "largest_disc_frac": 0.0006,
+        "comparable_heads": 6,
+        "disc_saturation": 146.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.7213,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 15.8,
+        "skin_fraction": 0.0113,
+        "flower_fraction": 0.0799,
+        "foliage_fraction": 0.62,
+        "subject_fraction": 0.741
+      }
+    },
+    {
+      "photo_id": 708723484,
+      "file": "inat-708723484.jpg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (6.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 152 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.06% of the frame: too small to read as a specimen on a card",
+        "14 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 6.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.2,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 37.5,
+      "_fill": 0.7762517929077148,
+      "measured_heads": {
+        "largest_disc_frac": 0.0006,
+        "comparable_heads": 14,
+        "disc_saturation": 152.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.7449,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 11.9,
+        "skin_fraction": 0.066,
+        "flower_fraction": 0.0749,
+        "foliage_fraction": 0.6602,
+        "subject_fraction": 0.7763
+      }
+    },
+    {
+      "photo_id": 711813222,
+      "file": "inat-711813222.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 6.1,
+        "identification": 3.0
+      },
+      "score": 37.1,
+      "_fill": 0.5275569491916232,
+      "measured_subject": {
+        "largest_region_frac": 0.1336,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 26.5,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.5119,
+        "subject_fraction": 0.5276
+      }
+    },
+    {
+      "photo_id": 510460133,
+      "file": "inat-510460133.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 136 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.7,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 36.7,
+      "_fill": 0.8940941492716471,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 4,
+        "disc_saturation": 136.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8556,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 6.0,
+        "skin_fraction": 0.0355,
+        "flower_fraction": 0.0684,
+        "foliage_fraction": 0.8511,
+        "subject_fraction": 0.8941
+      }
+    },
+    {
+      "photo_id": 442271301,
+      "file": "inat-442271301.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 144 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 8.2,
+        "foliage_visible": 2.4,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.0,
+        "identification": 3.0
+      },
+      "score": 36.6,
+      "_fill": 0.4505136277940538,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 2,
+        "disc_saturation": 144.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0229,
+        "regions": 12
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 28.1,
+        "skin_fraction": 0.0205,
+        "flower_fraction": 0.099,
+        "foliage_fraction": 0.1008,
+        "subject_fraction": 0.4505
+      }
+    },
+    {
+      "photo_id": 352672977,
+      "file": "inat-352672977.jpeg",
+      "reject": [],
+      "flags": [
+        "a hand crosses the plant in the source (30.5% of frame); the cutout is checked afterwards and rejected if any of it survives"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 1.8,
+        "clean_subject": 6.3,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.3,
+        "identification": 6.0
+      },
+      "score": 36.4,
+      "_fill": 0.23462390899658203,
+      "measured_subject": {
+        "largest_region_frac": 0.0498,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 7.0,
+        "skin_fraction": 0.3055,
+        "flower_fraction": 0.1229,
+        "foliage_fraction": 0.0739,
+        "subject_fraction": 0.2346
+      }
+    },
+    {
+      "photo_id": 341382146,
+      "file": "inat-341382146.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.5,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.8,
+        "identification": 6.0
+      },
+      "score": 36.3,
+      "_fill": 0.5506792210820896,
+      "measured_subject": {
+        "largest_region_frac": 0.0398,
+        "regions": 4
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 42.4,
+        "skin_fraction": 0.0012,
+        "flower_fraction": 0.006,
+        "foliage_fraction": 0.4639,
+        "subject_fraction": 0.5507
+      }
+    },
+    {
+      "photo_id": 449507172,
+      "file": "inat-449507172.jpeg",
+      "reject": [],
+      "flags": [
+        "9.8% warm-toned background (gradient 29.0); read as soil or dry vegetation rather than skin",
+        "flower may be facing away: disc saturation 157 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "15 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.6,
+        "foliage_visible": 6.0,
+        "clean_subject": 10.1,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 6.6,
+        "identification": 3.0
+      },
+      "score": 36.3,
+      "_fill": 0.380165312958884,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 15,
+        "disc_saturation": 157.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.1447,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 30.4,
+        "skin_fraction": 0.0975,
+        "flower_fraction": 0.0068,
+        "foliage_fraction": 0.3364,
+        "subject_fraction": 0.3802
+      }
+    },
+    {
+      "photo_id": 269596904,
+      "file": "inat-269596904.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.5,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 4.2,
+        "identification": 3.0
+      },
+      "score": 35.7,
+      "_fill": 0.5186637242635092,
+      "measured_subject": {
+        "largest_region_frac": 0.091,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 37.1,
+        "skin_fraction": 0.0155,
+        "flower_fraction": 0.0054,
+        "foliage_fraction": 0.3825,
+        "subject_fraction": 0.5187
+      }
+    },
+    {
+      "photo_id": 172827545,
+      "file": "inat-172827545.jpg",
+      "reject": [],
+      "flags": [],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.8,
+        "foliage_visible": 2.2,
+        "clean_subject": 9.3,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.9,
+        "identification": 6.0
+      },
+      "score": 35.2,
+      "_fill": 0.34918509589301217,
+      "measured_subject": {
+        "largest_region_frac": 0.0417,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 41.2,
+        "skin_fraction": 0.0013,
+        "flower_fraction": 0.0696,
+        "foliage_fraction": 0.0935,
+        "subject_fraction": 0.3492
+      }
+    },
+    {
+      "photo_id": 437056796,
+      "file": "inat-437056796.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "28 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.1,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.1,
+        "identification": 3.0
+      },
+      "score": 35.2,
+      "_fill": 0.5713138580322266,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 28,
+        "disc_saturation": 147.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0466,
+        "regions": 6
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 48.8,
+        "skin_fraction": 0.0035,
+        "flower_fraction": 0.0255,
+        "foliage_fraction": 0.28,
+        "subject_fraction": 0.5713
+      }
+    },
+    {
+      "photo_id": 712664972,
+      "file": "inat-712664972.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 153 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.15% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.4,
+        "disc_facing": 0.3,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 34.9,
+      "_fill": 0.9435106913248698,
+      "measured_heads": {
+        "largest_disc_frac": 0.0015,
+        "comparable_heads": 7,
+        "disc_saturation": 153.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.9219,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 23.2,
+        "skin_fraction": 0.005,
+        "flower_fraction": 0.0387,
+        "foliage_fraction": 0.8711,
+        "subject_fraction": 0.9435
+      }
+    },
+    {
+      "photo_id": 335412276,
+      "file": "inat-335412276.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 142 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.8,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 34.8,
+      "_fill": 0.903564453125,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 8,
+        "disc_saturation": 142.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.845,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 7.5,
+        "skin_fraction": 0.0004,
+        "flower_fraction": 0.0454,
+        "foliage_fraction": 0.8261,
+        "subject_fraction": 0.9036
+      }
+    },
+    {
+      "photo_id": 108514445,
+      "file": "inat-108514445.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 11.6,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.8,
+        "identification": 3.0
+      },
+      "score": 34.6,
+      "_fill": 0.43521976470947266,
+      "measured_subject": {
+        "largest_region_frac": 0.0614,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 33.9,
+        "skin_fraction": 0.0041,
+        "flower_fraction": 0.014,
+        "foliage_fraction": 0.2779,
+        "subject_fraction": 0.4352
+      }
+    },
+    {
+      "photo_id": 664754,
+      "file": "inat-664754.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 4.7,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 0.2,
+        "clean_subject": 8.6,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 8.1,
+        "identification": 3.0
+      },
+      "score": 34.6,
+      "_fill": 0.3211111111111111,
+      "measured_subject": {
+        "largest_region_frac": 0.1768,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 960,
+        "sharpness": 9.5,
+        "skin_fraction": 0.0003,
+        "flower_fraction": 0.274,
+        "foliage_fraction": 0.0081,
+        "subject_fraction": 0.3211
+      }
+    },
+    {
+      "photo_id": 127829266,
+      "file": "inat-127829266.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.7,
+        "foliage_visible": 6.0,
+        "clean_subject": 9.5,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.0,
+        "identification": 3.0
+      },
+      "score": 34.2,
+      "_fill": 0.3565217515544989,
+      "measured_subject": {
+        "largest_region_frac": 0.0437,
+        "regions": 6
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 19.0,
+        "skin_fraction": 0.0007,
+        "flower_fraction": 0.0445,
+        "foliage_fraction": 0.2953,
+        "subject_fraction": 0.3565
+      }
+    },
+    {
+      "photo_id": 437056793,
+      "file": "inat-437056793.jpeg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 167 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.17% of the frame: too small to read as a specimen on a card",
+        "9 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.2,
+        "foliage_visible": 4.3,
+        "clean_subject": 10.7,
+        "breathing_room": 0.0,
+        "disc_scale": 0.5,
+        "disc_facing": 0.8,
+        "specimen_scale": 1.7,
+        "identification": 3.0
+      },
+      "score": 34.2,
+      "_fill": 0.40035470326741535,
+      "measured_heads": {
+        "largest_disc_frac": 0.0017,
+        "comparable_heads": 9,
+        "disc_saturation": 167.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0361,
+        "regions": 8
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 28.2,
+        "skin_fraction": 0.0012,
+        "flower_fraction": 0.0379,
+        "foliage_fraction": 0.1785,
+        "subject_fraction": 0.4004
+      }
+    },
+    {
+      "photo_id": 292755704,
+      "file": "inat-292755704.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 148 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 6.0
+      },
+      "score": 34.0,
+      "_fill": 0.8943382898966471,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 8,
+        "disc_saturation": 148.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8284,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 39.2,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.8814,
+        "subject_fraction": 0.8943
+      }
+    },
+    {
+      "photo_id": 708715773,
+      "file": "inat-708715773.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.05% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.7,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 33.9,
+      "_fill": 0.8447230656941732,
+      "measured_heads": {
+        "largest_disc_frac": 0.0005,
+        "comparable_heads": 4,
+        "disc_saturation": 147.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8156,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 17.9,
+        "skin_fraction": 0.0432,
+        "flower_fraction": 0.0323,
+        "foliage_fraction": 0.8027,
+        "subject_fraction": 0.8447
+      }
+    },
+    {
+      "photo_id": 708723584,
+      "file": "inat-708723584.jpg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (6.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 143 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.02% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.8,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 33.9,
+      "_fill": 0.8737583160400391,
+      "measured_heads": {
+        "largest_disc_frac": 0.0002,
+        "comparable_heads": 3,
+        "disc_saturation": 143.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8533,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 18.5,
+        "skin_fraction": 0.0656,
+        "flower_fraction": 0.034,
+        "foliage_fraction": 0.8239,
+        "subject_fraction": 0.8738
+      }
+    },
+    {
+      "photo_id": 708715802,
+      "file": "inat-708715802.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 140 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "15 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.7,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 33.7,
+      "_fill": 0.8512233098347982,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 15,
+        "disc_saturation": 140.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.7332,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 33.9,
+        "skin_fraction": 0.0041,
+        "flower_fraction": 0.0318,
+        "foliage_fraction": 0.7992,
+        "subject_fraction": 0.8512
+      }
+    },
+    {
+      "photo_id": 30725414,
+      "file": "inat-30725414.jpg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (5.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "flower may be facing away: disc saturation 144 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.05% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.0,
+        "foliage_visible": 4.5,
+        "clean_subject": 8.2,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.7,
+        "identification": 3.0
+      },
+      "score": 33.5,
+      "_fill": 0.30572859446207684,
+      "measured_heads": {
+        "largest_disc_frac": 0.0005,
+        "comparable_heads": 3,
+        "disc_saturation": 144.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0596,
+        "regions": 4
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 16.4,
+        "skin_fraction": 0.0565,
+        "flower_fraction": 0.0604,
+        "foliage_fraction": 0.1875,
+        "subject_fraction": 0.3057
+      }
+    },
+    {
+      "photo_id": 459504729,
+      "file": "inat-459504729.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.4,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 33.4,
+      "_fill": 0.7460212707519531,
+      "measured_subject": {
+        "largest_region_frac": 0.7262,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.5,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0285,
+        "foliage_fraction": 0.7419,
+        "subject_fraction": 0.746
+      }
+    },
+    {
+      "photo_id": 708722008,
+      "file": "inat-708722008.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.4,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 33.4,
+      "_fill": 0.989159901936849,
+      "measured_subject": {
+        "largest_region_frac": 0.985,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 16.2,
+        "skin_fraction": 0.002,
+        "flower_fraction": 0.0284,
+        "foliage_fraction": 0.9823,
+        "subject_fraction": 0.9892
+      }
+    },
+    {
+      "photo_id": 512537852,
+      "file": "inat-512537852.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 9.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 0.1,
+        "clean_subject": 6.8,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 4.4,
+        "identification": 3.0
+      },
+      "score": 33.3,
+      "_fill": 0.2550232311920143,
+      "measured_subject": {
+        "largest_region_frac": 0.096,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 1836,
+        "sharpness": 22.9,
+        "skin_fraction": 0.0173,
+        "flower_fraction": 0.181,
+        "foliage_fraction": 0.0047,
+        "subject_fraction": 0.255
+      }
+    },
+    {
+      "photo_id": 509977479,
+      "file": "inat-509977479.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.3,
+        "identification": 3.0
+      },
+      "score": 33.3,
+      "_fill": 0.6151423984103732,
+      "measured_subject": {
+        "largest_region_frac": 0.0509,
+        "regions": 7
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 50.4,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.4831,
+        "subject_fraction": 0.6151
+      }
+    },
+    {
+      "photo_id": 306129071,
+      "file": "inat-306129071.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 153 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.01% of the frame: too small to read as a specimen on a card",
+        "15 similarly sized flower heads: reads as a colony, not a specimen",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 2.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 33.2,
+      "_fill": 0.9985230763753256,
+      "measured_heads": {
+        "largest_disc_frac": 0.0001,
+        "comparable_heads": 15,
+        "disc_saturation": 153.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.9982,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.9,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0268,
+        "foliage_fraction": 0.9733,
+        "subject_fraction": 0.9985
+      }
+    },
+    {
+      "photo_id": 449507161,
+      "file": "inat-449507161.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.3,
+        "foliage_visible": 5.5,
+        "clean_subject": 9.6,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.2,
+        "identification": 3.0
+      },
+      "score": 32.6,
+      "_fill": 0.35994286894273125,
+      "measured_subject": {
+        "largest_region_frac": 0.026,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 43.1,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0394,
+        "foliage_fraction": 0.2279,
+        "subject_fraction": 0.3599
+      }
+    },
+    {
+      "photo_id": 708722192,
+      "file": "inat-708722192.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 140 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.9,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 31.9,
+      "_fill": 0.8930924733479818,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 2,
+        "disc_saturation": 140.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.8518,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 34.6,
+        "skin_fraction": 0.0072,
+        "flower_fraction": 0.0108,
+        "foliage_fraction": 0.8665,
+        "subject_fraction": 0.8931
+      }
+    },
+    {
+      "photo_id": 708723678,
+      "file": "inat-708723678.jpg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 147 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.05% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.6,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.1,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 31.8,
+      "_fill": 0.9617843627929688,
+      "measured_heads": {
+        "largest_disc_frac": 0.0005,
+        "comparable_heads": 1,
+        "disc_saturation": 147.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.9441,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 34.8,
+        "skin_fraction": 0.0002,
+        "flower_fraction": 0.007,
+        "foliage_fraction": 0.9318,
+        "subject_fraction": 0.9618
+      }
+    },
+    {
+      "photo_id": 127829310,
+      "file": "inat-127829310.jpeg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 136 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 7.7,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 4.4,
+        "identification": 3.0
+      },
+      "score": 31.1,
+      "_fill": 0.28734976511064375,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 1,
+        "disc_saturation": 136.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0967,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 15.1,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.2727,
+        "subject_fraction": 0.2873
+      }
+    },
+    {
+      "photo_id": 8813399,
+      "file": "inat-8813399.jpg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 148 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.7,
+        "foliage_visible": 3.7,
+        "clean_subject": 6.1,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 2.4,
+        "identification": 3.0
+      },
+      "score": 28.9,
+      "_fill": 0.23032410939534506,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 1,
+        "disc_saturation": 148.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.052,
+        "regions": 4
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 28.3,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0442,
+        "foliage_fraction": 0.1536,
+        "subject_fraction": 0.2303
+      }
+    },
+    {
+      "photo_id": 547324,
+      "file": "inat-547324.jpg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 177 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.19% of the frame: too small to read as a specimen on a card",
+        "10 similarly sized flower heads: reads as a colony, not a specimen"
+      ],
+      "points": {
+        "resolution": 4.7,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.3,
+        "foliage_visible": 3.3,
+        "clean_subject": 8.3,
+        "breathing_room": 0.0,
+        "disc_scale": 0.5,
+        "disc_facing": 1.3,
+        "specimen_scale": 0.3,
+        "identification": 6.0
+      },
+      "score": 27.7,
+      "_fill": 0.30982349537037035,
+      "measured_heads": {
+        "largest_disc_frac": 0.0019,
+        "comparable_heads": 10,
+        "disc_saturation": 177.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0057,
+        "regions": 17
+      },
+      "measured": {
+        "orig_edge": 960,
+        "sharpness": 37.3,
+        "skin_fraction": 0.0001,
+        "flower_fraction": 0.0397,
+        "foliage_fraction": 0.1358,
+        "subject_fraction": 0.3098
+      }
+    },
+    {
+      "photo_id": 111407752,
+      "file": "inat-111407752.jpg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 143 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.07% of the frame: too small to read as a specimen on a card"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.0,
+        "foliage_visible": 1.1,
+        "clean_subject": 6.1,
+        "breathing_room": 0.0,
+        "disc_scale": 0.2,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.8,
+        "identification": 6.0
+      },
+      "score": 27.2,
+      "_fill": 0.22756322224934897,
+      "measured_heads": {
+        "largest_disc_frac": 0.0007,
+        "comparable_heads": 3,
+        "disc_saturation": 143.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0168,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 25.0,
+        "skin_fraction": 0.0012,
+        "flower_fraction": 0.0357,
+        "foliage_fraction": 0.0458,
+        "subject_fraction": 0.2276
+      }
+    },
+    {
+      "photo_id": 375641994,
+      "file": "inat-375641994.jpg",
+      "reject": [],
+      "flags": [
+        "6.7% warm-toned background (gradient 10.5); read as soil or dry vegetation rather than skin",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.6,
+        "foliage_visible": 0.9,
+        "clean_subject": 5.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.2,
+        "identification": 3.0
+      },
+      "score": 23.7,
+      "_fill": 0.18790340423583984,
+      "measured_subject": {
+        "largest_region_frac": 0.0267,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 15.1,
+        "skin_fraction": 0.0675,
+        "flower_fraction": 0.0427,
+        "foliage_fraction": 0.0385,
+        "subject_fraction": 0.1879
+      }
+    },
+    {
+      "photo_id": 1813546,
+      "file": "inat-1813546.jpg",
+      "reject": [],
+      "flags": [
+        "largest flower head is 0.17% of the frame: too small to read as a specimen on a card"
+      ],
+      "points": {
+        "resolution": 5.2,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 3.2,
+        "foliage_visible": 0.5,
+        "clean_subject": 5.3,
+        "breathing_room": 0.0,
+        "disc_scale": 0.5,
+        "disc_facing": 2.2,
+        "specimen_scale": 0.5,
+        "identification": 6.0
+      },
+      "score": 23.4,
+      "_fill": 0.20007849109653233,
+      "measured_heads": {
+        "largest_disc_frac": 0.0017,
+        "comparable_heads": 3,
+        "disc_saturation": 214.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0099,
+        "regions": 6
+      },
+      "measured": {
+        "orig_edge": 1067,
+        "sharpness": 56.9,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0384,
+        "foliage_fraction": 0.0217,
+        "subject_fraction": 0.2001
+      }
+    },
+    {
+      "photo_id": 111407759,
+      "file": "inat-111407759.jpg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 142 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.04% of the frame: too small to read as a specimen on a card"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.6,
+        "foliage_visible": 1.4,
+        "clean_subject": 4.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.1,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.2,
+        "identification": 6.0
+      },
+      "score": 23.3,
+      "_fill": 0.1498699188232422,
+      "measured_heads": {
+        "largest_disc_frac": 0.0004,
+        "comparable_heads": 5,
+        "disc_saturation": 142.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0046,
+        "regions": 7
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 45.5,
+        "skin_fraction": 0.0034,
+        "flower_fraction": 0.0193,
+        "foliage_fraction": 0.0594,
+        "subject_fraction": 0.1499
+      }
+    },
+    {
+      "photo_id": 375641978,
+      "file": "inat-375641978.jpg",
+      "reject": [],
+      "flags": [
+        "a hand is present behind the subject (13.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 1.2,
+        "foliage_visible": 3.2,
+        "clean_subject": 3.7,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.8,
+        "identification": 3.0
+      },
+      "score": 22.9,
+      "_fill": 0.13852055867513022,
+      "measured_subject": {
+        "largest_region_frac": 0.0397,
+        "regions": 6
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 3.8,
+        "skin_fraction": 0.1363,
+        "flower_fraction": 0.0142,
+        "foliage_fraction": 0.134,
+        "subject_fraction": 0.1385
+      }
+    },
+    {
+      "photo_id": 341960374,
+      "file": "inat-341960374.jpeg",
+      "reject": [],
+      "flags": [
+        "flower may be facing away: disc saturation 146 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.00% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 3.5,
+        "clean_subject": 5.6,
+        "breathing_room": 0.0,
+        "disc_scale": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.7,
+        "identification": 3.0
+      },
+      "score": 22.8,
+      "_fill": 0.21181519826253256,
+      "measured_heads": {
+        "largest_disc_frac": 0.0,
+        "comparable_heads": 8,
+        "disc_saturation": 146.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.0159,
+        "regions": 5
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 41.4,
+        "skin_fraction": 0.0258,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.1478,
+        "subject_fraction": 0.2118
+      }
+    },
+    {
+      "photo_id": 141314486,
+      "file": "inat-141314486.jpeg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 5.2,
+        "foliage_visible": 0.3,
+        "clean_subject": 1.8,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.8,
+        "identification": 3.0
+      },
+      "score": 22.1,
+      "_fill": 0.06848716735839844,
+      "measured_subject": {
+        "largest_region_frac": 0.04,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.3,
+        "skin_fraction": 0.0029,
+        "flower_fraction": 0.0628,
+        "foliage_fraction": 0.0137,
+        "subject_fraction": 0.0685
+      }
+    },
+    {
+      "photo_id": 650755601,
+      "file": "inat-650755601.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 3.0,
+        "clean_subject": 5.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 1.0,
+        "identification": 3.0
+      },
+      "score": 22.0,
+      "_fill": 0.12722905476888022,
+      "measured_subject": {
+        "largest_region_frac": 0.0218,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.2,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.124,
+        "subject_fraction": 0.1272
+      }
+    },
+    {
+      "photo_id": 30725394,
+      "file": "inat-30725394.jpg",
+      "reject": [],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 0.4,
+        "clean_subject": 2.1,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 15.5,
+      "_fill": 0.07847754160563152,
+      "measured_subject": {
+        "largest_region_frac": 0.0007,
+        "regions": 23
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 56.3,
+        "skin_fraction": 0.0025,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.0165,
+        "subject_fraction": 0.0785
+      }
+    },
+    {
+      "photo_id": 351055609,
+      "file": "inat-351055609.jpeg",
+      "reject": [
+        "too soft: gradient energy 2.5 < 3.0"
+      ],
+      "flags": [
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 0.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 12.5,
+        "identification": 3.0
+      },
+      "score": 47.5,
+      "_fill": 0.4297342300415039,
+      "measured_subject": {
+        "largest_region_frac": 0.426,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 2.5,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.4253,
+        "foliage_fraction": 0.0003,
+        "subject_fraction": 0.4297
+      }
+    },
+    {
+      "photo_id": 351055624,
+      "file": "inat-351055624.jpeg",
+      "reject": [
+        "too soft: gradient energy 2.0 < 3.0"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 3 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 0.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 11.6,
+        "identification": 3.0
+      },
+      "score": 46.6,
+      "_fill": 0.4573078155517578,
+      "measured_subject": {
+        "largest_region_frac": 0.4465,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 2.0,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.4477,
+        "foliage_fraction": 0.0005,
+        "subject_fraction": 0.4573
+      }
+    },
+    {
+      "photo_id": 306129491,
+      "file": "inat-306129491.jpeg",
+      "reject": [
+        "too soft: gradient energy 3.0 < 3.0"
+      ],
+      "flags": [
+        "a hand is present behind the subject (14.6% of frame) but does not cross it; segmentation must remove it and the cutout is checked after",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "flower may be facing away: disc saturation 152 suggests a receptacle rather than the open yellow centre",
+        "largest flower head is 0.07% of the frame: too small to read as a specimen on a card",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 8.2,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_scale": 0.2,
+        "disc_facing": 0.2,
+        "specimen_scale": 6.6,
+        "identification": 3.0
+      },
+      "score": 46.2,
+      "_fill": 0.6518599192301432,
+      "measured_heads": {
+        "largest_disc_frac": 0.0007,
+        "comparable_heads": 1,
+        "disc_saturation": 152.0
+      },
+      "measured_subject": {
+        "largest_region_frac": 0.5562,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 3.0,
+        "skin_fraction": 0.1459,
+        "flower_fraction": 0.0985,
+        "foliage_fraction": 0.5362,
+        "subject_fraction": 0.6519
+      }
+    },
+    {
+      "photo_id": 326920086,
+      "file": "inat-326920086.jpeg",
+      "reject": [
+        "too soft: gradient energy 2.2 < 3.0"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 0.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 11.1,
+        "identification": 3.0
+      },
+      "score": 46.1,
+      "_fill": 0.4628435770670573,
+      "measured_subject": {
+        "largest_region_frac": 0.4564,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 2.2,
+        "skin_fraction": 0.0,
+        "flower_fraction": 0.4558,
+        "foliage_fraction": 0.001,
+        "subject_fraction": 0.4628
+      }
+    },
+    {
+      "photo_id": 108514437,
+      "file": "inat-108514437.jpeg",
+      "reject": [
+        "too soft: gradient energy 2.8 < 3.0"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 0.0,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 14.4,
+        "identification": 3.0
+      },
+      "score": 45.4,
+      "_fill": 0.5921494166056315,
+      "measured_subject": {
+        "largest_region_frac": 0.3154,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 2.8,
+        "skin_fraction": 0.0036,
+        "flower_fraction": 0.0,
+        "foliage_fraction": 0.5914,
+        "subject_fraction": 0.5921
+      }
+    },
+    {
+      "photo_id": 351831786,
+      "file": "inat-351831786.jpeg",
+      "reject": [
+        "too soft: gradient energy 2.4 < 3.0"
+      ],
+      "flags": [
+        "a hand crosses the plant in the source (27.7% of frame); the cutout is checked afterwards and rejected if any of it survives",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 2.6,
+        "clean_subject": 6.9,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 3.8,
+        "identification": 3.0
+      },
+      "score": 36.3,
+      "_fill": 0.26016871134440106,
+      "measured_subject": {
+        "largest_region_frac": 0.0823,
+        "regions": 3
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 2.4,
+        "skin_fraction": 0.2773,
+        "flower_fraction": 0.1291,
+        "foliage_fraction": 0.1076,
+        "subject_fraction": 0.2602
+      }
+    },
+    {
+      "photo_id": 271883714,
+      "file": "inat-271883714.jpeg",
+      "reject": [
+        "too soft: gradient energy 1.5 < 3.0"
+      ],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 0.7,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 0.0,
+        "identification": 3.0
+      },
+      "score": 35.7,
+      "_fill": 0.7728328704833984,
+      "measured_subject": {
+        "largest_region_frac": 0.7378,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 1.5,
+        "skin_fraction": 0.0003,
+        "flower_fraction": 0.7369,
+        "foliage_fraction": 0.0278,
+        "subject_fraction": 0.7728
+      }
+    }
+  ],
+  "selected": [
+    {
+      "photo_id": 111407747,
+      "file": "inat-111407747.jpg",
+      "reject": [],
+      "flags": [
+        "4.5% warm-toned background (gradient 14.6); read as soil or dry vegetation rather than skin",
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "8.0% of the cutout is warm-hued, but the largest smooth region is 0.0% at gradient 18.8 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 9.5,
+        "foliage_visible": 6.0,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 15.0,
+        "identification": 6.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 10.6
+      },
+      "score": 133.2,
+      "_fill": 0.5641215642293295,
+      "measured_subject": {
+        "largest_region_frac": 0.3726,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 20.5,
+        "skin_fraction": 0.0454,
+        "flower_fraction": 0.1136,
+        "foliage_fraction": 0.3137,
+        "subject_fraction": 0.5641
+      },
+      "segmented_by": "colour-fallback",
+      "source_edges": {},
+      "cutout_solidity": 0.543,
+      "skin_in_cutout": 0.08,
+      "skin_blob_in_cutout": 0.0003,
+      "skin_blob_gradient": 18.8,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.5458,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.6292,
+        "needles": 0.2017
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.879,
+      "subject_sharpness": 26.9,
+      "stem_support": {
+        "foot_ink": 0.5159,
+        "foot_width_frac": 1.0,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.345,
+        "placed_centroid_x": 0.467,
+        "points": {
+          "frame_fill_match": 14.4,
+          "centred": 5.7,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.4489,
+        "size": [
+          404,
+          513
+        ],
+        "offset": [
+          100,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "111407747-cutout.png",
+      "preview": "111407747-front.png",
+      "provenance": {
+        "photo_id": 111407747,
+        "observation_id": 68753563,
+        "observation_url": "https://www.inaturalist.org/observations/68753563",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T21:00:50+00:00"
+    },
+    {
+      "photo_id": 340372052,
+      "file": "inat-340372052.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 3.5,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 9.9,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 14.0,
+        "silhouette_openness": 17.7
+      },
+      "score": 132.3,
+      "_fill": 0.7111304601033529,
+      "measured_subject": {
+        "largest_region_frac": 0.4838,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 5.5,
+        "skin_fraction": 0.0014,
+        "flower_fraction": 0.5107,
+        "foliage_fraction": 0.1477,
+        "subject_fraction": 0.7111
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.391,
+      "skin_in_cutout": 0.0259,
+      "skin_blob_in_cutout": 0.0004,
+      "skin_blob_gradient": 11.6,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0531,
+        "berry_dark": 0.0,
+        "berry_red": 0.0,
+        "foliage": 0.4687,
+        "needles": 0.1169
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.356,
+      "subject_sharpness": 19.1,
+      "stem_support": {
+        "foot_ink": 0.2475,
+        "foot_width_frac": 0.466,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.331,
+        "placed_centroid_x": 0.494,
+        "points": {
+          "frame_fill_match": 15.1,
+          "centred": 7.1,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.7991,
+        "size": [
+          489,
+          513
+        ],
+        "offset": [
+          58,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "340372052-cutout.png",
+      "preview": "340372052-front.png",
+      "provenance": {
+        "photo_id": 340372052,
+        "observation_id": 193741664,
+        "observation_url": "https://www.inaturalist.org/observations/193741664",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 2048,
+          "height": 1536
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T21:00:50+00:00"
+    },
+    {
+      "photo_id": 306725928,
+      "file": "inat-306725928.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof",
+        "15.6% of the cutout is warm-hued, but the largest smooth region is 3.6% at gradient 3.3 -- texture, not skin"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 5.5,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.8,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 10.2,
+        "silhouette_openness": 16.6
+      },
+      "score": 129.2,
+      "_fill": 0.6298449834187826,
+      "measured_subject": {
+        "largest_region_frac": 0.3026,
+        "regions": 2
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 8.0,
+        "skin_fraction": 0.0301,
+        "flower_fraction": 0.3667,
+        "foliage_fraction": 0.2286,
+        "subject_fraction": 0.6298
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.0,
+        "left": 0.314,
+        "right": 0.005
+      },
+      "cutout_solidity": 0.355,
+      "skin_in_cutout": 0.1558,
+      "skin_blob_in_cutout": 0.0359,
+      "skin_blob_gradient": 3.3,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.0487,
+        "berry_dark": 0.0913,
+        "berry_red": 0.0,
+        "foliage": 0.3098,
+        "needles": 0.1309
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.291,
+      "subject_sharpness": 13.1,
+      "stem_support": {
+        "foot_ink": 0.0795,
+        "foot_width_frac": 0.523,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.327,
+        "placed_centroid_x": 0.412,
+        "points": {
+          "frame_fill_match": 15.3,
+          "centred": 2.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.5804,
+        "size": [
+          519,
+          513
+        ],
+        "offset": [
+          43,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "306725928-cutout.png",
+      "preview": "306725928-front.png",
+      "provenance": {
+        "photo_id": 306725928,
+        "observation_id": 176424963,
+        "observation_url": "https://www.inaturalist.org/observations/176424963",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 1536,
+          "height": 2048
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T21:00:50+00:00"
+    },
+    {
+      "photo_id": 354857174,
+      "file": "inat-354857174.jpeg",
+      "reject": [],
+      "flags": [
+        "subject fills the frame and runs off 4 edges; little room to crop",
+        "only one agreeing identification; research grade is not proof"
+      ],
+      "points": {
+        "resolution": 10.0,
+        "sharpness_prefilter": 0.0,
+        "flowers_visible": 10.0,
+        "foliage_visible": 2.3,
+        "clean_subject": 12.0,
+        "breathing_room": 0.0,
+        "disc_facing": 0.0,
+        "specimen_scale": 13.0,
+        "identification": 3.0,
+        "brief_preferred": 0.0,
+        "structure_retention": 14.0,
+        "subject_sharpness": 13.8,
+        "silhouette_openness": 16.1
+      },
+      "score": 128.9,
+      "_fill": 0.4520088831583659,
+      "measured_subject": {
+        "largest_region_frac": 0.2837,
+        "regions": 1
+      },
+      "measured": {
+        "orig_edge": 2048,
+        "sharpness": 10.2,
+        "skin_fraction": 0.0006,
+        "flower_fraction": 0.2867,
+        "foliage_fraction": 0.0945,
+        "subject_fraction": 0.452
+      },
+      "segmented_by": "birefnet-general-lite",
+      "source_edges": {
+        "top": 0.0,
+        "bottom": 0.046,
+        "left": 0.0,
+        "right": 0.0
+      },
+      "cutout_solidity": 0.426,
+      "skin_in_cutout": 0.0294,
+      "skin_blob_in_cutout": 0.0005,
+      "skin_blob_gradient": 19.2,
+      "skin_obstructs": false,
+      "brief_structures": {
+        "flower_yellow": 0.0,
+        "flower_white": 0.1073,
+        "berry_dark": 0.0097,
+        "berry_red": 0.0,
+        "foliage": 0.1489,
+        "needles": 0.0463
+      },
+      "brief_check": {
+        "missing_mandatory": [],
+        "preferred_present": [],
+        "ok": true,
+        "preferred_score": 0.0
+      },
+      "green_retention": 0.34,
+      "subject_sharpness": 17.7,
+      "stem_support": {
+        "foot_ink": 0.0797,
+        "foot_width_frac": 0.551,
+        "has_stem": true
+      },
+      "composition": {
+        "placed_fill": 0.413,
+        "placed_centroid_x": 0.505,
+        "points": {
+          "frame_fill_match": 10.9,
+          "centred": 7.8,
+          "crops_bottom": 8.0,
+          "keeps_sides": 8.0
+        }
+      },
+      "placement": {
+        "scale": 0.6672,
+        "size": [
+          552,
+          513
+        ],
+        "offset": [
+          26,
+          10
+        ],
+        "rooted": true,
+        "crops_bottom": true,
+        "bottom_overflow_px": 39,
+        "crops_sides": false,
+        "top_margin_px": 10
+      },
+      "cutout": "354857174-cutout.png",
+      "preview": "354857174-front.png",
+      "provenance": {
+        "photo_id": 354857174,
+        "observation_id": 201063018,
+        "observation_url": "https://www.inaturalist.org/observations/201063018",
+        "license_code": "cc0",
+        "license": "CC0 (public domain dedication)",
+        "photographer": "no rights reserved",
+        "dimensions": {
+          "width": 2048,
+          "height": 1536
+        },
+        "taxon_name": "Pinus strobus",
+        "taxon_id": 52391
+      },
+      "retrieved_at": "2026-11-06T21:00:50+00:00"
+    }
+  ],
+  "seconds": 236.7
+}

@@ -1,0 +1,54 @@
+{
+  "species": "matricaria_chamomilla",
+  "verdict": "NEEDS_REVIEW",
+  "any_genuine_api_vision": false,
+  "art_direction": "Keep Chamomile 650137635 as my preferred candidate.",
+  "selected": null,
+  "candidates": [
+    {
+      "photo_id": 650137635,
+      "score": 156.2,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.06,
+      "vision_source": "vision (model in the loop; no ANTHROPIC_API_KEY in this environment)",
+      "genuine_api_vision": false,
+      "human_decision": {
+        "species": "matricaria_chamomilla",
+        "decision": "preferred",
+        "reason": "Owner: 'Keep Chamomile 650137635 as my preferred candidate.' Recorded as PREFERRED, not approved: the owner has pinned the photograph, not signed off on the finished card, and an earlier message in this review explicitly separated those two for another candidate.",
+        "by": "owner, 2026-11-06",
+        "at": "2026-11-06"
+      },
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": true,
+      "owner_alternative": false
+    },
+    {
+      "photo_id": 18365261,
+      "score": 139.3,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.138,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false,
+      "owner_alternative": false
+    },
+    {
+      "photo_id": 293002707,
+      "score": 127.2,
+      "status": "NEEDS_REVIEW",
+      "senescence": 0.365,
+      "vision_source": "none",
+      "genuine_api_vision": false,
+      "human_decision": null,
+      "hard_failures": [],
+      "soft_notes": [],
+      "owner_preferred": false,
+      "owner_alternative": false
+    }
+  ]
+}

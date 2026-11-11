@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Chamomile #G0001</title>
+<style>
+  /* THE DECK'S OWN FACES, extracted from the unflattened card PDF rather than matched by
+     eye. Palatino Bold Italic sets the scientific name, Baloo Bhaijaan the common name,
+     Palatino Bold the encounter value and the number, Avenir Medium the whole back. */
+  @font-face{font-family:Baloo;src:url(fonts/BalooBhaijaan-Regular.ttf);}
+  @font-face{font-family:PalBI;src:url(fonts/Palatino-BoldItalic.ttf);}
+  @font-face{font-family:PalB;src:url(fonts/Palatino-Bold.ttf);}
+  @font-face{font-family:Avenir;src:url(fonts/Avenir-Medium.ttf);}
+  :root{--gold:#ffd84a;--outline:#4a1a7a;--ink:#3f1278;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#17101c;color:#f6ebfd;padding:26px;
+    font:14px/1.5 ui-sans-serif,system-ui,sans-serif;}
+  h1{font:600 14px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;
+    text-transform:uppercase;color:#ddaaf7;margin:0 0 16px;}
+  .pair{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start;}
+  .card{position:relative;width:488px;height:788px;flex:0 0 auto;border-radius:18px;
+    overflow:hidden;}
+  .card>img.base{position:absolute;inset:0;width:488px;height:788px;}
+  .s{position:absolute;}
+
+  /* ── FRONT ─────────────────────────────────────────────── */
+  .name{left:40px;top:40px;width:330px;height:44px;display:flex;align-items:center;
+    font:400 33px/1 Baloo,sans-serif;color:var(--gold);
+    text-shadow:2.5px 2.5px 0 var(--outline);
+    /* BalooBhaijaan ships no italic cut; the card skews the regular. Matched. */
+    transform:skewX(-9deg);transform-origin:left center;}
+  .num{left:386px;top:44px;width:66px;height:32px;display:flex;align-items:center;
+    justify-content:center;font:400 19px/1 PalB,Georgia,serif;color:#f2e4ff;}
+
+  .photo{left:84px;top:142px;width:320px;height:214px;border-radius:36px;
+    overflow:hidden;background:url(backdrop.png) center/cover;
+    display:flex;align-items:center;justify-content:center;padding:13px 18px;}
+  .photo img{max-width:100%;max-height:100%;object-fit:contain;
+    filter:drop-shadow(0 4px 8px rgba(60,20,90,.35));}
+
+  .sci{left:40px;top:424px;width:300px;height:36px;display:flex;align-items:center;
+    font:400 27px/1 PalBI,Georgia,serif;color:var(--gold);
+    text-shadow:1.5px 1.5px 0 var(--outline);}
+  .uses{left:350px;top:420px;display:flex;gap:10px;}
+  .uses img{width:42px;height:42px;}
+
+  .ind{left:42px;top:472px;width:270px;}
+  .ind .row{display:flex;gap:7px;align-items:center;height:42px;}
+  .ind .row.w img{height:30px;}
+  .ind .row.s img{height:30px;}
+  .ind .row.t img{height:32px;}
+
+  .pixel{left:320px;top:466px;width:132px;height:132px;
+    display:flex;align-items:center;justify-content:center;}
+  .pixel img{width:112px;height:112px;image-rendering:pixelated;}
+
+  .enc{left:268px;top:608px;height:30px;display:flex;align-items:center;
+    font:400 21px/1 PalB,Georgia,serif;color:#fff;
+    text-shadow:1.5px 1.5px 0 var(--outline);}
+  .season{left:432px;top:604px;width:34px;height:34px;}
+  .season img{width:100%;height:100%;}
+
+  /* ── BACK ──────────────────────────────────────────────── */
+  .p{color:var(--ink);font:400 17px/1.45 Avenir,ui-sans-serif,sans-serif;}
+  .p .cols{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;}
+  .p .l{text-align:left;} .p .r{text-align:right;}
+  .healing{left:62px;top:112px;width:364px;}
+  .compounds{left:62px;top:262px;width:364px;}
+  .taste{left:42px;top:380px;width:150px;text-align:left;}
+  .aromatic{left:296px;top:380px;width:150px;text-align:right;}
+  .preps{left:58px;top:612px;width:140px;text-align:left;}
+  .parts{left:292px;top:612px;width:140px;text-align:right;}
+</style></head><body>
+<h1>Chamomile &mdash; generated series card, draft for review</h1>
+<div class="pair">
+
+  <div class="card">
+    <img class="base" src="base-1.png" alt="">
+    <div class="s name">Chamomile</div>
+    <div class="s num">#G0001</div>
+    <div class="s photo"><img src="hero.png" alt=""></div>
+    <div class="s sci">Matricaria chamomilla</div>
+    <div class="s uses">
+      <!-- THE REAL ICONS, and the two a claim supports. `digestive` carries the
+           Lithuanian ethnobotany record; `calm` carries the Iranian survey's
+           anxiety use. Both are approved-standing claims, and the deck gives every
+           printed card exactly two use icons. -->
+      <img src="icons/use-digestive.png" alt="Digestive">
+      <img src="icons/use-calm.png" alt="Calm">
+    </div>
+    <div class="s ind"></div>
+    <div class="s pixel"><img src="pixel.png" alt=""></div>
+    <div class="s enc"></div>
+    <div class="s season"></div>
+  </div>
+
+  <div class="card">
+    <img class="base" src="base-2.png" alt="">
+    <div class="s p healing"><div class="cols">
+      <span class="l">Digestive</span><span class="r">Calming</span>
+      <span class="l">Skin support</span><span class="r">Antimicrobial</span>
+      <span class="l">Anti-inflammatory</span><span class="r">Antioxidant</span>
+    </div></div>
+    <div class="s p compounds"><div class="cols">
+      <span class="l">Germacrene</span><span class="r">&alpha;-Curcumene</span>
+    </div></div>
+    <div class="s p taste"></div>
+    <div class="s p aromatic"></div>
+    <div class="s p preps">Infusion<br>Essential oil</div>
+    <div class="s p parts">Flower<br>Leaf</div>
+  </div>
+
+</div></body></html>

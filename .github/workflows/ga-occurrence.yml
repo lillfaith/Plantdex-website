@@ -1,0 +1,57 @@
+name: Georgia occurrence research
+
+# Asks GBIF what is recorded in Georgia for each species in the printed deck.
+#
+# Read-only in every sense: it queries one public, keyless API, writes no database, reads no
+# secret, contacts no identification provider and spends nothing. It runs here because
+# api.gbif.org is blocked from the sandbox this repository is edited in — measured, not
+# assumed (see scripts/resolve_taxa.py, which recorded the 403).
+#
+# IT DECIDES NOTHING. The output is a table and a JSON artifact carrying GBIF's counts and a
+# PROPOSED classification under a stated rule. A human reads it and decides what goes on a
+# quest board. Nothing here sets medicinal eligibility, which no pipeline may do.
+#
+# IT ALSO RUNS ON PUSH TO THE RESEARCH BRANCH, and that is not a convenience. A
+# `workflow_dispatch` workflow can only be dispatched once its file is on the DEFAULT
+# branch, and on this repository the default branch is what GitHub Pages deploys — so
+# dispatching a research job would have meant shipping the site to get a table of plant
+# counts. A push trigger scoped to this file and its script runs from the branch it is
+# pushed to, with no deploy and nothing published.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - scripts/ga_occurrence.py
+      - .github/workflows/ga-occurrence.yml
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Survey at most N species (blank = all 36)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  survey:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The classification rule and the deck parsing, checked before anything is classified
+      # under them.
+      - name: Self-test the rule
+        run: python3 scripts/ga_occurrence.py --self-test
+
+      - name: Survey
+        run: |
+          python3 scripts/ga_occurrence.py \
+            ${{ github.event_name == 'workflow_dispatch' && inputs.limit && format('--limit {0}', inputs.limit) || '' }} \
+            --out build/georgia-occurrence.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: georgia-occurrence
+          path: build/georgia-occurrence.json
+          retention-days: 90

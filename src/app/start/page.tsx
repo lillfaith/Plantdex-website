@@ -167,7 +167,7 @@ export default function StartPage() {
           */}
           <li className="flex flex-col items-center text-center">
             <span className="flex h-40 w-full items-end justify-center">
-              <span className="w-full max-w-[5.75rem] overflow-hidden rounded-[var(--radius-card)] shadow-card">
+              <span className="card-frame w-full max-w-[5.75rem] overflow-hidden rounded-[var(--radius-card)] shadow-card">
                 {card && (
                   <Image
                     src={assetPath(card.thumb)}

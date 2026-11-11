@@ -2,11 +2,14 @@ import { describe, expect, it } from 'vitest';
 
 import {
   CARD_SOURCES,
+  cardsNeedingReview,
   citationsFor,
   citedCardCount,
   evidenceLabelFor,
   type CardEvidence,
 } from './card-sources';
+import { siteCautionFor } from './card-cautions';
+import { cardCorrectionFor } from './card-corrections';
 import { PRINTED_CARDS } from './deck';
 import { getSource, resolveRefs } from './sources';
 
@@ -135,7 +138,10 @@ describe('evidenceLabelFor', () => {
     // #04 Ragweed: the audit found the card's own claims outrun their evidence. The card
     // is printed and transcribed by rule, so saying so is the only correction available.
     expect(CARD_SOURCES['4']!.evidence).toBe('revise');
-    expect(evidenceLabelFor(BY_NUMBER.get(4)!)).toBe('Card needs review');
+    // `revise` IS NOT SHOWN TO A READER. It is an internal audit state; printed beside a
+    // card's references it reads as a disclaimer about the plant rather than a note about
+    // our backlog. The state itself is still there and `cardsNeedingReview()` lists it.
+    expect(evidenceLabelFor(BY_NUMBER.get(4)!)).toBeNull();
   });
 
   /**
@@ -147,5 +153,49 @@ describe('evidenceLabelFor', () => {
     for (const number of [11, 19, 21]) {
       expect(evidenceLabelFor(BY_NUMBER.get(number)!), `card #${number}`).toBeNull();
     }
+  });
+
+  /**
+   * NO CARD IN THE DECK MAY PRINT EDITORIAL STATUS AT A PLAYER.
+   *
+   * The single `revise` assertion above covers one card. This sweeps all 45 and bans the
+   * vocabulary rather than one string, because the regression is not "the old label came
+   * back" — it is somebody adding a `revise: 'Under review'` entry, or a sixth verdict with
+   * a label of its own, and both would read to a reader as a disclaimer about the plant.
+   *
+   * `EVIDENCE_LABEL` is deliberately `Partial`, so a verdict with no entry is a legitimate
+   * and silent state. That is what makes this enforceable at the accessor.
+   */
+  it('never grades a card with an internal editorial word', () => {
+    const EDITORIAL = /review|revise|pending|unverified|provisional|backlog|audit|draft/i;
+    for (const herb of PRINTED_CARDS) {
+      const label = evidenceLabelFor(herb);
+      if (label === null) continue;
+      expect(label, `card #${herb.cardNumber} prints an editorial label`).not.toMatch(EDITORIAL);
+    }
+  });
+
+  /**
+   * AND REMOVING THE LABEL TOOK NO SAFETY INFORMATION WITH IT.
+   *
+   * The whole argument for dropping `revise` from the page is that it said nothing a reader
+   * needed — the hazards and the printing errors are carried by three other layers, each
+   * answering a different question (CLAUDE.md: "BOTH layers fire and neither substitutes for
+   * the other"). If one of those had quietly gone with it, the page would now be both
+   * quieter AND less safe, which is the one outcome this change must not produce.
+   *
+   * Card #04 Ragweed is the card the `revise` verdict was about, and #31 Elder is the one
+   * whose reprinted back lists parts that are not safely usable. Both must still speak.
+   */
+  it('leaves the cautions and corrections that do reach a reader', () => {
+    const ragweed = BY_NUMBER.get(4)!;
+    expect(evidenceLabelFor(ragweed)).toBeNull();
+    // Its audit note is still recorded, and still internal.
+    expect(CARD_SOURCES['4']!.auditNote.length).toBeGreaterThan(0);
+    expect(cardsNeedingReview().map((card) => card.cardNumber)).toContain('4');
+
+    const elder = BY_NUMBER.get(31)!;
+    expect(siteCautionFor(elder), 'elder lost its hazard caution').toBeTruthy();
+    expect(cardCorrectionFor(elder), 'elder lost its printed-card correction').toBeTruthy();
   });
 });

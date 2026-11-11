@@ -87,6 +87,12 @@ const USER_TABLES = [
   // name appears in it, so an explanation that spelled it out would trip the guard it is
   // explaining — a shape this repo has been bitten by before.)
   'entitlements',
+  // Added with the Field Board. The row holds only a decision — "list me, in this region" —
+  // but it is the decision that made this person visible to other players, so account
+  // deletion has to take it or a deleted account keeps a public listing. Removing it stops
+  // the listing immediately: the standings are computed at read time from the participant
+  // table, so a missing row is an absent player rather than a stale one.
+  'leaderboard_participants',
 ] as const;
 
 const CORS_HEADERS: Record<string, string> = {

@@ -1,0 +1,182 @@
+{
+  "_how": "Set decision to approved, rejected or preferred and give a reason, then run scripts/contact_sheet.py --record FILE. Rows left as 'open' change nothing.",
+  "_decisions": {
+    "approved": "you approve this card; gates.py reports HUMAN_APPROVED",
+    "rejected": "never use this photograph; needs a reason",
+    "preferred": "pin it as the leader WITHOUT approving the card; stays NEEDS_REVIEW"
+  },
+  "_revising": "To change a verdict you already gave, set \"revise\": true and give the new reason. The previous verdict is kept in that photo id's history and is never deleted.",
+  "rows": [
+    {
+      "species": "matricaria_chamomilla",
+      "photo_id": 650137635,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "preferred",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "matricaria_chamomilla",
+      "photo_id": 18365261,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "matricaria_chamomilla",
+      "photo_id": 293002707,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "pinus_strobus",
+      "photo_id": 111407747,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "pinus_strobus",
+      "photo_id": 340372052,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "pinus_strobus",
+      "photo_id": 306725928,
+      "current_status": "REJECTED",
+      "existing_decision": "rejected",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "pinus_strobus",
+      "photo_id": 354857174,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "sambucus_canadensis",
+      "photo_id": 424182823,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "preferred",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "sambucus_canadensis",
+      "photo_id": 424182835,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "alternative",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "sambucus_canadensis",
+      "photo_id": 309523755,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "sambucus_canadensis",
+      "photo_id": 554726092,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "taraxacum_officinale",
+      "photo_id": 152340494,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "preferred",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "taraxacum_officinale",
+      "photo_id": 133194303,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "taraxacum_officinale",
+      "photo_id": 403970862,
+      "current_status": "REJECTED",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "taraxacum_officinale",
+      "photo_id": 924120,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "verbascum_thapsus",
+      "photo_id": 21260078,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "preferred",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "verbascum_thapsus",
+      "photo_id": 210580027,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "verbascum_thapsus",
+      "photo_id": 143588661,
+      "current_status": "NEEDS_REVIEW",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    },
+    {
+      "species": "verbascum_thapsus",
+      "photo_id": 44345492,
+      "current_status": "REJECTED",
+      "existing_decision": "",
+      "decision": "open",
+      "reason": "",
+      "revise": false
+    }
+  ]
+}

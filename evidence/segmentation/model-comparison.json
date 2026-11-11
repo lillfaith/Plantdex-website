@@ -1,0 +1,210 @@
+[
+  {
+    "photo": "matricaria_chamomilla-650137635",
+    "source": "evidence/photos/matricaria_chamomilla/inat-650137635.jpg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.507,
+        "thin_kept": 0.705,
+        "frame_kept": 0.403,
+        "pieces": 1,
+        "seconds": 11.7
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.996,
+        "thin_kept": 0.985,
+        "frame_kept": 0.515,
+        "pieces": 1,
+        "seconds": 0.0,
+        "recovered_share": 0.279,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.241,
+        "grown_solidity": 0.515
+      }
+    ]
+  },
+  {
+    "photo": "pinus_strobus-111407747",
+    "source": "evidence/photos/pinus_strobus/inat-111407747.jpg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.0,
+        "thin_kept": 0.0,
+        "frame_kept": 0.0,
+        "pieces": 10,
+        "seconds": 7.5
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.84,
+        "thin_kept": 0.797,
+        "frame_kept": 0.272,
+        "pieces": 1,
+        "seconds": 1.1,
+        "recovered_share": 3669.662,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.017,
+        "grown_solidity": 0.273
+      }
+    ]
+  },
+  {
+    "photo": "sambucus_canadensis-424182823",
+    "source": "evidence/photos/sambucus_canadensis/inat-424182823.jpg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.021,
+        "thin_kept": 0.07,
+        "frame_kept": 0.221,
+        "pieces": 1,
+        "seconds": 8.0
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.985,
+        "thin_kept": 0.957,
+        "frame_kept": 0.861,
+        "pieces": 1,
+        "seconds": 0.0,
+        "recovered_share": 2.902,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.087,
+        "grown_solidity": 0.861
+      }
+    ]
+  },
+  {
+    "photo": "sambucus_canadensis-424182835",
+    "source": "evidence/photos/sambucus_canadensis/inat-424182835.jpg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.012,
+        "thin_kept": 0.052,
+        "frame_kept": 0.229,
+        "pieces": 1,
+        "seconds": 7.5
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.997,
+        "thin_kept": 0.991,
+        "frame_kept": 0.914,
+        "pieces": 1,
+        "seconds": 0.0,
+        "recovered_share": 2.989,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.095,
+        "grown_solidity": 0.914
+      }
+    ]
+  },
+  {
+    "photo": "taraxacum_officinale-133194303",
+    "source": "evidence/photos/taraxacum_officinale/inat-133194303.jpeg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.634,
+        "thin_kept": 0.498,
+        "frame_kept": 0.322,
+        "pieces": 1,
+        "seconds": 7.5
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.849,
+        "thin_kept": 0.734,
+        "frame_kept": 0.422,
+        "pieces": 1,
+        "seconds": 0.1,
+        "recovered_share": 0.311,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.044,
+        "grown_solidity": 0.519
+      }
+    ]
+  },
+  {
+    "photo": "taraxacum_officinale-152340494",
+    "source": "evidence/photos/taraxacum_officinale/inat-152340494.jpeg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.226,
+        "thin_kept": 0.202,
+        "frame_kept": 0.183,
+        "pieces": 1,
+        "seconds": 9.5
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.998,
+        "thin_kept": 0.979,
+        "frame_kept": 0.74,
+        "pieces": 1,
+        "seconds": 0.3,
+        "recovered_share": 3.036,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.087,
+        "grown_solidity": 0.74
+      }
+    ]
+  },
+  {
+    "photo": "verbascum_thapsus-210580027",
+    "source": "evidence/photos/verbascum_thapsus/inat-210580027.jpeg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.318,
+        "thin_kept": 0.147,
+        "frame_kept": 0.309,
+        "pieces": 1,
+        "seconds": 7.7
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 1.0,
+        "thin_kept": 0.988,
+        "frame_kept": 0.967,
+        "pieces": 1,
+        "seconds": 0.2,
+        "recovered_share": 2.133,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.101,
+        "grown_solidity": 0.967
+      }
+    ]
+  },
+  {
+    "photo": "verbascum_thapsus-21260078",
+    "source": "evidence/photos/verbascum_thapsus/inat-21260078.jpg",
+    "rows": [
+      {
+        "model": "birefnet-general-lite",
+        "green_kept": 0.259,
+        "thin_kept": 0.245,
+        "frame_kept": 0.138,
+        "pieces": 1,
+        "seconds": 7.4
+      },
+      {
+        "model": "birefnet-general-lite+grow",
+        "green_kept": 0.946,
+        "thin_kept": 0.844,
+        "frame_kept": 0.482,
+        "pieces": 1,
+        "seconds": 0.3,
+        "recovered_share": 2.504,
+        "recovered_green": 1.0,
+        "recovered_edge": 0.095,
+        "grown_solidity": 0.658
+      }
+    ]
+  }
+]

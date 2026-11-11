@@ -25,8 +25,19 @@ const DISCOVER_PANEL = strip(readFileSync('src/components/herbdex/DiscoverPanel.
  * Progression in Plantdex is self-declared at every stage, deliberately: `DiscoverPanel`
  * records a find from two taps and no camera, and `SIGHTINGS_FOR_MASTERY` is 1 with
  * `photoId` optional. Nothing here verifies that anybody went outside, and nothing is meant
- * to — there is no leaderboard, no public profile and no economy for a false record to
- * cheat. See CLAUDE.md, "Progression is self-declared".
+ * to. See CLAUDE.md, "Progression is self-declared".
+ *
+ * THAT ARGUMENT USED TO END "there is no leaderboard, no public profile and no economy for a
+ * false record to cheat", and the Field Board made the first clause false. It does not undo
+ * the reasoning, but it does change what rests on it: a false record now moves a number other
+ * players can see, so "it cheats nobody but its author" is no longer the whole story.
+ *
+ * What holds instead is that the board PUBLISHES THE SAME UNCHECKED RECORDS IN THE SAME
+ * WORDS. Every score on it is marked provisional, the page says in plain terms that nothing
+ * is verified, and the structural limits — one payment per species, a daily cap on journal
+ * entries — bound what a false record is worth rather than pretending to detect one. Which
+ * makes the sentences below MORE load-bearing than before, not less: a surface that writes a
+ * discovery without saying so now feeds a public number as well as a private collection.
  *
  * What that makes load-bearing is the WORDS. The only thing standing between a player and a
  * collection that does not mean what it says is each confirmation stating what it records,

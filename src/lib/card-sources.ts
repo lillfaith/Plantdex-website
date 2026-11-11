@@ -633,7 +633,13 @@ export const CARD_SOURCES: Record<string, CardSources> = {
 const EVIDENCE_LABEL: Partial<Record<CardEvidence, string>> = {
   strong: 'Well sourced',
   mixed: 'Evidence varies',
-  revise: 'Card needs review',
+  // `revise` DELIBERATELY HAS NO READER-FACING LABEL. "Card needs review" is an internal
+  // audit state, and printing it beside a card's references reads as a disclaimer about
+  // the plant rather than a note about our own backlog — it made correct, well-cited
+  // information look provisional. The verdict is NOT removed: `evidence` still carries
+  // `revise`, `auditNote` still says why, `cardsNeedingReview()` below lists them, and
+  // `docs/card-claim-review.md` is the review queue. Nothing is lost; it simply stops
+  // being shown to someone holding the card.
 };
 
 function entryFor(herb: Herb): CardSources | undefined {
@@ -651,6 +657,19 @@ function entryFor(herb: Herb): CardSources | undefined {
 export function citationsFor(herb: Herb): SourceRef[] {
   const curated = entryFor(herb)?.sourceIds ?? [];
   return [...(herb.sources ?? []), ...curated.map((sourceId) => ({ sourceId }))];
+}
+
+/**
+ * Cards whose audit reached `revise`, for internal review. Not rendered anywhere.
+ *
+ * This is where the state went when the label came off the page. Keeping the accessor
+ * named and exported is what stops `revise` quietly becoming a value nothing reads, which
+ * is how an audit backlog turns into an audit that never happened.
+ */
+export function cardsNeedingReview(): { cardNumber: string; auditNote: string }[] {
+  return Object.entries(CARD_SOURCES)
+    .filter(([, entry]) => entry.evidence === 'revise')
+    .map(([cardNumber, entry]) => ({ cardNumber, auditNote: entry.auditNote }));
 }
 
 /** The evidence label for this card, or `null` if it has none. */

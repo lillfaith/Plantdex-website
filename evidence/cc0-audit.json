@@ -1,0 +1,196 @@
+{
+  "min_edge": 900,
+  "rows": [
+    {
+      "species": "Achillea millefolium",
+      "taxon_id": 52821,
+      "accepted": "Achillea millefolium",
+      "observations_with_photos": 348429,
+      "research_grade": 275342,
+      "cc0_photos": 12015,
+      "cc0_research": 10436,
+      "sampled_cc0_photos": 73,
+      "sampled_pass_resolution": 73
+    },
+    {
+      "species": "Hypericum perforatum",
+      "taxon_id": 56077,
+      "accepted": "Hypericum perforatum",
+      "observations_with_photos": 138941,
+      "research_grade": 79873,
+      "cc0_photos": 4303,
+      "cc0_research": 2338,
+      "sampled_cc0_photos": 57,
+      "sampled_pass_resolution": 55
+    },
+    {
+      "species": "Echinacea purpurea",
+      "taxon_id": 48627,
+      "accepted": "Echinacea purpurea",
+      "observations_with_photos": 56247,
+      "research_grade": 20442,
+      "cc0_photos": 843,
+      "cc0_research": 338,
+      "sampled_cc0_photos": 58,
+      "sampled_pass_resolution": 58
+    },
+    {
+      "species": "Verbascum thapsus",
+      "taxon_id": 59029,
+      "accepted": "Verbascum thapsus",
+      "observations_with_photos": 194870,
+      "research_grade": 171166,
+      "cc0_photos": 4860,
+      "cc0_research": 4302,
+      "sampled_cc0_photos": 51,
+      "sampled_pass_resolution": 51
+    },
+    {
+      "species": "Urtica dioica",
+      "taxon_id": 51884,
+      "accepted": "Urtica dioica",
+      "observations_with_photos": 163270,
+      "research_grade": 150820,
+      "cc0_photos": 6931,
+      "cc0_research": 6670,
+      "sampled_cc0_photos": 35,
+      "sampled_pass_resolution": 35
+    },
+    {
+      "species": "Mentha piperita",
+      "error": "no exactly-matching active species taxon"
+    },
+    {
+      "species": "Melissa officinalis",
+      "taxon_id": 59901,
+      "accepted": "Melissa officinalis",
+      "observations_with_photos": 27753,
+      "research_grade": 9199,
+      "cc0_photos": 786,
+      "cc0_research": 404,
+      "sampled_cc0_photos": 53,
+      "sampled_pass_resolution": 51
+    },
+    {
+      "species": "Valeriana officinalis",
+      "taxon_id": 56160,
+      "accepted": "Valeriana officinalis",
+      "observations_with_photos": 40392,
+      "research_grade": 23229,
+      "cc0_photos": 1063,
+      "cc0_research": 581,
+      "sampled_cc0_photos": 63,
+      "sampled_pass_resolution": 63
+    },
+    {
+      "species": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "accepted": "Eupatorium perfoliatum",
+      "observations_with_photos": 40565,
+      "research_grade": 34025,
+      "cc0_photos": 1116,
+      "cc0_research": 984,
+      "sampled_cc0_photos": 60,
+      "sampled_pass_resolution": 60
+    },
+    {
+      "species": "Asclepias tuberosa",
+      "taxon_id": 47912,
+      "accepted": "Asclepias tuberosa",
+      "observations_with_photos": 79668,
+      "research_grade": 67050,
+      "cc0_photos": 1528,
+      "cc0_research": 1314,
+      "sampled_cc0_photos": 53,
+      "sampled_pass_resolution": 53
+    },
+    {
+      "species": "Lobelia inflata",
+      "taxon_id": 62351,
+      "accepted": "Lobelia inflata",
+      "observations_with_photos": 29752,
+      "research_grade": 26232,
+      "cc0_photos": 982,
+      "cc0_research": 905,
+      "sampled_cc0_photos": 59,
+      "sampled_pass_resolution": 59
+    },
+    {
+      "species": "Actaea racemosa",
+      "taxon_id": 119813,
+      "accepted": "Actaea racemosa",
+      "observations_with_photos": 18288,
+      "research_grade": 10659,
+      "cc0_photos": 435,
+      "cc0_research": 261,
+      "sampled_cc0_photos": 58,
+      "sampled_pass_resolution": 58
+    },
+    {
+      "species": "Sambucus canadensis",
+      "taxon_id": 84300,
+      "accepted": "Sambucus canadensis",
+      "observations_with_photos": 83317,
+      "research_grade": 62425,
+      "cc0_photos": 2160,
+      "cc0_research": 1633,
+      "sampled_cc0_photos": 61,
+      "sampled_pass_resolution": 61
+    },
+    {
+      "species": "Monarda fistulosa",
+      "taxon_id": 85320,
+      "accepted": "Monarda fistulosa",
+      "observations_with_photos": 87813,
+      "research_grade": 67131,
+      "cc0_photos": 1820,
+      "cc0_research": 1436,
+      "sampled_cc0_photos": 48,
+      "sampled_pass_resolution": 48
+    },
+    {
+      "species": "Arctium lappa",
+      "taxon_id": 75501,
+      "accepted": "Arctium lappa",
+      "observations_with_photos": 43549,
+      "research_grade": 14873,
+      "cc0_photos": 1277,
+      "cc0_research": 478,
+      "sampled_cc0_photos": 70,
+      "sampled_pass_resolution": 70
+    },
+    {
+      "species": "Symphytum officinale",
+      "taxon_id": 55724,
+      "accepted": "Symphytum officinale",
+      "observations_with_photos": 53416,
+      "research_grade": 29994,
+      "cc0_photos": 1798,
+      "cc0_research": 963,
+      "sampled_cc0_photos": 62,
+      "sampled_pass_resolution": 61
+    },
+    {
+      "species": "Tanacetum parthenium",
+      "taxon_id": 54520,
+      "accepted": "Tanacetum parthenium",
+      "observations_with_photos": 26495,
+      "research_grade": 17754,
+      "cc0_photos": 859,
+      "cc0_research": 735,
+      "sampled_cc0_photos": 51,
+      "sampled_pass_resolution": 51
+    },
+    {
+      "species": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "accepted": "Matricaria chamomilla",
+      "observations_with_photos": 19849,
+      "research_grade": 14848,
+      "cc0_photos": 564,
+      "cc0_research": 484,
+      "sampled_cc0_photos": 56,
+      "sampled_pass_resolution": 56
+    }
+  ]
+}

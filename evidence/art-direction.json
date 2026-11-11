@@ -1,0 +1,37 @@
+{
+  "_what": "The owner's ART DIRECTION, in his own words, per species. SUBJECTIVE BY DESIGN.",
+  "_why": "These are preferences about composition and specimen quality, not botany and not safety. They are kept apart from the briefs for exactly that reason: a brief says which structures must be VISIBLE for the plant to be identifiable, and failing one is a hard failure; a directive here says which of several identifiable photographs belongs on a card, and failing one is a soft note that blocks nothing. The two were briefly conflated and the result was a 0.17-fill specimen rejected for being small while two strips of background forest passed.",
+  "_how": "The text is injected into the vision rubric as ART DIRECTION and judged as its own axis, separately from cropping and segmentation. Nothing here is a pixel threshold, and nothing here may become one without a reproducible failure to point at.",
+  "shared": [
+    "One coherent specimen, not a colony and not a habitat scene.",
+    "Always touches the bottom edge of the art window; the other three edges are optional.",
+    "Do not force a bottom crop if the photograph does not contain enough stem to support it naturally."
+  ],
+  "species": {
+    "matricaria_chamomilla": {
+      "want": "The flower face toward the camera so the large yellow centre reads, with stems and feathery foliage attached.",
+      "avoid": "A bloom facing away from the camera; a flower head with its stems cut off.",
+      "owner": "Keep Chamomile 650137635 as my preferred candidate."
+    },
+    "taraxacum_officinale": {
+      "want": "A balanced specimen showing flowers, stems and recognizable toothed foliage together.",
+      "avoid": "One oversized bloom filling the frame with no stem or leaf context.",
+      "owner": "Dandelion: search for a more balanced specimen showing flowers, stems and recognizable foliage, rather than one oversized bloom."
+    },
+    "verbascum_thapsus": {
+      "want": "A full, dense flowering spike with substantial woolly basal foliage.",
+      "avoid": "A thin or sparse spike; a small specimen in a large frame; a spike clipped at the top.",
+      "owner": "Mullein: the new spike is no longer clipped, but it is too thin and small. Find a fuller flowering spike with substantial foliage."
+    },
+    "sambucus_canadensis": {
+      "want": "A healthy-looking fruiting specimen: dark berries on a visible cyme, with branching stems and intact leaves.",
+      "avoid": "Turned or yellowed foliage; a stripped cyme; berry fragments with no supporting branch.",
+      "owner": "Elderberry: preserve my rejection and continue searching for a healthy-looking fruiting specimen with dark berries, branching stems and leaves."
+    },
+    "pinus_strobus": {
+      "want": "A recognizable, attractive BRANCH showing distinct needle clusters (fascicles).",
+      "avoid": "A whole-tree habit shot; a stand of trees; a distant canopy where individual needles cannot be read.",
+      "owner": "Pine: reject the whole-tree composition for this card. Search for a recognizable, attractive branch showing distinct needle clusters."
+    }
+  }
+}

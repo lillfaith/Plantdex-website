@@ -1,0 +1,29 @@
+{
+  "common": "Pine",
+  "card": "pinus-spp",
+  "description": "Evergreen conifer. Needles borne in fascicles, persisting several years. Reproduction by woody seed cones; there are NO flowers, no petals and no fruit of any kind.",
+  "source": "Flora of North America vol. 2 (Pinaceae); card #41",
+  "mandatory": [
+    "needles"
+  ],
+  "preferred": [
+    "cones",
+    "branch_structure"
+  ],
+  "notes": "A conifer has no flowers. Any requirement for petals or fruit is botanically wrong for this species and must never be inferred from a colour signature -- sunlit needles against sky previously registered as 'white flowers'. Cones are welcome but are absent for much of the year. FRAMING: card #41 shows a BRANCH with needles at close range, not a whole tree. A habit shot of an entire pine is correct botany and the wrong scale -- at 593px wide the needles become canopy texture. Prefer a branch or shoot. IDENTITY: 'a conifer' is not an identification. Needle fascicle count is the field character and the vision pass should report it when resolvable.",
+  "species_key": "pinus_strobus",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  },
+  "framing": {
+    "prefer": "a branch or shoot at close range, needles individually resolvable",
+    "avoid": "a whole-tree habit shot; at 593px the needles become canopy texture",
+    "reference": "card #41, which shows a branch with needle fascicles and a cone"
+  },
+  "identity_check": "Pinus strobus has needles in fascicles of FIVE, soft and slender. Most other eastern pines carry two or three. A candidate must be confirmed as this species, not merely as 'a pine' -- the observation taxon is re-checked at retrieval and the vision pass is asked to confirm the fascicle count where it is visible."
+}

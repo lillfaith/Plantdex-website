@@ -1,0 +1,704 @@
+{
+  "species": "matricaria_chamomilla",
+  "rows": [
+    {
+      "photo_id": 232055411,
+      "method": "colour-grabcut",
+      "seconds": 1.54,
+      "kept": 0.4989,
+      "recall_botanical": 0.884,
+      "purity": 0.928,
+      "solidity": 0.643,
+      "fragments": 1,
+      "edge_softness": 0.74,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 232055411,
+      "method": "u2net",
+      "seconds": 2.2,
+      "kept": 0.0717,
+      "recall_botanical": 0.117,
+      "purity": 0.855,
+      "solidity": 0.594,
+      "fragments": 1,
+      "edge_softness": 5.52,
+      "problems": [
+        "destroyed plant structures (kept 12%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055411,
+      "method": "isnet",
+      "seconds": 3.51,
+      "kept": 0.0734,
+      "recall_botanical": 0.119,
+      "purity": 0.846,
+      "solidity": 0.612,
+      "fragments": 1,
+      "edge_softness": 6.28,
+      "problems": [
+        "destroyed plant structures (kept 12%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055411,
+      "method": "sam-prompted",
+      "seconds": 12.1,
+      "kept": 0.6346,
+      "recall_botanical": 0.66,
+      "purity": 0.545,
+      "solidity": 0.636,
+      "fragments": 2,
+      "edge_softness": 0.0,
+      "problems": [
+        "background remnants (45% non-botanical)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055411,
+      "method": "hybrid",
+      "seconds": 2.24,
+      "kept": 0.3519,
+      "recall_botanical": 0.56,
+      "purity": 0.832,
+      "solidity": 0.759,
+      "fragments": 1,
+      "edge_softness": 1.79,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 232055411,
+      "method": "colour+ai-veto",
+      "seconds": 2.9,
+      "kept": 0.4992,
+      "recall_botanical": 0.884,
+      "purity": 0.927,
+      "solidity": 0.643,
+      "fragments": 1,
+      "edge_softness": 0.74,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 232055418,
+      "method": "colour-grabcut",
+      "seconds": 1.56,
+      "kept": 0.3623,
+      "recall_botanical": 0.77,
+      "purity": 0.891,
+      "solidity": 0.409,
+      "fragments": 3,
+      "edge_softness": 0.77,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 232055418,
+      "method": "u2net",
+      "seconds": 0.77,
+      "kept": 0.0176,
+      "recall_botanical": 0.031,
+      "purity": 0.745,
+      "solidity": 0.571,
+      "fragments": 1,
+      "edge_softness": 5.8,
+      "problems": [
+        "background remnants (26% non-botanical)",
+        "destroyed plant structures (kept 3%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055418,
+      "method": "isnet",
+      "seconds": 0.84,
+      "kept": 0.038,
+      "recall_botanical": 0.074,
+      "purity": 0.819,
+      "solidity": 0.116,
+      "fragments": 4,
+      "edge_softness": 5.34,
+      "problems": [
+        "destroyed plant structures (kept 7%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055418,
+      "method": "sam-prompted",
+      "seconds": 9.51,
+      "kept": 0.0676,
+      "recall_botanical": 0.159,
+      "purity": 0.986,
+      "solidity": 0.464,
+      "fragments": 1,
+      "edge_softness": 0.0,
+      "problems": [
+        "destroyed plant structures (kept 16%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055418,
+      "method": "hybrid",
+      "seconds": 1.14,
+      "kept": 0.2529,
+      "recall_botanical": 0.428,
+      "purity": 0.711,
+      "solidity": 0.465,
+      "fragments": 1,
+      "edge_softness": 1.98,
+      "problems": [
+        "background remnants (29% non-botanical)",
+        "destroyed plant structures (kept 43%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 232055418,
+      "method": "colour+ai-veto",
+      "seconds": 2.63,
+      "kept": 0.2077,
+      "recall_botanical": 0.446,
+      "purity": 0.9,
+      "solidity": 0.371,
+      "fragments": 1,
+      "edge_softness": 0.77,
+      "problems": [
+        "destroyed plant structures (kept 45%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 650137635,
+      "method": "colour-grabcut",
+      "seconds": 2.06,
+      "kept": 0.446,
+      "recall_botanical": 0.895,
+      "purity": 0.895,
+      "solidity": 0.446,
+      "fragments": 1,
+      "edge_softness": 0.77,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 650137635,
+      "method": "u2net",
+      "seconds": 0.32,
+      "kept": 0.0781,
+      "recall_botanical": 0.174,
+      "purity": 0.991,
+      "solidity": 0.771,
+      "fragments": 1,
+      "edge_softness": 15.03,
+      "problems": [
+        "destroyed plant structures (kept 17%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 650137635,
+      "method": "isnet",
+      "seconds": 0.88,
+      "kept": 0.0781,
+      "recall_botanical": 0.173,
+      "purity": 0.986,
+      "solidity": 0.235,
+      "fragments": 1,
+      "edge_softness": 30.56,
+      "problems": [
+        "destroyed plant structures (kept 17%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 650137635,
+      "method": "sam-prompted",
+      "seconds": 4.11,
+      "kept": 0.0218,
+      "recall_botanical": 0.048,
+      "purity": 0.988,
+      "solidity": 0.804,
+      "fragments": 1,
+      "edge_softness": 0.0,
+      "problems": [
+        "destroyed plant structures (kept 5%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 650137635,
+      "method": "hybrid",
+      "seconds": 1.23,
+      "kept": 0.2796,
+      "recall_botanical": 0.565,
+      "purity": 0.9,
+      "solidity": 0.36,
+      "fragments": 1,
+      "edge_softness": 7.38,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 650137635,
+      "method": "colour+ai-veto",
+      "seconds": 2.75,
+      "kept": 0.4463,
+      "recall_botanical": 0.895,
+      "purity": 0.894,
+      "solidity": 0.446,
+      "fragments": 1,
+      "edge_softness": 0.77,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 650138623,
+      "method": "colour-grabcut",
+      "seconds": 3.31,
+      "kept": 0.4263,
+      "recall_botanical": 0.999,
+      "purity": 0.89,
+      "solidity": 0.438,
+      "fragments": 1,
+      "edge_softness": 0.74,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 650138623,
+      "method": "u2net",
+      "seconds": 0.31,
+      "kept": 0.2004,
+      "recall_botanical": 0.524,
+      "purity": 0.994,
+      "solidity": 0.455,
+      "fragments": 1,
+      "edge_softness": 4.88,
+      "problems": [
+        "destroyed plant structures (kept 52%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 650138623,
+      "method": "isnet",
+      "seconds": 0.86,
+      "kept": 0.2776,
+      "recall_botanical": 0.702,
+      "purity": 0.96,
+      "solidity": 0.328,
+      "fragments": 1,
+      "edge_softness": 12.95,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 650138623,
+      "method": "sam-prompted",
+      "seconds": 4.24,
+      "kept": 0.0275,
+      "recall_botanical": 0.068,
+      "purity": 0.944,
+      "solidity": 0.692,
+      "fragments": 1,
+      "edge_softness": 0.0,
+      "problems": [
+        "destroyed plant structures (kept 7%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 650138623,
+      "method": "hybrid",
+      "seconds": 1.19,
+      "kept": 0.4136,
+      "recall_botanical": 0.888,
+      "purity": 0.815,
+      "solidity": 0.433,
+      "fragments": 1,
+      "edge_softness": 2.93,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 650138623,
+      "method": "colour+ai-veto",
+      "seconds": 3.81,
+      "kept": 0.4263,
+      "recall_botanical": 0.999,
+      "purity": 0.89,
+      "solidity": 0.438,
+      "fragments": 1,
+      "edge_softness": 0.74,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 50423922,
+      "method": "colour-grabcut",
+      "seconds": 1.07,
+      "kept": 0.9999,
+      "recall_botanical": 1.0,
+      "purity": 0.979,
+      "solidity": 1.0,
+      "fragments": 1,
+      "edge_softness": 0.87,
+      "problems": [
+        "rectangular (solidity 1.0)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 50423922,
+      "method": "u2net",
+      "seconds": 0.36,
+      "kept": 0.0666,
+      "recall_botanical": 0.068,
+      "purity": 1.0,
+      "solidity": 0.369,
+      "fragments": 1,
+      "edge_softness": 4.65,
+      "problems": [
+        "destroyed plant structures (kept 7%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 50423922,
+      "method": "isnet",
+      "seconds": 0.8,
+      "kept": 0.0731,
+      "recall_botanical": 0.075,
+      "purity": 1.0,
+      "solidity": 0.1,
+      "fragments": 2,
+      "edge_softness": 8.54,
+      "problems": [
+        "destroyed plant structures (kept 8%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 50423922,
+      "method": "sam-prompted",
+      "seconds": 3.81,
+      "kept": 0.9743,
+      "recall_botanical": 0.974,
+      "purity": 0.979,
+      "solidity": 0.975,
+      "fragments": 1,
+      "edge_softness": 0.0,
+      "problems": [
+        "rectangular (solidity 0.975)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 50423922,
+      "method": "hybrid",
+      "seconds": 1.06,
+      "kept": 0.8239,
+      "recall_botanical": 0.824,
+      "purity": 0.98,
+      "solidity": 0.824,
+      "fragments": 1,
+      "edge_softness": 1.77,
+      "problems": [
+        "rectangular (solidity 0.824)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 50423922,
+      "method": "colour+ai-veto",
+      "seconds": 2.0,
+      "kept": 0.9999,
+      "recall_botanical": 1.0,
+      "purity": 0.979,
+      "solidity": 1.0,
+      "fragments": 1,
+      "edge_softness": 0.87,
+      "problems": [
+        "rectangular (solidity 1.0)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 682309814,
+      "method": "colour-grabcut",
+      "seconds": 1.84,
+      "kept": 0.8811,
+      "recall_botanical": 0.984,
+      "purity": 0.909,
+      "solidity": 0.881,
+      "fragments": 1,
+      "edge_softness": 0.8,
+      "problems": [
+        "rectangular (solidity 0.881)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 682309814,
+      "method": "u2net",
+      "seconds": 0.3,
+      "kept": 0.0006,
+      "recall_botanical": 0.0,
+      "purity": 0.653,
+      "solidity": 0.15,
+      "fragments": 5,
+      "edge_softness": 21.39,
+      "problems": [
+        "background remnants (35% non-botanical)",
+        "destroyed plant structures (kept 0%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 682309814,
+      "method": "isnet",
+      "seconds": 0.85,
+      "kept": 0.0084,
+      "recall_botanical": 0.01,
+      "purity": 0.992,
+      "solidity": 0.086,
+      "fragments": 6,
+      "edge_softness": 7.88,
+      "problems": [
+        "destroyed plant structures (kept 1%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 682309814,
+      "method": "sam-prompted",
+      "seconds": 4.24,
+      "kept": 0.9064,
+      "recall_botanical": 0.964,
+      "purity": 0.865,
+      "solidity": 0.909,
+      "fragments": 1,
+      "edge_softness": 0.0,
+      "problems": [
+        "rectangular (solidity 0.909)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 682309814,
+      "method": "hybrid",
+      "seconds": 1.08,
+      "kept": 0.3116,
+      "recall_botanical": 0.341,
+      "purity": 0.889,
+      "solidity": 0.886,
+      "fragments": 1,
+      "edge_softness": 2.39,
+      "problems": [
+        "rectangular (solidity 0.886)",
+        "destroyed plant structures (kept 34%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 682309814,
+      "method": "colour+ai-veto",
+      "seconds": 2.56,
+      "kept": 0.8811,
+      "recall_botanical": 0.984,
+      "purity": 0.909,
+      "solidity": 0.881,
+      "fragments": 1,
+      "edge_softness": 0.8,
+      "problems": [
+        "rectangular (solidity 0.881)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 107920971,
+      "method": "colour-grabcut",
+      "seconds": 2.56,
+      "kept": 0.9576,
+      "recall_botanical": 0.999,
+      "purity": 0.879,
+      "solidity": 0.958,
+      "fragments": 1,
+      "edge_softness": 0.77,
+      "problems": [
+        "rectangular (solidity 0.958)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 107920971,
+      "method": "u2net",
+      "seconds": 0.39,
+      "kept": 0.0561,
+      "recall_botanical": 0.066,
+      "purity": 0.992,
+      "solidity": 0.445,
+      "fragments": 1,
+      "edge_softness": 3.89,
+      "problems": [
+        "destroyed plant structures (kept 7%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 107920971,
+      "method": "isnet",
+      "seconds": 0.87,
+      "kept": 0.1177,
+      "recall_botanical": 0.132,
+      "purity": 0.946,
+      "solidity": 0.282,
+      "fragments": 3,
+      "edge_softness": 5.83,
+      "problems": [
+        "destroyed plant structures (kept 13%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 107920971,
+      "method": "sam-prompted",
+      "seconds": 4.04,
+      "kept": 0.0521,
+      "recall_botanical": 0.061,
+      "purity": 0.988,
+      "solidity": 0.376,
+      "fragments": 3,
+      "edge_softness": 0.0,
+      "problems": [
+        "destroyed plant structures (kept 6%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 107920971,
+      "method": "hybrid",
+      "seconds": 1.09,
+      "kept": 0.6336,
+      "recall_botanical": 0.648,
+      "purity": 0.861,
+      "solidity": 0.84,
+      "fragments": 1,
+      "edge_softness": 1.81,
+      "problems": [
+        "rectangular (solidity 0.84)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 107920971,
+      "method": "colour+ai-veto",
+      "seconds": 3.49,
+      "kept": 0.9586,
+      "recall_botanical": 0.999,
+      "purity": 0.879,
+      "solidity": 0.959,
+      "fragments": 1,
+      "edge_softness": 0.76,
+      "problems": [
+        "rectangular (solidity 0.959)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 275372296,
+      "method": "colour-grabcut",
+      "seconds": 3.03,
+      "kept": 0.6764,
+      "recall_botanical": 0.907,
+      "purity": 0.812,
+      "solidity": 0.681,
+      "fragments": 1,
+      "edge_softness": 0.8,
+      "problems": [],
+      "acceptable": true
+    },
+    {
+      "photo_id": 275372296,
+      "method": "u2net",
+      "seconds": 0.49,
+      "kept": 0.0,
+      "verdict": "empty",
+      "problems": [
+        "kept nothing"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 275372296,
+      "method": "isnet",
+      "seconds": 1.05,
+      "kept": 0.0003,
+      "recall_botanical": 0.0,
+      "purity": 0.205,
+      "solidity": 0.004,
+      "fragments": 17,
+      "edge_softness": 58.05,
+      "problems": [
+        "background remnants (80% non-botanical)",
+        "destroyed plant structures (kept 0%)",
+        "17 detached fragments"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 275372296,
+      "method": "sam-prompted",
+      "seconds": 4.7,
+      "kept": 0.0007,
+      "recall_botanical": 0.001,
+      "purity": 0.978,
+      "solidity": 0.746,
+      "fragments": 1,
+      "edge_softness": 0.0,
+      "problems": [
+        "destroyed plant structures (kept 0%)"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 275372296,
+      "method": "hybrid",
+      "seconds": 2.29,
+      "kept": 0.0003,
+      "recall_botanical": 0.0,
+      "purity": 0.205,
+      "solidity": 0.004,
+      "fragments": 17,
+      "edge_softness": 58.05,
+      "problems": [
+        "background remnants (80% non-botanical)",
+        "destroyed plant structures (kept 0%)",
+        "17 detached fragments"
+      ],
+      "acceptable": false
+    },
+    {
+      "photo_id": 275372296,
+      "method": "colour+ai-veto",
+      "seconds": 3.85,
+      "kept": 0.6762,
+      "recall_botanical": 0.906,
+      "purity": 0.812,
+      "solidity": 0.681,
+      "fragments": 1,
+      "edge_softness": 0.8,
+      "problems": [],
+      "acceptable": true
+    }
+  ],
+  "work_edge": 1200
+}

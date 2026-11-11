@@ -92,6 +92,25 @@ export const EVENT_NAMES = [
   'start_path_herbdex',
   'start_path_learn',
 
+  /*
+   * THE REGIONAL LOOP.
+   *
+   * Four names, answering the four questions the Georgia trial exists to settle: do people
+   * choose a region at all, do they open the board, does the board send them outside, and
+   * do they come back. Everything after that is already measured — a find is a find, and
+   * `discovery_first` fires wherever it happens.
+   *
+   * NO REGION IS ATTACHED TO ANY OF THESE. `track()` takes one parameter, which is the
+   * privacy guarantee rather than a convention, and a region is the one dimension that
+   * would be genuinely identifying at this sample size: with twenty testers, "Georgia" plus
+   * a timestamp is close to a name. When a second region launches, the question "which
+   * region" is answered by the board's own URL in the pages report, not by a property here.
+   */
+  'region_selected',
+  'region_cleared',
+  'quest_board_opened',
+  'quest_plant_opened',
+
   // Plant profiles. The species comes from the URL; the name carries only how much of that
   // plant the viewer had already unlocked, which the URL cannot say.
   'plant_viewed_locked',

@@ -1,0 +1,19 @@
+# Species to retrieve evidence for. One accepted binomial per line.
+#
+# THE FIRST END-TO-END DEMONSTRATION USES ONE SAFE, WELL-DOCUMENTED SPECIES.
+# Toxic species stay out of this file until the safety path has been validated on a
+# controlled fixture — a pipeline whose first run is a hepatotoxin is a pipeline whose
+# first mistake is a hepatotoxin.
+Matricaria chamomilla
+
+# CROSS-TESTING THE PHOTO SCORER ACROSS GROWTH FORMS. These are species the deck ALREADY
+# carries, which is the point: the printed card is the answer, so a scorer that works should
+# prefer photographs resembling it. They span the forms the catalogue has to cover -- a
+# rosette, a tall spike, a shrub, a tree, a creeping mat -- because a ranking tuned on one
+# daisy would be worthless on a conifer.
+Taraxacum officinale
+Verbascum thapsus
+Achillea millefolium
+Plantago major
+Sambucus canadensis
+Pinus strobus

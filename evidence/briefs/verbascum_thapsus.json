@@ -1,0 +1,21 @@
+{
+  "common": "Mullein",
+  "card": "verbascum-thapsus",
+  "description": "Biennial. First year a basal rosette of large, thick, densely woolly grey-green leaves. Second year a single tall unbranched stem ending in a DENSE CYLINDRICAL SPIKE of 5-petalled yellow flowers opening a few at a time.",
+  "source": "Flora of North America vol. 12 (Verbascum); card #27",
+  "mandatory": [
+    "foliage",
+    "flower_yellow"
+  ],
+  "preferred": [],
+  "notes": "The dense cylindrical flowering spike is the identifying structure. Woolly leaves alone are ambiguous with other rosette biennials.",
+  "species_key": "verbascum_thapsus",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

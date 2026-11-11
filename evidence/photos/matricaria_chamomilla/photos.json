@@ -1,0 +1,2611 @@
+{
+  "species": "Matricaria chamomilla",
+  "fetched_at": "2026-11-06T20:51:32+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 77965,
+    "name": "Matricaria chamomilla",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Matricaria_chamomilla"
+  },
+  "photos": [
+    {
+      "photo_id": 232055411,
+      "observation_id": 136004087,
+      "observation_url": "https://www.inaturalist.org/observations/136004087",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-22",
+      "place": "Москва, Россия, 117513",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055411/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055411/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055411/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 945,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-232055411.jpeg",
+      "bytes": 993864,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 232055418,
+      "observation_id": 136004087,
+      "observation_url": "https://www.inaturalist.org/observations/136004087",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-22",
+      "place": "Москва, Россия, 117513",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055418/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055418/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/232055418/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 945,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-232055418.jpeg",
+      "bytes": 1396784,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 650137635,
+      "observation_id": 356505021,
+      "observation_url": "https://www.inaturalist.org/observations/356505021",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-04-29",
+      "place": "Verona Airport, 37066 Sommacampagna VR, Italy",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/650137635/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/650137635/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/650137635/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-650137635.jpg",
+      "bytes": 1303692,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 650138623,
+      "observation_id": 356505021,
+      "observation_url": "https://www.inaturalist.org/observations/356505021",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-04-29",
+      "place": "Verona Airport, 37066 Sommacampagna VR, Italy",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/650138623/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/650138623/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/650138623/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-650138623.jpg",
+      "bytes": 1100570,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 50423922,
+      "observation_id": 32166626,
+      "observation_url": "https://www.inaturalist.org/observations/32166626",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-09-05",
+      "place": "Alder Wood, Alderfield Drive, Speke, Liverpool, Merseyside",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/50423922/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/50423922/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/50423922/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-50423922.jpeg",
+      "bytes": 1363111,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 107920971,
+      "observation_id": 66881934,
+      "observation_url": "https://www.inaturalist.org/observations/66881934",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-01",
+      "place": "Donkseweg, Brandwijk, South Holland, NL",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/107920971/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/107920971/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/107920971/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-107920971.jpg",
+      "bytes": 880485,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 275372296,
+      "observation_id": 159383888,
+      "observation_url": "https://www.inaturalist.org/observations/159383888",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-03",
+      "place": "Jászberény, 5100 Magyarország",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/275372296/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/275372296/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/275372296/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-275372296.jpeg",
+      "bytes": 3086356,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 513077738,
+      "observation_id": 285448648,
+      "observation_url": "https://www.inaturalist.org/observations/285448648",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-05-30",
+      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077738/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077738/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077738/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-513077738.jpg",
+      "bytes": 1867222,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 513077813,
+      "observation_id": 285448648,
+      "observation_url": "https://www.inaturalist.org/observations/285448648",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-05-30",
+      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077813/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077813/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/513077813/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-513077813.jpg",
+      "bytes": 1859481,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 421572885,
+      "observation_id": 236923708,
+      "observation_url": "https://www.inaturalist.org/observations/236923708",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-20",
+      "place": "Hampshire, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/421572885/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/421572885/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/421572885/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-421572885.jpeg",
+      "bytes": 1566457,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 421572897,
+      "observation_id": 236923708,
+      "observation_url": "https://www.inaturalist.org/observations/236923708",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-20",
+      "place": "Hampshire, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/421572897/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/421572897/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/421572897/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-421572897.jpeg",
+      "bytes": 1280179,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 511506802,
+      "observation_id": 284608643,
+      "observation_url": "https://www.inaturalist.org/observations/284608643",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-05-27",
+      "place": "Přísečná",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/511506802/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/511506802/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/511506802/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-511506802.jpg",
+      "bytes": 3107537,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 517719208,
+      "observation_id": 287916668,
+      "observation_url": "https://www.inaturalist.org/observations/287916668",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-08",
+      "place": "22690 Pleudihen-sur-Rance, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719208/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719208/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719208/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-517719208.jpg",
+      "bytes": 2729282,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 517719258,
+      "observation_id": 287916668,
+      "observation_url": "https://www.inaturalist.org/observations/287916668",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-08",
+      "place": "22690 Pleudihen-sur-Rance, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719258/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719258/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719258/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1154
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-517719258.jpg",
+      "bytes": 1672260,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 517719259,
+      "observation_id": 287916668,
+      "observation_url": "https://www.inaturalist.org/observations/287916668",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-08",
+      "place": "22690 Pleudihen-sur-Rance, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719259/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719259/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/517719259/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1154
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-517719259.jpg",
+      "bytes": 2324372,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 517726252,
+      "observation_id": 287918777,
+      "observation_url": "https://www.inaturalist.org/observations/287918777",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-08",
+      "place": "Rákóczifalva, 5085 Magyarország",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/517726252/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/517726252/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/517726252/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-517726252.jpg",
+      "bytes": 2750809,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 373796900,
+      "observation_id": 211421375,
+      "observation_url": "https://www.inaturalist.org/observations/211421375",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-04-29",
+      "place": "98057 Milazzo ME, Italia",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/373796900/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/373796900/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/373796900/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 921,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-373796900.jpeg",
+      "bytes": 1696535,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 195560773,
+      "observation_id": 115868998,
+      "observation_url": "https://www.inaturalist.org/observations/115868998",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-07",
+      "place": "08272 Sant Fruitós de Bages, Barcelona, Espanya",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/195560773/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-195560773.jpeg",
+      "bytes": 1788663,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 91282063,
+      "observation_id": 57238200,
+      "observation_url": "https://www.inaturalist.org/observations/57238200",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-22",
+      "place": "Corbeni, Romania",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282063/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282063/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282063/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-91282063.jpeg",
+      "bytes": 1734325,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 91282083,
+      "observation_id": 57238200,
+      "observation_url": "https://www.inaturalist.org/observations/57238200",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-22",
+      "place": "Corbeni, Romania",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282083/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282083/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282083/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-91282083.jpeg",
+      "bytes": 1504748,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 91282109,
+      "observation_id": 57238200,
+      "observation_url": "https://www.inaturalist.org/observations/57238200",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-22",
+      "place": "Corbeni, Romania",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282109/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282109/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/91282109/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-91282109.jpeg",
+      "bytes": 1833533,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 682309814,
+      "observation_id": 373359357,
+      "observation_url": "https://www.inaturalist.org/observations/373359357",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-06-19",
+      "place": "Whipsnade, Dunstable, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/682309814/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/682309814/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/682309814/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1274
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-682309814.jpg",
+      "bytes": 1764040,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 612855131,
+      "observation_id": 337163397,
+      "observation_url": "https://www.inaturalist.org/observations/337163397",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-01",
+      "place": "Paraje Pavón, Provincia de Buenos Aires, Argentina",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/612855131/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/612855131/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/612855131/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-612855131.jpg",
+      "bytes": 413239,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 444752236,
+      "observation_id": 248879043,
+      "observation_url": "https://www.inaturalist.org/observations/248879043",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-23",
+      "place": "Court Farm Woods, Court Avenue, Halewood, Liverpool, Merseyside, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/444752236/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/444752236/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/444752236/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-444752236.jpeg",
+      "bytes": 625982,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 437028276,
+      "observation_id": 244954437,
+      "observation_url": "https://www.inaturalist.org/observations/244954437",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-09-11",
+      "place": "Rojas, Provincia de Buenos Aires, Argentina",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/437028276/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/437028276/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/437028276/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1498
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-437028276.jpeg",
+      "bytes": 708487,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 322802135,
+      "observation_id": 184893778,
+      "observation_url": "https://www.inaturalist.org/observations/184893778",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-25",
+      "place": "Münster, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802135/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802135/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802135/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-322802135.jpg",
+      "bytes": 847493,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 322802617,
+      "observation_id": 184893778,
+      "observation_url": "https://www.inaturalist.org/observations/184893778",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-25",
+      "place": "Münster, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802617/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802617/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802617/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-322802617.jpg",
+      "bytes": 822215,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 322802145,
+      "observation_id": 184893778,
+      "observation_url": "https://www.inaturalist.org/observations/184893778",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-25",
+      "place": "Münster, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802145/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802145/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802145/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-322802145.jpg",
+      "bytes": 1012442,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 322802186,
+      "observation_id": 184893778,
+      "observation_url": "https://www.inaturalist.org/observations/184893778",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-25",
+      "place": "Münster, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802186/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802186/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802186/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-322802186.jpg",
+      "bytes": 1408461,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 322802142,
+      "observation_id": 184893778,
+      "observation_url": "https://www.inaturalist.org/observations/184893778",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-25",
+      "place": "Münster, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802142/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802142/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/322802142/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-322802142.jpg",
+      "bytes": 1492874,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 632612033,
+      "observation_id": 346996359,
+      "observation_url": "https://www.inaturalist.org/observations/346996359",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-31",
+      "place": "Зоопарк, 04105 Leipzig, Германия",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/632612033/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/632612033/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/632612033/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-632612033.jpg",
+      "bytes": 2720340,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 78117631,
+      "observation_id": 49212581,
+      "observation_url": "https://www.inaturalist.org/observations/49212581",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-11",
+      "place": "L3088, Kirchhain, Hessen, DE",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/78117631/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/78117631/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/78117631/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-78117631.jpg",
+      "bytes": 1333863,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 81472570,
+      "observation_id": 51290792,
+      "observation_url": "https://www.inaturalist.org/observations/51290792",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-28",
+      "place": "Leicestershire, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/81472570/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/81472570/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/81472570/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-81472570.jpeg",
+      "bytes": 1173457,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 81472573,
+      "observation_id": 51290792,
+      "observation_url": "https://www.inaturalist.org/observations/51290792",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-28",
+      "place": "Leicestershire, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/81472573/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/81472573/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/81472573/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-81472573.jpeg",
+      "bytes": 1195999,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 74694772,
+      "observation_id": 46950647,
+      "observation_url": "https://www.inaturalist.org/observations/46950647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-23",
+      "place": "Hayange, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694772/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694772/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694772/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 995,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-74694772.jpeg",
+      "bytes": 1123235,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 74694790,
+      "observation_id": 46950647,
+      "observation_url": "https://www.inaturalist.org/observations/46950647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-23",
+      "place": "Hayange, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694790/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694790/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694790/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 995,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-74694790.jpeg",
+      "bytes": 923957,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 74694806,
+      "observation_id": 46950647,
+      "observation_url": "https://www.inaturalist.org/observations/46950647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-23",
+      "place": "Hayange, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694806/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694806/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694806/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 995,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-74694806.jpeg",
+      "bytes": 929791,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 74694819,
+      "observation_id": 46950647,
+      "observation_url": "https://www.inaturalist.org/observations/46950647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-23",
+      "place": "Hayange, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694819/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694819/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694819/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 995,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-74694819.jpeg",
+      "bytes": 1060567,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 74694831,
+      "observation_id": 46950647,
+      "observation_url": "https://www.inaturalist.org/observations/46950647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-23",
+      "place": "Hayange, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694831/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694831/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/74694831/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 995
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-74694831.jpeg",
+      "bytes": 1983631,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 211461455,
+      "observation_id": 124743329,
+      "observation_url": "https://www.inaturalist.org/observations/124743329",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-06-09",
+      "place": "Hale, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/211461455/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/211461455/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/211461455/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-211461455.jpg",
+      "bytes": 1328561,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 73911615,
+      "observation_id": 46600549,
+      "observation_url": "https://www.inaturalist.org/observations/46600549",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-20",
+      "place": "Great Britain, Cardiff, Wales, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911615/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911615/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911615/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-73911615.jpg",
+      "bytes": 1834226,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 73911647,
+      "observation_id": 46600549,
+      "observation_url": "https://www.inaturalist.org/observations/46600549",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-20",
+      "place": "Great Britain, Cardiff, Wales, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911647/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911647/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911647/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-73911647.jpg",
+      "bytes": 1007097,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 73911603,
+      "observation_id": 46600549,
+      "observation_url": "https://www.inaturalist.org/observations/46600549",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-20",
+      "place": "Great Britain, Cardiff, Wales, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911603/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911603/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911603/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-73911603.jpg",
+      "bytes": 782250,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 73911633,
+      "observation_id": 46600549,
+      "observation_url": "https://www.inaturalist.org/observations/46600549",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-20",
+      "place": "Great Britain, Cardiff, Wales, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911633/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911633/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/73911633/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-73911633.jpg",
+      "bytes": 671687,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 489831993,
+      "observation_id": 272272135,
+      "observation_url": "https://www.inaturalist.org/observations/272272135",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-22",
+      "place": "Plac Hallera 05, Warszawa, Poland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/489831993/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/489831993/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/489831993/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-489831993.jpeg",
+      "bytes": 1477244,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 489832060,
+      "observation_id": 272272135,
+      "observation_url": "https://www.inaturalist.org/observations/272272135",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-22",
+      "place": "Plac Hallera 05, Warszawa, Poland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832060/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832060/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832060/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-489832060.jpeg",
+      "bytes": 1205490,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 489832117,
+      "observation_id": 272272135,
+      "observation_url": "https://www.inaturalist.org/observations/272272135",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-22",
+      "place": "Plac Hallera 05, Warszawa, Poland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832117/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832117/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832117/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-489832117.jpeg",
+      "bytes": 1548786,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 489832186,
+      "observation_id": 272272135,
+      "observation_url": "https://www.inaturalist.org/observations/272272135",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-22",
+      "place": "Plac Hallera 05, Warszawa, Poland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832186/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832186/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/489832186/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-489832186.jpeg",
+      "bytes": 1920538,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 157695614,
+      "observation_id": 95020270,
+      "observation_url": "https://www.inaturalist.org/observations/95020270",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-15",
+      "place": "Lunt Meadows Nature Reserve, Lunt Road, Lunt Village, Near Maghull, Merseyside, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/157695614/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/157695614/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/157695614/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-157695614.jpeg",
+      "bytes": 977966,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 306103593,
+      "observation_id": 176091519,
+      "observation_url": "https://www.inaturalist.org/observations/176091519",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-01",
+      "place": "67046 Ovindoli, L'Aquila, Italie",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306103593/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-306103593.jpeg",
+      "bytes": 1738542,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 293002667,
+      "observation_id": 169027582,
+      "observation_url": "https://www.inaturalist.org/observations/169027582",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-23",
+      "place": "Emsworth PO10, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002667/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002667/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002667/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-293002667.jpeg",
+      "bytes": 1516524,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 293002741,
+      "observation_id": 169027582,
+      "observation_url": "https://www.inaturalist.org/observations/169027582",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-23",
+      "place": "Emsworth PO10, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002741/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002741/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002741/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-293002741.jpeg",
+      "bytes": 1785958,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 293002707,
+      "observation_id": 169027582,
+      "observation_url": "https://www.inaturalist.org/observations/169027582",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-23",
+      "place": "Emsworth PO10, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002707/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002707/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/293002707/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-293002707.jpeg",
+      "bytes": 1299830,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 297485404,
+      "observation_id": 171438293,
+      "observation_url": "https://www.inaturalist.org/observations/171438293",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-07-06",
+      "place": "Ormskirk, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/297485404/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/297485404/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/297485404/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-297485404.jpeg",
+      "bytes": 335775,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 674132551,
+      "observation_id": 369069430,
+      "observation_url": "https://www.inaturalist.org/observations/369069430",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-06-06",
+      "place": "Cheshire, England, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/674132551/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/674132551/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/674132551/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-674132551.jpg",
+      "bytes": 2798375,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 674132630,
+      "observation_id": 369069430,
+      "observation_url": "https://www.inaturalist.org/observations/369069430",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-06-06",
+      "place": "Cheshire, England, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/674132630/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/674132630/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/674132630/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-674132630.jpg",
+      "bytes": 3316691,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 534293168,
+      "observation_id": 296710139,
+      "observation_url": "https://www.inaturalist.org/observations/296710139",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-10",
+      "place": "Charlynch Lane, Bridgwater, England, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/534293168/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/534293168/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/534293168/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-534293168.jpg",
+      "bytes": 4007502,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 540359311,
+      "observation_id": 299936018,
+      "observation_url": "https://www.inaturalist.org/observations/299936018",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-21",
+      "place": "Within Way, Hale, Liverpool, Merseyside, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/540359311/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/540359311/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/540359311/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-540359311.jpg",
+      "bytes": 1446950,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 552837462,
+      "observation_id": 306563713,
+      "observation_url": "https://www.inaturalist.org/observations/306563713",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-15",
+      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837462/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837462/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837462/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-552837462.jpg",
+      "bytes": 1337898,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 552837729,
+      "observation_id": 306563713,
+      "observation_url": "https://www.inaturalist.org/observations/306563713",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-15",
+      "place": "Мотовилівка, Київська область, Україна, 08522",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837729/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837729/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/552837729/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-552837729.jpg",
+      "bytes": 1460302,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 395372635,
+      "observation_id": 223159155,
+      "observation_url": "https://www.inaturalist.org/observations/223159155",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-06-16",
+      "place": "Hampshire, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/395372635/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/395372635/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/395372635/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-395372635.jpeg",
+      "bytes": 1917384,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 395372732,
+      "observation_id": 223159155,
+      "observation_url": "https://www.inaturalist.org/observations/223159155",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-06-16",
+      "place": "Hampshire, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/395372732/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/395372732/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/395372732/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1368,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-395372732.jpeg",
+      "bytes": 1977797,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 512748965,
+      "observation_id": 285267362,
+      "observation_url": "https://www.inaturalist.org/observations/285267362",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-05-25",
+      "place": "Kreimers Kamp, Hopsten, North Rhine-Westphalia, DE",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/512748965/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/512748965/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/512748965/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-512748965.jpg",
+      "bytes": 3901065,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 84145859,
+      "observation_id": 52917776,
+      "observation_url": "https://www.inaturalist.org/observations/52917776",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-07-12",
+      "place": "Sandy Lane, Widnes, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/84145859/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/84145859/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/84145859/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-84145859.jpeg",
+      "bytes": 660155,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 78106767,
+      "observation_id": 49205404,
+      "observation_url": "https://www.inaturalist.org/observations/49205404",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-11",
+      "place": "V Kotlině, Olomouc, Olomoucký, CZ",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/78106767/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/78106767/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/78106767/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-78106767.jpg",
+      "bytes": 1178944,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 204694390,
+      "observation_id": 120992302,
+      "observation_url": "https://www.inaturalist.org/observations/120992302",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-06-09",
+      "place": "87-140 Chełmża, Polska",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/204694390/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/204694390/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/204694390/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-204694390.jpg",
+      "bytes": 3308885,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 40521770,
+      "observation_id": 26115213,
+      "observation_url": "https://www.inaturalist.org/observations/26115213",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-05-31",
+      "place": "1860 Meise, Belgium",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/40521770/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/40521770/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/40521770/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-40521770.jpeg",
+      "bytes": 2900756,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 40521775,
+      "observation_id": 26115213,
+      "observation_url": "https://www.inaturalist.org/observations/26115213",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-05-31",
+      "place": "1860 Meise, Belgium",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/40521775/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/40521775/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/40521775/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-40521775.jpeg",
+      "bytes": 1424463,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 562621252,
+      "observation_id": 311654419,
+      "observation_url": "https://www.inaturalist.org/observations/311654419",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-05",
+      "place": "Newton-le-Willows WA12, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/562621252/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/562621252/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/562621252/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-562621252.jpg",
+      "bytes": 1717788,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 551438337,
+      "observation_id": 305818616,
+      "observation_url": "https://www.inaturalist.org/observations/305818616",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-12",
+      "place": "Luton, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438337/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438337/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438337/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-551438337.jpg",
+      "bytes": 1820541,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 551438371,
+      "observation_id": 305818616,
+      "observation_url": "https://www.inaturalist.org/observations/305818616",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-12",
+      "place": "Luton, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438371/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438371/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438371/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-551438371.jpg",
+      "bytes": 1403372,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 551438417,
+      "observation_id": 305818616,
+      "observation_url": "https://www.inaturalist.org/observations/305818616",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-12",
+      "place": "Luton, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438417/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438417/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/551438417/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-551438417.jpg",
+      "bytes": 1028542,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 662149674,
+      "observation_id": 362786755,
+      "observation_url": "https://www.inaturalist.org/observations/362786755",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-18",
+      "place": "22630 Le Quiou, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149674/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149674/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149674/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1154,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-662149674.jpg",
+      "bytes": 1875411,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 662149709,
+      "observation_id": 362786755,
+      "observation_url": "https://www.inaturalist.org/observations/362786755",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-18",
+      "place": "22630 Le Quiou, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149709/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149709/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149709/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1366,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-662149709.jpg",
+      "bytes": 2230617,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 662149708,
+      "observation_id": 362786755,
+      "observation_url": "https://www.inaturalist.org/observations/362786755",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-18",
+      "place": "22630 Le Quiou, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149708/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149708/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149708/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1367,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-662149708.jpg",
+      "bytes": 2079447,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 662149715,
+      "observation_id": 362786755,
+      "observation_url": "https://www.inaturalist.org/observations/362786755",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-18",
+      "place": "22630 Le Quiou, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149715/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149715/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/662149715/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1366,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-662149715.jpg",
+      "bytes": 2050493,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 21684003,
+      "observation_id": 14555642,
+      "observation_url": "https://www.inaturalist.org/observations/14555642",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-07-20",
+      "place": "700 Coyote Canyon Rd, Jackson, WY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/21684003/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/21684003/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/21684003/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-21684003.jpg",
+      "bytes": 1431886,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 21684012,
+      "observation_id": 14555642,
+      "observation_url": "https://www.inaturalist.org/observations/14555642",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-07-20",
+      "place": "700 Coyote Canyon Rd, Jackson, WY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/21684012/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/21684012/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/21684012/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-21684012.jpg",
+      "bytes": 1487381,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 21683998,
+      "observation_id": 14555642,
+      "observation_url": "https://www.inaturalist.org/observations/14555642",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-07-20",
+      "place": "700 Coyote Canyon Rd, Jackson, WY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/21683998/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/21683998/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/21683998/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-21683998.jpg",
+      "bytes": 1406799,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 18365261,
+      "observation_id": 12687012,
+      "observation_url": "https://www.inaturalist.org/observations/12687012",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-21",
+      "place": "Weende, Göttingen, Deutschland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/18365261/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/18365261/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/18365261/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-18365261.jpg",
+      "bytes": 166244,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 122329162,
+      "observation_id": 74816992,
+      "observation_url": "https://www.inaturalist.org/observations/74816992",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-04-22",
+      "place": "San Cataldo, Modena, Italy",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/122329162/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/122329162/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/122329162/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-122329162.jpeg",
+      "bytes": 1767819,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 283633755,
+      "observation_id": 163953863,
+      "observation_url": "https://www.inaturalist.org/observations/163953863",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-24",
+      "place": "Marburg, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633755/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633755/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633755/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-283633755.jpeg",
+      "bytes": 1564912,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 283633817,
+      "observation_id": 163953863,
+      "observation_url": "https://www.inaturalist.org/observations/163953863",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-24",
+      "place": "Marburg, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633817/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633817/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633817/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-283633817.jpeg",
+      "bytes": 1558033,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 283633776,
+      "observation_id": 163953863,
+      "observation_url": "https://www.inaturalist.org/observations/163953863",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-24",
+      "place": "Marburg, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633776/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633776/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633776/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-283633776.jpeg",
+      "bytes": 2071070,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 283633795,
+      "observation_id": 163953863,
+      "observation_url": "https://www.inaturalist.org/observations/163953863",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-24",
+      "place": "Marburg, Germany",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633795/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633795/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/283633795/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-283633795.jpeg",
+      "bytes": 1436786,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 394404806,
+      "observation_id": 222639721,
+      "observation_url": "https://www.inaturalist.org/observations/222639721",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-06-14",
+      "place": "Southport, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/394404806/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/394404806/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/394404806/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1542,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-394404806.jpeg",
+      "bytes": 2935691,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 402392355,
+      "observation_id": 226860786,
+      "observation_url": "https://www.inaturalist.org/observations/226860786",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-03",
+      "place": "Marburg Kantstraße, 35039 Marburg, Deutschland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/402392355/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/402392355/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/402392355/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-402392355.jpeg",
+      "bytes": 1682921,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 402435852,
+      "observation_id": 226860786,
+      "observation_url": "https://www.inaturalist.org/observations/226860786",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-03",
+      "place": "Marburg Kantstraße, 35039 Marburg, Deutschland",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/402435852/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/402435852/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/402435852/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-402435852.jpeg",
+      "bytes": 1673351,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 398255486,
+      "observation_id": 224686749,
+      "observation_url": "https://www.inaturalist.org/observations/224686749",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-06-23",
+      "place": "35190 Saint-Domineuc, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/398255486/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/398255486/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/398255486/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1364
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-398255486.jpeg",
+      "bytes": 774153,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 405042263,
+      "observation_id": 228264758,
+      "observation_url": "https://www.inaturalist.org/observations/228264758",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-09",
+      "place": "260 13 Sankt Ibb, Sweden",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/405042263/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/405042263/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/405042263/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-405042263.jpeg",
+      "bytes": 2174565,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 409702751,
+      "observation_id": 230724624,
+      "observation_url": "https://www.inaturalist.org/observations/230724624",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-19",
+      "place": "York, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/409702751/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/409702751/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/409702751/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-409702751.jpeg",
+      "bytes": 839087,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 409702749,
+      "observation_id": 230724624,
+      "observation_url": "https://www.inaturalist.org/observations/230724624",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-19",
+      "place": "York, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/409702749/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/409702749/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/409702749/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-409702749.jpeg",
+      "bytes": 604152,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 669645473,
+      "observation_id": 366724256,
+      "observation_url": "https://www.inaturalist.org/observations/366724256",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-30",
+      "place": "Mihai Bravu, Románia",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645473/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645473/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645473/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-669645473.jpg",
+      "bytes": 2638655,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 669645567,
+      "observation_id": 366724256,
+      "observation_url": "https://www.inaturalist.org/observations/366724256",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-30",
+      "place": "Mihai Bravu, Románia",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645567/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645567/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/669645567/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-669645567.jpg",
+      "bytes": 2397710,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 706234496,
+      "observation_id": 385757530,
+      "observation_url": "https://www.inaturalist.org/observations/385757530",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-24",
+      "place": "The Avenue, London, England, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/706234496/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/706234496/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/706234496/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-706234496.jpg",
+      "bytes": 4334105,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 705330355,
+      "observation_id": 385282402,
+      "observation_url": "https://www.inaturalist.org/observations/385282402",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-26",
+      "place": "Station Road, Dunham Massey, Altrincham WA14 5RP, UK",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/705330355/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/705330355/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/705330355/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Matricaria chamomilla",
+      "taxon_id": 77965,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-705330355.jpg",
+      "bytes": 2952700,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

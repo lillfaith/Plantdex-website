@@ -5,7 +5,7 @@ import { SafetyNotice } from '@/components/SafetyNotice';
 import { DeckCta } from '@/components/shop/DeckCta';
 import { DonateButton } from '@/components/support/DonateButton';
 import { PlantSprite } from '@/components/PlantSprite';
-import { RarityAura } from '@/components/game/RarityAura';
+import { CardShowcase } from '@/components/game/CardShowcase';
 import { assetPath } from '@/lib/asset-path';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { EYEBROW } from '@/components/ui/accents';
@@ -26,6 +26,31 @@ const HERO_CREATURES = [
 ] as const;
 
 /**
+ * The five cards in the showcase fan.
+ *
+ * FIVE, BECAUSE FOUR OF THEM HAVE TO SIT BEHIND THE FIFTH. `CardShowcase` holds one card out
+ * and fans the rest, so the list length is the fan's own geometry rather than a round number.
+ *
+ * Chosen for spread rather than for favourites: #01 Dandelion (Common, and the first card
+ * anybody meets), #08 Nettle, #14 Plantain — the Backyard Collection's own plant, and about
+ * as findable as a wild medicinal gets — #33 Yarrow (Rare) and #45 Oak (Epic). Three tiers,
+ * five different card grounds, and every one of them prints at least three Healing Traits,
+ * which is what the fan deals out underneath. Rendered in DECK ORDER, so Dandelion is the
+ * card held when the page loads.
+ *
+ * A NAMED LIST RATHER THAN "the first five in deck order", for the same reason
+ * `HERO_CREATURES` is one: adding a card to the deck must never silently change what the
+ * front page shows.
+ */
+const SHOWCASE_CARDS = [
+  'taraxacum-officinale',
+  'urtica-dioica',
+  'plantago-major',
+  'achillea-millefolium',
+  'quercus-spp',
+] as const;
+
+/**
  * Landing page.
  *
  * Deliberately NOT a storefront, even now that /shop exists. The front page introduces the
@@ -35,11 +60,8 @@ const HERO_CREATURES = [
  * both from configuration and says the deck is not on sale when they are unset.
  */
 export default function HomePage() {
-  // A few real cards as a preview strip.
   const showcase = printedCardsInDeckOrder().filter((herb) =>
-    ['taraxacum-officinale', 'achillea-millefolium', 'urtica-dioica', 'quercus-spp'].includes(
-      herb.id,
-    ),
+    SHOWCASE_CARDS.includes(herb.id as (typeof SHOWCASE_CARDS)[number]),
   );
 
   return (
@@ -78,11 +100,26 @@ export default function HomePage() {
           thing being lit. Blurred, gold, and well under the badge's own brightness so the
           art stays the brightest thing on the page.
         */}
+        {/*
+          A QUARTER SMALLER THAN IT SHIPPED, AND THE GLOW CAME WITH IT. 160 -> 120 and
+          208 -> 156, which is 0.75 exactly rather than the nearest tidy Tailwind step: the
+          badge is the page's own name, and a logo resized by eye is the one element a
+          visitor compares against every other version of it they have seen.
+
+          The radial behind it moved by the same factor (44 -> 33, 56 -> 42). It was tuned
+          to sit just outside the crest, so leaving it at full size would have turned a lit
+          badge into a badge with a halo around it — the sticker read the glow exists to
+          avoid.
+
+          The asset itself is untouched, and this is its only instance in the app: the
+          favicon is `src/app/icon.png`, a separate file, and the nav badge is the player's
+          own avatar rather than the logo.
+        */}
         <h1 className="relative mt-3">
           <span className="sr-only">Plantdex</span>
           <span
             aria-hidden="true"
-            className="absolute top-1/2 left-1/2 -z-10 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-2xl sm:h-56 sm:w-56"
+            className="absolute top-1/2 left-1/2 -z-10 h-33 w-33 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-2xl sm:h-42 sm:w-42"
           />
           <Image
             src={assetPath('/plantdex-logo.png')}
@@ -91,7 +128,7 @@ export default function HomePage() {
             width={640}
             height={683}
             priority
-            className="mx-auto h-auto w-40 sm:w-52"
+            className="mx-auto h-auto w-30 sm:w-39"
           />
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
@@ -291,25 +328,21 @@ export default function HomePage() {
           The first Plantdex collection begins with {PRINTED_DECK_SIZE} plants — with room for the
           world to grow.
         </p>
-        <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {showcase.map((herb) => (
-            <li key={herb.id} className="relative">
-              <RarityAura rarity={herb.rarity} />
-              <Link
-                href={`/herbdex/${herb.id}`}
-                className="relative z-10 block overflow-hidden rounded-[var(--radius-card)] shadow-card transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
-              >
-                <Image
-                  src={assetPath(herb.thumb)}
-                  alt={`Plantdex card ${herb.cardNumber}: ${herb.commonName} (${herb.scientificName})`}
-                  width={178}
-                  height={288}
-                  className="w-full"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/*
+          A HAND OF CARDS, NOT A GRID OF THEM. See `CardShowcase` for the whole argument; in
+          short, a uniform grid of product images is how a catalogue presents stock, and this
+          is the page that has to make somebody want to collect these.
+
+          THE RARITY AURA CAME OFF, AND THAT IS A DECISION RATHER THAN A CASUALTY. The
+          showcase lights the card you are LOOKING AT, in gold, and rarity has no business in
+          that signal: Common is 21 of the 45 cards and has no aura at all, so a tier glow
+          cannot say "this is the one in front" without promoting every featured Common to
+          Uncommon. The tier is still named under the fan and the aura still does its job in
+          the Herbdex grid, where the cards sit side by side and the comparison is the point.
+        */}
+        <div className="mt-5">
+          <CardShowcase cards={showcase} />
+        </div>
       </section>
 
       {/*

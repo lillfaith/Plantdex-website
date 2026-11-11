@@ -1,12 +1,20 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useRef, useState } from 'react';
 import { FIELD_LOG_TRIGGER_ID } from '@/lib/grow-track';
 import type { Herb } from '@/lib/types';
 import { GROWTH_STAGE_LABEL, GROWTH_STAGES, type GrowthStage } from '@/lib/sightings';
+import {
+  MIN_QUALIFYING_NOTE,
+  awardForEntry,
+  paidJournalSpecies,
+  scoreFromRecords,
+} from '@/lib/leaderboard';
 import { localDateKey } from '@/lib/research';
 import { useSightingsStore } from '@/lib/sightings-store';
 import { useAuth } from '@/state/AuthProvider';
+import { useHerbdex } from '@/state/HerbdexProvider';
 import { SightingPhoto } from './SightingPhoto';
 import { PhotoField } from './PhotoField';
 
@@ -46,10 +54,40 @@ function formatDate(iso: string): string {
   });
 }
 
+/**
+ * What the save panel reports after a successful write, or null when there is nothing to say.
+ *
+ * `points` is what THIS entry earned; `total` is the player's whole field score afterwards.
+ * Both are computed from records already on this device by the same pure module the board's
+ * SQL mirrors — see `src/lib/leaderboard.ts`. Nothing is sent anywhere to produce them, and
+ * nothing anywhere stores them.
+ */
+interface EntryReward {
+  points: number;
+  total: number;
+}
+
 export function MySightings({ herb }: { herb: Herb }) {
   const { sightings, addSighting, removeSighting } = useSightingsStore(herb.id);
+  /*
+   * EVERY SPECIES, NOT JUST THIS ONE. The scoped list above is what the panel draws; the
+   * daily cap is counted across the whole journal, so scoring needs the lot. Both come from
+   * the same store, so this is a second read of one cache rather than a second source.
+   */
+  const { sightings: allSightings } = useSightingsStore();
+  const { state } = useHerbdex();
   const { user } = useAuth();
   const formRef = useRef<HTMLDialogElement>(null);
+  const [reward, setReward] = useState<EntryReward | null>(null);
+
+  /*
+   * Has this species already had its one paying entry? Derived rather than remembered, like
+   * everything else on this board: it is a question about the rows, and the rows are here.
+   */
+  const firstEntryPaid = paidJournalSpecies(
+    allSightings,
+    new Set(Object.keys(state.discoveries)),
+  ).includes(herb.id);
 
   const [date, setDate] = useState(todayIso);
   const [region, setRegion] = useState('');
@@ -76,8 +114,10 @@ export function MySightings({ herb }: { herb: Herb }) {
       event.preventDefault();
       setSaving(true);
       setError(null);
+      setReward(null);
+      let saved;
       try {
-        await addSighting({
+        saved = await addSighting({
           herbId: herb.id,
           date,
           region: region.trim() || undefined,
@@ -91,11 +131,43 @@ export function MySightings({ herb }: { herb: Herb }) {
         setSaving(false);
         return;
       }
+
+      /*
+       * WHAT THAT ENTRY EARNED, ASKED OF THE RECORD RATHER THAN OF THE FORM.
+       *
+       * `awardForEntry` is handed the journal as it now stands INCLUDING the new row, because
+       * the question is "given everything recorded, is this the entry that paid for this
+       * species" — which is the same question the board's SQL asks, and the only phrasing
+       * whose answer matches it. A second entry for a plant, an edit, a delete-and-relog and
+       * an empty form all come back `awarded: false` for their own stated reason.
+       *
+       * The store may or may not have flushed the new row into `allSightings` by the time
+       * this runs, so it is appended and deduplicated by id: either ordering gives the same
+       * answer, which is what stops this being a race.
+       */
+      const journal = [...allSightings.filter((entry) => entry.id !== saved.id), saved];
+      const award = awardForEntry(saved, journal, new Set(Object.keys(state.discoveries)));
+      if (award.awarded) {
+        setReward({ points: award.points, total: scoreFromRecords(state, journal).points });
+      }
+
       setSaving(false);
       formRef.current?.close();
       reset();
     },
-    [herb.id, date, region, notes, growthStage, foundAgain, photo, reset, addSighting],
+    [
+      herb.id,
+      date,
+      region,
+      notes,
+      growthStage,
+      foundAgain,
+      photo,
+      reset,
+      addSighting,
+      allSightings,
+      state,
+    ],
   );
 
   return (
@@ -131,6 +203,51 @@ export function MySightings({ herb }: { herb: Herb }) {
         <p role="alert" className="mt-3 text-sm font-semibold text-stat-temp">
           {error}
         </p>
+      )}
+
+      {/*
+        THE REWARD, AND IT ONLY APPEARS WHEN THERE REALLY WAS ONE.
+
+        `awardForEntry` returns false for a second entry about the same plant, for an edit,
+        and for anything past the daily cap — and in every one of those cases this renders
+        nothing at all. A panel that congratulated somebody for zero points is how they learn
+        to stop reading the next one.
+
+        `role="status"` rather than `aria-live` on a container: it is announced once, when it
+        arrives, and the dialog that was focused has just closed, so nothing is talking over
+        it. Dismissable, because it sits above the log it is about and a player scrolling back
+        to re-read their own entries should be able to put it away.
+
+        IT SAYS PROVISIONAL IN THE LINK, NOT IN A BADGE. Nothing in Plantdex verifies that
+        anybody went outside, so the board these points feed is a board of self-reported
+        field work — stated plainly where somebody can act on it rather than as decoration
+        here.
+      */}
+      {reward && (
+        <div
+          role="status"
+          className="reward-pop game-panel game-panel-earned mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 p-3"
+        >
+          <p className="text-sm font-bold text-gold-300">
+            Field Journal entry complete!{' '}
+            <span className="text-gold-plate tabular-nums">+{reward.points} points</span>
+          </p>
+          <p className="flex items-center gap-3 text-xs text-violet-200">
+            <span className="tabular-nums">
+              Field score <strong className="text-violet-100">{reward.total.toLocaleString()}</strong>
+            </span>
+            <Link href="/leaderboard" className="font-semibold text-gold-400 underline underline-offset-2">
+              Field Board
+            </Link>
+            <button
+              type="button"
+              onClick={() => setReward(null)}
+              className="text-violet-400 underline underline-offset-2 hover:text-violet-200"
+            >
+              Dismiss
+            </button>
+          </p>
+        </div>
       )}
 
       {sightings.length === 0 ? (
@@ -270,6 +387,18 @@ export function MySightings({ herb }: { herb: Herb }) {
               placeholder="Growing along the sunny edge of a field. Several plants flowering."
               className="mt-1 w-full rounded-lg border border-violet-600 bg-plum-700/70 p-3 text-sm text-violet-100 placeholder:text-violet-500"
             />
+            {/*
+              WHAT MAKES AN ENTRY COUNT, SAID WHERE THE DECISION IS MADE — and only the first
+              time, because after that the species is paid and the sentence would be a prompt
+              to do something that earns nothing. The photo field above is the other half of
+              the same rule, so both are named here rather than only the one this label is on.
+            */}
+            {!firstEntryPaid && (
+              <span className="mt-1 block text-xs leading-relaxed text-violet-400">
+                A photo, or a note of at least {MIN_QUALIFYING_NOTE} characters, makes this your
+                first real entry for {herb.commonName} — worth points on the Field Board.
+              </span>
+            )}
           </label>
 
           <label className="flex items-center gap-2">

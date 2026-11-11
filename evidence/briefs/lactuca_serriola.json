@@ -1,0 +1,24 @@
+{
+  "species_key": "lactuca_serriola",
+  "card": "lactuca-serriola",
+  "edited": false,
+  "derived_from": "structure shares inside the printed card's art window",
+  "card_shares": {
+    "flower_yellow": 0.0732,
+    "flower_white": 0.0859,
+    "berry_dark": 0.0,
+    "berry_red": 0.0,
+    "foliage": 0.012
+  },
+  "mandatory": [
+    "flower_white"
+  ],
+  "preferred": [
+    "flower_yellow"
+  ],
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

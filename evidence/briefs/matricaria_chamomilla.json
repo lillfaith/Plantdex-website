@@ -1,0 +1,23 @@
+{
+  "common": "Chamomile",
+  "card": null,
+  "description": "Annual herb. Solitary heads on branched, leafy stems. 10-20 white ray florets, usually reflexed downward as the head ages, around a PROMINENT HOLLOW CONICAL yellow disc that stands proud of the rays. Leaves finely bipinnate into thread-like segments.",
+  "source": "Flora of North America vol. 19 (Matricaria); POWO taxon profile",
+  "mandatory": [
+    "flower_yellow",
+    "flower_white"
+  ],
+  "preferred": [
+    "foliage"
+  ],
+  "notes": "The raised yellow disc is the identifying feature and must FACE THE VIEWER; a head photographed from behind shows only the green receptacle and is not acceptable however sharp. A stem must be visible. Feathery foliage is welcome but is often reduced to a thin stem in a good close-up, so it is preferred, not required.",
+  "species_key": "matricaria_chamomilla",
+  "edited": true,
+  "edited_by": "botanical description, 2026-11-05",
+  "derived_from": "botanical description and the printed card, NOT a colour signature",
+  "thresholds": {
+    "mandatory_at": 0.08,
+    "preferred_at": 0.02,
+    "present_at": 0.015
+  }
+}

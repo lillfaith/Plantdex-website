@@ -1,0 +1,21 @@
+# CC0 photo-availability audit. Medicinally relevant species, chosen to span growth forms
+# and commonness -- a showy garden perennial, a roadside weed and a woodland rarity do not
+# have the same photographic coverage, and the question is whether Chamomile is unusual.
+Achillea millefolium
+Hypericum perforatum
+Echinacea purpurea
+Verbascum thapsus
+Urtica dioica
+Mentha piperita
+Melissa officinalis
+Valeriana officinalis
+Eupatorium perfoliatum
+Asclepias tuberosa
+Lobelia inflata
+Actaea racemosa
+Sambucus canadensis
+Monarda fistulosa
+Arctium lappa
+Symphytum officinale
+Tanacetum parthenium
+Matricaria chamomilla

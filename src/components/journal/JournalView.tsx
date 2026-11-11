@@ -40,6 +40,20 @@ export function JournalView() {
       <p className="mt-1 text-sm text-violet-300">
         Everything you&apos;ve logged, newest first.
       </p>
+      {/*
+        THE ONE ROUTE TO THE BOARD FROM THE THING THAT FEEDS IT, and it is a line of text
+        rather than a panel. The journal's job is reading back what you wrote; a scoreboard
+        promoted at the top of it would reframe a personal record as a competition, which is
+        the opposite of what this page is. The nav is untouched for the same reason, and
+        because seven labels is its measured ceiling — see `SiteNav`.
+      */}
+      <p className="mt-2 text-xs text-violet-400">
+        Entries with a photo or a real note count toward your{' '}
+        <Link href="/leaderboard" className="underline underline-offset-2 hover:text-violet-200">
+          Field Board
+        </Link>{' '}
+        score, if you choose to be listed.
+      </p>
 
       {sightings.length === 0 ? (
         <div className="panel mt-6 p-6 text-center">

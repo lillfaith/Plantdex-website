@@ -63,13 +63,20 @@ export function FieldCardsHeld() {
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {drawn.map((slot) => (
               <li key={slot.ordinal}>
-                <Link href={`/herbdex/${slot.card!.id}`} title={slot.card!.commonName} className="block">
+                {/* `overflow-hidden` on the frame is what turns the image's own hover
+                    scale into a zoom inside the gilding rather than a card that outgrows
+                    its edge. See `card-frame` in globals.css. */}
+                <Link
+                  href={`/herbdex/${slot.card!.id}`}
+                  title={slot.card!.commonName}
+                  className="card-frame block overflow-hidden rounded"
+                >
                   <Image
                     src={assetPath(chipArt(slot.card!))}
                     alt={slot.card!.commonName}
                     width={CHIP_WIDTH}
                     height={Math.round((CHIP_WIDTH * 576) / 356)}
-                    className="h-14 w-[2.2rem] rounded object-cover transition-transform hover:scale-105 motion-reduce:hover:scale-100"
+                    className="h-14 w-[2.2rem] object-cover transition-transform hover:scale-105 motion-reduce:hover:scale-100"
                   />
                 </Link>
               </li>
