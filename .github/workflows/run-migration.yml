@@ -89,6 +89,31 @@ jobs:
           fi
           echo "Token is scoped to $PROJECT_REF."
 
+          # AND SAY WHETHER THE PROJECT IS AWAKE, because the apply step cannot.
+          #
+          # A paused project answers the apply with HTTP 400 and
+          # {"message":"Database is possibly not accessible at the moment"} — which names no
+          # cause, reads like an outage, and is indistinguishable from a transient one. The
+          # SQL is never executed, so it is also not a migration failure, though the step
+          # that reports it is the one called "Apply the migration".
+          #
+          # The status is already in the response this step fetched for the scope check, so
+          # printing it costs nothing and converts that 400 into an answer. A free-tier
+          # project pauses after about a week of inactivity, and only a dashboard restore
+          # brings it back — nothing in this workflow can.
+          #
+          # ONLY THE REQUESTED REF'S STATUS IS PRINTED. The reasoning in the scope check
+          # above applies unchanged: the other projects on the token are none of a log's
+          # business, so this selects one entry rather than dumping the list.
+          STATUS=$(python3 -c "import json,sys;d=json.load(open('/tmp/projects.json'));print(next((p.get('status','?') for p in d if p.get('id')==sys.argv[1]),'?'))" "$PROJECT_REF")
+          echo "Project status: $STATUS"
+          if [ "$STATUS" != "ACTIVE_HEALTHY" ]; then
+            echo "::warning::$PROJECT_REF is reporting '$STATUS' rather than ACTIVE_HEALTHY." \
+                 "If the apply step fails with \"Database is possibly not accessible\", that" \
+                 "is why, and the remedy is to restore the project from the Supabase" \
+                 "dashboard — no SQL has run and nothing is half-applied."
+          fi
+
       - name: Apply the migration
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
