@@ -13,8 +13,27 @@ permissions:
   id-token: write
 
 # Let a running deploy finish rather than cancelling it half-published.
+#
+# RENAMED FROM `pages` TO ESCAPE A WEDGED RUN, and the rename is the entire fix.
+#
+# Run #150 entered this group and stopped: `queued` forever, zero jobs created, and
+# `updated_at` never moving off `created_at`. It cannot be cleared — GitHub refuses the
+# cancel with "Cannot cancel a workflow run that has not been queued yet", which is the API
+# saying the run was created but never actually enqueued. A run in that state holds the
+# concurrency slot and never releases it.
+#
+# Every deploy launched afterwards then collided with it and came back `startup_failure`,
+# twice, with no jobs and no logs to read. That looked like a broken repository and was not:
+# dispatching `check-live-site.yml` — a workflow with no concurrency group of its own — ran
+# and SUCCEEDED in the same window, which is what proved Actions itself was healthy and the
+# fault was specific to this group.
+#
+# A group is just a string, so a new name is a new slot. The protection is unchanged: every
+# future run shares `pages-deploy` and still serialises against the others, which is the only
+# thing this block was ever for. The wedged run stays where it is, harmlessly, in a group
+# nothing uses any more.
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: false
 
 jobs:
