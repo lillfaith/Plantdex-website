@@ -231,3 +231,53 @@ export function improvementHint(
     : 'Add a photo of a flower, fruit, seed head, stem or bark.';
 }
 
+/**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * A CARD SITTING BELOW THE IDENTIFIER'S LEADING ANSWER.
+ *
+ * Photograph a dandelion badly and the provider can answer "Taraxacum, species uncertain"
+ * with a marsh dandelion in front and `Taraxacum campylodes` — the conserved name for
+ * *T. officinale*, and an EXACT match for card #01 — sitting third at 9%. Plantdex then
+ * correctly refuses to call the leader *T. officinale*, and the player is left reading
+ * "not collectible" at the top of a list whose third row is the card they were after.
+ *
+ * ───────────────────────────────────────────────────────────────────────────────
+ * THIS CHANGES NO RANKING AND NO OUTCOME, WHICH IS THE WHOLE POINT.
+ *
+ * `outcomeFor` reads RANK, never score and never "is one of these a Plantdex card": a 0.09
+ * deck species below a 0.41 non-deck one leaves the outcome `uncertain`, because reversing
+ * that would let the collection overrule the identifier. That rule is untouched. The scan
+ * still resolves to the same outcome, the rows still render in the provider's order, and
+ * nothing is auto-confirmed.
+ *
+ * All this does is SAY that the row exists, above a list where it was invisible. A signpost
+ * to something the player must still check for themselves is not a promotion.
+ * ───────────────────────────────────────────────────────────────────────────────
+ */
+
+/** The part of a candidate this question needs. Structural, so a test needs no fixtures. */
+export interface CandidateCardView {
+  readonly match: {
+    readonly confirmable?: boolean;
+    readonly herbId?: string | null;
+  };
+}
+
+/**
+ * The index of the first candidate carrying a Plantdex card, when the LEADER does not.
+ *
+ * Null when the leader already offers a card — then the list leads with the collectible and
+ * there is nothing to point at — and null when nothing below carries one either.
+ */
+export function collectibleBelowLeader(
+  candidates: readonly CandidateCardView[],
+): number | null {
+  if (candidates.length < 2) return null;
+  // The leader already carries the card: the player is not being asked to look past anything.
+  if (candidates[0]?.match.confirmable) return null;
+  for (let index = 1; index < candidates.length; index += 1) {
+    const candidate = candidates[index];
+    if (candidate?.match.confirmable && candidate.match.herbId) return index;
+  }
+  return null;
+}

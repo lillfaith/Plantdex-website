@@ -26,6 +26,7 @@ import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
+import { CollectibleBelowLeader } from './CollectibleBelowLeader';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
@@ -773,6 +774,14 @@ export function ScanPanel() {
                   Photographing one of your cards is not a find. Log it only if you met the
                   plant outdoors.
                 </p>
+
+                {/*
+                  When the identifier's leading answer carries no card but something below it
+                  does, say so — otherwise the player reads "not collectible" at the top of a
+                  list whose third row is the card they were after. It changes no ranking and
+                  no outcome; see `collectibleBelowLeader`.
+                */}
+                <CollectibleBelowLeader candidates={result.candidates} />
 
                 <h4
                   ref={listRef}
