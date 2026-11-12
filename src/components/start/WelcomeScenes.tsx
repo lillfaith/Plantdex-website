@@ -83,7 +83,7 @@ function Welcome({ onNext }: SceneProps) {
         autoFocus
         type="button"
         onClick={onNext}
-        className="arcade-key mx-auto mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-gold-400 px-8 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
+        className="arcade-key mx-auto mt-5 inline-flex min-h-12 items-center justify-center rounded-full welcome-key px-8 text-sm font-bold tracking-wide uppercase transition-colors"
       >
         Start collecting
       </button>
@@ -121,7 +121,7 @@ function Discover() {
             </li>
           ))}
         </ul>
-        <p className="mt-2 rounded-full bg-gold-400 py-1.5 text-center text-[0.72rem] font-bold tracking-wide text-plum-900 uppercase">
+        <p className="welcome-key mt-2 rounded-full py-1.5 text-center text-[0.72rem] font-bold tracking-wide uppercase">
           Record this find
         </p>
       </div>
@@ -350,7 +350,7 @@ function Explore({ returning, onLeave }: SceneProps) {
       <Link
         href="/scan"
         onClick={onLeave}
-        className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
+        className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full welcome-key px-6 text-sm font-bold tracking-wide uppercase transition-colors"
       >
         {returning ? 'Go scan a plant' : 'Find my first plant'}
       </Link>

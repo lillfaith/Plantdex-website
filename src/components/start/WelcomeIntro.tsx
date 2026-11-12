@@ -180,7 +180,7 @@ export function WelcomeIntro() {
           <button
             type="button"
             onClick={() => setIndex((one) => Math.min(SCENES.length - 1, one + 1))}
-            className="arcade-key inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
+            className="arcade-key inline-flex min-h-12 flex-1 items-center justify-center rounded-full welcome-key px-6 text-sm font-bold tracking-wide uppercase transition-colors"
           >
             Next
           </button>

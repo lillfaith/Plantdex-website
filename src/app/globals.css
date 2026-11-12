@@ -2297,6 +2297,16 @@ body {
   box-shadow: 3px 3px 0 var(--color-plum-950);
 }
 
+/* The tour's gold buttons, a touch quieter than the app's own gold-400 key. */
+@utility welcome-key {
+  background-color: color-mix(in srgb, var(--color-gold-400) 80%, var(--color-plum-700));
+  color: var(--color-plum-950);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--color-gold-300) 80%, var(--color-plum-700));
+  }
+}
+
 @utility welcome-scene-in {
   animation: welcome-greeter-in 320ms cubic-bezier(0.22, 0.72, 0.24, 1) both;
 }
