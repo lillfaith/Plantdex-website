@@ -454,7 +454,7 @@ export function ScanPanel() {
           type="button"
           disabled={!canIdentify || busy}
           onClick={() => void run(photos)}
-          className="arcade-key mt-3 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full holo-fill px-6 text-base font-extrabold tracking-wide text-plum-900 transition-[filter] hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-75 disabled:saturate-[.75]"
+          className="arcade-key mt-3 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full holo-fill px-6 text-base font-extrabold tracking-wide text-plum-900 transition-[filter] hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-80"
         >
           <PlantdexIcon name="scan" className="text-2xl" aria-hidden="true" />
           {busy ? 'Identifying…' : outOfScans ? 'Daily limit reached' : 'Get Identification'}
@@ -1064,7 +1064,7 @@ export function ScanPanel() {
                   <span className="font-bold tabular-nums text-gold-300">
                     {result.remaining} identification{result.remaining === 1 ? '' : 's'}
                   </span>{' '}
-                  left today{result.signedIn ? '' : ' — signing in raises the limit'}.
+                  left today.
                 </span>
               </p>
             )}

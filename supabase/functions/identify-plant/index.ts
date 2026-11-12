@@ -156,18 +156,17 @@ const QUOTA_SALT = Deno.env.get('SCAN_QUOTA_SALT') ?? `derived:${SERVICE_ROLE_KE
  * PlantNet's free tier is roughly 500 identifications/day for the whole project, so these
  * are sized against a shared budget rather than against what one person might enjoy.
  *
- *   ANON_DAILY_LIMIT  5   Enough to genuinely try the feature on a walk — photograph a few
- *                         things and see it work — without one device being able to spend
- *                         a meaningful share of the day's allowance.
- *   USER_DAILY_LIMIT  10  A daily scan goal: enough for a good day outdoors, and still twice
- *                         the anonymous allowance, so signing in is rewarded with more. The
- *                         client mirrors this number in `src/lib/scan-allowance.ts`, and a
- *                         test holds the two together.
- *   GLOBAL_DAILY_LIMIT 450 The backstop. Without it, 90 anonymous devices exhaust the tier
+ *   ANON_DAILY_LIMIT  10  The same daily goal as a signed-in player: ten scans a day, said
+ *                         once, to everybody. The shared backstop below, not a lower anonymous
+ *                         number, is what protects the day's allowance.
+ *   USER_DAILY_LIMIT  10  A daily scan goal: enough for a good day outdoors. The client mirrors
+ *                         both numbers in `src/lib/scan-allowance.ts`, and a test holds them
+ *                         together.
+ *   GLOBAL_DAILY_LIMIT 450 The backstop. Without it, 45 devices exhaust the tier
  *                         and every later scan fails at the provider with an error nobody
  *                         can act on. Held below 500 so there is headroom to notice.
  */
-const ANON_DAILY_LIMIT = 5;
+const ANON_DAILY_LIMIT = 10;
 const USER_DAILY_LIMIT = 10;
 const GLOBAL_DAILY_LIMIT = 450;
 
@@ -399,7 +398,7 @@ Deno.serve(async (req: Request) => {
       {
         error: userId
           ? `You have used all ${USER_DAILY_LIMIT} identifications for today.`
-          : `You have used all ${ANON_DAILY_LIMIT} identifications for today. Signing in raises it to ${USER_DAILY_LIMIT}.`,
+          : `You have used all ${ANON_DAILY_LIMIT} identifications for today. They reset at midnight UTC.`,
         code: 'rateLimited',
         limit,
         signedIn: Boolean(userId),

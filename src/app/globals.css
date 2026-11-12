@@ -2788,19 +2788,13 @@ body {
     0 0 18px rgb(143 214 255 / 0.18);
 }
 @utility holo-fill {
-  background: linear-gradient(
-    105deg,
-    #ff9bd8 0%,
-    #f3b6ff 22%,
-    #a9d7ff 45%,
-    #ffffff 52%,
-    #ffb9e8 62%,
-    #9fc9ff 84%,
-    #d6b3ff 100%
-  );
+  background:
+    radial-gradient(120% 140% at 12% 0%, rgb(255 255 255 / 0.55), transparent 42%),
+    radial-gradient(90% 120% at 100% 100%, rgb(150 220 255 / 0.65), transparent 55%),
+    linear-gradient(100deg, #ff86c9 0%, #f79ae6 28%, #d3a4ff 52%, #a9c0ff 76%, #86d6ff 100%);
   box-shadow:
     inset 0 2px 0 rgb(255 255 255 / 0.6),
     inset 0 -3px 0 rgb(120 90 200 / 0.25),
-    0 0 18px rgb(255 155 216 / 0.4),
-    0 0 24px rgb(143 214 255 / 0.3);
+    0 0 18px rgb(255 134 201 / 0.45),
+    0 0 24px rgb(134 214 255 / 0.35);
 }

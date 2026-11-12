@@ -18,8 +18,9 @@ const memory = () => {
 };
 
 describe('the daily scan allowance', () => {
-  it('shows ten for a signed-in player and matches the server constant', () => {
+  it('shows ten for everybody and matches the server constants', () => {
     expect(SIGNED_IN_DAILY_SCANS).toBe(10);
+    expect(ANON_DAILY_SCANS).toBe(10);
     const fn = readFileSync('supabase/functions/identify-plant/index.ts', 'utf8');
     expect(fn).toMatch(/const USER_DAILY_LIMIT = 10;/);
     expect(fn).toMatch(new RegExp(`const ANON_DAILY_LIMIT = ${ANON_DAILY_SCANS};`));
