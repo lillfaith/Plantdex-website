@@ -1,11 +1,9 @@
-import { ChipRow } from '../ui/Chip';
-import { GemChip, PixelIcon } from '../herbdex/HerbalVisuals';
-import { gemFor } from '@/lib/pixel-icons';
+import { PixelIcon } from '../herbdex/HerbalVisuals';
+import { gemFor, illustration } from '@/lib/pixel-icons';
 import type { Herb } from '@/lib/types';
 import { compoundFor, sortForPlate, type CompoundEntry } from '@/lib/compounds';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
 import { STRUCTURES } from './structures';
-import { Disclosure } from '../ui/Disclosure';
 import { ACCENTS, MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { linksFor, type CompoundLink } from '@/lib/compound-links';
 
@@ -380,39 +378,44 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
 
   const order = sortForPlate(compounds);
 
+  // The card's own layout, reduced: a flask pill, a ruled list of names beside a small
+  // molecule. The structures stay behind a tap, as before, so nothing is lost.
   return (
-    <Disclosure
-      id="compounds-heading"
-      eyebrow="From the card"
-      accent="indigo"
-      summary={BACK_SECTION_LABEL.compounds}
-      aside={
-        <span className={`${MICRO_LABEL} text-violet-400 tabular-nums`}>
-          {compounds.length} named
-        </span>
-      }
-      // Collapsed, but not hidden: the names are on screen either way, so folding this
-      // section costs a reader nothing but the structures.
-      preview={
-        <ChipRow>
+    <section aria-labelledby="compounds-heading" className="pixel-tile overflow-hidden">
+      <h2
+        id="compounds-heading"
+        className="flex items-center gap-2 bg-gradient-to-r from-violet-700/80 to-violet-800/40 px-3 py-2 text-lg font-extrabold text-gold-300"
+      >
+        <PixelIcon uri={illustration('flask')} size={32} />
+        {BACK_SECTION_LABEL.compounds}
+      </h2>
+      <details className="group/s">
+        <summary className="flex cursor-pointer list-none items-center gap-3 p-3">
+          <ul className="min-w-0 flex-1">
+            {order.map((printed) => (
+              <li
+                key={printed}
+                className="flex items-center gap-2.5 border-b border-violet-500/30 py-1.5 last:border-b-0"
+              >
+                <PixelIcon uri={gemFor(printed)} size={22} />
+                <span className="text-base font-bold text-violet-50">{printed}</span>
+              </li>
+            ))}
+          </ul>
+          <span className="flex shrink-0 flex-col items-center gap-1">
+            <PixelIcon uri={illustration('molecule')} size={56} />
+            <span className={`${MICRO_LABEL} text-violet-300 group-open/s:hidden`}>
+              + Structures
+            </span>
+          </span>
+        </summary>
+        {/* `items-start` so a plate with four connections does not stretch its whole row. */}
+        <ul className="grid grid-cols-1 items-start gap-3 p-3 pt-1 sm:grid-cols-2 lg:grid-cols-3">
           {order.map((printed) => (
-            <li key={printed}>
-              <GemChip name={printed} />
-            </li>
+            <CompoundPlate key={printed} herb={herb} printed={printed} />
           ))}
-        </ChipRow>
-      }
-    >
-      <p className={`max-w-prose ${NOTE} text-violet-300`}>
-        Constituents named on the card. Naming a compound is not a claim about what it does.
-      </p>
-      {/* `items-start` so a plate with four connections does not stretch its whole row;
-          the compounds differ a lot in how much they have to say. */}
-      <ul className="mt-4 grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {order.map((printed) => (
-          <CompoundPlate key={printed} herb={herb} printed={printed} />
-        ))}
-      </ul>
-    </Disclosure>
+        </ul>
+      </details>
+    </section>
   );
 }

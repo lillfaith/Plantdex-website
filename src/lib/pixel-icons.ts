@@ -376,6 +376,30 @@ export const ILLUSTRATIONS: Record<string, readonly string[]> = {
     '          ',
     '          ',
   ],
+  flask: [
+    '   kkkk   ',
+    '    kwk   ',
+    '    kwk   ',
+    '   kwwwk  ',
+    '  kwppuwk ',
+    '  kppuuuk ',
+    ' kppuuuuuk',
+    'kppuuuuuuk',
+    ' kkkkkkkk ',
+    '          ',
+  ],
+  molecule: [
+    '    uu    ',
+    '   k  k   ',
+    ' uu    uu ',
+    ' k      k ',
+    '  uu  uu  ',
+    '  k    k  ',
+    '   u  u   ',
+    '          ',
+    '          ',
+    '          ',
+  ],
   taste: [
     '   kkkk   ',
     '  kyyyyk  ',
@@ -404,7 +428,12 @@ export const ILLUSTRATIONS: Record<string, readonly string[]> = {
 
 export function illustration(name: string): string {
   const rows = ILLUSTRATIONS[name] ?? ILLUSTRATIONS.leaf!;
-  const palette = name === 'aroma' ? { ...PAL, k: '#c9a4ff' } : PAL;
+  const palette =
+    name === 'aroma'
+      ? { ...PAL, k: '#c9a4ff' }
+      : name === 'molecule'
+        ? { ...PAL, k: '#8a6bd6', u: '#c9a4ff' }
+        : PAL;
   return memo(`i:${name}`, () => gridToUri(fromRows(rows, palette)));
 }
 
