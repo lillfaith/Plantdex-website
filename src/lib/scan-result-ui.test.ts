@@ -244,9 +244,22 @@ describe('the score is presented as a score, not a probability', () => {
     expect(PANEL).toContain('{band}');
   });
 
+  /*
+   * THE SUBSTANCE, NOT THE SENTENCE. This used to pin the exact words "need not add up to
+   * 100%", which was guarding prose that turned out to be pointing the wrong way: measured
+   * across the 45 real provider responses in `plant-match.live.test.ts`, the returned
+   * candidates sum to between 0.23 and 0.98 and NOT ONE exceeds 1. They are shares of one
+   * distribution whose tail the provider does not send, so a reader's real question is why
+   * they add up to 56%, not why they add up to 103%.
+   *
+   * Both claims the line must keep making are asserted; the wording is free to improve.
+   */
   it('says what the numbers are, once, under the list', () => {
-    expect(PANEL).toMatch(/not calibrated probabilities/);
-    expect(PANEL).toMatch(/need not add up to 100%/);
+    const prose = PANEL.replace(/\s+/g, ' ');
+    expect(prose).toMatch(/not calibrated probabilities/);
+    // That the list is a truncated top, which is why the percentages fall short of 100.
+    expect(prose).toMatch(/top of a longer list/);
+    expect(prose).toMatch(/less than 100%/);
   });
 });
 

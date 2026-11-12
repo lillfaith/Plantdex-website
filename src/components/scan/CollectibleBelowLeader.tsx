@@ -73,16 +73,23 @@ export function CombinedSupport({ candidates }: { candidates: readonly SupportCa
     <p className="mt-3 rounded-xl border border-violet-600/50 bg-plum-800/60 p-3 text-xs leading-relaxed text-violet-200">
       <span className="font-semibold text-violet-100">
         {support.names.length} of these suggestions are names for {herb.commonName} —{' '}
-        <span className="text-gold-400">{Math.round(support.share * 100)}%</span> of the
-        ranking between them.
+        <span className="text-gold-400">{Math.round(support.share * 100)}%</span> between
+        them.
       </span>{' '}
       {/*
         The caveat travels WITH the number, not in grey text at the foot of the list. A
         combined share is no more calibrated than the parts it was added from, and this is
         the one line most likely to be read as a probability.
       */}
-      Still a ranking rather than a calibrated probability, and still worth checking the
-      plant against the card.
+      {/*
+        "Of the ranking" was the first wording and it was wrong: it implies the rows on
+        screen are the whole distribution. They are its top, and the provider does not send
+        the tail — measured across 45 real responses, the returned candidates sum to 0.23 to
+        0.98. So the figure is quoted in the same unit as the rows above it and nothing else
+        is claimed about it.
+      */}
+      Added from the rows above, in the same units. Still a ranking rather than a calibrated
+      probability, and still worth checking the plant against the card.
     </p>
   );
 }

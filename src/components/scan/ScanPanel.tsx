@@ -1118,15 +1118,24 @@ export function ScanPanel() {
                 {/*
                   WHAT THE NUMBERS ARE, SAID ONCE UNDER THE LIST THEY QUALIFY.
 
-                  Five scores that read 45, 23, 20, 12 and 3 invite a reader to add them up
-                  and wonder why they make 103. They are a ranking, not a partition of
-                  certainty, and neither provider publishes a calibration for them — so this
-                  says what they are rather than quietly normalising them into a shape they
+                  THE EXAMPLE THAT USED TO BE HERE WAS INVENTED, AND IT POINTED THE WRONG WAY.
+                  It said five scores reading 45, 23, 20, 12 and 3 would invite a reader to
+                  add them up and wonder why they make 103. Measured against the 45 real
+                  provider responses stored in `plant-match.live.test.ts`, that never happens:
+                  the returned candidates sum to between 0.23 and 0.98, mean 0.81, and NOT ONE
+                  exceeds 1. They are shares of a single distribution, and what is missing is
+                  the tail — the provider returns the top few and the rest is not sent.
+
+                  So the question a reader actually asks is the opposite one: why do these add
+                  up to 56%? Because they are the top of a longer list. The line below says
+                  that, rather than the thing nobody was confused about. They are still not
+                  calibrated probabilities, and this still does not normalise them into a shape they
                   were never in.
                 */}
                 <p className="mt-3 text-xs leading-relaxed text-violet-400">
-                  Match scores rank the identifier&rsquo;s suggestions against each other. They
-                  are not calibrated probabilities and need not add up to 100%.
+                  Match scores are the identifier&rsquo;s own ranking, and this is the top of a
+                  longer list — so they add up to less than 100%, with the rest spread over
+                  suggestions too weak to show. They are not calibrated probabilities.
                 </p>
 
                 {hint && (
