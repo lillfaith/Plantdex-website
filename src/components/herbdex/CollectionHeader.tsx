@@ -18,7 +18,6 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { achievementIcon } from '../icons/achievement-icons';
 import { PixelIcon } from './HerbalVisuals';
 import { illustration, traitBadge } from '@/lib/pixel-icons';
-import { pixelObject } from '@/lib/pixel-art';
 
 /**
  * The top of the collection: who you are, how far along, what you hold, what you have earned.
@@ -59,13 +58,13 @@ export function CollectionHeader() {
             stage={
               (profile.avatarHerbId && stageForState(state, profile.avatarHerbId)) || 'flowering'
             }
-            size="sm"
+            size="lg"
           />
         </Link>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <p className="font-display truncate text-2xl leading-none font-extrabold text-violet-50">
+              <p className="font-display text-xl leading-tight font-extrabold text-violet-50">
                 {profile.displayName ?? 'Field Naturalist'}
               </p>
               <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-gold-300">
@@ -73,7 +72,7 @@ export function CollectionHeader() {
                 <span className="truncate">{title}</span>
               </p>
             </div>
-            <span className="shrink-0 rounded-full border-2 border-gold-500/80 bg-plum-900/70 px-3 py-1 text-sm font-extrabold text-gold-200 tabular-nums">
+            <span className="rounded-full border-2 border-gold-500/80 bg-plum-900/70 px-3 py-1 text-sm font-extrabold text-gold-200 tabular-nums">
               Lv. {progress.level}
             </span>
           </div>
@@ -120,17 +119,17 @@ export function CollectionHeader() {
       {/* ── What you hold ───────────────────────────────────────────── */}
       <dl className="grid grid-cols-3 divide-x divide-violet-500/40 text-center">
         <Stat
-          icon={<PixelIcon uri={pixelObject('book')} size={30} />}
+          icon={<PixelIcon uri={illustration('cards')} size={34} />}
           value={`${discoveredCount} / ${deckSize}`}
-          label="Herbs discovered"
+          label="Cards collected"
         />
         <Stat
-          icon={<PixelIcon uri={illustration('leaf')} size={30} />}
+          icon={<PixelIcon uri={illustration('leaf')} size={34} />}
           value={String(learnedCount)}
           label="Cards learned"
         />
         <Stat
-          icon={<PixelIcon uri={traitBadge('star')} size={30} />}
+          icon={<PixelIcon uri={traitBadge('star')} size={34} />}
           value={`${masteredCount} / ${deckSize}`}
           label="Cards mastered"
         />
@@ -158,7 +157,7 @@ export function CollectionHeader() {
       <div className="border-t border-violet-500/40 pt-3">
         <div className="flex items-center justify-between">
           <p className="flex items-center gap-2 font-display text-lg font-bold text-violet-50">
-            <PlantdexIcon name="laurel" className="text-xl text-gold-400" aria-hidden="true" />
+            <PixelIcon uri={illustration('trophy')} size={30} />
             Achievements
           </p>
           <Link
@@ -208,7 +207,10 @@ export function CollectionHeader() {
         </ul>
         <details className="mt-1">
           <summary className="group flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-xs font-bold tracking-wide text-violet-300 uppercase">
-            <span aria-hidden="true" className="text-base leading-none transition-transform group-open:rotate-90 motion-reduce:transition-none">
+            <span
+              aria-hidden="true"
+              className="text-base leading-none transition-transform group-open:rotate-90 motion-reduce:transition-none"
+            >
               &rsaquo;
             </span>
             All achievements
@@ -237,15 +239,7 @@ export function CollectionHeader() {
   );
 }
 
-function Stat({
-  icon,
-  value,
-  label,
-}: {
-  icon: React.ReactNode;
-  value: string;
-  label: string;
-}) {
+function Stat({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
     <div className="flex flex-col items-center gap-0.5 px-1">
       {icon}
