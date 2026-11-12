@@ -8,6 +8,7 @@ import { PlantSprite } from '@/components/PlantSprite';
 import { CardShowcase } from '@/components/game/CardShowcase';
 import { assetPath } from '@/lib/asset-path';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
+import { TakeTourButton } from '@/components/start/TakeTourButton';
 import { EYEBROW } from '@/components/ui/accents';
 
 /**
@@ -377,6 +378,9 @@ export default function HomePage() {
         </h2>
         <p className="mx-auto mt-2 max-w-sm text-center text-sm text-violet-300">
           That is the whole game.
+        </p>
+        <p className="mt-1 text-center">
+          <TakeTourButton />
         </p>
         <ol className="mx-auto mt-7 grid max-w-3xl gap-7 sm:grid-cols-3 sm:gap-5">
           {[

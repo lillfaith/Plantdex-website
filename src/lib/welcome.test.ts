@@ -6,6 +6,7 @@ import { shouldShowWelcome } from './first-run';
 import type { HerbdexState } from './types';
 
 const WELCOME = readFileSync('src/components/start/WelcomeIntro.tsx', 'utf8');
+const SCENES = readFileSync('src/components/start/WelcomeScenes.tsx', 'utf8');
 const LAYOUT = readFileSync('src/app/layout.tsx', 'utf8');
 const START = readFileSync('src/app/start/page.tsx', 'utf8');
 const CELEBRATION = readFileSync('src/components/herbdex/DiscoveryCelebration.tsx', 'utf8');
@@ -143,32 +144,33 @@ describe('/start stays a stateless QR destination', () => {
 
 describe('what the welcome says', () => {
   it('carries the opening copy', () => {
-    expect(WELCOME).toContain('Welcome to Plantdex');
-    expect(WELCOME).toContain('Every great herbalist starts with a single discovery.');
-    expect(WELCOME).toContain('Begin Your Adventure');
+    expect(SCENES).toContain('Welcome to Plantdex');
+    expect(SCENES).toMatch(/real-world plant collecting adventure/);
+    expect(WELCOME).toContain('Begin Adventure');
   });
 
-  it('introduces the Field Journal and the first objective', () => {
-    expect(WELCOME).toContain('Your Field Journal');
-    expect(WELCOME).toContain('Your First Discovery');
-    expect(WELCOME).toMatch(/Find and identify your first medicinal plant/);
+  it('teaches that identifying is not finding', () => {
+    expect(SCENES).toContain('Identifying a plant is not finding it.');
   });
 
-  /*
-   * The rows read the real definitions. Restating a badge's description or a frame's
-   * condition here would let this screen promise something the predicate does not pay —
-   * the same reason the cosmetics cabinet prints `condition` rather than its own copy.
-   */
-  it('names the rewards from their own definitions', () => {
-    expect(WELCOME).toContain('badge.description');
-    expect(WELCOME).toContain('amberRing.condition');
-    expect(WELCOME).toContain('amberRing.ring');
+  it('ends on the first objective', () => {
+    expect(SCENES).toContain('Your First Find');
+    expect(SCENES).toMatch(/Photograph a plant outdoors, then record it/);
+    expect(SCENES.indexOf("id: 'explore'")).toBeGreaterThan(SCENES.indexOf("id: 'discover'"));
+  });
+
+  // The Amber Ring is a profile frame; it is shown on the avatar, never on a card.
+  it('shows the Amber Ring on the profile avatar, from its own definition', () => {
+    expect(SCENES).toContain('<ProfileAvatar');
+    expect(SCENES).toContain('frame={amberRing}');
+    expect(SCENES).toMatch(/profile frame/);
+    expect(SCENES).toContain('badge.name');
   });
 
   // A number in a button is a promise, and which plant somebody finds decides what it pays.
   it('prints no XP figure', () => {
-    expect(code(WELCOME)).not.toMatch(/\+\s*\d+\s*XP/);
     expect(code(WELCOME)).not.toMatch(/\d+\s*XP/);
+    expect(code(SCENES)).not.toMatch(/\d+\s*XP/);
   });
 
   it('is skippable by button and by Escape, and both record the dismissal', () => {
@@ -176,11 +178,6 @@ describe('what the welcome says', () => {
     expect(WELCOME).toContain('onCancel');
     expect(code(WELCOME).match(/dismiss\(\)/g)?.length ?? 0).toBeGreaterThanOrEqual(2);
     expect(WELCOME).toContain('markWelcomeSeen');
-  });
-
-  // The demonstration must not read as a way to earn anything.
-  it('labels the look-around as recording nothing', () => {
-    expect(WELCOME).toMatch(/records no discovery and earns no XP/);
   });
 
   it('uses exactly one dialog', () => {
@@ -310,14 +307,14 @@ describe('First Find leads when it is the first find', () => {
 describe('the closed dialog is actually hidden', () => {
   it('restores display:none for the closed state it overrode', () => {
     const sheet = CSS.match(/@utility welcome-sheet \{[\s\S]*?\n\}/)?.[0] ?? '';
-    expect(sheet).toContain('display: grid');
+    expect(sheet).toContain('display: flex');
     expect(sheet).toMatch(/&:not\(\[open\]\)\s*\{[^}]*display:\s*none/);
   });
 
   // The hidden rule has to come from the same utility, or a future reorder separates them.
   it('keeps the closed rule inside the sheet utility', () => {
     const sheet = CSS.match(/@utility welcome-sheet \{[\s\S]*?\n\}/)?.[0] ?? '';
-    const grid = sheet.indexOf('display: grid');
+    const grid = sheet.indexOf('display: flex');
     const hidden = sheet.search(/&:not\(\[open\]\)/);
     expect(hidden).toBeGreaterThan(-1);
     expect(grid).toBeGreaterThan(-1);

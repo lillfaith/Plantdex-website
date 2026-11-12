@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -12,17 +11,16 @@ import {
   useWelcomeSeen,
   welcomeSeen,
 } from '@/lib/first-run';
-import { getAchievement } from '@/lib/achievements';
-import { FIELD_FRAMES } from '@/lib/field-frames';
-import { PlantSprite } from '../PlantSprite';
-import { PlantdexIcon } from '../icons/PlantdexIcon';
+import { TOUR_EVENT } from '@/lib/welcome-tour';
+import { SCENES } from './WelcomeScenes';
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
  * THE FIRST SCREEN A NEW PLAYER EVER SEES.
  *
- * Two panes, both skippable: who you are about to become, then what the first objective is
- * and what it pays. It is the beginning of a collecting game, so it opens with a creature
+ * A short tour of scenes (see `WelcomeScenes`), all skippable, ending on the first objective
+ * and what it pays. It can also be opened on purpose through `welcome-tour.ts`, which touches
+ * no flag. It is the beginning of a collecting game, so it opens with a creature
  * and a promise rather than a form.
  *
  * ───────────────────────────────────────────────────────────────────────────────
@@ -55,9 +53,6 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-/** The creature on the first pane. Dandelion: the most recognisable plant in the deck. */
-const GREETER = 'taraxacum-officinale';
-
 export function WelcomeIntro() {
   const { user } = useAuth();
   const { ready, discoveredCount } = useHerbdex();
@@ -65,29 +60,17 @@ export function WelcomeIntro() {
   const seen = useWelcomeSeen(scope);
   const pathname = usePathname();
   const frame = useRef<HTMLDialogElement | null>(null);
-  const [pane, setPane] = useState(0);
+  const [index, setIndex] = useState(0);
+  // An explicit "Take the tour". Independent of the first-run gate and never persisted.
+  const [requested, setRequested] = useState(false);
 
   /**
    * SIGNING IN SEEDS THE ACCOUNT'S FLAG FROM THE DEVICE, ONCE.
    *
-   * Without this the welcome reappears the moment somebody signs up. A new account is empty
-   * until the local-progress import runs, so `discoveredCount` is 0 and the account scope has
-   * no flag of its own — and the player who dismissed this screen two minutes ago meets it
-   * again. Worse, signup lands on /account, which is where `ImportLocalProgressDialog` is
-   * mounted, so a second modal would open on top of that one.
-   *
-   * This is the arrangement the player profile already uses, in its words: signing in seeds
-   * the account from the device, never overwrites and never clears. The write is one-time and
-   * only ever sets a flag that was unset.
-   *
-   * THE COST IS A SHARED DEVICE, and it is the right way round. If one person dismisses the
-   * welcome while signed out and somebody else then signs into their own fresh account on the
-   * same device, that second person inherits the dismissal and does not see it. What they lose
-   * is an introduction — `FirstFindNote` still explains the empty Herbdex, and /start still
-   * exists — whereas the alternative interrupts a player who has already read it, on the one
-   * screen that already has a dialog open. Note this leaks only DEVICE to ACCOUNT: one
-   * account's flag is never readable by another, which is the leak that actually matters and
-   * the one this repo has shipped twice.
+   * Without this the welcome reappears the moment somebody signs up: a new account is empty
+   * until the local-progress import runs, and signup lands on the page that hosts that
+   * import's own dialog. One-time, only ever sets an unset flag; a flag in one account's
+   * scope is never readable by another. A shared device costs an introduction, not progress.
    */
   useEffect(() => {
     if (!user?.id) return;
@@ -96,180 +79,110 @@ export function WelcomeIntro() {
     markWelcomeSeen(user.id);
   }, [user?.id]);
 
-  const show = shouldShowWelcome({ ready, discoveredCount, seen, pathname });
+  useEffect(() => {
+    const open = () => {
+      setIndex(0);
+      setRequested(true);
+    };
+    window.addEventListener(TOUR_EVENT, open);
+    return () => window.removeEventListener(TOUR_EVENT, open);
+  }, []);
+
+  const open = requested || shouldShowWelcome({ ready, discoveredCount, seen, pathname });
 
   /*
-   * `showModal` rather than rendering in the flow: it traps focus, puts the overlay in the
-   * top layer above the fixed nav, and makes Escape work without a key handler of its own.
-   * The dialog element stays mounted whatever `show` says, because a <dialog> that unmounts
-   * underneath itself is the bug this repo has recorded fixing twice.
+   * `showModal` traps focus, uses the top layer above the fixed nav and makes Escape work.
+   * The element stays mounted whatever `open` says: a <dialog> that unmounts underneath
+   * itself is the bug this repo has recorded fixing twice.
    */
   useEffect(() => {
     const node = frame.current;
     if (!node) return;
-    if (show && !node.open) node.showModal();
-    if (!show && node.open) node.close();
-  }, [show]);
+    if (open && !node.open) node.showModal();
+    if (!open && node.open) node.close();
+  }, [open]);
+
+  // Land on the new scene's heading so a screen reader announces it. Not on first paint:
+  // there focus belongs on the primary button.
+  useEffect(() => {
+    if (index === 0) return;
+    frame.current?.querySelector<HTMLElement>('#welcome-title')?.focus();
+  }, [index]);
 
   function dismiss() {
     markWelcomeSeen(scope);
+    setRequested(false);
     frame.current?.close();
   }
 
-  const badge = getAchievement('first-find');
-  const amberRing = FIELD_FRAMES.find((entry) => entry.id === 'amber-ring');
+  const last = index === SCENES.length - 1;
+  const Scene = SCENES[index]?.Component ?? SCENES[0]!.Component;
 
   return (
     <dialog
       ref={frame}
       aria-labelledby="welcome-title"
-      /*
-       * `onCancel` covers Escape and the backdrop, so dismissing by any route writes the flag
-       * — otherwise a player who pressed Escape would be met by the same overlay on the next
-       * page load, which reads as a bug rather than as a welcome.
-       */
+      /* `onCancel` covers Escape, so every route out writes the flag. */
       onCancel={(event) => {
         event.preventDefault();
         dismiss();
       }}
       className="welcome-sheet"
     >
-      <div className="relative mx-auto w-full max-w-md px-5 py-7 text-center">
+      <span aria-hidden="true" className="welcome-woods" />
+
+      <header className="relative flex items-center justify-between px-3 pt-2">
+        <ol
+          aria-label={`Step ${index + 1} of ${SCENES.length}`}
+          className="flex items-center gap-1.5 pl-2"
+        >
+          {SCENES.map((one, position) => (
+            <li
+              key={one.id}
+              aria-current={position === index ? 'step' : undefined}
+              className={`h-2 rounded-full transition-all ${
+                position === index ? 'w-6 bg-gold-400' : 'w-2 bg-violet-400/60'
+              }`}
+            />
+          ))}
+        </ol>
         <button
           type="button"
           onClick={dismiss}
-          className="tap-44 absolute top-1 right-1 inline-flex items-center justify-center rounded px-3 text-xs font-bold tracking-[0.1em] text-violet-300 uppercase transition-colors hover:text-violet-100 focus-visible:text-violet-100"
+          className="tap-44 inline-flex items-center justify-center rounded px-3 text-xs font-bold tracking-[0.1em] text-violet-100 uppercase transition-colors hover:text-white focus-visible:text-white"
         >
           Skip
           <span className="sr-only"> the introduction</span>
         </button>
+      </header>
 
-        {pane === 0 ? (
-          <>
-            {/*
-              The creature arrives first, because this is a collecting game. `frozen` under
-              reduced motion is handled by the sprite itself — frame 0 is authored as a
-              complete resting pose precisely so it can be held.
-            */}
-            <div className="welcome-greeter mx-auto mt-5 w-28">
-              <PlantSprite herbId={GREETER} stage="flowering" alt="" />
-            </div>
-
-            <h2
-              id="welcome-title"
-              className="font-display mt-4 text-3xl font-bold text-gold-plate"
-            >
-              Welcome to Plantdex
-            </h2>
-            <p className="mt-2 text-sm text-violet-200">
-              Every great herbalist starts with a single discovery.
-            </p>
-
-            {/*
-              FOCUS LANDS ON THE PRIMARY ACTION, NOT ON SKIP.
-
-              `showModal` focuses the first focusable element in the dialog, which is the Skip
-              control — so a keyboard or screen-reader user opened the welcome already sitting
-              on "dismiss this", and the focus ring was the loudest thing on the screen. The
-              ring was also being drawn past the sheet's right edge and clipped by the
-              viewport, which is what made it look broken rather than merely wrong.
-            */}
-            { }
-            <button
-              autoFocus
-              type="button"
-              onClick={() => setPane(1)}
-              className="arcade-key inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 mt-6"
-            >
-              Begin Your Adventure
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
-              Your Field Journal
-            </p>
-            <h2
-              id="welcome-title"
-              className="font-display mt-1 text-2xl font-bold text-gold-plate"
-            >
-              Your First Discovery
-            </h2>
-            <p className="mt-2 text-sm text-violet-200">
-              Find and identify your first medicinal plant. Your Field Journal keeps every
-              find — what you saw, where you were looking, and the card it unlocked.
-            </p>
-
-            {/*
-              THE REWARD IS SHOWN BEFORE THE QUEST, which is the point of this pane. Both
-              rows read from the real definitions rather than restating them: the badge's
-              own description, and the frame's own `condition` sentence and `ring` classes.
-              Restating either here would let this screen promise something the predicate
-              does not pay.
-            */}
-            <ul className="mt-5 space-y-2 text-left">
-              {badge && (
-                <li className="flex items-center gap-3 rounded-xl border border-gold-500/50 bg-gold-500/10 px-3 py-2">
-                  <PlantdexIcon name="sprout" className="shrink-0 text-base text-gold-400" />
-                  <span>
-                    <p className="text-sm font-bold text-gold-300">{badge.name} badge</p>
-                    <p className="text-xs text-violet-200">{badge.description}</p>
-                  </span>
-                </li>
-              )}
-              {amberRing && (
-                <li className="flex items-center gap-3 rounded-xl border border-gold-500/50 bg-gold-500/10 px-3 py-2">
-                  <span
-                    aria-hidden="true"
-                    className={`h-7 w-7 shrink-0 rounded-full ${amberRing.ring}`}
-                  />
-                  <span>
-                    <p className="text-sm font-bold text-gold-300">
-                      {amberRing.name} card frame
-                    </p>
-                    <p className="text-xs text-violet-200">{amberRing.condition}</p>
-                  </span>
-                </li>
-              )}
-              <li className="flex items-center gap-3 rounded-xl border border-violet-600/40 bg-plum-800/60 px-3 py-2">
-                <PlantdexIcon name="leaves" className="shrink-0 text-base text-violet-300" />
-                <span>
-                  <p className="text-sm font-bold text-violet-100">Discovery XP</p>
-                  {/* No figure: which plant you find decides what it pays. */}
-                  <p className="text-xs text-violet-200">
-                    Earned for the plant you find, towards your next level.
-                  </p>
-                </span>
-              </li>
-            </ul>
-
-            <Link href="/scan" onClick={dismiss} className="arcade-key inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 mt-6">
-              Find my first plant
-            </Link>
-
-            {/*
-              THE DEMONSTRATION, AND IT IS LABELLED FOR WHAT IT IS.
-
-              `/herbdex` reveals read through `reveals.ts`, a store with its own key that
-              never touches `HerbdexState` — so reading a card's entry awards no XP, does not
-              count toward the collection and leaves the card a silhouette in the grid. That
-              is already the safe way to look around without claiming a find, so the brief's
-              "clearly labelled demonstration that does not award real discoveries" needed no
-              new mechanism, only a door and an honest sentence.
-            */}
-            <Link
-              href="/herbdex"
-              onClick={dismiss}
-              className="mt-3 block text-sm font-bold text-violet-300 underline-offset-2 hover:text-violet-100 hover:underline"
-            >
-              Or look around the deck first
-            </Link>
-            <p className="mt-1 text-xs text-violet-300">
-              Browsing records no discovery and earns no XP.
-            </p>
-          </>
-        )}
+      <div className="welcome-scene relative mx-auto w-full max-w-md px-5 text-center">
+        <div key={index} className="welcome-scene-in">
+          <Scene returning={discoveredCount > 0} onLeave={dismiss} />
+        </div>
       </div>
+
+      {!last && (
+        <footer className="relative mx-auto flex w-full max-w-md items-center gap-3 px-5 pb-4">
+          <button
+            type="button"
+            onClick={() => setIndex((one) => Math.max(0, one - 1))}
+            disabled={index === 0}
+            className="tap-44 rounded px-3 text-sm font-bold text-violet-100 transition-colors hover:text-white disabled:invisible"
+          >
+            Back
+          </button>
+          {/* Focus lands here on open, not on Skip: Skip is the least useful first stop. */}
+          <button
+            autoFocus
+            type="button"
+            onClick={() => setIndex((one) => Math.min(SCENES.length - 1, one + 1))}
+            className="arcade-key inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
+          >
+            {index === 0 ? 'Begin Adventure' : 'Next'}
+          </button>
+        </footer>
+      )}
     </dialog>
   );
 }

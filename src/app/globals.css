@@ -2005,21 +2005,7 @@ body {
  * translucency.
  */
 @utility welcome-sheet {
-  /*
-   * `display: none` WHEN CLOSED, AND LEAVING THIS OUT SHIPPED THE BUG TO PRODUCTION.
-   *
-   * The browser hides a closed <dialog> with `dialog:not([open]) { display: none }` in its
-   * own stylesheet. The `display: grid` below is an author declaration, so it WINS — and the
-   * dialog then renders as an ordinary grid block in the normal flow whether or not it is
-   * open. On a phone that put the greeter sprite and the Skip control inline at the top of
-   * every page: over the homepage logo, and on /scan, where the route gate had correctly
-   * decided not to open anything. It was never modal, so there was no top layer and no
-   * backdrop, and the page simply scrolled behind it.
-   *
-   * It passed a desktop check because that check only ever loaded a route where the welcome
-   * SHOULD be open, where "renders in flow" and "renders as a modal" look similar enough at a
-   * glance. The regression test now asserts both states.
-   */
+  /* `display: none` when closed — see the note above; leaving it out shipped a bug. */
   &:not([open]) {
     display: none;
   }
@@ -2031,13 +2017,18 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  display: grid;
-  place-items: center;
-  background: color-mix(in srgb, var(--color-plum-950) 94%, var(--color-violet-800));
-  color: var(--color-violet-200);
-  overflow-y: auto;
-
-  /* Clear of the phone's system bars; the sheet itself is edge to edge. */
+  /* Header, one scene that takes the room, footer. The scene scrolls only as a fallback. */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  color: var(--color-violet-100);
+  background: linear-gradient(
+    180deg,
+    var(--color-violet-600) 0%,
+    var(--color-violet-700) 38%,
+    var(--color-plum-800) 100%
+  );
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 
@@ -2046,13 +2037,131 @@ body {
   }
 }
 
+/* The scene sits between header and footer and centres its contents. */
+@utility welcome-scene {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
 /*
- * The greeter's arrival. A fade and a two-pixel rise, never a scale: the sprites are pixel
- * art and scaling one blurs it — the same rule `stage-grow` follows in the garden.
- *
- * One iteration, and listed explicitly in the reduced-motion block below rather than left to
- * the global 0.01ms collapse, per the Motion section.
+ * Woodland ground behind everything: two hill layers and a row of grass tufts, all gradients
+ * so it costs no image. Backgrounds only; every word sits on the violet above it.
  */
+@utility welcome-woods {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 26%;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, #3f8a4c 0 6px, transparent 6px 14px) bottom / 100% 6px no-repeat,
+    radial-gradient(120% 90% at 20% 100%, #2f7a45 0 55%, transparent 56%),
+    radial-gradient(110% 80% at 85% 100%, #3b8f52 0 52%, transparent 53%),
+    radial-gradient(140% 100% at 55% 110%, #235f38 0 60%, transparent 61%);
+  opacity: 0.9;
+}
+
+/* A patch of sky and meadow behind the greeter, so the sprite is not on an empty page. */
+@utility welcome-stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 13rem;
+  height: 8.5rem;
+  margin-bottom: 0.75rem;
+  background:
+    radial-gradient(60% 40% at 50% 100%, #4aa35c 0 60%, transparent 61%),
+    radial-gradient(70% 70% at 50% 40%, color-mix(in srgb, var(--color-gold-300) 38%, transparent), transparent 70%);
+  border-radius: 50% 50% 0.5rem 0.5rem / 60% 60% 0.5rem 0.5rem;
+}
+
+@utility welcome-mote {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold-300);
+  animation: welcome-drift 5.5s ease-in-out infinite;
+}
+@utility welcome-mote-a {
+  left: 14%;
+  top: 46%;
+}
+@utility welcome-mote-b {
+  right: 12%;
+  top: 30%;
+  animation-delay: -2s;
+}
+@utility welcome-mote-c {
+  left: 36%;
+  top: 14%;
+  animation-delay: -3.6s;
+}
+
+@keyframes welcome-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(6px, -10px);
+    opacity: 1;
+  }
+}
+
+/* A game object, not a web card: hard pixel edge, offset shadow, no radius to speak of. */
+@utility welcome-prop {
+  background: color-mix(in srgb, var(--color-plum-900) 78%, var(--color-violet-700));
+  border: 2px solid var(--color-violet-400);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-plum-950);
+}
+
+/* The journal tile reads as a book: a spine down the left edge. */
+@utility welcome-journal {
+  border-left: 8px solid var(--color-gold-500);
+}
+
+@utility welcome-photo {
+  background: linear-gradient(180deg, #9fd0f0 0%, #cfe9c8 70%, #4aa35c 100%);
+  border: 2px solid var(--color-plum-950);
+}
+
+/* One pass of a scan line down the example photograph. */
+@utility welcome-scan-line {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--color-gold-300);
+  animation: welcome-scan 2.6s ease-in-out infinite;
+}
+@keyframes welcome-scan {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(92px);
+  }
+}
+
+/* The first quest: a gold-edged quest scroll. */
+@utility welcome-quest {
+  background: color-mix(in srgb, var(--color-gold-500) 14%, var(--color-plum-900));
+  border: 2px solid var(--color-gold-500);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-plum-950);
+}
+
+@utility welcome-scene-in {
+  animation: welcome-greeter-in 320ms cubic-bezier(0.22, 0.72, 0.24, 1) both;
+}
+
 @utility welcome-greeter {
   animation: welcome-greeter-in 620ms cubic-bezier(0.22, 0.72, 0.24, 1) both;
 }
@@ -2069,7 +2178,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .welcome-greeter {
+  .welcome-greeter,
+  .welcome-scene-in,
+  .welcome-mote,
+  .welcome-scan-line {
     animation: none;
   }
 }
