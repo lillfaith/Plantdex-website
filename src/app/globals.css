@@ -1975,3 +1975,19 @@ body {
     animation: none;
   }
 }
+
+/*
+ * SKIPPING THE CARD TURN. Set by `DiscoveryCelebration` when the player taps Skip.
+ *
+ * `flip-card-spin` owns a 900ms duration and `flip-card` a 560ms one, so zeroing this has
+ * to beat both — hence the duration rather than `transition: none`, which would also drop
+ * the property list the revealed state relies on. The shade transitions with it, or the
+ * card lands face up with a half-faded shadow still travelling across it.
+ */
+@utility flip-card-instant {
+  transition-duration: 0s;
+
+  & .flip-shade {
+    transition-duration: 0s;
+  }
+}

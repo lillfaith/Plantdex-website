@@ -12,6 +12,7 @@ import { MysteryCard } from './MysteryCard';
 import { achievementIcon } from '../icons/achievement-icons';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { CountUp } from './CountUp';
+import { haptic } from '@/lib/haptics';
 
 /**
  * The discovery celebration: reveal, reward, progress.
@@ -104,6 +105,24 @@ export function DiscoveryCelebration({
 }) {
   const [revealed, setRevealed] = useState(false);
 
+  /**
+   * SKIP: LAND THE WHOLE SEQUENCE NOW.
+   *
+   * The reveal is about a second and a half, which is right the first time and wrong the
+   * twentieth — and a player who has just found three plants on one walk sees it three
+   * times. So every beat is skippable, and skipping means arriving at the END STATE rather
+   * than closing the dialog: the XP, the level bar and the achievement rows are the
+   * information somebody came for, and a skip that threw them away would make the control
+   * a punishment for being in a hurry.
+   *
+   * IT IS NOT HIDDEN UNDER REDUCED MOTION, which is worth stating because it looks like it
+   * should be. That preference collapses CSS durations; the bar phases here are setTimeout
+   * and are untouched by it — `FACE_DOWN_HOLD_MS` above records the same asymmetry. So a
+   * reduced-motion player still waits out the 700ms and 1500ms beats, and is arguably the
+   * player who most wants a way past them.
+   */
+  const [skipped, setSkipped] = useState(false);
+
   const xpBefore = xpAfter - result.xpAwarded;
   const before = progressFromXp(xpBefore);
   const after = progressFromXp(xpAfter);
@@ -114,12 +133,54 @@ export function DiscoveryCelebration({
   const [barPhase, setBarPhase] = useState<'start' | 'filling' | 'newLevel'>('start');
 
   useEffect(() => {
+    // Skipping has already written every end state, so re-arming the timers would animate
+    // the sequence a second time over the top of its own conclusion.
+    if (skipped) return;
     const timers: ReturnType<typeof setTimeout>[] = [];
-    timers.push(setTimeout(() => setRevealed(true), revealDelay()));
+    /*
+       HAPTICS RIDE THE BEATS THAT ALREADY EXIST — the turn, and the level-up — rather than
+       adding any of their own. Two in a celebration is the ceiling: a third would make the
+       phone the loudest thing in the room at the moment somebody is trying to read a card.
+
+       `haptic()` is a no-op wherever there is no engine, which includes iOS Safari; see
+       `src/lib/haptics.ts` for why that is an abstraction and not a `navigator.vibrate`
+       call. Nothing here branches on the result, because there is nothing a UI should do
+       differently because a phone cannot buzz.
+
+       Deliberately NOT fired on skip: somebody who asked to cut the sequence short has not
+       asked to be buzzed twice in the same instant as it collapses.
+    */
+    timers.push(
+      setTimeout(() => {
+        setRevealed(true);
+        haptic('tap');
+      }, revealDelay()),
+    );
     timers.push(setTimeout(() => setBarPhase('filling'), 700));
-    if (leveledUp) timers.push(setTimeout(() => setBarPhase('newLevel'), 1500));
+    if (leveledUp) {
+      timers.push(
+        setTimeout(() => {
+          setBarPhase('newLevel');
+          haptic('success');
+        }, 1500),
+      );
+    }
     return () => timers.forEach(clearTimeout);
-  }, [leveledUp]);
+  }, [leveledUp, skipped]);
+
+  /*
+   * The final beat, named once. `barPhase` settles on 'newLevel' only when the level
+   * actually changed — otherwise 'filling' IS the end — so this cannot be written as a
+   * single constant and must not be guessed at in two places.
+   */
+  const finalBarPhase = leveledUp ? 'newLevel' : 'filling';
+  const settled = revealed && barPhase === finalBarPhase;
+
+  function skipToEnd() {
+    setSkipped(true);
+    setRevealed(true);
+    setBarPhase(finalBarPhase);
+  }
 
   const shownLevel = leveledUp && barPhase !== 'newLevel' ? before : after;
   const barPct =
@@ -133,6 +194,32 @@ export function DiscoveryCelebration({
 
   return (
     <div className="text-center">
+      {/*
+        IN THE FLOW AND RIGHT-ALIGNED, not absolutely positioned in the corner. This body is
+        mounted inside a <dialog> owned by the CALLER — two of them, on two routes — and an
+        absolute control here would be placed against whatever padding and close affordance
+        that particular dialog happens to have. A flow row cannot collide with either.
+
+        IT DISAPPEARS WHEN THERE IS NOTHING LEFT TO SKIP, rather than sitting there inert:
+        once the sequence has settled the button would do nothing, and a control that does
+        nothing teaches a player not to trust the next one. It is replaced by an equally
+        tall spacer so the card below does not jump up at the moment the reward lands.
+      */}
+      <div className="flex h-6 justify-end">
+        {!settled && (
+          <button
+            type="button"
+            onClick={skipToEnd}
+            className="rounded px-1.5 text-xs font-bold tracking-[0.1em] text-violet-300 uppercase transition-colors hover:text-violet-100 focus-visible:text-violet-100"
+          >
+            Skip
+            {/* The button says "Skip"; a screen reader is told what is skipped and that
+                nothing is lost by it, which the four letters cannot carry on their own. */}
+            <span className="sr-only"> the reveal animation and show the rewards now</span>
+          </button>
+        )}
+      </div>
+
       <p className="text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
         New discovery
       </p>
@@ -156,7 +243,14 @@ export function DiscoveryCelebration({
           earns; the plant page's `CardFlip` is a toggle and keeps the ordinary 180deg turn.
           See the utility in globals.css for why it is scoped rather than global.
         */}
-        <div className={`flip-card flip-card-spin ${revealed ? 'flip-card-revealed' : ''}`}>
+        {/* `flip-card-instant` zeroes the 900ms turn. Setting `revealed` alone would start
+            the spin rather than skip it, so the card would still take nearly a second to
+            arrive — the one beat a skip most obviously has to cut. */}
+        <div
+          className={`flip-card flip-card-spin ${skipped ? 'flip-card-instant' : ''} ${
+            revealed ? 'flip-card-revealed' : ''
+          }`}
+        >
           <div className="aspect-[356/576] w-full" />
 
           <div className="flip-face shadow-card">
@@ -206,7 +300,7 @@ export function DiscoveryCelebration({
       </p>
 
       <p aria-hidden="true" className="mt-4 text-2xl font-bold text-gold-400 tabular-nums">
-        <CountUp from={0} to={result.xpAwarded} prefix="+" durationMs={700} /> XP
+        <CountUp from={0} to={result.xpAwarded} prefix="+" durationMs={skipped ? 0 : 700} /> XP
       </p>
 
       {/* Updated progress */}
@@ -216,7 +310,7 @@ export function DiscoveryCelebration({
             Level {shownLevel.level} — {shownLevel.levelName}
           </p>
           <p aria-hidden="true" className="text-xs font-semibold text-violet-200 tabular-nums">
-            <CountUp from={xpBefore} to={xpAfter} durationMs={900} />
+            <CountUp from={xpBefore} to={xpAfter} durationMs={skipped ? 0 : 900} />
             {after.nextLevelXp !== null && (
               <span className="text-violet-400"> / {after.nextLevelXp.toLocaleString()}</span>
             )}{' '}
