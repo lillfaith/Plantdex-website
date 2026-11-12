@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { RarityAura } from '../game/RarityAura';
+import { CardFoil } from '../game/CardFoil';
 import type { Herb } from '@/lib/types';
 import { assetPath } from '@/lib/asset-path';
 import { MASTERY_STAGE_LABEL, type MasteryStage } from '@/lib/mastery';
@@ -161,6 +162,17 @@ export function HerbCard({
               </div>
             </>
           )}
+
+          {/*
+            FOIL ON A FOUND CARD ONLY, and inside the art box so it clips with the artwork.
+            A silhouette is deliberately excluded: the gilt frame is universal because every
+            card is one of the deck's own, but the foil is what a card looks like once it is
+            YOURS. An earned-not-found Field Card gets it too — it is owned and readable.
+
+            z-[2] sits above the image and below the number chip and stage marker, so the
+            reflection passes over the art and never over the text on top of it.
+          */}
+          {showFace && <CardFoil rarity={herb.rarity} />}
 
           {showFace && (
             <span className="absolute top-1.5 left-1.5 rounded-md bg-plum-950/75 px-1.5 py-0.5 text-[0.72rem] font-bold text-gold-400 tabular-nums">

@@ -1918,3 +1918,60 @@ body {
     transform: none !important;
   }
 }
+
+/*
+ * HOLOGRAPHIC FOIL. Tiers and geometry: `src/lib/card-foil.ts`.
+ *
+ * Driven entirely by three custom properties the component writes on its host
+ * (`--foil-x`, `--foil-y`, `--foil-band`) plus two it sets per layer (`--foil-tint`,
+ * `--foil-alpha`). No keyframes for the movement: this is not ambient motion, it only
+ * moves while a finger or cursor is on the card.
+ *
+ * `soft-light`, NOT `screen`. Both lift luminance; `screen` also washes mid-tones toward
+ * white, and the mid-tones here are a photograph of a plant with its binomial printed over
+ * it. The card has to stay readable, so the blend that preserves mid-tone separation wins.
+ *
+ * NOTE THIS FILE IS NOT PRETTIER-FORMATTED, and running `prettier --write` on it rewrites
+ * 64 lines of existing CSS and fails three tests that match exact declaration text
+ * (`seed-shelf-decor`, `plant-sprites`, `field-cards` all read this stylesheet as source).
+ * Append by hand.
+ */
+@utility card-foil-glare {
+  background: radial-gradient(circle at var(--foil-x) var(--foil-y), color-mix(in srgb, var(--foil-tint) var(--foil-alpha), transparent) 0%, transparent 62%);
+  mix-blend-mode: soft-light;
+  animation: foil-in 220ms ease-out both;
+}
+
+/*
+ * The hard streak. `repeating-linear-gradient` rather than one band so the edges stay
+ * crisp at any card size, translated by `--foil-band` so it sweeps with horizontal
+ * movement instead of being redrawn.
+ */
+@utility card-foil-band {
+  background: repeating-linear-gradient(102deg, transparent 0 14%, color-mix(in srgb, var(--foil-tint) var(--foil-alpha), transparent) 16% 19%, transparent 21% 34%);
+  background-position-x: var(--foil-band);
+  mix-blend-mode: overlay;
+  animation: foil-in 220ms ease-out both;
+}
+
+@keyframes foil-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * REDUCED MOTION KEEPS THE FOIL AND DROPS THE FADE. A still highlight is not motion, and
+ * removing it entirely would take the card's premium treatment off the players most likely
+ * to have set the preference for reasons unrelated to shimmer. Named explicitly rather than
+ * left to the global 0.01ms collapse, per the Motion section.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .card-foil-glare,
+  .card-foil-band {
+    animation: none;
+  }
+}
