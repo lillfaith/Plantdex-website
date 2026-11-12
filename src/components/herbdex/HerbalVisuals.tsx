@@ -39,7 +39,7 @@ export function PixelIcon({ uri, size = 40 }: { uri: string; size?: number }) {
  * stretched: width and offsets are percentages of one source rectangle, so the aspect ratio
  * is fixed by construction.
  */
-const WINDOW = { x: 50, y: 140, w: 690, h: 550, sheetW: 800 };
+const WINDOW = { x: 50, y: 150, w: 690, h: 440, sheetW: 800 };
 export function HerbalHero({ herb }: { herb: Herb }) {
   const scale = (WINDOW.sheetW / WINDOW.w) * 100;
   return (
@@ -71,10 +71,10 @@ export function TraitList({
   render: (t: string) => ReactNode;
 }) {
   return (
-    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+    <ul className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
       {traits.map((trait) => (
-        <li key={trait} className="pixel-tile flex items-center gap-3 px-3 py-2">
-          <PixelIcon uri={traitBadge(glyphForTrait(trait))} size={40} />
+        <li key={trait} className="pixel-tile flex items-center gap-2 px-2 py-1.5">
+          <PixelIcon uri={traitBadge(glyphForTrait(trait))} size={28} />
           <span className="text-sm leading-tight font-bold text-violet-50">{render(trait)}</span>
         </li>
       ))}
@@ -109,8 +109,8 @@ export function ArtTile({
   children?: ReactNode;
 }) {
   return (
-    <div className="pixel-tile flex flex-col items-center gap-1.5 px-2 py-3 text-center">
-      <PixelIcon uri={illustration(artName(kind, word))} size={48} />
+    <div className="pixel-tile flex flex-col items-center gap-1 px-1.5 py-2 text-center">
+      <PixelIcon uri={illustration(artName(kind, word))} size={32} />
       <span className="text-sm leading-tight font-bold text-violet-50">{children ?? word}</span>
     </div>
   );

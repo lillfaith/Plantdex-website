@@ -384,9 +384,9 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
     <section aria-labelledby="compounds-heading" className="pixel-tile overflow-hidden">
       <h2
         id="compounds-heading"
-        className="flex items-center gap-2 bg-gradient-to-r from-violet-500/70 to-violet-700/50 shadow-[inset_0_3px_0_0_rgb(214_190_255/0.45)] px-3 py-2 text-lg font-extrabold text-gold-300"
+        className="flex items-center gap-2 bg-gradient-to-r from-violet-500/70 to-violet-700/50 shadow-[inset_0_3px_0_0_rgb(214_190_255/0.45)] px-3 py-1.5 text-base font-extrabold text-gold-300"
       >
-        <PixelIcon uri={illustration('flask')} size={32} />
+        <PixelIcon uri={illustration('flask')} size={24} />
         {BACK_SECTION_LABEL.compounds}
       </h2>
       <details className="group/s">
@@ -395,15 +395,15 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
             {order.map((printed) => (
               <li
                 key={printed}
-                className="flex items-center gap-2.5 border-b border-violet-500/30 py-1.5 last:border-b-0"
+                className="flex items-center gap-2.5 border-b border-violet-500/30 py-1 last:border-b-0"
               >
-                <PixelIcon uri={gemFor(printed)} size={22} />
-                <span className="text-base font-bold text-violet-50">{printed}</span>
+                <PixelIcon uri={gemFor(printed)} size={18} />
+                <span className="text-sm font-bold text-violet-50">{printed}</span>
               </li>
             ))}
           </ul>
           <span className="flex shrink-0 flex-col items-center gap-1">
-            <PixelIcon uri={illustration('molecule')} size={56} />
+            <PixelIcon uri={illustration('molecule')} size={40} />
             <span className={`${MICRO_LABEL} text-violet-300 group-open/s:hidden`}>
               + Structures
             </span>

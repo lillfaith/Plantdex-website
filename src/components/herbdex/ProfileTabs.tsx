@@ -222,7 +222,7 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
             className={
-              tab.id === 'field-identification' ? 'field-guide space-y-6' : 'space-y-6 pt-5'
+              tab.id === 'field-identification' ? 'field-guide space-y-6' : 'space-y-4 pt-4'
             }
           >
             {tab.id === 'field-identification' && (
@@ -242,7 +242,7 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                 <ul className="flex flex-wrap gap-2" aria-label="Card use categories">
                   {herb.uses.map((use) => (
                     <li key={use} className="pixel-tile flex items-center gap-2 py-1 pr-3 pl-1.5">
-                      <PixelIcon uri={traitBadge(USE_GLYPH[use] ?? 'leaf')} size={28} />
+                      <PixelIcon uri={traitBadge(USE_GLYPH[use] ?? 'leaf')} size={22} />
                       <span className="text-xs font-bold text-violet-50">{USE_LABEL[use]}</span>
                     </li>
                   ))}
@@ -275,7 +275,7 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                   key={rowKey(row)}
                   className={
                     row.kind === 'split'
-                      ? 'grid gap-8 lg:grid-cols-2 lg:gap-10'
+                      ? 'grid gap-5 lg:grid-cols-2 lg:gap-10'
                       : MEASURE_CLASS[row.sections[0].measure]
                   }
                 >
@@ -293,13 +293,13 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                   <summary className="min-h-11 cursor-pointer text-sm font-bold text-gold-300">
                     {expandable.label}
                   </summary>
-                  <div className="mt-4 space-y-8">
+                  <div className="mt-3 space-y-5">
                     {rows
                       .filter((row) => row.sections.every((s) => expandable.ids.includes(s.id)))
                       .map((row) => (
                         <div
                           key={rowKey(row)}
-                          className={row.kind === 'split' ? 'grid gap-8 lg:grid-cols-2' : ''}
+                          className={row.kind === 'split' ? 'grid gap-5 lg:grid-cols-2' : ''}
                         >
                           {row.sections.map((section) => (
                             <div key={section.id}>{RENDERERS[section.id](herb)}</div>

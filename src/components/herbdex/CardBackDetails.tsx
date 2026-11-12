@@ -77,7 +77,7 @@ export function UsablePartsSection({ herb }: { herb: Herb }) {
         right={<ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />}
         note="The parts the card names as usable."
       />
-      <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+      <ul className="grid grid-cols-4 gap-1.5 sm:grid-cols-6">
         {parts.map((part) => (
           <li key={part}>
             <ArtTile kind="part" word={part} />
@@ -112,12 +112,12 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
         size="lg"
         note="How the card says it has traditionally been prepared."
       />
-      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <ul className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
         {preparations.map((prep) => {
           const entry = PREPARATION_GUIDE.find((candidate) => candidate.match.test(prep));
           return (
-            <li key={prep} className="pixel-tile flex items-center gap-3 px-3 py-2">
-              <PixelIcon uri={illustration(artFor(PREP_ART, prep))} size={40} />
+            <li key={prep} className="pixel-tile flex items-center gap-2 px-2 py-1.5">
+              <PixelIcon uri={illustration(artFor(PREP_ART, prep))} size={28} />
               <span className={`flex-1 ${READING} font-semibold text-violet-100`}>
                 <Term>{prep}</Term>
               </span>
@@ -215,7 +215,7 @@ export function TasteAromaSection({ herb }: { herb: Herb }) {
           .map((column) => (
             <div key={column.key}>
               <h3 className={`mb-2 ${MICRO_LABEL} text-violet-300`}>{column.label}</h3>
-              <ul className="grid grid-cols-2 gap-2">
+              <ul className="grid grid-cols-3 gap-1.5">
                 {column.items.map((item) => (
                   <li key={item}>
                     <ArtTile kind={column.key === 'taste' ? 'taste' : 'aroma'} word={item}>
