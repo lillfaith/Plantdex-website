@@ -13,6 +13,8 @@ import { achievementIcon } from '../icons/achievement-icons';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { CountUp } from './CountUp';
 import { haptic } from '@/lib/haptics';
+import { FIELD_CARDS_NAME, slotsCrossedBetween } from '@/lib/field-cards';
+import { consumeJustUnlocked } from '@/lib/unlocked-field-cards';
 
 /**
  * The discovery celebration: reveal, reward, progress.
@@ -127,6 +129,46 @@ export function DiscoveryCelebration({
   const before = progressFromXp(xpBefore);
   const after = progressFromXp(xpAfter);
   const leveledUp = after.level > before.level;
+
+  /**
+   * FIELD CARDS UNLOCKED BY THIS DISCOVERY, DERIVED RATHER THAN SUBSCRIBED TO.
+   *
+   * This closes a real gap. `recordUnlocks` runs in `HerbdexProvider`, which wraps every
+   * page, so a crossing was RECORDED wherever it happened — but `justUnlocked` is read by
+   * `FieldCardReward`, mounted on /herbdex/research alone. So crossing 600 XP by confirming
+   * a find on /scan granted the card in silence, and the next visit to Field Research
+   * announced a card earned on a different walk as though it had just been won. The
+   * provider's own comment says this was fixed by moving the recording; only half of it
+   * moved. The announcement never did.
+   *
+   * `slotsCrossedBetween` is a set difference over XP, which is why there is nothing to
+   * invalidate: a repeat discovery awards nothing so the difference is empty, and a card
+   * earned last week sits below `xpBefore`. See the argument in `field-cards.ts`.
+   */
+  const unlockedNow = slotsCrossedBetween(xpBefore, xpAfter);
+
+  /*
+   * AND TELL THE RESEARCH PANEL IT HAS BEEN SAID. Without this, a player who saw the card
+   * here and then walked over to /herbdex/research in the same session would be told again
+   * — one event, two announcements, which is the thing `justUnlocked` exists to prevent.
+   * Only the pending reveal is consumed; the written record is untouched, so the card stays
+   * in the quiet `Unlocked` row and the profile's held strip for good.
+   *
+   * DEFERRED BY A TIMEOUT, AND THAT IS NOT A HACK. React runs a CHILD's effects before its
+   * parent's, and the parent here is the provider whose effect calls `recordUnlocks` and
+   * sets the flag. Consuming on mount would therefore run first and find nothing, and the
+   * flag would be set immediately afterwards. A zero timeout lands after the whole commit's
+   * effects, which is exactly the ordering this needs. If it somehow still ran early the
+   * consume is a no-op and the behaviour degrades to what it is today.
+   */
+  const unlockedKey = unlockedNow.map((slot) => slot.ordinal).join(',');
+
+  useEffect(() => {
+    if (!unlockedKey) return;
+    const ordinals = unlockedKey.split(',').map(Number);
+    const timer = setTimeout(() => consumeJustUnlocked(ordinals), 0);
+    return () => clearTimeout(timer);
+  }, [unlockedKey]);
 
   // On a level-up the bar would otherwise animate *backwards* (say 92% -> 8%). Fill the
   // old level to 100% first, then swap to the new level and fill from empty.
@@ -297,6 +339,13 @@ export function DiscoveryCelebration({
               .map((id) => getAchievement(id)?.name ?? id)
               .join(', ')}.`
           : ''}
+        {/* Folded into the one existing announcement rather than given a second live
+            region, which would interrupt the first mid-sentence. */}
+        {unlockedNow.length > 0
+          ? ` ${FIELD_CARDS_NAME} unlocked: ${unlockedNow
+              .map((slot) => slot.card?.commonName ?? `Field Card ${slot.ordinal}`)
+              .join(', ')}.`
+          : ''}
       </p>
 
       <p aria-hidden="true" className="mt-4 text-2xl font-bold text-gold-400 tabular-nums">
@@ -348,6 +397,62 @@ export function DiscoveryCelebration({
               </li>
             );
           })}
+        </ul>
+      )}
+
+      {/*
+        THE FIELD CARD REWARD, INSIDE THIS SEQUENCE RATHER THAN ON TOP OF IT.
+
+        No second dialog. The brief's own rule — do not stack full-screen reward popups — is
+        the reason this is a row in the celebration beside the achievements, and it is also
+        just correct: a player who crosses a threshold by finding a plant has had ONE
+        moment, not two, and two modals would make them dismiss the same event twice.
+
+        TWO THRESHOLDS AT ONCE IS A LIST, NOT A QUEUE. 600 and 1,200 XP can both fall inside
+        one gain, and `slotsCrossedBetween` returns both; they render as two rows in one
+        block. That matches the store's own rule, which treats crossing two thresholds in one
+        go as a single event announcing both.
+
+        It borrows the achievements' own treatment deliberately — same gold border, same
+        `animate-toast-in` — because these are two kinds of the same thing (a reward that is
+        not a discovery) and giving the newer one louder styling would say it mattered more.
+
+        A SLOT WITH NO CARD IS A REAL STATE and is named by ordinal. All nine are drawn
+        today, so nothing renders this branch; a tenth would start here, and inventing a
+        species name to fill the gap is the one thing this repo may never do.
+      */}
+      {unlockedNow.length > 0 && (
+        <ul className="mt-3 space-y-2">
+          {unlockedNow.map((slot) => (
+            <li
+              key={slot.ordinal}
+              className="animate-toast-in flex items-center gap-3 rounded-xl border border-gold-500/60 bg-gold-500/15 px-3 py-2 text-left"
+            >
+              {slot.card && (
+                <span className="card-frame block w-12 shrink-0 overflow-hidden rounded-lg shadow-card">
+                  <Image
+                    src={assetPath(slot.card.thumb)}
+                    alt=""
+                    width={400}
+                    height={648}
+                    className="h-full w-full object-cover"
+                  />
+                </span>
+              )}
+              <span className="min-w-0">
+                <p className="text-sm font-bold text-gold-300">
+                  <PlantdexIcon name="mastered" className="text-sm" /> {FIELD_CARDS_NAME}{' '}
+                  unlocked — {slot.card?.commonName ?? `Field Card ${slot.ordinal}`}
+                </p>
+                {/* Earned with XP, not found outdoors — the profile's own phrasing. Those
+                    are two different records and the dialog must not blur them, least of
+                    all in the same breath as a real discovery. */}
+                <p className="text-xs text-violet-200">
+                  Earned with XP, not found outdoors.
+                </p>
+              </span>
+            </li>
+          ))}
         </ul>
       )}
 

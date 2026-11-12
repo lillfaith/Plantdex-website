@@ -425,6 +425,45 @@ export function slotsUnlockedAt(xp: number): readonly FieldCardSlot[] {
 }
 
 /** The next slot a player has not reached, or null when all nine are unlocked. */
+/**
+ * The slots an XP GAIN crossed — unlocked by `xpAfter`, not by `xpBefore`.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THIS IS WHY THE CELEBRATION NEEDS NO FLAG, NO STORE READ AND NO STALENESS CHECK.
+ *
+ * An unlock is already a pure function of XP (`slotsUnlockedAt`), and the celebration
+ * already knows both totals: it receives `xpAfter` and derives `xpBefore` from the award.
+ * So "did this discovery unlock a Field Card" is a set difference, not a message to be
+ * published, subscribed to and then invalidated.
+ *
+ * Three of the four things that could go wrong fall out for free rather than being guarded:
+ *
+ *   - A REPEAT discovery awards 0 XP, so `xpBefore === xpAfter`, so the difference is
+ *     empty. There is no second announcement to suppress.
+ *   - A RETURNING player opens a celebration only when a new discovery happens, and the
+ *     difference spans that discovery's own award. A card earned last week is below
+ *     `xpBefore` and cannot appear.
+ *   - TWO THRESHOLDS crossed by one gain produce two entries in one list, which is one
+ *     announcement naming both rather than two modals.
+ *
+ * The fourth — the /herbdex/research panel re-announcing the same crossing later in the
+ * session — is the only one that needed real work, and it is handled by consuming
+ * `justUnlocked`, not here.
+ *
+ * `xpAfter <= xpBefore` returns empty rather than computing a negative difference: XP never
+ * falls during play, so a descending pair means the caller is wrong about something and the
+ * safe answer is to announce nothing.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export function slotsCrossedBetween(
+  xpBefore: number,
+  xpAfter: number,
+): readonly FieldCardSlot[] {
+  if (!(xpAfter > xpBefore)) return [];
+  const already = new Set(slotsUnlockedAt(xpBefore).map((slot) => slot.ordinal));
+  return slotsUnlockedAt(xpAfter).filter((slot) => !already.has(slot.ordinal));
+}
+
 export function nextSlotAfter(xp: number): FieldCardSlot | null {
   return FIELD_CARD_SLOTS.find((slot) => xp < slot.xp) ?? null;
 }

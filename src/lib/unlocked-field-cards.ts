@@ -172,6 +172,34 @@ export function recordUnlocks(
  * forgot to pass one would silently read the signed-out scope while a player was signed in,
  * and be wrong in the direction of granting cards.
  */
+/**
+ * Drop ordinals from the pending reveal, because something has already announced them.
+ *
+ * `justUnlocked` exists so a crossing is announced ONCE. Now that the discovery celebration
+ * announces it at the moment it happens, the /herbdex/research reveal would show the same
+ * card a second time if the player walked over to that page in the same session — one event,
+ * two announcements, which is exactly what the flag was introduced to prevent.
+ *
+ * IT TOUCHES ONLY THE PENDING REVEAL, NEVER THE RECORD. The persisted write-once dates are
+ * untouched, so the card stays in the quiet `Unlocked` row, in the profile's held strip and
+ * in `resolveUnlocked` forever. "Already announced" and "no longer owned" are different
+ * facts and this may only ever assert the first. That is also what keeps the ratchet intact:
+ * nothing here can take a card back.
+ *
+ * No-op when nothing matches, so a caller that fires early or twice costs nothing.
+ */
+export function consumeJustUnlocked(ordinals: readonly number[]): void {
+  if (ordinals.length === 0 || justUnlocked.length === 0) return;
+  const drop = new Set(ordinals);
+  const remaining = justUnlocked.filter((ordinal) => !drop.has(ordinal));
+  if (remaining.length === justUnlocked.length) return;
+  justUnlocked = remaining;
+  // The snapshot is what `useSyncExternalStore` compares, so it has to be replaced rather
+  // than mutated, and listeners have to be told or the panel keeps its stale reveal.
+  snapshot = { record: snapshot.record, justUnlocked };
+  for (const listener of listeners) listener();
+}
+
 export function resolveUnlocked(xp: number, record: UnlockRecord): FieldCardSlot[] {
   const derived = new Set(slotsUnlockedAt(xp).map((slot) => slot.ordinal));
   return FIELD_CARD_SLOTS.filter(
