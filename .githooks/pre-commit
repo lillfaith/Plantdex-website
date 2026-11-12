@@ -48,3 +48,7 @@ MSG
     exit 1
   fi
 done
+
+# Wired by the `prepare` script in package.json, which npm runs after `npm install`, so a
+# fresh clone gets this without anyone remembering. To wire it by hand:
+#   git config core.hooksPath .githooks
