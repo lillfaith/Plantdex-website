@@ -144,7 +144,7 @@ export function FieldCardReward() {
 
       {next ? (
         <div className="mt-3">
-          <p className="text-xs tracking-[0.12em] text-violet-400 uppercase">Next Field Card</p>
+          <p className="text-xs tracking-[0.12em] text-violet-400 uppercase">Next unlock-able Field Card</p>
           {/*
             A SLOT WITH NO CARD SAYS SO. Five of the nine are approved thresholds whose
             artwork is not finished, and naming a species we have not drawn — or inventing
@@ -243,16 +243,6 @@ export function FieldCardReward() {
           </ul>
         </div>
       )}
-
-      {/*
-        THE DISTINCTION, SAID PLAINLY AND IN THE ONE PLACE A PLAYER MEETS IT. A Field Card is
-        earned by playing; it is not a card anybody posted you, and unlocking it is not the
-        same as having found that plant outdoors.
-      */}
-      <p className="mt-3 text-xs leading-relaxed text-violet-400">
-        Field Cards are digital and earned by XP. They are not part of the printed Collection
-        01 deck, and unlocking one does not mean you have found that plant.
-      </p>
     </section>
   );
 }
