@@ -111,3 +111,64 @@ boss_forms(user_id, herb_id, earned_at, primary key (user_id, herb_id))
 3. The photo licence policy, and permission to add one cited lookalike species to Dandelion's curated notes.
 4. The schema and the "insert requires mastery and prerequisites" policy in section 3.
 5. Whether a Boss Form should ever change the avatar or sidekick.
+
+---
+
+# Round 2: approved decisions, final security design, sources and open concerns
+
+**Status: still a plan. Nothing implemented.**
+
+## A. Decisions recorded
+
+- Separate challenge module approved; `knowledge-check.ts`, its restrictions and tests unchanged.
+- Thresholds: Part Spotter 3/4, Lookalike Compare 3/3, Habitat and Season 2/3, Boss Trial 9/10. Unlimited retries, immediate feedback, retry of missed questions where practical.
+- Keyword filtering is **not** the safety mechanism. Every served question carries `reviewed: true`, a reviewer, a date and at least one source id; the builder serves nothing unreviewed and a test fails otherwise. Completion copy never claims real-world identification ability.
+- Photos: Wikimedia Commons only, CC0 / CC BY / CC BY-SA, each licence verified on its file page.
+- Avatar and sidekick unchanged. Boss Form appears in the Garden and the expanded profile only.
+- Dandelion is the sole pilot. Boss Form is separate from XP and the three mastery stages. No retroactive grants.
+
+## B. Final security design (replaces the insert-policy design in section 3)
+
+**Why the earlier design is not enough.** An insert policy that checks "a mastered row and three completion rows exist" is circular: the completion rows are as client-writable as the Boss Form row, so anyone can POST them directly to the REST API in order. It stops nothing.
+
+**Final design: no client write path at all.**
+- `challenge_completions` and `boss_forms` get **select-only** policies for the owner. No insert, update or delete policy for any client role.
+- The only writer is a new edge function `challenge-submit`, using the service role after verifying the caller's JWT with `auth.getUser()` (identity from the token, never from the body).
+- The client submits **only** `{ herbId, activityId, attempt, answers }`. It never sends a score, a pass flag or a completion record.
+- The function: (1) rejects any herb not in `BOSS_PILOT`; (2) reads the caller's own `mastered` row and, for the Boss Trial, the three prerequisite rows from the database itself; (3) **rebuilds the question set** from `(herbId, activityId, attempt)` with the same deterministic pure module the client uses (synced to `_shared`); (4) scores the submitted answers itself against that set and applies the thresholds; (5) on a pass, inserts with `on conflict do nothing`, and for the Boss Trial inserts the `boss_forms` row in the same request.
+- Retry-missed flow: each missed question gets one deterministic replacement (a different item, not the same question again). The submission lists the answer for the original and, if needed, the replacement; the server recomputes both and counts a slot resolved if either is correct. The Boss Trial has no replacements: a retry is a new attempt.
+- Input validation: answer indexes bounded, lengths exact, herb and activity ids from fixed lists, one transaction per submission.
+- Rate limit: a per-user hourly cap using the existing quota-bucket pattern (one more bucket; exact limit to be confirmed).
+- Account deletion and export: both tables go in `USER_TABLES` and the export, deleted by the existing service-role deletion function.
+
+**What this prevents:** forged completion or Boss flags, skipping mastery or prerequisites, wrong thresholds, other species, backdating or editing records, writing to another user's rows.
+
+**What it cannot prevent, stated plainly:** the answer key must ship in the public bundle for instant feedback, so a determined player can script correct answers; and `mastered` is itself derived from client-written sightings. The server can prove the records were produced by the real rules and the real order, not that a person studied. The record is cosmetic-only, pays no XP, and the screen says so.
+
+## C. Image sources (candidates only, none verified or downloaded)
+
+Found by search, **not yet verified on their file pages**:
+
+| Need | Candidate on Commons | Licence per search result |
+|---|---|---|
+| Seed head | "Regrat lučka - Taraxacum officinale.JPG" | CC0 1.0 |
+| Seed head | "Taraxacum seed head, Nagai park, Osaka.jpg" | CC BY-SA 4.0 |
+| Seed head | "Dandelion seed head (Taraxacum officinale).jpg" | CC BY-SA 4.0 and earlier, plus GFDL |
+| Rosette, flower, stalk, cat's-ear (leaf hairiness, branched stalks) | not yet chosen | to be verified |
+
+Search snippets are not verification. Each file's licence, author, source URL and any "changes made" note must be read on its file page and recorded in `sources.json` before use.
+
+## D. Botanical reference for the named lookalike
+
+**Proposed: *Hypochaeris radicata* (common or hairy cat's-ear).** Search results consistently describe it as the principal dandelion lookalike, with these distinctions: flower stalks are **branched** (dandelion: one head per unbranched stalk); leaves are **bristly-hairy** (dandelion: smooth); cat's-ear stalks often carry small scale-like bracts (dandelion: none); a central "eye" in the flower is a weak, inconsistent cue.
+
+References seen only as search results so far, **none read in full**: Penn State Extension "noxious weed catsear"; Wikipedia and iNaturalist guide pages for *H. radicata*; Maryland Biodiversity Project. A flora or extension page must be read and quoted for each diagnostic claim before any question is written.
+
+## E. Unresolved concerns (blocking implementation)
+
+1. **I cannot fetch Commons, Wikimedia upload hosts or extension.psu.edu from this environment** (the network policy refuses them; a fetch agent failed at DNS). I therefore cannot verify any licence, download any image or read the botanical sources. Needed: the owner approving an environment network change for `commons.wikimedia.org`, `upload.wikimedia.org` and the chosen reference hosts, or the owner supplying the images and references.
+2. **"Hollow stalk" is not a safe discriminator.** Sources say both plants have hollow stalks; cat's-ear's are tough and may look solid. The existing curated Dandelion note says "unbranched and hollow" which is true of dandelion but must not become the distinguishing feature in any question. Branching and leaf hairiness are the supported ones.
+3. **Dandelion is a species complex.** Questions must not make species-level claims inside *Taraxacum*; the card already treats *T. campylodes* and section-level names carefully.
+4. **Scientific review.** The model that drafted this is not a botanist. "Scientifically reviewed" needs a named human reviewer (the owner or a botanist) to sign each question and its sources. Until then nothing is served.
+5. **CC BY-SA** obliges attribution, a licence link, a statement of changes (a resized crop is an adaptation) and the same licence on the adapted image. It does not make the surrounding site share-alike. Prefer CC0 or CC BY where equal.
+6. The curated Dandelion lookalike entry (a group with no species) needs a cited edit naming *H. radicata*.
