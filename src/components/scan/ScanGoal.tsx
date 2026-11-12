@@ -61,7 +61,7 @@ export function ScanGoal({
         <p className="mt-1.5 text-xs text-violet-300">
           {toNext === null
             ? 'Top level reached.'
-            : `${toNext.toLocaleString()} XP to Level ${progress.level + 1}. Every new plant you find earns XP.`}
+            : `${toNext.toLocaleString()} XP to Level ${progress.level + 1}. Every plant in the deck you find earns you XP.`}
         </p>
       </div>
 
