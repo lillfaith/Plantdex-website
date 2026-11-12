@@ -207,7 +207,7 @@ function Collect() {
         {flipped && herb ? (
           <div key={turns}>
             <p className="text-[0.72rem] font-bold tracking-[0.08em] text-violet-200 uppercase">
-              Healing Traits &middot; traditional use, not medical advice
+              Healing Traits
             </p>
             <ul className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
               {herb.back.healingTraits.slice(0, 4).map((trait, index) => (
