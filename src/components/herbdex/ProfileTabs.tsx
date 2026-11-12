@@ -26,6 +26,8 @@ import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
 import { ReferencePhotos } from './ReferencePhotos';
 import { XpBar } from '../game/XpBar';
+import { HabitatChips } from '../game/HabitatChip';
+import { USE_LABEL } from '@/lib/deck';
 import { useHerbdex } from '@/state/HerbdexProvider';
 
 /**
@@ -174,9 +176,27 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
             className="space-y-8 pt-6"
           >
             {tab.id === 'field-identification' && (
-              <p className="text-sm text-violet-200">
-                {herb.commonName} · <span className="font-botanical italic">{herb.scientificName}</span>
-              </p>
+              <div>
+                <p className="text-sm text-violet-200">
+                  {herb.commonName} ·{' '}
+                  <span className="font-botanical italic">{herb.scientificName}</span>
+                </p>
+                {/* Moved here from the card view; the habitat classification is not lost. */}
+                <HabitatChips herbId={herb.id} className="mt-3" />
+              </div>
+            )}
+            {tab.id === 'herbal-knowledge' && access !== 'locked' && (
+              /* Moved here from the card view: the card's own use categories. */
+              <ul className="flex flex-wrap gap-1.5" aria-label="Card use categories">
+                {herb.uses.map((use) => (
+                  <li
+                    key={use}
+                    className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2.5 py-1 text-xs font-semibold text-gold-300"
+                  >
+                    {USE_LABEL[use]}
+                  </li>
+                ))}
+              </ul>
             )}
             {tab.id === 'your-progress' && access === 'discovered' && (
               /* Account-wide level and XP: there is no per-plant level and none is invented. */
