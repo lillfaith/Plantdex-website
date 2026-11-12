@@ -25,7 +25,7 @@ export function ScanGoal({
   return (
     <section
       aria-label="Your progress today"
-      className="space-y-3 rounded-2xl border border-violet-500/40 bg-plum-800/50 p-3"
+      className="holo-border space-y-3 rounded-2xl p-3"
     >
       <div>
         <div className="flex items-baseline justify-between gap-2">

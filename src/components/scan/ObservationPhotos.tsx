@@ -156,7 +156,7 @@ export function ObservationPhotos({
         into a single answer, so photographs of two different plants produce a confident
         result about neither. It sits above the slots because it governs all of them.
       */}
-      <p className="flex items-center gap-3 rounded-full border border-violet-400/40 bg-plum-800/60 px-4 py-2.5 text-sm leading-snug text-violet-100">
+      <p className="flex items-center gap-3 holo-border rounded-full px-4 py-2.5 text-sm leading-snug text-violet-100">
         <span aria-hidden="true" className="shrink-0 text-2xl text-violet-300">
           <PlantdexIcon name="scan" />
         </span>
@@ -182,7 +182,7 @@ export function ObservationPhotos({
                     one
                       ? 'border-gold-400'
                       : active
-                        ? 'border-violet-200 shadow-[0_0_14px_rgb(214_190_255/0.45)]'
+                        ? 'holo-border'
                         : 'border-violet-500/50'
                   }`}
                 >

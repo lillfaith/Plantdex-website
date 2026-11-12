@@ -107,7 +107,7 @@ export function CollectionHeader() {
           </div>
           <XpMilestones progress={progress} />
         </div>
-        <p className="mt-1.5 text-xs text-violet-300">{progressionSubtext(progress)}</p>
+        <p className="mt-1.5 text-[0.9rem] leading-snug text-violet-200">{progressionSubtext(progress)}</p>
         {ready && progress.xp === 0 && (
           <p className="mt-1 text-xs text-violet-400">
             Earn XP by exploring and completing Field Research. Higher levels unlock digital Field

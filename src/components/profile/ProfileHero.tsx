@@ -263,7 +263,7 @@ export function ProfileHero({
                 other place a player reads their standing, so the two must agree. */}
             <XpMilestones progress={progress} />
           </div>
-          <p className="mt-1 text-xs text-violet-300">{progressionSubtext(progress)}</p>
+          <p className="mt-1 text-[0.9rem] leading-snug text-violet-200">{progressionSubtext(progress)}</p>
 
           <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
             <p className={`${MICRO_LABEL} text-violet-300`}>Collection</p>

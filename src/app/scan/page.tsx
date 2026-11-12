@@ -39,7 +39,11 @@ export default function ScanPage() {
         `shrink-0` because a flex sibling with an intrinsic aspect ratio gives up its width
         first and squashes to a sliver the moment the heading wants more room.
       */}
-      <div className="flex flex-col items-center text-center">
+      <div className="relative flex flex-col items-center text-center">
+        <span
+          aria-hidden="true"
+          className="absolute top-3 left-2 h-1.5 w-28 -rotate-[28deg] rounded-full bg-gradient-to-r from-transparent via-pink-accent/70 to-cyan-accent/80"
+        />
         <ScanScout className="w-20 shrink-0" />
         <h1 className="font-display mt-1 flex items-center gap-3 text-3xl font-extrabold text-gold-plate">
           <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
