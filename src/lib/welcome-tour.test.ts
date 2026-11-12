@@ -51,3 +51,20 @@ describe('the tour is skippable and accessible', () => {
     expect(css).toMatch(/@utility welcome-scene \{[\s\S]*?min-height: 0;/);
   });
 });
+
+describe('the Collect and Garden scenes', () => {
+  const code = strip(SCENES);
+  it('are part of the tour, in order', () => {
+    const ids = [...SCENES.matchAll(/id: '([a-z]+)', Component/g)].map((m) => m[1]);
+    expect(ids).toEqual(['welcome', 'discover', 'collect', 'garden', 'explore']);
+  });
+
+  it('flip a picture only: no store, reducer or writer is reachable from the scenes', () => {
+    expect(code).not.toMatch(/herbdex-store|herbdex-reducer|reveals|useHerbdex|discover\(/);
+    expect(code).toContain('aria-pressed={flipped}');
+  });
+
+  it('draw the garden from the real growth stages', () => {
+    for (const stage of ["'sprout'", "'growing'", "'flowering'"]) expect(code).toContain(stage);
+  });
+});

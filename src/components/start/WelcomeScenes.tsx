@@ -1,14 +1,21 @@
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ComponentType, ReactNode } from 'react';
 import { PlantSprite } from '../PlantSprite';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { ProfileAvatar } from '../profile/ProfileAvatar';
+import { RarityBadge } from '../herbdex/RarityBadge';
+import { assetPath } from '@/lib/asset-path';
+import { getPrintedCard } from '@/lib/deck';
+import type { GardenStage } from '@/lib/garden';
 import { getAchievement } from '@/lib/achievements';
 import { FIELD_FRAMES } from '@/lib/field-frames';
 
 /**
- * The tour's scenes, in order. Stage 1 ships Welcome, Discover and Explore; Collect and
- * Garden slot in between without touching the shell, which only knows this list.
+ * The tour's scenes, in order. Five scenes, each drawn to fit a small phone. The shell only knows this list.
  *
  * Every scene is drawn to fit a 320x568 phone WITHOUT scrolling, and `welcome-tour.test.ts`
  * pins the class budget that keeps it so. None of them awards anything: the rewards on the
@@ -104,6 +111,117 @@ function Discover() {
   );
 }
 
+
+/*
+ * COLLECT. A demonstration card the player can turn over. It is a picture of a printed card
+ * and nothing else: this module imports no store, so flipping it cannot record a discovery,
+ * pay XP or unlock anything. The back is the real printed back, which is the point.
+ */
+function Collect() {
+  const [flipped, setFlipped] = useState(false);
+  const herb = getPrintedCard(GREETER);
+
+  return (
+    <>
+      <Title>Collect the deck</Title>
+      {herb && (
+        <div className="mt-3">
+          <div className="flip-scene relative mx-auto w-32">
+            <span aria-hidden="true" className="welcome-fan welcome-fan-left" />
+            <span aria-hidden="true" className="welcome-fan welcome-fan-right" />
+            <button
+              type="button"
+              aria-pressed={flipped}
+              onClick={() => setFlipped((one) => !one)}
+              aria-label={`Example card: ${herb.commonName}. Tap to turn it over.`}
+              className="relative block w-full rounded-[var(--radius-card)]"
+            >
+              <span className={`flip-card shadow-card-lift block ${flipped ? 'flip-card-revealed' : ''}`}>
+                <Image
+                  src={assetPath(herb.image)}
+                  alt=""
+                  aria-hidden="true"
+                  width={800}
+                  height={1295}
+                  className="invisible w-full"
+                />
+                <span className="flip-face">
+                  <Image
+                    src={assetPath(herb.image)}
+                    alt=""
+                    width={800}
+                    height={1295}
+                    className="h-full w-full object-cover"
+                  />
+                </span>
+                <span className="flip-face flip-face-back">
+                  <Image
+                    src={assetPath(herb.backImage)}
+                    alt=""
+                    width={800}
+                    height={1295}
+                    className="h-full w-full object-cover"
+                  />
+                </span>
+              </span>
+            </button>
+          </div>
+          <p className="mt-2 text-xs font-bold tracking-[0.1em] text-gold-300 uppercase">
+            Tap the card to turn it over
+          </p>
+        </div>
+      )}
+      <ul className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
+        {(['Common', 'Uncommon', 'Rare', 'Epic'] as const).map((tier) => (
+          <li key={tier}>
+            <RarityBadge rarity={tier} />
+          </li>
+        ))}
+      </ul>
+      <p className="mx-auto mt-3 max-w-[19rem] text-sm leading-relaxed text-violet-100">
+        Every plant you find unlocks its card. Cards come in four rarities, earn XP and
+        levels, and open cosmetic rewards. This one is just for show.
+      </p>
+    </>
+  );
+}
+
+/*
+ * GARDEN. Real sprites at the three growth stages, planted in a small bed. The columns say
+ * what grows a plant, using the same mapping `garden.ts` draws: found, learned, mastered.
+ */
+const BED: readonly { stage: GardenStage; label: string; plants: readonly string[] }[] = [
+  { stage: 'sprout', label: 'Found', plants: ['plantago-major', 'viola-sororia'] },
+  { stage: 'growing', label: 'Learned', plants: ['trifolium-pratense', 'urtica-dioica'] },
+  { stage: 'flowering', label: 'Mastered', plants: ['taraxacum-officinale', 'achillea-millefolium'] },
+];
+
+function Garden() {
+  return (
+    <>
+      <Title>Grow your garden</Title>
+      <div aria-hidden="true" className="welcome-bed mx-auto mt-3 grid w-full max-w-[19rem] grid-cols-3 gap-x-1 px-2 pt-2 pb-1">
+        {BED.map((column) => (
+          <div key={column.stage} className="flex flex-col items-center">
+            {column.plants.map((herbId) => (
+              <div key={herbId} className="w-16">
+                <PlantSprite herbId={herbId} stage={column.stage} alt="" fit />
+              </div>
+            ))}
+            <p className="mt-1 text-[0.72rem] leading-tight font-bold text-plum-950">
+              {column.label}
+            </p>
+          </div>
+        ))}
+      </div>
+      <p className="mx-auto mt-3 max-w-[19rem] text-sm leading-relaxed text-violet-100">
+        Every plant you discover appears in your Garden. Learn its card to help it grow, master
+        it to watch it bloom.
+      </p>
+    </>
+  );
+}
+
 const EXPLORE_TILES = [
   { icon: 'journal', label: 'Field Journal', note: 'Your finds' },
   { icon: 'compass', label: 'Regional quests', note: 'Plants to seek' },
@@ -187,5 +305,7 @@ function Explore({ returning, onLeave }: SceneProps) {
 export const SCENES: readonly Scene[] = [
   { id: 'welcome', Component: Welcome },
   { id: 'discover', Component: Discover },
+  { id: 'collect', Component: Collect },
+  { id: 'garden', Component: Garden },
   { id: 'explore', Component: Explore },
 ];

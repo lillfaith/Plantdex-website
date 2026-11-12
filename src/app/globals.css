@@ -2158,6 +2158,32 @@ body {
   box-shadow: 3px 3px 0 var(--color-plum-950);
 }
 
+/* Two card backs peeking out behind the demonstration card: a fan with no extra images. */
+@utility welcome-fan {
+  position: absolute;
+  inset: 4% 0 0 0;
+  border-radius: var(--radius-card);
+  background: linear-gradient(160deg, var(--color-violet-500), var(--color-plum-700));
+  border: 2px solid var(--color-gold-500);
+}
+@utility welcome-fan-left {
+  transform: rotate(-9deg) translateX(-14%);
+}
+@utility welcome-fan-right {
+  transform: rotate(9deg) translateX(14%);
+}
+
+/* A miniature garden bed: meadow above, a strip of soil below, pixel tufts along the top. */
+@utility welcome-bed {
+  background:
+    repeating-linear-gradient(90deg, #5cb86a 0 6px, transparent 6px 14px) top / 100% 5px no-repeat,
+    linear-gradient(180deg, #8fd49a 0%, #6bbd78 100%);
+  border-bottom: 8px solid #6e4528;
+  border: 2px solid var(--color-plum-950);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-plum-950);
+}
+
 @utility welcome-scene-in {
   animation: welcome-greeter-in 320ms cubic-bezier(0.22, 0.72, 0.24, 1) both;
 }
