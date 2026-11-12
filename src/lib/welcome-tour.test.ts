@@ -68,3 +68,15 @@ describe('the Collect and Garden scenes', () => {
     for (const stage of ["'sprout'", "'growing'", "'flowering'"]) expect(code).toContain(stage);
   });
 });
+
+describe('a tall slide can be scrolled to its top', () => {
+  it('does not centre the scroll container, which hides overflow above the top edge', () => {
+    const css = readFileSync('src/app/globals.css', 'utf8');
+    const block = css.match(/@utility welcome-scene \{[\s\S]*?\n\}/)![0];
+    const code = block.replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(code).not.toMatch(/justify-content:\s*center/);
+    expect(code).toMatch(/justify-content:\s*flex-start/);
+    expect(code).toMatch(/& > \* \{\s*margin-block:\s*auto;/);
+    expect(code).toMatch(/overflow-y:\s*auto/);
+  });
+});
