@@ -11,6 +11,7 @@ import { stageForState } from '@/lib/garden';
 import { ACHIEVEMENTS } from '@/lib/achievements';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 import { progressionSubtext } from '@/lib/progression-track';
+import { fieldCardProgress } from '@/lib/field-cards';
 import { XpMilestones } from '../game/XpMilestones';
 import { CountUp } from './CountUp';
 import { ProfileAvatar } from '../profile/ProfileAvatar';
@@ -35,6 +36,8 @@ export function CollectionHeader() {
 
   const pct = Math.round(progress.fraction * 100);
   const title = profile.title ? titleLabel(profile.title, state) : progress.levelName;
+  const cardProgress = fieldCardProgress(progress.xp);
+  const cardPct = Math.round(cardProgress.fraction * 100);
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
   // Four badges: earned ones first (in the achievements' own order), then the next locked ones.
@@ -114,6 +117,42 @@ export function CollectionHeader() {
             Cards.
           </p>
         )}
+      </div>
+
+      {/* ── The next Field Card, on its own bar: same XP, its own threshold ─────────── */}
+      <div className="-mt-1">
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="text-xs font-extrabold tracking-wide text-violet-200 uppercase">
+            XP to next Field Card
+          </p>
+          <p className="text-xs font-semibold text-violet-300 tabular-nums">
+            {cardProgress.next
+              ? `${cardProgress.remaining.toLocaleString()} XP to go`
+              : 'All unlocked'}
+          </p>
+        </div>
+        <div
+          className="relative mt-1 h-5 overflow-hidden rounded-full bg-plum-950/80 ring-2 ring-violet-400/50"
+          role="progressbar"
+          aria-valuenow={cardPct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={
+            cardProgress.next
+              ? `${cardProgress.remaining} XP to your next Field Card`
+              : 'Every Field Card unlocked'
+          }
+        >
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-violet-600 to-violet-400 transition-[width] duration-500 ease-out"
+            style={{ width: `${cardPct}%` }}
+          />
+          <p className="absolute inset-y-0 right-3 flex items-center text-[0.72rem] font-extrabold text-violet-50 tabular-nums">
+            {cardProgress.next
+              ? `${progress.xp.toLocaleString()} / ${cardProgress.next.xp.toLocaleString()} XP`
+              : `${cardProgress.unlockedCount} / ${cardProgress.unlockedCount}`}
+          </p>
+        </div>
       </div>
 
       {/* ── What you hold ───────────────────────────────────────────── */}
