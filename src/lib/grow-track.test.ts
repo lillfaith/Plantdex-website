@@ -180,3 +180,15 @@ describe('the growth panel points at actions that actually exist', () => {
     expect(TRACK).toMatch(/<KnowledgeCheck herb=\{herb\} showTrigger=\{learnStepIsNext\} \/>/);
   });
 });
+
+describe('a recorded mastery is finished even with no sighting on file', () => {
+  it('has no current step when the sighting that earned it was deleted', () => {
+    const track = growTrack(
+      state({ discoveries: { [HERB]: at }, learned: { [HERB]: at }, mastered: { [HERB]: at } }),
+      HERB,
+      0,
+    );
+    expect(track?.complete).toBe(true);
+    expect(track?.steps.every((s) => s.done && !s.current)).toBe(true);
+  });
+});

@@ -97,7 +97,10 @@ export function growTrack(
 
   const found = Boolean(state.discoveries[herbId]);
   const learned = Boolean(state.learned[herbId]);
-  const logged = sightings >= SIGHTINGS_FOR_MASTERY;
+  // Mastery is recorded and never revoked, so a mastered plant has every step done even if
+  // the sighting that earned it was later deleted.
+  const mastered = Boolean(state.mastered[herbId]);
+  const logged = mastered || sightings >= SIGHTINGS_FOR_MASTERY;
 
   /*
    * THE ONE PLACE THE PANEL SAYS SOMETHING OTHER THAN AN INSTRUCTION.
@@ -115,13 +118,13 @@ export function growTrack(
     {
       id: 'found',
       label: 'Found in the wild',
-      done: found,
+      done: found || mastered,
       note: null,
     },
     {
       id: 'learn',
       label: 'Learn the card',
-      done: learned,
+      done: learned || mastered,
       note: 'Pass its card check — every question comes from what this card prints.',
     },
     {
@@ -138,7 +141,7 @@ export function growTrack(
 
   return {
     stage,
-    complete: Boolean(state.mastered[herbId]),
+    complete: mastered,
     steps: steps.map((step, index) => ({ ...step, current: index === nextIndex })),
   };
 }
