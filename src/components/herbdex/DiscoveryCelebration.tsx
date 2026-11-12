@@ -84,11 +84,11 @@ type Intro = 'card' | 'grey' | 'lit' | 'out' | 'done';
 // Unhurried, and every step has room to be seen: the card holds face down, steps aside, the
 // grey sprite is shown for a beat, lights up, circled by the star, then trades places with
 // the card, which rests face down before it turns.
-const INTRO_GREY_AT = 600;
-const INTRO_LIT_AT = 1100;
-const INTRO_OUT_AT = 3100;
-const INTRO_DONE_AT = 3600;
-const AFTER_INTRO_FLIP_MS = 350;
+const INTRO_GREY_AT = 350;
+const INTRO_LIT_AT = 650;
+const INTRO_OUT_AT = 1950;
+const INTRO_DONE_AT = 2350;
+const AFTER_INTRO_FLIP_MS = 250;
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -393,7 +393,7 @@ export function DiscoveryCelebration({
         {(intro === 'grey' || intro === 'lit' || intro === 'out') && (
           <div
             aria-hidden="true"
-            className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-500 [animation:reveal-fade_500ms_ease-out_backwards] ${
+            className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 [animation:reveal-fade_300ms_ease-out_backwards] ${
               intro === 'out' ? 'opacity-0' : 'opacity-100'
             }`}
           >
@@ -402,14 +402,14 @@ export function DiscoveryCelebration({
                 card's own silhouette during the hold, then the lit sprite. The grey copy is
                 a held frame. A radial wash rather than a blur, which would repaint each frame. */}
             {(intro === 'lit' || intro === 'out') && (
-              <span className="absolute inset-0 bg-[radial-gradient(circle,rgb(255_212_92/0.3)_0%,transparent_62%)] [animation:reveal-fade_1000ms_ease-out_backwards]" />
+              <span className="absolute inset-0 bg-[radial-gradient(circle,rgb(255_212_92/0.3)_0%,transparent_62%)] [animation:reveal-fade_600ms_ease-out_backwards]" />
             )}
             <span className="relative block w-full">
               <span className="block w-full opacity-60 [filter:brightness(0)_saturate(0)]">
                 <PlantSprite herbId={herb.id} alt="" fit frozen />
               </span>
               {(intro === 'lit' || intro === 'out') && (
-                <span className="absolute inset-0 block w-full [animation:reveal-fade_1000ms_ease-out_backwards]">
+                <span className="absolute inset-0 block w-full [animation:reveal-fade_600ms_ease-out_backwards]">
                   <PlantSprite herbId={herb.id} alt="" fit />
                 </span>
               )}
