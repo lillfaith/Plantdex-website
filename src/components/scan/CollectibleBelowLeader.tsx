@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { collectibleBelowLeader, type CandidateCardView } from '@/lib/scan-summary';
+import { combinedSupport, type SupportCandidate } from '@/lib/card-support';
 import { getCatalogueEntry } from '@/lib/catalogue';
 
 /**
@@ -46,6 +47,42 @@ export function CollectibleBelowLeader({
         its card
       </Link>{' '}
       before you record anything.
+    </p>
+  );
+}
+
+/**
+ * "Several of these names are the same plant" — the figure a reader thought they were
+ * already being shown.
+ *
+ * A provider splits its mass across NAMES, and several names routinely mean one card, so a
+ * correct identification can lead at 45% while 68% of the ranking points at that card. See
+ * `card-support.ts` for why adding those shares is description rather than inflation.
+ *
+ * Shown only when more than one name contributes; otherwise it would restate a number
+ * already on the row above it.
+ */
+export function CombinedSupport({ candidates }: { candidates: readonly SupportCandidate[] }) {
+  const support = combinedSupport(candidates);
+  if (!support) return null;
+
+  const herb = getCatalogueEntry(support.herbId);
+  if (!herb) return null;
+
+  return (
+    <p className="mt-3 rounded-xl border border-violet-600/50 bg-plum-800/60 p-3 text-xs leading-relaxed text-violet-200">
+      <span className="font-semibold text-violet-100">
+        {support.names.length} of these suggestions are names for {herb.commonName} —{' '}
+        <span className="text-gold-400">{Math.round(support.share * 100)}%</span> of the
+        ranking between them.
+      </span>{' '}
+      {/*
+        The caveat travels WITH the number, not in grey text at the foot of the list. A
+        combined share is no more calibrated than the parts it was added from, and this is
+        the one line most likely to be read as a probability.
+      */}
+      Still a ranking rather than a calibrated probability, and still worth checking the
+      plant against the card.
     </p>
   );
 }

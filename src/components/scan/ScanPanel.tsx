@@ -26,7 +26,7 @@ import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
-import { CollectibleBelowLeader } from './CollectibleBelowLeader';
+import { CollectibleBelowLeader, CombinedSupport } from './CollectibleBelowLeader';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
@@ -782,6 +782,13 @@ export function ScanPanel() {
                   no outcome; see `collectibleBelowLeader`.
                 */}
                 <CollectibleBelowLeader candidates={result.candidates} />
+
+                {/*
+                  Several names for one plant read as one weak answer unless somebody adds
+                  them up. This says what the ranking actually points at; it changes no
+                  ranking and no outcome.
+                */}
+                <CombinedSupport candidates={result.candidates} />
 
                 <h4
                   ref={listRef}
