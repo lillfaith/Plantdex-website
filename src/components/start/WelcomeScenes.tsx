@@ -10,6 +10,7 @@ import { ProfileAvatar } from '../profile/ProfileAvatar';
 import { RarityBadge } from '../herbdex/RarityBadge';
 import { assetPath } from '@/lib/asset-path';
 import { getPrintedCard } from '@/lib/deck';
+import { spriteFor } from '@/lib/plant-sprites';
 import type { GardenStage } from '@/lib/garden';
 import { getAchievement } from '@/lib/achievements';
 import { FIELD_FRAMES } from '@/lib/field-frames';
@@ -51,6 +52,43 @@ function Title({ children }: { children: ReactNode }) {
   );
 }
 
+
+/*
+ * THE THREE GREETERS, SPACED BY WHAT YOU SEE RATHER THAN BY THEIR BOXES.
+ *
+ * Every sprite sits centred in a frame with a different amount of empty margin, so equal
+ * boxes or equal gaps between boxes leave unequal gaps between the plants. Each manifest
+ * entry carries the measured ink box of its resting frame; the margins below are solved so
+ * the gap between one plant's ink and the next is the same, and the row is then shifted to
+ * put the ink — not the boxes — at the centre.
+ */
+const GREETING_GAP = 10;
+const GREETING_ROW = (() => {
+  const plants = [
+    { herbId: 'viola-sororia', width: 96, center: false },
+    { herbId: GREETER, width: 144, center: true },
+    { herbId: 'monarda-fistulosa', width: 96, center: false },
+  ] as const;
+  const ink = plants.map((plant) => {
+    const box = spriteFor(plant.herbId, 'flowering')?.content;
+    return { left: box?.left ?? 0, right: box?.right ?? 1 };
+  });
+  const items = plants.map((plant, index) => {
+    const here = ink[index]!;
+    const before = ink[index - 1];
+    const previous = plants[index - 1];
+    const marginLeft =
+      before && previous
+        ? GREETING_GAP - previous.width * (1 - before.right) - plant.width * here.left
+        : 0;
+    return { ...plant, marginLeft };
+  });
+  const last = plants.length - 1;
+  const padLeft = plants[0].width * ink[0]!.left;
+  const padRight = plants[last]!.width * (1 - ink[last]!.right);
+  return { items, shift: (padRight - padLeft) / 2 };
+})();
+
 function Welcome({ onNext }: SceneProps) {
   return (
     <>
@@ -62,14 +100,19 @@ function Welcome({ onNext }: SceneProps) {
         <span aria-hidden="true" className="welcome-mote welcome-mote-a" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-b" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-c" />
-        <div className="relative z-0 -mr-4 w-24 shrink-0">
-          <PlantSprite herbId="viola-sororia" stage="flowering" alt="" fit />
-        </div>
-        <div className="welcome-greeter relative z-10 w-36 shrink-0">
-          <PlantSprite herbId={GREETER} stage="flowering" alt="" fit />
-        </div>
-        <div className="relative z-0 -ml-4 w-24 shrink-0">
-          <PlantSprite herbId="monarda-fistulosa" stage="flowering" alt="" fit />
+        <div
+          className="flex items-end"
+          style={{ transform: `translateX(${GREETING_ROW.shift}px)` }}
+        >
+          {GREETING_ROW.items.map((item) => (
+            <div
+              key={item.herbId}
+              className={`shrink-0 ${item.center ? 'welcome-greeter relative z-10' : ''}`}
+              style={{ width: item.width, marginLeft: item.marginLeft }}
+            >
+              <PlantSprite herbId={item.herbId} stage="flowering" alt="" fit />
+            </div>
+          ))}
         </div>
       </div>
       <Title>Welcome to Plantdex</Title>
