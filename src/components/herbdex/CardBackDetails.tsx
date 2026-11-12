@@ -2,14 +2,12 @@ import type { IconName } from '../icons/PlantdexIcon';
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
-import { Panel } from '../ui/Panel';
-import { SectionHeader } from '../ui/SectionHeader';
-import { ArtTile, PixelIcon, TraitList } from './HerbalVisuals';
+import { ArtTile, HerbalPanel, PixelIcon, TraitList } from './HerbalVisuals';
 import { PREP_ART, artFor, illustration } from '@/lib/pixel-icons';
 import { ProvenanceChip } from '../game/Provenance';
 import { evidenceFor, STANDING_LABEL } from '@/lib/trait-evidence';
 import { isFieldCard } from '@/lib/field-cards';
-import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
+import { MICRO_LABEL } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
 import { ContaminationNote } from '../SafetyNotice';
 
@@ -63,40 +61,45 @@ const PREPARATION_GUIDE: { match: RegExp; icon: IconName; guide?: string }[] = [
   { match: /^(fresh|fresh greens|salad)$/i, icon: 'leaves' },
 ];
 
-
 export function UsablePartsSection({ herb }: { herb: Herb }) {
   const parts = herb.back.usableParts;
   if (!parts.length) return null;
   return (
-    <section aria-labelledby="parts-heading">
-      <SectionHeader
-        id="parts-heading"
-        title={BACK_SECTION_LABEL.usableParts}
-        accent="mauve"
-        size="lg"
-        right={<ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />}
-        note="The parts the card names as usable."
-      />
-      <ul className="grid grid-cols-4 gap-1.5 sm:grid-cols-6">
-        {parts.map((part) => (
-          <li key={part}>
-            <ArtTile kind="part" word={part} />
-          </li>
-        ))}
-      </ul>
-      {/*
-        BELOW THE PARTS, NOT ABOVE THEM. This section's job is to print what the card names as
-        usable, and the heading plus the provenance chip is what says where that list came
-        from; a warning wedged in front of it would push the card's own content down on the one
-        section a reader opened the page for. Underneath, it reads as the last thing to think
-        about before acting on the list — which is exactly when "where did this grow" is the
-        unanswered question. Contamination is a property of the ground, so it belongs against
-        the parts a reader is about to eat rather than against the identification above.
-      */}
-      <div className="mt-3">
-        <ContaminationNote />
+    <HerbalPanel id="parts-heading" icon="leaf" title={BACK_SECTION_LABEL.usableParts}>
+      <div className="space-y-2 px-2 pb-2">
+        <ul className="grid grid-cols-2 gap-1.5">
+          {parts.map((part) => (
+            <li key={part}>
+              <ArtTile kind="part" word={part} />
+            </li>
+          ))}
+        </ul>
       </div>
-    </section>
+    </HerbalPanel>
+  );
+}
+
+/**
+ * Parts and preparations sit side by side as one working pair, with the single foraging
+ * warning underneath at full width where it can be read. It is rendered once here, below the
+ * parts it is about, and nowhere else on the profile.
+ */
+export function PartsAndPreparations({ herb }: { herb: Herb }) {
+  const hasParts = herb.back.usableParts.length > 0;
+  const hasPreps = herb.back.preparations.length > 0;
+  return (
+    <div>
+      <div className={hasParts && hasPreps ? 'grid grid-cols-[5fr_7fr] items-start gap-2' : ''}>
+        <UsablePartsSection herb={herb} />
+        <PreparationsSection herb={herb} />
+      </div>
+      {hasParts && (
+        <div className="mt-2 space-y-2">
+          <ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />
+          <ContaminationNote />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -104,27 +107,23 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
   const preparations = herb.back.preparations;
   if (!preparations.length) return null;
   return (
-    <section aria-labelledby="prep-heading">
-      <SectionHeader
-        id="prep-heading"
-        title={BACK_SECTION_LABEL.preparations}
-        accent="violet"
-        size="lg"
-        note="How the card says it has traditionally been prepared."
-      />
-      <ul className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+    <HerbalPanel id="prep-heading" icon="mortar" title={BACK_SECTION_LABEL.preparations}>
+      <ul className="grid grid-cols-2 gap-1.5 px-2 pb-2">
         {preparations.map((prep) => {
           const entry = PREPARATION_GUIDE.find((candidate) => candidate.match.test(prep));
           return (
-            <li key={prep} className="pixel-tile flex items-center gap-2 px-2 py-1.5">
-              <PixelIcon uri={illustration(artFor(PREP_ART, prep))} size={28} />
-              <span className={`flex-1 ${READING} font-semibold text-violet-100`}>
+            <li
+              key={prep}
+              className="pixel-tile flex flex-col items-center gap-0.5 px-1 py-2 text-center"
+            >
+              <PixelIcon uri={illustration(artFor(PREP_ART, prep))} size={32} />
+              <span className="text-xs leading-tight font-bold text-violet-50">
                 <Term>{prep}</Term>
               </span>
               {entry?.guide && (
                 <Link
                   href={`/learn/preparations#${entry.guide}`}
-                  className={`inline-flex min-h-11 items-center px-1 ${NOTE} font-semibold text-violet-300 underline underline-offset-2 hover:text-gold-400`}
+                  className="inline-flex min-h-8 items-center px-2 text-[0.72rem] font-semibold text-violet-200 underline underline-offset-2 hover:text-gold-300"
                 >
                   Guide
                 </Link>
@@ -133,7 +132,7 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
           );
         })}
       </ul>
-    </section>
+    </HerbalPanel>
   );
 }
 
@@ -141,19 +140,17 @@ export function HealingTraitsSection({ herb }: { herb: Herb }) {
   const traits = herb.back.healingTraits;
   if (!traits.length) return null;
   return (
-    <Panel frame="bare" as="section" aria-labelledby="healing-heading">
-      <SectionHeader
-        id="healing-heading"
-        title={BACK_SECTION_LABEL.healingTraits}
-        accent="gold"
-        size="lg"
-        // The one place on this page that says it, directly under the heading it qualifies,
-        // which is where a caveat actually gets read.
-        note="Traditional and historical use, as printed. Not medical advice, and not a claim that this plant treats anything."
-      />
-      <TraitList traits={traits} render={(trait) => <Term>{trait}</Term>} />
-      <TraitEvidenceNote herb={herb} />
-    </Panel>
+    <HerbalPanel id="healing-heading" icon="leaf" title={BACK_SECTION_LABEL.healingTraits}>
+      <div className="space-y-2 px-2 pb-2">
+        {/* The one place on this page that says it, directly under the heading it qualifies. */}
+        <p className="text-xs leading-snug text-violet-200 italic">
+          Traditional and historical use, as printed. Not medical advice, and not a claim that this
+          plant treats anything.
+        </p>
+        <TraitList traits={traits} render={(trait) => <Term>{trait}</Term>} />
+        <TraitEvidenceNote herb={herb} />
+      </div>
+    </HerbalPanel>
   );
 }
 
@@ -199,34 +196,29 @@ function TraitEvidenceNote({ herb }: { herb: Herb }) {
 export function TasteAromaSection({ herb }: { herb: Herb }) {
   const { taste, aromatic } = herb.back;
   if (!taste.length && !aromatic.length) return null;
+  const strips = [
+    { key: 'taste', icon: 'taste', items: taste, label: BACK_SECTION_LABEL.taste },
+    { key: 'aromatic', icon: 'aroma', items: aromatic, label: BACK_SECTION_LABEL.aromatic },
+  ].filter((strip) => strip.items.length > 0);
   return (
-    <Panel family="field" pad="md" accent="blossom" aria-labelledby="profile-heading">
-      <SectionHeader id="profile-heading" accent="blossom" title="Taste &amp; aroma" />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {[
-          { key: 'taste', items: taste, label: BACK_SECTION_LABEL.taste },
-          {
-            key: 'aromatic',
-            items: aromatic,
-            label: BACK_SECTION_LABEL.aromatic,
-          },
-        ]
-          .filter((column) => column.items.length > 0)
-          .map((column) => (
-            <div key={column.key}>
-              <h3 className={`mb-2 ${MICRO_LABEL} text-violet-300`}>{column.label}</h3>
-              <ul className="grid grid-cols-3 gap-1.5">
-                {column.items.map((item) => (
-                  <li key={item}>
-                    <ArtTile kind={column.key === 'taste' ? 'taste' : 'aroma'} word={item}>
-                      <Term>{item}</Term>
-                    </ArtTile>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+    <HerbalPanel id="profile-heading" icon="taste" title="Taste &amp; aroma">
+      <div className="space-y-1.5 px-2 pb-2">
+        {strips.map((strip) => (
+          <div key={strip.key} className="herbal-strip flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="flex items-center gap-1 text-[0.72rem] font-extrabold tracking-wide text-violet-200 uppercase">
+              <PixelIcon uri={illustration(strip.icon)} size={22} />
+              {strip.label}
+            </span>
+            <ul className="flex flex-wrap gap-x-3 gap-y-0.5 text-sm font-bold text-violet-50">
+              {strip.items.map((item) => (
+                <li key={item}>
+                  <Term>{item}</Term>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
-    </Panel>
+    </HerbalPanel>
   );
 }

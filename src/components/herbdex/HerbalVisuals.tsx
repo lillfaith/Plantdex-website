@@ -40,6 +40,28 @@ export function PixelIcon({ uri, size = 40 }: { uri: string; size?: number }) {
  * is fixed by construction.
  */
 const WINDOW = { x: 50, y: 150, w: 690, h: 440, sheetW: 800 };
+export function HerbalPanel({
+  id,
+  icon,
+  title,
+  children,
+}: {
+  id: string;
+  icon: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section aria-labelledby={id} className="herbal-panel">
+      <h2 id={id} className="panel-pill">
+        <PixelIcon uri={illustration(icon)} size={22} />
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
 export function HerbalHero({ herb }: { herb: Herb }) {
   const scale = (WINDOW.sheetW / WINDOW.w) * 100;
   return (
@@ -59,6 +81,9 @@ export function HerbalHero({ herb }: { herb: Herb }) {
           top: `${-(WINDOW.y / WINDOW.h) * 100}%`,
         }}
       />
+      <figcaption className="absolute top-2 left-2 rounded-sm bg-plum-900/80 px-2 py-0.5 text-[0.72rem] font-extrabold tracking-[0.08em] text-gold-200 uppercase shadow-[0_0_0_2px_#b8841f]">
+        Botanical record #{String(herb.cardNumber).padStart(3, '0')}
+      </figcaption>
     </figure>
   );
 }

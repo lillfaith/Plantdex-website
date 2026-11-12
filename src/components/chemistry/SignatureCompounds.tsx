@@ -1,5 +1,5 @@
-import { PixelIcon } from '../herbdex/HerbalVisuals';
-import { gemFor, illustration } from '@/lib/pixel-icons';
+import { HerbalPanel, PixelIcon } from '../herbdex/HerbalVisuals';
+import { gemFor } from '@/lib/pixel-icons';
 import type { Herb } from '@/lib/types';
 import { compoundFor, sortForPlate, type CompoundEntry } from '@/lib/compounds';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
@@ -378,44 +378,33 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
 
   const order = sortForPlate(compounds);
 
-  // The card's own layout, reduced: a flask pill, a ruled list of names beside a small
-  // molecule. The structures stay behind a tap, as before, so nothing is lost.
+  // Gem collectibles up front; the structure drawings and links stay behind a tap.
   return (
-    <section aria-labelledby="compounds-heading" className="pixel-tile overflow-hidden">
-      <h2
-        id="compounds-heading"
-        className="flex items-center gap-2 bg-gradient-to-r from-violet-500/70 to-violet-700/50 shadow-[inset_0_3px_0_0_rgb(214_190_255/0.45)] px-3 py-1.5 text-base font-extrabold text-gold-300"
-      >
-        <PixelIcon uri={illustration('flask')} size={24} />
-        {BACK_SECTION_LABEL.compounds}
-      </h2>
-      <details className="group/s">
-        <summary className="flex cursor-pointer list-none items-center gap-3 p-3">
-          <ul className="min-w-0 flex-1">
-            {order.map((printed) => (
-              <li
-                key={printed}
-                className="flex items-center gap-2.5 border-b border-violet-500/30 py-1 last:border-b-0"
-              >
-                <PixelIcon uri={gemFor(printed)} size={18} />
-                <span className="text-sm font-bold text-violet-50">{printed}</span>
-              </li>
-            ))}
-          </ul>
-          <span className="flex shrink-0 flex-col items-center gap-1">
-            <PixelIcon uri={illustration('molecule')} size={40} />
-            <span className={`${MICRO_LABEL} text-violet-300 group-open/s:hidden`}>
-              + Structures
+    <HerbalPanel id="compounds-heading" icon="flask" title={BACK_SECTION_LABEL.compounds}>
+      <ul className="grid grid-cols-4 gap-1.5 px-2 pb-2 sm:grid-cols-5">
+        {order.map((printed) => (
+          <li
+            key={printed}
+            className="pixel-tile flex flex-col items-center gap-1 px-1 py-2 text-center"
+          >
+            <PixelIcon uri={gemFor(printed)} size={36} />
+            <span className="text-[0.72rem] leading-tight font-bold break-words text-violet-50">
+              {printed}
             </span>
-          </span>
+          </li>
+        ))}
+      </ul>
+      <details className="px-2 pb-2">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center text-xs font-extrabold tracking-wide text-violet-200 uppercase">
+          + Structures and links
         </summary>
         {/* `items-start` so a plate with four connections does not stretch its whole row. */}
-        <ul className="grid grid-cols-1 items-start gap-3 p-3 pt-1 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 items-start gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {order.map((printed) => (
             <CompoundPlate key={printed} herb={herb} printed={printed} />
           ))}
         </ul>
       </details>
-    </section>
+    </HerbalPanel>
   );
 }

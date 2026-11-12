@@ -12,12 +12,7 @@ import {
   type ProfileTabId,
   type SectionMeasure,
 } from '@/lib/profile-sections';
-import {
-  HealingTraitsSection,
-  PreparationsSection,
-  TasteAromaSection,
-  UsablePartsSection,
-} from './CardBackDetails';
+import { HealingTraitsSection, TasteAromaSection, PartsAndPreparations } from './CardBackDetails';
 import { HabitatSection, IdentificationSection, LookalikeSection } from './FieldNotesSections';
 import { FieldDataStrip } from './FieldDataStrip';
 import { SignatureCompounds } from '../chemistry/SignatureCompounds';
@@ -72,29 +67,20 @@ const RENDERERS: Record<ProfileSectionId, (herb: Herb) => React.ReactNode> = {
   'field-data': (herb) => <FieldDataStrip herb={herb} />,
   healing: (herb) => <HealingTraitsSection herb={herb} />,
   compounds: (herb) => <SignatureCompounds herb={herb} />,
-  parts: (herb) => <UsablePartsSection herb={herb} />,
-  preparations: (herb) => <PreparationsSection herb={herb} />,
+  parts: (herb) => <PartsAndPreparations herb={herb} />,
+  // Rendered beside the parts, inside PartsAndPreparations, so the pair shares one row.
+  preparations: () => null,
   taste: (herb) => <TasteAromaSection herb={herb} />,
   sources: (herb) => <SourcesSection herb={herb} />,
   mastery: (herb) => <MasteryTrack herb={herb} />,
   sightings: (herb) => <MySightings herb={herb} />,
 };
 
-/** Sections that live inside an expandable subsection, per tab, so long content stays short. */
 const EXPANDABLE: Partial<
   Record<ProfileTabId, { ids: readonly ProfileSectionId[]; label: string }>
-> = {
-  'herbal-knowledge': {
-    ids: ['parts', 'preparations', 'taste'],
-    label: 'Parts, preparations and taste',
-  },
-};
+> = {};
 
-/** Visual grouping in Herbal Knowledge: traditional use is gold-edged, chemistry lilac-edged. */
-const GROUP: Partial<Record<ProfileSectionId, string>> = {
-  healing: 'border-l-4 border-gold-500/70 pl-3',
-  compounds: 'border-l-4 border-mystery-lilac/70 pl-3',
-};
+const GROUP: Partial<Record<ProfileSectionId, string>> = {};
 
 const USE_GLYPH: Record<string, TraitGlyph> = {
   digestive: 'digestive',
@@ -222,7 +208,11 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
             className={
-              tab.id === 'field-identification' ? 'field-guide space-y-6' : 'space-y-4 pt-4'
+              tab.id === 'field-identification'
+                ? 'field-guide space-y-6'
+                : tab.id === 'herbal-knowledge'
+                  ? 'herbal-frame space-y-2'
+                  : 'space-y-4 pt-4'
             }
           >
             {tab.id === 'field-identification' && (
@@ -237,16 +227,34 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
             )}
             {tab.id === 'herbal-knowledge' && access !== 'locked' && (
               /* The card's own use categories, drawn as the card's circular badges. */
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <HerbalHero herb={herb} />
-                <ul className="flex flex-wrap gap-2" aria-label="Card use categories">
-                  {herb.uses.map((use) => (
-                    <li key={use} className="pixel-tile flex items-center gap-2 py-1 pr-3 pl-1.5">
-                      <PixelIcon uri={traitBadge(USE_GLYPH[use] ?? 'leaf')} size={22} />
-                      <span className="text-xs font-bold text-violet-50">{USE_LABEL[use]}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex items-start justify-between gap-2 px-1">
+                  <div className="min-w-0">
+                    <p className="font-display text-2xl leading-none font-extrabold text-violet-50">
+                      {herb.commonName}
+                    </p>
+                    <p className="font-botanical mt-1 text-sm text-violet-300 italic">
+                      {herb.scientificName}
+                    </p>
+                  </div>
+                  <ul
+                    className="flex max-w-[55%] flex-wrap justify-end gap-1.5"
+                    aria-label="Card use categories"
+                  >
+                    {herb.uses.map((use) => (
+                      <li
+                        key={use}
+                        className="pixel-tile flex items-center gap-1.5 py-0.5 pr-2 pl-1"
+                      >
+                        <PixelIcon uri={traitBadge(USE_GLYPH[use] ?? 'leaf')} size={20} />
+                        <span className="text-[0.72rem] font-bold text-violet-50">
+                          {USE_LABEL[use]}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
             {tab.id === 'your-progress' && access === 'discovered' && (
@@ -274,16 +282,18 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                 <div
                   key={rowKey(row)}
                   className={
-                    row.kind === 'split'
+                    row.kind === 'split' && !row.sections.some((s) => s.id === 'parts')
                       ? 'grid gap-5 lg:grid-cols-2 lg:gap-10'
                       : MEASURE_CLASS[row.sections[0].measure]
                   }
                 >
-                  {row.sections.map((section) => (
-                    <div key={section.id} className={GROUP[section.id]}>
-                      {RENDERERS[section.id](herb)}
-                    </div>
-                  ))}
+                  {row.sections
+                    .filter((section) => section.id !== 'preparations')
+                    .map((section) => (
+                      <div key={section.id} className={GROUP[section.id]}>
+                        {RENDERERS[section.id](herb)}
+                      </div>
+                    ))}
                 </div>
               );
             })}

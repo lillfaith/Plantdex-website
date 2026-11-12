@@ -2625,3 +2625,46 @@ body {
   margin: 6px;
   border-radius: 2px;
 }
+
+/* Herbalism profile: one continuous purple frame with lavender panels and gold pill headers. */
+@utility herbal-frame {
+  padding: 10px;
+  margin: 8px 5px 0;
+  background: linear-gradient(180deg, rgb(70 34 120 / 0.9), rgb(36 16 66 / 0.95));
+  box-shadow:
+    0 0 0 3px #4b1d8f,
+    0 0 0 5px #b8841f,
+    inset 0 3px 0 0 rgb(214 190 255 / 0.3);
+  border-radius: 2px;
+}
+@utility herbal-panel {
+  margin: 2px;
+  background: linear-gradient(180deg, rgb(98 58 160 / 0.55), rgb(52 26 98 / 0.6));
+  box-shadow:
+    0 0 0 2px rgb(150 118 224 / 0.6),
+    inset 0 3px 0 0 rgb(214 190 255 / 0.22);
+  border-radius: 2px;
+}
+@utility panel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 8px 8px;
+  padding: 2px 8px 2px 5px;
+  font-size: 0.92rem;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #fff3c4;
+  background: linear-gradient(90deg, #7144b8, #4b2490);
+  box-shadow:
+    0 -2px 0 0 #b8841f,
+    0 2px 0 0 #b8841f,
+    -2px 0 0 0 #b8841f,
+    2px 0 0 0 #b8841f;
+}
+@utility herbal-strip {
+  padding: 6px 8px;
+  background: rgb(190 160 250 / 0.18);
+  box-shadow: inset 0 2px 0 0 rgb(214 190 255 / 0.3);
+  border-radius: 4px;
+}

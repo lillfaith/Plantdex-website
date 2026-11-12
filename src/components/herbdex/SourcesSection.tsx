@@ -1,3 +1,5 @@
+import { PixelIcon } from './HerbalVisuals';
+import { pixelObject } from '@/lib/pixel-art';
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
 import { citationsFor, evidenceLabelFor } from '@/lib/card-sources';
@@ -48,14 +50,21 @@ export function SourcesSection({ herb }: { herb: Herb }) {
   if (total === 0) return null;
 
   return (
-    <details className="science-panel p-5">
-      <summary className="flex min-h-11 cursor-pointer flex-wrap items-center gap-2 text-sm font-bold tracking-wide text-gold-400 uppercase">
+    <details className="pixel-tile group/src pb-3 [&>:not(summary)]:px-3">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 px-3 text-sm font-bold text-violet-50">
+        <PixelIcon uri={pixelObject('book')} size={24} />
         Sources ({total})
         {evidence && (
-          <span className="rounded-full border border-violet-600 bg-plum-700/70 px-2 py-0.5 text-xs tracking-wide text-violet-200">
+          <span className="ml-auto rounded-full border border-violet-400/70 bg-plum-900/60 px-2 py-0.5 text-[0.72rem] font-bold tracking-wide text-violet-100 uppercase">
             {evidence}
           </span>
         )}
+        <span
+          aria-hidden="true"
+          className="text-violet-200 transition-transform group-open/src:rotate-180"
+        >
+          &#9662;
+        </span>
       </summary>
 
       {provenance.length > 0 && (
@@ -82,9 +91,9 @@ export function SourcesSection({ herb }: { herb: Herb }) {
             ))}
           </ul>
           <p className="mt-2 text-xs leading-relaxed text-violet-400">
-            Plant information is educational. Evidence ranges from traditional use and
-            laboratory studies to human clinical research; source quality and applicability
-            vary by plant, preparation, and species.
+            Plant information is educational. Evidence ranges from traditional use and laboratory
+            studies to human clinical research; source quality and applicability vary by plant,
+            preparation, and species.
           </p>
         </div>
       )}
@@ -94,9 +103,7 @@ export function SourcesSection({ herb }: { herb: Herb }) {
         <dl className="mt-4 space-y-2 border-t border-violet-700/50 pt-3">
           {cited.map(({ section, label, sources }) => (
             <div key={section}>
-              <dt className="text-xs font-bold tracking-wide text-violet-300 uppercase">
-                {label}
-              </dt>
+              <dt className="text-xs font-bold tracking-wide text-violet-300 uppercase">{label}</dt>
               <dd className="mt-0.5 space-y-1">
                 {sources.map((entry) => (
                   <Citation key={entry.source.id + (entry.detail ?? '')} entry={entry} small />

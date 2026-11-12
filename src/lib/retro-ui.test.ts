@@ -51,7 +51,7 @@ describe('the retro layer is scenery and objects, never a redrawn plant', () => 
   it('the parchment page is scoped to the Identify tab only', () => {
     const tabs = read('src/components/herbdex/ProfileTabs.tsx');
     expect(tabs.match(/field-guide/g)).toHaveLength(1);
-    expect(tabs).toMatch(/tab\.id === 'field-identification' \? 'field-guide/);
+    expect(tabs).toMatch(/tab\.id === 'field-identification'\s*\?\s*'field-guide/);
     for (const file of ['src/app/learn/page.tsx', 'src/components/herbdex/MasteryTrack.tsx', 'src/components/game/SpeciesHero.tsx']) {
       expect(read(file)).not.toContain('field-guide');
     }
