@@ -38,6 +38,12 @@ export const PURE_MODULES = [
   'mastery.ts',
   'rng.ts',
   'research.ts',
+  // Boss Form pilot. `challenge-submit` rebuilds and scores a submission with exactly the
+  // code vitest tests; the question bank travels with it because the server must hold the
+  // answer key to score against. Draft items are unservable until reviewed.
+  'boss-form.ts',
+  'challenge-bank.ts',
+  'mastery-challenges.ts',
   // Added with the Field Cards. `applyDiscovery` resolves an id against the CATALOGUE — a
   // Field Card is a species Plantdex knows, and finding one outdoors is a real discovery —
   // while the AWARD still resolves through the printed deck, so an unlock pays nothing.

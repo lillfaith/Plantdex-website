@@ -45,6 +45,9 @@ const entrypoints = [
   // the same validator and signer that seed-packet verifies with, and a drifted copy of
   // either would reject every legitimate scan.
   join(root, 'supabase', 'functions', 'identify-plant', 'index.ts'),
+  // challenge-submit (Boss Form pilot, not deployed) rebuilds and scores with the shared
+  // challenge modules; a drifted copy would score differently from what the client showed.
+  join(root, 'supabase', 'functions', 'challenge-submit', 'index.ts'),
 ];
 
 /** Every relative specifier in a module, from `import`/`export ... from` and side effects. */
