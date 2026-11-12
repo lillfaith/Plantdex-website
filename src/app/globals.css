@@ -2022,6 +2022,7 @@ body {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  --welcome-grass: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 240 90%22%3E%3Cdefs%3E%3ClinearGradient id=%22b%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%234fb04e%22/%3E%3Cstop offset=%221%22 stop-color=%22%231c6234%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22f%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23b6ec63%22/%3E%3Cstop offset=%220.55%22 stop-color=%22%235cc04e%22/%3E%3Cstop offset=%221%22 stop-color=%22%232b8a40%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect y=%2274%22 width=%22240%22 height=%2216%22 fill=%22%231c6234%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M10 90Q10.0 56.0 18 10Q17.0 56.0 24 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M32 90Q43.0 64.0 44 26Q49.5 64.0 45 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M55 90Q52.5 54.0 60 6Q60.0 54.0 70 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M80 90Q92.0 62.0 92 22Q98.5 62.0 93 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M103 90Q101.5 57.0 108 12Q109.0 57.0 118 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M128 90Q140.0 63.0 140 24Q146.5 63.0 141 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M150 90Q145.5 53.0 153 4Q153.0 53.0 165 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M176 90Q187.0 61.0 188 20Q193.5 61.0 189 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M200 90Q197.5 57.0 205 12Q204.5 57.0 214 90Z%22/%3E%3Cpath fill=%22url%28%23b%29%22 d=%22M222 90Q230.0 65.0 230 28Q236.0 65.0 234 90Z%22/%3E%3Crect y=%2280%22 width=%22240%22 height=%2210%22 fill=%22%232b8a40%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M2 90Q2.0 71.0 8 40Q8.0 71.0 14 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M22 90Q32.0 75.0 32 48Q38.0 75.0 34 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M44 90Q42.0 67.0 48 32Q48.5 67.0 57 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M68 90Q78.0 76.0 78 50Q84.0 76.0 80 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M92 90Q90.5 69.0 97 36Q97.0 69.0 105 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M116 90Q126.0 74.0 126 46Q132.0 74.0 128 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M139 90Q136.5 66.0 144 30Q143.0 66.0 152 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M162 90Q172.0 76.0 172 50Q178.0 76.0 174 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M186 90Q184.0 68.0 190 34Q190.5 68.0 199 90Z%22/%3E%3Cpath fill=%22url%28%23f%29%22 d=%22M210 90Q218.0 74.0 218 46Q224.0 74.0 222 90Z%22/%3E%3Cg fill=%22%23fff%22%3E%3Ccircle cx=%2249%22 cy=%2270%22 r=%222.4%22/%3E%3Ccircle cx=%2255%22 cy=%2270%22 r=%222.4%22/%3E%3Ccircle cx=%2252%22 cy=%2267%22 r=%222.4%22/%3E%3Ccircle cx=%2252%22 cy=%2273%22 r=%222.4%22/%3E%3C/g%3E%3Ccircle cx=%2252%22 cy=%2270%22 r=%221.8%22 fill=%22%23ffd45c%22/%3E%3Cg fill=%22%23fff%22%3E%3Ccircle cx=%22147%22 cy=%2274%22 r=%222.4%22/%3E%3Ccircle cx=%22153%22 cy=%2274%22 r=%222.4%22/%3E%3Ccircle cx=%22150%22 cy=%2271%22 r=%222.4%22/%3E%3Ccircle cx=%22150%22 cy=%2277%22 r=%222.4%22/%3E%3C/g%3E%3Ccircle cx=%22150%22 cy=%2274%22 r=%221.8%22 fill=%22%23ffd45c%22/%3E%3Cg fill=%22%23fff%22%3E%3Ccircle cx=%22211%22 cy=%2268%22 r=%222.4%22/%3E%3Ccircle cx=%22217%22 cy=%2268%22 r=%222.4%22/%3E%3Ccircle cx=%22214%22 cy=%2265%22 r=%222.4%22/%3E%3Ccircle cx=%22214%22 cy=%2271%22 r=%222.4%22/%3E%3C/g%3E%3Ccircle cx=%22214%22 cy=%2268%22 r=%221.8%22 fill=%22%23ffd45c%22/%3E%3C/svg%3E");
   color: var(--color-violet-100);
   background: linear-gradient(
     180deg,
@@ -2057,14 +2058,10 @@ body {
   inset: auto 0 0 0;
   height: 17%;
   pointer-events: none;
-  /* Rolling meadow in the soft style of a cosy indie game: shaded hills, scalloped bushy
-     crests rather than ruled blades, and a few scattered wildflowers. Gradients only. */
+  /* Meadow in the soft style of a cosy indie game: a few big two-tone blades over shaded hills
+     (an inline SVG tile, see --welcome-grass) and the odd daisy. */
   background:
-    radial-gradient(circle at 50% 78%, #ffd45c 0 2.5px, transparent 3px) 0 0 / 83px 100% repeat-x,
-    radial-gradient(circle at 50% 66%, #ff9fcf 0 2.5px, transparent 3px) 21px 0 / 107px 100% repeat-x,
-    radial-gradient(circle at 50% 88%, #ffffff 0 2px, transparent 2.5px) 47px 0 / 131px 100% repeat-x,
-    radial-gradient(circle at 50% 72%, #d2b4ff 0 2.5px, transparent 3px) 12px 0 / 97px 100% repeat-x,
-    radial-gradient(ellipse 22px 9px at 50% 100%, #6fcf7e 0 70%, transparent 72%) 0 62% / 38px 9px repeat-x,
+    var(--welcome-grass) bottom left / 240px 90px repeat-x,
     radial-gradient(ellipse 60% 100% at 18% 100%, #4fae65 0%, #2f7a45 62%, transparent 63%),
     radial-gradient(ellipse 55% 85% at 86% 100%, #55b36a 0%, #357f4b 62%, transparent 63%),
     radial-gradient(ellipse 90% 70% at 52% 112%, #2a6c3f 0%, #1f5a35 62%, transparent 63%);
@@ -2174,7 +2171,7 @@ body {
     radial-gradient(circle at 50% 40%, #ffd45c 0 2px, transparent 2.5px) 6px 0 / 41px 100% repeat-x,
     radial-gradient(circle at 50% 62%, #ff9fcf 0 2px, transparent 2.5px) 19px 0 / 53px 100% repeat-x,
     radial-gradient(circle at 50% 78%, #ffffff 0 1.5px, transparent 2px) 31px 0 / 67px 100% repeat-x,
-    radial-gradient(ellipse 14px 6px at 50% 100%, #8fe39a 0 70%, transparent 72%) 0 6px / 24px 7px repeat-x,
+    var(--welcome-grass) bottom left / 120px 56px repeat-x,
     linear-gradient(180deg, #6fcf7e 0%, #3f9a55 55%, #2f7a45 100%);
 }
 
