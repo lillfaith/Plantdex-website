@@ -25,7 +25,7 @@ export function ScanGoal({
   return (
     <section
       aria-label="Your progress today"
-      className="holo-border space-y-3 rounded-2xl p-3"
+      className="holo-border space-y-2 rounded-2xl px-3 py-2.5"
     >
       <div>
         <div className="flex items-baseline justify-between gap-2">
@@ -38,9 +38,9 @@ export function ScanGoal({
             {progress.nextLevelXp !== null && ` / ${progress.nextLevelXp.toLocaleString()}`} XP
           </p>
         </div>
-        <div className="relative mt-1.5">
+        <div className="relative mt-1">
           <div
-            className="h-4 overflow-hidden rounded-full bg-plum-950/80 ring-2 ring-violet-400/50"
+            className="h-3 overflow-hidden rounded-full bg-plum-950/80 ring-2 ring-violet-400/50"
             role="progressbar"
             aria-valuenow={pct}
             aria-valuemin={0}
@@ -58,14 +58,14 @@ export function ScanGoal({
           </div>
           <XpMilestones progress={progress} />
         </div>
-        <p className="mt-1.5 text-xs text-violet-300">
+        <p className="mt-1 text-xs leading-snug text-balance text-violet-300">
           {toNext === null
             ? 'Top level reached.'
             : `${toNext.toLocaleString()} XP to Level ${progress.level + 1}. Every plant in the deck you find earns you XP.`}
         </p>
       </div>
 
-      <div className="border-t border-violet-500/30 pt-3">
+      <div className="border-t border-violet-500/30 pt-2">
         <div className="flex items-baseline justify-between gap-2">
           <p className="text-sm font-bold text-violet-50">Daily scan goal</p>
           <p className="text-xs font-semibold text-violet-200 tabular-nums">
@@ -74,7 +74,7 @@ export function ScanGoal({
         </div>
         <ul
           aria-hidden="true"
-          className="mt-2 grid gap-1"
+          className="mt-1.5 grid gap-1"
           style={{ gridTemplateColumns: `repeat(${allowance.limit}, minmax(0, 1fr))` }}
         >
           {Array.from({ length: allowance.limit }, (_, index) => (
@@ -86,11 +86,11 @@ export function ScanGoal({
             />
           ))}
         </ul>
-        <p className="mt-1.5 text-xs text-violet-300">
-          {allowance.left === 0
-            ? 'That is today’s goal. Your scans reset at midnight UTC.'
-            : `${allowance.used} used. Scans reset at midnight UTC.`}
-        </p>
+        {allowance.left === 0 && (
+          <p className="mt-1 text-xs text-violet-300">
+            That is today&rsquo;s goal. Your scans reset at midnight UTC.
+          </p>
+        )}
       </div>
     </section>
   );

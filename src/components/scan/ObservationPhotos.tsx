@@ -251,14 +251,6 @@ export function ObservationPhotos({
         })}
       </ol>
 
-      {/* The instruction for whichever shot is next, which is the one the player is about to take. */}
-      {firstEmpty && (
-        <p className="text-center text-xs leading-relaxed text-violet-300">
-          <span className="font-bold text-violet-100">{firstEmpty.label}:</span>{' '}
-          {firstEmpty.instruction}
-        </p>
-      )}
-
       {duplicate && <p className="text-sm text-stat-temp">{duplicate}</p>}
 
       <p className="text-center text-xs font-semibold text-violet-300" aria-live="polite">
