@@ -126,3 +126,31 @@ Decisions made without review, all reversible and all presentation-only:
   single 420ms rise on the podium, switched off under reduced motion.
 - **Pure helpers** live in `src/lib/board-view.ts`; `BoardScreen` is presentational and takes plain
   props, so every state is renderable in tests with clearly labelled mock data.
+
+## Current page (development branch)
+
+- **Layout:** flat, one phone column. Title and the provisional line, then "Your points", a collapsed
+  "How rankings work", your listing, the board chooser, your rank strip, the pixel podium (real
+  Plantdex sprites standing on three steps, each with its own botanical trophy), then a compact ranked list
+  with "Show more".
+- **One points figure.** Once you are listed, "Your points" shows the board's own row, so it cannot
+  disagree with your rank. Before that it is counted on the device and says so. A device-versus-board
+  difference is reported on the page, never hidden. Pure helpers: `src/lib/board-view.ts` (`ownDisplay`).
+- **Rank strip.** Your place, points and the live gap to the next rank up (`gapToNext`), or your lead,
+  or "Tied for Nth". Your own avatar, frame and title come from your own profile on this device.
+- **Not shown for other players:** avatars, frames, level or XP. The standings function does not publish
+  them. See `docs/leaderboard-showcase-proposal.md`.
+- **Reduced motion:** the only animation is a single 420ms rise on the podium, off under reduced motion.
+
+## Testing
+
+| Layer | File | Runs in |
+| --- | --- | --- |
+| SQL shape, constants, privacy columns | `src/lib/leaderboard-schema.test.ts` | `npm test` |
+| Scoring rule | `src/lib/leaderboard.test.ts` | `npm test` |
+| Layout helpers, every screen state, ties, regions | `src/lib/board-view.test.ts` | `npm test` |
+| Data layer against a stand-in client | `src/lib/remote-leaderboard.test.ts` | `npm test` |
+| Guards on the live test (columns in sync, never production) | `src/lib/leaderboard-e2e-guard.test.ts` | `npm test` |
+| Two accounts attacking the board | `e2e/leaderboard.e2e.test.ts` | `npm run verify:supabase` (test project, needs `.env.local`) |
+
+Release steps are in `docs/leaderboard-production-checklist.md`.

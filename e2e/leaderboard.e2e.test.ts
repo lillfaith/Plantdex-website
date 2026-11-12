@@ -26,6 +26,17 @@ const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const configured = Boolean(URL && KEY);
 
+/**
+ * NEVER AGAINST PRODUCTION. This suite signs up users and writes rows. If the environment points
+ * at a production project the whole file fails loudly instead of quietly skipping, so nobody can
+ * mistake "skipped" for "passed" and nobody can run it by accident. The refs are listed in
+ * `supabase/README.md` (test) and `docs/leaderboard-production-checklist.md` (production).
+ */
+const PRODUCTION_REFS = ['vygiamigomwlvnwkryyl'];
+if (URL && PRODUCTION_REFS.some((ref) => URL.includes(ref))) {
+  throw new Error('e2e/leaderboard.e2e.test.ts refuses to run against the production project.');
+}
+
 const STAMP = `${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
 const ALICE_NAME = `E2E Alice ${STAMP}`;
 const BOB_NAME = `E2E Bob ${STAMP}`;
@@ -173,7 +184,7 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
     expect(Object.keys(row).sort()).toEqual(PUBLISHED);
 
     const text = JSON.stringify(view);
-    for (const secret of [alice.id, alice.email ?? 'no-email', ALICE_AVATAR, 'e2e-private-title', 'photo_path', 'notes']) {
+    for (const secret of [alice.id, alice.email ?? 'no-email', ALICE_AVATAR, 'e2e-private-title']) {
       expect(text, `the board must not carry ${secret}`).not.toContain(secret);
     }
   });

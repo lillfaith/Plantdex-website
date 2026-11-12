@@ -1250,6 +1250,22 @@ every rule below exists because of that.
   app. The regional QUEST BOARD pays nothing at all and cannot — it is a seeded client-side
   lens with no completion record, and making it scorable would mean a client asserting one.
 
+- **"Your points" and the board's points are ONE metric, and the page shows one figure.** Once a
+  player is listed, `ownDisplay()` (`board-view.ts`) returns the standings function's own row, so the
+  points line and the rank strip cannot disagree; before that the figure is counted on the device and
+  says so. A device-versus-board difference is reported, never hidden: the board counts only records
+  synced to the account. Both sides pay 50 / 15 / 100, and `e2e/leaderboard.e2e.test.ts` requires the
+  server's number to equal `scoreFromRecords` over the same records.
+- **Other players' avatars, frames and titles are NOT published, and the page renders them only if the
+  standings function ever returns them.** Showing a collection is a different disclosure from joining the
+  board, so it needs its own opt-in, server-side verification and a deliberate edit to the pinned
+  signature test. The proposal is `docs/leaderboard-showcase-proposal.md`; none of it is built. The podium
+  sprites are decorative, chosen by place, and are never a player's avatar.
+- **The live board test refuses production.** `e2e/leaderboard.e2e.test.ts` throws if the URL contains the
+  production ref and is skipped without credentials; `leaderboard-e2e-guard.test.ts` keeps its column list
+  equal to the SQL and fails if it ever holds a service-role key. Release steps live in
+  `docs/leaderboard-production-checklist.md`.
+
 ## Analytics, deletion and export
 
 - **`track()` takes an event name and has no second parameter.** That is the privacy
