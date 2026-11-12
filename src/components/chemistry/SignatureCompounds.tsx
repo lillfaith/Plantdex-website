@@ -1,5 +1,6 @@
 import { ChipRow } from '../ui/Chip';
-import { GemChip } from '../herbdex/HerbalVisuals';
+import { GemChip, PixelIcon } from '../herbdex/HerbalVisuals';
+import { gemFor } from '@/lib/pixel-icons';
 import type { Herb } from '@/lib/types';
 import { compoundFor, sortForPlate, type CompoundEntry } from '@/lib/compounds';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
@@ -88,8 +89,13 @@ function Plate({
       <div className="flex h-24 items-center justify-center text-violet-300 sm:h-28">
         {children}
       </div>
-      <p className={`mt-2 ${MICRO_LABEL} ${ACCENTS.indigo.label}`}>{eyebrow}</p>
-      <p className={`mt-0.5 ${READING} leading-tight font-bold text-violet-100`}>{title}</p>
+      <div className="mt-2 flex items-center gap-2.5">
+        <PixelIcon uri={gemFor(title)} size={36} />
+        <div>
+          <p className={`${MICRO_LABEL} ${ACCENTS.indigo.label}`}>{eyebrow}</p>
+          <p className={`mt-0.5 ${READING} leading-tight font-bold text-violet-100`}>{title}</p>
+        </div>
+      </div>
       {subtitle && <p className={`mt-0.5 ${NOTE} text-violet-300`}>{subtitle}</p>}
           {(caption || links.length > 0) && (
             <p className={`mt-2 ${MICRO_LABEL} ${ACCENTS.indigo.label} group-open/c:hidden`}>
