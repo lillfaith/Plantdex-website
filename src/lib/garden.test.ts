@@ -175,3 +175,42 @@ describe('the moment is gated, and silent under reduced motion', () => {
     expect(view, 'the flowering mark loops').not.toMatch(/animate-pulse|node-pulse|sparkle/);
   });
 });
+
+/**
+ * THE GARDEN'S SPRITES PERFORM. This reverses an earlier decision to hold frame 0, so it is
+ * pinned: the Garden is not a catalogue, and the creatures are the reason to open it.
+ */
+describe('the garden animates its creatures', () => {
+  const GROWTH = readFileSync('src/components/garden/GrowthSprite.tsx', 'utf8');
+  const CSS = readFileSync('src/app/globals.css', 'utf8');
+
+  it('does not freeze the sprite on frame 0', () => {
+    expect(GROWTH).toMatch(/<PlantSprite[^>]*\/>/);
+    expect(GROWTH).not.toMatch(/<PlantSprite[^>]*\bfrozen\b/);
+  });
+
+  // `fit` walks the sheet in percentages so a creature shrinks to its tile and still performs.
+  it('keeps the fitted walk, which is what makes it fit the tile', () => {
+    expect(GROWTH).toMatch(/<PlantSprite[^>]*\bfit\b/);
+  });
+
+  /*
+   * REDUCED MOTION IS HANDLED ONCE, IN THE STYLESHEET, AND MUST NOT BE DUPLICATED HERE.
+   * Collapsing a sprite's duration does not freeze it — it jumps one whole sheet left and the
+   * portrait vanishes — so the global block stops the animation and pins frame 0 instead.
+   */
+  it('is frozen for reduced motion by the global rule, not by this component', () => {
+    const reduced = CSS.slice(CSS.indexOf('@media (prefers-reduced-motion: reduce)'));
+    expect(reduced).toMatch(/\.plant-sprite\s*\{[^}]*animation:\s*none\s*!important/);
+    expect(reduced).toMatch(/\.plant-sprite-fit\s*\{[^}]*animation:\s*none\s*!important/);
+    /*
+     * One rule in one place: no second guard in the COMPONENT — comments stripped, because
+     * the comment explaining why there is no guard necessarily names the thing it is saying
+     * is absent. Third time this shape has bitten in this repo; see the note on
+     * delete-account's USER_TABLES.
+     */
+    const growthCode = GROWTH.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    expect(growthCode).not.toContain('prefers-reduced-motion');
+    expect(growthCode).not.toContain('matchMedia');
+  });
+});

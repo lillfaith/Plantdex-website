@@ -17,9 +17,26 @@ import { PlantSprite } from '../PlantSprite';
  * shows its own character rather than a placeholder — never a shared generic sprout, which
  * would make forty species interchangeable. `docs/creature-stages.md` lists which are done.
  *
- * HELD ON FRAME 0 rather than animating. A bed of a dozen plants each running its own loop
- * is noise; the card page is where a creature performs. Frame 0 is authored as a complete
- * resting pose precisely so it can be used still.
+ * THE GARDEN IS THE ONE PAGE WHERE EVERY CREATURE PERFORMS AT ONCE, AND THIS USED TO SAY THE
+ * OPPOSITE. It held frame 0, arguing that "a bed of a dozen plants each running its own loop
+ * is noise; the card page is where a creature performs". That is a defensible reading of a
+ * grid — and it is the wrong one for THIS grid, which is not a catalogue. The Garden exists
+ * so a player can look at the collection they have grown; a bed of still pictures is a
+ * shelf, and the sprites are the whole reason to open the page. Reversed deliberately, and
+ * the old argument is kept here rather than deleted so nobody re-derives it from scratch.
+ *
+ * IT COSTS MEMORY, AND THE NUMBER IS MEASURED RATHER THAN GUESSED. `frozen` loads a single
+ * `still` frame; animating takes the whole sheet, and the browser holds the entire decoded
+ * bitmap however little of it is on screen. Measured across the manifest: a mean of 1.30 MB
+ * decoded per sheet, 2.2 MB for the largest (dandelion). A garden holding all 45 printed
+ * species at adult stage is therefore about 58 MB resident — the upper bound, since sprout
+ * and growing sheets are smaller. That is real but affordable; if it ever bites on a phone,
+ * the fix is to animate only the tiles in view rather than to go back to stills.
+ *
+ * REDUCED MOTION NEEDS NOTHING HERE. The `prefers-reduced-motion` block in globals.css
+ * already stops `.plant-sprite` and `.plant-sprite-fit`, so a player who asked for less
+ * motion still gets frame 0 — which is exactly why frame 0 is authored as a complete resting
+ * pose. Do not add a second guard in this component; one rule in one place.
  *
  * SCALED ONLY WHEN THE ART IS NOT ALREADY STAGED. Staged art is drawn at evenly stepped
  * heights — 60%, 80%, 100% of the adult — so applying `STAGE_SCALE` on top of it compounds
@@ -81,7 +98,7 @@ export function GrowthSprite({
           aspectRatio: `${sprite.frameWidth} / ${sprite.frameHeight}`,
         }}
       >
-        <PlantSprite herbId={herb.id} alt="" stage={stage} frozen fit />
+        <PlantSprite herbId={herb.id} alt="" stage={stage} fit />
       </span>
     </span>
   );
