@@ -29,6 +29,8 @@ export interface SceneProps {
   /** True for somebody who already has discoveries, taking the tour on purpose. */
   readonly returning: boolean;
   readonly onLeave: () => void;
+  /** Advance to the next scene. */
+  readonly onNext: () => void;
 }
 
 export interface Scene {
@@ -49,7 +51,7 @@ function Title({ children }: { children: ReactNode }) {
   );
 }
 
-function Welcome() {
+function Welcome({ onNext }: SceneProps) {
   return (
     <>
       <p className="text-[0.72rem] font-bold tracking-[0.28em] text-gold-300 uppercase">
@@ -73,9 +75,18 @@ function Welcome() {
       <Title>Welcome to Plantdex</Title>
       <p aria-hidden="true" className="welcome-rule mx-auto mt-2" />
       <p className="mx-auto mt-2 max-w-[19rem] text-sm leading-relaxed text-violet-100">
-        Step outside, meet the plants growing around you, and fill your Herbdex with every
-        real find.
+        Nature as a game. Discover wild medicinal plants, collect cards, grow your garden, and
+        unlock your environment&rsquo;s secrets.
       </p>
+      {/* Focus lands here on open, not on Skip: Skip is the least useful first stop. */}
+      <button
+        autoFocus
+        type="button"
+        onClick={onNext}
+        className="arcade-key mx-auto mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-gold-400 px-8 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
+      >
+        Start collecting
+      </button>
     </>
   );
 }

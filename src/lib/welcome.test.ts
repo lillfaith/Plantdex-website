@@ -146,7 +146,8 @@ describe('what the welcome says', () => {
   it('carries the opening copy', () => {
     expect(SCENES).toContain('Welcome to Plantdex');
     expect(SCENES).toMatch(/real-world adventure/);
-    expect(WELCOME).toContain('Begin Adventure');
+    expect(SCENES).toContain('Start collecting');
+    expect(SCENES).toMatch(/Nature as a game\. Discover wild medicinal plants/);
   });
 
   it('teaches that identifying is not finding', () => {

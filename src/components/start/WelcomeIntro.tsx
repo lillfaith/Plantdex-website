@@ -159,11 +159,15 @@ export function WelcomeIntro() {
 
       <div className="welcome-scene relative mx-auto w-full max-w-md px-5 text-center">
         <div key={index} className="welcome-scene-in">
-          <Scene returning={discoveredCount > 0} onLeave={dismiss} />
+          <Scene
+            returning={discoveredCount > 0}
+            onLeave={dismiss}
+            onNext={() => setIndex((one) => Math.min(SCENES.length - 1, one + 1))}
+          />
         </div>
       </div>
 
-      {!last && (
+      {!last && index > 0 && (
         <footer className="relative mx-auto flex w-full max-w-md items-center gap-3 px-6 pb-6">
           <button
             type="button"
@@ -173,14 +177,12 @@ export function WelcomeIntro() {
           >
             Back
           </button>
-          {/* Focus lands here on open, not on Skip: Skip is the least useful first stop. */}
           <button
-            autoFocus
             type="button"
             onClick={() => setIndex((one) => Math.min(SCENES.length - 1, one + 1))}
             className="arcade-key inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300"
           >
-            {index === 0 ? 'Begin Adventure' : 'Next'}
+            Next
           </button>
         </footer>
       )}

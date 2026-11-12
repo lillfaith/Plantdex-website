@@ -43,7 +43,7 @@ describe('the tour is skippable and accessible', () => {
 
   it('moves focus to the new scene heading and starts on the primary button', () => {
     expect(WELCOME).toContain("querySelector<HTMLElement>('#welcome-title')");
-    expect(WELCOME).toContain('autoFocus');
+    expect(readFileSync('src/components/start/WelcomeScenes.tsx', 'utf8')).toContain('autoFocus');
   });
 
   it('lets the scene area shrink instead of pushing the footer off a small screen', () => {
