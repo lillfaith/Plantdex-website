@@ -26,8 +26,6 @@ import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
-import { CollectibleBelowLeader } from './CollectibleBelowLeader';
-import { topThreeStatement } from '@/lib/identification-reliability';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
@@ -769,36 +767,6 @@ export function ScanPanel() {
                   Photographing one of your cards is not a find. Log it only if you met the
                   plant outdoors.
                 </p>
-
-                {/*
-                  When the identifier's leading answer carries no card but something below it
-                  does, say so — otherwise the player reads "not collectible" at the top of a
-                  list whose third row is the card they were after. It changes no ranking and
-                  no outcome; see `collectibleBelowLeader`.
-                */}
-                {/*
-                  HOW OFTEN THE LIST IS RIGHT, ABOVE A COLUMN OF SMALL PERCENTAGES.
-
-                  A correct identification can print 16%, because that is one NAME's share of
-                  a ranking whose tail the provider does not send. Read alone it looks like a
-                  broken product. The honest answer is not to raise the number — that would be
-                  inventing confidence — but to say the thing the number is not saying, which
-                  this repo can actually measure: the deck's 45 cards were each photographed
-                  and sent to the live identifier, and the correct card came back in the top
-                  three 44 times, in the top four every time.
-
-                  It sits ABOVE the list because it is the context the scores need to be read
-                  in, and `identification-reliability.test.ts` recomputes it from those same
-                  fixtures so the sentence cannot drift from its evidence.
-                */}
-                <p className="mt-4 rounded-xl border border-gold-500/40 bg-gold-500/[0.07] p-3 text-xs leading-relaxed text-violet-200">
-                  <span className="font-semibold text-gold-300">
-                    The right plant is usually one of the first few.
-                  </span>{' '}
-                  {topThreeStatement()}
-                </p>
-
-                <CollectibleBelowLeader candidates={result.candidates} />
 
                 <h4
                   className="mt-5 scroll-mt-24 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase"
