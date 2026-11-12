@@ -68,26 +68,23 @@ export function GrowSpriteCta({ herb }: { herb: Herb }) {
    * The one place the icon survives: with no verb to crowd, the bloom mark is what makes a
    * finished plant read as finished at a glance.
    */
+  // Growth, in the panel's one quiet line: a finished plant says so, anything else offers
+  // the one next action. Same words and same anchor as before.
   if (!label) {
     return (
-      <p className="flex w-full items-center justify-center gap-1.5 rounded-full border border-gold-500/40 bg-gold-500/10 px-2 py-1.5 text-center text-[0.72rem] leading-tight font-bold text-gold-300">
+      <span className="inline-flex items-center gap-1 text-[0.72rem] font-extrabold tracking-[0.08em] text-botanical-200 uppercase">
         <PlantdexIcon name="mastered" className="shrink-0 text-sm" aria-hidden="true" />
         Fully grown
-      </p>
+      </span>
     );
   }
 
   return (
     <a
       href="#card-mastery"
-      /*
-       * `min-h-11` holds the 44px touch target every control on this site keeps, while the
-       * type stays small enough to sit under a 112px sprite — the height comes from padding
-       * rather than from font size, which is what lets those two survive together.
-       */
-      className="flex min-h-11 w-full items-center justify-center rounded-full border border-gold-500/60 bg-gold-500/12 px-2 text-center text-[0.72rem] leading-tight font-bold text-gold-300 transition-colors hover:bg-gold-500/25 hover:text-gold-200"
+      className="inline-flex min-h-9 items-center rounded-full bg-violet-600/40 px-3 text-[0.72rem] leading-tight font-extrabold tracking-[0.06em] text-violet-100 uppercase transition-colors hover:bg-violet-600/70"
     >
-      {label}
+      {label} <span aria-hidden="true">&nbsp;&rarr;</span>
     </a>
   );
 }

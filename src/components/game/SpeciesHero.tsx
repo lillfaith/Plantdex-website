@@ -1,30 +1,47 @@
 'use client';
 
-import type {Herb } from '@/lib/types';
+import type { Herb } from '@/lib/types';
 import type { MasteryStage } from '@/lib/mastery';
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import { cardLabel } from '@/lib/collection';
+import { LEAF_ASPECT, pixelLeaf } from '@/lib/pixel-art';
+import { useHerbdex } from '@/state/HerbdexProvider';
 import { CardFlip } from '../herbdex/CardFlip';
 import { RarityAura } from './RarityAura';
 import { PlantSprite } from '../PlantSprite';
 import { GrowSpriteCta } from '../herbdex/GrowSpriteCta';
 import { RarityMeter } from './RarityMeter';
+import { PixelIsland } from './PixelIsland';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
-import type { GardenStage } from '@/lib/garden';
+import type { SpriteStage } from '@/lib/plant-sprites';
 
 /**
- * The collectible species hero.
+ * THE CHARACTER PANEL UNDER THE COLLECTIBLE CARD.
  *
- * THE PRINTED CARD IS THE HERO AND STAYS THE HERO. Everything else here is arranged to
- * light it rather than compete with it: the aura sits behind it, the pixel companion is
- * deliberately small and beside the names, and no panel on the rest of the page blooms as
- * brightly as this. The card is the physical object the player paid for; the digital layer
- * is what it unlocks.
+ * The printed card above it is untouched and complete. This panel is the Plantdex layer
+ * around it: the creature on a small grass island as the centrepiece, rarity and growth as one
+ * quiet line, mastery as the single prominent mark (the gold ribbon), the three traditional
+ * uses as one connected tile group, and one prominent way into the expanded profile.
  *
- * The aura is tinted by RARITY, which is real data — a rare card genuinely glows
- * differently from a common one. It is not a random per-species colour, because that would
- * be a decorative claim about a plant rather than a readout of its encounter rate.
+ * Retro where it is a character or scenery (the sprite, the island, the leaf, the ribbon's
+ * laurels), modern where it is information or a control (names, tiles' words, the button).
+ * Every figure comes from the records the game already keeps; nothing is added or reworded.
  */
+
+function Laurel({ flip = false }: { flip?: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 28"
+      width="12"
+      height="17"
+      fill="currentColor"
+      style={flip ? { transform: 'scaleX(-1)' } : undefined}
+    >
+      <path d="M10 27C3 22 1 14 4 3c1 5 3 7 6 8-4 2-5 5-4 8 2-3 4-4 5-4-1 3-1 6-1 12z" />
+    </svg>
+  );
+}
 
 export function SpeciesHero({
   herb,
@@ -34,19 +51,17 @@ export function SpeciesHero({
 }: {
   herb: Herb;
   stage: MasteryStage | null;
-  portraitStage: GardenStage;
+  portraitStage: SpriteStage;
   discovered: boolean;
 }) {
+  const { state } = useHerbdex();
+  const discoveredAt = state.discoveries[herb.id];
+  const mastered = discovered && stage === 'mastered';
+
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-10">
       <div className="justify-self-center lg:justify-self-start">
         <div className="relative">
-          {/*
-            The hero keeps its own reach — scale-[1.45] on one big card, not the grid's
-            step — but the COLOUR now comes from the shared map, so the halo and the rarity
-            text on the same screen can no longer disagree. Common was violet here and
-            rarity-common everywhere else.
-          */}
           <RarityAura rarity={herb.rarity} size="hero" />
           <div className="card-tilt relative z-10 drop-shadow-[0_18px_44px_rgba(23,16,28,0.7)]">
             <CardFlip herb={herb} size="hero" />
@@ -59,110 +74,114 @@ export function SpeciesHero({
         </p>
       </div>
 
-      <div className="min-w-0">
-        {/* Collection · card number, so a card reads as part of a collectible set rather
-            than a loose number. */}
-        <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase tabular-nums">
-          {cardLabel(herb)}
-        </p>
+      <section
+        aria-label={`${herb.commonName} overview`}
+        className="character-panel relative min-w-0 rounded-[1.75rem] p-4 pt-5"
+      >
+        {/* Pink pixel confetti on the corners: decoration only. */}
+        <span aria-hidden="true" className="pixel-confetti pixel-confetti-left" />
+        <span aria-hidden="true" className="pixel-confetti pixel-confetti-right" />
 
-        <h1 className="font-display mt-1 text-3xl leading-tight font-extrabold text-gold-plate sm:text-4xl">
-          {herb.commonName}
-        </h1>
-        <p className="font-botanical mt-1 text-lg text-violet-200 italic">
-          {herb.scientificName}
-        </p>
+        <div className="grid grid-cols-[1.12fr_1fr] items-center gap-1.5">
+          <div className="min-w-0">
+            <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase tabular-nums">
+              {cardLabel(herb)}
+            </p>
+            <h1 className="font-display text-gold-plate mt-1 text-3xl leading-[1.05] font-extrabold">
+              {herb.commonName}
+            </h1>
+            <p className="font-botanical mt-0.5 text-base text-violet-200 italic">
+              {herb.scientificName}
+            </p>
 
-
-        <div className="mt-4 flex items-center gap-2">
-          <div className="flex min-w-0 flex-wrap items-center gap-2">
-            <RarityMeter rarity={herb.rarity} />
-          {/* Status, in words and with a mark — never colour alone. */}
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.72rem] font-bold tracking-[0.1em] uppercase ${
-              discovered
-                ? 'bloom-gold border-gold-500/60 bg-gold-500/15 text-gold-300'
-                : 'border-violet-600 bg-plum-800/60 text-violet-300'
-            }`}
-          >
-            <PlantdexIcon name={discovered ? 'check' : 'locked'} className="text-sm" />
-            {discovered && stage ? MASTERY_STAGE_LABEL[stage] : 'Undiscovered'}
-            </span>
-          </div>
-          {/*
-            The digital companion, NOT a replacement for the card. It shows the stage the
-            player has actually reached, so the creature on their own card page grows up
-            with their progress. Decoration rather than an identification aid: deliberately
-            stylised, with the card art and the field notes below as the real reference.
-
-            It sits at the end of the status row because a full-width species name leaves it
-            no room beside the heading — on a 390px screen it wrapped onto a line of its own
-            and read as a stranded illustration rather than a companion.
-          */}
-          {/*
-            THE CREATURE AND THE CONTROL THAT GROWS IT, AS ONE COLUMN.
-
-            The button used to sit far below, under the discovery stamp — one clear line, and
-            a full screen below the fold at 390px, since the card art alone is 414px tall.
-            Attached to the sprite it is both on the first screen and next to the thing it
-            acts on: somebody looking at a small green rosette and wondering how to grow it
-            now has the answer directly beneath it.
-
-            THE COLUMN IS SIZED BY THE SPRITE, NOT BY THE BUTTON. The width classes stay on
-            the inner wrapper, so the creature keeps the exact dimensions this hero was
-            composed around — `fit` sets width:100% inline and would otherwise let the button
-            decide how big the plant is.
-          */}
-          <div className="ml-auto flex w-28 shrink-0 flex-col items-center gap-2 sm:w-40">
-            {/* `fit` sets width:100% inline, which beats any width class on the sprite
-                itself — so the SIZE lives on this wrapper. Without it the companion rendered
-                358px wide on a 390px screen and read as a banner rather than a creature. */}
-            <div className="w-full drop-shadow-[0_6px_20px_rgba(23,16,28,0.65)]">
-              <PlantSprite
-                herbId={herb.id}
-                alt={`Pixel-art portrait of ${herb.commonName}`}
-                stage={portraitStage}
-                fit
-              />
+            {/* Rarity and growth, as one quiet line rather than two badges. */}
+            <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1">
+              <RarityMeter rarity={herb.rarity} className="border-0 bg-transparent px-0" />
+              <span aria-hidden="true" className="text-violet-500">
+                &middot;
+              </span>
+              <GrowSpriteCta herb={herb} />
             </div>
-            <GrowSpriteCta herb={herb} />
+
+            {discoveredAt && (
+              <p className="mt-2 text-[0.72rem] text-violet-300">
+                Discovered{' '}
+                <time dateTime={discoveredAt}>
+                  {new Date(discoveredAt).toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </time>
+              </p>
+            )}
+          </div>
+
+          <div className="relative">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-x-3 -top-3 bottom-4 bg-[radial-gradient(closest-side,rgba(255,226,140,0.5),rgba(255,159,207,0.16)_62%,transparent_76%)]"
+            />
+            <div className="relative">
+              <div className="relative z-10 -mb-[22%] w-[125%] -translate-x-[10%] drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)]">
+                <PlantSprite
+                  herbId={herb.id}
+                  alt={`Pixel-art portrait of ${herb.commonName}`}
+                  stage={portraitStage}
+                  fit
+                />
+              </div>
+              <PixelIsland className="relative z-0" />
+            </div>
+            {/* Mastery is the ONE prominent mark. A plant not yet mastered gets a quiet tag. */}
+            {mastered ? (
+              <p className="mastery-ribbon relative z-20 mx-auto -mt-2 flex w-max items-center gap-1 rounded-full px-3 py-1 text-xs font-extrabold tracking-[0.1em] uppercase">
+                <Laurel />
+                {MASTERY_STAGE_LABEL.mastered}
+                <Laurel flip />
+              </p>
+            ) : (
+              <p className="relative z-20 mx-auto -mt-2 flex w-max items-center gap-1 rounded-full border border-botanical-400/50 bg-botanical-400/15 px-3 py-1 text-xs font-extrabold tracking-[0.1em] text-botanical-200 uppercase">
+                <PlantdexIcon name={discovered ? 'check' : 'locked'} className="text-sm" />
+                {discovered && stage ? MASTERY_STAGE_LABEL[stage] : 'Undiscovered'}
+              </p>
+            )}
           </div>
         </div>
 
-        {/*
-          THE LIGHTWEIGHT CARD VIEW. Collectible card, creature, rarity, status and the next
-          action, then three highlights under their own heading and one way into the full
-          profile. Habitat, the XP bar and the use categories moved into the tabs.
-
-          The heading and caption keep the distinction between traditional use and
-          scientifically supported efficacy: these are what the card prints as traditional uses.
-        */}
-        <div className="mt-3">
-          <h2 className="text-[0.72rem] font-bold tracking-[0.12em] text-violet-300 uppercase">
+        <div className="mt-5">
+          <h2 className="flex items-center gap-1.5 text-[0.72rem] font-extrabold tracking-[0.14em] text-botanical-200 uppercase">
+            <PlantdexIcon name="leaves" className="text-sm" />
             Traditional Uses
           </h2>
-          <ul className="mt-1 flex flex-wrap gap-1">
+          <ul className="uses-tiles mt-1.5 grid grid-cols-3 overflow-hidden rounded-2xl">
             {herb.back.healingTraits.slice(0, 3).map((trait) => (
-              <li
-                key={trait}
-                className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2 py-0.5 text-xs font-semibold text-gold-300"
-              >
-                {trait}
+              <li key={trait} className="flex flex-col items-center gap-1 px-1.5 py-2.5 text-center">
+                <span
+                  aria-hidden="true"
+                  className="block w-[22px]"
+                  style={{
+                    aspectRatio: LEAF_ASPECT,
+                    backgroundImage: pixelLeaf(),
+                    backgroundSize: '100% 100%',
+                    imageRendering: 'pixelated',
+                  }}
+                />
+                <span className="text-xs leading-tight font-bold text-botanical-50">{trait}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-1 text-[0.72rem] text-violet-400">
+          <p className="mt-1.5 text-center text-[0.72rem] text-pink-accent/90 italic">
             Traditional use, not proven treatment.
           </p>
         </div>
 
-        <a
-          href="#field-identification"
-          className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase hover:bg-gold-300"
-        >
-          Open full profile <span aria-hidden="true">&darr;</span>
+        <a href="#field-identification" className="profile-cta mt-4 flex min-h-14 items-center justify-center gap-2.5 rounded-full px-5 text-[0.95rem] font-extrabold tracking-[0.03em] text-white">
+          <PlantdexIcon name="learn" className="text-xl" />
+          Explore full plant profile
+          <span aria-hidden="true">&rarr;</span>
         </a>
-      </div>
+      </section>
     </div>
   );
 }

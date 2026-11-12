@@ -17,6 +17,9 @@ import { track } from '@/lib/analytics';
 import { Panel } from '../ui/Panel';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { KnowledgeCheck } from './KnowledgeCheck';
+import { PlantSprite } from '../PlantSprite';
+import { PixelIsland } from '../game/PixelIsland';
+import type { GardenStage } from '@/lib/garden';
 
 /**
  * The three-stage mastery track, as a progression path.
@@ -51,6 +54,129 @@ const XP_FOR_STAGE: Record<MasteryStage, (herb: Herb) => number> = {
   learned: () => XP_FOR_LEARNING,
   mastered: () => XP_FOR_MASTERY,
 };
+
+
+/** Which growth drawing each mastery stage shows: the real sprite sheets, never redrawn. */
+const NODE_SPRITE: Record<MasteryStage, GardenStage> = {
+  discovered: 'sprout',
+  learned: 'growing',
+  mastered: 'flowering',
+};
+
+/**
+ * THE EVOLUTION PATH: the plant's own sprite at each stage it can reach, on a small island,
+ * joined by a pixel path. Reached stages glow, the current one stands out, and stages not yet
+ * reached stay locked as silhouettes. Presentation only: the stages, XP and rules are the
+ * ones above, and the words under each node (stage, XP, status) are unchanged.
+ */
+function EvolutionPath({
+  herb,
+  reached,
+  justEarned,
+}: {
+  herb: Herb;
+  reached: number;
+  justEarned: MasteryStage | null;
+}) {
+  return (
+    <ol className="relative mt-4 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start" aria-label="Growth stages">
+      {MASTERY_STAGES.flatMap((entry, position) => {
+        const done = position < reached;
+        const current = position === reached - 1;
+        const earned = justEarned === entry;
+        const node = (
+          <li key={entry} className="flex min-w-0 flex-col items-center text-center">
+            <span className="relative block w-full max-w-[6.5rem]">
+              {/* A soft halo behind a reached stage; the current one is brighter. */}
+              {done && (
+                <span
+                  aria-hidden="true"
+                  className={`absolute -inset-x-2 -top-2 bottom-3 rounded-full ${
+                    current
+                      ? 'bg-[radial-gradient(closest-side,rgba(255,214,102,0.55),transparent_75%)]'
+                      : 'bg-[radial-gradient(closest-side,rgba(255,214,102,0.28),transparent_75%)]'
+                  }`}
+                />
+              )}
+              {done && (
+                <>
+                  <span aria-hidden="true" className="evo-sparkle evo-sparkle-a" />
+                  <span aria-hidden="true" className="evo-sparkle evo-sparkle-b" />
+                </>
+              )}
+              <span className={`relative block ${earned ? 'node-earned' : ''}`}>
+                <span
+                  aria-hidden="true"
+                  className={`relative z-10 -mb-[20%] block w-[125%] -translate-x-[10%] ${
+                    done
+                      ? 'drop-shadow-[0_0_8px_rgba(255,214,102,0.7)]'
+                      : 'opacity-80 [filter:brightness(0)_invert(0.4)]'
+                  }`}
+                >
+                  <PlantSprite
+                    herbId={herb.id}
+                    alt=""
+                    stage={NODE_SPRITE[entry]}
+                    frozen={!done}
+                    fit
+                  />
+                </span>
+                <PixelIsland className={done ? '' : 'opacity-60 saturate-50'} />
+              </span>
+              {!done && (
+                <span
+                  aria-hidden="true"
+                  className="absolute right-0 bottom-0 z-20 flex h-6 w-6 items-center justify-center rounded-full border border-violet-500 bg-plum-900 text-xs text-violet-300"
+                >
+                  <PlantdexIcon name="locked" />
+                </span>
+              )}
+              {current && reached < MASTERY_STAGES.length && (
+                <span
+                  aria-hidden="true"
+                  className="node-pulse absolute -inset-1 -z-0 rounded-2xl border-2 border-gold-400/70"
+                />
+              )}
+              {earned && (
+                <span
+                  aria-hidden="true"
+                  className="xp-rise glow-gold absolute -top-4 left-1/2 z-30 -translate-x-1/2 text-xs font-extrabold whitespace-nowrap text-gold-400"
+                >
+                  +{XP_FOR_STAGE[entry](herb)} XP
+                </span>
+              )}
+            </span>
+            <span
+              className={`mt-2 block text-[0.72rem] font-extrabold tracking-[0.08em] uppercase ${
+                done ? 'text-gold-300' : 'text-violet-400'
+              }`}
+            >
+              {MASTERY_STAGE_LABEL[entry]}
+            </span>
+            <span className="mt-0.5 block text-[0.72rem] text-violet-300 tabular-nums">
+              +{XP_FOR_STAGE[entry](herb)} XP
+            </span>
+            <span className="sr-only">
+              {done ? (current ? ' — current stage' : ' — complete') : ' — not yet earned'}.{' '}
+              {MASTERY_STAGE_BLURB[entry]}
+            </span>
+          </li>
+        );
+        if (position === MASTERY_STAGES.length - 1) return [node];
+        // The path to the next stage: gold once that stage has been reached.
+        const lit = position + 1 < reached;
+        return [
+          node,
+          <li
+            key={`${entry}-path`}
+            aria-hidden="true"
+            className={`evo-path mx-1 mt-9 w-6 ${lit ? 'evo-path-lit' : ''}`}
+          />,
+        ];
+      })}
+    </ol>
+  );
+}
 
 export function MasteryTrack({ herb }: { herb: Herb }) {
   const { stageOf, sightingsFor, state, ready } = useHerbdex();
@@ -140,7 +266,6 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
     document.getElementById('sightings-heading')?.scrollIntoView({ behavior: 'smooth' });
   };
   // The line fills to the LAST completed node, so a half-done track reads as half-done.
-  const fill = reached <= 1 ? 0 : ((reached - 1) / (MASTERY_STAGES.length - 1)) * 100;
 
   return (
     <Panel
@@ -165,73 +290,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
         </p>
       </div>
 
-      <div className="relative mt-5">
-        {/* The rail, and the earned length over it. `aria-hidden` because the list below
-            already states every stage and its status in words. */}
-        <div
-          aria-hidden="true"
-          className="absolute top-3 right-[12%] left-[12%] h-0.5 rounded-full bg-violet-800"
-        >
-          <div
-            className="path-fill h-full rounded-full bg-gradient-to-r from-gold-500 to-gold-300"
-            style={{ ['--fill' as string]: `${fill}%` }}
-          />
-        </div>
-
-        <ol className="relative grid grid-cols-3">
-          {MASTERY_STAGES.map((entry, position) => {
-            const done = position < reached;
-            const current = position === reached - 1;
-            const earned = justEarned === entry;
-            return (
-              <li key={entry} className="flex flex-col items-center text-center">
-                <span className="relative flex h-6 w-6 items-center justify-center">
-                  {/* The "you are here" ring. Only on the current stage, and only when it
-                      is not already the finished one. */}
-                  {current && reached < MASTERY_STAGES.length && (
-                    <span
-                      aria-hidden="true"
-                      className="node-pulse absolute inset-0 rounded-full bg-mystery-pink/60"
-                    />
-                  )}
-                  <span
-                    aria-hidden="true"
-                    className={`relative flex h-6 w-6 items-center justify-center rounded-full border text-xs ${
-                      done
-                        ? 'bloom-gold border-gold-400 bg-gold-500/25 text-gold-300'
-                        : 'border-violet-600 bg-plum-900 text-violet-500'
-                    } ${earned ? 'node-earned' : ''}`}
-                  >
-                    <PlantdexIcon name={done ? 'check' : 'pending'} />
-                  </span>
-                  {earned && (
-                    <span
-                      aria-hidden="true"
-                      className="xp-rise glow-gold absolute -top-5 left-1/2 -translate-x-1/2 text-xs font-extrabold whitespace-nowrap text-gold-400"
-                    >
-                      +{XP_FOR_STAGE[entry](herb)} XP
-                    </span>
-                  )}
-                </span>
-                <span
-                  className={`mt-2 block text-[0.72rem] font-bold tracking-[0.08em] uppercase ${
-                    done ? 'text-gold-300' : 'text-violet-400'
-                  }`}
-                >
-                  {MASTERY_STAGE_LABEL[entry]}
-                </span>
-                <span className="mt-0.5 block text-[0.72rem] text-violet-400 tabular-nums">
-                  +{XP_FOR_STAGE[entry](herb)} XP
-                </span>
-                <span className="sr-only">
-                  {done ? (current ? ' — current stage' : ' — complete') : ' — not yet earned'}.{' '}
-                  {MASTERY_STAGE_BLURB[entry]}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
+      <EvolutionPath herb={herb} reached={reached} justEarned={justEarned} />
 
       {/*
         ── THE QUEST, AS THREE STEPS ───────────────────────────────────────────

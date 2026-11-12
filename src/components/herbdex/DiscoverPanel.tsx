@@ -23,6 +23,7 @@ export function DiscoverPanel({
   herb,
   label = 'I Found This Plant',
   spoilerFree = false,
+  showStamp = true,
   onDiscovered,
 }: {
   herb: Herb;
@@ -30,6 +31,8 @@ export function DiscoverPanel({
   label?: string;
   /** On an undiscovered page the confirm step must not leak the plant's name. */
   spoilerFree?: boolean;
+  /** Show the "Discovered" stamp panel once found. The overview hides it (the Progress tab and the character panel carry the date). */
+  showStamp?: boolean;
   /** Called only for a genuine first discovery, so the parent can celebrate it. */
   onDiscovered?: (result: DiscoveryResult) => void;
 }) {
@@ -70,6 +73,7 @@ export function DiscoverPanel({
   return (
     <>
       {discovered ? (
+        showStamp ? (
         <div className="panel flex items-center gap-3 p-4">
           <span
             aria-hidden="true"
@@ -92,6 +96,7 @@ export function DiscoverPanel({
             )}
           </div>
         </div>
+        ) : null
       ) : (
         <button
           type="button"

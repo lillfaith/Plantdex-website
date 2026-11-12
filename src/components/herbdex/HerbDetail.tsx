@@ -345,7 +345,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
       )}
 
       <div className="mt-6">
-        <DiscoverPanel herb={herb} onDiscovered={onDiscovered} />
+        <DiscoverPanel herb={herb} showStamp={false} onDiscovered={onDiscovered} />
       </div>
 
       {/*

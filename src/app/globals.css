@@ -103,6 +103,11 @@
   --color-gold-frame: color-mix(in srgb, var(--color-gold-500) 70%, var(--color-wood-500));
 
   --color-pink-accent: #f280b3;
+  /* Botanical greens: plant-related detail only (tiles, leaf marks, growth words). */
+  --color-botanical-50: #eaffd6;
+  --color-botanical-200: #bff09a;
+  --color-botanical-400: #6fcf7e;
+  --color-botanical-600: #357f45;
   --color-cyan-accent: #4fc3f7;
 
   /* Rarity colours, matching the Encounter Rate text on the cards. */
@@ -2367,4 +2372,230 @@ body {
   .scroll-cue {
     animation: none;
   }
+}
+
+/*
+ * THE CHARACTER PANEL (card overview). Retro where it is scenery or a character, modern where
+ * it is information or a control. Accent roles: botanical green = plant detail, warm gold =
+ * mastery, violet = the interactive action, a little pink = decoration.
+ */
+@utility character-panel {
+  background: linear-gradient(170deg, rgb(96 52 150 / 0.55), rgb(38 22 62 / 0.92) 60%);
+  border: 1.5px solid rgb(180 139 232 / 0.45);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.35),
+    0 18px 40px -14px rgb(0 0 0 / 0.7),
+    inset 0 1px 0 rgb(255 255 255 / 0.12);
+}
+
+/* Four pink and gold pixels on each top corner. */
+@utility pixel-confetti {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-pink-accent);
+  pointer-events: none;
+}
+@utility pixel-confetti-left {
+  left: 16px;
+  box-shadow:
+    11px 5px 0 #ffd45c,
+    -7px 9px 0 #c9a4ff;
+}
+@utility pixel-confetti-right {
+  right: 20px;
+  box-shadow: -12px 7px 0 #fff3a0;
+}
+
+@utility mastery-ribbon {
+  background: linear-gradient(180deg, #ffe58a, #e0a91f);
+  color: #3b2406;
+  box-shadow:
+    0 3px 0 #8a5a12,
+    0 0 16px rgb(255 214 102 / 0.45);
+}
+
+/* Three traditional uses as one connected group, divided by hairlines. */
+@utility uses-tiles {
+  background: linear-gradient(180deg, rgb(60 110 60 / 0.38), rgb(34 66 44 / 0.4));
+  border: 1px solid rgb(155 220 102 / 0.38);
+
+  & > li + li {
+    border-left: 1px solid rgb(155 220 102 / 0.28);
+  }
+}
+
+/* The single prominent action: violet, a pressable edge, and a quiet glow. */
+@utility profile-cta {
+  background: linear-gradient(180deg, #9d6bf0, #6d3fc4);
+  border: 1.5px solid #e9d5ff;
+  box-shadow:
+    0 4px 0 #3d1f7a,
+    0 0 22px rgb(157 107 240 / 0.5),
+    inset 0 1px 0 rgb(255 255 255 / 0.35);
+  transition: transform 120ms;
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow:
+      0 1px 0 #3d1f7a,
+      0 0 18px rgb(157 107 240 / 0.4);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-cta {
+    transition: none;
+  }
+}
+
+/* The evolution path: a dotted pixel trail between stages, gold once travelled. */
+@utility evo-path {
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--color-violet-600) 0 4px, transparent 4px 8px);
+}
+@utility evo-path-lit {
+  background: repeating-linear-gradient(90deg, var(--color-gold-400) 0 4px, transparent 4px 8px);
+}
+@utility evo-sparkle {
+  position: absolute;
+  z-index: 20;
+  width: 5px;
+  height: 5px;
+  background: #fff3a0;
+  box-shadow: 0 0 6px #ffd45c;
+  animation: evo-twinkle 1.6s ease-in-out 2;
+}
+@utility evo-sparkle-a {
+  top: 6%;
+  right: 4%;
+}
+@utility evo-sparkle-b {
+  top: 34%;
+  left: -2%;
+  animation-delay: 0.5s;
+}
+@keyframes evo-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .evo-sparkle {
+    animation: none;
+    opacity: 0.8;
+  }
+}
+
+/*
+ * A Learn menu tile: a selectable location in a cosy adventure game. A stepped pixel shadow, an
+ * accent edge in the tile's own colour, and a hand-drawn object. The words stay modern.
+ */
+@utility learn-tile {
+  position: relative;
+  border: 2px solid color-mix(in srgb, var(--accent) 70%, var(--color-plum-900));
+  border-radius: 10px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 70%),
+    var(--color-plum-800);
+  box-shadow:
+    3px 3px 0 var(--color-plum-950),
+    inset 0 0 0 2px rgb(0 0 0 / 0.25);
+  transition:
+    transform 110ms,
+    box-shadow 110ms;
+
+  &:hover,
+  &:focus-visible {
+    transform: translate(-1px, -1px);
+    box-shadow:
+      4px 4px 0 var(--color-plum-950),
+      0 0 14px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--color-plum-950);
+  }
+}
+@utility learn-art {
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 3px 0 rgb(0 0 0 / 0.35));
+}
+@media (prefers-reduced-motion: reduce) {
+  .learn-tile {
+    transition: none;
+  }
+}
+
+/*
+ * THE FIELD GUIDE PAGE (Identify tab only). A cream parchment page with a stepped pixel
+ * binding, as if a field-guide book were opened inside an adventure game. It re-points the
+ * dark theme's colour tokens inside this one container, so the existing identification,
+ * lookalike and habitat sections draw dark ink on parchment without being rewritten; their
+ * words, order and sources are untouched. Photographs on it are shown as mounted prints and
+ * are never pixelated or tinted.
+ */
+@utility field-guide {
+  --color-violet-100: #2b1a0e;
+  --color-violet-200: #3a2616;
+  --color-violet-300: #5a3f24;
+  --color-violet-400: #6b4d2d;
+  --color-violet-500: #8a6a45;
+  --color-violet-600: #a98c63;
+  --color-violet-700: #bfa371;
+  --color-violet-800: #d3bb8a;
+  --color-gold-300: #6b3f06;
+  --color-gold-400: #7d4d08;
+  --color-gold-500: #946010;
+  --color-mystery-lilac: #5b3a8a;
+  --color-plum-700: #ead9ad;
+  --color-plum-800: #e4d09c;
+  --color-plum-900: #dcc78c;
+  --color-plum-950: #c9b27a;
+  position: relative;
+  margin-top: 1rem;
+  padding: 1.25rem 1rem 1.5rem;
+  color: var(--color-violet-200);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(255 255 255 / 0.35), transparent 60%),
+    repeating-linear-gradient(0deg, rgb(120 84 40 / 0.04) 0 2px, transparent 2px 5px),
+    #f3e6c4;
+  /* A stepped pixel frame: dark ink, tan board, dark ink, with the corners notched. */
+  border: 4px solid #3b2616;
+  box-shadow:
+    0 0 0 4px #9b6b3a,
+    0 0 0 8px #3b2616,
+    6px 8px 0 8px rgb(0 0 0 / 0.35),
+    inset 0 0 40px rgb(120 84 40 / 0.22);
+}
+/* Headings on parchment are ink, not gilt: a flat deep brown instead of the gold gradient. */
+.field-guide .text-gold-plate {
+  background: none;
+  -webkit-text-fill-color: #5b3306;
+  color: #5b3306;
+}
+/* The panels inside keep their structure and drop their glass. */
+.field-guide .panel,
+.field-guide .field-panel,
+.field-guide .panel-raised {
+  backdrop-filter: none;
+  background: rgb(255 250 232 / 0.55);
+  border-color: rgb(120 84 40 / 0.45);
+}
+.field-guide details {
+  background: rgb(255 250 232 / 0.5);
+}
+
+/* Habitat chips are tinted for a dark page; on parchment they become plain ink-on-paper tags. */
+.field-guide [class*="rounded-full"][class*="uppercase"] {
+  color: #4a2f12;
+  background: rgb(255 250 232 / 0.6);
+  border-color: rgb(120 84 40 / 0.55);
 }

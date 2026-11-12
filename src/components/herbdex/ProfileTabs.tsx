@@ -24,7 +24,7 @@ import { SignatureCompounds } from '../chemistry/SignatureCompounds';
 import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
-import { ReferencePhotos } from './ReferencePhotos';
+import { LookalikeCompare, ReferencePhotos } from './ReferencePhotos';
 import { FieldResearchRow, JourneyPanel, LockedJourney } from './JourneyPanels';
 import { HabitatChips } from '../game/HabitatChip';
 import { USE_LABEL } from '@/lib/deck';
@@ -55,12 +55,17 @@ const MEASURE_CLASS: Record<SectionMeasure, string> = {
 
 const RENDERERS: Record<ProfileSectionId, (herb: Herb) => React.ReactNode> = {
   identification: (herb) => (
-    <>
+    <div className="space-y-8">
       <ReferencePhotos herb={herb} />
       <IdentificationSection herb={herb} />
-    </>
+    </div>
   ),
-  lookalikes: (herb) => <LookalikeSection herb={herb} />,
+  lookalikes: (herb) => (
+    <div className="space-y-8">
+      <LookalikeSection herb={herb} />
+      <LookalikeCompare herb={herb} />
+    </div>
+  ),
   habitat: (herb) => <HabitatSection herb={herb} />,
   'field-data': (herb) => <FieldDataStrip herb={herb} />,
   healing: (herb) => <HealingTraitsSection herb={herb} />,
@@ -95,9 +100,12 @@ const PLACEHOLDER: Record<ProfileTabId, string> = {
   'your-progress': 'Find this plant to start its journal and progress.',
 };
 
+/** Anchors that live inside a tab open that tab too: the growth button points at the track. */
+const INNER_ANCHORS: Record<string, ProfileTabId> = { 'card-mastery': 'mastery-challenges' };
+
 function tabFromHash(hash: string): ProfileTabId | null {
   const id = hash.replace(/^#/, '');
-  return PROFILE_TABS.find((tab) => tab.id === id)?.id ?? null;
+  return PROFILE_TABS.find((tab) => tab.id === id)?.id ?? INNER_ANCHORS[id] ?? null;
 }
 
 export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAccess }) {
@@ -110,7 +118,13 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
       const wanted = tabFromHash(window.location.hash);
       if (!wanted) return;
       setActive(wanted);
-      root.current?.scrollIntoView({ block: 'start' });
+      const inner = window.location.hash.replace(/^#/, '');
+      // Wait a frame so a panel that was hidden is showing before it is scrolled to.
+      requestAnimationFrame(() => {
+        (INNER_ANCHORS[inner] ? document.getElementById(inner) : root.current)?.scrollIntoView({
+          block: 'start',
+        });
+      });
     };
     apply();
     window.addEventListener('hashchange', apply);
@@ -178,7 +192,9 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
             role="tabpanel"
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
-            className="space-y-6 pt-5"
+            className={
+              tab.id === 'field-identification' ? 'field-guide space-y-6' : 'space-y-6 pt-5'
+            }
           >
             {tab.id === 'field-identification' && (
               <div>

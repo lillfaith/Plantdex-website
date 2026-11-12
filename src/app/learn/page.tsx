@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { pixelObject } from '@/lib/pixel-art';
 
 export const metadata: Metadata = {
   title: 'Learn',
@@ -9,11 +9,17 @@ export const metadata: Metadata = {
     'Background reading for the Plantdex deck — a glossary of herbal terminology and general guides to traditional preparation methods.',
 };
 
-const SECTIONS: { href: string; icon: IconName; title: string; body: string }[] = [
-  { href: '/learn/plants', icon: 'leaves', title: 'Plant library', body: 'Every plant, field guide first.' },
-  { href: '/learn/glossary', icon: 'learn', title: 'Glossary', body: 'What the words mean.' },
-  { href: '/learn/preparations', icon: 'infusion', title: 'Preparations', body: 'How teas, tinctures and salves are made.' },
-  { href: '/safety', icon: 'safety', title: 'Herbal safety', body: 'Warnings and how to stay careful.' },
+const SECTIONS: {
+  href: string;
+  object: 'book' | 'magnifier' | 'mortar' | 'emblem';
+  accent: string;
+  title: string;
+  body: string;
+}[] = [
+  { href: '/learn/plants', object: 'book', accent: '#6fcf7e', title: 'Plant library', body: 'Every plant, field guide first.' },
+  { href: '/learn/glossary', object: 'magnifier', accent: '#c9a4ff', title: 'Glossary', body: 'What the words mean.' },
+  { href: '/learn/preparations', object: 'mortar', accent: '#f0a95a', title: 'Preparations', body: 'How teas, tinctures and salves are made.' },
+  { href: '/safety', object: 'emblem', accent: '#ffd45c', title: 'Herbal safety', body: 'Warnings and how to stay careful.' },
 ];
 
 export default function LearnPage() {
@@ -37,16 +43,19 @@ export default function LearnPage() {
       */}
       <p className="mt-1 text-sm leading-relaxed text-violet-300">Guides and reference for the deck.</p>
 
-      <ul className="mt-5 grid grid-cols-2 gap-3">
+      <ul className="mt-5 grid grid-cols-2 gap-3.5">
         {SECTIONS.map((section) => (
           <li key={section.href}>
             <Link
               href={section.href}
-              className="panel flex h-full min-h-36 flex-col items-center gap-2 p-4 text-center transition-colors hover:bg-plum-600/50"
+              style={{ ['--accent' as string]: section.accent }}
+              className="learn-tile flex h-full min-h-40 flex-col items-center gap-1.5 px-3 pt-3 pb-3.5 text-center"
             >
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold-500/40 bg-gold-500/10 text-3xl text-gold-300">
-                <PlantdexIcon name={section.icon} />
-              </span>
+              <span
+                aria-hidden="true"
+                className="learn-art block h-[72px] w-[72px]"
+                style={{ backgroundImage: pixelObject(section.object) }}
+              />
               <h2 className="font-display text-lg leading-tight font-bold text-gold-300">
                 {section.title}
               </h2>
