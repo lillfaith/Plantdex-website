@@ -2349,3 +2349,22 @@ body {
   }
 }
 
+
+/* "More below" cue on the card view. Two bobs and done; never loops. */
+@utility scroll-cue {
+  animation: scroll-cue-bob 1.1s ease-in-out 2;
+}
+@keyframes scroll-cue-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue {
+    animation: none;
+  }
+}

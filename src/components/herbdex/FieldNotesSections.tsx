@@ -59,33 +59,9 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
         id="identification-heading"
         accent="lilac"
         title="Field identification"
-        right={<ProvenanceChip source="plantdex" />}
         size="lg"
         note={IDENTIFICATION_CAVEAT}
       />
-      {/* Provenance, stated once where the field notes begin. The caveat above is about
-          safety and stays exactly as it is; this is about where the words came from. */}
-      {/*
-        THE SECOND SENTENCE IS CONDITIONAL, AND IT WAS NOT. It read "added here from the
-        sources listed at the foot of this page" for every card — true while every card with
-        field notes was a printed card carrying plant-level references, and false the moment
-        the Field Cards got notes: none of their candidates has been verified, so
-        `SourcesSection` returns null and the sentence pointed at a list that is not there.
-        `pageSourceCount` is the same number that section decides on, so the claim and the
-        list cannot disagree.
-
-        THE FIRST SENTENCE SAID "not PRINTED on your card", which is the same printed-card
-        assumption, one clause earlier: a Field Card is not printed at all, so the sentence
-        distinguished these notes from something the reader does not have. "Part of the card
-        itself" is the distinction that was always meant and holds for both kinds — and it is
-        the provenance dialog's own wording for the same fact, so the two agree.
-      */}
-      <p className={`-mt-1 mb-1 ${NOTE} text-violet-300`}>
-        These notes are not part of the card itself.{' '}
-        {pageSourceCount(herb) > 0
-          ? 'They were added here from the sources listed at the foot of this page.'
-          : 'They were added here by Plantdex, and are not yet backed by an independent source.'}
-      </p>
       {/*
         Two columns of trait rows rather than one long list: at reading measure the details
         are short enough that a single column leaves half the plate empty, which is what
@@ -117,6 +93,27 @@ export function IdentificationSection({ herb }: { herb: Herb }) {
         })}
       </dl>
       <GenusNotice herb={herb} />
+      {/*
+        PROVENANCE, FOLDED. The one-line safety caveat stays visible above the traits; where
+        these notes came from is a small expandable, so the identifying characteristics sit
+        higher on a phone. Nothing was removed: the same sentences and the same chip are inside.
+      */}
+      <details className="mt-4 rounded-lg border border-violet-700/70 bg-plum-800/40 px-3 py-1">
+        <summary className="min-h-11 cursor-pointer py-2.5 text-xs font-bold text-violet-200">
+          About this information
+        </summary>
+        <div className="pb-3">
+          <div className="mb-2">
+            <ProvenanceChip source="plantdex" />
+          </div>
+          <p className={`${NOTE} text-violet-300`}>
+            These notes are not part of the card itself.{' '}
+            {pageSourceCount(herb) > 0
+              ? 'They were added here from the sources listed at the foot of this page.'
+              : 'They were added here by Plantdex, and are not yet backed by an independent source.'}
+          </p>
+        </div>
+      </details>
     </Panel>
   );
 }

@@ -368,9 +368,13 @@ export function HerbDetail({ herb }: { herb: Herb }) {
           this is the page where a player has just advanced a card and is deciding what to do
           with the next one.
         */}
-        <div className="mt-8 max-w-3xl">
-          <ResearchTeaser />
-        </div>
+        {/* A discovered viewer finds it in the Progress tab; this keeps the route for a viewer
+            who is only reading. */}
+        {!discovered && (
+          <div className="mt-8 max-w-3xl">
+            <ResearchTeaser />
+          </div>
+        )}
 
         {/*
           The account nudge, on the page where progress is actually made rather than only on

@@ -51,14 +51,14 @@ export type ProfileSectionId = (typeof PROFILE_SECTION_IDS)[number];
 /**
  * THE FOUR TABS OF THE EXPANDED PROFILE, in the order they appear, owner-approved. Field
  * Identification is first and is the selected tab by default; it supersedes the earlier
- * "traditional use first" sandwich. `hash` is the native anchor that opens the tab, so the
+ * "traditional use first" sandwich. `label` is the full heading (shown inside each panel); `short` is the tab-button text on a phone. `hash` is the native anchor that opens the tab, so the
  * Learn library and the card view can deep-link to it with no extra route.
  */
 export const PROFILE_TABS = [
-  { id: 'field-identification', label: 'Field Identification' },
-  { id: 'herbal-knowledge', label: 'Herbal Knowledge' },
-  { id: 'mastery-challenges', label: 'Mastery Challenges' },
-  { id: 'your-progress', label: 'Your Progress' },
+  { id: 'field-identification', label: 'Field Identification', short: 'Identify' },
+  { id: 'herbal-knowledge', label: 'Herbal Knowledge', short: 'Herbalism' },
+  { id: 'mastery-challenges', label: 'Mastery Challenges', short: 'Challenges' },
+  { id: 'your-progress', label: 'Your Progress', short: 'Progress' },
 ] as const;
 export type ProfileTabId = (typeof PROFILE_TABS)[number]['id'];
 

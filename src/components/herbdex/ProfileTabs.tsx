@@ -25,10 +25,9 @@ import { MasteryTrack } from './MasteryTrack';
 import { SourcesSection } from './SourcesSection';
 import { MySightings } from '../journal/MySightings';
 import { ReferencePhotos } from './ReferencePhotos';
-import { XpBar } from '../game/XpBar';
+import { FieldResearchRow, JourneyPanel, LockedJourney } from './JourneyPanels';
 import { HabitatChips } from '../game/HabitatChip';
 import { USE_LABEL } from '@/lib/deck';
-import { useHerbdex } from '@/state/HerbdexProvider';
 
 /**
  * THE EXPANDED PROFILE: FOUR TABS, ONE PAGE, ONE SET OF DATA.
@@ -82,6 +81,12 @@ const EXPANDABLE: Partial<Record<ProfileTabId, { ids: readonly ProfileSectionId[
   },
 };
 
+/** Visual grouping in Herbal Knowledge: traditional use is gold-edged, chemistry lilac-edged. */
+const GROUP: Partial<Record<ProfileSectionId, string>> = {
+  healing: 'border-l-4 border-gold-500/70 pl-3',
+  compounds: 'border-l-4 border-mystery-lilac/70 pl-3',
+};
+
 const PLACEHOLDER: Record<ProfileTabId, string> = {
   'field-identification': '',
   'herbal-knowledge':
@@ -98,7 +103,6 @@ function tabFromHash(hash: string): ProfileTabId | null {
 export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAccess }) {
   const [active, setActive] = useState<ProfileTabId>('field-identification');
   const root = useRef<HTMLDivElement | null>(null);
-  const { progress } = useHerbdex();
 
   // A deep link (#herbal-knowledge) opens that tab, on load and when the hash changes.
   useEffect(() => {
@@ -150,13 +154,13 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(tab.id)}
               onKeyDown={(event) => onKeyDown(event, index)}
-              className={`min-h-11 rounded-t px-1 text-[0.72rem] leading-tight font-bold transition-colors ${
+              className={`min-h-12 rounded-t px-1 text-[0.8rem] leading-tight font-bold transition-colors ${
                 selected
-                  ? 'bg-plum-800 text-gold-300 shadow-[inset_0_-3px_0_var(--color-gold-400)]'
+                  ? 'bg-plum-700 text-gold-200 shadow-[inset_0_-4px_0_var(--color-gold-400)]'
                   : 'text-violet-300 hover:text-violet-100'
               }`}
             >
-              {tab.label}
+              {tab.short}
             </button>
           );
         })}
@@ -165,7 +169,8 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
       {PROFILE_TABS.map((tab) => {
         const rows = sectionRows(access, tab.id);
         const expandable = EXPANDABLE[tab.id];
-        const placeholder = waiting.has(tab.id) ? PLACEHOLDER[tab.id] : '';
+        const placeholder =
+          waiting.has(tab.id) && tab.id === 'herbal-knowledge' ? PLACEHOLDER[tab.id] : '';
         return (
           <div
             key={tab.id}
@@ -173,7 +178,7 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
             role="tabpanel"
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
-            className="space-y-8 pt-6"
+            className="space-y-6 pt-5"
           >
             {tab.id === 'field-identification' && (
               <div>
@@ -199,10 +204,22 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
               </ul>
             )}
             {tab.id === 'your-progress' && access === 'discovered' && (
-              /* Account-wide level and XP: there is no per-plant level and none is invented. */
-              <div className="rounded-xl border border-violet-700/60 bg-plum-900/50 px-3 py-2.5">
-                <XpBar progress={progress} />
-              </div>
+              /* Stages, dates, next step and the account-wide XP; no per-plant level is invented. */
+              <JourneyPanel herb={herb} />
+            )}
+            {tab.id === 'your-progress' && access !== 'discovered' && (
+              <LockedJourney
+                herb={herb}
+                heading="Your journey starts here"
+                line="Your journal, XP and progress begin with your first sighting of this plant."
+              />
+            )}
+            {tab.id === 'mastery-challenges' && access !== 'discovered' && (
+              <LockedJourney
+                herb={herb}
+                heading="Master this plant"
+                line="Find it, learn its card, then see it again. Each stage grows it in your Garden."
+              />
             )}
             {rows.map((row) => {
               const inFold = row.sections.every((section) => expandable?.ids.includes(section.id));
@@ -217,7 +234,9 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                   }
                 >
                   {row.sections.map((section) => (
-                    <div key={section.id}>{RENDERERS[section.id](herb)}</div>
+                    <div key={section.id} className={GROUP[section.id]}>
+                      {RENDERERS[section.id](herb)}
+                    </div>
                   ))}
                 </div>
               );
@@ -243,6 +262,7 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                 </div>
               </details>
             )}
+            {tab.id === 'your-progress' && access === 'discovered' && <FieldResearchRow />}
             {placeholder && (
               <p className="rounded-xl border border-violet-700 bg-plum-900/40 p-4 text-sm text-violet-200">
                 {placeholder}

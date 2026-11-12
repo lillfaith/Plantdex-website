@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CATALOGUE } from './catalogue';
 
-const PAGE = readFileSync('src/app/learn/plants/page.tsx', 'utf8');
+const PAGE =
+  readFileSync('src/app/learn/plants/page.tsx', 'utf8') +
+  readFileSync('src/components/learn/PlantLibrary.tsx', 'utf8');
 const code = PAGE.replace(/\/\*[\s\S]*?\*\//g, '');
 
 describe('the plant library index', () => {
@@ -18,7 +20,7 @@ describe('the plant library index', () => {
     expect(code).not.toMatch(/herbs\.json|sources\.json/);
   });
   it('is open to everybody and carries the safety notice', () => {
-    expect(code).not.toMatch(/useHerbdex|isDiscovered|'use client'/);
+    expect(code).not.toMatch(/useHerbdex|isDiscovered/);
     expect(code).toContain('<SafetyNotice');
   });
   it('is reachable from Learn', () => {

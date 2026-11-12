@@ -10,30 +10,10 @@ export const metadata: Metadata = {
 };
 
 const SECTIONS: { href: string; icon: IconName; title: string; body: string }[] = [
-  {
-    href: '/learn/plants',
-    icon: 'leaves',
-    title: 'Plant library',
-    body: 'Every plant Plantdex covers, each linking to its field identification guide: how to recognise it, its lookalikes and where it grows.',
-  },
-  {
-    href: '/learn/glossary',
-    icon: 'learn',
-    title: 'Glossary',
-    body: 'What the words mean. Infusion, decoction, tincture, poultice, mucilage, menstruum and the rest — including every term that turns up on the cards.',
-  },
-  {
-    href: '/learn/preparations',
-    icon: 'infusion',
-    title: 'Preparation guides',
-    body: 'How traditional preparations are made, in general terms: teas and infusions, decoctions, infused oils and salves, and drying and storing plant material.',
-  },
-  {
-    href: '/safety',
-    icon: 'safety',
-    title: 'Herbal safety',
-    body: 'The deck’s own disclaimer in full, how to treat identification, every warning printed in this deck, and where the plant information on this site comes from.',
-  },
+  { href: '/learn/plants', icon: 'leaves', title: 'Plant library', body: 'Every plant, field guide first.' },
+  { href: '/learn/glossary', icon: 'learn', title: 'Glossary', body: 'What the words mean.' },
+  { href: '/learn/preparations', icon: 'infusion', title: 'Preparations', body: 'How teas, tinctures and salves are made.' },
+  { href: '/safety', icon: 'safety', title: 'Herbal safety', body: 'Warnings and how to stay careful.' },
 ];
 
 export default function LearnPage() {
@@ -55,20 +35,22 @@ export default function LearnPage() {
         the intro look like a caption for the first card rather than for all three. The nav
         label and the three destinations are unchanged; only this sentence is.
       */}
-      <p className="mt-1 text-sm leading-relaxed text-violet-300">
-        The vocabulary behind the deck — the terminology printed on the cards, the
-        preparation methods those words name, and the safety language used across this site.
-      </p>
+      <p className="mt-1 text-sm leading-relaxed text-violet-300">Guides and reference for the deck.</p>
 
-      <ul className="mt-6 space-y-3">
+      <ul className="mt-5 grid grid-cols-2 gap-3">
         {SECTIONS.map((section) => (
           <li key={section.href}>
-            <Link href={section.href} className="panel block p-5 transition-colors hover:bg-plum-600/50">
-              <h2 className="font-display flex items-center gap-2.5 text-xl font-bold text-gold-300">
-                <PlantdexIcon name={section.icon} className="shrink-0 text-2xl text-violet-300" />
+            <Link
+              href={section.href}
+              className="panel flex h-full min-h-36 flex-col items-center gap-2 p-4 text-center transition-colors hover:bg-plum-600/50"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold-500/40 bg-gold-500/10 text-3xl text-gold-300">
+                <PlantdexIcon name={section.icon} />
+              </span>
+              <h2 className="font-display text-lg leading-tight font-bold text-gold-300">
                 {section.title}
               </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-violet-200">{section.body}</p>
+              <p className="text-xs leading-snug text-violet-200">{section.body}</p>
             </Link>
           </li>
         ))}

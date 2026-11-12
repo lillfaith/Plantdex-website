@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CATALOGUE } from '@/lib/catalogue';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { PlantLibrary } from '@/components/learn/PlantLibrary';
 
 export const metadata: Metadata = {
   title: 'Plant library',
@@ -35,32 +36,16 @@ export default function PlantLibraryPage() {
       </nav>
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">Plant library</h1>
       <p className="mt-1 text-sm leading-relaxed text-violet-300">
-        {plants.length} plants. Each opens its field identification guide first: how to
-        recognise it, what it is confused with, and where it grows.
+        Each plant opens its field identification guide first.
       </p>
 
-      <ul className="mt-6 divide-y divide-violet-800/70 rounded-xl border border-violet-700 bg-plum-900/40">
-        {plants.map((plant) => (
-          <li key={plant.id}>
-            <Link
-              href={`/herbdex/${plant.id}/#field-identification`}
-              className="flex min-h-14 items-center justify-between gap-3 px-4 py-2.5 transition-colors hover:bg-plum-600/50"
-            >
-              <span className="min-w-0">
-                <span className="block truncate text-sm font-bold text-violet-100">
-                  {plant.commonName}
-                </span>
-                <span className="font-botanical block truncate text-xs text-violet-300 italic">
-                  {plant.scientificName}
-                </span>
-              </span>
-              <span aria-hidden="true" className="shrink-0 text-violet-400">
-                &rarr;
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <PlantLibrary
+        plants={plants.map((plant) => ({
+          id: plant.id,
+          commonName: plant.commonName,
+          scientificName: plant.scientificName,
+        }))}
+      />
 
       <div className="mt-10">
         <SafetyNotice context="A field guide is an aid, not proof. Finding a plant is not identifying it, and traditional use is not evidence. Never eat, drink or apply one you are not certain of." />

@@ -52,6 +52,11 @@ export function SpeciesHero({
             <CardFlip herb={herb} size="hero" />
           </div>
         </div>
+        {/* A quiet cue that more sits below the card: a small bobbing chevron, twice, never
+            looping, and still under reduced motion. */}
+        <p aria-hidden="true" className="scroll-cue mt-1 text-center text-lg text-violet-400">
+          &#8964;
+        </p>
       </div>
 
       <div className="min-w-0">
@@ -132,28 +137,28 @@ export function SpeciesHero({
           The heading and caption keep the distinction between traditional use and
           scientifically supported efficacy: these are what the card prints as traditional uses.
         */}
-        <div className="mt-4">
+        <div className="mt-3">
           <h2 className="text-[0.72rem] font-bold tracking-[0.12em] text-violet-300 uppercase">
             Traditional Uses
           </h2>
-          <ul className="mt-1.5 flex flex-wrap gap-1.5">
+          <ul className="mt-1 flex flex-wrap gap-1">
             {herb.back.healingTraits.slice(0, 3).map((trait) => (
               <li
                 key={trait}
-                className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2.5 py-1 text-xs font-semibold text-gold-300"
+                className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2 py-0.5 text-xs font-semibold text-gold-300"
               >
                 {trait}
               </li>
             ))}
           </ul>
-          <p className="mt-1.5 text-[0.72rem] text-violet-400">
+          <p className="mt-1 text-[0.72rem] text-violet-400">
             Traditional use, not proven treatment.
           </p>
         </div>
 
         <a
           href="#field-identification"
-          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-violet-500 px-4 text-sm font-bold text-violet-100 hover:bg-plum-600"
+          className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase hover:bg-gold-300"
         >
           Open full profile <span aria-hidden="true">&darr;</span>
         </a>
