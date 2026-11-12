@@ -56,6 +56,7 @@ function Welcome() {
         &#9670; A real-world adventure &#9670;
       </p>
       <div className="welcome-stage mx-auto mt-2">
+        <span aria-hidden="true" className="welcome-mound" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-a" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-b" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-c" />
@@ -198,17 +199,41 @@ function Collect() {
           </div>
         </div>
       )}
-      <ul className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
+      {/*
+        The card's own printed Healing Traits, one at a time after the turn. A fixed-height
+        slot, so nothing below it moves. Framed as traditional use, never as a claim.
+      */}
+      <div className="mx-auto mt-2 min-h-[4.6rem] max-w-[19rem]" aria-live="polite">
+        {flipped && herb ? (
+          <div key={turns}>
+            <p className="text-[0.72rem] font-bold tracking-[0.08em] text-violet-200 uppercase">
+              Healing Traits &middot; traditional use, not medical advice
+            </p>
+            <ul className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
+              {herb.back.healingTraits.slice(0, 4).map((trait, index) => (
+                <li
+                  key={trait}
+                  className="welcome-trait rounded-full border border-gold-500/60 bg-plum-900/70 px-2.5 py-0.5 text-xs font-bold text-gold-200"
+                  style={{ animationDelay: `${index * 420}ms` }}
+                >
+                  {trait}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p className="text-sm leading-relaxed text-violet-100">
+            Every real find unlocks a card with its rarity, XP and more. Turn this one over.
+          </p>
+        )}
+      </div>
+      <ul className="mt-2 flex items-center justify-center gap-1">
         {(['Common', 'Uncommon', 'Rare', 'Epic'] as const).map((tier) => (
           <li key={tier}>
             <RarityBadge rarity={tier} />
           </li>
         ))}
       </ul>
-      <p className="mx-auto mt-3 max-w-[19rem] text-sm leading-relaxed text-violet-100">
-        Every real find unlocks its card and earns XP, levels and cosmetic rewards. This one
-        is just for show.
-      </p>
     </>
   );
 }

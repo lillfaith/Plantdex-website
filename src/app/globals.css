@@ -2055,23 +2055,21 @@ body {
 @utility welcome-woods {
   position: absolute;
   inset: auto 0 0 0;
-  height: 19%;
+  height: 17%;
   pointer-events: none;
-  /* Wild meadow, not a lawn: irregular blades at unrelated periods, then scattered
-     flowers, bushes and hills. Gradients only, so it costs no image. */
+  /* Rolling meadow in the soft style of a cosy indie game: shaded hills, scalloped bushy
+     crests rather than ruled blades, and a few scattered wildflowers. Gradients only. */
   background:
-    radial-gradient(circle at 50% 66%, #ffd45c 0 2px, transparent 2.5px) 0px 0 / 37px 100% repeat-x,
-    radial-gradient(circle at 50% 74%, #ff8fc7 0 2px, transparent 2.5px) 9px 0 / 53px 100% repeat-x,
-    radial-gradient(circle at 50% 82%, #ffffff 0 2px, transparent 2.5px) 17px 0 / 71px 100% repeat-x,
-    radial-gradient(circle at 50% 90%, #c9a4ff 0 2px, transparent 2.5px) 5px 0 / 89px 100% repeat-x,
-    radial-gradient(circle at 50% 95%, #ffd45c 0 2px, transparent 2.5px) 23px 0 / 43px 100% repeat-x,
-    repeating-linear-gradient(83deg, #6fcf7e 0 2px, transparent 2px 9px) bottom 30px left 0 / 100% 22px no-repeat,
-    repeating-linear-gradient(97deg, #3f9a55 0 3px, transparent 3px 13px) bottom 24px left 0 / 100% 26px no-repeat,
-    radial-gradient(40% 55% at 12% 100%, #1f5a35 0 60%, transparent 61%),
-    radial-gradient(34% 45% at 90% 100%, #1f5a35 0 60%, transparent 61%),
-    radial-gradient(120% 90% at 20% 100%, #2f7a45 0 55%, transparent 56%),
-    radial-gradient(110% 80% at 85% 100%, #3b8f52 0 52%, transparent 53%),
-    radial-gradient(140% 100% at 55% 110%, #235f38 0 60%, transparent 61%);
+    radial-gradient(circle at 50% 78%, #ffd45c 0 2.5px, transparent 3px) 0 0 / 83px 100% repeat-x,
+    radial-gradient(circle at 50% 66%, #ff9fcf 0 2.5px, transparent 3px) 21px 0 / 107px 100% repeat-x,
+    radial-gradient(circle at 50% 88%, #ffffff 0 2px, transparent 2.5px) 47px 0 / 131px 100% repeat-x,
+    radial-gradient(circle at 50% 72%, #d2b4ff 0 2.5px, transparent 3px) 12px 0 / 97px 100% repeat-x,
+    radial-gradient(ellipse 22px 9px at 50% 100%, #6fcf7e 0 70%, transparent 72%) 0 62% / 38px 9px repeat-x,
+    radial-gradient(ellipse 60% 100% at 18% 100%, #4fae65 0%, #2f7a45 62%, transparent 63%),
+    radial-gradient(ellipse 55% 85% at 86% 100%, #55b36a 0%, #357f4b 62%, transparent 63%),
+    radial-gradient(ellipse 90% 70% at 52% 112%, #2a6c3f 0%, #1f5a35 62%, transparent 63%);
+  /* Fades into the sky above instead of starting on a hard line. */
+  mask-image: linear-gradient(180deg, transparent 0, #000 22%);
 }
 
 /* An inset gilt frame around the whole screen, with a stud in each corner. */
@@ -2153,16 +2151,46 @@ body {
   max-width: 19rem;
   height: 8.5rem;
   margin-bottom: 0.75rem;
+  background: radial-gradient(
+    70% 70% at 50% 40%,
+    color-mix(in srgb, var(--color-gold-300) 38%, transparent),
+    transparent 70%
+  );
+}
+
+/*
+ * The mound the sprites stand on. Its own element with `overflow: hidden`, so the scalloped
+ * crest and the flowers are clipped to the hill and cannot trail off its sides.
+ */
+@utility welcome-mound {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: 42%;
+  overflow: hidden;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
   background:
-    repeating-linear-gradient(84deg, #7ad88a 0 2px, transparent 2px 8px) bottom 18px left 0 / 100% 12px no-repeat,
-    repeating-linear-gradient(96deg, #2f7a45 0 3px, transparent 3px 11px) bottom 6px left 0 / 100% 14px no-repeat,
-    radial-gradient(circle at 50% 80%, #ffd45c 0 2px, transparent 2.5px) 0px 0 / 41px 100% repeat-x,
-    radial-gradient(circle at 50% 88%, #ff8fc7 0 2px, transparent 2.5px) 9px 0 / 57px 100% repeat-x,
-    radial-gradient(circle at 50% 84%, #ffffff 0 2px, transparent 2.5px) 17px 0 / 73px 100% repeat-x,
-    radial-gradient(circle at 50% 92%, #c9a4ff 0 2px, transparent 2.5px) 5px 0 / 47px 100% repeat-x,
-    radial-gradient(circle at 50% 86%, #ffd45c 0 2px, transparent 2.5px) 23px 0 / 67px 100% repeat-x,
-    radial-gradient(70% 38% at 50% 100%, #4aa35c 0 60%, transparent 61%),
-    radial-gradient(70% 70% at 50% 40%, color-mix(in srgb, var(--color-gold-300) 38%, transparent), transparent 70%);
+    radial-gradient(circle at 50% 40%, #ffd45c 0 2px, transparent 2.5px) 6px 0 / 41px 100% repeat-x,
+    radial-gradient(circle at 50% 62%, #ff9fcf 0 2px, transparent 2.5px) 19px 0 / 53px 100% repeat-x,
+    radial-gradient(circle at 50% 78%, #ffffff 0 1.5px, transparent 2px) 31px 0 / 67px 100% repeat-x,
+    radial-gradient(ellipse 14px 6px at 50% 100%, #8fe39a 0 70%, transparent 72%) 0 6px / 24px 7px repeat-x,
+    linear-gradient(180deg, #6fcf7e 0%, #3f9a55 55%, #2f7a45 100%);
+}
+
+/* A trait pops in, overshoots a touch and settles. Once, then held. */
+@utility welcome-trait {
+  animation: welcome-trait-in 380ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes welcome-trait-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @utility welcome-mote {
@@ -2297,6 +2325,9 @@ body {
   }
   .welcome-sparkles {
     display: none;
+  }
+  .welcome-trait {
+    animation: none;
   }
 }
 
