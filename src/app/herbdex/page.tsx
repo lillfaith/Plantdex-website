@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { printedCardsInDeckOrder } from '@/lib/deck';
 import { FIELD_CARDS } from '@/lib/field-cards';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
-import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
+import { CollectionHeader } from '@/components/herbdex/CollectionHeader';
 import { FirstQuestCard } from '@/components/herbdex/FirstQuestCard';
-import { RegionTeaser } from '@/components/quests/RegionTeaser';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { RecentFindsStrip } from '@/components/herbdex/RecentFindsStrip';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
@@ -22,6 +21,34 @@ export const metadata: Metadata = {
     'Track the wild plants you have found in real life, earn XP, and complete your Plantdex collection.',
 };
 
+function QuickLink({
+  href,
+  icon,
+  label,
+  note,
+}: {
+  href: string;
+  icon: 'revealed' | 'seed' | 'research';
+  label: string;
+  note: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="pixel-tile flex min-h-[4.5rem] flex-col items-center justify-center gap-1 px-1 py-2 text-center"
+    >
+      <span
+        aria-hidden="true"
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-500/15 text-base text-gold-300"
+      >
+        <PlantdexIcon name={icon} />
+      </span>
+      <span className="text-xs leading-tight font-bold text-violet-50">{label}</span>
+      <span className="sr-only">{note}</span>
+    </Link>
+  );
+}
+
 export default function HerbdexPage() {
   const herbs = printedCardsInDeckOrder();
   /*
@@ -35,180 +62,63 @@ export default function HerbdexPage() {
   return (
     <main id="main" className="mx-auto max-w-6xl px-4 py-8">
       <TrackView event="herbdex_opened" />
-      <nav aria-label="Breadcrumb" className="mb-2">
-        <Link href="/" className="-ml-2 inline-flex min-h-11 items-center rounded-lg px-2 text-xs font-semibold text-violet-300 hover:text-gold-400">
-          ← Plantdex
-        </Link>
-      </nav>
+      {/* Above the header, because it is about that progress, and inline in the page flow
+          rather than a modal so it never interrupts anyone. It renders nothing until a
+          signed-out player has enough collection to be worth protecting. */}
+      <LocalProgressNotice />
+      <CollectionHeader />
 
-      <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Collection</h1>
-      <p className="mt-1 text-sm text-violet-300">
-        Found a plant in the wild? Open its card and log it.
-      </p>
-      {/* Collection identity, stated once. The deck is complete as it stands — this names
-          it rather than implying anything is missing from it. */}
-      <p className="mt-1.5 text-xs font-semibold tracking-wide text-violet-400 uppercase">
-        {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
-      </p>
-      {/*
-        AND WHAT THAT NAME MEANS, ONCE, WHERE IT FIRST APPEARS AS A NAME.
-
-        "Collection 01" is a proper noun the app uses on six surfaces and defines on none.
-        A reader can infer from the chip above that it involves 45 cards; what they cannot
-        infer is that it is the PHYSICAL deck — which is the fact the Field Card band, the
-        Seed Shelf and "Beyond Collection 01" all quietly depend on further down this page.
-
-        Here rather than on /scan, /shop or a card page: this is the label's own home, the
-        one place it is printed as a standalone identity rather than used in a sentence, and
-        the page a new arrival reaches first. Defining it on each surface that mentions it
-        would be the same sentence five times.
-
-        NOT gated on an empty collection, unlike the two onboarding aids below it. Those
-        teach an action somebody then performs; this defines a term that stays in the
-        interface forever, and a definition a returning reader cannot find again is not
-        much of a definition. It is one dim line under the chip it explains.
-      */}
-      <p className="mt-1 text-xs text-violet-400">
-        {CURRENT_COLLECTION.shortName} is the {CURRENT_COLLECTION.size}-card physical
-        Plantdex deck.
-      </p>
+      {/* The three places this page leads. Identify is first: it is the one action that works
+          on the first visit. The descriptions stay for screen readers. */}
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        <QuickLink
+          href="/scan"
+          icon="revealed"
+          label="Identify a plant"
+          note="Photograph something growing and see what Plantdex thinks it might be"
+        />
+        <QuickLink
+          href="/seed-shelf"
+          icon="seed"
+          label="Seed Shelf"
+          note="Species you have found that this collection has no card for"
+        />
+        <QuickLink
+          href="/herbdex/research"
+          icon="research"
+          label="Field Research"
+          note="Daily tasks, seasonal ladders and challenges, and what your XP unlocks"
+        />
+      </div>
 
       {/* Renders only while the collection is genuinely empty, without a button of its own:
           the scanner is directly beneath it. */}
       <FirstQuestCard cta={false} />
 
-      {/*
-        FIRST THING AFTER THE TITLE, BECAUSE IT ANSWERS THE TITLE.
-
-        The subtitle above says "Found a plant in the wild?" — and until now the only reply
-        to that was a grid of 45 silhouettes to hunt through. This entry point has moved
-        twice: it shipped below the collection footer, then above the grid but under the
-        progress cluster, where it measured y=563 on a 390x720 phone against a nav floor of
-        662. Visible, technically; a strip at the very bottom of the screen, in practice, and
-        the report was still "I cannot find it".
-
-        Progress and research now follow it. Reading how far along you are is something you
-        do sitting down; naming the plant in front of you is not, and the page opens on the
-        one you cannot postpone.
-      */}
-      <div className="mt-5">
-        <Link
-          href="/scan"
-          className="panel flex items-center gap-3 p-4 transition-colors hover:bg-plum-600/50"
-        >
-          <span
-            aria-hidden="true"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-lg text-gold-300"
-          >
-            <PlantdexIcon name="revealed" />
-          </span>
-          <span className="min-w-0">
-            <span className="block font-bold text-violet-100">Identify a plant</span>
-            <span className="block text-xs text-violet-300">
-              Photograph something growing and see what Plantdex thinks it might be
-            </span>
-          </span>
-        </Link>
-
-        {/*
-          THE COLLECTION'S OTHER HALF, AND THE ONLY PLACE TO LOOK FOR IT.
-
-          A scan produces one of two things: a card, or a seed packet for a species this
-          collection has no card for — and the second is the ORDINARY outcome, 45 species out
-          of a world of them. But `/seed-shelf` was reachable from the Garden and from the
-          moment a packet was saved, and from nowhere else. So a player who shelved something,
-          closed the tab and came back had no route to it at all: not from the nav, not from
-          the collection page, not from their profile. The find was kept and became unfindable.
-
-          It belongs here rather than in the nav bar because this is the page somebody opens
-          when they are wondering where their finds went, and because seven labels already
-          divide a 390px bar as far as it goes. Quieter than the scanner above it: the shelf is
-          somewhere you visit, and identifying is something you do.
-        */}
-        <Link
-          href="/seed-shelf"
-          className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-violet-800/70 px-4 py-2.5 transition-colors hover:bg-plum-600/40"
-        >
-          <span
-            aria-hidden="true"
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-mystery-violet/20 text-sm text-violet-200"
-          >
-            <PlantdexIcon name="seed" />
-          </span>
-          <span className="min-w-0">
-            <span className="block text-sm font-bold text-violet-100">My Seed Shelf</span>
-            <span className="block text-xs text-violet-300">
-              Species you have found that this collection has no card for
-            </span>
-          </span>
-        </Link>
-
-        {/*
-          FIELD RESEARCH, WHICH WAS REACHABLE ONLY BY ACCIDENT.
-
-          The page sits at `/herbdex/research`, is in no navigation, and was linked only from
-          three teasers that render today's open dailies — so a player who closed it, or whose
-          board happened to be empty, had no way back. It is the layer that gives XP a reason
-          to exist, so it gets a permanent, findable entry beside the Seed Shelf rather than
-          an eighth nav slot: seven labels already divide a 390px bar as far as it goes.
-
-          Quieter than the scanner above, same weight as the shelf: these are two places you
-          VISIT, and identifying is the thing you DO.
-        */}
-        <Link
-          href="/herbdex/research"
-          className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-violet-800/70 px-4 py-2.5 transition-colors hover:bg-plum-600/40"
-        >
-          <span
-            aria-hidden="true"
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-sm text-gold-300"
-          >
-            <PlantdexIcon name="research" />
-          </span>
-          <span className="min-w-0">
-            <span className="block text-sm font-bold text-violet-100">Field Research</span>
-            <span className="block text-xs text-violet-300">
-              Daily tasks, seasonal ladders and challenges — and what your XP unlocks
-            </span>
-          </span>
-        </Link>
-      </div>
-
-      {/* Above the progress header, because it is about that progress — and inline in the
-          page flow rather than a modal, so it never interrupts anyone. It renders nothing
-          until a signed-out player has enough collection to be worth protecting. */}
-      <div className="mt-5">
-        <LocalProgressNotice />
-        <ProgressHeader />
-      </div>
-
-      {/*
-        WHAT YOU JUST DID, THEN WHAT TO DO NEXT — in that order.
-
-        The strip is `RecentFinds`, reused from the profile, where it had been the only
-        mount. Recent activity sits above the research teaser deliberately: one looks
-        backwards and one forwards, and a page that opens by telling you what to do next
-        without first acknowledging what you already did reads as a task list. It renders
-        nothing at all until there is a find to show, so a new player still meets the grid.
-      */}
       <div className="mt-3">
         <RecentFindsStrip />
-      </div>
-
-      {/*
-        The regional board, as a signpost rather than an eighth nav item — seven labels is
-        the measured ceiling at 390px. It sits beside Field Research because both answer
-        the same question a returning player has: what should I do next.
-      */}
-      <div className="mt-3">
-        <RegionTeaser />
       </div>
 
       <div className="mt-3">
         <ResearchTeaser />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8 flex items-center gap-3">
+        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500/80" />
+        <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Collection</h1>
+        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-500/80" />
+      </div>
+      {/* Collection identity, stated once. The deck is complete as it stands: this names it
+          rather than implying anything is missing from it. */}
+      <p className="mt-2 text-center text-xs font-semibold tracking-wide text-violet-400 uppercase">
+        {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
+      </p>
+      <p className="mt-1 text-center text-xs text-violet-400">
+        {CURRENT_COLLECTION.shortName} is the {CURRENT_COLLECTION.size}-card physical Plantdex
+        deck. Found a plant in the wild? Open its card and log it.
+      </p>
+
+      <div className="mt-4">
         <HerbGrid herbs={herbs} fieldCards={fieldCards} />
       </div>
 

@@ -203,10 +203,11 @@ describe('account switching', () => {
 });
 
 describe('the way in from the Herbdex', () => {
-  it('is on the Herbdex, and does not take a nav slot', () => {
+  it('is off the Herbdex for now, and never took a nav slot', () => {
     // Seven nav labels is the measured ceiling: at 390px each is 53px and an eighth
     // truncates. The board is a signpost on the page a returning player already lands on.
-    expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).toContain('<RegionTeaser />');
+    // "Plants near you" is switched off for now; the teaser component and route stay in place.
+    expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).not.toContain('<RegionTeaser />');
     expect(readFileSync('src/components/SiteNav.tsx', 'utf8'))
       .not.toContain('/quests');
   });

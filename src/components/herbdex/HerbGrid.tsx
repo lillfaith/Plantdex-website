@@ -11,11 +11,12 @@ import { FIELD_CARDS_TOTAL, unlockXpFor } from '@/lib/field-cards';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
-type StatusFilter = 'all' | 'discovered' | 'undiscovered' | 'mastered';
+type StatusFilter = 'all' | 'discovered' | 'learned' | 'undiscovered' | 'mastered';
 
 const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
   { value: 'all', label: 'All' },
-  { value: 'discovered', label: 'Discovered' },
+  { value: 'discovered', label: 'Found' },
+  { value: 'learned', label: 'Learned' },
   { value: 'mastered', label: 'Mastered' },
   { value: 'undiscovered', label: 'Not found' },
 ];
@@ -56,7 +57,17 @@ function Chip({
  * name would otherwise reveal what is hiding behind an undiscovered slot.
  */
 export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards?: Herb[] }) {
-  const { isDiscovered, isMastered, stageOf, ready, progress, discoveredCount } = useHerbdex();
+  const {
+    isDiscovered,
+    isMastered,
+    stageOf,
+    ready,
+    progress,
+    discoveredCount,
+    learnedCount,
+    masteredCount,
+    state,
+  } = useHerbdex();
   const [status, setStatus] = useState<StatusFilter>('all');
   const [rarity, setRarity] = useState<Rarity | 'all'>('all');
   const [season, setSeason] = useState<Season | 'all'>('all');
@@ -70,6 +81,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
 
       if (status === 'discovered' && !discovered) return false;
       if (status === 'undiscovered' && discovered) return false;
+      if (status === 'learned' && !(ready && state.learned[herb.id])) return false;
       if (status === 'mastered' && !(ready && isMastered(herb.id))) return false;
       if (rarity !== 'all' && herb.rarity !== rarity) return false;
       if (season !== 'all' && herb.season !== season) return false;
@@ -92,7 +104,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
       }
       return true;
     });
-  }, [herbs, status, rarity, season, habitat, query, isDiscovered, isMastered, ready]);
+  }, [herbs, status, rarity, season, habitat, query, isDiscovered, isMastered, ready, state.learned]);
 
   /*
    * THE FIELD CARDS RUN THROUGH THE SAME FILTERS, WITH ONE EXEMPTION.
@@ -118,6 +130,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
 
       if (status === 'discovered' && !discovered) return false;
       if (status === 'undiscovered' && discovered) return false;
+      if (status === 'learned' && !(ready && state.learned[herb.id])) return false;
       if (status === 'mastered' && !(ready && isMastered(herb.id))) return false;
       if (rarity !== 'all' && herb.rarity !== rarity) return false;
       if (season !== 'all' && herb.season !== season) return false;
@@ -145,6 +158,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
     isMastered,
     ready,
     progress.xp,
+    state.learned,
   ]);
 
   // Named, not counted: "2 active" tells a player something is on without telling them
@@ -156,8 +170,36 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
     habitat !== 'all' ? HABITAT_LABEL[habitat] : null,
   ].filter((label): label is string => Boolean(label));
 
+  const PILLS: { value: StatusFilter; label: string; count: number }[] = [
+    { value: 'all', label: 'All', count: herbs.length },
+    { value: 'discovered', label: 'Found', count: discoveredCount },
+    { value: 'learned', label: 'Learned', count: learnedCount },
+    { value: 'mastered', label: 'Mastered', count: masteredCount },
+  ];
+
   return (
     <div>
+      <div
+        role="group"
+        aria-label="Show cards by status"
+        className="mb-3 grid grid-cols-4 rounded-full border-2 border-violet-500/70 bg-plum-900/60 p-0.5"
+      >
+        {PILLS.map((pill) => (
+          <button
+            key={pill.value}
+            type="button"
+            aria-pressed={status === pill.value}
+            onClick={() => setStatus(pill.value)}
+            className={`min-h-11 rounded-full px-1 text-[0.78rem] font-bold whitespace-nowrap transition-colors ${
+              status === pill.value
+                ? 'bg-gradient-to-b from-pink-accent to-violet-400 text-violet-deep'
+                : 'text-violet-200 hover:text-violet-50'
+            }`}
+          >
+            {pill.label} ({pill.count})
+          </button>
+        ))}
+      </div>
       <div className="space-y-3">
         <label className="block">
           <span className="sr-only">Search your discovered herbs by name or card number</span>
@@ -201,16 +243,13 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
           */}
           <div className="mt-2 space-y-2">
         <div>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by discovery status">
-            {STATUS_OPTIONS.map((option) => (
-              <Chip
-                key={option.value}
-                active={status === option.value}
-                onClick={() => setStatus(option.value)}
-              >
-                {option.label}
-              </Chip>
-            ))}
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by what is missing">
+            <Chip
+              active={status === 'undiscovered'}
+              onClick={() => setStatus(status === 'undiscovered' ? 'all' : 'undiscovered')}
+            >
+              Not found yet
+            </Chip>
           </div>
         </div>
 
