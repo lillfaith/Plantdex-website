@@ -107,3 +107,44 @@ export function countsLine(
   const photos = row.photoBackedEntries > 0 ? ` · ${row.photoBackedEntries} with photo` : '';
   return `${species} · ${entries}${photos}`;
 }
+
+/** Decorative podium plants. Real sprites, chosen by place; they are never a player's avatar. */
+export const PODIUM_PLANTS: Record<1 | 2 | 3, string> = {
+  1: 'taraxacum-officinale',
+  2: 'trifolium-pratense',
+  3: 'achillea-millefolium',
+};
+
+export type GapNote =
+  | { kind: 'gap'; points: number; toStanding: number }
+  | { kind: 'lead'; points: number }
+  | { kind: 'tied'; standing: number }
+  | { kind: 'alone' };
+
+/**
+ * How far the player is from the next rank up, worked out from the rows the server returned.
+ *
+ * Nothing is stored or guessed: the nearest score above theirs, minus theirs. If nobody is above,
+ * it is the lead over the nearest score below. Players level on points share a standing, so a
+ * tie is said as a tie rather than as a gap of zero.
+ */
+export function gapToNext(rows: readonly Standing[], me: Standing): GapNote {
+  if (rows.some((row) => row !== me && row.points === me.points)) {
+    return { kind: 'tied', standing: me.standing };
+  }
+  const above = rows.filter((row) => row.points > me.points);
+  if (above.length > 0) {
+    const next = above.reduce((best, row) => (row.points < best.points ? row : best));
+    return { kind: 'gap', points: next.points - me.points, toStanding: next.standing };
+  }
+  const below = rows.filter((row) => row.points < me.points);
+  if (below.length === 0) return { kind: 'alone' };
+  const closest = below.reduce((best, row) => (row.points > best.points ? row : best));
+  return { kind: 'lead', points: me.points - closest.points };
+}
+
+export function ordinal(n: number): string {
+  const tens = n % 100;
+  if (tens >= 11 && tens <= 13) return `${n}th`;
+  return `${n}${({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
+}

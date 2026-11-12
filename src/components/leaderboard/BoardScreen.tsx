@@ -6,22 +6,41 @@ import { LEADERBOARD_POINTS, SCORING_RULES } from '@/lib/leaderboard';
 import type { Standing } from '@/lib/remote-leaderboard';
 import {
   BOARD_PAGE_SIZE,
+  PODIUM_PLANTS,
   beyondPodium,
   countsLine,
   friendlyBoardError,
+  gapToNext,
   isFull,
+  ordinal,
   placeNote,
   podiumOf,
   remainingAfter,
+  selfOf,
 } from '@/lib/board-view';
-import { illustration, medalArt, traitBadge } from '@/lib/pixel-icons';
+import { illustration, traitBadge, trophyArt } from '@/lib/pixel-icons';
+import { DEFAULT_FRAME_ID, getFrame, type FieldFrame } from '@/lib/field-frames';
+import { hasSprite } from '@/lib/plant-sprites';
+import type { GardenStage } from '@/lib/garden';
+import { PlantSprite } from '../PlantSprite';
+import { ProfileAvatar } from '../profile/ProfileAvatar';
 import { pixelObject } from '@/lib/pixel-art';
 import { regionById } from '@/lib/regions';
 import { PixelIcon } from '../herbdex/HerbalVisuals';
 
 export type BoardScope = { kind: 'global' } | { kind: 'region'; id: string };
 
+/** The signed-in player's own identity, from their own profile on this device. */
+export interface BoardMe {
+  name: string | null;
+  title: string;
+  avatarHerbId: string | null;
+  frame: FieldFrame;
+  stage: GardenStage;
+}
+
 export interface BoardScreenProps {
+  me?: BoardMe;
   /** `unconfigured`: no accounts on this build. `signedOut`: accounts exist, nobody is in. */
   access: 'unconfigured' | 'signedOut' | 'member';
   own: {
@@ -45,17 +64,17 @@ export interface BoardScreenProps {
 
 const STEP: Record<1 | 2 | 3, { height: string; tone: string; label: string }> = {
   1: {
-    height: '5.25rem',
+    height: '6.4rem',
     tone: 'from-gold-300 to-gold-500 text-plum-900',
     label: 'First place',
   },
   2: {
-    height: '3.9rem',
+    height: '5.2rem',
     tone: 'from-violet-200 to-violet-400 text-plum-900',
     label: 'Second place',
   },
   3: {
-    height: '3rem',
+    height: '4.4rem',
     tone: 'from-pink-accent/80 to-pink-accent text-plum-900',
     label: 'Third place',
   },
@@ -72,13 +91,10 @@ export function BoardScreen(props: BoardScreenProps) {
     <main id="main" className="mx-auto max-w-xl px-4 py-6">
       {/* ── Header ───────────────────────────────────────────────────── */}
       <header className="flex items-center gap-3">
-        <PixelIcon uri={illustration('trophy')} size={44} />
-        <div className="min-w-0">
-          <h1 className="font-display text-3xl leading-none font-extrabold text-gold-plate">
-            Field Board
-          </h1>
-          <p className="mt-1 text-sm text-violet-200">Who has put in the most field work.</p>
-        </div>
+        <PixelIcon uri={illustration('trophy')} size={40} />
+        <h1 className="font-display text-3xl leading-none font-extrabold text-gold-plate">
+          Field Board
+        </h1>
       </header>
 
       {/*
@@ -86,46 +102,43 @@ export function BoardScreen(props: BoardScreenProps) {
         here is self-reported. The live-site check looks for this exact heading in the built page,
         so it is in the first render in every state, not behind a tap.
       */}
-      <p className="holo-border mt-4 rounded-xl px-3 py-2 text-sm leading-snug text-violet-100">
+      <p className="mt-2 text-xs leading-snug text-violet-200">
         <strong className="font-bold text-gold-300">These scores are provisional.</strong> Plantdex
-        does not verify that anybody went outside, so this is self-reported field work, shown
-        honestly as that.
+        does not verify that anybody went outside, so they are self-reported.
       </p>
 
-      {/* ── Your score ───────────────────────────────────────────────── */}
-      <section aria-labelledby="own-heading" className="mt-5">
-        <div className="flex items-baseline justify-between gap-3">
-          <h2 id="own-heading" className="font-display text-lg font-bold text-violet-50">
-            Your field score
-          </h2>
-          <p className="font-display text-3xl leading-none font-extrabold text-gold-plate tabular-nums">
-            {own.ready ? own.points.toLocaleString() : '—'}
-          </p>
-        </div>
-        <dl className="mt-2 grid grid-cols-3 gap-2 text-center">
-          <Stat
-            icon={<PixelIcon uri={illustration('leaf')} size={26} />}
-            label="Species"
+      {/* ── Your score, on one line ──────────────────────────────── */}
+      <section
+        aria-labelledby="own-heading"
+        className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1"
+      >
+        <h2 id="own-heading" className="text-sm font-bold text-violet-50">
+          Your score{' '}
+          <span className="font-display text-xl font-extrabold text-gold-plate tabular-nums">
+            {own.ready ? own.points.toLocaleString() : '\u2014'}
+          </span>
+        </h2>
+        <dl className="flex items-center gap-3 text-xs text-violet-200">
+          <MiniStat
+            icon={<PixelIcon uri={illustration('leaf')} size={20} />}
+            label="species"
             value={own.ready ? own.discoveries : null}
           />
-          <Stat
-            icon={<PixelIcon uri={pixelObject('book')} size={26} />}
-            label="Journal entries"
+          <MiniStat
+            icon={<PixelIcon uri={pixelObject('book')} size={20} />}
+            label="entries"
             value={own.ready ? own.journalEntries : null}
           />
-          <Stat
-            icon={<PixelIcon uri={traitBadge('star')} size={26} />}
-            label="Challenges"
+          <MiniStat
+            icon={<PixelIcon uri={traitBadge('star')} size={20} />}
+            label="challenges"
             value={own.ready ? own.challenges : null}
           />
         </dl>
-        <p className="mt-1.5 text-xs text-balance text-violet-300">
-          Counted from your own records on this device, so you can check it.
-        </p>
       </section>
 
       {/* ── How rankings work ──────────────────────────────────────── */}
-      <details className="group mt-3 border-y border-violet-500/25">
+      <details className="group mt-2 border-y border-violet-500/25">
         <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-bold text-violet-100">
           <span
             aria-hidden="true"
@@ -148,8 +161,9 @@ export function BoardScreen(props: BoardScreenProps) {
             </li>
           ))}
           <li className="text-xs leading-relaxed text-violet-300">
-            Players are ranked by points, and equal points share a place. The daily journal limit
-            runs on UTC so it means the same thing for everyone. A discovery is worth{' '}
+            Your own score is counted from the records on this device, so you can check it. Players
+            are ranked by points, and equal points share a place. The daily journal limit runs on
+            UTC so it means the same thing for everyone. A discovery is worth{' '}
             {LEADERBOARD_POINTS.discovery} points because going outside is what this is for. Nothing
             on this board unlocks anything, costs anything or changes your collection.
           </li>
@@ -161,31 +175,33 @@ export function BoardScreen(props: BoardScreenProps) {
       ) : (
         <>
           <Membership {...props} listed={listed} />
-          <section aria-labelledby="standings-heading" className="mt-6">
+          <section aria-labelledby="standings-heading" className="mt-4">
             <h2 id="standings-heading" className="sr-only">
               Standings
             </h2>
-            <div
-              role="group"
-              aria-label="Choose a board"
-              className="mb-4 flex flex-wrap gap-1.5 rounded-full border-2 border-violet-500/60 bg-plum-900/50 p-0.5"
-            >
-              <Scope
-                active={scope.kind === 'global'}
-                onClick={() => props.onScope({ kind: 'global' })}
+            {regions.length > 0 && (
+              <div
+                role="group"
+                aria-label="Choose a board"
+                className="mb-4 flex flex-wrap gap-1.5 rounded-full border-2 border-violet-500/60 bg-plum-900/50 p-0.5"
               >
-                Everyone
-              </Scope>
-              {regions.map((region) => (
                 <Scope
-                  key={region.id}
-                  active={scope.kind === 'region' && scope.id === region.id}
-                  onClick={() => props.onScope({ kind: 'region', id: region.id })}
+                  active={scope.kind === 'global'}
+                  onClick={() => props.onScope({ kind: 'global' })}
                 >
-                  {region.name}
+                  Everyone
                 </Scope>
-              ))}
-            </div>
+                {regions.map((region) => (
+                  <Scope
+                    key={region.id}
+                    active={scope.kind === 'region' && scope.id === region.id}
+                    onClick={() => props.onScope({ kind: 'region', id: region.id })}
+                  >
+                    {region.name}
+                  </Scope>
+                ))}
+              </div>
+            )}
 
             {error ? (
               <div role="alert" className="py-6 text-center">
@@ -210,6 +226,7 @@ export function BoardScreen(props: BoardScreenProps) {
                 onMore={() => setShown((count) => count + BOARD_PAGE_SIZE)}
                 scope={scope}
                 memberRegion={membership?.regionId ?? null}
+                me={props.me}
               />
             )}
           </section>
@@ -219,7 +236,7 @@ export function BoardScreen(props: BoardScreenProps) {
   );
 }
 
-function Stat({
+function MiniStat({
   icon,
   label,
   value,
@@ -229,12 +246,12 @@ function Stat({
   value: number | null;
 }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex items-center gap-1">
       {icon}
-      <dd className="mt-0.5 text-xl leading-none font-extrabold text-violet-50 tabular-nums">
-        {value === null ? '—' : value.toLocaleString()}
+      <dd className="font-bold text-violet-50 tabular-nums">
+        {value === null ? '\u2014' : value.toLocaleString()}
       </dd>
-      <dt className="mt-0.5 text-xs text-violet-300">{label}</dt>
+      <dt className="text-violet-300">{label}</dt>
     </div>
   );
 }
@@ -292,16 +309,16 @@ function SignedOut({ access }: { access: 'unconfigured' | 'signedOut' }) {
 function Membership(props: BoardScreenProps & { listed: boolean }) {
   const { membership, regions, busy, listed } = props;
   return (
-    <section aria-labelledby="listing-heading" className="mt-5">
+    <section aria-labelledby="listing-heading" className="mt-3">
       <h2 id="listing-heading" className="sr-only">
         Your listing
       </h2>
       {membership === undefined ? (
         <p className="text-sm text-violet-300">Checking your listing…</p>
       ) : listed ? (
-        <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-2">
           <p className="text-sm text-violet-100">
-            You are listed
+            Listed
             {membership?.regionId ? ` in ${regionById(membership.regionId)?.name}` : ' globally'}.
           </p>
           <button
@@ -314,38 +331,33 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
           </button>
         </div>
       ) : (
-        <div>
-          <p className="text-sm text-violet-100">You are not on the board.</p>
-          <div className="mt-2 flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => props.onJoin(null)}
+            disabled={busy}
+            className="holo-fill min-h-11 rounded-full px-5 text-sm font-extrabold text-plum-900 disabled:opacity-70"
+          >
+            Join the board
+          </button>
+          {regions.map((region) => (
             <button
+              key={region.id}
               type="button"
-              onClick={() => props.onJoin(null)}
+              onClick={() => props.onJoin(region.id)}
               disabled={busy}
-              className="holo-fill min-h-11 rounded-full px-5 text-sm font-extrabold text-plum-900 disabled:opacity-70"
+              className="min-h-11 rounded-full border border-gold-500/70 px-4 text-sm font-semibold text-gold-300 hover:bg-plum-700 disabled:opacity-60"
             >
-              Join the board
+              Join as {region.name}
             </button>
-            {regions.map((region) => (
-              <button
-                key={region.id}
-                type="button"
-                onClick={() => props.onJoin(region.id)}
-                disabled={busy}
-                className="min-h-11 rounded-full border border-gold-500/70 px-4 text-sm font-semibold text-gold-300 hover:bg-plum-700 disabled:opacity-60"
-              >
-                Join as {region.name}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
       )}
-      <p className="mt-2 text-xs leading-relaxed text-violet-300">
-        {listed
-          ? 'Other signed-in players see your display name, region and counts. Nothing else.'
-          : 'Joining shares your display name, region and counts with other signed-in players, never your notes, photographs or places.'}{' '}
-        Your name is the display name on{' '}
+      <p className="mt-1.5 text-xs leading-snug text-violet-300">
+        {listed ? 'Shared with signed-in players: ' : 'Joining shares '}your display name, region
+        and counts. Nothing else.{' '}
         <Link href="/profile" className="underline underline-offset-2 hover:text-violet-100">
-          your profile
+          Set your name
         </Link>
         .
       </p>
@@ -391,6 +403,70 @@ function Empty({ listed }: { listed: boolean }) {
   );
 }
 
+function RowAvatar({ row, me, size }: { row: Standing; me?: BoardMe; size: 'xs' | 'sm' }) {
+  // Your own avatar and frame come from your own profile. Anybody else's appears only if the
+  // standings function publishes them, which it does not today, and only for a plant with art.
+  if (row.isSelf && me && me.avatarHerbId) {
+    return (
+      <ProfileAvatar
+        herbId={me.avatarHerbId}
+        frame={me.frame}
+        stage={me.stage}
+        size={size}
+        frozen
+      />
+    );
+  }
+  if (!row.isSelf && row.avatarHerbId && hasSprite(row.avatarHerbId)) {
+    return (
+      <ProfileAvatar
+        herbId={row.avatarHerbId}
+        frame={getFrame(row.frameId) ?? getFrame(DEFAULT_FRAME_ID)!}
+        stage="flowering"
+        size={size}
+        frozen
+      />
+    );
+  }
+  return null;
+}
+
+function RankStrip({ rows, me }: { rows: Standing[]; me?: BoardMe }) {
+  const mine = selfOf(rows);
+  if (!mine) return null;
+  const gap = gapToNext(rows, mine);
+  const text =
+    gap.kind === 'gap'
+      ? `${gap.points.toLocaleString()} pts to reach ${ordinal(gap.toStanding)}`
+      : gap.kind === 'lead'
+        ? `You lead by ${gap.points.toLocaleString()} pts`
+        : gap.kind === 'tied'
+          ? `Tied for ${ordinal(gap.standing)}`
+          : 'You are first on this board';
+  return (
+    <section aria-label="Your rank" className="holo-border rounded-2xl px-3 py-2.5">
+      <div className="flex items-center gap-3">
+        <RowAvatar row={mine} me={me} size="sm" />
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-base font-extrabold text-violet-50">
+            {me?.name ?? mine.displayName ?? 'You'}
+          </p>
+          {me?.title && <p className="truncate text-xs text-gold-300">{me.title}</p>}
+        </div>
+        <div className="text-right">
+          <p className="font-display text-4xl leading-none font-extrabold text-gold-plate">
+            {ordinal(mine.standing)}
+          </p>
+          <p className="text-sm font-bold text-violet-100 tabular-nums">
+            {mine.points.toLocaleString()} pts
+          </p>
+        </div>
+      </div>
+      <p className="mt-1.5 text-sm font-semibold text-violet-100">{text}</p>
+    </section>
+  );
+}
+
 function Standings({
   rows,
   listed,
@@ -398,6 +474,7 @@ function Standings({
   onMore,
   scope,
   memberRegion,
+  me,
 }: {
   rows: Standing[];
   listed: boolean;
@@ -405,6 +482,7 @@ function Standings({
   onMore: () => void;
   scope: BoardScope;
   memberRegion: string | null;
+  me?: BoardMe;
 }) {
   const podium = podiumOf(rows);
   const rest = beyondPodium(rows, shown);
@@ -415,10 +493,9 @@ function Standings({
   return (
     <div>
       {note.kind === 'place' ? (
-        <p className="mb-3 text-center text-sm font-semibold text-violet-100">
-          You are <span className="text-gold-300">{ordinal(note.standing)}</span> with{' '}
-          <span className="text-gold-300 tabular-nums">{note.points.toLocaleString()}</span> points.
-        </p>
+        <div className="mb-4">
+          <RankStrip rows={rows} me={me} />
+        </div>
       ) : note.kind === 'outside' ? (
         <p className="mb-3 text-center text-sm text-violet-200">
           You are listed, but outside the top {rows.length} shown here.
@@ -436,11 +513,10 @@ function Standings({
             className="board-rise flex min-w-0 flex-1 flex-col items-center"
             style={{ animationDelay: `${index * 110}ms` }}
           >
-            <span aria-hidden="true">
-              <PixelIcon
-                uri={place === 1 ? illustration('crown') : medalArt(place as 2 | 3)}
-                size={place === 1 ? 52 : 42}
-              />
+            {/* A real Plantdex sprite stands on each step. Decorative: chosen by place, never a
+                player's own plant. */}
+            <span aria-hidden="true" className="block w-14">
+              <PlantSprite herbId={PODIUM_PLANTS[place]} alt="" fit />
             </span>
             <p
               className={`mt-1 w-full truncate text-center text-sm font-bold ${
@@ -459,11 +535,16 @@ function Standings({
               {row.points.toLocaleString()} pts
             </p>
             <div
-              className={`mt-1.5 flex w-full items-start justify-center rounded-t-md bg-gradient-to-b pt-1 font-display text-3xl leading-none font-extrabold shadow-[inset_0_3px_0_rgb(255_255_255/0.5)] ${STEP[place].tone}`}
+              className={`mt-1.5 flex w-full flex-col items-center rounded-t-md bg-gradient-to-b pt-1 font-display leading-none font-extrabold shadow-[inset_0_3px_0_rgb(255_255_255/0.5)] ${STEP[place].tone}`}
               style={{ height: STEP[place].height }}
             >
-              <span className="sr-only">{STEP[place].label}, standing </span>
-              {row.standing}
+              <span aria-hidden="true">
+                <PixelIcon uri={trophyArt(place)} size={place === 1 ? 40 : 34} />
+              </span>
+              <span className="mt-0.5 text-2xl">
+                <span className="sr-only">{STEP[place].label}, standing </span>
+                {row.standing}
+              </span>
             </div>
           </li>
         ))}
@@ -484,6 +565,7 @@ function Standings({
               <span className="font-display w-9 shrink-0 text-right text-lg font-extrabold text-violet-200 tabular-nums">
                 {row.standing}
               </span>
+              <RowAvatar row={row} me={me} size="xs" />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-bold text-violet-50">
                   {nameOf(row)}
@@ -494,7 +576,7 @@ function Standings({
                   )}
                 </span>
                 <span className="block truncate text-xs text-violet-300">
-                  {row.regionId ? `${regionById(row.regionId)?.name} · ` : ''}
+                  {row.regionId ? `${regionById(row.regionId)?.name} \u00b7 ` : ''}
                   {countsLine(row)}
                 </span>
               </span>
@@ -517,10 +599,4 @@ function Standings({
       )}
     </div>
   );
-}
-
-function ordinal(n: number): string {
-  const tens = n % 100;
-  if (tens >= 11 && tens <= 13) return `${n}th`;
-  return `${n}${({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
 }

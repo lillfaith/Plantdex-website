@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { scoreFromRecords } from '@/lib/leaderboard';
 import { BOARD_FETCH_LIMIT } from '@/lib/board-view';
 import {
@@ -13,7 +13,12 @@ import {
 import { launchedRegions } from '@/lib/regions';
 import { useSightingsStore } from '@/lib/sightings-store';
 import { useAuth } from '@/state/AuthProvider';
-import { BoardScreen, type BoardScope } from './BoardScreen';
+import { BoardScreen, type BoardMe, type BoardScope } from './BoardScreen';
+import { useProfileStore } from '@/lib/profile-store';
+import { resolveProfile } from '@/lib/player-profile';
+import { titleLabel } from '@/lib/field-titles';
+import { stageForState } from '@/lib/garden';
+import { progressFromState } from '@/lib/progression';
 import { useHerbdex } from '@/state/HerbdexProvider';
 
 /**
@@ -60,6 +65,19 @@ export function FieldBoardView() {
   // Added up from the player's own records on this device; nothing stores a score.
   const own = scoreFromRecords(state, sightings);
   const regions = launchedRegions();
+
+  // The player's own identity, from their own profile on this device.
+  const { profile: stored } = useProfileStore();
+  const me = useMemo<BoardMe>(() => {
+    const profile = resolveProfile(stored, state);
+    return {
+      name: profile.displayName,
+      title: profile.title ? titleLabel(profile.title, state) : progressFromState(state).levelName,
+      avatarHerbId: profile.avatarHerbId,
+      frame: profile.frame,
+      stage: (profile.avatarHerbId && stageForState(state, profile.avatarHerbId)) || 'flowering',
+    };
+  }, [stored, state]);
 
   const reload = useCallback(() => {
     if (!user) return undefined;
@@ -124,6 +142,7 @@ export function FieldBoardView() {
   return (
     <BoardScreen
       access={access}
+      me={me}
       own={{
         ready,
         points: own.points,

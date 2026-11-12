@@ -7,7 +7,9 @@ import {
   BOARD_PAGE_SIZE,
   beyondPodium,
   countsLine,
+  PODIUM_PLANTS,
   friendlyBoardError,
+  gapToNext,
   isFull,
   placeNote,
   podiumOf,
@@ -15,6 +17,9 @@ import {
   selfOf,
 } from './board-view';
 import type { Standing } from './remote-leaderboard';
+import { hasSprite } from './plant-sprites';
+import { ILLUSTRATIONS, trophyArt } from './pixel-icons';
+import { getFrame } from './field-frames';
 import { BoardScreen, type BoardScreenProps } from '@/components/leaderboard/BoardScreen';
 
 /** MOCK DATA, for tests only: these players do not exist and nothing here is served anywhere. */
@@ -151,7 +156,7 @@ describe('what the screen renders in each state', () => {
     all[4] = { ...all[4]!, isSelf: true };
     const out = html({ standings: all });
     expect(out).toContain('Top three');
-    expect(out).toContain('You are');
+    expect(out).toContain('aria-label="Your rank"');
     expect(out).toContain('5th');
     expect(out).toContain('Show more (12 left)');
     // The rows beyond the first page are not in the page until asked for.
@@ -195,5 +200,85 @@ describe('the screen is calm, honest and mobile-safe', () => {
     expect(css).toMatch(/@utility board-rise \{[\s\S]*?animation: rise-in 420ms ease-out both;/);
     expect(css).toMatch(/prefers-reduced-motion: reduce\) \{\s*\.board-rise \{\s*animation: none;/);
     expect(css).not.toMatch(/board-rise[^}]*infinite/);
+  });
+});
+
+describe('the distance to the next rank up', () => {
+  const board = [mock(1, 500), mock(2, 450), mock(3, 400), mock(4, 390), mock(5, 100)];
+  it('is the nearest score above yours, minus yours, and names the rank it reaches', () => {
+    expect(gapToNext(board, board[3]!)).toEqual({ kind: 'gap', points: 10, toStanding: 3 });
+    expect(gapToNext(board, board[4]!)).toEqual({ kind: 'gap', points: 290, toStanding: 4 });
+  });
+  it('says the lead when nobody is above, and a tie as a tie', () => {
+    expect(gapToNext(board, board[0]!)).toEqual({ kind: 'lead', points: 50 });
+    const tied = [mock(1, 300), mock(1, 300), mock(3, 100)];
+    expect(gapToNext(tied, tied[0]!)).toEqual({ kind: 'tied', standing: 1 });
+    const solo = mock(1, 70);
+    expect(gapToNext([solo], solo)).toEqual({ kind: 'alone' });
+  });
+  it('skips a tied block above and measures to the nearest distinct score', () => {
+    const rows = [mock(1, 200), mock(2, 150), mock(2, 150), mock(4, 120)];
+    expect(gapToNext(rows, rows[3]!)).toEqual({ kind: 'gap', points: 30, toStanding: 2 });
+  });
+});
+
+describe('the botanical podium', () => {
+  it('stands real Plantdex sprites on the steps, never an avatar', () => {
+    for (const place of [1, 2, 3] as const) expect(hasSprite(PODIUM_PLANTS[place]), String(place)).toBe(true);
+    expect(new Set(Object.values(PODIUM_PLANTS)).size).toBe(3);
+  });
+  it('gives each place its own botanical trophy', () => {
+    const arts = [trophyArt(1), trophyArt(2), trophyArt(3)];
+    expect(new Set(arts).size).toBe(3);
+    for (const key of ['trophyBloom', 'trophyLeaf', 'trophyAcorn']) {
+      const rows = ILLUSTRATIONS[key]!;
+      expect(rows).toHaveLength(10);
+      expect(new Set(rows.map((r) => r.length))).toEqual(new Set([10]));
+    }
+  });
+});
+
+describe('rank display, avatars and compact copy', () => {
+  it('shows a distinct rank strip with the live gap when the player is listed', () => {
+    const all = rows(12);
+    all[6] = { ...all[6]!, isSelf: true };
+    const out = html({ standings: all });
+    expect(out).toContain('aria-label="Your rank"');
+    expect(out).toContain('7th');
+    expect(out).toMatch(/10 pts to reach 6th/);
+  });
+  it('shows your own avatar from your own profile, and nobody elses by default', () => {
+    const all = rows(12);
+    all[6] = { ...all[6]!, isSelf: true };
+    const me = {
+      name: 'Mock me',
+      title: 'Seedling',
+      avatarHerbId: 'taraxacum-officinale',
+      frame: getFrame('field-notes')!,
+      stage: 'flowering' as const,
+    };
+    const out = html({ standings: all, me });
+    expect(out).toContain('Mock me');
+    // One avatar: the player's own. The other rows carry none, because the server publishes none.
+    expect((out.match(/taraxacum-officinale/g) ?? []).length).toBeGreaterThanOrEqual(1);
+    const none = html({ standings: rows(12) });
+    expect(none).not.toContain('rounded-[1.4rem]');
+  });
+  it('renders a published avatar only when the plant has art, and ignores anything else', () => {
+    const withAvatar = rows(10);
+    withAvatar[5] = { ...withAvatar[5]!, avatarHerbId: 'taraxacum-officinale', frameId: 'no-such-frame' };
+    withAvatar[6] = { ...withAvatar[6]!, avatarHerbId: 'not-a-real-plant' };
+    const out = html({ standings: withAvatar });
+    expect((out.match(/plant-sprite|background-image/g) ?? []).length).toBeGreaterThan(0);
+    expect(out).not.toContain('not-a-real-plant');
+  });
+  it('keeps the page above the rankings short and the disclosures concise', () => {
+    const out = html({ standings: rows(6) });
+    // The collapsed "How rankings work" fold is reference text, not what is read at first sight.
+    const before = out.slice(0, out.indexOf('Top three')).replace(/<details[\s\S]*?<\/details>/g, '');
+    const text = before.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    expect(text.length).toBeLessThan(900);
+    expect(text).toContain('These scores are provisional');
+    expect(text).toMatch(/Nothing else/);
   });
 });

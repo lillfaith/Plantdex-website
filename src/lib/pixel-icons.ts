@@ -554,3 +554,33 @@ export function medalArt(place: 2 | 3): string {
     gridToUri(fromRows(ILLUSTRATIONS.medal!, { ...PAL, ...coin })),
   );
 }
+
+// Botanical trophies for the podium: one cup, three different toppers.
+const CUP = [
+  'kYyyyyyyYk',
+  'kYyyyyyyYk',
+  ' kYyyyyYk ',
+  '  kkYYkk  ',
+  '   kYYk   ',
+  '  kYYYYk  ',
+];
+ILLUSTRATIONS.trophyBloom = ['   kppk   ', '  kpyypk  ', '   kppk   ', '    kg    ', ...CUP];
+ILLUSTRATIONS.trophyLeaf = ['    kggk  ', '   kgggGk ', '    kGGk  ', '     kk   ', ...CUP];
+ILLUSTRATIONS.trophyAcorn = ['    kk    ', '  kBBBBk  ', '  kBbBbk  ', '   kbbk   ', ...CUP];
+
+/** The botanical trophy for a podium place: gold bloom, silver leaf, bronze acorn. */
+export function trophyArt(place: 1 | 2 | 3): string {
+  const rows =
+    place === 1
+      ? ILLUSTRATIONS.trophyBloom!
+      : place === 2
+        ? ILLUSTRATIONS.trophyLeaf!
+        : ILLUSTRATIONS.trophyAcorn!;
+  const metal: Record<string, string> =
+    place === 1
+      ? {}
+      : place === 2
+        ? { y: '#e6e8f5', Y: '#aab0d0' }
+        : { y: '#f2b784', Y: '#b4713f' };
+  return memo(`tr:${place}`, () => gridToUri(fromRows(rows, { ...PAL, ...metal })));
+}

@@ -36,6 +36,12 @@ export interface Standing extends Omit<LeaderboardScore, 'verification'> {
   photoBackedEntries: number;
   /** True for the row belonging to whoever is asking. */
   isSelf: boolean;
+  /**
+   * Present only if the standings function ever publishes them. It does not today, so these are
+   * always undefined and nothing renders; see docs/leaderboard-showcase-proposal.md.
+   */
+  avatarHerbId?: string | null;
+  frameId?: string | null;
   verification: typeof PROVISIONAL;
 }
 
@@ -53,6 +59,8 @@ interface StandingRow {
   challenges: number;
   photo_backed_entries: number;
   is_self: boolean;
+  avatar_herb_id?: string | null;
+  frame_id?: string | null;
 }
 
 /**
@@ -77,6 +85,8 @@ function rowToStanding(row: StandingRow): Standing {
     challenges: row.challenges,
     photoBackedEntries: row.photo_backed_entries,
     isSelf: row.is_self,
+    avatarHerbId: row.avatar_herb_id ?? null,
+    frameId: row.frame_id ?? null,
     verification: PROVISIONAL,
   };
 }

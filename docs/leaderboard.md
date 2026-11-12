@@ -89,6 +89,12 @@ To check it live, sign in, open `/leaderboard`, join, and confirm your own row a
 the counts your collection shows. `e2e/supabase.e2e.test.ts` is where a cross-user attack on
 it would belong; it is not written yet, and that gap is listed below.
 
+## Verified migration status
+
+`0011_leaderboard.sql` is applied to the test project and not to production. See
+`docs/leaderboard-showcase-proposal.md` for the evidence, the blockers and a proposal for
+categories and a collection showcase.
+
 ## Known gaps
 
 - **No live cross-user test.** The RLS attacks in `e2e/supabase.e2e.test.ts` do not yet cover
