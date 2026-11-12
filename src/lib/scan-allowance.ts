@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
 /**
  * THE DAILY SCAN ALLOWANCE, AS THE PLAYER SEES IT.
@@ -45,15 +45,13 @@ interface Stored {
   limit: number;
 }
 
-export function readAllowance(
-  scope: string,
+export function allowanceFromRaw(
+  raw: string | null,
   signedIn: boolean,
   now: Date = new Date(),
-  storage: Pick<Storage, 'getItem'> | null = typeof window === 'undefined' ? null : window.localStorage,
 ): ScanAllowance {
   const limit = dailyLimitFor(signedIn);
   try {
-    const raw = storage?.getItem(`${KEY}:${scope}`);
     if (!raw) return full(limit);
     const stored = JSON.parse(raw) as Partial<Stored>;
     if (stored.day !== scanDay(now)) return full(limit);
@@ -64,6 +62,21 @@ export function readAllowance(
   } catch {
     return full(limit);
   }
+}
+
+export function readAllowance(
+  scope: string,
+  signedIn: boolean,
+  now: Date = new Date(),
+  storage: Pick<Storage, 'getItem'> | null = typeof window === 'undefined' ? null : window.localStorage,
+): ScanAllowance {
+  let raw: string | null = null;
+  try {
+    raw = storage?.getItem(`${KEY}:${scope}`) ?? null;
+  } catch {
+    raw = null;
+  }
+  return allowanceFromRaw(raw, signedIn, now);
 }
 
 export function writeAllowance(
@@ -81,20 +94,40 @@ export function writeAllowance(
   }
 }
 
+const listeners = new Set<() => void>();
+
+function subscribe(callback: () => void) {
+  listeners.add(callback);
+  if (typeof window !== 'undefined') window.addEventListener('storage', callback);
+  return () => {
+    listeners.delete(callback);
+    if (typeof window !== 'undefined') window.removeEventListener('storage', callback);
+  };
+}
+
 export function useScanAllowance(userId: string | null) {
   const scope = userId ?? 'device';
   const signedIn = Boolean(userId);
-  const [allowance, setAllowance] = useState<ScanAllowance>(() => full(dailyLimitFor(signedIn)));
-
-  useEffect(() => {
-    setAllowance(readAllowance(scope, signedIn));
-  }, [scope, signedIn]);
+  // The stored text is the snapshot, so the display follows storage (and other tabs) without
+  // an effect that sets state. The server render sees no storage and shows a full allowance.
+  const raw = useSyncExternalStore(
+    subscribe,
+    () => {
+      try {
+        return window.localStorage.getItem(`${KEY}:${scope}`) ?? '';
+      } catch {
+        return '';
+      }
+    },
+    () => '',
+  );
+  const allowance = useMemo(() => allowanceFromRaw(raw || null, signedIn), [raw, signedIn]);
 
   const record = useCallback(
     (remaining: number, limit?: number) => {
       const total = limit && limit > 0 ? limit : dailyLimitFor(signedIn);
       writeAllowance(scope, remaining, total);
-      setAllowance(readAllowance(scope, signedIn));
+      listeners.forEach((listener) => listener());
     },
     [scope, signedIn],
   );
