@@ -21,6 +21,10 @@ import {
 import { useSightingsStore } from '@/lib/sightings-store';
 import { localDateKey } from '@/lib/research';
 import { ObservationPhotos } from './ObservationPhotos';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
+import { ScanGoal } from './ScanGoal';
+import { pixelForest } from '@/lib/pixel-art';
+import { useScanAllowance } from '@/lib/scan-allowance';
 import { warmIdentifier } from '@/lib/scan-warmup';
 import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
@@ -58,6 +62,7 @@ function relatedGenus(candidates: readonly ScanCandidate[]): string {
 export function ScanPanel() {
   const { user } = useAuth();
   const { discover, isDiscovered, ready, progress } = useHerbdex();
+  const { allowance, record: recordAllowance } = useScanAllowance(user?.id ?? null);
   /*
    * THE FACADE, NOT EITHER ADAPTER. Signed in it writes the Supabase row; signed out it
    * writes localStorage and IndexedDB — which is what makes "preserve the observation
@@ -291,13 +296,18 @@ export function ScanPanel() {
       const answer = await identifyPlant(photos, () => setStage('identifying'));
 
       if (isScanFailure(answer)) {
-        if (answer.kind === 'rateLimited') setRateLimited({ signedIn: answer.signedIn });
+        if (answer.kind === 'rateLimited') {
+          setRateLimited({ signedIn: answer.signedIn });
+          recordAllowance(0);
+        }
         setProblem(answer.message);
         setStage('idle');
         return;
       }
 
       setResult(answer);
+      // The server's own count, kept so the page can show what is left before the next tap.
+      if (typeof answer.remaining === 'number') recordAllowance(answer.remaining, answer.limit);
       // Bare outcome counts. No species and no score travel — "how often does a scan find
       // nothing" is the question that decides whether the deck should grow, and it needs
       // neither. Consistent with the property-free schema.
@@ -315,7 +325,7 @@ export function ScanPanel() {
       if (user) void recordScan(user.id, answer).then(setScanId);
       setStage('idle');
     },
-    [user],
+    [user, recordAllowance],
   );
 
   /*
@@ -393,7 +403,8 @@ export function ScanPanel() {
    * photographs are held. One owner, and the button cannot disagree with the slots.
    */
   const [photos, setPhotos] = useState<ObservationPhoto[]>([]);
-  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS;
+  const outOfScans = allowance.left <= 0;
+  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS && !outOfScans;
 
   /*
    * DERIVED ON RENDER, FROM THE RESULT ITSELF. No state and nothing stored: the summary is a
@@ -414,66 +425,57 @@ export function ScanPanel() {
         Trim only — the frame is a pseudo-element and the rule is 3px tall, because the answer
         below still has to clear the fold on a 390x720 phone.
       */}
-      <section className="panel scanner-frame p-5">
-        <h2 className="text-sm font-bold tracking-wide text-gold-400 uppercase">
-          Identify a plant
-        </h2>
-        <div aria-hidden="true" className="pixel-rule mt-2 w-24" />
-        <p className="mt-2 text-sm leading-relaxed text-violet-200">
-          Two or three photographs identify a plant far better than one. The clearer and
-          closer each shot, the better the suggestion.
-        </p>
+      <ScanGoal progress={progress} ready={ready} allowance={allowance} />
 
-        <div className="mt-4">
-          <ObservationPhotos onChange={setPhotos} disabled={busy} />
-        </div>
+      <section aria-label="Identify a plant">
+        <ObservationPhotos onChange={setPhotos} disabled={busy || outOfScans} />
 
         {/*
           THE ONE PIECE OF FRAMING ADVICE, BESIDE THE CONTROL IT IS ABOUT.
 
-          It cannot go where it belongs — over the viewfinder — because there is no viewfinder
-          to put it on: `capture="environment"` hands off to the OS camera app, and the page is
+          It cannot go where it belongs, over the viewfinder, because there is no viewfinder to
+          put it on: `capture="environment"` hands off to the OS camera app, and the page is
           backgrounded for the whole of the capture. So the last moment Plantdex can say
-          anything is the instant before the tap, which is here.
-
-          Short enough to be REMEMBERED through that handoff, which is the real constraint.
-          Deliberately "one plant" rather than a framing rectangle — nothing here implies the
-          plant must fit a box — and it now carries the weight of the whole set, because every
-          photograph must be of that same one plant.
+          anything is the instant before the tap, which is here. Short enough to be REMEMBERED
+          through that handoff.
         */}
-        <p className="mt-4 flex items-center gap-2 text-xs font-semibold text-mystery-pink">
+        <p className="mt-4 flex items-center justify-center gap-2 text-xs font-semibold text-mystery-pink">
           <span aria-hidden="true" className="pixel-rule w-4 shrink-0" />
           Fill the frame with one plant
         </p>
 
         {/*
-          A BUTTON, NOT A LABEL, AND THAT IS THE STRUCTURAL CHANGE.
-
-          Capture used to BE the submit: one `<label for>` opened the camera and the answer
-          followed whatever came back. With an observation there are two separate moments —
-          gathering photographs, then asking — so the control that asks has to be its own
-          button, and it can be DISABLED, which a label cannot meaningfully be.
-
-          Disabled below two photographs rather than hidden: a control that vanishes teaches
-          nothing, while one that is visibly not ready, beside a count saying why, tells
-          somebody exactly what remains.
+          A BUTTON, NOT A LABEL: there are two separate moments, gathering photographs and
+          asking, and the control that asks has to be its own button so it can be DISABLED.
+          Disabled rather than hidden: one that is visibly not ready, beside a line saying why,
+          tells somebody exactly what remains.
         */}
         <button
           type="button"
           disabled={!canIdentify || busy}
           onClick={() => void run(photos)}
-          className="arcade-key mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 disabled:cursor-not-allowed disabled:bg-violet-600 disabled:text-violet-300 sm:w-auto"
+          className="arcade-key mt-3 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-pink-accent via-mystery-lilac to-violet-300 px-6 text-base font-extrabold tracking-wide text-plum-900 shadow-[0_0_18px_rgb(240_205_254/0.35)] transition-[filter] hover:brightness-110 disabled:cursor-not-allowed disabled:bg-none disabled:bg-violet-600/70 disabled:text-violet-200 disabled:shadow-none"
         >
-          {busy
-            ? 'Identifying…'
-            : canIdentify
-              ? `Identify this plant (${photos.length} photo${photos.length === 1 ? '' : 's'})`
-              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'}`}
+          <PlantdexIcon name="scan" className="text-2xl" aria-hidden="true" />
+          {busy ? 'Identifying…' : outOfScans ? 'Daily limit reached' : 'Get Identification'}
+          {!busy && !outOfScans && <span aria-hidden="true">&rarr;</span>}
         </button>
-        <p className="mt-2 text-xs text-violet-400">
-          {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it
-          leaves your device.
+        <p className="mt-2 text-center text-xs text-violet-300" aria-live="polite">
+          {outOfScans
+            ? 'You have used all of today\u2019s scans. They reset at midnight UTC.'
+            : canIdentify
+              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.`
+              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'} to identify.`}
         </p>
+        <p className="mt-1 text-center text-xs text-violet-400">
+          {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it leaves
+          your device.
+        </p>
+        <span
+          aria-hidden="true"
+          className="scan-forest mt-4 block"
+          style={{ ['--scan-forest' as string]: pixelForest() }}
+        />
       </section>
 
       {/*

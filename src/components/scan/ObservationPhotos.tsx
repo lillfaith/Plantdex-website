@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ACCEPT_ATTRIBUTE } from '@/lib/photo-input';
+import { PlantdexIcon } from '../icons/PlantdexIcon';
 import {
   MAX_OBSERVATION_PHOTOS,
   MIN_OBSERVATION_PHOTOS,
@@ -59,8 +60,8 @@ const SLOTS: readonly Slot[] = [
   },
   {
     key: 'feature',
-    label: 'Flower / fruit / feature',
-    instruction: 'Capture the most distinctive feature you can find.',
+    label: 'Detail',
+    instruction: 'A flower, fruit or the most distinctive feature you can find.',
     // `auto` rather than a guess: this slot is deliberately whatever the plant offers, and
     // naming one organ here would mislabel every other thing somebody legitimately shoots.
     organ: 'auto',
@@ -146,6 +147,8 @@ export function ObservationPhotos({
   const count = SLOTS.filter((slot) => held[slot.key]).length;
   const ready = count >= MIN_OBSERVATION_PHOTOS;
 
+  const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
+
   return (
     <div className="space-y-3">
       {/*
@@ -153,79 +156,77 @@ export function ObservationPhotos({
         into a single answer, so photographs of two different plants produce a confident
         result about neither. It sits above the slots because it governs all of them.
       */}
-      <p className="text-sm leading-relaxed text-violet-200">
-        Take <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span> —
-        the same individual, not two plants of the same kind.
+      <p className="flex items-center gap-3 rounded-full border border-violet-400/40 bg-plum-800/60 px-4 py-2.5 text-sm leading-snug text-violet-100">
+        <span aria-hidden="true" className="shrink-0 text-2xl text-violet-300">
+          <PlantdexIcon name="scan" />
+        </span>
+        <span>
+          Take <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span>{' '}
+          &mdash; the same individual, not two plants of the same kind.
+        </span>
       </p>
 
-      <ol className="space-y-3">
+      <ol className="grid grid-cols-3 gap-3">
         {SLOTS.map((slot, index) => {
           const one = held[slot.key];
+          const active = !one && firstEmpty?.key === slot.key;
           return (
-            <li key={slot.key} className="rounded-xl border border-violet-600/70 bg-plum-700/40 p-3">
-              <div className="flex items-start gap-3">
-                {/* The preview doubles as the state indicator: filled means done. */}
-                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-violet-600 bg-plum-800">
+            <li key={slot.key} className="flex flex-col items-center">
+              <div className="relative w-full">
+                <button
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => inputs.current[slot.key]?.click()}
+                  aria-label={`${one ? 'Replace' : 'Add'} photo: ${slot.label}. ${slot.instruction}`}
+                  className={`relative block aspect-square w-full overflow-hidden rounded-2xl border-2 bg-plum-800/60 transition-colors disabled:opacity-60 ${
+                    one
+                      ? 'border-gold-400'
+                      : active
+                        ? 'border-violet-200 shadow-[0_0_14px_rgb(214_190_255/0.45)]'
+                        : 'border-violet-500/50'
+                  }`}
+                >
                   {one ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={one.url} alt="" className="h-full w-full object-cover" />
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="flex h-full w-full items-center justify-center text-lg text-violet-400"
+                      className="flex h-full w-full items-center justify-center text-4xl font-light text-violet-200"
                     >
-                      {index + 1}
+                      +
                     </span>
                   )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  {/*
-                    `flex-wrap`, because "Identifying Feature" plus its Recommended chip does
-                    not fit one line at 390px and the unwrapped version collided them. The
-                    marker keeps `items-center` alignment on the first line either way.
-                  */}
-                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-bold text-violet-100">
-                    {/*
-                      DRAWN, NOT A CHARACTER. A tick glyph is an emoji by the suite's
-                      definition and by this app's — the interface is pixel art, and a font's
-                      idea of a checkmark is neither drawn nor consistent across platforms. A
-                      filled square is held, a hollow one is not, and the count below says the
-                      same thing in words for anyone who cannot see either.
-                    */}
+                </button>
+                {one && (
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => put(slot, undefined)}
+                    aria-label={`Remove photo: ${slot.label}`}
+                    className="absolute -top-2 -right-2 flex h-11 w-11 items-start justify-end"
+                  >
                     <span
                       aria-hidden="true"
-                      className={`inline-block h-2.5 w-2.5 shrink-0 border-2 ${
-                        one ? 'border-gold-400 bg-gold-400' : 'border-violet-400'
-                      }`}
-                    />
-                    {slot.label}{' '}
-                    <span className="text-xs font-semibold text-violet-400">
-                      {slot.required ? 'Required' : 'Optional \u2014 usually helpful'}
-                    </span>
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-violet-300">{slot.instruction}</p>
-                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                    <button
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => inputs.current[slot.key]?.click()}
-                      className="min-h-11 text-sm font-semibold text-gold-300 underline underline-offset-4 hover:text-gold-200 disabled:text-violet-400"
+                      className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-plum-950 bg-violet-200 text-xs font-extrabold text-plum-900"
                     >
-                      {one ? 'Replace' : 'Add photo'}
-                    </button>
-                    {one && (
-                      <button
-                        type="button"
-                        disabled={disabled}
-                        onClick={() => put(slot, undefined)}
-                        className="min-h-11 text-sm font-semibold text-violet-300 underline underline-offset-4 hover:text-violet-100 disabled:text-violet-500"
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                </div>
+                      &times;
+                    </span>
+                  </button>
+                )}
               </div>
+              <p className="mt-2 flex items-center gap-1.5 text-center text-xs leading-tight font-semibold text-violet-100">
+                <span
+                  aria-hidden="true"
+                  className={`inline-block h-2.5 w-2.5 shrink-0 border-2 ${
+                    one ? 'border-gold-400 bg-gold-400' : 'border-violet-400'
+                  }`}
+                />
+                {slot.label}
+              </p>
+              {!slot.required && (
+                <p className="text-[0.72rem] leading-tight text-violet-300">(optional)</p>
+              )}
               <input
                 ref={(node) => {
                   inputs.current[slot.key] = node;
@@ -234,6 +235,7 @@ export function ObservationPhotos({
                 accept={ACCEPT_ATTRIBUTE}
                 capture="environment"
                 className="sr-only"
+                tabIndex={-1}
                 onChange={(event) => {
                   const file = event.target.files?.[0];
                   // Reset first, or picking the same file twice never fires a change event.
@@ -241,19 +243,32 @@ export function ObservationPhotos({
                   if (file) put(slot, file);
                 }}
               />
+              <span className="sr-only">
+                {index + 1}. {slot.required ? 'Required' : 'Optional'}. {slot.instruction}
+              </span>
             </li>
           );
         })}
       </ol>
 
+      {/* The instruction for whichever shot is next, which is the one the player is about to take. */}
+      {firstEmpty && (
+        <p className="text-center text-xs leading-relaxed text-violet-300">
+          <span className="font-bold text-violet-100">{firstEmpty.label}:</span>{' '}
+          {firstEmpty.instruction}
+        </p>
+      )}
+
       {duplicate && <p className="text-sm text-stat-temp">{duplicate}</p>}
 
-      <p className="text-xs font-semibold text-violet-300" aria-live="polite">
+      <p className="text-center text-xs font-semibold text-violet-300" aria-live="polite">
         {count} of {MAX_OBSERVATION_PHOTOS} added ·{' '}
         {ready ? (
           <span className="text-gold-300">ready to identify</span>
         ) : (
-          <span>{MIN_OBSERVATION_PHOTOS} photos required · {MAX_OBSERVATION_PHOTOS} recommended</span>
+          <span>
+            {MIN_OBSERVATION_PHOTOS} photos required · {MAX_OBSERVATION_PHOTOS} recommended
+          </span>
         )}
       </p>
     </div>

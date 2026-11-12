@@ -246,3 +246,47 @@ export function pixelObject(name: keyof typeof OBJECTS): string {
   }
   return uri;
 }
+
+// ── The Identify page's forest floor ─────────────────────────────────────────────────────
+
+/** A tileable strip of pixel ferns and mushrooms on a dark ground, 48x14. */
+export function pixelForest(): string {
+  const W = 48;
+  const H = 14;
+  const grid: Grid = Array.from({ length: H }, () => Array<string | null>(W).fill(null));
+  const put = (x: number, y: number, colour: string) => {
+    if (x >= 0 && x < W && y >= 0 && y < H) grid[y]![x] = colour;
+  };
+  for (let x = 0; x < W; x += 1) {
+    put(x, 13, '#1d4a2d');
+    put(x, 12, '#2c6a3e');
+    if ((x * 7) % 5 < 2) put(x, 11, '#3f9a55');
+  }
+  const fern = (x0: number) => {
+    for (let y = 4; y <= 11; y += 1) put(x0, y, '#2f7a47');
+    [9, 7, 5].forEach((y, i) => {
+      const reach = 3 - i;
+      for (let d = 1; d <= reach; d += 1) {
+        put(x0 - d, y - (d > 1 ? 1 : 0), '#3f9a55');
+        put(x0 + d, y - (d > 1 ? 1 : 0), '#3f9a55');
+      }
+    });
+    put(x0, 3, '#6fcf7e');
+  };
+  const mushroom = (x: number, y: number, size: number) => {
+    for (let dy = 0; dy < size; dy += 1) {
+      for (let dx = -(dy + 1); dx <= dy + 1; dx += 1) put(x + dx, y - size + dy + 1, '#e85a9a');
+    }
+    put(x - 1, y - size + 2, '#fff6f8');
+    put(x + 1, y - size + 3, '#fff6f8');
+    for (let sy = 1; sy <= 2; sy += 1) {
+      put(x, y + sy, '#e8d8ff');
+      put(x - 1, y + sy, '#cdb6f0');
+    }
+  };
+  fern(6);
+  fern(41);
+  mushroom(22, 8, 3);
+  mushroom(29, 9, 2);
+  return gridToUri(grid);
+}

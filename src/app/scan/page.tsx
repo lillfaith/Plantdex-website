@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
 import { ScanScout } from '@/components/scan/ScanScout';
+import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { ContaminationNote, SafetyNotice } from '@/components/SafetyNotice';
 
 export const metadata: Metadata = {
@@ -38,42 +39,38 @@ export default function ScanPage() {
         `shrink-0` because a flex sibling with an intrinsic aspect ratio gives up its width
         first and squashes to a sliver the moment the heading wants more room.
       */}
-      <div className="flex items-center gap-3">
-        <ScanScout className="w-16 shrink-0 sm:w-20" />
-        <h1 className="font-display text-2xl font-bold text-gold-plate">Identify a plant</h1>
+      <div className="flex flex-col items-center text-center">
+        <ScanScout className="w-20 shrink-0" />
+        <h1 className="font-display mt-1 flex items-center gap-3 text-3xl font-extrabold text-gold-plate">
+          <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
+          Identify a Plant
+          <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
+        </h1>
+        <div aria-hidden="true" className="mt-2 flex w-full max-w-xs items-center gap-3">
+          <span className="h-px flex-1 bg-violet-500/60" />
+          <PlantdexIcon name="leaves" className="text-lg text-violet-300" />
+          <span className="h-px flex-1 bg-violet-500/60" />
+        </div>
       </div>
       {/*
-        WHAT THIS SCANNER ACTUALLY ACCEPTS, WHICH IS NOT WHAT IT SAID.
+        WHAT THIS SCANNER ACTUALLY ACCEPTS, WHICH IS NOT WHAT IT SAID. "see which cards it might
+        be" described the deck, and the deck is a few dozen species out of a world of them, so the
+        line quietly told a first-time visitor that photographing anything else was pointless.
+        Both outcomes are real and the second is the ORDINARY one. It names no count: the matcher
+        indexes the whole catalogue and a number here goes stale the moment either list moves.
 
-        "see which cards it might be" describes the deck, and the deck is 45 species out of a
-        world of them — so the line quietly told a first-time visitor that photographing
-        anything else was pointless, which is the opposite of true. Both outcomes are real and
-        the second is the ORDINARY one; the page that invites the photograph is where that
-        belongs, not only in the answer after somebody has already risked a tap.
-
-        IT NO LONGER NAMES A NUMBER, AND THAT IS NOW THE ACCURATE VERSION. It used to read
-        "one of the 45 Collection 01 plants", counted from `CURRENT_COLLECTION` rather than
-        typed as a literal — which was right while the printed deck was the only thing the
-        scanner could resolve. It is not any more: the matcher indexes `CATALOGUE`, so the
-        nine Field Cards resolve too and 49 species have a card. "A plant we have a card for"
-        is the question `confirmable` actually answers, and it stays true whatever either
-        number does next. Do not reintroduce a count here — there are two, and naming either
-        one alone is the thing that just went stale.
-
-        THREE SENTENCES IN THREE PARAGRAPHS, NOT ONE RUN-ON. At 390px the combined version
-        wrapped to five lines and the safety clause landed mid-block, reading as the tail of a
-        feature description rather than as a caution. Splitting them costs no vertical space
-        worth having and keeps the last line visually its own statement — brighter, on its own
-        line, immediately above `ScanCaution`. Its wording is unchanged.
+        THE LAST SENTENCE STAYS ITS OWN LINE, brighter than the rest and directly above the
+        caution, so the safety framing reads as a statement and not as the tail of a feature
+        description. Its wording is unchanged.
       */}
-      <p className="mt-2 text-sm leading-relaxed text-violet-300">
+      <p className="mx-auto mt-3 max-w-sm text-center text-base leading-relaxed text-violet-100">
         Photograph something growing and see what Plantdex thinks it might be.
       </p>
-      <p className="mt-2 text-sm leading-relaxed text-violet-300">
+      <p className="mx-auto mt-2 max-w-sm text-center text-xs leading-relaxed text-violet-300">
         If it is a plant we have a card for, you can add it to your collection. Anything else
         can go on your Seed Shelf.
       </p>
-      <p className="mt-2 text-sm leading-relaxed font-semibold text-violet-200">
+      <p className="mx-auto mt-1.5 max-w-sm text-center text-xs leading-relaxed font-semibold text-violet-100">
         The answer is a suggestion to check, not a verdict.
       </p>
 

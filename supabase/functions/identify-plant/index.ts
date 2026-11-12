@@ -159,15 +159,16 @@ const QUOTA_SALT = Deno.env.get('SCAN_QUOTA_SALT') ?? `derived:${SERVICE_ROLE_KE
  *   ANON_DAILY_LIMIT  5   Enough to genuinely try the feature on a walk — photograph a few
  *                         things and see it work — without one device being able to spend
  *                         a meaningful share of the day's allowance.
- *   USER_DAILY_LIMIT  30  A real session of use. Signing in is rewarded with more, which is
- *                         a reason to make an account rather than a penalty for not having
- *                         one.
+ *   USER_DAILY_LIMIT  10  A daily scan goal: enough for a good day outdoors, and still twice
+ *                         the anonymous allowance, so signing in is rewarded with more. The
+ *                         client mirrors this number in `src/lib/scan-allowance.ts`, and a
+ *                         test holds the two together.
  *   GLOBAL_DAILY_LIMIT 450 The backstop. Without it, 90 anonymous devices exhaust the tier
  *                         and every later scan fails at the provider with an error nobody
  *                         can act on. Held below 500 so there is headroom to notice.
  */
 const ANON_DAILY_LIMIT = 5;
-const USER_DAILY_LIMIT = 30;
+const USER_DAILY_LIMIT = 10;
 const GLOBAL_DAILY_LIMIT = 450;
 
 const MAX_IMAGE_BYTES = 6 * 1024 * 1024;

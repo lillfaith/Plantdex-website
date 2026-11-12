@@ -2755,3 +2755,14 @@ body {
     opacity: 1;
   }
 }
+
+/* The Identify page's footer scenery: a tiled strip of pixel ferns and mushrooms. */
+@utility scan-forest {
+  height: 3.5rem;
+  background-image: var(--scan-forest, none);
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  opacity: 0.9;
+}

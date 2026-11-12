@@ -89,9 +89,11 @@ describe('the observation UI', () => {
      * nothing — so what is pinned is that each one names an ORGAN or a view, not the
      * particular wording. They were shortened once already, for a screen read outdoors.
      */
-    for (const label of ['Whole plant', 'Leaf + stem', 'Flower / fruit / feature']) {
+    for (const label of ['Whole plant', 'Leaf + stem', 'Detail']) {
       expect(UI, label).toContain(label);
     }
+    // The short label names no organ, so the instruction beside it has to.
+    expect(UI).toContain('flower, fruit');
     // A flower or fruit is the most useful third shot and many plants have neither in a
     // given season. Requiring it would block real finds over a feature that does not exist.
     expect(UI).toMatch(/required: false/);
