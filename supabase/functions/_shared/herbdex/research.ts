@@ -321,7 +321,7 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
     verb: 'Find',
     title: (herb) => `Find ${herb.commonName}`,
     description: (herb) =>
-      `Card ${cardRef(herb)} · ${herb.rarity} · best found in ${SEASON_LABEL[herb.season].toLowerCase()}.`,
+      `Card ${cardRef(herb)} · ${herb.rarity} · best found in ${SEASON_LABEL[herb.season].toLowerCase()}. Done when you record a find of it.`,
     stepLabel: (herb) => `Discover ${herb.commonName}`,
     satisfied: (herb, world) => Boolean(world.state.discoveries[herb.id]),
     available: () => true,
@@ -329,8 +329,9 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
   {
     id: 'learn',
     verb: 'Study',
-    title: (herb) => `Study ${herb.commonName}`,
-    description: (herb) => `Read card ${cardRef(herb)}, then pass its check.`,
+    title: (herb) => `Pass ${herb.commonName}’s card check`,
+    description: (herb) =>
+      `Read card ${cardRef(herb)}, then pass its short quiz. Done when the check is passed.`,
     stepLabel: (herb) => `Learn ${herb.commonName}’s card`,
     satisfied: (herb, world) => Boolean(world.state.learned[herb.id]),
     // Learning a card you have not found is not a challenge, it is a dead end.
@@ -339,8 +340,9 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
   {
     id: 'revisit',
     verb: 'Revisit',
-    title: (herb) => `Go back to ${herb.commonName}`,
-    description: (herb) => `Find card ${cardRef(herb)} again and log what you saw.`,
+    title: (herb) => `Log a sighting of ${herb.commonName}`,
+    description: (herb) =>
+      `Add a Field Journal entry for card ${cardRef(herb)}. Done when one sighting is logged.`,
     stepLabel: (herb) => `Log a sighting of ${herb.commonName}`,
     satisfied: (herb, world) => (world.sightingCounts[herb.id] ?? 0) > 0,
     available: (herb, world) => Boolean(world.state.discoveries[herb.id]),
@@ -349,7 +351,8 @@ const DAILY_TEMPLATES: readonly DailyTemplate[] = [
     id: 'master',
     verb: 'Master',
     title: (herb) => `Master ${herb.commonName}`,
-    description: (herb) => `Card ${cardRef(herb)} is learned. One more sighting completes it.`,
+    description: (herb) =>
+      `Card ${cardRef(herb)} is learned. Log a sighting of it to master the card.`,
     stepLabel: (herb) => `Master ${herb.commonName}’s card`,
     satisfied: (herb, world) => Boolean(world.state.mastered[herb.id]),
     available: (herb, world) => Boolean(world.state.learned[herb.id]),

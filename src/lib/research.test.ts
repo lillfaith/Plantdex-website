@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   buildWorld,
@@ -380,5 +381,61 @@ describe('the task set stays honest', () => {
       expect(task.title).not.toMatch(forbidden);
       for (const step of task.steps) expect(step.label).not.toMatch(forbidden);
     }
+  });
+});
+
+describe('what each daily asks, and what completes it', () => {
+  const herb = PRINTED_CARDS[0]!;
+  const dailyFor = (kind: string, w: ResearchWorld) =>
+    pickDailyTasks(w, 'probe', new Set(), 1000).find(
+      (task) => task.id === `daily:${kind}:${herb.id}`,
+    );
+  const found = applyDiscovery(emptyState(), herb.id, at).state;
+  const learned = applyLearned(found, herb.id, at).state;
+
+  it('a new player is only ever offered finds, never learn, sighting or master', () => {
+    const kinds = new Set(
+      pickDailyTasks(world(), 'probe', new Set(), 1000).map((task) => task.id.split(':')[1]),
+    );
+    expect([...kinds]).toEqual(['find']);
+  });
+
+  it('find completes on a discovery of that card, however it was recorded', () => {
+    const task = dailyFor('find', world())!;
+    expect(progressForTask(task, world()).done).toBe(false);
+    expect(progressForTask(task, world(found)).done).toBe(true);
+    expect(task.description).toMatch(/Done when you record a find/);
+  });
+
+  it('the card check completes only on LEARNED, and only for a found card', () => {
+    expect(dailyFor('learn', world())).toBeUndefined();
+    const task = dailyFor('learn', world(found))!;
+    expect(task.title).toMatch(/card check/);
+    expect(progressForTask(task, world(found)).done).toBe(false);
+    expect(progressForTask(task, world(learned)).done).toBe(true);
+  });
+
+  it('log-a-sighting completes on the card’s first logged sighting, not on a return trip', () => {
+    expect(dailyFor('revisit', world())).toBeUndefined();
+    const task = dailyFor('revisit', world(found))!;
+    expect(task.title).toMatch(/^Log a sighting of /);
+    expect(progressForTask(task, world(found)).done).toBe(false);
+    expect(progressForTask(task, world(found, { [herb.id]: 1 })).done).toBe(true);
+    // Never offered once a sighting exists, so it cannot be handed out already satisfied.
+    expect(dailyFor('revisit', world(found, { [herb.id]: 1 }))).toBeUndefined();
+  });
+
+  it('master completes on the recorded mastery, which needs learned plus one sighting', () => {
+    expect(dailyFor('master', world(found))).toBeUndefined();
+    const task = dailyFor('master', world(learned))!;
+    expect(task.description).toMatch(/Log a sighting/);
+    expect(progressForTask(task, world(learned)).done).toBe(false);
+    const mastered = { ...learned, mastered: { [herb.id]: at } };
+    expect(progressForTask(task, world(mastered)).done).toBe(true);
+  });
+
+  it('the old wording that implied a return trip or a second sighting is gone', () => {
+    const src = readFileSync('src/lib/research.ts', 'utf8');
+    expect(src).not.toMatch(/Go back to|again and log|One more sighting/);
   });
 });

@@ -9,6 +9,7 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { SafetyNotice } from '../SafetyNotice';
 import { TaskCard } from './TaskCard';
 import { FieldCardReward } from './FieldCardReward';
+import { FirstQuestCard } from '../herbdex/FirstQuestCard';
 import { GrowthPlaceholder } from '../GrowthLoader';
 
 /**
@@ -22,7 +23,8 @@ import { GrowthPlaceholder } from '../GrowthLoader';
 const NEVER_CHANGES = () => () => {};
 
 export function ResearchView() {
-  const { ready, world, dailyTasks, standingTasks, completedResearchCount } = useHerbdex();
+  const { ready, world, dailyTasks, standingTasks, completedResearchCount, discoveredCount } = useHerbdex();
+  const newPlayer = ready && discoveredCount === 0;
 
   /*
    * The current season only ever *orders* the seasonal list — all four stay open, because
@@ -82,6 +84,8 @@ export function ResearchView() {
             of this" — a player who scrolls no further should still have seen that research
             leads somewhere. It states its own separation from the printed deck in place.
           */}
+          <FirstQuestCard />
+
           <div className="mt-8">
             <FieldCardReward />
           </div>
@@ -89,12 +93,18 @@ export function ResearchView() {
           <section aria-labelledby="today-heading" className="mt-8">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 id="today-heading" className="font-display text-xl font-bold text-gold-plate">
-                Today
+                {newPlayer ? 'More to try later' : 'Today'}
               </h2>
               <span className="text-xs text-violet-400">
                 {RESEARCH_XP.daily} XP each · refreshes daily
               </span>
             </div>
+
+            {newPlayer && (
+              <p className="mt-1 text-xs text-violet-300">
+                Each of these names one specific plant. Your first find can be any plant.
+              </p>
+            )}
 
             {dailyTasks.length === 0 ? (
               <p className="panel mt-3 p-5 text-center text-sm text-violet-300">

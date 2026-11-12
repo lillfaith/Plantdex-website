@@ -4,7 +4,7 @@ import { printedCardsInDeckOrder } from '@/lib/deck';
 import { FIELD_CARDS } from '@/lib/field-cards';
 import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { ProgressHeader } from '@/components/herbdex/ProgressHeader';
-import { FirstFindNote } from '@/components/herbdex/FirstFindNote';
+import { FirstQuestCard } from '@/components/herbdex/FirstQuestCard';
 import { RegionTeaser } from '@/components/quests/RegionTeaser';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 import { RecentFindsStrip } from '@/components/herbdex/RecentFindsStrip';
@@ -73,9 +73,9 @@ export default function HerbdexPage() {
         Plantdex deck.
       </p>
 
-      {/* Renders only while the collection is genuinely empty; see the component for why it
-          is a line rather than a second button above the one directly beneath it. */}
-      <FirstFindNote />
+      {/* Renders only while the collection is genuinely empty, without a button of its own:
+          the scanner is directly beneath it. */}
+      <FirstQuestCard cta={false} />
 
       {/*
         FIRST THING AFTER THE TITLE, BECAUSE IT ANSWERS THE TITLE.

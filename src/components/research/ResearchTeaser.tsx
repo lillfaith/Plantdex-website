@@ -17,7 +17,7 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
  * Field Research at all.
  */
 export function ResearchTeaser() {
-  const { ready, world, dailyTasks } = useHerbdex();
+  const { ready, world, dailyTasks, discoveredCount } = useHerbdex();
 
   const open = ready ? dailyTasks.filter((task) => !progressForTask(task, world).done) : [];
   const next = open[0];
@@ -38,8 +38,10 @@ export function ResearchTeaser() {
         <span className="block truncate text-xs text-violet-300">
           {!ready
             ? 'Reasons to take the deck outside'
-            : next
-              ? `Next up: ${next.title}`
+            : discoveredCount === 0
+              ? 'Make your first find, then come back for more'
+              : next
+                ? `Next up: ${next.title}`
               : 'All caught up — new suggestions tomorrow'}
         </span>
       </span>
