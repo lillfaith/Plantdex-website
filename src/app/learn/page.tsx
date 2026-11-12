@@ -11,6 +11,12 @@ export const metadata: Metadata = {
 
 const SECTIONS: { href: string; icon: IconName; title: string; body: string }[] = [
   {
+    href: '/learn/plants',
+    icon: 'leaves',
+    title: 'Plant library',
+    body: 'Every plant Plantdex covers, each linking to its field identification guide: how to recognise it, its lookalikes and where it grows.',
+  },
+  {
     href: '/learn/glossary',
     icon: 'learn',
     title: 'Glossary',
