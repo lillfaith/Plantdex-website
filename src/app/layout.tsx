@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Outfit, Fraunces } from 'next/font/google';
 import { HerbdexProvider } from '@/state/HerbdexProvider';
+import { WelcomeIntro } from '@/components/start/WelcomeIntro';
 import { AuthProvider } from '@/state/AuthProvider';
 import { SiteDecor } from '@/components/SiteDecor';
 import { SiteNav } from '@/components/SiteNav';
@@ -58,6 +59,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <HerbdexProvider>
             <SiteNav />
             <AccountBadge />
+            {/*
+              THE FIRST-RUN WELCOME, MOUNTED HERE AND NOT ON /start.
+
+              It has to read the collection to know whether this player is new, and /start is
+              a printed QR target that may not import a store at all — `entry-point.test.ts`
+              reads that route's source and fails if one appears. The shell is also where it
+              reaches somebody who arrives at `/` rather than through a code, which is most
+              players. Inside `HerbdexProvider` because it reads `discoveredCount`, and inside
+              `AuthProvider` because the dismissal flag is scoped to the account.
+
+              It renders a closed <dialog> and nothing else until the gate opens, so it costs
+              a returning player no layout and no paint.
+            */}
+            <WelcomeIntro />
             {/*
               THE FIXED NAV'S CLEARANCE COMES FROM THE FOOTER, not from here.
 

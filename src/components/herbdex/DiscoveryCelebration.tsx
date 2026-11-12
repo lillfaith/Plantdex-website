@@ -14,6 +14,7 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { CountUp } from './CountUp';
 import { haptic } from '@/lib/haptics';
 import { FIELD_CARDS_NAME, slotsCrossedBetween } from '@/lib/field-cards';
+import { FIELD_FRAMES } from '@/lib/field-frames';
 import { consumeJustUnlocked } from '@/lib/unlocked-field-cards';
 
 /**
@@ -147,6 +148,34 @@ export function DiscoveryCelebration({
    */
   const unlockedNow = slotsCrossedBetween(xpBefore, xpAfter);
 
+  /**
+   * IS THIS THE PLAYER'S VERY FIRST DISCOVERY? DERIVED FROM THE AWARD, NOT COUNTED.
+   *
+   * `first-find` is a pure predicate — `discoveredCount(state) >= 1` — so it appears in
+   * `newAchievementIds` exactly once in an account's life, on the discovery that took the
+   * count from nothing to one. That makes it a better answer than counting discoveries here
+   * would be: the reducer has already decided, idempotently, and a repeat or a re-render
+   * cannot put it back in the list.
+   *
+   * So there is no new state, no flag and no "has seen the first-run celebration" record.
+   * The one-time-ness is a property of the achievement, which was already write-once and
+   * already synced.
+   */
+  const firstDiscovery = result.newAchievementIds.includes('first-find');
+
+  /*
+   * The frame that first find unlocks. Read from `FIELD_FRAMES` rather than named here,
+   * because the cosmetic's own `condition` sentence is what the cabinet prints and a second
+   * copy of it in this dialog would be free to promise something else.
+   *
+   * IT IS A PROFILE COSMETIC AND TOUCHES NO CARD'S RARITY. Frames are chosen in the profile
+   * and drawn around an avatar; `rarity` is printed on the card itself and is read by the
+   * aura, the badge and the foil. Nothing here goes near it.
+   */
+  const firstFrame = firstDiscovery
+    ? (FIELD_FRAMES.find((entry) => entry.id === 'amber-ring') ?? null)
+    : null;
+
   /*
    * AND TELL THE RESEARCH PANEL IT HAS BEEN SAID. Without this, a player who saw the card
    * here and then walked over to /herbdex/research in the same session would be told again
@@ -262,9 +291,24 @@ export function DiscoveryCelebration({
         )}
       </div>
 
-      <p className="text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
-        New discovery
-      </p>
+      {/*
+        THE FIRST DISCOVERY GETS ITS OWN HEADLINE, IN THE SAME DIALOG.
+
+        Not a second modal, and not a bigger one: the brief's rule against stacking
+        full-screen rewards is also just right, because a player who has found their first
+        plant has had ONE moment. What marks it out is the line, the gold bloom behind the
+        card, and the two reward rows below — all inside the sequence that already exists,
+        and all still governed by the Skip control and the reduced-motion rules.
+      */}
+      {firstDiscovery ? (
+        <p className="font-display text-xl leading-tight font-bold text-gold-plate">
+          Your Herbalist Journey Begins!
+        </p>
+      ) : (
+        <p className="text-xs font-bold tracking-[0.2em] text-violet-300 uppercase">
+          New discovery
+        </p>
+      )}
       <h2 id="celebrate-title" className="font-display mt-1 text-2xl font-bold text-gold-plate">
         {herb.commonName}
       </h2>
@@ -278,7 +322,7 @@ export function DiscoveryCelebration({
         The faces are absolutely positioned, so an invisible sizer establishes the box —
         the same structure as `CardFlip`, for the same reason.
       */}
-      <div className="flip-scene mx-auto mt-4 w-44">
+      <div className={`flip-scene mx-auto mt-4 w-44${firstDiscovery ? ' first-find-bloom' : ''}`}>
         {/*
           A FULL REVOLUTION HERE, A HALF TURN EVERYWHERE ELSE. `flip-card-spin` takes the card
           round once before it lands face up (540deg), which is the flourish this one moment
@@ -341,6 +385,7 @@ export function DiscoveryCelebration({
           : ''}
         {/* Folded into the one existing announcement rather than given a second live
             region, which would interrupt the first mid-sentence. */}
+        {firstFrame ? ` Card frame unlocked: ${firstFrame.name}.` : ''}
         {unlockedNow.length > 0
           ? ` ${FIELD_CARDS_NAME} unlocked: ${unlockedNow
               .map((slot) => slot.card?.commonName ?? `Field Card ${slot.ordinal}`)
@@ -454,6 +499,29 @@ export function DiscoveryCelebration({
             </li>
           ))}
         </ul>
+      )}
+
+      {/*
+        THE CARD FRAME THE FIRST FIND UNLOCKS.
+
+        The badge is already announced by the achievement rows above — `first-find` arrives in
+        `newAchievementIds` like any other — so this adds only the cosmetic, which has no row
+        of its own anywhere else in the app. The swatch is the frame's REAL `ring` classes, so
+        what the player sees here is what the profile will draw.
+      */}
+      {firstFrame && (
+        <div className="animate-toast-in mt-3 flex items-center gap-3 rounded-xl border border-gold-500/60 bg-gold-500/15 px-3 py-2 text-left">
+          <span aria-hidden="true" className={`h-8 w-8 shrink-0 rounded-full ${firstFrame.ring}`} />
+          <span className="min-w-0">
+            <p className="text-sm font-bold text-gold-300">
+              Card frame unlocked — {firstFrame.name}
+            </p>
+            {/* A profile cosmetic. It changes nothing about the plant or its rarity. */}
+            <p className="text-xs text-violet-200">
+              Wear it on your profile. It changes no card&rsquo;s rarity.
+            </p>
+          </span>
+        </div>
       )}
 
       {/*
