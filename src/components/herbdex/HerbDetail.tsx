@@ -89,7 +89,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
       // every one of the 45 pages the reference dangled at nothing while the dialog sat
       // closed. A static label cannot dangle.
       aria-label={`${herb.commonName} discovered`}
-      className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
+      className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/92"
     >
       {celebration && (
         <DiscoveryCelebration
@@ -122,7 +122,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     <dialog
       ref={masteryRef}
       aria-labelledby="mastered-title"
-      className="panel m-auto max-h-[90dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-5 text-center text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
+      className="panel m-auto max-h-[90dvh] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-5 text-center text-violet-100 backdrop:bg-plum-950/92"
     >
       <p
         aria-hidden="true"

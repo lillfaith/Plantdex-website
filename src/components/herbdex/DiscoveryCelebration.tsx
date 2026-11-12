@@ -80,11 +80,15 @@ const FACE_DOWN_HOLD_MS = 520;
  * ordinary spin. All of it is timers and a one-shot filter transition, so Skip and reduced
  * motion jump straight past it to the card, exactly as the old sequence began.
  */
-type Intro = 'card' | 'grey' | 'lit' | 'done';
-const INTRO_GREY_AT = 250;
-const INTRO_LIT_AT = 450;
-const INTRO_DONE_AT = 1900;
-const AFTER_INTRO_FLIP_MS = 150;
+type Intro = 'card' | 'grey' | 'lit' | 'out' | 'done';
+// Unhurried, and every step has room to be seen: the card holds face down, steps aside, the
+// grey sprite is shown for a beat, lights up, circled by the star, then trades places with
+// the card, which rests face down before it turns.
+const INTRO_GREY_AT = 600;
+const INTRO_LIT_AT = 1100;
+const INTRO_OUT_AT = 3100;
+const INTRO_DONE_AT = 3600;
+const AFTER_INTRO_FLIP_MS = 350;
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -277,6 +281,7 @@ export function DiscoveryCelebration({
     if (hasIntro) {
       timers.push(setTimeout(() => setIntro('grey'), INTRO_GREY_AT));
       timers.push(setTimeout(() => setIntro('lit'), INTRO_LIT_AT));
+      timers.push(setTimeout(() => setIntro('out'), INTRO_OUT_AT));
       timers.push(setTimeout(() => setIntro('done'), INTRO_DONE_AT));
     }
     timers.push(
@@ -385,27 +390,31 @@ export function DiscoveryCelebration({
       <div className="flip-scene relative mx-auto mt-4 w-44">
         {/* The sprite alone on the dark: grey at first, then lit into its colours and playing
             its own animation. Decorative; the plant is named in the heading above. */}
-        {hasIntro && (intro === 'grey' || intro === 'lit') && (
+        {(intro === 'grey' || intro === 'lit' || intro === 'out') && (
           <div
             aria-hidden="true"
-            className="absolute inset-0 z-10 flex items-center justify-center"
+            className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-500 [animation:reveal-fade_500ms_ease-out_backwards] ${
+              intro === 'out' ? 'opacity-0' : 'opacity-100'
+            }`}
           >
-            {intro === 'lit' && <StarOrbit side="back" />}
-            <span
-              className={`absolute inset-4 rounded-full bg-gold-400/25 blur-2xl transition-opacity duration-1000 ${
-                intro === 'lit' ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-            <span
-              className={`relative block w-full transition-[filter,opacity] duration-1000 ease-out ${
-                intro === 'lit'
-                  ? 'opacity-100 [filter:none]'
-                  : 'opacity-60 [filter:brightness(0)_saturate(0)]'
-              }`}
-            >
-              <PlantSprite herbId={herb.id} alt="" fit />
+            {(intro === 'lit' || intro === 'out') && <StarOrbit side="back" />}
+            {/* Mounted only when needed, so at most one sprite is animating at a time: the
+                card's own silhouette during the hold, then the lit sprite. The grey copy is
+                a held frame. A radial wash rather than a blur, which would repaint each frame. */}
+            {(intro === 'lit' || intro === 'out') && (
+              <span className="absolute inset-0 bg-[radial-gradient(circle,rgb(255_212_92/0.3)_0%,transparent_62%)] [animation:reveal-fade_1000ms_ease-out_backwards]" />
+            )}
+            <span className="relative block w-full">
+              <span className="block w-full opacity-60 [filter:brightness(0)_saturate(0)]">
+                <PlantSprite herbId={herb.id} alt="" fit frozen />
+              </span>
+              {(intro === 'lit' || intro === 'out') && (
+                <span className="absolute inset-0 block w-full [animation:reveal-fade_1000ms_ease-out_backwards]">
+                  <PlantSprite herbId={herb.id} alt="" fit />
+                </span>
+              )}
             </span>
-            {intro === 'lit' && <StarOrbit side="front" />}
+            {(intro === 'lit' || intro === 'out') && <StarOrbit side="front" />}
           </div>
         )}
         {/*
@@ -420,9 +429,11 @@ export function DiscoveryCelebration({
         <div
           className={`flip-card flip-card-spin ${skipped ? 'flip-card-instant' : ''} ${
             revealed ? 'flip-card-revealed' : ''
-          } ${
-            intro === 'grey' || intro === 'lit' ? 'opacity-0' : 'opacity-100'
-          } transition-opacity duration-200 motion-reduce:transition-none`}
+          } [&>.flip-face]:transition-opacity [&>.flip-face]:duration-500 ${
+            intro === 'card' || intro === 'done' || intro === 'out'
+              ? ''
+              : '[&>.flip-face]:opacity-0'
+          }`}
         >
           <div className="aspect-[356/576] w-full" />
 

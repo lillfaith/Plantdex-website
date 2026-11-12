@@ -1194,7 +1194,7 @@ export function ScanPanel() {
         onClick={(event) => {
           if (event.target === celebrateRef.current) celebrateRef.current?.close();
         }}
-        className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/88 backdrop:backdrop-blur-sm"
+        className="panel m-auto max-h-[90dvh] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto p-5 text-violet-100 backdrop:bg-plum-950/92"
       >
         {celebrating &&
           (() => {

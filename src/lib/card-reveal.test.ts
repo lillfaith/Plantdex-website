@@ -93,7 +93,7 @@ describe('haptics in the reveal', () => {
 describe('the sprite reveal comes before the card turn', () => {
   it('shows the greyed sprite, lights it, then returns the card; skip and reduced motion bypass it', () => {
     const src = CELEBRATION.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
-    expect(src).toContain("type Intro = 'card' | 'grey' | 'lit' | 'done'");
+    expect(src).toContain("type Intro = 'card' | 'grey' | 'lit' | 'out' | 'done'");
     expect(src).toMatch(/hasSprite\(herb\.id\) && !prefersReducedMotion\(\)/);
     expect(src).toMatch(/setIntro\('done'\);\s*setRevealed\(true\)/);
     expect(src).toContain('[filter:brightness(0)_saturate(0)]');
