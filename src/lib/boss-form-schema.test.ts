@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { CHALLENGE_ACTIVITIES } from './boss-form';
+import { CHALLENGE_ACTIVITIES, CHALLENGE_DAILY_LIMIT, challengeBucket } from './boss-form';
 
 const SQL = readFileSync('supabase/migrations/0012_boss_forms.sql', 'utf8');
 const FN = readFileSync('supabase/functions/challenge-submit/index.ts', 'utf8');
@@ -58,6 +58,18 @@ describe('challenge-submit', () => {
   it('trusts no score or completion flag from the client', () => {
     expect(code).not.toMatch(/body\.(score|passed|completed|resolved|bossForm)/);
     expect(code).toContain('evaluateSubmission');
+  });
+  it('claims a durable per-user daily allowance before reading anything else', () => {
+    expect(code).toContain("service.rpc('claim_scan'");
+    expect(code).toContain('challengeBucket(userId)');
+    expect(code.indexOf("rpc('claim_scan'")).toBeLessThan(code.indexOf('await req.json()'));
+    expect(code.indexOf("rpc('claim_scan'")).toBeLessThan(code.indexOf("caller.from('mastered')"));
+    expect(code).toMatch(/!\(limit > 0\)/);
+    expect(CHALLENGE_DAILY_LIMIT).toBeGreaterThan(0);
+    expect(challengeBucket('abc')).toBe('challenge:abc');
+  });
+  it('keeps its bucket apart from scanning\u2019s', () => {
+    expect(challengeBucket('x').startsWith('challenge:')).toBe(true);
   });
   it('is not part of any deploy workflow yet', () => {
     expect(readFileSync('.github/workflows/deploy-function.yml', 'utf8')).not.toContain('challenge-submit');

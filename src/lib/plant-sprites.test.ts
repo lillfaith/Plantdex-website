@@ -159,7 +159,8 @@ describe('growth stages', () => {
 
   it('ships the sheet each stage points at, and only for real stages', () => {
     for (const { herbId, stage, entry } of staged) {
-      expect(GROWTH_STAGES, `${herbId}: unknown stage`).toContain(stage);
+      // 'boss' is the optional fourth form, pilot species only (see boss-sprite.test.ts).
+      expect([...GROWTH_STAGES, 'boss'], `${herbId}: unknown stage`).toContain(stage);
       expect(
         existsSync(join(root, 'public', entry.src)),
         `${herbId} (${stage}): ${entry.src} is in the manifest but not in public/`,
@@ -187,7 +188,13 @@ describe('growth stages', () => {
     // jump size for reasons unrelated to growth.
     for (const { herbId, stage, entry, adult } of staged) {
       expect(entry.frameWidth, `${herbId} (${stage}) width`).toBe(adult.frameWidth);
-      expect(entry.frameHeight, `${herbId} (${stage}) height`).toBe(adult.frameHeight);
+      // The Boss Form grows UPWARD (a crown over the bloom) so the feet keep the shared ground
+      // line; its extra height is the crown's headroom, never a different scale.
+      if (stage === 'boss') {
+        expect(entry.frameHeight, `${herbId} (boss) height`).toBeGreaterThan(adult.frameHeight);
+      } else {
+        expect(entry.frameHeight, `${herbId} (${stage}) height`).toBe(adult.frameHeight);
+      }
     }
   });
 

@@ -9,6 +9,8 @@ import { buildGarden, nextStageHint, MASTERY_BY_GARDEN_STAGE } from '@/lib/garde
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import { clearAdvanced, recordStages, useGardenMoments } from '@/lib/garden-moments';
 import { GrowthSprite } from './GrowthSprite';
+import { useAuth } from '@/state/AuthProvider';
+import { useBossForms } from '@/lib/boss-forms';
 import { usePauseOffscreenSprites } from '@/lib/sprite-visibility';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -42,6 +44,13 @@ export function GardenView() {
    * announcement ends by itself rather than sitting on the page until you navigate away.
    */
   const justAdvanced = useGardenMoments();
+  // Optional fourth form, shown in the Garden only. Off unless the build flag is set; never
+  // changes the mastery word, the growth stage or anything the progression reads.
+  const { user } = useAuth();
+  const bossForms = useBossForms(
+    user?.id,
+    garden.filter((entry) => entry.stage === 'flowering').map((entry) => entry.herbId),
+  );
   const stageSignature = garden.map((entry) => `${entry.herbId}:${entry.stage}`).join(',');
 
   /*
@@ -135,7 +144,11 @@ export function GardenView() {
                         planting rather than a row of stickers. Growth is carried by the
                         DRAWING now, not by scaling one image up and down. */}
                     <span className="flex h-20 w-full items-end justify-center">
-                      <GrowthSprite herb={herb} stage={stage} advanced={advanced} />
+                      <GrowthSprite
+                        herb={herb}
+                        stage={bossForms.has(herbId) ? 'boss' : stage}
+                        advanced={advanced}
+                      />
                     </span>
 
                     {/*
@@ -171,6 +184,11 @@ export function GardenView() {
                     >
                       {MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[stage]]}
                     </span>
+                    {bossForms.has(herbId) && (
+                      <span className="text-center text-[0.72rem] font-bold tracking-wide text-gold-300 uppercase">
+                        Boss Form
+                      </span>
+                    )}
                     {action && (
                       <span className="text-center text-[0.72rem] text-violet-400">{action}</span>
                     )}

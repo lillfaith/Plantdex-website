@@ -1,6 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { evaluateSubmission } from '../_shared/herbdex/mastery-challenges.ts';
-import { CHALLENGE_ACTIVITIES, type ActivityId } from '../_shared/herbdex/boss-form.ts';
+import {
+  CHALLENGE_ACTIVITIES,
+  CHALLENGE_DAILY_LIMIT,
+  challengeBucket,
+  type ActivityId,
+} from '../_shared/herbdex/boss-form.ts';
 
 /**
  * challenge-submit — the ONLY writer of `challenge_completions` and `boss_forms`.   NOT DEPLOYED.
@@ -9,6 +14,8 @@ import { CHALLENGE_ACTIVITIES, type ActivityId } from '../_shared/herbdex/boss-f
  * score or a completion flag, because this function has nowhere to read one from:
  *
  *   1. Identity comes from `auth.getUser()` on the caller's JWT. A user id in the body is never read.
+ *   1b. A durable per-user daily allowance is claimed in the database before anything else is
+ *      read, so a refused or invalid request still costs the caller one unit.
  *   2. Standing (mastered, prerequisites) is read from the database under the CALLER'S OWN
  *      session, so RLS scopes every read to them.
  *   3. `evaluateSubmission` — the same pure code vitest tests — rebuilds the question set from
@@ -53,6 +60,20 @@ Deno.serve(async (req) => {
   if (userError || !userData.user) return json({ error: 'Not authenticated' }, 401);
   const userId = userData.user.id;
 
+  // DURABLE RATE LIMIT, claimed before any work. `claim_scan` is the atomic counter scanning
+  // uses; it returns null once the caller is over their limit. A limit of zero is a kill
+  // switch and is refused here because the counter's first insert ignores the limit.
+  const service = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+  const limit = Number(Deno.env.get('CHALLENGE_DAILY_LIMIT') ?? CHALLENGE_DAILY_LIMIT);
+  if (!(limit > 0)) return json({ error: 'Challenges are paused' }, 429);
+  const { data: claimed, error: quotaError } = await service.rpc('claim_scan', {
+    p_bucket: challengeBucket(userId),
+    p_day: new Date().toISOString().slice(0, 10),
+    p_limit: limit,
+  });
+  if (quotaError) return json({ error: 'Could not check the daily limit' }, 500);
+  if (typeof claimed !== 'number') return json({ error: 'Daily limit reached' }, 429);
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();
@@ -85,7 +106,6 @@ Deno.serve(async (req) => {
   if (!decision.ok) return json({ ok: false, reason: decision.reason }, 200);
 
   if (decision.recordActivity) {
-    const service = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
     const { error } = await service.rpc('award_challenge', {
       p_user: userId,
       p_herb: herbId,

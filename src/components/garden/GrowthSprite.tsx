@@ -1,6 +1,6 @@
-import { STAGE_SCALE, type GardenStage } from '@/lib/garden';
+import { STAGE_SCALE } from '@/lib/garden';
 import type { Herb } from '@/lib/types';
-import { hasStageArt, spriteFor } from '@/lib/plant-sprites';
+import { hasStageArt, spriteFor, type SpriteStage } from '@/lib/plant-sprites';
 import { PlantSprite } from '../PlantSprite';
 
 /**
@@ -55,7 +55,7 @@ export function GrowthSprite({
   className = '',
 }: {
   herb: Herb;
-  stage: GardenStage;
+  stage: SpriteStage;
   /** This plant grew since the Garden last showed it — play the moment once. */
   advanced?: boolean;
   className?: string;
@@ -63,7 +63,7 @@ export function GrowthSprite({
   const sprite = spriteFor(herb.id, stage);
   if (!sprite) return null;
 
-  const scale = hasStageArt(herb.id, stage) ? 1 : STAGE_SCALE[stage];
+  const scale = hasStageArt(herb.id, stage) || stage === 'boss' ? 1 : STAGE_SCALE[stage];
 
   return (
     // Decorative: GardenView writes the plant's name and its stage directly underneath,

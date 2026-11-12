@@ -26,6 +26,12 @@ import type { GardenStage } from './garden';
  * Where frame 0's ink sits inside the frame, as fractions of the frame's own width and
  * height. Measured from the assembled sheet by `build_sprites.py`, never authored.
  */
+/**
+ * A sprite stage: the three growth stages plus the optional Boss Form. The Boss Form is NOT a
+ * growth or mastery stage; `GardenStage` and its pinned inverse map stay exactly as they were.
+ */
+export type SpriteStage = GardenStage | 'boss';
+
 export interface SpriteContentBox {
   left: number;
   top: number;
@@ -78,7 +84,7 @@ export interface PlantSpriteEntry {
    * optional in the type, because a new species reaches the site before its stage art
    * does and rendering the adult beats rendering nothing.
    */
-  stages?: Partial<Record<GardenStage, PlantSpriteEntry>>;
+  stages?: Partial<Record<SpriteStage, PlantSpriteEntry>>;
 }
 
 const SPRITES = manifest as Record<string, PlantSpriteEntry>;
@@ -93,7 +99,7 @@ export const SUPPORTED_FRAME_COUNTS = [4, 6, 8, 10, 12, 14, 16, 18] as const;
 
 export function spriteFor(
   herbId: string,
-  stage: GardenStage = 'flowering',
+  stage: SpriteStage = 'flowering',
 ): PlantSpriteEntry | null {
   const entry = SPRITES[herbId];
   if (!entry) return null;
@@ -115,7 +121,7 @@ export function hasSprite(herbId: string): boolean {
  * `stages` field is optional, since a species whose art has not been drawn yet still
  * needs an external scale if it is to show growth at all.
  */
-export function hasStageArt(herbId: string, stage: GardenStage): boolean {
+export function hasStageArt(herbId: string, stage: SpriteStage): boolean {
   return Boolean(SPRITES[herbId]?.stages?.[stage]);
 }
 

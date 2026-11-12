@@ -2684,6 +2684,24 @@
           "right": 0.6957,
           "bottom": 0.9062
         }
+      },
+      "boss": {
+        "herbId": "taraxacum-officinale-boss",
+        "src": "/cards/animated/taraxacum-officinale-boss.png",
+        "version": "63783b95",
+        "frameWidth": 230,
+        "frameHeight": 190,
+        "frames": 18,
+        "fps": 14,
+        "personality": "energetic",
+        "still": "/cards/animated/still/taraxacum-officinale-boss.png",
+        "stillVersion": "44d54704",
+        "content": {
+          "left": 0.0217,
+          "top": 0.1053,
+          "right": 0.7609,
+          "bottom": 0.9211
+        }
       }
     }
   },

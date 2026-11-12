@@ -72,3 +72,20 @@ export function mayAttempt(
   }
   return { ok: true };
 }
+
+/**
+ * DURABLE RATE LIMIT. Every authenticated submission, valid or not, spends one unit of a
+ * per-user, per-UTC-day allowance held in the database (`claim_scan`, the same atomic counter
+ * scanning uses), so it survives isolate restarts and cannot be bypassed by calling again.
+ *
+ * Sized generously for honest play (three prerequisites plus retries and several Trials) and
+ * low enough to make scripting the answer key across attempts noisy. A limit of zero is a
+ * kill switch: it refuses everything, which the counter alone would not (its first insert
+ * ignores the limit), so the function checks it first.
+ */
+export const CHALLENGE_DAILY_LIMIT = 60;
+
+/** The bucket a user's submissions are counted in. Never shared with scanning's buckets. */
+export function challengeBucket(userId: string): string {
+  return `challenge:${userId}`;
+}

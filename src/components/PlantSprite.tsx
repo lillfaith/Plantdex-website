@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 
 import { assetPath } from '@/lib/asset-path';
 import { spriteFor } from '@/lib/plant-sprites';
-import type { GardenStage } from '@/lib/garden';
+import type { SpriteStage } from '@/lib/plant-sprites';
 
 /**
  * A herb's animated pixel-art portrait.
@@ -38,7 +38,7 @@ export function PlantSprite({
   /** Describes the plant, not the animation — screen readers gain nothing from "bouncing". */
   alt: string;
   /** Growth stage. Every species has its own art for each — see `plant-sprites.ts`. */
-  stage?: GardenStage;
+  stage?: SpriteStage;
   /** Multiplier on the sheet's own size. Keep to whole or half steps to stay crisp. */
   scale?: number;
   /**

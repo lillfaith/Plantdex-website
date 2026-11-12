@@ -519,3 +519,124 @@ SPRITE = {
     },
     "palette": PALETTE,
 }
+
+
+# ── BOSS FORM ────────────────────────────────────────────────────────────────────────────
+#
+# THE PLANT'S OWN LAST STAGE. A dandelion's flower does not end as a flower: it goes over into
+# the round white seed head, the "clock", and lets its seeds go on the wind. So the boss form is
+# the same creature, mane and face untouched, CROWNED by that clock — a halo of fine pappus
+# wisps standing off the mane — with three seeds on their parachutes working loose and drifting
+# away. Nothing here is invented botany; it is the species' actual final act.
+#
+# Built as a recipe on the authored adult, like every stage: same face, same arms, same loop,
+# plus two added parts. The canvas grows UPWARD (`shift` moves every adult part down together)
+# so the feet stay on the shared ground line. Frame 0 is the resting pose and ONE connected
+# piece: the seeds start attached to the crown and only work loose later, and are gone again
+# before the loop closes so it begins as it ended.
+
+BOSS_SHIFT = 6
+BOSS_SIZE = (44, 32 + BOSS_SHIFT)
+CROWN_CENTRE = (16.0, 16.0 + BOSS_SHIFT)  # the mane's own centre, after the shift
+
+
+def _line(grid, x0, y0, x1, y1, char):
+    steps = max(int(round(abs(x1 - x0))), int(round(abs(y1 - y0))), 1)
+    for i in range(steps + 1):
+        x = round(x0 + (x1 - x0) * i / steps)
+        y = round(y0 + (y1 - y0) * i / steps)
+        if 0 <= y < len(grid) and 0 <= x < len(grid[0]):
+            grid[y][x] = char
+
+
+def _crown(tip, spark=False):
+    """Pappus wisps standing off the mane over its upper arc. Procedural, like the mane."""
+    import math
+
+    width, height = BOSS_SIZE[0], 24
+    grid = [[" "] * width for _ in range(height)]
+    cx, cy = CROWN_CENTRE
+    angles = [-172 + 12 * i for i in range(15)]  # -172 .. -4 degrees, upper arc
+    for index, degrees in enumerate(angles):
+        a = math.radians(degrees)
+        near, far = 8.5, 14.5 + (1.5 if index % 2 else 0.0)
+        _line(
+            grid,
+            cx + near * math.cos(a), cy + near * math.sin(a),
+            cx + far * math.cos(a), cy + far * math.sin(a),
+            "H",
+        )
+        tx, ty = round(cx + (far + 1) * math.cos(a)), round(cy + (far + 1) * math.sin(a))
+        if 0 <= ty < height and 0 <= tx < width:
+            grid[ty][tx] = tip if (index % 2 == 0) != spark else "H"
+    return ["".join(row) for row in grid]
+
+
+CROWN = _crown("W")
+CROWN_TWINKLE = _crown("W", spark=True)
+
+SEED = [
+    " WFW ",
+    "WFWFW",
+    " WFW ",
+    "  M  ",
+    "  M  ",
+    "  o  ",
+]
+SEED_HIDDEN = ["     "] * len(SEED)
+
+
+def _extend(track, n):
+    """Stretch an authored 16-frame track to n frames by holding its settled tail."""
+    tail = track[-1]
+    return list(track) + [tail] * (n - len(track))
+
+
+def _boss_recipe(sprite):
+    frames = 18
+    motion = {}
+    for name, tracks in sprite["motion"].items():
+        motion[name] = {
+            key: _extend(values, frames) for key, values in tracks.items()
+        }
+    # Seeds: start attached at three crown tips, work loose, drift up and away, then are gone
+    # (hidden) for the last frames so frame 17 flows into frame 0.
+    dx_track = [0, 0, 0, 0, 0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 0, 0, 0]
+    dy_track = [0, 0, 0, 0, 0, -1, -1, -2, -2, -3, -3, -4, -4, -5, -5, 0, 0, 0]
+    gone = ["hidden" if f >= 15 else None for f in range(frames)]
+    for name, stagger in {"seedA": 0, "seedB": 2, "seedC": 4}.items():
+        # Each seed lets go a little later than the last. They all end hidden by frame 15.
+        motion[name] = {
+            "dx": ([0] * stagger + dx_track)[:frames],
+            "dy": ([0] * stagger + dy_track)[:frames],
+            "art": gone,
+        }
+    motion["crown"] = {"art": [None, None, "twinkle", None, "twinkle", None, None, "twinkle",
+                               None, "twinkle", None, None, "twinkle", None, "twinkle", None,
+                               None, None]}
+    cx, cy = CROWN_CENTRE
+    import math
+
+    def tip(degrees):
+        a = math.radians(degrees)
+        return (round(cx + 15.5 * math.cos(a)) - 2, round(cy + 15.5 * math.sin(a)) - 5)
+
+    return {
+        "size": BOSS_SIZE,
+        "frames": frames,
+        "fps": 14,
+        "shift": (0, BOSS_SHIFT),
+        "palette": {},
+        "motion": motion,
+        # The crown paints first so it sits BEHIND the mane; the seeds paint last.
+        "add": [
+            {"name": "crown", "origin": (0, 0), "rows": CROWN,
+             "variants": {"twinkle": CROWN_TWINKLE}},
+            {"name": "seedA", "origin": tip(-15), "rows": SEED, "variants": {"hidden": SEED_HIDDEN}},
+            {"name": "seedB", "origin": tip(-35), "rows": SEED, "variants": {"hidden": SEED_HIDDEN}},
+            {"name": "seedC", "origin": tip(-55), "rows": SEED, "variants": {"hidden": SEED_HIDDEN}},
+        ],
+    }
+
+
+SPRITE["stages"]["boss"] = _boss_recipe(SPRITE)

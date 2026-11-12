@@ -82,6 +82,17 @@ FRAME_GUTTER = 1
 # every stage to that one portrait.
 DERIVED_STAGES = ("sprout", "growing")
 
+# THE BOSS FORM (pilot). A fourth form beyond the authored adult, earned in the app by scored
+# mastery challenges, never by growth alone. It is declared per species like the others, but it
+# is NOT part of the sprout -> growing -> flowering ladder: it sits after the adult, so the
+# ladder checks below skip it and it gets its own. Pilot species only; see
+# docs/boss-form-implementation-plan.md.
+BOSS_STAGE = "boss"
+BUILT_STAGES = (*DERIVED_STAGES, BOSS_STAGE)
+# Taller than the adult (a crown over the bloom) but never so tall it stops being the same
+# creature; measured from ink like every other height here.
+BOSS_HEIGHT_RANGE = (1.05, 1.30)
+
 # How tall each stage stands as a fraction of the adult, and how far off it may be. Even
 # steps; `_stages.py` carries the reasoning and the frame-rate half of the same idea.
 STAGE_HEIGHT = {"sprout": 0.60, "growing": 0.80}
@@ -150,6 +161,8 @@ def apply_stage(sprite: dict, stage: str, recipe: dict) -> dict:
                 f"(has: {sorted(known)})"
             )
 
+    shift = recipe.get("shift", (0, 0))
+
     parts = []
     for part in sprite["parts"]:
         if part["name"] in hidden:
@@ -166,7 +179,15 @@ def apply_stage(sprite: dict, stage: str, recipe: dict) -> dict:
             part["variants"] = variants[part["name"]]
         if part["name"] in origins:
             part["origin"] = origins[part["name"]]
+        # `shift` moves every ADULT part together, so a taller canvas keeps the creature's
+        # feet on the shared ground line and every measured face offset intact.
+        if shift != (0, 0):
+            ox, oy = part["origin"]
+            part["origin"] = (ox + shift[0], oy + shift[1])
         parts.append(part)
+    # `add` appends whole new parts, already in the stage's own (shifted) coordinates.
+    for extra in recipe.get("add", ()):
+        parts.append(dict(extra))
     staged["parts"] = parts
 
     if "frames" in recipe:
@@ -431,6 +452,8 @@ def check_growth(sprite: dict, staged: dict[str, dict]) -> None:
     """
     adult_h = ink_height(sprite)
     order = [*DERIVED_STAGES, "flowering"]
+    boss = staged.get(BOSS_STAGE)
+    staged = {stage: one for stage, one in staged.items() if stage != BOSS_STAGE}
     speeds = {**{s: staged[s]["fps"] for s in staged}, "flowering": sprite["fps"]}
 
     previous = None
@@ -455,19 +478,38 @@ def check_growth(sprite: dict, staged: dict[str, dict]) -> None:
             )
 
 
+def check_boss(sprite: dict, boss: dict) -> None:
+    """The boss form is faster than the adult and a little taller, never a different size class."""
+    if boss["fps"] <= sprite["fps"]:
+        raise SystemExit(
+            f"{sprite['herbId']} (boss): {boss['fps']}fps, no faster than the adult's "
+            f"{sprite['fps']}fps"
+        )
+    adult_h = ink_height(sprite)
+    got = ink_height(boss) / adult_h if adult_h else 0
+    low, high = BOSS_HEIGHT_RANGE
+    if not (low <= got <= high):
+        raise SystemExit(
+            f"{sprite['herbId']} (boss): stands {got:.0%} of the adult's height, "
+            f"wanted {low:.0%}-{high:.0%}"
+        )
+
+
 def staged_sprites(sprite: dict) -> dict[str, dict]:
     """Every derived stage a species declares, keyed by stage name."""
     recipes = sprite.get("stages", {})
-    unknown = set(recipes) - set(DERIVED_STAGES)
+    unknown = set(recipes) - set(BUILT_STAGES)
     if unknown:
         raise SystemExit(
             f"{sprite['herbId']}: unknown stage(s) {sorted(unknown)}; "
-            f"derived stages are {DERIVED_STAGES} ('flowering' is the authored sprite)"
+            f"derived stages are {BUILT_STAGES} ('flowering' is the authored sprite)"
         )
     staged = {stage: apply_stage(sprite, stage, recipes[stage])
-              for stage in DERIVED_STAGES if stage in recipes}
+              for stage in BUILT_STAGES if stage in recipes}
     if staged:
         check_growth(sprite, staged)
+    if BOSS_STAGE in staged:
+        check_boss(sprite, staged[BOSS_STAGE])
     return staged
 
 
@@ -476,7 +518,7 @@ def main() -> None:
     parser.add_argument("--preview", help="herb id to print as text instead of building")
     parser.add_argument("--frame", type=int, default=0)
     parser.add_argument(
-        "--stage", choices=DERIVED_STAGES,
+        "--stage", choices=BUILT_STAGES,
         help="preview a derived stage instead of the authored sprite",
     )
     args = parser.parse_args()
