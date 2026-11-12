@@ -305,22 +305,6 @@ describe('the result list was compacted without losing the distinctions', () => 
     );
   });
 
-  it('keeps the score line to one line, with the leader mark elsewhere', () => {
-    /*
-     * Sliced from the comment-stripped source and anchored on the meter, because the note
-     * explaining why the leader mark left this line necessarily names it.
-     */
-    const from = PANEL_CODE.indexOf('pixel-meter');
-    const meta = PANEL_CODE.slice(from, PANEL_CODE.indexOf('</div>', from));
-    expect(meta).toContain('Match score:');
-    expect(meta).toContain('{band}');
-    /*
-     * Folded into the score line, the leader mark wrapped three ways at 390px — taller than
-     * the separate line it was meant to replace. It is a chip on the name's own row instead.
-     */
-    expect(meta, 'the leader mark is back in the score line').not.toContain('Closest suggestion');
-  });
-
   it('reserves gold for the leader and the commit, violet for Plantdex status', () => {
     /*
      * The entry chip and the "Check traits" button were both gold, so a 23% relative carrying

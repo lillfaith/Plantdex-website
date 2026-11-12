@@ -6,7 +6,7 @@ import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { getCatalogueEntry } from '@/lib/catalogue';
 import type { DiscoveryResult } from '@/lib/types';
-import { confidenceBand, genusOf, type ScanCandidate } from '@/lib/plant-match';
+import { genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { genusLabel, improvementHint, summariseScan } from '@/lib/scan-summary';
 import {
   MIN_OBSERVATION_PHOTOS,
@@ -26,7 +26,7 @@ import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
-import { CollectibleBelowLeader, CombinedSupport } from './CollectibleBelowLeader';
+import { CollectibleBelowLeader } from './CollectibleBelowLeader';
 import { topThreeStatement } from '@/lib/identification-reliability';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
@@ -191,8 +191,6 @@ export function ScanPanel() {
    * hold — and the rest are one tap away. NOTHING IS DISCARDED: `result.candidates` is
    * untouched, the order is untouched, and every row renders the same way when opened.
    */
-  const [showAllCandidates, setShowAllCandidates] = useState(false);
-  const listRef = useRef<HTMLHeadingElement>(null);
 
   /** The organs of the photographs that produced the result currently on screen. */
   const [sentOrgans, setSentOrgans] = useState<readonly ObservationPhoto['organ'][]>([]);
@@ -283,7 +281,6 @@ export function ScanPanel() {
       setConfirmed(null);
       setScanId(null);
       setShelved(false);
-      setShowAllCandidates(false);
       track('scan_started');
 
       /*
@@ -684,9 +681,6 @@ export function ScanPanel() {
                     {result.candidates.slice(0, 3).map((candidate) => (
                       <li key={candidate.scientificName} className="flex justify-between gap-3">
                         <span className="italic">{candidate.scientificName}</span>
-                        <span className="tabular-nums text-violet-400">
-                          {Math.round(candidate.score * 100)}%
-                        </span>
                       </li>
                     ))}
                   </ul>
@@ -806,25 +800,14 @@ export function ScanPanel() {
 
                 <CollectibleBelowLeader candidates={result.candidates} />
 
-                {/*
-                  Several names for one plant read as one weak answer unless somebody adds
-                  them up. This says what the ranking actually points at; it changes no
-                  ranking and no outcome.
-                */}
-                <CombinedSupport candidates={result.candidates} />
-
                 <h4
-                  ref={listRef}
                   className="mt-5 scroll-mt-24 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase"
                 >
                   Best matches
                 </h4>
 
                 <ul className="mt-2 space-y-3">
-                  {(showAllCandidates
-                    ? result.candidates
-                    : result.candidates.slice(0, VISIBLE_CANDIDATES)
-                  ).map((candidate, index) => {
+                  {result.candidates.slice(0, VISIBLE_CANDIDATES).map((candidate, index) => {
                     /*
                      * Which row gets the full "related, but a different species" explanation.
                      * A property of the LIST rather than of a row, so it is resolved against
@@ -849,7 +832,6 @@ export function ScanPanel() {
                     const herb = candidate.match.herbId
                       ? getCatalogueEntry(candidate.match.herbId)
                       : null;
-                    const band = confidenceBand(candidate.score);
                     const already = ready && herb ? isDiscovered(herb.id) : false;
                     /*
                      * RANK IS THE ONLY THING THE EMPHASIS TRACKS. Gold marks the identifier's
@@ -922,46 +904,6 @@ export function ScanPanel() {
                                 Closest suggestion
                               </span>
                             )}
-                          </span>
-                          <span className="flex items-center gap-2 text-xs tabular-nums text-violet-300">
-                            <span
-                              aria-hidden="true"
-                              className="pixel-meter w-14 shrink-0 rounded-[2px]"
-                              style={
-                                {
-                                  '--fill': `${Math.round(candidate.score * 100)}%`,
-                                  '--meter-colour': leads
-                                    ? 'var(--color-gold-500)'
-                                    : 'var(--color-violet-400)',
-                                } as React.CSSProperties
-                              }
-                            />
-                            {/*
-                              "MATCH SCORE", NOT A PROBABILITY.
-
-                              It read "45% · moderate", which invites exactly one reading:
-                              a 45% chance of being right. Neither provider documents the
-                              number that way — `identification-types.ts` says in as many
-                              words that the semantics differ between them — and the five
-                              shown here do not add up to 100. So the label says what it is,
-                              a score used to rank suggestions against each other, and the
-                              qualitative band steps down to a secondary note beside it.
-                            */}
-                            {/*
-                              ONE META LINE, NOT THREE. "Closest suggestion" used to be its
-                              own paragraph under the row, the score its own cluster and the
-                              band a third element — three lines saying three short things.
-                              They are one dot-separated line now, which is the same
-                              information at roughly a third of the height.
-                            */}
-                            <span>
-                              Match score:{' '}
-                              <span className="font-bold text-violet-100">
-                                {Math.round(candidate.score * 100)}%
-                              </span>
-                            </span>
-                            <span aria-hidden="true" className="text-violet-600">&middot;</span>
-                            <span className="text-violet-400">{band}</span>
                           </span>
                         </div>
 
@@ -1113,30 +1055,7 @@ export function ScanPanel() {
                   })}
                 </ul>
 
-                {result.candidates.length > VISIBLE_CANDIDATES && (
-                  <button
-                    type="button"
-                    aria-expanded={showAllCandidates}
-                    onClick={() => {
-                      setShowAllCandidates((open) => !open);
-                      /*
-                       * COLLAPSING FROM BELOW THE FOLD WOULD LEAVE THE READER IN THE FOOTER.
-                       * The list shortens under them, so the page scrolls up by however many
-                       * rows just left — which reads as the app jumping. Bringing the heading
-                       * back puts them at the top of the thing they just collapsed; expanding
-                       * grows downwards from where they are and needs nothing.
-                       */
-                      if (showAllCandidates) {
-                        listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }
-                    }}
-                    className="mt-2 min-h-11 w-full rounded-full border border-violet-700 px-4 text-xs font-bold tracking-[0.08em] text-violet-300 uppercase transition-colors hover:border-violet-500 hover:text-violet-100"
-                  >
-                    {showAllCandidates
-                      ? 'Show fewer'
-                      : `Show ${result.candidates.length - VISIBLE_CANDIDATES} more`}
-                  </button>
-                )}
+                
 
                 {/*
                   WHAT THE NUMBERS ARE, SAID ONCE UNDER THE LIST THEY QUALIFY.
@@ -1155,11 +1074,7 @@ export function ScanPanel() {
                   calibrated probabilities, and this still does not normalise them into a shape they
                   were never in.
                 */}
-                <p className="mt-3 text-xs leading-relaxed text-violet-400">
-                  Match scores are the identifier&rsquo;s own ranking, and this is the top of a
-                  longer list — so they add up to less than 100%, with the rest spread over
-                  suggestions too weak to show. They are not calibrated probabilities.
-                </p>
+                
 
                 {hint && (
                   <div className="mt-4 rounded-xl border border-violet-700 bg-plum-800/40 p-3">

@@ -38,10 +38,6 @@ describe('1. the provider ranking is what the page emphasises', () => {
     expect(PANEL, 'the row border is keyed on card eligibility again').not.toMatch(
       /border-l-4[^`]*\$\{[^}]*candidate\.match\.confirmable/,
     );
-    expect(PANEL, 'the score meter colour is keyed on card eligibility again').not.toMatch(
-      /'--meter-colour':\s*candidate\.match\.confirmable/,
-    );
-    expect(PANEL).toMatch(/'--meter-colour':\s*leads/);
   });
 
   it('marks the leader as the closest suggestion, and marks nothing else', () => {
@@ -73,7 +69,6 @@ describe('2. card availability does not reorder or remove candidates', () => {
      * slice is new surface a reorder could hide in. What is asserted is that it is taken from
      * the FRONT of the untouched array, and that nothing sorts, reverses or filters it.
      */
-    expect(PANEL).toContain('? result.candidates');
     expect(PANEL).toContain('result.candidates.slice(0, VISIBLE_CANDIDATES)');
     expect(PANEL).toContain(').map((candidate, index) => {');
     for (const reorder of [
@@ -228,38 +223,20 @@ describe('7. historical results still render', () => {
   });
 });
 
-describe('the score is presented as a score, not a probability', () => {
-  it('labels it and keeps the band secondary', () => {
-    expect(PANEL).toContain('Match score:');
-    expect(PANEL).toContain('{Math.round(candidate.score * 100)}%');
-    /*
-     * "45% · moderate" read as "a 45% chance of being right". Neither provider publishes a
-     * calibration for the number — `identification-types.ts` says the semantics differ
-     * between them in as many words — so the old juxtaposition is gone and the band is a
-     * quiet note beside a labelled figure.
-     */
-    expect(PANEL, 'the old bare percent-then-band juxtaposition is back').not.toContain(
-      '{Math.round(candidate.score * 100)}% &middot; {band}',
-    );
-    expect(PANEL).toContain('{band}');
+describe('the list shows names only, and only the top three', () => {
+  it('prints no score, band or percentage on a row', () => {
+    const code = PANEL.replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(code).not.toContain('Match score');
+    expect(code).not.toContain('candidate.score');
+    expect(code).not.toContain('confidenceBand');
+    expect(code).not.toContain('pixel-meter');
+    expect(code).not.toContain('CombinedSupport');
   });
 
-  /*
-   * THE SUBSTANCE, NOT THE SENTENCE. This used to pin the exact words "need not add up to
-   * 100%", which was guarding prose that turned out to be pointing the wrong way: measured
-   * across the 45 real provider responses in `plant-match.live.test.ts`, the returned
-   * candidates sum to between 0.23 and 0.98 and NOT ONE exceeds 1. They are shares of one
-   * distribution whose tail the provider does not send, so a reader's real question is why
-   * they add up to 56%, not why they add up to 103%.
-   *
-   * Both claims the line must keep making are asserted; the wording is free to improve.
-   */
-  it('says what the numbers are, once, under the list', () => {
-    const prose = PANEL.replace(/\s+/g, ' ');
-    expect(prose).toMatch(/not calibrated probabilities/);
-    // That the list is a truncated top, which is why the percentages fall short of 100.
-    expect(prose).toMatch(/top of a longer list/);
-    expect(prose).toMatch(/less than 100%/);
+  it('never offers more than three suggestions', () => {
+    const code = PANEL.replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(code).toContain('const VISIBLE_CANDIDATES = 3;');
+    expect(code).not.toContain('showAllCandidates');
   });
 });
 
