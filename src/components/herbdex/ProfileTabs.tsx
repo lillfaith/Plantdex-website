@@ -12,7 +12,12 @@ import {
   type ProfileTabId,
   type SectionMeasure,
 } from '@/lib/profile-sections';
-import { HealingTraitsSection, TasteAromaSection, PartsAndPreparations } from './CardBackDetails';
+import {
+  ForagingSafetyFooter,
+  HealingTraitsSection,
+  PartsAndPreparations,
+  TasteAromaSection,
+} from './CardBackDetails';
 import { HabitatSection, IdentificationSection, LookalikeSection } from './FieldNotesSections';
 import { FieldDataStrip } from './FieldDataStrip';
 import { SignatureCompounds } from '../chemistry/SignatureCompounds';
@@ -319,6 +324,9 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                   </div>
                 </details>
               )}
+            {tab.id === 'herbal-knowledge' && access !== 'locked' && (
+              <ForagingSafetyFooter herb={herb} />
+            )}
             {tab.id === 'your-progress' && access === 'discovered' && <FieldResearchRow />}
             {placeholder && (
               <p className="rounded-xl border border-violet-700 bg-plum-900/40 p-4 text-sm text-violet-200">

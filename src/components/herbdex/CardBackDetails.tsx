@@ -94,13 +94,22 @@ export function PartsAndPreparations({ herb }: { herb: Herb }) {
         <PreparationsSection herb={herb} />
       </div>
       {hasParts && (
-        <div className="mt-2 space-y-2">
+        <div className="mt-2">
           <ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />
-          <ContaminationNote />
         </div>
       )}
     </div>
   );
+}
+
+/**
+ * The foraging warning closes the Herbalism tab: after the sources, as the last thing read
+ * before acting on anything above it. Rendered once per profile, only where usable parts are
+ * shown, exactly as before.
+ */
+export function ForagingSafetyFooter({ herb }: { herb: Herb }) {
+  if (!herb.back.usableParts.length) return null;
+  return <ContaminationNote />;
 }
 
 export function PreparationsSection({ herb }: { herb: Herb }) {
