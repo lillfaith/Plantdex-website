@@ -300,16 +300,16 @@ export default function HomePage() {
           The 48 above and 8+16+24 below also keep the button optically centred between the
           creatures and the sentence, which is where it was put deliberately.
         */}
-        <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mx-auto mt-4 flex max-w-md flex-row items-stretch justify-center gap-2">
           <Link
             href="/scan"
-            className="flex min-h-12 w-full max-w-xs items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-8 text-base font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:w-auto"
+            className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-3 text-center text-sm leading-tight font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:px-6 sm:text-base"
           >
             Identify a plant
           </Link>
           <Link
             href="/herbdex"
-            className="flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-full border border-gold-500/70 bg-plum-800/60 px-8 text-base font-bold text-gold-300 transition-colors hover:bg-plum-700 sm:w-auto"
+            className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-gold-500/70 bg-plum-800/60 px-3 text-center text-sm leading-tight font-bold text-gold-300 transition-colors hover:bg-plum-700 sm:px-6 sm:text-base"
           >
             Explore the collection
           </Link>
