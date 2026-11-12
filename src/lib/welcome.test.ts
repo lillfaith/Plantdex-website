@@ -254,6 +254,45 @@ describe('signing in does not replay the welcome', () => {
   });
 });
 
+describe('the welcome is route-gated in the component too', () => {
+  it('passes the real pathname into the gate', () => {
+    expect(WELCOME).toContain('usePathname');
+    expect(code(WELCOME)).toMatch(/shouldShowWelcome\(\{[^}]*pathname[^}]*\}\)/);
+  });
+});
+
+describe('First Find leads when it is the first find', () => {
+  /*
+   * A first discovery can unlock a habitat or season badge at the same time, and the reducer
+   * returns them in its own order — so `first-find` could sit third in a list of four on the
+   * one occasion it is the headline.
+   */
+  it('sorts first-find to the front of the achievement rows', () => {
+    expect(code(CELEBRATION)).toMatch(/const achievementIds = firstDiscovery/);
+    expect(code(CELEBRATION)).toMatch(/left === 'first-find' \? -1/);
+  });
+
+  it('renders from the ordered copy, not the raw list', () => {
+    expect(code(CELEBRATION)).toMatch(/\{achievementIds\.map\(/);
+    expect(code(CELEBRATION)).not.toMatch(/\{result\.newAchievementIds\.map\(/);
+  });
+
+  // The caller owns `result`, and the reducer's arrays are read elsewhere.
+  it('copies rather than sorting in place', () => {
+    expect(code(CELEBRATION)).toContain('[...result.newAchievementIds].sort(');
+  });
+
+  it('leaves the reducer order alone on every other discovery', () => {
+    expect(code(CELEBRATION)).toMatch(/:\s*result\.newAchievementIds;/);
+  });
+
+  // Both rewards must be legible side by side: the badge among the rows, the frame below.
+  it('shows the frame as its own row so it cannot be lost among badges', () => {
+    expect(code(CELEBRATION)).toMatch(/firstFrame && \(/);
+    expect(CELEBRATION).toContain('Card frame unlocked');
+  });
+});
+
 describe('reduced motion', () => {
   it('names every new animation explicitly rather than trusting the global collapse', () => {
     const reducedBlocks = CSS.match(/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\n\}/g) ?? [];

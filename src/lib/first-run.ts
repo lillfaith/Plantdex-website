@@ -116,6 +116,54 @@ export function useWelcomeSeen(scope: string = ANONYMOUS_SCOPE): boolean {
   );
 }
 
+/**
+ * THE ONLY ROUTES THE WELCOME MAY OPEN ON.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * AN OVERLAY ON EVERY ROUTE IS AN INTERRUPTION, NOT A WELCOME.
+ *
+ * The gate's other two signals say WHETHER somebody is new; this says whether the page they
+ * opened is one where a first-run introduction belongs. Without it, a link to a single plant,
+ * a glossary entry or the safety disclaimer opens behind a modal the reader did not ask for —
+ * and somebody arriving from a search result for `/safety` is exactly the person who should
+ * not have to dismiss a dialog first.
+ *
+ * TWO ROUTES, both of which mean "I am here to collect":
+ *
+ *   `/`         the homepage, where somebody lands to find out what this is.
+ *   `/herbdex`  the collection itself, deliberately opened.
+ *
+ * WHAT IS DELIBERATELY EXCLUDED, and why each one is a decision rather than an oversight:
+ *
+ *   `/herbdex/<id>`  a deep link to one plant. The reader came for that plant.
+ *   `/start`         already a purpose-built introduction with one dominant action. An
+ *                    overlay on top of it is two onboardings competing.
+ *   `/scan`          the player is mid-action with a camera open. Interrupting that is worse
+ *                    than never introducing anything.
+ *   `/safety`, `/privacy`, `/terms`, `/learn/*`  reference and legal reading, often arrived
+ *                    at from outside. A modal in front of a safety disclaimer is the single
+ *                    worst placement available here.
+ *   `/account`       `ImportLocalProgressDialog` is mounted there, and two dialogs must never
+ *                    open together.
+ *
+ * EXACT MATCHES ONLY, which is what keeps `/herbdex` in and `/herbdex/urtica-dioica` out. A
+ * prefix test would quietly re-admit every one of the 54 card pages.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+export const WELCOME_ROUTES: readonly string[] = ['/', '/herbdex'];
+
+/**
+ * Is this a route the welcome may open on?
+ *
+ * A trailing slash is accepted because the export emits directory-style URLs, so the same
+ * page is reachable as `/herbdex` and `/herbdex/` depending on how it was linked.
+ */
+export function isWelcomeRoute(pathname: string | null | undefined): boolean {
+  if (!pathname) return false;
+  const trimmed = pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname;
+  return WELCOME_ROUTES.includes(trimmed);
+}
+
 /** Everything the decision depends on. Taken as data so the rule is testable on its own. */
 export interface FirstRunState {
   /** Has the collection finished hydrating? Before that, every collection looks empty. */
@@ -124,6 +172,8 @@ export interface FirstRunState {
   readonly discoveredCount: number;
   /** Has this scope dismissed the welcome? */
   readonly seen: boolean;
+  /** The route being viewed. Only `WELCOME_ROUTES` may open the overlay. */
+  readonly pathname?: string | null;
 }
 
 /**
@@ -137,7 +187,13 @@ export interface FirstRunState {
 export function shouldShowWelcome(state: FirstRunState): boolean {
   if (!state.ready) return false;
   if (state.seen) return false;
-  return state.discoveredCount === 0;
+  if (state.discoveredCount !== 0) return false;
+  /*
+   * `pathname` is optional so the three player-identity signals can still be tested on their
+   * own, and an omitted route is read as "not a welcome route" — closed rather than open,
+   * because the failure that matters is an overlay appearing where it should not.
+   */
+  return isWelcomeRoute(state.pathname);
 }
 
 /** Test seam, and the reset account deletion's prefix sweep performs in production. */

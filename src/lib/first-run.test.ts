@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   ANONYMOUS_SCOPE,
+  WELCOME_ROUTES,
+  isWelcomeRoute,
   WELCOME_STORAGE_KEY,
   clearWelcomeState,
   markWelcomeSeen,
@@ -47,7 +49,7 @@ afterEach(() => {
   delete (globalThis as { window?: unknown }).window;
 });
 
-const NEW_VISITOR = { ready: true, discoveredCount: 0, seen: false };
+const NEW_VISITOR = { ready: true, discoveredCount: 0, seen: false, pathname: '/' };
 
 describe('who sees the welcome', () => {
   it('shows it to a genuinely new player', () => {
@@ -57,7 +59,7 @@ describe('who sees the welcome', () => {
   // A new account, signed in, with nothing found yet is the same case as a new visitor:
   // the decision reads a count, not an auth state.
   it('shows it to a new authenticated player with an empty collection', () => {
-    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: false })).toBe(true);
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: false, pathname: '/' })).toBe(true);
   });
 
   /*
@@ -66,12 +68,12 @@ describe('who sees the welcome', () => {
    * cleared browser without any flag surviving.
    */
   it('never shows it to a player who has found anything', () => {
-    expect(shouldShowWelcome({ ready: true, discoveredCount: 1, seen: false })).toBe(false);
-    expect(shouldShowWelcome({ ready: true, discoveredCount: 40, seen: false })).toBe(false);
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 1, seen: false, pathname: '/' })).toBe(false);
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 40, seen: false, pathname: '/' })).toBe(false);
   });
 
   it('does not show it again once dismissed, while the collection is still empty', () => {
-    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: true })).toBe(false);
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: true, pathname: '/' })).toBe(false);
   });
 
   /*
@@ -80,17 +82,17 @@ describe('who sees the welcome', () => {
    * same note; this is the easiest way to get the gate wrong.
    */
   it('shows nothing at all before the collection has hydrated', () => {
-    expect(shouldShowWelcome({ ready: false, discoveredCount: 0, seen: false })).toBe(false);
-    expect(shouldShowWelcome({ ready: false, discoveredCount: 40, seen: false })).toBe(false);
-    expect(shouldShowWelcome({ ready: false, discoveredCount: 0, seen: true })).toBe(false);
+    expect(shouldShowWelcome({ ready: false, discoveredCount: 0, seen: false, pathname: '/' })).toBe(false);
+    expect(shouldShowWelcome({ ready: false, discoveredCount: 40, seen: false, pathname: '/' })).toBe(false);
+    expect(shouldShowWelcome({ ready: false, discoveredCount: 0, seen: true, pathname: '/' })).toBe(false);
   });
 
   // A cleared browser loses the flag. Signed out with nothing found, that player genuinely
   // has no progress, so the welcome is correct rather than an interruption.
   it('returns for a cleared browser only when there is also no progress', () => {
-    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: false })).toBe(true);
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: false, pathname: '/' })).toBe(true);
     // Signed in, the server's count suppresses it even with the flag gone.
-    expect(shouldShowWelcome({ ready: true, discoveredCount: 12, seen: false })).toBe(false);
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 12, seen: false, pathname: '/' })).toBe(false);
   });
 
   it('is exhaustive over the eight combinations', () => {
@@ -98,7 +100,7 @@ describe('who sees the welcome', () => {
     for (const ready of [true, false]) {
       for (const discoveredCount of [0, 3]) {
         for (const seen of [true, false]) {
-          if (shouldShowWelcome({ ready, discoveredCount, seen })) {
+          if (shouldShowWelcome({ ready, discoveredCount, seen, pathname: '/' })) {
             shown.push(`${ready}/${discoveredCount}/${seen}`);
           }
         }
@@ -106,6 +108,80 @@ describe('who sees the welcome', () => {
     }
     // Exactly one of the eight shows the overlay.
     expect(shown).toEqual(['true/0/false']);
+  });
+});
+
+/**
+ * WHERE the welcome may open, which is as much of the gate as WHETHER.
+ *
+ * Without this, a link to one plant, a glossary entry or the safety disclaimer opens behind a
+ * modal nobody asked for — and somebody arriving at /safety from a search result is exactly
+ * the person who must not have to dismiss a dialog first.
+ */
+describe('which routes the welcome may open on', () => {
+  it('opens on the homepage and the collection', () => {
+    expect(isWelcomeRoute('/')).toBe(true);
+    expect(isWelcomeRoute('/herbdex')).toBe(true);
+  });
+
+  it('tolerates the export\'s trailing slashes', () => {
+    expect(isWelcomeRoute('/herbdex/')).toBe(true);
+    expect(isWelcomeRoute('/')).toBe(true);
+  });
+
+  // EXACT MATCHES ONLY. A prefix test would quietly re-admit all 54 card pages.
+  it('never opens on a deep link to a single plant', () => {
+    expect(isWelcomeRoute('/herbdex/taraxacum-officinale')).toBe(false);
+    expect(isWelcomeRoute('/herbdex/urtica-dioica/')).toBe(false);
+    expect(isWelcomeRoute('/herbdex/research')).toBe(false);
+  });
+
+  // A modal in front of a safety disclaimer is the worst placement available here.
+  it('never opens on reference, legal or safety reading', () => {
+    for (const route of [
+      '/safety',
+      '/privacy',
+      '/terms',
+      '/terms-of-sale',
+      '/learn',
+      '/learn/glossary',
+      '/learn/preparations',
+      '/shop',
+      '/seasons',
+    ]) {
+      expect(isWelcomeRoute(route), `${route} must not open the welcome`).toBe(false);
+    }
+  });
+
+  // /start is already a purpose-built introduction; /scan has a camera open; /account already
+  // mounts ImportLocalProgressDialog and two dialogs must never open together.
+  it('never opens on /start, /scan or /account', () => {
+    for (const route of ['/start', '/scan', '/account', '/account/reset', '/profile', '/journal', '/garden', '/leaderboard', '/seed-shelf']) {
+      expect(isWelcomeRoute(route), `${route} must not open the welcome`).toBe(false);
+    }
+  });
+
+  it('is closed when the route is unknown or missing', () => {
+    expect(isWelcomeRoute(null)).toBe(false);
+    expect(isWelcomeRoute(undefined)).toBe(false);
+    expect(isWelcomeRoute('')).toBe(false);
+    expect(isWelcomeRoute('/nope')).toBe(false);
+  });
+
+  // Closed rather than open: the failure that matters is an overlay where it should not be.
+  it('shows nothing when no route is supplied at all', () => {
+    expect(shouldShowWelcome({ ready: true, discoveredCount: 0, seen: false })).toBe(false);
+  });
+
+  it('gates a genuinely new player by route', () => {
+    const player = { ready: true, discoveredCount: 0, seen: false };
+    expect(shouldShowWelcome({ ...player, pathname: '/herbdex' })).toBe(true);
+    expect(shouldShowWelcome({ ...player, pathname: '/herbdex/plantago-major' })).toBe(false);
+    expect(shouldShowWelcome({ ...player, pathname: '/safety' })).toBe(false);
+  });
+
+  it('keeps the allow-list small and deliberate', () => {
+    expect([...WELCOME_ROUTES]).toEqual(['/', '/herbdex']);
   });
 });
 

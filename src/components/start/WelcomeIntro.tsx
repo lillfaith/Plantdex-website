@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import {
@@ -62,6 +63,7 @@ export function WelcomeIntro() {
   const { ready, discoveredCount } = useHerbdex();
   const scope = user?.id ?? ANONYMOUS_SCOPE;
   const seen = useWelcomeSeen(scope);
+  const pathname = usePathname();
   const frame = useRef<HTMLDialogElement | null>(null);
   const [pane, setPane] = useState(0);
 
@@ -94,7 +96,7 @@ export function WelcomeIntro() {
     markWelcomeSeen(user.id);
   }, [user?.id]);
 
-  const show = shouldShowWelcome({ ready, discoveredCount, seen });
+  const show = shouldShowWelcome({ ready, discoveredCount, seen, pathname });
 
   /*
    * `showModal` rather than rendering in the flow: it traps focus, puts the overlay in the
@@ -136,7 +138,7 @@ export function WelcomeIntro() {
         <button
           type="button"
           onClick={dismiss}
-          className="absolute top-2 right-3 rounded px-2 py-1 text-xs font-bold tracking-[0.1em] text-violet-300 uppercase transition-colors hover:text-violet-100 focus-visible:text-violet-100"
+          className="tap-44 absolute top-1 right-1 inline-flex items-center justify-center rounded px-3 text-xs font-bold tracking-[0.1em] text-violet-300 uppercase transition-colors hover:text-violet-100 focus-visible:text-violet-100"
         >
           Skip
           <span className="sr-only"> the introduction</span>
@@ -163,7 +165,18 @@ export function WelcomeIntro() {
               Every great herbalist starts with a single discovery.
             </p>
 
+            {/*
+              FOCUS LANDS ON THE PRIMARY ACTION, NOT ON SKIP.
+
+              `showModal` focuses the first focusable element in the dialog, which is the Skip
+              control — so a keyboard or screen-reader user opened the welcome already sitting
+              on "dismiss this", and the focus ring was the loudest thing on the screen. The
+              ring was also being drawn past the sheet's right edge and clipped by the
+              viewport, which is what made it look broken rather than merely wrong.
+            */}
+            { }
             <button
+              autoFocus
               type="button"
               onClick={() => setPane(1)}
               className="arcade-key inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gold-400 px-6 text-sm font-bold tracking-wide text-plum-900 uppercase transition-colors hover:bg-gold-300 mt-6"

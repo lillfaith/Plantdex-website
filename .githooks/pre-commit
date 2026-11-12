@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# REFUSE A COMMIT ON A DEPLOY BRANCH.
+#
+# This exists because of a real mistake: after merging a feature branch into the deploy
+# branch, the working copy was left ON the deploy branch, and the next feature was built and
+# committed there. Nothing reached the remote only because the push named a branch
+# explicitly — had it been a bare `git push`, an unreviewed feature would have deployed
+# straight to plantdex.online.
+#
+# `deploy.yml` triggers on a push to the branch named below, so a commit there is one
+# `git push` away from production. Feature work belongs on a development branch and reaches
+# the deploy branch only by a deliberate merge.
+#
+# To make that deliberate merge, or any other intentional commit on a deploy branch:
+#   PLANTDEX_ALLOW_DEPLOY_COMMIT=1 git commit ...
+#
+# A merge commit created by `git merge` does NOT run this hook at all (git skips pre-commit
+# for merges unless --no-verify is absent and the merge needs a manual commit), so the normal
+# release path is unaffected either way.
+set -euo pipefail
+
+DEPLOY_BRANCHES=("claude/planning-session-61zwro" "main" "master")
+
+branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')"
+
+if [ "${PLANTDEX_ALLOW_DEPLOY_COMMIT:-}" = "1" ]; then
+  exit 0
+fi
+
+for protected in "${DEPLOY_BRANCHES[@]}"; do
+  if [ "$branch" = "$protected" ]; then
+    cat >&2 <<MSG
+
+  REFUSED: you are committing on '$branch', which is a DEPLOY branch.
+
+  A push from here goes live. Move the work to a development branch instead:
+
+      git stash
+      git checkout -b <your-branch>     # or: git checkout <existing-branch>
+      git stash pop
+
+  If this commit really is meant for '$branch' (a release merge, a hotfix):
+
+      PLANTDEX_ALLOW_DEPLOY_COMMIT=1 git commit ...
+
+MSG
+    exit 1
+  fi
+done

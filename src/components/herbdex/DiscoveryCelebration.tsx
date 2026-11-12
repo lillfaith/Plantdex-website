@@ -164,6 +164,23 @@ export function DiscoveryCelebration({
   const firstDiscovery = result.newAchievementIds.includes('first-find');
 
   /*
+   * FIRST FIND LEADS THE ROWS WHEN IT IS THE FIRST FIND.
+   *
+   * A first discovery can legitimately unlock several achievements at once — a habitat badge,
+   * a season badge — and the reducer returns them in its own order, so `first-find` could
+   * appear third in a list of four on the one occasion it is the headline. Moved to the front
+   * for that one discovery only; every other celebration keeps the reducer's order untouched.
+   *
+   * A copy, not a sort in place: `result` belongs to the caller and the reducer's arrays are
+   * read elsewhere.
+   */
+  const achievementIds = firstDiscovery
+    ? [...result.newAchievementIds].sort((left, right) =>
+        left === 'first-find' ? -1 : right === 'first-find' ? 1 : 0,
+      )
+    : result.newAchievementIds;
+
+  /*
    * The frame that first find unlocks. Read from `FIELD_FRAMES` rather than named here,
    * because the cosmetic's own `condition` sentence is what the cabinet prints and a second
    * copy of it in this dialog would be free to promise something else.
@@ -424,9 +441,9 @@ export function DiscoveryCelebration({
         )}
       </div>
 
-      {result.newAchievementIds.length > 0 && (
+      {achievementIds.length > 0 && (
         <ul className="mt-3 space-y-2">
-          {result.newAchievementIds.map((id) => {
+          {achievementIds.map((id) => {
             const achievement = getAchievement(id);
             if (!achievement) return null;
             return (
