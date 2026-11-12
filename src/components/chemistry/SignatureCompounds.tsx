@@ -384,7 +384,7 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
     <section aria-labelledby="compounds-heading" className="pixel-tile overflow-hidden">
       <h2
         id="compounds-heading"
-        className="flex items-center gap-2 bg-gradient-to-r from-violet-700/80 to-violet-800/40 px-3 py-2 text-lg font-extrabold text-gold-300"
+        className="flex items-center gap-2 bg-gradient-to-r from-violet-500/70 to-violet-700/50 shadow-[inset_0_3px_0_0_rgb(214_190_255/0.45)] px-3 py-2 text-lg font-extrabold text-gold-300"
       >
         <PixelIcon uri={illustration('flask')} size={32} />
         {BACK_SECTION_LABEL.compounds}
