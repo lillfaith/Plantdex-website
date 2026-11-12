@@ -27,6 +27,8 @@ import { MySightings } from '../journal/MySightings';
 import { LookalikeCompare, ReferencePhotos } from './ReferencePhotos';
 import { FieldResearchRow, JourneyPanel, LockedJourney } from './JourneyPanels';
 import { HabitatChips } from '../game/HabitatChip';
+import { HerbalHero, PixelIcon } from './HerbalVisuals';
+import { traitBadge, type TraitGlyph } from '@/lib/pixel-icons';
 import { USE_LABEL } from '@/lib/deck';
 
 /**
@@ -79,7 +81,9 @@ const RENDERERS: Record<ProfileSectionId, (herb: Herb) => React.ReactNode> = {
 };
 
 /** Sections that live inside an expandable subsection, per tab, so long content stays short. */
-const EXPANDABLE: Partial<Record<ProfileTabId, { ids: readonly ProfileSectionId[]; label: string }>> = {
+const EXPANDABLE: Partial<
+  Record<ProfileTabId, { ids: readonly ProfileSectionId[]; label: string }>
+> = {
   'herbal-knowledge': {
     ids: ['parts', 'preparations', 'taste'],
     label: 'Parts, preparations and taste',
@@ -92,6 +96,21 @@ const GROUP: Partial<Record<ProfileSectionId, string>> = {
   compounds: 'border-l-4 border-mystery-lilac/70 pl-3',
 };
 
+const USE_GLYPH: Record<string, TraitGlyph> = {
+  digestive: 'digestive',
+  tea: 'leaf',
+  edible: 'edible',
+  wound: 'plus',
+  lungs: 'lungs',
+  topical: 'sparkle',
+  calm: 'moon',
+  heart: 'heart',
+  immune: 'shield',
+  urinary: 'urinary',
+  bone: 'bone',
+  energy: 'energy',
+};
+
 const PLACEHOLDER: Record<ProfileTabId, string> = {
   'field-identification': '',
   'herbal-knowledge':
@@ -101,7 +120,9 @@ const PLACEHOLDER: Record<ProfileTabId, string> = {
 };
 
 /** Anchors that live inside a tab open that tab too: the growth button points at the track. */
-const INNER_ANCHORS: Record<string, ProfileTabId> = { 'card-mastery': 'mastery-challenges' };
+const INNER_ANCHORS: Record<string, ProfileTabId> = {
+  'card-mastery': 'mastery-challenges',
+};
 
 function tabFromHash(hash: string): ProfileTabId | null {
   const id = hash.replace(/^#/, '');
@@ -134,11 +155,19 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
   function onKeyDown(event: React.KeyboardEvent, index: number) {
     const last = PROFILE_TABS.length - 1;
     const next =
-      event.key === 'ArrowRight' ? (index === last ? 0 : index + 1)
-      : event.key === 'ArrowLeft' ? (index === 0 ? last : index - 1)
-      : event.key === 'Home' ? 0
-      : event.key === 'End' ? last
-      : null;
+      event.key === 'ArrowRight'
+        ? index === last
+          ? 0
+          : index + 1
+        : event.key === 'ArrowLeft'
+          ? index === 0
+            ? last
+            : index - 1
+          : event.key === 'Home'
+            ? 0
+            : event.key === 'End'
+              ? last
+              : null;
     if (next === null) return;
     event.preventDefault();
     const tab = PROFILE_TABS[next]!;
@@ -207,17 +236,18 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
               </div>
             )}
             {tab.id === 'herbal-knowledge' && access !== 'locked' && (
-              /* Moved here from the card view: the card's own use categories. */
-              <ul className="flex flex-wrap gap-1.5" aria-label="Card use categories">
-                {herb.uses.map((use) => (
-                  <li
-                    key={use}
-                    className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2.5 py-1 text-xs font-semibold text-gold-300"
-                  >
-                    {USE_LABEL[use]}
-                  </li>
-                ))}
-              </ul>
+              /* The card's own use categories, drawn as the card's circular badges. */
+              <div className="space-y-3">
+                <HerbalHero herb={herb} />
+                <ul className="flex flex-wrap gap-2" aria-label="Card use categories">
+                  {herb.uses.map((use) => (
+                    <li key={use} className="pixel-tile flex items-center gap-2 py-1 pr-3 pl-1.5">
+                      <PixelIcon uri={traitBadge(USE_GLYPH[use] ?? 'leaf')} size={28} />
+                      <span className="text-xs font-bold text-violet-50">{USE_LABEL[use]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
             {tab.id === 'your-progress' && access === 'discovered' && (
               /* Stages, dates, next step and the account-wide XP; no per-plant level is invented. */
@@ -257,27 +287,28 @@ export function ProfileTabs({ herb, access }: { herb: Herb; access: ProfileAcces
                 </div>
               );
             })}
-            {expandable && rows.some((row) => row.sections.some((s) => expandable.ids.includes(s.id))) && (
-              <details className="rounded-xl border border-violet-700 bg-plum-900/40 p-3">
-                <summary className="min-h-11 cursor-pointer text-sm font-bold text-gold-300">
-                  {expandable.label}
-                </summary>
-                <div className="mt-4 space-y-8">
-                  {rows
-                    .filter((row) => row.sections.every((s) => expandable.ids.includes(s.id)))
-                    .map((row) => (
-                      <div
-                        key={rowKey(row)}
-                        className={row.kind === 'split' ? 'grid gap-8 lg:grid-cols-2' : ''}
-                      >
-                        {row.sections.map((section) => (
-                          <div key={section.id}>{RENDERERS[section.id](herb)}</div>
-                        ))}
-                      </div>
-                    ))}
-                </div>
-              </details>
-            )}
+            {expandable &&
+              rows.some((row) => row.sections.some((s) => expandable.ids.includes(s.id))) && (
+                <details className="rounded-xl border border-violet-700 bg-plum-900/40 p-3">
+                  <summary className="min-h-11 cursor-pointer text-sm font-bold text-gold-300">
+                    {expandable.label}
+                  </summary>
+                  <div className="mt-4 space-y-8">
+                    {rows
+                      .filter((row) => row.sections.every((s) => expandable.ids.includes(s.id)))
+                      .map((row) => (
+                        <div
+                          key={rowKey(row)}
+                          className={row.kind === 'split' ? 'grid gap-8 lg:grid-cols-2' : ''}
+                        >
+                          {row.sections.map((section) => (
+                            <div key={section.id}>{RENDERERS[section.id](herb)}</div>
+                          ))}
+                        </div>
+                      ))}
+                  </div>
+                </details>
+              )}
             {tab.id === 'your-progress' && access === 'discovered' && <FieldResearchRow />}
             {placeholder && (
               <p className="rounded-xl border border-violet-700 bg-plum-900/40 p-4 text-sm text-violet-200">

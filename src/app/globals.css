@@ -2599,3 +2599,27 @@ body {
   background: rgb(255 250 232 / 0.6);
   border-color: rgb(120 84 40 / 0.55);
 }
+
+/* Herbalism: a pixel-notched tile (gold edge, deep purple) and the photo frame. */
+@utility pixel-tile {
+  background: linear-gradient(180deg, rgb(60 30 100 / 0.85), rgb(34 16 62 / 0.92));
+  box-shadow:
+    0 -2px 0 0 #b8841f,
+    0 2px 0 0 #b8841f,
+    -2px 0 0 0 #b8841f,
+    2px 0 0 0 #b8841f,
+    inset 0 2px 0 0 rgb(255 255 255 / 0.1);
+  margin: 2px;
+  border-radius: 1px;
+}
+@utility herbal-hero {
+  background: #8a2be2;
+  box-shadow:
+    0 -3px 0 0 #ffd45c,
+    0 3px 0 0 #ffd45c,
+    -3px 0 0 0 #ffd45c,
+    3px 0 0 0 #ffd45c,
+    0 0 0 6px #4b1d8f;
+  margin: 6px;
+  border-radius: 2px;
+}

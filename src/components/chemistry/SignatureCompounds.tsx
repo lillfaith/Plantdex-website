@@ -1,9 +1,10 @@
+import { ChipRow } from '../ui/Chip';
+import { GemChip } from '../herbdex/HerbalVisuals';
 import type { Herb } from '@/lib/types';
 import { compoundFor, sortForPlate, type CompoundEntry } from '@/lib/compounds';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
 import { STRUCTURES } from './structures';
 import { Disclosure } from '../ui/Disclosure';
-import { Chip, ChipRow } from '../ui/Chip';
 import { ACCENTS, MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { linksFor, type CompoundLink } from '@/lib/compound-links';
 
@@ -390,7 +391,7 @@ export function SignatureCompounds({ herb }: { herb: Herb }) {
         <ChipRow>
           {order.map((printed) => (
             <li key={printed}>
-              <Chip tone="plain">{printed}</Chip>
+              <GemChip name={printed} />
             </li>
           ))}
         </ChipRow>

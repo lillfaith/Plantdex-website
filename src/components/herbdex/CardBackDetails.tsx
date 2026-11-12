@@ -1,16 +1,16 @@
+import type { IconName } from '../icons/PlantdexIcon';
 import Link from 'next/link';
 import type { Herb } from '@/lib/types';
 import { BACK_SECTION_LABEL } from '@/lib/deck';
 import { Panel } from '../ui/Panel';
 import { SectionHeader } from '../ui/SectionHeader';
-import { Chip, ChipRow } from '../ui/Chip';
-import { InfoTile } from '../ui/InfoTile';
+import { ArtTile, PixelIcon, TraitList } from './HerbalVisuals';
+import { PREP_ART, artFor, illustration } from '@/lib/pixel-icons';
 import { ProvenanceChip } from '../game/Provenance';
 import { evidenceFor, STANDING_LABEL } from '@/lib/trait-evidence';
 import { isFieldCard } from '@/lib/field-cards';
 import { MICRO_LABEL, NOTE, READING } from '../ui/accents';
 import { GlossaryTermLink } from '../learn/GlossaryTermLink';
-import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 import { ContaminationNote } from '../SafetyNotice';
 
 /**
@@ -50,7 +50,11 @@ const PREPARATION_GUIDE: { match: RegExp; icon: IconName; guide?: string }[] = [
   { match: /^(decoction|cold soak)$/i, icon: 'decoction', guide: 'decoction' },
   { match: /^oil$/i, icon: 'tincture', guide: 'infused-oil' },
   { match: /^(salve|poultice)$/i, icon: 'salve', guide: 'salve' },
-  { match: /^(powder|spice|roasted|roasted roots)$/i, icon: 'drying', guide: 'drying' },
+  {
+    match: /^(powder|spice|roasted|roasted roots)$/i,
+    icon: 'drying',
+    guide: 'drying',
+  },
   // No guide exists for these yet, so they get an icon and no link rather than a link to
   // the nearest thing — a tincture is not an infused oil, and syrup is not dry storage.
   { match: /^(tincture|extract)$/i, icon: 'tincture' },
@@ -59,15 +63,6 @@ const PREPARATION_GUIDE: { match: RegExp; icon: IconName; guide?: string }[] = [
   { match: /^(fresh|fresh greens|salad)$/i, icon: 'leaves' },
 ];
 
-const PART_ICON: { match: RegExp; icon: IconName }[] = [
-  { match: /^(leaf|shoot)$/i, icon: 'leaves' },
-  { match: /^(flower|petal)$/i, icon: 'flower' },
-  { match: /^(berry|fruit|hip|nut|cone)$/i, icon: 'fruit' },
-  { match: /^(seed)$/i, icon: 'seed' },
-  { match: /^(root|bulb|stock)$/i, icon: 'root' },
-  { match: /^(bark|twigs)$/i, icon: 'bark' },
-  { match: /^(stem|stalk|needle|resin|sap)$/i, icon: 'stem' },
-];
 
 export function UsablePartsSection({ herb }: { herb: Herb }) {
   const parts = herb.back.usableParts;
@@ -82,14 +77,10 @@ export function UsablePartsSection({ herb }: { herb: Herb }) {
         right={<ProvenanceChip source={isFieldCard(herb.id) ? 'field-card' : 'card'} />}
         note="The parts the card names as usable."
       />
-      <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+      <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
         {parts.map((part) => (
           <li key={part}>
-            <InfoTile
-              icon={PART_ICON.find((entry) => entry.match.test(part))?.icon}
-              label={part}
-              align="center"
-            />
+            <ArtTile kind="part" word={part} />
           </li>
         ))}
       </ul>
@@ -121,16 +112,12 @@ export function PreparationsSection({ herb }: { herb: Herb }) {
         size="lg"
         note="How the card says it has traditionally been prepared."
       />
-      <ul className="divide-y divide-mystery-violet/20 rounded-card border border-mystery-violet/25 bg-mystery-violet/[0.04]">
+      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {preparations.map((prep) => {
           const entry = PREPARATION_GUIDE.find((candidate) => candidate.match.test(prep));
           return (
-            <li key={prep} className="flex items-center gap-3 px-4 py-2.5">
-              {entry ? (
-                <PlantdexIcon name={entry.icon} className="shrink-0 text-lg text-violet-300" />
-              ) : (
-                <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" />
-              )}
+            <li key={prep} className="pixel-tile flex items-center gap-3 px-3 py-2">
+              <PixelIcon uri={illustration(artFor(PREP_ART, prep))} size={40} />
               <span className={`flex-1 ${READING} font-semibold text-violet-100`}>
                 <Term>{prep}</Term>
               </span>
@@ -164,15 +151,7 @@ export function HealingTraitsSection({ herb }: { herb: Herb }) {
         // which is where a caveat actually gets read.
         note="Traditional and historical use, as printed. Not medical advice, and not a claim that this plant treats anything."
       />
-      <ChipRow>
-        {traits.map((trait) => (
-          <li key={trait}>
-            <Chip tone="violet">
-              <Term>{trait}</Term>
-            </Chip>
-          </li>
-        ))}
-      </ChipRow>
+      <TraitList traits={traits} render={(trait) => <Term>{trait}</Term>} />
       <TraitEvidenceNote herb={herb} />
     </Panel>
   );
@@ -222,31 +201,29 @@ export function TasteAromaSection({ herb }: { herb: Herb }) {
   if (!taste.length && !aromatic.length) return null;
   return (
     <Panel family="field" pad="md" accent="blossom" aria-labelledby="profile-heading">
-      <SectionHeader
-        id="profile-heading"
-        accent="blossom"
-        title="Taste &amp; aroma"
-      />
+      <SectionHeader id="profile-heading" accent="blossom" title="Taste &amp; aroma" />
       <div className="grid gap-4 sm:grid-cols-2">
         {[
           { key: 'taste', items: taste, label: BACK_SECTION_LABEL.taste },
-          { key: 'aromatic', items: aromatic, label: BACK_SECTION_LABEL.aromatic },
+          {
+            key: 'aromatic',
+            items: aromatic,
+            label: BACK_SECTION_LABEL.aromatic,
+          },
         ]
           .filter((column) => column.items.length > 0)
           .map((column) => (
             <div key={column.key}>
-              <h3 className={`mb-2 ${MICRO_LABEL} text-violet-300`}>
-                {column.label}
-              </h3>
-              <ChipRow>
+              <h3 className={`mb-2 ${MICRO_LABEL} text-violet-300`}>{column.label}</h3>
+              <ul className="grid grid-cols-2 gap-2">
                 {column.items.map((item) => (
                   <li key={item}>
-                    <Chip tone="plain">
+                    <ArtTile kind={column.key === 'taste' ? 'taste' : 'aroma'} word={item}>
                       <Term>{item}</Term>
-                    </Chip>
+                    </ArtTile>
                   </li>
                 ))}
-              </ChipRow>
+              </ul>
             </div>
           ))}
       </div>
