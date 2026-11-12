@@ -63,7 +63,19 @@ export function GrowthSprite({
   const sprite = spriteFor(herb.id, stage);
   if (!sprite) return null;
 
-  const scale = hasStageArt(herb.id, stage) || stage === 'boss' ? 1 : STAGE_SCALE[stage];
+  // THE BOSS FRAME IS TALLER THAN THE ADULT'S (a crown over the bloom, on the same ground
+  // line), so it is drawn at the ratio of the two heights: the creature keeps exactly the
+  // pixel scale of its neighbours and the extra height is the crown's headroom, rather than
+  // the whole frame being squeezed into the same tile and the plant shrinking to fit it.
+  const adult = spriteFor(herb.id, 'flowering');
+  const scale =
+    stage === 'boss'
+      ? adult && adult.frameHeight > 0
+        ? sprite.frameHeight / adult.frameHeight
+        : 1
+      : hasStageArt(herb.id, stage)
+        ? 1
+        : STAGE_SCALE[stage];
 
   return (
     // Decorative: GardenView writes the plant's name and its stage directly underneath,

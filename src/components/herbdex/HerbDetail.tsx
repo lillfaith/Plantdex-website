@@ -10,28 +10,10 @@ import { GARDEN_STAGE_BY_MASTERY, type GardenStage } from '@/lib/garden';
 import { XP_FOR_MASTERY } from '@/lib/progression';
 import { usePrevious } from '@/lib/use-previous';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import {
-  rowKey,
-  sectionRows,
-  type ProfileSectionId,
-  type SectionMeasure,
-} from '@/lib/profile-sections';
 import { useRevealed } from '@/lib/reveals';
 import { plantViewedEvent, track } from '@/lib/analytics';
 import { DiscoverPanel } from './DiscoverPanel';
-import {
-  HealingTraitsSection,
-  PreparationsSection,
-  TasteAromaSection,
-  UsablePartsSection,
-} from './CardBackDetails';
-import {
-  HabitatSection,
-  IdentificationSection,
-  LookalikeSection,
-} from './FieldNotesSections';
-import { FieldDataStrip } from './FieldDataStrip';
-import { SignatureCompounds } from '../chemistry/SignatureCompounds';
+import { ProfileTabs } from './ProfileTabs';
 import { LockedHerb } from './LockedHerb';
 import { LockedFieldCard } from './LockedFieldCard';
 import { FIELD_CARDS_NAME, FIELD_CARD_SLOTS, unlockXpFor } from '@/lib/field-cards';
@@ -43,12 +25,9 @@ import {
 import { useAuth } from '@/state/AuthProvider';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { DiscoveryCelebration } from './DiscoveryCelebration';
-import { MasteryTrack } from './MasteryTrack';
-import { SourcesSection } from './SourcesSection';
 import { DeckCta } from '../shop/DeckCta';
 import { LocalProgressNotice } from '../auth/LocalProgressNotice';
 import { ResearchTeaser } from '../research/ResearchTeaser';
-import { MySightings } from '../journal/MySightings';
 import {
   CardIssueNote,
   CardWarning,
@@ -67,44 +46,6 @@ import { SpeciesHero } from '../game/SpeciesHero';
  * `split` is deliberately the same grid cell as `wide` here: Usable Parts and Preparations
  * are two consecutive `split` sections, and CSS grid pairs them at the container level
  * below rather than each wrapping itself.
- */
-const MEASURE_CLASS: Record<SectionMeasure, string> = {
-  wide: '',
-  reading: 'max-w-2xl',
-  narrow: 'max-w-xl',
-  // `split` bands are laid out by their shared grid row, not by their own wrapper.
-  split: '',
-};
-
-/**
- * How each band is drawn. Keyed by `ProfileSectionId`, so TypeScript fails the build if a
- * section is added to the order with nothing to render it — a stronger guarantee than a
- * test, and the reason there is no runtime fallback here.
- */
-const SECTION_RENDERERS: Record<ProfileSectionId, (herb: Herb) => React.ReactNode> = {
-  identification: (herb) => <IdentificationSection herb={herb} />,
-  lookalikes: (herb) => <LookalikeSection herb={herb} />,
-  compounds: (herb) => <SignatureCompounds herb={herb} />,
-  healing: (herb) => <HealingTraitsSection herb={herb} />,
-  parts: (herb) => <UsablePartsSection herb={herb} />,
-  preparations: (herb) => <PreparationsSection herb={herb} />,
-  habitat: (herb) => <HabitatSection herb={herb} />,
-  'field-data': (herb) => <FieldDataStrip herb={herb} />,
-  taste: (herb) => <TasteAromaSection herb={herb} />,
-  sightings: (herb) => <MySightings herb={herb} />,
-  mastery: (herb) => <MasteryTrack herb={herb} />,
-  sources: (herb) => <SourcesSection herb={herb} />,
-};
-
-/**
- * A herb page, gated on discovery.
- *
- * Undiscovered and unrevealed → the locked view, which shows nothing that would spoil
- * the card. Discovered *or* explicitly revealed → the full entry.
- *
- * The gate is client-side because discovery lives in the browser, which means the static
- * HTML never contains the plant's content. The page's <title> and description still name
- * the plant so the deck remains findable in search; the body is what stays hidden.
  */
 export function HerbDetail({ herb }: { herb: Herb }) {
   const { isDiscovered, ready, progress, stageOf } = useHerbdex();
@@ -317,6 +258,11 @@ export function HerbDetail({ herb }: { herb: Herb }) {
     body = (
       <>
         <LockedHerb herb={herb} onDiscovered={onDiscovered} />
+        {/* Identification, lookalikes, habitat, season and the sources are open to everybody:
+            discovery unlocks personal progress and rewards, never basic safety. */}
+        <div className="mt-10">
+          <ProfileTabs herb={herb} access="locked" />
+        </div>
         {/* Nothing about traditional use is on screen yet — but a warning printed on the
             card is, shown by LockedHerb above, which is the part that matters here. */}
         <div className="mt-10">
@@ -355,7 +301,6 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
       <SpeciesHero
         herb={herb}
-        progress={progress}
         stage={stage}
         portraitStage={portraitStage}
         discovered={discovered}
@@ -412,20 +357,9 @@ export function HerbDetail({ herb }: { herb: Herb }) {
 
         Neither <dialog> is in this list. Both sit below, at fixed positions.
       */}
-      <div className="mt-12 space-y-12">
-        {sectionRows(discovered).map((row) =>
-          row.kind === 'split' ? (
-            <div key={rowKey(row)} className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-              {row.sections.map((section) => (
-                <div key={section.id}>{SECTION_RENDERERS[section.id](herb)}</div>
-              ))}
-            </div>
-          ) : (
-            <div key={rowKey(row)} className={MEASURE_CLASS[row.sections[0].measure]}>
-              {SECTION_RENDERERS[row.sections[0].id](herb)}
-            </div>
-          ),
-        )}
+      {/* The expanded profile: four tabs, Field Identification first. See ProfileTabs. */}
+      <div className="mt-10">
+        <ProfileTabs herb={herb} access={discovered ? 'discovered' : 'readable'} />
       </div>
 
         {/*

@@ -182,13 +182,13 @@ export function GardenView() {
                         flowering ? 'font-bold text-gold-300' : 'text-violet-300'
                       }`}
                     >
-                      {MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[stage]]}
+                      {/* A Boss Form is the primary status when earned: one label, never "Mastered" and
+                        "Boss Form" side by side. */}
+                      {bossForms.has(herbId)
+                        ? 'Boss Form'
+                        : MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[stage]]}
                     </span>
-                    {bossForms.has(herbId) && (
-                      <span className="text-center text-[0.72rem] font-bold tracking-wide text-gold-300 uppercase">
-                        Boss Form
-                      </span>
-                    )}
+
                     {action && (
                       <span className="text-center text-[0.72rem] text-violet-400">{action}</span>
                     )}

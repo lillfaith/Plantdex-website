@@ -1,18 +1,14 @@
 'use client';
 
 import type {Herb } from '@/lib/types';
-import type { Progress } from '@/lib/progression';
 import type { MasteryStage } from '@/lib/mastery';
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import { cardLabel } from '@/lib/collection';
-import { USE_LABEL } from '@/lib/deck';
 import { CardFlip } from '../herbdex/CardFlip';
 import { RarityAura } from './RarityAura';
 import { PlantSprite } from '../PlantSprite';
 import { GrowSpriteCta } from '../herbdex/GrowSpriteCta';
-import { HabitatChips } from './HabitatChip';
 import { RarityMeter } from './RarityMeter';
-import { XpBar } from './XpBar';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import type { GardenStage } from '@/lib/garden';
 
@@ -32,13 +28,11 @@ import type { GardenStage } from '@/lib/garden';
 
 export function SpeciesHero({
   herb,
-  progress,
   stage,
   portraitStage,
   discovered,
 }: {
   herb: Herb;
-  progress: Progress;
   stage: MasteryStage | null;
   portraitStage: GardenStage;
   discovered: boolean;
@@ -74,12 +68,6 @@ export function SpeciesHero({
           {herb.scientificName}
         </p>
 
-        {/*
-          Habitat sits with the identity, not with the game state: it answers "what kind of
-          ground is this plant" alongside the name, and the detailed cited sentence still
-          lives in "Where it grows" further down the page.
-        */}
-        <HabitatChips herbId={herb.id} className="mt-3" />
 
         <div className="mt-4 flex items-center gap-2">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
@@ -136,24 +124,39 @@ export function SpeciesHero({
           </div>
         </div>
 
-        {/* The card's own use categories. Gold, because these are the deck's headline
-            classification and one of the few gold things left on the page. */}
-        <ul className="mt-3 flex flex-wrap gap-1.5">
-          {herb.uses.map((use) => (
-            <li
-              key={use}
-              className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2.5 py-1 text-xs font-semibold text-gold-300"
-            >
-              {USE_LABEL[use]}
-            </li>
-          ))}
-        </ul>
+        {/*
+          THE LIGHTWEIGHT CARD VIEW. Collectible card, creature, rarity, status and the next
+          action, then three highlights under their own heading and one way into the full
+          profile. Habitat, the XP bar and the use categories moved into the tabs.
 
-        {/* Account-wide level and XP. Real figures from `progressFromState`; there is no
-            per-plant level in this data model and none is invented here. */}
-        <div className="mt-4 rounded-xl border border-violet-700/60 bg-plum-900/50 px-3 py-2.5">
-          <XpBar progress={progress} />
+          The heading and caption keep the distinction between traditional use and
+          scientifically supported efficacy: these are what the card prints as traditional uses.
+        */}
+        <div className="mt-4">
+          <h2 className="text-[0.72rem] font-bold tracking-[0.12em] text-violet-300 uppercase">
+            Traditional Uses
+          </h2>
+          <ul className="mt-1.5 flex flex-wrap gap-1.5">
+            {herb.back.healingTraits.slice(0, 3).map((trait) => (
+              <li
+                key={trait}
+                className="rounded-full border border-gold-500/40 bg-gold-500/10 px-2.5 py-1 text-xs font-semibold text-gold-300"
+              >
+                {trait}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1.5 text-[0.72rem] text-violet-400">
+            Traditional use, not proven treatment.
+          </p>
         </div>
+
+        <a
+          href="#field-identification"
+          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-violet-500 px-4 text-sm font-bold text-violet-100 hover:bg-plum-600"
+        >
+          Open full profile <span aria-hidden="true">&darr;</span>
+        </a>
       </div>
     </div>
   );

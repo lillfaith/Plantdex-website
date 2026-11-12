@@ -44,8 +44,22 @@ describe('the Boss Form flag', () => {
     expect(bossFormsMode(undefined)).toBe('off');
     expect(bossFormsMode('')).toBe('off');
     expect(bossFormsMode('yes')).toBe('off');
-    expect(bossFormsMode('preview')).toBe('preview');
-    expect(bossFormsMode('on')).toBe('on');
+    expect(bossFormsMode('preview', 'development')).toBe('preview');
+    expect(bossFormsMode('on', 'production')).toBe('on');
+  });
+  it('preview can never show an unearned Boss Form in a production build', () => {
+    expect(bossFormsMode('preview', 'production')).toBe('off');
+    expect(bossFormsMode('preview', 'test')).toBe('off');
+    expect(bossFormsMode('preview', undefined)).toBe('off');
+  });
+  it('no workflow sets the flag', () => {
+    for (const file of ['.github/workflows/deploy.yml']) {
+      expect(readFileSync(file, 'utf8')).not.toContain('NEXT_PUBLIC_BOSS_FORMS');
+    }
+  });
+  it('the Garden shows one status, never Mastered and Boss Form together', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    expect(view).toMatch(/bossForms\.has\(herbId\)\s*\?\s*'Boss Form'\s*:\s*MASTERY_STAGE_LABEL/);
   });
   it('the browser module has no write path', () => {
     const code = strip(readFileSync('src/lib/boss-forms.ts', 'utf8'));

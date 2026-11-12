@@ -9,8 +9,9 @@ import { isBossPilot } from './boss-form';
  *
  * OFF BY DEFAULT, AND OFF IN PRODUCTION. `NEXT_PUBLIC_BOSS_FORMS` is read at build time:
  *   unset      nothing is shown and nothing is requested. The deployed site behaves as today.
- *   'preview'  development only: the pilot species shows its Boss Form once MASTERED, with no
- *              server involved and no claim that anything was earned. For looking at the art.
+ *   'preview'  `next dev` ONLY (NODE_ENV === 'development'); a production build treats it as
+ *              'off'. The pilot species shows its Boss Form once MASTERED, with no server and
+ *              no claim that anything was earned. For looking at the art.
  *   'on'       reads the signed-in player's own `boss_forms` rows (select-only RLS). A missing
  *              table or any error yields the empty set, never a thrown render.
  *
@@ -19,8 +20,14 @@ import { isBossPilot } from './boss-form';
  */
 export type BossFormsMode = 'off' | 'preview' | 'on';
 
-export function bossFormsMode(raw: string | undefined = process.env.NEXT_PUBLIC_BOSS_FORMS): BossFormsMode {
-  return raw === 'preview' || raw === 'on' ? raw : 'off';
+export function bossFormsMode(
+  raw: string | undefined = process.env.NEXT_PUBLIC_BOSS_FORMS,
+  nodeEnv: string | undefined = process.env.NODE_ENV,
+): BossFormsMode {
+  // PREVIEW IS DEVELOPMENT-ONLY. A production build sets NODE_ENV to 'production', so even if
+  // the variable leaked into a deploy workflow an unearned Boss Form could never be shown.
+  if (raw === 'preview') return nodeEnv === 'development' ? 'preview' : 'off';
+  return raw === 'on' ? 'on' : 'off';
 }
 
 const NONE: ReadonlySet<string> = new Set();

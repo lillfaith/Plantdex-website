@@ -564,7 +564,7 @@ def _crown(tip, spark=False):
             grid,
             cx + near * math.cos(a), cy + near * math.sin(a),
             cx + far * math.cos(a), cy + far * math.sin(a),
-            "H",
+            "D",
         )
         tx, ty = round(cx + (far + 1) * math.cos(a)), round(cy + (far + 1) * math.sin(a))
         if 0 <= ty < height and 0 <= tx < width:
@@ -576,14 +576,15 @@ CROWN = _crown("W")
 CROWN_TWINKLE = _crown("W", spark=True)
 
 SEED = [
-    " WFW ",
-    "WFWFW",
-    " WFW ",
-    "  M  ",
-    "  M  ",
-    "  o  ",
+    "  ooo  ",
+    " oWFWo ",
+    "oWFWFWo",
+    " oWFWo ",
+    "  oMo  ",
+    "  oMo  ",
+    "   o   ",
 ]
-SEED_HIDDEN = ["     "] * len(SEED)
+SEED_HIDDEN = ["       "] * len(SEED)
 
 
 def _extend(track, n):
@@ -619,7 +620,7 @@ def _boss_recipe(sprite):
 
     def tip(degrees):
         a = math.radians(degrees)
-        return (round(cx + 15.5 * math.cos(a)) - 2, round(cy + 15.5 * math.sin(a)) - 5)
+        return (round(cx + 15.5 * math.cos(a)) - 3, round(cy + 15.5 * math.sin(a)) - 6)
 
     return {
         "size": BOSS_SIZE,

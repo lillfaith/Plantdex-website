@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import {
   DIALOG_OWNING_SECTION,
   PROFILE_SECTIONS,
+  PROFILE_TABS,
+  lockedSectionsFor,
   PROFILE_SECTION_IDS,
   rowKey,
   sectionRows,
@@ -13,139 +15,122 @@ import {
 const order = PROFILE_SECTIONS.map((section) => section.id);
 const at = (id: ProfileSectionId) => order.indexOf(id);
 
-describe('profile section order', () => {
-  it('is the canonical order', () => {
-    // A snapshot in code rather than a file, so a reorder shows up as a reviewable diff
-    // with the reason for each move sitting next to it in PROFILE_SECTIONS.
-    expect(order).toEqual([
-      'healing',
-      'compounds',
-      'field-data',
-      'identification',
-      'lookalikes',
-      'parts',
-      'preparations',
-      'habitat',
-      'taste',
-      'sightings',
-      'mastery',
-      'sources',
+describe('profile structure (four tabs, Field Identification first)', () => {
+  it('has the four approved tabs in order, and Field Identification is first', () => {
+    expect(PROFILE_TABS.map((tab) => tab.id)).toEqual([
+      'field-identification',
+      'herbal-knowledge',
+      'mastery-challenges',
+      'your-progress',
+    ]);
+    expect(PROFILE_TABS.map((tab) => tab.label)).toEqual([
+      'Field Identification',
+      'Herbal Knowledge',
+      'Mastery Challenges',
+      'Your Progress',
     ]);
   });
 
-  it('lists every declared id exactly once', () => {
+  it('is the canonical order: tab by tab, identification first', () => {
+    expect(order).toEqual([
+      'identification',
+      'lookalikes',
+      'habitat',
+      'field-data',
+      'healing',
+      'compounds',
+      'parts',
+      'preparations',
+      'taste',
+      'sources',
+      'mastery',
+      'sightings',
+    ]);
+  });
+
+  it('lists every declared id exactly once, each with a rationale and a real tab', () => {
     expect([...order].sort()).toEqual([...PROFILE_SECTION_IDS].sort());
     expect(new Set(order).size).toBe(order.length);
-  });
-
-  it('gives every section a rationale', () => {
+    const tabs = PROFILE_TABS.map((tab) => tab.id) as string[];
     for (const section of PROFILE_SECTIONS) {
       expect(section.rationale.length, section.id).toBeGreaterThan(20);
+      expect(tabs, section.id).toContain(section.tab);
     }
   });
 
-  it('keeps identification before everything it discriminates', () => {
-    expect(at('identification')).toBeLessThan(at('lookalikes'));
-  });
-
-  it('keeps lookalikes above everything about using the plant', () => {
-    /*
-     * THE INVARIANT THAT REPLACED "lookalikes is second".
-     *
-     * Compounds and Healing Traits moved above Lookalikes, which is safe for one specific
-     * reason: the acute hazards are not in this section. A card-printed `herb.warning` and
-     * any site caution render ABOVE the whole section stack in HerbDetail, before any of
-     * this order applies. What Lookalikes carries is confusion avoidance.
-     *
-     * Confusion avoidance has to come before PREPARATION, though — reading how a plant is
-     * traditionally made into a tea before reading what it can be mistaken for is the real
-     * failure mode, and it is the one this pins. Chemistry above it costs nothing; a
-     * preparation above it would.
-     */
-    for (const useSection of ['parts', 'preparations', 'taste'] as const) {
-      expect(
-        at('lookalikes'),
-        `lookalikes must stay above ${useSection} — never read how to use a plant before what it is confused with`,
-      ).toBeLessThan(at(useSection));
-    }
-  });
-
-  it('opens with the sandwich the owner asked for', () => {
-    /*
-     * Traditional use, chemistry, the card's own data, then how to recognise it. This
-     * REPLACED an assertion that read identification=0, compounds=1, healing=2, and the
-     * change of mind is the point of writing it down: the earlier arrangement led with
-     * chemistry deliberately, and a later reader finding both rationales in
-     * PROFILE_SECTIONS should be able to tell which one is live.
-     */
-    expect(at('healing')).toBe(0);
-    expect(at('compounds')).toBe(1);
-    expect(at('field-data')).toBe(2);
-    expect(at('identification')).toBe(3);
-  });
-
-  it('keeps Signature Compounds in the top half and above preparation', () => {
-    /*
-     * What survived the reorder. Compounds no longer sits above Healing Traits — that was
-     * the old stance and it was reversed on purpose — but it must still land in the top
-     * half and above everything about preparing or tasting the plant, so the chemistry is
-     * read before any instruction that depends on it.
-     */
-    expect(at('compounds')).toBeLessThan(at('preparations'));
-    expect(at('compounds')).toBeLessThan(at('taste'));
-    expect(at('compounds')).toBeLessThan(order.length / 2);
-  });
-
-  it('still never puts a use before its hazard framing', () => {
-    /*
-     * Healing Traits leading the page does not weaken this, because the property never came
-     * from the order: `HerbDetail` renders a card-printed warning and the SafetyNotice ABOVE
-     * the whole section stack, and this asserts that the component still does so rather than
-     * trusting the arrangement below it.
-     */
-    const detail = readFileSync('src/components/herbdex/HerbDetail.tsx', 'utf8');
-    /*
-     * The RENDERED elements, not the identifiers. Written as `indexOf('SafetyNotice')` this
-     * matched the import on line 43 and so asserted only that imports precede usage — true
-     * of every file ever written. And a marker that is absent returns -1, which is less than
-     * any index, so each one is required to exist before it is compared.
-     */
-    const at = (marker: string) => {
-      const index = detail.indexOf(marker);
-      expect(index, `${marker} is not in HerbDetail at all`).toBeGreaterThan(-1);
-      return index;
-    };
-    const stack = at('sectionRows(discovered).map');
-    expect(at('<CardWarning'), 'the card warning must render before the bands').toBeLessThan(stack);
-    expect(at('<SafetyNotice'), 'the safety notice must render before the bands').toBeLessThan(
-      stack,
+  it('keeps sections grouped by tab, in tab order', () => {
+    const tabOrder = PROFILE_SECTIONS.map((section) => section.tab);
+    const sorted = [...tabOrder].sort(
+      (x, y) => PROFILE_TABS.findIndex((t) => t.id === x) - PROFILE_TABS.findIndex((t) => t.id === y),
     );
+    expect(tabOrder).toEqual(sorted);
   });
 
-  it('puts player progression after the botany', () => {
-    expect(at('mastery')).toBeGreaterThan(at('healing'));
-    expect(at('mastery')).toBeGreaterThan(at('habitat'));
+  it('keeps identification before the lookalikes it discriminates, and both before any use', () => {
+    expect(at('identification')).toBeLessThan(at('lookalikes'));
+    for (const useSection of ['parts', 'preparations', 'taste'] as const) {
+      expect(at('lookalikes'), useSection).toBeLessThan(at(useSection));
+    }
+  });
+});
+
+describe('what is open before discovery', () => {
+  const ids = (access: 'locked' | 'readable' | 'discovered') =>
+    sectionsFor(access).map((section) => section.id);
+
+  it('shows identification, lookalikes, habitat, season and sources to everybody', () => {
+    for (const id of ['identification', 'lookalikes', 'habitat', 'field-data', 'sources'] as const) {
+      expect(ids('locked'), id).toContain(id);
+    }
   });
 
-  it('ends on provenance', () => {
-    expect(order[order.length - 1]).toBe('sources');
+  it('keeps the card back content and progression locked until discovery', () => {
+    for (const id of ['healing', 'compounds', 'parts', 'preparations', 'taste', 'mastery', 'sightings'] as const) {
+      expect(ids('locked'), id).not.toContain(id);
+    }
   });
 
-  it('gates only the sections that describe the player', () => {
-    // Everything about the PLANT shows on a revealed-but-undiscovered card; only the
-    // player's own record and progression are withheld.
-    const gated = PROFILE_SECTIONS.filter((section) => section.requires === 'discovered');
-    expect(gated.map((section) => section.id).sort()).toEqual(['mastery', 'sightings']);
+  it('opens the card back content on a reveal or XP unlock, but not progression', () => {
+    expect(ids('readable')).toContain('healing');
+    expect(ids('readable')).not.toContain('mastery');
+    expect(ids('readable')).not.toContain('sightings');
   });
 
-  it('drops gated sections when undiscovered and restores them when discovered', () => {
-    const undiscovered = sectionsFor(false).map((section) => section.id);
-    const discovered = sectionsFor(true).map((section) => section.id);
-    expect(undiscovered).not.toContain('mastery');
-    expect(undiscovered).not.toContain('sightings');
-    expect(discovered).toEqual(order);
-    // Relative order of the surviving sections is unchanged by the filter.
-    expect(undiscovered).toEqual(discovered.filter((id) => !['mastery', 'sightings'].includes(id)));
+  it('shows everything once discovered, in the canonical order', () => {
+    expect(ids('discovered')).toEqual(order);
+    const locked = ids('locked');
+    expect(locked).toEqual(ids('discovered').filter((id) => locked.includes(id)));
+  });
+
+  it('never gates an identification, lookalike or habitat section behind collection progress', () => {
+    for (const section of PROFILE_SECTIONS) {
+      if (section.tab === 'field-identification') expect(section.requires, section.id).toBe('always');
+    }
+  });
+
+  it('lists what a viewer is still waiting for', () => {
+    expect(lockedSectionsFor('locked').map((s) => s.id)).toContain('healing');
+    expect(lockedSectionsFor('discovered')).toEqual([]);
+  });
+});
+
+describe('HerbDetail renders the profile as tabs, after the warnings', () => {
+  const detail = readFileSync('src/components/herbdex/HerbDetail.tsx', 'utf8');
+  const marker = (text: string) => {
+    const index = detail.indexOf(text);
+    expect(index, `${text} is not in HerbDetail`).toBeGreaterThan(-1);
+    return index;
+  };
+  it('puts the card warning before the tabs', () => {
+    // The readable branch's tabs are the LAST occurrence; the locked branch has its own.
+    expect(marker('<CardWarning')).toBeLessThan(detail.lastIndexOf('<ProfileTabs'));
+  });
+  it('shows the tabs to an undiscovered viewer too', () => {
+    expect(detail).toContain('<ProfileTabs herb={herb} access="locked" />');
+  });
+  it('keeps both dialogs outside the tabs', () => {
+    expect(detail).toContain('{celebrationDialog}');
+    expect(detail).toContain('{masteryDialog}');
   });
 });
 
@@ -175,9 +160,10 @@ describe('dialog lifecycle constraints', () => {
      * be torn down mid-animation. This asserts it is not reachable from the section map.
      */
     const source = readFileSync('src/components/herbdex/HerbDetail.tsx', 'utf8');
-    const rendererBlock = source.slice(
-      source.indexOf('const SECTION_RENDERERS'),
-      source.indexOf('};', source.indexOf('const SECTION_RENDERERS')),
+    const tabs = readFileSync('src/components/herbdex/ProfileTabs.tsx', 'utf8');
+    const rendererBlock = tabs.slice(
+      tabs.indexOf('const RENDERERS'),
+      tabs.indexOf('};', tabs.indexOf('const RENDERERS')),
     );
     expect(rendererBlock).not.toContain('DiscoveryCelebration');
     expect(rendererBlock).not.toContain('dialog');
@@ -208,19 +194,31 @@ describe('dialog lifecycle constraints', () => {
 
 describe('section rows', () => {
   it('pairs consecutive split sections into one row', () => {
-    const rows = sectionRows(true);
+    const rows = sectionRows('discovered');
     const pair = rows.find((row) => row.kind === 'split')!;
     expect(pair.sections.map((section) => section.id)).toEqual(['parts', 'preparations']);
   });
 
   it('keeps every section, in order, across the rows', () => {
-    const flattened = sectionRows(true).flatMap((row) => row.sections.map((s) => s.id));
+    const flattened = sectionRows('discovered').flatMap((row) => row.sections.map((s) => s.id));
     expect(flattened).toEqual(order);
   });
 
   it('gives each row a stable, unique key', () => {
-    const keys = sectionRows(true).map(rowKey);
+    const keys = sectionRows('discovered').map(rowKey);
     expect(new Set(keys).size).toBe(keys.length);
     expect(keys).toContain('parts+preparations');
+  });
+});
+
+describe('tabs keep every panel mounted', () => {
+  const tabs = readFileSync('src/components/herbdex/ProfileTabs.tsx', 'utf8');
+  it('hides inactive panels instead of unmounting them, so the knowledge-check dialog survives', () => {
+    expect(tabs).toContain('hidden={tab.id !== active}');
+    expect(tabs).not.toMatch(/active === tab\.id\s*&&/);
+  });
+  it('selects Field Identification by default and opens a tab from the hash', () => {
+    expect(tabs).toContain("useState<ProfileTabId>('field-identification')");
+    expect(tabs).toContain("addEventListener('hashchange'");
   });
 });

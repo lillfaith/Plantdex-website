@@ -32,21 +32,35 @@
 
 /** Ids are stable: they key React nodes and are what the ordering test asserts against. */
 export const PROFILE_SECTION_IDS = [
-  'healing',
-  'compounds',
-  'field-data',
   'identification',
   'lookalikes',
+  'habitat',
+  'field-data',
+  'healing',
+  'compounds',
   'parts',
   'preparations',
-  'habitat',
   'taste',
-  'sightings',
-  'mastery',
   'sources',
+  'mastery',
+  'sightings',
 ] as const;
 
 export type ProfileSectionId = (typeof PROFILE_SECTION_IDS)[number];
+
+/**
+ * THE FOUR TABS OF THE EXPANDED PROFILE, in the order they appear, owner-approved. Field
+ * Identification is first and is the selected tab by default; it supersedes the earlier
+ * "traditional use first" sandwich. `hash` is the native anchor that opens the tab, so the
+ * Learn library and the card view can deep-link to it with no extra route.
+ */
+export const PROFILE_TABS = [
+  { id: 'field-identification', label: 'Field Identification' },
+  { id: 'herbal-knowledge', label: 'Herbal Knowledge' },
+  { id: 'mastery-challenges', label: 'Mastery Challenges' },
+  { id: 'your-progress', label: 'Your Progress' },
+] as const;
+export type ProfileTabId = (typeof PROFILE_TABS)[number]['id'];
 
 /**
  * How wide a band is set.
@@ -57,11 +71,21 @@ export type ProfileSectionId = (typeof PROFILE_SECTION_IDS)[number];
  */
 export type SectionMeasure = 'wide' | 'reading' | 'narrow' | 'split';
 
-/** What has to be true before a band appears at all. */
-export type SectionRequirement = 'always' | 'discovered';
+/**
+ * What a viewer needs before a band appears.
+ *   always      anybody, found or not: identification, lookalikes, habitat, season, sources.
+ *   readable    the card's own content (traditional uses, compounds, preparations ...), which
+ *               opens on discovery, a reveal or an XP unlock. Safety is never in this tier.
+ *   discovered  the player's own record and progression.
+ */
+export type SectionRequirement = 'always' | 'readable' | 'discovered';
+
+/** How much of the profile this viewer has unlocked. */
+export type ProfileAccess = 'locked' | 'readable' | 'discovered';
 
 export interface ProfileSection {
   id: ProfileSectionId;
+  tab: ProfileTabId;
   measure: SectionMeasure;
   requires: SectionRequirement;
   /** Why it sits where it sits. Read this before moving one. */
@@ -69,132 +93,124 @@ export interface ProfileSection {
 }
 
 /**
- * The order, top to bottom.
- *
- * THE FIRST FOUR ARE A DELIBERATE SANDWICH, set by the owner: what the plant has
- * traditionally been for, what is in it, what the card prints about it, then how to
- * recognise it. Everything else keeps the relative order it had.
- *
- * That puts Healing Traits above Signature Compounds, reversing an earlier decision to lead
- * with chemistry, and puts Identification fourth rather than first. Recorded plainly because
- * the reasoning for the old arrangement is still in the entries below and a later reader
- * should not have to guess which one is current.
- *
- * IT STILL NEVER PUTS A USE BEFORE A HAZARD. That property does not come from this list at
- * all: a card-printed warning and the site's safety notice render ABOVE the entire section
- * stack in `HerbDetail`, before the first band whatever the first band is. Healing Traits
- * also carries its own non-claim framing under its own heading. And Lookalikes still sits
- * above everything about USING the plant — Usable Parts, Preparations, Taste — which is the
- * ordering constraint that carries weight, and it is pinned by a test.
- *
- * A band renders nothing when it has no content — `HerbDetail`'s section components each
- * return null on empty data — so this order never manufactures an empty heading to satisfy
- * itself.
+ * The order, top to bottom within the whole profile, which is also tab order then position
+ * within the tab. Safety-critical identification information is `always` and sits in the
+ * first tab: discovery unlocks personal progress and rewards, never basic safety.
  */
 export const PROFILE_SECTIONS: readonly ProfileSection[] = [
   {
-    id: 'healing',
-    measure: 'reading',
-    requires: 'always',
-    rationale:
-      'First, by the owner\'s decision. It carries the non-claim framing that belongs under this heading and nowhere else, and it needs that framing more than ever leading the page — this is the deck\'s wording for traditional use, never a statement that a plant treats anything. Nothing acute is displaced by it: the card warning and the safety notice both render above the whole stack.',
-  },
-  {
-    id: 'compounds',
-    measure: 'wide',
-    requires: 'always',
-    rationale:
-      'Second, directly under the traditional uses it is sometimes credited with — which is the most useful place for it to be, since a reader who has just read what a plant was used for is owed the chemistry immediately rather than three sections later. The most credibility-carrying section on the page: 43 of 45 cards show real skeletal formulas.',
-  },
-  {
-    id: 'field-data',
-    measure: 'wide',
-    requires: 'always',
-    rationale:
-      'Third. It used to sit directly under Habitat so the card-printed figures and the habitat prose read as one answer to "where and when"; that pairing is broken by this order, and Habitat now follows further down on its own. The trade was made deliberately: the card\'s own printed data — season, encounter rate, growing conditions — is what a player is holding in their hand, so it belongs in the opening group.',
-  },
-  {
     id: 'identification',
+    tab: 'field-identification',
     measure: 'wide',
     requires: 'always',
-    rationale:
-      'Fourth, closing the opening group. It led the page until the owner asked for the traditional-use / chemistry / card-data sandwich above it. Still above Lookalikes, so the plant is described before the things it is confused with, and still above every section about using it.',
+    rationale: 'First and most prominent: how to recognise the plant, visible to everybody.',
   },
   {
     id: 'lookalikes',
+    tab: 'field-identification',
     measure: 'wide',
     requires: 'always',
+    rationale: 'Straight after identification: confusion avoidance is safety information.',
+  },
+  {
+    id: 'habitat',
+    tab: 'field-identification',
+    measure: 'wide',
+    requires: 'always',
+    rationale: 'Where to look, which is part of recognising a plant in the field.',
+  },
+  {
+    id: 'field-data',
+    tab: 'field-identification',
+    measure: 'wide',
+    requires: 'always',
+    rationale: 'The card-printed season, sun, temperature and encounter figures, as seasonality.',
+  },
+  {
+    id: 'healing',
+    tab: 'herbal-knowledge',
+    measure: 'reading',
+    requires: 'readable',
     rationale:
-      'Below Compounds and Healing Traits, but still above every section about USING the plant — Usable Parts, Preparations and Taste all sit under it, and that is the ordering that matters. It is safe to move down two places because the acute hazards do not live here: a card-printed warning and any site caution render ABOVE the whole section stack in HerbDetail, before this or anything else. What this section carries is confusion avoidance, which belongs before preparation rather than before chemistry.',
+      'Traditional use, with the non-claim framing that belongs under this heading and nowhere else.',
+  },
+  {
+    id: 'compounds',
+    tab: 'herbal-knowledge',
+    measure: 'wide',
+    requires: 'readable',
+    rationale: 'The chemistry the traditional uses are sometimes credited to, directly beneath them.',
   },
   {
     id: 'parts',
+    tab: 'herbal-knowledge',
     measure: 'split',
-    requires: 'always',
+    requires: 'readable',
     rationale: 'Working with the plant: what you can use, paired with how it has been prepared.',
   },
   {
     id: 'preparations',
+    tab: 'herbal-knowledge',
     measure: 'split',
-    requires: 'always',
+    requires: 'readable',
     rationale: 'The other half of the pair; sits beside Usable Parts on a wide screen.',
   },
   {
-    id: 'habitat',
-    measure: 'wide',
-    requires: 'always',
-    rationale: 'Where to look, once you know what you are looking for and why you want it.',
-  },
-  {
     id: 'taste',
+    tab: 'herbal-knowledge',
     measure: 'reading',
-    requires: 'always',
+    requires: 'readable',
     rationale: 'Sensory detail, which is confirmation in the hand rather than a reason to go out.',
   },
   {
-    id: 'sightings',
-    measure: 'wide',
-    requires: 'discovered',
-    rationale:
-      'Your own record of the plant. Only meaningful once it has been found, so it is gated on discovery.',
+    id: 'sources',
+    tab: 'herbal-knowledge',
+    measure: 'reading',
+    requires: 'always',
+    rationale: 'Provenance for the profile, which is where a reader goes to check.',
   },
   {
     id: 'mastery',
+    tab: 'mastery-challenges',
     measure: 'wide',
     requires: 'discovered',
     rationale:
-      'MOVED DOWN from third. Progression is about the player, not the plant, so it follows the botany rather than interrupting it. OWNS THE KNOWLEDGE-CHECK DIALOG — see the header comment; it may move, but it may never be wrapped in a new conditional.',
+      'OWNS THE KNOWLEDGE-CHECK DIALOG. Progression is about the player, so it follows the botany. Its panel stays mounted when another tab is selected, so the dialog never remounts.',
   },
   {
-    id: 'sources',
-    measure: 'reading',
-    requires: 'always',
-    rationale: 'Provenance for everything above it, which is where a reader goes to check.',
+    id: 'sightings',
+    tab: 'your-progress',
+    measure: 'wide',
+    requires: 'discovered',
+    rationale: 'Your own record of the plant. Only meaningful once it has been found.',
   },
 ];
 
-/** Sections to render, in order, for a given discovery state. */
-export function sectionsFor(discovered: boolean): readonly ProfileSection[] {
-  return PROFILE_SECTIONS.filter(
-    (section) => section.requires === 'always' || discovered,
-  );
+const RANK: Record<ProfileAccess, number> = { locked: 0, readable: 1, discovered: 2 };
+const NEEDS: Record<SectionRequirement, ProfileAccess> = {
+  always: 'locked',
+  readable: 'readable',
+  discovered: 'discovered',
+};
+
+/** The sections this viewer may see, in order. */
+export function sectionsFor(access: ProfileAccess): readonly ProfileSection[] {
+  return PROFILE_SECTIONS.filter((section) => RANK[access] >= RANK[NEEDS[section.requires]]);
 }
 
-/**
- * One row of the page: either a band on its own, or a run of `split` bands sharing a
- * two-column grid.
- *
- * Pairing is derived from ADJACENCY rather than declared, so a pair cannot be separated
- * by reordering one half of it and silently leave a half-width orphan — move `parts` away
- * from `preparations` and each simply becomes its own full row.
- */
+/** Every section a viewer is still waiting to unlock, for the tab's placeholder. */
+export function lockedSectionsFor(access: ProfileAccess): readonly ProfileSection[] {
+  return PROFILE_SECTIONS.filter((section) => RANK[access] < RANK[NEEDS[section.requires]]);
+}
+
 export type SectionRow =
   | { kind: 'single'; sections: readonly [ProfileSection] }
   | { kind: 'split'; sections: readonly ProfileSection[] };
 
-export function sectionRows(discovered: boolean): SectionRow[] {
+export function sectionRows(access: ProfileAccess, tab?: ProfileTabId): SectionRow[] {
   const rows: SectionRow[] = [];
-  for (const section of sectionsFor(discovered)) {
+  for (const section of sectionsFor(access)) {
+    if (tab && section.tab !== tab) continue;
     const last = rows[rows.length - 1];
     if (section.measure === 'split' && last?.kind === 'split') {
       rows[rows.length - 1] = { kind: 'split', sections: [...last.sections, section] };
@@ -207,15 +223,8 @@ export function sectionRows(discovered: boolean): SectionRow[] {
   return rows;
 }
 
-/** A stable key for a row, so React reconciles rows by identity too. */
 export function rowKey(row: SectionRow): string {
   return row.sections.map((section) => section.id).join('+');
 }
 
-/**
- * The one band that owns a `<dialog>` and therefore must never be conditionally wrapped.
- *
- * Named here rather than left as folklore so the ordering test can assert it is present
- * exactly once, and so anyone reordering the list meets the constraint in code.
- */
 export const DIALOG_OWNING_SECTION: ProfileSectionId = 'mastery';
