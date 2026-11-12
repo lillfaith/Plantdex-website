@@ -36,10 +36,10 @@ export function XpMilestones({ progress }: { progress: Progress }) {
           style={{ left: `${milestone.fraction * 100}%` }}
         >
           <span
-            className={`block h-1.5 w-1.5 rotate-45 rounded-[1px] ring-1 ${
+            className={`block h-3.5 w-3.5 rotate-45 rounded-[2px] ring-2 ${
               milestone.earned
-                ? 'bg-gold-300 ring-plum-950'
-                : 'bg-plum-900 ring-violet-300'
+                ? 'bg-violet-100 ring-violet-50'
+                : 'bg-violet-400/70 ring-violet-200'
             }`}
           />
         </span>
