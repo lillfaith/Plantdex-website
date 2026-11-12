@@ -26,7 +26,6 @@ import { ScanGoal } from './ScanGoal';
 import { pixelForest } from '@/lib/pixel-art';
 import { useScanAllowance } from '@/lib/scan-allowance';
 import { warmIdentifier } from '@/lib/scan-warmup';
-import { ACCEPTED_LABEL } from '@/lib/photo-input';
 import { track } from '@/lib/analytics';
 import { DiscoveryCelebration } from '../herbdex/DiscoveryCelebration';
 import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
@@ -466,10 +465,6 @@ export function ScanPanel() {
             : canIdentify
               ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.`
               : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'} to identify.`}
-        </p>
-        <p className="mt-1 text-center text-xs text-violet-400">
-          {ACCEPTED_LABEL}. Your photo is resized and its location data removed before it leaves
-          your device.
         </p>
         <span
           aria-hidden="true"

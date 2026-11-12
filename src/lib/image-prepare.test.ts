@@ -139,10 +139,11 @@ describe('what is promised about location data', () => {
     expect(SCANS.indexOf('UnprocessableImageError')).toBeLessThan(SCANS.indexOf('new FormData()'));
   });
 
-  it('keeps the scan screen able to promise it', () => {
-    // Only true because of the guard above. If the refusal is ever removed, this sentence
-    // becomes a lie again, so the two are pinned together deliberately.
-    expect(SCAN_PANEL).toContain('location data removed before it');
+  it('states the promise on /privacy now that the scan screen no longer repeats it', () => {
+    // The line under the Identify button was removed by request. The behaviour it described
+    // is unchanged and still guarded above, so the one place that says it must keep saying it.
+    expect(SCAN_PANEL).not.toContain('location data removed before it');
+    expect(readFileSync('src/app/privacy/page.tsx', 'utf8')).toMatch(/location/i);
   });
 
   it('does not make the flat promise on the path that keeps originals', () => {
