@@ -40,7 +40,7 @@ describe('the discovery reveal can be skipped', () => {
 
   it('stops the timers instead of replaying the sequence over its own conclusion', () => {
     expect(CELEBRATION).toMatch(/if \(skipped\) return;/);
-    expect(CELEBRATION).toMatch(/\}, \[leveledUp, skipped\]\);/);
+    expect(CELEBRATION).toMatch(/\}, \[leveledUp, skipped, hasIntro\]\);/);
   });
 
   // Setting `revealed` alone starts the 900ms spin rather than skipping it, so the card
@@ -87,5 +87,15 @@ describe('haptics in the reveal', () => {
   it('goes through the platform-aware module, never navigator.vibrate', () => {
     expect(CELEBRATION).toContain("from '@/lib/haptics'");
     expect(code(CELEBRATION)).not.toMatch(/navigator\s*\.\s*vibrate/);
+  });
+});
+
+describe('the sprite reveal comes before the card turn', () => {
+  it('shows the greyed sprite, lights it, then returns the card; skip and reduced motion bypass it', () => {
+    const src = CELEBRATION.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '');
+    expect(src).toContain("type Intro = 'card' | 'grey' | 'lit' | 'done'");
+    expect(src).toMatch(/hasSprite\(herb\.id\) && !prefersReducedMotion\(\)/);
+    expect(src).toMatch(/setIntro\('done'\);\s*setRevealed\(true\)/);
+    expect(src).toContain('[filter:brightness(0)_saturate(0)]');
   });
 });

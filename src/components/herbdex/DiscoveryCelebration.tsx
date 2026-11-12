@@ -9,6 +9,8 @@ import { progressFromXp } from '@/lib/progression';
 import { tracksMastery } from '@/lib/mastery';
 import { assetPath } from '@/lib/asset-path';
 import { MysteryCard } from './MysteryCard';
+import { PlantSprite } from '../PlantSprite';
+import { hasSprite } from '@/lib/plant-sprites';
 import { achievementIcon } from '../icons/achievement-icons';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { CountUp } from './CountUp';
@@ -69,13 +71,31 @@ export interface CelebrationNext {
  */
 const FACE_DOWN_HOLD_MS = 520;
 
-function revealDelay(): number {
-  const reduced =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/**
+ * THE SPRITE REVEAL, BEFORE THE CARD TURNS.
+ *
+ * The card in the grid is a grey silhouette; here the mystery is paid off. The face-down card
+ * steps aside for a beat, the greyed sprite is left alone on the dark, then it lights up into
+ * its real colours and plays its own animation. Only then does the card return and take its
+ * ordinary spin. All of it is timers and a one-shot filter transition, so Skip and reduced
+ * motion jump straight past it to the card, exactly as the old sequence began.
+ */
+type Intro = 'card' | 'grey' | 'lit' | 'done';
+const INTRO_GREY_AT = 250;
+const INTRO_LIT_AT = 450;
+const INTRO_DONE_AT = 1450;
+const AFTER_INTRO_FLIP_MS = 150;
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function revealDelay(hasIntro: boolean): number {
   // The original next-frame delay, which is only there so the browser paints the back
-  // before the transition starts.
-  return reduced ? 60 : FACE_DOWN_HOLD_MS;
+  // before the transition starts. With the sprite reveal first, the card returns face down at
+  // INTRO_DONE_AT and turns a moment later.
+  if (hasIntro) return INTRO_DONE_AT + AFTER_INTRO_FLIP_MS;
+  return prefersReducedMotion() ? 60 : FACE_DOWN_HOLD_MS;
 }
 
 export function DiscoveryCelebration({
@@ -107,6 +127,9 @@ export function DiscoveryCelebration({
   next?: CelebrationNext;
 }) {
   const [revealed, setRevealed] = useState(false);
+  // The sprite reveal plays only when there is a sprite to show and motion is welcome.
+  const hasIntro = hasSprite(herb.id) && !prefersReducedMotion();
+  const [intro, setIntro] = useState<Intro>(hasIntro ? 'card' : 'done');
 
   /**
    * SKIP: LAND THE WHOLE SEQUENCE NOW.
@@ -238,23 +261,30 @@ export function DiscoveryCelebration({
        Deliberately NOT fired on skip: somebody who asked to cut the sequence short has not
        asked to be buzzed twice in the same instant as it collapses.
     */
+    const flipAt = revealDelay(hasIntro);
+    if (hasIntro) {
+      timers.push(setTimeout(() => setIntro('grey'), INTRO_GREY_AT));
+      timers.push(setTimeout(() => setIntro('lit'), INTRO_LIT_AT));
+      timers.push(setTimeout(() => setIntro('done'), INTRO_DONE_AT));
+    }
     timers.push(
       setTimeout(() => {
         setRevealed(true);
         haptic('tap');
-      }, revealDelay()),
+      }, flipAt),
     );
-    timers.push(setTimeout(() => setBarPhase('filling'), 700));
+    // The XP beats keep their old spacing from the turn.
+    timers.push(setTimeout(() => setBarPhase('filling'), flipAt + 180));
     if (leveledUp) {
       timers.push(
         setTimeout(() => {
           setBarPhase('newLevel');
           haptic('success');
-        }, 1500),
+        }, flipAt + 980),
       );
     }
     return () => timers.forEach(clearTimeout);
-  }, [leveledUp, skipped]);
+  }, [leveledUp, skipped, hasIntro]);
 
   /*
    * The final beat, named once. `barPhase` settles on 'newLevel' only when the level
@@ -266,6 +296,7 @@ export function DiscoveryCelebration({
 
   function skipToEnd() {
     setSkipped(true);
+    setIntro('done');
     setRevealed(true);
     setBarPhase(finalBarPhase);
   }
@@ -339,7 +370,30 @@ export function DiscoveryCelebration({
         The faces are absolutely positioned, so an invisible sizer establishes the box —
         the same structure as `CardFlip`, for the same reason.
       */}
-      <div className="flip-scene mx-auto mt-4 w-44">
+      <div className="flip-scene relative mx-auto mt-4 w-44">
+        {/* The sprite alone on the dark: grey at first, then lit into its colours and playing
+            its own animation. Decorative; the plant is named in the heading above. */}
+        {hasIntro && (intro === 'grey' || intro === 'lit') && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-10 flex items-center justify-center"
+          >
+            <span
+              className={`absolute inset-4 rounded-full bg-gold-400/25 blur-2xl transition-opacity duration-1000 ${
+                intro === 'lit' ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            <span
+              className={`relative block w-full transition-[filter,opacity] duration-1000 ease-out ${
+                intro === 'lit'
+                  ? 'opacity-100 [filter:none]'
+                  : 'opacity-60 [filter:brightness(0)_saturate(0)]'
+              }`}
+            >
+              <PlantSprite herbId={herb.id} alt="" fit />
+            </span>
+          </div>
+        )}
         {/*
           A FULL REVOLUTION HERE, A HALF TURN EVERYWHERE ELSE. `flip-card-spin` takes the card
           round once before it lands face up (540deg), which is the flourish this one moment
@@ -352,7 +406,9 @@ export function DiscoveryCelebration({
         <div
           className={`flip-card flip-card-spin ${skipped ? 'flip-card-instant' : ''} ${
             revealed ? 'flip-card-revealed' : ''
-          }`}
+          } ${
+            intro === 'grey' || intro === 'lit' ? 'opacity-0' : 'opacity-100'
+          } transition-opacity duration-200 motion-reduce:transition-none`}
         >
           <div className="aspect-[356/576] w-full" />
 

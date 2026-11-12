@@ -264,7 +264,7 @@ describe('the reveal holds the card face down first', () => {
      */
     expect(CELEBRATION_SRC).toContain('const FACE_DOWN_HOLD_MS = 520');
     expect(CELEBRATION_SRC).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
-    expect(CELEBRATION_SRC).toMatch(/reduced \? 60 : FACE_DOWN_HOLD_MS/);
+    expect(CELEBRATION_SRC).toMatch(/prefersReducedMotion\(\) \? 60 : FACE_DOWN_HOLD_MS/);
   });
 
   it('gives the hold something to watch, without moving the composition', () => {
