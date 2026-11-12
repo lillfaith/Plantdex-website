@@ -2050,8 +2050,15 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* NOT `justify-content: center`: when a slide is taller than the room, centring overflows it
+     equally above and below, and the part above the top edge can never be scrolled to, so the
+     scroll bar travels over empty space. Auto margins centre a short slide and let a tall one
+     start at the top and scroll down to its end. */
+  justify-content: flex-start;
   overflow-y: auto;
+  & > * {
+    margin-block: auto;
+  }
 }
 
 /*
