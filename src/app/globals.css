@@ -2058,6 +2058,9 @@ body {
   inset: auto 0 0 0;
   /* The artwork is 120x40 pixels; this keeps its proportions at any width. */
   aspect-ratio: 120 / 40;
+  /* Sunk by 15% of its own height, so it is shorter on screen but never squashed; the
+     sheet clips what drops below the bottom edge. */
+  transform: translateY(15%);
   pointer-events: none;
   /* A pixel-art meadow in the same style as the sprites: rolling hills, tufts, lavender
      and daisies. One tiny inline SVG (see --welcome-grass), so it costs no image file. */
