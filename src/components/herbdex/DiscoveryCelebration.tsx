@@ -98,6 +98,18 @@ function revealDelay(hasIntro: boolean): number {
   return prefersReducedMotion() ? 60 : FACE_DOWN_HOLD_MS;
 }
 
+/** One half of the shooting star's orbit: `back` sits behind the sprite, `front` in front. */
+function StarOrbit({ side }: { side: 'back' | 'front' }) {
+  return (
+    <span className={`star-orbit star-orbit-${side}`}>
+      <span className="star-orbit-ring" />
+      <span className="star-orbit-head">
+        <span className="star-orbit-dot" />
+      </span>
+    </span>
+  );
+}
+
 export function DiscoveryCelebration({
   herb,
   result,
@@ -378,14 +390,7 @@ export function DiscoveryCelebration({
             aria-hidden="true"
             className="absolute inset-0 z-10 flex items-center justify-center"
           >
-            {intro === 'lit' && (
-              <>
-                <span className="shooting-star" />
-                <span className="shooting-star-head">
-                  <span className="shooting-star-head-dot" />
-                </span>
-              </>
-            )}
+            {intro === 'lit' && <StarOrbit side="back" />}
             <span
               className={`absolute inset-4 rounded-full bg-gold-400/25 blur-2xl transition-opacity duration-1000 ${
                 intro === 'lit' ? 'opacity-100' : 'opacity-0'
@@ -400,6 +405,7 @@ export function DiscoveryCelebration({
             >
               <PlantSprite herbId={herb.id} alt="" fit />
             </span>
+            {intro === 'lit' && <StarOrbit side="front" />}
           </div>
         )}
         {/*
