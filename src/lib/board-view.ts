@@ -148,3 +148,46 @@ export function ordinal(n: number): string {
   if (tens >= 11 && tens <= 13) return `${n}th`;
   return `${n}${({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
 }
+
+export interface OwnScore {
+  points: number;
+  discoveries: number;
+  journalEntries: number;
+  challenges: number;
+}
+
+export interface OwnDisplay {
+  score: OwnScore;
+  /** `board`: the server's row for you. `device`: counted from the records on this device. */
+  source: 'board' | 'device';
+  /** Points the device counts beyond the board (negative if the board counts more); null if equal or unknown. */
+  difference: number | null;
+}
+
+/**
+ * ONE NUMBER, ONE SOURCE. "Your points" and your row on the board are the same metric (the same
+ * 50 / 15 / 100 rule, in `leaderboard.ts` and in the SQL), so once you are listed the board's own
+ * row is what is shown, and the two can never read differently side by side. Before you are
+ * listed there is no board row, so the figure is counted from the records on this device, and
+ * says so. If the device and the board disagree, the difference is reported, never hidden:
+ * the board counts only records synced to the account.
+ */
+export function ownDisplay(
+  local: OwnScore & { ready: boolean },
+  mine: Standing | undefined,
+): OwnDisplay {
+  if (mine) {
+    const diff = local.ready ? local.points - mine.points : 0;
+    return {
+      score: {
+        points: mine.points,
+        discoveries: mine.discoveries,
+        journalEntries: mine.journalEntries,
+        challenges: mine.challenges,
+      },
+      source: 'board',
+      difference: diff === 0 ? null : diff,
+    };
+  }
+  return { score: local, source: 'device', difference: null };
+}

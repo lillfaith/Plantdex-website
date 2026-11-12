@@ -10,11 +10,30 @@ already have no update policy and a one-row-per-key primary key.
 
 | Source table | Rule today | Anti-farming already structural |
 | --- | --- | --- |
-| `discoveries` | 10 pts per species | one row per (user, species) |
-| `sightings` | 5 pts for the first qualifying journal entry per species, daily cap | counts species, not entries |
+| `discoveries` | 50 pts per species | one row per (user, species) |
+| `sightings` | 15 pts for the first qualifying journal entry per species, capped at 4 paid a day (UTC) | counts species, not entries |
 | `research_completions` | 100 pts per completed challenge | one row per (user, task) |
 
 Published per player: display name, region, counts, points. No level, XP, avatar, frame or title.
+
+## Audit: are "Your points" and the board's points the same metric?
+
+Yes by construction, with three ways they can look different, now handled on the page.
+
+- **One rule, written twice.** `leaderboard.ts` (`scoreFromRecords`) and the SQL in migration 0011
+  both pay 50 per species, 15 per first qualifying journal entry per species (4 a day, on the UTC day)
+  and 100 per completed `collection:` or `seasonal:` challenge; daily tasks pay 0. The constants are
+  compared with the SQL by `leaderboard-schema.test.ts`, and the new live test
+  (`e2e/leaderboard.e2e.test.ts`) runs the client function over the same records and requires the
+  server's number to equal it.
+- **Different inputs.** "Your points" was counted on the device; the board counts rows synced to the
+  account. A signed-out play session, an unsynced device or a deleted sighting can make them differ.
+- **Different labels.** The page said "Your score", the strip said "pts" and the list showed bare
+  numbers. Now: one label, "Your points", and "pts" everywhere.
+- **What changed.** Once you are listed, the points line shows the board's own row, so the two cannot
+  disagree on screen. If this device counts a different total, the page says by how much and why
+  (the board counts only records synced to your account). Before you are listed it says the figure is
+  counted on this device.
 
 ## Which other categories the existing data could support
 
@@ -98,3 +117,50 @@ Verified from the repository's workflow history, without applying anything:
 3. Decide whether the showcase proposal above is wanted; if so, it needs its own migration number.
 4. Only 1 launched region exists (`us-ga`), so the regional board will look empty until a second
    launches.
+
+
+## Showcasing earned avatars and frames with separate consent (proposal only)
+
+**Nothing here is built. No public profile field is added, and the existing opt-in is unchanged.**
+
+### What exists
+
+- `profiles` (migration 0003) holds `avatar_herb_id`, `avatar_frame_id`, `title_id`,
+  `sidekick_herb_id`, `featured_herb_id`, `pinned_achievement_ids`. It is owner-only: select, insert,
+  update and delete are all scoped to `auth.uid()`, and the live suite checks another account cannot
+  read it. Choices are validated on read in the client (`resolveProfile`), never on write.
+- Frames are pure predicates of the player's records (`field-frames.ts`), so the server stores a
+  frame id but cannot say whether it was earned.
+
+### Can the server verify an earned frame?
+
+| Frame | Condition | Derivable in SQL from existing tables? |
+| --- | --- | --- |
+| Field Notes | always | yes (default) |
+| Amber Ring | 1 discovery | yes (`discoveries`) |
+| Laurel | 10 discoveries | yes |
+| Bloom | 10 cards mastered | yes (`mastered`) |
+| Starlight | every deck plant discovered | yes, with the deck size as a constant (drift risk, as `leaderboard.ts` already carries) |
+| Compass Rose | a plant from every habitat | not without copying the habitat map into SQL |
+
+An avatar plant is verifiable too: it must be in the player's own `discoveries`.
+
+### A consent model that would be safe
+
+1. **A separate opt-in.** Joining the board consents to name, region and counts. Showing a collection is a different disclosure, so it gets its own switch and its own row, for example a new table
+   `leaderboard_showcase (user_id primary key references auth.users on delete cascade, avatar_herb_id text, frame_id text)`
+   with select, insert and delete policies scoped to the owner and **no update policy**, like every table except `profiles`. Turning it off deletes the row.
+2. **The server publishes only what it can verify.** `leaderboard_standings()` would left-join the showcase row for players who are also listed, and return the avatar only if that plant is in the player's `discoveries`, and the frame only if its SQL predicate holds. Anything else returns null (default frame, no avatar). Compass Rose would be excluded until its map exists in SQL.
+3. **Nothing else is added.** No titles, no featured card, no pinned achievements, no ids, dates or notes. The pinned-signature test is updated deliberately in the same change.
+4. **What the consent screen must say.** An avatar plant tells other players one species you have found, and a frame tells them a milestone. That is the whole disclosure, and it is stated before the switch.
+5. **Housekeeping.** The new table goes in `USER_TABLES`, the export, and the privacy page, with `legal.test.ts` and `account-security.test.ts` updated; a two-account live test (the pattern in `e2e/leaderboard.e2e.test.ts`) is written first.
+6. **Frontend.** Already prepared: rows render an avatar and frame only when the server returns them, only for a plant with sprite art, and fall back to the default frame for an unknown id.
+
+### Risks to weigh
+
+- A showcase invites comparison of cosmetics as well as points. Keeping it opt-in and off by default avoids pressuring players who prefer not to show anything.
+- Verified-but-self-reported: an avatar proves a discovery row exists, and discoveries are self-declared (see CLAUDE.md, "Progression is self-declared"). The board already states its scores are provisional; the showcase would carry the same note.
+
+### Decision needed from you
+
+Whether to pursue it at all, and if so whether to ship without Compass Rose. It needs its own migration number and its own approval.

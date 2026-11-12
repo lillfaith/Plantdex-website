@@ -13,6 +13,7 @@ import {
   gapToNext,
   isFull,
   ordinal,
+  ownDisplay,
   placeNote,
   podiumOf,
   remainingAfter,
@@ -86,6 +87,8 @@ export function BoardScreen(props: BoardScreenProps) {
   const { access, own, membership, standings, error, scope, regions } = props;
   const [shown, setShown] = useState(BOARD_PAGE_SIZE);
   const listed = Boolean(membership);
+  const shownOwn = ownDisplay(own, selfOf(standings ?? []));
+  const ownReady = own.ready || shownOwn.source === 'board';
 
   return (
     <main id="main" className="mx-auto max-w-xl px-4 py-6">
@@ -107,34 +110,42 @@ export function BoardScreen(props: BoardScreenProps) {
         does not verify that anybody went outside, so they are self-reported.
       </p>
 
-      {/* ── Your score, on one line ──────────────────────────────── */}
-      <section
-        aria-labelledby="own-heading"
-        className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1"
-      >
-        <h2 id="own-heading" className="text-sm font-bold text-violet-50">
-          Your score{' '}
-          <span className="font-display text-xl font-extrabold text-gold-plate tabular-nums">
-            {own.ready ? own.points.toLocaleString() : '\u2014'}
-          </span>
-        </h2>
-        <dl className="flex items-center gap-3 text-xs text-violet-200">
-          <MiniStat
-            icon={<PixelIcon uri={illustration('leaf')} size={20} />}
-            label="species"
-            value={own.ready ? own.discoveries : null}
-          />
-          <MiniStat
-            icon={<PixelIcon uri={pixelObject('book')} size={20} />}
-            label="entries"
-            value={own.ready ? own.journalEntries : null}
-          />
-          <MiniStat
-            icon={<PixelIcon uri={traitBadge('star')} size={20} />}
-            label="challenges"
-            value={own.ready ? own.challenges : null}
-          />
-        </dl>
+      {/* ── Your points, on one line ─────────────────────────────── */}
+      <section aria-labelledby="own-heading" className="mt-3">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <h2 id="own-heading" className="text-sm font-bold text-violet-50">
+            Your points{' '}
+            <span className="font-display text-xl font-extrabold text-gold-plate tabular-nums">
+              {own.ready || shownOwn.source === 'board'
+                ? shownOwn.score.points.toLocaleString()
+                : '\u2014'}
+            </span>
+          </h2>
+          <dl className="flex items-center gap-3 text-xs text-violet-200">
+            <MiniStat
+              icon={<PixelIcon uri={illustration('leaf')} size={20} />}
+              label="species"
+              value={ownReady ? shownOwn.score.discoveries : null}
+            />
+            <MiniStat
+              icon={<PixelIcon uri={pixelObject('book')} size={20} />}
+              label="entries"
+              value={ownReady ? shownOwn.score.journalEntries : null}
+            />
+            <MiniStat
+              icon={<PixelIcon uri={traitBadge('star')} size={20} />}
+              label="challenges"
+              value={ownReady ? shownOwn.score.challenges : null}
+            />
+          </dl>
+        </div>
+        <p className="mt-1 text-xs leading-snug text-violet-300">
+          {shownOwn.source === 'board'
+            ? shownOwn.difference === null
+              ? 'Counted by the board from your synced records.'
+              : `The board counts ${Math.abs(shownOwn.difference).toLocaleString()} ${shownOwn.difference > 0 ? 'fewer' : 'more'} points than this device. It counts only records synced to your account.`
+            : 'Counted on this device. Join the board to be ranked by the same rule.'}
+        </p>
       </section>
 
       {/* ── How rankings work ──────────────────────────────────────── */}
@@ -582,6 +593,7 @@ function Standings({
               </span>
               <span className="shrink-0 text-base font-extrabold text-gold-300 tabular-nums">
                 {row.points.toLocaleString()}
+                <span className="ml-0.5 text-xs font-bold text-violet-300">pts</span>
               </span>
             </li>
           ))}

@@ -11,6 +11,7 @@ import {
   friendlyBoardError,
   gapToNext,
   isFull,
+  ownDisplay,
   placeNote,
   podiumOf,
   remainingAfter,
@@ -280,5 +281,59 @@ describe('rank display, avatars and compact copy', () => {
     expect(text.length).toBeLessThan(900);
     expect(text).toContain('These scores are provisional');
     expect(text).toMatch(/Nothing else/);
+  });
+});
+
+describe('one points figure, from one source', () => {
+  const local = { ready: true, points: 150, discoveries: 3, journalEntries: 0, challenges: 0 };
+  it('uses the board row once you are listed, so the two can never read differently', () => {
+    const mine = mock(4, 150, { isSelf: true, discoveries: 3 });
+    expect(ownDisplay(local, mine)).toMatchObject({ source: 'board', difference: null });
+    expect(ownDisplay(local, mine).score.points).toBe(mine.points);
+  });
+  it('reports a device-versus-board difference instead of hiding it', () => {
+    const behind = mock(4, 100, { isSelf: true });
+    expect(ownDisplay(local, behind).difference).toBe(50);
+    const ahead = mock(4, 200, { isSelf: true });
+    expect(ownDisplay(local, ahead).difference).toBe(-50);
+  });
+  it('counts on the device before you are listed, and says so', () => {
+    expect(ownDisplay(local, undefined)).toMatchObject({ source: 'device', difference: null });
+    const out = html({ standings: null, membership: null });
+    expect(out).toContain('Counted on this device');
+    expect(out).toContain('Your points');
+  });
+  it('prints the same figure in the rank strip and the points line', () => {
+    const all = rows(10);
+    all[5] = { ...all[5]!, isSelf: true, points: 321 };
+    const out = html({ standings: all, own: { ...base.own, points: 999 } });
+    expect(out).toContain('The board counts 678 fewer points than this device');
+    expect((out.match(/321/g) ?? []).length).toBeGreaterThanOrEqual(2);
+    expect(out).not.toContain('>999<');
+  });
+});
+
+describe('regional filtering and unavailable backends', () => {
+  it('marks the chosen board and offers one chip per launched region', () => {
+    const regions = [{ id: 'us-ga', name: 'Georgia' }];
+    const global = html({ regions });
+    expect(global).toMatch(/aria-pressed="true"[^>]*>Everyone/);
+    const regional = html({ regions, scope: { kind: 'region', id: 'us-ga' } });
+    expect(regional).toMatch(/aria-pressed="true"[^>]*>Georgia/);
+    expect(html({ regions: [] })).not.toContain('Choose a board');
+  });
+  it('tells a player on another board where to look', () => {
+    const mine = rows(6);
+    const out = html({
+      standings: mine,
+      membership: { regionId: 'us-ga' },
+      scope: { kind: 'region', id: 'us-xx' },
+    });
+    expect(out).toContain('listed on a different board');
+  });
+  it('never shows a raw backend error', () => {
+    const out = html({ standings: [], error: 'PGRST202 Could not find the function public.leaderboard_standings(p_limit, p_region)' });
+    expect(out).not.toMatch(/PGRST|public\./);
+    expect(out).toContain('not switched on');
   });
 });

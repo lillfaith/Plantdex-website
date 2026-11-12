@@ -97,9 +97,10 @@ categories and a collection showcase.
 
 ## Known gaps
 
-- **No live cross-user test.** The RLS attacks in `e2e/supabase.e2e.test.ts` do not yet cover
-  `leaderboard_participants` or the standings function. The source-level guards in
-  `leaderboard-schema.test.ts` check the shape of the SQL, not Postgres's behaviour.
+- **The live cross-user test exists but has not been run.** `e2e/leaderboard.e2e.test.ts` attacks the
+  board from two accounts (opt-in, opt-out, restricted fields, forged writes, region filtering, signed-out
+  access). It needs the test project's credentials in `.env.local` and runs with
+  `npm run verify:supabase`; it is skipped without them.
 - **One launched region.** `regions.ts` has launched only `us-ga`, so the regional board is
   correct and nearly empty. It needs no code change when a second region launches.
 - **Ties share a standing but not an order.** `rank()` gives equal scores equal numbers; the
