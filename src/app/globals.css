@@ -2163,11 +2163,17 @@ body {
   height: 42%;
   overflow: hidden;
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  /* The same stepped greens as the meadow artwork at the foot of the screen. */
   background:
-    radial-gradient(circle at 50% 40%, #ffd45c 0 2px, transparent 2.5px) 6px 0 / 41px 100% repeat-x,
-    radial-gradient(circle at 50% 62%, #ff9fcf 0 2px, transparent 2.5px) 19px 0 / 53px 100% repeat-x,
-    radial-gradient(circle at 50% 78%, #ffffff 0 1.5px, transparent 2px) 31px 0 / 67px 100% repeat-x,
-    linear-gradient(180deg, #5fae4a 0%, #357f45 55%, #276a3c 100%);
+    radial-gradient(circle at 50% 46%, #ffd45c 0 2px, transparent 2.5px) 6px 0 / 41px 100% repeat-x,
+    radial-gradient(circle at 50% 72%, #ffffff 0 1.5px, transparent 2px) 31px 0 / 67px 100% repeat-x,
+    linear-gradient(
+      180deg,
+      #7fc25a 0 12%,
+      #4a9a48 12% 42%,
+      #357f45 42% 72%,
+      #276a3c 72% 100%
+    );
 }
 
 /* A trait pops in, overshoots a touch and settles. Once, then held. */
