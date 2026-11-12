@@ -16,6 +16,31 @@ It follows the shape of `docs/release-runbook.md` (checkpoint, migration, functi
 The frontend is safe to ship before the migration (the page says the board "is not switched on for
 this project yet"), but a signed-in player cannot see standings until step 3 is done.
 
+## Review notes (migration dependencies, backups, rollback limits)
+
+**Migration dependencies.** `0011_leaderboard.sql` reads `discoveries`, `sightings` (`herb_id`, `photo_path`,
+`notes`, `created_at`), `research_completions` and `profiles` (`display_name`), and references `auth.users`.
+All come from the baseline migrations, so 0011 needs nothing newer: not 0010 (catalogue), not 0012 (Boss Forms), and
+no edge function. Production already has 0006, 0007 and 0008 applied (`docs/release-runbook.md`,
+`docs/collection-entitlements.md`). It is independent of the `identify-plant` change in step 5, which needs no
+migration (the quota function `claim_scan_pair` from 0009 is already live).
+
+**Backups.** 0011 is additive: it creates one table, one index, three policies and one function, and rewrites no
+existing row, so a restore is not needed to undo it. A backup is still the right habit before touching the live
+database. Point-in-time recovery is a paid Supabase feature; on a plan without it take an on-demand backup or
+record that none exists. Which applies to production is not visible from the repository, so confirm it in the
+dashboard (Database, Backups) before step 2.
+
+**Rollback limits.** There is no down-migration. Removing the board means dropping the table and function, which
+deletes only the opt-in rows (who chose to be listed), never anyone's progress. A frontend rollback is a reset of the
+deploy branch to the tag in step 0. The page tolerates the function being absent. A function rollback needs the
+previously deployed version recorded in step 0, because the old limits (5 and 30) are only in that version.
+
+**Removing an entry (moderation).** There is no in-app removal. To take one player off the board: Supabase
+dashboard, SQL editor, `delete from public.leaderboard_participants where user_id = '<id>';` (run as the dashboard
+owner). To blank an offensive display name: `update public.profiles set display_name = null where user_id = '<id>';`.
+Both are manual and need your decision each time.
+
 ## Gate A: before anything is touched (owner tasks)
 
 | Check | How | Pass condition |
@@ -96,6 +121,25 @@ Until this step is done the site shows "of 10" while the server still enforces 5
 - `leaderboard_participants` is in the account export and in `USER_TABLES` for deletion (`account-security.test.ts`).
 - `/privacy` describes the board, and `legal.test.ts` fails if the denial returns.
 - Board scores are labelled provisional on the page and asserted by the live-site check.
+
+## Other things that could stop or sour a launch
+
+1. **The live page and server already disagree about scan limits** (page says 10 for everyone; server allows 5 and
+   30). See `docs/identification-limits-audit.md`. Not caused by the leaderboard, but it is on the live site now.
+2. **Display names are free text, up to 24 characters, shown to every signed-in player.** There is no profanity,
+   impersonation or reserved-name check and no report button. Names are optional (an unnamed player shows as
+   "No name set"). Options before launch: accept it for a small launch, add a client and SQL check, or add a
+   report route. Not implemented.
+3. **The standings function runs a full aggregation on every call** and any signed-in player may call it
+   repeatedly; the page fetches 200 rows per visit and per board change. Fine at launch scale; watch database load.
+4. **The live two-account test has never run** (needs your test credentials), and the older 60-test suite has not been
+   re-run for this release. A pass is the gate for step 2.
+5. **The currently deployed frontend still has the first leaderboard page**, which prints the raw database error when
+   the function is missing. Shipping the new page first removes that message; standings still need step 2.
+6. **Only one region is launched**, so the regional board is almost empty. Cosmetic, not a blocker.
+7. **Privacy copy** must keep matching what is published. It is covered by `legal.test.ts`; re-read `/privacy` once
+   in production after the deploy.
+8. **Test accounts pile up** in the test project after each live run (they cannot be deleted without a service-role key).
 
 ## Open items (owner)
 
