@@ -83,7 +83,7 @@ const FACE_DOWN_HOLD_MS = 520;
 type Intro = 'card' | 'grey' | 'lit' | 'done';
 const INTRO_GREY_AT = 250;
 const INTRO_LIT_AT = 450;
-const INTRO_DONE_AT = 1450;
+const INTRO_DONE_AT = 1700;
 const AFTER_INTRO_FLIP_MS = 150;
 
 function prefersReducedMotion(): boolean {
@@ -378,6 +378,14 @@ export function DiscoveryCelebration({
             aria-hidden="true"
             className="absolute inset-0 z-10 flex items-center justify-center"
           >
+            {intro === 'lit' && (
+              <>
+                <span className="shooting-star" />
+                <span className="shooting-star-head">
+                  <span className="shooting-star-head-dot" />
+                </span>
+              </>
+            )}
             <span
               className={`absolute inset-4 rounded-full bg-gold-400/25 blur-2xl transition-opacity duration-1000 ${
                 intro === 'lit' ? 'opacity-100' : 'opacity-0'
