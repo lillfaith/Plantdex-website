@@ -293,6 +293,50 @@ describe('First Find leads when it is the first find', () => {
   });
 });
 
+/**
+ * THE BUG THIS FILE EXISTS TO NEVER REPEAT.
+ *
+ * `welcome-sheet` sets `display: grid`, which is an author declaration and therefore BEATS
+ * the browser's own `dialog:not([open]) { display: none }`. The dialog rendered as an
+ * ordinary grid block in the normal flow whether or not it was open — never modal, no top
+ * layer, no backdrop — so on a phone the greeter sprite and the Skip control sat inline at
+ * the top of every page: over the homepage logo, and on /scan, where the route gate had
+ * correctly decided to open nothing.
+ *
+ * It reached production because the check that was run only ever loaded a route where the
+ * welcome SHOULD be open, and "renders in flow" and "renders as a modal" look similar enough
+ * there at a glance.
+ */
+describe('the closed dialog is actually hidden', () => {
+  it('restores display:none for the closed state it overrode', () => {
+    const sheet = CSS.match(/@utility welcome-sheet \{[\s\S]*?\n\}/)?.[0] ?? '';
+    expect(sheet).toContain('display: grid');
+    expect(sheet).toMatch(/&:not\(\[open\]\)\s*\{[^}]*display:\s*none/);
+  });
+
+  // The hidden rule has to come from the same utility, or a future reorder separates them.
+  it('keeps the closed rule inside the sheet utility', () => {
+    const sheet = CSS.match(/@utility welcome-sheet \{[\s\S]*?\n\}/)?.[0] ?? '';
+    const grid = sheet.indexOf('display: grid');
+    const hidden = sheet.search(/&:not\(\[open\]\)/);
+    expect(hidden).toBeGreaterThan(-1);
+    expect(grid).toBeGreaterThan(-1);
+  });
+
+  // Any future full-bleed dialog utility needs the same guard.
+  it('every author display on a dialog utility pairs with a closed rule', () => {
+    for (const match of CSS.matchAll(/@utility ([a-z0-9-]*sheet[a-z0-9-]*) \{([\s\S]*?)\n\}/g)) {
+      const name = match[1] ?? '';
+      const body = match[2] ?? '';
+      if (/display:\s*(grid|flex|block)/.test(body)) {
+        expect(body, `${name} sets display without hiding the closed dialog`).toMatch(
+          /&:not\(\[open\]\)/,
+        );
+      }
+    }
+  });
+});
+
 describe('reduced motion', () => {
   it('names every new animation explicitly rather than trusting the global collapse', () => {
     const reducedBlocks = CSS.match(/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\n\}/g) ?? [];

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Link from 'next/link';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
@@ -9,6 +9,7 @@ import { buildGarden, nextStageHint, MASTERY_BY_GARDEN_STAGE } from '@/lib/garde
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import { clearAdvanced, recordStages, useGardenMoments } from '@/lib/garden-moments';
 import { GrowthSprite } from './GrowthSprite';
+import { usePauseOffscreenSprites } from '@/lib/sprite-visibility';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
@@ -42,6 +43,14 @@ export function GardenView() {
    */
   const justAdvanced = useGardenMoments();
   const stageSignature = garden.map((entry) => `${entry.herbId}:${entry.stage}`).join(',');
+
+  /*
+   * Only the creatures somebody can see are allowed to move. Keyed on the stage signature so
+   * a plant that grows is re-observed rather than left with a stale inline play-state; see
+   * `sprite-visibility.ts` for why this costs no React renders and no timers.
+   */
+  const bed = useRef<HTMLUListElement | null>(null);
+  usePauseOffscreenSprites(bed, stageSignature);
 
   useEffect(() => {
     if (!ready) return;
@@ -96,7 +105,7 @@ export function GardenView() {
             </Link>
           </div>
         ) : (
-          <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
+          <ul ref={bed} className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
             {garden.map(({ herbId, stage }) => {
               const herb = getPrintedCard(herbId);
               if (!herb) return null;

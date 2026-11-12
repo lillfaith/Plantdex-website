@@ -2005,6 +2005,25 @@ body {
  * translucency.
  */
 @utility welcome-sheet {
+  /*
+   * `display: none` WHEN CLOSED, AND LEAVING THIS OUT SHIPPED THE BUG TO PRODUCTION.
+   *
+   * The browser hides a closed <dialog> with `dialog:not([open]) { display: none }` in its
+   * own stylesheet. The `display: grid` below is an author declaration, so it WINS — and the
+   * dialog then renders as an ordinary grid block in the normal flow whether or not it is
+   * open. On a phone that put the greeter sprite and the Skip control inline at the top of
+   * every page: over the homepage logo, and on /scan, where the route gate had correctly
+   * decided not to open anything. It was never modal, so there was no top layer and no
+   * backdrop, and the page simply scrolled behind it.
+   *
+   * It passed a desktop check because that check only ever loaded a route where the welcome
+   * SHOULD be open, where "renders in flow" and "renders as a modal" look similar enough at a
+   * glance. The regression test now asserts both states.
+   */
+  &:not([open]) {
+    display: none;
+  }
+
   max-width: 100vw;
   max-height: 100dvh;
   width: 100vw;
