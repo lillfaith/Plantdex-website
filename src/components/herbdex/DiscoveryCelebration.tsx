@@ -339,7 +339,7 @@ export function DiscoveryCelebration({
         The faces are absolutely positioned, so an invisible sizer establishes the box —
         the same structure as `CardFlip`, for the same reason.
       */}
-      <div className={`flip-scene mx-auto mt-4 w-44${firstDiscovery ? ' first-find-bloom' : ''}`}>
+      <div className="flip-scene mx-auto mt-4 w-44">
         {/*
           A FULL REVOLUTION HERE, A HALF TURN EVERYWHERE ELSE. `flip-card-spin` takes the card
           round once before it lands face up (540deg), which is the flourish this one moment

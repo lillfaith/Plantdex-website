@@ -341,14 +341,14 @@ describe('reduced motion', () => {
   it('names every new animation explicitly rather than trusting the global collapse', () => {
     const reducedBlocks = CSS.match(/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\n\}/g) ?? [];
     const joined = reducedBlocks.join('\n');
-    for (const utility of ['welcome-greeter', 'first-find-bloom']) {
+    for (const utility of ['welcome-greeter']) {
       expect(joined, `${utility} has no reduced-motion rule`).toContain(utility);
     }
   });
 
   // The Motion section's rule: nothing here is ambient.
   it('gives the new keyframes a bounded iteration count', () => {
-    for (const utility of ['welcome-greeter', 'first-find-bloom']) {
+    for (const utility of ['welcome-greeter']) {
       const block = CSS.match(new RegExp(`@utility ${utility} \\{[\\s\\S]*?\\n\\}`))?.[0] ?? '';
       expect(block).not.toContain('infinite');
     }
