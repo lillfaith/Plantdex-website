@@ -98,3 +98,24 @@ it would belong; it is not written yet, and that gap is listed below.
   correct and nearly empty. It needs no code change when a second region launches.
 - **Ties share a standing but not an order.** `rank()` gives equal scores equal numbers; the
   row order within a tie is by user id, which is deterministic and arbitrary.
+
+## Field Board UI polish (development branch)
+
+Decisions made without review, all reversible and all presentation-only:
+
+- **No schema change.** `leaderboard_standings()` is untouched, so migration 0011 stays separate and
+  unapplied. The page fetches the function's maximum (200 rows) in one call, finds the player's own
+  row wherever it sits within that, and pages the rest client-side ("Show more").
+- **Published fields only.** The function returns a display name, a launched region, counts and
+  points. It returns no level, XP, avatar or frame, so none is shown and none is invented. The
+  podium art is decorative (a crown and two medals), never a stand-in for a player's avatar.
+- **Ties.** Ranking is the server's `rank()`: equal points share a standing. Three players tied for
+  first all stand on the first step.
+- **Honesty line stays in the first render of every state.** `scripts/check_live_site.py` asserts
+  "These scores are provisional" on `/leaderboard/`.
+- **Failure copy.** A missing function (migration not applied to the project) reads as "not switched
+  on for this project yet" rather than a database error.
+- **Calm by design.** No streaks, timers, urgency or invented rewards. The one animation is a
+  single 420ms rise on the podium, switched off under reduced motion.
+- **Pure helpers** live in `src/lib/board-view.ts`; `BoardScreen` is presentational and takes plain
+  props, so every state is renderable in tests with clearly labelled mock data.

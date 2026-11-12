@@ -516,3 +516,41 @@ export function gemFor(name: string): string {
     gridToUri(fromRows(GEM_ROWS, { k: '#3b1d63', ...GEM_SETS[index]! })),
   );
 }
+
+// ── Field Board podium art ───────────────────────────────────────────────────────────────
+
+ILLUSTRATIONS.crown = [
+  'k   kk   k',
+  'yk  yy  ky',
+  'yyk yy kyy',
+  'yyyyyyyyyy',
+  'kYYYYYYYYk',
+  'kyyyryyyyk',
+  'kYYYYYYYYk',
+  ' kkkkkkkk ',
+  '          ',
+  '          ',
+];
+ILLUSTRATIONS.medal = [
+  '  pp  pp  ',
+  '   pppp   ',
+  '    pp    ',
+  '   kkkk   ',
+  '  kwwwwk  ',
+  ' kwwXXwwk ',
+  ' kwwXXwwk ',
+  '  kwwwwk  ',
+  '   kkkk   ',
+  '          ',
+];
+
+/** A silver (2nd) or bronze (3rd) medal on the shared ribbon. */
+export function medalArt(place: 2 | 3): string {
+  const coin =
+    place === 2
+      ? { w: '#e6e8f5', X: '#aab0d0' }
+      : { w: '#f2b784', X: '#b4713f' };
+  return memo(`m:${place}`, () =>
+    gridToUri(fromRows(ILLUSTRATIONS.medal!, { ...PAL, ...coin })),
+  );
+}

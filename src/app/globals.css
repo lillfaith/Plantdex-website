@@ -2798,3 +2798,13 @@ body {
     0 0 18px rgb(255 134 201 / 0.45),
     0 0 24px rgb(134 214 255 / 0.35);
 }
+
+/* Field Board: a one-shot rise for the podium steps, off under reduced motion. */
+@utility board-rise {
+  animation: rise-in 420ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .board-rise {
+    animation: none;
+  }
+}
