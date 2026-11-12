@@ -145,7 +145,7 @@ describe('/start stays a stateless QR destination', () => {
 describe('what the welcome says', () => {
   it('carries the opening copy', () => {
     expect(SCENES).toContain('Welcome to Plantdex');
-    expect(SCENES).toMatch(/real-world plant collecting adventure/);
+    expect(SCENES).toMatch(/real-world adventure/);
     expect(WELCOME).toContain('Begin Adventure');
   });
 

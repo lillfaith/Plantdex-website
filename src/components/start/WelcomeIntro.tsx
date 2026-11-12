@@ -130,8 +130,9 @@ export function WelcomeIntro() {
       className="welcome-sheet"
     >
       <span aria-hidden="true" className="welcome-woods" />
+      <span aria-hidden="true" className="welcome-frame" />
 
-      <header className="relative flex items-center justify-between px-3 pt-2">
+      <header className="relative flex items-center justify-between px-5 pt-5">
         <ol
           aria-label={`Step ${index + 1} of ${SCENES.length}`}
           className="flex items-center gap-1.5 pl-2"
@@ -163,12 +164,12 @@ export function WelcomeIntro() {
       </div>
 
       {!last && (
-        <footer className="relative mx-auto flex w-full max-w-md items-center gap-3 px-5 pb-4">
+        <footer className="relative mx-auto flex w-full max-w-md items-center gap-3 px-6 pb-6">
           <button
             type="button"
             onClick={() => setIndex((one) => Math.max(0, one - 1))}
             disabled={index === 0}
-            className="tap-44 rounded px-3 text-sm font-bold text-violet-100 transition-colors hover:text-white disabled:invisible"
+            className="tap-44 rounded-full bg-plum-900/80 px-4 text-sm font-bold text-violet-100 transition-colors hover:text-white disabled:invisible"
           >
             Back
           </button>

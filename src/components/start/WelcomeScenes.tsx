@@ -52,18 +52,28 @@ function Title({ children }: { children: ReactNode }) {
 function Welcome() {
   return (
     <>
-      <div className="welcome-stage mx-auto">
+      <p className="text-[0.72rem] font-bold tracking-[0.28em] text-gold-300 uppercase">
+        &#9670; A real-world adventure &#9670;
+      </p>
+      <div className="welcome-stage mx-auto mt-2">
         <span aria-hidden="true" className="welcome-mote welcome-mote-a" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-b" />
         <span aria-hidden="true" className="welcome-mote welcome-mote-c" />
-        <div className="welcome-greeter w-44">
+        <div className="relative z-0 -mr-4 w-24 shrink-0">
+          <PlantSprite herbId="viola-sororia" stage="flowering" alt="" fit />
+        </div>
+        <div className="welcome-greeter relative z-10 w-36 shrink-0">
           <PlantSprite herbId={GREETER} stage="flowering" alt="" fit />
+        </div>
+        <div className="relative z-0 -ml-4 w-24 shrink-0">
+          <PlantSprite herbId="monarda-fistulosa" stage="flowering" alt="" fit />
         </div>
       </div>
       <Title>Welcome to Plantdex</Title>
+      <p aria-hidden="true" className="welcome-rule mx-auto mt-2" />
       <p className="mx-auto mt-2 max-w-[19rem] text-sm leading-relaxed text-violet-100">
-        A real-world plant collecting adventure. Step outside, meet the plants growing around
-        you, and fill your Herbdex.
+        Step outside, meet the plants growing around you, and fill your Herbdex with every
+        real find.
       </p>
     </>
   );
@@ -99,7 +109,7 @@ function Discover() {
             </li>
           ))}
         </ul>
-        <p className="mt-2 rounded bg-gold-400 py-1 text-center text-[0.72rem] font-bold tracking-wide text-plum-900 uppercase">
+        <p className="mt-2 rounded-full bg-gold-400 py-1.5 text-center text-[0.72rem] font-bold tracking-wide text-plum-900 uppercase">
           Record this find
         </p>
       </div>
@@ -119,6 +129,8 @@ function Discover() {
  */
 function Collect() {
   const [flipped, setFlipped] = useState(false);
+  // Counts turns so each one mounts fresh sparkles, which play once.
+  const [turns, setTurns] = useState(0);
   const herb = getPrintedCard(GREETER);
 
   return (
@@ -129,10 +141,18 @@ function Collect() {
           <div className="flip-scene relative mx-auto w-32">
             <span aria-hidden="true" className="welcome-fan welcome-fan-left" />
             <span aria-hidden="true" className="welcome-fan welcome-fan-right" />
+            {turns > 0 && (
+              <span key={turns} aria-hidden="true" className="welcome-sparkles">
+                <i /> <i /> <i /> <i /> <i /> <i />
+              </span>
+            )}
             <button
               type="button"
               aria-pressed={flipped}
-              onClick={() => setFlipped((one) => !one)}
+              onClick={() => {
+                setFlipped((one) => !one);
+                setTurns((one) => one + 1);
+              }}
               aria-label={`Example card: ${herb.commonName}. Tap to turn it over.`}
               className="relative block w-full rounded-[var(--radius-card)]"
             >
@@ -169,6 +189,13 @@ function Collect() {
           <p className="mt-2 text-xs font-bold tracking-[0.1em] text-gold-300 uppercase">
             Tap the card to turn it over
           </p>
+          {/* A demonstration bar. It moves with the flip and is wired to nothing. */}
+          <div aria-hidden="true" className="mx-auto mt-2 flex w-44 items-center gap-2">
+            <span className="text-[0.72rem] font-bold text-gold-300">XP</span>
+            <span className="welcome-xp flex-1">
+              <span className="welcome-xp-fill path-fill" style={{ width: flipped ? '82%' : '28%' }} />
+            </span>
+          </div>
         </div>
       )}
       <ul className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
@@ -179,8 +206,8 @@ function Collect() {
         ))}
       </ul>
       <p className="mx-auto mt-3 max-w-[19rem] text-sm leading-relaxed text-violet-100">
-        Every plant you find unlocks its card. Cards come in four rarities, earn XP and
-        levels, and open cosmetic rewards. This one is just for show.
+        Every real find unlocks its card and earns XP, levels and cosmetic rewards. This one
+        is just for show.
       </p>
     </>
   );
