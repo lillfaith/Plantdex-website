@@ -83,7 +83,7 @@ const FACE_DOWN_HOLD_MS = 520;
 type Intro = 'card' | 'grey' | 'lit' | 'done';
 const INTRO_GREY_AT = 250;
 const INTRO_LIT_AT = 450;
-const INTRO_DONE_AT = 1700;
+const INTRO_DONE_AT = 1900;
 const AFTER_INTRO_FLIP_MS = 150;
 
 function prefersReducedMotion(): boolean {
