@@ -1651,3 +1651,13 @@ Plan and reasoning: `docs/boss-form-revised-questions-and-ux.md`, `docs/boss-for
   taller frame, faster and sterner than the adult), so the Garden marks an earned one with a STATIC
   golden plate and a crown, never a loop. New art, if wanted, is proposed in
   `docs/boss-form-art-proposals.md` and waits for approval.
+
+## Page themes
+
+Each major page can have its own atmosphere through one fixed gradient layer, `PageAtmosphere`
+(`docs/page-themes.md`). Scan, Collection and Garden are applied; the other six palettes are
+defined and wait. It is a server-rendered `position: fixed` element, never a `body` background:
+iOS Safari ignores `background-attachment: fixed`. It may not animate, blur or use filters, and
+its lighting strengths are capped by contrast: the dimmest text token must stay at 4.5:1 over its
+brightest point. The bottom nav stays one solid brand plum on every page. Do not recolour
+components to match a page.

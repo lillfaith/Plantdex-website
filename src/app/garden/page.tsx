@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { GardenView } from '@/components/garden/GardenView';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { TrackView } from '@/components/analytics/TrackView';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
 
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function GardenPage() {
   return (
     <>
+      <PageAtmosphere theme="garden" />
       <TrackView event="garden_opened" />
       <GardenView />
       {/*

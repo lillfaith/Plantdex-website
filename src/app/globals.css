@@ -306,6 +306,78 @@ body {
   min-height: 100dvh;
 }
 
+/*
+ * THE BRAND PALETTE, AS DESIGN TARGETS. These sit beside the semantic tokens and replace none
+ * of them: rarity, warning, success and safety colours are untouched, and components are not
+ * recoloured to match. They are what the page atmospheres and the navigation are drawn from.
+ * `static` so Tailwind emits them even though some are only read from a stylesheet.
+ */
+@theme static {
+  --color-brand-plum: #170d2b;
+  --color-brand-purple: #261344;
+  --color-brand-royal: #512b86;
+  --color-brand-violet: #9361d6;
+  --color-brand-lavender: #c9a7f2;
+  --color-brand-gold: #f2c75c;
+  --color-brand-gold-light: #ffe5a0;
+  --color-brand-green: #80b889;
+  --color-brand-pink: #f2a7cf;
+  --color-brand-text: #f8f2ff;
+  /* Navigation: always the same dark plum, whichever page is showing. */
+  --color-brand-nav: #1c1033;
+  --color-brand-nav-idle: #b8a4d3;
+  --color-brand-nav-line: #563b76;
+}
+
+/*
+ * PAGE THEMES. --pt-a is the ground and dominates; --pt-b and --pt-c are lighting that only
+ * shows in the upper and lower thirds; the two accents are small touches. Purple stays present
+ * on every page through --pt-purple, so the blue and green worlds are still Plantdex.
+ * Nine are defined; `ACTIVE_PAGE_THEMES` lists the ones a route uses today.
+ */
+[data-page-theme='home']       { --pt-a:#170d2b; --pt-b:#38205b; --pt-c:#512b86; --pt-accent:#f2a7cf; --pt-accent-2:#f2c75c; }
+[data-page-theme='scan']       { --pt-a:#14152f; --pt-b:#243d70; --pt-c:#235b69; --pt-accent:#6fd5c2; --pt-accent-2:#b9a1f2; }
+[data-page-theme='collection'] { --pt-a:#170d2b; --pt-b:#34205f; --pt-c:#59308c; --pt-accent:#f2c75c; --pt-accent-2:#b786f1; --pt-glint:#f2a7cf; }
+[data-page-theme='garden']     { --pt-a:#171c2c; --pt-b:#294a42; --pt-c:#40305f; --pt-accent:#8cc78b; --pt-accent-2:#c5a5e9; }
+[data-page-theme='journal']    { --pt-a:#24152e; --pt-b:#58304e; --pt-c:#744366; --pt-accent:#f2a7cf; --pt-accent-2:#f5d58b; }
+[data-page-theme='learn']      { --pt-a:#211b40; --pt-b:#414c83; --pt-c:#5a477e; --pt-accent:#afc3ff; --pt-accent-2:#f2d58b; }
+[data-page-theme='quests']     { --pt-a:#27152d; --pt-b:#663b57; --pt-c:#89526b; --pt-accent:#ffaa93; --pt-accent-2:#f4cd75; }
+[data-page-theme='board']      { --pt-a:#190f30; --pt-b:#43256c; --pt-c:#63418b; --pt-accent:#ffd66b; --pt-accent-2:#c6a4f5; }
+[data-page-theme='boss']       { --pt-a:#220d38; --pt-b:#572477; --pt-c:#803c84; --pt-accent:#ef8ad0; --pt-accent-2:#ffd86f; }
+
+/*
+ * The ground itself. ONE layer, fixed to the viewport (Safari-safe, unlike
+ * `background-attachment: fixed`), drawn over the global body gradient and under SiteDecor.
+ * The first colour is the base and fills most of the screen; --pt-b is a soft light high up,
+ * --pt-c a soft light low down, royal purple a small wash in the lower corner, and the accent a
+ * faint glow at the top. A hard-edged 2px dotted line at the very top is the pixel touch.
+ * No blur, no animation, no filter: gradients only, so it is cheap to paint once.
+ */
+@utility page-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--pt-accent) 38%, transparent) 0 6px, transparent 6px 12px) top / 100% 2px no-repeat,
+    radial-gradient(ellipse 55% 20% at 88% 6%, color-mix(in srgb, var(--pt-glint, transparent) 11%, transparent), transparent 100%),
+    radial-gradient(ellipse 80% 26% at 50% 0%, color-mix(in srgb, var(--pt-accent) 9%, transparent), transparent 100%),
+    radial-gradient(ellipse 130% 50% at 50% 12%, color-mix(in srgb, var(--pt-b) 52%, transparent), transparent 100%),
+    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) 22%, transparent), transparent 100%),
+    radial-gradient(ellipse 140% 58% at 50% 108%, color-mix(in srgb, var(--pt-c) 66%, transparent), transparent 100%),
+    var(--pt-a);
+}
+
+/*
+ * THE NAVIGATION IS ONE DARK PLUM EVERYWHERE. Solid rather than the translucent panel it was,
+ * so a coloured page behind it can never tint it, and no backdrop blur (cheaper, and Safari
+ * handles it unevenly). Idle icons and labels are a lavender-grey, the active one gold.
+ */
+@utility nav-bar {
+  background: var(--color-brand-nav);
+  border: 1px solid var(--color-brand-nav-line);
+}
+
 /* Visible, high-contrast focus for keyboard users on every interactive element. */
 :where(a, button, input, select, summary, [tabindex]):focus-visible {
   outline: 3px solid var(--color-gold-500);

@@ -11,6 +11,7 @@ import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
 import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
 import { TrackView } from '@/components/analytics/TrackView';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { DeckCta } from '@/components/shop/DeckCta';
 import { CURRENT_COLLECTION } from '@/lib/collection';
@@ -61,6 +62,7 @@ export default function HerbdexPage() {
 
   return (
     <main id="main" className="mx-auto max-w-6xl px-4 py-8">
+      <PageAtmosphere theme="collection" />
       <TrackView event="herbdex_opened" />
       {/* Above the header, because it is about that progress, and inline in the page flow
           rather than a modal so it never interrupts anyone. It renders nothing until a

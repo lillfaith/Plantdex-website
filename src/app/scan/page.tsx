@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
 import { ScanScout } from '@/components/scan/ScanScout';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { ContaminationNote, SafetyNotice } from '@/components/SafetyNotice';
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
 export default function ScanPage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-4 py-8">
+      <PageAtmosphere theme="scan" />
       {/*
         THE SCOUT SITS BESIDE THE HEADING, AND ON ITS LEFT.
 
