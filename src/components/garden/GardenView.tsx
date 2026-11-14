@@ -11,6 +11,7 @@ import { clearAdvanced, recordStages, useGardenMoments } from '@/lib/garden-mome
 import { GrowthSprite } from './GrowthSprite';
 import { useAuth } from '@/state/AuthProvider';
 import { useBossForms } from '@/lib/boss-forms';
+import { Art } from '@/components/challenges/ChallengeArt';
 import { usePauseOffscreenSprites } from '@/lib/sprite-visibility';
 import { GrowthPlaceholder } from '../GrowthLoader';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
@@ -143,7 +144,11 @@ export function GardenView() {
                         pine and a dandelion share one ground line and the bed reads as a
                         planting rather than a row of stickers. Growth is carried by the
                         DRAWING now, not by scaling one image up and down. */}
-                    <span className="flex h-20 w-full items-end justify-center">
+                    <span className="relative flex h-20 w-full items-end justify-center">
+                      {/* An earned Boss Form stands on a STATIC golden plate: rare, and still. */}
+                      {bossForms.has(herbId) && (
+                        <span aria-hidden="true" className="boss-plate absolute inset-x-0 -top-1 bottom-0 rounded-full" />
+                      )}
                       <GrowthSprite
                         herb={herb}
                         stage={bossForms.has(herbId) ? 'boss' : stage}
@@ -184,6 +189,7 @@ export function GardenView() {
                     >
                       {/* A Boss Form is the primary status when earned: one label, never "Mastered" and
                         "Boss Form" side by side. */}
+                      {bossForms.has(herbId) && <Art name="crown" className="mr-1 inline h-3 w-3 align-[-1px]" />}
                       {bossForms.has(herbId)
                         ? 'Boss Form'
                         : MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[stage]]}

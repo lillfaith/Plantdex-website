@@ -10,15 +10,15 @@ import { Art } from './ChallengeArt';
 export function ChallengeFrame({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <div className={`challenge-frame ${className}`}>
-      <span aria-hidden="true" className="absolute -top-1.5 -left-1.5 h-2.5 w-2.5 bg-gold-300" />
-      <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 h-2.5 w-2.5 bg-gold-300" />
-      <span aria-hidden="true" className="absolute -bottom-1.5 -left-1.5 h-2.5 w-2.5 bg-gold-300" />
-      <span aria-hidden="true" className="absolute -right-1.5 -bottom-1.5 h-2.5 w-2.5 bg-gold-300" />
+      <span aria-hidden="true" className="absolute -top-1 -left-1 h-2 w-2 bg-gold-300" />
+      <span aria-hidden="true" className="absolute -top-1 -right-1 h-2 w-2 bg-gold-300" />
+      <span aria-hidden="true" className="absolute -bottom-1 -left-1 h-2 w-2 bg-gold-300" />
+      <span aria-hidden="true" className="absolute -right-1 -bottom-1 h-2 w-2 bg-gold-300" />
       <span
         aria-hidden="true"
-        className="absolute -top-3 left-1/2 -translate-x-1/2 bg-plum-900 px-2 text-gold-300"
+        className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-plum-900 px-1.5 text-gold-300"
       >
-        <Art name="leaf" className="h-4 w-4" />
+        <Art name="leaf" className="h-3.5 w-3.5" />
       </span>
       {children}
     </div>

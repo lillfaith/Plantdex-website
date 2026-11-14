@@ -70,6 +70,14 @@ describe('the Boss Form flag', () => {
     expect(readFileSync('src/lib/types.ts', 'utf8')).not.toMatch(/bossForms/);
     expect(readFileSync('src/lib/herbdex-state.ts', 'utf8')).not.toMatch(/boss/i);
   });
+  it('the Garden marks an earned Boss Form with a STATIC plate and a crown, nothing that moves', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    expect(view).toContain('boss-plate');
+    expect(view).toMatch(/name="crown"/);
+    const css = readFileSync('src/app/globals.css', 'utf8');
+    const plate = css.slice(css.indexOf('@utility boss-plate'), css.indexOf('@utility boss-plate') + 400);
+    expect(plate).not.toMatch(/animation/);
+  });
   it('the Garden changes only the picture and a label', () => {
     const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
     expect(view).toContain("bossForms.has(herbId) ? 'boss' : stage");

@@ -9,28 +9,38 @@ import { usePageHidden } from './BotanicalStage';
 import { Sparkles } from './Sparkles';
 
 /**
- * THE EVOLUTION, and the one moment in the challenges that is allowed to be big.
+ * THE EVOLUTION, and the one moment in the challenges that is allowed to be big. About three
+ * seconds, in beats:
  *
- * It dims the screen (a flat translucent layer, not a blur), then in order: the adult fades out,
- * one gold ring pulses outward, a warm glow swells and sparks fly as the Boss Form fades in,
- * and "Evolution Complete!" rises in over it. About three seconds, and SKIPPABLE at any moment:
- * Skip (or Escape) lands every animation on its end state at once, and reduced motion starts
- * there.
+ *   0.0s  the screen dims
+ *   0.3s  the adult swells a little and a warm glow builds behind it
+ *   1.25s ONE gold flash; the adult gives way and a ring pulses outward
+ *   1.35s the Boss Form pops in slightly large, then settles; gold sparks burst outward
+ *   2.0s  "Evolution Complete!" rises in
+ *   2.5s  the plant's name and the Done button arrive, and the Boss Form is left to admire
  *
- * IT SHOWS ONLY WHAT EXISTS. The Boss Form sprite is the one already in the manifest, and the
- * only words are the headline, the plant's name, and the fixed sentence every result carries.
- * No XP, achievement, frame or collectible is mentioned, because none is awarded.
+ * SKIPPABLE: Skip (or Escape) lands every animation on its end state at once, and reduced
+ * motion starts there. Nothing loops. Opacity and transform only, no blur, paused while the
+ * page is hidden.
  *
- * Rendered through a portal so it covers the fixed navigation too. Opacity and transform only;
- * paused while the page is hidden.
+ * EARNED OR PREVIEW, AND THEY LOOK DIFFERENT ON PURPOSE. `preview` (only ever passed by the
+ * development-only button) swaps the headline for "Evolution Preview" and says plainly that
+ * nothing was earned, so a screenshot of one can never be mistaken for the other. The earned
+ * version is reached only from the server's own answer.
+ *
+ * IT SHOWS ONLY WHAT EXISTS. The Boss Form sprite is the one already in the manifest and the
+ * words are the headline, the plant's name and the fixed disclaimer. No XP, badge, frame or
+ * collectible is mentioned, because none is awarded.
  */
 export function BossEvolution({
   herbId,
   name,
+  preview = false,
   onDone,
 }: {
   herbId: string;
   name: string;
+  preview?: boolean;
   onDone: () => void;
 }) {
   // True once we are in the browser. A portal needs `document`, and this avoids a mismatch.
@@ -59,29 +69,36 @@ export function BossEvolution({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Evolution complete"
+      aria-label={preview ? 'Evolution preview, nothing earned' : 'Evolution complete'}
       data-paused={hidden}
       data-skip={skipped}
-      className="boss-scene fixed inset-0 z-[70] flex flex-col items-center justify-center bg-plum-950/95 px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] text-center"
+      data-evolution={preview ? 'preview' : 'earned'}
+      className="boss-scene fixed inset-0 z-[70] flex flex-col items-center justify-center overflow-hidden bg-plum-950/95 px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] text-center"
     >
+      {/* The one flash. A flat gold layer fading in and out: no blur, no filter. */}
+      <span
+        aria-hidden="true"
+        className="evolve-burst pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgb(255_236_170),rgb(255_210_110/0.7)_35%,transparent_75%)]"
+      />
+
       {!skipped ? (
         <button
           type="button"
           onClick={() => setSkipped(true)}
-          className="absolute top-[max(0.75rem,env(safe-area-inset-top))] right-4 min-h-11 px-3 text-sm font-bold text-violet-200 underline-offset-4 hover:underline"
+          className="absolute top-[max(0.75rem,env(safe-area-inset-top))] right-4 z-20 min-h-11 px-3 text-sm font-bold text-violet-200 underline-offset-4 hover:underline"
         >
           Skip
         </button>
       ) : null}
 
-      <div className="relative flex h-56 w-56 items-center justify-center">
+      <div className="relative flex h-64 w-full max-w-xs items-center justify-center">
         <span
           aria-hidden="true"
-          className="evolve-flash absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(255_210_110/0.65),rgb(190_140_255/0.25)_60%,transparent_80%)]"
+          className="evolve-flash absolute inset-2 rounded-full bg-[radial-gradient(closest-side,rgb(255_210_110/0.6),rgb(190_140_255/0.25)_62%,transparent_82%)]"
         />
         <span
           aria-hidden="true"
-          className="evolve-ring absolute inset-6 rounded-full border-[5px] border-gold-300"
+          className="evolve-ring absolute top-1/2 left-1/2 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full border-[5px] border-gold-300"
         />
         <div className="evolve-out absolute inset-0 flex items-center justify-center">
           <PlantSprite herbId={herbId} alt="" stage="flowering" scale={1} frozen />
@@ -89,17 +106,19 @@ export function BossEvolution({
         <div className="evolve-in absolute inset-0 flex items-center justify-center">
           <PlantSprite herbId={herbId} alt={`${name}, Boss Form`} stage="boss" scale={1} />
         </div>
-        <Sparkles count={10} radius={104} startMs={1000} />
+        <Sparkles count={12} radius={128} startMs={1300} />
       </div>
 
-      <h2 className="evolve-text mt-5 font-display text-4xl leading-tight font-extrabold text-gold-plate">
-        Evolution Complete!
+      <h2 className="evolve-text mt-2 font-display text-4xl leading-tight font-extrabold text-gold-plate">
+        {preview ? 'Evolution Preview' : 'Evolution Complete!'}
       </h2>
       <p className="evolve-text-late mt-1 flex items-center gap-2 text-lg font-bold text-violet-50">
         <Art name="crown" className="h-5 w-5 text-gold-300" />
         {name} · Boss Form
       </p>
-      <p className="evolve-text-late mx-auto mt-3 max-w-xs text-xs text-violet-300">{CHALLENGE_DISCLAIMER}</p>
+      <p className="evolve-text-late mx-auto mt-3 max-w-xs text-xs text-violet-300">
+        {preview ? 'Preview only. Nothing was earned or recorded.' : CHALLENGE_DISCLAIMER}
+      </p>
       <button
         ref={done}
         type="button"

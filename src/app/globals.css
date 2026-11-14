@@ -2829,7 +2829,9 @@ body {
  *   seed-drift        a drifting dandelion seed, three slow passes then it rests
  *   boss-aura         the hub's golden glow breathes twice
  *   tile-glow         a completed tile's glow fades in once
- *   evolve-out/in     adult fades out, Boss Form fades in (1.1s)
+ *   evolve-out        the adult grows a little, then gives way (1.3s)
+ *   evolve-burst      one brief gold flash across the screen at the change (650ms)
+ *   evolve-in         the Boss Form pops in slightly large, then settles (700ms)
  *   evolve-ring       one gold ring pulses outward
  *   evolve-flash      a warm glow swells behind the sprite
  *   evolve-text       the headline rises in after the change
@@ -2864,13 +2866,20 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes evolve-fade-out {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+@keyframes evolve-adult {
+  0% { opacity: 1; transform: scale(1); }
+  70% { opacity: 1; transform: scale(1.18); }
+  100% { opacity: 0; transform: scale(1.24); }
 }
-@keyframes evolve-fade-in {
-  0% { opacity: 0; transform: translateY(4px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes evolve-reveal {
+  0% { opacity: 0; transform: scale(0.7); }
+  60% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes evolve-burst-flash {
+  0% { opacity: 0; }
+  30% { opacity: 0.95; }
+  100% { opacity: 0; }
 }
 @keyframes evolve-ring-pulse {
   0% { opacity: 0.9; transform: scale(0.55); }
@@ -2905,22 +2914,25 @@ body {
   animation: tile-glow-in 700ms ease-out both;
 }
 @utility evolve-out {
-  animation: evolve-fade-out 700ms ease-in 300ms both;
+  animation: evolve-adult 1300ms ease-in 300ms both;
 }
 @utility evolve-in {
-  animation: evolve-fade-in 1100ms ease-out 700ms both;
+  animation: evolve-reveal 700ms ease-out 1350ms both;
+}
+@utility evolve-burst {
+  animation: evolve-burst-flash 650ms ease-out 1250ms both;
 }
 @utility evolve-ring {
-  animation: evolve-ring-pulse 1300ms ease-out 600ms both;
+  animation: evolve-ring-pulse 1000ms ease-out 1250ms both;
 }
 @utility evolve-flash {
-  animation: evolve-flash-swell 1600ms ease-out 400ms both;
+  animation: evolve-flash-swell 1500ms ease-out 300ms both;
 }
 @utility evolve-text {
-  animation: evolve-text-rise 700ms ease-out 1500ms both;
+  animation: evolve-text-rise 600ms ease-out 2000ms both;
 }
 @utility evolve-text-late {
-  animation: evolve-text-rise 700ms ease-out 2000ms both;
+  animation: evolve-text-rise 600ms ease-out 2500ms both;
 }
 /* The page is hidden: freeze every challenge animation where it is. */
 .boss-scene[data-paused='true'] * {
@@ -2932,11 +2944,13 @@ body {
 .boss-scene[data-skip='true'] .sparkle-out,
 .boss-scene[data-skip='true'] .evolve-in,
 .boss-scene[data-skip='true'] .evolve-flash,
+.boss-scene[data-skip='true'] .evolve-burst,
 .boss-scene[data-skip='true'] .evolve-text,
 .boss-scene[data-skip='true'] .evolve-text-late {
   animation: none;
 }
 .boss-scene[data-skip='true'] .evolve-out,
+.boss-scene[data-skip='true'] .evolve-burst,
 .boss-scene[data-skip='true'] .evolve-ring,
 .boss-scene[data-skip='true'] .sparkle-out {
   display: none;
@@ -2950,6 +2964,7 @@ body {
   .tile-glow,
   .evolve-out,
   .evolve-in,
+  .evolve-burst,
   .evolve-ring,
   .evolve-flash,
   .evolve-text,
@@ -2959,6 +2974,7 @@ body {
   /* With no animation the end state must still be right: the adult and the ring have nothing
      left to do, the seeds never appear, and the Boss Form simply stands there. */
   .evolve-out,
+  .evolve-burst,
   .evolve-ring,
   .sparkle-out,
   .seed-drift {
@@ -2968,12 +2984,17 @@ body {
 /* An ornamental gold frame around the question: a pixel-stepped double border. */
 @utility challenge-frame {
   position: relative;
-  border-radius: 0.5rem;
-  padding: 0.75rem 0.75rem 0.85rem;
-  background: linear-gradient(180deg, rgb(70 36 124 / 0.55), rgb(28 12 56 / 0.72));
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.5rem 0.6rem;
+  background: linear-gradient(180deg, rgb(70 36 124 / 0.5), rgb(28 12 56 / 0.7));
   box-shadow:
     0 0 0 2px #b8841f,
-    0 0 0 4px rgb(28 12 56),
-    0 0 0 5px rgb(214 165 60 / 0.55),
-    0 0 26px rgb(190 140 255 / 0.18);
+    0 0 0 3px rgb(28 12 56),
+    0 0 20px rgb(190 140 255 / 0.16);
+}
+
+/* A STATIC golden plate behind an earned Boss Form in the Garden: it marks the tile as rare
+   without moving, because the one thing that would cheapen "finished" is flickering. */
+@utility boss-plate {
+  background: radial-gradient(closest-side, rgb(255 210 110 / 0.38), rgb(190 140 255 / 0.14) 62%, transparent 80%);
 }

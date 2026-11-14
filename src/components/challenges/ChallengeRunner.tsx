@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { PlantSprite } from '@/components/PlantSprite';
 import { hasRetry, type ActivityId } from '@/lib/boss-form';
 import { submitChallenge, type SubmitResult } from '@/lib/challenge-client';
@@ -46,6 +46,15 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
   const [queue, setQueue] = useState<number[]>([]);
   const [finished, setFinished] = useState<SubmitResult | { ok: true; preview: true; passed: boolean; resolved: number; total: number } | null>(null);
   const [busy, setBusy] = useState(false);
+  const feedbackRef = useRef<HTMLDivElement | null>(null);
+
+  // After an answer, bring the feedback and its Next button into view: on a small phone the photos
+  // can fill the screen, and the one action that matters must never sit below the fold.
+  useEffect(() => {
+    if (chosen === null) return;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    feedbackRef.current?.scrollIntoView({ block: 'nearest', behavior: calm ? 'auto' : 'smooth' });
+  }, [chosen]);
 
   if (!slots) {
     return <p className="mt-8 text-center text-violet-200">This one is not available yet.</p>;
@@ -72,7 +81,9 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
     const result = await submitChallenge({ herbId, activity, attempt, answers: final });
     setFinished(result);
     setBusy(false);
-    if (result.ok) onDone({ passed: result.passed, bossForm: result.bossForm });
+    // The evolution is shown only when the SERVER says a Boss Form was recorded, and only for
+    // the Boss Trial. Nothing in this file decides that.
+    if (result.ok) onDone({ passed: result.passed, bossForm: result.bossForm && activity === 'boss-trial' });
   };
 
   const answer = (index: number) => {
@@ -156,7 +167,7 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
   return (
     <section className="mt-2" aria-live="polite">
       <div className="flex items-center gap-3">
-        <div className="w-16 shrink-0">
+        <div className="w-12 shrink-0">
           <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} fit />
         </div>
         <div className="min-w-0 flex-1">
@@ -172,13 +183,13 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
         </div>
       </div>
 
-      <ChallengeFrame className="mt-6">
-        <h2 className="text-center text-2xl leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
+      <ChallengeFrame className="mt-4">
+        <h2 className="px-1 text-center text-xl leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
         <QuestionView key={`${step.slot}-${step.which}`} question={question} chosen={chosen} onAnswer={answer} />
       </ChallengeFrame>
 
       {chosen !== null ? (
-        <div className={`relative mt-4 rounded-lg px-4 py-3 text-center ${correct ? 'bg-gold-500/15 shadow-[0_0_22px_rgb(255_210_110/0.3)]' : 'bg-violet-800/60'}`}>
+        <div ref={feedbackRef} className={`relative mt-3 scroll-mb-24 rounded-lg px-4 py-3 text-center ${correct ? 'bg-gold-500/15 shadow-[0_0_22px_rgb(255_210_110/0.3)]' : 'bg-violet-800/60'}`}>
           <p className={`relative text-lg font-extrabold ${correct ? 'text-gold-200' : 'text-violet-100'}`}>
             {correct ? 'Nice!' : 'Good try'}
             {correct ? <Sparkles count={6} radius={52} /> : null}

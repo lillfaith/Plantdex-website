@@ -208,3 +208,22 @@ export function regionAt(imageId: string, xPct: number, yPct: number): string | 
   }
   return null;
 }
+
+/**
+ * A pointer position as percentages of the image box it landed on.
+ *
+ * Takes the box's own rectangle, so the answer is the same whatever size the photograph is drawn
+ * at: a region is a percentage of the PICTURE, never a pixel. The box must be the image itself
+ * (no padding around it), which is why the screen puts its ref on the inner element.
+ */
+export function pointInBox(
+  box: { left: number; top: number; width: number; height: number },
+  clientX: number,
+  clientY: number,
+): { x: number; y: number } | null {
+  if (box.width <= 0 || box.height <= 0) return null;
+  const x = ((clientX - box.left) / box.width) * 100;
+  const y = ((clientY - box.top) / box.height) * 100;
+  if (x < 0 || x > 100 || y < 0 || y > 100) return null;
+  return { x, y };
+}
