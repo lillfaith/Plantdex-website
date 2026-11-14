@@ -33,6 +33,8 @@ matched to their project all the same: a key from the other project fails with "
 might also be owned by another Supabase project", which reads like a broken key rather than
 a mixed-up one.
 
+See `docs/live-test-setup.md` for step-by-step instructions to run the live suites against the test project.
+
 ## One-time setup
 
 1. Create a project at [supabase.com](https://supabase.com) and note its Project URL and

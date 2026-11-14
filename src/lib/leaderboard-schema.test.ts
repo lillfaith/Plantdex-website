@@ -196,6 +196,8 @@ describe('the standings function is locked down', () => {
   it('is executable by signed-in players only', () => {
     expect(SQL).toMatch(/revoke all on function public\.leaderboard_standings\(text, integer\) from public/);
     expect(SQL).toMatch(/grant execute on function public\.leaderboard_standings\(text, integer\) to authenticated/);
+    // Supabase grants anon EXECUTE by default; `from public` does not remove a named-role grant.
+    expect(SQL).toMatch(/revoke all on function public\.leaderboard_standings\(text, integer\) from anon/);
   });
 
   it('returns nothing that identifies a person or a place', () => {

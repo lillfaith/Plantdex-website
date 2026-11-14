@@ -516,3 +516,71 @@ export function gemFor(name: string): string {
     gridToUri(fromRows(GEM_ROWS, { k: '#3b1d63', ...GEM_SETS[index]! })),
   );
 }
+
+// ── Field Board podium art ───────────────────────────────────────────────────────────────
+
+ILLUSTRATIONS.crown = [
+  'k   kk   k',
+  'yk  yy  ky',
+  'yyk yy kyy',
+  'yyyyyyyyyy',
+  'kYYYYYYYYk',
+  'kyyyryyyyk',
+  'kYYYYYYYYk',
+  ' kkkkkkkk ',
+  '          ',
+  '          ',
+];
+ILLUSTRATIONS.medal = [
+  '  pp  pp  ',
+  '   pppp   ',
+  '    pp    ',
+  '   kkkk   ',
+  '  kwwwwk  ',
+  ' kwwXXwwk ',
+  ' kwwXXwwk ',
+  '  kwwwwk  ',
+  '   kkkk   ',
+  '          ',
+];
+
+/** A silver (2nd) or bronze (3rd) medal on the shared ribbon. */
+export function medalArt(place: 2 | 3): string {
+  const coin =
+    place === 2
+      ? { w: '#e6e8f5', X: '#aab0d0' }
+      : { w: '#f2b784', X: '#b4713f' };
+  return memo(`m:${place}`, () =>
+    gridToUri(fromRows(ILLUSTRATIONS.medal!, { ...PAL, ...coin })),
+  );
+}
+
+// Botanical trophies for the podium: one cup, three different toppers.
+const CUP = [
+  'kYyyyyyyYk',
+  'kYyyyyyyYk',
+  ' kYyyyyYk ',
+  '  kkYYkk  ',
+  '   kYYk   ',
+  '  kYYYYk  ',
+];
+ILLUSTRATIONS.trophyBloom = ['   kppk   ', '  kpyypk  ', '   kppk   ', '    kg    ', ...CUP];
+ILLUSTRATIONS.trophyLeaf = ['    kggk  ', '   kgggGk ', '    kGGk  ', '     kk   ', ...CUP];
+ILLUSTRATIONS.trophyAcorn = ['    kk    ', '  kBBBBk  ', '  kBbBbk  ', '   kbbk   ', ...CUP];
+
+/** The botanical trophy for a podium place: gold bloom, silver leaf, bronze acorn. */
+export function trophyArt(place: 1 | 2 | 3): string {
+  const rows =
+    place === 1
+      ? ILLUSTRATIONS.trophyBloom!
+      : place === 2
+        ? ILLUSTRATIONS.trophyLeaf!
+        : ILLUSTRATIONS.trophyAcorn!;
+  const metal: Record<string, string> =
+    place === 1
+      ? {}
+      : place === 2
+        ? { y: '#e6e8f5', Y: '#aab0d0' }
+        : { y: '#f2b784', Y: '#b4713f' };
+  return memo(`tr:${place}`, () => gridToUri(fromRows(rows, { ...PAL, ...metal })));
+}

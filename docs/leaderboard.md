@@ -89,12 +89,68 @@ To check it live, sign in, open `/leaderboard`, join, and confirm your own row a
 the counts your collection shows. `e2e/supabase.e2e.test.ts` is where a cross-user attack on
 it would belong; it is not written yet, and that gap is listed below.
 
+## Verified migration status
+
+`0011_leaderboard.sql` is applied to the test project and not to production. See
+`docs/leaderboard-showcase-proposal.md` for the evidence, the blockers and a proposal for
+categories and a collection showcase.
+
 ## Known gaps
 
-- **No live cross-user test.** The RLS attacks in `e2e/supabase.e2e.test.ts` do not yet cover
-  `leaderboard_participants` or the standings function. The source-level guards in
-  `leaderboard-schema.test.ts` check the shape of the SQL, not Postgres's behaviour.
+- **The live cross-user test exists but has not been run.** `e2e/leaderboard.e2e.test.ts` attacks the
+  board from two accounts (opt-in, opt-out, restricted fields, forged writes, region filtering, signed-out
+  access). It needs the test project's credentials in `.env.local` and runs with
+  `npm run verify:supabase`; it is skipped without them.
 - **One launched region.** `regions.ts` has launched only `us-ga`, so the regional board is
   correct and nearly empty. It needs no code change when a second region launches.
 - **Ties share a standing but not an order.** `rank()` gives equal scores equal numbers; the
   row order within a tie is by user id, which is deterministic and arbitrary.
+
+## Field Board UI polish (development branch)
+
+Decisions made without review, all reversible and all presentation-only:
+
+- **No schema change.** `leaderboard_standings()` is untouched, so migration 0011 stays separate and
+  unapplied. The page fetches the function's maximum (200 rows) in one call, finds the player's own
+  row wherever it sits within that, and pages the rest client-side ("Show more").
+- **Published fields only.** The function returns a display name, a launched region, counts and
+  points. It returns no level, XP, avatar or frame, so none is shown and none is invented. The
+  podium art is decorative (a crown and two medals), never a stand-in for a player's avatar.
+- **Ties.** Ranking is the server's `rank()`: equal points share a standing. Three players tied for
+  first all stand on the first step.
+- **Honesty line stays in the first render of every state.** `scripts/check_live_site.py` asserts
+  "These scores are provisional" on `/leaderboard/`.
+- **Failure copy.** A missing function (migration not applied to the project) reads as "not switched
+  on for this project yet" rather than a database error.
+- **Calm by design.** No streaks, timers, urgency or invented rewards. The one animation is a
+  single 420ms rise on the podium, switched off under reduced motion.
+- **Pure helpers** live in `src/lib/board-view.ts`; `BoardScreen` is presentational and takes plain
+  props, so every state is renderable in tests with clearly labelled mock data.
+
+## Current page (development branch)
+
+- **Layout:** flat, one phone column. Title and the provisional line, then "Your points", a collapsed
+  "How rankings work", your listing, the board chooser, your rank strip, the pixel podium (real
+  Plantdex sprites standing on three steps, each with its own botanical trophy), then a compact ranked list
+  with "Show more".
+- **One points figure.** Once you are listed, "Your points" shows the board's own row, so it cannot
+  disagree with your rank. Before that it is counted on the device and says so. A device-versus-board
+  difference is reported on the page, never hidden. Pure helpers: `src/lib/board-view.ts` (`ownDisplay`).
+- **Rank strip.** Your place, points and the live gap to the next rank up (`gapToNext`), or your lead,
+  or "Tied for Nth". Your own avatar, frame and title come from your own profile on this device.
+- **Not shown for other players:** avatars, frames, level or XP. The standings function does not publish
+  them. See `docs/leaderboard-showcase-proposal.md`.
+- **Reduced motion:** the only animation is a single 420ms rise on the podium, off under reduced motion.
+
+## Testing
+
+| Layer | File | Runs in |
+| --- | --- | --- |
+| SQL shape, constants, privacy columns | `src/lib/leaderboard-schema.test.ts` | `npm test` |
+| Scoring rule | `src/lib/leaderboard.test.ts` | `npm test` |
+| Layout helpers, every screen state, ties, regions | `src/lib/board-view.test.ts` | `npm test` |
+| Data layer against a stand-in client | `src/lib/remote-leaderboard.test.ts` | `npm test` |
+| Guards on the live test (columns in sync, never production) | `src/lib/leaderboard-e2e-guard.test.ts` | `npm test` |
+| Two accounts attacking the board | `e2e/leaderboard.e2e.test.ts` | `npm run verify:supabase` (test project, needs `.env.local`) |
+
+Release steps are in `docs/leaderboard-production-checklist.md`.

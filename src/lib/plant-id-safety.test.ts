@@ -119,7 +119,7 @@ describe('the identify-plant function', () => {
     }
   });
 
-  it('gives everybody the same ten scans a day, under a global cap', () => {
+  it('gives signed-out players five scans and signed-in players ten, under a global cap', () => {
     const fn = readFileSync(FUNCTION, 'utf8');
     const read = (name: string) => {
       const match = fn.match(new RegExp(`const ${name} = (\\d+)`));
@@ -132,7 +132,8 @@ describe('the identify-plant function', () => {
 
     expect(anon, 'anonymous scanning must be allowed at all').toBeGreaterThan(0);
     expect(user, 'signing in must never lower the limit').toBeGreaterThanOrEqual(anon);
-    expect(user, 'the daily scan goal is ten').toBe(10);
+    expect(user, 'the signed-in daily scan goal is ten').toBe(10);
+    expect(anon, 'signed-out players get five').toBe(5);
     // The backstop that stops a busy day exhausting a shared allowance at the provider.
     expect(global).toBeGreaterThan(user);
     expect(global, 'stay under the free tier with headroom to notice').toBeLessThanOrEqual(500);

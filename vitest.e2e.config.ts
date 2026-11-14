@@ -14,6 +14,8 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['e2e/**/*.e2e.test.ts'],
+    // Refuses to run against anything but the test project, for every live suite.
+    setupFiles: ['e2e/guard.setup.ts'],
     testTimeout: 60_000,
     hookTimeout: 60_000,
     fileParallelism: false,

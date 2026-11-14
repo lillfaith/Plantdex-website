@@ -229,4 +229,8 @@ $$;
 -- narrowed explicitly. Signing in is the gate: the board is for players, and an anonymous
 -- reader has no business enumerating the names people chose.
 revoke all on function public.leaderboard_standings(text, integer) from public;
+-- Supabase also grants EXECUTE on every new public function to `anon` directly, through its
+-- default privileges, and `from public` does not touch a grant made to a named role. The live
+-- test caught exactly this: a signed-out client could call the function. Revoke it by name.
+revoke all on function public.leaderboard_standings(text, integer) from anon;
 grant execute on function public.leaderboard_standings(text, integer) to authenticated;

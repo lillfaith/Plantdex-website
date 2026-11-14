@@ -588,7 +588,7 @@ export function ScanPanel() {
                 >
                   Create a free account
                 </Link>{' '}
-                for a higher daily limit. Everything else here works without one.
+                to keep your scan history. Everything else here works without one.
               </p>
             )}
           </section>
@@ -1117,8 +1117,8 @@ export function ScanPanel() {
 
       {!user && (
         <p className="text-xs leading-relaxed text-violet-400">
-          You can scan without an account. Signed in, you get a higher daily limit and your
-          scan history is kept &mdash; signed out, nothing is saved anywhere.
+          You can scan without an account. Signed in, your scan history is kept &mdash; signed
+          out, nothing is saved anywhere.
         </p>
       )}
 

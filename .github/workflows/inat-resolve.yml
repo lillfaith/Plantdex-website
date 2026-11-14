@@ -31,6 +31,12 @@ on:
         default: ''
         type: string
 
+      licenses:
+        description: Comma-separated iNaturalist licence codes (cc0 = public domain only)
+        required: false
+        default: cc0
+        type: string
+
 permissions:
   contents: read
 
@@ -44,4 +50,5 @@ jobs:
           TAXON: ${{ inputs.taxon }}
           LIMIT: ${{ inputs.limit }}
           PLACE_ID: ${{ inputs.place_id }}
+          LICENSES: ${{ inputs.licenses }}
         run: python3 scripts/inat_observations.py
