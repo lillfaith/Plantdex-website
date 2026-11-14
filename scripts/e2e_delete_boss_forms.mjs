@@ -242,10 +242,16 @@ try {
   check('bystander E: every row identical, column by column and value by value (timestamps included)',
     JSON.stringify(bystanderAfter) === JSON.stringify(bystanderBefore),
     `before=${JSON.stringify(bystanderBefore).slice(0, 200)} after=${JSON.stringify(bystanderAfter).slice(0, 200)}`);
+  // Compare instants, not strings: the SQL endpoint prints timestamptz as '2026-03-05 06:07:08+00'.
+  const at = (v) => (v ? new Date(v).getTime() : NaN);
   check('bystander E: the seeded values are the values read back (not just "some rows")',
-    bystanderAfter.boss_forms[0]?.earned_at?.startsWith('2026-03-05T06:07:08') &&
-    bystanderAfter.mastered[0]?.mastered_at?.startsWith('2026-02-14T15:16:17') &&
-    bystanderAfter.challenge_completions.length === 3);
+    at(bystanderAfter.boss_forms[0]?.earned_at) === at(FIXED.earned) &&
+    at(bystanderAfter.mastered[0]?.mastered_at) === at(FIXED.mastered) &&
+    at(bystanderAfter.learned[0]?.learned_at) === at(FIXED.learned) &&
+    at(bystanderAfter.discoveries[0]?.discovered_at) === at(FIXED.found) &&
+    bystanderAfter.challenge_completions.length === 3 &&
+    bystanderAfter.challenge_completions.every((r) => at(r.completed_at) === at(FIXED.completed)),
+    JSON.stringify(bystanderAfter).slice(0, 300));
   const stillIn = await post('/auth/v1/token?grant_type=password', { email: E.email, password: E.password });
   check('bystander E: can still sign in', stillIn.status === 200);
 
