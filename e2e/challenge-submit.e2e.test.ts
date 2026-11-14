@@ -213,12 +213,31 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
       ['a sql-shaped herb id', JSON.stringify({ herbId: "x'; drop table boss_forms;--", activity: 'part-spotter', attempt: 1, answers: [] }), true],
       ['a 300 KB body', JSON.stringify({ herbId: HERB, activity: 'part-spotter', attempt: 1, answers: 'x'.repeat(300_000) }), true],
     ];
+    // Requests that are not a well-formed object, or name a plant that is not a slug, are the
+    // CALLER'S error and must be exactly HTTP 400 (they used to be 500 for two of these).
+    const EXACTLY_400 = new Set([
+      'not JSON', 'JSON null', 'a JSON array', 'a bare number', 'a path-shaped herb id', 'a sql-shaped herb id',
+    ]);
+
+    async function snapshot(client: SupabaseClient, id: string) {
+      const counts: Record<string, number> = {};
+      for (const t of ['challenge_completions', 'boss_forms', 'discoveries', 'learned', 'mastered']) {
+        const { data, error } = await client.from(t).select('*').eq('user_id', id);
+        expect(error, t).toBeNull();
+        counts[t] = (data ?? []).length;
+      }
+      return counts;
+    }
+
     for (const [name, payload, raw] of cases) {
-      it(`${name}: refused, never a pass, never a crash`, async () => {
+      it(`${name}: refused, never a pass, never a crash, and the database is unchanged`, async () => {
+        const before = await snapshot(supabase!, alice.id);
         const r = await call(aliceToken, payload, { raw });
-        expect(r.status, r.text).toBeLessThan(500);
+        if (EXACTLY_400.has(name)) expect(r.status, `${name}: ${r.text}`).toBe(400);
+        else expect(r.status, r.text).toBeLessThan(500);
         expect(r.json?.ok, r.text).not.toBe(true);
         expect(r.json?.bossForm, r.text).not.toBe(true);
+        expect(await snapshot(supabase!, alice.id), 'no record may be created or changed').toEqual(before);
       });
     }
 
