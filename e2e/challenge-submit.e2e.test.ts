@@ -43,22 +43,42 @@ const seenBodies: string[] = [];
 
 type Reply = { status: number; text: string; json: Record<string, unknown> | null };
 
+/** A just-issued token can be refused as "JWT issued at future" while two clocks disagree by a moment. */
+const CLOCK_SKEW = /issued at future/i;
+
+async function waitUntilTokenAccepted(client: SupabaseClient): Promise<void> {
+  for (let i = 0; i < 20; i += 1) {
+    const { error } = await client.from('boss_forms').select('user_id').limit(1);
+    if (!error || !CLOCK_SKEW.test(error.message)) return;
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+  throw new Error('the token was still refused as issued in the future after 40s');
+}
+
 async function call(
   token: string | null,
   body: unknown,
   opts: { method?: string; raw?: boolean; headers?: Record<string, string> } = {},
 ): Promise<Reply> {
-  const res = await fetch(ENDPOINT, {
-    method: opts.method ?? 'POST',
-    headers: {
-      apikey: KEY!,
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...opts.headers,
-    },
-    body: opts.method === 'GET' ? undefined : opts.raw ? (body as string) : JSON.stringify(body),
-  });
-  const text = await res.text();
+  const send = () =>
+    fetch(ENDPOINT, {
+      method: opts.method ?? 'POST',
+      headers: {
+        apikey: KEY!,
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...opts.headers,
+      },
+      body: opts.method === 'GET' ? undefined : opts.raw ? (body as string) : JSON.stringify(body),
+    });
+  let res = await send();
+  let text = await res.text();
+  // Only the clock-skew refusal is retried, and only a few times: any other 401 is a real answer.
+  for (let i = 0; i < 5 && res.status === 401 && CLOCK_SKEW.test(text); i += 1) {
+    await new Promise((r) => setTimeout(r, 2000));
+    res = await send();
+    text = await res.text();
+  }
   seenBodies.push(text);
   let json: Record<string, unknown> | null = null;
   try {
@@ -116,7 +136,8 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
 
     // Make Alice genuinely mastered, the way a player does: discover, learn, one sighting,
     // then the server re-derives mastery from its own rows.
-    await new Promise((r) => setTimeout(r, 3000)); // a token used instantly can read "issued in the future"
+    await waitUntilTokenAccepted(supabase!);
+    await waitUntilTokenAccepted(bobClient);
     const storage = createRemoteHerbdexStorage(alice.id);
     let state = await storage.load();
     state = applyDiscovery(state, HERB).state;
