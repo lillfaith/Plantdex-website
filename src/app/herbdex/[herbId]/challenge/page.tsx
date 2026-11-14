@@ -31,7 +31,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ herb
   const herb = getCatalogueEntry(herbId);
   if (!herb || !(BOSS_PILOT as readonly string[]).includes(herbId)) notFound();
   return (
-    <main id="main" className="mx-auto max-w-md px-4 pt-4 pb-28">
+    <main id="main" className="relative z-10 mx-auto max-w-md px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[calc(7rem+env(safe-area-inset-bottom))]">
       <ChallengeGate herbId={herb.id} name={herb.commonName} />
     </main>
   );

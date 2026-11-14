@@ -1624,3 +1624,18 @@ Plan and reasoning: `docs/boss-form-revised-questions-and-ux.md`, `docs/boss-for
 - **No timers, no randomness, no blur, no check-mark glyph** in the screens (a drawn SVG tick is
   used; the glyph renders as emoji on some phones). One-shot animations are listed in the
   reduced-motion block.
+- **The atmosphere is CSS and inline SVG only, and nothing in it loops forever.** Pine
+  silhouettes, the existing `pixelForest()` strip, a golden light and five drifting seeds sit in
+  `BotanicalStage` at `-z-10` (a positioned layer at `z-0` painted OVER the footer text). Seeds make
+  three slow passes and rest; the hub's aura breathes twice. That is the "no ambient motion"
+  Motion rule applied to a screen that wanted ambience. `.boss-scene[data-paused]` freezes every
+  animation while the tab is hidden; `data-skip` lands them on their end state. The forest strip is
+  held at 30% opacity because a decoration behind text must not lower its contrast.
+- **An element revealed by an animation must not also be hidden by an inline style.** The
+  evolution's Boss Form carried `style={{ opacity: 0 }}` and relied on `animation-fill-mode: both`
+  to show it, so under `prefers-reduced-motion` (animation: none) the Boss Form never appeared and
+  the reduced-motion rule also hid the adult: a blank screen. Animation classes carry their own
+  starting state through `both`; reduced motion simply removes the animation. Pinned in
+  `challenge-screens.test.ts`.
+- **The evolution names only what exists.** The Boss Form sprite, the plant's name, and the fixed
+  disclaimer. No XP, badge, frame or collectible, because the system awards none.

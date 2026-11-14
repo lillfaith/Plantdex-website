@@ -5,7 +5,10 @@ import { PlantSprite } from '@/components/PlantSprite';
 import { hasRetry, type ActivityId } from '@/lib/boss-form';
 import { submitChallenge, type SubmitResult } from '@/lib/challenge-client';
 import { buildChallenge, scoreSubmission, type Slot } from '@/lib/mastery-challenges';
+import { ChallengeFrame } from './ChallengeFrame';
+import { FlowerProgress, type FlowerState } from './FlowerProgress';
 import { QuestionView } from './QuestionViews';
+import { Sparkles } from './Sparkles';
 
 /**
  * ONE ACTIVITY, ONE SCREEN AT A TIME.
@@ -40,7 +43,6 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
   const [answers, setAnswers] = useState<number[][]>([]);
   const [step, setStep] = useState<Step>({ slot: 0, which: 'primary' });
   const [chosen, setChosen] = useState<number | null>(null);
-  const [secondChance, setSecondChance] = useState<number[] | null>(null);
   const [queue, setQueue] = useState<number[]>([]);
   const [finished, setFinished] = useState<SubmitResult | { ok: true; preview: true; passed: boolean; resolved: number; total: number } | null>(null);
   const [busy, setBusy] = useState(false);
@@ -93,7 +95,6 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
       const redo = hasRetry(activity) ? missed(answers) : [];
       if (redo.length > 0) {
         setQueue(redo);
-        setSecondChance(redo);
         return setStep({ slot: redo[0]!, which: 'replacement' });
       }
       return void finish(answers);
@@ -107,7 +108,10 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
     const preview = finished.ok && 'preview' in finished;
     return (
       <section className="mt-4 flex flex-col items-center text-center" aria-live="polite">
-        <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} scale={1} frozen={!passed} />
+        <div className="relative">
+          <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} scale={1} frozen={!passed} />
+          {passed ? <Sparkles count={8} radius={70} /> : null}
+        </div>
         {finished.ok ? (
           <>
             <h2 className="font-display text-3xl font-extrabold text-gold-plate">
@@ -140,47 +144,44 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
 
   const correct = chosen === question.correctIndex;
   const secondPhase = step.which === 'replacement';
+  const flowers: FlowerState[] = slots.map((_, index) => {
+    const given = answers[index];
+    if (given === undefined) return index === step.slot ? 'current' : 'ahead';
+    const right =
+      given[0] === slots[index]!.primary.correctIndex ||
+      (given[1] !== undefined && given[1] === slots[index]!.replacement?.correctIndex);
+    return right ? 'bloom' : 'sprout';
+  });
 
   return (
     <section className="mt-2" aria-live="polite">
       <div className="flex items-center gap-3">
-        <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} scale={1} className="shrink-0" />
+        <div className="w-16 shrink-0">
+          <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} fit />
+        </div>
         <div className="min-w-0 flex-1">
-          <ol className="flex gap-1.5" aria-label={`Question ${step.slot + 1} of ${total}`}>
-            {slots.map((_, index) => {
-              const given = answers[index];
-              const done = given !== undefined;
-              const right =
-                done &&
-                (given[0] === slots[index]!.primary.correctIndex ||
-                  (given[1] !== undefined && given[1] === slots[index]!.replacement?.correctIndex));
-              const current = index === step.slot;
-              return (
-                <li
-                  key={index}
-                  className={`h-3 flex-1 rounded-sm ${
-                    right ? 'bg-gold-400' : done && !(secondChance?.includes(index) && step.slot !== index && given.length === 1 && secondPhase) ? 'bg-violet-500' : current ? 'bg-violet-200' : 'bg-violet-700'
-                  }`}
-                />
-              );
-            })}
-          </ol>
+          <FlowerProgress
+            states={flowers}
+            label={`Question ${step.slot + 1} of ${total}`}
+          />
           {secondPhase ? (
-            <p className="mt-1.5 text-xs font-bold tracking-wide text-gold-300 uppercase">Second chance</p>
+            <p className="mt-1 text-xs font-bold tracking-wide text-gold-300 uppercase">Second chance</p>
           ) : isTrial ? (
-            <p className="mt-1.5 text-xs font-bold tracking-wide text-violet-300 uppercase">One hit allowed</p>
+            <p className="mt-1 text-xs font-bold tracking-wide text-violet-300 uppercase">One hit allowed</p>
           ) : null}
         </div>
       </div>
 
-      <h2 className="mt-5 text-center text-2xl leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
-
-      <QuestionView key={`${step.slot}-${step.which}`} question={question} chosen={chosen} onAnswer={answer} />
+      <ChallengeFrame className="mt-6">
+        <h2 className="text-center text-2xl leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
+        <QuestionView key={`${step.slot}-${step.which}`} question={question} chosen={chosen} onAnswer={answer} />
+      </ChallengeFrame>
 
       {chosen !== null ? (
-        <div className={`mt-4 rounded-lg px-4 py-3 text-center ${correct ? 'bg-gold-500/15' : 'bg-violet-800/60'}`}>
-          <p className={`text-lg font-extrabold ${correct ? 'text-gold-200' : 'text-violet-100'}`}>
-            {correct ? 'Nice!' : 'Not quite'}
+        <div className={`relative mt-4 rounded-lg px-4 py-3 text-center ${correct ? 'bg-gold-500/15 shadow-[0_0_22px_rgb(255_210_110/0.3)]' : 'bg-violet-800/60'}`}>
+          <p className={`relative text-lg font-extrabold ${correct ? 'text-gold-200' : 'text-violet-100'}`}>
+            {correct ? 'Nice!' : 'Good try'}
+            {correct ? <Sparkles count={6} radius={52} /> : null}
           </p>
           <p className="mt-0.5 text-sm text-violet-100">{question.feedback}</p>
           <button

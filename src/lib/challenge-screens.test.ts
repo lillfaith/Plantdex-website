@@ -91,7 +91,11 @@ describe('the screens keep the rules', () => {
   const views = read('src/components/challenges/QuestionViews.tsx');
   const hub = read('src/components/challenges/ChallengeExperience.tsx');
   const evolution = read('src/components/challenges/BossEvolution.tsx');
-  const all = runner + views + hub + evolution;
+  const art = ['ChallengeArt', 'ChallengeFrame', 'FlowerProgress', 'Sparkles', 'BotanicalStage']
+    .map((name) => read(`src/components/challenges/${name}.tsx`))
+    .join('\n');
+  const all = runner + views + hub + evolution + art;
+  const css = readFileSync('src/app/globals.css', 'utf8');
 
   it('has no timer, no countdown and no randomness', () => {
     expect(all).not.toMatch(/setTimeout|setInterval|requestAnimationFrame|Math\.random|Date\.now/);
@@ -117,5 +121,44 @@ describe('the screens keep the rules', () => {
   });
   it('states the fixed disclaimer on the evolution screen', () => {
     expect(evolution).toMatch(/CHALLENGE_DISCLAIMER/);
+  });
+  it('names only rewards that exist: the Boss Form, and no XP, badge, frame or collectible', () => {
+    for (const source of [evolution, hub, runner]) {
+      expect(source).not.toMatch(/\bXP\b|achievement|avatar|frame unlocked|collectible|reward/i);
+    }
+  });
+  it('the evolution is skippable, closes on Escape, and covers the navigation through a portal', () => {
+    expect(evolution).toMatch(/setSkipped\(true\)/);
+    expect(evolution).toMatch(/event\.key === 'Escape'/);
+    expect(evolution).toMatch(/createPortal\(/);
+    expect(evolution).toMatch(/role="dialog"/);
+  });
+  it('no animated element is hidden by an inline style, which reduced motion could not undo', () => {
+    expect(evolution + hub + runner + art).not.toMatch(/style=\{\{[^}]*opacity:\s*0/);
+  });
+  it('every decorative piece is aria-hidden', () => {
+    for (const name of ['Sparkles', 'BotanicalStage', 'ChallengeFrame', 'ChallengeArt']) {
+      expect(read(`src/components/challenges/${name}.tsx`), name).toMatch(/aria-hidden="true"/);
+    }
+  });
+  it('pauses with the page: a hidden-tab listener, and a stylesheet rule that freezes animations', () => {
+    expect(art).toMatch(/visibilitychange/);
+    expect(css).toMatch(/\.boss-scene\[data-paused='true'\] \*/);
+  });
+  it('every motion class the screens use runs a fixed number of times and is in the reduced-motion list', () => {
+    const block = css.slice(css.indexOf('BOSS FORM CHALLENGES: every motion'));
+    expect(block).not.toMatch(/infinite/);
+    const reduced = block.slice(block.indexOf('@media (prefers-reduced-motion: reduce)'));
+    for (const name of [
+      'challenge-pop', 'flower-bloom', 'sparkle-out', 'seed-drift', 'boss-aura', 'tile-glow',
+      'evolve-out', 'evolve-in', 'evolve-ring', 'evolve-flash', 'evolve-text', 'evolve-text-late',
+    ]) {
+      expect(reduced, name).toContain(`.${name}`);
+    }
+  });
+  it('uses only inline SVG and CSS for decoration: no new image files, no blur, no filter', () => {
+    const block = css.slice(css.indexOf('/*\n * BOSS FORM CHALLENGES: every motion'));
+    expect(block.replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/blur|filter:|backdrop/);
+    expect(art).not.toMatch(/<img|new Image|\.png|\.webp/);
   });
 });
