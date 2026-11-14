@@ -216,8 +216,12 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
     // Requests that are not a well-formed object, or name a plant that is not a slug, are the
     // CALLER'S error and must be exactly HTTP 400 (they used to be 500 for two of these).
     const EXACTLY_400 = new Set([
-      'not JSON', 'JSON null', 'a JSON array', 'a bare number', 'a path-shaped herb id', 'a sql-shaped herb id',
+      'not JSON', 'JSON null', 'a JSON array', 'a bare number', 'a sql-shaped herb id',
     ]);
+    // A path-traversal string is stopped by the platform's edge firewall (Cloudflare, HTTP 403)
+    // before it reaches the function; if it ever does reach it, the function answers 400. Either is
+    // a refusal, and neither may touch the database.
+    const REFUSED_AT_EDGE_OR_400 = new Set(['a path-shaped herb id']);
 
     async function snapshot(client: SupabaseClient, id: string) {
       const counts: Record<string, number> = {};
@@ -233,8 +237,9 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
       it(`${name}: refused, never a pass, never a crash, and the database is unchanged`, async () => {
         const before = await snapshot(supabase!, alice.id);
         const r = await call(aliceToken, payload, { raw });
-        if (EXACTLY_400.has(name)) expect(r.status, `${name}: ${r.text}`).toBe(400);
-        else expect(r.status, r.text).toBeLessThan(500);
+        if (EXACTLY_400.has(name)) expect(r.status, `${name}: ${r.text.slice(0, 200)}`).toBe(400);
+        else if (REFUSED_AT_EDGE_OR_400.has(name)) expect([400, 403], `${name}: ${r.text.slice(0, 200)}`).toContain(r.status);
+        else expect(r.status, r.text.slice(0, 200)).toBeLessThan(500);
         expect(r.json?.ok, r.text).not.toBe(true);
         expect(r.json?.bossForm, r.text).not.toBe(true);
         expect(await snapshot(supabase!, alice.id), 'no record may be created or changed').toEqual(before);
