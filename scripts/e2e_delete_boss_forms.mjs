@@ -25,7 +25,8 @@
  * THE TOKEN IS NEVER PRINTED. Every console line passes through a redactor that replaces it, and a
  * check at the end scans the whole captured output for it.
  *
- * Env: PROJECT_REF (must equal the test ref), SUPABASE_ACCESS_TOKEN.
+ * Env: PROJECT_REF (must equal the test ref), SUPABASE_ACCESS_TOKEN, and optionally REQUIRE_SCOPED_TOKEN=1
+ * (fail unless the token cannot see the production project).
  */
 
 const TEST_REF = 'vgjehmwcpavflbfhbbrp';
@@ -191,7 +192,10 @@ try {
   const projects = await projRes.json();
   const ids = projects.map((p) => p.id);
   check('token reaches the TEST project', ids.includes(TEST_REF));
-  out(`info: this token is account-scoped: it can see ${ids.length} project(s), including production: ${ids.includes(PRODUCTION_REF) ? 'YES' : 'no'}. The safeguard is that no URL here is built from anything but the TEST ref constant.`);
+  const seesProduction = ids.includes(PRODUCTION_REF);
+  out(`info: this token can see ${ids.length} project(s), including production: ${seesProduction ? 'YES' : 'no'}.${seesProduction ? ' It is not scoped to TEST. The safeguard is that no URL here is built from anything but the TEST ref constant.' : ''}`);
+  // Opt-in: once a TEST-scoped token exists, REQUIRE_SCOPED_TOKEN=1 turns "can see production" into a failure.
+  if (process.env.REQUIRE_SCOPED_TOKEN === '1') check('token is scoped to the TEST project only (cannot see production)', !seesProduction);
 
   const keys = await (await fetch(`${MGMT}/api-keys`, { headers: { Authorization: `Bearer ${TOKEN}` } })).json();
   ANON = keys.find((k) => k.name === 'anon')?.api_key ?? '';

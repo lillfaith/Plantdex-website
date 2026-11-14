@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const wf = readFileSync('.github/workflows/comparison-account.yml', 'utf8');
@@ -53,8 +53,20 @@ describe('the account-deletion live check cannot be redirected to production', (
 
 describe('the account-deletion live check handles its token and its leftovers', () => {
   it('passes the token only to the two steps that run the script', () => {
-    const uses = job.match(/SUPABASE_ACCESS_TOKEN: \$\{\{ secrets\.SUPABASE_ACCESS_TOKEN \}\}/g) ?? [];
+    const uses = job.match(/SUPABASE_ACCESS_TOKEN: \$\{\{ secrets\.SUPABASE_TEST_ACCESS_TOKEN \|\| secrets\.SUPABASE_ACCESS_TOKEN \}\}/g) ?? [];
     expect(uses).toHaveLength(2);
+  });
+  it('prefers a TEST-scoped token when one exists and can require it', () => {
+    expect(wf).toContain('SUPABASE_TEST_ACCESS_TOKEN');
+    expect(script).toContain("process.env.REQUIRE_SCOPED_TOKEN === '1'");
+  });
+  it('every token-using workflow is dispatch-only with read-only permissions and no inline input expressions', () => {
+    for (const f of readdirSync('.github/workflows').filter((n) => n.endsWith('.yml'))) {
+      const text = readFileSync(`.github/workflows/${f}`, 'utf8');
+      if (!text.includes('SUPABASE_ACCESS_TOKEN')) continue;
+      expect(text, `${f} must not run on pull requests, comments or pushes`).not.toMatch(/^\s{2}(pull_request|pull_request_target|issue_comment|issues|push|workflow_run)\s*:/m);
+      expect(text, `${f} needs read-only permissions`).toMatch(/^permissions:\s*\n\s+contents: read\s*$/m);
+    }
   });
   it('redacts the token from every line it prints and checks the whole output for it', () => {
     expect(script).toContain('const redact = (s) => String(s).split(TOKEN).join');
