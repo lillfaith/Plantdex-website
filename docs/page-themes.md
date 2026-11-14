@@ -35,9 +35,9 @@ and `src/lib/page-themes.ts` and wait for their pages.** Nothing here recolours 
 ## Strengths are set by contrast, not by taste
 
 The spec's lighter colours are only allowed to be the ground's lighting, at low strength. The
-lighting alphas (upper light 52%, lower light 66%, royal wash 22%, accent glow 9%, glint 11%) were
+lighting alphas (upper light 60% by default, lower light 75%, royal wash 25%, accent glow 9%, glint 11%, plus per-theme overrides and a vignette that keeps the edges dark) were
 tuned so that the dimmest text colour used directly on a page (`violet-400`) stays at or above
-4.5:1 over the brightest point of every applied background (4.74 to 5.10 measured). When applying
+4.5:1 over the brightest point of every applied background (4.84 to 5.96 measured). When applying
 a new theme, re-measure: its lower light is brighter than the plum default.
 
 ## Not changed on purpose

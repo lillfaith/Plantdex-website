@@ -10,7 +10,7 @@ const SPEC: Record<string, [string, string, string, string, string]> = {
   home: ['#170d2b', '#38205b', '#512b86', '#f2a7cf', '#f2c75c'],
   scan: ['#14152f', '#243d70', '#235b69', '#6fd5c2', '#b9a1f2'],
   collection: ['#170d2b', '#34205f', '#59308c', '#f2c75c', '#b786f1'],
-  garden: ['#171c2c', '#294a42', '#40305f', '#8cc78b', '#c5a5e9'],
+  garden: ['#171c2c', '#426b58', '#40305f', '#8cc78b', '#c5a5e9'],
   journal: ['#24152e', '#58304e', '#744366', '#f2a7cf', '#f5d58b'],
   learn: ['#211b40', '#414c83', '#5a477e', '#afc3ff', '#f2d58b'],
   quests: ['#27152d', '#663b57', '#89526b', '#ffaa93', '#f4cd75'],
@@ -60,5 +60,22 @@ describe('page themes', () => {
     const nav = readFileSync('src/components/SiteNav.tsx', 'utf8');
     expect(nav).toContain('nav-bar');
     expect(nav).not.toContain('panel-raised');
+  });
+});
+
+describe('page theme refinement', () => {
+  it('moss green reference on Garden, boosted teal on Scan', () => {
+    expect(css).toMatch(/\[data-page-theme='garden'\][^}]*--pt-b:#426b58/);
+    expect(css).toMatch(/\[data-page-theme='scan'\][^}]*--pt-c-a:90%/);
+  });
+  it('secondary text token is the pale lavender, and panels are lighter than the old plum-700 at 72%', () => {
+    expect(css).toMatch(/--color-violet-300:\s*#ddd0ef/);
+    const at = css.indexOf('@utility panel {');
+    const block = css.slice(at, css.indexOf('}', at));
+    expect(block).toContain('var(--color-plum-700) 91%, white');
+  });
+  it('a vignette keeps the edges darker than the middle', () => {
+    const at = css.indexOf('@utility page-atmosphere');
+    expect(css.slice(at, css.indexOf('\n}', at))).toMatch(/transparent 58%, color-mix\(in srgb, var\(--color-brand-plum\)/);
   });
 });

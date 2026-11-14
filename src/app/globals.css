@@ -69,8 +69,8 @@
   /* 500 and 400 were darkened-for-mood originally and failed AA as body text. Raised
      in lightness only — hue and saturation are unchanged, so the deck look is intact. */
   --color-violet-500: #bf70fb;
-  --color-violet-400: #d484f5;
-  --color-violet-300: #ddaaf7;
+  --color-violet-400: #dd9ef6;
+  --color-violet-300: #ddd0ef;
   --color-violet-200: #ecd4fb;
   /* Brightest body text. Previously undefined, so 32 usages of `text-violet-100` were
      silently falling through to Tailwind's stock violet — a blue-leaning lavender that
@@ -336,9 +336,9 @@ body {
  * Nine are defined; `ACTIVE_PAGE_THEMES` lists the ones a route uses today.
  */
 [data-page-theme='home']       { --pt-a:#170d2b; --pt-b:#38205b; --pt-c:#512b86; --pt-accent:#f2a7cf; --pt-accent-2:#f2c75c; }
-[data-page-theme='scan']       { --pt-a:#14152f; --pt-b:#243d70; --pt-c:#235b69; --pt-accent:#6fd5c2; --pt-accent-2:#b9a1f2; }
-[data-page-theme='collection'] { --pt-a:#170d2b; --pt-b:#34205f; --pt-c:#59308c; --pt-accent:#f2c75c; --pt-accent-2:#b786f1; --pt-glint:#f2a7cf; }
-[data-page-theme='garden']     { --pt-a:#171c2c; --pt-b:#294a42; --pt-c:#40305f; --pt-accent:#8cc78b; --pt-accent-2:#c5a5e9; }
+[data-page-theme='scan']       { --pt-a:#14152f; --pt-b:#243d70; --pt-c:#235b69; --pt-accent:#6fd5c2; --pt-accent-2:#b9a1f2; --pt-c-a:90%; --pt-c-y:101%; }
+[data-page-theme='collection'] { --pt-a:#170d2b; --pt-b:#34205f; --pt-c:#59308c; --pt-accent:#f2c75c; --pt-accent-2:#b786f1; --pt-glint:#f2a7cf; --pt-b-a:72%; --pt-c-a:84%; }
+[data-page-theme='garden']     { --pt-a:#171c2c; --pt-b:#426b58; --pt-c:#40305f; --pt-accent:#8cc78b; --pt-accent-2:#c5a5e9; --pt-b-a:42%; }
 [data-page-theme='journal']    { --pt-a:#24152e; --pt-b:#58304e; --pt-c:#744366; --pt-accent:#f2a7cf; --pt-accent-2:#f5d58b; }
 [data-page-theme='learn']      { --pt-a:#211b40; --pt-b:#414c83; --pt-c:#5a477e; --pt-accent:#afc3ff; --pt-accent-2:#f2d58b; }
 [data-page-theme='quests']     { --pt-a:#27152d; --pt-b:#663b57; --pt-c:#89526b; --pt-accent:#ffaa93; --pt-accent-2:#f4cd75; }
@@ -360,11 +360,12 @@ body {
   pointer-events: none;
   background:
     repeating-linear-gradient(90deg, color-mix(in srgb, var(--pt-accent) 38%, transparent) 0 6px, transparent 6px 12px) top / 100% 2px no-repeat,
+    radial-gradient(ellipse 115% 85% at 50% 46%, transparent 58%, color-mix(in srgb, var(--color-brand-plum) 62%, transparent) 100%),
     radial-gradient(ellipse 55% 20% at 88% 6%, color-mix(in srgb, var(--pt-glint, transparent) 11%, transparent), transparent 100%),
     radial-gradient(ellipse 80% 26% at 50% 0%, color-mix(in srgb, var(--pt-accent) 9%, transparent), transparent 100%),
-    radial-gradient(ellipse 130% 50% at 50% 12%, color-mix(in srgb, var(--pt-b) 52%, transparent), transparent 100%),
-    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) 22%, transparent), transparent 100%),
-    radial-gradient(ellipse 140% 58% at 50% 108%, color-mix(in srgb, var(--pt-c) 66%, transparent), transparent 100%),
+    radial-gradient(ellipse 130% 50% at 50% 12%, color-mix(in srgb, var(--pt-b) var(--pt-b-a, 60%), transparent), transparent 100%),
+    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) 25%, transparent), transparent 100%),
+    radial-gradient(ellipse 140% 58% at 50% var(--pt-c-y, 108%), color-mix(in srgb, var(--pt-c) var(--pt-c-a, 75%), transparent), transparent 100%),
     var(--pt-a);
 }
 
@@ -410,8 +411,8 @@ body {
  *   .panel-modal   dialogs, which must read as nearer than everything behind them
  */
 @utility panel {
-  background: color-mix(in srgb, var(--color-plum-700) 72%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-violet-500) 30%, transparent);
+  background: color-mix(in srgb, color-mix(in srgb, var(--color-plum-700) 91%, white) 74%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-500) 34%, transparent);
   border-radius: var(--radius-card);
   backdrop-filter: blur(8px);
 }

@@ -104,7 +104,7 @@ function PlantChip({
           </span>
           <span className="block truncate text-xs text-violet-400">
             {found ? 'Found' : 'Not yet found'}
-            {qualifier && <span className="text-violet-500"> &middot; {qualifier}</span>}
+            {qualifier && <span className="text-violet-300"> &middot; {qualifier}</span>}
           </span>
         </span>
       </Link>
