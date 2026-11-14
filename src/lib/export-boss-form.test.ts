@@ -122,3 +122,17 @@ describe('account deletion removes Boss Form records', () => {
     expect(names).not.toContain('species_packets');
   });
 });
+
+describe('delete-account error responses', () => {
+  const source = readFileSync('supabase/functions/delete-account/index.ts', 'utf8').replace(/\/\*[\s\S]*?\*\/|^\s*\/\/.*$/gm, '');
+  it('never put a raw database, storage or auth error message in a response body', () => {
+    // Every json({ error: ... }) body is built from our own strings: no `.message` interpolation.
+    const bodies = source.match(/json\(\s*\{\s*error:[\s\S]*?\}\s*,?\s*(?:\d{3})?\s*\)/g) ?? [];
+    expect(bodies.length).toBeGreaterThan(4);
+    for (const body of bodies) expect(body, body).not.toMatch(/\.message|cause instanceof/);
+  });
+  it('logs the detail server-side instead', () => {
+    expect(source).toMatch(/console\.error\('delete-account: deleteUser failed'/);
+    expect(source).toMatch(/console\.error\(`delete-account: could not delete rows from/);
+  });
+});
