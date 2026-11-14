@@ -69,7 +69,9 @@ def search(taxon: str, limit: int, place_id: str | None) -> list[dict]:
         "taxon_name": taxon,
         "quality_grade": "research",
         "photos": "true",
-        "photo_license": "cc0,cc-by,cc-by-nc,cc-by-sa,cc-by-nc-sa",
+        # LICENSES env narrows this, e.g. "cc0" for public-domain-only reference photos.
+        "photo_license": os.environ.get("LICENSES")
+        or "cc0,cc-by,cc-by-nc,cc-by-sa,cc-by-nc-sa",
         "order_by": "votes",
         "per_page": str(max(limit * 3, 30)),
         "locale": "en",
