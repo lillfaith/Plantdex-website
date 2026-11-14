@@ -70,13 +70,17 @@ describe('the Boss Form flag', () => {
     expect(readFileSync('src/lib/types.ts', 'utf8')).not.toMatch(/bossForms/);
     expect(readFileSync('src/lib/herbdex-state.ts', 'utf8')).not.toMatch(/boss/i);
   });
-  it('the Garden marks an earned Boss Form with a STATIC plate and a crown, nothing that moves', () => {
+  it('the Garden marks an earned Boss Form with a STATIC frame, pedestal and plaque, nothing that moves', () => {
     const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
-    expect(view).toContain('boss-plate');
-    expect(view).toMatch(/name="crown"/);
+    expect(view).toContain('boss-frame');
+    expect(view).toContain('boss-pedestal');
+    expect(view).toContain('bossForms.has(herbId)');
     const css = readFileSync('src/app/globals.css', 'utf8');
-    const plate = css.slice(css.indexOf('@utility boss-plate'), css.indexOf('@utility boss-plate') + 400);
-    expect(plate).not.toMatch(/animation/);
+    for (const name of ['boss-frame', 'boss-pedestal']) {
+      const at = css.indexOf(`@utility ${name}`);
+      const block = css.slice(at, css.indexOf('\n}', at));
+      expect(block).not.toMatch(/animation|transition/);
+    }
   });
   it('the Garden changes only the picture and a label', () => {
     const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));

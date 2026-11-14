@@ -3005,6 +3005,38 @@ body {
 
 /* A STATIC golden plate behind an earned Boss Form in the Garden: it marks the tile as rare
    without moving, because the one thing that would cheapen "finished" is flickering. */
-@utility boss-plate {
-  background: radial-gradient(closest-side, rgb(255 210 110 / 0.38), rgb(190 140 255 / 0.14) 62%, transparent 80%);
+/* EARNED BOSS FORM, GARDEN ONLY, ALL STATIC. A thin notched gold frame drawn as 1px lines with
+   stepped corners (an overlay, so the tile keeps its size), and a mossy stone step with a gold rim
+   for the plant to stand on. Pixel hard edges, deck tokens only, no animation. */
+@utility boss-frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --g: color-mix(in srgb, var(--color-gold-500) 85%, transparent);
+  background:
+    linear-gradient(var(--g), var(--g)) 6px 0 / calc(100% - 12px) 1px no-repeat,
+    linear-gradient(var(--g), var(--g)) 6px 100% / calc(100% - 12px) 1px no-repeat,
+    linear-gradient(var(--g), var(--g)) 0 6px / 1px calc(100% - 12px) no-repeat,
+    linear-gradient(var(--g), var(--g)) 100% 6px / 1px calc(100% - 12px) no-repeat,
+    linear-gradient(var(--g), var(--g)) 3px 3px / 3px 3px no-repeat,
+    linear-gradient(var(--g), var(--g)) calc(100% - 3px) 3px / 3px 3px no-repeat,
+    linear-gradient(var(--g), var(--g)) 3px calc(100% - 3px) / 3px 3px no-repeat,
+    linear-gradient(var(--g), var(--g)) calc(100% - 3px) calc(100% - 3px) / 3px 3px no-repeat,
+    linear-gradient(180deg, color-mix(in srgb, var(--color-violet-800) 35%, transparent), transparent 70%);
+}
+@utility boss-pedestal {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 84%;
+  height: 0.5rem;
+  transform: translateX(-50%);
+  z-index: 0;
+  background:
+    linear-gradient(var(--color-gold-500), var(--color-gold-500)) 6px 0 / calc(100% - 12px) 1px no-repeat,
+    linear-gradient(color-mix(in srgb, var(--color-habitat-woodland) 55%, var(--color-plum-900)), color-mix(in srgb, var(--color-habitat-woodland) 55%, var(--color-plum-900))) 6px 1px / calc(100% - 12px) 2px no-repeat,
+    linear-gradient(var(--color-wood-500), var(--color-wood-500)) 3px 3px / calc(100% - 6px) 2px no-repeat,
+    linear-gradient(var(--color-wood-700), var(--color-wood-700)) 0 5px / 100% 3px no-repeat,
+    linear-gradient(var(--color-habitat-woodland), var(--color-habitat-woodland)) 9px -1px / 2px 2px no-repeat,
+    linear-gradient(var(--color-habitat-woodland), var(--color-habitat-woodland)) calc(100% - 12px) -1px / 2px 2px no-repeat;
 }

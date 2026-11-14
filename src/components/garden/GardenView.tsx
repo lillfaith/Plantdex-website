@@ -138,22 +138,29 @@ export function GardenView() {
                   */}
                   <Link
                     href={action ? `/herbdex/${herb.id}#card-mastery` : `/herbdex/${herb.id}`}
-                    className="group flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-plum-600/50"
+                    className="group relative flex flex-col items-center rounded-xl p-2 transition-colors hover:bg-plum-600/50"
                   >
+                    {/* An earned Boss Form's tile gets a thin notched gold frame. It is an overlay
+                        (absolute, no layout), so the tile keeps exactly the size and spacing of its
+                        neighbours. STATIC, and only for a form the server recorded. */}
+                    {bossForms.has(herbId) && (
+                      <span aria-hidden="true" className="boss-frame" />
+                    )}
                     {/* Every sprite gets the same box and stands on its bottom edge, so a
                         pine and a dandelion share one ground line and the bed reads as a
                         planting rather than a row of stickers. Growth is carried by the
                         DRAWING now, not by scaling one image up and down. */}
                     <span className="relative flex h-20 w-full items-end justify-center">
-                      {/* An earned Boss Form stands on a STATIC golden plate: rare, and still. */}
-                      {bossForms.has(herbId) && (
-                        <span aria-hidden="true" className="boss-plate absolute inset-x-0 -top-1 bottom-0 rounded-full" />
-                      )}
-                      <GrowthSprite
-                        herb={herb}
-                        stage={bossForms.has(herbId) ? 'boss' : stage}
-                        advanced={advanced}
-                      />
+                      {/* An earned Boss Form stands on a mossy stone step with a gold rim: still,
+                          and part of the bed rather than a trophy stand. */}
+                      {bossForms.has(herbId) && <span aria-hidden="true" className="boss-pedestal" />}
+                      <span className={`relative z-10 flex h-full w-full items-end justify-center ${bossForms.has(herbId) ? 'pb-1' : ''}`}>
+                        <GrowthSprite
+                          herb={herb}
+                          stage={bossForms.has(herbId) ? 'boss' : stage}
+                          advanced={advanced}
+                        />
+                      </span>
                     </span>
 
                     {/*
@@ -163,7 +170,7 @@ export function GardenView() {
                       glows, pulses or loops, because the one thing that would cheapen
                       "finished" is making it flicker for as long as you look at it.
                     */}
-                    {flowering && (
+                    {flowering && !bossForms.has(herbId) && (
                       <span aria-hidden="true" className="soil-line mt-0.5 h-0.5 w-10 rounded-full" />
                     )}
 
@@ -184,12 +191,16 @@ export function GardenView() {
                     */}
                     <span
                       className={`text-center text-[0.72rem] ${
-                        flowering ? 'font-bold text-gold-300' : 'text-violet-300'
+                        bossForms.has(herbId)
+                          ? '-my-0.5 bg-gold-400 px-1.5 py-0.5 leading-none font-extrabold whitespace-nowrap text-plum-950 shadow-[0_2px_0_var(--color-wood-500)]'
+                          : flowering
+                            ? 'font-bold text-gold-300'
+                            : 'text-violet-300'
                       }`}
                     >
                       {/* A Boss Form is the primary status when earned: one label, never "Mastered" and
                         "Boss Form" side by side. */}
-                      {bossForms.has(herbId) && <Art name="crown" className="mr-1 inline h-3 w-3 align-[-1px]" />}
+                      {bossForms.has(herbId) && <Art name="crown" className="mr-1 hidden h-3 w-3 align-[-1px] min-[380px]:inline" />}
                       {bossForms.has(herbId)
                         ? 'Boss Form'
                         : MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[stage]]}
