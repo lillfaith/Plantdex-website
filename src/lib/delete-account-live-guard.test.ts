@@ -52,12 +52,20 @@ describe('the account-deletion live check cannot be redirected to production', (
 });
 
 describe('the account-deletion live check handles its token and its leftovers', () => {
-  it('passes the token only to the two steps that run the script', () => {
-    const uses = job.match(/SUPABASE_ACCESS_TOKEN: \$\{\{ secrets\.SUPABASE_TEST_ACCESS_TOKEN \|\| secrets\.SUPABASE_ACCESS_TOKEN \}\}/g) ?? [];
+  it('passes the token only to the two steps that run the script, and only the TEST-scoped one', () => {
+    const uses = job.match(/SUPABASE_ACCESS_TOKEN: \$\{\{ secrets\.SUPABASE_TEST_ACCESS_TOKEN \}\}/g) ?? [];
     expect(uses).toHaveLength(2);
   });
-  it('prefers a TEST-scoped token when one exists and can require it', () => {
-    expect(wf).toContain('SUPABASE_TEST_ACCESS_TOKEN');
+  it('has no fallback to the account-wide token, and runs every job in the gated TEST environment', () => {
+    // A missing or mistyped test secret must fail the job, never widen its reach.
+    expect(wf).not.toMatch(/\|\|\s*secrets\.SUPABASE_ACCESS_TOKEN/);
+    expect(wf).not.toContain('secrets.SUPABASE_ACCESS_TOKEN');
+    const jobs = wf.slice(wf.indexOf('\njobs:'));
+    const headers = jobs.match(/^  [a-z-]+:\n(?:    if: [^\n]*\n)?    environment: supabase-test\n/gm) ?? [];
+    expect(headers).toHaveLength(3); // prepare, boss-form-live, delete-account-live
+  });
+  it('requires the token to be unable to see production when it runs the deletion check', () => {
+    expect(job).toContain("REQUIRE_SCOPED_TOKEN: '1'");
     expect(script).toContain("process.env.REQUIRE_SCOPED_TOKEN === '1'");
   });
   it('every token-using workflow is dispatch-only with read-only permissions and no inline input expressions', () => {
