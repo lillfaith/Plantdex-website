@@ -1,0 +1,18 @@
+{
+  "_what": "CC0 reference photographs for the Dandelion Boss Form pilot (Part Spotter). Not shipped: nothing in src/ reads these yet.",
+  "_policy": "iNaturalist photographs licensed CC0 only (owner decision, 2026-11-14). The licence code comes from the iNaturalist API response, printed by the Find iNaturalist observations workflow, run 43618585548.",
+  "_status": "Candidates chosen by eye from one observation; botanist review still required before use. Photographer name not yet recorded (CC0 needs no attribution; add it for provenance).",
+  "observation": "https://www.inaturalist.org/observations/163217195",
+  "taxon": "Taraxacum officinale",
+  "observed": "2023-05-17, Omaha, Nebraska, USA",
+  "license": "cc0",
+  "photos": [
+    {"part": "rosette leaf", "photo_id": 282276229, "file": "rosette-leaf-282276229.webp", "source": "https://inaturalist-open-data.s3.amazonaws.com/photos/282276229/medium.jpg"},
+    {"part": "rosette leaf (alternate)", "photo_id": 282276389, "file": "rosette-leaf-alt-282276389.webp", "source": "https://inaturalist-open-data.s3.amazonaws.com/photos/282276389/medium.jpg"},
+    {"part": "flower head (closing, involucre bracts)", "photo_id": 282276319, "file": "flower-head-282276319.webp", "source": "https://inaturalist-open-data.s3.amazonaws.com/photos/282276319/medium.jpg"},
+    {"part": "stalk", "photo_id": 282276157, "file": "stalk-282276157.webp", "source": "https://inaturalist-open-data.s3.amazonaws.com/photos/282276157/medium.jpg"},
+    {"part": "seed head", "photo_id": 282276185, "file": "seed-head-282276185.webp", "source": "https://inaturalist-open-data.s3.amazonaws.com/photos/282276185/medium.jpg"},
+    {"part": "whole plant", "photo_id": 282276146, "file": "whole-plant-282276146.webp", "source": "https://inaturalist-open-data.s3.amazonaws.com/photos/282276146/medium.jpg"}
+  ],
+  "still_missing": ["open yellow flower head close-up", "cat's-ear (lookalike) rosette and branched stalk, with a named species"]
+}
