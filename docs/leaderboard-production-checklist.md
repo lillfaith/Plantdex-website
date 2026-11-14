@@ -28,8 +28,9 @@ migration (the quota function `claim_scan_pair` from 0009 is already live).
 **Backups.** 0011 is additive: it creates one table, one index, three policies and one function, and rewrites no
 existing row, so a restore is not needed to undo it. A backup is still the right habit before touching the live
 database. Point-in-time recovery is a paid Supabase feature; on a plan without it take an on-demand backup or
-record that none exists. Which applies to production is not visible from the repository, so confirm it in the
-dashboard (Database, Backups) before step 2.
+record that none exists. **Confirmed 2026-11-14 (dashboard screenshot): production is on the Free plan, which includes no project backups and no
+point-in-time recovery.** There is no restore point. 0011 is additive and cannot damage existing data, so it is
+acceptable to proceed without one; a Pro plan (7 days of backups) is the option if you want a safety net for later changes.
 
 **Rollback limits.** There is no down-migration. Removing the board means dropping the table and function, which
 deletes only the opt-in rows (who chose to be listed), never anyone's progress. A frontend rollback is a reset of the
