@@ -80,7 +80,18 @@ Deno.serve(async (req) => {
   } catch {
     return json({ error: 'Body must be JSON' }, 400);
   }
+  // `JSON.parse('null')` and a bare number are valid JSON and not objects: reading a field off them
+  // threw, and the platform answered 500. A malformed request is the caller's error, so say so.
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    return json({ error: 'Body must be a JSON object' }, 400);
+  }
   const herbId = typeof body.herbId === 'string' ? body.herbId : '';
+  // A plant id is a lowercase slug. Anything else never reaches the database, so a hostile string
+  // cannot make a query fail and surface as a server error. An empty id still flows through to the
+  // ordinary refusal ('not-in-pilot'), exactly as before.
+  if (herbId !== '' && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(herbId)) {
+    return json({ error: 'Unknown plant' }, 400);
+  }
 
   // Standing, from the database, under the caller's own session.
   const [mastered, completions] = await Promise.all([
