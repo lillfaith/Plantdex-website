@@ -71,7 +71,14 @@ describe('challenge-submit', () => {
   it('keeps its bucket apart from scanning\u2019s', () => {
     expect(challengeBucket('x').startsWith('challenge:')).toBe(true);
   });
-  it('is not part of any deploy workflow yet', () => {
-    expect(readFileSync('.github/workflows/deploy-function.yml', 'utf8')).not.toContain('challenge-submit');
+  it('can be deployed to the TEST project by name, and to nothing else by accident', () => {
+    const wf = readFileSync('.github/workflows/deploy-function.yml', 'utf8');
+    // Deployable only when chosen explicitly...
+    expect(wf).toContain('- challenge-submit');
+    // ...never swept up by "all" (that is how a release would reach production unnoticed)...
+    expect(wf).toMatch(/! -name 'challenge-submit'/);
+    // ...and refused outright on the production project until the owner approves that step.
+    expect(wf).toMatch(/inputs\.function == 'challenge-submit' && inputs\.project_ref == 'vygiamigomwlvnwkryyl'/);
+    expect(wf).toContain('may not be deployed to production yet');
   });
 });
