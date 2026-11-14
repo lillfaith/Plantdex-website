@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import manifest from '@/data/sprites.json';
 import { BOSS_PILOT } from './boss-form';
@@ -52,9 +52,20 @@ describe('the Boss Form flag', () => {
     expect(bossFormsMode('preview', 'test')).toBe('off');
     expect(bossFormsMode('preview', undefined)).toBe('off');
   });
-  it('no workflow sets the flag', () => {
-    for (const file of ['.github/workflows/deploy.yml']) {
-      expect(readFileSync(file, 'utf8')).not.toContain('NEXT_PUBLIC_BOSS_FORMS');
+  it('no workflow turns the flag on: the deploy may only pin it to off', () => {
+    const deploy = readFileSync('.github/workflows/deploy.yml', 'utf8');
+    // Every mention is the literal 'off' (the build and the bundle guard). Never on, never
+    // preview, never read from a repository variable.
+    const mentions = deploy.match(/NEXT_PUBLIC_BOSS_FORMS[^\n]*/g) ?? [];
+    expect(mentions.length).toBeGreaterThan(0);
+    for (const line of mentions) {
+      if (line.trim().startsWith('#')) continue;
+      expect(line).toMatch(/^NEXT_PUBLIC_BOSS_FORMS: 'off'$/);
+    }
+    // And no other workflow mentions it at all.
+    for (const file of readdirSync('.github/workflows')) {
+      if (file === 'deploy.yml') continue;
+      expect(readFileSync(`.github/workflows/${file}`, 'utf8')).not.toContain('NEXT_PUBLIC_BOSS_FORMS');
     }
   });
   it('the Garden shows one status, never Mastered and Boss Form together', () => {
@@ -69,6 +80,32 @@ describe('the Boss Form flag', () => {
   it('is never stored in HerbdexState', () => {
     expect(readFileSync('src/lib/types.ts', 'utf8')).not.toMatch(/bossForms/);
     expect(readFileSync('src/lib/herbdex-state.ts', 'utf8')).not.toMatch(/boss/i);
+  });
+  it('the Garden marks an earned Boss Form with a STATIC frame, pedestal and plaque, nothing that moves', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    expect(view).toContain('boss-frame');
+    expect(view).toContain('boss-pedestal');
+    expect(view).toContain('bossForms.has(herbId)');
+    const css = readFileSync('src/app/globals.css', 'utf8');
+    for (const name of ['boss-frame', 'boss-pedestal']) {
+      const at = css.indexOf(`@utility ${name}`);
+      const block = css.slice(at, css.indexOf('\n}', at));
+      expect(block).not.toMatch(/animation|transition/);
+    }
+  });
+  it('the Garden wraps long plant names instead of cutting them, and keeps the Boss art inside its frame', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    expect(view).toContain('line-clamp-2');
+    expect(view).not.toMatch(/mt-1 w-full truncate/);
+    // Narrow screens draw the Boss art smaller and nudged into its frame; wider ones at full size.
+    expect(view).toContain('scale-[0.8]');
+    expect(view).toContain('min-[380px]:scale-100');
+  });
+  it('the Garden tile is still one link to the plant page, Boss Form or not', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    // The tile's own link is unconditional: nothing about a Boss Form changes where it goes.
+    expect(view).toContain('`/herbdex/${herb.id}`');
+    expect(view).not.toMatch(/bossForms\.has\(herbId\)\s*\?\s*`\/herbdex/);
   });
   it('the Garden changes only the picture and a label', () => {
     const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));

@@ -30,13 +30,36 @@ export const PREREQUISITE_ACTIVITIES: readonly ActivityId[] = [
   'habitat-season',
 ];
 
-/** Owner-approved initial thresholds. `of` is also the number of questions in the set. */
+/**
+ * Owner-approved thresholds. `of` is also the number of questions in the set.
+ *
+ * Compare moved from 3 of 3 to 2 of 3 on the owner's instruction. The threshold lives only
+ * here, in code: no database row or SQL function holds it, and `challenge-submit` has never
+ * been deployed, so no recorded completion can be affected. Completions are write-once.
+ */
 export const PASS_MARKS: Readonly<Record<ActivityId, { need: number; of: number }>> = {
   'part-spotter': { need: 3, of: 4 },
-  compare: { need: 3, of: 3 },
+  compare: { need: 2, of: 3 },
   'habitat-season': { need: 2, of: 3 },
   'boss-trial': { need: 9, of: 10 },
 };
+
+/**
+ * WHICH ACTIVITIES ALLOW ONE SECOND CHANCE ON A MISSED QUESTION.
+ *
+ * Part Spotter and Habitat do: a missed slot may be answered once more by a DIFFERENT question
+ * on the same fact (never the same question again, because the feedback has just shown its
+ * answer). Compare does not, because its comparisons have only two choices each: with a
+ * retry, pure guessing passed 84% of the time. The Boss Trial never does.
+ */
+export const RETRY_ACTIVITIES: readonly ActivityId[] = ['part-spotter', 'habitat-season'];
+
+export function hasRetry(activity: ActivityId): boolean {
+  return RETRY_ACTIVITIES.includes(activity);
+}
+
+/** The Boss Trial's makeup: six picture questions, three applied, one recall (60/30/10). */
+export const TRIAL_MIX = { visual: 6, applied: 3, recall: 1 } as const;
 
 export const CHALLENGE_DISCLAIMER =
   'Passing this means you studied this guide. It does not mean you can identify or use this plant outdoors.';

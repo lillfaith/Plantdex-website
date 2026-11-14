@@ -39,3 +39,4 @@ deno.lock
 plantdex-ad-assets*.zip
 ad-assets/
 *-codes.csv
+bundle-guard.json

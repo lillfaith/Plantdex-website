@@ -1596,3 +1596,68 @@ backend and no order state anywhere in this repository.
   checkout and no payment processing anywhere in the application", which stopped being true
   the moment `/shop` shipped — exactly as the privacy page's "no analytics" sentences did.
   `legal.test.ts` now fails if a `/shop` route exists while `/terms` denies it.
+
+## Boss Form challenges (Dandelion pilot, OFF)
+
+Four question formats (pick the picture, spot the feature, lookalike showdown, quick pick), three
+short activities and a ten-question Boss Trial. Dev branch only; nothing deployed, flag off.
+Plan and reasoning: `docs/boss-form-revised-questions-and-ux.md`, `docs/boss-form-implementation-plan-v2.md`.
+
+- **Every answer is an integer index, whatever the format.** A picture is an image id, a tapped
+  part is a region id (the screen turns a tap into a region; the server never sees coordinates),
+  a quick pick is short text. That is why the four formats share one server scorer.
+- **Nothing unreviewed is served, and an item missing a photograph or ruling is disabled even in
+  preview.** `CHALLENGE_REVIEWS` and `READY_ASSETS` are both empty; the cat's-ear items `require`
+  a branched-stem photograph and a reviewer's ruling on the wording. The old note said "branched
+  LEAFY flowering stems", and the sources describe leafless stems with small scale-like bracts and
+  branching that is usual, not universal. "Hollow" is never a difference.
+- **Compare passes at 2 of 3 and has no second chance; Part Spotter and Habitat get one; the
+  Trial gets none.** `RETRY_ACTIVITIES` is the one rule, read by the builder, the scorer and the
+  screen. A retry is a DIFFERENT question on the same fact, because the feedback has just
+  revealed the first answer. Pure guessing passes Compare 50% of the time; the Trial, at under
+  0.1%, is the real gate. `challenge-odds.ts` computes this exactly.
+- **The draft bank must not ship.** `next.config.ts` defaults `NEXT_PUBLIC_BOSS_FORMS` to `'off'`
+  so the bundler drops the dynamic import in `ChallengeGate`; a test searches a built `out/` for
+  the draft prompts. Hiding them behind a screen would still publish them in a JS file.
+- **`challenge_completions` and `boss_forms` are in the account export and in deletion**, like
+  every user-owned table, and `account-security.test.ts` keeps both lists equal.
+- **No timers, no randomness, no blur, no check-mark glyph** in the screens (a drawn SVG tick is
+  used; the glyph renders as emoji on some phones). One-shot animations are listed in the
+  reduced-motion block.
+- **The atmosphere is CSS and inline SVG only, nothing in it loops forever, and it is CONTAINED.**
+  Pine silhouettes, the existing `pixelForest()` strip, a golden light and five drifting seeds
+  live inside `BotanicalStage`, which ends where the content ends. It first shipped as a fixed
+  full-screen layer: at `z-0` it painted OVER the footer text, and at `-z-10` the fern strip still
+  ran behind the footer links. The strip is now an ordinary block after the content, so it can
+  never sit behind the footer or the bottom navigation. Seeds make three slow passes and rest; the
+  hub's aura breathes twice. `.boss-scene[data-paused]` freezes every animation while the tab is
+  hidden; `data-skip` lands them on their end state.
+- **An element revealed by an animation must not also be hidden by an inline style.** The
+  evolution's Boss Form carried `style={{ opacity: 0 }}` and relied on `animation-fill-mode: both`
+  to show it, so under `prefers-reduced-motion` (animation: none) the Boss Form never appeared and
+  the reduced-motion rule also hid the adult: a blank screen. Animation classes carry their own
+  starting state through `both`; reduced motion simply removes the animation. Pinned in
+  `challenge-screens.test.ts`.
+- **The evolution names only what exists, and a PREVIEW can never pass for an earned one.** The Boss
+  Form sprite, the plant's name, and the fixed disclaimer. No XP, badge, frame or collectible,
+  because the system awards none. The earned evolution is reachable only from the server's answer
+  to a Boss Trial submission; the dev-only preview button says "Evolution Preview" and "Nothing was
+  earned or recorded", and the hub gives preview no shortcut past the three rounds.
+- **A tap is a percentage of the PICTURE.** The tap photograph is sized from the viewport's height as
+  well as its width (so it keeps its own aspect ratio instead of being clipped), and `pointInBox`
+  measures against the image box with no frame around it, so a region lands in the same place at
+  320px and at 430px.
+- **The Boss Form's art is already distinct** (a radiating golden mane, three floating seed puffs,
+  taller frame, faster and sterner than the adult), so the Garden marks an earned one with a STATIC
+  golden plate and a crown, never a loop. New art, if wanted, is proposed in
+  `docs/boss-form-art-proposals.md` and waits for approval.
+
+## Page themes
+
+Each major page can have its own atmosphere through one fixed gradient layer, `PageAtmosphere`
+(`docs/page-themes.md`). Scan, Collection and Garden are applied; the other six palettes are
+defined and wait. It is a server-rendered `position: fixed` element, never a `body` background:
+iOS Safari ignores `background-attachment: fixed`. It may not animate, blur or use filters, and
+its lighting strengths are capped by contrast: the dimmest text token must stay at 4.5:1 over its
+brightest point. The bottom nav stays one solid brand plum on every page. Do not recolour
+components to match a page.

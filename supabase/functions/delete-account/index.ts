@@ -87,6 +87,12 @@ const USER_TABLES = [
   // name appears in it, so an explanation that spelled it out would trip the guard it is
   // explaining — a shape this repo has been bitten by before.)
   'entitlements',
+  // Added with the Boss Form pilot. Both tables are written only by the service role (there is
+  // no client write path), but they record what THIS person completed, so account deletion
+  // takes them like every other user-owned row. They hold no score and no XP: a row says only
+  // that an activity or a Boss Form was recorded for this player and this plant.
+  'challenge_completions',
+  'boss_forms',
   // Added with the Field Board. The row holds only a decision — "list me, in this region" —
   // but it is the decision that made this person visible to other players, so account
   // deletion has to take it or a deleted account keeps a public listing. Removing it stops

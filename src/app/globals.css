@@ -69,8 +69,8 @@
   /* 500 and 400 were darkened-for-mood originally and failed AA as body text. Raised
      in lightness only — hue and saturation are unchanged, so the deck look is intact. */
   --color-violet-500: #bf70fb;
-  --color-violet-400: #d484f5;
-  --color-violet-300: #ddaaf7;
+  --color-violet-400: #dd9ef6;
+  --color-violet-300: #ddd0ef;
   --color-violet-200: #ecd4fb;
   /* Brightest body text. Previously undefined, so 32 usages of `text-violet-100` were
      silently falling through to Tailwind's stock violet — a blue-leaning lavender that
@@ -306,6 +306,79 @@ body {
   min-height: 100dvh;
 }
 
+/*
+ * THE BRAND PALETTE, AS DESIGN TARGETS. These sit beside the semantic tokens and replace none
+ * of them: rarity, warning, success and safety colours are untouched, and components are not
+ * recoloured to match. They are what the page atmospheres and the navigation are drawn from.
+ * `static` so Tailwind emits them even though some are only read from a stylesheet.
+ */
+@theme static {
+  --color-brand-plum: #170d2b;
+  --color-brand-purple: #261344;
+  --color-brand-royal: #512b86;
+  --color-brand-violet: #9361d6;
+  --color-brand-lavender: #c9a7f2;
+  --color-brand-gold: #f2c75c;
+  --color-brand-gold-light: #ffe5a0;
+  --color-brand-green: #80b889;
+  --color-brand-pink: #f2a7cf;
+  --color-brand-text: #f8f2ff;
+  /* Navigation: always the same dark plum, whichever page is showing. */
+  --color-brand-nav: #1c1033;
+  --color-brand-nav-idle: #b8a4d3;
+  --color-brand-nav-line: #563b76;
+}
+
+/*
+ * PAGE THEMES. --pt-a is the ground and dominates; --pt-b and --pt-c are lighting that only
+ * shows in the upper and lower thirds; the two accents are small touches. Purple stays present
+ * on every page through --pt-purple, so the blue and green worlds are still Plantdex.
+ * Nine are defined; `ACTIVE_PAGE_THEMES` lists the ones a route uses today.
+ */
+[data-page-theme='home']       { --pt-a:#170d2b; --pt-b:#38205b; --pt-c:#512b86; --pt-accent:#f2a7cf; --pt-accent-2:#f2c75c; }
+[data-page-theme='scan']       { --pt-a:#14152f; --pt-b:#243d70; --pt-c:#235b69; --pt-accent:#6fd5c2; --pt-accent-2:#b9a1f2; --pt-c-a:90%; --pt-c-y:101%; }
+[data-page-theme='collection'] { --pt-a:#170d2b; --pt-b:#34205f; --pt-c:#59308c; --pt-accent:#f2c75c; --pt-accent-2:#b786f1; --pt-glint:#f2a7cf; --pt-b-a:72%; --pt-c-a:84%; }
+[data-page-theme='garden']     { --pt-a:#171c2c; --pt-b:#426b58; --pt-c:#40305f; --pt-accent:#8cc78b; --pt-accent-2:#c5a5e9; --pt-b-a:42%; }
+[data-page-theme='journal']    { --pt-a:#24152e; --pt-b:#58304e; --pt-c:#744366; --pt-accent:#f2a7cf; --pt-accent-2:#f5d58b; }
+[data-page-theme='learn']      { --pt-a:#211b40; --pt-b:#414c83; --pt-c:#5a477e; --pt-accent:#afc3ff; --pt-accent-2:#f2d58b; }
+[data-page-theme='quests']     { --pt-a:#27152d; --pt-b:#663b57; --pt-c:#89526b; --pt-accent:#ffaa93; --pt-accent-2:#f4cd75; }
+[data-page-theme='board']      { --pt-a:#190f30; --pt-b:#43256c; --pt-c:#63418b; --pt-accent:#ffd66b; --pt-accent-2:#c6a4f5; }
+[data-page-theme='boss']       { --pt-a:#220d38; --pt-b:#572477; --pt-c:#803c84; --pt-accent:#ef8ad0; --pt-accent-2:#ffd86f; }
+
+/*
+ * The ground itself. ONE layer, fixed to the viewport (Safari-safe, unlike
+ * `background-attachment: fixed`), drawn over the global body gradient and under SiteDecor.
+ * The first colour is the base and fills most of the screen; --pt-b is a soft light high up,
+ * --pt-c a soft light low down, royal purple a small wash in the lower corner, and the accent a
+ * faint glow at the top. A hard-edged 2px dotted line at the very top is the pixel touch.
+ * No blur, no animation, no filter: gradients only, so it is cheap to paint once.
+ */
+@utility page-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--pt-accent) 38%, transparent) 0 6px, transparent 6px 12px) top / 100% 2px no-repeat,
+    radial-gradient(ellipse 115% 85% at 50% 46%, transparent 58%, color-mix(in srgb, var(--color-brand-plum) 62%, transparent) 100%),
+    radial-gradient(ellipse 55% 20% at 88% 6%, color-mix(in srgb, var(--pt-glint, transparent) 11%, transparent), transparent 100%),
+    radial-gradient(ellipse 80% 26% at 50% 0%, color-mix(in srgb, var(--pt-accent) 9%, transparent), transparent 100%),
+    radial-gradient(ellipse 130% 50% at 50% 12%, color-mix(in srgb, var(--pt-b) var(--pt-b-a, 60%), transparent), transparent 100%),
+    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) 25%, transparent), transparent 100%),
+    radial-gradient(ellipse 140% 58% at 50% var(--pt-c-y, 108%), color-mix(in srgb, var(--pt-c) var(--pt-c-a, 75%), transparent), transparent 100%),
+    var(--pt-a);
+}
+
+/*
+ * THE NAVIGATION IS ONE DARK PLUM EVERYWHERE. Solid rather than the translucent panel it was,
+ * so a coloured page behind it can never tint it, and no backdrop blur (cheaper, and Safari
+ * handles it unevenly). Idle icons and labels are a lavender-grey, the active one gold.
+ */
+@utility nav-bar {
+  background: var(--color-brand-nav);
+  border: 1px solid var(--color-brand-nav-line);
+}
+
 /* Visible, high-contrast focus for keyboard users on every interactive element. */
 :where(a, button, input, select, summary, [tabindex]):focus-visible {
   outline: 3px solid var(--color-gold-500);
@@ -338,8 +411,8 @@ body {
  *   .panel-modal   dialogs, which must read as nearer than everything behind them
  */
 @utility panel {
-  background: color-mix(in srgb, var(--color-plum-700) 72%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-violet-500) 30%, transparent);
+  background: color-mix(in srgb, color-mix(in srgb, var(--color-plum-700) 91%, white) 74%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-violet-500) 34%, transparent);
   border-radius: var(--radius-card);
   backdrop-filter: blur(8px);
 }
@@ -2814,4 +2887,229 @@ body {
   .board-rise {
     animation: none;
   }
+}
+
+/*
+ * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
+ * this app does not use ambient motion that repeats forever. Opacity and transform only, never
+ * blur or filter (blur measurably halved the discovery reveal's frame rate), so it stays cheap
+ * on mobile Safari. Each is listed in the reduced-motion block below, and a `data-paused`
+ * ancestor (set when the page is hidden) freezes them without restarting.
+ *
+ *   challenge-pop     a correct tick springs in (240ms)
+ *   flower-bloom      a progress flower opens (380ms)
+ *   sparkle-out       a few gold sparks fly outward from a correct answer (800ms)
+ *   seed-drift        a drifting dandelion seed, three slow passes then it rests
+ *   boss-aura         the hub's golden glow breathes twice
+ *   tile-glow         a completed tile's glow fades in once
+ *   evolve-out        the adult grows a little, then gives way (1.3s)
+ *   evolve-burst      one brief gold flash across the screen at the change (650ms)
+ *   evolve-in         the Boss Form pops in slightly large, then settles (700ms)
+ *   evolve-ring       one gold ring pulses outward
+ *   evolve-flash      a warm glow swells behind the sprite
+ *   evolve-text       the headline rises in after the change
+ */
+@keyframes challenge-pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes flower-bloom {
+  0% { opacity: 0.3; transform: scale(0.4); }
+  70% { opacity: 1; transform: scale(1.25); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes sparkle-out {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(1); }
+}
+@keyframes seed-drift {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  15% { opacity: 0.75; }
+  85% { opacity: 0.6; }
+  100% { opacity: 0; transform: translate3d(var(--seed-x, 36px), var(--seed-y, -140px), 0) rotate(50deg); }
+}
+@keyframes aura-breathe {
+  0% { opacity: 0.55; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.85; transform: scale(1); }
+}
+@keyframes tile-glow-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes evolve-adult {
+  0% { opacity: 1; transform: scale(1); }
+  70% { opacity: 1; transform: scale(1.18); }
+  100% { opacity: 0; transform: scale(1.24); }
+}
+@keyframes evolve-reveal {
+  0% { opacity: 0; transform: scale(0.55); }
+  55% { opacity: 1; transform: scale(1.14); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes evolve-burst-flash {
+  0% { opacity: 0; }
+  30% { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+@keyframes evolve-ring-pulse {
+  0% { opacity: 0.9; transform: scale(0.55); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+@keyframes evolve-ring-pulse-late {
+  0% { opacity: 0.7; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+@keyframes evolve-flash-swell {
+  0% { opacity: 0; transform: scale(0.7); }
+  40% { opacity: 0.9; transform: scale(1.05); }
+  100% { opacity: 0.35; transform: scale(1); }
+}
+@keyframes evolve-text-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility challenge-pop {
+  animation: challenge-pop 240ms ease-out both;
+}
+@utility flower-bloom {
+  animation: flower-bloom 380ms ease-out both;
+}
+@utility sparkle-out {
+  animation: sparkle-out 800ms ease-out both;
+}
+@utility seed-drift {
+  animation: seed-drift var(--seed-d, 12s) ease-in-out var(--seed-delay, 0s) 3 both;
+}
+@utility boss-aura {
+  background: radial-gradient(closest-side, rgb(255 210 110 / 0.5), rgb(190 140 255 / 0.22) 58%, transparent 78%);
+  animation: aura-breathe 3.2s ease-in-out 2 both;
+}
+@utility tile-glow {
+  animation: tile-glow-in 700ms ease-out both;
+}
+@utility evolve-out {
+  animation: evolve-adult 1300ms ease-in 300ms both;
+}
+@utility evolve-in {
+  animation: evolve-reveal 700ms ease-out 1350ms both;
+}
+@utility evolve-burst {
+  animation: evolve-burst-flash 650ms ease-out 1250ms both;
+}
+@utility evolve-ring {
+  animation: evolve-ring-pulse 1000ms ease-out 1250ms both;
+}
+@utility evolve-ring-late {
+  animation: evolve-ring-pulse-late 1100ms ease-out 1400ms both;
+}
+@utility evolve-flash {
+  animation: evolve-flash-swell 1500ms ease-out 300ms both;
+}
+@utility evolve-text {
+  animation: evolve-text-rise 600ms ease-out 2000ms both;
+}
+@utility evolve-text-late {
+  animation: evolve-text-rise 600ms ease-out 2500ms both;
+}
+/* The page is hidden: freeze every challenge animation where it is. */
+.boss-scene[data-paused='true'] * {
+  animation-play-state: paused !important;
+}
+/* Skipped, or reduced motion: no animation, and the end state is what shows. */
+.boss-scene[data-skip='true'] .challenge-pop,
+.boss-scene[data-skip='true'] .flower-bloom,
+.boss-scene[data-skip='true'] .sparkle-out,
+.boss-scene[data-skip='true'] .evolve-in,
+.boss-scene[data-skip='true'] .evolve-flash,
+.boss-scene[data-skip='true'] .evolve-burst,
+.boss-scene[data-skip='true'] .evolve-text,
+.boss-scene[data-skip='true'] .evolve-text-late {
+  animation: none;
+}
+.boss-scene[data-skip='true'] .evolve-out,
+.boss-scene[data-skip='true'] .evolve-burst,
+.boss-scene[data-skip='true'] .evolve-ring,
+.boss-scene[data-skip='true'] .evolve-ring-late,
+.boss-scene[data-skip='true'] .sparkle-out {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .challenge-pop,
+  .flower-bloom,
+  .sparkle-out,
+  .seed-drift,
+  .boss-aura,
+  .tile-glow,
+  .evolve-out,
+  .evolve-in,
+  .evolve-burst,
+  .evolve-ring,
+  .evolve-ring-late,
+  .evolve-flash,
+  .evolve-text,
+  .evolve-text-late {
+    animation: none;
+  }
+  /* With no animation the end state must still be right: the adult and the ring have nothing
+     left to do, the seeds never appear, and the Boss Form simply stands there. */
+  .evolve-out,
+  .evolve-burst,
+  .evolve-ring,
+  .evolve-ring-late,
+  .sparkle-out,
+  .seed-drift {
+    display: none;
+  }
+}
+/* An ornamental gold frame around the question: a pixel-stepped double border. */
+@utility challenge-frame {
+  position: relative;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.5rem 0.6rem;
+  background: linear-gradient(180deg, rgb(70 36 124 / 0.5), rgb(28 12 56 / 0.7));
+  box-shadow:
+    0 0 0 2px #b8841f,
+    0 0 0 3px rgb(28 12 56),
+    0 0 20px rgb(190 140 255 / 0.16);
+}
+
+/* A STATIC golden plate behind an earned Boss Form in the Garden: it marks the tile as rare
+   without moving, because the one thing that would cheapen "finished" is flickering. */
+/* EARNED BOSS FORM, GARDEN ONLY, ALL STATIC. A thin notched gold frame drawn as 1px lines with
+   stepped corners (an overlay, so the tile keeps its size), and a mossy stone step with a gold rim
+   for the plant to stand on. Pixel hard edges, deck tokens only, no animation. */
+@utility boss-frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --g: color-mix(in srgb, var(--color-gold-500) 85%, transparent);
+  background:
+    linear-gradient(var(--g), var(--g)) 6px 0 / calc(100% - 12px) 1px no-repeat,
+    linear-gradient(var(--g), var(--g)) 6px 100% / calc(100% - 12px) 1px no-repeat,
+    linear-gradient(var(--g), var(--g)) 0 6px / 1px calc(100% - 12px) no-repeat,
+    linear-gradient(var(--g), var(--g)) 100% 6px / 1px calc(100% - 12px) no-repeat,
+    linear-gradient(var(--g), var(--g)) 3px 3px / 3px 3px no-repeat,
+    linear-gradient(var(--g), var(--g)) calc(100% - 3px) 3px / 3px 3px no-repeat,
+    linear-gradient(var(--g), var(--g)) 3px calc(100% - 3px) / 3px 3px no-repeat,
+    linear-gradient(var(--g), var(--g)) calc(100% - 3px) calc(100% - 3px) / 3px 3px no-repeat,
+    linear-gradient(180deg, color-mix(in srgb, var(--color-violet-800) 35%, transparent), transparent 70%);
+}
+@utility boss-pedestal {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 84%;
+  height: 0.5rem;
+  transform: translateX(-50%);
+  z-index: 0;
+  background:
+    linear-gradient(var(--color-gold-500), var(--color-gold-500)) 6px 0 / calc(100% - 12px) 1px no-repeat,
+    linear-gradient(color-mix(in srgb, var(--color-habitat-woodland) 55%, var(--color-plum-900)), color-mix(in srgb, var(--color-habitat-woodland) 55%, var(--color-plum-900))) 6px 1px / calc(100% - 12px) 2px no-repeat,
+    linear-gradient(var(--color-wood-500), var(--color-wood-500)) 3px 3px / calc(100% - 6px) 2px no-repeat,
+    linear-gradient(var(--color-wood-700), var(--color-wood-700)) 0 5px / 100% 3px no-repeat,
+    linear-gradient(var(--color-habitat-woodland), var(--color-habitat-woodland)) 9px -1px / 2px 2px no-repeat,
+    linear-gradient(var(--color-habitat-woodland), var(--color-habitat-woodland)) calc(100% - 12px) -1px / 2px 2px no-repeat;
 }

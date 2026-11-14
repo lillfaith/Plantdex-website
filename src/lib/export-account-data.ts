@@ -100,6 +100,13 @@ export interface AccountExport {
    * account that never joined, which is every account by default.
    */
   leaderboardListing: Record<string, unknown> | null;
+  /**
+   * Boss Form pilot: which challenge activities were recorded for this player, and which
+   * plants earned a Boss Form. Records only. No score or XP is stored or exported, because a
+   * completion awards neither. Empty for every account that has not taken part.
+   */
+  challengeCompletions: Record<string, unknown>[];
+  bossForms: Record<string, unknown>[];
   photos: {
     included: ExportedPhoto[];
     omitted: { sightingId: string; reference: string; reason: string }[];
@@ -258,6 +265,9 @@ export async function exportLocalData(): Promise<AccountExport> {
     identificationComparisons: [],
     // The Field Board needs an account, so a signed-out device has no listing to export.
     leaderboardListing: null,
+    // Boss Form records are written only by the server, against an account.
+    challengeCompletions: [],
+    bossForms: [],
     // The shelf, however, is kept on the device when signed out — so it is here.
     seedShelf: mergeFinds(getLocalFinds()),
     seedShelfFinds: getLocalFinds(),
@@ -289,6 +299,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
     entitlementRow,
     profileRow,
     leaderboardRow,
+    challengeRows,
+    bossFormRows,
   ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
       client.from('learned').select('herb_id, learned_at').eq('user_id', userId),
@@ -336,6 +348,11 @@ export async function exportAccountData(userId: string, email?: string): Promise
         .select('*')
         .eq('user_id', userId)
         .maybeSingle(),
+      // Boss Form pilot records. Written only by the service role, readable by their owner
+      // under RLS, so the ordinary anon-key client can export them. An account that never
+      // tried the pilot has none, which is every account today.
+      client.from('challenge_completions').select('herb_id, activity_id, completed_at').eq('user_id', userId),
+      client.from('boss_forms').select('herb_id, earned_at').eq('user_id', userId),
     ]);
 
   for (const [name, result] of Object.entries({
@@ -351,6 +368,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
     entitlement: entitlementRow,
     profile: profileRow,
     'Field Board listing': leaderboardRow,
+    'challenge completions': challengeRows,
+    'Boss Forms': bossFormRows,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
     // their account afterwards would believe they had kept a copy.
@@ -441,6 +460,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
     seedShelfFinds,
     identificationComparisons: (comparisonRows.data ?? []) as Record<string, unknown>[],
     leaderboardListing: (leaderboardRow.data as Record<string, unknown> | null) ?? null,
+    challengeCompletions: (challengeRows.data ?? []) as Record<string, unknown>[],
+    bossForms: (bossFormRows.data ?? []) as Record<string, unknown>[],
     photos: await collectPhotos(sightings, async (path) => {
       const { data, error } = await client.storage.from('sighting-photos').download(path);
       if (error) return null;
