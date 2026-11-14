@@ -37,7 +37,8 @@ if (URL && PRODUCTION_REFS.some((ref) => URL.includes(ref))) {
   throw new Error('e2e/leaderboard.e2e.test.ts refuses to run against the production project.');
 }
 
-const STAMP = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`; // names must fit profiles.display_name (24)
+// Short on purpose: "E2E Alice " + this must fit profiles.display_name (24).
+const STAMP = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
 const ALICE_NAME = `E2E Alice ${STAMP}`;
 const BOB_NAME = `E2E Bob ${STAMP}`;
 const HERB_A = PRINTED_CARDS[0]!.id;
