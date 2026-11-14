@@ -2872,8 +2872,8 @@ body {
   100% { opacity: 0; transform: scale(1.24); }
 }
 @keyframes evolve-reveal {
-  0% { opacity: 0; transform: scale(0.7); }
-  60% { opacity: 1; transform: scale(1.12); }
+  0% { opacity: 0; transform: scale(0.55); }
+  55% { opacity: 1; transform: scale(1.14); }
   100% { opacity: 1; transform: scale(1); }
 }
 @keyframes evolve-burst-flash {
@@ -2884,6 +2884,10 @@ body {
 @keyframes evolve-ring-pulse {
   0% { opacity: 0.9; transform: scale(0.55); }
   100% { opacity: 0; transform: scale(1.5); }
+}
+@keyframes evolve-ring-pulse-late {
+  0% { opacity: 0.7; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.9); }
 }
 @keyframes evolve-flash-swell {
   0% { opacity: 0; transform: scale(0.7); }
@@ -2925,6 +2929,9 @@ body {
 @utility evolve-ring {
   animation: evolve-ring-pulse 1000ms ease-out 1250ms both;
 }
+@utility evolve-ring-late {
+  animation: evolve-ring-pulse-late 1100ms ease-out 1400ms both;
+}
 @utility evolve-flash {
   animation: evolve-flash-swell 1500ms ease-out 300ms both;
 }
@@ -2952,6 +2959,7 @@ body {
 .boss-scene[data-skip='true'] .evolve-out,
 .boss-scene[data-skip='true'] .evolve-burst,
 .boss-scene[data-skip='true'] .evolve-ring,
+.boss-scene[data-skip='true'] .evolve-ring-late,
 .boss-scene[data-skip='true'] .sparkle-out {
   display: none;
 }
@@ -2966,6 +2974,7 @@ body {
   .evolve-in,
   .evolve-burst,
   .evolve-ring,
+  .evolve-ring-late,
   .evolve-flash,
   .evolve-text,
   .evolve-text-late {
@@ -2976,6 +2985,7 @@ body {
   .evolve-out,
   .evolve-burst,
   .evolve-ring,
+  .evolve-ring-late,
   .sparkle-out,
   .seed-drift {
     display: none;

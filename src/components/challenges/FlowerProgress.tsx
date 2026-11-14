@@ -9,7 +9,7 @@ import { Art } from './ChallengeArt';
 export type FlowerState = 'ahead' | 'current' | 'bloom' | 'sprout';
 
 const LOOK: Record<FlowerState, { art: 'bud' | 'bloom' | 'sprout'; tone: string }> = {
-  ahead: { art: 'bud', tone: 'text-violet-500' },
+  ahead: { art: 'bud', tone: 'text-violet-400' },
   current: { art: 'bud', tone: 'text-violet-100' },
   bloom: { art: 'bloom', tone: 'text-gold-300' },
   sprout: { art: 'sprout', tone: 'text-violet-300' },

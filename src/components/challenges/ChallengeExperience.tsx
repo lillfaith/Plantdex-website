@@ -38,7 +38,7 @@ function PathNode({ state, art }: { state: NodeState; art: ArtName }) {
   const look = {
     done: 'border-gold-300 bg-gold-400 text-plum-950 shadow-[0_0_12px_rgb(255_210_110/0.55)]',
     next: 'border-gold-300 bg-plum-900 text-gold-300 shadow-[0_0_10px_rgb(255_210_110/0.4)]',
-    later: 'border-violet-600 bg-plum-900 text-violet-500',
+    later: 'border-violet-500 bg-plum-900 text-violet-400',
   }[state];
   return (
     <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 ${look}`}>
@@ -132,7 +132,7 @@ function SideTile({
   const playable = state === 'ready' || state === 'done';
   const boss = activity === 'boss-trial';
   const tone =
-    state === 'done' ? 'text-gold-300' : state === 'ready' ? 'text-gold-300' : 'text-violet-500';
+    state === 'done' ? 'text-gold-300' : state === 'ready' ? 'text-gold-300' : 'text-violet-400';
   return (
     <li className={`relative ${boss ? 'col-span-full' : ''}`}>
       {state === 'done' ? (
@@ -144,16 +144,16 @@ function SideTile({
         onClick={onPlay}
         className={`pixel-tile relative flex w-full rounded-lg transition-transform active:scale-[0.97] ${
           boss ? 'min-h-14 items-center justify-between gap-3 px-3 py-2 text-left' : 'min-h-[5.25rem] flex-col items-center justify-center gap-0.5 px-1 py-2 text-center'
-        } ${playable ? '' : 'opacity-45'}`}
+        } ${playable ? '' : 'border-dashed'}`}
       >
         <span className={`flex h-8 w-8 shrink-0 items-center justify-center ${tone}`}>
           <Art name={state === 'locked' ? 'lock' : tile.art} accent="fill-plum-900" className="h-full w-full" />
         </span>
         <span className={boss ? 'min-w-0 flex-1' : ''}>
-          <span className="block text-sm leading-tight font-extrabold text-violet-50">{tile.name}</span>
+          <span className={`block text-sm leading-tight font-extrabold ${playable ? 'text-violet-50' : 'text-violet-200'}`}>{tile.name}</span>
           {boss ? <span className="block text-[0.72rem] leading-tight text-violet-300">Final unlock</span> : null}
         </span>
-        <span className={`flex items-center gap-1 text-xs font-bold ${state === 'done' ? 'text-gold-200' : state === 'ready' ? 'text-gold-300' : 'text-violet-400'}`}>
+        <span className={`flex items-center gap-1 text-xs font-bold ${state === 'done' ? 'text-gold-200' : state === 'ready' ? 'text-gold-300' : 'text-violet-300'}`}>
           {state === 'done' ? <Art name="check" className="h-3 w-3" /> : null}
           {STATUS[state]}
         </span>
@@ -241,7 +241,7 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
           </div>
           <EvolutionPath done={done} next={next} />
           {preview ? (
-            <p className="mt-1.5 text-center text-xs text-violet-400">Preview: draft questions, nothing is recorded.</p>
+            <p className="mt-1.5 text-center text-xs text-violet-300">Preview: draft questions, nothing is recorded.</p>
           ) : null}
           {next ? (
             <div className="mt-3">

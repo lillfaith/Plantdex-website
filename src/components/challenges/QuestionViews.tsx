@@ -68,8 +68,8 @@ function PictureChoices({ question, chosen, onAnswer }: QuestionViewProps) {
             ? isRight
               ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.55)]'
               : isChosen
-                ? 'ring-2 ring-violet-400 opacity-60'
-                : 'opacity-45'
+                ? 'ring-2 ring-violet-300 opacity-70'
+                : 'opacity-55'
             : 'hover:brightness-110';
           return (
             <li key={id} className={three && index === 2 ? 'col-span-2 mx-auto w-[calc(50%-0.3rem)]' : ''}>
@@ -177,8 +177,8 @@ function QuickPick({ question, chosen, onAnswer }: QuestionViewProps) {
           ? isRight
             ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.45)]'
             : isChosen
-              ? 'ring-2 ring-violet-400 opacity-60'
-              : 'opacity-45'
+              ? 'ring-2 ring-violet-300 opacity-80'
+              : 'opacity-70'
           : '';
         return (
           <li key={text}>

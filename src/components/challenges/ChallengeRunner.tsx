@@ -134,7 +134,7 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
             <p className="mt-1 text-sm text-violet-300">
               {passed ? 'Activity complete.' : 'Try again. Every try is a fresh set.'}
             </p>
-            {preview ? <p className="mt-2 text-xs text-violet-400">Preview only. Nothing is recorded.</p> : null}
+            {preview ? <p className="mt-2 text-xs text-violet-300">Preview only. Nothing is recorded.</p> : null}
           </>
         ) : (
           <p className="text-violet-100">Could not save that. Please try again later.</p>
