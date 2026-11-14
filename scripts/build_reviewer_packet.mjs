@@ -77,7 +77,8 @@ const off = CHALLENGE_BANK.filter((q) => q.requires?.length).length;
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Boss Form Review Packet</title>
 <style>
 :root{--bg:#f6f4ef;--ink:#1d2417;--mut:#5b6553;--card:#fff;--line:#d9d6cb;--ok:#2f7d3b;--bad:#a8402e;--warn:#fff2d0;--warnl:#d9a928;--acc:#3f2d6b}
-@media (prefers-color-scheme:dark){:root{--bg:#161a14;--ink:#e8ecdf;--mut:#a3ad98;--card:#1f241c;--line:#363d31;--ok:#7fcf8a;--bad:#f0907f;--warn:#3a3217;--warnl:#d9a928;--acc:#c9b6ff}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161a14;--ink:#e8ecdf;--mut:#a3ad98;--card:#1f241c;--line:#363d31;--ok:#7fcf8a;--bad:#f0907f;--warn:#3a3217;--warnl:#d9a928;--acc:#c9b6ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161a14;--ink:#e8ecdf;--mut:#a3ad98;--card:#1f241c;--line:#363d31;--ok:#7fcf8a;--bad:#f0907f;--warn:#3a3217;--warnl:#d9a928;--acc:#c9b6ff;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Georgia,'Times New Roman',serif}
 main{max-width:920px;margin:0 auto;padding:24px 16px 80px}h1{font-size:2rem;margin:.2em 0}h2{font-size:1.5rem;margin:2em 0 .6em;border-bottom:2px solid var(--acc);padding-bottom:.2em}h2 small{font-weight:400;color:var(--mut);font-size:.9rem}h3{margin:.4em 0;font-size:1.2rem}
 .sans,header,figcaption,dt,.lab,.flag,.rule,.opts,.ans,nav{font-family:system-ui,sans-serif}
