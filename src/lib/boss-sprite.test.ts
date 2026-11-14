@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import manifest from '@/data/sprites.json';
 import { BOSS_PILOT } from './boss-form';
@@ -52,9 +52,20 @@ describe('the Boss Form flag', () => {
     expect(bossFormsMode('preview', 'test')).toBe('off');
     expect(bossFormsMode('preview', undefined)).toBe('off');
   });
-  it('no workflow sets the flag', () => {
-    for (const file of ['.github/workflows/deploy.yml']) {
-      expect(readFileSync(file, 'utf8')).not.toContain('NEXT_PUBLIC_BOSS_FORMS');
+  it('no workflow turns the flag on: the deploy may only pin it to off', () => {
+    const deploy = readFileSync('.github/workflows/deploy.yml', 'utf8');
+    // Every mention is the literal 'off' (the build and the bundle guard). Never on, never
+    // preview, never read from a repository variable.
+    const mentions = deploy.match(/NEXT_PUBLIC_BOSS_FORMS[^\n]*/g) ?? [];
+    expect(mentions.length).toBeGreaterThan(0);
+    for (const line of mentions) {
+      if (line.trim().startsWith('#')) continue;
+      expect(line).toMatch(/^NEXT_PUBLIC_BOSS_FORMS: 'off'$/);
+    }
+    // And no other workflow mentions it at all.
+    for (const file of readdirSync('.github/workflows')) {
+      if (file === 'deploy.yml') continue;
+      expect(readFileSync(`.github/workflows/${file}`, 'utf8')).not.toContain('NEXT_PUBLIC_BOSS_FORMS');
     }
   });
   it('the Garden shows one status, never Mastered and Boss Form together', () => {

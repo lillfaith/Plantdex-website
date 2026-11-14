@@ -56,6 +56,12 @@ jobs:
           npm run typecheck
           npm test
 
+      # NEVER BUILD ON TOP OF OLD OUTPUT. A runner starts clean, but this makes it a rule of the
+      # workflow rather than a property of the runner, so the guard below can only ever read the
+      # output of the build immediately above it.
+      - name: Remove any previous build output
+        run: rm -rf out .next
+
       - name: Build static export
         # GITHUB_PAGES switches on the /Plantdex-website basePath. Without it the site
         # would build for a domain root and every asset would 404 under the project path.
@@ -94,7 +100,37 @@ jobs:
           NEXT_PUBLIC_STRIPE_PAYMENT_LINK: ${{ vars.NEXT_PUBLIC_STRIPE_PAYMENT_LINK }}
           NEXT_PUBLIC_DECK_PRICE: ${{ vars.NEXT_PUBLIC_DECK_PRICE }}
           NEXT_PUBLIC_DONATE_URL: ${{ vars.NEXT_PUBLIC_DONATE_URL }}
+          # PINNED OFF, NOT READ FROM A VARIABLE. Boss Forms are not released: a repo variable
+          # must not be able to switch them on in a deploy, and the guard below is only
+          # meaningful against a build made with the flag off. Enabling them is a deliberate
+          # edit to this line, made with approval.
+          NEXT_PUBLIC_BOSS_FORMS: 'off'
         run: npm run build
+
+      # THE DRAFT-QUESTION GUARD, RUN AGAINST THE BUILD ABOVE AND REQUIRED TO PASS.
+      #
+      # `npm test` earlier in this job runs BEFORE the build, so the bundle test it contains
+      # always skipped here (no out/ yet). This step runs that one file after the build with
+      # REQUIRE_BOSS_BUNDLE=1, which makes the test unable to skip: a missing or incomplete
+      # build, a flag that is not 'off', or a scan that reads almost nothing all FAIL it. The
+      # JSON report is then checked as well, so a future edit that quietly turned the test back
+      # into a skip still stops the deploy. A failure here stops the job before the artifact is
+      # uploaded, so nothing reaches Pages.
+      - name: Guard - no draft Boss Form questions in the production build
+        env:
+          NEXT_PUBLIC_BOSS_FORMS: 'off'
+          REQUIRE_BOSS_BUNDLE: '1'
+        run: |
+          test -f out/index.html || { echo "::error::out/index.html missing: no fresh build to check"; exit 1; }
+          npx vitest run src/lib/boss-form-bundle.test.ts --reporter=json --outputFile=bundle-guard.json
+          node -e "
+            const r = JSON.parse(require('fs').readFileSync('bundle-guard.json', 'utf8'));
+            const t = r.testResults.flatMap((f) => f.assertionResults)
+              .find((a) => a.title === 'a built export contains no draft question text');
+            if (!t) { console.error('bundle guard test not found'); process.exit(1); }
+            if (t.status !== 'passed') { console.error('bundle guard did not pass: ' + t.status); process.exit(1); }
+            console.log('bundle guard passed against the fresh build');
+          "
 
       # THE CNAME IS WRITTEN HERE, NOT COMMITTED TO public/.
       #
