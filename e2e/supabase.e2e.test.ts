@@ -189,6 +189,10 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const { data, error } = await supabase!.auth.signInWithPassword(aliceCreds);
       expect(error).toBeNull();
       expect(data.user?.id).toBe(alice.id);
+      // A token used in the same second it was issued can be refused as "JWT issued at future"
+      // when Supabase's own servers disagree on the time by a moment. Wait it out, so the next
+      // test fails for its own reasons rather than for a clock.
+      await new Promise((resolve) => setTimeout(resolve, 3000));
     });
   });
 
