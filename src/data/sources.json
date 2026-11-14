@@ -1054,7 +1054,8 @@
       "title": "Dandelion, Taraxacum officinale",
       "organization": "University of Wisconsin-Madison Division of Extension",
       "url": "https://hort.extension.wisc.edu/articles/dandelion-taraxacum-officinale/",
-      "verified": false
+      "verified": false,
+      "note": "Machine-read by Claude on 2026-11-14 (page text fetched and searched; no person has confirmed it), so it stays verified:false. Says: \"The stem contains milky latex sap\"; \"a smooth, hollow stalk\"; \"The lance shaped leaves grow in a rosette\"; seeds have \"a feathery parachute of soft, white hairs that makes it easily carried by the wind\"; \"a common plant of grassland and cultivated ground\". It does not say the wind is the MAIN way seeds spread, and does not mention a single, unbranched or leafless stalk. Open and confirm before flipping the flag."
     },
     {
       "id": "umn-dandelions",
@@ -1062,7 +1063,8 @@
       "title": "Dandelions",
       "organization": "University of Minnesota Extension",
       "url": "https://extension.umn.edu/weeds/dandelions",
-      "verified": false
+      "verified": false,
+      "note": "Machine-read by Claude on 2026-11-14 (page text fetched and searched; no person has confirmed it), so it stays verified:false. Says: \"Dandelion stalks do not branch, have no leaves, and only produce one flower\"; \"Stalks are hollow and contain white sap when broken\"; \"Dandelion leaves are deeply lobed and form points angled toward the stem\"; \"Dandelions thrive in thin lawns, garden beds, and disturbed soils\"; \"increased growth in full sun and moist conditions, they are adaptable to many different environments\"; \"Dandelions can indicate compaction\"; the taproot is \"able to aerate compacted soils\". It does not use the words \"tolerate compacted soil\", \"open\", \"roadside\", \"path\" or \"field\". Open and confirm before flipping the flag."
     },
     {
       "id": "umn-foraging-backyard-weeds",
@@ -1284,7 +1286,7 @@
       "url": "https://www.worldfloraonline.org/taxon/wfo-0000074809",
       "accessed": "2026-11-14",
       "verified": false,
-      "note": "Found by search for the Dandelion Boss Form cat's-ear lookalike items. NOT opened: this environment's network blocks the host, so only a search summary was seen (accepted species, family Asteraceae, 'scapose perennial herb'). Use it for the name and taxonomy. Do not cite it for branching or bracts until a person has read the page and found those words there."
+      "note": "NOT read. On 2026-11-14 the host answered but its certificate chain would not verify from this environment, and TLS checks are not bypassed. Only a search summary was seen (accepted species, family Asteraceae, \"scapose perennial herb\"). Use it for the name and taxonomy only. Do not cite it for branching or bracts until a person has read the page and found those words there."
     },
     {
       "id": "wsu-hortsense-catsear",
@@ -1294,7 +1296,7 @@
       "url": "https://hortsense.cahnrs.wsu.edu/fact-sheet/weeds-catsear-common-false-dandelion-hypochaeris-radicata",
       "accessed": "2026-11-14",
       "verified": false,
-      "note": "Found by search. NOT opened: host blocked here. A search summary describes a rosette of long, hairy, lobed leaves and disturbed or cultivated habitats such as lawns. It was NOT seen to mention stem branching or bracts."
+      "note": "URL DOES NOT LOAD. On 2026-11-14 this address returned the WSU HortSense \"Page not found\" (404) page, and a site search for \"catsear\" found no page. The address came from a search-engine result and may be stale or mistyped. Nothing from this page was read. Replace the URL with the real page, or remove this entry."
     },
     {
       "id": "wsu-hosted-usfs-treatment-guide",
@@ -1304,7 +1306,7 @@
       "url": "https://s3.wp.wsu.edu/uploads/sites/2054/2014/04/Invasive-Plant-Treatment-Guide-US-Forest-Service.pdf",
       "accessed": "2026-11-14",
       "verified": false,
-      "note": "Found by search. NOT opened. A search summary says it compares hairy cat's ear with common dandelion: branched flowering stems, hairier and more deeply lobed basal leaves, and flower-head bracts that do not bend backward. It is the only candidate seen to mention branching, so a reviewer should open it before any branching claim is cited to a WSU source. The author is the US Forest Service, not WSU."
+      "note": "Machine-read by Claude on 2026-11-14 (page text fetched and searched; no person has confirmed it), so it stays verified:false. A 22-page PDF titled \"INVASIVE PLANT TREATMENT GUIDE - Summer Home Lots\", compiled from \"numerous websites\" (a compilation, not original research). On hairy cats-ear it says: \"hairy cats-ear has branched or several flowering stems (a single flowering stem in common dandelion)\", that its basal leaves are \"hairier, more irregular, and have deeper lobes\", and that \"the outer bracts below the flower heads of cats-ear are not curved downward (reflexed)\" unlike dandelion. It says \"branched or several\", not \"usually branched\"; it does not say the stems are leafless and does not mention small stem bracts. Confirm, and consider a primary botanical source."
     }
   ]
 }

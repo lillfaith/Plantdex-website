@@ -32,6 +32,14 @@ export interface BossImage {
   readonly width?: number;
   readonly height?: number;
   readonly regions?: Readonly<Record<string, readonly Rect[]>>;
+  /**
+   * A CROP of another registered photograph, made by `scripts/build_boss_crops.mjs`. It keeps the
+   * parent's iNaturalist id and licence. It exists so a wrong-answer picture cannot also be a
+   * valid example of the feature asked for (a leaf, a flower, a seed puff). `crop` is the box in
+   * percent of the parent: x, y, width, height.
+   */
+  readonly cropOf?: string;
+  readonly crop?: readonly [number, number, number, number];
 }
 
 const dir = '/boss-form';
@@ -171,6 +179,47 @@ export const BOSS_IMAGES: Readonly<Record<string, BossImage>> = {
     inatPhotoId: 282276319,
     width: 375,
     height: 500,
+  },
+  // ── Crops of the photographs above. Same photographs, same CC0 licence, same iNaturalist ids. ──
+  'd-flower-crop': {
+    src: `${dir}/d-flower-crop.webp`,
+    alt: 'A bright yellow flower head up close, with no leaves in the frame',
+    licence: 'cc0',
+    inatPhotoId: 486847173,
+    width: 278,
+    height: 360,
+    cropOf: 'd-flower-open',
+    crop: [6, 2, 74, 72],
+  },
+  'd-flowers-crop': {
+    src: `${dir}/d-flowers-crop.webp`,
+    alt: 'Two yellow flower heads on bare ground, with no leaves in the frame',
+    licence: 'cc0',
+    inatPhotoId: 284777956,
+    width: 150,
+    height: 200,
+    cropOf: 'd-flowers-stalks',
+    crop: [46, 24, 40, 40],
+  },
+  'd-rosette-crop': {
+    src: `${dir}/d-rosette-crop.webp`,
+    alt: 'Toothed green leaves low to the ground, with no flower or seed head in the frame',
+    licence: 'cc0',
+    inatPhotoId: 282276229,
+    width: 270,
+    height: 315,
+    cropOf: 'd-rosette-leaf',
+    crop: [28, 37, 72, 63],
+  },
+  'd-rosette-alt-crop': {
+    src: `${dir}/d-rosette-alt-crop.webp`,
+    alt: 'Toothed green leaves held by a hand, with no flower or seed head in the frame',
+    licence: 'cc0',
+    inatPhotoId: 282276389,
+    width: 410,
+    height: 500,
+    cropOf: 'd-rosette-alt',
+    crop: [0, 0, 82, 100],
   },
   // Cat's-ear stem that forks, with a bud on the short branch. iNaturalist observation 43803097.
   // The question that uses it stays disabled: `cats-ear-branch-photo` is NOT in READY_ASSETS until
