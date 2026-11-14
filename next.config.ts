@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
   env: {
     // Read by src/lib/asset-path.ts so image srcs resolve under the project path.
     NEXT_PUBLIC_BASE_PATH: basePath ?? '',
+    // Always defined, so an unset flag is the literal 'off' at build time. That is what lets the
+    // bundler DROP the Boss Form challenge screens, and the draft question bank with them, from
+    // a production build; with the variable merely undefined the dynamic import is still emitted.
+    // `challenge-screens.test.ts` builds nothing, but `boss-form-bundle.test.ts` pins this line.
+    NEXT_PUBLIC_BOSS_FORMS: process.env.NEXT_PUBLIC_BOSS_FORMS ?? 'off',
   },
 };
 

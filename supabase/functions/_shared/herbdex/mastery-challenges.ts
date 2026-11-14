@@ -1,13 +1,20 @@
 import { hash, seeded, shuffle } from './rng.ts';
 import {
   PASS_MARKS,
+  TRIAL_MIX,
+  hasRetry,
   isActivityId,
   isBossPilot,
   mayAttempt,
   type ActivityId,
   type Standing,
 } from './boss-form.ts';
-import { CHALLENGE_BANK, type ChallengeItem } from './challenge-bank.ts';
+import {
+  CHALLENGE_BANK,
+  type ChallengeCategory,
+  type ChallengeItem,
+  type ChallengeKind,
+} from './challenge-bank.ts';
 
 /**
  * MASTERY CHALLENGES: the builder and the scorer, as pure code shared by client and server.
@@ -37,9 +44,22 @@ export interface Review {
 /** Sign-offs by question id. Kept in this file on purpose: one visible place, empty by default. */
 export const CHALLENGE_REVIEWS: Readonly<Record<string, Review>> = {};
 
+/**
+ * ASSETS THAT ARE READY TO SHIP. Empty for the two cat's-ear pieces: a licensed photograph of a
+ * branched stem does not exist yet, and the cat's-ear wording has not been ruled on by a
+ * reviewer. An item that `requires` anything not listed here is DISABLED, in preview as well
+ * as in production, because there is nothing to show.
+ */
+export const READY_ASSETS: ReadonlySet<string> = new Set<string>();
+
+export function isAvailable(item: ChallengeItem): boolean {
+  return (item.requires ?? []).every((need) => READY_ASSETS.has(need));
+}
+
 export function isServable(item: ChallengeItem): boolean {
   const review = CHALLENGE_REVIEWS[item.id];
   return (
+    isAvailable(item) &&
     review !== undefined &&
     review.reviewer.trim() !== '' &&
     /^\d{4}-\d{2}-\d{2}$/.test(review.reviewedOn) &&
@@ -49,6 +69,9 @@ export function isServable(item: ChallengeItem): boolean {
 
 export interface BuiltQuestion {
   readonly id: string;
+  readonly kind: ChallengeKind;
+  readonly category: ChallengeCategory;
+  readonly media?: string;
   readonly prompt: string;
   readonly options: readonly string[];
   readonly correctIndex: number;
@@ -67,6 +90,9 @@ function build(item: ChallengeItem, seed: number): BuiltQuestion {
   const options = shuffle([item.correct, ...item.distractors], rand);
   return {
     id: item.id,
+    kind: item.kind,
+    category: item.category,
+    media: item.media,
     prompt: item.prompt,
     options,
     correctIndex: options.indexOf(item.correct),
@@ -89,25 +115,44 @@ export function buildChallenge(
   herbId: string,
   activity: ActivityId,
   attempt: number,
-  options: { includeUnreviewed?: boolean } = {},
+  options: { includeUnreviewed?: boolean; includeUnavailable?: boolean } = {},
 ): Slot[] | null {
   if (!isBossPilot(herbId)) return null;
   if (!Number.isInteger(attempt) || attempt < 0 || attempt > MAX_ATTEMPT) return null;
 
+  // An item whose photograph or ruling is missing is never built, unless a TEST asks for it
+  // (the odds report measures the questions as specified, not only the ones available today).
+  // `includeUnavailable` is for tests; `evaluateSubmission` passes neither option.
   const wanted = (item: ChallengeItem) =>
     item.herbId === herbId &&
-    (activity === 'boss-trial' || item.activity === activity) &&
-    (options.includeUnreviewed === true || isServable(item));
+    item.activity === activity &&
+    (options.includeUnavailable === true || isAvailable(item)) &&
+    (options.includeUnreviewed === true || options.includeUnavailable === true || isServable(item));
 
   const pool = CHALLENGE_BANK.filter(wanted);
   const size = PASS_MARKS[activity].of;
-  if (pool.length < size) return null;
-
   const seed = hash(`${herbId}|${activity}|${attempt}`);
-  const order = shuffle(pool, seeded(seed));
-  const primaries = order.slice(0, size);
-  // The Boss Trial is first-try only: a retry is a new attempt, never a replacement.
-  const spares = activity === 'boss-trial' ? [] : order.slice(size);
+  const shuffled = shuffle(pool, seeded(seed));
+
+  let primaries: ChallengeItem[];
+  if (activity === 'boss-trial') {
+    // Six picture questions, three applied, one recall. Each group is drawn on its own so the
+    // 60/30/10 makeup holds on every attempt, then the ten are shuffled together.
+    primaries = [];
+    for (const category of ['visual', 'applied', 'recall'] as const) {
+      const group = shuffled.filter((item) => item.category === category);
+      if (group.length < TRIAL_MIX[category]) return null;
+      primaries.push(...group.slice(0, TRIAL_MIX[category]));
+    }
+    primaries = shuffle(primaries, seeded(hash(`${seed}|order`)));
+  } else {
+    if (pool.length < size) return null;
+    primaries = shuffled.slice(0, size);
+  }
+
+  // Second chances exist only where `RETRY_ACTIVITIES` says so. The Boss Trial and Compare
+  // never have one, so the same set is first-try only.
+  const spares = hasRetry(activity) ? shuffled.filter((item) => !primaries.includes(item)) : [];
 
   return primaries.map((item, index) => {
     const spare = spares[index];
@@ -154,6 +199,8 @@ export function scoreSubmission(
       continue;
     }
     if (given.length === 2) {
+      // Defence in depth: an activity without a retry refuses a second answer outright.
+      if (!hasRetry(activity)) return null;
       if (!slot.replacement || !inRange(second, slot.replacement)) return null;
       if (second === slot.replacement.correctIndex) resolved += 1;
     }
