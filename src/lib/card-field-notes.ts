@@ -119,12 +119,12 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
       { trait: 'Seed head', detail: 'Mature flowers become round white wind-dispersed clocks.' },
     ],
     habitat:
-      'Lawns, paths, roadsides, gardens, fields and other open sunny places on disturbed ground. Especially tolerant of compacted soils.',
+      'Lawns, paths, roadsides, gardens, fields and other open sunny places on disturbed ground. Can tolerate compacted soil.',
     lookalikes: [
       {
         commonName: "Cat's-ear and other yellow-flowered daisy-family plants",
         distinguishBy:
-          'Dandelion flower stalks are single, unbranched and hollow, rising straight from the basal rosette rather than from branched leafy flowering stems.',
+          'Dandelion flower stalks are single and unbranched, rising straight from the basal rosette. Cat\u2019s-ear stems are usually branched and largely leafless, with small bracts. Branching is a useful clue, not proof of which species it is: check the leaves and flower-head bracts too.',
       },
     ],
     sourceIds: ['wisc-dandelion', 'umn-dandelions'],

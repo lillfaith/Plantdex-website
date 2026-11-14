@@ -11,6 +11,8 @@ import {
   type ActivityId,
 } from './boss-form';
 import { CHALLENGE_BANK } from './challenge-bank';
+import { CATS_EAR_CLAIMS } from './challenge-claims';
+import { getSource } from './sources';
 import { BOSS_IMAGES, REGION_LABELS, regionAt } from './boss-images';
 import { activityGuessOdds, guessPassProbability } from './challenge-odds';
 import {
@@ -323,5 +325,63 @@ describe('the exception stays separate from the card check', () => {
   it('the existing card-check guard is unchanged', () => {
     const test = readFileSync('src/lib/knowledge-check.test.ts', 'utf8');
     expect(test).toContain('/heal|treat|cure|remed|safe|edible|eat|dose|medic|identif|poison/i');
+  });
+});
+
+describe('the preliminary botanical review changed wording, never gates', () => {
+  const by = (id: string) => CHALLENGE_BANK.find((i) => i.id === id)!;
+  it('nothing is approved and nothing is ready', () => {
+    expect(Object.keys(CHALLENGE_REVIEWS)).toEqual([]);
+    expect(READY_ASSETS.size).toBe(0);
+    for (const item of CHALLENGE_BANK) expect(isServable(item), item.id).toBe(false);
+  });
+  it('keeps every question id the bank had', () => {
+    expect(CHALLENGE_BANK.length).toBe(26);
+  });
+  it('the roadside questions stay disabled pending better species evidence', () => {
+    for (const id of ['hb.curb', 'hb.curb2', 'tr.curb']) {
+      expect(by(id).requires, id).toContain('roadside-species-evidence');
+      expect(isAvailable(by(id)), id).toBe(false);
+    }
+  });
+  it('the cat’s-ear photo questions also wait for an independent identification review', () => {
+    for (const id of ['cp.single', 'cp.branch', 'tr.single', 'tr.branch']) {
+      expect(by(id).requires, id).toContain('cats-ear-independent-id-review');
+    }
+  });
+  it('branching is only ever offered as a clue, never as proof', () => {
+    for (const id of ['cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch']) {
+      expect(by(id).feedback, id).toMatch(/clue/i);
+      expect(by(id).feedback, id).not.toMatch(/\b(always|definitely|only)\b/i);
+    }
+  });
+  it('the wind questions ask for the MAIN mechanism', () => {
+    for (const id of ['ps.wind', 'tr.wind']) {
+      expect(`${by(id).prompt} ${by(id).correct}`, id).toMatch(/main/i);
+    }
+  });
+  it('hb.puff no longer offers the bud, which the puff also grew from', () => {
+    expect(by('hb.puff').distractors).not.toContain('d-bud');
+  });
+  it('compacted soil is worded as tolerance', () => {
+    for (const id of ['hb.trampled', 'tr.packed']) {
+      expect(by(id).feedback, id).toMatch(/can tolerate compacted soil/i);
+    }
+  });
+  it('ps.stalk talks about the seed head its photograph shows', () => {
+    expect(by('ps.stalk').prompt + by('ps.stalk').feedback).toMatch(/seed head/i);
+  });
+  it('cat’s-ear sources exist in the registry and none is claimed verified', () => {
+    for (const item of CHALLENGE_BANK) {
+      for (const id of item.sources) {
+        const src = getSource(id);
+        expect(src, `${item.id} cites unknown source ${id}`).toBeDefined();
+        expect(src!.verified, id).toBe(false);
+      }
+    }
+  });
+  it('no claim is marked read, because nobody has opened these pages yet', () => {
+    for (const c of CATS_EAR_CLAIMS) expect(c.basis, c.id).not.toBe('read');
+    for (const c of CATS_EAR_CLAIMS) for (const id of c.sourceIds) expect(getSource(id), id).toBeDefined();
   });
 });

@@ -1275,6 +1275,36 @@
       "accessed": "2026-09-09",
       "verified": false,
       "note": "Supplied by the deck owner for card #21. The best-identified of the three: PMID 24379887, PMC3860133 and DOI 10.1155/2013/579319 all cross-check, and the title, three named authors, journal and 2013 date agree across independent results. Species-specific to Cichorium intybus, and its own abstract states toxicological data on the species is limited — which is worth carrying into any evidence grade rather than reading the review's breadth as strength. Full text not opened; PubMed and PMC are blocked by this environment's egress proxy."
+    },
+    {
+      "id": "wfo-hypochaeris-radicata",
+      "kind": "web",
+      "title": "Hypochaeris radicata L.",
+      "organization": "World Flora Online",
+      "url": "https://www.worldfloraonline.org/taxon/wfo-0000074809",
+      "accessed": "2026-11-14",
+      "verified": false,
+      "note": "Found by search for the Dandelion Boss Form cat's-ear lookalike items. NOT opened: this environment's network blocks the host, so only a search summary was seen (accepted species, family Asteraceae, 'scapose perennial herb'). Use it for the name and taxonomy. Do not cite it for branching or bracts until a person has read the page and found those words there."
+    },
+    {
+      "id": "wsu-hortsense-catsear",
+      "kind": "web",
+      "title": "Weeds: Catsear, common (false dandelion), Hypochaeris radicata",
+      "organization": "Washington State University, HortSense",
+      "url": "https://hortsense.cahnrs.wsu.edu/fact-sheet/weeds-catsear-common-false-dandelion-hypochaeris-radicata",
+      "accessed": "2026-11-14",
+      "verified": false,
+      "note": "Found by search. NOT opened: host blocked here. A search summary describes a rosette of long, hairy, lobed leaves and disturbed or cultivated habitats such as lawns. It was NOT seen to mention stem branching or bracts."
+    },
+    {
+      "id": "wsu-hosted-usfs-treatment-guide",
+      "kind": "web",
+      "title": "Invasive Plant Treatment Guide (US Forest Service)",
+      "organization": "Hosted by Washington State University (guide produced by the US Forest Service)",
+      "url": "https://s3.wp.wsu.edu/uploads/sites/2054/2014/04/Invasive-Plant-Treatment-Guide-US-Forest-Service.pdf",
+      "accessed": "2026-11-14",
+      "verified": false,
+      "note": "Found by search. NOT opened. A search summary says it compares hairy cat's ear with common dandelion: branched flowering stems, hairier and more deeply lobed basal leaves, and flower-head bracts that do not bend backward. It is the only candidate seen to mention branching, so a reviewer should open it before any branching claim is cited to a WSU source. The author is the US Forest Service, not WSU."
     }
   ]
 }

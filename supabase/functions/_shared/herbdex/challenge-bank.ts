@@ -21,9 +21,18 @@ import type { ActivityId } from './boss-form.ts';
  * ITEMS THAT DEPEND ON SOMETHING MISSING carry `requires`, and stay disabled until it exists:
  *   cats-ear-branch-photo      a licensed photograph clearly showing a branched cat's-ear stem
  *   cats-ear-wording-reviewed  a reviewer's ruling on the cat's-ear wording (the old note said
- *                              "branched LEAFY flowering stems"; sources describe leafless
- *                              stems with small scale-like bracts, and branching that is usual
- *                              rather than universal)
+ *                              "branched LEAFY flowering stems"; the corrected wording is
+ *                              "usually branched, largely leafless, with small bracts", and
+ *                              branching is a clue, never proof of species)
+ *   cats-ear-independent-id-review  an independent confirmation that the cat's-ear photograph
+ *                              really shows Hypochaeris radicata
+ *   roadside-species-evidence  better evidence that the small yellow flowers in the two roadside
+ *                              photographs are dandelion and not another yellow daisy-family
+ *                              plant
+ *
+ * THE PRELIMINARY REVIEW IS NOT AN APPROVAL. Wording here follows a preliminary botanical
+ * review, which is why it changed; it has not put a name in `CHALLENGE_REVIEWS`, and nothing
+ * here is formally approved.
  */
 export type ChallengeKind = 'pick-picture' | 'spot-feature' | 'showdown' | 'quick-pick';
 export type ChallengeCategory = 'visual' | 'applied' | 'recall';
@@ -52,7 +61,20 @@ export interface ChallengeItem {
 
 const DANDELION = 'taraxacum-officinale';
 const SRC = ['wisc-dandelion', 'umn-dandelions'] as const;
-const CAT = ['cats-ear-branch-photo', 'cats-ear-wording-reviewed'] as const;
+const CAT = [
+  'cats-ear-branch-photo',
+  'cats-ear-wording-reviewed',
+  'cats-ear-independent-id-review',
+] as const;
+/** Cat's-ear claims from sources the drafter has not read; see `challenge-claims.ts`. */
+const CATSRC = [
+  ...SRC,
+  'wfo-hypochaeris-radicata',
+  'wsu-hortsense-catsear',
+  'wsu-hosted-usfs-treatment-guide',
+] as const;
+/** A roadside photograph whose species has not been confirmed by independent review. */
+const ROADSIDE = ['roadside-species-evidence'] as const;
 const CAT_WORDING = ['cats-ear-wording-reviewed'] as const;
 
 export const CHALLENGE_BANK: readonly ChallengeItem[] = [
@@ -76,11 +98,11 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     activity: 'part-spotter',
     kind: 'spot-feature',
     category: 'visual',
-    prompt: 'Tap the flower stalk.',
+    prompt: 'Tap the stalk holding the seed head.',
     media: 'd-seed-stalk',
     correct: 'stalk',
     distractors: ['head', 'leaves', 'ground'],
-    feedback: 'One bare stalk carries one flower.',
+    feedback: 'One bare stalk holds up the seed head, and held the flower before it.',
     sources: SRC,
     fact: 'singly on a leafless',
   },
@@ -93,7 +115,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Find the seed ‘clock’.',
     correct: 'd-seed-head',
     distractors: ['d-rosette-leaf', 'd-flower-open'],
-    feedback: 'That round white puff is the seed head, and the wind spreads it.',
+    feedback: 'That round white puff is the seed head, mainly spread by the wind.',
     sources: SRC,
     fact: 'round white wind-dispersed',
   },
@@ -146,7 +168,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Spot the white seed head.',
     correct: 'd-seed-stalk',
     distractors: ['d-rosette-alt', 'd-bud'],
-    feedback: 'Round, white and spread by the wind.',
+    feedback: 'Round, white and mainly spread by the wind.',
     sources: SRC,
     fact: 'round white wind-dispersed',
   },
@@ -156,10 +178,10 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     activity: 'part-spotter',
     kind: 'quick-pick',
     category: 'applied',
-    prompt: 'How does a dandelion puff travel?',
-    correct: 'On the wind',
-    distractors: ['Floating on water', 'Stuck to fur'],
-    feedback: 'The seed head is wind-dispersed, so the wind carries the seeds.',
+    prompt: 'What is the main way the seeds spread?',
+    correct: 'Mostly on the wind',
+    distractors: ['Mostly floating on water', 'Mostly stuck to fur'],
+    feedback: 'Wind is the main way a dandelion seed head spreads its seeds.',
     sources: SRC,
     fact: 'wind-dispersed',
   },
@@ -174,9 +196,9 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Which has one stalk from the leaves?',
     correct: 'd-plant-stalk',
     distractors: ['c-branched'],
-    feedback: 'Dandelion stalks are single and unbranched, and rise straight from the leaves.',
-    sources: SRC,
-    fact: 'single, unbranched',
+    feedback: 'Dandelion stalks are single and unbranched. Branching is a clue, not proof.',
+    sources: CATSRC,
+    fact: 'single and unbranched',
     requires: CAT,
   },
   {
@@ -188,9 +210,9 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Which usually has a branching stem?',
     correct: 'c-branched',
     distractors: ['d-flowers-stalks'],
-    feedback: 'Cat’s-ear usually branches. Dandelion stalks stay single.',
-    sources: SRC,
-    fact: 'single, unbranched',
+    feedback: 'Cat’s-ear stems usually branch. That is a clue, not proof of species.',
+    sources: CATSRC,
+    fact: 'single and unbranched',
     requires: CAT,
   },
   {
@@ -202,9 +224,9 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'A stem forks into several heads. Dandelion?',
     correct: 'Probably not',
     distractors: ['Yes, that is dandelion'],
-    feedback: 'Dandelion stalks are single and unbranched.',
-    sources: SRC,
-    fact: 'single, unbranched',
+    feedback: 'Probably not: dandelion stalks are single. Branching is a clue, not proof.',
+    sources: CATSRC,
+    fact: 'single and unbranched',
     requires: CAT_WORDING,
   },
 
@@ -222,6 +244,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     feedback: 'Dandelions love roadsides and paths: open, sunny, disturbed ground.',
     sources: SRC,
     fact: 'roadsides',
+    requires: ROADSIDE,
   },
   {
     id: 'hb.trampled',
@@ -229,12 +252,12 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     activity: 'habitat-season',
     kind: 'quick-pick',
     category: 'applied',
-    prompt: 'A path gets trampled hard. Can dandelions cope?',
-    correct: 'Yes, packed soil is fine',
-    distractors: ['No, they need soft soil'],
-    feedback: 'Dandelions are especially tolerant of packed soil.',
+    prompt: 'Can dandelions tolerate compacted soil?',
+    correct: 'Yes, they can tolerate it',
+    distractors: ['No, they need loose soil'],
+    feedback: 'Dandelions can tolerate compacted soil.',
     sources: SRC,
-    fact: 'compacted soils',
+    fact: 'tolerate compacted soil',
   },
   {
     id: 'hb.puff',
@@ -245,7 +268,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'This puff used to be a…',
     media: 'd-seed-head',
     correct: 'd-flower-open',
-    distractors: ['d-rosette-leaf', 'd-bud'],
+    distractors: ['d-rosette-leaf', 'd-rosette-alt'],
     feedback: 'Mature flowers turn into round white seed heads.',
     sources: SRC,
     fact: 'round white wind-dispersed',
@@ -263,6 +286,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     feedback: 'Paths and roadsides suit dandelions.',
     sources: SRC,
     fact: 'roadsides',
+    requires: ROADSIDE,
   },
   {
     id: 'hb.bloom2',
@@ -303,7 +327,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Which one is the seed head?',
     correct: 'd-seed-stalk',
     distractors: ['d-flowers-stalks', 'd-rosette-alt'],
-    feedback: 'Round, white and spread by the wind.',
+    feedback: 'Round, white and mainly spread by the wind.',
     sources: SRC,
     fact: 'round white wind-dispersed',
   },
@@ -330,9 +354,9 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Which has one unbranched stalk?',
     correct: 'd-flowers-stalks',
     distractors: ['c-branched-2'],
-    feedback: 'Dandelion stalks do not branch.',
-    sources: SRC,
-    fact: 'single, unbranched',
+    feedback: 'Dandelion stalks are single and unbranched. Branching is a clue, not proof.',
+    sources: CATSRC,
+    fact: 'single and unbranched',
     requires: CAT,
   },
   {
@@ -344,9 +368,9 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     prompt: 'Which one forks into several heads?',
     correct: 'c-branched-2',
     distractors: ['d-plant-stalk'],
-    feedback: 'Lookalikes usually branch. Dandelion does not.',
-    sources: SRC,
-    fact: 'single, unbranched',
+    feedback: 'Cat’s-ear stems usually branch, which is a clue, not proof.',
+    sources: CATSRC,
+    fact: 'single and unbranched',
     requires: CAT,
   },
   {
@@ -362,6 +386,7 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     feedback: 'Roadsides and paths suit dandelions.',
     sources: SRC,
     fact: 'roadsides',
+    requires: ROADSIDE,
   },
   {
     id: 'tr.puff',
@@ -383,12 +408,12 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     activity: 'boss-trial',
     kind: 'quick-pick',
     category: 'applied',
-    prompt: 'Hard-packed soil along a path. Dandelions?',
-    correct: 'Yes, they cope',
+    prompt: 'On a trampled path, can dandelions tolerate it?',
+    correct: 'Yes, they can tolerate it',
     distractors: ['No, they need loose soil'],
-    feedback: 'Compacted soil does not stop them.',
+    feedback: 'Dandelions can tolerate compacted soil.',
     sources: SRC,
-    fact: 'compacted soils',
+    fact: 'tolerate compacted soil',
   },
   {
     id: 'tr.wind',
@@ -396,10 +421,10 @@ export const CHALLENGE_BANK: readonly ChallengeItem[] = [
     activity: 'boss-trial',
     kind: 'quick-pick',
     category: 'applied',
-    prompt: 'How do the seeds travel?',
-    correct: 'On the wind',
-    distractors: ['By water', 'On animal fur'],
-    feedback: 'The seed head is wind-dispersed.',
+    prompt: 'How do the seeds mainly travel?',
+    correct: 'Mostly on the wind',
+    distractors: ['Mostly by water', 'Mostly on animal fur'],
+    feedback: 'Wind is the main way the seeds spread.',
     sources: SRC,
     fact: 'wind-dispersed',
   },
