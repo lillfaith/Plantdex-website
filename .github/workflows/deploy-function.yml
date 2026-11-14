@@ -52,6 +52,7 @@ on:
           # GitHub will not let us derive, so a new function has to be added here by hand
           # or it cannot be deployed on its own.
           - redeem-deck-code
+          - challenge-submit
 
 permissions:
   contents: read
