@@ -154,7 +154,11 @@ export function GardenView() {
                       {/* An earned Boss Form stands on a mossy stone step with a gold rim: still,
                           and part of the bed rather than a trophy stand. */}
                       {bossForms.has(herbId) && <span aria-hidden="true" className="boss-pedestal" />}
-                      <span className={`relative z-10 flex h-full w-full items-end justify-center ${bossForms.has(herbId) ? 'pb-1' : ''}`}>
+                      {/* The Boss frame is wider than its tile below 380px (about 83px of ink in 61px at
+                          320), so it is drawn at 80% there, standing on the same ground line. The art
+                          is also left of centre in its own frame (ink spans 2%-78% of the width), so it
+                          is nudged right until the mane and seed puffs sit inside the gold frame. */}
+                      <span className={`relative z-10 flex h-full w-full items-end justify-center ${bossForms.has(herbId) ? 'origin-bottom translate-x-[9px] scale-[0.8] pb-1 min-[380px]:translate-x-[11px] min-[380px]:scale-100' : ''}`}>
                         <GrowthSprite
                           herb={herb}
                           stage={bossForms.has(herbId) ? 'boss' : stage}
@@ -174,7 +178,7 @@ export function GardenView() {
                       <span aria-hidden="true" className="soil-line mt-0.5 h-0.5 w-10 rounded-full" />
                     )}
 
-                    <span className="mt-1 w-full truncate text-center text-xs font-semibold text-violet-100">
+                    <span className="mt-1 line-clamp-2 w-full text-center text-xs leading-tight font-semibold break-words text-violet-100">
                       {herb.commonName}
                     </span>
 

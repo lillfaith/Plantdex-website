@@ -82,6 +82,20 @@ describe('the Boss Form flag', () => {
       expect(block).not.toMatch(/animation|transition/);
     }
   });
+  it('the Garden wraps long plant names instead of cutting them, and keeps the Boss art inside its frame', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    expect(view).toContain('line-clamp-2');
+    expect(view).not.toMatch(/mt-1 w-full truncate/);
+    // Narrow screens draw the Boss art smaller and nudged into its frame; wider ones at full size.
+    expect(view).toContain('scale-[0.8]');
+    expect(view).toContain('min-[380px]:scale-100');
+  });
+  it('the Garden tile is still one link to the plant page, Boss Form or not', () => {
+    const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
+    // The tile's own link is unconditional: nothing about a Boss Form changes where it goes.
+    expect(view).toContain('`/herbdex/${herb.id}`');
+    expect(view).not.toMatch(/bossForms\.has\(herbId\)\s*\?\s*`\/herbdex/);
+  });
   it('the Garden changes only the picture and a label', () => {
     const view = strip(readFileSync('src/components/garden/GardenView.tsx', 'utf8'));
     expect(view).toContain("bossForms.has(herbId) ? 'boss' : stage");
