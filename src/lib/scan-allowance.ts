@@ -17,7 +17,7 @@ import { useCallback, useMemo, useSyncExternalStore } from 'react';
  * nothing else names a UTC calendar day by slicing a string stays absolute.
  */
 export const SIGNED_IN_DAILY_SCANS = 10;
-export const ANON_DAILY_SCANS = 10;
+export const ANON_DAILY_SCANS = 5;
 
 const KEY = 'plantdex.scan-allowance.v1';
 

@@ -156,9 +156,8 @@ const QUOTA_SALT = Deno.env.get('SCAN_QUOTA_SALT') ?? `derived:${SERVICE_ROLE_KE
  * PlantNet's free tier is roughly 500 identifications/day for the whole project, so these
  * are sized against a shared budget rather than against what one person might enjoy.
  *
- *   ANON_DAILY_LIMIT  10  The same daily goal as a signed-in player: ten scans a day, said
- *                         once, to everybody. The shared backstop below, not a lower anonymous
- *                         number, is what protects the day's allowance.
+ *   ANON_DAILY_LIMIT  5   Signed out: five scans a day. Signing in doubles it, which is the
+ *                         honest reason to make an account.
  *   USER_DAILY_LIMIT  10  A daily scan goal: enough for a good day outdoors. The client mirrors
  *                         both numbers in `src/lib/scan-allowance.ts`, and a test holds them
  *                         together.
@@ -166,7 +165,7 @@ const QUOTA_SALT = Deno.env.get('SCAN_QUOTA_SALT') ?? `derived:${SERVICE_ROLE_KE
  *                         and every later scan fails at the provider with an error nobody
  *                         can act on. Held below 500 so there is headroom to notice.
  */
-const ANON_DAILY_LIMIT = 10;
+const ANON_DAILY_LIMIT = 5;
 const USER_DAILY_LIMIT = 10;
 const GLOBAL_DAILY_LIMIT = 450;
 
