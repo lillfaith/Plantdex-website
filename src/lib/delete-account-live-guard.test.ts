@@ -32,7 +32,7 @@ describe('the account-deletion live check cannot be redirected to production', (
   it('refuses to start for production or any other ref, before any network call', () => {
     for (const ref of ['vygiamigomwlvnwkryyl', 'someotherproject', '']) {
       const r = spawnSync('node', ['scripts/e2e_delete_boss_forms.mjs'], {
-        env: { PATH: process.env.PATH ?? '', PROJECT_REF: ref, SUPABASE_ACCESS_TOKEN: 'sentinel-token-value' },
+        env: { NODE_ENV: 'test', PATH: process.env.PATH ?? '', PROJECT_REF: ref, SUPABASE_ACCESS_TOKEN: 'sentinel-token-value' },
         encoding: 'utf8',
         timeout: 15_000,
       });
@@ -43,7 +43,7 @@ describe('the account-deletion live check cannot be redirected to production', (
   });
   it('the sweep refuses the same way', () => {
     const r = spawnSync('node', ['scripts/e2e_delete_boss_forms.mjs', '--sweep'], {
-      env: { PATH: process.env.PATH ?? '', PROJECT_REF: 'vygiamigomwlvnwkryyl', SUPABASE_ACCESS_TOKEN: 'x' },
+      env: { NODE_ENV: 'test', PATH: process.env.PATH ?? '', PROJECT_REF: 'vygiamigomwlvnwkryyl', SUPABASE_ACCESS_TOKEN: 'x' },
       encoding: 'utf8',
       timeout: 15_000,
     });
