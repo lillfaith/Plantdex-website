@@ -1,0 +1,35 @@
+{
+  "_what": "CC0 reference photographs for the cat's-ear (Hypochaeris radicata) lookalike round of the Dandelion Boss Form pilot.",
+  "_policy": "iNaturalist photographs licensed CC0 only (owner decision, 2026-11-14). Licence code taken from the iNaturalist API response printed by the Find iNaturalist observations workflow, run 43635831294.",
+  "_status": "Chosen by the owner from a contact sheet. NOT yet confirmed by a botanical reviewer, so `cats-ear-branch-photo` is not in READY_ASSETS and every question that needs it stays disabled.",
+  "taxon": "Hypochaeris radicata",
+  "photos": [
+    {
+      "use": "branched flower stem (c-branched)",
+      "file": "public/boss-form/c-branched-43803097.webp",
+      "inat_photo_id": 69472306,
+      "observation": "https://www.inaturalist.org/observations/43803097",
+      "observed": "2020-04-26",
+      "place": "Ingram Mountain Rd, Lilesville, NC, US",
+      "license": "cc0",
+      "note": "A slender stem held across a hand splits in a Y with a bud on the short branch. Shows usual branching, not universal: wording must keep saying 'usually'."
+    }
+  ],
+  "candidates_not_used": [
+    {
+      "inat_photo_id": 209442295,
+      "observation": "https://www.inaturalist.org/observations/123623874",
+      "note": "whole plant, several slender leafless stems; less clearly branched"
+    },
+    {
+      "inat_photo_id": 608137960,
+      "observation": "https://www.inaturalist.org/observations/334836184",
+      "note": "coarse hairy leaf close-up; for the optional hairy-leaf round once a reviewer confirms dandelion leaves are hairless or nearly so"
+    }
+  ],
+  "still_missing": [
+    "reviewer confirmation of this photograph",
+    "reviewed cat's-ear wording (cats-ear-wording-reviewed)",
+    "a second branched-stem photo (c-branched-2)"
+  ]
+}

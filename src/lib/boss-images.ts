@@ -172,10 +172,16 @@ export const BOSS_IMAGES: Readonly<Record<string, BossImage>> = {
     width: 375,
     height: 500,
   },
-  // NOT YET AVAILABLE: a clear photograph of a branched cat's-ear flowering stem. No src.
+  // Cat's-ear stem that forks, with a bud on the short branch. iNaturalist observation 43803097.
+  // The question that uses it stays disabled: `cats-ear-branch-photo` is NOT in READY_ASSETS until
+  // a botanical reviewer confirms this photograph shows the branching it is meant to show.
   'c-branched': {
-    alt: 'A cat’s-ear flowering stem that branches',
+    src: `${dir}/c-branched-43803097.webp`,
+    alt: 'A cat’s-ear flower stem that forks, held across a hand',
     licence: 'cc0',
+    inatPhotoId: 69472306,
+    width: 375,
+    height: 500,
   },
   'c-branched-2': {
     alt: 'A second cat’s-ear stem that forks into several heads',
