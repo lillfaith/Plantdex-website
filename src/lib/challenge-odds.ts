@@ -31,14 +31,20 @@ export function guessPassProbability(slots: readonly Slot[], need: number): numb
   return distribution.reduce((sum, mass, resolved) => (resolved >= need ? sum + mass : sum), 0);
 }
 
+/**
+ * `scope` 'specified' (the default) measures the whole bank, gated questions included.
+ * 'available' measures only the drafts a player could actually be given once reviewed, which is
+ * the figure that matters for a section whose hardest questions are gated.
+ */
 export function activityGuessOdds(
   activity: ActivityId,
   attempts = 200,
+  scope: 'specified' | 'available' = 'specified',
 ): { average: number; min: number; max: number } | null {
   const results: number[] = [];
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     const slots = buildChallenge('taraxacum-officinale', activity, attempt, {
-      includeUnavailable: true,
+      ...(scope === 'specified' ? { includeUnavailable: true } : { includeUnreviewed: true }),
     });
     if (!slots) return null;
     results.push(guessPassProbability(slots, PASS_MARKS[activity].need));

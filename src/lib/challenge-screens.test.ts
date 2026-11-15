@@ -76,9 +76,9 @@ describe('the hub', () => {
     const out = html('preview');
     expect(out).toContain('Part Spotter');
     expect(out).toContain('Habitat');
-    // Only Compare needs the cat’s-ear photograph and ruling, so only it cannot start. The Trial
-    // can now be BUILT in preview from dandelion-only drafts, but stays behind its prerequisites.
-    expect((out.match(/Coming soon/g) ?? []).length).toBe(1);
+    // Every activity now has dandelion-only drafts, so each can be built in a development
+    // preview. The Trial stays behind its three prerequisites.
+    expect((out.match(/Coming soon/g) ?? []).length).toBe(0);
     expect(out).toMatch(/Preview: draft questions, nothing is recorded/);
   });
   it('in production-like "on" mode nothing is playable, because nothing is reviewed', () => {

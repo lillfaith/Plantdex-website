@@ -36,19 +36,19 @@ export const CATS_EAR_CLAIMS: readonly ClaimSource[] = [
   },
   {
     id: 'branched',
-    claim: 'Cat’s-ear flowering stems are usually branched.',
+    claim: 'Cat’s-ear has branched or several flowering stems (dandelion has a single flowering stem).',
     sourceIds: ['wsu-hosted-usfs-treatment-guide'],
     basis: 'machine-read',
-    note: 'The WSU-hosted US Forest Service guide says: "hairy cats-ear has branched or several flowering stems (a single flowering stem in common dandelion)". That is "branched or several", not "usually branched". The WSU HortSense address does not load.',
+    note: 'The WSU-hosted US Forest Service guide says: "hairy cats-ear has branched or several flowering stems (a single flowering stem in common dandelion)". The questions and the curated note now use exactly that wording. The WSU HortSense address does not load.',
     usedBy: ['cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch'],
   },
   {
     id: 'leafless-bracts',
-    claim: 'Cat’s-ear stems are largely leafless, with small bracts.',
+    claim: 'Cat’s-ear stems are largely leafless, with small bracts. WITHHELD: no longer stated anywhere in the bank.',
     sourceIds: ['wfo-hypochaeris-radicata'],
     basis: 'unsourced',
-    note: 'No page read says it. The World Flora Online summary calls it a "scapose" herb, which points at a leafless flowering stem, and the Forest Service guide mentions only the outer bracts under the flower head, not bracts on the stem. The wording comes from the preliminary reviewer.',
-    usedBy: ['curated note (lookalikes)'],
+    note: 'No page read says it, so it was taken out of the questions and the curated note. The World Flora Online summary calls it a "scapose" herb, which points at a leafless flowering stem, and the Forest Service guide mentions only the outer bracts under the flower head, not bracts on the stem. Put it back only with a source that says it.',
+    usedBy: [],
   },
   {
     id: 'leaves-habitat',
@@ -107,7 +107,7 @@ export const PHOTO_CLUES: Readonly<Record<string, PhotoClues>> = {
     leaves: false,
     flower: 'unclear',
     seedHead: 'unclear',
-    note: 'A closed head held in a hand, with withered yellow tips and a pale tuft on top. It may be a bud or a spent bloom closing. A botanist must say which.',
+    note: 'NOT USED by any question since version 4. A closed head held in a hand, with withered yellow tips and a pale tuft on top. It may be a bud or a spent bloom closing, so it is not labelled a bud anywhere. Kept on disk with its provenance only.',
   },
 };
 
@@ -128,13 +128,13 @@ export interface DandelionClaim {
 
 export const DANDELION_CLAIMS: readonly DandelionClaim[] = [
   { id: 'sap', claim: 'Broken stalks and leaves leak milky white sap.', sourceIds: ['wisc-dandelion', 'umn-dandelions'], strength: 'direct', quote: '\u201cThe stem contains milky latex sap.\u201d (Wisconsin) \u201cStalks are hollow and contain white sap when broken.\u201d (Minnesota)', usedBy: ['ps.sap', 'tr.sap'] },
-  { id: 'wind', claim: 'The round white seed head is wind-dispersed.', sourceIds: ['wisc-dandelion'], strength: 'partial', quote: '\u201ca feathery parachute of soft, white hairs that makes it easily carried by the wind.\u201d The page does not say wind is the MAIN way seeds spread.', usedBy: ['ps.wind', 'tr.wind', 'ps.clock', 'ps.seedhead2', 'tr.clock', 'tr.puff'] },
-  { id: 'stalk', claim: 'One flower on a single, unbranched, leafless stalk.', sourceIds: ['umn-dandelions'], strength: 'direct', quote: '\u201cDandelion stalks do not branch, have no leaves, and only produce one flower.\u201d', usedBy: ['ps.stalk', 'ps.flower2', 'tr.flower', 'tr.flowerbare', 'cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch'] },
-  { id: 'rosette', claim: 'Toothed or lobed leaves grow in a low rosette.', sourceIds: ['wisc-dandelion', 'umn-dandelions'], strength: 'direct', quote: '\u201cThe lance shaped leaves grow in a rosette\u201d (Wisconsin); leaves \u201cform at the base of the stem in a circular cluster\u201d and \u201care deeply lobed\u201d (Minnesota).', usedBy: ['ps.rosette', 'ps.leaves2', 'tr.rosette', 'tr.rosflower', 'tr.noflower'] },
+  { id: 'wind', claim: 'The round white seed head is wind-dispersed.', sourceIds: ['wisc-dandelion'], strength: 'partial', quote: '\u201ca feathery parachute of soft, white hairs that makes it easily carried by the wind.\u201d The page does not say wind is the MAIN way seeds spread.', usedBy: ['ps.wind', 'tr.wind', 'ps.clock', 'ps.seedhead2', 'tr.clock', 'tr.puff', 'cp.seedleaves'] },
+  { id: 'stalk', claim: 'One flower on a single, unbranched, leafless stalk.', sourceIds: ['umn-dandelions'], strength: 'direct', quote: '\u201cDandelion stalks do not branch, have no leaves, and only produce one flower.\u201d', usedBy: ['ps.stalk', 'ps.flower2', 'tr.flower', 'tr.flowerbare', 'cp.flowerleaves', 'cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch'] },
+  { id: 'rosette', claim: 'Toothed or lobed leaves grow in a low rosette.', sourceIds: ['wisc-dandelion', 'umn-dandelions'], strength: 'direct', quote: '\u201cThe lance shaped leaves grow in a rosette\u201d (Wisconsin); leaves \u201cform at the base of the stem in a circular cluster\u201d and \u201care deeply lobed\u201d (Minnesota).', usedBy: ['ps.rosette', 'ps.leaves2', 'tr.rosette', 'tr.rosflower', 'tr.noflower', 'cp.seedleaves', 'cp.flowerleaves'] },
   { id: 'backward-lobes', claim: 'Leaf lobes point back toward the centre.', sourceIds: ['umn-dandelions'], strength: 'direct', quote: '\u201cDandelion leaves are deeply lobed and form points angled toward the stem.\u201d', usedBy: [] },
   { id: 'lawn-garden', claim: 'Dandelions grow in lawns, gardens and disturbed soil.', sourceIds: ['umn-dandelions', 'wisc-dandelion'], strength: 'direct', quote: '\u201cDandelions thrive in thin lawns, garden beds, and disturbed soils\u201d (Minnesota); \u201ca common plant of grassland and cultivated ground\u201d (Wisconsin).', usedBy: ['hb.lawn', 'hb.disturbed'] },
   { id: 'sun', claim: 'Dandelions grow more in full sun.', sourceIds: ['umn-dandelions'], strength: 'partial', quote: '\u201cdandelions have increased growth in full sun and moist conditions, they are adaptable to many different environments.\u201d The word \u201copen\u201d does not appear, and \u201cDeep shade\u201d is a wrong answer only because the claim is about what they favor.', usedBy: ['hb.sunny'] },
   { id: 'compacted', claim: 'Dandelions can tolerate compacted soil.', sourceIds: ['umn-dandelions'], strength: 'indirect', quote: '\u201cDandelions can indicate compaction\u201d; the taproot is \u201cable to aerate compacted soils.\u201d Growth in compacted soil is implied, and \u201ctolerate\u201d is the drafter\u2019s word.', usedBy: ['hb.trampled', 'tr.packed'] },
   { id: 'paths-roadsides-fields', claim: 'Dandelions grow on paths, roadsides and in fields.', sourceIds: [], strength: 'not-found', quote: 'Neither page uses these words. The curated habitat note keeps them. No ungated question depends on them.', usedBy: ['hb.curb', 'hb.curb2', 'tr.curb'] },
-  { id: 'bud-flower', claim: 'A green bud opens into the flower, which later becomes the seed head.', sourceIds: ['wisc-dandelion', 'umn-dandelions'], strength: 'partial', quote: '\u201cThe fat green buds ... open ... to expose all the numerous ray and disc flowers\u201d (Wisconsin); \u201cthe formation of \u2018puffballs\u2019 when they go to seed\u201d (Minnesota). This supports the sequence. Whether the d-bud PHOTOGRAPH shows a bud is a separate question.', usedBy: ['hb.puff', 'hb.bloom2', 'tr.puff'] },
+  { id: 'bud-flower', claim: 'A green bud opens into the flower, which later becomes the seed head.', sourceIds: ['wisc-dandelion', 'umn-dandelions'], strength: 'partial', quote: '\u201cThe fat green buds ... open ... to expose all the numerous ray and disc flowers\u201d (Wisconsin); \u201cthe formation of \u2018puffballs\u2019 when they go to seed\u201d (Minnesota). This supports the sequence. The unresolved d-bud photograph is no longer used by any question.', usedBy: ['hb.puff', 'hb.bloom2', 'tr.puff', 'cp.stages'] },
 ];

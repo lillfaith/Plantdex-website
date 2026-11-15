@@ -124,7 +124,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
       {
         commonName: "Cat's-ear and other yellow-flowered daisy-family plants",
         distinguishBy:
-          'Dandelion flower stalks are single and unbranched, rising straight from the basal rosette. Cat\u2019s-ear stems are usually branched and largely leafless, with small bracts. Branching is a useful clue, not proof of which species it is: check the leaves and flower-head bracts too.',
+          'Dandelion flower stalks are single and unbranched, rising straight from the basal rosette. Cat\u2019s-ear has branched or several flowering stems. Branching is a useful clue, not proof of which species it is: check the leaves and the bracts under the flower head too.',
       },
     ],
     sourceIds: ['wisc-dandelion', 'umn-dandelions'],

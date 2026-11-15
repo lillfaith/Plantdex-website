@@ -5,8 +5,8 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-// The bank as it stood in packet version 2, so every change since is computed, not remembered.
-const BASELINE = '7540fab'; // version 2 of the packet
+// The bank as it stood in packet version 3, so every change since is computed, not remembered.
+const BASELINE = '5ebe4db'; // version 3 of the packet
 const oldFile = join(tmpdir(), `old-challenge-bank-${BASELINE}.ts`);
 writeFileSync(oldFile, execFileSync('git', ['show', `${BASELINE}:src/lib/challenge-bank.ts`], { encoding: 'utf8' }));
 const { CHALLENGE_BANK: OLD_BANK } = await import(oldFile);
@@ -14,6 +14,7 @@ const { CHALLENGE_BANK } = await import('../src/lib/challenge-bank.ts');
 const { BOSS_IMAGES, REGION_LABELS } = await import('../src/lib/boss-images.ts');
 const { CATS_EAR_CLAIMS, DANDELION_CLAIMS, PHOTO_CLUES } = await import('../src/lib/challenge-claims');
 const { PASS_MARKS, TRIAL_MIX } = await import('../src/lib/boss-form');
+const { activityGuessOdds } = await import('../src/lib/challenge-odds');
 const { isAvailable } = await import('../src/lib/mastery-challenges');
 const { FIELD_NOTES } = await import('../src/lib/card-field-notes');
 const sources = JSON.parse(readFileSync('src/data/sources.json', 'utf8'));
@@ -33,10 +34,10 @@ const CONCERNS = {
   'ps.clock': ['fixed', 'A wrong-answer leaf photograph had a small seed puff in it. It is now a crop without the puff.'],
   'tr.clock': ['fixed', 'A wrong-answer leaf photograph had a small seed puff in it. It is now a crop without the puff.'],
   'hb.puff': ['fixed', 'Both wrong answers are leaf photographs, cropped so no small seed puff shows.'],
-  'ps.seedhead2': ['open', 'The wrong-answer leaf photograph is now a crop without its small puff. The other wrong answer, d-bud, still needs a botanist: see the d-bud item at the end.'],
-  'hb.bloom2': ['open', 'd-bud is kept as a wrong answer, as instructed, because a bud comes before an open flower. A botanist must confirm the photograph shows a bud and not a spent bloom: see the d-bud item at the end.'],
-  'tr.puff': ['open', 'd-bud is kept as a wrong answer, as instructed. A botanist must confirm the photograph shows a bud and not a spent bloom: see the d-bud item at the end.'],
-  'hb.trampled': ['open', 'The Minnesota page says dandelions "can indicate compaction" and aerate compacted soil. "Tolerate" is an inference from that.'],
+  'ps.seedhead2': ['fixed', "The unresolved d-bud photograph is gone. The wrong answers are now a leaf crop and an open-flower photograph."],
+  'hb.bloom2': ['fixed', "The unresolved d-bud photograph is gone. The wrong answers are now a leaf crop and a photograph of flowers still in bloom."],
+  'tr.puff': ['fixed', "The unresolved d-bud photograph is gone. The wrong answers are now two leaf crops."],
+  'hb.trampled': ['open', "A third answer (\"No, only sandy soil\") was added so every Habitat question has three options. The Minnesota page says dandelions \"can indicate compaction\" and aerate compacted soil; \"tolerate\" is an inference from that."],
   'tr.packed': ['open', 'The Minnesota page says dandelions "can indicate compaction" and aerate compacted soil. "Tolerate" is an inference from that.'],
   'hb.sunny': ['new', 'Supported in part: "increased growth in full sun and moist conditions", but the same page says dandelions are "adaptable to many different environments". The word "open" is not on the page.'],
   'hb.lawn': ['new', 'Supported for lawns and gardens ("thin lawns, garden beds"). Paths, roadsides and fields are not on either page.'],
@@ -44,6 +45,12 @@ const CONCERNS = {
   'tr.rosflower': ['new', 'Two clues needed: a leaf ring AND a flower. Each wrong picture lacks one (checked against the written photograph readings).'],
   'tr.noflower': ['new', 'Leaves are not enough: both wrong pictures also show a flower or a seed head, so the answer needs an absence as well as a presence.'],
   'tr.flowerbare': ['new', 'A flower head with no leaves in frame. The correct picture is a crop made for the purpose, so the question rests on the crop, not on the plant. A botanist may prefer to drop it.'],
+  'cp.seedleaves': ['new', "Compare, two observations: a seed head AND leaves. The wrong picture shows a seed head with no leaves (checked against the written photograph readings)."],
+  'cp.flowerleaves': ['new', "Compare, two observations: a flower AND leaves. The wrong picture shows flowers with no leaves in frame."],
+  'cp.stages': ['new', "Compare, growth stages: which is the stage after flowering. The wrong picture is a flower with no seed head."],
+  'cp.branch': ['disabled', "Reworded to the source: \"branched or several flowering stems\". Still a clue, not proof. Disabled until the photograph has an independent identification review."],
+  'tr.branch': ['disabled', "Reworded to the source: \"branched or several flowering stems\". Needs a second cat’s-ear photograph that does not exist."],
+  'cp.forks': ['disabled', "Reworded: dandelion has one flowering stem, branching is a clue, not proof. Disabled until the cat’s-ear wording is ruled on."],
   'hb.curb': ['disabled', 'Still disabled. Needs: roadside-species-evidence. Neither Extension page mentions roadsides.'],
   'hb.curb2': ['disabled', 'Still disabled. Needs: roadside-species-evidence.'],
   'tr.curb': ['disabled', 'Still disabled. Needs: roadside-species-evidence.'],
@@ -132,28 +139,34 @@ nav{font-size:.85rem;display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0}nav 
 @media print{body{font-size:12px}article{break-inside:avoid}.rule input{display:none}}
 .st{border-collapse:collapse;width:100%;font-size:.85rem}.st th,.st td{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}.st td.done{color:var(--ok)}.st td.gated{color:var(--bad)}.st td.partial{color:var(--warnl)}.b-direct{color:var(--ok)}.b-partial,.b-indirect{color:var(--warnl)}.b-not-found{color:var(--bad)}.b-machine-read{color:var(--ok)}.b-unsourced{color:var(--bad)}.b-search-summary{color:var(--warnl)}.box small{color:var(--mut)}</style></head><body><main>
 <p class="sans" style="margin:0;color:var(--mut)">Plantdex · Boss Form pilot · Dandelion (<i>Taraxacum officinale</i>)</p>
-<h1>Botanical Review Packet <small style="font-size:1rem;font-weight:400">version 3</small></h1>
-<div class="box" style="border-color:var(--bad)"><h4>Status: DRAFTS ONLY. Nothing here is approved.</h4>
-<p class="sans">No question has a named reviewer or date against it, none can be shown to players and none can award anything. ${total} drafts: ${total - off} ungated, ${off} gated. ${newIds.length} questions are new in this version and are marked <span class="tag">NEW</span>; changed ones are marked <span class="tag">CHANGED</span> with the old text struck through.</p></div>
+<h1>Botanical Review Packet <small style="font-size:1rem;font-weight:400">version 4, frozen</small></h1>
+<div class="box" style="border-color:var(--bad)"><h4>Status: DRAFTS ONLY, FROZEN FOR FORMAL REVIEW. Nothing here is approved.</h4>
+<p class="sans">No question has a named reviewer or date against it, none can be shown to players and none can award anything. ${total} drafts: ${total - off} ungated, ${off} gated. ${newIds.length} are new since version 3 (<span class="tag">NEW</span>); changed ones are marked <span class="tag">CHANGED</span> with the old text struck through. The bank is not expected to change again before a botanist reviews it, except to apply that review.</p></div>
 <div class="box"><h4>Do the sections now have enough questions?</h4><table class="sans st"><tr><th>Section</th><th>Asked</th><th>Needed incl. retry</th><th>Ungated drafts</th><th>Gated</th><th>Complete?</th></tr>
 ${[['part-spotter', 'Part Spotter', PASS_MARKS['part-spotter'].of, PASS_MARKS['part-spotter'].of * 2], ['compare', 'Compare', PASS_MARKS.compare.of, PASS_MARKS.compare.of], ['habitat-season', 'Habitat', PASS_MARKS['habitat-season'].of, PASS_MARKS['habitat-season'].of * 2], ['boss-trial', 'Boss Trial', PASS_MARKS['boss-trial'].of, PASS_MARKS['boss-trial'].of]].map(([a, n, asked, need]) => { const all = CHALLENGE_BANK.filter((q) => q.activity === a); const ok = all.filter((q) => isAvailable(q)); return `<tr><td>${n}</td><td>${asked}</td><td>${need}</td><td>${ok.length}</td><td>${all.length - ok.length}</td><td class="${ok.length >= need ? 'done' : 'gated'}">${ok.length >= need ? 'Yes' : 'NO'}</td></tr>`; }).join('')}</table>
-<p class="sans">The Trial needs ${TRIAL_MIX.visual} picture, ${TRIAL_MIX.applied} applied and ${TRIAL_MIX.recall} recall questions and has no retry, so its ten available drafts are every attempt’s ten (only the order changes). <b>Compare has no ungated question</b>: every comparison needs the cat’s-ear photograph. The Trial opens only after Compare, so the pilot cannot be completed until that evidence exists.</p></div>
-<div class="box"><h4>Change log from version 2</h4><ul class="sans">
-<li><b>6 new questions.</b> Habitat: hb.sunny, hb.lawn, hb.disturbed. Boss Trial: tr.rosflower, tr.noflower, tr.flowerbare (each needs two observations).</li>
-<li><b>tr.sap:</b> “Pale yellow” is now “Bright blue”.</li>
-<li><b>Photographs:</b> four crops were made from existing CC0 photographs so a wrong-answer picture is not also a valid example of what is asked (leaves, a flower, a seed puff). Provenance table below.</li>
-<li><b>Seed-head and leaf questions:</b> wrong-answer pictures swapped for those crops in ps.rosette, ps.leaves2, ps.clock, ps.seedhead2, hb.puff, hb.bloom2, tr.clock and tr.puff. Correct answers unchanged.</li>
-<li><b>Habitat feedback</b> reworded to match what the Extension pages actually say.</li>
-<li><b>d-bud kept</b> as a wrong answer in hb.bloom2 and tr.puff, as instructed.</li>
-<li><b>Sources:</b> three of the five were fetched and read by a machine this time (Wisconsin, Minnesota, the Forest Service guide). World Flora Online could not be read (certificate). The WSU HortSense address returns “Page not found”. All five remain unverified.</li>
-<li><b>Unchanged:</b> all 26 original ids, every gate, the reviews list (empty), scoring, pass marks, XP, mastery, and the flag (off).</li></ul></div>
+<p class="sans">Part Spotter and Habitat each need a different spare for every question, so twice the number asked. The Trial needs ${TRIAL_MIX.visual} picture, ${TRIAL_MIX.applied} applied and ${TRIAL_MIX.recall} recall questions and has no retry, so its ten available drafts are every attempt’s ten (only the order changes). Compare now has its three dandelion-only drafts, so the Trial can follow it. The cat’s-ear questions stay gated.</p></div>
+<div class="box"><h4>Habitat guess probability, calculated from the implemented scoring</h4>
+<p class="sans">Every available Habitat question has three options and every slot has one retry, so one slot is resolved by pure guessing with probability 1 − (2/3)² = 0.556, and a set passes on 2 of 3. The result is <b>${(() => { const sp = activityGuessOdds('habitat-season', 50, 'available').average; return (sp * 100).toFixed(1); })()}%</b> (computed by the same code the server uses, then checked by hand). The target of under 25% is <b>not</b> reachable with the existing formats, because it needs about six options per question or no retry:</p>
+<table class="sans st"><tr><th>Design</th><th>Chance a random guesser passes</th><th>What it would take</th></tr>
+<tr><td>Today: 3 options, one retry, pass 2 of 3</td><td>58.3%</td><td>nothing: this is the bank</td></tr>
+<tr><td>4 options, one retry</td><td>40.7%</td><td>a four-option format, or the roadside taps back</td></tr>
+<tr><td>6 options, one retry</td><td>22.3%</td><td>six plausible options per question</td></tr>
+<tr><td>3 options, no retry</td><td>25.9%</td><td>removing the owner’s Habitat retry rule</td></tr>
+<tr><td>4 options, no retry</td><td>15.6%</td><td>both of the above</td></tr></table>
+<p class="sans">Better distractors do not change this: random guessing depends only on how many options there are. The Boss Trial (under 0.1%) is the real gate, and Compare stays at 50% by design (two choices, no retry). The pass mark, the retry rule and the Trial gate are unchanged.</p></div>
+<div class="box"><h4>Change log from version 3</h4><ul class="sans">
+<li><b>Compare completed.</b> Three new dandelion-only questions (cp.seedleaves, cp.flowerleaves, cp.stages), each comparing two observations or two growth stages. The three original cat’s-ear comparisons are unchanged apart from wording and are still gated.</li>
+<li><b>d-bud photograph retired.</b> It may show a spent bloom, so it is out of hb.bloom2, tr.puff and ps.seedhead2 and is not called a bud anywhere. Its file and provenance are kept.</li>
+<li><b>hb.trampled</b> gained a third answer, so every Habitat question has three options.</li>
+<li><b>Cat’s-ear wording</b> now says “branched or several flowering stems”, which is what the one page read says. “Usually branched”, “largely leafless” and “small bracts” are removed because no page read says them. Branching is still only a clue, not proof.</li>
+<li><b>Unchanged:</b> every original id, every gate, the reviews list (empty), scoring, pass marks, retry rules, XP, mastery and the flag (off).</li></ul></div>
 <div class="box"><h4>Still needs a botanist</h4><ul class="sans">
-<li><b>d-bud photograph.</b> Is it a bud, or a spent bloom closing? The photograph shows withered yellow tips and a pale tuft on a closed head. If it is a spent bloom it is not a valid wrong answer in hb.bloom2, tr.puff and ps.seedhead2.</li>
-<li><b>Open the sources.</b> A person must confirm each page before any source is marked verified. The Minnesota and Wisconsin pages say most of what the questions need (see the claim table), but not that wind is the <i>main</i> mechanism, and not “open” sunny, “tolerate” compacted soil, or paths, roadsides and fields.</li>
-<li><b>Cat’s-ear wording.</b> The only page read says “branched or several flowering stems”, not “usually branched”, and nothing read says “largely leafless” or “small bracts”.</li>
-<li><b>Cat’s-ear photograph</b> (independent identification) and a second one; <b>roadside photographs</b> (species evidence).</li>
-<li><b>Photograph readings.</b> The three multi-clue Trial questions and every crop rest on the drafter’s reading of which clues each photograph shows (table below). Confirm or correct.</li>
-<li><b>Guess odds, for the owner.</b> With the roadside taps gated, Habitat can be passed by guessing about 58% of the time. The Trial remains the real gate (under 0.1%).</li></ul></div>
+<li><b>Every question.</b> Nothing is approved. Each needs a named reviewer and a date.</li>
+<li><b>Sources.</b> All five are unverified. Wisconsin, Minnesota and the Forest Service guide were machine-read; World Flora Online could not be read; the WSU HortSense address returns “Page not found”. A person must confirm each claim row.</li>
+<li><b>Source gaps.</b> The pages do not say wind is the <i>main</i> dispersal route, “open” sun, “tolerate” compacted soil, or paths, roadsides and fields.</li>
+<li><b>Cat’s-ear photograph</b> (independent identification), and a second one for tr.single and tr.branch. <b>Roadside photographs</b> (species evidence). All eight of those questions stay gated.</li>
+<li><b>Photograph readings.</b> Every crop, the three multi-clue Trial questions and the three new Compare questions rest on the drafter’s reading of which clues each photograph shows (table below).</li>
+<li><b>An unopened-bud photograph</b> is not needed by any question. If a reviewer wants one used, it must come from a traceable CC0 source.</li></ul></div>
 <div class="box"><h4>What we are asking you to do</h4><ol class="sans"><li>For each question, check that the <b>claim is true</b>, that the <b>cited source supports it</b>, and that <b>each photograph shows what its caption says</b>.</li><li>Mark Approve, Approve with changes, or Reject, and write the corrected wording if any.</li><li>Rule on the open items at the end.</li></ol>
 <p class="sans"><b>What this is not:</b> a safety test. No question concerns eating, preparing or using the plant. Nothing here claims a health effect. The only subject is telling parts and lookalikes apart.</p></div>
 <div class="box"><h4>The curated notes the questions are drawn from</h4><ul class="sans">${notes.identification.map((i) => `<li><b>${esc(i.trait)}.</b> ${esc(i.detail)}</li>`).join('')}<li><b>Habitat.</b> ${esc(notes.habitat)}</li><li><b>Lookalike note.</b> ${esc(notes.lookalikes[0].commonName)}: ${esc(notes.lookalikes[0].distinguishBy)}</li></ul></div>
@@ -167,9 +180,9 @@ ${[['part-spotter', 'Part Spotter', PASS_MARKS['part-spotter'].of, PASS_MARKS['p
 ${sections}
 <section id="key"><h2>Answer key <small>one line per question</small></h2><div class="box"><table class="sans st"><tr><th>Id</th><th>Section</th><th>Correct answer</th><th>Gate</th></tr>${CHALLENGE_BANK.map((q) => `<tr><td><code>${q.id}</code></td><td>${ACT[q.activity]}</td><td>${q.kind === 'quick-pick' ? esc(q.correct) : q.kind === 'spot-feature' ? esc(REGION_LABELS[q.correct] ?? q.correct) + ' (tap)' : esc(q.correct) + ' (picture)'}</td><td>${q.requires?.length ? esc(q.requires.join(', ')) : 'none'}</td></tr>`).join('')}</table></div></section>
 <section id="open"><h2>Open items</h2>
-<div class="box sans"><h4>1. The d-bud photograph</h4><p>It is a wrong answer in hb.bloom2, tr.puff and ps.seedhead2, on the reasoning that a bud comes before an open flower. ${photo('d-bud').replace('<figure', '<figure style="max-width:300px"')}The photograph shows a closed head with withered yellow tips and a pale tuft on top. Is it a bud, or a spent bloom closing? If a spent bloom, it must come out of those answers.<br><br>☐ Bud, keep   ☐ Spent bloom, replace</p></div>
+<div class="box sans"><h4>1. The retired d-bud photograph</h4><p>No question uses it any more. ${photo('d-bud').replace('<figure', '<figure style="max-width:300px"')}It shows a closed head with withered yellow tips and a pale tuft on top, which may be a spent bloom. It is kept on disk only. If you can say what it shows, that settles whether it could ever be reused.</p></div>
 <div class="box sans"><h4>2. Cat’s-ear photograph: independent identification review</h4><p>iNaturalist photo 69472306 (<i>Hypochaeris radicata</i>, CC0, Lilesville NC, 2020-04-26): ${photo('c-branched').replace('<figure', '<figure style="max-width:300px"')}Gates: <code>cats-ear-independent-id-review</code>, <code>cats-ear-branch-photo</code>.<br><br>☐ Approve   ☐ Reject</p></div>
-<div class="box sans"><h4>3. Cat’s-ear wording</h4><p>Current: “Cat’s-ear stems are usually branched and largely leafless, with small bracts. Branching is a useful clue, not proof of which species it is.” The Forest Service guide says “branched or several flowering stems”. Please rule, and cite where “largely leafless” and “small bracts” come from. Gate: <code>cats-ear-wording-reviewed</code>.</p></div>
+<div class="box sans"><h4>3. Cat’s-ear wording</h4><p>Current curated note: “Dandelion flower stalks are single and unbranched, rising straight from the basal rosette. Cat’s-ear has branched or several flowering stems. Branching is a useful clue, not proof of which species it is: check the leaves and the bracts under the flower head too.” This follows the one page read (“branched or several flowering stems”, hairier and more deeply lobed leaves, outer bracts not curved downward). Please rule on it. Gate: <code>cats-ear-wording-reviewed</code>.</p></div>
 <div class="box sans"><h4>4. Roadside photographs</h4><p>hb.curb, hb.curb2 and tr.curb: are the small yellow flowers dandelion? Gate: <code>roadside-species-evidence</code>.</p></div>
 <div class="box sans"><h4>5. Sources and the WSU address</h4><p>Open the five sources and confirm each claim row. Replace or remove the broken WSU HortSense address, and read World Flora Online.</p></div>
 <div class="box sans"><h4>6. Formal review</h4><p>This packet records drafts only. A formal approval needs a reviewer’s name and a date against each question id.</p><p>Name and credentials: ______________________   Date: ______________</p></div></section>

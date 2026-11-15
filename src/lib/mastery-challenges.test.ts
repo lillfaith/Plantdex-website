@@ -92,8 +92,9 @@ describe('items that need something missing are disabled', () => {
       expect(isAvailable(item), item.id).toBe(false);
       expect(item.requires?.length, item.id).toBeGreaterThan(0);
     }
-    // With the Compare pool disabled, Compare and the Trial cannot be built, even as a preview.
-    expect(buildChallenge(DANDELION, 'compare', 0, PREVIEW)).toBeNull();
+    // The cat’s-ear comparisons are disabled. Compare is built from its dandelion-only drafts.
+    expect(buildChallenge(DANDELION, 'compare', 0, PREVIEW)).toHaveLength(3);
+    expect(buildChallenge(DANDELION, 'compare', 0)).toBeNull();
     // The Trial's own cat's-ear items are disabled too, but its other drafts now fill it, so a
     // DEVELOPMENT preview can build it. The server never can: nothing is reviewed.
     expect(buildChallenge(DANDELION, 'boss-trial', 0, PREVIEW)).toHaveLength(10);
@@ -302,10 +303,11 @@ describe('random-guess odds, from the real answer counts and retry rules', () =>
     const compare = activityGuessOdds('compare')!;
     expect(compare.average).toBeCloseTo(0.5, 6);
     expect(activityGuessOdds('part-spotter')!.average).toBeLessThan(0.4);
-    // Habitat reads about 0.58 now that its two four-option roadside taps are gated and the
-    // spare questions are three-option text picks. That is a known cost, reported to the owner,
-    // not a target: the Trial (below) is the real gate. It must not drift any higher.
-    expect(activityGuessOdds('habitat-season')!.average).toBeLessThan(0.6);
+    // Habitat is pinned honestly in "version 4" below: about 0.58, from the implemented scoring.
+    // Gated four-option roadside taps lower the whole-bank figure slightly, never raise it.
+    expect(activityGuessOdds('habitat-season')!.average).toBeLessThanOrEqual(
+      activityGuessOdds('habitat-season', 200, 'available')!.average,
+    );
     expect(activityGuessOdds('boss-trial')!.average).toBeLessThan(0.001);
   });
 });
@@ -345,7 +347,7 @@ describe('the preliminary botanical review changed wording, never gates', () => 
     for (const item of CHALLENGE_BANK) expect(isServable(item), item.id).toBe(false);
   });
   it('keeps every question id the bank had', () => {
-    expect(CHALLENGE_BANK.length).toBe(32);
+    expect(CHALLENGE_BANK.length).toBe(35);
   });
   it('the roadside questions stay disabled pending better species evidence', () => {
     for (const id of ['hb.curb', 'hb.curb2', 'tr.curb']) {
@@ -413,7 +415,7 @@ describe('version 3: complete pools, nothing player-visible', () => {
   it('keeps all 26 original ids and adds only new ones', () => {
     for (const id of V1_IDS) expect(ids, id).toContain(id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.length - V1_IDS.length).toBe(6);
+    expect(ids.length - V1_IDS.length).toBe(9);
   });
   it('every section that can be built has enough eligible drafts for its structure, retries included', () => {
     const eligible = (a: ActivityId) => CHALLENGE_BANK.filter((i) => i.activity === a && isAvailable(i));
@@ -432,9 +434,11 @@ describe('version 3: complete pools, nothing player-visible', () => {
     }
     expect(buildChallenge(DANDELION, 'boss-trial', 0, draft)).toHaveLength(10);
   });
-  it('Compare cannot be built, because its lookalike photographs and wording are not ready', () => {
-    expect(CHALLENGE_BANK.filter((i) => i.activity === 'compare' && isAvailable(i))).toHaveLength(0);
-    expect(buildChallenge(DANDELION, 'compare', 0, draft)).toBeNull();
+  it('Compare has its three ungated drafts, and still cannot be served', () => {
+    const compare = CHALLENGE_BANK.filter((i) => i.activity === 'compare' && isAvailable(i));
+    expect(compare.map((i) => i.id).sort()).toEqual(['cp.flowerleaves', 'cp.seedleaves', 'cp.stages']);
+    expect(buildChallenge(DANDELION, 'compare', 0, draft)).toHaveLength(3);
+    expect(buildChallenge(DANDELION, 'compare', 0)).toBeNull();
   });
   it('the roadside and cat’s-ear questions are still gated', () => {
     for (const id of ['hb.curb', 'hb.curb2', 'tr.curb', 'cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch']) {
@@ -474,7 +478,7 @@ describe('version 3: complete pools, nothing player-visible', () => {
     // Leaf questions: no wrong picture may show a leaf.
     for (const id of ['ps.rosette', 'ps.leaves2']) for (const d of by(id).distractors) expect(clues(d).leaves, `${id}: ${d}`).toBe(false);
     // Seed-head questions: no wrong picture may show, or possibly show, a seed head.
-    for (const id of ['ps.clock', 'ps.seedhead2', 'tr.clock', 'hb.bloom2', 'tr.puff']) {
+    for (const id of ['ps.clock', 'ps.seedhead2', 'tr.clock', 'hb.bloom2', 'tr.puff', 'cp.stages']) {
       for (const d of by(id).distractors) expect(clues(d).seedHead === true, `${id}: ${d}`).toBe(false);
       expect(clues(by(id).correct).seedHead, id).toBe(true);
     }
@@ -503,6 +507,63 @@ describe('version 3: complete pools, nothing player-visible', () => {
     for (const item of CHALLENGE_BANK.filter((i) => i.activity === 'boss-trial' && isAvailable(i) && i.kind === 'pick-picture')) {
       expect(seen.get(item.correct), `${item.id} repeats ${item.correct}`).toBeUndefined();
       seen.set(item.correct, item.id);
+    }
+  });
+});
+
+describe('version 4: Compare, the bud photograph, Habitat odds and cat’s-ear wording', () => {
+  const by = (id: string) => CHALLENGE_BANK.find((i) => i.id === id)!;
+  const clues = (id: string) => PHOTO_CLUES[id]!;
+  it('the new Compare questions are dandelion-only and two-observation, and the originals keep their gates', () => {
+    for (const id of ['cp.seedleaves', 'cp.flowerleaves', 'cp.stages']) {
+      const item = by(id);
+      expect(item.kind, id).toBe('showdown');
+      expect(item.requires, id).toBeUndefined();
+      for (const photo of [item.correct, ...item.distractors]) expect(photo.startsWith('c-'), `${id}: ${photo}`).toBe(false);
+    }
+    const sl = by('cp.seedleaves');
+    expect([clues(sl.correct).seedHead, clues(sl.correct).leaves]).toEqual([true, true]);
+    expect(clues(sl.distractors[0]!).seedHead === true && clues(sl.distractors[0]!).leaves === true).toBe(false);
+    const fl = by('cp.flowerleaves');
+    expect([clues(fl.correct).flower, clues(fl.correct).leaves]).toEqual([true, true]);
+    expect(clues(fl.distractors[0]!).leaves).toBe(false);
+    const st = by('cp.stages');
+    expect(clues(st.correct).seedHead).toBe(true);
+    expect(clues(st.distractors[0]!).seedHead).toBe(false);
+    for (const id of ['cp.single', 'cp.branch', 'cp.forks']) expect(isAvailable(by(id)), id).toBe(false);
+  });
+  it('no question uses the unresolved d-bud photograph, and nothing calls it a bud', () => {
+    for (const item of CHALLENGE_BANK) {
+      expect([item.media, item.correct, ...item.distractors], item.id).not.toContain('d-bud');
+    }
+    expect(BOSS_IMAGES['d-bud']!.alt).not.toMatch(/\bbud\b/i);
+    expect(clues('d-bud').flower).toBe('unclear');
+  });
+  it('Habitat guess odds are computed from the implemented scoring, retries included', () => {
+    // Every ungated Habitat question has three options and every slot has a retry, so one slot
+    // is resolved by guessing with p = 1 - (2/3)^2, and a set passes on 2 of 3.
+    const habitat = CHALLENGE_BANK.filter((i) => i.activity === 'habitat-season' && isAvailable(i));
+    expect(Math.max(...habitat.map((i) => 1 + i.distractors.length))).toBe(3);
+    expect(Math.min(...habitat.map((i) => 1 + i.distractors.length))).toBe(3);
+    const p = 1 - (2 / 3) ** 2;
+    const byHand = 3 * p * p * (1 - p) + p ** 3;
+    expect(activityGuessOdds('habitat-season', 50, 'available')!.average).toBeCloseTo(byHand, 9);
+    expect(byHand).toBeCloseTo(0.583, 3);
+    // Below 25% would need about six options per question, or no retry. Neither exists in the
+    // current formats, so the figure is reported and not tuned.
+    const sixOptions = 1 - (5 / 6) ** 2;
+    expect(3 * sixOptions ** 2 * (1 - sixOptions) + sixOptions ** 3).toBeLessThan(0.25);
+  });
+  it('cat’s-ear wording follows the one source that was read, and no more', () => {
+    const notes = JSON.stringify(FIELD_NOTES[DANDELION]);
+    expect(notes).toContain('branched or several flowering stems');
+    const text = [notes, ...CHALLENGE_BANK.map((i) => `${i.prompt} ${i.feedback}`)].join(' ');
+    expect(text).not.toMatch(/usually branch/i);
+    expect(text).not.toMatch(/largely leafless/i);
+    expect(text).not.toMatch(/small bracts/i);
+    for (const id of ['cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch']) {
+      expect(by(id).requires?.length, id).toBeGreaterThan(0);
+      expect(by(id).feedback, id).toMatch(/clue/i);
     }
   });
 });
