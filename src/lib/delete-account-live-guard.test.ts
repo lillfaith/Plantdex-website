@@ -62,7 +62,9 @@ describe('the account-deletion live check handles its token and its leftovers', 
     expect(wf).not.toContain('secrets.SUPABASE_ACCESS_TOKEN');
     const jobs = wf.slice(wf.indexOf('\njobs:'));
     const headers = jobs.match(/^  [a-z-]+:\n(?:    if: [^\n]*\n)?    environment: supabase-test\n/gm) ?? [];
-    expect(headers).toHaveLength(3); // prepare, boss-form-live, delete-account-live
+    // Every job, counted: a job added without the gated environment fails here.
+    expect(headers).toHaveLength(4); // prepare, boss-form-live, full-live-suite (temporary), delete-account-live
+    expect(jobs.match(/^  [a-z-]+:\n/gm) ?? []).toHaveLength(headers.length);
   });
   it('requires the token to be unable to see production when it runs the deletion check', () => {
     expect(job).toContain("REQUIRE_SCOPED_TOKEN: '1'");
