@@ -100,6 +100,24 @@ function credentials(tag: string) {
   };
 }
 
+interface Player {
+  user: User;
+  client: SupabaseClient;
+  token: string;
+}
+
+/** A disposable player on a client of their own. Each group of tests gets its own, because every
+ *  request spends the per-player daily allowance and one player cannot carry the whole suite. */
+async function createPlayer(tag: string): Promise<Player> {
+  const client = freshClient();
+  const c = credentials(tag);
+  await client.auth.signUp(c);
+  const signed = await client.auth.signInWithPassword(c);
+  if (signed.error || !signed.data.user) throw new Error(`${tag} signIn failed: ${signed.error?.message}`);
+  await waitUntilTokenAccepted(client);
+  return { user: signed.data.user, client, token: signed.data.session!.access_token };
+}
+
 async function readRows(client: SupabaseClient, userId: string) {
   const [c, b] = await Promise.all([
     client.from('challenge_completions').select('*').eq('user_id', userId),
@@ -114,6 +132,9 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
   let bob: User; // an ordinary player, not mastered
   let bobClient: SupabaseClient;
   let bobToken = '';
+  let mallory: Player; // sends the malformed and hostile requests
+  let dana: Player; // takes the identical burst
+  let carol: Player; // finds the two limits under concurrency
   const aliceCreds = credentials('alice');
 
   beforeAll(async () => {
@@ -133,6 +154,10 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
     if (b.error || !b.data.user) throw new Error(`bob signIn failed: ${b.error?.message}`);
     bob = b.data.user;
     bobToken = b.data.session!.access_token;
+
+    mallory = await createPlayer('mallory');
+    dana = await createPlayer('dana');
+    carol = await createPlayer('carol');
 
     // Make Alice genuinely mastered, the way a player does: discover, learn, one sighting,
     // then the server re-derives mastery from its own rows.
@@ -161,6 +186,7 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
       await supabase.auth.signOut();
     }
     if (bobClient) await bobClient.auth.signOut();
+    for (const p of [mallory, dana, carol]) if (p) await p.client.auth.signOut();
   }, 60_000);
 
   describe('the deployment', () => {
@@ -235,19 +261,19 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
 
     for (const [name, payload, raw] of cases) {
       it(`${name}: refused, never a pass, never a crash, and the database is unchanged`, async () => {
-        const before = await snapshot(supabase!, alice.id);
-        const r = await call(aliceToken, payload, { raw });
+        const before = await snapshot(mallory.client, mallory.user.id);
+        const r = await call(mallory.token, payload, { raw });
         if (EXACTLY_400.has(name)) expect(r.status, `${name}: ${r.text.slice(0, 200)}`).toBe(400);
         else if (REFUSED_AT_EDGE_OR_400.has(name)) expect([400, 403], `${name}: ${r.text.slice(0, 200)}`).toContain(r.status);
         else expect(r.status, r.text.slice(0, 200)).toBeLessThan(500);
         expect(r.json?.ok, r.text).not.toBe(true);
         expect(r.json?.bossForm, r.text).not.toBe(true);
-        expect(await snapshot(supabase!, alice.id), 'no record may be created or changed').toEqual(before);
+        expect(await snapshot(mallory.client, mallory.user.id), 'no record may be created or changed').toEqual(before);
       });
     }
 
     it('ignores extra fields a client might try to smuggle in (userId, score, includeUnreviewed)', async () => {
-      const r = await call(aliceToken, {
+      const r = await call(mallory.token, {
         herbId: HERB, activity: 'part-spotter', attempt: 1, answers: [0, 0, 0, 0],
         userId: bob.id, score: 4, passed: true, includeUnreviewed: true, includeUnavailable: true, bossForm: true,
       });
@@ -278,7 +304,7 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
 
     it('a MASTERED player still cannot pass any activity: no question is reviewed, so nothing is served', async () => {
       for (const activity of ['part-spotter', 'compare', 'habitat-season'] as const) {
-        for (const answers of [[0, 0, 0, 0], [1, 1, 1, 1], [3, 2, 1, 0]]) {
+        for (const answers of [[0, 0, 0], [1, 1, 1]]) {
           const r = await call(aliceToken, { herbId: HERB, activity, attempt: 1, answers });
           expect(r.json?.ok, `${activity}: ${r.text}`).toBe(false);
           expect(r.json?.reason, `${activity}`).toBe('unavailable');
@@ -289,10 +315,22 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
       expect(rows.bossForms).toEqual([]);
     });
 
+    it('retry rotation: every attempt number is handled alike, and an out-of-range one is a clean refusal', async () => {
+      // The attempt number only selects which questions are drawn (attempt mod pool). With nothing
+      // reviewed there is nothing to draw, so every attempt, the whole rotation and the extremes,
+      // must answer the same refusal and never a crash. The draw itself is pure code, pinned by
+      // boss-form-engine.test.ts and identical to what is deployed.
+      for (const attempt of [0, 1, 2, 3, 4, 5, 9999, 10_000]) {
+        const r = await call(aliceToken, { herbId: HERB, activity: 'part-spotter', attempt, answers: [0, 0, 0] });
+        expect(r.status, `attempt ${attempt}: ${r.text}`).toBeLessThan(500);
+        expect(r.json, `attempt ${attempt}`).toMatchObject({ ok: false, reason: 'unavailable' });
+      }
+    });
+
     it('the deployed decisions match this checkout (same pure code and the same empty review list)', () => {
       for (const activity of ACTIVITIES) {
         const local = evaluateSubmission(
-          { herbId: HERB, activity, attempt: 1, answers: [0, 0, 0, 0] },
+          { herbId: HERB, activity, attempt: 1, answers: [0, 0, 0] },
           { mastered: true, completed: new Set(['part-spotter', 'compare', 'habitat-season']) },
         );
         expect(local.ok, `local ${activity}`).toBe(false);
@@ -303,13 +341,13 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
 
   describe('concurrency and duplicates', () => {
     it('a burst of identical requests never produces a pass, a crash or a row', async () => {
-      const body = { herbId: HERB, activity: 'part-spotter', attempt: 1, answers: [0, 0, 0, 0] };
-      const replies = await Promise.all(Array.from({ length: 12 }, () => call(aliceToken, body)));
+      const body = { herbId: HERB, activity: 'part-spotter', attempt: 1, answers: [0, 0, 0] };
+      const replies = await Promise.all(Array.from({ length: 12 }, () => call(dana.token, body)));
       for (const r of replies) {
         expect(r.status, r.text).toBeLessThan(500);
         expect(r.json?.ok).not.toBe(true);
       }
-      const rows = await readRows(supabase!, alice.id);
+      const rows = await readRows(dana.client, dana.user.id);
       expect(rows.completions).toEqual([]);
       expect(rows.bossForms).toEqual([]);
     }, 60_000);
@@ -340,6 +378,36 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
         }
       }
       expect(refusedAt, 'the daily limit never engaged').toBeGreaterThan(0);
+    }, 120_000);
+
+    it('ATOMIC: ten simultaneous Boss Trial submissions admit exactly the Trial allowance, no more', async () => {
+      // All ten arrive together. The counter is one INSERT ... ON CONFLICT DO UPDATE ... WHERE
+      // count < limit, so concurrent claims serialise on the row: exactly CHALLENGE_TRIAL_DAILY_LIMIT
+      // are admitted (answered with a normal refusal, since Carol has not mastered anything) and the
+      // rest get 429 with the Trial message.
+      const replies = await Promise.all(
+        Array.from({ length: 10 }, (_, i) => call(carol.token, { herbId: HERB, activity: 'boss-trial', attempt: i, answers: Array(5).fill(0) })),
+      );
+      const refused = replies.filter((r) => r.status === 429);
+      expect(replies.length - refused.length, replies.map((r) => r.status).join()).toBe(CHALLENGE_TRIAL_DAILY_LIMIT);
+      for (const r of refused) expect(r.text).toMatch(/Boss Trial limit/);
+      for (const r of replies.filter((x) => x.status !== 429)) expect(r.status).toBeLessThan(500);
+    }, 90_000);
+
+    it('ATOMIC: twenty simultaneous submissions fill the daily allowance exactly, never past it', async () => {
+      // Carol has already spent ten units on the Trial test above, so exactly
+      // CHALLENGE_DAILY_LIMIT - 10 of these twenty part-spotter requests are admitted.
+      const spent = 10;
+      const replies = await Promise.all(
+        Array.from({ length: 20 }, (_, i) => call(carol.token, { herbId: HERB, activity: 'part-spotter', attempt: i, answers: [0, 0, 0] })),
+      );
+      const refused = replies.filter((r) => r.status === 429);
+      expect(replies.length - refused.length, replies.map((r) => r.status).join()).toBe(CHALLENGE_DAILY_LIMIT - spent);
+      for (const r of refused) expect(r.text).toMatch(/Daily limit reached/);
+      // Nothing was written, whatever was admitted.
+      const rows = await readRows(carol.client, carol.user.id);
+      expect(rows.completions).toEqual([]);
+      expect(rows.bossForms).toEqual([]);
     }, 120_000);
   });
 

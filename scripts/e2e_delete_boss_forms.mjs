@@ -283,6 +283,46 @@ try {
     check(`${name}: body leaks nothing sensitive`, !secretsShape.some((p) => p.test(r.text)), r.text.slice(0, 120));
   }
   check('a refused request deleted nobody', await userExists(E.id));
+
+  // ── The award function: idempotent, guarded, and it never takes a stage back ─────────
+  // `award_challenge` is the ONLY thing that writes these tables for a player. Run here, as the
+  // database's own role, on a disposable account, so the live suite proves the reward path cannot
+  // duplicate or be skipped, independently of any rate limit.
+  const F = await newUser('award');
+  await new Promise((r) => setTimeout(r, 2000));
+  const award = (activity, boss = false) =>
+    `select public.award_challenge('${F.id}', '${HERB}', '${activity}', ${boss ? 'true' : 'false'})`;
+  const fails = async (query) => { try { await sql(query); return null; } catch (e) { return String(e instanceof Error ? e.message : e); } };
+  const rows = (t) => count(t, F.id);
+
+  check('award: refused for a player who has not mastered the plant', /not mastered/.test((await fails(award('part-spotter'))) ?? ''));
+  check('award: and nothing was written by the refusal', (await rows('challenge_completions')) === 0 && (await rows('boss_forms')) === 0);
+
+  await seed(F, { progression: true }); // mastered, no completions
+  await sql(award('part-spotter'));
+  await sql(award('part-spotter'));
+  await sql(award('part-spotter'));
+  check('award: the same stage awarded three times is ONE row (idempotent)', (await rows('challenge_completions')) === 1);
+
+  check('award: a Boss Form is refused while prerequisites are missing', /prerequisites missing/.test((await fails(award('boss-trial', true))) ?? ''));
+  check('award: and the refusal rolled back its own completion row (still only the one stage)', (await rows('challenge_completions')) === 1 && (await rows('boss_forms')) === 0);
+  check('award: only the Boss Trial may award a Boss Form', /only the boss trial/.test((await fails(award('compare', true))) ?? ''));
+
+  await sql(award('compare'));
+  await sql(award('habitat-season'));
+  const before = await snapshot(F.id);
+  await sql(award('boss-trial', true));
+  await sql(award('boss-trial', true));
+  check('award: the Trial awarded twice is ONE completion and ONE Boss Form', (await rows('challenge_completions')) === 4 && (await rows('boss_forms')) === 1);
+
+  // A later failure must not reset earlier progress: attempt things that are refused, then compare.
+  await fails(award('compare', true));
+  await fails(`select public.award_challenge('${F.id}', '', 'compare', false)`);
+  const after = await snapshot(F.id);
+  const keep = (snap) => JSON.stringify({ c: snap.challenge_completions.filter((r) => r.activity_id !== 'boss-trial'), m: snap.mastered, d: snap.discoveries, l: snap.learned });
+  check('award: earlier stages and progression are byte-identical after later refusals and replays', keep(before) === keep(after));
+  check('award: a stage, once recorded, keeps its original timestamp when awarded again',
+    JSON.stringify(before.challenge_completions.map((r) => r.completed_at)) === JSON.stringify(after.challenge_completions.filter((r) => r.activity_id !== 'boss-trial').map((r) => r.completed_at)));
 } catch (e) {
   exitCode = 1;
   out(`ERROR  the run stopped early: ${redact(e instanceof Error ? e.message : e)}`);
