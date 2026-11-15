@@ -7,10 +7,10 @@ import { submitChallenge, type SubmitResult } from '@/lib/challenge-client';
 import { START, actionFor, step, type FlowAction, type FlowEvent, type FlowState } from '@/lib/challenge-flow';
 import { buildChallenge, scoreSubmission, type BuiltQuestion } from '@/lib/mastery-challenges';
 import { ACTIVITY_LABELS } from './activity-labels';
+import { ChallengeResultView, type ResultKind, type ReviewItem } from './ChallengeResult';
 import { ChallengeShell } from './ChallengeShell';
 import { FlowerProgress, type FlowerState } from './FlowerProgress';
 import { QuestionView, fillsHeight } from './QuestionViews';
-import { Sparkles } from './Sparkles';
 
 /**
  * ONE STAGE, ONE SCREEN AT A TIME, inside the full-screen shell.
@@ -45,6 +45,9 @@ export interface RunnerProps {
   onDone: (outcome: { passed: boolean; bossForm: boolean }) => void;
   onRetry: () => void;
   onExit: () => void;
+  /** The label of the next round, and how to go straight to it from a passed result. */
+  nextLabel?: string;
+  onContinue?: () => void;
 }
 
 type Finished =
@@ -61,7 +64,7 @@ const ACTION_LABEL: Record<FlowAction, string> = {
   wait: 'Submitting',
 };
 
-export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, onDone, onRetry, onExit }: RunnerProps) {
+export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, onDone, onRetry, onExit, nextLabel, onContinue }: RunnerProps) {
   const questions = useMemo<BuiltQuestion[] | null>(
     () => buildChallenge(herbId, activity, attempt, { includeUnreviewed: mode === 'preview' }),
     [herbId, activity, attempt, mode],
@@ -128,84 +131,32 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, on
   if (finished) {
     const passed = finished.ok ? finished.passed : false;
     const preview = finished.ok && 'preview' in finished;
-    const limited = !finished.ok && finished.reason === 'limit';
-    // Every question with the answer the player gave and its explanation. For the Boss Trial this
-    // is the first time any of it is shown, and only when a verdict came back.
-    const review = finished.ok ? questions : [];
-    const mine = flow.answers;
-    const action = passed
-      ? { label: 'Back to the challenges', onClick: leave }
-      : limited || !finished.ok
-        ? { label: 'Back', onClick: onExit }
-        : { label: 'Try again', onClick: onRetry };
+    // The limit screen is shown ONLY for the server's own refusal (a 429), never for any other failure.
+    const kind: ResultKind = !finished.ok ? (finished.reason === 'limit' ? 'limit' : 'error') : passed ? 'complete' : 'failed';
+    // For the Boss Trial this is the first time any answer or explanation is shown, and only when a
+    // verdict came back.
+    const review: ReviewItem[] = finished.ok
+      ? questions.map((q, i) => ({ id: q.id, prompt: q.prompt, feedback: q.feedback, right: flow.answers[i] === q.correctIndex }))
+      : [];
+    // Passing leads straight to the next round when there is one and no Boss Form to celebrate.
+    const bossFormEarned = passed && !preview && isTrial && finished.ok && 'bossForm' in finished && finished.bossForm;
+    const onPrimary =
+      kind === 'complete' ? (nextLabel && !bossFormEarned && onContinue ? onContinue : leave) : kind === 'failed' ? onRetry : onExit;
     return (
-      <ChallengeShell
-        title={label.name}
-        kicker="Result"
-        status={
-          finished.ok ? (
-            <span>
-              {preview
-                ? passed
-                  ? 'Passed in preview. Nothing is recorded.'
-                  : 'Preview only. Nothing is recorded.'
-                : passed
-                  ? 'Stage complete.'
-                  : 'Try again. Questions are drawn from a set, so some may come back.'}
-            </span>
-          ) : limited ? (
-            <span>That is all the tries for today. Come back tomorrow.</span>
-          ) : (
-            <span>Could not save that. Please try again later.</span>
-          )
-        }
-        action={action}
-        secondary={
-          !passed && !limited && finished.ok ? (
-            <button
-              type="button"
-              onClick={onExit}
-              className="min-h-12 px-4 text-base font-bold text-violet-200 underline underline-offset-4 outline-none focus-visible:ring-4 focus-visible:ring-gold-300"
-            >
-              Back
-            </button>
-          ) : null
-        }
+      <ChallengeResultView
+        kind={kind}
+        herbId={herbId}
+        activityName={label.name}
+        isTrial={isTrial}
+        preview={preview}
+        resolved={finished.ok ? finished.resolved : undefined}
+        total={finished.ok ? finished.total : undefined}
+        review={review}
+        nextLabel={nextLabel && !bossFormEarned ? nextLabel : undefined}
+        onPrimary={onPrimary}
+        onBack={onExit}
         onExit={leave}
-      >
-        <section className="flex flex-col items-center text-center" aria-live="polite">
-          <div className="relative">
-            <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} scale={1} frozen={!passed} />
-            {passed ? <Sparkles count={8} radius={70} /> : null}
-          </div>
-          {finished.ok ? (
-            <>
-              <h2 className="font-display text-3xl font-extrabold text-gold-plate">
-                {passed ? 'Nicely done!' : 'So close!'}
-              </h2>
-              <p className="mt-2 text-lg font-bold text-violet-100">
-                {finished.resolved} of {finished.total}
-              </p>
-            </>
-          ) : null}
-
-          {review.length > 0 ? (
-            <ol className="mt-5 grid w-full gap-2.5 text-left" aria-label="Your answers and explanations">
-              {review.map((q, i) => {
-                const right = mine[i] === q.correctIndex;
-                return (
-                  <li key={q.id} className="rounded-lg bg-violet-800/50 px-3 py-2.5">
-                    <p className="text-base font-extrabold text-violet-50">
-                      {right ? 'Right' : 'Not this time'}: {q.prompt}
-                    </p>
-                    <p className="mt-0.5 text-base text-violet-100">{q.feedback}</p>
-                  </li>
-                );
-              })}
-            </ol>
-          ) : null}
-        </section>
-      </ChallengeShell>
+      />
     );
   }
 
@@ -256,6 +207,7 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, on
         </div>
       }
       status={status}
+      scrollKey={flow.index}
       action={{ label: ACTION_LABEL[act], onClick: onAction, disabled: act === 'choose' || act === 'wait' }}
       onExit={onExit}
     >

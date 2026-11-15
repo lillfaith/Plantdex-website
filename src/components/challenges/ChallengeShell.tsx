@@ -43,6 +43,11 @@ export interface ChallengeShellProps {
   /** An optional quiet text control under the action. */
   secondary?: ReactNode;
   onExit: () => void;
+  /**
+   * Changes when the screen's content changes (the next question), and scrolls the content back to
+   * the top. Without it a player who scrolled down a long question starts the next one half way.
+   */
+  scrollKey?: string | number;
   children: ReactNode;
 }
 
@@ -65,6 +70,7 @@ export function ChallengeShell({
   action,
   secondary,
   onExit,
+  scrollKey,
   children,
 }: ChallengeShellProps) {
   // A portal needs `document`; this avoids a server/client mismatch and renders nothing on the server.
@@ -75,6 +81,11 @@ export function ChallengeShell({
   );
   const hidden = usePageHidden();
   const root = useRef<HTMLDivElement | null>(null);
+  const body = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    body.current?.scrollTo({ top: 0 });
+  }, [scrollKey]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -144,7 +155,9 @@ export function ChallengeShell({
         {progress ? <div className="px-4 pt-2">{progress}</div> : null}
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-3 pb-2">{children}</div>
+      <div ref={body} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-3 pb-2">
+        {children}
+      </div>
 
       <footer className="shrink-0 px-4 pt-1 pb-[max(0.875rem,env(safe-area-inset-bottom))]">
         <div

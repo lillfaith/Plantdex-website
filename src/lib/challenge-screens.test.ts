@@ -8,6 +8,16 @@ vi.mock('@/lib/boss-forms', () => ({ bossFormsMode: () => mode.value }));
 vi.mock('@/state/HerbdexProvider', () => ({
   useHerbdex: () => ({ isMastered: () => true, ready: true }),
 }));
+vi.mock('@/state/AuthProvider', () => ({ useAuth: () => ({ user: null, ready: true }) }));
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: () => undefined }) }));
+// The shell draws into a portal, which a static render cannot show; render its parts in place instead.
+vi.mock('@/components/challenges/ChallengeShell', async () => {
+  const { createElement: h } = await import('react');
+  return {
+    ChallengeShell: (p: { title: string; kicker?: string; status?: unknown; action: { label: unknown }; secondary?: unknown; children: unknown }) =>
+      h('div', null, h('h1', null, p.title), p.kicker ? h('p', null, p.kicker) : null, p.children as never, h('div', null, p.status as never), h('button', null, p.action.label as never), p.secondary as never),
+  };
+});
 
 import { ChallengeExperience } from '@/components/challenges/ChallengeExperience';
 import { QuestionView, fillsHeight } from '@/components/challenges/QuestionViews';
@@ -85,7 +95,7 @@ describe('the Boss Trial reveals nothing until it is submitted', () => {
     const runner = read('src/components/challenges/ChallengeRunner.tsx');
     expect(runner).toMatch(/reveal=\{!hidden\}/);
     expect(runner).toMatch(/Submit the Trial/);
-    expect(runner).toMatch(/Your answers and explanations/);
+    expect(read('src/components/challenges/ChallengeResult.tsx')).toMatch(/Your answers and explanations/);
   });
 });
 
@@ -254,12 +264,14 @@ describe('the hub says what to tap next', () => {
   };
   it('features exactly one next step, and it is the first playable round', () => {
     const out = render('preview');
-    expect((out.match(/Next up/g) ?? []).length).toBe(1);
-    expect(out.indexOf('Next up')).toBeLessThan(out.indexOf('Habitat'));
-    expect(out.slice(out.indexOf('Next up'), out.indexOf('Next up') + 160)).toContain('Part Spotter');
+    expect((out.match(/>Next</g) ?? []).length).toBe(1);
+    // The one "Next" belongs to the first round, Part Spotter.
+    const nodes = out.slice(out.indexOf('aria-label="Rounds"'));
+    expect(nodes.indexOf('>Next<')).toBeGreaterThan(nodes.indexOf('Part Spotter'));
+    expect(nodes.indexOf('>Next<')).toBeLessThan(nodes.indexOf('Picture Match'));
   });
   it('features nothing when nothing is playable, so locked or unavailable never leads', () => {
-    expect(render('on')).not.toContain('Next up');
+    expect(render('on')).not.toContain('>Next<');
   });
 });
 
@@ -268,7 +280,7 @@ describe('an evolution is earned only by the server, and a preview says so', () 
   const runner = read('src/components/challenges/ChallengeRunner.tsx');
   const evolution = read('src/components/challenges/BossEvolution.tsx');
   it('the Trial has no preview shortcut: it opens only when every round is done', () => {
-    expect(hub).toMatch(/const trialOpen = PREREQUISITE_ACTIVITIES\.every\(\(one\) => done\.has\(one\)\);/);
+    expect(read('src/lib/awakening-state.ts')).toMatch(/const trialOpen = PREREQUISITE_ACTIVITIES\.every\(\(one\) => done\.has\(one\)\);/);
     expect(hub).not.toMatch(/\|\| preview/);
   });
   it('only the server\u2019s answer, for the Boss Trial, can start the earned evolution', () => {
@@ -279,7 +291,7 @@ describe('an evolution is earned only by the server, and a preview says so', () 
     expect(hub).toMatch(/if \(bossForm\) setEvolved\('earned'\)/);
   });
   it('the preview button exists only in preview mode and starts the preview, never the earned one', () => {
-    const button = hub.slice(hub.lastIndexOf('{preview ? ('), hub.lastIndexOf('Preview the evolution'));
+    const button = hub.slice(hub.lastIndexOf('preview ? ('), hub.lastIndexOf('Preview the evolution'));
     expect(button).toMatch(/setEvolved\('preview'\)/);
     expect(button).not.toMatch(/setEvolved\('earned'\)/);
   });
@@ -350,8 +362,8 @@ describe('the full-screen shell (milestone 1)', () => {
     expect(labels).toMatch(/'part-spotter'/);
   });
   it('does not claim a retry brings new questions', () => {
-    expect(runner).not.toMatch(/different set|mixes the questions differently|new questions/i);
-    expect(runner).toMatch(/some may come back/);
+    expect(runner + read('src/components/challenges/ChallengeResult.tsx')).not.toMatch(/different set|mixes the questions differently|new questions/i);
+    expect(read('src/components/challenges/ChallengeResult.tsx')).toMatch(/some may come back/);
   });
   it('the hub (and so the bottom bar) is not part of the full-screen experience', () => {
     expect(runner).toMatch(/<ChallengeShell/);
