@@ -16,6 +16,13 @@ describe('what this visit has seen passed', () => {
     expect(passedThisSession('preview', 'taraxacum-officinale').has('compare')).toBe(true);
   });
 
+  it('keeps accounts apart on the same device, so signing in as somebody else shows none of the first one\'s passes', () => {
+    notePassed('on', 'a', 'part-spotter', 'user-1');
+    expect(passedThisSession('on', 'a', 'user-2').size).toBe(0);
+    expect(passedThisSession('on', 'a', undefined).size).toBe(0);
+    expect(passedThisSession('on', 'a', 'user-1').has('part-spotter')).toBe(true);
+  });
+
   it('keeps plants apart', () => {
     notePassed('on', 'a', 'part-spotter');
     expect(passedThisSession('on', 'b').size).toBe(0);

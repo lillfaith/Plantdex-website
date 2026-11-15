@@ -133,7 +133,7 @@ export function BossEvolution({
         />
         <span
           aria-hidden="true"
-          className="evolve-beams pointer-events-none absolute top-1/2 left-1/2 aspect-square h-[170%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="evolve-beams pointer-events-none absolute top-1/2 left-1/2 aspect-square h-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full"
         />
         <svg
           aria-hidden="true"

@@ -2952,8 +2952,11 @@ body {
 }
 @keyframes evolve-reveal {
   0% { opacity: 0; transform: scale(0.55); }
-  55% { opacity: 1; transform: scale(1.14); }
-  100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.14); }
+  68% { opacity: 1; transform: scale(1) translateY(-8px); }
+  82% { opacity: 1; transform: scale(1) translateY(0); }
+  91% { opacity: 1; transform: scale(1) translateY(-3px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes evolve-burst-flash {
   0% { opacity: 0; }
@@ -3030,7 +3033,7 @@ body {
   animation: evolve-adult 1300ms ease-in 300ms both;
 }
 @utility evolve-in {
-  animation: evolve-reveal 700ms ease-out 1350ms both;
+  animation: evolve-reveal 1000ms ease-out 1350ms both;
 }
 @utility evolve-burst {
   animation: evolve-burst-flash 650ms ease-out 1250ms both;
@@ -3057,9 +3060,13 @@ body {
   animation: evolve-sigil-turn 1100ms ease-out 200ms both;
 }
 @utility evolve-beams {
-  background: repeating-conic-gradient(rgb(255 215 120 / 0.55) 0deg 5deg, transparent 5deg 15deg);
-  mask-image: radial-gradient(circle, #000 8%, transparent 68%);
-  -webkit-mask-image: radial-gradient(circle, #000 8%, transparent 68%);
+  /* The rays fade out toward the edge with a plain gradient laid over them in the screen's own dark
+     colour, not a mask: a mask over a large turning layer measurably cost one ~90ms frame at the
+     moment the rays begin (4x CPU slowdown), and this does not. `will-change` was tried and made the
+     opening frame slower, so it is not used. */
+  background:
+    radial-gradient(circle, transparent 8%, rgb(23 16 28) 64%),
+    repeating-conic-gradient(rgb(255 215 120 / 0.55) 0deg 5deg, transparent 5deg 15deg);
   animation: evolve-beams-turn 2400ms ease-out 1300ms both;
 }
 @utility awaken-pulse {

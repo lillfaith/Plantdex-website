@@ -16,17 +16,21 @@
 const pending = new Set<string>();
 const played = new Set<string>();
 
-export function noteBossEarned(herbId: string): void {
-  if (!played.has(herbId)) pending.add(herbId);
+/** Keyed by account as well as plant: a moment earned by one person is never played for another. */
+const k = (herbId: string, userId: string) => `${userId}|${herbId}`;
+
+export function noteBossEarned(herbId: string, userId: string | undefined): void {
+  if (!userId) return;
+  if (!played.has(k(herbId, userId))) pending.add(k(herbId, userId));
 }
 
-/** Reads without consuming, so a render (which may run twice) cannot spend it. */
-export function bossArrivalPending(herbId: string): boolean {
-  return pending.has(herbId);
+/** Reads without consuming. */
+export function bossArrivalPending(herbId: string, userId: string | undefined): boolean {
+  return Boolean(userId) && pending.has(k(herbId, userId!));
 }
 
-export function consumeBossArrival(herbId: string): void {
-  if (pending.delete(herbId)) played.add(herbId);
+export function consumeBossArrival(herbId: string, userId: string | undefined): void {
+  if (userId && pending.delete(k(herbId, userId))) played.add(k(herbId, userId));
 }
 
 export function clearBossMoments(): void {

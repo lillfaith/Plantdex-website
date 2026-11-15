@@ -43,7 +43,7 @@ const STATE_WORD: Record<NodeState, string> = {
   unknown: 'Unknown',
 };
 
-const LEVEL = ['bg-plum-950', 'bg-plum-700', 'bg-plum-600', 'bg-violet-800'] as const;
+const LEVEL = ['bg-plum-800', 'bg-plum-700', 'bg-plum-600', 'bg-violet-800'] as const;
 
 function Sigil() {
   return (

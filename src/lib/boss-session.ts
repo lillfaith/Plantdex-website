@@ -16,16 +16,20 @@ import type { ActivityId } from './boss-form';
 
 const passed = new Map<string, Set<ActivityId>>();
 
-function key(mode: 'preview' | 'on', herbId: string): string {
-  return `${mode}:${herbId}`;
+/**
+ * KEYED BY ACCOUNT in `on`, so signing out and in as somebody else on the same device never shows
+ * the first person's passes to the second. A preview has no account and shares one key.
+ */
+function key(mode: 'preview' | 'on', herbId: string, userId?: string): string {
+  return `${mode}:${mode === 'on' ? (userId ?? '') : ''}:${herbId}`;
 }
 
-export function passedThisSession(mode: 'preview' | 'on', herbId: string): ReadonlySet<ActivityId> {
-  return new Set(passed.get(key(mode, herbId)) ?? []);
+export function passedThisSession(mode: 'preview' | 'on', herbId: string, userId?: string): ReadonlySet<ActivityId> {
+  return new Set(passed.get(key(mode, herbId, userId)) ?? []);
 }
 
-export function notePassed(mode: 'preview' | 'on', herbId: string, activity: ActivityId): void {
-  const k = key(mode, herbId);
+export function notePassed(mode: 'preview' | 'on', herbId: string, activity: ActivityId, userId?: string): void {
+  const k = key(mode, herbId, userId);
   const set = passed.get(k) ?? new Set<ActivityId>();
   set.add(activity);
   passed.set(k, set);

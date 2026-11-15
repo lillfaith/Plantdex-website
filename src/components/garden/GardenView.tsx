@@ -54,13 +54,17 @@ export function GardenView() {
     user?.id,
     garden.filter((entry) => entry.stage === 'flowering').map((entry) => entry.herbId),
   );
-  // THE ARRIVAL IS ONE-TIME. Captured once when the Garden mounts (reading does not spend it, so a
-  // double render cannot lose it) and spent right after, so coming back later never replays it. It
-  // only ever exists after an earned evolution, and it only plays on a form the server has recorded.
-  const [arriving] = useState<ReadonlySet<string>>(() => new Set(BOSS_PILOT.filter(bossArrivalPending)));
+  // THE ARRIVAL IS ONE-TIME. What is pending for this account is captured once when the Garden mounts
+  // (reading spends nothing, so a double render cannot lose it) and spent right after in an effect
+  // (spending twice is harmless), so coming back later, or a remount, never replays it. It only ever
+  // exists after an earned evolution for THIS account, and it only plays on a form the server has
+  // recorded. A pending moment implies the same session, so the account is already known at mount.
+  const [arriving] = useState<ReadonlySet<string>>(
+    () => new Set(BOSS_PILOT.filter((id) => bossArrivalPending(id, user?.id))),
+  );
   useEffect(() => {
-    for (const id of arriving) consumeBossArrival(id);
-  }, [arriving]);
+    for (const id of arriving) consumeBossArrival(id, user?.id);
+  }, [arriving, user?.id]);
   const stageSignature = garden.map((entry) => `${entry.herbId}:${entry.stage}`).join(',');
 
   /*

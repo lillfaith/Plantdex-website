@@ -79,6 +79,26 @@ export async function readCompletions(
   }
 }
 
+/**
+ * The state to show, as a pure function so it can be tested. An answer is kept while the SAME player
+ * and plant are being read again (after a pass), so the screen does not flash "unknown" for a read it
+ * already has; an answer for a different player or plant is never kept.
+ */
+export function completionsStateFor(args: {
+  active: boolean;
+  result: { base: string; key: string; read: CompletionsRead } | null;
+  base: string;
+  key: string;
+}): CompletionsState {
+  const { active, result, base, key } = args;
+  if (!active) return { status: 'disabled' };
+  if (result && result.base === base && result.read.ok && result.key !== key) {
+    return { status: 'ready', passed: result.read.passed };
+  }
+  if (!result || result.key !== key) return { status: 'loading' };
+  return result.read.ok ? { status: 'ready', passed: result.read.passed } : { status: 'error' };
+}
+
 export function useChallengeCompletions(options: {
   /** False for a preview, a signed-out player, or anything else with nothing to read. */
   enabled: boolean;
@@ -86,10 +106,11 @@ export function useChallengeCompletions(options: {
   herbId: string;
 }): { state: CompletionsState; retry: () => void } {
   const { enabled, userId, herbId } = options;
-  const [result, setResult] = useState<{ key: string; read: CompletionsRead } | null>(null);
+  const [result, setResult] = useState<{ base: string; key: string; read: CompletionsRead } | null>(null);
   const [attempt, setAttempt] = useState(0);
   const latest = useRef(0);
-  const key = `${userId ?? ''}|${herbId}|${attempt}`;
+  const base = `${userId ?? ''}|${herbId}`;
+  const key = `${base}|${attempt}`;
   const active = enabled && Boolean(userId);
 
   useEffect(() => {
@@ -99,19 +120,15 @@ export function useChallengeCompletions(options: {
     void readCompletions(supabase as unknown as CompletionsClient | null, userId, herbId).then((read) => {
       // Drop an answer that is no longer the latest, or whose player or plant has changed.
       if (cancelled || seq !== latest.current) return;
-      setResult({ key, read });
+      setResult({ base, key, read });
     });
     return () => {
       cancelled = true;
     };
-  }, [active, userId, herbId, key]);
+  }, [active, userId, herbId, base, key]);
 
   const retry = useCallback(() => setAttempt((n) => n + 1), []);
 
-  let state: CompletionsState;
-  if (!active) state = { status: 'disabled' };
-  // An answer for an older key is stale, so it is treated as no answer: loading.
-  else if (!result || result.key !== key) state = { status: 'loading' };
-  else state = result.read.ok ? { status: 'ready', passed: result.read.passed } : { status: 'error' };
+  const state = completionsStateFor({ active, result, base, key });
   return { state, retry };
 }

@@ -288,7 +288,7 @@ describe('an evolution is earned only by the server, and a preview says so', () 
     expect(runner).toMatch(/const bossForm = !\('preview' in finished\) && finished\.bossForm && isTrial;/);
     const earned = hub.match(/setEvolved\('earned'\)/g) ?? [];
     expect(earned).toHaveLength(1);
-    expect(hub).toMatch(/if \(bossForm\) \{\s*noteBossEarned\(herbId\);\s*setEvolved\('earned'\);\s*\}/);
+    expect(hub).toMatch(/if \(bossForm\) \{\s*noteBossEarned\(herbId, user\?\.id\);\s*setEvolved\('earned'\);\s*\}/);
   });
   it('the preview button exists only in preview mode and starts the preview, never the earned one', () => {
     const button = hub.slice(hub.lastIndexOf('preview ? ('), hub.lastIndexOf('Preview the evolution'));
@@ -439,8 +439,8 @@ describe('the evolution moments (milestone 4)', () => {
   });
   it('the Garden arrival is gated on an earned evolution AND a form the server recorded, and spent once', () => {
     expect(garden).toMatch(/bossForms\.has\(herbId\) && arriving\.has\(herbId\)/);
-    expect(garden).toMatch(/consumeBossArrival\(id\)/);
-    expect(hub).toMatch(/noteBossEarned\(herbId\)/);
+    expect(garden).toMatch(/consumeBossArrival\(id, user\?\.id\)/);
+    expect(hub).toMatch(/noteBossEarned\(herbId, user\?\.id\)/);
     // The preview evolution never queues an arrival: the only caller is the earned branch.
     expect(hub.match(/noteBossEarned\(/g)?.length).toBe(1); // exactly one call, in the earned branch
   });

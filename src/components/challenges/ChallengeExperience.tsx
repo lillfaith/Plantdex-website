@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { bossFormsMode } from '@/lib/boss-forms';
@@ -45,8 +45,10 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
   const [active, setActive] = useState<ActivityId | null>(null);
   const [attempt, setAttempt] = useState(0);
   const sessionMode = mode === 'on' ? 'on' : 'preview';
-  // Passes seen by a verdict in this visit. Filled only by a verdict, kept apart by mode.
-  const [seen, setSeen] = useState<ReadonlySet<ActivityId>>(() => passedThisSession(sessionMode, herbId));
+  // Passes seen by a verdict in this visit, kept apart by mode AND by account, and read afresh on
+  // every render so a change of account can never show the previous account's passes.
+  const [, refresh] = useReducer((n: number) => n + 1, 0);
+  const seen = passedThisSession(sessionMode, herbId, user?.id);
   // 'earned' only ever comes from the server's answer; 'preview' only from the dev-only button.
   const [evolved, setEvolved] = useState<false | 'earned' | 'preview'>(false);
   // The sleeping Boss Form swells once when the SERVER confirms a pass. Never for a preview.
@@ -143,8 +145,8 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
           }}
           onVerdict={({ passed }) => {
             if (!passed) return;
-            notePassed(sessionMode, herbId, active);
-            setSeen((current) => new Set(current).add(active));
+            notePassed(sessionMode, herbId, active, user?.id);
+            refresh();
             if (!preview) setPulse(true);
             // Read the server's record again, so what is shown follows what is stored.
             if (!preview) completions.retry();
@@ -153,7 +155,7 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
             setActive(null);
             setAttempt(0);
             if (bossForm) {
-              noteBossEarned(herbId);
+              noteBossEarned(herbId, user?.id);
               setEvolved('earned');
             }
           }}
