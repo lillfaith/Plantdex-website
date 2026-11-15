@@ -29,6 +29,16 @@ describe('the four ways a submission can end', () => {
     expect(out).toContain('Continue to Picture Match');
     expect(out).toContain('2 of 3');
   });
+  it('a Trial pass the server confirmed leads into the evolution', () => {
+    const out = render('complete', { isTrial: true, awakens: true });
+    expect(out).toContain('The seal holds');
+    expect(out).toContain('Awaken the Boss Form');
+    expect(out).not.toContain('Continue to');
+  });
+  it('a preview pass never says it awakens anything', () => {
+    const out = render('complete', { isTrial: true, preview: true, awakens: false });
+    expect(out).not.toContain('Awaken the Boss Form');
+  });
   it('a preview pass is labelled as one and claims nothing recorded', () => {
     const out = render('complete', { preview: true });
     expect(out).toContain('Passed in preview');

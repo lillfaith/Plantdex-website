@@ -288,7 +288,7 @@ describe('an evolution is earned only by the server, and a preview says so', () 
     expect(runner).toMatch(/const bossForm = !\('preview' in finished\) && finished\.bossForm && isTrial;/);
     const earned = hub.match(/setEvolved\('earned'\)/g) ?? [];
     expect(earned).toHaveLength(1);
-    expect(hub).toMatch(/if \(bossForm\) setEvolved\('earned'\)/);
+    expect(hub).toMatch(/if \(bossForm\) \{\s*noteBossEarned\(herbId\);\s*setEvolved\('earned'\);\s*\}/);
   });
   it('the preview button exists only in preview mode and starts the preview, never the earned one', () => {
     const button = hub.slice(hub.lastIndexOf('preview ? ('), hub.lastIndexOf('Preview the evolution'));
@@ -408,5 +408,40 @@ describe('the M2 correction pass: calmer, clearer, never an empty panel', () => 
   it('keeps the photograph markers the reveal rule depends on', () => {
     expect(views).toMatch(/challenge-pop/);
     expect(views).toMatch(/shadow-\[0_0_22px_rgb\(255_210_110\/0\.55\)\]/);
+  });
+});
+
+describe('the evolution moments (milestone 4)', () => {
+  const css = readFileSync('src/app/globals.css', 'utf8');
+  const block = css.slice(css.indexOf('BOSS FORM CHALLENGES: every motion'));
+  const reduced = block.slice(block.indexOf('@media (prefers-reduced-motion: reduce)'));
+  const skip = block.slice(block.indexOf("Skipped, or reduced motion"), block.indexOf('@media (prefers-reduced-motion: reduce)'));
+  const NEW = ['evolve-tremble', 'evolve-sigil', 'evolve-beams', 'awaken-pulse', 'awaken-glow', 'boss-arrive'];
+  const evolution = read('src/components/challenges/BossEvolution.tsx');
+  const hub = read('src/components/challenges/ChallengeExperience.tsx');
+  const garden = read('src/components/garden/GardenView.tsx');
+  it('every new motion is one-shot, transform and opacity only, and switched off under reduced motion', () => {
+    for (const name of NEW) expect(reduced, name).toContain(`.${name}`);
+    for (const name of ['evolve-tremble', 'evolve-sigil', 'evolve-beams']) expect(skip, name).toContain(`.${name}`);
+    for (const frames of ['evolve-tremble-steps', 'evolve-sigil-turn', 'evolve-beams-turn', 'awaken-pulse-swell', 'awaken-glow-fade', 'boss-arrive-in']) {
+      const body = block.slice(block.indexOf(`@keyframes ${frames}`), block.indexOf('}\n}', block.indexOf(`@keyframes ${frames}`)));
+      expect(body, frames).not.toMatch(/filter|blur|box-shadow|width|height|top|left/);
+    }
+    expect(block).not.toMatch(/infinite/);
+  });
+  it('the anticipation pieces are decorative and hidden from assistive technology', () => {
+    expect(evolution).toMatch(/evolve-sigil[^>]*>|aria-hidden="true"\s+viewBox="0 0 64 64"/);
+    expect(evolution).toMatch(/aria-hidden="true"\s+className="evolve-beams/);
+  });
+  it('the sleeping Boss Form only swells for a server-confirmed pass, never a preview, and only once', () => {
+    expect(hub).toMatch(/if \(!preview\) setPulse\(true\)/);
+    expect(read('src/components/challenges/Awakening.tsx')).toMatch(/if \(pulse\) onPulseShown\?\.\(\)/);
+  });
+  it('the Garden arrival is gated on an earned evolution AND a form the server recorded, and spent once', () => {
+    expect(garden).toMatch(/bossForms\.has\(herbId\) && arriving\.has\(herbId\)/);
+    expect(garden).toMatch(/consumeBossArrival\(id\)/);
+    expect(hub).toMatch(/noteBossEarned\(herbId\)/);
+    // The preview evolution never queues an arrival: the only caller is the earned branch.
+    expect(hub.match(/noteBossEarned\(/g)?.length).toBe(1); // exactly one call, in the earned branch
   });
 });

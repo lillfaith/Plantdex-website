@@ -153,6 +153,7 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, on
         total={finished.ok ? finished.total : undefined}
         review={review}
         nextLabel={nextLabel && !bossFormEarned ? nextLabel : undefined}
+        awakens={Boolean(bossFormEarned)}
         onPrimary={onPrimary}
         onBack={onExit}
         onExit={leave}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import { PRINTED_DECK_SIZE, getPrintedCard, printedCardsInDeckOrder } from '@/lib/deck';
@@ -11,6 +11,8 @@ import { clearAdvanced, recordStages, useGardenMoments } from '@/lib/garden-mome
 import { GrowthSprite } from './GrowthSprite';
 import { useAuth } from '@/state/AuthProvider';
 import { useBossForms } from '@/lib/boss-forms';
+import { BOSS_PILOT } from '@/lib/boss-form';
+import { bossArrivalPending, consumeBossArrival } from '@/lib/boss-moments';
 import { Art } from '@/components/challenges/ChallengeArt';
 import { usePauseOffscreenSprites } from '@/lib/sprite-visibility';
 import { GrowthPlaceholder } from '../GrowthLoader';
@@ -52,6 +54,13 @@ export function GardenView() {
     user?.id,
     garden.filter((entry) => entry.stage === 'flowering').map((entry) => entry.herbId),
   );
+  // THE ARRIVAL IS ONE-TIME. Captured once when the Garden mounts (reading does not spend it, so a
+  // double render cannot lose it) and spent right after, so coming back later never replays it. It
+  // only ever exists after an earned evolution, and it only plays on a form the server has recorded.
+  const [arriving] = useState<ReadonlySet<string>>(() => new Set(BOSS_PILOT.filter(bossArrivalPending)));
+  useEffect(() => {
+    for (const id of arriving) consumeBossArrival(id);
+  }, [arriving]);
   const stageSignature = garden.map((entry) => `${entry.herbId}:${entry.stage}`).join(',');
 
   /*
@@ -159,11 +168,13 @@ export function GardenView() {
                           is also left of centre in its own frame (ink spans 2%-78% of the width), so it
                           is nudged right until the mane and seed puffs sit inside the gold frame. */}
                       <span className={`relative z-10 flex h-full w-full items-end justify-center ${bossForms.has(herbId) ? 'origin-bottom translate-x-[9px] scale-[0.8] pb-1 min-[380px]:translate-x-[11px] min-[380px]:scale-100' : ''}`}>
+                        <span className={`flex h-full w-full items-end justify-center ${bossForms.has(herbId) && arriving.has(herbId) ? 'boss-arrive' : ''}`}>
                         <GrowthSprite
                           herb={herb}
                           stage={bossForms.has(herbId) ? 'boss' : stage}
                           advanced={advanced}
                         />
+                        </span>
                       </span>
                     </span>
 

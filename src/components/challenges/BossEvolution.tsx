@@ -133,6 +133,20 @@ export function BossEvolution({
         />
         <span
           aria-hidden="true"
+          className="evolve-beams pointer-events-none absolute top-1/2 left-1/2 aspect-square h-[170%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        />
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 64 64"
+          className="evolve-sigil pointer-events-none absolute top-1/2 left-1/2 h-[80%] aspect-square -translate-x-1/2 -translate-y-1/2 text-gold-300"
+        >
+          <circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" strokeWidth="2" />
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
+            <line key={a} x1="32" y1="32" x2="32" y2="8" stroke="currentColor" strokeWidth="2" transform={`rotate(${a} 32 32)`} />
+          ))}
+        </svg>
+        <span
+          aria-hidden="true"
           className="evolve-ring absolute top-1/2 left-1/2 h-[70%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border-[5px] border-gold-300"
         />
         <span
@@ -140,7 +154,9 @@ export function BossEvolution({
           className="evolve-ring-late absolute top-1/2 left-1/2 h-[70%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-violet-200"
         />
         <div className="evolve-out absolute inset-0 flex items-center justify-center">
-          <PlantSprite herbId={herbId} alt="" stage="flowering" scale={scale} frozen />
+          <div className="evolve-tremble">
+            <PlantSprite herbId={herbId} alt="" stage="flowering" scale={scale} frozen />
+          </div>
         </div>
         <div className="evolve-in absolute inset-0 flex items-center justify-center">
           <PlantSprite herbId={herbId} alt={`${name}, Boss Form`} stage="boss" scale={scale} />

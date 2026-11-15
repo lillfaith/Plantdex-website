@@ -41,6 +41,8 @@ export interface ResultViewProps {
   review: readonly ReviewItem[];
   /** For `complete`: the label of the next round, so the action can lead straight on. */
   nextLabel?: string;
+  /** The server recorded a Boss Form: the pass leads into the evolution. */
+  awakens?: boolean;
   onPrimary: () => void;
   onBack: () => void;
   onExit: () => void;
@@ -51,15 +53,15 @@ function Words({ children }: { children: ReactNode }) {
 }
 
 export function ChallengeResultView(props: ResultViewProps) {
-  const { kind, herbId, activityName, isTrial, preview, resolved, total, review, nextLabel, onPrimary, onBack, onExit } = props;
+  const { kind, herbId, activityName, isTrial, preview, resolved, total, review, nextLabel, awakens = false, onPrimary, onBack, onExit } = props;
   const score = resolved !== undefined && total !== undefined ? `${resolved} of ${total}` : null;
 
   const copy: Record<ResultKind, { kicker: string; heading: string; status: string; action: string }> = {
     complete: {
-      kicker: preview ? 'Preview' : 'Stage complete',
-      heading: preview ? 'Passed in preview' : 'Nicely done!',
-      status: preview ? 'Preview only. Nothing is recorded.' : 'Stage complete.',
-      action: nextLabel ? `Continue to ${nextLabel}` : 'Back to the Awakening',
+      kicker: preview ? 'Preview' : awakens ? 'Boss Trial passed' : 'Stage complete',
+      heading: preview ? 'Passed in preview' : awakens ? 'The seal holds' : 'Nicely done!',
+      status: preview ? 'Preview only. Nothing is recorded.' : awakens ? 'Something is waking.' : 'Stage complete.',
+      action: awakens ? 'Awaken the Boss Form' : nextLabel ? `Continue to ${nextLabel}` : 'Back to the Awakening',
     },
     failed: {
       kicker: 'Not yet',

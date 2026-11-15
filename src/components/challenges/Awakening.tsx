@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { PlantSprite } from '@/components/PlantSprite';
 import { assetPath } from '@/lib/asset-path';
 import type { ActivityId } from '@/lib/boss-form';
@@ -43,7 +43,7 @@ const STATE_WORD: Record<NodeState, string> = {
   unknown: 'Unknown',
 };
 
-const LEVEL = ['bg-plum-950', 'bg-plum-600', 'bg-violet-700', 'bg-violet-500'] as const;
+const LEVEL = ['bg-plum-950', 'bg-plum-700', 'bg-plum-600', 'bg-violet-800'] as const;
 
 function Sigil() {
   return (
@@ -123,9 +123,16 @@ export interface AwakeningProps {
   footerNote?: ReactNode;
   /** For `signedout`: where to sign in. */
   signInHref?: string;
+  /** True once, right after the server confirmed a pass: the sleeping Boss Form swells. */
+  pulse?: boolean;
+  onPulseShown?: () => void;
 }
 
-export function AwakeningView({ herbId, name, nodes, level, progress, action, status, onRetry, onExit, footerNote, signInHref }: AwakeningProps) {
+export function AwakeningView({ herbId, name, nodes, level, progress, action, status, onRetry, onExit, footerNote, signInHref, pulse = false, onPulseShown }: AwakeningProps) {
+  // The pulse is a one-time moment: once it has been drawn it is spent, so coming back does not replay it.
+  useEffect(() => {
+    if (pulse) onPulseShown?.();
+  }, [pulse, onPulseShown]);
   return (
     <ChallengeShell title="Awakening" kicker="Boss Form" status={<span>{status}</span>} action={action} onExit={onExit}>
       <div className="flex min-h-full flex-col gap-5">
@@ -142,8 +149,11 @@ export function AwakeningView({ herbId, name, nodes, level, progress, action, st
             <Sigil />
           </div>
           <figure className="flex flex-col items-center gap-1.5">
-            <div className="flex w-full max-w-[9.5rem] justify-center">
-              <BossSilhouette herbId={herbId} level={level} />
+            <div className="relative flex w-full max-w-[9.5rem] justify-center">
+              {pulse ? <span aria-hidden="true" className="awaken-glow pointer-events-none absolute inset-[-15%]" /> : null}
+              <div className={pulse ? 'awaken-pulse w-full' : 'w-full'}>
+                <BossSilhouette herbId={herbId} level={level} />
+              </div>
             </div>
             <figcaption className="text-base font-bold text-violet-50">Boss Form</figcaption>
           </figure>

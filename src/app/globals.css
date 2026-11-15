@@ -2908,6 +2908,12 @@ body {
  *   evolve-ring       one gold ring pulses outward
  *   evolve-flash      a warm glow swells behind the sprite
  *   evolve-text       the headline rises in after the change
+ *   evolve-tremble    the adult trembles for six short steps before it changes (anticipation)
+ *   evolve-sigil      a gold sigil turns in around the adult, then opens outward at the change
+ *   evolve-beams      rays of light turn once, slowly, behind the Boss Form as it lands
+ *   awaken-pulse      the sleeping Boss Form swells once when a round is confirmed passed
+ *   awaken-glow       a gold glow behind it fades up and away once
+ *   boss-arrive       an earned Boss Form settles into its Garden tile, once, the first time only
  */
 @keyframes challenge-pop {
   0% { opacity: 0; transform: scale(0.6); }
@@ -2971,6 +2977,36 @@ body {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes evolve-tremble-steps {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+@keyframes evolve-sigil-turn {
+  0% { opacity: 0; transform: scale(0.5) rotate(-30deg); }
+  45% { opacity: 1; transform: scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(1.4) rotate(40deg); }
+}
+@keyframes evolve-beams-turn {
+  0% { opacity: 0; transform: rotate(0deg) scale(0.6); }
+  20% { opacity: 0.8; }
+  100% { opacity: 0.3; transform: rotate(40deg) scale(1.1); }
+}
+@keyframes awaken-pulse-swell {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+@keyframes awaken-glow-fade {
+  0% { opacity: 0; transform: scale(0.7); }
+  35% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+@keyframes boss-arrive-in {
+  0% { opacity: 0; transform: translateY(-10px) scale(0.85); }
+  60% { opacity: 1; transform: translateY(0) scale(1.08); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
 @utility challenge-pop {
   animation: challenge-pop 240ms ease-out both;
 }
@@ -3014,6 +3050,29 @@ body {
 @utility evolve-text-late {
   animation: evolve-text-rise 600ms ease-out 2500ms both;
 }
+@utility evolve-tremble {
+  animation: evolve-tremble-steps 160ms steps(2, end) 380ms 6 both;
+}
+@utility evolve-sigil {
+  animation: evolve-sigil-turn 1100ms ease-out 200ms both;
+}
+@utility evolve-beams {
+  background: repeating-conic-gradient(rgb(255 215 120 / 0.55) 0deg 5deg, transparent 5deg 15deg);
+  mask-image: radial-gradient(circle, #000 8%, transparent 68%);
+  -webkit-mask-image: radial-gradient(circle, #000 8%, transparent 68%);
+  animation: evolve-beams-turn 2400ms ease-out 1300ms both;
+}
+@utility awaken-pulse {
+  animation: awaken-pulse-swell 700ms ease-out both;
+}
+@utility awaken-glow {
+  background: radial-gradient(closest-side, rgb(255 210 110 / 0.7), transparent 75%);
+  animation: awaken-glow-fade 1200ms ease-out both;
+}
+@utility boss-arrive {
+  transform-origin: 50% 100%;
+  animation: boss-arrive-in 900ms ease-out both;
+}
 /* The page is hidden: freeze every challenge animation where it is. */
 .boss-scene[data-paused='true'] * {
   animation-play-state: paused !important;
@@ -3026,13 +3085,16 @@ body {
 .boss-scene[data-skip='true'] .evolve-flash,
 .boss-scene[data-skip='true'] .evolve-burst,
 .boss-scene[data-skip='true'] .evolve-text,
-.boss-scene[data-skip='true'] .evolve-text-late {
+.boss-scene[data-skip='true'] .evolve-text-late,
+.boss-scene[data-skip='true'] .evolve-tremble {
   animation: none;
 }
 .boss-scene[data-skip='true'] .evolve-out,
 .boss-scene[data-skip='true'] .evolve-burst,
 .boss-scene[data-skip='true'] .evolve-ring,
 .boss-scene[data-skip='true'] .evolve-ring-late,
+.boss-scene[data-skip='true'] .evolve-sigil,
+.boss-scene[data-skip='true'] .evolve-beams,
 .boss-scene[data-skip='true'] .sparkle-out {
   display: none;
 }
@@ -3050,7 +3112,11 @@ body {
   .evolve-ring-late,
   .evolve-flash,
   .evolve-text,
-  .evolve-text-late {
+  .evolve-text-late,
+  .evolve-tremble,
+  .awaken-pulse,
+  .awaken-glow,
+  .boss-arrive {
     animation: none;
   }
   /* With no animation the end state must still be right: the adult and the ring have nothing
@@ -3059,6 +3125,9 @@ body {
   .evolve-burst,
   .evolve-ring,
   .evolve-ring-late,
+  .evolve-sigil,
+  .evolve-beams,
+  .awaken-glow,
   .sparkle-out,
   .seed-drift {
     display: none;

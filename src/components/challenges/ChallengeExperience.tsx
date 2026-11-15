@@ -8,6 +8,7 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { bossFormsMode } from '@/lib/boss-forms';
 import { CHALLENGE_ACTIVITIES, PREREQUISITE_ACTIVITIES, isBossPilot, type ActivityId } from '@/lib/boss-form';
 import { deriveAwakening } from '@/lib/awakening-state';
+import { noteBossEarned } from '@/lib/boss-moments';
 import { notePassed, passedThisSession } from '@/lib/boss-session';
 import { useChallengeCompletions } from '@/lib/challenge-completions';
 import { buildChallenge } from '@/lib/mastery-challenges';
@@ -48,6 +49,8 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
   const [seen, setSeen] = useState<ReadonlySet<ActivityId>>(() => passedThisSession(sessionMode, herbId));
   // 'earned' only ever comes from the server's answer; 'preview' only from the dev-only button.
   const [evolved, setEvolved] = useState<false | 'earned' | 'preview'>(false);
+  // The sleeping Boss Form swells once when the SERVER confirms a pass. Never for a preview.
+  const [pulse, setPulse] = useState(false);
   const completions = useChallengeCompletions({ enabled: mode === 'on', userId: user?.id, herbId });
 
   if (mode === 'off' || !isBossPilot(herbId)) {
@@ -142,13 +145,17 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
             if (!passed) return;
             notePassed(sessionMode, herbId, active);
             setSeen((current) => new Set(current).add(active));
+            if (!preview) setPulse(true);
             // Read the server's record again, so what is shown follows what is stored.
             if (!preview) completions.retry();
           }}
           onDone={({ bossForm }) => {
             setActive(null);
             setAttempt(0);
-            if (bossForm) setEvolved('earned');
+            if (bossForm) {
+              noteBossEarned(herbId);
+              setEvolved('earned');
+            }
           }}
           onRetry={() => setAttempt((n) => n + 1)}
           onExit={() => {
@@ -168,6 +175,8 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
           onRetry={completions.retry}
           onExit={exit}
           signInHref="/account"
+          pulse={pulse}
+          onPulseShown={() => setPulse(false)}
           footerNote={
             preview ? (
               <button
