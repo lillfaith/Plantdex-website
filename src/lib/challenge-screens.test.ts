@@ -249,8 +249,8 @@ describe('an evolution is earned only by the server, and a preview says so', () 
     expect(hub).not.toMatch(/\|\| preview/);
   });
   it('only the server\u2019s answer, for the Boss Trial, can start the earned evolution', () => {
-    expect(runner).toMatch(/bossForm: result\.bossForm && activity === 'boss-trial'/);
-    expect(runner).toMatch(/bossForm: false/); // the preview path never claims one
+    // The flag comes from the SERVER's verdict, only for the Trial, and never from a preview verdict.
+    expect(runner).toMatch(/const bossForm = !\('preview' in finished\) && finished\.bossForm && isTrial;/);
     const earned = hub.match(/setEvolved\('earned'\)/g) ?? [];
     expect(earned).toHaveLength(1);
     expect(hub).toMatch(/if \(bossForm\) setEvolved\('earned'\)/);
@@ -282,5 +282,56 @@ describe('the scenery stays inside the stage and away from the footer and naviga
   });
   it('puts the fern strip after the content, as ordinary flow, with no text over it', () => {
     expect(stage.indexOf('{children}')).toBeLessThan(stage.indexOf('scan-forest'));
+  });
+});
+
+describe('the full-screen shell (milestone 1)', () => {
+  const shell = read('src/components/challenges/ChallengeShell.tsx');
+  const runner = read('src/components/challenges/ChallengeRunner.tsx');
+  const hub = read('src/components/challenges/ChallengeExperience.tsx');
+  const labels = read('src/components/challenges/activity-labels.ts');
+  it('covers the site navigation through a portal, as a modal dialog', () => {
+    expect(shell).toMatch(/createPortal\(/);
+    expect(shell).toMatch(/role="dialog"/);
+    expect(shell).toMatch(/aria-modal="true"/);
+    expect(shell).toMatch(/z-\[60\]/); // above the bottom bar (z-50), below the evolution (z-[70])
+  });
+  it('always shows a labelled Exit, at least 48px tall, and Escape also exits', () => {
+    expect(shell).toMatch(/Exit\s*<\/button>/);
+    expect(shell).toMatch(/min-h-12/);
+    expect(shell).toMatch(/event\.key === 'Escape'/);
+  });
+  it('honours the safe areas and keeps the status line a fixed height so the action never moves', () => {
+    expect(shell).toMatch(/safe-area-inset-top/);
+    expect(shell).toMatch(/safe-area-inset-bottom/);
+    expect(shell).toMatch(/h-\[4\.25rem\]/);
+  });
+  it('uses no timer, randomness, blur or filter, and restores page scrolling on close', () => {
+    expect(shell).not.toMatch(/setTimeout|setInterval|requestAnimationFrame|Math\.random|Date\.now|blur|filter/);
+    expect(shell).toMatch(/document\.body\.style\.overflow = overflow/);
+  });
+  it('the runner uses the state machine, locks on check, and sends the set once', () => {
+    expect(runner).toMatch(/step\(flow, event, ctx\)/);
+    expect(runner).toMatch(/sent\.current/);
+    expect(runner).toMatch(/Check answer/);
+    expect(runner).toMatch(/onSelect=\{/);
+  });
+  it('the runner notes a passed round only from a verdict, never from a tap', () => {
+    expect(runner).toMatch(/if \(result\.ok\) onVerdict\?\.\(\{ passed: result\.passed \}\)/);
+    expect(hub).toMatch(/onVerdict=\{/);
+    expect(hub).toMatch(/notePassed\(/);
+  });
+  it('shows "Picture Match" for the compare round and keeps the internal id', () => {
+    expect(labels).toMatch(/compare: \{ name: 'Picture Match'/);
+    expect(hub + runner + labels).not.toMatch(/Lookalikes/);
+    expect(labels).toMatch(/'part-spotter'/);
+  });
+  it('does not claim a retry brings new questions', () => {
+    expect(runner).not.toMatch(/different set|mixes the questions differently|new questions/i);
+    expect(runner).toMatch(/some may come back/);
+  });
+  it('the hub (and so the bottom bar) is not part of the full-screen experience', () => {
+    expect(runner).toMatch(/<ChallengeShell/);
+    expect(shell).not.toMatch(/SiteNav|nav-bar/);
   });
 });

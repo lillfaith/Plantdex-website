@@ -1,37 +1,48 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { PlantSprite } from '@/components/PlantSprite';
 import { revealsAnswersAtEndOnly, type ActivityId } from '@/lib/boss-form';
 import { submitChallenge, type SubmitResult } from '@/lib/challenge-client';
+import { START, actionFor, step, type FlowAction, type FlowEvent, type FlowState } from '@/lib/challenge-flow';
 import { buildChallenge, scoreSubmission, type BuiltQuestion } from '@/lib/mastery-challenges';
+import { ACTIVITY_LABELS } from './activity-labels';
 import { ChallengeFrame } from './ChallengeFrame';
+import { ChallengeShell } from './ChallengeShell';
 import { FlowerProgress, type FlowerState } from './FlowerProgress';
 import { QuestionView } from './QuestionViews';
 import { Sparkles } from './Sparkles';
 
 /**
- * ONE STAGE, ONE SCREEN AT A TIME.
+ * ONE STAGE, ONE SCREEN AT A TIME, inside the full-screen shell.
  *
- * The flow is: every question once, then the result. There is no second chance on a question. A
- * stage that is not passed is replayed WHOLE, and each new attempt number draws a different set from
- * the pool (`selectForAttempt`), so a retry is never the same set twice running.
+ * The flow is: for each question, pick (and change your mind if you like), check, read the
+ * feedback, go on. Checking locks the answer, so there is no second go once it is revealed. After
+ * the last question the whole set is submitted. A stage that is not passed is replayed WHOLE, and
+ * each new attempt number draws its set from the same pool (`selectForAttempt`), so a retry mixes
+ * the questions differently but some may come back.
  *
- * Ordinary stages explain each answer as it is given. The Boss Trial does not: it marks only the
- * player's own choice, and answers and explanations appear on the result screen once the whole Trial
- * has been submitted (`revealsAnswersAtEndOnly`). That is presentation only; the server decides the
- * pass.
+ * Ordinary stages explain each answer as it is given. The Boss Trial does not: checking SEALS the
+ * answer and moves on, and answers and explanations appear on the result screen once the whole
+ * Trial has been submitted (`revealsAnswersAtEndOnly`). That is presentation only; the server
+ * decides the pass.
  *
  * The answers are sent exactly as `scoreSubmission` reads them: one option index per question.
  * Nothing about scoring is decided here. In `preview` (development only) the result is computed
  * locally and nothing is recorded; in `on` the server's verdict is the only one shown, and the
  * Trial's answers are shown only if that verdict arrived.
+ *
+ * Two callbacks, because two different things happen. `onVerdict` fires the moment a verdict
+ * exists, so the hub can note a passed round even if the player leaves from the result screen.
+ * `onDone` fires only when the player leaves a PASSED result, and it carries whether the server
+ * recorded a Boss Form. Leaving any other way calls `onExit`.
  */
 export interface RunnerProps {
   herbId: string;
   activity: ActivityId;
   attempt: number;
   mode: 'preview' | 'on';
+  onVerdict?: (outcome: { passed: boolean }) => void;
   onDone: (outcome: { passed: boolean; bossForm: boolean }) => void;
   onRetry: () => void;
   onExit: () => void;
@@ -41,63 +52,78 @@ type Finished =
   | SubmitResult
   | { ok: true; preview: true; passed: boolean; resolved: number; total: number };
 
-export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRetry, onExit }: RunnerProps) {
+const ACTION_LABEL: Record<FlowAction, string> = {
+  choose: 'Choose an answer',
+  check: 'Check answer',
+  seal: 'Seal answer',
+  submit: 'Submit the Trial',
+  next: 'Next',
+  finish: 'Finish',
+  wait: 'Submitting',
+};
+
+export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, onDone, onRetry, onExit }: RunnerProps) {
   const questions = useMemo<BuiltQuestion[] | null>(
     () => buildChallenge(herbId, activity, attempt, { includeUnreviewed: mode === 'preview' }),
     [herbId, activity, attempt, mode],
   );
-  const [answers, setAnswers] = useState<number[]>([]);
-  const [index, setIndex] = useState(0);
-  const [chosen, setChosen] = useState<number | null>(null);
+  const [flow, setFlow] = useState<FlowState>(START);
   const [finished, setFinished] = useState<Finished | null>(null);
-  const [busy, setBusy] = useState(false);
-  const feedbackRef = useRef<HTMLDivElement | null>(null);
+  // A guard against a double tap sending the set twice before the screen has re-rendered.
+  const sent = useRef(false);
   const hidden = revealsAnswersAtEndOnly(activity);
-
-  // After an answer, bring the feedback and its Next button into view: on a small phone the photos
-  // can fill the screen, and the one action that matters must never sit below the fold.
-  useEffect(() => {
-    if (chosen === null) return;
-    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    feedbackRef.current?.scrollIntoView({ block: 'nearest', behavior: calm ? 'auto' : 'smooth' });
-  }, [chosen]);
+  const label = ACTIVITY_LABELS[activity];
 
   if (!questions) {
-    return <p className="mt-8 text-center text-violet-200">This one is not available yet.</p>;
+    return (
+      <ChallengeShell
+        title={label.name}
+        action={{ label: 'Back', onClick: onExit }}
+        onExit={onExit}
+      >
+        <p className="mt-8 text-center text-lg text-violet-100">This one is not available yet.</p>
+      </ChallengeShell>
+    );
   }
 
-  const question = questions[index]!;
   const total = questions.length;
   const isTrial = activity === 'boss-trial';
-  const last = index === total - 1;
+  const question = questions[Math.min(flow.index, total - 1)]!;
+  const ctx = { total, hidden, optionCount: question.options.length };
 
-  const finish = async (final: number[]) => {
-    setBusy(true);
+  const finish = async (final: readonly number[]) => {
+    if (sent.current) return;
+    sent.current = true;
+    const answers = [...final];
     if (mode === 'preview') {
-      const score = scoreSubmission(questions, activity, final);
-      setFinished({ ok: true, preview: true, passed: Boolean(score?.passed), resolved: score?.resolved ?? 0, total });
-      setBusy(false);
+      const score = scoreSubmission(questions, activity, answers);
+      const verdict = { ok: true as const, preview: true as const, passed: Boolean(score?.passed), resolved: score?.resolved ?? 0, total };
+      setFinished(verdict);
+      onVerdict?.({ passed: verdict.passed });
       return;
     }
-    const result = await submitChallenge({ herbId, activity, attempt, answers: final });
+    const result = await submitChallenge({ herbId, activity, attempt, answers });
     setFinished(result);
-    setBusy(false);
-    // The evolution is shown only when the SERVER says a Boss Form was recorded, and only for
-    // the Boss Trial. Nothing in this file decides that.
-    if (result.ok) onDone({ passed: result.passed, bossForm: result.bossForm && activity === 'boss-trial' });
+    // A round is noted as passed only on the SERVER's say-so. A failed call notes nothing.
+    if (result.ok) onVerdict?.({ passed: result.passed });
   };
 
-  const answer = (choice: number) => {
-    if (chosen !== null) return;
-    setChosen(choice);
-    setAnswers((current) => [...current.slice(0, index), choice]);
+  const apply = (event: FlowEvent) => {
+    const after = step(flow, event, ctx);
+    if (after === flow) return;
+    setFlow(after);
+    if (after.phase === 'submitting') void finish(after.answers);
   };
 
-  const next = () => {
-    const final = answers.slice(0, total);
-    setChosen(null);
-    if (!last) return setIndex(index + 1);
-    return void finish(final);
+  const leave = () => {
+    if (finished && finished.ok && finished.passed) {
+      // The evolution is shown only when the SERVER says a Boss Form was recorded, and only for
+      // the Boss Trial. Nothing in this file decides that.
+      const bossForm = !('preview' in finished) && finished.bossForm && isTrial;
+      onDone({ passed: true, bossForm });
+      return;
+    }
+    onExit();
   };
 
   if (finished) {
@@ -107,120 +133,145 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onDone, onRet
     // Every question with the answer the player gave and its explanation. For the Boss Trial this
     // is the first time any of it is shown, and only when a verdict came back.
     const review = finished.ok ? questions : [];
+    const mine = flow.answers;
+    const action = passed
+      ? { label: 'Back to the challenges', onClick: leave }
+      : limited || !finished.ok
+        ? { label: 'Back', onClick: onExit }
+        : { label: 'Try again', onClick: onRetry };
     return (
-      <section className="mt-4 flex flex-col items-center text-center" aria-live="polite">
-        <div className="relative">
-          <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} scale={1} frozen={!passed} />
-          {passed ? <Sparkles count={8} radius={70} /> : null}
-        </div>
-        {finished.ok ? (
-          <>
-            <h2 className="font-display text-3xl font-extrabold text-gold-plate">
-              {passed ? 'Nicely done!' : 'So close!'}
-            </h2>
-            <p className="mt-2 text-lg font-bold text-violet-100">
-              {finished.resolved} of {finished.total}
-            </p>
-            <p className="mt-1 text-sm text-violet-300">
-              {passed
-                ? 'Stage complete. It stays complete.'
-                : 'Try again. Each try mixes the questions differently.'}
-            </p>
-            {preview ? <p className="mt-2 text-xs text-violet-300">Preview only. Nothing is recorded.</p> : null}
-          </>
-        ) : limited ? (
-          <p className="mt-2 text-violet-100">That is all the tries for today. Come back tomorrow.</p>
-        ) : (
-          <p className="mt-2 text-violet-100">Could not save that. Please try again later.</p>
-        )}
-
-        {review.length > 0 ? (
-          <ol className="mt-5 grid w-full gap-2.5 text-left" aria-label="Your answers and explanations">
-            {review.map((q, i) => {
-              const right = answers[i] === q.correctIndex;
-              return (
-                <li key={q.id} className="rounded-lg bg-violet-800/50 px-3 py-2.5">
-                  <p className="text-sm font-extrabold text-violet-50">
-                    {right ? 'Right' : 'Not this time'}: {q.prompt}
-                  </p>
-                  <p className="mt-0.5 text-sm text-violet-100">{q.feedback}</p>
-                </li>
-              );
-            })}
-          </ol>
-        ) : null}
-
-        <div className="mt-5 grid w-full gap-3">
-          {!passed && !limited ? (
-            <button type="button" onClick={onRetry} className="arcade-key holo-fill min-h-14 rounded-full px-6 text-base font-extrabold text-plum-900">
-              Try again
+      <ChallengeShell
+        title={label.name}
+        kicker="Result"
+        status={
+          finished.ok ? (
+            <span>
+              {preview
+                ? passed
+                  ? 'Passed in preview. Nothing is recorded.'
+                  : 'Preview only. Nothing is recorded.'
+                : passed
+                  ? 'Stage complete.'
+                  : 'Try again. Questions are drawn from a set, so some may come back.'}
+            </span>
+          ) : limited ? (
+            <span>That is all the tries for today. Come back tomorrow.</span>
+          ) : (
+            <span>Could not save that. Please try again later.</span>
+          )
+        }
+        action={action}
+        secondary={
+          !passed && !limited && finished.ok ? (
+            <button
+              type="button"
+              onClick={onExit}
+              className="min-h-12 px-4 text-base font-bold text-violet-200 underline underline-offset-4 outline-none focus-visible:ring-4 focus-visible:ring-gold-300"
+            >
+              Back
             </button>
+          ) : null
+        }
+        onExit={leave}
+      >
+        <section className="flex flex-col items-center text-center" aria-live="polite">
+          <div className="relative">
+            <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} scale={1} frozen={!passed} />
+            {passed ? <Sparkles count={8} radius={70} /> : null}
+          </div>
+          {finished.ok ? (
+            <>
+              <h2 className="font-display text-3xl font-extrabold text-gold-plate">
+                {passed ? 'Nicely done!' : 'So close!'}
+              </h2>
+              <p className="mt-2 text-lg font-bold text-violet-100">
+                {finished.resolved} of {finished.total}
+              </p>
+            </>
           ) : null}
-          <button type="button" onClick={passed && preview ? () => onDone({ passed: true, bossForm: false }) : onExit} className="min-h-12 text-sm font-bold text-violet-200 underline-offset-4 hover:underline">
-            {passed ? 'Back to the challenges' : 'Back'}
-          </button>
-        </div>
-      </section>
+
+          {review.length > 0 ? (
+            <ol className="mt-5 grid w-full gap-2.5 text-left" aria-label="Your answers and explanations">
+              {review.map((q, i) => {
+                const right = mine[i] === q.correctIndex;
+                return (
+                  <li key={q.id} className="rounded-lg bg-violet-800/50 px-3 py-2.5">
+                    <p className="text-base font-extrabold text-violet-50">
+                      {right ? 'Right' : 'Not this time'}: {q.prompt}
+                    </p>
+                    <p className="mt-0.5 text-base text-violet-100">{q.feedback}</p>
+                  </li>
+                );
+              })}
+            </ol>
+          ) : null}
+        </section>
+      </ChallengeShell>
     );
   }
 
-  const correct = chosen === question.correctIndex;
+  const act = actionFor(flow, ctx);
+  const locked = flow.locked;
+  // While the set is being sent the last answer stays on screen, so the player sees what was sent.
+  const shown = flow.phase === 'submitting' ? (flow.answers[flow.index] ?? null) : locked;
+  const correct = shown === question.correctIndex;
   const flowers: FlowerState[] = questions.map((q, i) => {
-    const given = answers[i];
-    if (given === undefined) return i === index ? 'current' : 'ahead';
+    const given = flow.answers[i];
+    if (given === undefined) return i === flow.index ? 'current' : 'ahead';
     if (hidden) return 'held';
     return given === q.correctIndex ? 'bloom' : 'sprout';
   });
 
+  const onAction = () => {
+    if (act === 'check' || act === 'seal' || act === 'submit') apply({ type: 'check' });
+    else if (act === 'next' || act === 'finish') apply({ type: 'next' });
+  };
+
+  const status =
+    act === 'wait' ? (
+      <span>Sending your answers.</span>
+    ) : locked !== null && !hidden ? (
+      <span>
+        <b className={correct ? 'text-gold-200' : 'text-violet-50'}>{correct ? 'Yes. ' : 'Not quite. '}</b>
+        {question.feedback}
+      </span>
+    ) : act === 'choose' ? (
+      <span>{hidden ? 'Pick an answer. Nothing is shown until the end.' : 'Pick an answer, then check it.'}</span>
+    ) : (
+      <span>You can change it until you {hidden ? 'seal' : 'check'} it.</span>
+    );
+
   return (
-    <section className="mt-2" aria-live="polite">
-      <div className="flex items-center gap-3">
-        <div className="w-12 shrink-0">
-          <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} fit />
+    <ChallengeShell
+      title={label.name}
+      kicker={isTrial ? 'Final challenge' : `Question ${flow.index + 1} of ${total}`}
+      counter={`${Math.min(flow.index + 1, total)}/${total}`}
+      progress={
+        <div className="flex items-center gap-3">
+          <div className="w-10 shrink-0">
+            <PlantSprite herbId={herbId} alt="" stage={isTrial ? 'boss' : 'flowering'} fit />
+          </div>
+          <div className="min-w-0 flex-1">
+            <FlowerProgress states={flowers} label={`Question ${flow.index + 1} of ${total}`} />
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <FlowerProgress states={flowers} label={`Question ${index + 1} of ${total}`} />
-          {isTrial ? (
-            <p className="mt-1 text-xs font-bold tracking-wide text-violet-300 uppercase">
-              Final challenge: answers come at the end
-            </p>
-          ) : null}
-        </div>
-      </div>
-
-      <ChallengeFrame className="mt-4">
+      }
+      status={status}
+      action={{ label: ACTION_LABEL[act], onClick: onAction, disabled: act === 'choose' || act === 'wait' }}
+      onExit={onExit}
+    >
+      <ChallengeFrame>
         <h2 className="px-1 text-center text-xl leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
-        <QuestionView key={index} question={question} chosen={chosen} onAnswer={answer} reveal={!hidden} />
+        <QuestionView
+          key={flow.index}
+          question={question}
+          chosen={shown}
+          selected={flow.selected}
+          onSelect={(index) => apply({ type: 'select', index })}
+          onAnswer={(index) => apply({ type: 'select', index })}
+          reveal={!hidden}
+        />
       </ChallengeFrame>
-
-      {chosen !== null ? (
-        <div
-          ref={feedbackRef}
-          className={`relative mt-3 scroll-mb-24 rounded-lg px-4 py-3 text-center ${
-            hidden ? 'bg-violet-800/60' : correct ? 'bg-gold-500/15 shadow-[0_0_22px_rgb(255_210_110/0.3)]' : 'bg-violet-800/60'
-          }`}
-        >
-          {hidden ? (
-            <p className="text-sm text-violet-100">Answer locked in.</p>
-          ) : (
-            <>
-              <p className={`relative text-lg font-extrabold ${correct ? 'text-gold-200' : 'text-violet-100'}`}>
-                {correct ? 'Nice!' : 'Good try'}
-                {correct ? <Sparkles count={6} radius={52} /> : null}
-              </p>
-              <p className="mt-0.5 text-sm text-violet-100">{question.feedback}</p>
-            </>
-          )}
-          <button
-            type="button"
-            disabled={busy}
-            onClick={next}
-            className="arcade-key holo-fill mt-3 min-h-12 w-full rounded-full px-6 text-base font-extrabold text-plum-900"
-          >
-            {last ? (hidden ? 'Submit the Trial' : 'Finish') : 'Next'}
-          </button>
-        </div>
-      ) : null}
-    </section>
+    </ChallengeShell>
   );
 }

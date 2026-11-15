@@ -26,6 +26,13 @@ export interface QuestionViewProps {
   chosen: number | null;
   onAnswer: (index: number) => void;
   /**
+   * The option picked but NOT yet confirmed, and the handler that picks it. When `onSelect` is
+   * given, a tap only selects (and may be changed); the screen's Check action is what locks an
+   * answer, by setting `chosen`. Without `onSelect` a tap answers at once, as before.
+   */
+  selected?: number | null;
+  onSelect?: (index: number) => void;
+  /**
    * Whether answering shows which option was right. True for ordinary stages, which explain each
    * answer as it is given. False in the Boss Trial, which marks only the player's own choice and
    * reveals nothing until the whole Trial is submitted.
@@ -60,8 +67,9 @@ function Media({ id }: { id: string }) {
   );
 }
 
-function PictureChoices({ question, chosen, onAnswer, reveal = true }: QuestionViewProps) {
+function PictureChoices({ question, chosen, onAnswer, selected = null, onSelect, reveal = true }: QuestionViewProps) {
   const answered = chosen !== null;
+  const pick = onSelect ?? onAnswer;
   const three = question.options.length === 3;
   return (
     <>
@@ -80,13 +88,16 @@ function PictureChoices({ question, chosen, onAnswer, reveal = true }: QuestionV
                 : isChosen
                   ? 'ring-2 ring-violet-300 opacity-70'
                   : 'opacity-55'
-            : 'hover:brightness-110';
+            : selected === index
+              ? 'ring-4 ring-violet-200 shadow-[0_0_18px_rgb(210_190_255/0.5)]'
+              : 'hover:brightness-110';
           return (
             <li key={id} className={three && index === 2 ? 'col-span-2 mx-auto w-[calc(50%-0.3rem)]' : ''}>
               <button
                 type="button"
                 disabled={answered}
-                onClick={() => onAnswer(index)}
+                aria-pressed={selected === index}
+                onClick={() => pick(index)}
                 aria-label={BOSS_IMAGES[id]?.alt ?? id}
                 className={`pixel-tile relative block aspect-[4/5] w-full touch-manipulation overflow-hidden rounded-md p-[3px] outline-none transition-transform active:scale-95 focus-visible:ring-4 focus-visible:ring-gold-300 ${state}`}
               >
@@ -108,7 +119,8 @@ function PictureChoices({ question, chosen, onAnswer, reveal = true }: QuestionV
   );
 }
 
-function SpotFeature({ question, chosen, onAnswer, reveal = true }: QuestionViewProps) {
+function SpotFeature({ question, chosen, onAnswer, selected = null, onSelect, reveal = true }: QuestionViewProps) {
+  const pick = onSelect ?? onAnswer;
   const box = useRef<HTMLDivElement | null>(null);
   const imageId = question.media ?? '';
   const image = BOSS_IMAGES[imageId];
@@ -123,7 +135,7 @@ function SpotFeature({ question, chosen, onAnswer, reveal = true }: QuestionView
     // A tap on no region answers nothing, so a stray tap is never a wrong answer.
     if (region === null) return;
     const index = question.options.indexOf(region);
-    if (index >= 0) onAnswer(index);
+    if (index >= 0) pick(index);
   };
 
   if (!image?.src || !image.width || !image.height) return null;
@@ -144,6 +156,16 @@ function SpotFeature({ question, chosen, onAnswer, reveal = true }: QuestionView
           style={{ aspectRatio: `${image.width} / ${image.height}` }}
         >
           <Photo id={imageId} />
+          {!answered && selected !== null
+            ? (image.regions?.[question.options[selected] ?? ''] ?? []).map((r, i) => (
+                <span
+                  key={`picked-${i}`}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute rounded-md border-[3px] border-violet-200 bg-violet-200/20"
+                  style={{ left: `${r.x}%`, top: `${r.y}%`, width: `${r.w}%`, height: `${r.h}%` }}
+                />
+              ))
+            : null}
           {answered && reveal
             ? (image.regions?.[rightId] ?? []).map((r, i) => (
                 <span
@@ -164,7 +186,8 @@ function SpotFeature({ question, chosen, onAnswer, reveal = true }: QuestionView
             <button
               type="button"
               disabled={answered}
-              onClick={() => onAnswer(index)}
+              aria-pressed={selected === index}
+              onClick={() => pick(index)}
               className="pixel-tile min-h-11 w-full rounded-md px-3 py-2 text-sm font-bold text-violet-50 outline-none focus-visible:ring-4 focus-visible:ring-gold-300"
             >
               {REGION_LABELS[id] ?? id}
@@ -176,8 +199,9 @@ function SpotFeature({ question, chosen, onAnswer, reveal = true }: QuestionView
   );
 }
 
-function QuickPick({ question, chosen, onAnswer, reveal = true }: QuestionViewProps) {
+function QuickPick({ question, chosen, onAnswer, selected = null, onSelect, reveal = true }: QuestionViewProps) {
   const answered = chosen !== null;
+  const pick = onSelect ?? onAnswer;
   return (
     <>
       {question.media ? <Media id={question.media} /> : null}
@@ -195,13 +219,16 @@ function QuickPick({ question, chosen, onAnswer, reveal = true }: QuestionViewPr
               : isChosen
                 ? 'ring-2 ring-violet-300 opacity-80'
                 : 'opacity-70'
-          : '';
+          : selected === index
+            ? 'ring-4 ring-violet-200 shadow-[0_0_18px_rgb(210_190_255/0.5)]'
+            : '';
         return (
           <li key={text}>
             <button
               type="button"
               disabled={answered}
-              onClick={() => onAnswer(index)}
+              aria-pressed={selected === index}
+              onClick={() => pick(index)}
               className={`pixel-tile flex min-h-14 w-full touch-manipulation items-center justify-between rounded-lg px-4 py-3 text-left text-base font-bold text-violet-50 outline-none transition-transform active:scale-[0.98] focus-visible:ring-4 focus-visible:ring-gold-300 ${state}`}
             >
               {text}

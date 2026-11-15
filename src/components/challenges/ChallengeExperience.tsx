@@ -7,6 +7,8 @@ import { useHerbdex } from '@/state/HerbdexProvider';
 import { bossFormsMode } from '@/lib/boss-forms';
 import { CHALLENGE_ACTIVITIES, PREREQUISITE_ACTIVITIES, isBossPilot, type ActivityId } from '@/lib/boss-form';
 import { buildChallenge } from '@/lib/mastery-challenges';
+import { notePassed, passedThisSession } from '@/lib/boss-session';
+import { ACTIVITY_LABELS } from './activity-labels';
 import { Art, type ArtName } from './ChallengeArt';
 import { BossEvolution } from './BossEvolution';
 import { BotanicalStage } from './BotanicalStage';
@@ -26,10 +28,10 @@ import { ChallengeRunner } from './ChallengeRunner';
  * server's, and the hub never invents a reward: the only thing earned is the Boss Form itself.
  */
 const TILES: Record<ActivityId, { name: string; hint: string; art: ArtName }> = {
-  'part-spotter': { name: 'Part Spotter', hint: 'Name the parts', art: 'leaf' },
-  compare: { name: 'Lookalikes', hint: 'Spot the difference', art: 'pair' },
-  'habitat-season': { name: 'Habitat', hint: 'Where it grows', art: 'tree' },
-  'boss-trial': { name: 'Boss Trial', hint: 'Final unlock', art: 'crown' },
+  'part-spotter': { ...ACTIVITY_LABELS['part-spotter'], art: 'leaf' },
+  compare: { ...ACTIVITY_LABELS.compare, art: 'pair' },
+  'habitat-season': { ...ACTIVITY_LABELS['habitat-season'], art: 'tree' },
+  'boss-trial': { ...ACTIVITY_LABELS['boss-trial'], art: 'crown' },
 };
 
 type NodeState = 'done' | 'next' | 'later';
@@ -167,7 +169,11 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
   const { isMastered, ready } = useHerbdex();
   const [active, setActive] = useState<ActivityId | null>(null);
   const [attempt, setAttempt] = useState(0);
-  const [done, setDone] = useState<ReadonlySet<ActivityId>>(new Set());
+  // What this visit has already seen passed, so leaving and coming back keeps finished rounds finished.
+  // It is filled only from a verdict (the server's, in `on`), never from a tap.
+  const [done, setDone] = useState<ReadonlySet<ActivityId>>(() =>
+    passedThisSession(bossFormsMode() === 'on' ? 'on' : 'preview', herbId),
+  );
   // 'earned' only ever comes from the server's answer; 'preview' only from the dev-only button.
   const [evolved, setEvolved] = useState<false | 'earned' | 'preview'>(false);
 
@@ -218,8 +224,12 @@ export function ChallengeExperience({ herbId, name }: { herbId: string; name: st
           activity={active}
           attempt={attempt}
           mode={preview ? 'preview' : 'on'}
-          onDone={({ passed, bossForm }) => {
-            if (passed) setDone((current) => new Set(current).add(active));
+          onVerdict={({ passed }) => {
+            if (!passed) return;
+            notePassed(preview ? 'preview' : 'on', herbId, active);
+            setDone((current) => new Set(current).add(active));
+          }}
+          onDone={({ bossForm }) => {
             setActive(null);
             setAttempt(0);
             if (bossForm) setEvolved('earned');
