@@ -1307,6 +1307,46 @@
       "accessed": "2026-11-14",
       "verified": false,
       "note": "Machine-read by Claude on 2026-11-14 (page text fetched and searched; no person has confirmed it), so it stays verified:false. A 22-page PDF titled \"INVASIVE PLANT TREATMENT GUIDE - Summer Home Lots\", compiled from \"numerous websites\" (a compilation, not original research). On hairy cats-ear it says: \"hairy cats-ear has branched or several flowering stems (a single flowering stem in common dandelion)\", that its basal leaves are \"hairier, more irregular, and have deeper lobes\", and that \"the outer bracts below the flower heads of cats-ear are not curved downward (reflexed)\" unlike dandelion. It says \"branched or several\", not \"usually branched\"; it does not say the stems are leafless and does not mention small stem bracts. Confirm, and consider a primary botanical source."
+    },
+    {
+      "id": "cornell-cals-dandelion",
+      "kind": "web",
+      "title": "Dandelion",
+      "organization": "Cornell University, College of Agriculture and Life Sciences, Weed Science",
+      "url": "https://cals.cornell.edu/weed-science/weed-profiles/dandelion",
+      "accessed": "2026-11-15",
+      "verified": false,
+      "note": "Machine-read by Claude on 2026-11-15 (page text fetched and searched; no person has confirmed it), so it stays verified:false. Says: \"Seeds are wind dispersed by means of umbrella-like fluff\"; \"Updrafts are most important for long distance dispersal\"; \"The entire plant exudes milky white sap when cut\"; \"Single flowers develop on ... hollow, sparsely hairy, leafless, white-green to reddish tinged stalks\"; \"Dandelion is shade tolerant\"; and, of cat's-ear, \"Common catsear (Hypochaeris radicata L.) has similar yellow flowers, but its stems are tall and branching with scattered leaves and multiple flowers.\" That last sentence says cat's-ear stems carry SCATTERED LEAVES, which conflicts with calling them leafless. It does not mention roadsides or compacted soil."
+    },
+    {
+      "id": "cornell-weedid-dandelion",
+      "kind": "web",
+      "title": "Dandelion",
+      "organization": "Cornell University, Weed Identification",
+      "url": "https://blogs.cornell.edu/weedid/dandelion/",
+      "accessed": "2026-11-15",
+      "verified": false,
+      "note": "Machine-read by Claude on 2026-11-15 (page text fetched and searched; no person has confirmed it), so it stays verified:false. Says: \"Dandelion reproduces by wind-blown seeds and through vegetative reproduction from broken taproot segments\"; flower heads are \"solitary, at the ends of hollow, leafless flower stalks\"; leaves, stalks and taproot \"exude a milky juice when cut open\"; leaves have \"widely-spaced teeth that point toward the leaf base\". It names regrowth from root pieces as the other way the plant spreads, so wind is the only SEED route it names. No roadside or compacted-soil wording."
+    },
+    {
+      "id": "unce-dandelion-guide",
+      "kind": "web",
+      "title": "A Northern Nevada Homeowner’s Guide to Identifying and Managing Dandelions",
+      "organization": "University of Nevada Cooperative Extension",
+      "url": "https://extension.unr.edu/publication.aspx?PubID=2780",
+      "accessed": "2026-11-15",
+      "verified": false,
+      "note": "Machine-read by Claude on 2026-11-15 (page text fetched and searched; no person has confirmed it), so it stays verified:false. Says: \"Where it grows: Lawns, gardens, landscaped areas, roadsides, pastures and parks. Grows best in moist areas with full sun.\"; \"Produces a circular ball of seeds that blow with the wind\"; \"The lobe tips point back towards the center of the plant\"; \"A single flower is produced at the end of a hollow stalk\"; \"All plant parts ooze a milky liquid when broken\"; a photo caption reads \"Typical plant growing in disturbed site\". No compacted-soil wording."
+    },
+    {
+      "id": "msu-extension-dandelion",
+      "kind": "web",
+      "title": "Dandelion",
+      "organization": "Michigan State University Extension, Weeds",
+      "url": "https://www.canr.msu.edu/weeds/extension/dandelion",
+      "accessed": "2026-11-15",
+      "verified": false,
+      "note": "NOT read. On 2026-11-15 this address returned only a bot-protection page, not the article, so nothing from it was seen. A search summary says seeds spread mainly by wind and that a different, older MSU publication calls dandelion well adapted to roadsides; neither was read. Leave it unverified and unquoted until a person opens it."
     }
   ]
 }

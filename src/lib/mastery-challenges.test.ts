@@ -436,7 +436,7 @@ describe('version 3: complete pools, nothing player-visible', () => {
   });
   it('Compare has its three ungated drafts, and still cannot be served', () => {
     const compare = CHALLENGE_BANK.filter((i) => i.activity === 'compare' && isAvailable(i));
-    expect(compare.map((i) => i.id).sort()).toEqual(['cp.flowerleaves', 'cp.seedleaves', 'cp.stages']);
+    expect(compare.map((i) => i.id).sort()).toEqual(['cp.rosette', 'cp.seedstalk', 'cp.stages']);
     expect(buildChallenge(DANDELION, 'compare', 0, draft)).toHaveLength(3);
     expect(buildChallenge(DANDELION, 'compare', 0)).toBeNull();
   });
@@ -489,9 +489,11 @@ describe('version 3: complete pools, nothing player-visible', () => {
     const nf = by('tr.noflower');
     expect([clues(nf.correct).leaves, clues(nf.correct).flower, clues(nf.correct).seedHead]).toEqual([true, false, false]);
     for (const d of nf.distractors) expect(clues(d).flower === true || clues(d).seedHead === true, d).toBe(true);
+    // tr.flowerbare is a quick pick about the stalk in its own photograph, not a picture hunt.
     const fb = by('tr.flowerbare');
-    expect([clues(fb.correct).flower, clues(fb.correct).leaves]).toEqual([true, false]);
-    for (const d of fb.distractors) expect(clues(d).leaves, d).toBe(true);
+    expect(fb.kind).toBe('quick-pick');
+    expect(fb.media).toBe('d-plant-stalk');
+    expect(fb.correct).toBe('No, only at the base');
   });
   it('a crop keeps its parent’s photograph id and licence, and its file exists', () => {
     for (const [id, image] of Object.entries(BOSS_IMAGES).filter(([, i]) => i.cropOf)) {
@@ -515,18 +517,24 @@ describe('version 4: Compare, the bud photograph, Habitat odds and cat’s-ear w
   const by = (id: string) => CHALLENGE_BANK.find((i) => i.id === id)!;
   const clues = (id: string) => PHOTO_CLUES[id]!;
   it('the new Compare questions are dandelion-only and two-observation, and the originals keep their gates', () => {
-    for (const id of ['cp.seedleaves', 'cp.flowerleaves', 'cp.stages']) {
+    for (const id of ['cp.rosette', 'cp.seedstalk', 'cp.stages']) {
       const item = by(id);
       expect(item.kind, id).toBe('showdown');
       expect(item.requires, id).toBeUndefined();
       for (const photo of [item.correct, ...item.distractors]) expect(photo.startsWith('c-'), `${id}: ${photo}`).toBe(false);
     }
-    const sl = by('cp.seedleaves');
-    expect([clues(sl.correct).seedHead, clues(sl.correct).leaves]).toEqual([true, true]);
-    expect(clues(sl.distractors[0]!).seedHead === true && clues(sl.distractors[0]!).leaves === true).toBe(false);
-    const fl = by('cp.flowerleaves');
-    expect([clues(fl.correct).flower, clues(fl.correct).leaves]).toEqual([true, true]);
-    expect(clues(fl.distractors[0]!).leaves).toBe(false);
+    // Every Compare prompt asks which PICTURE SHOWS something, never what the plant lacks, so a
+    // feature that is merely out of frame cannot make a wrong picture right.
+    for (const id of ['cp.rosette', 'cp.seedstalk', 'cp.stages']) {
+      expect(by(id).prompt, id).toMatch(/^Which shows/);
+      expect(by(id).prompt, id).not.toMatch(/\b(no|not|without|only|but)\b/i);
+    }
+    const ro = by('cp.rosette');
+    expect(clues(ro.correct).leaves).toBe(true);
+    expect(clues(ro.distractors[0]!).leaves).toBe(false);
+    const ss = by('cp.seedstalk');
+    expect(clues(ss.correct).seedHead).toBe(true);
+    expect(clues(ss.distractors[0]!).seedHead).toBe(false);
     const st = by('cp.stages');
     expect(clues(st.correct).seedHead).toBe(true);
     expect(clues(st.distractors[0]!).seedHead).toBe(false);
@@ -564,6 +572,39 @@ describe('version 4: Compare, the bud photograph, Habitat odds and cat’s-ear w
     for (const id of ['cp.single', 'cp.branch', 'cp.forks', 'tr.single', 'tr.branch']) {
       expect(by(id).requires?.length, id).toBeGreaterThan(0);
       expect(by(id).feedback, id).toMatch(/clue/i);
+    }
+  });
+});
+
+describe('independent review addendum', () => {
+  const by = (id: string) => CHALLENGE_BANK.find((i) => i.id === id)!;
+  it('no trial prompt asks about what a plant lacks, because a feature can be out of frame', () => {
+    for (const id of ['tr.noflower', 'tr.rosflower']) expect(by(id).prompt, id).toMatch(/picture/i);
+    expect(by('tr.noflower').feedback).toMatch(/in view/);
+  });
+  it('Habitat distractors are realistic: no water, caves or underwater ground', () => {
+    const habitat = CHALLENGE_BANK.filter((i) => i.activity === 'habitat-season');
+    for (const item of habitat) {
+      for (const text of [item.correct, ...item.distractors].filter((t) => !t.startsWith('d-'))) {
+        expect(text, `${item.id}: ${text}`).not.toMatch(/water|cave|underwater|ocean|lake/i);
+      }
+    }
+    expect(by('hb.sunny').correct).toBe('Full sun');
+    expect(by('hb.sunny').feedback).toMatch(/tolerate shade/);
+  });
+  it('identification-flavoured feedback never lets one feature stand for the species', () => {
+    const single = ['ps.rosette', 'ps.leaves2', 'ps.clock', 'ps.sap', 'ps.flower2', 'ps.seedhead2', 'tr.rosette', 'tr.clock', 'tr.flower', 'tr.sap', 'tr.flowerbare', 'cp.rosette', 'cp.seedstalk'];
+    for (const id of single) {
+      expect(by(id).feedback, id).toMatch(/(other plants|many plants|related|alone|one clue|not proof|several clues|more clues|other clues)/i);
+    }
+    for (const item of CHALLENGE_BANK) {
+      expect(`${item.prompt} ${item.feedback}`, item.id).not.toMatch(/\b((this|that|it) is a dandelion|proves|confirms it|always|definitely|certainly)\b/i);
+    }
+  });
+  it('the unread MSU page is recorded as unread, and nothing here is verified', () => {
+    expect(getSource('msu-extension-dandelion')?.note).toMatch(/^NOT read/);
+    for (const id of ['cornell-cals-dandelion', 'cornell-weedid-dandelion', 'unce-dandelion-guide', 'msu-extension-dandelion']) {
+      expect(getSource(id)?.verified, id).toBe(false);
     }
   });
 });

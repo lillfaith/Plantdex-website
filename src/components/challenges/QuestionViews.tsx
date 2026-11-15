@@ -169,7 +169,9 @@ function SpotFeature({ question, chosen, onAnswer }: QuestionViewProps) {
 function QuickPick({ question, chosen, onAnswer }: QuestionViewProps) {
   const answered = chosen !== null;
   return (
-    <ul className="mt-4 grid gap-3">
+    <>
+      {question.media ? <Media id={question.media} /> : null}
+      <ul className="mt-4 grid gap-3">
       {question.options.map((text, index) => {
         const isRight = index === question.correctIndex;
         const isChosen = chosen === index;
@@ -198,7 +200,8 @@ function QuickPick({ question, chosen, onAnswer }: QuestionViewProps) {
           </li>
         );
       })}
-    </ul>
+      </ul>
+    </>
   );
 }
 
