@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   PRODUCTION_PROJECT_REF,
   TEST_PROJECT_REF,
+  assertLiveConfigured,
   assertTestProject,
 } from '../../e2e/e2e-guard';
 
@@ -19,6 +20,20 @@ describe('the live suites cannot touch production', () => {
     expect(() => assertTestProject(`https://${TEST_PROJECT_REF}.supabase.co.evil.example`)).toThrow();
     expect(() => assertTestProject(`https://evil.example/${TEST_PROJECT_REF}.supabase.co`)).toThrow();
     expect(() => assertTestProject('not a url')).toThrow(/valid URL/);
+  });
+
+  it('a required run fails closed on missing configuration instead of skipping', () => {
+    const test = `https://${TEST_PROJECT_REF}.supabase.co`;
+    expect(() => assertLiveConfigured(undefined, undefined, false)).not.toThrow();
+    expect(() => assertLiveConfigured(undefined, 'key', true)).toThrow(/URL is not set/);
+    expect(() => assertLiveConfigured(test, '', true)).toThrow(/ANON_KEY is not set/);
+    expect(() => assertLiveConfigured(test, 'key', true)).not.toThrow();
+    expect(() => assertLiveConfigured(`https://${PRODUCTION_PROJECT_REF}.supabase.co`, 'key', true)).toThrow(/PRODUCTION/);
+    expect(readFileSync('e2e/guard.setup.ts', 'utf8')).toContain("process.env.PLANTDEX_E2E_REQUIRED === '1'");
+    const workflow = readFileSync('.github/workflows/verify-supabase-live.yml', 'utf8');
+    expect(workflow).toContain("PLANTDEX_E2E_REQUIRED: '1'");
+    expect(workflow).toContain(TEST_PROJECT_REF);
+    expect(workflow).not.toContain('SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}');
   });
 
   it('is wired into the live config as a setup file, so no suite can skip it', () => {

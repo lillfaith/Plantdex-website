@@ -30,3 +30,20 @@ export function assertTestProject(url: string | undefined): void {
       `Point .env.local at https://${TEST_PROJECT_REF}.supabase.co and try again.`,
   );
 }
+
+/**
+ * FAIL CLOSED WHEN A RUN IS MEANT TO BE LIVE. Locally a missing `.env.local` makes every suite
+ * skip itself, which is right for a laptop and wrong for a workflow whose whole purpose is the
+ * live run: a green job that skipped everything reads as a pass. With `required`, missing
+ * configuration is an error, and the URL must be the test project exactly.
+ */
+export function assertLiveConfigured(
+  url: string | undefined,
+  anonKey: string | undefined,
+  required: boolean,
+): void {
+  assertTestProject(url);
+  if (!required) return;
+  if (!url) throw new Error('NEXT_PUBLIC_SUPABASE_URL is not set; a required live run cannot skip.');
+  if (!anonKey) throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not set; a required live run cannot skip.');
+}

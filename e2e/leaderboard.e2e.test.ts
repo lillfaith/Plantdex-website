@@ -5,6 +5,7 @@ import { PRINTED_CARDS } from '@/lib/deck';
 import { emptyState } from '@/lib/herbdex-state';
 import { scoreFromRecords, LEADERBOARD_POINTS } from '@/lib/leaderboard';
 import { launchedRegions } from '@/lib/regions';
+import { researchTaskById } from '@/lib/research';
 
 /**
  * THE FIELD BOARD, ATTACKED FROM TWO ACCOUNTS.
@@ -41,9 +42,20 @@ if (URL && PRODUCTION_REFS.some((ref) => URL.includes(ref))) {
 const STAMP = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
 const ALICE_NAME = `E2E Alice ${STAMP}`;
 const BOB_NAME = `E2E Bob ${STAMP}`;
-const HERB_A = PRINTED_CARDS[0]!.id;
-const HERB_B = PRINTED_CARDS[1]!.id;
-const ALICE_AVATAR = PRINTED_CARDS[2]!.id;
+/**
+ * THE FIVE CARDS OF `collection:backyard`, READ FROM THE TASK ITSELF. Migration 0013 removed the
+ * client insert policy on `research_completions`, so a completion can only come from
+ * `herbdex-action` after the account genuinely meets the task. Alice therefore finds exactly
+ * these five and asks the function to reconcile; nothing here asserts a completion directly.
+ */
+const BACKYARD = researchTaskById('collection:backyard')!;
+const BACKYARD_HERBS = [...BACKYARD.herbIds];
+const HERB_A = BACKYARD_HERBS[0]!;
+/** A real daily, offered to the function and genuinely satisfied. It must be recorded and pay nothing. */
+const DAILY_ID = `daily:revisit:${HERB_A}`;
+const JOURNAL_NOTE = 'Rosette by the path edge, three flower heads open.';
+// Not one of Alice's finds, so its absence from the board is a real check.
+const ALICE_AVATAR = PRINTED_CARDS.find((card) => !BACKYARD_HERBS.includes(card.id))!.id;
 
 /** The exact set of columns `leaderboard_standings()` may return. Anything else is a leak. */
 const PUBLISHED = [
@@ -93,6 +105,8 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
   let anonClient: SupabaseClient;
   const region = launchedRegions()[0]?.id ?? null;
   const at = new Date().toISOString();
+  const SIGHTING_ID = `sighting_e2e_lb_${STAMP}`;
+  let reconciledIds: string[] = [];
 
   beforeAll(async () => {
     anonClient = freshClient();
@@ -101,17 +115,12 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
     alice = await signUpAndIn(aliceClient, 'lb-alice');
     bob = await signUpAndIn(bobClient, 'lb-bob');
 
-    // Alice: two finds and one completed collection challenge. A daily task is recorded too, and
-    // must pay nothing. Bob: one find, and he never joins until a later test asks him to.
+    // Alice: the five backyard finds and one journal entry with a real note. Bob: one find, and
+    // he never joins until a later test asks him to. No research row is written here.
     const inserts = await Promise.all([
-      aliceClient.from('discoveries').insert([
-        { user_id: alice.id, herb_id: HERB_A, discovered_at: at },
-        { user_id: alice.id, herb_id: HERB_B, discovered_at: at },
-      ]),
-      aliceClient.from('research_completions').insert([
-        { user_id: alice.id, task_id: 'collection:backyard', completed_at: at },
-        { user_id: alice.id, task_id: 'daily:e2e-leaderboard', completed_at: at },
-      ]),
+      aliceClient.from('discoveries').insert(
+        BACKYARD_HERBS.map((herb_id) => ({ user_id: alice.id, herb_id, discovered_at: at })),
+      ),
       bobClient.from('discoveries').insert({ user_id: bob.id, herb_id: HERB_A, discovered_at: at }),
       aliceClient.from('profiles').upsert({
         user_id: alice.id,
@@ -122,6 +131,24 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
       bobClient.from('profiles').upsert({ user_id: bob.id, display_name: BOB_NAME }),
     ]);
     for (const result of inserts) expect(result.error, JSON.stringify(result.error)).toBeNull();
+
+    // After the discovery exists: the journal entry is a RETURN to a species already found.
+    const entry = await aliceClient.from('sightings').insert({
+      id: SIGHTING_ID,
+      user_id: alice.id,
+      herb_id: HERB_A,
+      date: at.slice(0, 10),
+      notes: JOURNAL_NOTE,
+    });
+    expect(entry.error, JSON.stringify(entry.error)).toBeNull();
+
+    // THE ONLY ROUTE TO A COMPLETION. The function recomputes from its own reads and writes the
+    // row with the service role; the daily is offered so that it is recorded as well.
+    const reconciled = await aliceClient.functions.invoke('herbdex-action', {
+      body: { dailyTaskIds: [DAILY_ID] },
+    });
+    expect(reconciled.error, String(reconciled.error?.message)).toBeNull();
+    reconciledIds = [...((reconciled.data as { completedResearchIds?: string[] }).completedResearchIds ?? [])].sort();
   }, 90_000);
 
   afterAll(async () => {
@@ -129,7 +156,7 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
     // deliberately never holds.
     for (const [client, user] of [[aliceClient, alice], [bobClient, bob]] as const) {
       if (!client || !user) continue;
-      for (const table of ['leaderboard_participants', 'discoveries', 'research_completions', 'profiles']) {
+      for (const table of ['leaderboard_participants', 'sightings', 'discoveries', 'research_completions', 'unlocked_achievements', 'profiles']) {
         await client.from(table).delete().eq('user_id', user.id);
       }
       await client.auth.signOut();
@@ -145,6 +172,26 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
     }
   });
 
+  it('research completions come only from the server, and only for work really done', async () => {
+    // Exactly the challenge Alice met and the daily she was offered: no other standing task is
+    // satisfied by five finds and one sighting, so anything more is the function over-paying.
+    expect(reconciledIds).toEqual(['collection:backyard', DAILY_ID].sort());
+    const stored = await aliceClient.from('research_completions').select('task_id').eq('user_id', alice.id);
+    expect((stored.data ?? []).map((row) => row.task_id).sort()).toEqual(reconciledIds);
+
+    // The direct route 0013 closed: a real task id, the caller's own row, and still refused.
+    for (const task_id of ['collection:hard-to-find', 'collection:backyard']) {
+      const forged = await aliceClient.from('research_completions').insert({ user_id: alice.id, task_id });
+      expect(forged.error, `a client must not insert ${task_id}`).not.toBeNull();
+    }
+    // Bob has one find. Reconciling must give him nothing.
+    const bobs = await bobClient.functions.invoke('herbdex-action', { body: { dailyTaskIds: [DAILY_ID] } });
+    expect(bobs.error).toBeNull();
+    expect((bobs.data as { completedResearchIds: string[] }).completedResearchIds).toEqual([]);
+    const bobStored = await bobClient.from('research_completions').select('task_id').eq('user_id', bob.id);
+    expect(bobStored.data ?? []).toHaveLength(0);
+  });
+
   it('joining lists only you, scored by the server with the same rule the client uses', async () => {
     const { error } = await aliceClient
       .from('leaderboard_participants')
@@ -153,16 +200,25 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
 
     const own = mine(await standings(aliceClient))!;
     expect(own.display_name).toBe(ALICE_NAME);
-    expect(own.discoveries).toBe(2);
+    expect(own.discoveries).toBe(5);
+    expect(own.journal_entries).toBe(1);
+    expect(own.photo_backed_entries).toBe(0);
+    // One, although two completions are stored: the daily is recorded and pays nothing.
     expect(own.challenges).toBe(1);
-    expect(own.points).toBe(2 * LEADERBOARD_POINTS.discovery + LEADERBOARD_POINTS.challenge);
+    expect(own.discovery_points).toBe(5 * LEADERBOARD_POINTS.discovery);
+    expect(own.journal_points).toBe(LEADERBOARD_POINTS.journalEntry);
+    expect(own.challenge_points).toBe(LEADERBOARD_POINTS.challenge);
+    expect(own.points).toBe(
+      5 * LEADERBOARD_POINTS.discovery + LEADERBOARD_POINTS.journalEntry + LEADERBOARD_POINTS.challenge,
+    );
 
     // "Your points" on the page and the board's points are one metric: the client rule, run over
     // the same records, must equal the server's number.
     const state = emptyState();
-    state.discoveries = { [HERB_A]: at, [HERB_B]: at };
-    state.research = { 'collection:backyard': at, 'daily:e2e-leaderboard': at };
-    expect(scoreFromRecords(state, []).points).toBe(own.points);
+    state.discoveries = Object.fromEntries(BACKYARD_HERBS.map((id) => [id, at]));
+    state.research = { 'collection:backyard': at, [DAILY_ID]: at };
+    const journal = [{ herbId: HERB_A, notes: JOURNAL_NOTE, createdAt: at }];
+    expect(scoreFromRecords(state, journal).points).toBe(own.points);
 
     // Bob never joined, so he sees Alice, and Alice's row is not his.
     const bobsView = await standings(bobClient);
@@ -176,7 +232,7 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
       .from('discoveries')
       .insert({ user_id: alice.id, herb_id: HERB_A, discovered_at: at });
     expect(duplicate.error, 'one row per (user, species) by primary key').not.toBeNull();
-    expect(mine(await standings(aliceClient))!.discoveries).toBe(2);
+    expect(mine(await standings(aliceClient))!.discoveries).toBe(5);
   });
 
   it('publishes exactly the documented fields and nothing identifying', async () => {
@@ -185,7 +241,7 @@ describe.skipIf(!configured)('Field Board — live cross-account privacy and sec
     expect(Object.keys(row).sort()).toEqual(PUBLISHED);
 
     const text = JSON.stringify(view);
-    for (const secret of [alice.id, alice.email ?? 'no-email', ALICE_AVATAR, 'e2e-private-title']) {
+    for (const secret of [alice.id, alice.email ?? 'no-email', ALICE_AVATAR, 'e2e-private-title', JOURNAL_NOTE, SIGHTING_ID]) {
       expect(text, `the board must not carry ${secret}`).not.toContain(secret);
     }
   });
