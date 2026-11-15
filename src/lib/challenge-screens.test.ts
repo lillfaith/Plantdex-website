@@ -10,7 +10,7 @@ vi.mock('@/state/HerbdexProvider', () => ({
 }));
 
 import { ChallengeExperience } from '@/components/challenges/ChallengeExperience';
-import { QuestionView } from '@/components/challenges/QuestionViews';
+import { QuestionView, fillsHeight } from '@/components/challenges/QuestionViews';
 import { pointInBox, regionAt } from '@/lib/boss-images';
 import { buildChallenge } from '@/lib/mastery-challenges';
 
@@ -227,9 +227,9 @@ describe('tapping a photograph is accurate at every size', () => {
     expect(views).toMatch(/object-contain/);
     expect(views).not.toMatch(/Photo id=\{[^}]*\} fit="cover"/);
   });
-  it('gives every picture the same square thumbnail, a letter, and a visible keyboard focus', () => {
+  it('gives every picture the same portrait thumbnail, a letter, and a visible keyboard focus', () => {
     const views = read('src/components/challenges/QuestionViews.tsx');
-    expect(views).toContain('aspect-square');
+    expect(views).toContain('aspect-[3/4]');
     expect(views).toMatch(/grid-cols-3/);
     expect(views).toMatch(/focus-visible:ring-4/);
     expect(views).toMatch(/LETTERS\[index\]/);
@@ -356,5 +356,45 @@ describe('the full-screen shell (milestone 1)', () => {
   it('the hub (and so the bottom bar) is not part of the full-screen experience', () => {
     expect(runner).toMatch(/<ChallengeShell/);
     expect(shell).not.toMatch(/SiteNav|nav-bar/);
+  });
+});
+
+describe('the M2 correction pass: calmer, clearer, never an empty panel', () => {
+  const views = read('src/components/challenges/QuestionViews.tsx');
+  const runner = read('src/components/challenges/ChallengeRunner.tsx');
+  it('Picture Match draws the choices first and a larger view only once there is something to show', () => {
+    expect(views).toMatch(/Choose one picture/);
+    expect(views).toMatch(/Picture \{LETTERS\[shown\]\}, larger/);
+    expect(views).toMatch(/Tap a picture to see it larger/);
+    expect(views).not.toMatch(/border-dashed[^`]*Tap a picture below/); // the old empty dashed panel is gone
+    expect(views).toMatch(/Look at this photo/); // a reference photograph is named as one, with no letter
+  });
+  it('only a question whose photograph IS the question fills the screen; the rest are as tall as their content', () => {
+    const kinds = ['pick-picture', 'spot-feature', 'quick-pick'].map((kind) => [kind, fillsHeight(questionOf(kind))] as const);
+    expect(Object.fromEntries(kinds)).toEqual({ 'pick-picture': false, 'spot-feature': true, 'quick-pick': false });
+    expect(runner).toMatch(/fillsHeight\(question\) \? 'min-h-full' : ''/);
+    expect(views).not.toMatch(/Dandelion|taraxacum/i); // generic: no plant is named in a view
+  });
+  it('a tap message belongs to the selection it was made against, so it disappears when anything is picked', () => {
+    expect(views).toMatch(/note && note\.at === selected/);
+    expect(views).toMatch(/at: selected/);
+  });
+  it('every state has its own look: picked, right, not quite, and disabled are four different things', () => {
+    expect(views).toMatch(/picked: 'ring-4 ring-violet-200'/);
+    expect(views).toMatch(/right: 'ring-4 ring-gold-300/);
+    expect(views).toMatch(/wrong: 'ring-4 ring-pink-accent'/);
+    expect(views).toMatch(/dim: 'opacity-45'/);
+    expect(views).toMatch(/'Right answer'/);
+    expect(views).toMatch(/'Not this one'/);
+    expect(views).toMatch(/'Your pick'/);
+  });
+  it('draws the answers on calm flat tiles and the question without a decorative frame', () => {
+    expect(views).not.toMatch(/pixel-tile/);
+    expect(runner).not.toMatch(/ChallengeFrame/);
+    expect(views).toMatch(/const TILE = /);
+  });
+  it('keeps the photograph markers the reveal rule depends on', () => {
+    expect(views).toMatch(/challenge-pop/);
+    expect(views).toMatch(/shadow-\[0_0_22px_rgb\(255_210_110\/0\.55\)\]/);
   });
 });

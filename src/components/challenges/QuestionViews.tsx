@@ -45,11 +45,14 @@ export interface QuestionViewProps {
   reveal?: boolean;
 }
 
+/** A calm, flat tile for every answer, so the STATE ring is the loudest thing on it. */
+const TILE = 'rounded-lg border-2 border-violet-500 bg-plum-800';
+
 const RING = {
-  picked: 'ring-4 ring-violet-200 shadow-[0_0_18px_rgb(210_190_255/0.5)]',
+  picked: 'ring-4 ring-violet-200',
   right: 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.55)]',
-  wrong: 'ring-2 ring-violet-300 opacity-70',
-  dim: 'opacity-55',
+  wrong: 'ring-4 ring-pink-accent',
+  dim: 'opacity-45',
   focus: 'outline-none focus-visible:ring-4 focus-visible:ring-gold-300',
 } as const;
 
@@ -69,12 +72,12 @@ function markFor(
 }
 
 function ringOf(mark: Mark): string {
-  return mark === 'picked' ? RING.picked : mark === 'right' ? RING.right : mark === 'chosen-wrong' ? RING.wrong : mark === 'dim' ? RING.dim : 'hover:brightness-110';
+  return mark === 'picked' ? RING.picked : mark === 'right' ? RING.right : mark === 'chosen-wrong' ? RING.wrong : mark === 'dim' ? RING.dim : 'hover:border-violet-300';
 }
 
 /** The words on a tile for its state. Text, so colour is never the only signal. */
 function chipOf(mark: Mark): string | null {
-  return mark === 'right' ? 'Right answer' : mark === 'chosen-wrong' || mark === 'picked' ? 'Your pick' : null;
+  return mark === 'right' ? 'Right answer' : mark === 'chosen-wrong' ? 'Not this one' : mark === 'picked' ? 'Your pick' : null;
 }
 
 function Tick() {
@@ -117,21 +120,40 @@ function ratioOf(id: string): number {
   return image?.width && image.height ? image.width / image.height : 0.8;
 }
 
-/** A photograph shown in the stage: used for a question's own picture and for the Picture Match preview. */
-function Preview({ id, note }: { id: string; note?: string }) {
+/**
+ * A photograph shown beside other things: as tall as asked and no taller, so a short question is
+ * not stretched. `size` picks how much of the screen it may take.
+ */
+function Preview({ id, size = 'large' }: { id: string; size?: 'large' | 'small' }) {
   return (
-    <PhotoStage ratio={ratioOf(id)}>
+    <PhotoStage ratio={ratioOf(id)} height={size === 'large' ? 'clamp(15rem, 42dvh, 26rem)' : 'clamp(15rem, 34dvh, 20rem)'}>
       <Photo id={id} />
-      {note ? (
-        <span className="absolute top-2 left-2 rounded-full bg-plum-950/90 px-3 py-1 text-sm font-extrabold text-violet-50">{note}</span>
-      ) : null}
     </PhotoStage>
   );
 }
 
+/** A small plain heading that says what the thing below it is. */
+function Heading({ children }: { children: React.ReactNode }) {
+  return <h3 className="mb-1.5 text-base font-bold text-violet-200">{children}</h3>;
+}
+
+/**
+ * Whether a question's photograph IS the question, so its screen should use all the room it has.
+ * Everything else is only as tall as its content: a short multiple-choice question stays short.
+ */
+export function fillsHeight(question: BuiltQuestion): boolean {
+  return question.kind === 'spot-feature';
+}
+
 const LETTERS = ['A', 'B', 'C', 'D'] as const;
 
-/** PICTURE MATCH: one large preview, then three equal labelled thumbnails. */
+/**
+ * PICTURE MATCH. The three pictures to choose from come first, labelled A, B and C under a plain
+ * heading. Picking one shows it larger below them, labelled with its letter, so the large photograph
+ * is clearly a closer look at a choice and never a fourth choice. A reference photograph that the
+ * question itself shows ("this flower, what does it become?") sits above the choices under its own
+ * heading and has no letter. Nothing is drawn until there is something to show: no empty panel.
+ */
 function PictureChoices(props: QuestionViewProps) {
   const { question, chosen, onAnswer, selected = null, onSelect } = props;
   const pick = onSelect ?? onAnswer;
@@ -139,48 +161,56 @@ function PictureChoices(props: QuestionViewProps) {
   const shown = chosen ?? selected;
   const previewId = shown !== null ? question.options[shown] : null;
   return (
-    <div className="mt-3 flex flex-1 flex-col gap-3">
-      {previewId ? (
-        <Preview id={previewId} />
-      ) : question.media ? (
-        <Preview id={question.media} note="Look at this one" />
-      ) : (
-        <div className="flex min-h-[15rem] flex-1 items-center justify-center rounded-md border-2 border-dashed border-violet-500 px-6 text-center text-lg font-bold text-violet-200">
-          Tap a picture below to look closer
-        </div>
-      )}
-      <ul className="grid grid-cols-3 gap-2.5" aria-label="Pictures to choose from">
-        {question.options.map((id, index) => {
-          const mark = markFor(index, props);
-          const chip = chipOf(mark);
-          const alt = BOSS_IMAGES[id]?.alt ?? id;
-          return (
-            <li key={id}>
-              <button
-                type="button"
-                disabled={answered}
-                aria-pressed={selected === index}
-                onClick={() => pick(index)}
-                aria-label={`Picture ${LETTERS[index]}: ${alt}${chip ? `. ${chip}` : ''}`}
-                className={`pixel-tile relative block aspect-square w-full touch-manipulation overflow-hidden rounded-md p-[3px] ${RING.focus} ${ringOf(mark)}`}
-              >
-                <span className="block h-full w-full overflow-hidden rounded-[3px] bg-plum-950">
-                  <Photo id={id} />
-                </span>
-                <span aria-hidden="true" className="absolute top-1.5 left-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-plum-950/90 text-base font-extrabold text-violet-50">
-                  {LETTERS[index]}
-                </span>
-                {mark === 'right' ? <span className="absolute top-1.5 right-1.5"><Tick /></span> : null}
-                {chip ? (
-                  <span aria-hidden="true" className="absolute right-1 bottom-1 left-1 flex justify-center">
-                    <Chip text={chip} right={mark === 'right'} />
+    <div className="mt-3 flex flex-col gap-4">
+      {question.media ? (
+        <section aria-label="Reference photograph">
+          <Heading>Look at this photo</Heading>
+          <Preview id={question.media} size="small" />
+        </section>
+      ) : null}
+      <section aria-label="Pictures to choose from">
+        <Heading>Choose one picture</Heading>
+        <ul className="grid grid-cols-3 gap-2.5">
+          {question.options.map((id, index) => {
+            const mark = markFor(index, props);
+            const chip = chipOf(mark);
+            const alt = BOSS_IMAGES[id]?.alt ?? id;
+            return (
+              <li key={id}>
+                <button
+                  type="button"
+                  disabled={answered}
+                  aria-pressed={selected === index}
+                  onClick={() => pick(index)}
+                  aria-label={`Picture ${LETTERS[index]}: ${alt}${chip ? `. ${chip}` : ''}`}
+                  className={`relative block aspect-[3/4] w-full touch-manipulation overflow-hidden p-0.5 ${TILE} ${RING.focus} ${ringOf(mark)}`}
+                >
+                  <span className="block h-full w-full overflow-hidden rounded-md bg-plum-950">
+                    <Photo id={id} />
                   </span>
-                ) : null}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+                  <span aria-hidden="true" className="absolute top-1.5 left-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-plum-950/90 text-base font-extrabold text-violet-50">
+                    {LETTERS[index]}
+                  </span>
+                  {mark === 'right' ? <span className="absolute top-1.5 right-1.5"><Tick /></span> : null}
+                  {chip ? (
+                    <span aria-hidden="true" className="absolute right-1 bottom-1 left-1 flex justify-center">
+                      <Chip text={chip} right={mark === 'right'} />
+                    </span>
+                  ) : null}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+      {previewId && shown !== null ? (
+        <section aria-label="Larger view">
+          <Heading>Picture {LETTERS[shown]}, larger</Heading>
+          <Preview id={previewId} />
+        </section>
+      ) : (
+        <p className="text-center text-base text-violet-200">Tap a picture to see it larger.</p>
+      )}
     </div>
   );
 }
@@ -190,12 +220,12 @@ function regionLabel(imageId: string, region: string): string {
   return REGION_LABEL_OVERRIDES[imageId]?.[region] ?? REGION_LABELS[region] ?? region;
 }
 
-type TapNote = 'ambiguous' | 'none' | null;
+type TapNote = { kind: 'ambiguous' | 'none'; at: number | null } | null;
 
-const NOTE_TEXT: Record<Exclude<TapNote, null>, string> = {
-  ambiguous: 'That could be more than one part. Tap closer to one, or use the list.',
-  none: 'Nothing is selected there. Tap a part of the plant, or use the list.',
-};
+const NOTE_TEXT = {
+  ambiguous: 'Tap closer to one part, or use the list.',
+  none: 'Tap a part of the plant, or use the list.',
+} as const;
 
 function SpotFeature(props: QuestionViewProps) {
   const { question, chosen, onAnswer, selected = null, onSelect, reveal = true } = props;
@@ -224,7 +254,7 @@ function SpotFeature(props: QuestionViewProps) {
         return;
       }
     }
-    setNote(outcome.kind === 'ambiguous' ? 'ambiguous' : 'none');
+    setNote({ kind: outcome.kind === 'ambiguous' ? 'ambiguous' : 'none', at: selected });
   };
 
   if (!image?.src || !image.width || !image.height) return null;
@@ -234,7 +264,7 @@ function SpotFeature(props: QuestionViewProps) {
       <span
         key={`${key}-${i}`}
         aria-hidden="true"
-        className={`pointer-events-none absolute rounded-md border-[3px] ${className}`}
+        className={`pointer-events-none absolute rounded-md ${className.includes('border-gold') ? 'border-[3px]' : ''} ${className}`}
         style={{ left: `${r.x}%`, top: `${r.y}%`, width: `${r.w}%`, height: `${r.h}%` }}
       />
     ));
@@ -245,16 +275,17 @@ function SpotFeature(props: QuestionViewProps) {
     <div className="mt-3 flex flex-1 flex-col gap-2">
       <PhotoStage ratio={image.width / image.height} boxRef={box} onBoxClick={tap} label={image.alt}>
         <Photo id={imageId} />
-        {!answered && pickedId ? zones(pickedId, 'border-violet-200 bg-violet-200/20', 'picked') : null}
-        {answered && !reveal && chosenId ? zones(chosenId, 'border-violet-200 bg-violet-200/20', 'locked') : null}
-        {answered && reveal ? zones(rightId, 'challenge-pop border-gold-300 bg-gold-300/20', 'right') : null}
+        {!answered && pickedId ? zones(pickedId, 'border-2 border-violet-200', 'picked') : null}
+        {answered && !reveal && chosenId ? zones(chosenId, 'border-2 border-violet-200', 'locked') : null}
+        {answered && reveal ? zones(rightId, 'challenge-pop border-gold-300', 'right') : null}
         {answered && reveal && chosenId && chosenId !== rightId
-          ? zones(chosenId, 'border-dashed border-violet-200 bg-violet-200/10', 'wrong')
+          ? zones(chosenId, 'border-2 border-dashed border-pink-accent', 'wrong')
           : null}
       </PhotoStage>
 
+      {/* A message belongs to the selection it was made against: pick anything and it is gone. */}
       <p aria-live="polite" className="min-h-6 text-center text-base text-violet-200">
-        {note ? NOTE_TEXT[note] : null}
+        {note && note.at === selected ? NOTE_TEXT[note.kind] : null}
       </p>
 
       {/* THE LIST ALTERNATIVE: always visible, a real disclosure, a large target. Every part is a
@@ -262,7 +293,7 @@ function SpotFeature(props: QuestionViewProps) {
           as complete a way to answer. */}
       <details ref={list} className="group">
         <summary
-          className={`pixel-tile flex min-h-12 cursor-pointer list-none items-center justify-center gap-2 rounded-lg px-4 text-base font-extrabold text-violet-50 select-none ${RING.focus} ${answered ? 'pointer-events-none opacity-60' : ''}`}
+          className={`${TILE} flex min-h-12 cursor-pointer list-none items-center justify-center gap-2 px-4 text-base font-extrabold text-violet-50 select-none ${RING.focus} ${answered ? 'pointer-events-none opacity-60' : ''}`}
         >
           Use a list
           <span aria-hidden="true" className="text-gold-300 group-open:hidden">+</span>
@@ -282,7 +313,7 @@ function SpotFeature(props: QuestionViewProps) {
                     pick(index);
                     if (list.current) list.current.open = false;
                   }}
-                  className={`pixel-tile flex min-h-12 w-full touch-manipulation items-center justify-center rounded-md px-3 py-2 text-base font-bold text-violet-50 ${RING.focus} ${ringOf(mark)}`}
+                  className={`${TILE} flex min-h-12 w-full touch-manipulation items-center justify-center px-3 py-2 text-base font-bold text-violet-50 ${RING.focus} ${ringOf(mark)}`}
                 >
                   {regionLabel(imageId, id)}
                 </button>
@@ -314,9 +345,9 @@ function HabitatChoices(props: QuestionViewProps & { scenes: NonNullable<ReturnT
               aria-pressed={selected === index}
               onClick={() => pick(index)}
               aria-label={`${text}${chip ? `. ${chip}` : ''}`}
-              className={`pixel-tile relative block h-28 w-full touch-manipulation overflow-hidden rounded-lg p-[3px] text-left ${RING.focus} ${ringOf(mark)}`}
+              className={`relative block h-28 w-full touch-manipulation overflow-hidden p-0.5 text-left ${TILE} ${RING.focus} ${ringOf(mark)}`}
             >
-              <HabitatScene ground={scene.ground} light={scene.light} className="absolute inset-[3px] h-[calc(100%-6px)] w-[calc(100%-6px)] rounded-[3px]" />
+              <HabitatScene ground={scene.ground} light={scene.light} className="absolute inset-0.5 h-[calc(100%-4px)] w-[calc(100%-4px)] rounded-md" />
               <span className="absolute bottom-2 left-2.5 max-w-[78%] rounded-md bg-plum-950/90 px-2.5 py-1 text-base leading-tight font-extrabold text-violet-50">
                 {text}
               </span>
@@ -341,8 +372,8 @@ function QuickPick(props: QuestionViewProps) {
     return <HabitatChoices {...props} scenes={scenes} />;
   }
   return (
-    <div className="mt-3 flex flex-1 flex-col gap-3">
-      {question.media ? <Preview id={question.media} /> : null}
+    <div className="mt-3 flex flex-col gap-3">
+      {question.media ? <Preview id={question.media} size="small" /> : null}
       <ul className="grid gap-2.5" aria-label="Answers">
         {question.options.map((text, index) => {
           const mark = markFor(index, props);
@@ -354,7 +385,7 @@ function QuickPick(props: QuestionViewProps) {
                 disabled={answered}
                 aria-pressed={selected === index}
                 onClick={() => pick(index)}
-                className={`pixel-tile flex min-h-16 w-full touch-manipulation items-center gap-3 rounded-lg px-3 py-2 text-left text-lg leading-tight font-extrabold text-violet-50 ${RING.focus} ${ringOf(mark)}`}
+                className={`${TILE} flex min-h-16 w-full touch-manipulation items-center gap-3 px-3 py-2 text-left text-lg leading-tight font-extrabold text-violet-50 ${RING.focus} ${ringOf(mark)}`}
               >
                 {icon ? (
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-plum-950/70">

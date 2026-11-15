@@ -7,10 +7,9 @@ import { submitChallenge, type SubmitResult } from '@/lib/challenge-client';
 import { START, actionFor, step, type FlowAction, type FlowEvent, type FlowState } from '@/lib/challenge-flow';
 import { buildChallenge, scoreSubmission, type BuiltQuestion } from '@/lib/mastery-challenges';
 import { ACTIVITY_LABELS } from './activity-labels';
-import { ChallengeFrame } from './ChallengeFrame';
 import { ChallengeShell } from './ChallengeShell';
 import { FlowerProgress, type FlowerState } from './FlowerProgress';
-import { QuestionView } from './QuestionViews';
+import { QuestionView, fillsHeight } from './QuestionViews';
 import { Sparkles } from './Sparkles';
 
 /**
@@ -260,7 +259,7 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, on
       action={{ label: ACTION_LABEL[act], onClick: onAction, disabled: act === 'choose' || act === 'wait' }}
       onExit={onExit}
     >
-      <ChallengeFrame className="flex min-h-full flex-col">
+      <div className={`flex flex-col ${fillsHeight(question) ? 'min-h-full' : ''}`}>
         <h2 className="px-1 text-center text-[1.375rem] leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
         <QuestionView
           key={flow.index}
@@ -271,7 +270,7 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, on
           onAnswer={(index) => apply({ type: 'select', index })}
           reveal={!hidden}
         />
-      </ChallengeFrame>
+      </div>
     </ChallengeShell>
   );
 }

@@ -25,7 +25,7 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode, type Ref 
  * photograph and a reviewed region lands in the same place at every screen size. The frame around
  * it is a separate element.
  */
-const FRAME = 6; // the 3px pixel-tile padding on each side, in px
+const FRAME = 4; // the 2px border on each side, in px
 
 /** The width of the framed picture: the biggest of this ratio that fits the stage. */
 export function framedWidth(stageWidth: number, stageHeight: number, ratio: number): number {
@@ -54,6 +54,7 @@ export function PhotoStage({
   onBoxClick,
   className = '',
   label,
+  height,
 }: {
   /** The photograph's width divided by its height. */
   ratio: number;
@@ -63,20 +64,27 @@ export function PhotoStage({
   onBoxClick?: (event: MouseEvent<HTMLDivElement>) => void;
   className?: string;
   label?: string;
+  /**
+   * A fixed stage height (any CSS length). Without it the stage grows to fill the room its parent
+   * has left, which suits a question whose photograph IS the question. With it the stage is only
+   * as tall as asked, which suits a photograph shown beside other things, so a short question is
+   * not stretched to fill the screen.
+   */
+  height?: string;
 }) {
   const stage = useRef<HTMLDivElement | null>(null);
   const size = useSize(stage);
   const width = size ? framedWidth(size.w, size.h, ratio) : null;
   return (
-    <div ref={stage} className={`relative min-h-[15rem] flex-1 ${className}`}>
+    <div ref={stage} className={`relative min-h-[15rem] ${height ? '' : 'flex-1'} ${className}`} style={height ? { height } : undefined}>
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="pixel-tile rounded-md p-[3px]" style={{ width: width === null ? '100%' : `${Math.floor(width)}px`, maxWidth: '100%' }}>
+        <div className="rounded-md border-2 border-violet-400 bg-plum-950" style={{ width: width === null ? '100%' : `${Math.floor(width)}px`, maxWidth: '100%' }}>
           <div
             ref={boxRef}
             onClick={onBoxClick}
             role={label ? 'group' : undefined}
             aria-label={label}
-            className={`relative overflow-hidden rounded-[3px] bg-plum-950 ${onBoxClick ? 'cursor-pointer touch-manipulation' : ''}`}
+            className={`relative overflow-hidden bg-plum-950 ${onBoxClick ? 'cursor-pointer touch-manipulation' : ''}`}
             style={{ aspectRatio: ratio.toFixed(4) }}
           >
             {children}
