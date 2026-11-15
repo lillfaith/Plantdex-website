@@ -25,6 +25,12 @@ export interface QuestionViewProps {
   /** The option index already chosen, or null while the question is open. */
   chosen: number | null;
   onAnswer: (index: number) => void;
+  /**
+   * Whether answering shows which option was right. True for ordinary stages, which explain each
+   * answer as it is given. False in the Boss Trial, which marks only the player's own choice and
+   * reveals nothing until the whole Trial is submitted.
+   */
+  reveal?: boolean;
 }
 
 /** The tallest the tap photograph may be, as a share of the viewport's height. */
@@ -54,7 +60,7 @@ function Media({ id }: { id: string }) {
   );
 }
 
-function PictureChoices({ question, chosen, onAnswer }: QuestionViewProps) {
+function PictureChoices({ question, chosen, onAnswer, reveal = true }: QuestionViewProps) {
   const answered = chosen !== null;
   const three = question.options.length === 3;
   return (
@@ -65,11 +71,15 @@ function PictureChoices({ question, chosen, onAnswer }: QuestionViewProps) {
           const isRight = index === question.correctIndex;
           const isChosen = chosen === index;
           const state = answered
-            ? isRight
-              ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.55)]'
-              : isChosen
-                ? 'ring-2 ring-violet-300 opacity-70'
+            ? !reveal
+              ? isChosen
+                ? 'ring-4 ring-violet-200'
                 : 'opacity-55'
+              : isRight
+                ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.55)]'
+                : isChosen
+                  ? 'ring-2 ring-violet-300 opacity-70'
+                  : 'opacity-55'
             : 'hover:brightness-110';
           return (
             <li key={id} className={three && index === 2 ? 'col-span-2 mx-auto w-[calc(50%-0.3rem)]' : ''}>
@@ -81,7 +91,7 @@ function PictureChoices({ question, chosen, onAnswer }: QuestionViewProps) {
                 className={`pixel-tile relative block aspect-[4/5] w-full touch-manipulation overflow-hidden rounded-md p-[3px] outline-none transition-transform active:scale-95 focus-visible:ring-4 focus-visible:ring-gold-300 ${state}`}
               >
                 <Photo id={id} className="rounded-[3px]" />
-                {answered && isRight ? (
+                {answered && reveal && isRight ? (
                   <span
                     aria-hidden="true"
                     className="challenge-pop absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-gold-400 text-plum-950"
@@ -98,7 +108,7 @@ function PictureChoices({ question, chosen, onAnswer }: QuestionViewProps) {
   );
 }
 
-function SpotFeature({ question, chosen, onAnswer }: QuestionViewProps) {
+function SpotFeature({ question, chosen, onAnswer, reveal = true }: QuestionViewProps) {
   const box = useRef<HTMLDivElement | null>(null);
   const imageId = question.media ?? '';
   const image = BOSS_IMAGES[imageId];
@@ -134,7 +144,7 @@ function SpotFeature({ question, chosen, onAnswer }: QuestionViewProps) {
           style={{ aspectRatio: `${image.width} / ${image.height}` }}
         >
           <Photo id={imageId} />
-          {answered
+          {answered && reveal
             ? (image.regions?.[rightId] ?? []).map((r, i) => (
                 <span
                   key={i}
@@ -166,7 +176,7 @@ function SpotFeature({ question, chosen, onAnswer }: QuestionViewProps) {
   );
 }
 
-function QuickPick({ question, chosen, onAnswer }: QuestionViewProps) {
+function QuickPick({ question, chosen, onAnswer, reveal = true }: QuestionViewProps) {
   const answered = chosen !== null;
   return (
     <>
@@ -176,11 +186,15 @@ function QuickPick({ question, chosen, onAnswer }: QuestionViewProps) {
         const isRight = index === question.correctIndex;
         const isChosen = chosen === index;
         const state = answered
-          ? isRight
-            ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.45)]'
-            : isChosen
-              ? 'ring-2 ring-violet-300 opacity-80'
+          ? !reveal
+            ? isChosen
+              ? 'ring-4 ring-violet-200'
               : 'opacity-70'
+            : isRight
+              ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.45)]'
+              : isChosen
+                ? 'ring-2 ring-violet-300 opacity-80'
+                : 'opacity-70'
           : '';
         return (
           <li key={text}>
@@ -191,7 +205,7 @@ function QuickPick({ question, chosen, onAnswer }: QuestionViewProps) {
               className={`pixel-tile flex min-h-14 w-full touch-manipulation items-center justify-between rounded-lg px-4 py-3 text-left text-base font-bold text-violet-50 outline-none transition-transform active:scale-[0.98] focus-visible:ring-4 focus-visible:ring-gold-300 ${state}`}
             >
               {text}
-              {answered && isRight ? (
+              {answered && reveal && isRight ? (
                 <span aria-hidden="true" className="challenge-pop text-gold-300">
                   <Art name="check" className="h-6 w-6" />
                 </span>

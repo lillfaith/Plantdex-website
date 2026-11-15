@@ -3,7 +3,9 @@ import { evaluateSubmission } from '../_shared/herbdex/mastery-challenges.ts';
 import {
   CHALLENGE_ACTIVITIES,
   CHALLENGE_DAILY_LIMIT,
+  CHALLENGE_TRIAL_DAILY_LIMIT,
   challengeBucket,
+  trialBucket,
   type ActivityId,
 } from '../_shared/herbdex/boss-form.ts';
 
@@ -91,6 +93,20 @@ Deno.serve(async (req) => {
   // ordinary refusal ('not-in-pilot'), exactly as before.
   if (herbId !== '' && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(herbId)) {
     return json({ error: 'Unknown plant' }, 400);
+  }
+
+  // THE BOSS TRIAL'S OWN, SMALLER ALLOWANCE, claimed here because only now is the stage known. It is
+  // in addition to the general one above, counted in the same database counter, per user per UTC
+  // day. Every Trial submission spends one unit whether or not it could pass, so scripting the
+  // hardest stage is bounded no matter what the answers say.
+  if (body.activity === 'boss-trial') {
+    const { data: trialClaimed, error: trialError } = await service.rpc('claim_scan', {
+      p_bucket: trialBucket(userId),
+      p_day: new Date().toISOString().slice(0, 10),
+      p_limit: CHALLENGE_TRIAL_DAILY_LIMIT,
+    });
+    if (trialError) return json({ error: 'Could not check the daily limit' }, 500);
+    if (typeof trialClaimed !== 'number') return json({ error: 'Daily Boss Trial limit reached' }, 429);
   }
 
   // Standing, from the database, under the caller's own session.

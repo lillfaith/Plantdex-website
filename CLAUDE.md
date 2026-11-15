@@ -1599,10 +1599,19 @@ backend and no order state anywhere in this repository.
 
 ## Boss Form challenges (Dandelion pilot, OFF)
 
-Four question formats (pick the picture, spot the feature, lookalike showdown, quick pick), three
-short activities and a ten-question Boss Trial. Dev branch only; nothing deployed, flag off.
-Plan and reasoning: `docs/boss-form-revised-questions-and-ux.md`, `docs/boss-form-implementation-plan-v2.md`.
+Four question formats (pick the picture, spot the feature, lookalike showdown, quick pick) and four
+stages: Part Spotter, Compare, Habitat and a final Boss Trial. **12 questions are played from a pool
+of 16 per plant** (3/4, 2/3, 2/3, 5/6). Dev branch only; nothing deployed, flag off. Plan and
+reasoning: `docs/boss-form-revised-questions-and-ux.md`, `docs/boss-form-implementation-plan-v2.md`;
+adding a plant: `docs/boss-form-template.md`.
 
+- **The engine is generic and a plant is one content file.** `boss-form.ts` holds `STAGE_RULES`
+  (played / pool / need per stage, owner-approved 2026-11-15) and the daily limits;
+  `mastery-challenges.ts` builds, scores and decides; `challenge-bank.ts` is the species registry
+  and `speciesProblems()` check. A plant's questions live in `boss-species/<plant>.ts` as `active`
+  (the 16 served) and `archived` (kept, never served). `BOSS_PILOT` in `boss-form.ts` is a plain list
+  on purpose: that module ships in every build and must never import a question bank; a test keeps it
+  equal to the registry. `boss-form-engine.test.ts` fails if the engine names a plant.
 - **Every answer is an integer index, whatever the format.** A picture is an image id, a tapped
   part is a region id (the screen turns a tap into a region; the server never sees coordinates),
   a quick pick is short text. That is why the four formats share one server scorer.
@@ -1611,11 +1620,24 @@ Plan and reasoning: `docs/boss-form-revised-questions-and-ux.md`, `docs/boss-for
   a branched-stem photograph and a reviewer's ruling on the wording. The old note said "branched
   LEAFY flowering stems", and the sources describe leafless stems with small scale-like bracts and
   branching that is usual, not universal. "Hollow" is never a difference.
-- **Compare passes at 2 of 3 and has no second chance; Part Spotter and Habitat get one; the
-  Trial gets none.** `RETRY_ACTIVITIES` is the one rule, read by the builder, the scorer and the
-  screen. A retry is a DIFFERENT question on the same fact, because the feedback has just
-  revealed the first answer. Pure guessing passes Compare 50% of the time; the Trial, at under
-  0.1%, is the real gate. `challenge-odds.ts` computes this exactly.
+- **A retry replays the whole stage; there is no per-question second chance.** Attempt `k` leaves
+  out pool item `k mod pool` (`selectForAttempt`), so a retry never repeats the set before it and
+  never needs more questions than the pool holds. Pass marks: 2/3 Part Spotter, 2/2 Compare, 2/2
+  Habitat, 4/5 Boss Trial. A pass is recorded once and kept: failing a later stage, or replaying
+  one, never takes anything back (insert-only, `on conflict do nothing`, and the function never
+  deletes). The Boss Trial shows no answers or explanations until the whole Trial is submitted
+  (`revealsAnswersAtEndOnly`); other stages explain each answer as it is given.
+- **Guessing odds are calculated and tested three ways** (dynamic programme, brute-force
+  enumeration, simulation through the real builder and scorer): about 23.1% Part Spotter, 11.1%
+  Compare, 11.1% Habitat and 3.8% Boss Trial per try. Retries let a blind clicker eventually pass,
+  so the SERVER limits submissions: 20 a day per player and 3 Boss Trials a day (`claim_scan`
+  buckets `challenge:` and `challenge-trial:`), which puts a blind bot's chance of clearing all four
+  stages in a day near 5% (60 a day was about 74%). A rate limit is not the reward control: rewards
+  are safe because a stage records once by primary key. `challenge-odds.ts` holds the maths.
+- **Archived is not rejected, and the active sixteen are not approved.** Archiving records which
+  sixteen suit the smaller game (accuracy, clarity, teaching value, picture quality, variety of
+  skill). Every review gate, `requires` and `CHALLENGE_REVIEWS` rule applies unchanged, and an
+  archived id cannot be served even if a review entry names it.
 - **The draft bank must not ship.** `next.config.ts` defaults `NEXT_PUBLIC_BOSS_FORMS` to `'off'`
   so the bundler drops the dynamic import in `ChallengeGate`; a test searches a built `out/` for
   the draft prompts. Hiding them behind a screen would still publish them in a JS file.

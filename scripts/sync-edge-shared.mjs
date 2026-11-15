@@ -43,6 +43,9 @@ export const PURE_MODULES = [
   // answer key to score against. Draft items are unservable until reviewed.
   'boss-form.ts',
   'challenge-bank.ts',
+  // A plant's Boss Form questions: content only, but the server must hold the answer key to score
+  // against, so every registered species travels with the engine.
+  'boss-species/taraxacum-officinale.ts',
   'mastery-challenges.ts',
   // Added with the Field Cards. `applyDiscovery` resolves an id against the CATALOGUE — a
   // Field Card is a species Plantdex knows, and finding one outdoors is a real discovery —
@@ -132,6 +135,7 @@ export function syncEdgeShared(root) {
 
   for (const name of PURE_MODULES) {
     const source = readFileSync(join(srcLib, name), 'utf8');
+    mkdirSync(dirname(join(destDir, name)), { recursive: true });
     writeFileSync(join(destDir, name), rewriteForDeno(name, source));
   }
 

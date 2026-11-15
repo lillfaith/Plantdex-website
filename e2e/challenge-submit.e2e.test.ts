@@ -7,7 +7,7 @@ import { addRemoteSighting, removeRemoteSighting } from '@/lib/remote-sightings'
 import { applyDiscovery, applyLearned } from '@/lib/herbdex-reducer';
 import { buildWorld, STANDING_TASKS } from '@/lib/research';
 import { evaluateSubmission } from '@/lib/mastery-challenges';
-import { CHALLENGE_DAILY_LIMIT } from '@/lib/boss-form';
+import { CHALLENGE_DAILY_LIMIT, CHALLENGE_TRIAL_DAILY_LIMIT } from '@/lib/boss-form';
 
 /**
  * THE DEPLOYED `challenge-submit`, ATTACKED OVER HTTP. Test project only (`npm run verify:supabase`).
@@ -272,7 +272,7 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
     });
 
     it('the Boss Trial is refused without its prerequisites', async () => {
-      const r = await call(aliceToken, { herbId: HERB, activity: 'boss-trial', attempt: 1, answers: Array(10).fill(0) });
+      const r = await call(aliceToken, { herbId: HERB, activity: 'boss-trial', attempt: 1, answers: Array(5).fill(0) });
       expect(r.json).toMatchObject({ ok: false, reason: 'prerequisites-missing' });
     });
 
@@ -314,9 +314,22 @@ describe.skipIf(!configured)('challenge-submit (deployed, TEST) — refusals and
       expect(rows.bossForms).toEqual([]);
     }, 60_000);
 
+    it('the Boss Trial has its own smaller allowance, enforced by the function', async () => {
+      // CHALLENGE_TRIAL_DAILY_LIMIT Trial submissions per user per UTC day, on top of the general
+      // allowance. Bob sends one more than that and the last must be refused with 429. He is used so
+      // Alice's counters are not disturbed.
+      const replies: { status: number; text: string }[] = [];
+      for (let i = 0; i <= CHALLENGE_TRIAL_DAILY_LIMIT; i += 1) {
+        replies.push(await call(bobToken, { herbId: HERB, activity: 'boss-trial', attempt: i, answers: Array(5).fill(0) }));
+      }
+      expect(replies.slice(0, CHALLENGE_TRIAL_DAILY_LIMIT).every((r) => r.status !== 429)).toBe(true);
+      expect(replies[CHALLENGE_TRIAL_DAILY_LIMIT]!.status).toBe(429);
+      expect(replies[CHALLENGE_TRIAL_DAILY_LIMIT]!.text).toMatch(/Boss Trial limit/);
+    }, 60_000);
+
     it('every request spends the daily allowance, so scripting is bounded', async () => {
-      // 60 per day per user. Alice has spent roughly half in this run; Bob is used to find the wall
-      // without disturbing Alice: he sends until refused, which must happen at or before the limit.
+      // CHALLENGE_DAILY_LIMIT per day per user. Bob finds the wall without disturbing Alice: he sends
+      // until refused, which must happen at or before the limit.
       let refusedAt = 0;
       const body = { herbId: HERB, activity: 'part-spotter', attempt: 1, answers: [0, 0, 0, 0] };
       for (let i = 1; i <= CHALLENGE_DAILY_LIMIT + 3; i += 10) {

@@ -21,10 +21,8 @@ const DANDELION = 'taraxacum-officinale';
 function questionOf(kind: string) {
   for (let attempt = 0; attempt < 30; attempt += 1) {
     for (const activity of ['part-spotter', 'habitat-season'] as const) {
-      const slots = buildChallenge(DANDELION, activity, attempt, { includeUnreviewed: true })!;
-      for (const slot of slots) {
-        for (const q of [slot.primary, slot.replacement]) if (q?.kind === kind) return q;
-      }
+      const questions = buildChallenge(DANDELION, activity, attempt, { includeUnreviewed: true })!;
+      for (const q of questions) if (q.kind === kind) return q;
     }
   }
   throw new Error(`no ${kind} question in the preview pool`);
@@ -57,6 +55,36 @@ describe('the four question formats render', () => {
     const html = render('pick-picture', 0);
     expect(html).toContain('disabled');
     expect(html).toContain('ring-gold-300');
+  });
+});
+
+describe('the Boss Trial reveals nothing until it is submitted', () => {
+  const render = (kind: string, reveal: boolean) =>
+    renderToStaticMarkup(
+      createElement(QuestionView, { question: questionOf(kind), chosen: 0, onAnswer: () => undefined, reveal }),
+    );
+  it('with reveal off, an answered question marks only the player’s choice', () => {
+    for (const kind of ['pick-picture', 'spot-feature', 'quick-pick']) {
+      // The right answer is marked with a glow and a drawn tick, or a gold outline on the tapped photograph.
+      const marker = /shadow-\[0_0_22px|challenge-pop/;
+      expect(render(kind, false), kind).not.toMatch(marker);
+      expect(render(kind, true), kind).toMatch(marker);
+    }
+  });
+  it('a quick pick can carry its own photograph (tr.flowerbare)', () => {
+    let found: ReturnType<typeof buildChallenge> extends (infer Q)[] | null ? Q | null : never = null;
+    for (let attempt = 0; attempt < 6 && !found; attempt += 1) {
+      found = buildChallenge(DANDELION, 'boss-trial', attempt, { includeUnreviewed: true })!.find((q) => q.id === 'tr.flowerbare') ?? null;
+    }
+    expect(found?.kind).toBe('quick-pick');
+    const html = renderToStaticMarkup(createElement(QuestionView, { question: found!, chosen: null, onAnswer: () => undefined }));
+    expect(html).toContain('<img');
+  });
+  it('the runner offers no second chance and reveals at the end only for the Trial', () => {
+    const runner = read('src/components/challenges/ChallengeRunner.tsx');
+    expect(runner).toMatch(/reveal=\{!hidden\}/);
+    expect(runner).toMatch(/Submit the Trial/);
+    expect(runner).toMatch(/Your answers and explanations/);
   });
 });
 
@@ -102,8 +130,9 @@ describe('the screens keep the rules', () => {
   it('has no timer, no countdown and no randomness', () => {
     expect(all).not.toMatch(/setTimeout|setInterval|requestAnimationFrame|Math\.random|Date\.now/);
   });
-  it('asks the rules module whether a retry exists, and decides no scoring itself', () => {
-    expect(runner).toMatch(/hasRetry\(activity\)/);
+  it('asks the rules module when answers are revealed, offers no per-question second chance, and decides no scoring itself', () => {
+    expect(runner).toMatch(/revealsAnswersAtEndOnly\(activity\)/);
+    expect(runner).not.toMatch(/replacement|second chance|hasRetry/i);
     expect(runner).toMatch(/scoreSubmission\(/);
     expect(all).not.toMatch(/PASS_MARKS|progression|herbdex-reducer|applyDiscovery|xpFor/);
   });

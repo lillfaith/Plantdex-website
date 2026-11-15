@@ -12,8 +12,13 @@
  * surface may say it is. `CHALLENGE_DISCLAIMER` is the one sentence every result carries.
  */
 
-/** The sole pilot species. Anything not listed here cannot be submitted for. */
-export const BOSS_PILOT = ['taraxacum-officinale'] as const;
+/**
+ * The plants that have a Boss Form. A plain list on purpose: this module is imported by code that
+ * ships in every build (the Garden, the challenge page's route list), and it must never pull a
+ * question bank into one. `challenge-bank.ts` registers each plant's CONTENT, and a test fails if
+ * the two lists ever differ. Listing a plant approves nothing; every question still needs review.
+ */
+export const BOSS_PILOT: readonly string[] = ['taraxacum-officinale'];
 
 export const CHALLENGE_ACTIVITIES = [
   'part-spotter',
@@ -31,35 +36,43 @@ export const PREREQUISITE_ACTIVITIES: readonly ActivityId[] = [
 ];
 
 /**
- * Owner-approved thresholds. `of` is also the number of questions in the set.
+ * THE TEMPLATE: how many questions each stage plays, how many the plant must supply, and the pass
+ * mark. One rule set for every featured plant; a plant supplies content, never rules.
  *
- * Compare moved from 3 of 3 to 2 of 3 on the owner's instruction. The threshold lives only
- * here, in code: no database row or SQL function holds it, and `challenge-submit` has never
- * been deployed, so no recorded completion can be affected. Completions are write-once.
+ *   played  questions in one try
+ *   pool    ACTIVE questions the plant must supply (always more than `played`)
+ *   need    correct answers required to pass
+ *
+ * A RETRY REPLAYS THE WHOLE STAGE. There is no per-question second chance. Each new attempt number
+ * leaves out a different question (`attempt mod pool`), so a retry always differs from the try
+ * before it and never needs more questions than the pool holds. Passing a stage records it once and
+ * keeps it: failing a later stage, or replaying this one, never takes it back.
+ *
+ * Owner-approved on 2026-11-15. The thresholds live only here, in code; no database row holds them.
  */
+export const STAGE_RULES: Readonly<Record<ActivityId, { played: number; pool: number; need: number }>> = {
+  'part-spotter': { played: 3, pool: 4, need: 2 },
+  compare: { played: 2, pool: 3, need: 2 },
+  'habitat-season': { played: 2, pool: 3, need: 2 },
+  'boss-trial': { played: 5, pool: 6, need: 4 },
+};
+
+/** `need` of `of` questions, derived from the template so there is one source of truth. */
 export const PASS_MARKS: Readonly<Record<ActivityId, { need: number; of: number }>> = {
-  'part-spotter': { need: 3, of: 4 },
-  compare: { need: 2, of: 3 },
-  'habitat-season': { need: 2, of: 3 },
-  'boss-trial': { need: 9, of: 10 },
+  'part-spotter': { need: STAGE_RULES['part-spotter'].need, of: STAGE_RULES['part-spotter'].played },
+  compare: { need: STAGE_RULES.compare.need, of: STAGE_RULES.compare.played },
+  'habitat-season': { need: STAGE_RULES['habitat-season'].need, of: STAGE_RULES['habitat-season'].played },
+  'boss-trial': { need: STAGE_RULES['boss-trial'].need, of: STAGE_RULES['boss-trial'].played },
 };
 
 /**
- * WHICH ACTIVITIES ALLOW ONE SECOND CHANCE ON A MISSED QUESTION.
- *
- * Part Spotter and Habitat do: a missed slot may be answered once more by a DIFFERENT question
- * on the same fact (never the same question again, because the feedback has just shown its
- * answer). Compare does not, because its comparisons have only two choices each: with a
- * retry, pure guessing passed 84% of the time. The Boss Trial never does.
+ * Which questions the Boss Trial shows its answers for, and when. The Trial reveals nothing until
+ * the whole Trial is submitted; every other stage explains each answer as it is given. Presentation
+ * only: the server's scoring does not depend on it.
  */
-export const RETRY_ACTIVITIES: readonly ActivityId[] = ['part-spotter', 'habitat-season'];
-
-export function hasRetry(activity: ActivityId): boolean {
-  return RETRY_ACTIVITIES.includes(activity);
+export function revealsAnswersAtEndOnly(activity: ActivityId): boolean {
+  return activity === 'boss-trial';
 }
-
-/** The Boss Trial's makeup: six picture questions, three applied, one recall (60/30/10). */
-export const TRIAL_MIX = { visual: 6, applied: 3, recall: 1 } as const;
 
 export const CHALLENGE_DISCLAIMER =
   'Passing this means you studied this guide. It does not mean you can identify or use this plant outdoors.';
@@ -97,18 +110,29 @@ export function mayAttempt(
 }
 
 /**
- * DURABLE RATE LIMIT. Every authenticated submission, valid or not, spends one unit of a
- * per-user, per-UTC-day allowance held in the database (`claim_scan`, the same atomic counter
- * scanning uses), so it survives isolate restarts and cannot be bypassed by calling again.
+ * DURABLE RATE LIMITS, enforced by the edge function, never by the browser. Every authenticated
+ * submission, valid or not, spends one unit of a per-user, per-UTC-day allowance held in the
+ * database (`claim_scan`, the same atomic counter scanning uses), so it survives isolate restarts
+ * and cannot be bypassed by calling again. A Boss Trial submission spends a second, smaller
+ * allowance as well.
  *
- * Sized generously for honest play (three prerequisites plus retries and several Trials) and
- * low enough to make scripting the answer key across attempts noisy. A limit of zero is a
- * kill switch: it refuses everything, which the counter alone would not (its first insert
- * ignores the limit), so the function checks it first.
+ * A RATE LIMIT IS NOT THE REWARD CONTROL. Rewards are safe because a stage records once per
+ * (player, plant, stage) by primary key and the award function ignores a repeat; the limits only
+ * make scripting the answers slow. Sized for honest play: a player who knows the material needs
+ * one or two tries per stage.
+ *
+ * A limit of zero is a kill switch: it refuses everything, which the counter alone would not (its
+ * first insert ignores the limit), so the function checks it first.
  */
-export const CHALLENGE_DAILY_LIMIT = 60;
+export const CHALLENGE_DAILY_LIMIT = 20;
+export const CHALLENGE_TRIAL_DAILY_LIMIT = 3;
 
 /** The bucket a user's submissions are counted in. Never shared with scanning's buckets. */
 export function challengeBucket(userId: string): string {
   return `challenge:${userId}`;
+}
+
+/** The smaller bucket the Boss Trial spends from, in addition to the general one. */
+export function trialBucket(userId: string): string {
+  return `challenge-trial:${userId}`;
 }

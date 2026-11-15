@@ -19,12 +19,16 @@ export async function submitChallenge(body: {
   herbId: string;
   activity: ActivityId;
   attempt: number;
-  answers: number[][];
+  answers: number[];
 }): Promise<SubmitResult> {
   if (!supabase) return { ok: false, reason: 'offline' };
   try {
     const { data, error } = await supabase.functions.invoke('challenge-submit', { body });
-    if (error || !data) return { ok: false, reason: 'unavailable' };
+    if (error || !data) {
+      // A 429 is the daily limit (general or Boss Trial). Say so rather than "unavailable".
+      const status = (error as { context?: { status?: number } } | null)?.context?.status;
+      return { ok: false, reason: status === 429 ? 'limit' : 'unavailable' };
+    }
     const reply = data as Record<string, unknown>;
     if (reply.ok !== true) {
       return { ok: false, reason: typeof reply.reason === 'string' ? reply.reason : 'refused' };

@@ -1,20 +1,13 @@
 import { hash, seeded, shuffle } from './rng';
 import {
-  PASS_MARKS,
-  TRIAL_MIX,
-  hasRetry,
+  STAGE_RULES,
   isActivityId,
   isBossPilot,
   mayAttempt,
   type ActivityId,
   type Standing,
 } from './boss-form';
-import {
-  CHALLENGE_BANK,
-  type ChallengeCategory,
-  type ChallengeItem,
-  type ChallengeKind,
-} from './challenge-bank';
+import { ACTIVE_CHALLENGES, type ChallengeCategory, type ChallengeItem, type ChallengeKind } from './challenge-bank';
 
 /**
  * MASTERY CHALLENGES: the builder and the scorer, as pure code shared by client and server.
@@ -79,12 +72,6 @@ export interface BuiltQuestion {
   readonly sources: readonly string[];
 }
 
-/** One slot in a set. A missed slot may be answered once more by its replacement question. */
-export interface Slot {
-  readonly primary: BuiltQuestion;
-  readonly replacement?: BuiltQuestion;
-}
-
 function build(item: ChallengeItem, seed: number): BuiltQuestion {
   const rand = seeded(hash(`${item.id}|${seed}`));
   const options = shuffle([item.correct, ...item.distractors], rand);
@@ -104,19 +91,32 @@ function build(item: ChallengeItem, seed: number): BuiltQuestion {
 export const MAX_ATTEMPT = 9999;
 
 /**
+ * WHICH QUESTIONS A TRY PLAYS: `played` consecutive questions from the pool, starting at
+ * `attempt mod pool`, wrapping round. Each attempt therefore leaves out a different question, so a
+ * retry always differs from the try before it, and no attempt can ask for more questions than the
+ * pool holds. Pure, so the server and the browser pick the same ones.
+ */
+export function selectForAttempt<T>(pool: readonly T[], played: number, attempt: number): T[] {
+  const n = pool.length;
+  if (n === 0 || played > n) return [];
+  const start = attempt % n;
+  return Array.from({ length: played }, (_, i) => pool[(start + i) % n]!);
+}
+
+/**
  * The question set for `(herb, activity, attempt)`, or null when the pool cannot fill it.
  *
- * Deterministic: the same arguments always give the same set in the same order, on any
- * machine, so the server rebuilds exactly what the client showed. A new attempt number draws
- * a different set of equal weight; it is not a reroll toward an easier one, because every
- * item in a pool is of the same kind.
+ * Deterministic: the same arguments always give the same set in the same order, on any machine, so
+ * the server rebuilds exactly what the client showed. Only ACTIVE questions are ever drawn; an
+ * archived question is not in `ACTIVE_CHALLENGES` and so cannot be served or scored, whatever its
+ * review state. Rules come from `STAGE_RULES`; nothing here names a plant.
  */
 export function buildChallenge(
   herbId: string,
   activity: ActivityId,
   attempt: number,
   options: { includeUnreviewed?: boolean; includeUnavailable?: boolean } = {},
-): Slot[] | null {
+): BuiltQuestion[] | null {
   if (!isBossPilot(herbId)) return null;
   if (!Number.isInteger(attempt) || attempt < 0 || attempt > MAX_ATTEMPT) return null;
 
@@ -129,37 +129,13 @@ export function buildChallenge(
     (options.includeUnavailable === true || isAvailable(item)) &&
     (options.includeUnreviewed === true || options.includeUnavailable === true || isServable(item));
 
-  const pool = CHALLENGE_BANK.filter(wanted);
-  const size = PASS_MARKS[activity].of;
+  const pool = ACTIVE_CHALLENGES.filter(wanted);
+  const { played } = STAGE_RULES[activity];
+  if (pool.length < played) return null;
+
   const seed = hash(`${herbId}|${activity}|${attempt}`);
-  const shuffled = shuffle(pool, seeded(seed));
-
-  let primaries: ChallengeItem[];
-  if (activity === 'boss-trial') {
-    // Six picture questions, three applied, one recall. Each group is drawn on its own so the
-    // 60/30/10 makeup holds on every attempt, then the ten are shuffled together.
-    primaries = [];
-    for (const category of ['visual', 'applied', 'recall'] as const) {
-      const group = shuffled.filter((item) => item.category === category);
-      if (group.length < TRIAL_MIX[category]) return null;
-      primaries.push(...group.slice(0, TRIAL_MIX[category]));
-    }
-    primaries = shuffle(primaries, seeded(hash(`${seed}|order`)));
-  } else {
-    if (pool.length < size) return null;
-    primaries = shuffled.slice(0, size);
-  }
-
-  // Second chances exist only where `RETRY_ACTIVITIES` says so. The Boss Trial and Compare
-  // never have one, so the same set is first-try only.
-  const spares = hasRetry(activity) ? shuffled.filter((item) => !primaries.includes(item)) : [];
-
-  return primaries.map((item, index) => {
-    const spare = spares[index];
-    return spare
-      ? { primary: build(item, seed), replacement: build(spare, seed) }
-      : { primary: build(item, seed) };
-  });
+  const chosen = shuffle(selectForAttempt(pool, played, attempt), seeded(hash(`${seed}|order`)));
+  return chosen.map((item) => build(item, seed));
 }
 
 export interface Score {
@@ -169,45 +145,26 @@ export interface Score {
 }
 
 /**
- * Score a submission. `answers[i]` holds the choice for slot i's primary question and, only if
- * that was wrong, its replacement. Anything malformed (wrong length, a non-integer, an index
- * out of range, a replacement answered when the primary was right) is rejected outright rather
- * than scored generously.
+ * Score a submission: one chosen option index per question, in the order the set was built.
+ * Anything malformed (wrong length, a non-integer, an index out of range, the old nested shape) is
+ * rejected outright rather than scored generously.
  */
 export function scoreSubmission(
-  slots: readonly Slot[],
+  questions: readonly BuiltQuestion[],
   activity: ActivityId,
   answers: unknown,
 ): Score | null {
-  if (!Array.isArray(answers) || answers.length !== slots.length) return null;
+  if (!Array.isArray(answers) || answers.length !== questions.length) return null;
   let resolved = 0;
-
-  for (let index = 0; index < slots.length; index += 1) {
-    const slot = slots[index]!;
+  for (let index = 0; index < questions.length; index += 1) {
     const given: unknown = answers[index];
-    if (!Array.isArray(given) || given.length < 1 || given.length > 2) return null;
-    const [first, second] = given as unknown[];
-    const inRange = (value: unknown, question: BuiltQuestion) =>
-      Number.isInteger(value) &&
-      (value as number) >= 0 &&
-      (value as number) < question.options.length;
-
-    if (!inRange(first, slot.primary)) return null;
-    if (first === slot.primary.correctIndex) {
-      if (given.length !== 1) return null;
-      resolved += 1;
-      continue;
+    const question = questions[index]!;
+    if (!Number.isInteger(given) || (given as number) < 0 || (given as number) >= question.options.length) {
+      return null;
     }
-    if (given.length === 2) {
-      // Defence in depth: an activity without a retry refuses a second answer outright.
-      if (!hasRetry(activity)) return null;
-      if (!slot.replacement || !inRange(second, slot.replacement)) return null;
-      if (second === slot.replacement.correctIndex) resolved += 1;
-    }
+    if (given === question.correctIndex) resolved += 1;
   }
-
-  const { need, of } = PASS_MARKS[activity];
-  return { resolved, total: of, passed: resolved >= need };
+  return { resolved, total: questions.length, passed: resolved >= STAGE_RULES[activity].need };
 }
 
 export interface Submission {
@@ -225,6 +182,10 @@ export type Decision =
  * THE WHOLE SERVER DECISION, AS A PURE FUNCTION. The edge function reads `standing` from the
  * database, calls this, and writes whatever it returns; vitest exercises the same code. The
  * client's claim is only `answers`: a score or a completion flag has nowhere to go.
+ *
+ * A FAIL RECORDS NOTHING AND TAKES NOTHING BACK. `recordActivity` is true only on a pass, and the
+ * caller never deletes a completion, so failing a stage, or a later stage, cannot undo earlier
+ * progress.
  */
 export function evaluateSubmission(submission: Submission, standing: Standing): Decision {
   const { herbId, activity, attempt, answers } = submission;
@@ -235,10 +196,10 @@ export function evaluateSubmission(submission: Submission, standing: Standing): 
   if (!gate.ok) return gate;
 
   // Never `includeUnreviewed`: a draft question cannot earn anything.
-  const slots = buildChallenge(herbId, activity, attempt);
-  if (!slots) return { ok: false, reason: 'unavailable' };
+  const questions = buildChallenge(herbId, activity, attempt);
+  if (!questions) return { ok: false, reason: 'unavailable' };
 
-  const score = scoreSubmission(slots, activity, answers);
+  const score = scoreSubmission(questions, activity, answers);
   if (!score) return { ok: false, reason: 'malformed-answers' };
 
   return {

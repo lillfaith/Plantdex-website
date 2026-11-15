@@ -44,6 +44,7 @@ describe('draft Boss Form questions stay out of a production build', () => {
         'src/components/challenges/ChallengeExperience.tsx',
         'src/components/challenges/ChallengeRunner.tsx',
         'src/components/challenges/QuestionViews.tsx',
+        'src/lib/boss-species/taraxacum-officinale.ts',
         'src/lib/challenge-odds.ts',
         'src/lib/mastery-challenges.ts',
       ].sort(),

@@ -2,17 +2,19 @@ import { Art } from './ChallengeArt';
 
 /**
  * PROGRESS AS A ROW OF SMALL FLOWERS instead of a number: a bud for what is ahead, a bright bud
- * for where you are, an open gold bloom for a right answer, a young sprout for one still being
- * learned (it opens if the second chance goes well). Each flower opens once, when it is earned.
+ * for where you are, an open gold bloom for a right answer, a young sprout for a wrong one, and a
+ * quiet held bud for an answer given where nothing may be revealed yet (the Boss Trial). Each
+ * flower opens once, when it is earned.
  * The text alternative says where you are, because the picture is decoration.
  */
-export type FlowerState = 'ahead' | 'current' | 'bloom' | 'sprout';
+export type FlowerState = 'ahead' | 'current' | 'bloom' | 'sprout' | 'held';
 
 const LOOK: Record<FlowerState, { art: 'bud' | 'bloom' | 'sprout'; tone: string }> = {
   ahead: { art: 'bud', tone: 'text-violet-400' },
   current: { art: 'bud', tone: 'text-violet-100' },
   bloom: { art: 'bloom', tone: 'text-gold-300' },
   sprout: { art: 'sprout', tone: 'text-violet-300' },
+  held: { art: 'bud', tone: 'text-violet-200' },
 };
 
 export function FlowerProgress({

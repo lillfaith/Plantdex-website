@@ -1,6 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { CHALLENGE_ACTIVITIES, CHALLENGE_DAILY_LIMIT, challengeBucket } from './boss-form';
+import {
+  CHALLENGE_ACTIVITIES,
+  CHALLENGE_DAILY_LIMIT,
+  CHALLENGE_TRIAL_DAILY_LIMIT,
+  challengeBucket,
+  trialBucket,
+} from './boss-form';
 
 const SQL = readFileSync('supabase/migrations/0012_boss_forms.sql', 'utf8');
 const FN = readFileSync('supabase/functions/challenge-submit/index.ts', 'utf8');
@@ -68,8 +74,27 @@ describe('challenge-submit', () => {
     expect(CHALLENGE_DAILY_LIMIT).toBeGreaterThan(0);
     expect(challengeBucket('abc')).toBe('challenge:abc');
   });
-  it('keeps its bucket apart from scanning\u2019s', () => {
+  it('keeps its buckets apart from scanning\u2019s and from each other', () => {
     expect(challengeBucket('x').startsWith('challenge:')).toBe(true);
+    expect(trialBucket('x')).toBe('challenge-trial:x');
+    expect(trialBucket('x').startsWith('challenge:')).toBe(false);
+  });
+  it('enforces the Boss Trial allowance on the SERVER, in the same atomic counter, before scoring', () => {
+    expect(CHALLENGE_DAILY_LIMIT).toBe(20);
+    expect(CHALLENGE_TRIAL_DAILY_LIMIT).toBe(3);
+    expect(code).toContain('trialBucket(userId)');
+    expect(code).toContain('CHALLENGE_TRIAL_DAILY_LIMIT');
+    expect(code).toMatch(/body\.activity === 'boss-trial'/);
+    // The trial allowance is claimed after the general one and before standing is read or scored.
+    const trial = code.indexOf('trialBucket(userId)');
+    expect(trial).toBeGreaterThan(code.indexOf('challengeBucket(userId)'));
+    expect(trial).toBeLessThan(code.indexOf("caller.from('mastered')"));
+    expect(trial).toBeLessThan(code.indexOf('evaluateSubmission('));
+    expect(code).toMatch(/Daily Boss Trial limit reached'\s*\}, 429/);
+  });
+  it('never deletes or updates a completion: failing a stage cannot undo earlier progress', () => {
+    expect(code).not.toMatch(/\.delete\(|\.update\(|\.upsert\(/);
+    expect(code).not.toMatch(/challenge_completions'\)\s*\.(delete|update)/);
   });
   it('can be deployed to the TEST project by name, and to nothing else by accident', () => {
     const wf = readFileSync('.github/workflows/deploy-function.yml', 'utf8');
