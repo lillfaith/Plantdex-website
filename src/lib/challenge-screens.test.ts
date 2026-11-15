@@ -40,10 +40,11 @@ describe('the four question formats render', () => {
     expect(html).toContain('<img');
     expect(html).toMatch(/aria-label="[^"]+"/);
   });
-  it('spot-feature: one photograph, plus keyboard buttons for each part', () => {
+  it('spot-feature: one photograph, plus a visible "Use a list" with a button for each part', () => {
     const html = render('spot-feature');
     expect((html.match(/<img/g) ?? []).length).toBe(1);
-    expect(html).toContain('sr-only');
+    expect(html).toContain('Use a list');
+    expect(html).not.toContain('sr-only');
     expect((html.match(/<button/g) ?? []).length).toBe(4);
   });
   it('quick-pick: short text buttons', () => {
@@ -208,19 +209,41 @@ describe('tapping a photograph is accurate at every size', () => {
     expect(pointInBox({ left: 0, top: 0, width: 100, height: 100 }, 101, 50)).toBeNull();
     expect(pointInBox({ left: 0, top: 0, width: 0, height: 0 }, 0, 0)).toBeNull();
   });
-  it('sizes the tap photograph from the screen height too, and measures the picture itself', () => {
+  it('sizes the picture from the room its stage has, uncropped, and measures the picture itself', () => {
+    const stage = read('src/components/challenges/PhotoStage.tsx');
     const views = read('src/components/challenges/QuestionViews.tsx');
-    expect(views).toMatch(/width: `min\(100%, calc\(\$\{TAP_PHOTO_MAX_HEIGHT\} \* \$\{ratio/);
-    expect(views).toMatch(/aspectRatio: `\$\{image\.width\} \/ \$\{image\.height\}`/);
+    // The room is measured, and the picture cannot change the room it is sized from.
+    expect(stage).toMatch(/new ResizeObserver\(read\)/);
+    expect(stage).toMatch(/absolute inset-0/);
+    expect(stage).toMatch(/framedWidth\(size\.w, size\.h, ratio\)/);
+    expect(stage).toMatch(/style=\{\{ aspectRatio: ratio\.toFixed\(4\) \}\}/);
+    expect(stage).toMatch(/min-h-\[15rem\]/); // never smaller than readable: the page scrolls instead
+    expect(stage).not.toMatch(/cqw|cqh|container-type/); // container units collapse under flex growth
     // The ref'd box is the picture: no padding on it, so a tap is never offset by a frame.
-    const ref = views.slice(views.indexOf('ref={box}'), views.indexOf('ref={box}') + 220);
+    const ref = stage.slice(stage.indexOf('ref={boxRef}'), stage.indexOf('ref={boxRef}') + 300);
     expect(ref).not.toMatch(/\bp-\[?\d/);
+    expect(views).toMatch(/<PhotoStage ratio=/);
+    // Photographs are letterboxed, never cropped, wherever they appear.
+    expect(views).toMatch(/object-contain/);
+    expect(views).not.toMatch(/Photo id=\{[^}]*\} fit="cover"/);
   });
-  it('gives the pictures a 4:5 tile and a visible keyboard focus', () => {
+  it('gives every picture the same square thumbnail, a letter, and a visible keyboard focus', () => {
     const views = read('src/components/challenges/QuestionViews.tsx');
-    expect(views).toContain('aspect-[4/5]');
+    expect(views).toContain('aspect-square');
+    expect(views).toMatch(/grid-cols-3/);
     expect(views).toMatch(/focus-visible:ring-4/);
-    expect(views).toMatch(/focus-within:not-sr-only/);
+    expect(views).toMatch(/LETTERS\[index\]/);
+  });
+  it('keeps a reachable list for every botanical feature question, never hidden from sight', () => {
+    const views = read('src/components/challenges/QuestionViews.tsx');
+    expect(views).toMatch(/<details/);
+    expect(views).toMatch(/Use a list/);
+    expect(views).toMatch(/min-h-12/);
+  });
+  it('asks the tap logic, never a region rewritten here', () => {
+    const views = read('src/components/challenges/QuestionViews.tsx');
+    expect(views).toMatch(/resolveTap\(regions,/);
+    expect(views).not.toMatch(/regions\[[^\]]+\]\s*=|\.x\s*[-+]=|\.w\s*[-+]=/);
   });
 });
 

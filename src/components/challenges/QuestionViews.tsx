@@ -1,35 +1,40 @@
 'use client';
 
-import { useRef, type MouseEvent } from 'react';
+import { useRef, useState, type MouseEvent } from 'react';
 import { assetPath } from '@/lib/asset-path';
-import { BOSS_IMAGES, REGION_LABELS, pointInBox, regionAt } from '@/lib/boss-images';
+import { BOSS_IMAGES, REGION_LABELS, pointInBox } from '@/lib/boss-images';
+import { REGION_LABEL_OVERRIDES, iconFor, sceneSetFor } from '@/lib/boss-presentation';
 import type { BuiltQuestion } from '@/lib/mastery-challenges';
+import { resolveTap } from '@/lib/tap-select';
 import { Art } from './ChallengeArt';
+import { ChoiceIcon } from './ChoiceIcon';
+import { HabitatScene } from './HabitatScene';
+import { PhotoStage } from './PhotoStage';
 
 /**
  * The four question formats, one screen each. Every one answers with an INDEX into
  * `question.options`, which is all the server scores:
  *
- *   pick-picture / showdown   large photographs; the option is the image id
- *   spot-feature              one photograph; a tap becomes the region under it (a region id)
- *   quick-pick                a short line of text
+ *   pick-picture / showdown   a large preview and three labelled thumbnails (Picture Match); the
+ *                             option is the image id
+ *   spot-feature              one photograph; a tap or the visible list picks a region (a region id)
+ *   quick-pick                a short line of text, with a small icon or a scene of a place when
+ *                             the client-only presentation data has one for it
  *
- * THE PHOTOGRAPH IS THE POINT, so the chrome around it is thin. Pictures are shown in a 4:5
- * tile (most field photographs are portrait) and never stretched. The tap photograph is sized
- * from the viewport HEIGHT as well as its width, so it keeps its own aspect ratio on every
- * screen instead of being clipped, and the tap is measured against the picture itself: a
- * region is a percentage of the image, so it lands in the same place at 320px and at 430px.
+ * THE PHOTOGRAPH IS THE POINT. It is shown at its own proportions and never cropped (`PhotoStage`),
+ * the thumbnails letterbox rather than crop, and a screen too short to show everything scrolls
+ * instead of shrinking a photograph until it cannot be read.
+ *
+ * Choosing is separate from answering. With `onSelect`, a tap only SELECTS, and the player may
+ * change it; the screen's Check action sets `chosen`, which locks it. Without `onSelect` a tap
+ * answers at once, as it used to.
  */
 export interface QuestionViewProps {
   question: BuiltQuestion;
-  /** The option index already chosen, or null while the question is open. */
+  /** The option index already chosen and locked, or null while the question is open. */
   chosen: number | null;
   onAnswer: (index: number) => void;
-  /**
-   * The option picked but NOT yet confirmed, and the handler that picks it. When `onSelect` is
-   * given, a tap only selects (and may be changed); the screen's Check action is what locks an
-   * answer, by setting `chosen`. Without `onSelect` a tap answers at once, as before.
-   */
+  /** The option picked but NOT yet confirmed, and the handler that picks it. */
   selected?: number | null;
   onSelect?: (index: number) => void;
   /**
@@ -40,10 +45,58 @@ export interface QuestionViewProps {
   reveal?: boolean;
 }
 
-/** The tallest the tap photograph may be, as a share of the viewport's height. */
-const TAP_PHOTO_MAX_HEIGHT = '52dvh';
+const RING = {
+  picked: 'ring-4 ring-violet-200 shadow-[0_0_18px_rgb(210_190_255/0.5)]',
+  right: 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.55)]',
+  wrong: 'ring-2 ring-violet-300 opacity-70',
+  dim: 'opacity-55',
+  focus: 'outline-none focus-visible:ring-4 focus-visible:ring-gold-300',
+} as const;
 
-function Photo({ id, className = '' }: { id: string; className?: string }) {
+type Mark = 'idle' | 'picked' | 'right' | 'chosen-wrong' | 'dim';
+
+/** One rule for every format: what a choice looks like given what has happened to it. */
+function markFor(
+  index: number,
+  { question, chosen, selected = null, reveal = true }: QuestionViewProps,
+): Mark {
+  if (chosen !== null) {
+    if (!reveal) return index === chosen ? 'picked' : 'dim';
+    if (index === question.correctIndex) return 'right';
+    return index === chosen ? 'chosen-wrong' : 'dim';
+  }
+  return selected === index ? 'picked' : 'idle';
+}
+
+function ringOf(mark: Mark): string {
+  return mark === 'picked' ? RING.picked : mark === 'right' ? RING.right : mark === 'chosen-wrong' ? RING.wrong : mark === 'dim' ? RING.dim : 'hover:brightness-110';
+}
+
+/** The words on a tile for its state. Text, so colour is never the only signal. */
+function chipOf(mark: Mark): string | null {
+  return mark === 'right' ? 'Right answer' : mark === 'chosen-wrong' || mark === 'picked' ? 'Your pick' : null;
+}
+
+function Tick() {
+  return (
+    <span
+      aria-hidden="true"
+      className="challenge-pop flex h-7 w-7 items-center justify-center rounded-full bg-gold-400 text-plum-950 shadow-[0_0_14px_rgb(255_210_110/0.6)]"
+    >
+      <Art name="check" className="h-4 w-4" />
+    </span>
+  );
+}
+
+function Chip({ text, right }: { text: string; right: boolean }) {
+  return (
+    <span className={`rounded-full bg-plum-950/90 px-2.5 py-0.5 text-sm font-extrabold ${right ? 'text-gold-300' : 'text-violet-100'}`}>
+      {text}
+    </span>
+  );
+}
+
+function Photo({ id, fit = 'contain', className = '' }: { id: string; fit?: 'contain' | 'cover'; className?: string }) {
   const image = BOSS_IMAGES[id];
   if (!image?.src) return null;
   return (
@@ -53,61 +106,74 @@ function Photo({ id, className = '' }: { id: string; className?: string }) {
       alt={image.alt}
       draggable={false}
       loading="eager"
-      className={`h-full w-full object-cover ${className}`}
+      className={`h-full w-full ${fit === 'contain' ? 'object-contain' : 'object-cover'} ${className}`}
     />
   );
 }
 
-/** The picture a question shows above its answers (the puff to match, the flower that finished). */
-function Media({ id }: { id: string }) {
+/** A photograph's width over its height, with a sensible portrait default if it is not recorded. */
+function ratioOf(id: string): number {
+  const image = BOSS_IMAGES[id];
+  return image?.width && image.height ? image.width / image.height : 0.8;
+}
+
+/** A photograph shown in the stage: used for a question's own picture and for the Picture Match preview. */
+function Preview({ id, note }: { id: string; note?: string }) {
   return (
-    <div className="mx-auto mt-2 h-24 w-24 overflow-hidden rounded pixel-tile p-[3px]">
+    <PhotoStage ratio={ratioOf(id)}>
       <Photo id={id} />
-    </div>
+      {note ? (
+        <span className="absolute top-2 left-2 rounded-full bg-plum-950/90 px-3 py-1 text-sm font-extrabold text-violet-50">{note}</span>
+      ) : null}
+    </PhotoStage>
   );
 }
 
-function PictureChoices({ question, chosen, onAnswer, selected = null, onSelect, reveal = true }: QuestionViewProps) {
-  const answered = chosen !== null;
+const LETTERS = ['A', 'B', 'C', 'D'] as const;
+
+/** PICTURE MATCH: one large preview, then three equal labelled thumbnails. */
+function PictureChoices(props: QuestionViewProps) {
+  const { question, chosen, onAnswer, selected = null, onSelect } = props;
   const pick = onSelect ?? onAnswer;
-  const three = question.options.length === 3;
+  const answered = chosen !== null;
+  const shown = chosen ?? selected;
+  const previewId = shown !== null ? question.options[shown] : null;
   return (
-    <>
-      {question.media ? <Media id={question.media} /> : null}
-      <ul className="mt-3 grid grid-cols-2 gap-2.5">
+    <div className="mt-3 flex flex-1 flex-col gap-3">
+      {previewId ? (
+        <Preview id={previewId} />
+      ) : question.media ? (
+        <Preview id={question.media} note="Look at this one" />
+      ) : (
+        <div className="flex min-h-[15rem] flex-1 items-center justify-center rounded-md border-2 border-dashed border-violet-500 px-6 text-center text-lg font-bold text-violet-200">
+          Tap a picture below to look closer
+        </div>
+      )}
+      <ul className="grid grid-cols-3 gap-2.5" aria-label="Pictures to choose from">
         {question.options.map((id, index) => {
-          const isRight = index === question.correctIndex;
-          const isChosen = chosen === index;
-          const state = answered
-            ? !reveal
-              ? isChosen
-                ? 'ring-4 ring-violet-200'
-                : 'opacity-55'
-              : isRight
-                ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.55)]'
-                : isChosen
-                  ? 'ring-2 ring-violet-300 opacity-70'
-                  : 'opacity-55'
-            : selected === index
-              ? 'ring-4 ring-violet-200 shadow-[0_0_18px_rgb(210_190_255/0.5)]'
-              : 'hover:brightness-110';
+          const mark = markFor(index, props);
+          const chip = chipOf(mark);
+          const alt = BOSS_IMAGES[id]?.alt ?? id;
           return (
-            <li key={id} className={three && index === 2 ? 'col-span-2 mx-auto w-[calc(50%-0.3rem)]' : ''}>
+            <li key={id}>
               <button
                 type="button"
                 disabled={answered}
                 aria-pressed={selected === index}
                 onClick={() => pick(index)}
-                aria-label={BOSS_IMAGES[id]?.alt ?? id}
-                className={`pixel-tile relative block aspect-[4/5] w-full touch-manipulation overflow-hidden rounded-md p-[3px] outline-none transition-transform active:scale-95 focus-visible:ring-4 focus-visible:ring-gold-300 ${state}`}
+                aria-label={`Picture ${LETTERS[index]}: ${alt}${chip ? `. ${chip}` : ''}`}
+                className={`pixel-tile relative block aspect-square w-full touch-manipulation overflow-hidden rounded-md p-[3px] ${RING.focus} ${ringOf(mark)}`}
               >
-                <Photo id={id} className="rounded-[3px]" />
-                {answered && reveal && isRight ? (
-                  <span
-                    aria-hidden="true"
-                    className="challenge-pop absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-gold-400 text-plum-950"
-                  >
-                    <Art name="check" className="h-5 w-5" />
+                <span className="block h-full w-full overflow-hidden rounded-[3px] bg-plum-950">
+                  <Photo id={id} />
+                </span>
+                <span aria-hidden="true" className="absolute top-1.5 left-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-plum-950/90 text-base font-extrabold text-violet-50">
+                  {LETTERS[index]}
+                </span>
+                {mark === 'right' ? <span className="absolute top-1.5 right-1.5"><Tick /></span> : null}
+                {chip ? (
+                  <span aria-hidden="true" className="absolute right-1 bottom-1 left-1 flex justify-center">
+                    <Chip text={chip} right={mark === 'right'} />
                   </span>
                 ) : null}
               </button>
@@ -115,113 +181,131 @@ function PictureChoices({ question, chosen, onAnswer, selected = null, onSelect,
           );
         })}
       </ul>
-    </>
+    </div>
   );
 }
 
-function SpotFeature({ question, chosen, onAnswer, selected = null, onSelect, reveal = true }: QuestionViewProps) {
+/** The label for a region on THIS photograph: its own name if the general one would be wrong. */
+function regionLabel(imageId: string, region: string): string {
+  return REGION_LABEL_OVERRIDES[imageId]?.[region] ?? REGION_LABELS[region] ?? region;
+}
+
+type TapNote = 'ambiguous' | 'none' | null;
+
+const NOTE_TEXT: Record<Exclude<TapNote, null>, string> = {
+  ambiguous: 'That could be more than one part. Tap closer to one, or use the list.',
+  none: 'Nothing is selected there. Tap a part of the plant, or use the list.',
+};
+
+function SpotFeature(props: QuestionViewProps) {
+  const { question, chosen, onAnswer, selected = null, onSelect, reveal = true } = props;
   const pick = onSelect ?? onAnswer;
   const box = useRef<HTMLDivElement | null>(null);
+  const list = useRef<HTMLDetailsElement | null>(null);
+  const [note, setNote] = useState<TapNote>(null);
   const imageId = question.media ?? '';
   const image = BOSS_IMAGES[imageId];
   const answered = chosen !== null;
   const rightId = question.options[question.correctIndex]!;
+  const regions = image?.regions ?? {};
 
   const tap = (event: MouseEvent<HTMLDivElement>) => {
     if (answered || !box.current) return;
     const point = pointInBox(box.current.getBoundingClientRect(), event.clientX, event.clientY);
     if (!point) return;
-    const region = regionAt(imageId, point.x, point.y);
-    // A tap on no region answers nothing, so a stray tap is never a wrong answer.
-    if (region === null) return;
-    const index = question.options.indexOf(region);
-    if (index >= 0) pick(index);
+    // Forgiving, never guessing: a near tap selects the one region it is next to, and a tap that
+    // could mean two asks the player to be clearer. The reviewed regions are only ever READ.
+    const outcome = resolveTap(regions, question.options, point.x, point.y);
+    if (outcome.kind === 'exact' || outcome.kind === 'near') {
+      const index = question.options.indexOf(outcome.region);
+      if (index >= 0) {
+        setNote(null);
+        pick(index);
+        return;
+      }
+    }
+    setNote(outcome.kind === 'ambiguous' ? 'ambiguous' : 'none');
   };
 
   if (!image?.src || !image.width || !image.height) return null;
-  const ratio = image.width / image.height;
+
+  const zones = (id: string, className: string, key: string) =>
+    (regions[id] ?? []).map((r, i) => (
+      <span
+        key={`${key}-${i}`}
+        aria-hidden="true"
+        className={`pointer-events-none absolute rounded-md border-[3px] ${className}`}
+        style={{ left: `${r.x}%`, top: `${r.y}%`, width: `${r.w}%`, height: `${r.h}%` }}
+      />
+    ));
+  const pickedId = selected !== null ? question.options[selected] : null;
+  const chosenId = chosen !== null ? question.options[chosen] : null;
+
   return (
-    <div className="mt-3">
-      {/* Width comes from BOTH the screen's width and its height, so the photograph is never
-          squeezed into a shorter box and cropped: its aspect ratio is its own, and the tap
-          regions (percentages of the picture) stay where the plant is. */}
-      <div
-        className="pixel-tile mx-auto rounded-md p-[3px]"
-        style={{ width: `min(100%, calc(${TAP_PHOTO_MAX_HEIGHT} * ${ratio.toFixed(4)}))` }}
-      >
-        <div
-          ref={box}
-          onClick={tap}
-          className="relative cursor-pointer touch-manipulation overflow-hidden rounded-[3px]"
-          style={{ aspectRatio: `${image.width} / ${image.height}` }}
+    <div className="mt-3 flex flex-1 flex-col gap-2">
+      <PhotoStage ratio={image.width / image.height} boxRef={box} onBoxClick={tap} label={image.alt}>
+        <Photo id={imageId} />
+        {!answered && pickedId ? zones(pickedId, 'border-violet-200 bg-violet-200/20', 'picked') : null}
+        {answered && !reveal && chosenId ? zones(chosenId, 'border-violet-200 bg-violet-200/20', 'locked') : null}
+        {answered && reveal ? zones(rightId, 'challenge-pop border-gold-300 bg-gold-300/20', 'right') : null}
+        {answered && reveal && chosenId && chosenId !== rightId
+          ? zones(chosenId, 'border-dashed border-violet-200 bg-violet-200/10', 'wrong')
+          : null}
+      </PhotoStage>
+
+      <p aria-live="polite" className="min-h-6 text-center text-base text-violet-200">
+        {note ? NOTE_TEXT[note] : null}
+      </p>
+
+      {/* THE LIST ALTERNATIVE: always visible, a real disclosure, a large target. Every part is a
+          button, so choosing without tapping a photograph, or with a switch or a keyboard, is just
+          as complete a way to answer. */}
+      <details ref={list} className="group">
+        <summary
+          className={`pixel-tile flex min-h-12 cursor-pointer list-none items-center justify-center gap-2 rounded-lg px-4 text-base font-extrabold text-violet-50 select-none ${RING.focus} ${answered ? 'pointer-events-none opacity-60' : ''}`}
         >
-          <Photo id={imageId} />
-          {!answered && selected !== null
-            ? (image.regions?.[question.options[selected] ?? ''] ?? []).map((r, i) => (
-                <span
-                  key={`picked-${i}`}
-                  aria-hidden="true"
-                  className="pointer-events-none absolute rounded-md border-[3px] border-violet-200 bg-violet-200/20"
-                  style={{ left: `${r.x}%`, top: `${r.y}%`, width: `${r.w}%`, height: `${r.h}%` }}
-                />
-              ))
-            : null}
-          {answered && reveal
-            ? (image.regions?.[rightId] ?? []).map((r, i) => (
-                <span
-                  key={i}
-                  aria-hidden="true"
-                  className="challenge-pop pointer-events-none absolute rounded-md border-[3px] border-gold-300 bg-gold-300/20"
-                  style={{ left: `${r.x}%`, top: `${r.y}%`, width: `${r.w}%`, height: `${r.h}%` }}
-                />
-              ))
-            : null}
-        </div>
-      </div>
-      {/* The same choices for keyboards and screen readers. Hidden until one is focused, then
-          shown as ordinary buttons, so a keyboard user can always see where they are. */}
-      <ul className="sr-only focus-within:not-sr-only focus-within:mt-2 focus-within:grid focus-within:grid-cols-2 focus-within:gap-2">
-        {question.options.map((id, index) => (
-          <li key={id}>
-            <button
-              type="button"
-              disabled={answered}
-              aria-pressed={selected === index}
-              onClick={() => pick(index)}
-              className="pixel-tile min-h-11 w-full rounded-md px-3 py-2 text-sm font-bold text-violet-50 outline-none focus-visible:ring-4 focus-visible:ring-gold-300"
-            >
-              {REGION_LABELS[id] ?? id}
-            </button>
-          </li>
-        ))}
-      </ul>
+          Use a list
+          <span aria-hidden="true" className="text-gold-300 group-open:hidden">+</span>
+          <span aria-hidden="true" className="hidden text-gold-300 group-open:inline">&minus;</span>
+        </summary>
+        <ul className="mt-2 grid grid-cols-2 gap-2" aria-label="Parts of the plant">
+          {question.options.map((id, index) => {
+            const mark = markFor(index, props);
+            return (
+              <li key={id}>
+                <button
+                  type="button"
+                  disabled={answered}
+                  aria-pressed={selected === index}
+                  onClick={() => {
+                    setNote(null);
+                    pick(index);
+                    if (list.current) list.current.open = false;
+                  }}
+                  className={`pixel-tile flex min-h-12 w-full touch-manipulation items-center justify-center rounded-md px-3 py-2 text-base font-bold text-violet-50 ${RING.focus} ${ringOf(mark)}`}
+                >
+                  {regionLabel(imageId, id)}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </details>
     </div>
   );
 }
 
-function QuickPick({ question, chosen, onAnswer, selected = null, onSelect, reveal = true }: QuestionViewProps) {
-  const answered = chosen !== null;
+/** A choice drawn as a scene of a place. Only used when EVERY option has one. */
+function HabitatChoices(props: QuestionViewProps & { scenes: NonNullable<ReturnType<typeof sceneSetFor>> }) {
+  const { question, chosen, onAnswer, selected = null, onSelect, scenes } = props;
   const pick = onSelect ?? onAnswer;
+  const answered = chosen !== null;
   return (
-    <>
-      {question.media ? <Media id={question.media} /> : null}
-      <ul className="mt-4 grid gap-3">
+    <ul className="mt-3 grid gap-2.5" aria-label="Places to choose from">
       {question.options.map((text, index) => {
-        const isRight = index === question.correctIndex;
-        const isChosen = chosen === index;
-        const state = answered
-          ? !reveal
-            ? isChosen
-              ? 'ring-4 ring-violet-200'
-              : 'opacity-70'
-            : isRight
-              ? 'ring-4 ring-gold-300 shadow-[0_0_22px_rgb(255_210_110/0.45)]'
-              : isChosen
-                ? 'ring-2 ring-violet-300 opacity-80'
-                : 'opacity-70'
-          : selected === index
-            ? 'ring-4 ring-violet-200 shadow-[0_0_18px_rgb(210_190_255/0.5)]'
-            : '';
+        const mark = markFor(index, props);
+        const chip = chipOf(mark);
+        const scene = scenes[index]!;
         return (
           <li key={text}>
             <button
@@ -229,20 +313,63 @@ function QuickPick({ question, chosen, onAnswer, selected = null, onSelect, reve
               disabled={answered}
               aria-pressed={selected === index}
               onClick={() => pick(index)}
-              className={`pixel-tile flex min-h-14 w-full touch-manipulation items-center justify-between rounded-lg px-4 py-3 text-left text-base font-bold text-violet-50 outline-none transition-transform active:scale-[0.98] focus-visible:ring-4 focus-visible:ring-gold-300 ${state}`}
+              aria-label={`${text}${chip ? `. ${chip}` : ''}`}
+              className={`pixel-tile relative block h-28 w-full touch-manipulation overflow-hidden rounded-lg p-[3px] text-left ${RING.focus} ${ringOf(mark)}`}
             >
-              {text}
-              {answered && reveal && isRight ? (
-                <span aria-hidden="true" className="challenge-pop text-gold-300">
-                  <Art name="check" className="h-6 w-6" />
-                </span>
+              <HabitatScene ground={scene.ground} light={scene.light} className="absolute inset-[3px] h-[calc(100%-6px)] w-[calc(100%-6px)] rounded-[3px]" />
+              <span className="absolute bottom-2 left-2.5 max-w-[78%] rounded-md bg-plum-950/90 px-2.5 py-1 text-base leading-tight font-extrabold text-violet-50">
+                {text}
+              </span>
+              {mark === 'right' ? <span className="absolute top-2 right-2"><Tick /></span> : null}
+              {chip && mark !== 'right' ? (
+                <span aria-hidden="true" className="absolute top-2 right-2"><Chip text={chip} right={false} /></span>
               ) : null}
             </button>
           </li>
         );
       })}
+    </ul>
+  );
+}
+
+function QuickPick(props: QuestionViewProps) {
+  const { question, chosen, onAnswer, selected = null, onSelect } = props;
+  const pick = onSelect ?? onAnswer;
+  const answered = chosen !== null;
+  const scenes = sceneSetFor(question.id, question.options);
+  if (scenes) {
+    return <HabitatChoices {...props} scenes={scenes} />;
+  }
+  return (
+    <div className="mt-3 flex flex-1 flex-col gap-3">
+      {question.media ? <Preview id={question.media} /> : null}
+      <ul className="grid gap-2.5" aria-label="Answers">
+        {question.options.map((text, index) => {
+          const mark = markFor(index, props);
+          const icon = iconFor(question.id, text);
+          return (
+            <li key={text}>
+              <button
+                type="button"
+                disabled={answered}
+                aria-pressed={selected === index}
+                onClick={() => pick(index)}
+                className={`pixel-tile flex min-h-16 w-full touch-manipulation items-center gap-3 rounded-lg px-3 py-2 text-left text-lg leading-tight font-extrabold text-violet-50 ${RING.focus} ${ringOf(mark)}`}
+              >
+                {icon ? (
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-plum-950/70">
+                    <ChoiceIcon name={icon.name} tint={icon.tint} />
+                  </span>
+                ) : null}
+                <span className="min-w-0 flex-1">{text}</span>
+                {mark === 'right' ? <Tick /> : null}
+                {mark === 'chosen-wrong' || mark === 'picked' ? <Chip text="Your pick" right={false} /> : null}
+              </button>
+            </li>
+          );
+        })}
       </ul>
-    </>
+    </div>
   );
 }
 

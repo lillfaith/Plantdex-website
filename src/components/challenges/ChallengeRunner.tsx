@@ -260,8 +260,8 @@ export function ChallengeRunner({ herbId, activity, attempt, mode, onVerdict, on
       action={{ label: ACTION_LABEL[act], onClick: onAction, disabled: act === 'choose' || act === 'wait' }}
       onExit={onExit}
     >
-      <ChallengeFrame>
-        <h2 className="px-1 text-center text-xl leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
+      <ChallengeFrame className="flex min-h-full flex-col">
+        <h2 className="px-1 text-center text-[1.375rem] leading-tight font-extrabold text-violet-50">{question.prompt}</h2>
         <QuestionView
           key={flow.index}
           question={question}
