@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { PlantSprite } from '@/components/PlantSprite';
-import { ANONYMOUS_SCOPE } from '@/lib/first-run';
+import { ANONYMOUS_SCOPE, markWelcomeSeen } from '@/lib/first-run';
 import {
   WALKTHROUGH_EVENT,
   WALK_FINISH,
@@ -96,6 +96,9 @@ export function AppWalkthrough() {
   // Tagged with the step it was measured for, so a box left over from the previous step is
   // simply ignored rather than having to be cleared from inside an effect.
   const [held, setHeld] = useState<{ index: number; box: Box | null } | null>(null);
+  // The step whose page has been reached. Leaving it afterwards (browser Back, say) means the
+  // player has gone their own way, and the tour must not shove them forward again.
+  const arrived = useRef(-1);
   const card = useRef<HTMLDivElement | null>(null);
   const title = useRef<HTMLHeadingElement | null>(null);
 
@@ -105,13 +108,17 @@ export function AppWalkthrough() {
 
   useEffect(() => {
     const start = () => {
+      // Starting the tour counts as having been welcomed. Without this, somebody who deep-linked
+      // to /profile and replayed the tour would have the intro open over it on /herbdex.
+      markWelcomeSeen(scope);
+      arrived.current = -1;
       setIndex(0);
       setHeld(null);
       setActive(true);
     };
     window.addEventListener(WALKTHROUGH_EVENT, start);
     return () => window.removeEventListener(WALKTHROUGH_EVENT, start);
-  }, []);
+  }, [scope]);
 
   const close = useCallback(
     (how: 'finished' | 'skipped') => {
@@ -126,9 +133,14 @@ export function AppWalkthrough() {
   useEffect(() => {
     if (!active || !step) return;
     if (normalise(pathname) !== step.route) {
+      if (arrived.current === index) {
+        close('skipped');
+        return;
+      }
       router.push(step.route);
       return;
     }
+    arrived.current = index;
     const at = index;
 
     let target: HTMLElement | null = null;
@@ -209,7 +221,7 @@ export function AppWalkthrough() {
       window.removeEventListener('resize', queue);
       watcher?.disconnect();
     };
-  }, [active, step, index, pathname, router]);
+  }, [active, step, index, pathname, router, close]);
 
   // Land on the new step's heading, so a screen reader announces it.
   useEffect(() => {
@@ -303,7 +315,7 @@ export function AppWalkthrough() {
         >
           {step ? step.title : WALK_FINISH.title}
         </h2>
-        <p className="mt-1 text-sm leading-relaxed text-violet-100">
+        <p className="mt-1 text-base leading-snug text-violet-100">
           {step ? step.body : WALK_FINISH.body}
         </p>
         {step?.sample === 'garden-stages' && <GardenStages />}
