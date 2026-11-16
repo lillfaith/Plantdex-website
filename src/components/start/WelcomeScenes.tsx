@@ -32,6 +32,10 @@ export interface SceneProps {
   readonly onLeave: () => void;
   /** Advance to the next scene. */
   readonly onNext: () => void;
+  /** Close the intro and start the guided walkthrough of the real app. */
+  readonly onTour: () => void;
+  /** The walkthrough was already finished or skipped, so the intro stops offering it. */
+  readonly tourDone: boolean;
 }
 
 export interface Scene {
@@ -376,7 +380,7 @@ const EXPLORE_TILES = [
   { icon: 'trophy', label: 'Field Board', note: 'Opt in only' },
 ] as const;
 
-function Explore({ returning, onLeave }: SceneProps) {
+function Explore({ returning, onLeave, onTour, tourDone }: SceneProps) {
   const badge = getAchievement('first-find');
   const amberRing = FIELD_FRAMES.find((entry) => entry.id === 'amber-ring');
 
@@ -432,17 +436,41 @@ function Explore({ returning, onLeave }: SceneProps) {
         )}
       </div>
 
-      <Link
-        href="/scan"
-        onClick={onLeave}
-        className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full welcome-key px-6 text-sm font-bold tracking-wide uppercase transition-colors"
-      >
-        {returning ? 'Go scan a plant' : 'Find my first plant'}
-      </Link>
+      {/*
+        THE INTRO HANDS OVER TO THE WALKTHROUGH. The tour of the real app is the next thing a new
+        player is offered, so it takes the main key; scanning is one tap away beneath it, and is
+        the main key again once the tour has been finished or skipped.
+      */}
+      {tourDone ? (
+        <Link
+          href="/scan"
+          onClick={onLeave}
+          className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full welcome-key px-6 text-sm font-bold tracking-wide uppercase transition-colors"
+        >
+          {returning ? 'Go scan a plant' : 'Find my first plant'}
+        </Link>
+      ) : (
+        <>
+          <button
+            type="button"
+            onClick={onTour}
+            className="arcade-key mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full welcome-key px-6 text-sm font-bold tracking-wide uppercase transition-colors"
+          >
+            Show me around
+          </button>
+          <Link
+            href="/scan"
+            onClick={onLeave}
+            className="tap-44 mt-1 inline-flex items-center justify-center text-sm font-bold text-gold-300 underline-offset-2 hover:text-gold-200 hover:underline"
+          >
+            {returning ? 'Or go scan a plant' : 'Skip the tour and find my first plant'}
+          </Link>
+        </>
+      )}
       <Link
         href="/herbdex"
         onClick={onLeave}
-        className="tap-44 mt-1 inline-flex items-center justify-center text-sm font-bold text-violet-200 underline-offset-2 hover:text-violet-100 hover:underline"
+        className="tap-44 inline-flex items-center justify-center text-sm font-bold text-violet-200 underline-offset-2 hover:text-violet-100 hover:underline"
       >
         Or look around the deck first
       </Link>

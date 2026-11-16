@@ -1674,6 +1674,23 @@ adding a plant: `docs/boss-form-template.md`.
   golden plate and a crown, never a loop. New art, if wanted, is proposed in
   `docs/boss-form-art-proposals.md` and waits for approval.
 
+## Guided walkthrough
+
+A spotlight tour of the real app, offered by the last scene of the welcome intro and replayable from
+the profile. `src/lib/walkthrough.ts` is the data (seven steps and a closing card); `AppWalkthrough`
+is the overlay, mounted once in the shell.
+
+- **It owns no feature and writes no progress.** Each step is a real route plus CSS selectors for
+  markup that already exists, and the Garden step uses static sample sprites because a new player's
+  garden is empty. Neither file may import a store, reducer or progression module; `walkthrough.test.ts`
+  fails if one appears, and fails if a step's route or primary selector stops existing.
+- **The only stored fact is that it was finished or skipped**, keyed by account like every other
+  first-run flag, and used only so the intro stops OFFERING it. It never starts by itself.
+- **The card is pinned to the bottom and the target is scrolled to the top**, so the card cannot
+  cover what it describes. The spotlight is one element whose huge box-shadow is the dimming, and it
+  stops easing under `prefers-reduced-motion`, as does the scrolling.
+- **A step may not wait on a selector.** If none matches, the step is shown with no hole.
+
 ## Page themes
 
 Each major page can have its own atmosphere through one fixed gradient layer, `PageAtmosphere`

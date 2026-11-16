@@ -330,7 +330,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
       ) : (
         <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {visible.map((herb, index) => (
-            <li key={herb.id}>
+            <li key={herb.id} data-tour={index === 0 ? 'first-card' : undefined}>
               <HerbCard
                 herb={herb}
                 discovered={ready && isDiscovered(herb.id)}

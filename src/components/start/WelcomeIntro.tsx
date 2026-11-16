@@ -12,6 +12,7 @@ import {
   welcomeSeen,
 } from '@/lib/first-run';
 import { TOUR_EVENT } from '@/lib/welcome-tour';
+import { startWalkthrough, useWalkthroughDone } from '@/lib/walkthrough';
 import { SCENES } from './WelcomeScenes';
 
 /**
@@ -58,6 +59,7 @@ export function WelcomeIntro() {
   const { ready, discoveredCount } = useHerbdex();
   const scope = user?.id ?? ANONYMOUS_SCOPE;
   const seen = useWelcomeSeen(scope);
+  const tourDone = useWalkthroughDone(scope);
   const pathname = usePathname();
   const frame = useRef<HTMLDialogElement | null>(null);
   const [index, setIndex] = useState(0);
@@ -163,6 +165,12 @@ export function WelcomeIntro() {
             returning={discoveredCount > 0}
             onLeave={dismiss}
             onNext={() => setIndex((one) => Math.min(SCENES.length - 1, one + 1))}
+            // Close the intro first (which also records that it was seen), then hand over.
+            onTour={() => {
+              dismiss();
+              startWalkthrough();
+            }}
+            tourDone={tourDone}
           />
         </div>
       </div>
