@@ -260,6 +260,21 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
   const openFieldLog = () => {
     const trigger = document.getElementById(FIELD_LOG_TRIGGER_ID);
     if (trigger) {
+      /*
+       * THE FORM LIVES IN ANOTHER TAB, AND A MODAL OPENED INSIDE A HIDDEN PANEL DRAWS NOTHING.
+       * On the plant page this button sits in the Challenges tab and the Field Log in Progress;
+       * every panel stays mounted and the inactive ones are `hidden`, so `showModal()` succeeded
+       * on a dialog nobody could see and the button looked dead. Show the panel that owns the
+       * trigger first, through the tab button that already exists, then open the form once the
+       * panel has painted. Same ask-the-DOM approach as the click itself: no new state, no
+       * coupling to ProfileTabs beyond the `panel-`/`tab-` ids it already writes.
+       */
+      const panel = trigger.closest<HTMLElement>('[role="tabpanel"]');
+      if (panel?.hidden) {
+        document.getElementById(panel.id.replace(/^panel-/, 'tab-'))?.click();
+        requestAnimationFrame(() => trigger.click());
+        return;
+      }
       trigger.click();
       return;
     }
