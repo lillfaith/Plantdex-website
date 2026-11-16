@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -43,21 +42,11 @@ export function AccountBadge({ inline = false }: { inline?: boolean } = {}) {
   const { ready, configured, user } = useAuth();
   const { state } = useHerbdex();
   const { profile: stored } = useProfileStore();
-  const pathname = usePathname();
 
   const resolved = useMemo(() => resolveProfile(stored, state), [stored, state]);
   const herb = resolved.avatarHerbId ? getPrintedCard(resolved.avatarHerbId) : undefined;
 
   if (!configured || !ready) return null;
-
-  /*
-   * NOT ON THE COLLECTION PAGE. Its header already draws the same avatar large, in the top-left,
-   * and links it to the profile, so the small copy in the corner was a second portrait of the
-   * same plant. Exactly `/herbdex`: a plant's own page (`/herbdex/<id>`) has no such header and
-   * keeps the badge. The trailing slash is stripped because the static export serves
-   * directories with one.
-   */
-  if (pathname.replace(/\/$/, '') === '/herbdex') return null;
 
   const initial = user?.email?.[0]?.toUpperCase();
 

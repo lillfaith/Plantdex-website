@@ -38,8 +38,11 @@ describe('where the Field Board can be reached from', () => {
     expect(CARD).toContain('selfOf(rows)');
     expect(CARD).toContain('fetchStandings');
     expect(strip(CARD)).not.toMatch(/scoreFromRecords|LEADERBOARD_POINTS|useHerbdex/);
-    // Honest about what the board is, on the card itself.
-    expect(CARD).toMatch(/Opt-in, and every score is provisional/);
+    // A compact strip: the trophy, and the word Leaderboard in small gold text beneath it.
+    expect(CARD).toContain('Leaderboard');
+    expect(CARD).toContain('text-gold-400');
+    expect(CARD).toContain('h-[2.4rem]');
+    expect(CARD).toContain('tap-44');
   });
 
   it('puts a trophy link in the sitewide shell, outside the page content', () => {
@@ -111,14 +114,14 @@ describe('the Collection page after the shortcut tiles were removed', () => {
   });
 });
 
-describe('the account badge on the Collection page', () => {
+describe('the account badge', () => {
   const badge = readFileSync('src/components/auth/AccountBadge.tsx', 'utf8');
 
-  it('is hidden there only, because the page header already shows the same avatar large', () => {
-    expect(badge).toContain("pathname.replace(/\\/$/, '') === '/herbdex'");
-    // Exactly the Collection page: a prefix match would hide it on every plant's own page too.
-    expect(badge).not.toMatch(/pathname\.startsWith\('\/herbdex/);
-    // The hook is called before the early returns, so hiding it never changes the hook order.
-    expect(badge.indexOf('usePathname()')).toBeLessThan(badge.indexOf("=== '/herbdex'"));
+  it('is shown on the Collection page too, beside the Field Board trophy', () => {
+    expect(badge).not.toContain('usePathname');
+    expect(badge).not.toContain("'/herbdex'");
+    const cluster = LAYOUT.slice(LAYOUT.indexOf('fixed top-2 right-2'), LAYOUT.indexOf('<WelcomeIntro />'));
+    expect(cluster).toContain('<BoardTrophyLink />');
+    expect(cluster).toContain('<AccountBadge inline />');
   });
 });
