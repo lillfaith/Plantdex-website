@@ -88,12 +88,28 @@ const EMPTY: StoredProfile = Object.freeze({
   pinnedAchievementIds: Object.freeze([]) as unknown as string[],
 });
 
+/**
+ * MIRRORS `public.is_safe_display_name` (migration 0013), which is the real boundary: the row is
+ * client-written, so the database refuses what this refuses. Invisible and control characters
+ * let one name pass for another; the reserved words let a player pose as the service.
+ * `leaderboard-integrity.test.ts` keeps both lists equal to the SQL.
+ */
+export const RESERVED_NAME_WORDS = ['plantdex', 'admin', 'moderator', 'official', 'support', 'staff'] as const;
+export const UNSAFE_NAME_CHARS =
+  /[\u0001-\u001F\u007F-\u009F\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180B-\u180E\u2000-\u200F\u2028-\u202F\u205F-\u206F\u3000\u3164\uFE00-\uFE0F\uFEFF\uFFA0]/g;
+
+export function isSafeDisplayName(name: string): boolean {
+  const lower = name.toLowerCase();
+  return name.search(UNSAFE_NAME_CHARS) === -1 && !RESERVED_NAME_WORDS.some((word) => lower.includes(word));
+}
+
 function cleanName(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   // Collapse runs of whitespace so a name of twenty spaces is empty rather than "chosen",
-  // and so the stored value cannot carry newlines into a single-line heading.
-  const trimmed = value.replace(/\s+/g, ' ').trim().slice(0, MAX_DISPLAY_NAME);
-  return trimmed.length > 0 ? trimmed : null;
+  // and so the stored value cannot carry newlines into a single-line heading. Invisible
+  // characters are dropped, and a name posing as the service is refused outright.
+  const trimmed = value.replace(/\s+/g, ' ').replace(UNSAFE_NAME_CHARS, '').trim().slice(0, MAX_DISPLAY_NAME).trim();
+  return trimmed.length > 0 && isSafeDisplayName(trimmed) ? trimmed : null;
 }
 
 function cleanId(value: unknown): string | null {

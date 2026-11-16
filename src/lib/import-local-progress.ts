@@ -236,8 +236,11 @@ export async function importLocalProgress(userId: string): Promise<ImportOutcome
   const parts: [string, Promise<boolean>][] = [
     ['discoveries', upsertTimestampRows('discoveries', 'herb_id', 'discovered_at', userId, state.discoveries)],
     ['learned', upsertTimestampRows('learned', 'herb_id', 'learned_at', userId, state.learned)],
-    ['mastered', upsertTimestampRows('mastered', 'herb_id', 'mastered_at', userId, state.mastered)],
-    ['research', upsertTimestampRows('research_completions', 'task_id', 'completed_at', userId, state.research)],
+    // MASTERY AND RESEARCH ARE NOT IMPORTED AS ROWS. Migration 0013 removed the client insert
+    // path on both tables, because either one is a claim the server derives. They are rebuilt
+    // by `herbdex-action` from the discoveries, learned records and sightings imported here,
+    // the next time the collection reconciles. The cost is narrow and stated: a card mastered
+    // on this device whose only sighting was later deleted is not carried into the account.
     [
       'achievements',
       upsertTimestampRows(

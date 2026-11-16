@@ -28,6 +28,16 @@ import type { HerbdexState } from '../_shared/herbdex/types.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
+/**
+ * THE ONLY WRITER OF `mastered` AND `research_completions`. Migration 0013 removed the client
+ * insert policy on both, because a row there is a claim the server derives, never one a client
+ * may assert. The service role is used for exactly those two writes and for nothing else: every
+ * read below still goes through the caller's own session, so row level security decides what
+ * this function can see. The key never leaves this function and is never logged.
+ */
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+/** More daily ids than any real board offers is a request trying to complete tasks in bulk. */
+const MAX_DAILY_TASK_IDS = 8;
 
 interface ReconcileRequest {
   /**
@@ -161,7 +171,9 @@ Deno.serve(async (req) => {
   }
 
   const world = buildWorld(state, sightingCounts);
-  const activeDailyTasks = (body.dailyTaskIds ?? [])
+  const offered = Array.isArray(body.dailyTaskIds) ? body.dailyTaskIds.slice(0, MAX_DAILY_TASK_IDS) : [];
+  const activeDailyTasks = offered
+    .filter((id): id is string => typeof id === 'string')
     .map((id) => researchTaskById(id))
     .filter((task): task is NonNullable<typeof task> => task !== undefined);
   const activeTasks = [...STANDING_TASKS, ...activeDailyTasks];
@@ -182,10 +194,18 @@ Deno.serve(async (req) => {
   // request when awaited. `Promise.all` takes thenables happily; typing this as `Promise`
   // is what `deno check` rejects, and `deno check` is how this function is validated
   // (the project's tsconfig excludes supabase/**, so nothing else would catch it).
-  const writes: PromiseLike<unknown>[] = [];
+  const needsDerivedWrite =
+    masteryOutcome.masteredIds.length > 0 || researchOutcome.completedIds.length > 0;
+  if (needsDerivedWrite && !SUPABASE_SERVICE_ROLE_KEY) {
+    return json({ error: 'Progress could not be recorded. Please try again later.' }, 500);
+  }
+  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const writes: PromiseLike<{ error: unknown }>[] = [];
   for (const herbId of masteryOutcome.masteredIds) {
     writes.push(
-      supabase
+      admin
         .from('mastered')
         .upsert(
           { user_id: userId, herb_id: herbId, mastered_at: at },
@@ -195,7 +215,7 @@ Deno.serve(async (req) => {
   }
   for (const taskId of researchOutcome.completedIds) {
     writes.push(
-      supabase
+      admin
         .from('research_completions')
         .upsert(
           { user_id: userId, task_id: taskId, completed_at: at },
@@ -213,7 +233,10 @@ Deno.serve(async (req) => {
         ),
     );
   }
-  await Promise.all(writes);
+  const results = await Promise.all(writes);
+  if (results.some((result) => result.error)) {
+    return json({ error: 'Progress could not be recorded. Please try again later.' }, 500);
+  }
 
   return json({
     masteredIds: masteryOutcome.masteredIds,
