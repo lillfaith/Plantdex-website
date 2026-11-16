@@ -84,11 +84,13 @@ describe('the walkthrough steps', () => {
   it('are short, friendly sentences and make no medical or identification promises', () => {
     for (const step of WALK_STEPS) {
       expect(step.title.length).toBeLessThanOrEqual(24);
-      expect(step.body.length).toBeLessThanOrEqual(150);
+      // Short enough to read at a glance: one line or two on a phone.
+      expect(step.body.length).toBeLessThanOrEqual(70);
       expect(step.body).not.toMatch(/\b(cure|treat|heal|edible|safe to|identif(y|ies) (it )?for sure)\b/i);
     }
     // Identification is a suggestion the player confirms, never a verdict.
     expect(WALK_STEPS[0]!.body).toMatch(/suggests/);
+    expect(WALK_FINISH.body.length).toBeLessThanOrEqual(50);
   });
 
   it('says on the Field Board step that joining is a choice and scores are self-reported', () => {
@@ -132,6 +134,13 @@ describe('the walkthrough controls', () => {
     // The card is pinned to the bottom above the tab bar; the target is scrolled to the top.
     expect(code).toContain('bottom-[calc(4.5rem+env(safe-area-inset-bottom))]');
     expect(code).toContain('TOP_GAP');
+  });
+
+  it('does not push a player forward after they leave a step, and does not let the intro cover it', () => {
+    const code = strip(OVERLAY);
+    expect(code).toContain('arrived.current === index');
+    expect(code).toMatch(/close\('skipped'\);\s*return;/);
+    expect(code).toContain('markWelcomeSeen(scope)');
   });
 
   it('needs no scan and no account, and writes nothing of the collection', () => {

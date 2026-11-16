@@ -43,21 +43,21 @@ export const WALK_STEPS: readonly WalkStep[] = [
     route: '/scan',
     targets: ['section[aria-label="Identify a plant"]', 'main h1'],
     title: 'Scan a plant',
-    body: 'Snap a few photos of one plant growing outdoors. Plantdex suggests what it might be, and you choose whether to record the find.',
+    body: 'Snap a few photos of one plant. Plantdex suggests a name; you decide.',
   },
   {
     id: 'collection',
     route: '/herbdex',
     targets: ['[data-tour="first-card"]', 'main h1'],
     title: 'Your collection',
-    body: 'Every card starts as a silhouette. Find its plant outdoors and the card blooms. Tap a card to read its story.',
+    body: 'Cards start as silhouettes. Find the plant and its card blooms.',
   },
   {
     id: 'garden',
     route: '/garden',
     targets: ['[data-tour="garden-bed"]', 'main h1'],
     title: 'Watch it grow',
-    body: 'Each find takes root here and grows as you get to know it: Discovered, then Learned, then Mastered.',
+    body: 'Every find takes root here and grows with you.',
     sample: 'garden-stages',
   },
   {
@@ -65,35 +65,35 @@ export const WALK_STEPS: readonly WalkStep[] = [
     route: '/journal',
     targets: ['main h1'],
     title: 'Field Journal',
-    body: 'Jot a note or add a photo each time you meet a plant again. Every visit is pressed here like a leaf in a book.',
+    body: 'Add a note or photo each time you meet a plant again.',
   },
   {
     id: 'research',
     route: '/herbdex/research',
     targets: ['#today-heading', 'main h1'],
     title: 'Field Research',
-    body: 'Little daily quests and seasonal ladders send you outside, and finishing them earns XP. Regional quests suggest plants to seek near you.',
+    body: 'Daily and regional quests send you outside to earn XP.',
   },
   {
     id: 'board',
     route: '/leaderboard',
     targets: ['section[aria-labelledby="own-heading"]', 'main h1'],
     title: 'The Field Board',
-    body: 'An optional leaderboard. Finds, journal entries and challenges earn points, you only appear if you choose to join, and every score is self-reported.',
+    body: 'Optional and self-reported. You only appear if you choose to join.',
   },
   {
     id: 'profile',
     route: '/profile',
     targets: ['.hero-wash', 'main h1'],
     title: 'Your field card',
-    body: 'XP, badges, titles and frames gather here. Level up and your card grows right along with you.',
+    body: 'XP, badges, titles and frames collect on your field card.',
   },
 ];
 
 /** The closing card: no target, one button, and the only link in the tour that leaves it. */
 export const WALK_FINISH = {
   title: 'Your adventure begins now!',
-  body: 'Somewhere close by, a plant is waiting to be found.',
+  body: 'Somewhere close by, a plant is waiting.',
   cta: 'Find My First Plant',
   href: '/scan',
 } as const;
