@@ -39,3 +39,8 @@ deno.lock
 plantdex-ad-assets*.zip
 ad-assets/
 *-codes.csv
+
+# private production tool: generated and downloaded assets, never committed
+production-assets/
+production-work/
+production-out/

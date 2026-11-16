@@ -1,0 +1,90 @@
+name: Production batch (collect candidates for ChatGPT review)
+
+# PRIVATE DEVELOPMENT TOOL. Collects CC0 iNaturalist candidates for the batch request files in
+# evidence/production/batches/, builds the two ZIPs, and commits ONLY the small result file.
+# It does not edit the ledger, touch any card or asset, modify the website, or deploy.
+#
+# api.inaturalist.org is refused by the development sandbox, so collection runs here.
+# STARTED BY PUSHING a new evidence/production/batches/batch-NNN.request.json on this branch
+# (made by `pd.py package-next`). The workflow file is deliberately NOT a trigger. Re-pushing
+# an unfinished request RESUMES it: finished species are checkpointed in the cached work dir.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/production/batches/*.request.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: production-batch
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - name: Offline tests (no network)
+        run: |
+          python3 scripts/fetch_inat_photos.py --self-test
+          python3 scripts/production/test_production.py
+      # RESUME + NO DUPLICATE DOWNLOADS: the work dir holds per-species checkpoints and the
+      # originals already fetched. The newest cache is restored; a new one is saved at the end.
+      - uses: actions/cache@v4
+        with:
+          path: production-work
+          key: pdwork-${{ github.run_id }}
+          restore-keys: pdwork-
+      - name: Collect every request that has no result yet
+        run: |
+          shopt -s nullglob
+          todo=0
+          for req in evidence/production/batches/batch-*.request.json; do
+            res="${req/.request./.result.}"
+            if [ -f "$res" ]; then echo "done already: $req"; continue; fi
+            todo=1
+            python3 scripts/production/pd.py collect --request "$req"
+          done
+          [ "$todo" = 1 ] || echo "nothing to collect"
+      - name: Summary
+        run: |
+          {
+            echo "### Production batch"
+            ls -la production-out/*.zip 2>/dev/null || echo "no ZIPs built"
+            echo
+            echo "Download the **review** ZIP into ChatGPT; keep the **originals** ZIP for \`pd import-selection\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: production-batch-review
+          path: production-out/*-review.zip
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        with:
+          name: production-batch-originals
+          path: production-out/*-originals.zip
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Commit the result file(s) (small JSON only)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/production/batches/*.result.json
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Production batch results (collection only; nothing selected or approved)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "::error::could not push after 5 attempts"; exit 1
