@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { useAuth } from '@/state/AuthProvider';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -38,15 +39,25 @@ import { ProfileAvatar } from '@/components/profile/ProfileAvatar';
  * would be a worse door.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-export function AccountBadge() {
+export function AccountBadge({ inline = false }: { inline?: boolean } = {}) {
   const { ready, configured, user } = useAuth();
   const { state } = useHerbdex();
   const { profile: stored } = useProfileStore();
+  const pathname = usePathname();
 
   const resolved = useMemo(() => resolveProfile(stored, state), [stored, state]);
   const herb = resolved.avatarHerbId ? getPrintedCard(resolved.avatarHerbId) : undefined;
 
   if (!configured || !ready) return null;
+
+  /*
+   * NOT ON THE COLLECTION PAGE. Its header already draws the same avatar large, in the top-left,
+   * and links it to the profile, so the small copy in the corner was a second portrait of the
+   * same plant. Exactly `/herbdex`: a plant's own page (`/herbdex/<id>`) has no such header and
+   * keeps the badge. The trailing slash is stripped because the static export serves
+   * directories with one.
+   */
+  if (pathname.replace(/\/$/, '') === '/herbdex') return null;
 
   const initial = user?.email?.[0]?.toUpperCase();
 
@@ -54,8 +65,11 @@ export function AccountBadge() {
    * `tap-44` because the badge is drawn at 36px. Same trick the filter chips use: the visual
    * size stays as designed and an invisible overlay keeps the thumb area at 44px.
    */
-  const shell =
-    'tap-44 fixed top-2 right-2 z-40 flex items-center justify-center rounded-full sm:top-3 sm:right-3';
+  // `inline` is for the shell's corner cluster (`layout.tsx`), which owns the fixed position
+  // and puts the Field Board link beside the badge; anywhere else it still floats by itself.
+  const shell = `tap-44 z-40 flex items-center justify-center rounded-full ${
+    inline ? 'relative' : 'fixed top-2 right-2 sm:top-3 sm:right-3'
+  }`;
 
   if (herb) {
     return (

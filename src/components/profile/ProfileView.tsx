@@ -15,6 +15,7 @@ import { FieldRecord } from './FieldRecord';
 import { GardenPreview } from './GardenPreview';
 import { HabitatIdentity } from './HabitatIdentity';
 import { FieldCardsHeld } from './FieldCardsHeld';
+import { AchievementsSection } from './AchievementsSection';
 import { PinnedAchievements } from './PinnedAchievements';
 import { ProfileHero } from './ProfileHero';
 import { RecentFinds } from './RecentFinds';
@@ -108,6 +109,10 @@ export function ProfileView() {
           border to separate them. */}
       <div className="mt-7">
         <PinnedAchievements ids={profile.pinnedAchievementIds} />
+      </div>
+
+      <div className="mt-7">
+        <AchievementsSection />
       </div>
 
       <div className="mt-7 space-y-3">

@@ -191,3 +191,31 @@ export function ownDisplay(
   }
   return { score: local, source: 'device', difference: null };
 }
+
+/**
+ * WHAT THE COLLECTION PAGE'S FIELD BOARD CARD SAYS ABOUT YOU, and nothing it cannot know.
+ *
+ * Your place exists only once you have joined, so the line has to tell apart "not signed in",
+ * "signed in but not listed" and "listed" instead of printing a rank for everybody. `null`
+ * means say nothing extra: while the board is loading, or if it could not be reached, a rank
+ * line would be a guess, and an unavailable board is not news worth a sentence on a card.
+ */
+export type BoardCardState =
+  | { kind: 'loading' }
+  | { kind: 'unavailable' }
+  | { kind: 'signedOut' }
+  | { kind: 'notListed' }
+  | { kind: 'listed'; standing: number; points: number };
+
+export function boardCardLine(state: BoardCardState): string | null {
+  switch (state.kind) {
+    case 'listed':
+      return `You are ${ordinal(state.standing)} · ${state.points} pts`;
+    case 'notListed':
+      return 'Not listed yet. Join whenever you like';
+    case 'signedOut':
+      return 'Sign in to take part';
+    default:
+      return null;
+  }
+}
