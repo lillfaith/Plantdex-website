@@ -1,0 +1,7 @@
+# Species to run through expansion-candidates.yml. One scientific name per line.
+# PILOT: the five from batch 1.
+Eupatorium perfoliatum
+Juglans nigra
+Opuntia engelmannii
+Eschscholzia californica
+Serenoa repens
