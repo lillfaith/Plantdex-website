@@ -169,14 +169,33 @@ export function AppWalkthrough() {
       if (!frame) frame = requestAnimationFrame(measure);
     };
 
+    /*
+     * WHERE TO SCROLL, OR NOWHERE. A scroll is only worth making when the target is actually hidden
+     * (above the header marks, or under the card) AND the page can really move far enough to fix it.
+     * Short pages (the Journal, the Field Board) already show their heading, and a scroll there can
+     * only be a no-op that still lands in the middle of a tap: on an iPhone a programmatic scroll
+     * during a touch can swallow the tap, and scrolling toward the top makes Safari redraw its
+     * toolbars, which shifts a bottom-pinned card out from under the finger. Returns null when no
+     * scroll is needed.
+     */
+    const scrollDestination = (): number | null => {
+      if (!target || !target.isConnected) return null;
+      const rect = target.getBoundingClientRect();
+      const cardTop = card.current?.getBoundingClientRect().top ?? window.innerHeight;
+      if (rect.top >= 8 && rect.bottom <= cardTop - 8) return null;
+      const furthest = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const to = Math.min(Math.max(0, window.scrollY + rect.top - TOP_GAP), furthest);
+      return Math.abs(to - window.scrollY) < 2 ? null : to;
+    };
+
     // A page that is still loading has no target yet, so look for a moment before settling for
     // the step's words with no hole: a tour must never wait on a selector.
     const look = () => {
       if (cancelled) return;
       target = findTarget(step);
       if (target) {
-        const top = target.getBoundingClientRect().top + window.scrollY - TOP_GAP;
-        window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth' });
+        const to = scrollDestination();
+        if (to !== null) window.scrollTo({ top: to, behavior: reducedMotion() ? 'auto' : 'smooth' });
         measure();
         return;
       }
@@ -190,15 +209,25 @@ export function AppWalkthrough() {
     // hydrating store), which leaves the target short of where it was aimed. Re-align twice,
     // instantly, shortly after arriving, unless the player has already started scrolling.
     let touched = false;
+    let touching = false;
     const touch = () => {
       touched = true;
     };
+    const down = () => {
+      touching = true;
+    };
+    const up = () => {
+      touching = false;
+    };
     window.addEventListener('touchstart', touch, { once: true, passive: true });
     window.addEventListener('wheel', touch, { once: true, passive: true });
+    window.addEventListener('touchstart', down, { passive: true });
+    window.addEventListener('touchend', up, { passive: true });
+    window.addEventListener('touchcancel', up, { passive: true });
     const realign = () => {
-      if (cancelled || touched || !target || !target.isConnected) return;
-      const gap = target.getBoundingClientRect().top - TOP_GAP;
-      if (Math.abs(gap) > 24) window.scrollTo({ top: Math.max(0, window.scrollY + gap), behavior: 'auto' });
+      if (cancelled || touched || touching) return;
+      const to = scrollDestination();
+      if (to !== null) window.scrollTo({ top: to, behavior: 'auto' });
     };
     const realigning = [window.setTimeout(realign, 700), window.setTimeout(realign, 1500)];
 
@@ -216,6 +245,9 @@ export function AppWalkthrough() {
       realigning.forEach((timer) => window.clearTimeout(timer));
       window.removeEventListener('touchstart', touch);
       window.removeEventListener('wheel', touch);
+      window.removeEventListener('touchstart', down);
+      window.removeEventListener('touchend', up);
+      window.removeEventListener('touchcancel', up);
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener('scroll', queue, { capture: true });
       window.removeEventListener('resize', queue);

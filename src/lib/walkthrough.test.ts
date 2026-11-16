@@ -136,6 +136,17 @@ describe('the walkthrough controls', () => {
     expect(code).toContain('TOP_GAP');
   });
 
+  it('scrolls only when the target is hidden and the page can move, and never during a touch', () => {
+    const code = strip(OVERLAY);
+    // One rule decides both the first scroll and the re-align, and returns null for "do not scroll".
+    expect(code).toContain('scrollDestination');
+    expect(code).toMatch(/rect\.top >= 8 && rect\.bottom <= cardTop - 8\) return null/);
+    expect(code).toContain('document.documentElement.scrollHeight - window.innerHeight');
+    // A programmatic scroll mid-tap can swallow the tap on iOS, so the re-align waits for the finger.
+    expect(code).toContain("window.addEventListener('touchend', up");
+    expect(code).toMatch(/if \(cancelled \|\| touched \|\| touching\) return;/);
+  });
+
   it('keeps Shift+Tab inside the card even when focus is on the heading', () => {
     // Focus lands on the heading at every step and the heading precedes the first button, so the
     // wrap has to cover it or the keyboard escapes behind the dim layer.
