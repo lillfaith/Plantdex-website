@@ -244,7 +244,9 @@ export function AppWalkthrough() {
     const first = stops[0];
     const last = stops[stops.length - 1];
     if (!first || !last) return;
-    if (event.shiftKey && document.activeElement === first) {
+    // Focus lands on the heading at every step, and the heading sits BEFORE the first button, so
+    // Shift+Tab from it has to wrap too or it walks straight out of the card into the page behind.
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === title.current)) {
       event.preventDefault();
       last.focus();
     } else if (!event.shiftKey && document.activeElement === last) {

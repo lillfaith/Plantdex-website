@@ -136,6 +136,12 @@ describe('the walkthrough controls', () => {
     expect(code).toContain('TOP_GAP');
   });
 
+  it('keeps Shift+Tab inside the card even when focus is on the heading', () => {
+    // Focus lands on the heading at every step and the heading precedes the first button, so the
+    // wrap has to cover it or the keyboard escapes behind the dim layer.
+    expect(strip(OVERLAY)).toMatch(/event\.shiftKey && \(document\.activeElement === first \|\| document\.activeElement === title\.current\)/);
+  });
+
   it('does not push a player forward after they leave a step, and does not let the intro cover it', () => {
     const code = strip(OVERLAY);
     expect(code).toContain('arrived.current === index');
