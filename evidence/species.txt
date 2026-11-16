@@ -17,3 +17,12 @@ Achillea millefolium
 Plantago major
 Sambucus canadensis
 Pinus strobus
+
+# EXPANSION BATCH 1 OF 86 (cards #57-142, numbers fixed; full list: evidence/expansion-86.json).
+# Five species chosen to span growth forms before the full run: an herb, a tree, a cactus,
+# a showy annual and a palm. None are safety-flagged.
+Eupatorium perfoliatum
+Juglans nigra
+Opuntia engelmannii
+Eschscholzia californica
+Serenoa repens

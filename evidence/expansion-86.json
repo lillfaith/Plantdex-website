@@ -1,0 +1,735 @@
+[
+ {
+  "card": 57,
+  "common": "Boneset",
+  "scientific": "Eupatorium perfoliatum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 58,
+  "common": "Hollow Joe-Pye Weed",
+  "scientific": "Eutrochium fistulosum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 59,
+  "common": "New Jersey Tea",
+  "scientific": "Ceanothus americanus",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 60,
+  "common": "Black-Eyed Susan",
+  "scientific": "Rudbeckia hirta",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 61,
+  "common": "Narrowleaf Mountain Mint",
+  "scientific": "Pycnanthemum tenuifolium",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 62,
+  "common": "California Buckwheat",
+  "scientific": "Eriogonum fasciculatum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "regions_corrected": [
+   "PC",
+   "SW"
+  ],
+  "habitat": "chaparral, coastal sage scrub, dry slopes",
+  "safety_flag": false
+ },
+ {
+  "card": 63,
+  "common": "Wild Quinine",
+  "scientific": "Parthenium integrifolium",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 64,
+  "common": "Sweet Everlasting",
+  "scientific": "Pseudognaphalium obtusifolium",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 65,
+  "common": "American Lotus",
+  "scientific": "Nelumbo lutea",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "regions_corrected": [
+   "MW",
+   "SE",
+   "GC",
+   "NE"
+  ],
+  "habitat": "ponds, lakes, slow-moving freshwater; where documented",
+  "safety_flag": false
+ },
+ {
+  "card": 66,
+  "common": "Annual Fleabane",
+  "scientific": "Erigeron annuus",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 67,
+  "common": "Curly Dock",
+  "scientific": "Rumex crispus",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 68,
+  "common": "Narrowleaf Plantain",
+  "scientific": "Plantago lanceolata",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 69,
+  "common": "Common Mugwort",
+  "scientific": "Artemisia vulgaris",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 70,
+  "common": "Motherwort",
+  "scientific": "Leonurus cardiaca",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 71,
+  "common": "New York Ironweed",
+  "scientific": "Vernonia noveboracensis",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 72,
+  "common": "Blue Mistflower",
+  "scientific": "Conoclinium coelestinum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 73,
+  "common": "Anise Hyssop",
+  "scientific": "Agastache foeniculum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 74,
+  "common": "Virginia Spring Beauty",
+  "scientific": "Claytonia virginica",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 75,
+  "common": "Smooth Solomon's Seal",
+  "scientific": "Polygonatum biflorum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 76,
+  "common": "Partridgeberry",
+  "scientific": "Mitchella repens",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 77,
+  "common": "American Groundnut",
+  "scientific": "Apios americana",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 78,
+  "common": "Wild Yam",
+  "scientific": "Dioscorea villosa",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 79,
+  "common": "Virginia Pepperweed",
+  "scientific": "Lepidium virginicum",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 80,
+  "common": "Common Cinquefoil",
+  "scientific": "Potentilla simplex",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 81,
+  "common": "White Clover",
+  "scientific": "Trifolium repens",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 82,
+  "common": "Queen Anne's Lace",
+  "scientific": "Daucus carota",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 83,
+  "common": "American Skullcap",
+  "scientific": "Scutellaria lateriflora",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 84,
+  "common": "Mountain Monardella",
+  "scientific": "Monardella odoratissima",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "regions_corrected": [
+   "RM",
+   "PC"
+  ],
+  "habitat": "montane forests, rocky slopes, open mountain habitats",
+  "safety_flag": false
+ },
+ {
+  "card": 85,
+  "common": "Slippery Elm",
+  "scientific": "Ulmus rubra",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 86,
+  "common": "Black Cherry",
+  "scientific": "Prunus serotina",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 87,
+  "common": "Black Walnut",
+  "scientific": "Juglans nigra",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 88,
+  "common": "Eastern Red Cedar",
+  "scientific": "Juniperus virginiana",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 89,
+  "common": "Pawpaw",
+  "scientific": "Asimina triloba",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 90,
+  "common": "American Persimmon",
+  "scientific": "Diospyros virginiana",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 91,
+  "common": "Flowering Dogwood",
+  "scientific": "Cornus florida",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 92,
+  "common": "Eastern Redbud",
+  "scientific": "Cercis canadensis",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 93,
+  "common": "American Sweetgum",
+  "scientific": "Liquidambar styraciflua",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 94,
+  "common": "American Sycamore",
+  "scientific": "Platanus occidentalis",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 95,
+  "common": "Sweetfern",
+  "scientific": "Comptonia peregrina",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "regions_corrected": [
+   "NF",
+   "NE",
+   "AP",
+   "MW"
+  ],
+  "habitat": "dry sandy or acidic soils",
+  "safety_flag": false
+ },
+ {
+  "card": 96,
+  "common": "American Beech",
+  "scientific": "Fagus grandifolia",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 97,
+  "common": "American Basswood",
+  "scientific": "Tilia americana",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 98,
+  "common": "Yaupon Holly",
+  "scientific": "Ilex vomitoria",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 99,
+  "common": "Southern Wax Myrtle",
+  "scientific": "Morella cerifera",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 100,
+  "common": "Devil's Walkingstick",
+  "scientific": "Aralia spinosa",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 101,
+  "common": "Canadian Serviceberry",
+  "scientific": "Amelanchier canadensis",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 102,
+  "common": "Muscadine Grape",
+  "scientific": "Vitis rotundifolia",
+  "pdf_group": "Eastern & Central U.S.",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 103,
+  "common": "California Poppy",
+  "scientific": "Eschscholzia californica",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 104,
+  "common": "California Yerba Santa",
+  "scientific": "Eriodictyon californicum",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 105,
+  "common": "California Spikenard",
+  "scientific": "Aralia californica",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 106,
+  "common": "California Mugwort",
+  "scientific": "Artemisia douglasiana",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 107,
+  "common": "California Bay Laurel",
+  "scientific": "Umbellularia californica",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 108,
+  "common": "Oregon Grape",
+  "scientific": "Mahonia aquifolium",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 109,
+  "common": "Cascara",
+  "scientific": "Frangula purshiana",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": true
+ },
+ {
+  "card": 110,
+  "common": "Salal",
+  "scientific": "Gaultheria shallon",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 111,
+  "common": "California Figwort",
+  "scientific": "Scrophularia californica",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": true
+ },
+ {
+  "card": 112,
+  "common": "Red-Flowering Currant",
+  "scientific": "Ribes sanguineum",
+  "pdf_group": "Pacific Coast & California",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 113,
+  "common": "Desert Lavender",
+  "scientific": "Condea emoryi",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "regions_corrected": null,
+  "habitat": "warm desert washes and rocky arid slopes, not wetlands",
+  "safety_flag": true
+ },
+ {
+  "card": 114,
+  "common": "Desert Globemallow",
+  "scientific": "Sphaeralcea ambigua",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 115,
+  "common": "Jojoba",
+  "scientific": "Simmondsia chinensis",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 116,
+  "common": "Engelmann Prickly Pear",
+  "scientific": "Opuntia engelmannii",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 117,
+  "common": "Honey Mesquite",
+  "scientific": "Prosopis glandulosa",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 118,
+  "common": "Desert Willow",
+  "scientific": "Chilopsis linearis",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 119,
+  "common": "Yerba Mansa",
+  "scientific": "Anemopsis californica",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "regions_corrected": null,
+  "habitat": "desert springs, seeps, wetland margins, not dry scrub",
+  "safety_flag": false
+ },
+ {
+  "card": 120,
+  "common": "Desert Chia",
+  "scientific": "Salvia columbariae",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 121,
+  "common": "Brittlebush",
+  "scientific": "Encelia farinosa",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 122,
+  "common": "Mormon Tea",
+  "scientific": "Ephedra trifurca",
+  "pdf_group": "Desert Southwest",
+  "number_fixed": true,
+  "safety_flag": true
+ },
+ {
+  "card": 123,
+  "common": "Rocky Mountain Beeplant",
+  "scientific": "Cleomella serrulata",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "regions_corrected": null,
+  "habitat": "western disturbed ground, plains, roadsides; not exclusively high mountains",
+  "safety_flag": false
+ },
+ {
+  "card": 124,
+  "common": "Arrowleaf Balsamroot",
+  "scientific": "Balsamorhiza sagittata",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 125,
+  "common": "Fireweed",
+  "scientific": "Chamerion angustifolium",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "regions_corrected": null,
+  "habitat": "widespread across several northern/western regions; not Rockies-exclusive",
+  "safety_flag": false
+ },
+ {
+  "card": 126,
+  "common": "Kinnikinnick",
+  "scientific": "Arctostaphylos uva-ursi",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "regions_corrected": null,
+  "habitat": "widespread across several northern/western regions; not Rockies-exclusive",
+  "safety_flag": false
+ },
+ {
+  "card": 127,
+  "common": "Swamp Rose Mallow",
+  "scientific": "Hibiscus moscheutos",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "regions_corrected": [
+   "GC",
+   "SE",
+   "NE",
+   "MW"
+  ],
+  "habitat": "marshes, wet meadows, stream margins",
+  "safety_flag": false
+ },
+ {
+  "card": 128,
+  "common": "Quaking Aspen",
+  "scientific": "Populus tremuloides",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 129,
+  "common": "Big Sagebrush",
+  "scientific": "Artemisia tridentata",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 130,
+  "common": "Canada Buffaloberry",
+  "scientific": "Shepherdia canadensis",
+  "pdf_group": "Rocky Mountains & Intermountain West",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 131,
+  "common": "American Licorice",
+  "scientific": "Glycyrrhiza lepidota",
+  "pdf_group": "Great Plains & Prairies",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 132,
+  "common": "Curlycup Gumweed",
+  "scientific": "Grindelia squarrosa",
+  "pdf_group": "Great Plains & Prairies",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 133,
+  "common": "Leadplant",
+  "scientific": "Amorpha canescens",
+  "pdf_group": "Great Plains & Prairies",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 134,
+  "common": "Purple Prairie Clover",
+  "scientific": "Dalea purpurea",
+  "pdf_group": "Great Plains & Prairies",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 135,
+  "common": "Narrowleaf Purple Coneflower",
+  "scientific": "Echinacea angustifolia",
+  "pdf_group": "Great Plains & Prairies",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 136,
+  "common": "Fringed Sagewort",
+  "scientific": "Artemisia frigida",
+  "pdf_group": "Great Plains & Prairies",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 137,
+  "common": "Saw Palmetto",
+  "scientific": "Serenoa repens",
+  "pdf_group": "Gulf Coast & Subtropical South",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 138,
+  "common": "Spanish Needles",
+  "scientific": "Bidens alba",
+  "pdf_group": "Gulf Coast & Subtropical South",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 139,
+  "common": "Water Hyssop (Brahmi)",
+  "scientific": "Bacopa monnieri",
+  "pdf_group": "Gulf Coast & Subtropical South",
+  "number_fixed": true,
+  "regions_corrected": [
+   "GC"
+  ],
+  "habitat": "shallow freshwater and wet soils; extra eligibility only where documented",
+  "safety_flag": true
+ },
+ {
+  "card": 140,
+  "common": "Saw Greenbrier",
+  "scientific": "Smilax bona-nox",
+  "pdf_group": "Gulf Coast & Subtropical South",
+  "number_fixed": true,
+  "safety_flag": false
+ },
+ {
+  "card": 141,
+  "common": "Bog Labrador Tea",
+  "scientific": "Rhododendron groenlandicum",
+  "pdf_group": "Northern & Boreal",
+  "number_fixed": true,
+  "safety_flag": true
+ },
+ {
+  "card": 142,
+  "common": "Lingonberry",
+  "scientific": "Vaccinium vitis-idaea",
+  "pdf_group": "Northern & Boreal",
+  "number_fixed": true,
+  "safety_flag": false
+ }
+]
