@@ -69,7 +69,7 @@ export function FieldBoardCard() {
       className="tap-44 panel flex h-[2.4rem] flex-col items-center justify-center border-gold-500/40 transition-colors hover:bg-plum-600/50"
     >
       <PlantdexIcon name="trophy" className="text-lg leading-none text-gold-300" />
-      <span className="text-[0.65rem] leading-none font-bold tracking-wide text-gold-400">
+      <span className="text-[0.72rem] leading-none font-bold tracking-wide text-gold-400">
         Leaderboard
       </span>
       {/* Your place, for a screen reader and only when there is one: the strip itself is a
