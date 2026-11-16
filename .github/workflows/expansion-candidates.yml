@@ -1,0 +1,108 @@
+name: Expansion candidates (many species in parallel)
+
+# ONE JOB PER SPECIES: fetch CC0 photos, score and segment them, render three candidate card
+# previews, and hand them over as an artifact. Photographs and previews NEVER enter git --
+# the pool is thrown away with the runner, exactly as docs/pipeline-2k.md stages 1-5 intend.
+# Only small contact-sheet JPEGs are committed, so a person (and a session) can look at them.
+#
+# SELECTS NOTHING and publishes nothing. It does not replace photo-candidates.yml: that one
+# keeps the originals durable once an asset store exists. This one exists so that comparing
+# candidates for ~80 species is not gated on that store.
+#
+# STARTED BY PUSHING evidence/expansion-queue.txt (one scientific name per line), the same
+# pattern as retrieve-evidence.yml. The workflow file itself is deliberately NOT a trigger:
+# editing a job with side effects must not run it.
+on:
+  push:
+    branches: [claude/botanical-catalog-stage-1]
+    paths:
+      - evidence/expansion-queue.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: expansion-candidates
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+      count: ${{ steps.m.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        run: |
+          python3 - <<'EOF'
+          import json, os
+          names = [l.strip() for l in open("evidence/expansion-queue.txt") if l.strip() and not l.lstrip().startswith("#")]
+          rows = [{"name": n, "key": n.lower().replace(" ", "_").replace("-", "_")} for n in dict.fromkeys(names)]
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("matrix=" + json.dumps({"include": rows}) + "\n")
+              f.write(f"count={len(rows)}\n")
+          print(len(rows), "species queued")
+          EOF
+
+  candidates:
+    needs: plan
+    if: needs.plan.outputs.count != '0'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.rembg
+          key: rembg-${{ env.PLANTDEX_SEGMENT_MODEL || 'birefnet-general-lite' }}-v1
+      - name: Install
+        run: pip install --quiet rembg onnxruntime opencv-python-headless pillow numpy pymupdf
+      - name: Fetch CC0 photographs (48 is enough to choose from; 96 was for re-searches)
+        run: python3 -I scripts/fetch_inat_photos.py "${{ matrix.name }}" --out evidence/photos --want 48 --size original
+      - name: Build candidates
+        run: python3 scripts/photo_pipeline.py --species "${{ matrix.key }}" --top 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cand-${{ matrix.key }}
+          path: evidence/candidates/${{ matrix.key }}
+          retention-days: 14
+          if-no-files-found: warn
+
+  sheets:
+    needs: [plan, candidates]
+    if: always() && needs.plan.outputs.count != '0'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cand-*
+          path: cands
+      - name: Build the contact sheets
+        run: |
+          for d in cands/cand-*; do mv "$d" "cands/${d#cands/cand-}"; done
+          python3 scripts/build_expansion_sheet.py --candidates cands --out evidence/review-sheets
+      - name: Commit the sheets (small JPEGs only)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/review-sheets
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Expansion contact sheets for review (nothing selected, nothing published)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "::error::could not push after 5 attempts"; exit 1
