@@ -10,6 +10,7 @@ import { useProfileStore } from '@/lib/profile-store';
 import { profileStats } from '@/lib/profile-stats';
 import { EYEBROW, MICRO_LABEL } from '@/components/ui/accents';
 import { Cabinet } from './Cabinet';
+import { startWalkthrough } from '@/lib/walkthrough';
 import { EDIT_PROFILE_ID, EditProfilePanel } from './EditProfilePanel';
 import { FieldRecord } from './FieldRecord';
 import { GardenPreview } from './GardenPreview';
@@ -164,6 +165,18 @@ export function ProfileView() {
         />
         <Cabinet state={state} stats={stats} />
       </div>
+
+      {/* Replay the guided tour of the app. It reads and writes nothing of the collection. */}
+      <p className="mt-7 text-center text-xs text-violet-300">
+        New here, or want a refresher?{' '}
+        <button
+          type="button"
+          onClick={startWalkthrough}
+          className="tap-44 inline-flex items-center font-bold text-gold-300 underline underline-offset-2 hover:text-gold-400"
+        >
+          Replay the guided tour
+        </button>
+      </p>
 
       {/*
         ── YOUR ACCOUNT ─────────────────────────────────────────────────────────

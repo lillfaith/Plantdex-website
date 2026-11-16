@@ -3113,3 +3113,37 @@ body {
     linear-gradient(var(--color-habitat-woodland), var(--color-habitat-woodland)) 9px -1px / 2px 2px no-repeat,
     linear-gradient(var(--color-habitat-woodland), var(--color-habitat-woodland)) calc(100% - 12px) -1px / 2px 2px no-repeat;
 }
+
+/*
+ * THE GUIDED WALKTHROUGH'S SPOTLIGHT.
+ *
+ * One element drawn around the real target. Its enormous box-shadow IS the dimming, so the
+ * target stays at full brightness with no mask or second layer to keep aligned. It is
+ * `pointer-events: none`; the blocker in `AppWalkthrough` owns the taps. It eases between
+ * steps, once per move, and stops under reduced motion.
+ */
+.tour-hole {
+  position: fixed;
+  z-index: 61;
+  pointer-events: none;
+  border-radius: 1rem;
+  outline: 2px solid var(--color-gold-400);
+  box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--color-plum-950) 80%, transparent);
+  transition:
+    top 0.25s ease,
+    left 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease;
+}
+.tour-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 61;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--color-plum-950) 80%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-hole {
+    transition: none;
+  }
+}

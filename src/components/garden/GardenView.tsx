@@ -87,7 +87,7 @@ export function GardenView() {
       </p>
 
       {/* The bed: fuller as the collection grows. */}
-      <div className="panel mt-4 min-h-64 overflow-hidden p-4">
+      <div data-tour="garden-bed" className="panel mt-4 min-h-64 overflow-hidden p-4">
         {!ready ? (
           <GrowthPlaceholder className="h-48" label="Loading your garden" />
         ) : garden.length === 0 ? (
