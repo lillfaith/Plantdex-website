@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "achillea millefolium",
-  "retrieved_at": "2026-11-06T20:47:51+00:00",
+  "retrieved_at": "2026-11-16T20:46:00+00:00",
   "identity": {
     "queried_name": "Achillea millefolium",
     "match_type": "EXACT",
@@ -92,11 +92,11 @@
         "pmc-13517077",
         "pmc-12914922",
         "pmc-13516345",
-        "pmc-12654173",
         "pmc-13074613",
+        "pmc-12654173",
         "pmc-12639085",
-        "epmc-a9e9bc9555",
         "pmc-12774671",
+        "epmc-a9e9bc9555",
         "pmc-12592042",
         "pmid-42316569",
         "pmid-40601286",
@@ -105,8 +105,8 @@
       ],
       "laboratory-study": [
         "pmid-42725524",
-        "pmid-42348360",
         "pmc-13708942",
+        "pmid-42348360",
         "pmc-13495121",
         "pmc-13405582",
         "pmc-13569960",
@@ -315,19 +315,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-12654173",
-        "title": "Metabolome and Essential Element Analyses of Five Underutilized European Crops Reveal Their Nutritional Properties and Potential to Diversify the European Food System.",
-        "journal": "Metabolites",
-        "year": "2025",
-        "doi": "10.3390/metabo15110720",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12654173",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13074613",
         "title": "In Vitro Antimicrobial Potential of Medicinal Plant Extracts and Their Combinations Against Mastitis-Causing Bacteria in Dairy Cows.",
         "journal": "Molecules (Basel, Switzerland)",
@@ -335,6 +322,19 @@
         "doi": "10.3390/molecules31071089",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13074613",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12654173",
+        "title": "Metabolome and Essential Element Analyses of Five Underutilized European Crops Reveal Their Nutritional Properties and Potential to Diversify the European Food System.",
+        "journal": "Metabolites",
+        "year": "2025",
+        "doi": "10.3390/metabo15110720",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12654173",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -354,19 +354,6 @@
         "verified_on": null
       },
       {
-        "source_id": "epmc-a9e9bc9555",
-        "title": "Morphotaxonomical and anatomical characterisation of Achillea millefolium L. : A therapeutic medicinal plant",
-        "journal": null,
-        "year": "2025",
-        "doi": "10.21203/rs.3.rs-6304753/v1",
-        "open_access": false,
-        "url": "https://doi.org/10.21203/rs.3.rs-6304753/v1",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12774671",
         "title": "Latvian herbal medicines under the infrared lens: An FTIR-ATR dataset.",
         "journal": "Data in brief",
@@ -374,6 +361,19 @@
         "doi": "10.1016/j.dib.2025.112378",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12774671",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-a9e9bc9555",
+        "title": "Morphotaxonomical and anatomical characterisation of Achillea millefolium L. : A therapeutic medicinal plant",
+        "journal": null,
+        "year": "2025",
+        "doi": "10.21203/rs.3.rs-6304753/v1",
+        "open_access": false,
+        "url": "https://doi.org/10.21203/rs.3.rs-6304753/v1",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -458,19 +458,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmid-42348360",
-        "title": "Mechanistic Insights Into ROS-Mediated Apoptotic Toxicity of Achillea millefolium L. Fabricated Manganese Oxide Nanoparticles in Human Neuroblastoma Cells.",
-        "journal": "Journal of applied toxicology : JAT",
-        "year": "2026",
-        "doi": "10.1002/jat.70301",
-        "open_access": false,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/42348360/",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13708942",
         "title": "Metabolomic Fingerprinting and UHPLC-ESI-HRMS/MS Profiling of Five Medicinal Plants Associated with Wound Care.",
         "journal": "Plants (Basel, Switzerland)",
@@ -478,6 +465,19 @@
         "doi": "10.3390/plants15203164",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13708942",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42348360",
+        "title": "Mechanistic Insights Into ROS-Mediated Apoptotic Toxicity of Achillea millefolium L. Fabricated Manganese Oxide Nanoparticles in Human Neuroblastoma Cells.",
+        "journal": "Journal of applied toxicology : JAT",
+        "year": "2026",
+        "doi": "10.1002/jat.70301",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42348360/",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -867,6 +867,12 @@
         "text": "This study aimed to establish a green, sunlight-assisted biosynthesis route for SeNPs using dual extracts of Achillea millefolium and Echinops spp., optimized through response surface methodology. Methods Synthesis conditions were optimized using a central composite design."
       },
       {
+        "passage_id": "pmc-13708942#abstract-3",
+        "source_id": "pmc-13708942",
+        "located_in": "abstract",
+        "text": "The phytochemical composition of five medicinal plants, Verbena officinalis , Plantago major , Achillea millefolium , Hypericum perforatum , and Calendula officinalis , was investigated using ultra-high-performance liquid chromatography coupled with high-resolution electrospray ionization tandem mass spectrometry (UHPLC-ESI-HRMS/MS). A total of 162 metabolites were identified across the investigated extracts, representing diverse classes including flavonoids, phenolic acids, phenylethanoid glycosides, xanthones, naphthodianthrones, acylphloroglucinols and iridoid glycosides."
+      },
+      {
         "passage_id": "pmid-42348360#abstract-1",
         "source_id": "pmid-42348360",
         "located_in": "abstract",
@@ -877,12 +883,6 @@
         "source_id": "pmid-42348360",
         "located_in": "abstract",
         "text": "Taken together, these findings suggest that A. millefolium-mediated MnO NPs exhibit notable antioxidant properties along with ROS-mediated anticancer activity. This indicates their potential as a promising and environmentally friendly nanotherapeutic approach for the treatment of neuroblastoma, although further investigation is needed to confirm their efficacy and safety."
-      },
-      {
-        "passage_id": "pmc-13708942#abstract-3",
-        "source_id": "pmc-13708942",
-        "located_in": "abstract",
-        "text": "The phytochemical composition of five medicinal plants, Verbena officinalis , Plantago major , Achillea millefolium , Hypericum perforatum , and Calendula officinalis , was investigated using ultra-high-performance liquid chromatography coupled with high-resolution electrospray ionization tandem mass spectrometry (UHPLC-ESI-HRMS/MS). A total of 162 metabolites were identified across the investigated extracts, representing diverse classes including flavonoids, phenolic acids, phenylethanoid glycosides, xanthones, naphthodianthrones, acylphloroglucinols and iridoid glycosides."
       }
     ]
   },

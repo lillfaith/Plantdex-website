@@ -1,0 +1,2422 @@
+{
+  "species": "Opuntia engelmannii",
+  "fetched_at": "2026-11-16T21:01:49+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 78264,
+    "name": "Opuntia engelmannii",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Opuntia_engelmannii"
+  },
+  "photos": [
+    {
+      "photo_id": 12591617,
+      "observation_id": 9288880,
+      "observation_url": "https://www.inaturalist.org/observations/9288880",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-12-20",
+      "place": "88352, Tularosa, NM, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/12591617/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/12591617/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/12591617/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-12591617.jpg",
+      "bytes": 2367197,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 12591628,
+      "observation_id": 9288880,
+      "observation_url": "https://www.inaturalist.org/observations/9288880",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-12-20",
+      "place": "88352, Tularosa, NM, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/12591628/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/12591628/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/12591628/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-12591628.jpg",
+      "bytes": 1888803,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 345752415,
+      "observation_id": 196394541,
+      "observation_url": "https://www.inaturalist.org/observations/196394541",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-01-09",
+      "place": "Pinnacle Peak, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/345752415/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/345752415/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/345752415/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-345752415.jpeg",
+      "bytes": 1527389,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 375446479,
+      "observation_id": 212455443,
+      "observation_url": "https://www.inaturalist.org/observations/212455443",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-11-19",
+      "place": "Sedona, AZ 86336, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/375446479/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/375446479/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/375446479/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-375446479.jpg",
+      "bytes": 625859,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 451702319,
+      "observation_id": 252340267,
+      "observation_url": "https://www.inaturalist.org/observations/252340267",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-11-11",
+      "place": "Tucson, AZ 85743, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/451702319/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/451702319/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/451702319/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-451702319.jpeg",
+      "bytes": 3064283,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 287441748,
+      "observation_id": 166012551,
+      "observation_url": "https://www.inaturalist.org/observations/166012551",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-06",
+      "place": "Mogollon, NM 88039, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/287441748/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/287441748/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/287441748/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-287441748.jpeg",
+      "bytes": 2541782,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 287441780,
+      "observation_id": 166012551,
+      "observation_url": "https://www.inaturalist.org/observations/166012551",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-06",
+      "place": "Mogollon, NM 88039, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/287441780/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/287441780/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/287441780/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-287441780.jpeg",
+      "bytes": 1733977,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 9996962,
+      "observation_id": 7641906,
+      "observation_url": "https://www.inaturalist.org/observations/7641906",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-08-24",
+      "place": "17920–17998 S Sonoita Hwy, Corona De Tucson, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/9996962/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/9996962/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/9996962/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-9996962.jpg",
+      "bytes": 1603290,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 2441292,
+      "observation_id": 2005930,
+      "observation_url": "https://www.inaturalist.org/observations/2005930",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2015-09-21",
+      "place": "Coconino, Arizona, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/2441292/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/2441292/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/2441292/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-2441292.jpg",
+      "bytes": 2041985,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 345765206,
+      "observation_id": 196399107,
+      "observation_url": "https://www.inaturalist.org/observations/196399107",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-01-09",
+      "place": "Pinnacle Peak, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/345765206/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/345765206/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/345765206/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-345765206.jpeg",
+      "bytes": 1685757,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 571235064,
+      "observation_id": 316180590,
+      "observation_url": "https://www.inaturalist.org/observations/316180590",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-23",
+      "place": "Sunset Path, Mayer, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/571235064/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/571235064/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/571235064/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-571235064.jpg",
+      "bytes": 2041744,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 571235120,
+      "observation_id": 316180590,
+      "observation_url": "https://www.inaturalist.org/observations/316180590",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-23",
+      "place": "Sunset Path, Mayer, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/571235120/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/571235120/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/571235120/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-571235120.jpg",
+      "bytes": 2155053,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 490362230,
+      "observation_id": 272560795,
+      "observation_url": "https://www.inaturalist.org/observations/272560795",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-06-12",
+      "place": "Grand Canyon National Park, Fredonia, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/490362230/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/490362230/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/490362230/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-490362230.jpg",
+      "bytes": 1149488,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 2997621,
+      "observation_id": 2666633,
+      "observation_url": "https://www.inaturalist.org/observations/2666633",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2006-12-26",
+      "place": null,
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/2997621/original.JPG",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/2997621/large.JPG",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/2997621/medium.JPG"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-2997621.JPG",
+      "bytes": 581222,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 215398777,
+      "observation_id": 126914908,
+      "observation_url": "https://www.inaturalist.org/observations/126914908",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-18",
+      "place": "Tonto National Forest, Fort McDowell, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/215398777/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/215398777/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/215398777/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-215398777.jpg",
+      "bytes": 790887,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 215398809,
+      "observation_id": 126914908,
+      "observation_url": "https://www.inaturalist.org/observations/126914908",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-18",
+      "place": "Tonto National Forest, Fort McDowell, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/215398809/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/215398809/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/215398809/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-215398809.jpg",
+      "bytes": 1001088,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 4279860,
+      "observation_id": 3689482,
+      "observation_url": "https://www.inaturalist.org/observations/3689482",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2010-06-08",
+      "place": "Grand Canyon National Park, South Rim, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/4279860/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/4279860/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/4279860/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1535
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-4279860.jpg",
+      "bytes": 668552,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 4280058,
+      "observation_id": 3689482,
+      "observation_url": "https://www.inaturalist.org/observations/3689482",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2010-06-08",
+      "place": "Grand Canyon National Park, South Rim, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/4280058/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/4280058/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/4280058/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1535
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-4280058.jpg",
+      "bytes": 705331,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13123402,
+      "observation_id": 9615930,
+      "observation_url": "https://www.inaturalist.org/observations/9615930",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-25",
+      "place": "North Scottsdale, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123402/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123402/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123402/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13123402.jpeg",
+      "bytes": 1452156,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13123424,
+      "observation_id": 9615930,
+      "observation_url": "https://www.inaturalist.org/observations/9615930",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-25",
+      "place": "North Scottsdale, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123424/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123424/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123424/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13123424.jpeg",
+      "bytes": 974265,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13123447,
+      "observation_id": 9615930,
+      "observation_url": "https://www.inaturalist.org/observations/9615930",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-25",
+      "place": "North Scottsdale, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123447/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123447/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123447/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13123447.jpeg",
+      "bytes": 856816,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13123457,
+      "observation_id": 9615930,
+      "observation_url": "https://www.inaturalist.org/observations/9615930",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-25",
+      "place": "North Scottsdale, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123457/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123457/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13123457/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13123457.jpeg",
+      "bytes": 618952,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 11904053,
+      "observation_id": 8856378,
+      "observation_url": "https://www.inaturalist.org/observations/8856378",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2016-04-15",
+      "place": "5401 E Martin Luther King Jr Blvd, Austin, TX 78721, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/11904053/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/11904053/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/11904053/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-11904053.jpg",
+      "bytes": 523797,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 43351411,
+      "observation_id": 27836536,
+      "observation_url": "https://www.inaturalist.org/observations/27836536",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-22",
+      "place": "Iturbide, N.L., México",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/43351411/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/43351411/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/43351411/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-43351411.jpeg",
+      "bytes": 1866133,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 97416844,
+      "observation_id": 60907392,
+      "observation_url": "https://www.inaturalist.org/observations/60907392",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-09-12",
+      "place": "Otero County, NM, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/97416844/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/97416844/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/97416844/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-97416844.jpg",
+      "bytes": 2798661,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 425963024,
+      "observation_id": 239192901,
+      "observation_url": "https://www.inaturalist.org/observations/239192901",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-30",
+      "place": "Zion National Park, Springdale, UT, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/425963024/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/425963024/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/425963024/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-425963024.jpeg",
+      "bytes": 1651017,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 325063233,
+      "observation_id": 186057647,
+      "observation_url": "https://www.inaturalist.org/observations/186057647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-30",
+      "place": "Culberson County, TX, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325063233/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325063233/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325063233/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325063233.jpeg",
+      "bytes": 1950133,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 569640465,
+      "observation_id": 315335801,
+      "observation_url": "https://www.inaturalist.org/observations/315335801",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-20",
+      "place": "Sedona, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640465/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640465/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640465/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-569640465.jpg",
+      "bytes": 1454500,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 569640534,
+      "observation_id": 315335801,
+      "observation_url": "https://www.inaturalist.org/observations/315335801",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-20",
+      "place": "Sedona, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640534/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640534/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640534/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-569640534.jpg",
+      "bytes": 821034,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 569640598,
+      "observation_id": 315335801,
+      "observation_url": "https://www.inaturalist.org/observations/315335801",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-20",
+      "place": "Sedona, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640598/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640598/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/569640598/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-569640598.jpg",
+      "bytes": 970476,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 15354153,
+      "observation_id": 10918700,
+      "observation_url": "https://www.inaturalist.org/observations/10918700",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-04-14",
+      "place": "Organ Mountains, Las Cruces, NM, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/15354153/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/15354153/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/15354153/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-15354153.jpg",
+      "bytes": 2251288,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 15354130,
+      "observation_id": 10918700,
+      "observation_url": "https://www.inaturalist.org/observations/10918700",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-04-14",
+      "place": "Organ Mountains, Las Cruces, NM, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/15354130/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/15354130/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/15354130/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-15354130.jpg",
+      "bytes": 1528329,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 17945157,
+      "observation_id": 12441796,
+      "observation_url": "https://www.inaturalist.org/observations/12441796",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-10",
+      "place": "Maricopa, Arizona, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945157/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945157/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945157/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-17945157.jpg",
+      "bytes": 1782835,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 17945150,
+      "observation_id": 12441796,
+      "observation_url": "https://www.inaturalist.org/observations/12441796",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-10",
+      "place": "Maricopa, Arizona, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945150/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945150/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945150/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-17945150.jpg",
+      "bytes": 1391093,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 8819763,
+      "observation_id": 6909176,
+      "observation_url": "https://www.inaturalist.org/observations/6909176",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2016-05-28",
+      "place": "Coconino County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/8819763/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/8819763/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/8819763/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-8819763.jpg",
+      "bytes": 1008174,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 12190075,
+      "observation_id": 9035509,
+      "observation_url": "https://www.inaturalist.org/observations/9035509",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2009-04-30",
+      "place": "1467 County Rd 401, Floresville, TX 78114, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/12190075/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/12190075/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/12190075/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 1,
+      "file": "inat-12190075.jpg",
+      "bytes": 1024509,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252205078,
+      "observation_id": 146664036,
+      "observation_url": "https://www.inaturalist.org/observations/146664036",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-15",
+      "place": "Maricopa County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205078/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205078/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205078/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252205078.jpeg",
+      "bytes": 2903928,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252205094,
+      "observation_id": 146664036,
+      "observation_url": "https://www.inaturalist.org/observations/146664036",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-15",
+      "place": "Maricopa County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205094/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205094/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205094/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252205094.jpeg",
+      "bytes": 1637028,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252205117,
+      "observation_id": 146664036,
+      "observation_url": "https://www.inaturalist.org/observations/146664036",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-15",
+      "place": "Maricopa County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205117/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205117/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205117/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252205117.jpeg",
+      "bytes": 2224973,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 252205149,
+      "observation_id": 146664036,
+      "observation_url": "https://www.inaturalist.org/observations/146664036",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-15",
+      "place": "Maricopa County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205149/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205149/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/252205149/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-252205149.jpeg",
+      "bytes": 2687878,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 316115537,
+      "observation_id": 181408205,
+      "observation_url": "https://www.inaturalist.org/observations/181408205",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-01",
+      "place": "Bandera, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/316115537/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/316115537/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/316115537/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-316115537.jpg",
+      "bytes": 1382192,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 623287290,
+      "observation_id": 342168262,
+      "observation_url": "https://www.inaturalist.org/observations/342168262",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-03-09",
+      "place": "Yavapai County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/623287290/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/623287290/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/623287290/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-623287290.jpg",
+      "bytes": 2541476,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 710595087,
+      "observation_id": 388020600,
+      "observation_url": "https://www.inaturalist.org/observations/388020600",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-31",
+      "place": "Saguaro, Saguaro National Park, Pima, Arizona, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/710595087/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/710595087/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/710595087/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-710595087.jpg",
+      "bytes": 1179160,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 639218612,
+      "observation_id": 350355412,
+      "observation_url": "https://www.inaturalist.org/observations/350355412",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-03-18",
+      "place": "Sedona, AZ 86336, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/639218612/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/639218612/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/639218612/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-639218612.jpg",
+      "bytes": 1044100,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 345751716,
+      "observation_id": 196394527,
+      "observation_url": "https://www.inaturalist.org/observations/196394527",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-01-09",
+      "place": "Pinnacle Peak, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/345751716/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/345751716/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/345751716/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-345751716.jpeg",
+      "bytes": 1532029,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13164193,
+      "observation_id": 9639621,
+      "observation_url": "https://www.inaturalist.org/observations/9639621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-27",
+      "place": "Cornville, AZ 86325, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164193/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164193/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164193/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13164193.jpeg",
+      "bytes": 1570819,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13164210,
+      "observation_id": 9639621,
+      "observation_url": "https://www.inaturalist.org/observations/9639621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-27",
+      "place": "Cornville, AZ 86325, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164210/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164210/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164210/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13164210.jpeg",
+      "bytes": 1174909,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13164220,
+      "observation_id": 9639621,
+      "observation_url": "https://www.inaturalist.org/observations/9639621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-27",
+      "place": "Cornville, AZ 86325, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164220/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164220/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164220/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13164220.jpeg",
+      "bytes": 1136346,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13164226,
+      "observation_id": 9639621,
+      "observation_url": "https://www.inaturalist.org/observations/9639621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-27",
+      "place": "Cornville, AZ 86325, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164226/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164226/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164226/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13164226.jpeg",
+      "bytes": 712923,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13164235,
+      "observation_id": 9639621,
+      "observation_url": "https://www.inaturalist.org/observations/9639621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-27",
+      "place": "Cornville, AZ 86325, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164235/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164235/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164235/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13164235.jpeg",
+      "bytes": 763232,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13164263,
+      "observation_id": 9639621,
+      "observation_url": "https://www.inaturalist.org/observations/9639621",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-01-27",
+      "place": "Cornville, AZ 86325, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164263/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164263/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13164263/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-13164263.jpeg",
+      "bytes": 459096,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 469987465,
+      "observation_id": 261590195,
+      "observation_url": "https://www.inaturalist.org/observations/261590195",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-02-13",
+      "place": "Camelback East Village, Phoenix, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/469987465/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/469987465/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/469987465/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-469987465.jpg",
+      "bytes": 1969051,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 623051443,
+      "observation_id": 342170012,
+      "observation_url": "https://www.inaturalist.org/observations/342170012",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-03-09",
+      "place": "Sedona",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/623051443/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/623051443/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/623051443/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-623051443.jpg",
+      "bytes": 2294691,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 602593793,
+      "observation_id": 332089423,
+      "observation_url": "https://www.inaturalist.org/observations/332089423",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-12-25",
+      "place": "Sedona, AZ 86336, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/602593793/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/602593793/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/602593793/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-602593793.jpg",
+      "bytes": 3546576,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 602593814,
+      "observation_id": 332089423,
+      "observation_url": "https://www.inaturalist.org/observations/332089423",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-12-25",
+      "place": "Sedona, AZ 86336, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/602593814/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/602593814/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/602593814/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-602593814.jpg",
+      "bytes": 2429786,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 96360805,
+      "observation_id": 60272684,
+      "observation_url": "https://www.inaturalist.org/observations/60272684",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-09-20",
+      "place": "CA-79, Julian, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/96360805/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/96360805/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/96360805/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-96360805.jpg",
+      "bytes": 1746929,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 180656133,
+      "observation_id": 107415625,
+      "observation_url": "https://www.inaturalist.org/observations/107415625",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-02-24",
+      "place": "W5RQ+7V, Lukeville, AZ 85321, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/180656133/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/180656133/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/180656133/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-180656133.jpeg",
+      "bytes": 2528612,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 180656154,
+      "observation_id": 107415625,
+      "observation_url": "https://www.inaturalist.org/observations/107415625",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-02-24",
+      "place": "W5RQ+7V, Lukeville, AZ 85321, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/180656154/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/180656154/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/180656154/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-180656154.jpeg",
+      "bytes": 2263849,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 307088093,
+      "observation_id": 176621826,
+      "observation_url": "https://www.inaturalist.org/observations/176621826",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-04-16",
+      "place": "Coconino County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/307088093/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/307088093/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/307088093/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-307088093.jpeg",
+      "bytes": 1611383,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 28120825,
+      "observation_id": 18398230,
+      "observation_url": "https://www.inaturalist.org/observations/18398230",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-11-14",
+      "place": "76502, Temple, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/28120825/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/28120825/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/28120825/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-28120825.jpg",
+      "bytes": 1928387,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 414459362,
+      "observation_id": 233224460,
+      "observation_url": "https://www.inaturalist.org/observations/233224460",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-31",
+      "place": "27486 Coah., México",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/414459362/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/414459362/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/414459362/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 921
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-414459362.jpeg",
+      "bytes": 1755262,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 618849491,
+      "observation_id": 340105205,
+      "observation_url": "https://www.inaturalist.org/observations/340105205",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-23",
+      "place": "Parsons Trail, Sedona, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/618849491/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/618849491/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/618849491/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-618849491.jpg",
+      "bytes": 5024348,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 58305945,
+      "observation_id": 36842247,
+      "observation_url": "https://www.inaturalist.org/observations/36842247",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-12-21",
+      "place": "Yavapai County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/58305945/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/58305945/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/58305945/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-58305945.jpg",
+      "bytes": 1939397,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 58305872,
+      "observation_id": 36842247,
+      "observation_url": "https://www.inaturalist.org/observations/36842247",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-12-21",
+      "place": "Yavapai County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/58305872/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/58305872/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/58305872/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-58305872.jpg",
+      "bytes": 881501,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 331041461,
+      "observation_id": 189040735,
+      "observation_url": "https://www.inaturalist.org/observations/189040735",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-26",
+      "place": "North Scottsdale, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/331041461/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/331041461/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/331041461/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-331041461.jpg",
+      "bytes": 2078890,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 331041464,
+      "observation_id": 189040735,
+      "observation_url": "https://www.inaturalist.org/observations/189040735",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-26",
+      "place": "North Scottsdale, Scottsdale, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/331041464/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/331041464/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/331041464/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-331041464.jpg",
+      "bytes": 1990530,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 114532666,
+      "observation_id": 70449063,
+      "observation_url": "https://www.inaturalist.org/observations/70449063",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-02",
+      "place": "Alamogordo, NM 88310, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/114532666/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/114532666/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/114532666/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-114532666.jpeg",
+      "bytes": 2542516,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 114532678,
+      "observation_id": 70449063,
+      "observation_url": "https://www.inaturalist.org/observations/70449063",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-02",
+      "place": "Alamogordo, NM 88310, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/114532678/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/114532678/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/114532678/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-114532678.jpeg",
+      "bytes": 1710349,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 122885315,
+      "observation_id": 75136447,
+      "observation_url": "https://www.inaturalist.org/observations/75136447",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-04-24",
+      "place": "Zion National Park, Springdale, UT, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/122885315/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/122885315/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/122885315/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-122885315.jpg",
+      "bytes": 1842300,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 122885351,
+      "observation_id": 75136447,
+      "observation_url": "https://www.inaturalist.org/observations/75136447",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-04-24",
+      "place": "Zion National Park, Springdale, UT, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/122885351/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/122885351/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/122885351/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-122885351.jpg",
+      "bytes": 1953768,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13554753,
+      "observation_id": 9887737,
+      "observation_url": "https://www.inaturalist.org/observations/9887737",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-02-13",
+      "place": "Maricopa County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13554753/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13554753/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13554753/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13554753.jpeg",
+      "bytes": 1302961,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13554767,
+      "observation_id": 9887737,
+      "observation_url": "https://www.inaturalist.org/observations/9887737",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-02-13",
+      "place": "Maricopa County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13554767/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13554767/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13554767/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13554767.jpeg",
+      "bytes": 386055,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 18471786,
+      "observation_id": 12750143,
+      "observation_url": "https://www.inaturalist.org/observations/12750143",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-04-28",
+      "place": "2700 N Kinney Rd, Tucson, AZ 85743, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/18471786/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/18471786/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/18471786/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1226,
+        "height": 1099
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-18471786.jpg",
+      "bytes": 492550,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 38200396,
+      "observation_id": 24702727,
+      "observation_url": "https://www.inaturalist.org/observations/24702727",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-05-06",
+      "place": "Maricopa County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/38200396/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/38200396/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/38200396/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-38200396.jpeg",
+      "bytes": 3048098,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 38200407,
+      "observation_id": 24702727,
+      "observation_url": "https://www.inaturalist.org/observations/24702727",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-05-06",
+      "place": "Maricopa County, US-AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/38200407/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/38200407/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/38200407/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-38200407.jpeg",
+      "bytes": 1759218,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 710723016,
+      "observation_id": 388085297,
+      "observation_url": "https://www.inaturalist.org/observations/388085297",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-31",
+      "place": "Saguaro National Park, Pima, Arizona, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/710723016/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/710723016/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/710723016/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-710723016.jpg",
+      "bytes": 1337396,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 678046556,
+      "observation_id": 371117596,
+      "observation_url": "https://www.inaturalist.org/observations/371117596",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-02-16",
+      "place": "Amboseli National Park, Kenya",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/678046556/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/678046556/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/678046556/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1159
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-678046556.jpg",
+      "bytes": 550401,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 17945357,
+      "observation_id": 12441824,
+      "observation_url": "https://www.inaturalist.org/observations/12441824",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-10",
+      "place": "Maricopa County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945357/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945357/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945357/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-17945357.jpg",
+      "bytes": 1518691,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 17945351,
+      "observation_id": 12441824,
+      "observation_url": "https://www.inaturalist.org/observations/12441824",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-10",
+      "place": "Maricopa County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945351/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945351/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17945351/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-17945351.jpg",
+      "bytes": 1184187,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 8855890,
+      "observation_id": 6932047,
+      "observation_url": "https://www.inaturalist.org/observations/6932047",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2014-09-06",
+      "place": "New River, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/8855890/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/8855890/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/8855890/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-8855890.jpeg",
+      "bytes": 1096426,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 487694672,
+      "observation_id": 271140521,
+      "observation_url": "https://www.inaturalist.org/observations/271140521",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-17",
+      "place": "Coconino National Forest, Sedona, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/487694672/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/487694672/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/487694672/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-487694672.jpg",
+      "bytes": 1248648,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 325311774,
+      "observation_id": 186183143,
+      "observation_url": "https://www.inaturalist.org/observations/186183143",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-04",
+      "place": "Las Cruces",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325311774/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325311774/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325311774/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1153,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325311774.jpeg",
+      "bytes": 1998615,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 459531954,
+      "observation_id": 256317567,
+      "observation_url": "https://www.inaturalist.org/observations/256317567",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-12-25",
+      "place": "Bernalillo County, NM, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459531954/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459531954/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459531954/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-459531954.jpeg",
+      "bytes": 1315096,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 442486272,
+      "observation_id": 247716831,
+      "observation_url": "https://www.inaturalist.org/observations/247716831",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-04",
+      "place": "Grand Canyon National Park, Grand Canyon, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/442486272/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/442486272/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/442486272/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-442486272.jpeg",
+      "bytes": 1410738,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24604435,
+      "observation_id": 16365417,
+      "observation_url": "https://www.inaturalist.org/observations/16365417",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2010-11-13",
+      "place": "Enchanted Rock, Texas 78643, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24604435/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24604435/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24604435/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24604435.jpeg",
+      "bytes": 1274720,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 442755375,
+      "observation_id": 247854687,
+      "observation_url": "https://www.inaturalist.org/observations/247854687",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-04",
+      "place": "Grand Canyon National Park, Marble Canyon, AZ, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/442755375/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/442755375/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/442755375/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-442755375.jpeg",
+      "bytes": 966245,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 8826361,
+      "observation_id": 6913181,
+      "observation_url": "https://www.inaturalist.org/observations/6913181",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2014-05-13",
+      "place": "Mather Point, Grand Canyon Village, AZ 86023, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/8826361/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/8826361/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/8826361/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-8826361.jpg",
+      "bytes": 1096789,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 17944897,
+      "observation_id": 12441629,
+      "observation_url": "https://www.inaturalist.org/observations/12441629",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-05-10",
+      "place": "Maricopa County, AZ, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/17944897/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/17944897/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/17944897/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-17944897.jpg",
+      "bytes": 1659808,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 710584400,
+      "observation_id": 388014804,
+      "observation_url": "https://www.inaturalist.org/observations/388014804",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-31",
+      "place": "Saguaro, Saguaro National Park, Pima, Arizona, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/710584400/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/710584400/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/710584400/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Opuntia engelmannii",
+      "taxon_id": 78264,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-710584400.jpg",
+      "bytes": 1612727,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

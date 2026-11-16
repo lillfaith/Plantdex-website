@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "verbascum thapsus",
-  "retrieved_at": "2026-11-06T20:47:18+00:00",
+  "retrieved_at": "2026-11-16T20:45:35+00:00",
   "identity": {
     "queried_name": "Verbascum thapsus",
     "match_type": "EXACT",
@@ -55,14 +55,14 @@
         "pmc-12137565",
         "pmc-12291726",
         "pmc-11232275",
-        "pmc-9032843",
         "pmc-13203402",
+        "pmc-9032843",
         "pmc-11396795",
+        "pmc-13736920",
         "pmc-12608489",
-        "pmc-11184722",
         "pmc-13659225",
+        "pmc-11184722",
         "pmc-12274356",
-        "pmc-12472671",
         "pmc-12992903"
       ],
       "laboratory-study": [
@@ -73,8 +73,9 @@
         "pmc-13610762",
         "pmid-42599172",
         "pmid-41166753",
-        "epmc-5e9fe2abad",
         "pmc-12299115",
+        "epmc-5e9fe2abad",
+        "pmc-12472671",
         "epmc-21e6a1a18c",
         "pmc-11341329",
         "pmc-12030741",
@@ -291,19 +292,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-9032843",
-        "title": "Diverse in Local, Overlapping in Official Medical Botany: Critical Analysis of Medicinal Plant Records from the Historic Regions of Livonia and Courland in Northeast Europe, 1829-1895.",
-        "journal": "Plants (Basel, Switzerland)",
-        "year": "2022",
-        "doi": "10.3390/plants11081065",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC9032843",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13203402",
         "title": "Transcriptomic and Proteomic Analysis of the Skeletal Muscle Revealed the Effects and Mechanism of Mulberry Leaf Flavonoids on Alleviating Exercise-Induced Muscle Damage in Mongolian Horses.",
         "journal": "Animals : an open access journal from MDPI",
@@ -311,6 +299,19 @@
         "doi": "10.3390/ani16101548",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13203402",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-9032843",
+        "title": "Diverse in Local, Overlapping in Official Medical Botany: Critical Analysis of Medicinal Plant Records from the Historic Regions of Livonia and Courland in Northeast Europe, 1829-1895.",
+        "journal": "Plants (Basel, Switzerland)",
+        "year": "2022",
+        "doi": "10.3390/plants11081065",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC9032843",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -330,6 +331,19 @@
         "verified_on": null
       },
       {
+        "source_id": "pmc-13736920",
+        "title": "Natural Products against Human and Veterinary Trichomonads: From In Vitro Activity to Future Therapeutic Perspectives.",
+        "journal": "ACS omega",
+        "year": "2026",
+        "doi": "10.1021/acsomega.6c08481",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13736920",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
         "source_id": "pmc-12608489",
         "title": "&lt;i&gt;FIAT LUX&lt;/i&gt;: The Mullein's (&lt;i&gt;Verbascum&lt;/i&gt; sp.) Image and Its Symbology Through History Within the Euro-Mediterranean Culture.",
         "journal": "Plants (Basel, Switzerland)",
@@ -337,19 +351,6 @@
         "doi": "10.3390/plants14213294",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12608489",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
-        "source_id": "pmc-11184722",
-        "title": "Modulation of innate immunity related genes resulting in prophylactic antimicrobial and antiviral properties.",
-        "journal": "Journal of translational medicine",
-        "year": "2024",
-        "doi": "10.1186/s12967-024-05378-2",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC11184722",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -369,6 +370,19 @@
         "verified_on": null
       },
       {
+        "source_id": "pmc-11184722",
+        "title": "Modulation of innate immunity related genes resulting in prophylactic antimicrobial and antiviral properties.",
+        "journal": "Journal of translational medicine",
+        "year": "2024",
+        "doi": "10.1186/s12967-024-05378-2",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11184722",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
         "source_id": "pmc-12274356",
         "title": "Conservation of Verbascum sinaiticum Benth using innovative tissue culture technique and DNA barcoding.",
         "journal": "Scientific reports",
@@ -376,19 +390,6 @@
         "doi": "10.1038/s41598-025-10968-1",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12274356",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
-        "source_id": "pmc-12472671",
-        "title": "Evaluation of Proliferative Activity of Hawaiian Plants on PC-12 and Neuro-2a Cells and Their Effect on the TPH and TH Genes.",
-        "journal": "Pharmaceuticals (Basel, Switzerland)",
-        "year": "2025",
-        "doi": "10.3390/ph18091403",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12472671",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -499,6 +500,19 @@
         "verified_on": null
       },
       {
+        "source_id": "pmc-12299115",
+        "title": "Intraspecific Variability of Wormwood (&lt;i&gt;Artemisia absinthium&lt;/i&gt; L.) Occurring in Poland in Respect of Developmental and Chemical Traits.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2025",
+        "doi": "10.3390/molecules30142915",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12299115",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
         "source_id": "epmc-5e9fe2abad",
         "title": "Natural Antioxidant Enrichment of Linseed Oil: Ultrasound-Assisted Maceration with Mullein Flowers (Verbascum thapsus L.)",
         "journal": "Food Biophysics",
@@ -512,13 +526,13 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-12299115",
-        "title": "Intraspecific Variability of Wormwood (&lt;i&gt;Artemisia absinthium&lt;/i&gt; L.) Occurring in Poland in Respect of Developmental and Chemical Traits.",
-        "journal": "Molecules (Basel, Switzerland)",
+        "source_id": "pmc-12472671",
+        "title": "Evaluation of Proliferative Activity of Hawaiian Plants on PC-12 and Neuro-2a Cells and Their Effect on the TPH and TH Genes.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
         "year": "2025",
-        "doi": "10.3390/molecules30142915",
+        "doi": "10.3390/ph18091403",
         "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC12299115",
+        "url": "https://europepmc.org/article/PMC/PMC12472671",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -737,8 +751,8 @@
     ]
   },
   "counts": {
-    "sources": 38,
-    "open_access_sources": 29,
+    "sources": 39,
+    "open_access_sources": 30,
     "passages": 26
   },
   "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."

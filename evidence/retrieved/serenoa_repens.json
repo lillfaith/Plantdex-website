@@ -1,0 +1,823 @@
+{
+  "state": "retrieved",
+  "schema_version": 1,
+  "species_key": "serenoa repens",
+  "retrieved_at": "2026-11-16T20:52:52+00:00",
+  "identity": {
+    "queried_name": "Serenoa repens",
+    "match_type": "EXACT",
+    "match_confidence": 99,
+    "gbif_status": "ACCEPTED",
+    "taxonomy_status": "accepted",
+    "gbif_id": "2735055",
+    "accepted_name": "Serenoa repens",
+    "name_authorship": "(W.Bartram) Small",
+    "family": "Arecaceae",
+    "genus": "Serenoa",
+    "rank": "species",
+    "synonyms": [
+      "Brahea serrulata (Michx.) H.Wendl.",
+      "Chamaerops serrulata Michx.",
+      "Corypha obliqua W.Bartram",
+      "Corypha repens W.Bartram",
+      "Diglossophyllum serrulatum (Michx.) H.Wendl.",
+      "Diglossophyllum serrulatum (Michx.) H.Wendl. ex Drude",
+      "Diglossophyllum serrulatum (Michx.) H.Wendl. ex Salomon",
+      "Diglossophyllum serrulatum (Michx.) Schaedtler",
+      "Sabal dealbata hort. ex L.H.Bailey",
+      "Sabal serrulata (Michx.) Schult.f.",
+      "Serenoa repens f. glauca Moldenke",
+      "Serenoa serrulata (Michx.) G.Nicholson",
+      "Serenoa serrulata (Michx.) Hook.f.",
+      "Serenoa serrulata (Michx.) Hook.f. ex B.D.Jacks."
+    ],
+    "endpoint": "https://api.gbif.org/v1/species/match"
+  },
+  "conservation": {
+    "iucn_category": "LEAST_CONCERN",
+    "endpoint": "https://api.gbif.org/v1/species/2735055/iucnRedListCategory",
+    "at_risk": false,
+    "promotable": false,
+    "conservation_note": "No usable global assessment (category: LEAST_CONCERN). Treated as NOT promotable: the plant may be documented, but nothing may present it as something to go and collect until a human checks regional listings. Missing data is not evidence of abundance."
+  },
+  "literature": {
+    "groups": {
+      "documented-use": [
+        "pmid-42480876",
+        "pmc-13543760",
+        "pmc-12491398",
+        "pmid-39418714",
+        "pmc-13515138",
+        "pmc-12065597",
+        "pmc-12689892",
+        "pmc-12720028",
+        "pmc-12683295",
+        "pmc-11963106",
+        "pmc-11991820",
+        "pmc-13610609",
+        "pmc-12089051",
+        "pmc-11643235",
+        "pmc-13426966",
+        "pmc-11549889",
+        "pmc-12679226",
+        "pmc-13646299",
+        "pmc-12650287",
+        "pmc-9911901",
+        "pmc-12251978",
+        "pmc-11074955",
+        "pmc-11032125",
+        "pmc-10967063",
+        "pmc-13508210"
+      ],
+      "laboratory-study": [
+        "pmc-13728354",
+        "pmc-12943485",
+        "pmc-13218814",
+        "pmid-42023747",
+        "pmid-41701395",
+        "pmc-13580080",
+        "pmc-13182888",
+        "pmid-42980740",
+        "pmc-13414076",
+        "pmc-12940174",
+        "pmc-13258752",
+        "pmid-42287322",
+        "pmc-13615888",
+        "pmid-42575271",
+        "pmc-13515395",
+        "pmc-12384774",
+        "epmc-ea932a460d"
+      ]
+    },
+    "sources": [
+      {
+        "source_id": "pmid-42480876",
+        "title": "Post-marketing safety profile and potential aspirin interaction of Serenoa repens extract: A real-world study using FAERS and network toxicology.",
+        "journal": "Journal of ethnopharmacology",
+        "year": "2027",
+        "doi": "10.1016/j.jep.2026.122221",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42480876/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13543760",
+        "title": "Integrated phytochemical and bioactivity profiling of Xanthium strumarium fruits from Korea and China: Implications for origin-specific quality specification.",
+        "journal": "Journal of the science of food and agriculture",
+        "year": "2026",
+        "doi": "10.1002/jsfa.70780",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13543760",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12491398",
+        "title": "Comparative study of the chemical profile, cytotoxic activity, and molecular docking of Serenoa repens extract and a pharmaceutical product.",
+        "journal": "Scientific reports",
+        "year": "2025",
+        "doi": "10.1038/s41598-025-16758-z",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12491398",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-39418714",
+        "title": "Green strategies for the valorization of industrial medicinal residues of Serenoa repens small (saw palmetto) as source of bioactive compounds.",
+        "journal": "Journal of environmental management",
+        "year": "2024",
+        "doi": "10.1016/j.jenvman.2024.122843",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39418714/",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13515138",
+        "title": "Anti-Androgenic Potential of Plant Extracts: Molecular Mechanisms, Synergistic Effects, and Nutritional Interventions.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31162849",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13515138",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12065597",
+        "title": "Nature's Cure or Kidney Curse? The Nephrotoxic Potential of Indigenous Remedies.",
+        "journal": "Indian journal of nephrology",
+        "year": "2025",
+        "doi": "10.25259/ijn_321_2024",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12065597",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12689892",
+        "title": "Botanical drug preparations for alleviating hair loss in menopausal women: a global ethnopharmacological mini-review.",
+        "journal": "Frontiers in pharmacology",
+        "year": "2025",
+        "doi": "10.3389/fphar.2025.1725691",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12689892",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12720028",
+        "title": "Neuroprotective potential of polyherbal formulation: Evidence from preliminary &lt;i&gt;in-vitro&lt;/i&gt; and &lt;i&gt;in-vivo&lt;/i&gt; studies.",
+        "journal": "Biochemistry and biophysics reports",
+        "year": "2026",
+        "doi": "10.1016/j.bbrep.2025.102381",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12720028",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12683295",
+        "title": "Effects of &lt;i&gt;Angelica archangelica&lt;/i&gt; Extract on Overactive Bladder: A Pilot Randomized Controlled Trial.",
+        "journal": "Food science & nutrition",
+        "year": "2025",
+        "doi": "10.1002/fsn3.71258",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12683295",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11963106",
+        "title": "The exposome impact on hair health: non-pharmacological management. Part II<sup>⋆</sup>.",
+        "journal": "Anais brasileiros de dermatologia",
+        "year": "2025",
+        "doi": "10.1016/j.abd.2024.08.006",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11963106",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11991820",
+        "title": "Assessing the Safety of Combined Therapy, &lt;i&gt;Croton membranaceus&lt;/i&gt; and Tamsulosin, in the Self-Prescribed Treatment Protocol for Benign Prostatic Hyperplasia.",
+        "journal": "Journal of toxicology",
+        "year": "2025",
+        "doi": "10.1155/jt/5574491",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11991820",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13610609",
+        "title": "&lt;i&gt;Lycopus lucidus&lt;/i&gt; Extract Attenuates Testosterone Propionate-Induced Benign Prostatic Hyperplasia in Rats.",
+        "journal": "Pharmaceuticals (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/ph19091478",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13610609",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12089051",
+        "title": "Computational drug discovery of potential 5α-reductase phytochemical inhibitors and hair growth promotion using &lt;i&gt;in silico&lt;/i&gt; techniques.",
+        "journal": "Frontiers in bioinformatics",
+        "year": "2025",
+        "doi": "10.3389/fbinf.2025.1570101",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12089051",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11643235",
+        "title": "Synergism of Specific Maca Phenotypes (<i>Lepidium peruvianum</i>) in Combination with Saw Palmetto (<i>Serenoa repens</i>) Extract for Chemoprevention of Prostate Cancer as Determined in In Vitro Cytotoxicity Assays on Human Epithelial and Prostate Cancer Cells.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2024",
+        "doi": "10.3390/molecules29235632",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11643235",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13426966",
+        "title": "Herbal medicine use disclosure, database-flagged potential herb-drug interactions, and inter - interaction database concordance among patients with non-communicable diseases in Vietnam: A multicenter cross-sectional study.",
+        "journal": "PloS one",
+        "year": "2026",
+        "doi": "10.1371/journal.pone.0355046",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13426966",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11549889",
+        "title": "An Overview of Commonly Used Natural Alternatives for the Treatment of Androgenetic Alopecia, with Special Emphasis on Rosemary Oil.",
+        "journal": "Clinical, cosmetic and investigational dermatology",
+        "year": "2024",
+        "doi": "10.2147/ccid.s470989",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11549889",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12679226",
+        "title": "Cultivar to chemotype: characterizing complex botanicals with mass spectrometry metabolomics.",
+        "journal": "Natural product reports",
+        "year": "2026",
+        "doi": "10.1039/d5np00040h",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12679226",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13646299",
+        "title": "Efficacy of &lt;i&gt;Prunella vulgaris&lt;/i&gt; on Male Lower Urinary Tract Symptoms: A Randomized, Double-Blind, Placebo-Controlled Clinical Trial.",
+        "journal": "The world journal of men's health",
+        "year": "2026",
+        "doi": "10.5534/wjmh.250154",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13646299",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12650287",
+        "title": "&lt;i&gt;Terminalia chebula&lt;/i&gt; Retz. Fruit Extract Promotes Murine Hair Growth by Suppressing 5α-Reductase and Accelerating the Degradation of Dihydrotestosterone.",
+        "journal": "Biomedicines",
+        "year": "2025",
+        "doi": "10.3390/biomedicines13112584",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12650287",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-9911901",
+        "title": "Pharmacological Effects of the Lipidosterolic Extract from <i>Kigelia africana</i> Fruits in Experimental Benign Prostatic Hyperplasia Induced by Testosterone in Sprague Dawley Rats.",
+        "journal": "Journal of experimental pharmacology",
+        "year": "2023",
+        "doi": "10.2147/jep.s383699",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC9911901",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12251978",
+        "title": "Topical Alternatives for Hair Loss: Beyond the Conventional.",
+        "journal": "International journal of trichology",
+        "year": "2025",
+        "doi": "10.4103/ijt.ijt_8_23",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12251978",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11074955",
+        "title": "A Narrative Review of Herbal Remedies for Managing Hirsutism.",
+        "journal": "International journal of preventive medicine",
+        "year": "2024",
+        "doi": "10.4103/ijpvm.ijpvm_62_23",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11074955",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11032125",
+        "title": "A Rare Case of Tongkat Ali-Induced Liver Injury: A Case Report.",
+        "journal": "Cureus",
+        "year": "2024",
+        "doi": "10.7759/cureus.56639",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11032125",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-10967063",
+        "title": "Medicinal plants and natural products for treating overactive bladder.",
+        "journal": "Chinese medicine",
+        "year": "2024",
+        "doi": "10.1186/s13020-024-00884-3",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC10967063",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13508210",
+        "title": "Global research landscape of natural medicines for lower urinary tract symptoms: bibliometric and clinical trial analysis.",
+        "journal": "Tropical medicine and health",
+        "year": "2026",
+        "doi": "10.1186/s41182-026-01064-9",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13508210",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13728354",
+        "title": "Plant-derived bioactives and nutraceuticals in chronic prostatitis/chronic pelvic pain syndrome: clinical evidence, pain-sensitization mechanisms and nutritional translation.",
+        "journal": "Frontiers in nutrition",
+        "year": "2026",
+        "doi": "10.3389/fnut.2026.1966858",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13728354",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12943485",
+        "title": "A Multi-Target Phytotherapeutic Approach to Benign Prostatic Hyperplasia: Preclinical Characterization of a PhytoBPH-Mix.",
+        "journal": "Nutrients",
+        "year": "2026",
+        "doi": "10.3390/nu18040650",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12943485",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13218814",
+        "title": "A Root Cause Approach to Men's Hormone Health Using Specific Maca Phenotypes: A Narrative Review.",
+        "journal": "Integrative medicine (Encinitas, Calif.)",
+        "year": "2026",
+        "doi": null,
+        "open_access": false,
+        "url": "https://europepmc.org/article/PMC/PMC13218814",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42023747",
+        "title": "Pharmacology, efficacy and safety of different extracts of Serenoa repens in patients with lower urinary tract symptoms and benign prostatic hyperplasia: a narrative review.",
+        "journal": "Minerva urology and nephrology",
+        "year": "2026",
+        "doi": "10.23736/s2724-6051.26.06657-7",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42023747/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-41701395",
+        "title": "Investigating the Neuroprotective Effects of Saw Palmetto Fruit Extract Against D-Galactose and Aluminum Chloride Induced Alzheimer's Disease: In Vivo Study.",
+        "journal": "Neurochemical research",
+        "year": "2026",
+        "doi": "10.1007/s11064-026-04666-1",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41701395/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13580080",
+        "title": "Effects of &lt;i&gt;Serenoa repens&lt;/i&gt; extract on sexual function in patients with benign prostatic hyperplasia: a systematic review and meta-analysis.",
+        "journal": "Sexual medicine",
+        "year": "2026",
+        "doi": "10.1093/sexmed/qfag088",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13580080",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13182888",
+        "title": "Efficacy and safety of Serenoa repens in benign prostatic disorders: a systematic review of recent clinical evidence.",
+        "journal": "Drugs in context",
+        "year": "2026",
+        "doi": "10.7573/dic.2025-10-2",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13182888",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42980740",
+        "title": "Gamma-sitosterol and male reproductive health: mechanistic insights, preclinical evidence, and clinical research gaps.",
+        "journal": "Molecular biology reports",
+        "year": "2026",
+        "doi": "10.1007/s11033-026-13117-7",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42980740/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13414076",
+        "title": "Beyond Minoxidil: Off-Label Therapies for Male Androgenetic Alopecia-A Systematic Review with Network Meta-Analyses.",
+        "journal": "Medicina (Kaunas, Lithuania)",
+        "year": "2026",
+        "doi": "10.3390/medicina62071282",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13414076",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12940174",
+        "title": "Potential Efficacy of Polyphenols and Isothiocyanates in the Management of Genitourinary Diseases: A Systematic Review of Preclinical and Clinical Studies.",
+        "journal": "International journal of molecular sciences",
+        "year": "2026",
+        "doi": "10.3390/ijms27041660",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12940174",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13258752",
+        "title": "Efficacy and Safety of &lt;i&gt;Salvia miltiorrhiza&lt;/i&gt; Extract (SAGX) Compared with Saw Palmetto in Men with Lower Urinary Tract Symptoms: A 12-Week, Randomized, Double-Blind, Parallel-Group Pilot Study.",
+        "journal": "Nutrients",
+        "year": "2026",
+        "doi": "10.3390/nu18111752",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13258752",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42287322",
+        "title": "Serenoa Repens-Lycopene-Selenium and Epilobium-Palmitoylethanolamide-Calendula after transperineal prostate biopsy: a tertiary single center experience.",
+        "journal": "World journal of urology",
+        "year": "2026",
+        "doi": "10.1007/s00345-026-06528-5",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42287322/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13615888",
+        "title": "Awareness and Use of Saw Palmetto and Other Alternative Medicines Used for Treating Prostate Diseases Among Men Visiting a Urology Clinic in Guyana.",
+        "journal": "Cureus",
+        "year": "2026",
+        "doi": "10.7759/cureus.115315",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13615888",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42575271",
+        "title": "Analysis of androgen modulation by natural products.",
+        "journal": "Pharmacological research",
+        "year": "2026",
+        "doi": "10.1016/j.phrs.2026.108377",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42575271/",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13515395",
+        "title": "Pungenin Promotes Hair Growth in Mouse Models of Androgenic Alopecia Through Transcriptional Regulation of the PI3K/AKT/mTOR Axis.",
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": "2026",
+        "doi": "10.3390/molecules31162864",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13515395",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12384774",
+        "title": "Plant Extracts and Natural Compounds for the Treatment of Urinary Tract Infections in Women: Mechanisms, Efficacy, and Therapeutic Potential.",
+        "journal": "Current issues in molecular biology",
+        "year": "2025",
+        "doi": "10.3390/cimb47080591",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12384774",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-ea932a460d",
+        "title": "Exploring the use of phytotherapy in benign prostatic hyperplasia [BPH]: a systematic review",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.12688/f1000research.162045.2",
+        "open_access": false,
+        "url": "https://doi.org/10.12688/f1000research.162045.2",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      }
+    ],
+    "passages": [
+      {
+        "passage_id": "pmid-42480876#abstract-0",
+        "source_id": "pmid-42480876",
+        "located_in": "abstract",
+        "text": "Ethnopharmacological relevance Saw palmetto (Serenoa repens) extract (SPE) originated from Native American traditional medicine and is now globally consumed for benign prostatic hyperplasia. Despite its popularity, its real-world safety profile regarding rare events and potential interactions remains incompletely characterized."
+      },
+      {
+        "passage_id": "pmc-12491398#abstract-0",
+        "source_id": "pmc-12491398",
+        "located_in": "abstract",
+        "text": "Serenoa repens (Bartram) J.K.Small known as Saw palmetto; its herb is widely used for its therapeutic potentials especially in the treatment of urological disorders such as benign prostatic hyperplasia (BPH) in men. Comparative chemical, biological and in silico docking profiling's of Serenoa repens seeds extract (S1) vs. a particular pharmaceutical product (S2) containing Serenoa repens."
+      },
+      {
+        "passage_id": "pmc-12491398#abstract-1",
+        "source_id": "pmc-12491398",
+        "located_in": "abstract",
+        "text": "Comparative chemical, biological and in silico docking profiling's of Serenoa repens seeds extract (S1) vs. a particular pharmaceutical product (S2) containing Serenoa repens. LCHR-ESI-MS is used for identification of bioactive constituents."
+      },
+      {
+        "passage_id": "pmc-12491398#abstract-8",
+        "source_id": "pmc-12491398",
+        "located_in": "abstract",
+        "text": "These results highlight Serenoa repens' potential as a natural cure and direct the development of pharmaceutical formulations for improved therapeutic efficacy."
+      },
+      {
+        "passage_id": "pmid-39418714#abstract-0",
+        "source_id": "pmid-39418714",
+        "located_in": "abstract",
+        "text": "Serenoa repens is a medicinal plant well-known for its therapeutic potential in treating various urological disorders and prevention of prostatic cancer. However, the extraction process in the pharmaceutical industry leads to the generation of plant residues, typically discarded, wasting valuable resources."
+      },
+      {
+        "passage_id": "pmid-39418714#abstract-2",
+        "source_id": "pmid-39418714",
+        "located_in": "abstract",
+        "text": "In this study, we aimed to explore a series of green extraction strategies to effectively valorize the residues of Serenoa repens fruits. Initially, we employed supercritical CO 2 (1.2% yield on dry biomass) on the discarded biomass to identify and quantify residual fatty acids and polyprenols (1.6% of the extract dry weight), a class of unsaturated isoprenoid alcohols with promising biomedical applications."
+      },
+      {
+        "passage_id": "pmc-12689892#abstract-6",
+        "source_id": "pmc-12689892",
+        "located_in": "abstract",
+        "text": "Key remedies include saw palmetto ( Serenoa repens ), which inhibits 5α-reductase to reduce dihydrotestosterone by approximately 30%-40%; rosemary oil ( Salvia rosmarinus Spenn.), which promotes scalp microcirculation similar to minoxidil; and ginseng ( Panax ginseng C.A.Mey.), which enhances follicle proliferation via ginsenosides. Emerging evidence from 2024 to 2025 reviews highlights multi-target mechanisms in plant extracts, including phytoestrogenic and anti-inflammatory effects."
+      },
+      {
+        "passage_id": "pmc-12089051#abstract-3",
+        "source_id": "pmc-12089051",
+        "located_in": "abstract",
+        "text": "There are also recommendations for effectively treating hair loss with natural remedies, such as Urtica dioica (nettle) , Serenoa repens (saw palmetto) , and Trigonella foenum-graecum (fenugreek) that is mainly used for diminish the hair loss in the traditional medicine. Research shows that these herbal formulations and plant extracts may help reduce hair loss."
+      },
+      {
+        "passage_id": "pmc-11643235#abstract-0",
+        "source_id": "pmc-11643235",
+        "located_in": "abstract",
+        "text": "Selected phenotypes of dried maca ( Lepidium peruvianum ) hypocotyls and supercritical CO 2 extract (USPlus ® ) of saw palmetto ( Serenoa repens ) were used to determine their targeted, cytotoxic action in prostate cancer cells. Fingerprinting by HPLC-MS and PCA analysis showed compositional differences in glucosinolates, amides, macamides, and other alkaloids, which varied based on the color and the size of hypocotyls."
+      },
+      {
+        "passage_id": "pmc-12943485#abstract-2",
+        "source_id": "pmc-12943485",
+        "located_in": "abstract",
+        "text": "This study investigates the potential role of a novel multi-component phytocomplex (PhytoBPH-Mix) comprising Serenoa repens , Pygeum africanum , Urtica dioica , Epilobium angustifolium L., Protium heptaphyllum , lycopene, Vitamin E, zinc, and selenium. Methods : The anti-androgenic, anti-inflammatory, and antimicrobial properties of the mixture were evaluated in vitro."
+      },
+      {
+        "passage_id": "pmid-42023747#abstract-0",
+        "source_id": "pmid-42023747",
+        "located_in": "abstract",
+        "text": "Aim of this review is to evaluate the pharmacological efficacy and safety of Serenoa repens extracts in managing lower urinary tract symptoms (LUTS) and benign prostatic hyperplasia (BPH). Using PubMed, Web of Science, and the Cochrane database, we identified studies published until November 2023 reporting effect of Serenoa repens extracts on LUTS and BPH."
+      },
+      {
+        "passage_id": "pmid-42023747#abstract-1",
+        "source_id": "pmid-42023747",
+        "located_in": "abstract",
+        "text": "Using PubMed, Web of Science, and the Cochrane database, we identified studies published until November 2023 reporting effect of Serenoa repens extracts on LUTS and BPH. All studies were included in the literature search."
+      },
+      {
+        "passage_id": "pmid-42023747#abstract-3",
+        "source_id": "pmid-42023747",
+        "located_in": "abstract",
+        "text": "The most relevant studies were selected to identify the effects of different extracts of serenoa repens in terms of pharmacology, efficacy and safety. Hexanic extract of Serenoa repens (HESr), presents important anti-inflammatory, antiproliferative, and antiandrogenic activities proven through various in vitro, in vivo, and clinical trials."
+      },
+      {
+        "passage_id": "pmid-42023747#abstract-4",
+        "source_id": "pmid-42023747",
+        "located_in": "abstract",
+        "text": "Hexanic extract of Serenoa repens (HESr), presents important anti-inflammatory, antiproliferative, and antiandrogenic activities proven through various in vitro, in vivo, and clinical trials. The current phytotherapeutic landscape is very heterogeneous and limited by the lack of a regulatory framework for herbal substances."
+      },
+      {
+        "passage_id": "pmid-42023747#abstract-10",
+        "source_id": "pmid-42023747",
+        "located_in": "abstract",
+        "text": "The review identifies the critical role of Serenoa repens extract in managing LUTS in patients with BPH. Particularly the evidence suggests significant in vitro and in vivo differences in terms of inflammation reduction, symptoms relief and flow improvement depending on the extraction technique."
+      },
+      {
+        "passage_id": "pmid-41701395#abstract-0",
+        "source_id": "pmid-41701395",
+        "located_in": "abstract",
+        "text": "Serenoa repens (Saw palmetto) contain 85–90% fatty acids and other constituents include sterols rich in components as carotenoids, lipases, tannin and sugars. The purpose of this study is to investigate the therapeutic potential of Saw palmetto fruit extract against Alzheimer’s disease in a mice model."
+      },
+      {
+        "passage_id": "pmc-13580080#abstract-0",
+        "source_id": "pmc-13580080",
+        "located_in": "abstract",
+        "text": "Introduction Serenoa repens extract has been widely used as a phytotherapeutic option for benign prostatic hyperplasia (BPH), potentially offering a milder alternative to pharmaceutical treatments such as 5-alpha reductase inhibitors or alpha-blockers. However, its effects on sexual function remain inconsistent across randomized trials."
+      },
+      {
+        "passage_id": "pmc-13580080#abstract-2",
+        "source_id": "pmc-13580080",
+        "located_in": "abstract",
+        "text": "This study aimed to evaluate the effects of S. repens extract on sexual function and quality of life in men withBPH. Methods Five electronic databases were searched from inception to January 21, 2026, for randomized controlled trials comparing S. repens extract with placebo in men with BPH."
+      },
+      {
+        "passage_id": "pmc-13580080#abstract-3",
+        "source_id": "pmc-13580080",
+        "located_in": "abstract",
+        "text": "Methods Five electronic databases were searched from inception to January 21, 2026, for randomized controlled trials comparing S. repens extract with placebo in men with BPH. The primary outcome was sexual function, with analyses restricted to studies using the International Index of Erectile Function (IIEF) where possible to improve comparability."
+      },
+      {
+        "passage_id": "pmc-13580080#abstract-8",
+        "source_id": "pmc-13580080",
+        "located_in": "abstract",
+        "text": "The pooled analysis showed no statistically significant effect of S. repens extract on sexual function compared with placebo (Hedges' g = -0.08, 95% CI -0.93 to 0.77; I 2 = 96.16%). The corresponding 95% prediction interval ranged from -2.448 to 2.286, indicating considerable between-study variability and suggesting that future studies could plausibly demonstrate effects favoring either S. repens or placebo."
+      },
+      {
+        "passage_id": "pmc-13580080#abstract-9",
+        "source_id": "pmc-13580080",
+        "located_in": "abstract",
+        "text": "The corresponding 95% prediction interval ranged from -2.448 to 2.286, indicating considerable between-study variability and suggesting that future studies could plausibly demonstrate effects favoring either S. repens or placebo. In the subgroup analysis restricted to studies using the IIEF, heterogeneity was substantially reduced (Hedges' g = -0.206, 95% CI -0.540 to 0.128; I 2 = 28.76%), although the treatment effect remained statistically non-significant."
+      },
+      {
+        "passage_id": "pmc-13580080#abstract-12",
+        "source_id": "pmc-13580080",
+        "located_in": "abstract",
+        "text": "Discussion Current evidence does not support a clinically meaningful benefit of S. repens extract over placebo for improving sexual function or quality of life in men with BPH. Because the overall pooled estimate combined conceptually different sexual function instruments and was associated with substantial heterogeneity, it should be interpreted cautiously."
+      },
+      {
+        "passage_id": "pmc-13182888#abstract-0",
+        "source_id": "pmc-13182888",
+        "located_in": "abstract",
+        "text": "This systematic review assessed the potential effectiveness and safety of Serenoa repens (saw palmetto) for benign prostatic disorders, mainly benign prostatic hyperplasia and associated lower urinary tract symptoms. Following PRISMA guidance (PROSPERO: CRD420251032255), we searched PubMed, Cochrane and ScienceDirect for human studies from January 2020 to May 2025."
+      },
+      {
+        "passage_id": "pmc-13182888#abstract-3",
+        "source_id": "pmc-13182888",
+        "located_in": "abstract",
+        "text": "Overall, S. repens was associated with improvements in symptom severity (International Prostate Symptom Score) in several trials, with variable effects on urinary flow, post-void residual volume, and patient-reported quality of life. Signals of benefit appeared more consistently with hexanic lipidosterolic extracts and β-sitosterol-enriched preparations, and some real-world and head-to-head comparisons suggested outcomes comparable to alpha-blockers with fewer adverse events."
+      },
+      {
+        "passage_id": "pmc-13182888#abstract-8",
+        "source_id": "pmc-13182888",
+        "located_in": "abstract",
+        "text": "Taken together, recent evidence supports S. repens as a potentially useful, well-tolerated option for benign prostatic hyperplasia-related symptoms - especially in certain formulations and as part of combination strategies - whilst underscoring the need for standardized, adequately powered trials to clarify which patients benefit most, optimal dosing, and durability of effects."
+      },
+      {
+        "passage_id": "pmid-42287322#abstract-4",
+        "source_id": "pmid-42287322",
+        "located_in": "abstract",
+        "text": "Following TPBx, patients either received Serenoa Repens, Lycopene and Selenium (Profluss®) with or without Epilobium-Palmitoylethanolamide-Calendula (Riflog CM®) (i.e. treatment group), or no post-biopsy treatment (control group). LUTS and erectile function (EF) were assessed using the International Prostate Symptom Score (IPSS) and the International Index of Erectile Function (IIEF) at baseline, 1 week, and 1 month after TPBx, respectively."
+      },
+      {
+        "passage_id": "pmc-13615888#abstract-1",
+        "source_id": "pmc-13615888",
+        "located_in": "abstract",
+        "text": "Saw palmetto ( Serenoa repens ) is internationally recognized as a common herbal supplement for benign prostatic hyperplasia (BPH) and lower urinary tract symptoms, but local data on its use among Guyanese men with prostate diseases are limited. The objective of this study is to assess awareness of saw palmetto and estimate the prevalence of saw palmetto and other herbal medicine use among men with prostate diseases attending the urology clinic at Georgetown Public Hospital Corporation, Guyana, and to describe the perceived effectiveness, concurrent use with prescribed medications, and disclosure to healthcare providers."
+      },
+      {
+        "passage_id": "pmid-42575271#abstract-6",
+        "source_id": "pmid-42575271",
+        "located_in": "abstract",
+        "text": "Serenoa repens illustrates the frequent disconnect between plausible 5α-reductase inhibition and largely negative trials for benign prostatic hyperplasia. Molecular docking is treated as hypothesis-generating rather than confirmatory."
+      },
+      {
+        "passage_id": "epmc-ea932a460d#abstract-6",
+        "source_id": "epmc-ea932a460d",
+        "located_in": "abstract",
+        "text": "Prominent examples include Serenoa repens [saw palmetto], Urtica dioica [nettle root], Cucurbita pepo [pumpkin seed], and Pygeum africanum [African cherry]. These plants exhibit mechanisms such as 5α-reductase inhibition, anti-inflammatory effects, and modulation of oxidative stress."
+      }
+    ]
+  },
+  "counts": {
+    "sources": 42,
+    "open_access_sources": 33,
+    "passages": 29
+  },
+  "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."
+}

@@ -1,0 +1,2611 @@
+{
+  "species": "Serenoa repens",
+  "fetched_at": "2026-11-16T21:03:36+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 83102,
+    "name": "Serenoa repens",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Serenoa"
+  },
+  "photos": [
+    {
+      "photo_id": 148204220,
+      "observation_id": 89728352,
+      "observation_url": "https://www.inaturalist.org/observations/89728352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-11",
+      "place": "Beaufort County, SC, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204220/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204220/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204220/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148204220.jpeg",
+      "bytes": 1196136,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148204234,
+      "observation_id": 89728352,
+      "observation_url": "https://www.inaturalist.org/observations/89728352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-11",
+      "place": "Beaufort County, SC, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204234/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204234/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204234/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148204234.jpeg",
+      "bytes": 825115,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148204256,
+      "observation_id": 89728352,
+      "observation_url": "https://www.inaturalist.org/observations/89728352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-11",
+      "place": "Beaufort County, SC, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204256/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204256/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204256/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148204256.jpeg",
+      "bytes": 981845,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148204299,
+      "observation_id": 89728352,
+      "observation_url": "https://www.inaturalist.org/observations/89728352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-11",
+      "place": "Beaufort County, SC, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204299/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204299/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148204299/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148204299.jpeg",
+      "bytes": 871146,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 41548412,
+      "observation_id": 26745775,
+      "observation_url": "https://www.inaturalist.org/observations/26745775",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-10",
+      "place": "3485 N County Road 426, Geneva, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/41548412/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/41548412/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/41548412/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-41548412.jpg",
+      "bytes": 1877809,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 615647080,
+      "observation_id": 338520283,
+      "observation_url": "https://www.inaturalist.org/observations/338520283",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-01-04",
+      "place": "NW 115th St, Chiefland, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/615647080/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/615647080/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/615647080/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-615647080.jpg",
+      "bytes": 3822469,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 615647078,
+      "observation_id": 338520283,
+      "observation_url": "https://www.inaturalist.org/observations/338520283",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-01-04",
+      "place": "NW 115th St, Chiefland, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/615647078/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/615647078/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/615647078/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-615647078.jpg",
+      "bytes": 3483040,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 538191427,
+      "observation_id": 298766117,
+      "observation_url": "https://www.inaturalist.org/observations/298766117",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-16",
+      "place": "Highlands County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/538191427/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/538191427/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/538191427/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-538191427.jpg",
+      "bytes": 2083414,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 343087054,
+      "observation_id": 195076112,
+      "observation_url": "https://www.inaturalist.org/observations/195076112",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-12-26",
+      "place": "Singer Island, Jupiter, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087054/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087054/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087054/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-343087054.jpg",
+      "bytes": 1487835,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 343087003,
+      "observation_id": 195076112,
+      "observation_url": "https://www.inaturalist.org/observations/195076112",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-12-26",
+      "place": "Singer Island, Jupiter, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087003/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087003/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087003/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-343087003.jpg",
+      "bytes": 2187750,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 343087029,
+      "observation_id": 195076112,
+      "observation_url": "https://www.inaturalist.org/observations/195076112",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-12-26",
+      "place": "Singer Island, Jupiter, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087029/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087029/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/343087029/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-343087029.jpg",
+      "bytes": 1902488,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 64621936,
+      "observation_id": 40765778,
+      "observation_url": "https://www.inaturalist.org/observations/40765778",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-03-26",
+      "place": "Polk County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/64621936/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/64621936/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/64621936/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-64621936.jpg",
+      "bytes": 2285823,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 257683482,
+      "observation_id": 149531131,
+      "observation_url": "https://www.inaturalist.org/observations/149531131",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-02-23",
+      "place": "Charing Cross Cir, Estero, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/257683482/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/257683482/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/257683482/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-257683482.jpg",
+      "bytes": 1842566,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 257683468,
+      "observation_id": 149531131,
+      "observation_url": "https://www.inaturalist.org/observations/149531131",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-02-23",
+      "place": "Charing Cross Cir, Estero, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/257683468/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/257683468/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/257683468/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-257683468.jpg",
+      "bytes": 1370425,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 282929542,
+      "observation_id": 163573953,
+      "observation_url": "https://www.inaturalist.org/observations/163573953",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-23",
+      "place": "United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929542/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929542/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929542/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-282929542.jpg",
+      "bytes": 1986853,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 282929611,
+      "observation_id": 163573953,
+      "observation_url": "https://www.inaturalist.org/observations/163573953",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-23",
+      "place": "United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929611/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929611/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929611/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-282929611.jpg",
+      "bytes": 2034174,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 282929696,
+      "observation_id": 163573953,
+      "observation_url": "https://www.inaturalist.org/observations/163573953",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-23",
+      "place": "United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929696/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929696/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/282929696/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-282929696.jpg",
+      "bytes": 1794046,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 237616842,
+      "observation_id": 138976955,
+      "observation_url": "https://www.inaturalist.org/observations/138976955",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-10-16",
+      "place": "Gainesville, FL 32641, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/237616842/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/237616842/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/237616842/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-237616842.jpeg",
+      "bytes": 2409207,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 237616915,
+      "observation_id": 138976955,
+      "observation_url": "https://www.inaturalist.org/observations/138976955",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-10-16",
+      "place": "Gainesville, FL 32641, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/237616915/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/237616915/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/237616915/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-237616915.jpeg",
+      "bytes": 1493333,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 549043216,
+      "observation_id": 304554491,
+      "observation_url": "https://www.inaturalist.org/observations/304554491",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-07",
+      "place": "Hardee County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/549043216/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/549043216/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/549043216/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1542
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-549043216.jpg",
+      "bytes": 2328966,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 536694116,
+      "observation_id": 297981246,
+      "observation_url": "https://www.inaturalist.org/observations/297981246",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-14",
+      "place": "Highlands County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/536694116/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/536694116/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/536694116/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-536694116.jpg",
+      "bytes": 1433684,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 538701655,
+      "observation_id": 299031786,
+      "observation_url": "https://www.inaturalist.org/observations/299031786",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-17",
+      "place": "Highlands County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/538701655/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/538701655/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/538701655/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-538701655.jpg",
+      "bytes": 1535361,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 491443881,
+      "observation_id": 273223358,
+      "observation_url": "https://www.inaturalist.org/observations/273223358",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-25",
+      "place": "Polk County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/491443881/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/491443881/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/491443881/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1542
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-491443881.jpg",
+      "bytes": 1336835,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 746813817,
+      "observation_id": 406481588,
+      "observation_url": "https://www.inaturalist.org/observations/406481588",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-03",
+      "place": "Broward, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/746813817/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/746813817/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/746813817/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-746813817.jpg",
+      "bytes": 1515356,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 746813796,
+      "observation_id": 406481588,
+      "observation_url": "https://www.inaturalist.org/observations/406481588",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-03",
+      "place": "Broward, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/746813796/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/746813796/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/746813796/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-746813796.jpg",
+      "bytes": 1517754,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 352838933,
+      "observation_id": 200031519,
+      "observation_url": "https://www.inaturalist.org/observations/200031519",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-21",
+      "place": "Dania Beach, Floride 33004, États-Unis",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352838933/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352838933/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352838933/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-352838933.jpeg",
+      "bytes": 2892910,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 352842544,
+      "observation_id": 200031519,
+      "observation_url": "https://www.inaturalist.org/observations/200031519",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-21",
+      "place": "Dania Beach, Floride 33004, États-Unis",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352842544/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352842544/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352842544/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1153,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-352842544.jpeg",
+      "bytes": 1991612,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 352842610,
+      "observation_id": 200031519,
+      "observation_url": "https://www.inaturalist.org/observations/200031519",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-21",
+      "place": "Dania Beach, Floride 33004, États-Unis",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352842610/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352842610/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352842610/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1153,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-352842610.jpeg",
+      "bytes": 2191425,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 545203412,
+      "observation_id": 302518219,
+      "observation_url": "https://www.inaturalist.org/observations/302518219",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-30",
+      "place": "Escambia County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/545203412/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/545203412/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/545203412/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1542
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-545203412.jpg",
+      "bytes": 2461120,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 545203433,
+      "observation_id": 302518219,
+      "observation_url": "https://www.inaturalist.org/observations/302518219",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-30",
+      "place": "Escambia County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/545203433/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/545203433/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/545203433/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1542
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-545203433.jpg",
+      "bytes": 2653393,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 465744929,
+      "observation_id": 259451112,
+      "observation_url": "https://www.inaturalist.org/observations/259451112",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-01-24",
+      "place": "University of Central Florida Arboretum Trail, Orlando, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/465744929/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/465744929/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/465744929/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-465744929.jpg",
+      "bytes": 1068189,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 465744943,
+      "observation_id": 259451112,
+      "observation_url": "https://www.inaturalist.org/observations/259451112",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-01-24",
+      "place": "University of Central Florida Arboretum Trail, Orlando, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/465744943/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/465744943/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/465744943/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-465744943.jpg",
+      "bytes": 975681,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 65759549,
+      "observation_id": 41451281,
+      "observation_url": "https://www.inaturalist.org/observations/41451281",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-04-05",
+      "place": "Polk County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/65759549/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/65759549/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/65759549/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-65759549.jpg",
+      "bytes": 2297367,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 241491565,
+      "observation_id": 141022612,
+      "observation_url": "https://www.inaturalist.org/observations/141022612",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-11-03",
+      "place": "Pensacola Beach, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/241491565/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/241491565/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/241491565/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-241491565.jpeg",
+      "bytes": 3440267,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 256168878,
+      "observation_id": 148725911,
+      "observation_url": "https://www.inaturalist.org/observations/148725911",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-02-13",
+      "place": "Polk County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/256168878/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/256168878/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/256168878/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-256168878.jpg",
+      "bytes": 1675437,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 107295588,
+      "observation_id": 66543868,
+      "observation_url": "https://www.inaturalist.org/observations/66543868",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-12-13",
+      "place": "Holland Park, Hollywood, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295588/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295588/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295588/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-107295588.jpg",
+      "bytes": 1515914,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 107295608,
+      "observation_id": 66543868,
+      "observation_url": "https://www.inaturalist.org/observations/66543868",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-12-13",
+      "place": "Holland Park, Hollywood, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295608/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295608/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295608/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-107295608.jpg",
+      "bytes": 1849398,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 107295618,
+      "observation_id": 66543868,
+      "observation_url": "https://www.inaturalist.org/observations/66543868",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-12-13",
+      "place": "Holland Park, Hollywood, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295618/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295618/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295618/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-107295618.jpg",
+      "bytes": 1118306,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 107295628,
+      "observation_id": 66543868,
+      "observation_url": "https://www.inaturalist.org/observations/66543868",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-12-13",
+      "place": "Holland Park, Hollywood, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295628/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295628/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/107295628/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-107295628.jpg",
+      "bytes": 1471374,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 243406963,
+      "observation_id": 142013823,
+      "observation_url": "https://www.inaturalist.org/observations/142013823",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-11-14",
+      "place": "Ochlockonee River State Park, Sopchoppy, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/243406963/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/243406963/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/243406963/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-243406963.jpg",
+      "bytes": 900795,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 243407005,
+      "observation_id": 142013823,
+      "observation_url": "https://www.inaturalist.org/observations/142013823",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-11-14",
+      "place": "Ochlockonee River State Park, Sopchoppy, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407005/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407005/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407005/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-243407005.jpg",
+      "bytes": 1412901,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 243407031,
+      "observation_id": 142013823,
+      "observation_url": "https://www.inaturalist.org/observations/142013823",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-11-14",
+      "place": "Ochlockonee River State Park, Sopchoppy, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407031/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407031/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407031/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-243407031.jpg",
+      "bytes": 728183,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 243407081,
+      "observation_id": 142013823,
+      "observation_url": "https://www.inaturalist.org/observations/142013823",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-11-14",
+      "place": "Ochlockonee River State Park, Sopchoppy, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407081/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407081/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/243407081/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-243407081.jpg",
+      "bytes": 2149176,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 656169241,
+      "observation_id": 359629478,
+      "observation_url": "https://www.inaturalist.org/observations/359629478",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-08",
+      "place": "Lake Wales, FL 33898, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/656169241/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/656169241/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/656169241/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-656169241.jpg",
+      "bytes": 2547700,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 723309903,
+      "observation_id": 394540626,
+      "observation_url": "https://www.inaturalist.org/observations/394540626",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-25",
+      "place": "Main Dr, Venus, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/723309903/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/723309903/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/723309903/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-723309903.jpg",
+      "bytes": 4155896,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 723310010,
+      "observation_id": 394540626,
+      "observation_url": "https://www.inaturalist.org/observations/394540626",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-25",
+      "place": "Main Dr, Venus, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/723310010/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/723310010/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/723310010/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-723310010.jpg",
+      "bytes": 4449618,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 719179870,
+      "observation_id": 392431387,
+      "observation_url": "https://www.inaturalist.org/observations/392431387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-18",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179870/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179870/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179870/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-719179870.jpg",
+      "bytes": 4709322,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 719179843,
+      "observation_id": 392431387,
+      "observation_url": "https://www.inaturalist.org/observations/392431387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-18",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179843/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179843/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179843/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-719179843.jpg",
+      "bytes": 3908861,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 719179862,
+      "observation_id": 392431387,
+      "observation_url": "https://www.inaturalist.org/observations/392431387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-18",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179862/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179862/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179862/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-719179862.jpg",
+      "bytes": 4463708,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 719179872,
+      "observation_id": 392431387,
+      "observation_url": "https://www.inaturalist.org/observations/392431387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-18",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179872/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179872/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/719179872/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-719179872.jpg",
+      "bytes": 5103236,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 30442669,
+      "observation_id": 19756751,
+      "observation_url": "https://www.inaturalist.org/observations/19756751",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-12-28",
+      "place": "Homestead, FL 33034, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/30442669/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/30442669/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/30442669/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-30442669.jpeg",
+      "bytes": 1355661,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 251335960,
+      "observation_id": 146217679,
+      "observation_url": "https://www.inaturalist.org/observations/146217679",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-08",
+      "place": "Clermont, FL 34711, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335960/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335960/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335960/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-251335960.jpeg",
+      "bytes": 2430460,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 251335974,
+      "observation_id": 146217679,
+      "observation_url": "https://www.inaturalist.org/observations/146217679",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-08",
+      "place": "Clermont, FL 34711, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335974/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335974/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335974/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-251335974.jpeg",
+      "bytes": 1208677,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 251335994,
+      "observation_id": 146217679,
+      "observation_url": "https://www.inaturalist.org/observations/146217679",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-08",
+      "place": "Clermont, FL 34711, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335994/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335994/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/251335994/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-251335994.jpeg",
+      "bytes": 1762790,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 350981761,
+      "observation_id": 199063000,
+      "observation_url": "https://www.inaturalist.org/observations/199063000",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-11",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/350981761/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/350981761/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/350981761/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-350981761.jpg",
+      "bytes": 1697824,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 350981855,
+      "observation_id": 199063000,
+      "observation_url": "https://www.inaturalist.org/observations/199063000",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-11",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/350981855/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/350981855/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/350981855/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-350981855.jpg",
+      "bytes": 1891805,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 452543244,
+      "observation_id": 252780696,
+      "observation_url": "https://www.inaturalist.org/observations/252780696",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-11-23",
+      "place": "Gainesville, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/452543244/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/452543244/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/452543244/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-452543244.jpeg",
+      "bytes": 1642833,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 452543234,
+      "observation_id": 252780696,
+      "observation_url": "https://www.inaturalist.org/observations/252780696",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-11-23",
+      "place": "Gainesville, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/452543234/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/452543234/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/452543234/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-452543234.jpeg",
+      "bytes": 1145975,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177845036,
+      "observation_id": 105926417,
+      "observation_url": "https://www.inaturalist.org/observations/105926417",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-31",
+      "place": "Clermont, FL 34714, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845036/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845036/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845036/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 995,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177845036.jpeg",
+      "bytes": 2040946,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177845059,
+      "observation_id": 105926417,
+      "observation_url": "https://www.inaturalist.org/observations/105926417",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-31",
+      "place": "Clermont, FL 34714, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845059/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845059/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845059/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 995
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177845059.jpeg",
+      "bytes": 1940698,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177845088,
+      "observation_id": 105926417,
+      "observation_url": "https://www.inaturalist.org/observations/105926417",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-31",
+      "place": "Clermont, FL 34714, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845088/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845088/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177845088/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 995,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177845088.jpeg",
+      "bytes": 1370465,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177049070,
+      "observation_id": 105510790,
+      "observation_url": "https://www.inaturalist.org/observations/105510790",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-23",
+      "place": "The Nature Conservancy Blowing Rocks Preserve",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049070/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049070/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049070/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1920,
+        "height": 1080
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177049070.jpeg",
+      "bytes": 1144690,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177049090,
+      "observation_id": 105510790,
+      "observation_url": "https://www.inaturalist.org/observations/105510790",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-23",
+      "place": "The Nature Conservancy Blowing Rocks Preserve",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049090/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049090/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049090/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1920,
+        "height": 1080
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177049090.jpeg",
+      "bytes": 1148600,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177049105,
+      "observation_id": 105510790,
+      "observation_url": "https://www.inaturalist.org/observations/105510790",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-23",
+      "place": "The Nature Conservancy Blowing Rocks Preserve",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049105/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049105/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177049105/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1920,
+        "height": 1080
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177049105.jpeg",
+      "bytes": 1049350,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 179127750,
+      "observation_id": 106610395,
+      "observation_url": "https://www.inaturalist.org/observations/106610395",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-02-12",
+      "place": "Burnt Store Rd, Punta Gorda, FL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/179127750/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/179127750/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/179127750/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-179127750.jpg",
+      "bytes": 994545,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 246812912,
+      "observation_id": 143870422,
+      "observation_url": "https://www.inaturalist.org/observations/143870422",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-12-06",
+      "place": "Hillsborough, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/246812912/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/246812912/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/246812912/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-246812912.jpg",
+      "bytes": 1997082,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 246812921,
+      "observation_id": 143870422,
+      "observation_url": "https://www.inaturalist.org/observations/143870422",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-12-06",
+      "place": "Hillsborough, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/246812921/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/246812921/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/246812921/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-246812921.jpg",
+      "bytes": 1608464,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586682420,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586682420/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586682420/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586682420/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586682420.jpg",
+      "bytes": 1678850,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586683223,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683223/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683223/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683223/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586683223.jpg",
+      "bytes": 1918155,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586683234,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683234/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683234/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683234/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586683234.jpg",
+      "bytes": 2078820,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586683238,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683238/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683238/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683238/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586683238.jpg",
+      "bytes": 2058081,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586683249,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683249/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683249/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683249/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586683249.jpg",
+      "bytes": 2186363,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586683264,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683264/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683264/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683264/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586683264.jpg",
+      "bytes": 2018402,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 586683269,
+      "observation_id": 324167976,
+      "observation_url": "https://www.inaturalist.org/observations/324167976",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-21",
+      "place": "Childs, Florida, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683269/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683269/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/586683269/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-586683269.jpg",
+      "bytes": 1988789,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 76545144,
+      "observation_id": 48248870,
+      "observation_url": "https://www.inaturalist.org/observations/48248870",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-02",
+      "place": "Suburban Heights, Gainesville, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545144/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545144/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545144/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-76545144.jpeg",
+      "bytes": 1141179,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 76545175,
+      "observation_id": 48248870,
+      "observation_url": "https://www.inaturalist.org/observations/48248870",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-02",
+      "place": "Suburban Heights, Gainesville, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545175/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545175/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545175/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-76545175.jpeg",
+      "bytes": 1028623,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 76545215,
+      "observation_id": 48248870,
+      "observation_url": "https://www.inaturalist.org/observations/48248870",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-02",
+      "place": "Suburban Heights, Gainesville, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545215/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545215/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/76545215/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-76545215.jpeg",
+      "bytes": 988399,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 205231159,
+      "observation_id": 121292568,
+      "observation_url": "https://www.inaturalist.org/observations/121292568",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-06-11",
+      "place": "Jacksonville, FL 32212, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/205231159/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/205231159/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/205231159/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-205231159.jpeg",
+      "bytes": 2987199,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 205231210,
+      "observation_id": 121292568,
+      "observation_url": "https://www.inaturalist.org/observations/121292568",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-06-11",
+      "place": "Jacksonville, FL 32212, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/205231210/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/205231210/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/205231210/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-205231210.jpeg",
+      "bytes": 2266139,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 73931867,
+      "observation_id": 46613552,
+      "observation_url": "https://www.inaturalist.org/observations/46613552",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-20",
+      "place": "Polk County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/73931867/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/73931867/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/73931867/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-73931867.jpg",
+      "bytes": 1990329,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 259849199,
+      "observation_id": 150670418,
+      "observation_url": "https://www.inaturalist.org/observations/150670418",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-03-09",
+      "place": "River Rd. Preserve: Putnam County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/259849199/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/259849199/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/259849199/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1872
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-259849199.jpeg",
+      "bytes": 1666206,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 259849311,
+      "observation_id": 150670418,
+      "observation_url": "https://www.inaturalist.org/observations/150670418",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-03-09",
+      "place": "River Rd. Preserve: Putnam County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/259849311/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/259849311/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/259849311/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-259849311.jpeg",
+      "bytes": 1900626,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 253972008,
+      "observation_id": 147580504,
+      "observation_url": "https://www.inaturalist.org/observations/147580504",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-28",
+      "place": "Ocala, FL 34476, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/253972008/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/253972008/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/253972008/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-253972008.jpeg",
+      "bytes": 1968880,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 253972029,
+      "observation_id": 147580504,
+      "observation_url": "https://www.inaturalist.org/observations/147580504",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-28",
+      "place": "Ocala, FL 34476, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/253972029/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/253972029/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/253972029/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-253972029.jpeg",
+      "bytes": 1439110,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 250021894,
+      "observation_id": 145544856,
+      "observation_url": "https://www.inaturalist.org/observations/145544856",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-12-31",
+      "place": "Davie, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/250021894/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/250021894/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/250021894/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1411
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-250021894.jpg",
+      "bytes": 1167459,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 250021908,
+      "observation_id": 145544856,
+      "observation_url": "https://www.inaturalist.org/observations/145544856",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-12-31",
+      "place": "Davie, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/250021908/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/250021908/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/250021908/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1260
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-250021908.jpg",
+      "bytes": 988075,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 335044612,
+      "observation_id": 191045098,
+      "observation_url": "https://www.inaturalist.org/observations/191045098",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-14",
+      "place": "Orange County, FL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/335044612/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/335044612/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/335044612/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-335044612.jpeg",
+      "bytes": 1552087,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 764115634,
+      "observation_id": 415015943,
+      "observation_url": "https://www.inaturalist.org/observations/415015943",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-11-13",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/764115634/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/764115634/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/764115634/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-764115634.jpg",
+      "bytes": 3858603,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 764115619,
+      "observation_id": 415015943,
+      "observation_url": "https://www.inaturalist.org/observations/415015943",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-11-13",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/764115619/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/764115619/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/764115619/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-764115619.jpg",
+      "bytes": 4726494,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 197823913,
+      "observation_id": 117155141,
+      "observation_url": "https://www.inaturalist.org/observations/117155141",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-15",
+      "place": "Stuart, FL 34997, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/197823913/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/197823913/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/197823913/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-197823913.jpeg",
+      "bytes": 2983687,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 197823966,
+      "observation_id": 117155141,
+      "observation_url": "https://www.inaturalist.org/observations/117155141",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-15",
+      "place": "Stuart, FL 34997, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/197823966/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/197823966/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/197823966/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-197823966.jpeg",
+      "bytes": 3183542,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 197824004,
+      "observation_id": 117155141,
+      "observation_url": "https://www.inaturalist.org/observations/117155141",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-15",
+      "place": "Stuart, FL 34997, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/197824004/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/197824004/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/197824004/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-197824004.jpeg",
+      "bytes": 2858705,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 197824044,
+      "observation_id": 117155141,
+      "observation_url": "https://www.inaturalist.org/observations/117155141",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-15",
+      "place": "Stuart, FL 34997, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/197824044/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/197824044/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/197824044/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-197824044.jpeg",
+      "bytes": 2499631,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 72358181,
+      "observation_id": 45628039,
+      "observation_url": "https://www.inaturalist.org/observations/45628039",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-11",
+      "place": "Gainesville, FL 32606, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358181/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358181/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358181/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-72358181.jpeg",
+      "bytes": 1674623,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 72358206,
+      "observation_id": 45628039,
+      "observation_url": "https://www.inaturalist.org/observations/45628039",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-11",
+      "place": "Gainesville, FL 32606, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358206/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358206/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358206/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-72358206.jpeg",
+      "bytes": 2757640,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 72358247,
+      "observation_id": 45628039,
+      "observation_url": "https://www.inaturalist.org/observations/45628039",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-11",
+      "place": "Gainesville, FL 32606, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358247/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358247/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/72358247/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Serenoa repens",
+      "taxon_id": 83102,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-72358247.jpeg",
+      "bytes": 3134433,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

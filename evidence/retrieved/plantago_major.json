@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "plantago major",
-  "retrieved_at": "2026-11-06T20:48:26+00:00",
+  "retrieved_at": "2026-11-16T20:46:30+00:00",
   "identity": {
     "queried_name": "Plantago major",
     "match_type": "EXACT",
@@ -91,13 +91,13 @@
         "pmc-12914922",
         "pmc-12394104",
         "pmc-13074613",
-        "epmc-e26d9b4304",
         "pmc-13417562",
+        "epmc-e26d9b4304",
         "pmc-13314007",
         "pmc-13250185",
         "pmc-11478695",
-        "pmc-13120872",
         "pmc-12592042",
+        "pmc-13120872",
         "pmc-11819796",
         "pmc-13277164",
         "pmc-13092156",
@@ -109,10 +109,10 @@
         "pmc-13659225",
         "pmc-13290503",
         "pmc-13708942",
-        "pmc-13625141",
-        "pmc-12788403",
         "pmc-13299215",
+        "pmc-12788403",
         "pmc-13666830",
+        "pmc-13625141",
         "pmc-13689166",
         "pmc-13512109",
         "pmc-13464917",
@@ -124,7 +124,8 @@
         "pmc-13170992",
         "pmc-12430101",
         "pmc-13269524",
-        "pmc-12299115"
+        "pmc-12299115",
+        "pmc-12370205"
       ]
     },
     "sources": [
@@ -285,19 +286,6 @@
         "verified_on": null
       },
       {
-        "source_id": "epmc-e26d9b4304",
-        "title": "Time-resolved analysis of UV-B-induced secondary metabolite biosynthesis and gene expression in Plantago major L.",
-        "journal": "Physiol Mol Biol Plants",
-        "year": "2025",
-        "doi": null,
-        "open_access": false,
-        "url": null,
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13417562",
         "title": "Ethnobotanical Inventory on the Vernacular Names of Useful Plants: Data of over 120 Years for the Ligurian Region (Northern Italy).",
         "journal": "Plants (Basel, Switzerland)",
@@ -305,6 +293,19 @@
         "doi": "10.3390/plants15142193",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13417562",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-e26d9b4304",
+        "title": "Time-resolved analysis of UV-B-induced secondary metabolite biosynthesis and gene expression in Plantago major L.",
+        "journal": "Physiol Mol Biol Plants",
+        "year": "2025",
+        "doi": null,
+        "open_access": false,
+        "url": null,
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -350,19 +351,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13120872",
-        "title": "Impact of flavonoid-rich herbal medicines on idiopathic heavy menstrual bleeding: A systematic review and meta-analysis of randomized controlled trials",
-        "journal": "Avicenna Journal of Phytomedicine",
-        "year": "2026",
-        "doi": null,
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13120872",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12592042",
         "title": "Herbal medicine in chronic wounds in Calabria region of Italy: an ethnographic study.",
         "journal": "Frontiers in sociology",
@@ -370,6 +358,19 @@
         "doi": "10.3389/fsoc.2025.1638784",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12592042",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13120872",
+        "title": "Impact of flavonoid-rich herbal medicines on idiopathic heavy menstrual bleeding: A systematic review and meta-analysis of randomized controlled trials",
+        "journal": "Avicenna Journal of Phytomedicine",
+        "year": "2026",
+        "doi": null,
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13120872",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -493,13 +494,13 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13625141",
-        "title": "Evaluation of Wound-Healing Potential of Plant Extracts via Picture Fuzzy Multi-Attribute Decision-Making.",
-        "journal": "ACS omega",
+        "source_id": "pmc-13299215",
+        "title": "Multifunctional 3D-Printed Alginate Emulgel Patches Incorporating Plant Extracts for Potential Burn Wound Applications.",
+        "journal": "Gels (Basel, Switzerland)",
         "year": "2026",
-        "doi": "10.1021/acsomega.6c08040",
+        "doi": "10.3390/gels12060541",
         "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13625141",
+        "url": "https://europepmc.org/article/PMC/PMC13299215",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -519,19 +520,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13299215",
-        "title": "Multifunctional 3D-Printed Alginate Emulgel Patches Incorporating Plant Extracts for Potential Burn Wound Applications.",
-        "journal": "Gels (Basel, Switzerland)",
-        "year": "2026",
-        "doi": "10.3390/gels12060541",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13299215",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13666830",
         "title": "Dual-Component Nanoemulsion Containing Brugmansia suaveolens Leaf Extract and Copaiba Oil: Antimicrobial Activity and Preclinical Wound-Healing Potential",
         "journal": "Plants (Basel, Switzerland)",
@@ -539,6 +527,19 @@
         "doi": null,
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13666830",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-13625141",
+        "title": "Evaluation of Wound-Healing Potential of Plant Extracts via Picture Fuzzy Multi-Attribute Decision-Making.",
+        "journal": "ACS omega",
+        "year": "2026",
+        "doi": "10.1021/acsomega.6c08040",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13625141",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -695,6 +696,19 @@
         "doi": "10.3390/molecules30142915",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12299115",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-12370205",
+        "title": "Ethnomedicinal documentation, phytochemical characterization, and biological evaluation of the traditional medicinal plants from Swat region of Pakistan.",
+        "journal": "PloS one",
+        "year": "2025",
+        "doi": "10.1371/journal.pone.0329735",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC12370205",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -925,6 +939,12 @@
         "text": "The phytochemical composition of five medicinal plants, Verbena officinalis , Plantago major , Achillea millefolium , Hypericum perforatum , and Calendula officinalis , was investigated using ultra-high-performance liquid chromatography coupled with high-resolution electrospray ionization tandem mass spectrometry (UHPLC-ESI-HRMS/MS). A total of 162 metabolites were identified across the investigated extracts, representing diverse classes including flavonoids, phenolic acids, phenylethanoid glycosides, xanthones, naphthodianthrones, acylphloroglucinols and iridoid glycosides."
       },
       {
+        "passage_id": "pmc-13299215#abstract-2",
+        "source_id": "pmc-13299215",
+        "located_in": "abstract",
+        "text": "The formulation included sodium alginate, hyaluronic acid, and hydroglyceric extracts of Calendula officinalis , Matricaria chamomilla , and Plantago major , as well as oily extracts of Hippophae rhamnoides and Hypericum perforatum . The emulgel was evaluated for pH, rheological behaviour, spreadability, physical stability, apparent hydrodynamic size distribution, zeta potential, total polyphenol content, and antioxidant activity."
+      },
+      {
         "passage_id": "pmc-12788403#abstract-0",
         "source_id": "pmc-12788403",
         "located_in": "abstract",
@@ -941,12 +961,6 @@
         "source_id": "pmc-12788403",
         "located_in": "abstract",
         "text": "In conclusion, Plantago major extract showed promise as an alternative strategy for controlling dental caries, presenting a lower risk of side effects. These findings encourage further investigation into phytotherapeutic approaches and support the advancement of clinical research aimed at improving oral health and addressing the growing challenge of antimicrobial resistance."
-      },
-      {
-        "passage_id": "pmc-13299215#abstract-2",
-        "source_id": "pmc-13299215",
-        "located_in": "abstract",
-        "text": "The formulation included sodium alginate, hyaluronic acid, and hydroglyceric extracts of Calendula officinalis , Matricaria chamomilla , and Plantago major , as well as oily extracts of Hippophae rhamnoides and Hypericum perforatum . The emulgel was evaluated for pH, rheological behaviour, spreadability, physical stability, apparent hydrodynamic size distribution, zeta potential, total polyphenol content, and antioxidant activity."
       },
       {
         "passage_id": "pmc-13689166#abstract-2",
@@ -981,8 +995,8 @@
     ]
   },
   "counts": {
-    "sources": 44,
-    "open_access_sources": 38,
+    "sources": 45,
+    "open_access_sources": 39,
     "passages": 46
   },
   "warning": "state=retrieved. Nothing here is a source, a claim, or evidence of anything. Every passage is a verbatim window from a document nobody has read. Do not render any of it."

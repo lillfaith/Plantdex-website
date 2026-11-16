@@ -1,0 +1,2611 @@
+{
+  "species": "Eschscholzia californica",
+  "fetched_at": "2026-11-16T21:02:42+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 48225,
+    "name": "Eschscholzia californica",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Eschscholzia_californica"
+  },
+  "photos": [
+    {
+      "photo_id": 541949962,
+      "observation_id": 300779554,
+      "observation_url": "https://www.inaturalist.org/observations/300779554",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-23",
+      "place": "Country Park Rd, Salinas, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/541949962/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/541949962/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/541949962/medium.jpg"
+      },
+      "dimensions": {
+        "width": 878,
+        "height": 923
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-541949962.jpg",
+      "bytes": 464321,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 541949982,
+      "observation_id": 300779554,
+      "observation_url": "https://www.inaturalist.org/observations/300779554",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-23",
+      "place": "Country Park Rd, Salinas, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/541949982/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/541949982/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/541949982/medium.jpg"
+      },
+      "dimensions": {
+        "width": 967,
+        "height": 987
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-541949982.jpg",
+      "bytes": 531209,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 116334467,
+      "observation_id": 71452646,
+      "observation_url": "https://www.inaturalist.org/observations/71452646",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-17",
+      "place": "Morgan Territory Regional Preserve, Pleasanton, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334467/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334467/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334467/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-116334467.jpg",
+      "bytes": 579472,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 116334492,
+      "observation_id": 71452646,
+      "observation_url": "https://www.inaturalist.org/observations/71452646",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-17",
+      "place": "Morgan Territory Regional Preserve, Pleasanton, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334492/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334492/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334492/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-116334492.jpg",
+      "bytes": 1828747,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 116334499,
+      "observation_id": 71452646,
+      "observation_url": "https://www.inaturalist.org/observations/71452646",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-17",
+      "place": "Morgan Territory Regional Preserve, Pleasanton, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334499/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334499/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/116334499/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-116334499.jpg",
+      "bytes": 1276021,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 482310173,
+      "observation_id": 268328907,
+      "observation_url": "https://www.inaturalist.org/observations/268328907",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-02",
+      "place": "Silverado, CA 92676, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310173/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310173/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310173/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1368
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-482310173.jpeg",
+      "bytes": 2939154,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 482310187,
+      "observation_id": 268328907,
+      "observation_url": "https://www.inaturalist.org/observations/268328907",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-02",
+      "place": "Silverado, CA 92676, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310187/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310187/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310187/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-482310187.jpeg",
+      "bytes": 2412885,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 482310201,
+      "observation_id": 268328907,
+      "observation_url": "https://www.inaturalist.org/observations/268328907",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-02",
+      "place": "Silverado, CA 92676, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310201/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310201/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/482310201/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1368
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-482310201.jpeg",
+      "bytes": 2672831,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 669952747,
+      "observation_id": 366885323,
+      "observation_url": "https://www.inaturalist.org/observations/366885323",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-30",
+      "place": "Coyote Point County Park, San Mateo County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/669952747/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/669952747/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/669952747/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2044
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-669952747.jpg",
+      "bytes": 3611483,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70972854,
+      "observation_id": 44769456,
+      "observation_url": "https://www.inaturalist.org/observations/44769456",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-03",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972854/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972854/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972854/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70972854.jpg",
+      "bytes": 1669205,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70972933,
+      "observation_id": 44769456,
+      "observation_url": "https://www.inaturalist.org/observations/44769456",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-03",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972933/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972933/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972933/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70972933.jpg",
+      "bytes": 1790276,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70972894,
+      "observation_id": 44769456,
+      "observation_url": "https://www.inaturalist.org/observations/44769456",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-03",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972894/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972894/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972894/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70972894.jpg",
+      "bytes": 1658719,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70972816,
+      "observation_id": 44769456,
+      "observation_url": "https://www.inaturalist.org/observations/44769456",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-03",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972816/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972816/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70972816/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70972816.jpg",
+      "bytes": 558769,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 14575420,
+      "observation_id": 10482961,
+      "observation_url": "https://www.inaturalist.org/observations/10482961",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-03-28",
+      "place": "Almaden Lake Park, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/14575420/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/14575420/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/14575420/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-14575420.jpeg",
+      "bytes": 780841,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 243809296,
+      "observation_id": 142228244,
+      "observation_url": "https://www.inaturalist.org/observations/142228244",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-03-10",
+      "place": "North Alberhill Ranch, Lake Elsinore, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/243809296/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/243809296/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/243809296/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-243809296.jpg",
+      "bytes": 617245,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 243809309,
+      "observation_id": 142228244,
+      "observation_url": "https://www.inaturalist.org/observations/142228244",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-03-10",
+      "place": "North Alberhill Ranch, Lake Elsinore, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/243809309/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/243809309/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/243809309/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-243809309.jpg",
+      "bytes": 676523,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 255475498,
+      "observation_id": 148362944,
+      "observation_url": "https://www.inaturalist.org/observations/148362944",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-02-08",
+      "place": "Torrey Pines State Natural Reserve, San Diego, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/255475498/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/255475498/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/255475498/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-255475498.jpg",
+      "bytes": 1673228,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 176376522,
+      "observation_id": 105158019,
+      "observation_url": "https://www.inaturalist.org/observations/105158019",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-17",
+      "place": "Garrapata State Park, Carmel, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/176376522/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/176376522/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/176376522/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1645,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-176376522.jpg",
+      "bytes": 670413,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 176376513,
+      "observation_id": 105158019,
+      "observation_url": "https://www.inaturalist.org/observations/105158019",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-17",
+      "place": "Garrapata State Park, Carmel, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/176376513/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/176376513/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/176376513/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-176376513.jpg",
+      "bytes": 786080,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 474289170,
+      "observation_id": 263958759,
+      "observation_url": "https://www.inaturalist.org/observations/263958759",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-03-04",
+      "place": "Cloverdale Ranch Open Space Preserve, Pescadero, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/474289170/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/474289170/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/474289170/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1852,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-474289170.jpg",
+      "bytes": 834499,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 488544462,
+      "observation_id": 271591580,
+      "observation_url": "https://www.inaturalist.org/observations/271591580",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-19",
+      "place": "R7R6+P6 Canyon Rim Peak, Anaheim, CA 92807, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544462/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544462/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544462/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-488544462.jpeg",
+      "bytes": 2157608,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 488544509,
+      "observation_id": 271591580,
+      "observation_url": "https://www.inaturalist.org/observations/271591580",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-19",
+      "place": "R7R6+P6 Canyon Rim Peak, Anaheim, CA 92807, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544509/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544509/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544509/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1368
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-488544509.jpeg",
+      "bytes": 2606142,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 488544526,
+      "observation_id": 271591580,
+      "observation_url": "https://www.inaturalist.org/observations/271591580",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-19",
+      "place": "R7R6+P6 Canyon Rim Peak, Anaheim, CA 92807, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544526/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544526/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544526/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1155
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-488544526.jpeg",
+      "bytes": 2444375,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 488544555,
+      "observation_id": 271591580,
+      "observation_url": "https://www.inaturalist.org/observations/271591580",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-19",
+      "place": "R7R6+P6 Canyon Rim Peak, Anaheim, CA 92807, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544555/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544555/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544555/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-488544555.jpeg",
+      "bytes": 2049414,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 488544568,
+      "observation_id": 271591580,
+      "observation_url": "https://www.inaturalist.org/observations/271591580",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-19",
+      "place": "R7R6+P6 Canyon Rim Peak, Anaheim, CA 92807, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544568/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544568/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/488544568/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-488544568.jpeg",
+      "bytes": 2711416,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 376370335,
+      "observation_id": 212976605,
+      "observation_url": "https://www.inaturalist.org/observations/212976605",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-05-01",
+      "place": "Denman Wildlife Refuge, Eagle Point, OR, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/376370335/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/376370335/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/376370335/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-376370335.jpg",
+      "bytes": 1016725,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 280752,
+      "observation_id": 222865,
+      "observation_url": "https://www.inaturalist.org/observations/222865",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2013-03-23",
+      "place": "San Carlos, California, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/280752/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/280752/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/280752/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1693
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-280752.jpg",
+      "bytes": 1843488,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 281862106,
+      "observation_id": 162989821,
+      "observation_url": "https://www.inaturalist.org/observations/162989821",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-21",
+      "place": "Anaheim, CA 92808, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862106/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862106/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862106/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1685,
+        "height": 1685
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-281862106.jpeg",
+      "bytes": 1095621,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 281862155,
+      "observation_id": 162989821,
+      "observation_url": "https://www.inaturalist.org/observations/162989821",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-21",
+      "place": "Anaheim, CA 92808, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862155/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862155/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862155/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1944,
+        "height": 1944
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-281862155.jpeg",
+      "bytes": 1731307,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 281862205,
+      "observation_id": 162989821,
+      "observation_url": "https://www.inaturalist.org/observations/162989821",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-21",
+      "place": "Anaheim, CA 92808, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862205/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862205/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/281862205/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1763,
+        "height": 1763
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-281862205.jpeg",
+      "bytes": 892771,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 122428610,
+      "observation_id": 74795529,
+      "observation_url": "https://www.inaturalist.org/observations/74795529",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-04-21",
+      "place": "H St, Arcata, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/122428610/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/122428610/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/122428610/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-122428610.jpg",
+      "bytes": 617156,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 122624832,
+      "observation_id": 74987994,
+      "observation_url": "https://www.inaturalist.org/observations/74987994",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-04-09",
+      "place": "Santa Clara County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/122624832/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/122624832/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/122624832/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1921,
+        "height": 1921
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-122624832.jpeg",
+      "bytes": 1057166,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 273807514,
+      "observation_id": 158428922,
+      "observation_url": "https://www.inaturalist.org/observations/158428922",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-30",
+      "place": "Mt. Burdell Open Space Preserve, Novato, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/273807514/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/273807514/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/273807514/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-273807514.jpg",
+      "bytes": 714482,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 283508488,
+      "observation_id": 163886616,
+      "observation_url": "https://www.inaturalist.org/observations/163886616",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-12",
+      "place": "Sutro Heights, San Francisco, CA 94121, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/283508488/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/283508488/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/283508488/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-283508488.jpeg",
+      "bytes": 1255897,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 279521464,
+      "observation_id": 161705916,
+      "observation_url": "https://www.inaturalist.org/observations/161705916",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-05-14",
+      "place": "Joseph D. Grant County Park, Santa Clara, California, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/279521464/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/279521464/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/279521464/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1542
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-279521464.jpg",
+      "bytes": 1451368,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 555750358,
+      "observation_id": 308066582,
+      "observation_url": "https://www.inaturalist.org/observations/308066582",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-21",
+      "place": "Maxwell Farms Regional Park, Sonoma, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750358/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750358/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750358/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-555750358.jpg",
+      "bytes": 1813647,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 555750426,
+      "observation_id": 308066582,
+      "observation_url": "https://www.inaturalist.org/observations/308066582",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-21",
+      "place": "Maxwell Farms Regional Park, Sonoma, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750426/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750426/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750426/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-555750426.jpg",
+      "bytes": 1086171,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 555750469,
+      "observation_id": 308066582,
+      "observation_url": "https://www.inaturalist.org/observations/308066582",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-21",
+      "place": "Maxwell Farms Regional Park, Sonoma, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750469/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750469/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/555750469/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-555750469.jpg",
+      "bytes": 1556844,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 558864575,
+      "observation_id": 309686352,
+      "observation_url": "https://www.inaturalist.org/observations/309686352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-27",
+      "place": "Santa Teresa County Park, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/558864575/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/558864575/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/558864575/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-558864575.jpg",
+      "bytes": 3610292,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 554266556,
+      "observation_id": 307308836,
+      "observation_url": "https://www.inaturalist.org/observations/307308836",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-18",
+      "place": "22100 Quévert, France",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/554266556/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/554266556/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/554266556/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1154
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-554266556.jpg",
+      "bytes": 2565826,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 551514107,
+      "observation_id": 305858348,
+      "observation_url": "https://www.inaturalist.org/observations/305858348",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-17",
+      "place": "King Range Wilderness, Garberville, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/551514107/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/551514107/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/551514107/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-551514107.jpg",
+      "bytes": 2306024,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 551514164,
+      "observation_id": 305858348,
+      "observation_url": "https://www.inaturalist.org/observations/305858348",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-17",
+      "place": "King Range Wilderness, Garberville, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/551514164/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/551514164/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/551514164/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-551514164.jpg",
+      "bytes": 1378477,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 42757478,
+      "observation_id": 27479492,
+      "observation_url": "https://www.inaturalist.org/observations/27479492",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-22",
+      "place": "San Luis Obispo County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/42757478/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/42757478/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/42757478/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-42757478.jpg",
+      "bytes": 1336971,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177867739,
+      "observation_id": 105938663,
+      "observation_url": "https://www.inaturalist.org/observations/105938663",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-31",
+      "place": "Garrapata State Park, Carmel, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177867739/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177867739/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177867739/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177867739.jpg",
+      "bytes": 1514667,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 177867750,
+      "observation_id": 105938663,
+      "observation_url": "https://www.inaturalist.org/observations/105938663",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-01-31",
+      "place": "Garrapata State Park, Carmel, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/177867750/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/177867750/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/177867750/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-177867750.jpg",
+      "bytes": 808581,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 44647630,
+      "observation_id": 28633324,
+      "observation_url": "https://www.inaturalist.org/observations/28633324",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-07-11",
+      "place": "Orange County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/44647630/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/44647630/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/44647630/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-44647630.jpg",
+      "bytes": 1760242,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 193260630,
+      "observation_id": 114448179,
+      "observation_url": "https://www.inaturalist.org/observations/114448179",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-01",
+      "place": "Pomona VORTAC POM 110.4, La Verne, CA 91750, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/193260630/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/193260630/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/193260630/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-193260630.jpeg",
+      "bytes": 3273570,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 193260721,
+      "observation_id": 114448179,
+      "observation_url": "https://www.inaturalist.org/observations/114448179",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-05-01",
+      "place": "Pomona VORTAC POM 110.4, La Verne, CA 91750, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/193260721/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/193260721/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/193260721/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-193260721.jpeg",
+      "bytes": 1742040,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 676812116,
+      "observation_id": 370484496,
+      "observation_url": "https://www.inaturalist.org/observations/370484496",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-06-10",
+      "place": "Ridgewood Fire Road, San Anselmo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/676812116/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/676812116/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/676812116/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-676812116.jpg",
+      "bytes": 2413152,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 3381377,
+      "observation_id": 2948386,
+      "observation_url": "https://www.inaturalist.org/observations/2948386",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2016-04-16",
+      "place": "McLaren Park, San Francisco, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/3381377/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/3381377/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/3381377/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-3381377.jpg",
+      "bytes": 4234447,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 129403390,
+      "observation_id": 79040178,
+      "observation_url": "https://www.inaturalist.org/observations/79040178",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-14",
+      "place": "Old Greenwood Bridge Roadk, Placer County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403390/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403390/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403390/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1535
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 1,
+      "file": "inat-129403390.jpeg",
+      "bytes": 1127797,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 129403426,
+      "observation_id": 79040178,
+      "observation_url": "https://www.inaturalist.org/observations/79040178",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-14",
+      "place": "Old Greenwood Bridge Roadk, Placer County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403426/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403426/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403426/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 1,
+      "file": "inat-129403426.jpeg",
+      "bytes": 255250,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 129403512,
+      "observation_id": 79040178,
+      "observation_url": "https://www.inaturalist.org/observations/79040178",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-14",
+      "place": "Old Greenwood Bridge Roadk, Placer County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403512/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403512/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/129403512/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 1,
+      "file": "inat-129403512.jpeg",
+      "bytes": 1243629,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 637602940,
+      "observation_id": 349517045,
+      "observation_url": "https://www.inaturalist.org/observations/349517045",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-04-12",
+      "place": "Peachy Canyon Rd, Paso Robles, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/637602940/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/637602940/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/637602940/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-637602940.jpg",
+      "bytes": 4057333,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 57879175,
+      "observation_id": 36601911,
+      "observation_url": "https://www.inaturalist.org/observations/36601911",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-12-12",
+      "place": "9th Ave & Lincoln Way, San Francisco, CA 94122, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/57879175/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/57879175/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/57879175/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-57879175.jpeg",
+      "bytes": 1745869,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 73023760,
+      "observation_id": 46041728,
+      "observation_url": "https://www.inaturalist.org/observations/46041728",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-05-15",
+      "place": "Ulistac Natural Area, Santa Clara, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/73023760/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/73023760/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/73023760/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-73023760.jpeg",
+      "bytes": 1340467,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70275211,
+      "observation_id": 44325398,
+      "observation_url": "https://www.inaturalist.org/observations/44325398",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-04-29",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275211/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275211/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275211/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70275211.jpg",
+      "bytes": 1513041,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70275193,
+      "observation_id": 44325398,
+      "observation_url": "https://www.inaturalist.org/observations/44325398",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-04-29",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275193/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275193/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275193/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70275193.jpg",
+      "bytes": 1296538,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70275150,
+      "observation_id": 44325398,
+      "observation_url": "https://www.inaturalist.org/observations/44325398",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-04-29",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275150/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275150/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275150/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70275150.jpg",
+      "bytes": 1108667,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 70275172,
+      "observation_id": 44325398,
+      "observation_url": "https://www.inaturalist.org/observations/44325398",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-04-29",
+      "place": "Silverdale Rotary Gateway Park, Silverdale, WA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275172/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275172/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/70275172/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-70275172.jpg",
+      "bytes": 652536,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 217692496,
+      "observation_id": 128175902,
+      "observation_url": "https://www.inaturalist.org/observations/128175902",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-27",
+      "place": "Piedras Blancas Light Station, Ragged Point, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/217692496/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/217692496/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/217692496/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-217692496.jpg",
+      "bytes": 1502897,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 217692599,
+      "observation_id": 128175902,
+      "observation_url": "https://www.inaturalist.org/observations/128175902",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-27",
+      "place": "Piedras Blancas Light Station, Ragged Point, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/217692599/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/217692599/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/217692599/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-217692599.jpg",
+      "bytes": 1501114,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410330,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410330/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410330/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410330/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410330.jpeg",
+      "bytes": 1405608,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410399,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410399/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410399/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410399/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410399.jpeg",
+      "bytes": 1375687,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410460,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410460/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410460/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410460/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410460.jpeg",
+      "bytes": 1414354,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410528,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410528/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410528/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410528/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410528.jpeg",
+      "bytes": 1292431,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410610,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410610/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410610/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410610/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410610.jpeg",
+      "bytes": 1392280,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410659,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410659/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410659/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410659/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410659.jpeg",
+      "bytes": 1383057,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 224410976,
+      "observation_id": 131840175,
+      "observation_url": "https://www.inaturalist.org/observations/131840175",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-20",
+      "place": "Island, Washington, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410976/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410976/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/224410976/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-224410976.jpeg",
+      "bytes": 1963843,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 730591675,
+      "observation_id": 398284398,
+      "observation_url": "https://www.inaturalist.org/observations/398284398",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-03-24",
+      "place": "Phoenix Mountains Preserve",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/730591675/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/730591675/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/730591675/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-730591675.jpg",
+      "bytes": 1838062,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 651843802,
+      "observation_id": 357388208,
+      "observation_url": "https://www.inaturalist.org/observations/357388208",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-04-27",
+      "place": "Almaden Winery, San Jose, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/651843802/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/651843802/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/651843802/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-651843802.jpg",
+      "bytes": 1279870,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 647186222,
+      "observation_id": 354793164,
+      "observation_url": "https://www.inaturalist.org/observations/354793164",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-04-26",
+      "place": "San Francisco Bay Trail, San Mateo, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/647186222/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/647186222/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/647186222/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-647186222.jpg",
+      "bytes": 4558033,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 654302922,
+      "observation_id": 358657818,
+      "observation_url": "https://www.inaturalist.org/observations/358657818",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-04",
+      "place": "Cement Plant Rd, Davenport, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/654302922/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/654302922/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/654302922/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1570
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-654302922.jpg",
+      "bytes": 2257431,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 362162660,
+      "observation_id": 204868631,
+      "observation_url": "https://www.inaturalist.org/observations/204868631",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-03-31",
+      "place": "Shady Oaks and Basking Ridge, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/362162660/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/362162660/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/362162660/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-362162660.jpeg",
+      "bytes": 1587775,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 362964508,
+      "observation_id": 205286257,
+      "observation_url": "https://www.inaturalist.org/observations/205286257",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-04-03",
+      "place": "Silver City, NM 88061, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/362964508/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/362964508/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/362964508/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-362964508.jpeg",
+      "bytes": 1934007,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 369222942,
+      "observation_id": 208667026,
+      "observation_url": "https://www.inaturalist.org/observations/208667026",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-04-21",
+      "place": "Joseph D. Grant County Park, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/369222942/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/369222942/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/369222942/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1349,
+        "height": 1011
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-369222942.jpeg",
+      "bytes": 698950,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 369222969,
+      "observation_id": 208667026,
+      "observation_url": "https://www.inaturalist.org/observations/208667026",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-04-21",
+      "place": "Joseph D. Grant County Park, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/369222969/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/369222969/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/369222969/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-369222969.jpeg",
+      "bytes": 2049133,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 469200506,
+      "observation_id": 261193860,
+      "observation_url": "https://www.inaturalist.org/observations/261193860",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-02-09",
+      "place": "Phillip Burton Wilderness, Inverness, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200506/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200506/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200506/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-469200506.jpg",
+      "bytes": 1397528,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 469200521,
+      "observation_id": 261193860,
+      "observation_url": "https://www.inaturalist.org/observations/261193860",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-02-09",
+      "place": "Phillip Burton Wilderness, Inverness, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200521/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200521/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200521/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-469200521.jpg",
+      "bytes": 1466873,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 469200533,
+      "observation_id": 261193860,
+      "observation_url": "https://www.inaturalist.org/observations/261193860",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-02-09",
+      "place": "Phillip Burton Wilderness, Inverness, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200533/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200533/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200533/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-469200533.jpg",
+      "bytes": 1359627,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 469200549,
+      "observation_id": 261193860,
+      "observation_url": "https://www.inaturalist.org/observations/261193860",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-02-09",
+      "place": "Phillip Burton Wilderness, Inverness, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200549/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200549/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/469200549/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-469200549.jpg",
+      "bytes": 1834373,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 2180201,
+      "observation_id": 1799558,
+      "observation_url": "https://www.inaturalist.org/observations/1799558",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2015-07-25",
+      "place": "501 Fulton Shipyard Rd, Antioch, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180201/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180201/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180201/medium.jpg"
+      },
+      "dimensions": {
+        "width": 852,
+        "height": 1136
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-2180201.jpg",
+      "bytes": 701747,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 2180203,
+      "observation_id": 1799558,
+      "observation_url": "https://www.inaturalist.org/observations/1799558",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2015-07-25",
+      "place": "501 Fulton Shipyard Rd, Antioch, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180203/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180203/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180203/medium.jpg"
+      },
+      "dimensions": {
+        "width": 852,
+        "height": 1136
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-2180203.jpg",
+      "bytes": 696494,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 2180202,
+      "observation_id": 1799558,
+      "observation_url": "https://www.inaturalist.org/observations/1799558",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2015-07-25",
+      "place": "501 Fulton Shipyard Rd, Antioch, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180202/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180202/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180202/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1136,
+        "height": 852
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-2180202.jpg",
+      "bytes": 1709784,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 2180204,
+      "observation_id": 1799558,
+      "observation_url": "https://www.inaturalist.org/observations/1799558",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2015-07-25",
+      "place": "501 Fulton Shipyard Rd, Antioch, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180204/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180204/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/2180204/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1136,
+        "height": 852
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-2180204.jpg",
+      "bytes": 1474631,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 13977551,
+      "observation_id": 10133937,
+      "observation_url": "https://www.inaturalist.org/observations/10133937",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-03-07",
+      "place": "Guadalupe River Trail, San Jose, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/13977551/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/13977551/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/13977551/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-13977551.jpeg",
+      "bytes": 739414,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 7385734,
+      "observation_id": 5919880,
+      "observation_url": "https://www.inaturalist.org/observations/5919880",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-04-22",
+      "place": "Sierra Azul Open Space Preserve, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/7385734/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/7385734/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/7385734/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1365,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-7385734.jpeg",
+      "bytes": 1120087,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 14599315,
+      "observation_id": 10495399,
+      "observation_url": "https://www.inaturalist.org/observations/10495399",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-03-29",
+      "place": "Sea West Ranch, San Luis Obispo County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599315/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599315/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599315/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-14599315.jpg",
+      "bytes": 1051773,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 14599325,
+      "observation_id": 10495399,
+      "observation_url": "https://www.inaturalist.org/observations/10495399",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-03-29",
+      "place": "Sea West Ranch, San Luis Obispo County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599325/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599325/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599325/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-14599325.jpg",
+      "bytes": 668174,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 14599321,
+      "observation_id": 10495399,
+      "observation_url": "https://www.inaturalist.org/observations/10495399",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-03-29",
+      "place": "Sea West Ranch, San Luis Obispo County, US-CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599321/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599321/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/14599321/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-14599321.jpg",
+      "bytes": 1908777,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 16176104,
+      "observation_id": 11354179,
+      "observation_url": "https://www.inaturalist.org/observations/11354179",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-04-14",
+      "place": "Hearst San Simeon State Park, San Luis Obispo, California, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/16176104/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/16176104/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/16176104/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1367
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-16176104.jpg",
+      "bytes": 1447054,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 180285834,
+      "observation_id": 107219008,
+      "observation_url": "https://www.inaturalist.org/observations/107219008",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-02-21",
+      "place": "Sibley Volcanic Regional Preserve, Oakland, CA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/180285834/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/180285834/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/180285834/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-180285834.jpg",
+      "bytes": 902519,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 499584297,
+      "observation_id": 278233145,
+      "observation_url": "https://www.inaturalist.org/observations/278233145",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-27",
+      "place": "Los Angeles County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/499584297/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/499584297/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/499584297/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1366
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-499584297.jpeg",
+      "bytes": 1346928,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 499584942,
+      "observation_id": 278233195,
+      "observation_url": "https://www.inaturalist.org/observations/278233195",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-27",
+      "place": "Los Angeles County, CA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/499584942/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/499584942/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/499584942/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-499584942.jpeg",
+      "bytes": 2029464,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 404215832,
+      "observation_id": 227829208,
+      "observation_url": "https://www.inaturalist.org/observations/227829208",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-07",
+      "place": "Stinson Rd, Yellowknife, NT, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/404215832/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/404215832/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/404215832/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-404215832.jpg",
+      "bytes": 902250,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 404215901,
+      "observation_id": 227829208,
+      "observation_url": "https://www.inaturalist.org/observations/227829208",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-07",
+      "place": "Stinson Rd, Yellowknife, NT, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/404215901/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/404215901/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/404215901/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eschscholzia californica",
+      "taxon_id": 48225,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-404215901.jpg",
+      "bytes": 968493,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

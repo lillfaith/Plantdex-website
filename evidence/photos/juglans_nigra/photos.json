@@ -1,0 +1,2611 @@
+{
+  "species": "Juglans nigra",
+  "fetched_at": "2026-11-16T21:01:03+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 54504,
+    "name": "Juglans nigra",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Juglans_nigra"
+  },
+  "photos": [
+    {
+      "photo_id": 52543981,
+      "observation_id": 33453827,
+      "observation_url": "https://www.inaturalist.org/observations/33453827",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-09-26",
+      "place": "Jackson Park, Chicago, IL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/52543981/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/52543981/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/52543981/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-52543981.jpg",
+      "bytes": 1398057,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 52543997,
+      "observation_id": 33453827,
+      "observation_url": "https://www.inaturalist.org/observations/33453827",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-09-26",
+      "place": "Jackson Park, Chicago, IL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/52543997/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/52543997/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/52543997/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-52543997.jpg",
+      "bytes": 1033627,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 52544031,
+      "observation_id": 33453827,
+      "observation_url": "https://www.inaturalist.org/observations/33453827",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-09-26",
+      "place": "Jackson Park, Chicago, IL, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/52544031/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/52544031/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/52544031/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-52544031.jpg",
+      "bytes": 2281651,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 85718088,
+      "observation_id": 53886003,
+      "observation_url": "https://www.inaturalist.org/observations/53886003",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-07-21",
+      "place": "Niagara Falls, ON L2E, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/85718088/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/85718088/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/85718088/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-85718088.jpeg",
+      "bytes": 2942199,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 85718129,
+      "observation_id": 53886003,
+      "observation_url": "https://www.inaturalist.org/observations/53886003",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-07-21",
+      "place": "Niagara Falls, ON L2E, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/85718129/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/85718129/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/85718129/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-85718129.jpeg",
+      "bytes": 3018977,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 89318001,
+      "observation_id": 56067701,
+      "observation_url": "https://www.inaturalist.org/observations/56067701",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-09",
+      "place": "Sioux Falls, SD, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/89318001/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/89318001/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/89318001/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-89318001.jpg",
+      "bytes": 1086007,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 89318029,
+      "observation_id": 56067701,
+      "observation_url": "https://www.inaturalist.org/observations/56067701",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-09",
+      "place": "Sioux Falls, SD, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/89318029/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/89318029/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/89318029/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-89318029.jpg",
+      "bytes": 1318772,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 85826062,
+      "observation_id": 53955677,
+      "observation_url": "https://www.inaturalist.org/observations/53955677",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-07-22",
+      "place": "Jackson, London, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/85826062/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/85826062/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/85826062/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-85826062.jpeg",
+      "bytes": 1562134,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 114682093,
+      "observation_id": 70532217,
+      "observation_url": "https://www.inaturalist.org/observations/70532217",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-03",
+      "place": "Hanover, PA 17331, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/114682093/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/114682093/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/114682093/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-114682093.jpg",
+      "bytes": 1038244,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 114682341,
+      "observation_id": 70532217,
+      "observation_url": "https://www.inaturalist.org/observations/70532217",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-03",
+      "place": "Hanover, PA 17331, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/114682341/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/114682341/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/114682341/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-114682341.jpg",
+      "bytes": 701293,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115967364,
+      "observation_id": 71247983,
+      "observation_url": "https://www.inaturalist.org/observations/71247983",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Dundas, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115967364/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115967364/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115967364/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-115967364.jpg",
+      "bytes": 2245721,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 248151988,
+      "observation_id": 71247983,
+      "observation_url": "https://www.inaturalist.org/observations/71247983",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Dundas, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/248151988/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/248151988/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/248151988/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-248151988.jpeg",
+      "bytes": 3247916,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115963855,
+      "observation_id": 71246052,
+      "observation_url": "https://www.inaturalist.org/observations/71246052",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Dundas, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115963855/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115963855/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115963855/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-115963855.jpg",
+      "bytes": 1950989,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 218974310,
+      "observation_id": 128892804,
+      "observation_url": "https://www.inaturalist.org/observations/128892804",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-31",
+      "place": "Strong, KS, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/218974310/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/218974310/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/218974310/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-218974310.jpeg",
+      "bytes": 2440541,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 556527465,
+      "observation_id": 308476446,
+      "observation_url": "https://www.inaturalist.org/observations/308476446",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-21",
+      "place": "Wake, North Carolina, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527465/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527465/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527465/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1992,
+        "height": 1883
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-556527465.jpg",
+      "bytes": 4605204,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 556527533,
+      "observation_id": 308476446,
+      "observation_url": "https://www.inaturalist.org/observations/308476446",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-21",
+      "place": "Wake, North Carolina, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527533/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527533/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527533/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2034,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-556527533.jpg",
+      "bytes": 5300276,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 556527552,
+      "observation_id": 308476446,
+      "observation_url": "https://www.inaturalist.org/observations/308476446",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-21",
+      "place": "Wake, North Carolina, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527552/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527552/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/556527552/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1236,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-556527552.jpg",
+      "bytes": 4348117,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115965096,
+      "observation_id": 71246637,
+      "observation_url": "https://www.inaturalist.org/observations/71246637",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Dundas, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115965096/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115965096/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115965096/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-115965096.jpg",
+      "bytes": 1536537,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115968717,
+      "observation_id": 71248833,
+      "observation_url": "https://www.inaturalist.org/observations/71248833",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Dundas, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115968717/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115968717/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115968717/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-115968717.jpg",
+      "bytes": 2111177,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 167663138,
+      "observation_id": 101028169,
+      "observation_url": "https://www.inaturalist.org/observations/101028169",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-11-06",
+      "place": "HASTINGS HDSN, NY 10706, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/167663138/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/167663138/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/167663138/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-167663138.jpeg",
+      "bytes": 1756698,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 167663163,
+      "observation_id": 101028169,
+      "observation_url": "https://www.inaturalist.org/observations/101028169",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-11-06",
+      "place": "HASTINGS HDSN, NY 10706, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/167663163/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/167663163/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/167663163/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-167663163.jpeg",
+      "bytes": 1710673,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 8223470,
+      "observation_id": 6498256,
+      "observation_url": "https://www.inaturalist.org/observations/6498256",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-06-03",
+      "place": "Barton Creek Greenbelt, Austin, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/8223470/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/8223470/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/8223470/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-8223470.jpg",
+      "bytes": 1069516,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115966827,
+      "observation_id": 71247647,
+      "observation_url": "https://www.inaturalist.org/observations/71247647",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Hamilton, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115966827/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115966827/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115966827/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-115966827.jpg",
+      "bytes": 2266327,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 154958460,
+      "observation_id": 93489884,
+      "observation_url": "https://www.inaturalist.org/observations/93489884",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-03",
+      "place": "The Gables, Barrie, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/154958460/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/154958460/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/154958460/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-154958460.jpg",
+      "bytes": 1238134,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 154958527,
+      "observation_id": 93489884,
+      "observation_url": "https://www.inaturalist.org/observations/93489884",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-03",
+      "place": "The Gables, Barrie, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/154958527/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/154958527/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/154958527/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-154958527.jpg",
+      "bytes": 2018795,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 78054398,
+      "observation_id": 49173416,
+      "observation_url": "https://www.inaturalist.org/observations/49173416",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-06-10",
+      "place": "Washington Park, Portland, OR, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/78054398/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/78054398/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/78054398/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-78054398.jpg",
+      "bytes": 1939795,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115965786,
+      "observation_id": 71247062,
+      "observation_url": "https://www.inaturalist.org/observations/71247062",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-14",
+      "place": "Dundas, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115965786/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115965786/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115965786/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-115965786.jpg",
+      "bytes": 2363163,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 156354214,
+      "observation_id": 94267466,
+      "observation_url": "https://www.inaturalist.org/observations/94267466",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-09",
+      "place": "Ottawa, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/156354214/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/156354214/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/156354214/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-156354214.jpeg",
+      "bytes": 1991888,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 156105177,
+      "observation_id": 94127482,
+      "observation_url": "https://www.inaturalist.org/observations/94127482",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-08",
+      "place": "New Milford, CT 06776, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105177/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105177/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105177/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-156105177.jpeg",
+      "bytes": 2940103,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 156105192,
+      "observation_id": 94127482,
+      "observation_url": "https://www.inaturalist.org/observations/94127482",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-08",
+      "place": "New Milford, CT 06776, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105192/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105192/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105192/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-156105192.jpeg",
+      "bytes": 2290120,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 156105216,
+      "observation_id": 94127482,
+      "observation_url": "https://www.inaturalist.org/observations/94127482",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-08",
+      "place": "New Milford, CT 06776, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105216/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105216/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/156105216/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-156105216.jpeg",
+      "bytes": 1727068,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 25256545,
+      "observation_id": 16736456,
+      "observation_url": "https://www.inaturalist.org/observations/16736456",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-20",
+      "place": "Gettysburg College, Gettysburg, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/25256545/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/25256545/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/25256545/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-25256545.jpg",
+      "bytes": 688375,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 35862612,
+      "observation_id": 23136098,
+      "observation_url": "https://www.inaturalist.org/observations/23136098",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-04-26",
+      "place": "2–40 Oglethorpe St NW, Washington, DC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862612/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862612/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862612/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-35862612.jpg",
+      "bytes": 627217,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 35862706,
+      "observation_id": 23136098,
+      "observation_url": "https://www.inaturalist.org/observations/23136098",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-04-26",
+      "place": "2–40 Oglethorpe St NW, Washington, DC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862706/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862706/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862706/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-35862706.jpg",
+      "bytes": 2070860,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 35862648,
+      "observation_id": 23136098,
+      "observation_url": "https://www.inaturalist.org/observations/23136098",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-04-26",
+      "place": "2–40 Oglethorpe St NW, Washington, DC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862648/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862648/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/35862648/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-35862648.jpg",
+      "bytes": 1119160,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 409933251,
+      "observation_id": 230850960,
+      "observation_url": "https://www.inaturalist.org/observations/230850960",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-21",
+      "place": "Montgomery County, PA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/409933251/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/409933251/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/409933251/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-409933251.jpeg",
+      "bytes": 1910724,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 518529705,
+      "observation_id": 288342584,
+      "observation_url": "https://www.inaturalist.org/observations/288342584",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-09",
+      "place": "Colerain Ave, Cincinnati, OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529705/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529705/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529705/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-518529705.jpg",
+      "bytes": 4087304,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 518529718,
+      "observation_id": 288342584,
+      "observation_url": "https://www.inaturalist.org/observations/288342584",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-09",
+      "place": "Colerain Ave, Cincinnati, OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529718/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529718/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529718/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-518529718.jpg",
+      "bytes": 4508538,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 518529708,
+      "observation_id": 288342584,
+      "observation_url": "https://www.inaturalist.org/observations/288342584",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-09",
+      "place": "Colerain Ave, Cincinnati, OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529708/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529708/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529708/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-518529708.jpg",
+      "bytes": 2948558,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 518529712,
+      "observation_id": 288342584,
+      "observation_url": "https://www.inaturalist.org/observations/288342584",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-09",
+      "place": "Colerain Ave, Cincinnati, OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529712/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529712/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/518529712/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-518529712.jpg",
+      "bytes": 3130424,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 335264270,
+      "observation_id": 191150982,
+      "observation_url": "https://www.inaturalist.org/observations/191150982",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-09",
+      "place": "Stoneybrook, London, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/335264270/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/335264270/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/335264270/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-335264270.jpg",
+      "bytes": 811497,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 335264263,
+      "observation_id": 191150982,
+      "observation_url": "https://www.inaturalist.org/observations/191150982",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-09",
+      "place": "Stoneybrook, London, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/335264263/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/335264263/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/335264263/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-335264263.jpg",
+      "bytes": 836948,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 349564246,
+      "observation_id": 198342764,
+      "observation_url": "https://www.inaturalist.org/observations/198342764",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-03",
+      "place": "Buttermilk Falls State Park, Ithaca, NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/349564246/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/349564246/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/349564246/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-349564246.jpg",
+      "bytes": 1903898,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 333169160,
+      "observation_id": 190097105,
+      "observation_url": "https://www.inaturalist.org/observations/190097105",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-05",
+      "place": "S Fifth St, Temple, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169160/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169160/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169160/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-333169160.jpg",
+      "bytes": 1083648,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 333169197,
+      "observation_id": 190097105,
+      "observation_url": "https://www.inaturalist.org/observations/190097105",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-05",
+      "place": "S Fifth St, Temple, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169197/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169197/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169197/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-333169197.jpg",
+      "bytes": 1201207,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 333169245,
+      "observation_id": 190097105,
+      "observation_url": "https://www.inaturalist.org/observations/190097105",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-05",
+      "place": "S Fifth St, Temple, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169245/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169245/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169245/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-333169245.jpg",
+      "bytes": 1283929,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 333169298,
+      "observation_id": 190097105,
+      "observation_url": "https://www.inaturalist.org/observations/190097105",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-05",
+      "place": "S Fifth St, Temple, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169298/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169298/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/333169298/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-333169298.jpg",
+      "bytes": 2141234,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 323310947,
+      "observation_id": 185149215,
+      "observation_url": "https://www.inaturalist.org/observations/185149215",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-27",
+      "place": "State Rd, Hinckley, OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/323310947/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/323310947/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/323310947/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-323310947.jpg",
+      "bytes": 1450792,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 272539889,
+      "observation_id": 157646515,
+      "observation_url": "https://www.inaturalist.org/observations/157646515",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Foxborough",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/272539889/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/272539889/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/272539889/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1146,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-272539889.jpeg",
+      "bytes": 1820587,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 272539955,
+      "observation_id": 157646515,
+      "observation_url": "https://www.inaturalist.org/observations/157646515",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Foxborough",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/272539955/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/272539955/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/272539955/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1222,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-272539955.jpeg",
+      "bytes": 1691710,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 272540028,
+      "observation_id": 157646515,
+      "observation_url": "https://www.inaturalist.org/observations/157646515",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Foxborough",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540028/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540028/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540028/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1111,
+        "height": 1979
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-272540028.jpeg",
+      "bytes": 1589055,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 272540100,
+      "observation_id": 157646515,
+      "observation_url": "https://www.inaturalist.org/observations/157646515",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Foxborough",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540100/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540100/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540100/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1191,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-272540100.jpeg",
+      "bytes": 1616623,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 272540163,
+      "observation_id": 157646515,
+      "observation_url": "https://www.inaturalist.org/observations/157646515",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Foxborough",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540163/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540163/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/272540163/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1053,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-272540163.jpeg",
+      "bytes": 1488423,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 726343948,
+      "observation_id": 396086806,
+      "observation_url": "https://www.inaturalist.org/observations/396086806",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-31",
+      "place": "Tickton, Beverley, England, GB",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/726343948/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/726343948/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/726343948/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-726343948.jpg",
+      "bytes": 1433100,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 491792390,
+      "observation_id": 273442839,
+      "observation_url": "https://www.inaturalist.org/observations/273442839",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-04-25",
+      "place": "Stoneybrook, London, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/491792390/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/491792390/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/491792390/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-491792390.jpeg",
+      "bytes": 1585673,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 299823523,
+      "observation_id": 172695126,
+      "observation_url": "https://www.inaturalist.org/observations/172695126",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-07-13",
+      "place": "Victoria Park, Kitchener, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/299823523/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/299823523/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/299823523/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-299823523.jpg",
+      "bytes": 848135,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173717,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173717/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173717/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173717/medium.jpg"
+      },
+      "dimensions": {
+        "width": 946,
+        "height": 1088
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173717.jpg",
+      "bytes": 557255,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173732,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173732/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173732/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173732/medium.jpg"
+      },
+      "dimensions": {
+        "width": 791,
+        "height": 1018
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173732.jpg",
+      "bytes": 447122,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173751,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173751/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173751/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173751/medium.jpg"
+      },
+      "dimensions": {
+        "width": 943,
+        "height": 1615
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173751.jpg",
+      "bytes": 762073,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173775,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173775/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173775/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173775/medium.jpg"
+      },
+      "dimensions": {
+        "width": 943,
+        "height": 1571
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173775.jpg",
+      "bytes": 663581,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173789,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173789/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173789/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173789/medium.jpg"
+      },
+      "dimensions": {
+        "width": 942,
+        "height": 1138
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173789.jpg",
+      "bytes": 528849,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173800,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173800/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173800/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173800/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1369,
+        "height": 918
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173800.jpg",
+      "bytes": 420421,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 758173818,
+      "observation_id": 412077639,
+      "observation_url": "https://www.inaturalist.org/observations/412077639",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-10-31",
+      "place": "Hamilton County, US-OH, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173818/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173818/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/758173818/medium.jpg"
+      },
+      "dimensions": {
+        "width": 868,
+        "height": 1130
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-758173818.jpg",
+      "bytes": 495007,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 554475740,
+      "observation_id": 307428510,
+      "observation_url": "https://www.inaturalist.org/observations/307428510",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-25",
+      "place": "Plano, TX, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/554475740/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/554475740/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/554475740/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1134,
+        "height": 1512
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-554475740.jpg",
+      "bytes": 319654,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 251390322,
+      "observation_id": 146245777,
+      "observation_url": "https://www.inaturalist.org/observations/146245777",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-09",
+      "place": "Mercer St, Hamilton, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/251390322/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/251390322/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/251390322/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-251390322.jpg",
+      "bytes": 2075755,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 251390339,
+      "observation_id": 146245777,
+      "observation_url": "https://www.inaturalist.org/observations/146245777",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-01-09",
+      "place": "Mercer St, Hamilton, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/251390339/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/251390339/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/251390339/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-251390339.jpg",
+      "bytes": 821920,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 371939671,
+      "observation_id": 210271189,
+      "observation_url": "https://www.inaturalist.org/observations/210271189",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-04-27",
+      "place": "River Rd, Louisville, KY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/371939671/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/371939671/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/371939671/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-371939671.jpg",
+      "bytes": 1454248,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 141416146,
+      "observation_id": 85899763,
+      "observation_url": "https://www.inaturalist.org/observations/85899763",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-06",
+      "place": "Lancaster Township, PA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/141416146/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/141416146/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/141416146/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-141416146.jpeg",
+      "bytes": 1546547,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 604594721,
+      "observation_id": 333063496,
+      "observation_url": "https://www.inaturalist.org/observations/333063496",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-01-01",
+      "place": "Hibernia County Park Trail Network, Coatesville, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/604594721/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/604594721/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/604594721/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-604594721.jpg",
+      "bytes": 4513904,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 604594717,
+      "observation_id": 333063496,
+      "observation_url": "https://www.inaturalist.org/observations/333063496",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-01-01",
+      "place": "Hibernia County Park Trail Network, Coatesville, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/604594717/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/604594717/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/604594717/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-604594717.jpg",
+      "bytes": 3385082,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 548844934,
+      "observation_id": 304447340,
+      "observation_url": "https://www.inaturalist.org/observations/304447340",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-07",
+      "place": "Mineral Township, MO, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/548844934/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/548844934/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/548844934/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-548844934.jpg",
+      "bytes": 3166698,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 548844973,
+      "observation_id": 304447340,
+      "observation_url": "https://www.inaturalist.org/observations/304447340",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-07",
+      "place": "Mineral Township, MO, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/548844973/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/548844973/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/548844973/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-548844973.jpg",
+      "bytes": 2559813,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 548845005,
+      "observation_id": 304447340,
+      "observation_url": "https://www.inaturalist.org/observations/304447340",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-07",
+      "place": "Mineral Township, MO, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/548845005/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/548845005/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/548845005/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-548845005.jpg",
+      "bytes": 2264959,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 548845027,
+      "observation_id": 304447340,
+      "observation_url": "https://www.inaturalist.org/observations/304447340",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-07",
+      "place": "Mineral Township, MO, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/548845027/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/548845027/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/548845027/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-548845027.jpg",
+      "bytes": 1912639,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 558154321,
+      "observation_id": 309318575,
+      "observation_url": "https://www.inaturalist.org/observations/309318575",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-26",
+      "place": "Oakville, ON L6H 5Y7, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/558154321/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/558154321/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/558154321/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-558154321.jpg",
+      "bytes": 1762346,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 558154369,
+      "observation_id": 309318575,
+      "observation_url": "https://www.inaturalist.org/observations/309318575",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-26",
+      "place": "Oakville, ON L6H 5Y7, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/558154369/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/558154369/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/558154369/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-558154369.jpg",
+      "bytes": 2098903,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 694701880,
+      "observation_id": 379766274,
+      "observation_url": "https://www.inaturalist.org/observations/379766274",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-09",
+      "place": "Lexington, KY 40515, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/694701880/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/694701880/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/694701880/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1792,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-694701880.jpg",
+      "bytes": 3058144,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 697161496,
+      "observation_id": 381032599,
+      "observation_url": "https://www.inaturalist.org/observations/381032599",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-13",
+      "place": "Carver Park Rd, Victoria, MN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/697161496/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/697161496/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/697161496/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-697161496.jpg",
+      "bytes": 1452437,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 697162128,
+      "observation_id": 381032599,
+      "observation_url": "https://www.inaturalist.org/observations/381032599",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-07-13",
+      "place": "Carver Park Rd, Victoria, MN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/697162128/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/697162128/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/697162128/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-697162128.jpg",
+      "bytes": 2237397,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 711629450,
+      "observation_id": 388546330,
+      "observation_url": "https://www.inaturalist.org/observations/388546330",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-05",
+      "place": "Winston-Salem, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/711629450/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/711629450/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/711629450/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-711629450.jpg",
+      "bytes": 3818116,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 711629463,
+      "observation_id": 388546330,
+      "observation_url": "https://www.inaturalist.org/observations/388546330",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-05",
+      "place": "Winston-Salem, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/711629463/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/711629463/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/711629463/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-711629463.jpg",
+      "bytes": 3656459,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 64897293,
+      "observation_id": 40932957,
+      "observation_url": "https://www.inaturalist.org/observations/40932957",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-03-28",
+      "place": "Rock Creek Park, Washington, DC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/64897293/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/64897293/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/64897293/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-64897293.jpg",
+      "bytes": 1771536,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 64897271,
+      "observation_id": 40932957,
+      "observation_url": "https://www.inaturalist.org/observations/40932957",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-03-28",
+      "place": "Rock Creek Park, Washington, DC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/64897271/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/64897271/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/64897271/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-64897271.jpg",
+      "bytes": 1701560,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 49202340,
+      "observation_id": 31439567,
+      "observation_url": "https://www.inaturalist.org/observations/31439567",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-14",
+      "place": "21699 County Rd 77, Wabasha, MN 55981, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202340/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202340/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202340/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1496
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-49202340.jpg",
+      "bytes": 1183941,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 49202322,
+      "observation_id": 31439567,
+      "observation_url": "https://www.inaturalist.org/observations/31439567",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-14",
+      "place": "21699 County Rd 77, Wabasha, MN 55981, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202322/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202322/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202322/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1361
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-49202322.jpg",
+      "bytes": 852225,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 49202352,
+      "observation_id": 31439567,
+      "observation_url": "https://www.inaturalist.org/observations/31439567",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-14",
+      "place": "21699 County Rd 77, Wabasha, MN 55981, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202352/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202352/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202352/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1223,
+        "height": 1487
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-49202352.jpg",
+      "bytes": 335130,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 49202359,
+      "observation_id": 31439567,
+      "observation_url": "https://www.inaturalist.org/observations/31439567",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-14",
+      "place": "21699 County Rd 77, Wabasha, MN 55981, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202359/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202359/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/49202359/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1770,
+        "height": 668
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-49202359.jpg",
+      "bytes": 264796,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 639912807,
+      "observation_id": 350698735,
+      "observation_url": "https://www.inaturalist.org/observations/350698735",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-04-17",
+      "place": "MacArthur Dr, Menomonee Falls, WI, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/639912807/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/639912807/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/639912807/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-639912807.jpg",
+      "bytes": 2713530,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 518364016,
+      "observation_id": 288258716,
+      "observation_url": "https://www.inaturalist.org/observations/288258716",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-06-07",
+      "place": "Eagle Heights Assembly, Madison, WI 53705, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/518364016/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/518364016/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/518364016/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-518364016.jpg",
+      "bytes": 1556139,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 228387874,
+      "observation_id": 134026618,
+      "observation_url": "https://www.inaturalist.org/observations/134026618",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-06",
+      "place": "Legacy Trail",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/228387874/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/228387874/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/228387874/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1365
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-228387874.jpeg",
+      "bytes": 921905,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 115824830,
+      "observation_id": 71167864,
+      "observation_url": "https://www.inaturalist.org/observations/71167864",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-03-13",
+      "place": "Pleasant Hill Church Rd, Siler City, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/115824830/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/115824830/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/115824830/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-115824830.jpg",
+      "bytes": 2036337,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 273446133,
+      "observation_id": 158206534,
+      "observation_url": "https://www.inaturalist.org/observations/158206534",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Moody, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/273446133/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/273446133/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/273446133/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-273446133.jpg",
+      "bytes": 1360416,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 273446604,
+      "observation_id": 158206534,
+      "observation_url": "https://www.inaturalist.org/observations/158206534",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-04-29",
+      "place": "Moody, TX, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/273446604/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/273446604/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/273446604/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-273446604.jpg",
+      "bytes": 1982673,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 41774027,
+      "observation_id": 26889273,
+      "observation_url": "https://www.inaturalist.org/observations/26889273",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-12",
+      "place": "21860 Joy Rd, Detroit, MI 48228, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774027/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774027/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774027/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1151
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-41774027.jpeg",
+      "bytes": 835762,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 41774607,
+      "observation_id": 26889273,
+      "observation_url": "https://www.inaturalist.org/observations/26889273",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-12",
+      "place": "21860 Joy Rd, Detroit, MI 48228, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774607/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774607/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774607/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 959,
+        "height": 905
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-41774607.jpeg",
+      "bytes": 168078,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 41774913,
+      "observation_id": 26889273,
+      "observation_url": "https://www.inaturalist.org/observations/26889273",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-12",
+      "place": "21860 Joy Rd, Detroit, MI 48228, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774913/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774913/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/41774913/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1208,
+        "height": 1791
+      },
+      "taxon_name": "Juglans nigra",
+      "taxon_id": 54504,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-41774913.jpeg",
+      "bytes": 430442,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

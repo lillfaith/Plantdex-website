@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "pinus strobus",
-  "retrieved_at": "2026-11-06T20:49:57+00:00",
+  "retrieved_at": "2026-11-16T20:47:51+00:00",
   "identity": {
     "queried_name": "Pinus strobus",
     "match_type": "EXACT",
@@ -44,8 +44,8 @@
     "groups": {
       "documented-use": [
         "pmc-10850535",
-        "pmc-9785413",
         "pmc-11868700",
+        "pmc-9785413",
         "pmc-11941527",
         "pmc-11789693",
         "pmc-9457545",
@@ -80,14 +80,14 @@
         "pmc-11483095",
         "pmc-10967410",
         "pmc-13061383",
-        "pmc-11922845",
         "pmc-13591347",
+        "pmc-11922845",
         "pmc-12299008",
         "pmc-13412462",
         "pmid-38695444",
         "pmc-12749062",
-        "epmc-f97e790d5b",
         "pmc-10710114",
+        "epmc-f97e790d5b",
         "pmc-10967544",
         "pmc-13150297"
       ]
@@ -107,19 +107,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-9785413",
-        "title": "Development of Native Essential Oils from Forestry Resources in South Korea.",
-        "journal": "Life (Basel, Switzerland)",
-        "year": "2022",
-        "doi": "10.3390/life12121995",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC9785413",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-11868700",
         "title": "Identification of Goldenseal (&lt;i&gt;Hydrastis canadensis&lt;/i&gt; L.) Habitat and Indicators in Pennsylvania, USA: The Influence of Climate and Site on In Situ Conservation of an Edge of Range Plant Species.",
         "journal": "Ecology and evolution",
@@ -127,6 +114,19 @@
         "doi": "10.1002/ece3.71050",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC11868700",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-9785413",
+        "title": "Development of Native Essential Oils from Forestry Resources in South Korea.",
+        "journal": "Life (Basel, Switzerland)",
+        "year": "2022",
+        "doi": "10.3390/life12121995",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC9785413",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -549,19 +549,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-11922845",
-        "title": "Contrasting levels of transcriptome-wide SNP diversity and adaptive molecular variation among conifers.",
-        "journal": "Frontiers in plant science",
-        "year": "2025",
-        "doi": "10.3389/fpls.2025.1500759",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC11922845",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13591347",
         "title": "Underground Signals: The Ecological Power of Root Volatiles.",
         "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
@@ -569,6 +556,19 @@
         "doi": "10.1002/advs.202522148",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC13591347",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmc-11922845",
+        "title": "Contrasting levels of transcriptome-wide SNP diversity and adaptive molecular variation among conifers.",
+        "journal": "Frontiers in plant science",
+        "year": "2025",
+        "doi": "10.3389/fpls.2025.1500759",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC11922845",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -627,19 +627,6 @@
         "verified_on": null
       },
       {
-        "source_id": "epmc-f97e790d5b",
-        "title": "Tree assisted migration in a browsed landscape: Can we predict susceptibility to herbivores?",
-        "journal": "Forest Ecology and Management.",
-        "year": "2022",
-        "doi": null,
-        "open_access": false,
-        "url": null,
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-10710114",
         "title": "Pinostrobin attenuates azoxymethane-induced colorectal cytotoxicity in rats through augmentation of apoptotic Bax/Bcl-2 proteins and antioxidants.",
         "journal": "SAGE open medicine",
@@ -647,6 +634,19 @@
         "doi": "10.1177/20503121231216585",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC10710114",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-f97e790d5b",
+        "title": "Tree assisted migration in a browsed landscape: Can we predict susceptibility to herbivores?",
+        "journal": "Forest Ecology and Management.",
+        "year": "2022",
+        "doi": null,
+        "open_access": false,
+        "url": null,
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,

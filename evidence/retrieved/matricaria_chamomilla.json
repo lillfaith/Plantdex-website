@@ -2,7 +2,7 @@
   "state": "retrieved",
   "schema_version": 1,
   "species_key": "matricaria chamomilla",
-  "retrieved_at": "2026-11-06T20:46:14+00:00",
+  "retrieved_at": "2026-11-16T20:44:45+00:00",
   "identity": {
     "queried_name": "Matricaria chamomilla",
     "match_type": "EXACT",
@@ -93,14 +93,14 @@
         "pmc-13204971",
         "pmc-13620397",
         "epmc-6dbe2e00b7",
-        "epmc-b9069fa020",
         "pmc-12914922",
+        "epmc-b9069fa020",
         "pmc-13164761",
         "pmc-13142231",
-        "pmc-12619506",
-        "pmid-41289904",
-        "pmc-13074613",
         "pmc-13404584",
+        "pmc-12619506",
+        "pmc-13074613",
+        "pmid-41289904",
         "pmc-12729506",
         "pmc-12936103",
         "pmc-13363751"
@@ -109,11 +109,11 @@
         "pmc-13668604",
         "pmc-13323515",
         "pmc-13581436",
-        "pmid-42966239",
         "pmc-13511730",
-        "pmid-42184206",
+        "pmid-42966239",
         "pmid-42827196",
         "pmc-12941530",
+        "pmid-42184206",
         "pmc-13275630",
         "pmc-13610124",
         "pmc-12698723",
@@ -308,19 +308,6 @@
         "verified_on": null
       },
       {
-        "source_id": "epmc-b9069fa020",
-        "title": "Logistic Kinetic Modeling and Interpretation of Mass Transfer in Supercritical CO<sub>2</sub> Extraction in Oregano, Chamomile and Moringa",
-        "journal": null,
-        "year": "2026",
-        "doi": "10.20944/preprints202605.1180.v1",
-        "open_access": false,
-        "url": "https://doi.org/10.20944/preprints202605.1180.v1",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-12914922",
         "title": "\"I know a lot about medicinal plants. I read, I watch, and I search\": towards hybrid knowledge systems in the modern era.",
         "journal": "Journal of ethnobiology and ethnomedicine",
@@ -328,6 +315,19 @@
         "doi": "10.1186/s13002-025-00844-7",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12914922",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "epmc-b9069fa020",
+        "title": "Logistic Kinetic Modeling and Interpretation of Mass Transfer in Supercritical CO<sub>2</sub> Extraction in Oregano, Chamomile and Moringa",
+        "journal": null,
+        "year": "2026",
+        "doi": "10.20944/preprints202605.1180.v1",
+        "open_access": false,
+        "url": "https://doi.org/10.20944/preprints202605.1180.v1",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -360,6 +360,19 @@
         "verified_on": null
       },
       {
+        "source_id": "pmc-13404584",
+        "title": "Natural Compounds in Pediatric Disease Treatment.",
+        "journal": "Biomedicines",
+        "year": "2026",
+        "doi": "10.3390/biomedicines14071528",
+        "open_access": true,
+        "url": "https://europepmc.org/article/PMC/PMC13404584",
+        "query_group": "documented-use",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
         "source_id": "pmc-12619506",
         "title": "Optimizing biosynthesis: the role of LED light spectra in regulating phenolic and flavonoid accumulation in Matricaria chamomilla L. Root cultures.",
         "journal": "BMC plant biology",
@@ -367,19 +380,6 @@
         "doi": "10.1186/s12870-025-07609-0",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12619506",
-        "query_group": "documented-use",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
-        "source_id": "pmid-41289904",
-        "title": "NiO-SnO&lt;sub&gt;2&lt;/sub&gt; nanocomposite as an adsorbent for the preconcentration of manganese ions in chamomile tea extract.",
-        "journal": "Food chemistry",
-        "year": "2026",
-        "doi": "10.1016/j.foodchem.2025.147252",
-        "open_access": false,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/41289904/",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -399,13 +399,13 @@
         "verified_on": null
       },
       {
-        "source_id": "pmc-13404584",
-        "title": "Natural Compounds in Pediatric Disease Treatment.",
-        "journal": "Biomedicines",
+        "source_id": "pmid-41289904",
+        "title": "NiO-SnO&lt;sub&gt;2&lt;/sub&gt; nanocomposite as an adsorbent for the preconcentration of manganese ions in chamomile tea extract.",
+        "journal": "Food chemistry",
         "year": "2026",
-        "doi": "10.3390/biomedicines14071528",
-        "open_access": true,
-        "url": "https://europepmc.org/article/PMC/PMC13404584",
+        "doi": "10.1016/j.foodchem.2025.147252",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41289904/",
         "query_group": "documented-use",
         "verified": false,
         "verified_by": null,
@@ -490,19 +490,6 @@
         "verified_on": null
       },
       {
-        "source_id": "pmid-42966239",
-        "title": "Enhanced wound healing potential of a carboxymethyl cellulose/gelatin-based hydrogel containing decellularized amniotic membrane and Matricaria chamomilla extract: A multifunctional composite dressing.",
-        "journal": "Injury",
-        "year": "2026",
-        "doi": "10.1016/j.injury.2026.113831",
-        "open_access": false,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/42966239/",
-        "query_group": "laboratory-study",
-        "verified": false,
-        "verified_by": null,
-        "verified_on": null
-      },
-      {
         "source_id": "pmc-13511730",
         "title": "&lt;i&gt;Geranium robertianum&lt;/i&gt; L. in Oral Health: From Phytochemical Profile to Therapeutic Potential.",
         "journal": "Dentistry journal",
@@ -516,13 +503,13 @@
         "verified_on": null
       },
       {
-        "source_id": "pmid-42184206",
-        "title": "Enhanced Antimicrobial and Antidiabetic Activities of &lt;i&gt;Matricaria chamomilla&lt;/i&gt; and &lt;i&gt;Anastatica hierochuntica&lt;/i&gt; Extracts Toward Pathogenic Microorganisms: Phytochemical Profiling and Biomedical Applications.",
-        "journal": "Foodborne pathogens and disease",
+        "source_id": "pmid-42966239",
+        "title": "Enhanced wound healing potential of a carboxymethyl cellulose/gelatin-based hydrogel containing decellularized amniotic membrane and Matricaria chamomilla extract: A multifunctional composite dressing.",
+        "journal": "Injury",
         "year": "2026",
-        "doi": "10.1177/15353141261451629",
+        "doi": "10.1016/j.injury.2026.113831",
         "open_access": false,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/42184206/",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42966239/",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -549,6 +536,19 @@
         "doi": "10.3390/jfb17020074",
         "open_access": true,
         "url": "https://europepmc.org/article/PMC/PMC12941530",
+        "query_group": "laboratory-study",
+        "verified": false,
+        "verified_by": null,
+        "verified_on": null
+      },
+      {
+        "source_id": "pmid-42184206",
+        "title": "Enhanced Antimicrobial and Antidiabetic Activities of &lt;i&gt;Matricaria chamomilla&lt;/i&gt; and &lt;i&gt;Anastatica hierochuntica&lt;/i&gt; Extracts Toward Pathogenic Microorganisms: Phytochemical Profiling and Biomedical Applications.",
+        "journal": "Foodborne pathogens and disease",
+        "year": "2026",
+        "doi": "10.1177/15353141261451629",
+        "open_access": false,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42184206/",
         "query_group": "laboratory-study",
         "verified": false,
         "verified_by": null,
@@ -835,12 +835,6 @@
         "text": "This study sought to develop a composite hydrogel incorporating decellularized amniotic membrane (dAM)-derived extracellular matrix components alongside Matricaria chamomilla extract, with the goal of achieving enhanced regenerative and therapeutic outcomes. Methods A CMC/GEL-Chamomilla-dAM hydrogel was prepared using decellularized dAM and subsequently evaluated in terms of its physicochemical and biological characteristics."
       },
       {
-        "passage_id": "pmid-42184206#abstract-0",
-        "source_id": "pmid-42184206",
-        "located_in": "abstract",
-        "text": "This research examined the in vitro antibacterial, potential antioxidant, and antidiabetic activities of Matricaria chamomilla extract (MCE), Anastatica hierochuntica extract (AHE), and their combination against selected foodborne pathogens. Agar well diffusion, minimum inhibitory concentration (MIC), and minimum bactericidal/fungicidal concentration (MBC/MFC), as well as time-kill effect experiments, were applied to evaluate the antimicrobial characteristics."
-      },
-      {
         "passage_id": "pmid-42827196#abstract-1",
         "source_id": "pmid-42827196",
         "located_in": "abstract",
@@ -851,6 +845,12 @@
         "source_id": "pmc-12941530",
         "located_in": "abstract",
         "text": "Several species, among them Larrea tridentata , Opuntia spp., Aloe spp., Matricaria chamomilla , Simmondsia chinensis , Prosopis glandulosa , and Artemisia ludoviciana , repeatedly demonstrated the presence of bioactive metabolites such as lignans, flavonoids, phenolic acids, terpenoids, and polysaccharides. These compounds support pathways central to extracellular matrix repair, including stimulation of fibroblast migration and collagen I/III expression, modulation of inflammatory cascades, antioxidant protection, and stabilization of ECM structures."
+      },
+      {
+        "passage_id": "pmid-42184206#abstract-0",
+        "source_id": "pmid-42184206",
+        "located_in": "abstract",
+        "text": "This research examined the in vitro antibacterial, potential antioxidant, and antidiabetic activities of Matricaria chamomilla extract (MCE), Anastatica hierochuntica extract (AHE), and their combination against selected foodborne pathogens. Agar well diffusion, minimum inhibitory concentration (MIC), and minimum bactericidal/fungicidal concentration (MBC/MFC), as well as time-kill effect experiments, were applied to evaluate the antimicrobial characteristics."
       },
       {
         "passage_id": "pmc-13275630#abstract-3",

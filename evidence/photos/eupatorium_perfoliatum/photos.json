@@ -1,0 +1,2611 @@
+{
+  "species": "Eupatorium perfoliatum",
+  "fetched_at": "2026-11-16T21:00:07+00:00",
+  "source": "iNaturalist",
+  "licenses_requested": [
+    "cc0"
+  ],
+  "quality_grade": "research",
+  "taxon": {
+    "id": 119045,
+    "name": "Eupatorium perfoliatum",
+    "rank": "species",
+    "wikipedia": "http://en.wikipedia.org/wiki/Eupatorium_perfoliatum"
+  },
+  "photos": [
+    {
+      "photo_id": 287640277,
+      "observation_id": 166122110,
+      "observation_url": "https://www.inaturalist.org/observations/166122110",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-07",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640277/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640277/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640277/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1717,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-287640277.jpg",
+      "bytes": 1929564,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 287640316,
+      "observation_id": 166122110,
+      "observation_url": "https://www.inaturalist.org/observations/166122110",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-07",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640316/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640316/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640316/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1665,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-287640316.jpg",
+      "bytes": 1654319,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 287640359,
+      "observation_id": 166122110,
+      "observation_url": "https://www.inaturalist.org/observations/166122110",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-07",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640359/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640359/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640359/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1668,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-287640359.jpg",
+      "bytes": 1480535,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 287640396,
+      "observation_id": 166122110,
+      "observation_url": "https://www.inaturalist.org/observations/166122110",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-07",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640396/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640396/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/287640396/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1780
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-287640396.jpg",
+      "bytes": 1480670,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 715553540,
+      "observation_id": 390565963,
+      "observation_url": "https://www.inaturalist.org/observations/390565963",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-12",
+      "place": "Pumping Station Rd, Lititz, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/715553540/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/715553540/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/715553540/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-715553540.jpg",
+      "bytes": 3740342,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 715553545,
+      "observation_id": 390565963,
+      "observation_url": "https://www.inaturalist.org/observations/390565963",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-12",
+      "place": "Pumping Station Rd, Lititz, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/715553545/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/715553545/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/715553545/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-715553545.jpg",
+      "bytes": 4329231,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 558565506,
+      "observation_id": 309532379,
+      "observation_url": "https://www.inaturalist.org/observations/309532379",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-27",
+      "place": "Bruce Mines, ON P0R 1C0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/558565506/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/558565506/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/558565506/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-558565506.jpg",
+      "bytes": 2619610,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 325093382,
+      "observation_id": 186072352,
+      "observation_url": "https://www.inaturalist.org/observations/186072352",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-03",
+      "place": "NC-86 S, Chapel Hill, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/325093382/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/325093382/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/325093382/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-325093382.jpg",
+      "bytes": 1626265,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 217180275,
+      "observation_id": 127896334,
+      "observation_url": "https://www.inaturalist.org/observations/127896334",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-25",
+      "place": "Worcester, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/217180275/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/217180275/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/217180275/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-217180275.jpeg",
+      "bytes": 686866,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 217180773,
+      "observation_id": 127896334,
+      "observation_url": "https://www.inaturalist.org/observations/127896334",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-25",
+      "place": "Worcester, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/217180773/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/217180773/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/217180773/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-217180773.jpeg",
+      "bytes": 494263,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 217181425,
+      "observation_id": 127896334,
+      "observation_url": "https://www.inaturalist.org/observations/127896334",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-25",
+      "place": "Worcester, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/217181425/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/217181425/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/217181425/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-217181425.jpeg",
+      "bytes": 560489,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197288,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197288/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197288/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197288/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197288.jpg",
+      "bytes": 829743,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197405,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197405/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197405/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197405/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197405.jpg",
+      "bytes": 1156484,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197483,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197483/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197483/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197483/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197483.jpg",
+      "bytes": 886975,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197594,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197594/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197594/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197594/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197594.jpg",
+      "bytes": 1086122,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197648,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197648/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197648/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197648/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197648.jpg",
+      "bytes": 731658,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197745,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197745/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197745/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197745/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197745.jpg",
+      "bytes": 1161914,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 160197935,
+      "observation_id": 96428081,
+      "observation_url": "https://www.inaturalist.org/observations/96428081",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-09-26",
+      "place": "Wadesboro Municipal Lake, Wadesboro, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197935/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197935/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/160197935/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-160197935.jpg",
+      "bytes": 2023739,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 311026404,
+      "observation_id": 178714968,
+      "observation_url": "https://www.inaturalist.org/observations/178714968",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-16",
+      "place": "Dutchess County, US-NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026404/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026404/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026404/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-311026404.jpeg",
+      "bytes": 2578345,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 311026448,
+      "observation_id": 178714968,
+      "observation_url": "https://www.inaturalist.org/observations/178714968",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-16",
+      "place": "Dutchess County, US-NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026448/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026448/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026448/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-311026448.jpeg",
+      "bytes": 1738459,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 311026492,
+      "observation_id": 178714968,
+      "observation_url": "https://www.inaturalist.org/observations/178714968",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-16",
+      "place": "Dutchess County, US-NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026492/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026492/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/311026492/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-311026492.jpeg",
+      "bytes": 1671447,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 211577618,
+      "observation_id": 124808606,
+      "observation_url": "https://www.inaturalist.org/observations/124808606",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-04",
+      "place": "Franklin, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/211577618/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/211577618/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/211577618/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-211577618.jpeg",
+      "bytes": 793004,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 218324932,
+      "observation_id": 128531569,
+      "observation_url": "https://www.inaturalist.org/observations/128531569",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-07-29",
+      "place": "Hawley, MA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/218324932/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/218324932/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/218324932/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-218324932.jpeg",
+      "bytes": 705013,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 88710037,
+      "observation_id": 55699901,
+      "observation_url": "https://www.inaturalist.org/observations/55699901",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2020-08-07",
+      "place": "Essex St, Whitman, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/88710037/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/88710037/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/88710037/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-88710037.jpg",
+      "bytes": 1213451,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 221086093,
+      "observation_id": 130040917,
+      "observation_url": "https://www.inaturalist.org/observations/130040917",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-08",
+      "place": "Port Rowan, ON N0E 1M0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086093/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086093/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086093/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 922,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-221086093.jpeg",
+      "bytes": 1167027,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 221086134,
+      "observation_id": 130040917,
+      "observation_url": "https://www.inaturalist.org/observations/130040917",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-08",
+      "place": "Port Rowan, ON N0E 1M0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086134/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086134/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086134/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 921,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-221086134.jpeg",
+      "bytes": 1763517,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 221086193,
+      "observation_id": 130040917,
+      "observation_url": "https://www.inaturalist.org/observations/130040917",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-08",
+      "place": "Port Rowan, ON N0E 1M0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086193/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086193/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086193/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1534,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-221086193.jpeg",
+      "bytes": 2770235,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 221086242,
+      "observation_id": 130040917,
+      "observation_url": "https://www.inaturalist.org/observations/130040917",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-08-08",
+      "place": "Port Rowan, ON N0E 1M0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086242/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086242/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/221086242/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1344,
+        "height": 1959
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-221086242.jpeg",
+      "bytes": 1912736,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 710635139,
+      "observation_id": 388039678,
+      "observation_url": "https://www.inaturalist.org/observations/388039678",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-03",
+      "place": "London, ON N6G 1S6, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/710635139/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/710635139/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/710635139/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-710635139.jpg",
+      "bytes": 2442172,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 710635691,
+      "observation_id": 388039678,
+      "observation_url": "https://www.inaturalist.org/observations/388039678",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-03",
+      "place": "London, ON N6G 1S6, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/710635691/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/710635691/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/710635691/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-710635691.jpg",
+      "bytes": 2755555,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 716714775,
+      "observation_id": 391164107,
+      "observation_url": "https://www.inaturalist.org/observations/391164107",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-14",
+      "place": "Ottawa, CA-ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/716714775/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/716714775/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/716714775/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-716714775.jpg",
+      "bytes": 3083204,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 721371620,
+      "observation_id": 393555075,
+      "observation_url": "https://www.inaturalist.org/observations/393555075",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-22",
+      "place": "Sperryville, VA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/721371620/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/721371620/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/721371620/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-721371620.jpg",
+      "bytes": 2869261,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 699741754,
+      "observation_id": 382373074,
+      "observation_url": "https://www.inaturalist.org/observations/382373074",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-19",
+      "place": "Killington, VT, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/699741754/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/699741754/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/699741754/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-699741754.jpg",
+      "bytes": 1358889,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 699741752,
+      "observation_id": 382373074,
+      "observation_url": "https://www.inaturalist.org/observations/382373074",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-07-19",
+      "place": "Killington, VT, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/699741752/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/699741752/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/699741752/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-699741752.jpg",
+      "bytes": 1071530,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 727164681,
+      "observation_id": 396522578,
+      "observation_url": "https://www.inaturalist.org/observations/396522578",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-08-31",
+      "place": "Erie County, US-PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/727164681/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/727164681/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/727164681/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-727164681.jpg",
+      "bytes": 1267806,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 332312450,
+      "observation_id": 189663046,
+      "observation_url": "https://www.inaturalist.org/observations/189663046",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-01",
+      "place": "Five Bridge Rd, Brimfield, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312450/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312450/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312450/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-332312450.jpg",
+      "bytes": 1578888,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 332312476,
+      "observation_id": 189663046,
+      "observation_url": "https://www.inaturalist.org/observations/189663046",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-01",
+      "place": "Five Bridge Rd, Brimfield, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312476/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312476/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312476/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-332312476.jpg",
+      "bytes": 1471454,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 332312505,
+      "observation_id": 189663046,
+      "observation_url": "https://www.inaturalist.org/observations/189663046",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-11-01",
+      "place": "Five Bridge Rd, Brimfield, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312505/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312505/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/332312505/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-332312505.jpg",
+      "bytes": 1217352,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 228385197,
+      "observation_id": 134025261,
+      "observation_url": "https://www.inaturalist.org/observations/134025261",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2022-09-06",
+      "place": "Tarbutt, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/228385197/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/228385197/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/228385197/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-228385197.jpeg",
+      "bytes": 1655649,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 50786266,
+      "observation_id": 32384118,
+      "observation_url": "https://www.inaturalist.org/observations/32384118",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-31",
+      "place": "Freelton, ON L0R 1K0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/50786266/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/50786266/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/50786266/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-50786266.jpeg",
+      "bytes": 3004349,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 110680140,
+      "observation_id": 68365661,
+      "observation_url": "https://www.inaturalist.org/observations/68365661",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-03",
+      "place": "Algonquin Provincial Park, Nipissing, Unorganized, South Part, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/110680140/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/110680140/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/110680140/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-110680140.jpg",
+      "bytes": 1030790,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 110680149,
+      "observation_id": 68365661,
+      "observation_url": "https://www.inaturalist.org/observations/68365661",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-08-03",
+      "place": "Algonquin Provincial Park, Nipissing, Unorganized, South Part, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/110680149/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/110680149/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/110680149/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-110680149.jpg",
+      "bytes": 903070,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148828658,
+      "observation_id": 90080376,
+      "observation_url": "https://www.inaturalist.org/observations/90080376",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-05",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828658/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828658/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828658/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148828658.jpeg",
+      "bytes": 1891389,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148828678,
+      "observation_id": 90080376,
+      "observation_url": "https://www.inaturalist.org/observations/90080376",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-05",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828678/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828678/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828678/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148828678.jpeg",
+      "bytes": 1883617,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 148828693,
+      "observation_id": 90080376,
+      "observation_url": "https://www.inaturalist.org/observations/90080376",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-05",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828693/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828693/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/148828693/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-148828693.jpeg",
+      "bytes": 1799349,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 147951329,
+      "observation_id": 89588629,
+      "observation_url": "https://www.inaturalist.org/observations/89588629",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-31",
+      "place": "Hegewisch, Chicago, IL, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/147951329/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/147951329/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/147951329/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-147951329.jpeg",
+      "bytes": 1488395,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 146620242,
+      "observation_id": 88832541,
+      "observation_url": "https://www.inaturalist.org/observations/88832541",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-27",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620242/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620242/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620242/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-146620242.jpeg",
+      "bytes": 1354037,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 146620271,
+      "observation_id": 88832541,
+      "observation_url": "https://www.inaturalist.org/observations/88832541",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-27",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620271/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620271/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620271/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-146620271.jpeg",
+      "bytes": 1047401,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 146620303,
+      "observation_id": 88832541,
+      "observation_url": "https://www.inaturalist.org/observations/88832541",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-27",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620303/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620303/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620303/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-146620303.jpeg",
+      "bytes": 1407148,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 146620335,
+      "observation_id": 88832541,
+      "observation_url": "https://www.inaturalist.org/observations/88832541",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-27",
+      "place": "Johnson, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620335/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620335/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/146620335/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-146620335.jpeg",
+      "bytes": 1341668,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 127839436,
+      "observation_id": 78139317,
+      "observation_url": "https://www.inaturalist.org/observations/78139317",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-09",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/127839436/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/127839436/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/127839436/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-127839436.jpg",
+      "bytes": 990699,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 127839476,
+      "observation_id": 78139317,
+      "observation_url": "https://www.inaturalist.org/observations/78139317",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-09",
+      "place": "Florida, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/127839476/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/127839476/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/127839476/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-127839476.jpg",
+      "bytes": 1065484,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 296403754,
+      "observation_id": 170724349,
+      "observation_url": "https://www.inaturalist.org/observations/170724349",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-07-02",
+      "place": "Ottawa",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/296403754/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/296403754/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/296403754/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-296403754.jpeg",
+      "bytes": 2914039,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 430508341,
+      "observation_id": 241548470,
+      "observation_url": "https://www.inaturalist.org/observations/241548470",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-09-13",
+      "place": "Whitewater Lake, Whitewater, WI, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/430508341/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/430508341/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/430508341/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-430508341.jpeg",
+      "bytes": 1096400,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 424893249,
+      "observation_id": 238646278,
+      "observation_url": "https://www.inaturalist.org/observations/238646278",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-29",
+      "place": "Flamborough, Hamilton, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/424893249/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/424893249/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/424893249/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-424893249.jpg",
+      "bytes": 444877,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 418671391,
+      "observation_id": 235416944,
+      "observation_url": "https://www.inaturalist.org/observations/235416944",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-08-12",
+      "place": "Tweed, ON K0K 3J0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/418671391/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/418671391/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/418671391/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-418671391.jpeg",
+      "bytes": 1659370,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 439985002,
+      "observation_id": 246454527,
+      "observation_url": "https://www.inaturalist.org/observations/246454527",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-09",
+      "place": "Boylston, MA 01505, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/439985002/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/439985002/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/439985002/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-439985002.jpeg",
+      "bytes": 2591564,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 439985061,
+      "observation_id": 246454527,
+      "observation_url": "https://www.inaturalist.org/observations/246454527",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-09",
+      "place": "Boylston, MA 01505, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/439985061/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/439985061/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/439985061/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-439985061.jpeg",
+      "bytes": 2580954,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 23655843,
+      "observation_id": 15824405,
+      "observation_url": "https://www.inaturalist.org/observations/15824405",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-08-23",
+      "place": "Cornell University, Ithaca, NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/23655843/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/23655843/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/23655843/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-23655843.jpg",
+      "bytes": 1025790,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 154229685,
+      "observation_id": 93087634,
+      "observation_url": "https://www.inaturalist.org/observations/93087634",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-08-30",
+      "place": "Deale, MD 20751, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/154229685/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/154229685/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/154229685/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-154229685.jpeg",
+      "bytes": 2561663,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24498043,
+      "observation_id": 16308318,
+      "observation_url": "https://www.inaturalist.org/observations/16308318",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-07",
+      "place": "Chatham, Miramichi, NB, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24498043/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24498043/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24498043/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24498043.jpeg",
+      "bytes": 1725125,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24578286,
+      "observation_id": 16350893,
+      "observation_url": "https://www.inaturalist.org/observations/16350893",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-08",
+      "place": "Bath Twp, MI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578286/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578286/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578286/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24578286.jpg",
+      "bytes": 743789,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24578287,
+      "observation_id": 16350893,
+      "observation_url": "https://www.inaturalist.org/observations/16350893",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-08",
+      "place": "Bath Twp, MI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578287/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578287/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578287/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24578287.jpg",
+      "bytes": 778006,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24578289,
+      "observation_id": 16350893,
+      "observation_url": "https://www.inaturalist.org/observations/16350893",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-08",
+      "place": "Bath Twp, MI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578289/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578289/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578289/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24578289.jpg",
+      "bytes": 651476,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24578290,
+      "observation_id": 16350893,
+      "observation_url": "https://www.inaturalist.org/observations/16350893",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-08",
+      "place": "Bath Twp, MI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578290/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578290/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578290/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24578290.jpg",
+      "bytes": 598770,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24578291,
+      "observation_id": 16350893,
+      "observation_url": "https://www.inaturalist.org/observations/16350893",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-08",
+      "place": "Bath Twp, MI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578291/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578291/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578291/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24578291.jpg",
+      "bytes": 597426,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 24578293,
+      "observation_id": 16350893,
+      "observation_url": "https://www.inaturalist.org/observations/16350893",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2018-09-08",
+      "place": "Bath Twp, MI, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578293/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578293/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/24578293/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1152
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-24578293.jpg",
+      "bytes": 694806,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 44097681,
+      "observation_id": 28295627,
+      "observation_url": "https://www.inaturalist.org/observations/28295627",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-07-06",
+      "place": "Adjala-Tosorontio, Adjala-Tosorontio, ON, CA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/44097681/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/44097681/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/44097681/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-44097681.jpg",
+      "bytes": 1557132,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 579947109,
+      "observation_id": 320735129,
+      "observation_url": "https://www.inaturalist.org/observations/320735129",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-10-13",
+      "place": "Delmar Township, PA 16901, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/579947109/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/579947109/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/579947109/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-579947109.jpg",
+      "bytes": 1403978,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 550491176,
+      "observation_id": 305322031,
+      "observation_url": "https://www.inaturalist.org/observations/305322031",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-10",
+      "place": "Woodward, OK, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/550491176/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/550491176/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/550491176/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-550491176.jpg",
+      "bytes": 2381098,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 559672060,
+      "observation_id": 310121151,
+      "observation_url": "https://www.inaturalist.org/observations/310121151",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-02",
+      "place": "Butler County, OH, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/559672060/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/559672060/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/559672060/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-559672060.jpg",
+      "bytes": 2053580,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 548058126,
+      "observation_id": 304038781,
+      "observation_url": "https://www.inaturalist.org/observations/304038781",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-05",
+      "place": "Paradise Park Trail, Windsor, VT, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/548058126/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/548058126/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/548058126/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-548058126.jpg",
+      "bytes": 3837278,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 553854917,
+      "observation_id": 307088969,
+      "observation_url": "https://www.inaturalist.org/observations/307088969",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-08-17",
+      "place": "Hurlock, MD 21643, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/553854917/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/553854917/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/553854917/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-553854917.jpg",
+      "bytes": 2923752,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 566238178,
+      "observation_id": 313546383,
+      "observation_url": "https://www.inaturalist.org/observations/313546383",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-13",
+      "place": "Beckett Ridge, OH 45069, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/566238178/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/566238178/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/566238178/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1153,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-566238178.jpg",
+      "bytes": 1489643,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 566238416,
+      "observation_id": 313546383,
+      "observation_url": "https://www.inaturalist.org/observations/313546383",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-13",
+      "place": "Beckett Ridge, OH 45069, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/566238416/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/566238416/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/566238416/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1153,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-566238416.jpg",
+      "bytes": 1508803,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 737931027,
+      "observation_id": 402006329,
+      "observation_url": "https://www.inaturalist.org/observations/402006329",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-09-20",
+      "place": "St Thomas, ON N5P 3B8, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/737931027/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/737931027/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/737931027/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-737931027.jpg",
+      "bytes": 2063717,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 737931267,
+      "observation_id": 402006329,
+      "observation_url": "https://www.inaturalist.org/observations/402006329",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-09-20",
+      "place": "St Thomas, ON N5P 3B8, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/737931267/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/737931267/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/737931267/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-737931267.jpg",
+      "bytes": 3182383,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 147373485,
+      "observation_id": 89255332,
+      "observation_url": "https://www.inaturalist.org/observations/89255332",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-30",
+      "place": "Lombard, IL 60148, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/147373485/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/147373485/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/147373485/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1846,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-147373485.jpeg",
+      "bytes": 2310206,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 147373503,
+      "observation_id": 89255332,
+      "observation_url": "https://www.inaturalist.org/observations/89255332",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-30",
+      "place": "Lombard, IL 60148, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/147373503/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/147373503/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/147373503/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1367,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-147373503.jpeg",
+      "bytes": 1496837,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 139224030,
+      "observation_id": 84691753,
+      "observation_url": "https://www.inaturalist.org/observations/84691753",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-06-27",
+      "place": "Five Bridge Rd, Brimfield, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/139224030/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/139224030/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/139224030/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-139224030.jpg",
+      "bytes": 1062002,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 139242164,
+      "observation_id": 84691753,
+      "observation_url": "https://www.inaturalist.org/observations/84691753",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-06-27",
+      "place": "Five Bridge Rd, Brimfield, MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/139242164/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/139242164/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/139242164/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-139242164.jpg",
+      "bytes": 957159,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 145677326,
+      "observation_id": 88303397,
+      "observation_url": "https://www.inaturalist.org/observations/88303397",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-07-23",
+      "place": "Sifton Bog, London, ON N6H, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/145677326/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/145677326/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/145677326/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1570,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-145677326.jpeg",
+      "bytes": 1629429,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 10511447,
+      "observation_id": 7956455,
+      "observation_url": "https://www.inaturalist.org/observations/7956455",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2017-09-16",
+      "place": "1018–1694 Lime Pond Rd, Barnard, VT, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/10511447/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/10511447/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/10511447/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-10511447.jpg",
+      "bytes": 2310786,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 408688418,
+      "observation_id": 230190261,
+      "observation_url": "https://www.inaturalist.org/observations/230190261",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-18",
+      "place": "Franklin, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/408688418/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/408688418/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/408688418/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-408688418.jpeg",
+      "bytes": 616276,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 396315827,
+      "observation_id": 223656424,
+      "observation_url": "https://www.inaturalist.org/observations/223656424",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-06-18",
+      "place": "Echo Bay, ON P0S 1C0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/396315827/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/396315827/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/396315827/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-396315827.jpeg",
+      "bytes": 2303969,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 413930524,
+      "observation_id": 232957992,
+      "observation_url": "https://www.inaturalist.org/observations/232957992",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-07-31",
+      "place": "Algoma District, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/413930524/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/413930524/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/413930524/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-413930524.jpeg",
+      "bytes": 2333807,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 321641878,
+      "observation_id": 184277824,
+      "observation_url": "https://www.inaturalist.org/observations/184277824",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-09-21",
+      "place": "Chardon Township, OH, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/321641878/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/321641878/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/321641878/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-321641878.jpeg",
+      "bytes": 2198151,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 313019924,
+      "observation_id": 179805917,
+      "observation_url": "https://www.inaturalist.org/observations/179805917",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-22",
+      "place": "Berkshire, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/313019924/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/313019924/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/313019924/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-313019924.jpeg",
+      "bytes": 717963,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 300524616,
+      "observation_id": 173073276,
+      "observation_url": "https://www.inaturalist.org/observations/173073276",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-07-15",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524616/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524616/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524616/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-300524616.jpg",
+      "bytes": 1558735,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 300524659,
+      "observation_id": 173073276,
+      "observation_url": "https://www.inaturalist.org/observations/173073276",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-07-15",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524659/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524659/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524659/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1108,
+        "height": 1134
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-300524659.jpg",
+      "bytes": 426339,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 300524687,
+      "observation_id": 173073276,
+      "observation_url": "https://www.inaturalist.org/observations/173073276",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-07-15",
+      "place": "Norland Rd, Charlotte, NC, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524687/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524687/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/300524687/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1029,
+        "height": 1124
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-300524687.jpg",
+      "bytes": 448510,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 309812089,
+      "observation_id": 178138156,
+      "observation_url": "https://www.inaturalist.org/observations/178138156",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-12",
+      "place": "Berkshire County, US-MA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/309812089/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/309812089/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/309812089/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-309812089.jpeg",
+      "bytes": 592550,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 306493624,
+      "observation_id": 176302387,
+      "observation_url": "https://www.inaturalist.org/observations/176302387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Centre Dr, Orono, ME, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493624/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493624/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493624/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-306493624.jpg",
+      "bytes": 1468267,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 306493692,
+      "observation_id": 176302387,
+      "observation_url": "https://www.inaturalist.org/observations/176302387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Centre Dr, Orono, ME, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493692/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493692/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493692/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-306493692.jpg",
+      "bytes": 1331237,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 306493743,
+      "observation_id": 176302387,
+      "observation_url": "https://www.inaturalist.org/observations/176302387",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-02",
+      "place": "Centre Dr, Orono, ME, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493743/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493743/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306493743/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-306493743.jpg",
+      "bytes": 1194743,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 311049498,
+      "observation_id": 178726938,
+      "observation_url": "https://www.inaturalist.org/observations/178726938",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-08-16",
+      "place": "N County Road 200 E, Chrisney, IN, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/311049498/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/311049498/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/311049498/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Eupatorium perfoliatum",
+      "taxon_id": 119045,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-311049498.jpg",
+      "bytes": 1215004,
+      "downloaded_size": "original"
+    }
+  ],
+  "note": null,
+  "warning": "Each photo's licence, photographer and original URL travel with it. A card that shows one of these without its provenance record is using somebody's work without saying so."
+}

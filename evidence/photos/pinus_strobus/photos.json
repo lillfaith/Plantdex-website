@@ -1,6 +1,6 @@
 {
   "species": "Pinus strobus",
-  "fetched_at": "2026-11-06T21:00:50+00:00",
+  "fetched_at": "2026-11-16T20:59:15+00:00",
   "source": "iNaturalist",
   "licenses_requested": [
     "cc0"
@@ -38,8 +38,7 @@
       "identification_disagreements": 0,
       "file": "inat-1813546.jpg",
       "bytes": 250014,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 172827545,
@@ -66,8 +65,7 @@
       "identification_disagreements": 0,
       "file": "inat-172827545.jpg",
       "bytes": 1551101,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 172827567,
@@ -94,8 +92,7 @@
       "identification_disagreements": 0,
       "file": "inat-172827567.jpg",
       "bytes": 1359956,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 390760300,
@@ -122,36 +119,7 @@
       "identification_disagreements": 0,
       "file": "inat-390760300.jpeg",
       "bytes": 2068612,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 512537852,
-      "observation_id": 285158470,
-      "observation_url": "https://www.inaturalist.org/observations/285158470",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2025-05-28",
-      "place": "Massachusetts, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/512537852/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/512537852/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/512537852/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1033,
-        "height": 1836
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-512537852.jpg",
-      "bytes": 2322175,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 509977479,
@@ -178,8 +146,34 @@
       "identification_disagreements": 0,
       "file": "inat-509977479.jpg",
       "bytes": 3953318,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 512537852,
+      "observation_id": 285158470,
+      "observation_url": "https://www.inaturalist.org/observations/285158470",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-05-28",
+      "place": "Massachusetts, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/512537852/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/512537852/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/512537852/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1033,
+        "height": 1836
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-512537852.jpg",
+      "bytes": 2322175,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 375641978,
@@ -206,8 +200,7 @@
       "identification_disagreements": 0,
       "file": "inat-375641978.jpg",
       "bytes": 789136,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 375641994,
@@ -234,8 +227,7 @@
       "identification_disagreements": 0,
       "file": "inat-375641994.jpg",
       "bytes": 1192667,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 221242744,
@@ -262,8 +254,7 @@
       "identification_disagreements": 0,
       "file": "inat-221242744.jpg",
       "bytes": 1136177,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 712664972,
@@ -290,64 +281,7 @@
       "identification_disagreements": 0,
       "file": "inat-712664972.jpg",
       "bytes": 2205193,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 666510116,
-      "observation_id": 365075402,
-      "observation_url": "https://www.inaturalist.org/observations/365075402",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-05-24",
-      "place": "Lake Harmony, PA, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510116/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510116/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510116/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-666510116.jpg",
-      "bytes": 3378464,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 666510115,
-      "observation_id": 365075402,
-      "observation_url": "https://www.inaturalist.org/observations/365075402",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2026-05-24",
-      "place": "Lake Harmony, PA, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510115/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510115/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510115/medium.jpg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-666510115.jpg",
-      "bytes": 3540226,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 390305665,
@@ -374,8 +308,61 @@
       "identification_disagreements": 0,
       "file": "inat-390305665.jpeg",
       "bytes": 1757559,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 666510116,
+      "observation_id": 365075402,
+      "observation_url": "https://www.inaturalist.org/observations/365075402",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-24",
+      "place": "Lake Harmony, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510116/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510116/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510116/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-666510116.jpg",
+      "bytes": 3378464,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 666510115,
+      "observation_id": 365075402,
+      "observation_url": "https://www.inaturalist.org/observations/365075402",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2026-05-24",
+      "place": "Lake Harmony, PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510115/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510115/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/666510115/medium.jpg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-666510115.jpg",
+      "bytes": 3540226,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 8813399,
@@ -402,8 +389,7 @@
       "identification_disagreements": 0,
       "file": "inat-8813399.jpg",
       "bytes": 1562017,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 127829310,
@@ -413,7 +399,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2021-05-08",
-      "place": "T\u00e9miscamingue, QC, Canada",
+      "place": "Témiscamingue, QC, Canada",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/127829310/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/127829310/large.jpeg",
@@ -430,8 +416,7 @@
       "identification_disagreements": 0,
       "file": "inat-127829310.jpeg",
       "bytes": 1709861,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 127829266,
@@ -441,7 +426,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2021-05-08",
-      "place": "T\u00e9miscamingue, QC, Canada",
+      "place": "Témiscamingue, QC, Canada",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/127829266/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/127829266/large.jpeg",
@@ -458,8 +443,7 @@
       "identification_disagreements": 0,
       "file": "inat-127829266.jpeg",
       "bytes": 2117934,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 127829336,
@@ -469,7 +453,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2021-05-08",
-      "place": "T\u00e9miscamingue, QC, Canada",
+      "place": "Témiscamingue, QC, Canada",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/127829336/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/127829336/large.jpeg",
@@ -486,8 +470,7 @@
       "identification_disagreements": 0,
       "file": "inat-127829336.jpeg",
       "bytes": 1745806,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 108514437,
@@ -514,8 +497,7 @@
       "identification_disagreements": 0,
       "file": "inat-108514437.jpeg",
       "bytes": 585360,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 108514445,
@@ -542,8 +524,7 @@
       "identification_disagreements": 0,
       "file": "inat-108514445.jpeg",
       "bytes": 1444019,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 108514455,
@@ -570,8 +551,7 @@
       "identification_disagreements": 0,
       "file": "inat-108514455.jpeg",
       "bytes": 761831,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 108514461,
@@ -598,8 +578,7 @@
       "identification_disagreements": 0,
       "file": "inat-108514461.jpeg",
       "bytes": 1815414,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 347206622,
@@ -626,8 +605,7 @@
       "identification_disagreements": 0,
       "file": "inat-347206622.jpg",
       "bytes": 3251295,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 347206697,
@@ -654,8 +632,7 @@
       "identification_disagreements": 0,
       "file": "inat-347206697.jpg",
       "bytes": 2456061,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 141313870,
@@ -682,8 +659,7 @@
       "identification_disagreements": 0,
       "file": "inat-141313870.jpeg",
       "bytes": 798993,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 141314486,
@@ -710,8 +686,7 @@
       "identification_disagreements": 0,
       "file": "inat-141314486.jpeg",
       "bytes": 692669,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 141314903,
@@ -738,8 +713,7 @@
       "identification_disagreements": 0,
       "file": "inat-141314903.jpeg",
       "bytes": 594054,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 141315497,
@@ -766,8 +740,34 @@
       "identification_disagreements": 0,
       "file": "inat-141315497.jpeg",
       "bytes": 979518,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 547324,
+      "observation_id": 434422,
+      "observation_url": "https://www.inaturalist.org/observations/434422",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2013-10-19",
+      "place": "4–8 Linden Hl, Woodstock, VT, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/547324/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/547324/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/547324/medium.jpg"
+      },
+      "dimensions": {
+        "width": 720,
+        "height": 960
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-547324.jpg",
+      "bytes": 932480,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 664754,
@@ -794,288 +794,7 @@
       "identification_disagreements": 0,
       "file": "inat-664754.jpg",
       "bytes": 703969,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 547324,
-      "observation_id": 434422,
-      "observation_url": "https://www.inaturalist.org/observations/434422",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2013-10-19",
-      "place": "4\u20138 Linden Hl, Woodstock, VT, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/547324/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/547324/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/547324/medium.jpg"
-      },
-      "dimensions": {
-        "width": 720,
-        "height": 960
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 2,
-      "identification_disagreements": 0,
-      "file": "inat-547324.jpg",
-      "bytes": 932480,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 496961047,
-      "observation_id": 276751237,
-      "observation_url": "https://www.inaturalist.org/observations/276751237",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2025-04-29",
-      "place": "Henryville, PA 18332, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/496961047/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/496961047/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/496961047/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 1152,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-496961047.jpeg",
-      "bytes": 2275425,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 510460133,
-      "observation_id": 284066349,
-      "observation_url": "https://www.inaturalist.org/observations/284066349",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2025-05-25",
-      "place": "Hampshire, Massachusetts, United States",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/510460133/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/510460133/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/510460133/medium.jpg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-510460133.jpg",
-      "bytes": 682759,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 510460858,
-      "observation_id": 284066349,
-      "observation_url": "https://www.inaturalist.org/observations/284066349",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2025-05-25",
-      "place": "Hampshire, Massachusetts, United States",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/510460858/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/510460858/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/510460858/medium.jpg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-510460858.jpg",
-      "bytes": 458837,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 509428987,
-      "observation_id": 283506849,
-      "observation_url": "https://www.inaturalist.org/observations/283506849",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2025-05-20",
-      "place": "Ramara, ON L3V 0M8, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/509428987/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/509428987/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/509428987/medium.jpg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-509428987.jpg",
-      "bytes": 1918495,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 130957459,
-      "observation_id": 79930325,
-      "observation_url": "https://www.inaturalist.org/observations/79930325",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2021-05-22",
-      "place": "T\u00e9miscamingue, QC, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957459/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957459/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957459/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 1367,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-130957459.jpeg",
-      "bytes": 1675326,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 130957491,
-      "observation_id": 79930325,
-      "observation_url": "https://www.inaturalist.org/observations/79930325",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2021-05-22",
-      "place": "T\u00e9miscamingue, QC, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957491/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957491/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957491/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 1367,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-130957491.jpeg",
-      "bytes": 1741590,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 292650621,
-      "observation_id": 168837771,
-      "observation_url": "https://www.inaturalist.org/observations/168837771",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2023-06-22",
-      "place": "Algoma District, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/292650621/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/292650621/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/292650621/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-292650621.jpeg",
-      "bytes": 1320258,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 292755704,
-      "observation_id": 168895072,
-      "observation_url": "https://www.inaturalist.org/observations/168895072",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2023-06-22",
-      "place": "Wendell, MA, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/292755704/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/292755704/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/292755704/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 2,
-      "identification_disagreements": 0,
-      "file": "inat-292755704.jpeg",
-      "bytes": 934155,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 292756024,
-      "observation_id": 168895072,
-      "observation_url": "https://www.inaturalist.org/observations/168895072",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2023-06-22",
-      "place": "Wendell, MA, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/292756024/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/292756024/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/292756024/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 2,
-      "identification_disagreements": 0,
-      "file": "inat-292756024.jpeg",
-      "bytes": 546024,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 286913454,
@@ -1102,25 +821,78 @@
       "identification_disagreements": 0,
       "file": "inat-286913454.jpg",
       "bytes": 1514307,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
-      "photo_id": 269595869,
-      "observation_id": 155937865,
-      "observation_url": "https://www.inaturalist.org/observations/155937865",
+      "photo_id": 292755704,
+      "observation_id": 168895072,
+      "observation_url": "https://www.inaturalist.org/observations/168895072",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2023-04-21",
-      "place": "Township Of Tarbutt, ON, Canada",
+      "observed_on": "2023-06-22",
+      "place": "Wendell, MA, USA",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/269595869/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/269595869/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/269595869/medium.jpeg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/292755704/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/292755704/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/292755704/medium.jpeg"
       },
       "dimensions": {
-        "width": 1536,
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-292755704.jpeg",
+      "bytes": 934155,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 292756024,
+      "observation_id": 168895072,
+      "observation_url": "https://www.inaturalist.org/observations/168895072",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-06-22",
+      "place": "Wendell, MA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/292756024/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/292756024/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/292756024/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 2,
+      "identification_disagreements": 0,
+      "file": "inat-292756024.jpeg",
+      "bytes": 546024,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 130957459,
+      "observation_id": 79930325,
+      "observation_url": "https://www.inaturalist.org/observations/79930325",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-05-22",
+      "place": "Témiscamingue, QC, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957459/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957459/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957459/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1367,
         "height": 2048
       },
       "taxon_name": "Pinus strobus",
@@ -1128,27 +900,26 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-269595869.jpeg",
-      "bytes": 2968978,
-      "downloaded_size": "original",
-      "retained": false
+      "file": "inat-130957459.jpeg",
+      "bytes": 1675326,
+      "downloaded_size": "original"
     },
     {
-      "photo_id": 269596904,
-      "observation_id": 155938523,
-      "observation_url": "https://www.inaturalist.org/observations/155938523",
+      "photo_id": 130957491,
+      "observation_id": 79930325,
+      "observation_url": "https://www.inaturalist.org/observations/79930325",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2023-04-21",
-      "place": "Township Of Tarbutt, ON, Canada",
+      "observed_on": "2021-05-22",
+      "place": "Témiscamingue, QC, Canada",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/269596904/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/269596904/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/269596904/medium.jpeg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957491/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957491/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/130957491/medium.jpeg"
       },
       "dimensions": {
-        "width": 1536,
+        "width": 1367,
         "height": 2048
       },
       "taxon_name": "Pinus strobus",
@@ -1156,24 +927,23 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-269596904.jpeg",
-      "bytes": 3089313,
-      "downloaded_size": "original",
-      "retained": false
+      "file": "inat-130957491.jpeg",
+      "bytes": 1741590,
+      "downloaded_size": "original"
     },
     {
-      "photo_id": 271883714,
-      "observation_id": 157235545,
-      "observation_url": "https://www.inaturalist.org/observations/157235545",
+      "photo_id": 292650621,
+      "observation_id": 168837771,
+      "observation_url": "https://www.inaturalist.org/observations/168837771",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2023-04-28",
+      "observed_on": "2023-06-22",
       "place": "Algoma District, ON, Canada",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/271883714/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/271883714/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/271883714/medium.jpeg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/292650621/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/292650621/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/292650621/medium.jpeg"
       },
       "dimensions": {
         "width": 2048,
@@ -1184,66 +954,9 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-271883714.jpeg",
-      "bytes": 806241,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 306129071,
-      "observation_id": 176122213,
-      "observation_url": "https://www.inaturalist.org/observations/176122213",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2023-07-29",
-      "place": "Essex County, NY, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129071/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129071/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129071/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-306129071.jpeg",
-      "bytes": 657218,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 306129491,
-      "observation_id": 176122213,
-      "observation_url": "https://www.inaturalist.org/observations/176122213",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2023-07-29",
-      "place": "Essex County, NY, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129491/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129491/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129491/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-306129491.jpeg",
-      "bytes": 447797,
-      "downloaded_size": "original",
-      "retained": false
+      "file": "inat-292650621.jpeg",
+      "bytes": 1320258,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 306725928,
@@ -1270,24 +983,21 @@
       "identification_disagreements": 0,
       "file": "inat-306725928.jpeg",
       "bytes": 1902725,
-      "downloaded_size": "original",
-      "sha256": "2f3d41d8df75fa6d245158f59beefa206996707831060cd1f51d099ba52f9582",
-      "retained": true,
-      "retained_bytes": 1902725
+      "downloaded_size": "original"
     },
     {
-      "photo_id": 326920086,
-      "observation_id": 186998070,
-      "observation_url": "https://www.inaturalist.org/observations/186998070",
+      "photo_id": 306129071,
+      "observation_id": 176122213,
+      "observation_url": "https://www.inaturalist.org/observations/176122213",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2023-10-05",
-      "place": "Algoma District, ON, Canada",
+      "observed_on": "2023-07-29",
+      "place": "Essex County, NY, USA",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/326920086/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/326920086/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/326920086/medium.jpeg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129071/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129071/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129071/medium.jpeg"
       },
       "dimensions": {
         "width": 2048,
@@ -1298,24 +1008,23 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-326920086.jpeg",
-      "bytes": 1121324,
-      "downloaded_size": "original",
-      "retained": false
+      "file": "inat-306129071.jpeg",
+      "bytes": 657218,
+      "downloaded_size": "original"
     },
     {
-      "photo_id": 351830949,
-      "observation_id": 199503820,
-      "observation_url": "https://www.inaturalist.org/observations/199503820",
+      "photo_id": 306129491,
+      "observation_id": 176122213,
+      "observation_url": "https://www.inaturalist.org/observations/176122213",
       "license_code": "cc0",
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
-      "observed_on": "2024-02-16",
-      "place": "Berkshire, Massachusetts, United States",
+      "observed_on": "2023-07-29",
+      "place": "Essex County, NY, USA",
       "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/351830949/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/351830949/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/351830949/medium.jpeg"
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129491/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129491/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/306129491/medium.jpeg"
       },
       "dimensions": {
         "width": 2048,
@@ -1326,292 +1035,9 @@
       "quality_grade": "research",
       "identification_agreements": 1,
       "identification_disagreements": 0,
-      "file": "inat-351830949.jpeg",
-      "bytes": 780590,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 351831786,
-      "observation_id": 199503820,
-      "observation_url": "https://www.inaturalist.org/observations/199503820",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-02-16",
-      "place": "Berkshire, Massachusetts, United States",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/351831786/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/351831786/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/351831786/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-351831786.jpeg",
-      "bytes": 421783,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 352673401,
-      "observation_id": 199947238,
-      "observation_url": "https://www.inaturalist.org/observations/199947238",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-02-20",
-      "place": "Shutesbury, MA, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352673401/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352673401/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352673401/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 3,
-      "identification_disagreements": 0,
-      "file": "inat-352673401.jpeg",
-      "bytes": 958510,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 352672977,
-      "observation_id": 199947238,
-      "observation_url": "https://www.inaturalist.org/observations/199947238",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-02-20",
-      "place": "Shutesbury, MA, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352672977/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352672977/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352672977/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 3,
-      "identification_disagreements": 0,
-      "file": "inat-352672977.jpeg",
-      "bytes": 518929,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 354857174,
-      "observation_id": 201063018,
-      "observation_url": "https://www.inaturalist.org/observations/201063018",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-03-02",
-      "place": "Tarbutt, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/354857174/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/354857174/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/354857174/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-354857174.jpeg",
-      "bytes": 2138559,
-      "downloaded_size": "original",
-      "sha256": "bd6ea5c6aa8693c862d4162d554c273fd5de67ba67d359a4565647988671f61a",
-      "retained": true,
-      "retained_bytes": 2138559
-    },
-    {
-      "photo_id": 442271301,
-      "observation_id": 247608972,
-      "observation_url": "https://www.inaturalist.org/observations/247608972",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-10-15",
-      "place": "Polk Township, PA, USA",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/442271301/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/442271301/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/442271301/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 1152,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-442271301.jpeg",
-      "bytes": 2194096,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 459504725,
-      "observation_id": 256304180,
-      "observation_url": "https://www.inaturalist.org/observations/256304180",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-12-26",
-      "place": "Greenbelt, Ottawa, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504725/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504725/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504725/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-459504725.jpeg",
-      "bytes": 618058,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 459504726,
-      "observation_id": 256304180,
-      "observation_url": "https://www.inaturalist.org/observations/256304180",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-12-26",
-      "place": "Greenbelt, Ottawa, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504726/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504726/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504726/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-459504726.jpeg",
-      "bytes": 735157,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 459504729,
-      "observation_id": 256304180,
-      "observation_url": "https://www.inaturalist.org/observations/256304180",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-12-26",
-      "place": "Greenbelt, Ottawa, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504729/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504729/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504729/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-459504729.jpeg",
-      "bytes": 718636,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 459504736,
-      "observation_id": 256304180,
-      "observation_url": "https://www.inaturalist.org/observations/256304180",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-12-26",
-      "place": "Greenbelt, Ottawa, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504736/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504736/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504736/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-459504736.jpeg",
-      "bytes": 644565,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 459504734,
-      "observation_id": 256304180,
-      "observation_url": "https://www.inaturalist.org/observations/256304180",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2024-12-26",
-      "place": "Greenbelt, Ottawa, ON, Canada",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504734/original.jpeg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504734/large.jpeg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504734/medium.jpeg"
-      },
-      "dimensions": {
-        "width": 2048,
-        "height": 1536
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-459504734.jpeg",
-      "bytes": 966672,
-      "downloaded_size": "original",
-      "retained": false
+      "file": "inat-306129491.jpeg",
+      "bytes": 447797,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 287252430,
@@ -1638,8 +1064,547 @@
       "identification_disagreements": 0,
       "file": "inat-287252430.jpeg",
       "bytes": 1544463,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 570307536,
+      "observation_id": 315687187,
+      "observation_url": "https://www.inaturalist.org/observations/315687187",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-20",
+      "place": "York, ME, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/570307536/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/570307536/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/570307536/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-570307536.jpg",
+      "bytes": 1307276,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 568687840,
+      "observation_id": 314841349,
+      "observation_url": "https://www.inaturalist.org/observations/314841349",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2025-09-18",
+      "place": "Searchmont, ON P0S 1J0, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/568687840/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/568687840/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/568687840/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-568687840.jpg",
+      "bytes": 2780958,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 42467380,
+      "observation_id": 27303756,
+      "observation_url": "https://www.inaturalist.org/observations/27303756",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-15",
+      "place": "Coopers Gap Rd, Milroy, PA 17063, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/42467380/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/42467380/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/42467380/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1228,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-42467380.jpeg",
+      "bytes": 1778719,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 42467396,
+      "observation_id": 27303756,
+      "observation_url": "https://www.inaturalist.org/observations/27303756",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-15",
+      "place": "Coopers Gap Rd, Milroy, PA 17063, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/42467396/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/42467396/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/42467396/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1228
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-42467396.jpeg",
+      "bytes": 1258746,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 42471028,
+      "observation_id": 27305469,
+      "observation_url": "https://www.inaturalist.org/observations/27305469",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-16",
+      "place": "Mifflin County, US-PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/42471028/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/42471028/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/42471028/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1228,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-42471028.jpeg",
+      "bytes": 1395875,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 42471035,
+      "observation_id": 27305469,
+      "observation_url": "https://www.inaturalist.org/observations/27305469",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-06-16",
+      "place": "Mifflin County, US-PA, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/42471035/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/42471035/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/42471035/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1228,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-42471035.jpeg",
+      "bytes": 1720184,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 172482900,
+      "observation_id": 103100057,
+      "observation_url": "https://www.inaturalist.org/observations/103100057",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2021-12-07",
+      "place": "Burnsville, NC 28714, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/172482900/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/172482900/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/172482900/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-172482900.jpeg",
+      "bytes": 3294927,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 30725394,
+      "observation_id": 19918947,
+      "observation_url": "https://www.inaturalist.org/observations/19918947",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-01-27",
+      "place": "194–214 Nevada Ave, New York, NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725394/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725394/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725394/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-30725394.jpg",
+      "bytes": 1849960,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 30725414,
+      "observation_id": 19918947,
+      "observation_url": "https://www.inaturalist.org/observations/19918947",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2019-01-27",
+      "place": "194–214 Nevada Ave, New York, NY, US",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725414/original.jpg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725414/large.jpg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725414/medium.jpg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-30725414.jpg",
+      "bytes": 1350520,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 351830949,
+      "observation_id": 199503820,
+      "observation_url": "https://www.inaturalist.org/observations/199503820",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-16",
+      "place": "Berkshire, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/351830949/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/351830949/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/351830949/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-351830949.jpeg",
+      "bytes": 780590,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 351831786,
+      "observation_id": 199503820,
+      "observation_url": "https://www.inaturalist.org/observations/199503820",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-16",
+      "place": "Berkshire, Massachusetts, United States",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/351831786/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/351831786/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/351831786/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-351831786.jpeg",
+      "bytes": 421783,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 352673401,
+      "observation_id": 199947238,
+      "observation_url": "https://www.inaturalist.org/observations/199947238",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-20",
+      "place": "Shutesbury, MA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352673401/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352673401/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352673401/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-352673401.jpeg",
+      "bytes": 958510,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 352672977,
+      "observation_id": 199947238,
+      "observation_url": "https://www.inaturalist.org/observations/199947238",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-02-20",
+      "place": "Shutesbury, MA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/352672977/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/352672977/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/352672977/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 3,
+      "identification_disagreements": 0,
+      "file": "inat-352672977.jpeg",
+      "bytes": 518929,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 354857174,
+      "observation_id": 201063018,
+      "observation_url": "https://www.inaturalist.org/observations/201063018",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-03-02",
+      "place": "Tarbutt, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/354857174/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/354857174/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/354857174/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-354857174.jpeg",
+      "bytes": 2138559,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 442271301,
+      "observation_id": 247608972,
+      "observation_url": "https://www.inaturalist.org/observations/247608972",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-10-15",
+      "place": "Polk Township, PA, USA",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/442271301/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/442271301/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/442271301/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1152,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-442271301.jpeg",
+      "bytes": 2194096,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 459504725,
+      "observation_id": 256304180,
+      "observation_url": "https://www.inaturalist.org/observations/256304180",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-12-26",
+      "place": "Greenbelt, Ottawa, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504725/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504725/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504725/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-459504725.jpeg",
+      "bytes": 618058,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 459504726,
+      "observation_id": 256304180,
+      "observation_url": "https://www.inaturalist.org/observations/256304180",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-12-26",
+      "place": "Greenbelt, Ottawa, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504726/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504726/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504726/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-459504726.jpeg",
+      "bytes": 735157,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 459504729,
+      "observation_id": 256304180,
+      "observation_url": "https://www.inaturalist.org/observations/256304180",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-12-26",
+      "place": "Greenbelt, Ottawa, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504729/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504729/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504729/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-459504729.jpeg",
+      "bytes": 718636,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 459504736,
+      "observation_id": 256304180,
+      "observation_url": "https://www.inaturalist.org/observations/256304180",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-12-26",
+      "place": "Greenbelt, Ottawa, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504736/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504736/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504736/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-459504736.jpeg",
+      "bytes": 644565,
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 459504734,
+      "observation_id": 256304180,
+      "observation_url": "https://www.inaturalist.org/observations/256304180",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2024-12-26",
+      "place": "Greenbelt, Ottawa, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504734/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504734/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/459504734/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-459504734.jpeg",
+      "bytes": 966672,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 64170186,
@@ -1666,64 +1631,7 @@
       "identification_disagreements": 0,
       "file": "inat-64170186.jpg",
       "bytes": 1581994,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 30725394,
-      "observation_id": 19918947,
-      "observation_url": "https://www.inaturalist.org/observations/19918947",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2019-01-27",
-      "place": "194\u2013214 Nevada Ave, New York, NY, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725394/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725394/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725394/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-30725394.jpg",
-      "bytes": 1849960,
-      "downloaded_size": "original",
-      "retained": false
-    },
-    {
-      "photo_id": 30725414,
-      "observation_id": 19918947,
-      "observation_url": "https://www.inaturalist.org/observations/19918947",
-      "license_code": "cc0",
-      "license": "CC0 (public domain dedication)",
-      "photographer": "no rights reserved",
-      "observed_on": "2019-01-27",
-      "place": "194\u2013214 Nevada Ave, New York, NY, US",
-      "urls": {
-        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725414/original.jpg",
-        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725414/large.jpg",
-        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/30725414/medium.jpg"
-      },
-      "dimensions": {
-        "width": 1536,
-        "height": 2048
-      },
-      "taxon_name": "Pinus strobus",
-      "taxon_id": 52391,
-      "quality_grade": "research",
-      "identification_agreements": 1,
-      "identification_disagreements": 0,
-      "file": "inat-30725414.jpg",
-      "bytes": 1350520,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 435123881,
@@ -1733,7 +1641,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2024-09-22",
-      "place": "Centre-du-Qu\u00e9bec, QC, Canada",
+      "place": "Centre-du-Québec, QC, Canada",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/435123881/original.jpg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/435123881/large.jpg",
@@ -1750,8 +1658,7 @@
       "identification_disagreements": 0,
       "file": "inat-435123881.jpg",
       "bytes": 384669,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 437056796,
@@ -1761,7 +1668,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2024-09-29",
-      "place": "Abitibi-T\u00e9miscamingue, QC, Canada",
+      "place": "Abitibi-Témiscamingue, QC, Canada",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/437056796/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/437056796/large.jpeg",
@@ -1778,8 +1685,7 @@
       "identification_disagreements": 0,
       "file": "inat-437056796.jpeg",
       "bytes": 1739228,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 437056793,
@@ -1789,7 +1695,7 @@
       "license": "CC0 (public domain dedication)",
       "photographer": "no rights reserved",
       "observed_on": "2024-09-29",
-      "place": "Abitibi-T\u00e9miscamingue, QC, Canada",
+      "place": "Abitibi-Témiscamingue, QC, Canada",
       "urls": {
         "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/437056793/original.jpeg",
         "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/437056793/large.jpeg",
@@ -1806,8 +1712,7 @@
       "identification_disagreements": 0,
       "file": "inat-437056793.jpeg",
       "bytes": 1782350,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 341960374,
@@ -1834,8 +1739,7 @@
       "identification_disagreements": 0,
       "file": "inat-341960374.jpeg",
       "bytes": 3055888,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 341382146,
@@ -1862,8 +1766,7 @@
       "identification_disagreements": 0,
       "file": "inat-341382146.jpeg",
       "bytes": 2367055,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 111407747,
@@ -1890,10 +1793,7 @@
       "identification_disagreements": 0,
       "file": "inat-111407747.jpg",
       "bytes": 1563102,
-      "downloaded_size": "original",
-      "sha256": "e08efeb707785287b6892c93c147f25be7e4adb4942d74e7de97ce3127b4caad",
-      "retained": true,
-      "retained_bytes": 1563102
+      "downloaded_size": "original"
     },
     {
       "photo_id": 111407752,
@@ -1920,8 +1820,7 @@
       "identification_disagreements": 0,
       "file": "inat-111407752.jpg",
       "bytes": 1591202,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 111407759,
@@ -1948,8 +1847,7 @@
       "identification_disagreements": 0,
       "file": "inat-111407759.jpg",
       "bytes": 1967591,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 116843902,
@@ -1976,8 +1874,7 @@
       "identification_disagreements": 0,
       "file": "inat-116843902.jpeg",
       "bytes": 964504,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 116844267,
@@ -2004,8 +1901,7 @@
       "identification_disagreements": 0,
       "file": "inat-116844267.jpeg",
       "bytes": 566480,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 340372052,
@@ -2032,10 +1928,7 @@
       "identification_disagreements": 0,
       "file": "inat-340372052.jpeg",
       "bytes": 1447703,
-      "downloaded_size": "original",
-      "sha256": "c831fbb87cc884331b2bea4e0037ad9748df278fe17abe0886368756354d8074",
-      "retained": true,
-      "retained_bytes": 1447703
+      "downloaded_size": "original"
     },
     {
       "photo_id": 335412276,
@@ -2062,8 +1955,7 @@
       "identification_disagreements": 0,
       "file": "inat-335412276.jpeg",
       "bytes": 767736,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 335413067,
@@ -2090,8 +1982,7 @@
       "identification_disagreements": 0,
       "file": "inat-335413067.jpeg",
       "bytes": 493650,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 316779811,
@@ -2118,8 +2009,34 @@
       "identification_disagreements": 0,
       "file": "inat-316779811.jpeg",
       "bytes": 2189010,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
+    },
+    {
+      "photo_id": 326920086,
+      "observation_id": 186998070,
+      "observation_url": "https://www.inaturalist.org/observations/186998070",
+      "license_code": "cc0",
+      "license": "CC0 (public domain dedication)",
+      "photographer": "no rights reserved",
+      "observed_on": "2023-10-05",
+      "place": "Algoma District, ON, Canada",
+      "urls": {
+        "original": "https://inaturalist-open-data.s3.amazonaws.com/photos/326920086/original.jpeg",
+        "large": "https://inaturalist-open-data.s3.amazonaws.com/photos/326920086/large.jpeg",
+        "medium": "https://inaturalist-open-data.s3.amazonaws.com/photos/326920086/medium.jpeg"
+      },
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "taxon_name": "Pinus strobus",
+      "taxon_id": 52391,
+      "quality_grade": "research",
+      "identification_agreements": 1,
+      "identification_disagreements": 0,
+      "file": "inat-326920086.jpeg",
+      "bytes": 1121324,
+      "downloaded_size": "original"
     },
     {
       "photo_id": 449507172,
@@ -2146,8 +2063,7 @@
       "identification_disagreements": 0,
       "file": "inat-449507172.jpeg",
       "bytes": 2579263,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 449507151,
@@ -2174,8 +2090,7 @@
       "identification_disagreements": 0,
       "file": "inat-449507151.jpeg",
       "bytes": 1066865,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 449507161,
@@ -2202,8 +2117,7 @@
       "identification_disagreements": 0,
       "file": "inat-449507161.jpeg",
       "bytes": 2455828,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 351055624,
@@ -2230,8 +2144,7 @@
       "identification_disagreements": 0,
       "file": "inat-351055624.jpeg",
       "bytes": 991831,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 351055609,
@@ -2258,8 +2171,7 @@
       "identification_disagreements": 0,
       "file": "inat-351055609.jpeg",
       "bytes": 1004427,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 351056159,
@@ -2286,8 +2198,7 @@
       "identification_disagreements": 0,
       "file": "inat-351056159.jpeg",
       "bytes": 1812842,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708715521,
@@ -2314,8 +2225,7 @@
       "identification_disagreements": 0,
       "file": "inat-708715521.jpg",
       "bytes": 2117554,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708715773,
@@ -2342,8 +2252,7 @@
       "identification_disagreements": 0,
       "file": "inat-708715773.jpg",
       "bytes": 2531319,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708715802,
@@ -2370,8 +2279,7 @@
       "identification_disagreements": 0,
       "file": "inat-708715802.jpg",
       "bytes": 3182633,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708721976,
@@ -2398,8 +2306,7 @@
       "identification_disagreements": 0,
       "file": "inat-708721976.jpg",
       "bytes": 2377310,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708722008,
@@ -2426,8 +2333,7 @@
       "identification_disagreements": 0,
       "file": "inat-708722008.jpg",
       "bytes": 2367643,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708722192,
@@ -2454,8 +2360,7 @@
       "identification_disagreements": 0,
       "file": "inat-708722192.jpg",
       "bytes": 3126476,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708723484,
@@ -2482,8 +2387,7 @@
       "identification_disagreements": 0,
       "file": "inat-708723484.jpg",
       "bytes": 2051898,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708723584,
@@ -2510,8 +2414,7 @@
       "identification_disagreements": 0,
       "file": "inat-708723584.jpg",
       "bytes": 2577211,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 708723678,
@@ -2538,8 +2441,7 @@
       "identification_disagreements": 0,
       "file": "inat-708723678.jpg",
       "bytes": 3119081,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 711813220,
@@ -2566,8 +2468,7 @@
       "identification_disagreements": 0,
       "file": "inat-711813220.jpg",
       "bytes": 1276904,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 711813222,
@@ -2594,8 +2495,7 @@
       "identification_disagreements": 0,
       "file": "inat-711813222.jpg",
       "bytes": 1325542,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 711813007,
@@ -2622,8 +2522,7 @@
       "identification_disagreements": 0,
       "file": "inat-711813007.jpg",
       "bytes": 1270134,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 643977248,
@@ -2650,8 +2549,7 @@
       "identification_disagreements": 0,
       "file": "inat-643977248.jpg",
       "bytes": 3664910,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 643886484,
@@ -2678,8 +2576,7 @@
       "identification_disagreements": 0,
       "file": "inat-643886484.jpg",
       "bytes": 1287023,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     },
     {
       "photo_id": 650755601,
@@ -2706,8 +2603,7 @@
       "identification_disagreements": 0,
       "file": "inat-650755601.jpg",
       "bytes": 1082999,
-      "downloaded_size": "original",
-      "retained": false
+      "downloaded_size": "original"
     }
   ],
   "note": null,
