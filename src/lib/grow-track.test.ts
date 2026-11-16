@@ -157,6 +157,15 @@ describe('the growth panel points at actions that actually exist', () => {
     expect(FIELD_LOG_TRIGGER_ID).toBe('log-sighting-trigger');
   });
 
+  it('shows the tab that owns the Field Log before opening it, because a modal in a hidden panel draws nothing', () => {
+    // The button is in the Challenges tab and the form in Progress; the inactive panel is
+    // `hidden`, so clicking the trigger alone opened an invisible dialog and looked dead.
+    expect(TRACK).toContain("trigger.closest<HTMLElement>('[role=\"tabpanel\"]')");
+    expect(TRACK).toContain('panel?.hidden');
+    expect(TRACK).toContain("panel.id.replace(/^panel-/, 'tab-')");
+    expect(TRACK).toContain('requestAnimationFrame(() => trigger.click())');
+  });
+
   it('sends the hero CTA and the Garden tile to the one anchor the track owns', () => {
     expect(CTA).toContain('#card-mastery');
     expect(GARDEN).toContain('#card-mastery');
