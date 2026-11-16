@@ -10,6 +10,10 @@ import { PlantdexIcon } from '../icons/PlantdexIcon';
 /**
  * THE FIELD BOARD'S DOOR ON THE COLLECTION PAGE, between your progress and the daily tasks.
  *
+ * A COMPACT STRIP, NOT A PANEL: a trophy and the word Leaderboard, about a third of the height
+ * of the first version, which carried a description and a rank line. The place is still
+ * announced to a screen reader. Everything the longer card said lives on the board's own page.
+ *
  * The board was reachable only by typing /leaderboard or finding the Garden's links, which is
  * how a feature nobody can find stops being used. This is a link and a sentence: no score is
  * computed here and nothing is stored. The rank, when there is one, is the standings
@@ -62,24 +66,15 @@ export function FieldBoardCard() {
   return (
     <Link
       href="/leaderboard"
-      className="panel flex min-h-[4.5rem] items-center gap-3 border-gold-500/40 p-4 transition-colors hover:bg-plum-600/50"
+      className="tap-44 panel flex h-[2.4rem] flex-col items-center justify-center border-gold-500/40 transition-colors hover:bg-plum-600/50"
     >
-      <span
-        aria-hidden="true"
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-2xl text-gold-300 ring-1 ring-gold-500/40"
-      >
-        <PlantdexIcon name="trophy" />
+      <PlantdexIcon name="trophy" className="text-lg leading-none text-gold-300" />
+      <span className="text-[0.65rem] leading-none font-bold tracking-wide text-gold-400">
+        Leaderboard
       </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-base font-bold text-gold-plate">Field Board</span>
-        <span className="block text-xs leading-snug text-violet-300">
-          See how your field work stacks up. Opt-in, and every score is provisional.
-        </span>
-        {line && <span className="mt-1 block text-xs font-bold text-gold-300">{line}</span>}
-      </span>
-      <span aria-hidden="true" className="shrink-0 text-violet-400">
-        →
-      </span>
+      {/* Your place, for a screen reader and only when there is one: the strip itself is a
+          trophy and a word, and the Field Board page says everything else. */}
+      {line && <span className="sr-only">. {line}</span>}
     </Link>
   );
 }
