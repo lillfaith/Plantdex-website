@@ -10,7 +10,7 @@ import { useProfileStore } from '@/lib/profile-store';
 import { profileStats } from '@/lib/profile-stats';
 import { EYEBROW, MICRO_LABEL } from '@/components/ui/accents';
 import { Cabinet } from './Cabinet';
-import { EditProfilePanel } from './EditProfilePanel';
+import { EDIT_PROFILE_ID, EditProfilePanel } from './EditProfilePanel';
 import { FieldRecord } from './FieldRecord';
 import { GardenPreview } from './GardenPreview';
 import { HabitatIdentity } from './HabitatIdentity';
@@ -65,6 +65,14 @@ export function ProfileView() {
   // `ready` first.
   const ready = collectionReady && profileReady;
 
+  const openEditor = () => {
+    const editor = document.getElementById(EDIT_PROFILE_ID);
+    if (!(editor instanceof HTMLDetailsElement)) return;
+    editor.open = true;
+    editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    editor.querySelector('summary')?.focus({ preventScroll: true });
+  };
+
   return (
     <main id="main" className="mx-auto max-w-4xl px-4 pt-6 pb-8">
       <nav aria-label="Breadcrumb" className="mb-2">
@@ -78,7 +86,23 @@ export function ProfileView() {
 
       <h1 className="sr-only">Your profile</h1>
 
-      <ProfileHero profile={profile} stats={stats} state={state} />
+      {/*
+        EDIT PROFILE, WHERE THE PROFILE IS. The editor is a disclosure further down the page (it has
+        to stay mounted at a fixed position, see below), which hid it from anybody who did not scroll
+        past everything. This opens that same disclosure and brings it into view, so there is still
+        one editor and one place it lives. Small white text in the hero's corner, inset from the
+        clipped edge; the page's fixed header marks sit above the hero and never over it.
+      */}
+      <div className="relative">
+        <ProfileHero profile={profile} stats={stats} state={state} />
+        <button
+          type="button"
+          onClick={openEditor}
+          className="tap-44 absolute top-3 right-5 z-30 text-xs font-semibold text-white underline-offset-2 hover:underline focus-visible:underline"
+        >
+          Edit profile
+        </button>
+      </div>
 
       {/* Clearance for the sidekick, which stands on the hero's floor and overlaps its
           bottom edge on a phone. Without it the creature would sit on the next section. */}
