@@ -116,6 +116,72 @@ Until this step is done the site shows "of 10" while the server still enforces 5
 | Migration | none required: the change is additive and the page degrades to "not switched on" if the function is absent | removing it needs a deliberate approval; the SQL would be `drop function public.leaderboard_standings(text, integer); drop table public.leaderboard_participants;` (data loss: only the opt-in rows) |
 | `identify-plant` | redeploy the version recorded in step 0 | limits revert with it |
 
+## Addendum: migration 0013 (leaderboard integrity), PREPARED, NOT RUN AGAINST PRODUCTION
+
+**Status: nothing here has been run against production (`vygiamigomwlvnwkryyl`).** Every step is **needs approval**.
+
+**TEST evidence.** 0013 and `herbdex-action` were applied to the test project (`vgjehmwcpavflbfhbbrp`) on 2026-11-16
+(migration run 43806668002, deploy run 43806759571). The full live suite then passed 118 of 118 with 0 skipped
+(run 43808023260, commit `7f8f788`), and `npm run verify` passed 2121 of 2121. Rollback and ordering below are
+untested on production.
+
+**What 0013 changes.** New rows must name a real card, research task or achievement (constraints are `NOT VALID`:
+existing rows are untouched and invalid ones simply stop scoring). `mastered` and `research_completions` lose their
+client insert policy, so only `herbdex-action` (service role) can write them. A sighting's `created_at` becomes the
+server clock and its photo path must be the owner's folder. The `sighting-photos` bucket gets an 8 MB limit and
+JPEG/PNG/WebP only. Display names reject invisible characters and staff-like names. `leaderboard_standings()` is replaced
+with the same signature.
+
+**Order matters, and differs from the other steps.** Function first, then migration, then frontend:
+
+1. **Prerequisite: 0011 must already be on production.** 0013 replaces `leaderboard_standings` and reads
+   `leaderboard_participants`. Do step 2 of this checklist first. 0012 is not needed.
+2. **Deploy `herbdex-action` to production first** (`deploy-function.yml`, `project_ref = vygiamigomwlvnwkryyl`,
+   `function = herbdex-action`). The new function writes with the service role, which works under today's policies,
+   so this is safe before the migration. Done the other way round, mastery and research stop being recorded for every
+   signed-in player the moment the policies are dropped.
+3. **Apply 0013** (`run-migration.yml`, production ref, `0013_leaderboard_integrity.sql`). Until the frontend in
+   step 4 ships, the currently deployed app cannot import device mastery/research into an account (those direct writes
+   are now refused); normal play is unaffected because it goes through the function. Keep the gap short.
+4. **Ship the frontend** that no longer imports those rows (`src/lib/import-local-progress.ts`).
+
+**Checks before step 2 (read-only).**
+- `SPECIES_ATTESTATION_SECRET` is set on production and is a different value from test (`check-function-secrets.yml`,
+  production ref; it prints names, never values).
+- Production dashboard: Authentication, email confirmation ON; Storage, note the current `sighting-photos` limits.
+- Take the "before" record with `release-checkpoint.yml`. Production is on the Free plan (no backups): 0013 deletes
+  and rewrites no rows, but it drops two policies, so record them (below) first.
+- Existing photos: stored photos are JPEGs re-encoded by the app, so the new bucket types should not affect them.
+  Confirm by listing a few object mime types before applying.
+
+**Checks after step 3 (read-only SQL).**
+
+```sql
+select policyname from pg_policies where tablename in ('mastered','research_completions') and cmd = 'INSERT';  -- none
+select conname, convalidated from pg_constraint where conname in ('discoveries_valid_herb','research_valid_task','profiles_safe_display_name'); -- present, convalidated = false
+select tgname from pg_trigger where tgname = 'sightings_server_clock';                                         -- one row
+select has_function_privilege('anon', 'public.leaderboard_standings(text,integer)', 'execute');               -- false
+select has_function_privilege('authenticated', 'public.sighting_photo_exists(uuid,text)', 'execute');          -- false
+select file_size_limit, allowed_mime_types from storage.buckets where id = 'sighting-photos';                 -- 8388608, three image types
+```
+
+**Smoke test after step 4 (owner or a named account, never the e2e suite).** The live suites refuse a production URL
+and must stay that way. Check by hand: sign in; log a find; confirm a Field Research task completes (this exercises the
+function's service-role write); write a journal entry with a 24-character note; join the board and confirm the points
+match the page; set a display name containing "admin" and confirm it is refused.
+
+**Rollback.**
+
+| Layer | How | Note |
+| --- | --- | --- |
+| Frontend | reset the deploy branch to the tag from step 0 | old import path returns, but it needs the policies below |
+| Migration | no down-migration. To restore client writes: `create policy "own mastered insert" on public.mastered for insert with check (auth.uid() = user_id);` and `create policy "own research completions insert" on public.research_completions for insert with check (auth.uid() = user_id);` (the original definitions, 0001_accounts.sql). Constraints and the trigger can stay (they only reject bad rows) or be dropped with `alter table ... drop constraint ...` | restoring those policies re-opens the forgery path 0013 closed, so it is an emergency lever, not a normal rollback |
+| `herbdex-action` | redeploy the version recorded in step 0 | the old version writes with the caller's session and needs the policies above |
+
+**Remaining known risks (unchanged by 0013).** Progress is self-declared; the species registry trusts the pairing of a
+real name and identifier from an authenticated client (`docs/registry-trust.md`); a photograph is evidence, not proof;
+mastery earned on a device whose only sighting was later deleted is not carried into an account on import.
+
 ## Privacy and compliance checks already automated
 
 - Return signature pinned (`leaderboard-schema.test.ts`), and the live suite lists the exact columns.
