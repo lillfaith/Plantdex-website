@@ -1,0 +1,48 @@
+name: Photo collector (private batch tool)
+
+# Collects CC0 candidate photos from iNaturalist, builds labelled contact sheets and ONE ZIP.
+# Runs here because api.inaturalist.org is refused by the development sandbox.
+#
+# WRITES NOTHING TO THE REPOSITORY and deploys nothing: the ZIP is a workflow artifact. It
+# touches no card, no deck data, no site file. It does not edit photos.
+#
+# STARTED BY PUSHING evidence/collector-queue.json on this branch (the same pattern as the
+# other pipeline workflows). The workflow file itself is deliberately NOT a trigger.
+on:
+  push:
+    branches: [claude/photo-collector-v1]
+    paths:
+      - evidence/collector-queue.json
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow
+      - name: Self-test (offline)
+        run: |
+          python3 scripts/fetch_inat_photos.py --self-test
+          python3 scripts/photo_collector.py --self-test
+      - name: Collect, label and package
+        run: python3 scripts/photo_collector.py --queue evidence/collector-queue.json --out out
+      - name: Summary
+        run: |
+          {
+            echo "### Photo batch"
+            unzip -p out/plantdex-photo-batch-*.zip '*/README.txt' | sed -n '/^SPECIES/,/^LAYOUT/p'
+            ls -la out/*.zip
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plantdex-photo-batch
+          path: out/plantdex-photo-batch-*.zip
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: error
