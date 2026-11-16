@@ -1341,7 +1341,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       const path = `${alice.id}/export-e2e-${Date.now()}.jpg`;
       const { error: uploadError } = await supabase!.storage
         .from('sighting-photos')
-        .upload(path, new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])]), {
+        .upload(path, new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])], { type: 'image/jpeg' }), {
           contentType: 'image/jpeg',
         });
       expect(uploadError).toBeNull();
@@ -1467,7 +1467,7 @@ describe.skipIf(!configured)('Supabase V0.3 accounts — live end to end', () =>
       photoPath = `${carol.id}/e2e-${Date.now()}.jpg`;
       const { error: uploadError } = await carolClient.storage
         .from('sighting-photos')
-        .upload(photoPath, new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])]), {
+        .upload(photoPath, new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])], { type: 'image/jpeg' }), {
           contentType: 'image/jpeg',
         });
       if (uploadError) throw new Error(`carol photo upload failed: ${uploadError.message}`);
