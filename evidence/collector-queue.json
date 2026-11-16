@@ -1,0 +1,10 @@
+{
+  "batch": "001",
+  "species": [
+    {"card": 57, "common": "Boneset", "scientific": "Eupatorium perfoliatum"},
+    {"card": 58, "common": "Hollow Joe-Pye Weed", "scientific": "Eutrochium fistulosum"},
+    {"card": 59, "common": "New Jersey Tea", "scientific": "Ceanothus americanus"},
+    {"card": 60, "common": "Black-Eyed Susan", "scientific": "Rudbeckia hirta"},
+    {"card": 61, "common": "Narrowleaf Mountain Mint", "scientific": "Pycnanthemum tenuifolium"}
+  ]
+}
