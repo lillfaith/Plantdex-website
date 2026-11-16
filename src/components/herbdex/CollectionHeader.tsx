@@ -8,14 +8,12 @@ import { useProfileStore } from '@/lib/profile-store';
 import { resolveProfile } from '@/lib/player-profile';
 import { titleLabel } from '@/lib/field-titles';
 import { stageForState } from '@/lib/garden';
-import { ACHIEVEMENTS } from '@/lib/achievements';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 import { progressionSubtext } from '@/lib/progression-track';
 import { XpMilestones } from '../game/XpMilestones';
 import { CountUp } from './CountUp';
 import { ProfileAvatar } from '../profile/ProfileAvatar';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
-import { achievementIcon } from '../icons/achievement-icons';
 import { PixelIcon } from './HerbalVisuals';
 import { illustration, traitBadge } from '@/lib/pixel-icons';
 
@@ -36,11 +34,6 @@ export function CollectionHeader() {
   const pct = Math.round(progress.fraction * 100);
   const title = profile.title ? titleLabel(profile.title, state) : progress.levelName;
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
-
-  // Four badges: earned ones first (in the achievements' own order), then the next locked ones.
-  const earned = ACHIEVEMENTS.filter((a) => ready && Boolean(state.achievements[a.id]));
-  const locked = ACHIEVEMENTS.filter((a) => !(ready && state.achievements[a.id]));
-  const shown = [...earned, ...locked].slice(0, 4);
 
   return (
     <section aria-labelledby="progress-heading" className="space-y-4">
@@ -152,89 +145,6 @@ export function CollectionHeader() {
           <p className="mt-2 text-xs text-violet-400">More pages to fill someday.</p>
         </div>
       )}
-
-      {/* ── Achievements ─────────────────────────────────────────────── */}
-      <div className="border-t border-violet-500/40 pt-3">
-        <div className="flex items-center justify-between">
-          <p className="flex items-center gap-2 font-display text-lg font-bold text-violet-50">
-            <PixelIcon uri={illustration('trophy')} size={30} />
-            Achievements
-          </p>
-          <Link
-            href="/profile"
-            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-violet-300 tabular-nums hover:text-gold-300"
-          >
-            {earned.length} / {ACHIEVEMENTS.length}
-            <span aria-hidden="true">&rsaquo;</span>
-            <span className="sr-only"> achievements. Open your profile.</span>
-          </Link>
-        </div>
-        <ul className="mt-1 grid grid-cols-4 gap-2 text-center">
-          {shown.map((achievement) => {
-            const isEarned = Boolean(ready && state.achievements[achievement.id]);
-            return (
-              <li key={achievement.id} className="flex flex-col items-center gap-1">
-                <span
-                  className={`relative flex h-14 w-14 items-center justify-center rounded-xl border-2 text-2xl ${
-                    isEarned
-                      ? 'border-gold-400 bg-plum-800/70 text-gold-300 shadow-[0_0_10px_rgb(255_212_92/0.35)]'
-                      : 'border-violet-600/60 bg-plum-900/50 text-violet-400/70'
-                  }`}
-                >
-                  <PlantdexIcon
-                    name={achievementIcon(achievement.id)}
-                    aria-hidden="true"
-                    className={isEarned ? '' : 'opacity-60'}
-                  />
-                  {!isEarned && (
-                    <PlantdexIcon
-                      name="locked"
-                      aria-hidden="true"
-                      className="absolute -top-1.5 -right-1.5 text-sm text-violet-300"
-                    />
-                  )}
-                </span>
-                <span
-                  className={`text-xs leading-tight font-semibold ${
-                    isEarned ? 'text-violet-50' : 'text-violet-300'
-                  }`}
-                >
-                  {achievement.name}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-        <details className="mt-1">
-          <summary className="group flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-xs font-bold tracking-wide text-violet-300 uppercase">
-            <span
-              aria-hidden="true"
-              className="text-base leading-none transition-transform group-open:rotate-90 motion-reduce:transition-none"
-            >
-              &rsaquo;
-            </span>
-            All achievements
-          </summary>
-          <ul className="space-y-1.5 pb-2">
-            {ACHIEVEMENTS.map((achievement) => {
-              const isEarned = Boolean(ready && state.achievements[achievement.id]);
-              return (
-                <li key={achievement.id} className="flex items-start gap-2 text-xs">
-                  <PlantdexIcon
-                    name={achievementIcon(achievement.id)}
-                    aria-hidden="true"
-                    className={`mt-0.5 shrink-0 text-base ${isEarned ? 'text-gold-300' : 'text-violet-500'}`}
-                  />
-                  <span className={isEarned ? 'text-violet-50' : 'text-violet-300'}>
-                    <span className="font-bold">{achievement.name}</span>
-                    {isEarned ? ' (unlocked)' : ' (locked)'} &mdash; {achievement.description}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </details>
-      </div>
     </section>
   );
 }

@@ -328,10 +328,52 @@ function Garden() {
   );
 }
 
+/**
+ * FIELD BOARD. A spotlight, not a sign-up: it says what the board is, that joining is a choice
+ * and that every score is self-reported, then shows where to find it. Static artwork only, so
+ * no store, reducer or writer is reachable from here (`welcome-tour.test.ts` pins that), and
+ * the one link leaves the tour the same way the last scene's links do.
+ */
+function Board({ onLeave }: SceneProps) {
+  return (
+    <>
+      <Title>Meet the Field Board</Title>
+      <div
+        aria-hidden="true"
+        className="welcome-prop mx-auto mt-3 flex w-full max-w-[19rem] items-center gap-3 px-4 py-3 text-left"
+      >
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-3xl text-gold-300 ring-1 ring-gold-500/40">
+          <PlantdexIcon name="trophy" />
+        </span>
+        <span>
+          <span className="block text-sm font-bold text-gold-300">Field Board</span>
+          <span className="block text-[0.72rem] leading-tight text-violet-300">
+            Species found, journal entries, research
+          </span>
+        </span>
+      </div>
+      <p className="mx-auto mt-3 max-w-[19rem] text-sm leading-relaxed text-violet-100">
+        An optional leaderboard built from your field work. You only appear if you choose to
+        join, and every score is self-reported and provisional.
+      </p>
+      <p className="mx-auto mt-2 max-w-[19rem] text-sm leading-relaxed text-violet-200">
+        Find it any time from the trophy at the top of the screen or on your Collection page.
+      </p>
+      <Link
+        href="/leaderboard"
+        onClick={onLeave}
+        className="tap-44 mt-1 inline-flex items-center justify-center text-sm font-bold text-gold-300 underline-offset-2 hover:text-gold-200 hover:underline"
+      >
+        Take a look now
+      </Link>
+    </>
+  );
+}
+
 const EXPLORE_TILES = [
   { icon: 'journal', label: 'Field Journal', note: 'Your finds' },
   { icon: 'compass', label: 'Regional quests', note: 'Plants to seek' },
-  { icon: 'laurel', label: 'Leaderboard', note: 'Opt in only' },
+  { icon: 'trophy', label: 'Field Board', note: 'Opt in only' },
 ] as const;
 
 function Explore({ returning, onLeave }: SceneProps) {
@@ -413,5 +455,6 @@ export const SCENES: readonly Scene[] = [
   { id: 'discover', Component: Discover },
   { id: 'collect', Component: Collect },
   { id: 'garden', Component: Garden },
+  { id: 'board', Component: Board },
   { id: 'explore', Component: Explore },
 ];

@@ -8,6 +8,7 @@ import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { PlausibleScript } from '@/components/analytics/PlausibleScript';
 import { AccountBadge } from '@/components/auth/AccountBadge';
+import { BoardTrophyLink } from '@/components/leaderboard/BoardTrophyLink';
 import './globals.css';
 
 const outfit = Outfit({
@@ -58,7 +59,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <HerbdexProvider>
             <SiteNav />
-            <AccountBadge />
+            {/* The header marks, as one fixed cluster: the Field Board link, then the account
+                badge. The badge renders nothing when accounts are not configured, and the link
+                still shows. */}
+            <div className="fixed top-2 right-2 z-40 flex items-center gap-2 sm:top-3 sm:right-3">
+              <BoardTrophyLink />
+              <AccountBadge inline />
+            </div>
             {/*
               THE FIRST-RUN WELCOME, MOUNTED HERE AND NOT ON /start.
 

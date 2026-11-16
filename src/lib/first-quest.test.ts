@@ -17,8 +17,8 @@ describe('the first quest card', () => {
   it('says what counts', () => {
     expect(code).toMatch(/It counts once you\s+confirm the find/);
   });
-  it('is on /herbdex without a second scan button, and on research with one', () => {
-    expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).toContain('<FirstQuestCard cta={false} />');
+  it('is on /herbdex and on research, each with its own scan button', () => {
+    expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).toContain('<FirstQuestCard />');
     expect(readFileSync('src/components/research/ResearchView.tsx', 'utf8')).toContain('<FirstQuestCard />');
   });
 });

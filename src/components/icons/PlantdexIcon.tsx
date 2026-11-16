@@ -79,6 +79,7 @@ export type IconName =
   | 'bloom'
   | 'crystal'
   | 'laurel'
+  | 'trophy'
   | 'compass'
   | 'fallen-leaf'
   | 'plot'
@@ -408,6 +409,20 @@ const ICONS: Record<IconName, React.ReactNode> = {
     <>
       <path d="M12 2.8 20.4 9 17.2 19.4H6.8L3.6 9Z" />
       <path d="M3.6 9h16.8M12 2.8 8.6 9l3.4 10.4L15.4 9Z" />
+    </>
+  ),
+  // A trophy for ONE place only: the way into the Field Board (Collection card, header link,
+  // tour scene). The Board is opt-in and says its scores are provisional, so the mark names the
+  // destination rather than turning the rest of the app into a contest. Everything else that
+  // rewards observation keeps the laurel below.
+  trophy: (
+    <>
+      <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" />
+      <path d="M8 6H5v1.3C5 9.2 6.3 10.2 8.3 10.5" />
+      <path d="M16 6h3v1.3c0 1.9-1.3 2.9-3.3 3.2" />
+      <path d="M12 13.2v3" />
+      <path d="M9.6 16.2h4.8l.9 3.6H8.7Z" />
+      <path d="M8 20.4h8" />
     </>
   ),
   // Laurel rather than a trophy: the deck rewards observation, not competition.

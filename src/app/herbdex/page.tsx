@@ -6,13 +6,13 @@ import { HerbGrid } from '@/components/herbdex/HerbGrid';
 import { CollectionHeader } from '@/components/herbdex/CollectionHeader';
 import { FirstQuestCard } from '@/components/herbdex/FirstQuestCard';
 import { ResearchTeaser } from '@/components/research/ResearchTeaser';
+import { FieldBoardCard } from '@/components/leaderboard/FieldBoardCard';
 import { RecentFindsStrip } from '@/components/herbdex/RecentFindsStrip';
 import { EncounterRateNote, SafetyNotice } from '@/components/SafetyNotice';
 import { BeyondCollection } from '@/components/collection/BeyondCollection';
 import { LocalProgressNotice } from '@/components/auth/LocalProgressNotice';
 import { TrackView } from '@/components/analytics/TrackView';
 import { PageAtmosphere } from '@/components/PageAtmosphere';
-import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { DeckCta } from '@/components/shop/DeckCta';
 import { CURRENT_COLLECTION } from '@/lib/collection';
 
@@ -21,34 +21,6 @@ export const metadata: Metadata = {
   description:
     'Track the wild plants you have found in real life, earn XP, and complete your Plantdex collection.',
 };
-
-function QuickLink({
-  href,
-  icon,
-  label,
-  note,
-}: {
-  href: string;
-  icon: 'revealed' | 'seed' | 'research';
-  label: string;
-  note: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="pixel-tile flex min-h-[4.5rem] flex-col items-center justify-center gap-1 px-1 py-2 text-center"
-    >
-      <span
-        aria-hidden="true"
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-500/15 text-base text-gold-300"
-      >
-        <PlantdexIcon name={icon} />
-      </span>
-      <span className="text-xs leading-tight font-bold text-violet-50">{label}</span>
-      <span className="sr-only">{note}</span>
-    </Link>
-  );
-}
 
 export default function HerbdexPage() {
   const herbs = printedCardsInDeckOrder();
@@ -70,32 +42,14 @@ export default function HerbdexPage() {
       <LocalProgressNotice />
       <CollectionHeader />
 
-      {/* The three places this page leads. Identify is first: it is the one action that works
-          on the first visit. The descriptions stay for screen readers. */}
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        <QuickLink
-          href="/scan"
-          icon="revealed"
-          label="Identify a plant"
-          note="Photograph something growing and see what Plantdex thinks it might be"
-        />
-        <QuickLink
-          href="/seed-shelf"
-          icon="seed"
-          label="Seed Shelf"
-          note="Species you have found that this collection has no card for"
-        />
-        <QuickLink
-          href="/herbdex/research"
-          icon="research"
-          label="Field Research"
-          note="Daily tasks, seasonal ladders and challenges, and what your XP unlocks"
-        />
+      {/* The Field Board's door, directly beneath your progress. */}
+      <div className="mt-3">
+        <FieldBoardCard />
       </div>
 
-      {/* Renders only while the collection is genuinely empty, without a button of its own:
-          the scanner is directly beneath it. */}
-      <FirstQuestCard cta={false} />
+      {/* Renders only while the collection is genuinely empty, and carries its own scan button:
+          the page no longer has a row of shortcuts for a first-time player to find it in. */}
+      <FirstQuestCard />
 
       <div className="mt-3">
         <RecentFindsStrip />
@@ -104,6 +58,31 @@ export default function HerbdexPage() {
       <div className="mt-3">
         <ResearchTeaser />
       </div>
+
+      {/* TWO PLAIN LINES WHERE THREE SHORTCUT TILES WERE. Plant ID has to stay reachable from
+          the Collection in words a person would look for (`plant-id-safety.test.ts`), and the
+          Seed Shelf is a kept thing that is effectively lost if nothing here points at it
+          (`launch-loop.test.ts`). Text, not rectangles: the primary nav carries Scan too. */}
+      <nav aria-label="More ways to explore" className="mt-4 space-y-1 text-center text-sm text-violet-300">
+        <p>
+          Spotted something growing?{' '}
+          <Link
+            href="/scan"
+            className="tap-44 inline-flex items-center font-bold text-gold-300 underline underline-offset-2 hover:text-gold-200"
+          >
+            Identify a plant
+          </Link>
+        </p>
+        <p>
+          Found a plant with no card?{' '}
+          <Link
+            href="/seed-shelf"
+            className="tap-44 inline-flex items-center font-bold text-gold-300 underline underline-offset-2 hover:text-gold-200"
+          >
+            Open your Seed Shelf
+          </Link>
+        </p>
+      </nav>
 
       <div className="mt-8 flex items-center gap-3">
         <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500/80" />

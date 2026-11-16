@@ -56,7 +56,7 @@ describe('the Collect and Garden scenes', () => {
   const code = strip(SCENES);
   it('are part of the tour, in order', () => {
     const ids = [...SCENES.matchAll(/id: '([a-z]+)', Component/g)].map((m) => m[1]);
-    expect(ids).toEqual(['welcome', 'discover', 'collect', 'garden', 'explore']);
+    expect(ids).toEqual(['welcome', 'discover', 'collect', 'garden', 'board', 'explore']);
   });
 
   it('flip a picture only: no store, reducer or writer is reachable from the scenes', () => {
