@@ -125,3 +125,26 @@ describe('the account badge', () => {
     expect(cluster).toContain('<AccountBadge inline />');
   });
 });
+
+describe('Edit profile and the rankings list', () => {
+  const view = readFileSync('src/components/profile/ProfileView.tsx', 'utf8');
+  const editor = readFileSync('src/components/profile/EditProfilePanel.tsx', 'utf8');
+  const board = readFileSync('src/components/leaderboard/BoardScreen.tsx', 'utf8');
+
+  it('puts an Edit profile control in the hero corner that opens the one existing editor', () => {
+    expect(view).toContain('Edit profile');
+    expect(view).toMatch(/absolute top-3 right-5/);
+    expect(view).toContain('text-white');
+    expect(view).toContain('editor.open = true');
+    // One editor, mounted once: the control reaches it by id and never renders a second.
+    expect(editor).toContain('id={EDIT_PROFILE_ID}');
+    expect(strip(view).match(/<EditProfilePanel/g) ?? []).toHaveLength(1);
+  });
+
+  it('shows the rankings as aligned one-line rows, with no sub text or closing paragraph', () => {
+    const code = strip(board);
+    expect(code).toContain('w-12 shrink-0 text-right');
+    expect(code).toContain('items-baseline');
+    expect(code).not.toMatch(/rule\.note|equal points share|Your own score is counted/);
+  });
+});

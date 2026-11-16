@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { LEADERBOARD_POINTS, SCORING_RULES } from '@/lib/leaderboard';
+import { SCORING_RULES } from '@/lib/leaderboard';
 import type { Standing } from '@/lib/remote-leaderboard';
 import {
   BOARD_PAGE_SIZE,
@@ -159,25 +159,22 @@ export function BoardScreen(props: BoardScreenProps) {
           </span>
           How rankings work
         </summary>
-        <ul className="space-y-2.5 pb-3">
+        {/*
+          THREE LINES, ONE SHAPE. Points in a fixed-width column that ends on the same edge, so
+          "+50", "+15" and "+100" line up whatever their length, then the rule in the same size and
+          weight beside them, on the same baseline. The long explanations that used to sit under
+          each rule and in a closing paragraph are gone; the provisional note above the score
+          stays, and the rules themselves are in `docs/leaderboard.md`.
+        */}
+        <ul className="space-y-2 pb-3">
           {SCORING_RULES.map((rule) => (
-            <li key={rule.what} className="flex gap-3">
-              <span className="font-display w-10 shrink-0 text-right text-lg leading-tight font-extrabold text-gold-400 tabular-nums">
+            <li key={rule.what} className="flex items-baseline gap-3 text-sm font-bold">
+              <span className="w-12 shrink-0 text-right text-gold-400 tabular-nums">
                 +{rule.points}
               </span>
-              <span className="min-w-0 text-xs leading-relaxed text-violet-300">
-                <span className="block text-sm font-semibold text-violet-100">{rule.what}</span>
-                {rule.note}
-              </span>
+              <span className="min-w-0 text-violet-100">{rule.what}</span>
             </li>
           ))}
-          <li className="text-xs leading-relaxed text-violet-300">
-            Your own score is counted from the records on this device, so you can check it. Players
-            are ranked by points, and equal points share a place. The daily journal limit runs on
-            UTC so it means the same thing for everyone. A discovery is worth{' '}
-            {LEADERBOARD_POINTS.discovery} points because going outside is what this is for. Nothing
-            on this board unlocks anything, costs anything or changes your collection.
-          </li>
         </ul>
       </details>
 

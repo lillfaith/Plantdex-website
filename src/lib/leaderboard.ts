@@ -381,20 +381,17 @@ export function scoreFromRecords(
  * reason the cosmetics cabinet prints each frame's own `condition` sentence: a UI free to
  * describe a rule differently from the code that enforces it will eventually do so.
  */
-export const SCORING_RULES: readonly { points: number; what: string; note: string }[] = [
+export const SCORING_RULES: readonly { points: number; what: string }[] = [
   {
     points: LEADERBOARD_POINTS.discovery,
     what: 'A species you have not recorded before',
-    note: 'Once per species. Finding the same plant again adds nothing — your collection already holds it.',
   },
   {
     points: LEADERBOARD_POINTS.journalEntry,
     what: 'Your first real Field Journal entry for that species',
-    note: `A photo, or a note of at least ${MIN_QUALIFYING_NOTE} characters. Up to ${DAILY_JOURNAL_POINT_CAP} a day. Editing an entry, or logging a second one for the same plant, adds nothing.`,
   },
   {
     points: LEADERBOARD_POINTS.challenge,
     what: 'A completed Field Research challenge',
-    note: 'Collection challenges and seasonal ladders. Daily tasks pay XP, not board points.',
   },
 ];

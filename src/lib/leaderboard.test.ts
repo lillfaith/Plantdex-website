@@ -248,13 +248,13 @@ describe('the rules a player reads', () => {
       LEADERBOARD_POINTS.journalEntry,
       LEADERBOARD_POINTS.challenge,
     ]);
-    const journal = SCORING_RULES[1]!;
-    expect(journal.note).toContain(String(MIN_QUALIFYING_NOTE));
-    expect(journal.note).toContain(String(DAILY_JOURNAL_POINT_CAP));
   });
 
-  it('says somewhere that a repeat find adds nothing', () => {
-    const text = SCORING_RULES.map((rule) => `${rule.what} ${rule.note}`).join(' ').toLowerCase();
-    expect(text).toContain('once per species');
+  it('lists three rules, each as a number and one line, with nothing underneath', () => {
+    expect(SCORING_RULES).toHaveLength(3);
+    for (const rule of SCORING_RULES) {
+      expect(Object.keys(rule).sort()).toEqual(['points', 'what']);
+      expect(rule.what.length).toBeGreaterThan(10);
+    }
   });
 });

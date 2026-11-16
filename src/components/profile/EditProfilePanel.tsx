@@ -34,6 +34,9 @@ import { EYEBROW, MICRO_LABEL } from '../ui/accents';
  * then silently does not apply.
  * ─────────────────────────────────────────────────────────────────────────────
  */
+/** The editor's id, so the link at the top of the profile can open it. */
+export const EDIT_PROFILE_ID = 'edit-profile';
+
 export function EditProfilePanel({
   profile,
   state,
@@ -129,7 +132,7 @@ export function EditProfilePanel({
   );
 
   return (
-    <details className="field-panel group p-4 sm:p-5">
+    <details id={EDIT_PROFILE_ID} className="field-panel group p-4 sm:p-5">
       <summary className="cursor-pointer list-none">
         <span className="flex min-h-11 items-center justify-between gap-2">
           <span className="flex items-center gap-1.5">
