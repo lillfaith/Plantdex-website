@@ -5,8 +5,8 @@
   "cardNumber": 84,
   "commonName": "Slippery Elm",
   "scientificName": "Ulmus rubra",
-  "rarity": "Common",
-  "xp": 100,
+  "rarity": "Uncommon",
+  "xp": 175,
   "season": "spring",
   "uses": [
    "lungs",

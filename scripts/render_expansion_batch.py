@@ -90,6 +90,11 @@ def apply_overrides(c: dict) -> dict:
     for e in json.loads(path.read_text()).get(str(c["cardNumber"]), []):
         sect, key = e["field"].split(".")
         items = c[sect][key]
+        if not isinstance(items, list):          # a single value (rarity, xp), not a list of entries
+            if items != e["from"]:
+                raise SystemExit(f"card {c['cardNumber']}: override expects {e['from']!r} in {e['field']} but found {items!r}")
+            c[sect][key] = e["to"]
+            continue
         if e["from"] not in items:
             raise SystemExit(f"card {c['cardNumber']}: override expects {e['from']!r} in {e['field']} but found {items}")
         items[items.index(e["from"])] = e["to"]
