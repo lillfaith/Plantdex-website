@@ -34,6 +34,15 @@ jobs:
         id: fetch
         continue-on-error: true
         run: python3 scripts/production/fetch_selected.py --hints hints --request evidence/photo-fetch/request.json --out export
+      - name: Print the manifest
+        if: always()
+        run: |
+          python3 - <<'P'
+          import json
+          for r in json.load(open("export/manifest.json"))["rows"]:
+              print(r["card"], r["role"], r["photo_id"], "obs", r["observation_id"], r["license_code"], r["taxon_check"], r["observation_taxon"], r["size_served"], f"{r['width']}x{r['height']}", r["bytes"], (r["sha256"] or "")[:12], "same_as=" + str(r["same_file_as_role"]), "|", r["photographer"])
+          P
+          find export -type f | sort
       - uses: actions/upload-artifact@v4
         with:
           name: plantdex-selected-originals-62-66
