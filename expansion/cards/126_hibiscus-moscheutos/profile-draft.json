@@ -20,9 +20,10 @@
   "back": {
    "healingTraits": [
     "Throat coating",
-    "Cough soothing",
+    "Demulcent",
     "Gut soothing",
-    "Nutritive greens"
+    "Nutritive greens",
+    "Emollient"
    ],
    "compounds": [
     "Mucilage",

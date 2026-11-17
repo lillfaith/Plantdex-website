@@ -203,5 +203,71 @@
    "by": "owner",
    "why": "Owner: added Eye care and Wound aid; 'Plant omega-3' is removed by the omega-3 rule and Omega-3 moves to Signature Compounds."
   }
+ ],
+ "122": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Fever aid",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner: added Fever aid and Digestive aid."
+  }
+ ],
+ "123": [
+  {
+   "field": "back.healingTraits",
+   "from": "Chest comfort",
+   "to": "Expectorant",
+   "by": "owner",
+   "why": "Owner: Chest comfort -> Expectorant."
+  }
+ ],
+ "124": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Vitamin-rich",
+    "Prostate aid",
+    "Dietary fiber",
+    "Urinary aid"
+   ],
+   "by": "owner",
+   "why": "Owner: Mucilage-rich moved to Signature Compounds; Nutritive greens replaced with Prostate aid; added Urinary aid."
+  },
+  {
+   "field": "back.compounds",
+   "append": [
+    "Mucilage"
+   ],
+   "by": "owner",
+   "why": "Owner: Mucilage moved here from Healing Traits."
+  }
+ ],
+ "125": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Antiseptic",
+    "Urinary aid"
+   ],
+   "by": "owner",
+   "why": "Owner: added Antiseptic and Urinary aid."
+  }
+ ],
+ "126": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Throat coating",
+    "Demulcent",
+    "Gut soothing",
+    "Nutritive greens",
+    "Emollient"
+   ],
+   "by": "owner",
+   "why": "Owner: Cough soothing replaced with Demulcent; added Emollient."
+  }
  ]
 }
