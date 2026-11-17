@@ -19,9 +19,10 @@
   },
   "back": {
    "healingTraits": [
-    "Nutritive greens",
-    "Vitamin-rich",
-    "Antioxidant-rich"
+    "Wound aid",
+    "Oral health",
+    "Antimicrob.",
+    "Antibacterial"
    ],
    "compounds": [
     "Okanin",

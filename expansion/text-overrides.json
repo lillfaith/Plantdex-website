@@ -426,5 +426,71 @@
    "by": "owner",
    "why": "Owner: removed Prostate folk use; Urinary folk use -> Urinary aid; added Hair support."
   }
+ ],
+ "137": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound aid",
+    "Oral health",
+    "Antimicrobial",
+    "Antibacterial"
+   ],
+   "by": "owner",
+   "why": "Owner: removed all three traits; replaced with Wound aid, Oral health, Antimicrobial, Antibacterial."
+  }
+ ],
+ "138": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Memory aid",
+    "Focus support",
+    "Cognitive aid",
+    "Calming"
+   ],
+   "by": "owner",
+   "why": "Owner: Memory support -> Memory aid."
+  }
+ ],
+ "139": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Anti-inflam.",
+    "Starchy energy",
+    "Dietary fiber",
+    "Mineral source",
+    "Skin aid"
+   ],
+   "by": "owner",
+   "why": "Owner: Nutritive greens -> Anti-inflam.; added Skin aid."
+  }
+ ],
+ "140": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cough soothing",
+    "Antioxidant",
+    "Respiratory aid"
+   ],
+   "by": "owner",
+   "why": "Owner: removed Aromatic; added Antioxidant; longest trait (Respiratory aid) placed last."
+  }
+ ],
+ "141": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Oral health",
+    "Urinary aid",
+    "Antioxidant-rich",
+    "Vitamin-rich",
+    "Metabolic health"
+   ],
+   "by": "owner",
+   "why": "Owner: Astringent -> Oral health; Urinary folk use -> Urinary aid; added Metabolic health last."
+  }
  ]
 }

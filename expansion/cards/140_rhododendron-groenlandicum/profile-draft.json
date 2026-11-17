@@ -19,9 +19,9 @@
   },
   "back": {
    "healingTraits": [
-    "Respiratory aid",
     "Cough soothing",
-    "Aromatic"
+    "Antioxidant",
+    "Respiratory aid"
    ],
    "compounds": [
     "Sabinene",
