@@ -1,0 +1,282 @@
+{
+  "ceanothus-americanus": {
+    "herbId": "ceanothus-americanus",
+    "src": "/cards/animated/ceanothus-americanus.png",
+    "version": "0d37a60c",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "jaunty",
+    "still": "/cards/animated/still/ceanothus-americanus.png",
+    "stillVersion": "2efc6b9a",
+    "content": {
+      "left": 0.0294,
+      "top": 0.0357,
+      "right": 0.9706,
+      "bottom": 0.9286
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "ceanothus-americanus-sprout",
+        "src": "/cards/animated/ceanothus-americanus-sprout.png",
+        "version": "3691eabb",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "jaunty",
+        "still": "/cards/animated/still/ceanothus-americanus-sprout.png",
+        "stillVersion": "fc0a68df",
+        "content": {
+          "left": 0.1471,
+          "top": 0.4643,
+          "right": 0.9412,
+          "bottom": 1.0
+        }
+      },
+      "growing": {
+        "herbId": "ceanothus-americanus-growing",
+        "src": "/cards/animated/ceanothus-americanus-growing.png",
+        "version": "45fb6a07",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "jaunty",
+        "still": "/cards/animated/still/ceanothus-americanus-growing.png",
+        "stillVersion": "1a577368",
+        "content": {
+          "left": 0.0588,
+          "top": 0.2857,
+          "right": 0.9706,
+          "bottom": 1.0
+        }
+      }
+    }
+  },
+  "eupatorium-perfoliatum": {
+    "herbId": "eupatorium-perfoliatum",
+    "src": "/cards/animated/eupatorium-perfoliatum.png",
+    "version": "66cdf9f6",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "clasping",
+    "still": "/cards/animated/still/eupatorium-perfoliatum.png",
+    "stillVersion": "c69018e9",
+    "content": {
+      "left": 0.0294,
+      "top": 0.0357,
+      "right": 0.9412,
+      "bottom": 0.9286
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "eupatorium-perfoliatum-sprout",
+        "src": "/cards/animated/eupatorium-perfoliatum-sprout.png",
+        "version": "8c28ce02",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "clasping",
+        "still": "/cards/animated/still/eupatorium-perfoliatum-sprout.png",
+        "stillVersion": "90f2e7be",
+        "content": {
+          "left": 0.1471,
+          "top": 0.4643,
+          "right": 0.9412,
+          "bottom": 1.0
+        }
+      },
+      "growing": {
+        "herbId": "eupatorium-perfoliatum-growing",
+        "src": "/cards/animated/eupatorium-perfoliatum-growing.png",
+        "version": "da0a0e0a",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "clasping",
+        "still": "/cards/animated/still/eupatorium-perfoliatum-growing.png",
+        "stillVersion": "5f2b67ad",
+        "content": {
+          "left": 0.0588,
+          "top": 0.2857,
+          "right": 0.9412,
+          "bottom": 1.0
+        }
+      }
+    }
+  },
+  "eutrochium-fistulosum": {
+    "herbId": "eutrochium-fistulosum",
+    "src": "/cards/animated/eutrochium-fistulosum.png",
+    "version": "52473b08",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "echoing",
+    "still": "/cards/animated/still/eutrochium-fistulosum.png",
+    "stillVersion": "54128e80",
+    "content": {
+      "left": 0.0294,
+      "top": 0.0357,
+      "right": 0.9412,
+      "bottom": 0.9286
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "eutrochium-fistulosum-sprout",
+        "src": "/cards/animated/eutrochium-fistulosum-sprout.png",
+        "version": "697644d6",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "echoing",
+        "still": "/cards/animated/still/eutrochium-fistulosum-sprout.png",
+        "stillVersion": "7f6e8ace",
+        "content": {
+          "left": 0.1471,
+          "top": 0.4643,
+          "right": 0.9412,
+          "bottom": 1.0
+        }
+      },
+      "growing": {
+        "herbId": "eutrochium-fistulosum-growing",
+        "src": "/cards/animated/eutrochium-fistulosum-growing.png",
+        "version": "5504ec0a",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "echoing",
+        "still": "/cards/animated/still/eutrochium-fistulosum-growing.png",
+        "stillVersion": "7a5d581b",
+        "content": {
+          "left": 0.0588,
+          "top": 0.2857,
+          "right": 0.9412,
+          "bottom": 1.0
+        }
+      }
+    }
+  },
+  "pycnanthemum-tenuifolium": {
+    "herbId": "pycnanthemum-tenuifolium",
+    "src": "/cards/animated/pycnanthemum-tenuifolium.png",
+    "version": "356e6c65",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 8,
+    "personality": "prickly",
+    "still": "/cards/animated/still/pycnanthemum-tenuifolium.png",
+    "stillVersion": "d74aa5c7",
+    "content": {
+      "left": 0.0294,
+      "top": 0.0357,
+      "right": 0.9706,
+      "bottom": 0.9286
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "pycnanthemum-tenuifolium-sprout",
+        "src": "/cards/animated/pycnanthemum-tenuifolium-sprout.png",
+        "version": "4ae7c71f",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 5,
+        "personality": "prickly",
+        "still": "/cards/animated/still/pycnanthemum-tenuifolium-sprout.png",
+        "stillVersion": "5cfbef04",
+        "content": {
+          "left": 0.1471,
+          "top": 0.4643,
+          "right": 0.9412,
+          "bottom": 1.0
+        }
+      },
+      "growing": {
+        "herbId": "pycnanthemum-tenuifolium-growing",
+        "src": "/cards/animated/pycnanthemum-tenuifolium-growing.png",
+        "version": "7ec3bf5a",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "prickly",
+        "still": "/cards/animated/still/pycnanthemum-tenuifolium-growing.png",
+        "stillVersion": "a20069d7",
+        "content": {
+          "left": 0.0588,
+          "top": 0.2857,
+          "right": 0.9706,
+          "bottom": 1.0
+        }
+      }
+    }
+  },
+  "rudbeckia-hirta": {
+    "herbId": "rudbeckia-hirta",
+    "src": "/cards/animated/rudbeckia-hirta.png",
+    "version": "c2929776",
+    "frameWidth": 170,
+    "frameHeight": 140,
+    "frames": 14,
+    "fps": 7,
+    "personality": "bristly",
+    "still": "/cards/animated/still/rudbeckia-hirta.png",
+    "stillVersion": "a3be2f97",
+    "content": {
+      "left": 0.0882,
+      "top": 0.0357,
+      "right": 0.9118,
+      "bottom": 0.9286
+    },
+    "stages": {
+      "sprout": {
+        "herbId": "rudbeckia-hirta-sprout",
+        "src": "/cards/animated/rudbeckia-hirta-sprout.png",
+        "version": "d74adc67",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 8,
+        "fps": 4,
+        "personality": "bristly",
+        "still": "/cards/animated/still/rudbeckia-hirta-sprout.png",
+        "stillVersion": "fdfe6fb1",
+        "content": {
+          "left": 0.2353,
+          "top": 0.3929,
+          "right": 0.7941,
+          "bottom": 0.9286
+        }
+      },
+      "growing": {
+        "herbId": "rudbeckia-hirta-growing",
+        "src": "/cards/animated/rudbeckia-hirta-growing.png",
+        "version": "2d43e880",
+        "frameWidth": 170,
+        "frameHeight": 140,
+        "frames": 10,
+        "fps": 6,
+        "personality": "bristly",
+        "still": "/cards/animated/still/rudbeckia-hirta-growing.png",
+        "stillVersion": "7364939f",
+        "content": {
+          "left": 0.2647,
+          "top": 0.25,
+          "right": 0.7941,
+          "bottom": 0.9643
+        }
+      }
+    }
+  }
+}
