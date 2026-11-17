@@ -30,6 +30,7 @@ import render_generated_card as R  # noqa: E402
 
 REF_W, REF_H = 390, 630
 K = R.WIDTH / REF_W
+MAIN_OPACITY = 0.95                      # main botanical layer at 95% (the deck's own photo opacity)
 PIXEL_DISPLAY = {57: 96}                 # approved: Boneset's icon displays 96px, the others ~91px
 PIXEL_DISPLAY_DEFAULT = 91
 # Element icons (water / sun / temperature) at the size they are drawn on the SHIPPED cards. The renderer's own
@@ -144,6 +145,7 @@ def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     # coarse fit was on the whole source at reference scale: refine nothing further, place at shipped scale
     w, h = round(src.width * s * K), round(src.height * s * K)
     art = src.resize((w, h), Image.LANCZOS)
+    art.putalpha(art.getchannel("A").point(lambda v: round(v * MAIN_OPACITY)))
     # The approved front is CLIPPED at the bottom of the art window (stem bottom ~row 329): the source runs on
     # below it, so cut at the lowest row the approved front shows the subject on. Nothing else is cropped.
     ys = np.where(target.any(axis=1))[0]
@@ -171,6 +173,48 @@ def place_pixel(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     px, py = round(pcx - icx), round(pcy - icy)
     front.alpha_composite(icon.resize((size, size), Image.NEAREST), (px, py))
     return {"panel_centre": [pcx, pcy], "ink_native": list(ab), "display_ref_px": disp, "placed_px": [px, py, size, size]}
+
+
+def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
+    """Automated checks for every rule learned in review, so a regression fails here instead of in front of the owner."""
+    import cv2
+    a = np.asarray(front.convert("RGB"))
+    hsv = cv2.cvtColor(a, cv2.COLOR_RGB2HSV)
+    H, S_, V = (hsv[..., i].astype(int) for i in range(3))
+    out = {}
+
+    def first_box(mask, y0, y1, x0=62, x1=200, dilate=1):
+        mm = mask[y0:y1, x0:x1].astype(np.uint8)
+        if dilate > 1:
+            mm = cv2.dilate(mm, np.ones((dilate, dilate), np.uint8))
+        n, l, st, _ = cv2.connectedComponentsWithStats(mm)
+        c = sorted([t for t in st[1:] if t[4] > 150], key=lambda t: t[0])
+        return c[0] if c else None
+    shipped = {"water": (33, 49), "sun": (54, 54), "temperature": (21, 33)}
+    masks = {"water": ((H > 85) & (H < 110) & (S_ > 60) & (V > 120), 750, 835, 1),
+             "sun": ((H >= 18) & (H <= 34) & (S_ > 90) & (V > 170), 836, 920, 7),
+             "temperature": ((((H < 10) | (H > 170)) & (S_ > 150) & (V > 120)), 922, 1010, 1)}
+    for k, (m, y0, y1, d) in masks.items():
+        b = first_box(m, y0, y1, dilate=d)
+        want = shipped[k]
+        out[f"icon_{k}_matches_shipped_size"] = bool(b is not None and abs(b[2] - (d - 1) - want[0]) <= 4 and abs(b[3] - (d - 1) - want[1]) <= 4)
+    px = info["pixel"]
+    cx = px["placed_px"][0] + (px["ink_native"][0] + px["ink_native"][2]) / 2 * px["placed_px"][2] / 24
+    cy = px["placed_px"][1] + (px["ink_native"][1] + px["ink_native"][3]) / 2 * px["placed_px"][3] / 24
+    out["pixel_icon_centred_in_panel"] = bool(abs(cx - px["panel_centre"][0]) <= 2 and abs(cy - px["panel_centre"][1]) <= 2)
+    out["main_art_not_stretched"] = bool(abs(info["main"]["source_aspect"] - info["main"]["placed_aspect"]) <= 0.01)
+    # names: ink must stay inside the name bar (x 59..607) and clear the first use disc (x >= 619) with room to spare
+    yellow = (a[..., 0] > 200) & (a[..., 1] > 180) & (a[..., 2] < 170)            # the name / Latin lettering
+    edge = lambda y0, y1, x1: (int(np.where(yellow[y0:y1, 62:x1].any(axis=0))[0].max() + 62) if yellow[y0:y1, 62:x1].any() else None)
+    out["name_right_edge_px"] = edge(75, 135, 607)
+    out["name_inside_bar_with_room"] = bool(out["name_right_edge_px"] is not None and out["name_right_edge_px"] <= 607 - 8)
+    out["latin_right_edge_px"] = edge(712, 760, 612)
+    out["latin_clear_of_use_discs"] = bool(out["latin_right_edge_px"] is not None and out["latin_right_edge_px"] <= 619 - 16)
+    tile = ((a[1000:1080, 660:760, 0] > 230) & (a[1000:1080, 660:760, 1] > 220) & (a[1000:1080, 660:760, 2] < 190))
+    ys, xs = np.where(tile)
+    out["season_tile_single_and_in_place"] = bool(len(xs) and (xs.max() - xs.min() + 1) <= 52 and (ys.max() - ys.min() + 1) <= 53 and 680 <= xs.min() + 660 <= 686)
+    out["all_passed"] = all(v for k, v in out.items() if isinstance(v, bool))
+    return out
 
 
 def main() -> int:
@@ -215,9 +259,14 @@ def main() -> int:
             sb = Image.new("RGB", (ref.width * 2 + 10, ref.height), (245, 245, 250))
             sb.paste(ref, (0, 0)); sb.paste(mine, (ref.width + 10, 0))
             sb.save(d / f"compare_{side}_reference_vs_generated.png")
+        info["qa"] = qa_checks(front, back, info)
         report["cards"][str(n)] = {"common_name": c["commonName"], **info}
-        print(n, c["commonName"], "ok", info["front_parity"], info["back_parity"], f"renderer notes: {len(blocked)}")
+        print(n, c["commonName"], "QA", "PASS" if info["qa"]["all_passed"] else "FAIL " + str([k for k, v in info["qa"].items() if v is False]), "|", info["front_parity"], info["back_parity"], f"renderer notes: {len(blocked)}")
     (out / "render-report.json").write_text(json.dumps(report, indent=1))
+    failed = [n for n, c in report["cards"].items() if not c["qa"]["all_passed"]]
+    if failed:
+        print("QA FAILED for cards:", ", ".join(failed))
+        return 1          # a card that breaks a rule learned in review does not ship
     return 0
 
 
