@@ -29,10 +29,22 @@ sys.path.insert(0, str(HERE))
 import render_generated_card as R  # noqa: E402
 
 REF_W, REF_H = 390, 630
-K = R.WIDTH / REF_W                      # reference space -> shipped 800px space
+K = R.WIDTH / REF_W
 PIXEL_DISPLAY = {57: 96}                 # approved: Boneset's icon displays 96px, the others ~91px
 PIXEL_DISPLAY_DEFAULT = 91
+# Element icons (water / sun / temperature) at the size they are drawn on the SHIPPED cards. The renderer's own
+# STAT_ROWS_INK came out larger (drops 35x54 vs 33x49, suns spilling into each other, thermometers 22x35 vs
+# 21x33), measured by colour-segmenting Dandelion/Pine from public/cards against this renderer's output.
+# (x0, top, width, height) of each icon's full ink; pitch from the shipped rows (66.5-67).
+SHIPPED_STAT_ROWS_INK = {"water": (74, 776, 33, 50), "sun": (61, 853, 60, 55), "temperature": (70, 931, 43, 59)}
+SHIPPED_STAT_PITCH = 66.4
 ART_ROWS = (0, 385)                      # reference rows that hold the art window
+R.STAT_ROWS_INK = SHIPPED_STAT_ROWS_INK
+R.SLOT_PITCH = SHIPPED_STAT_PITCH
+# The season tile. The renderer's SLOT_SEASON (688,1016)-(736,1064) sits 4px right of where the SHIPPED cards draw it
+# (measured on Dandelion/Pine: gold tile at (684,1016)-(732,1064)), so the icon landed beside the template's own tile
+# and read as a second, offset tile on top of the original.
+R.SLOT_SEASON = (682, 1013, 733, 1064)   # covers the shipped tile AND the template tile beneath it
 PIXEL_BOX = (265, 405, 375, 530)         # reference box around the pixel panel
 
 
@@ -45,6 +57,21 @@ def changed_bbox(a: Image.Image, b: Image.Image, box, thresh: int = 24):
     if not len(xs):
         return None
     return (x0 + xs.min(), y0 + ys.min(), x0 + xs.max() + 1, y0 + ys.max() + 1)
+
+
+def clear_template_tile(front: Image.Image) -> Image.Image:
+    """Remove the template's own gold season tile (inpainted from its surroundings) so the season icon is the
+    ONLY tile drawn there, instead of sitting on top of a second, slightly offset one."""
+    import cv2
+    rgb = np.asarray(front.convert("RGB")).copy()
+    y0, y1, x0, x1 = 1005, 1072, 672, 742
+    sub = rgb[y0:y1, x0:x1]
+    m = ((sub[..., 0] > 200) & (sub[..., 1] > 190) & (sub[..., 2] < 200)).astype(np.uint8) * 255
+    m = cv2.dilate(m, np.ones((5, 5), np.uint8))
+    rgb[y0:y1, x0:x1] = cv2.inpaint(sub, m, 4, cv2.INPAINT_TELEA)
+    out = front.copy()
+    out.paste(Image.fromarray(rgb), (0, 0))
+    return out
 
 
 def card_record(c: dict) -> dict:
@@ -126,19 +153,19 @@ def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
 
 
 def place_pixel(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
-    base = Image.open(pkg / "templates" / "front_base_390x630.png")
-    ref = Image.open(pkg / "cards" / str(n) / "front_final.png")
+    """The icon's INK is centred in the pixel panel (both axes), at the approved display size."""
     icon = Image.open(pkg / "cards" / str(n) / "pixel_icon_native_24x24.png").convert("RGBA")
     assert icon.size == (24, 24), icon.size
     ab = icon.getbbox()
-    box = changed_bbox(ref, base, PIXEL_BOX)
     disp = PIXEL_DISPLAY.get(n, PIXEL_DISPLAY_DEFAULT)
-    f = disp / 24
-    # the canvas's top-left, in reference px, so the icon's INK lands where the approved front has it
-    cx, cy = box[0] - f * ab[0], box[1] - f * ab[1]
-    size = round(disp * K)
-    front.alpha_composite(icon.resize((size, size), Image.NEAREST), (round(cx * K), round(cy * K)))
-    return {"ref_ink_box": [int(v) for v in box], "display_ref_px": disp, "placed_px": [round(cx * K), round(cy * K), size, size]}
+    f = disp / 24 * K                                   # shipped px per native px
+    size = round(24 * f)
+    x0, y0, x1, y1 = R.SLOT_PIXEL
+    pcx, pcy = (x0 + x1) / 2, (y0 + y1) / 2
+    icx, icy = (ab[0] + ab[2]) / 2 * f, (ab[1] + ab[3]) / 2 * f
+    px, py = round(pcx - icx), round(pcy - icy)
+    front.alpha_composite(icon.resize((size, size), Image.NEAREST), (px, py))
+    return {"panel_centre": [pcx, pcy], "ink_native": list(ab), "display_ref_px": disp, "placed_px": [px, py, size, size]}
 
 
 def main() -> int:
@@ -160,6 +187,7 @@ def main() -> int:
         def pages(ov=ov):
             f, b = real_pages()
             b = b.copy()
+            f = clear_template_tile(f)
             b.alpha_composite(ov, (0, 0))       # the preview sits UNDER the back text, as on the printed deck
             return f, b
         R.template_pages = pages
