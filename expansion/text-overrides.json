@@ -68,5 +68,14 @@
    "by": "owner",
    "why": "Owner asked to replace 'Cough soothing' with 'Salivary aid'."
   }
+ ],
+ "106": [
+  {
+   "field": "back.healingTraits",
+   "from": "Headache folk use",
+   "to": "Headache aid",
+   "by": "owner",
+   "why": "Owner asked to replace 'Headache folk use' with 'Headache aid'."
+  }
  ]
 }
