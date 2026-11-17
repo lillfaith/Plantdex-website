@@ -1691,6 +1691,28 @@ is the overlay, mounted once in the shell.
   stops easing under `prefers-reduced-motion`, as does the scrolling.
 - **A step may not wait on a selector.** If none matches, the step is shown with no hole.
 
+## Expansion cards (drafts, hidden)
+
+Eighty-five digital cards (#57-141) are imported as TEXT-ONLY DRAFTS from the supplied files in
+`expansion/source/`. Plan and workflow: `docs/expansion-cards.md`.
+
+- **They are not in `CATALOGUE`, and that is the whole hiding mechanism.** Collection, scan matching,
+  Field Research, the knowledge check, the Seed Shelf, the leaderboard and every herb page read
+  `CATALOGUE`/`PRINTED_CARDS`. `src/lib/expansion-cards.ts` imports types only and nothing imports it;
+  `expansion-cards.test.ts` fails if a live module, an edge function or `public/` ever references the
+  data or its artwork, and pins the live counts at 45 printed / 54 catalogue.
+- **`src/data/expansion-cards.json` is generated** by `npm run import:expansion`; never hand-edit it. Text is
+  imported exactly as supplied and matched across files by SCIENTIFIC NAME (card numbers moved once already).
+  The front fields the files do not contain (rarity, XP, season, use icons, stats) are `null`, never guessed.
+- **Records know nothing about images.** Artwork is found by id under `expansion/assets/<id>/`
+  (`main`, `pixel`, `tall`, each independently replaceable, old files kept in `_history/`), outside `public/`
+  so nothing ships. `npm run check:expansion` lists what is missing; `scripts/expansion_assets.py import`
+  matches files by card number or id and validates them (pixel icons must be native 21-24px, transparent,
+  hard-edged). The `tall` size is an UNCONFIRMED placeholder in `expansion/asset-spec.json`.
+- **Promotion is separate and not built.** A card becomes a real `Herb` in `DIGITAL_ONLY_ENTRIES` only after
+  its front fields, all three artwork files and their botanical review exist. A `cardSafetyWarning` in
+  `review` is an editorial note, not `Herb.warning`.
+
 ## Page themes
 
 Each major page can have its own atmosphere through one fixed gradient layer, `PageAtmosphere`
