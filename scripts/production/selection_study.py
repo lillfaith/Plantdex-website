@@ -174,11 +174,12 @@ def main() -> int:
         keys = sorted({k for o, t in paired[role] for k in o if k in t})
         rows = []
         for k in keys:
-            d = [o[k] - t[k] for o, t in paired[role]]
+            pr = [(o[k], t[k]) for o, t in paired[role] if k in o and k in t]
+            d = [x - y for x, y in pr]
             if all(abs(x) < 1e-9 for x in d):
                 continue
-            rows.append({"feature": k, "n": len(d), "mean_owner": round(st.mean(o[k] for o, _ in paired[role]), 3),
-                         "mean_pipeline_top": round(st.mean(t[k] for _, t in paired[role]), 3),
+            rows.append({"feature": k, "n": len(d), "mean_owner": round(st.mean(x for x, _ in pr), 3),
+                         "mean_pipeline_top": round(st.mean(y for _, y in pr), 3),
                          "owner_higher_in": sum(x > 0 for x in d), "owner_lower_in": sum(x < 0 for x in d)})
         rows.sort(key=lambda r: -abs(r["owner_higher_in"] - r["owner_lower_in"]))
         results["aggregate"][role] = {"mean_score_gap_pipeline_minus_owner": round(st.mean(gaps[role]), 2) if gaps[role] else None, "features": rows}
