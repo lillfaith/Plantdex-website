@@ -54,12 +54,25 @@ def _florets(rows):
     return out
 
 
+# Seven pixels carved out of the cloud (made transparent) so it reads as an airy, many-flowered BUSH with gaps in it, not a solid
+# white mass. Fixed positions, away from the face and the outline, so every pose carves the same holes.
+AIRY = [(11, 3), (16, 4), (6, 6), (19, 7), (5, 10), (19, 11), (6, 12)]
+
+
+def _airy(rows):
+    out = [list(r.ljust(HEAD_W)) for r in rows]
+    for x, y in AIRY:
+        if y < len(out) and out[y][x] in "HMDS":
+            out[y][x] = " "
+    return ["".join(r).rstrip() for r in out]
+
+
 def _head(face_dx=0.0, light=(-0.85, -0.65), rx=11.0, ry=8.2):
     # a smaller face patch (it was a big pale circle) inside a more irregular cloud: 11 deeper lobes rather than 17 shallow ones
-    return _florets(flower_head(
+    return _airy(_florets(flower_head(
         HEAD_W, HEAD_H, 12.0, 8.6, rx, ry, 11, 0.15, 4.5, 3.9,
         face_dx=face_dx, face_dy=1.0, light=light, trim_tail=False, chars="HMDSFo",
-    ))
+    )))
 
 
 HEAD = _head()
