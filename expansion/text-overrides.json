@@ -222,6 +222,16 @@
    "to": "Expectorant",
    "by": "owner",
    "why": "Owner: Chest comfort -> Expectorant."
+  },
+  {
+   "field": "back.compounds",
+   "set": [
+    "Sesquiterpenes",
+    "Inulin",
+    "Quercetin"
+   ],
+   "by": "owner",
+   "why": "Owner: Sesquiterpenes moved to the top of Signature Compounds."
   }
  ],
  "124": [
