@@ -281,6 +281,10 @@ def main() -> int:
             check((t / "qa" / "57_testus_plantus").exists() and (t / "qa" / "summary.json").exists(), "reduced QA sheets and a summary are written for review")
     finally:
         F.get, F.time.sleep, SE.time.sleep = real_get, real_sleep, real_sleep2
+    # regression (real CI run): a pixel survivor with NO detected flower head must still get a reason string
+    from production import rank as _R
+    _ev = {"measure": {"largest": {"h_frac": .5}, "flower_blob": None, "green_share": .3, "flower_share": 0}}
+    check(isinstance(_R.reason("pixel", _ev, {}), str), "reason() copes with a pixel candidate that has no detected flower head")
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     return 1 if FAIL else 0
 

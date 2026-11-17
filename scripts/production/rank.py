@@ -80,6 +80,9 @@ def reason(role: str, ev, obs) -> str:
         bits.append("no top/side contact" if not t else f"touches {'/'.join(t)} edge")
     elif role == "pixel":
         fb = m["flower_blob"]
+        if fb is None:
+            bits.append("no flower head detected by the colour model (needs visual review)")
+            return "; ".join(bits)
         bits.append(f"one head {fb['area']:.0%} of frame, not cropped" if not fb["cropped"] else "head touches frame")
         bits.append(f"stands out from surroundings (dE {fb['ring_delta_e']:.0f})")
         pt = ev.get("pixel_test")
