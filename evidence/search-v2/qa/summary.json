@@ -1,0 +1,311 @@
+{
+ "built": "2026-11-17T02:00:33+00:00",
+ "species": [
+  {
+   "card": 57,
+   "common": "Boneset",
+   "scientific": "Eupatorium perfoliatum",
+   "flower_kind": "white",
+   "needed_roles": [
+    "pixel",
+    "tall"
+   ],
+   "retained": {
+    "main": 23655843
+   },
+   "notes": [
+    "RETAINED main photo 23655843: provenance not found in any previous manifest; original not fetched, licence UNVERIFIED"
+   ],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": false,
+     "screened": 150,
+     "hard_rejected": 51,
+     "reject_reasons": {
+      "main_clipped": 20,
+      "no_subject": 18,
+      "subject_too_small": 14
+     },
+     "survivors": 99,
+     "shortlisted": 0
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 20,
+     "reject_reasons": {
+      "no_subject": 18,
+      "pixel_head_cropped": 2
+     },
+     "survivors": 96,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 38,
+     "reject_reasons": {
+      "no_subject": 18,
+      "tall_wide_mass": 15,
+      "tall_clipped_top": 11
+     },
+     "survivors": 112,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 119045,
+    "name": "Eupatorium perfoliatum"
+   },
+   "pool": 150,
+   "n_candidates": 17
+  },
+  {
+   "card": 58,
+   "common": "Hollow Joe-Pye Weed",
+   "scientific": "Eutrochium fistulosum",
+   "flower_kind": "pink_purple",
+   "needed_roles": [
+    "pixel"
+   ],
+   "retained": {
+    "main": 303843461,
+    "tall": 595827511
+   },
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": false,
+     "screened": 150,
+     "hard_rejected": 51,
+     "reject_reasons": {
+      "no_subject": 20,
+      "main_clipped": 16,
+      "subject_too_small": 14,
+      "hands": 1
+     },
+     "survivors": 99,
+     "shortlisted": 0
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 21,
+     "reject_reasons": {
+      "no_subject": 20,
+      "hands": 1
+     },
+     "survivors": 22,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": false,
+     "screened": 150,
+     "hard_rejected": 43,
+     "reject_reasons": {
+      "no_subject": 20,
+      "tall_wide_mass": 15,
+      "tall_clipped_top": 11,
+      "hands": 1
+     },
+     "survivors": 107,
+     "shortlisted": 0
+    }
+   },
+   "taxon": {
+    "id": 132717,
+    "name": "Eutrochium fistulosum"
+   },
+   "pool": 150,
+   "n_candidates": 14
+  },
+  {
+   "card": 59,
+   "common": "New Jersey Tea",
+   "scientific": "Ceanothus americanus",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "tall"
+   ],
+   "retained": {
+    "pixel": 282599815
+   },
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 71,
+     "reject_reasons": {
+      "no_subject": 36,
+      "subject_too_small": 26,
+      "hands": 6,
+      "main_clipped": 4
+     },
+     "survivors": 79,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": false,
+     "screened": 150,
+     "hard_rejected": 44,
+     "reject_reasons": {
+      "no_subject": 36,
+      "hands": 6,
+      "pixel_head_cropped": 2
+     },
+     "survivors": 61,
+     "shortlisted": 0
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 50,
+     "reject_reasons": {
+      "no_subject": 36,
+      "tall_clipped_top": 8,
+      "hands": 6,
+      "tall_wide_mass": 1
+     },
+     "survivors": 100,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 129315,
+    "name": "Ceanothus americanus"
+   },
+   "pool": 150,
+   "n_candidates": 18
+  },
+  {
+   "card": 60,
+   "common": "Black-Eyed Susan",
+   "scientific": "Rudbeckia hirta",
+   "flower_kind": "yellow",
+   "needed_roles": [
+    "main",
+    "tall"
+   ],
+   "retained": {
+    "pixel": 135566,
+    "tall": 705452061
+   },
+   "notes": [
+    "RETAINED tall photo 705452061: provenance not found in any previous manifest; original not fetched, licence UNVERIFIED"
+   ],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 67,
+     "reject_reasons": {
+      "no_subject": 32,
+      "subject_too_small": 29,
+      "main_clipped": 4,
+      "hands": 3
+     },
+     "survivors": 83,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": false,
+     "screened": 150,
+     "hard_rejected": 37,
+     "reject_reasons": {
+      "no_subject": 32,
+      "hands": 3,
+      "pixel_head_cropped": 2
+     },
+     "survivors": 108,
+     "shortlisted": 0
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 40,
+     "reject_reasons": {
+      "no_subject": 32,
+      "tall_clipped_top": 3,
+      "tall_wide_mass": 3,
+      "hands": 3
+     },
+     "survivors": 110,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 62741,
+    "name": "Rudbeckia hirta"
+   },
+   "pool": 150,
+   "n_candidates": 18
+  },
+  {
+   "card": 61,
+   "common": "Narrowleaf Mountain Mint",
+   "scientific": "Pycnanthemum tenuifolium",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 78,
+     "reject_reasons": {
+      "no_subject": 44,
+      "subject_too_small": 26,
+      "hands": 4,
+      "main_clipped": 4
+     },
+     "survivors": 71,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 50,
+     "reject_reasons": {
+      "no_subject": 44,
+      "hands": 4,
+      "pixel_head_cropped": 2
+     },
+     "survivors": 76,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 51,
+     "reject_reasons": {
+      "no_subject": 44,
+      "hands": 4,
+      "tall_wide_mass": 2,
+      "tall_clipped_top": 1
+     },
+     "survivors": 99,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 126891,
+    "name": "Pycnanthemum tenuifolium"
+   },
+   "pool": 150,
+   "n_candidates": 23
+  }
+ ],
+ "zip_bytes": 155975255
+}
