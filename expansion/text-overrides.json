@@ -278,6 +278,18 @@
    ],
    "by": "owner",
    "why": "Owner: Cough soothing replaced with Demulcent; added Emollient."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Throat coating",
+    "Demulcent",
+    "Gut soothing",
+    "Emollient",
+    "Nutritive greens"
+   ],
+   "by": "owner",
+   "why": "Owner: swapped Nutritive greens and Emollient so Nutritive greens sits alone, centred, at a larger size."
   }
  ]
 }

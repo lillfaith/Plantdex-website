@@ -613,9 +613,14 @@ def render_back(card: dict, blocked: list | None = None) -> Image.Image:
                 # entry that does not fit is scaled down and REPORTED, and the shortening
                 # stays a human call. Without this the two columns simply drew over each
                 # other, which is what 'Digestiv|Antimicrobial' was.
-                if two_column and layer.width > BACK_COLUMN:
-                    k = BACK_COLUMN / layer.width
-                    layer = layer.resize((BACK_COLUMN, max(1, round(layer.height * k))),
+                # A lone centred trait has the WHOLE row to itself, so it is limited by the panel, not by one column (owner: a long
+                # entry such as 'Nutritive greens' should be allowed its full size when it sits alone).
+                odd_last = (key == "healingTraits" and not right and len(items) % 2 == 1 and i == len(column) - 1
+                            and (len(items) in (3, 5) or card.get("centre_odd_healing")))   # owner rule: a lone 3rd or 5th trait is centred
+                limit = int(BACK_RIGHT - BACK_LEFT - 40) if odd_last else BACK_COLUMN
+                if two_column and layer.width > limit:
+                    k = limit / layer.width
+                    layer = layer.resize((limit, max(1, round(layer.height * k))),
                                          Image.LANCZOS)
                     by *= k
                     if blocked is not None:
@@ -624,8 +629,6 @@ def render_back(card: dict, blocked: list | None = None) -> Image.Image:
                                         "scaled_to": round(k, 3),
                                         "deck_convention": "the printed cards abbreviate"})
                 left = BACK_RIGHT - layer.width if right else BACK_LEFT
-                odd_last = (key == "healingTraits" and not right and len(items) % 2 == 1 and i == len(column) - 1
-                            and (len(items) in (3, 5) or card.get("centre_odd_healing")))   # owner rule: a lone 3rd or 5th trait is centred
                 if odd_last:
                     # THREE TRAITS: the odd one out sits on its own row, so it is CENTRED across the panel rather than
                     # left-aligned under the first (owner's rule). Two- and four-trait panels are unchanged.
