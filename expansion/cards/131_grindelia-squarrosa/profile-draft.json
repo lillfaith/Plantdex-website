@@ -19,7 +19,7 @@
   },
   "back": {
    "healingTraits": [
-    "Cough soothing",
+    "Cough aid",
     "Chest relief",
     "Poison ivy care",
     "Skin soothing"
@@ -46,7 +46,8 @@
    ],
    "usableParts": [
     "Flower",
-    "Leaf"
+    "Leaf",
+    "Sap"
    ]
   },
   "sources": [

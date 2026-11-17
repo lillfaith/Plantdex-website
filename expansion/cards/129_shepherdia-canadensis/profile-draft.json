@@ -21,7 +21,9 @@
    "healingTraits": [
     "Vitamin-rich",
     "Antioxidant-rich",
-    "Nutritive berry"
+    "Nutritive berry",
+    "Cathartic",
+    "Blood pressure aid"
    ],
    "compounds": [
     "Saponins",
@@ -44,7 +46,10 @@
     "Sauce"
    ],
    "usableParts": [
-    "Berry"
+    "Berry",
+    "Stem",
+    "Leaf",
+    "Bark"
    ]
   },
   "sources": [

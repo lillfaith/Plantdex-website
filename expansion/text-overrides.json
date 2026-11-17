@@ -296,5 +296,52 @@
    "by": "owner",
    "why": "Owner: swapped Nutritive greens and Emollient so Nutritive greens sits alone, centred, at a larger size."
   }
+ ],
+ "129": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Cathartic",
+    "Blood pressure aid"
+   ],
+   "by": "owner",
+   "why": "Owner: added Cathartic and Blood pressure aid."
+  },
+  {
+   "field": "back.usableParts",
+   "append": [
+    "Stem",
+    "Leaf",
+    "Bark"
+   ],
+   "by": "owner",
+   "why": "Owner: added Stem, Leaf and Bark to Usable Parts."
+  }
+ ],
+ "130": [
+  {
+   "field": "back.healingTraits",
+   "from": "Stomach soothing",
+   "to": "Oral health",
+   "by": "owner",
+   "why": "Owner: Stomach soothing -> Oral health."
+  }
+ ],
+ "131": [
+  {
+   "field": "back.healingTraits",
+   "from": "Cough soothing",
+   "to": "Cough aid",
+   "by": "owner",
+   "why": "Owner: Cough soothing -> Cough aid."
+  },
+  {
+   "field": "back.usableParts",
+   "append": [
+    "Sap"
+   ],
+   "by": "owner",
+   "why": "Owner: added Sap to Usable Parts."
+  }
  ]
 }
