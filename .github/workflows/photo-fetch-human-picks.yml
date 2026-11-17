@@ -1,0 +1,30 @@
+name: Photo fetch (owner picks, exact photographs)
+
+# PRIVATE DEVELOPMENT TOOL. Matches the owner's pictures to the exact iNaturalist photographs (named by browsing history),
+# verifies licence and taxon per photo, and packages unedited originals with a manifest. Edits nothing, deploys nothing.
+# STARTED BY PUSHING evidence/photo-fetch/human-picks-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/photo-fetch/human-picks-request.json
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet numpy opencv-python-headless pillow
+      - name: Match, verify, download
+        run: python3 scripts/production/fetch_human_picks.py --request evidence/photo-fetch/human-picks-request.json --picks evidence/selection-study/picks --out export
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plantdex-owner-picks-originals-62-66
+          path: export
+          compression-level: 0
+          retention-days: 30

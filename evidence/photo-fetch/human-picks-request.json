@@ -1,0 +1,11 @@
+{
+ "batch": "62-66-human-picks",
+ "note": "Observations from the owner's browsing history while choosing; the owner's 19 pictures are matched to photographs on these observations.",
+ "cards": [
+  {"card": 62, "scientific": "Eriogonum fasciculatum", "slug": "buckwheat", "observations": [3217076, 45735237, 163034672]},
+  {"card": 63, "scientific": "Parthenium integrifolium", "slug": "wildquinine", "observations": [90608931, 362228567, 135944027, 87006, 303560859]},
+  {"card": 64, "scientific": "Pseudognaphalium obtusifolium", "slug": "sweeteverlasting", "observations": [397085607, 405928651, 56464390, 236077232, 91799030]},
+  {"card": 65, "scientific": "Nelumbo lutea", "slug": "americanlotus", "observations": [14396705, 181762985, 16418243]},
+  {"card": 66, "scientific": "Erigeron annuus", "slug": "annualfleabane", "observations": [241644451, 370030845, 33943486]}
+ ]
+}
