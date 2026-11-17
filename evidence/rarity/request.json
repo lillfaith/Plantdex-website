@@ -1,0 +1,600 @@
+{
+ "note": "printed deck = calibration; expansion #57-91 = under review",
+ "cards": [
+  {
+   "card": 1,
+   "common": "Dandelion",
+   "scientific": "Taraxacum officinale",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 2,
+   "common": "Broadleaf Dock",
+   "scientific": "Rumex obtusifolius",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 3,
+   "common": "Goldenrod",
+   "scientific": "Solidago canadensis",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 4,
+   "common": "Ragweed",
+   "scientific": "Ambrosia artemisiifolia",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 5,
+   "common": "Lamb's Quarters",
+   "scientific": "Chenopodium album",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 6,
+   "common": "Purslane",
+   "scientific": "Portulaca oleracea",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 7,
+   "common": "Garlic Mustard",
+   "scientific": "Alliaria petiolata",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 8,
+   "common": "Stinging Nettle",
+   "scientific": "Urtica dioica",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 9,
+   "common": "Wood Sorrel",
+   "scientific": "Oxalis stricta",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 10,
+   "common": "Red Clover",
+   "scientific": "Trifolium pratense",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 11,
+   "common": "Purple Dead Nettle",
+   "scientific": "Lamium purpureum",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 12,
+   "common": "Wild Violet",
+   "scientific": "Viola sororia",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 13,
+   "common": "Chickweed",
+   "scientific": "Stellaria media",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 14,
+   "common": "Broad Leaf Plantain",
+   "scientific": "Plantago major",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 15,
+   "common": "Cleavers",
+   "scientific": "Galium aparine",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 16,
+   "common": "Ground Ivy",
+   "scientific": "Glechoma hederacea",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 17,
+   "common": "Maple",
+   "scientific": "Acer spp.",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 18,
+   "common": "Blackberry",
+   "scientific": "Rubus spp.",
+   "tier": "Common",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 19,
+   "common": "Sheep's Sorrel",
+   "scientific": "Rumex acetosella",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 20,
+   "common": "Sumac",
+   "scientific": "Rhus spp.",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 21,
+   "common": "Chicory",
+   "scientific": "Cichorium intybus",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 22,
+   "common": "Burdock",
+   "scientific": "Arctium lappa",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 23,
+   "common": "Wild Mint",
+   "scientific": "Mentha canadensis",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 24,
+   "common": "Catnip",
+   "scientific": "Nepeta cataria",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 25,
+   "common": "Shepherd's Purse",
+   "scientific": "Capsella bursa-pastoris",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 26,
+   "common": "Self-Heal",
+   "scientific": "Prunella vulgaris",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 27,
+   "common": "Mullein",
+   "scientific": "Verbascum thapsus",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 28,
+   "common": "Horsetail",
+   "scientific": "Equisetum arvense",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 29,
+   "common": "Field Garlic",
+   "scientific": "Allium vineale",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 30,
+   "common": "Wild Strawberry",
+   "scientific": "Fragaria virginiana",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 31,
+   "common": "Elderberry",
+   "scientific": "Sambucus spp.",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 32,
+   "common": "St. John's Wort",
+   "scientific": "Hypericum perforatum",
+   "tier": "Uncommon",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 33,
+   "common": "Yarrow",
+   "scientific": "Achillea millefolium",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 34,
+   "common": "Jewelweed",
+   "scientific": "Impatiens capensis",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 35,
+   "common": "Lemon Balm",
+   "scientific": "Melissa officinalis",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 36,
+   "common": "Bee Balm",
+   "scientific": "Monarda fistulosa",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 37,
+   "common": "Wild Rose",
+   "scientific": "Rosa spp.",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 38,
+   "common": "Willow",
+   "scientific": "Salix spp.",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 39,
+   "common": "Wild Geranium",
+   "scientific": "Geranium maculatum",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 40,
+   "common": "Honeysuckle",
+   "scientific": "Lonicera japonica",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 41,
+   "common": "Pine",
+   "scientific": "Pinus spp.",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 42,
+   "common": "Mulberry",
+   "scientific": "Morus spp.",
+   "tier": "Rare",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 43,
+   "common": "Passion Flower",
+   "scientific": "Passiflora incarnata",
+   "tier": "Epic",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 44,
+   "common": "Prickly Lettuce",
+   "scientific": "Lactuca serriola",
+   "tier": "Epic",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 45,
+   "common": "Oak",
+   "scientific": "Quercus spp.",
+   "tier": "Epic",
+   "set": "printed deck (calibration)"
+  },
+  {
+   "card": 57,
+   "common": "Boneset",
+   "scientific": "Eupatorium perfoliatum",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Broad eastern and central U.S. distribution; occurs in moist habitats"
+  },
+  {
+   "card": 58,
+   "common": "Hollow Joe-Pye Weed",
+   "scientific": "Eutrochium fistulosum",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Widespread and often conspicuous in wet eastern habitats"
+  },
+  {
+   "card": 59,
+   "common": "New Jersey Tea",
+   "scientific": "Ceanothus americanus",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Broad eastern and central distribution in dry open habitat"
+  },
+  {
+   "card": 60,
+   "common": "Black-Eyed Susan",
+   "scientific": "Rudbeckia hirta",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Jun\u2013Aug"
+  },
+  {
+   "card": 61,
+   "common": "Narrowleaf Mountain Mint",
+   "scientific": "Pycnanthemum tenuifolium",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Widespread eastern U.S.; roadsides, open woods and prairies"
+  },
+  {
+   "card": 62,
+   "common": "California Buckwheat",
+   "scientific": "Eriogonum fasciculatum",
+   "tier": "Uncommon",
+   "set": "expansion",
+   "rationale": "Jun\u2013Aug"
+  },
+  {
+   "card": 63,
+   "common": "Wild Quinine",
+   "scientific": "Parthenium integrifolium",
+   "tier": "Uncommon",
+   "set": "expansion",
+   "rationale": "Jun\u2013Aug"
+  },
+  {
+   "card": 64,
+   "common": "Sweet Everlasting",
+   "scientific": "Pseudognaphalium obtusifolium",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Aug\u2013Oct"
+  },
+  {
+   "card": 65,
+   "common": "American Lotus",
+   "scientific": "Nelumbo lutea",
+   "tier": "Uncommon",
+   "set": "expansion",
+   "rationale": "Jul\u2013Sep"
+  },
+  {
+   "card": 66,
+   "common": "Annual Fleabane",
+   "scientific": "Erigeron annuus",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Jun\u2013Sep"
+  },
+  {
+   "card": 67,
+   "common": "Curly Dock",
+   "scientific": "Rumex crispus",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Jun\u2013Aug"
+  },
+  {
+   "card": 68,
+   "common": "Narrowleaf Plantain",
+   "scientific": "Plantago lanceolata",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Apr\u2013Jun"
+  },
+  {
+   "card": 69,
+   "common": "Common Mugwort",
+   "scientific": "Artemisia vulgaris",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Jul\u2013Sep"
+  },
+  {
+   "card": 70,
+   "common": "Motherwort",
+   "scientific": "Leonurus cardiaca",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Widely naturalized in disturbed habitats in temperate U.S."
+  },
+  {
+   "card": 71,
+   "common": "New York Ironweed",
+   "scientific": "Vernonia noveboracensis",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Frequent within eastern U.S. meadows and moist open ground"
+  },
+  {
+   "card": 72,
+   "common": "Anise Hyssop",
+   "scientific": "Agastache foeniculum",
+   "tier": "Uncommon",
+   "set": "expansion",
+   "rationale": "Jul\u2013Sep"
+  },
+  {
+   "card": 73,
+   "common": "Virginia Spring Beauty",
+   "scientific": "Claytonia virginica",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Mar\u2013May"
+  },
+  {
+   "card": 74,
+   "common": "Smooth Solomon's Seal",
+   "scientific": "Polygonatum biflorum",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Broadly distributed in eastern temperate woodland"
+  },
+  {
+   "card": 75,
+   "common": "Partridgeberry",
+   "scientific": "Mitchella repens",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Widespread eastern U.S. forest understory"
+  },
+  {
+   "card": 76,
+   "common": "American Groundnut",
+   "scientific": "Apios americana",
+   "tier": "Uncommon",
+   "set": "expansion",
+   "rationale": "Sep\u2013Oct"
+  },
+  {
+   "card": 77,
+   "common": "Wild Yam",
+   "scientific": "Dioscorea villosa",
+   "tier": "Uncommon",
+   "set": "expansion",
+   "rationale": "Jun\u2013Aug"
+  },
+  {
+   "card": 78,
+   "common": "Virginia Pepperweed",
+   "scientific": "Lepidium virginicum",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Apr\u2013Jun"
+  },
+  {
+   "card": 79,
+   "common": "Common Cinquefoil",
+   "scientific": "Potentilla simplex",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "May\u2013Jun"
+  },
+  {
+   "card": 80,
+   "common": "White Clover",
+   "scientific": "Trifolium repens",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Apr\u2013Jun"
+  },
+  {
+   "card": 81,
+   "common": "Queen Anne's Lace",
+   "scientific": "Daucus carota",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Jun\u2013Aug"
+  },
+  {
+   "card": 82,
+   "common": "American Skullcap",
+   "scientific": "Scutellaria lateriflora",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Broad northern/eastern wetland and moist woodland range"
+  },
+  {
+   "card": 83,
+   "common": "Mountain Monardella",
+   "scientific": "Monardella odoratissima",
+   "tier": "Epic",
+   "set": "expansion",
+   "rationale": "Rare \u2192 Epic: Restricted western montane habitat; specialist encounter."
+  },
+  {
+   "card": 84,
+   "common": "Slippery Elm",
+   "scientific": "Ulmus rubra",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Broad eastern/central U.S. range; lower encounter certainty than some trees"
+  },
+  {
+   "card": 85,
+   "common": "Black Cherry",
+   "scientific": "Prunus serotina",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Jul\u2013Aug"
+  },
+  {
+   "card": 86,
+   "common": "Black Walnut",
+   "scientific": "Juglans nigra",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Sep\u2013Oct"
+  },
+  {
+   "card": 87,
+   "common": "Eastern Red Cedar",
+   "scientific": "Juniperus virginiana",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Sep\u2013Nov"
+  },
+  {
+   "card": 88,
+   "common": "Pawpaw",
+   "scientific": "Asimina triloba",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Widespread eastern U.S. in riparian woods; locally forms patches"
+  },
+  {
+   "card": 89,
+   "common": "American Persimmon",
+   "scientific": "Diospyros virginiana",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Sep\u2013Nov"
+  },
+  {
+   "card": 90,
+   "common": "Flowering Dogwood",
+   "scientific": "Cornus florida",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Apr\u2013May"
+  },
+  {
+   "card": 91,
+   "common": "Eastern Redbud",
+   "scientific": "Cercis canadensis",
+   "tier": "Common",
+   "set": "expansion",
+   "rationale": "Mar\u2013May"
+  }
+ ]
+}
