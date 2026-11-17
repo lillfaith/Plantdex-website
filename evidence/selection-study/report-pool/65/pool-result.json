@@ -1,0 +1,8267 @@
+{
+ "card": 65,
+ "scientific": "Nelumbo lutea",
+ "pool": 261,
+ "survivors": {
+  "main": 110,
+  "pixel": 98,
+  "tall": 120
+ },
+ "rejections": {
+  "main": {
+   "no_subject": 86,
+   "subject_too_small": 55,
+   "main_clipped": 10,
+   "dense_patch": 1,
+   "hands": 1
+  },
+  "pixel": {
+   "no_subject": 86,
+   "pixel_head_cropped": 4,
+   "dense_patch": 1,
+   "hands": 1
+  },
+  "tall": {
+   "no_subject": 86,
+   "tall_wide_mass": 4,
+   "tall_clipped_top": 3,
+   "dense_patch": 1,
+   "hands": 1
+  }
+ },
+ "human": [
+  {
+   "file": "americanlotusmaininspo.jpeg",
+   "role": "main",
+   "match_inliers": 2500,
+   "photo_id": 316785117,
+   "in_pool": true,
+   "own_picture": {
+    "scores": {
+     "main": {
+      "score": 80.9,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+       "little_foliage: few leaves in the subject"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 0.883,
+       "isolability": 0.763,
+       "role": 0.563,
+       "perspective": 0.5,
+       "aesthetic": 0.521,
+       "quality": 1.0
+      }
+     },
+     "pixel": {
+      "score": 82.0,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 0.85,
+       "isolability": 0.763,
+       "role": 0.689,
+       "perspective": 0.5,
+       "aesthetic": 0.521,
+       "quality": 1.0
+      }
+     },
+     "tall": {
+      "score": 72.6,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+       "not_vertical: the subject is 0.98:1 (height:width)",
+       "few_leaves_visible"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 0.819,
+       "isolability": 0.763,
+       "role": 0.708,
+       "perspective": 0.5,
+       "aesthetic": 0.521,
+       "quality": 1.0,
+       "plain_background": 0.509
+      }
+     }
+    },
+    "hands": {
+     "checked": true,
+     "frac": 0.001,
+     "smooth": 25.7,
+     "obstructs": false,
+     "reject": false
+    },
+    "measure": {
+     "coverage": 0.0411,
+     "n_components": 1,
+     "lap_var": 619.1,
+     "largest": {
+      "area": 0.0411,
+      "h_frac": 0.383,
+      "w_frac": 0.22,
+      "aspect_h_over_w": 0.98,
+      "solidity": 0.711,
+      "touch": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false
+      },
+      "n_touch": 0,
+      "coherence": 1.0
+     },
+     "significant_components": 1,
+     "stalk_like_components": 1,
+     "green_share": 0.018,
+     "flower_share": 0.253,
+     "bg_green_share": 0.632,
+     "bg_busy": 0.491,
+     "bg_spread": 0.61,
+     "exposure_v": 0.832,
+     "colourfulness": 0.371,
+     "boundary_delta_e": 77.7,
+     "flower_blob": {
+      "area": 0.01,
+      "h_frac": 0.224,
+      "solidity": 0.56,
+      "touch": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false
+      },
+      "edge_pixels": 0,
+      "cropped": false,
+      "n_significant": 1,
+      "ring_delta_e": 37.2,
+      "ring_green_share": 0.213,
+      "box": [
+       350,
+       233,
+       106,
+       97
+      ]
+     }
+    },
+    "pixel_test": {
+     "opaque_fraction": 0.207,
+     "components": 1,
+     "colours": 5,
+     "bbox_fill": 0.348,
+     "legibility": 0.35
+    }
+   },
+   "pool_record": {
+    "score_by_role": {
+     "main": 74.3,
+     "pixel": 75.4,
+     "tall": 69.4
+    },
+    "rejected_by_role": {
+     "main": [],
+     "pixel": [],
+     "tall": []
+    },
+    "rank_by_role": {
+     "main": 46,
+     "pixel": 57,
+     "tall": 46
+    }
+   },
+   "own_score_for_role": 80.9,
+   "own_rejected_for_role": [],
+   "own_rank_if_inserted": 24,
+   "of": 110
+  },
+  {
+   "file": "americanlotuspixeinspo.jpg",
+   "role": "pixel",
+   "match_inliers": 17,
+   "photo_id": null,
+   "in_pool": false,
+   "own_picture": {
+    "scores": {
+     "main": {
+      "score": 89.2,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 1.0,
+       "isolability": 0.653,
+       "role": 0.978,
+       "perspective": 0.5,
+       "aesthetic": 0.908,
+       "quality": 0.881
+      }
+     },
+     "pixel": {
+      "score": 87.9,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+       "buried_in_foliage: the head is surrounded by green"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 1.0,
+       "isolability": 0.653,
+       "role": 0.893,
+       "perspective": 0.5,
+       "aesthetic": 0.908,
+       "quality": 0.881
+      }
+     },
+     "tall": {
+      "score": 78.4,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+       "not_vertical: the subject is 0.89:1 (height:width)"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 1.0,
+       "isolability": 0.653,
+       "role": 0.834,
+       "perspective": 0.5,
+       "aesthetic": 0.908,
+       "quality": 0.881,
+       "plain_background": 0.534
+      }
+     }
+    },
+    "hands": {
+     "checked": true,
+     "frac": 0.009,
+     "smooth": 13.1,
+     "obstructs": false,
+     "reject": false
+    },
+    "measure": {
+     "coverage": 0.3244,
+     "n_components": 1,
+     "lap_var": 228.6,
+     "largest": {
+      "area": 0.3244,
+      "h_frac": 0.825,
+      "w_frac": 0.865,
+      "aspect_h_over_w": 0.89,
+      "solidity": 0.748,
+      "touch": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false
+      },
+      "n_touch": 0,
+      "coherence": 1.0
+     },
+     "significant_components": 1,
+     "stalk_like_components": 1,
+     "green_share": 0.228,
+     "flower_share": 0.615,
+     "bg_green_share": 0.768,
+     "bg_busy": 0.135,
+     "bg_spread": 0.665,
+     "exposure_v": 0.619,
+     "colourfulness": 0.586,
+     "boundary_delta_e": 29.8,
+     "flower_blob": {
+      "area": 0.1952,
+      "h_frac": 0.547,
+      "solidity": 0.868,
+      "touch": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false
+      },
+      "edge_pixels": 0,
+      "cropped": false,
+      "n_significant": 1,
+      "ring_delta_e": 24.3,
+      "ring_green_share": 0.613,
+      "box": [
+       286,
+       60,
+       409,
+       390
+      ]
+     }
+    },
+    "pixel_test": {
+     "opaque_fraction": 0.453,
+     "components": 1,
+     "colours": 6,
+     "bbox_fill": 0.725,
+     "legibility": 1.0
+    }
+   },
+   "own_score_for_role": 87.9,
+   "own_rejected_for_role": [],
+   "own_rank_if_inserted": 1,
+   "of": 98
+  },
+  {
+   "file": "americanlotuspreviewinspo.jpg",
+   "role": "tall",
+   "match_inliers": 2475,
+   "photo_id": 21411326,
+   "in_pool": true,
+   "own_picture": {
+    "scores": {
+     "main": {
+      "score": 91.4,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 1.0,
+       "isolability": 0.8,
+       "role": 0.984,
+       "perspective": 0.5,
+       "aesthetic": 0.619,
+       "quality": 1.0
+      }
+     },
+     "pixel": {
+      "score": 58.1,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+       "flower_not_detected: no flower-coloured head found in the subject (colour model may not fit this photo)"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 0.2,
+       "isolability": 0.8,
+       "role": 0.1,
+       "perspective": 0.5,
+       "aesthetic": 0.619,
+       "quality": 1.0
+      }
+     },
+     "tall": {
+      "score": 82.4,
+      "rejected": false,
+      "hard": [],
+      "flags": [
+       "perspective_unverified: viewing angle and lens distortion cannot be measured automatically"
+      ],
+      "parts": {
+       "recognizability": 1.0,
+       "completeness": 0.969,
+       "isolability": 0.8,
+       "role": 0.903,
+       "perspective": 0.5,
+       "aesthetic": 0.619,
+       "quality": 1.0,
+       "plain_background": 0.574
+      }
+     }
+    },
+    "hands": {
+     "checked": true,
+     "frac": 0.001,
+     "smooth": 11.1,
+     "obstructs": false,
+     "reject": false
+    },
+    "measure": {
+     "coverage": 0.0184,
+     "n_components": 1,
+     "lap_var": 353.6,
+     "largest": {
+      "area": 0.0184,
+      "h_frac": 0.645,
+      "w_frac": 0.167,
+      "aspect_h_over_w": 2.58,
+      "solidity": 0.329,
+      "touch": {
+       "top": false,
+       "bottom": false,
+       "left": false,
+       "right": false
+      },
+      "n_touch": 0,
+      "coherence": 1.0
+     },
+     "significant_components": 1,
+     "stalk_like_components": 1,
+     "green_share": 0.409,
+     "flower_share": 0.076,
+     "bg_green_share": 0.533,
+     "bg_busy": 0.219,
+     "bg_spread": 0.609,
+     "exposure_v": 0.717,
+     "colourfulness": 0.302,
+     "boundary_delta_e": 35.4,
+     "flower_blob": null
+    },
+    "pixel_test": null
+   },
+   "pool_record": {
+    "score_by_role": {
+     "main": 88.2,
+     "pixel": 55.0,
+     "tall": 80.8
+    },
+    "rejected_by_role": {
+     "main": [],
+     "pixel": [],
+     "tall": []
+    },
+    "rank_by_role": {
+     "main": 1,
+     "pixel": 91,
+     "tall": 7
+    }
+   },
+   "own_score_for_role": 82.4,
+   "own_rejected_for_role": [],
+   "own_rank_if_inserted": 3,
+   "of": 120
+  }
+ ],
+ "chatgpt_table": {
+  "main": {
+   "photo_id": 18367241,
+   "in_pool": true,
+   "score": 85.0,
+   "rejected": false,
+   "hard": [],
+   "rank": 7,
+   "of": 110
+  },
+  "pixel": {
+   "photo_id": 24700331,
+   "in_pool": true,
+   "score": 82.2,
+   "rejected": false,
+   "hard": [],
+   "rank": 11,
+   "of": 98
+  },
+  "tall": {
+   "photo_id": 728239756,
+   "in_pool": true,
+   "score": 72.9,
+   "rejected": false,
+   "hard": [],
+   "rank": 31,
+   "of": 120
+  }
+ },
+ "pipeline_top5": {
+  "main": [
+   {
+    "photo_id": 21411326,
+    "score": 88.2
+   },
+   {
+    "photo_id": 717259063,
+    "score": 88.2
+   },
+   {
+    "photo_id": 431603960,
+    "score": 88.0
+   },
+   {
+    "photo_id": 758542113,
+    "score": 87.9
+   },
+   {
+    "photo_id": 288708507,
+    "score": 87.2
+   }
+  ],
+  "pixel": [
+   {
+    "photo_id": 431603996,
+    "score": 87.8
+   },
+   {
+    "photo_id": 688149760,
+    "score": 87.4
+   },
+   {
+    "photo_id": 145468116,
+    "score": 86.3
+   },
+   {
+    "photo_id": 538073486,
+    "score": 86.2
+   },
+   {
+    "photo_id": 416343953,
+    "score": 86.0
+   }
+  ],
+  "tall": [
+   {
+    "photo_id": 18367241,
+    "score": 84.6
+   },
+   {
+    "photo_id": 431603960,
+    "score": 84.5
+   },
+   {
+    "photo_id": 134463284,
+    "score": 82.2
+   },
+   {
+    "photo_id": 410030616,
+    "score": 81.4
+   },
+   {
+    "photo_id": 299341166,
+    "score": 81.2
+   }
+  ]
+ },
+ "pool_scores": [
+  {
+   "photo_id": 221012856,
+   "scores": {
+    "main": 0.0,
+    "pixel": 79.8,
+    "tall": 67.6
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 21% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.12,
+    "bg_busy": 0.497,
+    "bg_green_share": 0.88,
+    "boundary_delta_e": 104.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.207,
+    "aspect_h_over_w": 0.75,
+    "coherence": 1.0,
+    "solidity": 0.715
+   }
+  },
+  {
+   "photo_id": 18367241,
+   "scores": {
+    "main": 85.0,
+    "pixel": 79.0,
+    "tall": 84.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.296,
+    "bg_busy": 0.009,
+    "bg_green_share": 0.496,
+    "boundary_delta_e": 38.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.879,
+    "aspect_h_over_w": 1.68,
+    "coherence": 1.0,
+    "solidity": 0.664
+   }
+  },
+  {
+   "photo_id": 722244748,
+   "scores": {
+    "main": 0.0,
+    "pixel": 77.6,
+    "tall": 66.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 23% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.125,
+    "bg_busy": 0.188,
+    "bg_green_share": 0.778,
+    "boundary_delta_e": 85.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.229,
+    "aspect_h_over_w": 0.66,
+    "coherence": 1.0,
+    "solidity": 0.708
+   }
+  },
+  {
+   "photo_id": 215393253,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 498664327,
+   "scores": {
+    "main": 63.2,
+    "pixel": 43.1,
+    "tall": 42.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.756,
+    "bg_green_share": 0.553,
+    "boundary_delta_e": 91.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.283,
+    "aspect_h_over_w": 0.81,
+    "coherence": 1.0,
+    "solidity": 0.937
+   }
+  },
+  {
+   "photo_id": 250462306,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 153188215,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 416343953,
+   "scores": {
+    "main": 86.3,
+    "pixel": 86.0,
+    "tall": 54.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.076,
+    "bg_busy": 0.741,
+    "bg_green_share": 0.533,
+    "boundary_delta_e": 37.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.674,
+    "aspect_h_over_w": 3.88,
+    "coherence": 1.0,
+    "solidity": 0.388
+   }
+  },
+  {
+   "photo_id": 21411326,
+   "scores": {
+    "main": 88.2,
+    "pixel": 55.0,
+    "tall": 80.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.076,
+    "bg_busy": 0.219,
+    "bg_green_share": 0.533,
+    "boundary_delta_e": 35.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.645,
+    "aspect_h_over_w": 2.58,
+    "coherence": 1.0,
+    "solidity": 0.329
+   }
+  },
+  {
+   "photo_id": 104420743,
+   "scores": {
+    "main": 62.3,
+    "pixel": 45.3,
+    "tall": 64.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.313,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 60.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.301,
+    "aspect_h_over_w": 0.89,
+    "coherence": 1.0,
+    "solidity": 0.84
+   }
+  },
+  {
+   "photo_id": 56775731,
+   "scores": {
+    "main": 66.9,
+    "pixel": 45.4,
+    "tall": 38.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.001,
+    "bg_busy": 0.855,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 53.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.422,
+    "aspect_h_over_w": 0.7,
+    "coherence": 0.652,
+    "solidity": 0.547
+   }
+  },
+  {
+   "photo_id": 312128676,
+   "scores": {
+    "main": 72.0,
+    "pixel": 81.1,
+    "tall": 77.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.058,
+    "bg_busy": 0.18,
+    "bg_green_share": 0.019,
+    "boundary_delta_e": 62.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.408,
+    "aspect_h_over_w": 0.32,
+    "coherence": 1.0,
+    "solidity": 0.853
+   }
+  },
+  {
+   "photo_id": 498664328,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 153188516,
+   "scores": {
+    "main": 62.7,
+    "pixel": 39.6,
+    "tall": 36.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.904,
+    "bg_green_share": 0.741,
+    "boundary_delta_e": 36.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.365,
+    "aspect_h_over_w": 1.32,
+    "coherence": 0.553,
+    "solidity": 0.855
+   }
+  },
+  {
+   "photo_id": 416344021,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 688149710,
+   "scores": {
+    "main": 0.0,
+    "pixel": 44.3,
+    "tall": 57.7
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 20% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.021,
+    "bg_busy": 0.457,
+    "bg_green_share": 0.706,
+    "boundary_delta_e": 53.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.199,
+    "aspect_h_over_w": 0.73,
+    "coherence": 0.755,
+    "solidity": 0.797
+   }
+  },
+  {
+   "photo_id": 678230088,
+   "scores": {
+    "main": 0.0,
+    "pixel": 74.4,
+    "tall": 67.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.281,
+    "bg_busy": 0.413,
+    "bg_green_share": 0.979,
+    "boundary_delta_e": 111.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.182,
+    "aspect_h_over_w": 0.89,
+    "coherence": 1.0,
+    "solidity": 0.838
+   }
+  },
+  {
+   "photo_id": 758542113,
+   "scores": {
+    "main": 87.9,
+    "pixel": 76.9,
+    "tall": 81.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.287,
+    "bg_busy": 0.326,
+    "bg_green_share": 0.021,
+    "boundary_delta_e": 27.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.805,
+    "aspect_h_over_w": 0.87,
+    "coherence": 1.0,
+    "solidity": 0.938
+   }
+  },
+  {
+   "photo_id": 251975412,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 553464338,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 742251762,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.378,
+    "bg_green_share": 0.061,
+    "boundary_delta_e": 4.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.337,
+    "aspect_h_over_w": 1.3,
+    "coherence": 1.0,
+    "solidity": 0.448
+   }
+  },
+  {
+   "photo_id": 547740479,
+   "scores": {
+    "main": 74.1,
+    "pixel": 73.2,
+    "tall": 71.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.122,
+    "bg_busy": 0.377,
+    "bg_green_share": 0.944,
+    "boundary_delta_e": 58.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.309,
+    "aspect_h_over_w": 1.03,
+    "coherence": 1.0,
+    "solidity": 0.459
+   }
+  },
+  {
+   "photo_id": 742391980,
+   "scores": {
+    "main": 60.0,
+    "pixel": 41.2,
+    "tall": 60.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.525,
+    "bg_green_share": 0.111,
+    "boundary_delta_e": 48.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.283,
+    "aspect_h_over_w": 0.78,
+    "coherence": 0.942,
+    "solidity": 0.525
+   }
+  },
+  {
+   "photo_id": 729802936,
+   "scores": {
+    "main": 0.0,
+    "pixel": 33.0,
+    "tall": 34.9
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 15% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.618,
+    "bg_green_share": 0.557,
+    "boundary_delta_e": 7.7,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.151,
+    "aspect_h_over_w": 0.74,
+    "coherence": 0.543,
+    "solidity": 0.75
+   }
+  },
+  {
+   "photo_id": 91936264,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 21264979,
+   "scores": {
+    "main": 0.0,
+    "pixel": 40.0,
+    "tall": 39.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 8% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.694,
+    "bg_green_share": 0.468,
+    "boundary_delta_e": 33.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.076,
+    "aspect_h_over_w": 0.38,
+    "coherence": 1.0,
+    "solidity": 0.961
+   }
+  },
+  {
+   "photo_id": 543345155,
+   "scores": {
+    "main": 82.6,
+    "pixel": 75.1,
+    "tall": 71.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.361,
+    "bg_busy": 0.248,
+    "bg_green_share": 0.578,
+    "boundary_delta_e": 24.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.615,
+    "aspect_h_over_w": 2.88,
+    "coherence": 1.0,
+    "solidity": 0.497
+   }
+  },
+  {
+   "photo_id": 727940231,
+   "scores": {
+    "main": 0.0,
+    "pixel": 69.7,
+    "tall": 68.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 25% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.154,
+    "bg_busy": 0.063,
+    "bg_green_share": 0.914,
+    "boundary_delta_e": 95.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.252,
+    "aspect_h_over_w": 0.73,
+    "coherence": 1.0,
+    "solidity": 0.842
+   }
+  },
+  {
+   "photo_id": 525326244,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 75.2
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: a flower head is cut by the frame"
+    ],
+    "pixel": [
+     "pixel_head_cropped: the largest flower head is cut by the frame"
+    ],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.555,
+    "bg_busy": 0.438,
+    "bg_green_share": 0.847,
+    "boundary_delta_e": 115.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.733,
+    "aspect_h_over_w": 1.07,
+    "coherence": 1.0,
+    "solidity": 0.873
+   }
+  },
+  {
+   "photo_id": 728239756,
+   "scores": {
+    "main": 84.1,
+    "pixel": 76.4,
+    "tall": 72.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.27,
+    "bg_busy": 0.396,
+    "bg_green_share": 0.458,
+    "boundary_delta_e": 62.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.931,
+    "aspect_h_over_w": 2.69,
+    "coherence": 1.0,
+    "solidity": 0.256
+   }
+  },
+  {
+   "photo_id": 725346410,
+   "scores": {
+    "main": 72.9,
+    "pixel": 79.8,
+    "tall": 76.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.368,
+    "bg_busy": 0.05,
+    "bg_green_share": 0.868,
+    "boundary_delta_e": 81.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.609,
+    "aspect_h_over_w": 1.07,
+    "coherence": 1.0,
+    "solidity": 0.968
+   }
+  },
+  {
+   "photo_id": 299341166,
+   "scores": {
+    "main": 81.4,
+    "pixel": 73.5,
+    "tall": 81.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.258,
+    "bg_busy": 0.021,
+    "bg_green_share": 0.64,
+    "boundary_delta_e": 41.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.817,
+    "aspect_h_over_w": 1.32,
+    "coherence": 1.0,
+    "solidity": 0.728
+   }
+  },
+  {
+   "photo_id": 725227755,
+   "scores": {
+    "main": 0.0,
+    "pixel": 75.7,
+    "tall": 34.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.102,
+    "bg_busy": 0.534,
+    "bg_green_share": 0.652,
+    "boundary_delta_e": 62.4,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.164,
+    "aspect_h_over_w": 0.95,
+    "coherence": 0.483,
+    "solidity": 0.723
+   }
+  },
+  {
+   "photo_id": 720296756,
+   "scores": {
+    "main": 62.8,
+    "pixel": 34.5,
+    "tall": 59.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.001,
+    "bg_busy": 0.529,
+    "bg_green_share": 0.49,
+    "boundary_delta_e": 8.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.52,
+    "aspect_h_over_w": 1.28,
+    "coherence": 1.0,
+    "solidity": 0.852
+   }
+  },
+  {
+   "photo_id": 558895808,
+   "scores": {
+    "main": 51.4,
+    "pixel": 39.9,
+    "tall": 56.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.355,
+    "bg_green_share": 0.109,
+    "boundary_delta_e": 93.9,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.354,
+    "aspect_h_over_w": 2.25,
+    "coherence": 0.468,
+    "solidity": 0.36
+   }
+  },
+  {
+   "photo_id": 409943657,
+   "scores": {
+    "main": 0.0,
+    "pixel": 72.9,
+    "tall": 65.7
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.128,
+    "bg_busy": 0.388,
+    "bg_green_share": 0.949,
+    "boundary_delta_e": 121.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.176,
+    "aspect_h_over_w": 0.73,
+    "coherence": 1.0,
+    "solidity": 0.853
+   }
+  },
+  {
+   "photo_id": 156812048,
+   "scores": {
+    "main": 75.4,
+    "pixel": 71.4,
+    "tall": 74.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.512,
+    "bg_busy": 0.277,
+    "bg_green_share": 0.795,
+    "boundary_delta_e": 98.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.429,
+    "aspect_h_over_w": 0.76,
+    "coherence": 1.0,
+    "solidity": 0.673
+   }
+  },
+  {
+   "photo_id": 513856591,
+   "scores": {
+    "main": 0.0,
+    "pixel": 37.7,
+    "tall": 34.6
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 15% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.005,
+    "bg_busy": 0.848,
+    "bg_green_share": 0.57,
+    "boundary_delta_e": 49.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.151,
+    "aspect_h_over_w": 1.13,
+    "coherence": 0.697,
+    "solidity": 0.64
+   }
+  },
+  {
+   "photo_id": 717258962,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "dense_patch: the subject fills 75% of the frame and touches 4 edges; no separable plant",
+     "main_clipped: the subject is cut by three or more frame edges"
+    ],
+    "pixel": [
+     "dense_patch: the subject fills 75% of the frame and touches 4 edges; no separable plant",
+     "pixel_head_cropped: the largest flower head is cut by the frame"
+    ],
+    "tall": [
+     "dense_patch: the subject fills 75% of the frame and touches 4 edges; no separable plant",
+     "tall_clipped_top: the stalk is cut at the top of the frame",
+     "tall_wide_mass: a broad mass cropped on both sides, not a single stalk"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.64,
+    "bg_busy": 0.021,
+    "bg_green_share": 0.324,
+    "boundary_delta_e": 103.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 1.0,
+    "aspect_h_over_w": 0.8,
+    "coherence": 1.0,
+    "solidity": 0.789
+   }
+  },
+  {
+   "photo_id": 407090697,
+   "scores": {
+    "main": 0.0,
+    "pixel": 81.6,
+    "tall": 49.7
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 21% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.247,
+    "bg_busy": 0.576,
+    "bg_green_share": 0.195,
+    "boundary_delta_e": 86.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.212,
+    "aspect_h_over_w": 0.98,
+    "coherence": 1.0,
+    "solidity": 0.81
+   }
+  },
+  {
+   "photo_id": 512446327,
+   "scores": {
+    "main": 0.0,
+    "pixel": 36.9,
+    "tall": 37.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.013,
+    "bg_busy": 0.756,
+    "bg_green_share": 0.798,
+    "boundary_delta_e": 98.8,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.179,
+    "aspect_h_over_w": 1.32,
+    "coherence": 0.578,
+    "solidity": 0.987
+   }
+  },
+  {
+   "photo_id": 429713705,
+   "scores": {
+    "main": 0.0,
+    "pixel": 80.5,
+    "tall": 24.9
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 11% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.403,
+    "bg_busy": 0.694,
+    "bg_green_share": 0.546,
+    "boundary_delta_e": 77.8,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.113,
+    "aspect_h_over_w": 1.2,
+    "coherence": 0.434,
+    "solidity": 0.894
+   }
+  },
+  {
+   "photo_id": 219138695,
+   "scores": {
+    "main": 0.0,
+    "pixel": 82.0,
+    "tall": 68.4
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 24% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.235,
+    "bg_busy": 0.336,
+    "bg_green_share": 0.911,
+    "boundary_delta_e": 126.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.236,
+    "aspect_h_over_w": 0.97,
+    "coherence": 1.0,
+    "solidity": 0.755
+   }
+  },
+  {
+   "photo_id": 131206902,
+   "scores": {
+    "main": 0.0,
+    "pixel": 33.6,
+    "tall": 35.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 19% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.006,
+    "bg_busy": 0.625,
+    "bg_green_share": 0.708,
+    "boundary_delta_e": 15.0,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.194,
+    "aspect_h_over_w": 0.68,
+    "coherence": 0.66,
+    "solidity": 0.687
+   }
+  },
+  {
+   "photo_id": 415868854,
+   "scores": {
+    "main": 0.0,
+    "pixel": 81.4,
+    "tall": 46.7
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.221,
+    "bg_busy": 0.557,
+    "bg_green_share": 0.629,
+    "boundary_delta_e": 95.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.16,
+    "aspect_h_over_w": 0.77,
+    "coherence": 1.0,
+    "solidity": 0.86
+   }
+  },
+  {
+   "photo_id": 409879398,
+   "scores": {
+    "main": 59.6,
+    "pixel": 41.9,
+    "tall": 59.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.217,
+    "bg_green_share": 0.184,
+    "boundary_delta_e": 59.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.319,
+    "aspect_h_over_w": 0.78,
+    "coherence": 1.0,
+    "solidity": 0.926
+   }
+  },
+  {
+   "photo_id": 24700331,
+   "scores": {
+    "main": 81.3,
+    "pixel": 82.2,
+    "tall": 75.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.139,
+    "bg_busy": 0.463,
+    "bg_green_share": 0.795,
+    "boundary_delta_e": 109.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.896,
+    "aspect_h_over_w": 0.88,
+    "coherence": 1.0,
+    "solidity": 0.724
+   }
+  },
+  {
+   "photo_id": 312740361,
+   "scores": {
+    "main": 0.0,
+    "pixel": 77.4,
+    "tall": 45.4
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 19% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.213,
+    "bg_busy": 0.662,
+    "bg_green_share": 0.909,
+    "boundary_delta_e": 104.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.191,
+    "aspect_h_over_w": 0.78,
+    "coherence": 1.0,
+    "solidity": 0.914
+   }
+  },
+  {
+   "photo_id": 694572634,
+   "scores": {
+    "main": 0.0,
+    "pixel": 44.5,
+    "tall": 32.7
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 11% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.978,
+    "bg_green_share": 0.091,
+    "boundary_delta_e": 52.7,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.108,
+    "aspect_h_over_w": 0.53,
+    "coherence": 0.659,
+    "solidity": 0.987
+   }
+  },
+  {
+   "photo_id": 561512478,
+   "scores": {
+    "main": 0.0,
+    "pixel": 32.4,
+    "tall": 32.6
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.938,
+    "bg_green_share": 0.924,
+    "boundary_delta_e": 12.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.177,
+    "aspect_h_over_w": 0.99,
+    "coherence": 1.0,
+    "solidity": 0.828
+   }
+  },
+  {
+   "photo_id": 215693997,
+   "scores": {
+    "main": 0.0,
+    "pixel": 77.0,
+    "tall": 66.1
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 10% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.234,
+    "bg_busy": 0.437,
+    "bg_green_share": 0.742,
+    "boundary_delta_e": 106.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.095,
+    "aspect_h_over_w": 0.86,
+    "coherence": 1.0,
+    "solidity": 0.934
+   }
+  },
+  {
+   "photo_id": 311695866,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.258,
+    "bg_busy": 0.74,
+    "bg_green_share": 0.929,
+    "boundary_delta_e": 54.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.105,
+    "aspect_h_over_w": 0.82,
+    "coherence": 0.955,
+    "solidity": 0.949
+   }
+  },
+  {
+   "photo_id": 147636291,
+   "scores": {
+    "main": 64.9,
+    "pixel": 44.1,
+    "tall": 64.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.023,
+    "bg_busy": 0.41,
+    "bg_green_share": 0.635,
+    "boundary_delta_e": 52.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.273,
+    "aspect_h_over_w": 0.69,
+    "coherence": 1.0,
+    "solidity": 0.996
+   }
+  },
+  {
+   "photo_id": 717474289,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.13,
+    "bg_busy": 0.469,
+    "bg_green_share": 0.935,
+    "boundary_delta_e": 77.7,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.073,
+    "aspect_h_over_w": 0.64,
+    "coherence": 0.708,
+    "solidity": 0.839
+   }
+  },
+  {
+   "photo_id": 390537770,
+   "scores": {
+    "main": 84.5,
+    "pixel": 82.5,
+    "tall": 72.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.319,
+    "bg_busy": 0.345,
+    "bg_green_share": 0.451,
+    "boundary_delta_e": 97.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.544,
+    "aspect_h_over_w": 0.95,
+    "coherence": 1.0,
+    "solidity": 0.836
+   }
+  },
+  {
+   "photo_id": 716661562,
+   "scores": {
+    "main": 0.0,
+    "pixel": 78.6,
+    "tall": 24.1
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 8% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.129,
+    "bg_busy": 0.571,
+    "bg_green_share": 0.733,
+    "boundary_delta_e": 72.3,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.083,
+    "aspect_h_over_w": 0.42,
+    "coherence": 0.61,
+    "solidity": 0.919
+   }
+  },
+  {
+   "photo_id": 89070929,
+   "scores": {
+    "main": 79.3,
+    "pixel": 78.7,
+    "tall": 68.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.219,
+    "bg_busy": 0.349,
+    "bg_green_share": 0.575,
+    "boundary_delta_e": 93.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.398,
+    "aspect_h_over_w": 0.66,
+    "coherence": 1.0,
+    "solidity": 0.66
+   }
+  },
+  {
+   "photo_id": 316862915,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.02,
+    "bg_busy": 0.903,
+    "bg_green_share": 0.612,
+    "boundary_delta_e": 62.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.102,
+    "aspect_h_over_w": 0.84,
+    "coherence": 1.0,
+    "solidity": 0.924
+   }
+  },
+  {
+   "photo_id": 298532292,
+   "scores": {
+    "main": 81.1,
+    "pixel": 78.7,
+    "tall": 74.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.514,
+    "bg_busy": 0.159,
+    "bg_green_share": 0.845,
+    "boundary_delta_e": 100.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.53,
+    "aspect_h_over_w": 1.13,
+    "coherence": 1.0,
+    "solidity": 0.908
+   }
+  },
+  {
+   "photo_id": 710257012,
+   "scores": {
+    "main": 53.9,
+    "pixel": 37.0,
+    "tall": 62.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.02,
+    "bg_green_share": 0.213,
+    "boundary_delta_e": 20.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.298,
+    "aspect_h_over_w": 0.81,
+    "coherence": 1.0,
+    "solidity": 0.966
+   }
+  },
+  {
+   "photo_id": 710339485,
+   "scores": {
+    "main": 0.0,
+    "pixel": 70.2,
+    "tall": 34.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 12% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.073,
+    "bg_busy": 0.427,
+    "bg_green_share": 0.763,
+    "boundary_delta_e": 59.6,
+    "stalk_like_components": 5
+   },
+   "largest": {
+    "h_frac": 0.125,
+    "aspect_h_over_w": 0.87,
+    "coherence": 0.301,
+    "solidity": 0.845
+   }
+  },
+  {
+   "photo_id": 704874771,
+   "scores": {
+    "main": 75.1,
+    "pixel": 75.4,
+    "tall": 71.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.552,
+    "bg_busy": 0.147,
+    "bg_green_share": 0.808,
+    "boundary_delta_e": 95.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.312,
+    "aspect_h_over_w": 0.96,
+    "coherence": 1.0,
+    "solidity": 0.968
+   }
+  },
+  {
+   "photo_id": 234268396,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 703476946,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.226,
+    "bg_busy": 0.617,
+    "bg_green_share": 0.769,
+    "boundary_delta_e": 103.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.069,
+    "aspect_h_over_w": 0.68,
+    "coherence": 1.0,
+    "solidity": 0.892
+   }
+  },
+  {
+   "photo_id": 703509578,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 82543095,
+   "scores": {
+    "main": 79.4,
+    "pixel": 81.1,
+    "tall": 43.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.441,
+    "bg_busy": 0.839,
+    "bg_green_share": 0.883,
+    "boundary_delta_e": 47.6,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.421,
+    "aspect_h_over_w": 2.1,
+    "coherence": 0.51,
+    "solidity": 0.647
+   }
+  },
+  {
+   "photo_id": 702964799,
+   "scores": {
+    "main": 64.7,
+    "pixel": 41.6,
+    "tall": 68.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.066,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 124.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.464,
+    "aspect_h_over_w": 0.98,
+    "coherence": 1.0,
+    "solidity": 0.972
+   }
+  },
+  {
+   "photo_id": 402900356,
+   "scores": {
+    "main": 0.0,
+    "pixel": 81.8,
+    "tall": 47.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 15% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.146,
+    "bg_busy": 0.605,
+    "bg_green_share": 0.918,
+    "boundary_delta_e": 101.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.15,
+    "aspect_h_over_w": 0.81,
+    "coherence": 1.0,
+    "solidity": 0.759
+   }
+  },
+  {
+   "photo_id": 698484329,
+   "scores": {
+    "main": 74.8,
+    "pixel": 76.1,
+    "tall": 69.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.624,
+    "bg_busy": 0.15,
+    "bg_green_share": 0.799,
+    "boundary_delta_e": 101.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.428,
+    "aspect_h_over_w": 0.91,
+    "coherence": 1.0,
+    "solidity": 0.909
+   }
+  },
+  {
+   "photo_id": 92535801,
+   "scores": {
+    "main": 0.0,
+    "pixel": 74.4,
+    "tall": 67.2
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 14% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.251,
+    "bg_busy": 0.294,
+    "bg_green_share": 0.805,
+    "boundary_delta_e": 66.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.139,
+    "aspect_h_over_w": 0.92,
+    "coherence": 0.607,
+    "solidity": 0.925
+   }
+  },
+  {
+   "photo_id": 723754677,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 735562755,
+   "scores": {
+    "main": 0.0,
+    "pixel": 76.6,
+    "tall": 45.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 17% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.32,
+    "bg_busy": 0.666,
+    "bg_green_share": 0.554,
+    "boundary_delta_e": 84.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.169,
+    "aspect_h_over_w": 0.72,
+    "coherence": 1.0,
+    "solidity": 0.782
+   }
+  },
+  {
+   "photo_id": 723755070,
+   "scores": {
+    "main": 0.0,
+    "pixel": 74.9,
+    "tall": 44.1
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 17% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.351,
+    "bg_busy": 0.714,
+    "bg_green_share": 0.638,
+    "boundary_delta_e": 74.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.174,
+    "aspect_h_over_w": 0.71,
+    "coherence": 1.0,
+    "solidity": 0.757
+   }
+  },
+  {
+   "photo_id": 683404395,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.23,
+    "bg_busy": 0.583,
+    "bg_green_share": 0.593,
+    "boundary_delta_e": 49.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.1,
+    "aspect_h_over_w": 0.75,
+    "coherence": 1.0,
+    "solidity": 0.884
+   }
+  },
+  {
+   "photo_id": 679044096,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.205,
+    "bg_busy": 0.587,
+    "bg_green_share": 0.911,
+    "boundary_delta_e": 105.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.102,
+    "aspect_h_over_w": 0.69,
+    "coherence": 0.804,
+    "solidity": 0.762
+   }
+  },
+  {
+   "photo_id": 679044098,
+   "scores": {
+    "main": 78.0,
+    "pixel": 72.5,
+    "tall": 74.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.347,
+    "bg_busy": 0.058,
+    "bg_green_share": 0.976,
+    "boundary_delta_e": 96.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.47,
+    "aspect_h_over_w": 0.63,
+    "coherence": 1.0,
+    "solidity": 0.73
+   }
+  },
+  {
+   "photo_id": 676575790,
+   "scores": {
+    "main": 0.0,
+    "pixel": 37.1,
+    "tall": 62.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.202,
+    "bg_green_share": 0.771,
+    "boundary_delta_e": 51.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.156,
+    "aspect_h_over_w": 0.93,
+    "coherence": 1.0,
+    "solidity": 0.836
+   }
+  },
+  {
+   "photo_id": 538441456,
+   "scores": {
+    "main": 0.0,
+    "pixel": 39.3,
+    "tall": 54.4
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.52,
+    "bg_green_share": 0.089,
+    "boundary_delta_e": 29.2,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.156,
+    "aspect_h_over_w": 0.59,
+    "coherence": 0.762,
+    "solidity": 0.897
+   }
+  },
+  {
+   "photo_id": 660348421,
+   "scores": {
+    "main": 0.0,
+    "pixel": 42.2,
+    "tall": 40.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.786,
+    "bg_green_share": 0.001,
+    "boundary_delta_e": 63.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.18,
+    "aspect_h_over_w": 0.94,
+    "coherence": 1.0,
+    "solidity": 0.905
+   }
+  },
+  {
+   "photo_id": 223121627,
+   "scores": {
+    "main": 77.1,
+    "pixel": 74.4,
+    "tall": 65.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.238,
+    "bg_busy": 0.525,
+    "bg_green_share": 0.923,
+    "boundary_delta_e": 59.9,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.448,
+    "aspect_h_over_w": 2.1,
+    "coherence": 0.56,
+    "solidity": 0.568
+   }
+  },
+  {
+   "photo_id": 627586223,
+   "scores": {
+    "main": 0.0,
+    "pixel": 37.5,
+    "tall": 56.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 27% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.411,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 18.2,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.271,
+    "aspect_h_over_w": 0.96,
+    "coherence": 0.634,
+    "solidity": 0.497
+   }
+  },
+  {
+   "photo_id": 623361544,
+   "scores": {
+    "main": 65.3,
+    "pixel": 43.9,
+    "tall": 42.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.004,
+    "bg_busy": 0.919,
+    "bg_green_share": 0.005,
+    "boundary_delta_e": 70.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.415,
+    "aspect_h_over_w": 2.17,
+    "coherence": 1.0,
+    "solidity": 0.482
+   }
+  },
+  {
+   "photo_id": 308703582,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 395987202,
+   "scores": {
+    "main": 59.9,
+    "pixel": 45.7,
+    "tall": 37.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.006,
+    "boundary_delta_e": 60.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.219,
+    "aspect_h_over_w": 0.86,
+    "coherence": 0.911,
+    "solidity": 0.935
+   }
+  },
+  {
+   "photo_id": 10884971,
+   "scores": {
+    "main": 57.1,
+    "pixel": 41.5,
+    "tall": 60.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.501,
+    "bg_green_share": 0.039,
+    "boundary_delta_e": 89.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.223,
+    "aspect_h_over_w": 0.44,
+    "coherence": 1.0,
+    "solidity": 0.996
+   }
+  },
+  {
+   "photo_id": 579236534,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 563122625,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.158,
+    "bg_busy": 0.533,
+    "bg_green_share": 0.227,
+    "boundary_delta_e": 44.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.049,
+    "aspect_h_over_w": 0.81,
+    "coherence": 0.709,
+    "solidity": 0.895
+   }
+  },
+  {
+   "photo_id": 108008178,
+   "scores": {
+    "main": 0.0,
+    "pixel": 40.0,
+    "tall": 34.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 25% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.757,
+    "boundary_delta_e": 52.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.253,
+    "aspect_h_over_w": 0.73,
+    "coherence": 1.0,
+    "solidity": 0.921
+   }
+  },
+  {
+   "photo_id": 561512495,
+   "scores": {
+    "main": 81.4,
+    "pixel": 78.9,
+    "tall": 76.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.346,
+    "bg_busy": 0.402,
+    "bg_green_share": 0.95,
+    "boundary_delta_e": 45.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.49,
+    "aspect_h_over_w": 2.28,
+    "coherence": 1.0,
+    "solidity": 0.366
+   }
+  },
+  {
+   "photo_id": 160992318,
+   "scores": {
+    "main": 65.8,
+    "pixel": 44.6,
+    "tall": 43.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.726,
+    "bg_green_share": 0.316,
+    "boundary_delta_e": 35.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.314,
+    "aspect_h_over_w": 0.69,
+    "coherence": 1.0,
+    "solidity": 0.993
+   }
+  },
+  {
+   "photo_id": 561512445,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 558895802,
+   "scores": {
+    "main": 77.9,
+    "pixel": 78.3,
+    "tall": 79.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.557,
+    "bg_busy": 0.159,
+    "bg_green_share": 0.219,
+    "boundary_delta_e": 55.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.943,
+    "aspect_h_over_w": 1.33,
+    "coherence": 0.862,
+    "solidity": 0.914
+   }
+  },
+  {
+   "photo_id": 196669126,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 558895807,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 558894866,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 385539169,
+   "scores": {
+    "main": 55.0,
+    "pixel": 37.0,
+    "tall": 32.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.023,
+    "boundary_delta_e": 23.3,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.328,
+    "aspect_h_over_w": 1.43,
+    "coherence": 0.536,
+    "solidity": 0.989
+   }
+  },
+  {
+   "photo_id": 551630823,
+   "scores": {
+    "main": 74.0,
+    "pixel": 77.2,
+    "tall": 71.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.528,
+    "bg_busy": 0.141,
+    "bg_green_share": 0.973,
+    "boundary_delta_e": 59.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.293,
+    "aspect_h_over_w": 0.99,
+    "coherence": 1.0,
+    "solidity": 0.988
+   }
+  },
+  {
+   "photo_id": 547825448,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.167,
+    "bg_busy": 0.835,
+    "bg_green_share": 0.734,
+    "boundary_delta_e": 93.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.051,
+    "aspect_h_over_w": 0.78,
+    "coherence": 1.0,
+    "solidity": 0.9
+   }
+  },
+  {
+   "photo_id": 547253100,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 92846832,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 42.9
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: a flower head is cut by the frame"
+    ],
+    "pixel": [
+     "pixel_head_cropped: the largest flower head is cut by the frame"
+    ],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.355,
+    "bg_busy": 0.757,
+    "bg_green_share": 0.532,
+    "boundary_delta_e": 24.2,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.255,
+    "aspect_h_over_w": 0.98,
+    "coherence": 0.622,
+    "solidity": 0.998
+   }
+  },
+  {
+   "photo_id": 547062841,
+   "scores": {
+    "main": 58.7,
+    "pixel": 41.4,
+    "tall": 61.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.531,
+    "bg_green_share": 0.009,
+    "boundary_delta_e": 56.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.306,
+    "aspect_h_over_w": 1.06,
+    "coherence": 1.0,
+    "solidity": 0.881
+   }
+  },
+  {
+   "photo_id": 427995058,
+   "scores": {
+    "main": 0.0,
+    "pixel": 76.1,
+    "tall": 65.6
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 24% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.411,
+    "bg_busy": 0.232,
+    "bg_green_share": 0.815,
+    "boundary_delta_e": 58.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.238,
+    "aspect_h_over_w": 0.56,
+    "coherence": 1.0,
+    "solidity": 0.767
+   }
+  },
+  {
+   "photo_id": 163649991,
+   "scores": {
+    "main": 58.5,
+    "pixel": 38.8,
+    "tall": 35.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.63,
+    "boundary_delta_e": 33.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.273,
+    "aspect_h_over_w": 0.77,
+    "coherence": 1.0,
+    "solidity": 0.903
+   }
+  },
+  {
+   "photo_id": 545061905,
+   "scores": {
+    "main": 78.0,
+    "pixel": 84.6,
+    "tall": 70.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.46,
+    "bg_busy": 0.176,
+    "bg_green_share": 0.267,
+    "boundary_delta_e": 121.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.4,
+    "aspect_h_over_w": 0.99,
+    "coherence": 1.0,
+    "solidity": 0.913
+   }
+  },
+  {
+   "photo_id": 153166095,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.136,
+    "bg_busy": 0.394,
+    "bg_green_share": 0.938,
+    "boundary_delta_e": 67.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.083,
+    "aspect_h_over_w": 0.6,
+    "coherence": 1.0,
+    "solidity": 0.863
+   }
+  },
+  {
+   "photo_id": 362500830,
+   "scores": {
+    "main": 70.7,
+    "pixel": 68.4,
+    "tall": 50.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.012,
+    "bg_busy": 0.669,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 27.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.908,
+    "aspect_h_over_w": 1.77,
+    "coherence": 1.0,
+    "solidity": 0.686
+   }
+  },
+  {
+   "photo_id": 541256609,
+   "scores": {
+    "main": 81.4,
+    "pixel": 75.5,
+    "tall": 71.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.253,
+    "bg_busy": 0.073,
+    "bg_green_share": 0.34,
+    "boundary_delta_e": 32.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.495,
+    "aspect_h_over_w": 0.96,
+    "coherence": 1.0,
+    "solidity": 0.689
+   }
+  },
+  {
+   "photo_id": 538073419,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 55.8
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: a flower head is cut by the frame"
+    ],
+    "pixel": [
+     "pixel_head_cropped: the largest flower head is cut by the frame"
+    ],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.368,
+    "bg_busy": 0.622,
+    "bg_green_share": 0.638,
+    "boundary_delta_e": 71.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.944,
+    "aspect_h_over_w": 1.6,
+    "coherence": 1.0,
+    "solidity": 0.512
+   }
+  },
+  {
+   "photo_id": 530927117,
+   "scores": {
+    "main": 67.5,
+    "pixel": 37.8,
+    "tall": 68.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.092,
+    "bg_green_share": 0.278,
+    "boundary_delta_e": 18.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.755,
+    "aspect_h_over_w": 1.84,
+    "coherence": 1.0,
+    "solidity": 0.629
+   }
+  },
+  {
+   "photo_id": 234920962,
+   "scores": {
+    "main": 0.0,
+    "pixel": 72.0,
+    "tall": 62.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 22% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.221,
+    "bg_busy": 0.424,
+    "bg_green_share": 0.588,
+    "boundary_delta_e": 111.8,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.217,
+    "aspect_h_over_w": 0.77,
+    "coherence": 0.557,
+    "solidity": 0.574
+   }
+  },
+  {
+   "photo_id": 308580291,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.108,
+    "bg_busy": 0.771,
+    "bg_green_share": 0.528,
+    "boundary_delta_e": 44.8,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.083,
+    "aspect_h_over_w": 0.63,
+    "coherence": 0.714,
+    "solidity": 0.763
+   }
+  },
+  {
+   "photo_id": 530926207,
+   "scores": {
+    "main": 82.6,
+    "pixel": 76.2,
+    "tall": 74.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.365,
+    "bg_busy": 0.501,
+    "bg_green_share": 0.486,
+    "boundary_delta_e": 58.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.642,
+    "aspect_h_over_w": 1.81,
+    "coherence": 1.0,
+    "solidity": 0.502
+   }
+  },
+  {
+   "photo_id": 530919109,
+   "scores": {
+    "main": 73.5,
+    "pixel": 71.9,
+    "tall": 67.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.347,
+    "bg_busy": 0.542,
+    "bg_green_share": 0.449,
+    "boundary_delta_e": 93.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.324,
+    "aspect_h_over_w": 0.86,
+    "coherence": 1.0,
+    "solidity": 0.904
+   }
+  },
+  {
+   "photo_id": 522075032,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 163650100,
+   "scores": {
+    "main": 69.3,
+    "pixel": 49.0,
+    "tall": 43.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.036,
+    "bg_busy": 0.756,
+    "bg_green_share": 0.115,
+    "boundary_delta_e": 40.0,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.345,
+    "aspect_h_over_w": 1.16,
+    "coherence": 0.718,
+    "solidity": 0.599
+   }
+  },
+  {
+   "photo_id": 31597748,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.004,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.188,
+    "boundary_delta_e": 65.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.547,
+    "aspect_h_over_w": 7.0,
+    "coherence": 1.0,
+    "solidity": 0.779
+   }
+  },
+  {
+   "photo_id": 304276009,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 153757516,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 518225257,
+   "scores": {
+    "main": 69.3,
+    "pixel": 42.3,
+    "tall": 43.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.046,
+    "boundary_delta_e": 51.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.658,
+    "aspect_h_over_w": 1.46,
+    "coherence": 1.0,
+    "solidity": 0.793
+   }
+  },
+  {
+   "photo_id": 332136408,
+   "scores": {
+    "main": 76.0,
+    "pixel": 47.0,
+    "tall": 44.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.964,
+    "bg_green_share": 0.019,
+    "boundary_delta_e": 43.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.589,
+    "aspect_h_over_w": 1.08,
+    "coherence": 1.0,
+    "solidity": 0.912
+   }
+  },
+  {
+   "photo_id": 421266088,
+   "scores": {
+    "main": 77.1,
+    "pixel": 80.7,
+    "tall": 47.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.068,
+    "bg_busy": 0.775,
+    "bg_green_share": 0.703,
+    "boundary_delta_e": 149.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.427,
+    "aspect_h_over_w": 0.98,
+    "coherence": 1.0,
+    "solidity": 0.952
+   }
+  },
+  {
+   "photo_id": 193742997,
+   "scores": {
+    "main": 65.0,
+    "pixel": 39.4,
+    "tall": 43.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.867,
+    "bg_green_share": 0.261,
+    "boundary_delta_e": 30.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.591,
+    "aspect_h_over_w": 2.05,
+    "coherence": 1.0,
+    "solidity": 0.96
+   }
+  },
+  {
+   "photo_id": 469902886,
+   "scores": {
+    "main": 59.5,
+    "pixel": 43.1,
+    "tall": 61.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.228,
+    "bg_green_share": 0.007,
+    "boundary_delta_e": 63.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.283,
+    "aspect_h_over_w": 0.93,
+    "coherence": 1.0,
+    "solidity": 0.891
+   }
+  },
+  {
+   "photo_id": 446423134,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 222006053,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 443735170,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 431603960,
+   "scores": {
+    "main": 88.0,
+    "pixel": 85.9,
+    "tall": 84.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.658,
+    "bg_busy": 0.203,
+    "bg_green_share": 0.257,
+    "boundary_delta_e": 43.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.8,
+    "aspect_h_over_w": 1.46,
+    "coherence": 1.0,
+    "solidity": 0.866
+   }
+  },
+  {
+   "photo_id": 29631922,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "hands: a hand covers the subject (skin 6.2% of frame)"
+    ],
+    "pixel": [
+     "hands: a hand covers the subject (skin 6.2% of frame)"
+    ],
+    "tall": [
+     "hands: a hand covers the subject (skin 6.2% of frame)"
+    ]
+   },
+   "hands": true,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.008,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 45.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.598,
+    "aspect_h_over_w": 1.07,
+    "coherence": 1.0,
+    "solidity": 0.469
+   }
+  },
+  {
+   "photo_id": 428245705,
+   "scores": {
+    "main": 82.6,
+    "pixel": 76.0,
+    "tall": 79.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.316,
+    "bg_busy": 0.114,
+    "bg_green_share": 0.37,
+    "boundary_delta_e": 79.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.652,
+    "aspect_h_over_w": 2.11,
+    "coherence": 1.0,
+    "solidity": 0.413
+   }
+  },
+  {
+   "photo_id": 5930167,
+   "scores": {
+    "main": 0.0,
+    "pixel": 81.8,
+    "tall": 47.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 17% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.171,
+    "bg_busy": 0.649,
+    "bg_green_share": 0.704,
+    "boundary_delta_e": 122.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.172,
+    "aspect_h_over_w": 0.99,
+    "coherence": 1.0,
+    "solidity": 0.902
+   }
+  },
+  {
+   "photo_id": 427551566,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 316785117,
+   "scores": {
+    "main": 74.3,
+    "pixel": 75.4,
+    "tall": 69.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.253,
+    "bg_busy": 0.491,
+    "bg_green_share": 0.632,
+    "boundary_delta_e": 77.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.383,
+    "aspect_h_over_w": 0.98,
+    "coherence": 1.0,
+    "solidity": 0.711
+   }
+  },
+  {
+   "photo_id": 423437447,
+   "scores": {
+    "main": 0.0,
+    "pixel": 43.7,
+    "tall": 38.3
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 25% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.002,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.511,
+    "boundary_delta_e": 32.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.249,
+    "aspect_h_over_w": 1.24,
+    "coherence": 0.962,
+    "solidity": 0.773
+   }
+  },
+  {
+   "photo_id": 383794520,
+   "scores": {
+    "main": 68.9,
+    "pixel": 42.5,
+    "tall": 43.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.959,
+    "bg_green_share": 0.007,
+    "boundary_delta_e": 32.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.679,
+    "aspect_h_over_w": 1.15,
+    "coherence": 1.0,
+    "solidity": 0.835
+   }
+  },
+  {
+   "photo_id": 420847676,
+   "scores": {
+    "main": 0.0,
+    "pixel": 83.0,
+    "tall": 74.1
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.507,
+    "bg_busy": 0.17,
+    "bg_green_share": 0.125,
+    "boundary_delta_e": 100.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.176,
+    "aspect_h_over_w": 0.89,
+    "coherence": 1.0,
+    "solidity": 0.895
+   }
+  },
+  {
+   "photo_id": 420370147,
+   "scores": {
+    "main": 0.0,
+    "pixel": 69.4,
+    "tall": 31.4
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.25,
+    "bg_busy": 0.502,
+    "bg_green_share": 0.83,
+    "boundary_delta_e": 91.5,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.184,
+    "aspect_h_over_w": 0.89,
+    "coherence": 0.458,
+    "solidity": 0.79
+   }
+  },
+  {
+   "photo_id": 410030616,
+   "scores": {
+    "main": 80.0,
+    "pixel": 69.4,
+    "tall": 81.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.213,
+    "bg_busy": 0.014,
+    "bg_green_share": 0.934,
+    "boundary_delta_e": 80.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.708,
+    "aspect_h_over_w": 0.94,
+    "coherence": 1.0,
+    "solidity": 0.766
+   }
+  },
+  {
+   "photo_id": 385533672,
+   "scores": {
+    "main": 0.0,
+    "pixel": 39.1,
+    "tall": 22.9
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 27% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.618,
+    "bg_green_share": 0.017,
+    "boundary_delta_e": 43.2,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.271,
+    "aspect_h_over_w": 1.13,
+    "coherence": 0.466,
+    "solidity": 0.635
+   }
+  },
+  {
+   "photo_id": 405786095,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 149065530,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 404188013,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 157617758,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 394783533,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 389177534,
+   "scores": {
+    "main": 0.0,
+    "pixel": 35.1,
+    "tall": 53.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 9% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.048,
+    "bg_green_share": 0.308,
+    "boundary_delta_e": 25.5,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.089,
+    "aspect_h_over_w": 0.57,
+    "coherence": 0.602,
+    "solidity": 0.584
+   }
+  },
+  {
+   "photo_id": 96097137,
+   "scores": {
+    "main": 72.3,
+    "pixel": 74.1,
+    "tall": 66.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.119,
+    "bg_busy": 0.468,
+    "bg_green_share": 0.175,
+    "boundary_delta_e": 16.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.267,
+    "aspect_h_over_w": 0.72,
+    "coherence": 1.0,
+    "solidity": 0.726
+   }
+  },
+  {
+   "photo_id": 385537208,
+   "scores": {
+    "main": 0.0,
+    "pixel": 41.6,
+    "tall": 59.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 10% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.469,
+    "bg_green_share": 0.058,
+    "boundary_delta_e": 53.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.095,
+    "aspect_h_over_w": 0.29,
+    "coherence": 1.0,
+    "solidity": 0.685
+   }
+  },
+  {
+   "photo_id": 288708507,
+   "scores": {
+    "main": 87.2,
+    "pixel": 82.2,
+    "tall": 78.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.079,
+    "bg_busy": 0.198,
+    "bg_green_share": 0.268,
+    "boundary_delta_e": 29.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.76,
+    "aspect_h_over_w": 5.4,
+    "coherence": 1.0,
+    "solidity": 0.578
+   }
+  },
+  {
+   "photo_id": 354373276,
+   "scores": {
+    "main": 61.6,
+    "pixel": 37.1,
+    "tall": 39.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.877,
+    "bg_green_share": 0.001,
+    "boundary_delta_e": 13.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.514,
+    "aspect_h_over_w": 1.08,
+    "coherence": 1.0,
+    "solidity": 0.939
+   }
+  },
+  {
+   "photo_id": 294766273,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 97213101,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 319571989,
+   "scores": {
+    "main": 76.9,
+    "pixel": 67.4,
+    "tall": 67.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.176,
+    "bg_busy": 0.288,
+    "bg_green_share": 0.283,
+    "boundary_delta_e": 4.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.56,
+    "aspect_h_over_w": 0.93,
+    "coherence": 1.0,
+    "solidity": 0.976
+   }
+  },
+  {
+   "photo_id": 314662843,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 85306681,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 313564374,
+   "scores": {
+    "main": 60.7,
+    "pixel": 40.6,
+    "tall": 63.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.329,
+    "bg_green_share": 0.159,
+    "boundary_delta_e": 56.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.379,
+    "aspect_h_over_w": 0.96,
+    "coherence": 1.0,
+    "solidity": 0.981
+   }
+  },
+  {
+   "photo_id": 150738838,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 310117770,
+   "scores": {
+    "main": 0.0,
+    "pixel": 68.5,
+    "tall": 35.3
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.318,
+    "bg_busy": 0.288,
+    "bg_green_share": 0.938,
+    "boundary_delta_e": 64.8,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.16,
+    "aspect_h_over_w": 0.58,
+    "coherence": 0.501,
+    "solidity": 0.81
+   }
+  },
+  {
+   "photo_id": 154054352,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 304024337,
+   "scores": {
+    "main": 73.9,
+    "pixel": 73.3,
+    "tall": 69.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.297,
+    "bg_busy": 0.411,
+    "bg_green_share": 0.965,
+    "boundary_delta_e": 51.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.33,
+    "aspect_h_over_w": 0.64,
+    "coherence": 0.861,
+    "solidity": 0.842
+   }
+  },
+  {
+   "photo_id": 282071458,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.784,
+    "bg_green_share": 0.698,
+    "boundary_delta_e": 72.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.108,
+    "aspect_h_over_w": 0.82,
+    "coherence": 1.0,
+    "solidity": 0.941
+   }
+  },
+  {
+   "photo_id": 292663821,
+   "scores": {
+    "main": 80.6,
+    "pixel": 84.0,
+    "tall": 51.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.071,
+    "bg_busy": 0.651,
+    "bg_green_share": 0.56,
+    "boundary_delta_e": 118.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.473,
+    "aspect_h_over_w": 0.86,
+    "coherence": 1.0,
+    "solidity": 0.83
+   }
+  },
+  {
+   "photo_id": 252579454,
+   "scores": {
+    "main": 60.0,
+    "pixel": 39.7,
+    "tall": 65.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.183,
+    "bg_green_share": 0.098,
+    "boundary_delta_e": 27.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.388,
+    "aspect_h_over_w": 0.88,
+    "coherence": 1.0,
+    "solidity": 0.99
+   }
+  },
+  {
+   "photo_id": 286386009,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 217087623,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 287362046,
+   "scores": {
+    "main": 59.9,
+    "pixel": 38.8,
+    "tall": 65.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.116,
+    "bg_green_share": 0.559,
+    "boundary_delta_e": 83.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.312,
+    "aspect_h_over_w": 1.42,
+    "coherence": 1.0,
+    "solidity": 1.003
+   }
+  },
+  {
+   "photo_id": 50154023,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 134571552,
+   "scores": {
+    "main": 70.7,
+    "pixel": 44.0,
+    "tall": 72.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.011,
+    "bg_green_share": 0.026,
+    "boundary_delta_e": 57.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.465,
+    "aspect_h_over_w": 0.99,
+    "coherence": 1.0,
+    "solidity": 0.992
+   }
+  },
+  {
+   "photo_id": 272390737,
+   "scores": {
+    "main": 71.4,
+    "pixel": 42.6,
+    "tall": 46.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.739,
+    "bg_green_share": 0.22,
+    "boundary_delta_e": 74.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.569,
+    "aspect_h_over_w": 0.98,
+    "coherence": 1.0,
+    "solidity": 0.99
+   }
+  },
+  {
+   "photo_id": 275826298,
+   "scores": {
+    "main": 0.0,
+    "pixel": 38.5,
+    "tall": 36.3
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.829,
+    "bg_green_share": 0.017,
+    "boundary_delta_e": 14.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.159,
+    "aspect_h_over_w": 0.85,
+    "coherence": 1.0,
+    "solidity": 0.771
+   }
+  },
+  {
+   "photo_id": 236826262,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 223381969,
+   "scores": {
+    "main": 0.0,
+    "pixel": 68.6,
+    "tall": 34.6
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 24% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.419,
+    "bg_busy": 0.385,
+    "bg_green_share": 0.952,
+    "boundary_delta_e": 59.1,
+    "stalk_like_components": 4
+   },
+   "largest": {
+    "h_frac": 0.238,
+    "aspect_h_over_w": 0.94,
+    "coherence": 0.29,
+    "solidity": 0.708
+   }
+  },
+  {
+   "photo_id": 85556364,
+   "scores": {
+    "main": 77.7,
+    "pixel": 76.9,
+    "tall": 69.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.349,
+    "bg_busy": 0.229,
+    "bg_green_share": 0.857,
+    "boundary_delta_e": 76.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.424,
+    "aspect_h_over_w": 1.68,
+    "coherence": 1.0,
+    "solidity": 0.764
+   }
+  },
+  {
+   "photo_id": 147636394,
+   "scores": {
+    "main": 81.2,
+    "pixel": 79.2,
+    "tall": 80.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.2,
+    "bg_busy": 0.152,
+    "bg_green_share": 0.457,
+    "boundary_delta_e": 90.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.806,
+    "aspect_h_over_w": 0.84,
+    "coherence": 1.0,
+    "solidity": 0.801
+   }
+  },
+  {
+   "photo_id": 215217424,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 217755191,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 205275969,
+   "scores": {
+    "main": 68.6,
+    "pixel": 78.7,
+    "tall": 65.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.032,
+    "bg_busy": 0.344,
+    "bg_green_share": 0.303,
+    "boundary_delta_e": 100.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.222,
+    "aspect_h_over_w": 0.47,
+    "coherence": 1.0,
+    "solidity": 0.957
+   }
+  },
+  {
+   "photo_id": 174323147,
+   "scores": {
+    "main": 66.5,
+    "pixel": 42.2,
+    "tall": 64.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.139,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 27.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.508,
+    "aspect_h_over_w": 0.87,
+    "coherence": 1.0,
+    "solidity": 0.898
+   }
+  },
+  {
+   "photo_id": 135144377,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 148332820,
+   "scores": {
+    "main": 71.6,
+    "pixel": 72.3,
+    "tall": 48.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.51,
+    "bg_busy": 0.615,
+    "bg_green_share": 0.85,
+    "boundary_delta_e": 64.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.335,
+    "aspect_h_over_w": 1.15,
+    "coherence": 1.0,
+    "solidity": 0.834
+   }
+  },
+  {
+   "photo_id": 47662141,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.567,
+    "boundary_delta_e": 85.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.087,
+    "aspect_h_over_w": 0.59,
+    "coherence": 1.0,
+    "solidity": 0.461
+   }
+  },
+  {
+   "photo_id": 48481013,
+   "scores": {
+    "main": 0.0,
+    "pixel": 39.4,
+    "tall": 34.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 22% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.201,
+    "bg_green_share": 0.137,
+    "boundary_delta_e": 61.1,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.217,
+    "aspect_h_over_w": 3.21,
+    "coherence": 0.423,
+    "solidity": 0.513
+   }
+  },
+  {
+   "photo_id": 38105634,
+   "scores": {
+    "main": 70.4,
+    "pixel": 41.0,
+    "tall": 70.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.351,
+    "bg_green_share": 0.07,
+    "boundary_delta_e": 49.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.615,
+    "aspect_h_over_w": 1.21,
+    "coherence": 1.0,
+    "solidity": 0.977
+   }
+  },
+  {
+   "photo_id": 147636509,
+   "scores": {
+    "main": 65.6,
+    "pixel": 39.2,
+    "tall": 58.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.225,
+    "bg_green_share": 0.122,
+    "boundary_delta_e": 18.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.457,
+    "aspect_h_over_w": 0.53,
+    "coherence": 1.0,
+    "solidity": 0.894
+   }
+  },
+  {
+   "photo_id": 154265575,
+   "scores": {
+    "main": 62.4,
+    "pixel": 37.7,
+    "tall": 64.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.349,
+    "bg_green_share": 0.433,
+    "boundary_delta_e": 64.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.408,
+    "aspect_h_over_w": 0.92,
+    "coherence": 0.807,
+    "solidity": 0.819
+   }
+  },
+  {
+   "photo_id": 134463284,
+   "scores": {
+    "main": 84.4,
+    "pixel": 75.2,
+    "tall": 82.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.139,
+    "bg_busy": 0.012,
+    "bg_green_share": 0.692,
+    "boundary_delta_e": 96.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.863,
+    "aspect_h_over_w": 0.85,
+    "coherence": 1.0,
+    "solidity": 0.651
+   }
+  },
+  {
+   "photo_id": 145468116,
+   "scores": {
+    "main": 0.0,
+    "pixel": 86.3,
+    "tall": 64.0
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 13% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.521,
+    "bg_busy": 0.519,
+    "bg_green_share": 0.228,
+    "boundary_delta_e": 104.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.126,
+    "aspect_h_over_w": 1.04,
+    "coherence": 1.0,
+    "solidity": 0.897
+   }
+  },
+  {
+   "photo_id": 142387683,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.263,
+    "bg_busy": 0.427,
+    "bg_green_share": 0.76,
+    "boundary_delta_e": 75.8,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.06,
+    "aspect_h_over_w": 0.7,
+    "coherence": 0.35,
+    "solidity": 0.986
+   }
+  },
+  {
+   "photo_id": 154055728,
+   "scores": {
+    "main": 59.5,
+    "pixel": 38.5,
+    "tall": 46.0
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.695,
+    "bg_green_share": 0.595,
+    "boundary_delta_e": 33.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.984,
+    "aspect_h_over_w": 0.65,
+    "coherence": 1.0,
+    "solidity": 0.752
+   }
+  },
+  {
+   "photo_id": 126719802,
+   "scores": {
+    "main": 58.7,
+    "pixel": 40.0,
+    "tall": 65.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.003,
+    "bg_busy": 0.099,
+    "bg_green_share": 0.118,
+    "boundary_delta_e": 107.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.241,
+    "aspect_h_over_w": 0.71,
+    "coherence": 0.605,
+    "solidity": 0.771
+   }
+  },
+  {
+   "photo_id": 106592195,
+   "scores": {
+    "main": 58.2,
+    "pixel": 41.0,
+    "tall": 64.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.1,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 22.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.758,
+    "aspect_h_over_w": 1.06,
+    "coherence": 1.0,
+    "solidity": 0.892
+   }
+  },
+  {
+   "photo_id": 89900398,
+   "scores": {
+    "main": 63.3,
+    "pixel": 36.2,
+    "tall": 36.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.002,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.582,
+    "boundary_delta_e": 19.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.473,
+    "aspect_h_over_w": 0.71,
+    "coherence": 1.0,
+    "solidity": 0.98
+   }
+  },
+  {
+   "photo_id": 78731534,
+   "scores": {
+    "main": 67.6,
+    "pixel": 71.9,
+    "tall": 61.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.294,
+    "bg_busy": 0.294,
+    "bg_green_share": 0.921,
+    "boundary_delta_e": 95.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.285,
+    "aspect_h_over_w": 0.9,
+    "coherence": 1.0,
+    "solidity": 0.798
+   }
+  },
+  {
+   "photo_id": 27492517,
+   "scores": {
+    "main": 81.5,
+    "pixel": 81.3,
+    "tall": 76.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.136,
+    "bg_busy": 0.278,
+    "bg_green_share": 0.835,
+    "boundary_delta_e": 133.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.66,
+    "aspect_h_over_w": 1.07,
+    "coherence": 1.0,
+    "solidity": 0.833
+   }
+  },
+  {
+   "photo_id": 688149760,
+   "scores": {
+    "main": 84.7,
+    "pixel": 87.4,
+    "tall": 79.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.093,
+    "bg_busy": 0.154,
+    "bg_green_share": 0.336,
+    "boundary_delta_e": 123.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.557,
+    "aspect_h_over_w": 0.99,
+    "coherence": 1.0,
+    "solidity": 0.904
+   }
+  },
+  {
+   "photo_id": 251975425,
+   "scores": {
+    "main": 69.3,
+    "pixel": 45.0,
+    "tall": 47.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.65,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 48.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.504,
+    "aspect_h_over_w": 3.08,
+    "coherence": 1.0,
+    "solidity": 0.851
+   }
+  },
+  {
+   "photo_id": 547741050,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 21265008,
+   "scores": {
+    "main": 75.4,
+    "pixel": 78.0,
+    "tall": 75.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.688,
+    "bg_busy": 0.27,
+    "bg_green_share": 0.46,
+    "boundary_delta_e": 139.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.362,
+    "aspect_h_over_w": 1.01,
+    "coherence": 1.0,
+    "solidity": 0.803
+   }
+  },
+  {
+   "photo_id": 525326279,
+   "scores": {
+    "main": 72.9,
+    "pixel": 81.9,
+    "tall": 68.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.971,
+    "bg_busy": 0.131,
+    "bg_green_share": 0.046,
+    "boundary_delta_e": 15.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.327,
+    "aspect_h_over_w": 1.01,
+    "coherence": 1.0,
+    "solidity": 0.983
+   }
+  },
+  {
+   "photo_id": 299344996,
+   "scores": {
+    "main": 0.0,
+    "pixel": 68.8,
+    "tall": 35.2
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 18% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.496,
+    "bg_busy": 0.186,
+    "bg_green_share": 0.791,
+    "boundary_delta_e": 42.5,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.183,
+    "aspect_h_over_w": 0.95,
+    "coherence": 0.435,
+    "solidity": 0.931
+   }
+  },
+  {
+   "photo_id": 720296850,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 410014066,
+   "scores": {
+    "main": 0.0,
+    "pixel": 35.9,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: the subject is cut by three or more frame edges"
+    ],
+    "pixel": [],
+    "tall": [
+     "tall_wide_mass: a broad mass cropped on both sides, not a single stalk"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.897,
+    "bg_green_share": 0.829,
+    "boundary_delta_e": 35.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.301,
+    "aspect_h_over_w": 0.2,
+    "coherence": 1.0,
+    "solidity": 0.737
+   }
+  },
+  {
+   "photo_id": 717259063,
+   "scores": {
+    "main": 88.2,
+    "pixel": 76.8,
+    "tall": 77.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.076,
+    "bg_busy": 0.03,
+    "bg_green_share": 0.2,
+    "boundary_delta_e": 49.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.892,
+    "aspect_h_over_w": 0.98,
+    "coherence": 1.0,
+    "solidity": 0.966
+   }
+  },
+  {
+   "photo_id": 407090883,
+   "scores": {
+    "main": 46.7,
+    "pixel": 29.8,
+    "tall": 54.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.496,
+    "bg_green_share": 0.841,
+    "boundary_delta_e": 27.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.414,
+    "aspect_h_over_w": 1.86,
+    "coherence": 0.54,
+    "solidity": 0.543
+   }
+  },
+  {
+   "photo_id": 512446180,
+   "scores": {
+    "main": 0.0,
+    "pixel": 75.6,
+    "tall": 38.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.221,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.599,
+    "boundary_delta_e": 87.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.158,
+    "aspect_h_over_w": 0.82,
+    "coherence": 1.0,
+    "solidity": 0.89
+   }
+  },
+  {
+   "photo_id": 219138698,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 131206969,
+   "scores": {
+    "main": 0.0,
+    "pixel": 30.5,
+    "tall": 27.6
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 28% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.005,
+    "bg_busy": 0.51,
+    "bg_green_share": 0.875,
+    "boundary_delta_e": 13.0,
+    "stalk_like_components": 3
+   },
+   "largest": {
+    "h_frac": 0.278,
+    "aspect_h_over_w": 0.77,
+    "coherence": 0.522,
+    "solidity": 0.815
+   }
+  },
+  {
+   "photo_id": 409879552,
+   "scores": {
+    "main": 0.0,
+    "pixel": 37.5,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: the subject is cut at the left and right edges"
+    ],
+    "pixel": [],
+    "tall": [
+     "tall_wide_mass: a broad mass cropped on both sides, not a single stalk"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.017,
+    "bg_green_share": 0.003,
+    "boundary_delta_e": 12.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.342,
+    "aspect_h_over_w": 0.46,
+    "coherence": 1.0,
+    "solidity": 0.994
+   }
+  },
+  {
+   "photo_id": 215694025,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 147636331,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.511,
+    "bg_busy": 0.321,
+    "bg_green_share": 0.398,
+    "boundary_delta_e": 49.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.111,
+    "aspect_h_over_w": 2.78,
+    "coherence": 1.0,
+    "solidity": 0.902
+   }
+  },
+  {
+   "photo_id": 717474404,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.347,
+    "bg_busy": 0.491,
+    "bg_green_share": 0.929,
+    "boundary_delta_e": 62.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.073,
+    "aspect_h_over_w": 0.76,
+    "coherence": 1.0,
+    "solidity": 0.958
+   }
+  },
+  {
+   "photo_id": 390537812,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 717200026,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 298534699,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 234268442,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 702964779,
+   "scores": {
+    "main": 65.2,
+    "pixel": 41.7,
+    "tall": 69.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.052,
+    "bg_green_share": 0.0,
+    "boundary_delta_e": 119.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.477,
+    "aspect_h_over_w": 1.04,
+    "coherence": 1.0,
+    "solidity": 0.946
+   }
+  },
+  {
+   "photo_id": 402900699,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.165,
+    "bg_busy": 0.819,
+    "bg_green_share": 0.888,
+    "boundary_delta_e": 85.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.095,
+    "aspect_h_over_w": 0.8,
+    "coherence": 1.0,
+    "solidity": 0.758
+   }
+  },
+  {
+   "photo_id": 698484362,
+   "scores": {
+    "main": 0.0,
+    "pixel": 73.7,
+    "tall": 66.5
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 22% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.464,
+    "bg_busy": 0.379,
+    "bg_green_share": 0.762,
+    "boundary_delta_e": 62.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.216,
+    "aspect_h_over_w": 1.1,
+    "coherence": 1.0,
+    "solidity": 0.953
+   }
+  },
+  {
+   "photo_id": 676575773,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 660348465,
+   "scores": {
+    "main": 56.7,
+    "pixel": 40.2,
+    "tall": 58.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.403,
+    "bg_green_share": 0.004,
+    "boundary_delta_e": 20.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.288,
+    "aspect_h_over_w": 1.19,
+    "coherence": 1.0,
+    "solidity": 0.952
+   }
+  },
+  {
+   "photo_id": 223121655,
+   "scores": {
+    "main": 80.2,
+    "pixel": 75.7,
+    "tall": 50.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.113,
+    "bg_busy": 0.555,
+    "bg_green_share": 0.906,
+    "boundary_delta_e": 51.1,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.519,
+    "aspect_h_over_w": 2.43,
+    "coherence": 0.641,
+    "solidity": 0.554
+   }
+  },
+  {
+   "photo_id": 623361545,
+   "scores": {
+    "main": 63.6,
+    "pixel": 38.9,
+    "tall": 37.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.922,
+    "bg_green_share": 0.138,
+    "boundary_delta_e": 26.1,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.535,
+    "aspect_h_over_w": 1.73,
+    "coherence": 0.643,
+    "solidity": 0.747
+   }
+  },
+  {
+   "photo_id": 579236550,
+   "scores": {
+    "main": 0.0,
+    "pixel": 34.1,
+    "tall": 31.7
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 17% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.785,
+    "bg_green_share": 0.334,
+    "boundary_delta_e": 0.9,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.172,
+    "aspect_h_over_w": 1.02,
+    "coherence": 0.675,
+    "solidity": 0.885
+   }
+  },
+  {
+   "photo_id": 561512466,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 196669145,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 551631168,
+   "scores": {
+    "main": 83.3,
+    "pixel": 79.5,
+    "tall": 80.2
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.631,
+    "bg_busy": 0.0,
+    "bg_green_share": 0.982,
+    "boundary_delta_e": 60.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.889,
+    "aspect_h_over_w": 1.35,
+    "coherence": 1.0,
+    "solidity": 0.832
+   }
+  },
+  {
+   "photo_id": 547253479,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 547062842,
+   "scores": {
+    "main": 59.5,
+    "pixel": 41.7,
+    "tall": 61.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.52,
+    "bg_green_share": 0.02,
+    "boundary_delta_e": 32.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.323,
+    "aspect_h_over_w": 1.02,
+    "coherence": 1.0,
+    "solidity": 0.773
+   }
+  },
+  {
+   "photo_id": 427995117,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.34,
+    "bg_busy": 0.419,
+    "bg_green_share": 0.662,
+    "boundary_delta_e": 45.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.154,
+    "aspect_h_over_w": 0.92,
+    "coherence": 1.0,
+    "solidity": 0.78
+   }
+  },
+  {
+   "photo_id": 545062008,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.3,
+    "bg_busy": 0.526,
+    "bg_green_share": 0.49,
+    "boundary_delta_e": 55.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.073,
+    "aspect_h_over_w": 1.08,
+    "coherence": 1.0,
+    "solidity": 0.923
+   }
+  },
+  {
+   "photo_id": 538073486,
+   "scores": {
+    "main": 75.0,
+    "pixel": 86.2,
+    "tall": 65.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.636,
+    "bg_busy": 0.262,
+    "bg_green_share": 0.159,
+    "boundary_delta_e": 50.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.28,
+    "aspect_h_over_w": 0.95,
+    "coherence": 0.9,
+    "solidity": 1.001
+   }
+  },
+  {
+   "photo_id": 530927163,
+   "scores": {
+    "main": 0.0,
+    "pixel": 63.7,
+    "tall": 77.1
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: a flower head is cut by the frame"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.126,
+    "bg_busy": 0.136,
+    "bg_green_share": 0.275,
+    "boundary_delta_e": 21.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.767,
+    "aspect_h_over_w": 2.23,
+    "coherence": 1.0,
+    "solidity": 0.544
+   }
+  },
+  {
+   "photo_id": 530926268,
+   "scores": {
+    "main": 0.0,
+    "pixel": 79.9,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: the subject is cut at the left and right edges"
+    ],
+    "pixel": [],
+    "tall": [
+     "tall_wide_mass: a broad mass cropped on both sides, not a single stalk"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.377,
+    "bg_busy": 0.134,
+    "bg_green_share": 0.521,
+    "boundary_delta_e": 55.9,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.866,
+    "aspect_h_over_w": 1.15,
+    "coherence": 1.0,
+    "solidity": 0.857
+   }
+  },
+  {
+   "photo_id": 530919154,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.173,
+    "bg_busy": 0.479,
+    "bg_green_share": 0.326,
+    "boundary_delta_e": 75.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.073,
+    "aspect_h_over_w": 0.86,
+    "coherence": 1.0,
+    "solidity": 0.933
+   }
+  },
+  {
+   "photo_id": 332136468,
+   "scores": {
+    "main": 0.0,
+    "pixel": 80.7,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: the subject is cut at the top and right edges"
+    ],
+    "pixel": [],
+    "tall": [
+     "tall_clipped_top: the stalk is cut at the top of the frame"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.034,
+    "bg_busy": 0.666,
+    "bg_green_share": 0.043,
+    "boundary_delta_e": 55.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.906,
+    "aspect_h_over_w": 1.74,
+    "coherence": 1.0,
+    "solidity": 0.701
+   }
+  },
+  {
+   "photo_id": 193743322,
+   "scores": {
+    "main": 59.8,
+    "pixel": 36.8,
+    "tall": 35.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.209,
+    "boundary_delta_e": 14.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.465,
+    "aspect_h_over_w": 0.94,
+    "coherence": 1.0,
+    "solidity": 0.962
+   }
+  },
+  {
+   "photo_id": 431603996,
+   "scores": {
+    "main": 79.6,
+    "pixel": 87.8,
+    "tall": 73.9
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.655,
+    "bg_busy": 0.469,
+    "bg_green_share": 0.323,
+    "boundary_delta_e": 66.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.337,
+    "aspect_h_over_w": 1.58,
+    "coherence": 1.0,
+    "solidity": 0.845
+   }
+  },
+  {
+   "photo_id": 423437533,
+   "scores": {
+    "main": 76.2,
+    "pixel": 81.2,
+    "tall": 48.8
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.028,
+    "bg_busy": 0.804,
+    "bg_green_share": 0.268,
+    "boundary_delta_e": 40.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.337,
+    "aspect_h_over_w": 1.4,
+    "coherence": 1.0,
+    "solidity": 0.88
+   }
+  },
+  {
+   "photo_id": 420847722,
+   "scores": {
+    "main": 83.6,
+    "pixel": 75.4,
+    "tall": 69.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.077,
+    "bg_busy": 0.246,
+    "bg_green_share": 0.517,
+    "boundary_delta_e": 38.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.545,
+    "aspect_h_over_w": 1.3,
+    "coherence": 0.7,
+    "solidity": 0.549
+   }
+  },
+  {
+   "photo_id": 83629262,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 157617607,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.975,
+    "bg_green_share": 0.15,
+    "boundary_delta_e": 22.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.076,
+    "aspect_h_over_w": 0.86,
+    "coherence": 1.0,
+    "solidity": 0.903
+   }
+  },
+  {
+   "photo_id": 288708533,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 319571933,
+   "scores": {
+    "main": 65.0,
+    "pixel": 41.1,
+    "tall": 39.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.234,
+    "boundary_delta_e": 87.7,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.387,
+    "aspect_h_over_w": 1.26,
+    "coherence": 1.0,
+    "solidity": 0.956
+   }
+  },
+  {
+   "photo_id": 314668256,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 313564400,
+   "scores": {
+    "main": 61.8,
+    "pixel": 41.7,
+    "tall": 64.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.08,
+    "bg_green_share": 0.107,
+    "boundary_delta_e": 34.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.384,
+    "aspect_h_over_w": 0.72,
+    "coherence": 1.0,
+    "solidity": 0.815
+   }
+  },
+  {
+   "photo_id": 150738873,
+   "scores": {
+    "main": 79.5,
+    "pixel": 47.7,
+    "tall": 76.3
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.043,
+    "bg_busy": 0.426,
+    "bg_green_share": 0.111,
+    "boundary_delta_e": 16.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.653,
+    "aspect_h_over_w": 4.19,
+    "coherence": 1.0,
+    "solidity": 0.516
+   }
+  },
+  {
+   "photo_id": 310117815,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.334,
+    "bg_busy": 0.525,
+    "bg_green_share": 0.957,
+    "boundary_delta_e": 82.4,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.049,
+    "aspect_h_over_w": 0.76,
+    "coherence": 0.392,
+    "solidity": 0.91
+   }
+  },
+  {
+   "photo_id": 154054327,
+   "scores": {
+    "main": 56.1,
+    "pixel": 35.1,
+    "tall": 67.6
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.152,
+    "bg_green_share": 0.984,
+    "boundary_delta_e": 29.8,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.935,
+    "aspect_h_over_w": 0.56,
+    "coherence": 1.0,
+    "solidity": 0.748
+   }
+  },
+  {
+   "photo_id": 304024641,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 252579468,
+   "scores": {
+    "main": 0.0,
+    "pixel": 41.6,
+    "tall": 59.8
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 17% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.494,
+    "bg_green_share": 0.075,
+    "boundary_delta_e": 50.1,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.167,
+    "aspect_h_over_w": 0.69,
+    "coherence": 1.0,
+    "solidity": 0.847
+   }
+  },
+  {
+   "photo_id": 286386055,
+   "scores": {
+    "main": 53.8,
+    "pixel": 37.7,
+    "tall": 58.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.002,
+    "bg_busy": 0.352,
+    "bg_green_share": 0.047,
+    "boundary_delta_e": 9.4,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.546,
+    "aspect_h_over_w": 0.74,
+    "coherence": 1.0,
+    "solidity": 0.685
+   }
+  },
+  {
+   "photo_id": 287362070,
+   "scores": {
+    "main": 60.8,
+    "pixel": 38.5,
+    "tall": 67.1
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.108,
+    "bg_green_share": 0.34,
+    "boundary_delta_e": 29.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.342,
+    "aspect_h_over_w": 0.84,
+    "coherence": 1.0,
+    "solidity": 0.8
+   }
+  },
+  {
+   "photo_id": 223382089,
+   "scores": {
+    "main": 0.0,
+    "pixel": 65.2,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "main_clipped: a flower head is cut by the frame",
+     "subject_too_small: the plant is 23% of the frame height"
+    ],
+    "pixel": [],
+    "tall": [
+     "tall_clipped_top: the stalk is cut at the top of the frame"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.115,
+    "bg_busy": 0.736,
+    "bg_green_share": 0.736,
+    "boundary_delta_e": 113.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.229,
+    "aspect_h_over_w": 0.55,
+    "coherence": 0.919,
+    "solidity": 0.793
+   }
+  },
+  {
+   "photo_id": 85556497,
+   "scores": {
+    "main": 0.0,
+    "pixel": 74.7,
+    "tall": 69.9
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 21% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.177,
+    "bg_busy": 0.213,
+    "bg_green_share": 0.97,
+    "boundary_delta_e": 104.6,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.212,
+    "aspect_h_over_w": 0.55,
+    "coherence": 1.0,
+    "solidity": 0.777
+   }
+  },
+  {
+   "photo_id": 147636419,
+   "scores": {
+    "main": 80.2,
+    "pixel": 70.7,
+    "tall": 78.4
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.119,
+    "bg_busy": 0.207,
+    "bg_green_share": 0.468,
+    "boundary_delta_e": 82.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.644,
+    "aspect_h_over_w": 0.72,
+    "coherence": 1.0,
+    "solidity": 0.734
+   }
+  },
+  {
+   "photo_id": 174323163,
+   "scores": {
+    "main": 67.6,
+    "pixel": 43.3,
+    "tall": 43.5
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.848,
+    "bg_green_share": 0.009,
+    "boundary_delta_e": 62.2,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.503,
+    "aspect_h_over_w": 1.15,
+    "coherence": 1.0,
+    "solidity": 0.91
+   }
+  },
+  {
+   "photo_id": 148332881,
+   "scores": {
+    "main": 0.0,
+    "pixel": 69.7,
+    "tall": 42.1
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 16% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.477,
+    "bg_busy": 0.635,
+    "bg_green_share": 0.777,
+    "boundary_delta_e": 67.7,
+    "stalk_like_components": 2
+   },
+   "largest": {
+    "h_frac": 0.155,
+    "aspect_h_over_w": 1.17,
+    "coherence": 0.652,
+    "solidity": 0.85
+   }
+  },
+  {
+   "photo_id": 48481001,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 145468145,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.013,
+    "bg_busy": 0.132,
+    "bg_green_share": 0.185,
+    "boundary_delta_e": 112.3,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.581,
+    "aspect_h_over_w": 7.82,
+    "coherence": 0.891,
+    "solidity": 0.271
+   }
+  },
+  {
+   "photo_id": 44738275,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 89900458,
+   "scores": {
+    "main": 65.9,
+    "pixel": 37.7,
+    "tall": 38.7
+   },
+   "rejected": {
+    "main": [],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.001,
+    "bg_busy": 1.0,
+    "bg_green_share": 0.482,
+    "boundary_delta_e": 24.5,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.512,
+    "aspect_h_over_w": 1.14,
+    "coherence": 1.0,
+    "solidity": 0.851
+   }
+  },
+  {
+   "photo_id": 78731548,
+   "scores": {
+    "main": 0.0,
+    "pixel": 0.0,
+    "tall": 0.0
+   },
+   "rejected": {
+    "main": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "pixel": [
+     "no_subject: the segmenter found no separable plant subject"
+    ],
+    "tall": [
+     "no_subject: the segmenter found no separable plant subject"
+    ]
+   },
+   "hands": false,
+   "m": {
+    "flower_share": null,
+    "bg_busy": null,
+    "bg_green_share": null,
+    "boundary_delta_e": null,
+    "stalk_like_components": null
+   },
+   "largest": {
+    "h_frac": null,
+    "aspect_h_over_w": null,
+    "coherence": null,
+    "solidity": null
+   }
+  },
+  {
+   "photo_id": 27492492,
+   "scores": {
+    "main": 0.0,
+    "pixel": 44.7,
+    "tall": 59.3
+   },
+   "rejected": {
+    "main": [
+     "subject_too_small: the plant is 19% of the frame height"
+    ],
+    "pixel": [],
+    "tall": []
+   },
+   "hands": false,
+   "m": {
+    "flower_share": 0.0,
+    "bg_busy": 0.315,
+    "bg_green_share": 0.356,
+    "boundary_delta_e": 39.0,
+    "stalk_like_components": 1
+   },
+   "largest": {
+    "h_frac": 0.191,
+    "aspect_h_over_w": 0.91,
+    "coherence": 1.0,
+    "solidity": 0.94
+   }
+  }
+ ]
+}
