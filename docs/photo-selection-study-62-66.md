@@ -113,9 +113,9 @@ observations the owner chose from sit (`evidence/blind-test/retrieval-probe/`).
 Findings, in order of how much they explain:
 1. **Every one of the 19 was reachable.** Retrieval depth was never the limit: by-votes position <= 277 in all five species. The loss
    happened at the pool CUT, not in the search.
-2. **The cut is biased against the owner's taste.** v2 sorts the pool "flowering-annotated first" and keeps 300 photographs. Only 14 of the owner's
-   19 observations (74%) lack that annotation (just 5 appear in a flowering-annotated query), and annotated observations are 6-13% of each species.
-   The sort therefore promotes a small, atypical subset and pushes the ordinary, well-liked photographs past the cut.
+2. **The cut is biased against the owner's taste.** v2 sorts the pool "flowering-annotated first" and keeps 300 photographs. 13 of the owner's
+   19 observations (68%) lack that annotation (6 carry it), and annotated observations are only 6-13% of each species. The sort therefore promotes a small subset
+   and pushes the ordinary photographs the owner liked past the cut.
 3. **iNaturalist's own vote ordering is a much better prior than the annotation.** Median by-votes position of the owner's
    observations is 64; in the site's default order it is several hundred.
 4. **v3 as built may still be too shallow.** It drops the flowering-first sort but round-robins seven queries into a 320-photograph pool,
@@ -123,6 +123,17 @@ Findings, in order of how much they explain:
    that sit between 100 and 277. The retro run will show how many of the 19 v3 actually retrieves; if it is short of 19, the fix is
    **a pool that takes the top ~300 observations by votes outright**, with a cheap pre-screen (resolution, orientation, colour) deciding
    what reaches the expensive segmentation step. Not built yet: it is the next change to test, not a finding.
+
+## 1d. How the owner picks (from the history and the observations themselves)
+
+`pick_position_probe.py` (`evidence/blind-test/retrieval-probe/pick-positions.json`):
+- The history shows 3, 5, 5, 3 and 3 observations viewed for 62-66, and the owner took 3, 5, 5, 3 and 3 pictures: **one picture per observation viewed**.
+  Selection is two-step: pick an observation from the grid, then a photo from it.
+- **14 of 19 picks are the observation's first (cover) photograph**; 11 of the 19 observations have only one photo at all.
+- The observations are ordinary: 18 of 19 have 0-1 faves and 16 of 19 have a single agreeing identification beyond the observer's. Popularity is not what
+  selects them, and neither is the flowering annotation (6 of 19).
+Implication: an observation's cover photograph is the owner's first filter, so candidate sheets should lead with cover photographs and
+score the observation by its best photograph, instead of counting every photograph as an independent candidate.
 
 ## 2. What the numbers say
 
