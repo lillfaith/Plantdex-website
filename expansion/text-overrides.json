@@ -55,5 +55,14 @@
    "by": "owner",
    "why": "Owner asked to add these two Healing Traits to Muscadine Grape if they fit (they are not in the master sheet)."
   }
+ ],
+ "103": [
+  {
+   "field": "back.healingTraits",
+   "from": "Cough soothing",
+   "to": "Salivary aid",
+   "by": "owner",
+   "why": "Owner asked to replace 'Cough soothing' with 'Salivary aid'."
+  }
  ]
 }
