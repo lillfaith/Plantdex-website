@@ -123,7 +123,8 @@ def measure(rgb: np.ndarray, mask: np.ndarray, flower_kind: str) -> dict:
     m["largest"] = {"area": round(lc["area"], 4), "h_frac": round(lc["h_frac"], 3), "w_frac": round(lc["w_frac"], 3),
                     "aspect_h_over_w": round(lc["box"][3] / max(1, lc["box"][2]), 2), "solidity": lc["solidity"],
                     "touch": lc["touch"], "n_touch": n_touch,
-                    "coherence": round(lc["area"] * h * w / max(1, mask.sum()), 3)}
+                    "coherence": round(lc["area"] * h * w / max(1, mask.sum()), 3),
+                    "box": [int(v) for v in lc["box"]]}
     m["significant_components"] = len(sig)
     m["stalk_like_components"] = len([c for c in comps if c["area"] >= 0.25 * lc["area"]])
     # colour structures INSIDE the subject only
@@ -330,8 +331,23 @@ def judge_tall(m) -> dict:
     return {"hard": hard, "flags": flags, "completeness": comp, "suitability": min(1.0, suit)}
 
 
+# POLICY v3 (owner-picks study, #62-66). Stage A keeps only what the bytes and facts decide. A hand, a stalk cut at the top,
+# a clipped or small subject and a cropped head are things an EDIT or a CROP can fix, and the owner accepted pictures with every one
+# of them, so under v3 they travel as flags (and still lower the completeness part of the score). v2 behaviour is unchanged.
+SOFT_V3 = ("hands", "main_clipped", "subject_too_small", "pixel_head_cropped", "tall_clipped_top", "tall_wide_mass")
+
+
+def soften(hard: list[str], flags: list[str], policy: str) -> tuple[list[str], list[str]]:
+    if policy != "v3":
+        return hard, flags
+    keep, moved = [], []
+    for h in hard:
+        (moved if h.split(":")[0] in SOFT_V3 else keep).append(h)
+    return keep, flags + [f"needs_crop_or_edit({m.split(':')[0]}): {m.split(':', 1)[1].strip()}" for m in moved]
+
+
 def evaluate(rgb: np.ndarray, orig_long: int, flower_kind: str, mask_fn=default_mask_fn,
-             want_pixel_test: bool = True) -> dict:
+             want_pixel_test: bool = True, policy: str = "v2") -> dict:
     """Measure once, judge for all three roles. Never raises on a bad image: it reports."""
     try:
         mask = mask_fn(rgb)
@@ -340,6 +356,7 @@ def evaluate(rgb: np.ndarray, orig_long: int, flower_kind: str, mask_fn=default_
     m = measure(rgb, mask, flower_kind)
     hands = hand_check(rgb, mask) if m.get("largest") else {"checked": False, "reject": False}
     hard, flags = _common(m, orig_long, hands)
+    hard, flags = soften(hard, flags, policy)
     out = {"measure": {k: v for k, v in m.items() if not k.startswith("_")}, "hands": hands,
            "common_hard": hard, "common_flags": flags, "roles": {}}
     if m.get("largest") is None or any(h.startswith("no_subject") for h in hard):
@@ -350,7 +367,67 @@ def evaluate(rgb: np.ndarray, orig_long: int, flower_kind: str, mask_fn=default_
     out["roles"]["main"] = judge_main(m)
     out["roles"]["pixel"] = judge_pixel(m, px)
     out["roles"]["tall"] = judge_tall(m)
+    for r in out["roles"].values():
+        r["hard"], r["flags"] = soften(r["hard"], r["flags"], policy)
     if px:
         out["pixel_test"] = {k: v for k, v in px.items() if k not in ("image", "enlarged")}
         out["_pixel_images"] = (px["image"], px["enlarged"])
     return out
+
+
+# --- v3: crop-then-score ---------------------------------------------------------------------
+# The owner's tall previews are "an upright unit found inside a landscape photo" and their main/pixel picks are often a branch inside a wider
+# scene. Scoring only the whole frame measures the frame, not the subject. So each photograph is also scored as it would be CROPPED:
+# a padded box around the subject (never cutting it), or, when the segmenter finds no subject at all, around the strongest flower cluster.
+CROP_PAD = 0.12            # margin around the subject box, as a share of its larger side
+CLUSTER_PAD = 0.9          # margin around a flower cluster (the cluster alone has no context to segment)
+MAX_CROPS = 3
+
+
+def _pad_box(box, shape, pad):
+    h, w = shape
+    x, y, bw, bh = box
+    p = int(pad * max(bw, bh))
+    x0, y0, x1, y1 = max(0, x - p), max(0, y - p), min(w, x + bw + p), min(h, y + bh + p)
+    return (x0, y0, x1 - x0, y1 - y0)
+
+
+def crop_boxes(rgb: np.ndarray, ev: dict, flower_kind: str) -> list[tuple[str, tuple[int, int, int, int]]]:
+    """Candidate crops (label, (x, y, w, h)) in `rgb` pixels. Every crop CONTAINS the subject box it was built from."""
+    h, w = rgb.shape[:2]
+    out = []
+    lc = (ev.get("measure") or {}).get("largest")
+    if lc and lc.get("box"):
+        box = _pad_box(tuple(lc["box"]), (h, w), CROP_PAD)
+        if box[2] * box[3] <= 0.85 * h * w:
+            out.append(("subject-crop", box))
+    if lc is None or any("no_subject" in x for x in ev.get("common_hard", [])):
+        hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
+        H, S_, V = (hsv[..., i].astype(int) for i in range(3))
+        fl = FLOWER_KINDS[flower_kind](H, S_, V)
+        fl = cv2.morphologyEx(fl.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        fl = cv2.dilate(fl, np.ones((9, 9), np.uint8), iterations=2)
+        for i, c in enumerate(_components(fl > 0, min_frac=0.0008)[:2]):
+            box = _pad_box(c["box"], (h, w), CLUSTER_PAD)
+            if box[2] * box[3] <= 0.85 * h * w:
+                out.append((f"flower-cluster-{i + 1}", box))
+    return out[:MAX_CROPS]
+
+
+def evaluate_views(rgb: np.ndarray, orig_long: int, flower_kind: str, mask_fn=default_mask_fn, policy: str = "v3") -> list[dict]:
+    """The whole frame plus its candidate crops, each fully evaluated. Crops are scored with their TRUE pixel size
+    (so quality still sees a small crop) but are not hard-rejected for it: the crop will be placed in an art window, not published as-is."""
+    views = []
+    full = evaluate(rgb, orig_long, flower_kind, mask_fn, policy=policy)
+    views.append({"label": "full-frame", "box": None, "px": orig_long, "ev": full})
+    if "error" in full or policy != "v3":
+        return views
+    H, W = rgb.shape[:2]
+    for label, (x, y, bw, bh) in crop_boxes(rgb, full, flower_kind):
+        px = int(orig_long * max(bw, bh) / max(H, W))
+        try:
+            ev = evaluate(np.ascontiguousarray(rgb[y:y + bh, x:x + bw]), max(px, MIN_ORIGINAL_EDGE), flower_kind, mask_fn, policy=policy)
+        except Exception as e:  # noqa: BLE001
+            ev = {"error": f"{type(e).__name__}: {str(e)[:80]}"}
+        views.append({"label": label, "box": [x, y, bw, bh], "px": px, "ev": ev})
+    return views

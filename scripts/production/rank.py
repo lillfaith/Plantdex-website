@@ -150,3 +150,41 @@ def shortlist(rows: list[dict], role: str, n: int = 12, min_score: float = MIN_S
         if len(out) >= n:
             break
     return out
+
+
+def best_view(role: str, views: list[dict], obs: dict, kind: str) -> dict:
+    """v3 crop-then-score: the role's score is the best over the whole frame and its candidate crops.
+    Weights and formulas are UNCHANGED (score_role); only WHAT is scored changes. Returns the winning score dict plus which view won."""
+    best = None
+    for v in views:
+        sc = score_role(role, v["ev"], obs, v["px"], kind)
+        sc = {**sc, "view": v["label"], "crop_box": v["box"]}
+        if best is None or (best["rejected"] and not sc["rejected"]) or (best["rejected"] == sc["rejected"] and sc["score"] > best["score"]):
+            best = sc
+    return best
+
+
+def joint_top3(rows: list[dict], width: int = 12) -> list[dict]:
+    """Three recommended (main, pixel, tall) triples chosen TOGETHER: no photograph, and no observation, is used twice in a triple,
+    and a later triple never reuses a photograph an earlier one took. Maximises the summed role scores. `rows`: {photo_id, observation_id, scores}."""
+    import itertools
+    used: set = set()
+    out = []
+    for rank in (1, 2, 3):
+        top = {}
+        for role in ROLES:
+            ok = [r for r in rows if r["photo_id"] not in used and not r["scores"][role]["rejected"] and r["scores"][role]["score"] >= MIN_SCORE]
+            top[role] = sorted(ok, key=lambda r: -r["scores"][role]["score"])[:width]
+        best = None
+        for m, p, t in itertools.product(top["main"], top["pixel"], top["tall"]):
+            if len({m["photo_id"], p["photo_id"], t["photo_id"]}) < 3 or len({m["observation_id"], p["observation_id"], t["observation_id"]}) < 3:
+                continue
+            total = m["scores"]["main"]["score"] + p["scores"]["pixel"]["score"] + t["scores"]["tall"]["score"]
+            if best is None or total > best[0]:
+                best = (total, m, p, t)
+        if best is None:
+            break
+        _, m, p, t = best
+        used |= {m["photo_id"], p["photo_id"], t["photo_id"]}
+        out.append({"rank": rank, "total": round(best[0], 1), "main": m["photo_id"], "pixel": p["photo_id"], "tall": t["photo_id"]})
+    return out

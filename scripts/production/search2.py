@@ -29,6 +29,12 @@ MIN_ORIG_EDGE = 1400               # a candidate's original long edge; the scree
 PER_PAGE = 200
 MAX_PAGES = 4
 FLOWERING = {"term_id": 12, "term_value_id": 13}     # Plant Phenology = Flowering
+FRUITING = {"term_id": 12, "term_value_id": 14}      # Plant Phenology = Fruiting
+BUDDING = {"term_id": 12, "term_value_id": 15}       # Plant Phenology = Flower Budding
+QUERIES_V3_EXTRA = [
+    ("fruiting-votes", {"order_by": "votes", **FRUITING}),
+    ("budding-votes", {"order_by": "votes", **BUDDING}),
+]
 QUERIES = [
     ("flowering-votes", {"order_by": "votes", **FLOWERING}),
     ("flowering-recent", {"order_by": "observed_on", "order": "desc", **FLOWERING}),
@@ -93,13 +99,15 @@ def photos_of(obs: dict, taxon_id: int, query: str) -> list[dict]:
     return out
 
 
-def build_pool(taxon_id: int, exclude_photos: set, exclude_obs: set, limit: int = 220, log=print) -> list[dict]:
+def build_pool(taxon_id: int, exclude_photos: set, exclude_obs: set, limit: int = 220, log=print, policy: str = "v2") -> list[dict]:
     """Candidate photographs: new, CC0, large, flowering-first, interleaved across query types."""
     per_query: list[list[dict]] = []
     seen_obs = set()
-    for name, extra in QUERIES:
+    queries = QUERIES + (QUERIES_V3_EXTRA if policy == "v3" else [])
+    pages = 6 if policy == "v3" else MAX_PAGES          # v3: deeper, because 7 of the owner's 19 picks were never in a pool
+    for name, extra in queries:
         got: list[dict] = []
-        for page in range(1, MAX_PAGES + 1):
+        for page in range(1, pages + 1):
             params = {"taxon_id": taxon_id, "photo_license": "cc0", "quality_grade": "research", "photos": "true",
                       "per_page": PER_PAGE, "page": page, **extra}
             ans = F.get(f"{F.API}/observations?{F.urllib.parse.urlencode(params)}") or {}
@@ -126,7 +134,8 @@ def build_pool(taxon_id: int, exclude_photos: set, exclude_obs: set, limit: int 
                 seen.add(p["photo_id"])
                 per_obs[p["observation_id"]] = per_obs.get(p["observation_id"], 0) + 1
                 pool.append(p)
-    pool.sort(key=lambda p: (not p["flowering_annotation"], -(p["identification_agreements"] or 0) // 2, p["photo_index"]))
+    if policy != "v3":      # v2 ordering puts flowering-annotated photos first, which starves fruit, bud and unannotated photographs at the cut
+        pool.sort(key=lambda p: (not p["flowering_annotation"], -(p["identification_agreements"] or 0) // 2, p["photo_index"]))
     return pool[:limit]
 
 

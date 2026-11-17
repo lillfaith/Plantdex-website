@@ -1,0 +1,102 @@
+name: Pipeline v3 (retro on #62-66, sealed blind predictions for #77-81)
+
+# PRIVATE RESEARCH TOOL. Runs the photo pipeline under policy v2 (as shipped) and v3 (owner-picks study changes):
+#  * retro: #62-66 with the owner's 19 known picks - did the changes help on the training batch?
+#  * blind: #77-81 - predictions written and COMMITTED before the owner chooses. Selects/approves/edits nothing.
+# STARTED BY PUSHING evidence/blind-test/request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/blind-test/request.json
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - run: python3 scripts/production/test_pipeline_v3.py
+      - run: python3 scripts/production/test_search_v2.py
+
+  run:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [retro, blind]
+        index: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - name: v2 then v3
+        run: |
+          if [ "${{ matrix.batch }}" = "retro" ]; then
+            REQ=evidence/blind-test/species-62-66.json; PICKS="--owner-picks evidence/blind-test/owner-picks-62-66.json"
+          else
+            REQ=evidence/blind-test/species-77-81.json; PICKS=""
+          fi
+          for P in v3 v2; do
+            python3 scripts/production/pipeline_run.py --request $REQ --index ${{ matrix.index }} --policy $P --limit 320 $PICKS --out out/${{ matrix.batch }}
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pv3-${{ matrix.batch }}-${{ matrix.index }}
+          path: out
+          retention-days: 14
+
+  report:
+    needs: run
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pv3-*
+          path: out
+          merge-multiple: true
+      - name: Seal and commit (the blind predictions are committed BEFORE the owner chooses)
+        run: |
+          mkdir -p evidence/blind-test/retro evidence/blind-test/77-81
+          cp -r out/retro/. evidence/blind-test/retro/ 2>/dev/null || true
+          cp -r out/blind/. evidence/blind-test/77-81/ 2>/dev/null || true
+          python3 - <<'P'
+          import glob, json, hashlib, datetime
+          sealed = {"sealed_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"), "batch": "77-81",
+                    "note": "Predictions only: top 12 per role and three joint (main, pixel, tall) triples, per policy. Written before the owner chose.", "species": {}}
+          for f in sorted(glob.glob("evidence/blind-test/77-81/*/result.json")):
+              d = json.load(open(f))
+              sealed["species"].setdefault(str(d["card"]), {})[d["policy"]] = {"scientific": d["scientific"], "pool": d["pool"], "top12": d["top12"], "joint_top3": d["joint_top3"]}
+          body = json.dumps(sealed, indent=1, sort_keys=True)
+          open("evidence/blind-test/77-81/PREDICTIONS_SEALED.json", "w").write(body)
+          print("sha256", hashlib.sha256(body.encode()).hexdigest())
+          P
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Pipeline v3: retro results (#62-66) and sealed blind predictions (#77-81)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1

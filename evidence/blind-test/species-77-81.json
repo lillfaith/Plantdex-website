@@ -1,0 +1,34 @@
+{
+ "species": [
+  {
+   "card": 77,
+   "common": "Wild Yam",
+   "scientific": "Dioscorea villosa",
+   "flower_kind": "white"
+  },
+  {
+   "card": 78,
+   "common": "Virginia Pepperweed",
+   "scientific": "Lepidium virginicum",
+   "flower_kind": "white"
+  },
+  {
+   "card": 79,
+   "common": "Common Cinquefoil",
+   "scientific": "Potentilla simplex",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 80,
+   "common": "White Clover",
+   "scientific": "Trifolium repens",
+   "flower_kind": "white"
+  },
+  {
+   "card": 81,
+   "common": "Queen Anne's Lace",
+   "scientific": "Daucus carota",
+   "flower_kind": "white"
+  }
+ ]
+}

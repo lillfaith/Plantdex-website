@@ -1,0 +1,34 @@
+{
+ "species": [
+  {
+   "card": 62,
+   "common": "California Buckwheat",
+   "scientific": "Eriogonum fasciculatum",
+   "flower_kind": "white"
+  },
+  {
+   "card": 63,
+   "common": "Wild Quinine",
+   "scientific": "Parthenium integrifolium",
+   "flower_kind": "white"
+  },
+  {
+   "card": 64,
+   "common": "Sweet Everlasting",
+   "scientific": "Pseudognaphalium obtusifolium",
+   "flower_kind": "white"
+  },
+  {
+   "card": 65,
+   "common": "American Lotus",
+   "scientific": "Nelumbo lutea",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 66,
+   "common": "Annual Fleabane",
+   "scientific": "Erigeron annuus",
+   "flower_kind": "white"
+  }
+ ]
+}
