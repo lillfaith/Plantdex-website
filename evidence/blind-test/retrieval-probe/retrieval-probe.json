@@ -1,0 +1,428 @@
+{
+ "pages": 15,
+ "per_page": 200,
+ "species": {
+  "62": {
+   "scientific": "Eriogonum fasciculatum",
+   "wanted": 3,
+   "orderings": {
+    "research | votes": {
+     "total_matching": 1460,
+     "positions": {
+      "3217076": 2,
+      "163034672": 227,
+      "45735237": 277
+     },
+     "found": 3,
+     "reached": 1460
+    },
+    "research | newest observed": {
+     "total_matching": 1460,
+     "positions": {
+      "163034672": 673,
+      "45735237": 981,
+      "3217076": 1418
+     },
+     "found": 3,
+     "reached": 1460
+    },
+    "research | newest upload": {
+     "total_matching": 1460,
+     "positions": {
+      "163034672": 684,
+      "45735237": 989,
+      "3217076": 1428
+     },
+     "found": 3,
+     "reached": 1460
+    },
+    "research | id desc (site default)": {
+     "total_matching": 1460,
+     "positions": {
+      "163034672": 684,
+      "45735237": 989,
+      "3217076": 1428
+     },
+     "found": 3,
+     "reached": 1460
+    },
+    "any grade | id desc (site default)": {
+     "total_matching": 1724,
+     "positions": {
+      "163034672": 879,
+      "45735237": 1229,
+      "3217076": 1692
+     },
+     "found": 3,
+     "reached": 1724
+    },
+    "any grade | votes": {
+     "total_matching": 1724,
+     "positions": {
+      "3217076": 2,
+      "163034672": 259,
+      "45735237": 339
+     },
+     "found": 3,
+     "reached": 1724
+    },
+    "research | flowering | votes": {
+     "total_matching": 150,
+     "positions": {},
+     "found": 0,
+     "reached": 150
+    },
+    "research | fruiting | votes": {
+     "total_matching": 45,
+     "positions": {},
+     "found": 0,
+     "reached": 45
+    }
+   }
+  },
+  "63": {
+   "scientific": "Parthenium integrifolium",
+   "wanted": 5,
+   "orderings": {
+    "research | votes": {
+     "total_matching": 355,
+     "positions": {
+      "303560859": 10,
+      "87006": 52,
+      "135944027": 72,
+      "362228567": 174,
+      "90608931": 222
+     },
+     "found": 5,
+     "reached": 355
+    },
+    "research | newest observed": {
+     "total_matching": 355,
+     "positions": {
+      "362228567": 35,
+      "303560859": 51,
+      "135944027": 165,
+      "90608931": 206,
+      "87006": 349
+     },
+     "found": 5,
+     "reached": 355
+    },
+    "research | newest upload": {
+     "total_matching": 355,
+     "positions": {
+      "362228567": 33,
+      "303560859": 52,
+      "135944027": 171,
+      "90608931": 215,
+      "87006": 355
+     },
+     "found": 5,
+     "reached": 355
+    },
+    "research | id desc (site default)": {
+     "total_matching": 355,
+     "positions": {
+      "362228567": 33,
+      "303560859": 52,
+      "135944027": 171,
+      "90608931": 215,
+      "87006": 355
+     },
+     "found": 5,
+     "reached": 355
+    },
+    "any grade | id desc (site default)": {
+     "total_matching": 451,
+     "positions": {
+      "362228567": 61,
+      "303560859": 91,
+      "135944027": 243,
+      "90608931": 298,
+      "87006": 451
+     },
+     "found": 5,
+     "reached": 451
+    },
+    "any grade | votes": {
+     "total_matching": 451,
+     "positions": {
+      "303560859": 23,
+      "87006": 69,
+      "135944027": 91,
+      "362228567": 228,
+      "90608931": 284
+     },
+     "found": 5,
+     "reached": 451
+    },
+    "research | flowering | votes": {
+     "total_matching": 98,
+     "positions": {
+      "303560859": 10,
+      "87006": 18,
+      "135944027": 25
+     },
+     "found": 3,
+     "reached": 98
+    },
+    "research | fruiting | votes": {
+     "total_matching": 6,
+     "positions": {},
+     "found": 0,
+     "reached": 6
+    }
+   }
+  },
+  "64": {
+   "scientific": "Pseudognaphalium obtusifolium",
+   "wanted": 5,
+   "orderings": {
+    "research | votes": {
+     "total_matching": 497,
+     "positions": {
+      "91799030": 4,
+      "56464390": 59,
+      "236077232": 64,
+      "405928651": 171,
+      "397085607": 210
+     },
+     "found": 5,
+     "reached": 497
+    },
+    "research | newest observed": {
+     "total_matching": 497,
+     "positions": {
+      "405928651": 14,
+      "397085607": 50,
+      "236077232": 212,
+      "91799030": 352,
+      "56464390": 433
+     },
+     "found": 5,
+     "reached": 497
+    },
+    "research | newest upload": {
+     "total_matching": 497,
+     "positions": {
+      "405928651": 13,
+      "397085607": 50,
+      "236077232": 214,
+      "91799030": 353,
+      "56464390": 436
+     },
+     "found": 5,
+     "reached": 497
+    },
+    "research | id desc (site default)": {
+     "total_matching": 497,
+     "positions": {
+      "405928651": 13,
+      "397085607": 50,
+      "236077232": 214,
+      "91799030": 353,
+      "56464390": 436
+     },
+     "found": 5,
+     "reached": 497
+    },
+    "any grade | id desc (site default)": {
+     "total_matching": 819,
+     "positions": {
+      "405928651": 41,
+      "397085607": 111,
+      "236077232": 432,
+      "91799030": 648,
+      "56464390": 745
+     },
+     "found": 5,
+     "reached": 819
+    },
+    "any grade | votes": {
+     "total_matching": 819,
+     "positions": {
+      "91799030": 4,
+      "236077232": 79,
+      "56464390": 95,
+      "405928651": 265,
+      "397085607": 346
+     },
+     "found": 5,
+     "reached": 819
+    },
+    "research | flowering | votes": {
+     "total_matching": 88,
+     "positions": {
+      "91799030": 2
+     },
+     "found": 1,
+     "reached": 88
+    },
+    "research | fruiting | votes": {
+     "total_matching": 16,
+     "positions": {},
+     "found": 0,
+     "reached": 16
+    }
+   }
+  },
+  "65": {
+   "scientific": "Nelumbo lutea",
+   "wanted": 3,
+   "orderings": {
+    "research | votes": {
+     "total_matching": 197,
+     "positions": {
+      "16418243": 41,
+      "181762985": 65,
+      "14396705": 95
+     },
+     "found": 3,
+     "reached": 197
+    },
+    "research | newest observed": {
+     "total_matching": 197,
+     "positions": {
+      "181762985": 96,
+      "16418243": 186,
+      "14396705": 190
+     },
+     "found": 3,
+     "reached": 197
+    },
+    "research | newest upload": {
+     "total_matching": 197,
+     "positions": {
+      "181762985": 98,
+      "16418243": 191,
+      "14396705": 193
+     },
+     "found": 3,
+     "reached": 197
+    },
+    "research | id desc (site default)": {
+     "total_matching": 197,
+     "positions": {
+      "181762985": 98,
+      "16418243": 191,
+      "14396705": 193
+     },
+     "found": 3,
+     "reached": 197
+    },
+    "any grade | id desc (site default)": {
+     "total_matching": 255,
+     "positions": {
+      "181762985": 151,
+      "16418243": 247,
+      "14396705": 250
+     },
+     "found": 3,
+     "reached": 255
+    },
+    "any grade | votes": {
+     "total_matching": 255,
+     "positions": {
+      "16418243": 59,
+      "181762985": 86,
+      "14396705": 119
+     },
+     "found": 3,
+     "reached": 255
+    },
+    "research | flowering | votes": {
+     "total_matching": 26,
+     "positions": {
+      "16418243": 7
+     },
+     "found": 1,
+     "reached": 26
+    },
+    "research | fruiting | votes": {
+     "total_matching": 9,
+     "positions": {},
+     "found": 0,
+     "reached": 9
+    }
+   }
+  },
+  "66": {
+   "scientific": "Erigeron annuus",
+   "wanted": 3,
+   "orderings": {
+    "research | votes": {
+     "total_matching": 1156,
+     "positions": {
+      "33943486": 19,
+      "370030845": 87,
+      "241644451": 262
+     },
+     "found": 3,
+     "reached": 1156
+    },
+    "research | newest observed": {
+     "total_matching": 1156,
+     "positions": {
+      "370030845": 122,
+      "241644451": 347,
+      "33943486": 1014
+     },
+     "found": 3,
+     "reached": 1156
+    },
+    "research | newest upload": {
+     "total_matching": 1156,
+     "positions": {
+      "370030845": 123,
+      "241644451": 355,
+      "33943486": 1019
+     },
+     "found": 3,
+     "reached": 1156
+    },
+    "research | id desc (site default)": {
+     "total_matching": 1156,
+     "positions": {
+      "370030845": 123,
+      "241644451": 355,
+      "33943486": 1019
+     },
+     "found": 3,
+     "reached": 1156
+    },
+    "any grade | id desc (site default)": {
+     "total_matching": 2321,
+     "positions": {
+      "370030845": 352,
+      "241644451": 976,
+      "33943486": 2137
+     },
+     "found": 3,
+     "reached": 2321
+    },
+    "any grade | votes": {
+     "total_matching": 2321,
+     "positions": {
+      "33943486": 25,
+      "370030845": 173,
+      "241644451": 523
+     },
+     "found": 3,
+     "reached": 2321
+    },
+    "research | flowering | votes": {
+     "total_matching": 186,
+     "positions": {},
+     "found": 0,
+     "reached": 186
+    },
+    "research | fruiting | votes": {
+     "total_matching": 7,
+     "positions": {},
+     "found": 0,
+     "reached": 7
+    }
+   }
+  }
+ }
+}
