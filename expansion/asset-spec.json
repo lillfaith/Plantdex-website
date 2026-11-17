@@ -2,17 +2,23 @@
   "_what": "Validation thresholds for expansion-card artwork. Edit here, not in code. confirmed:false means the repository never defined the number and a person must confirm it.",
   "main": {
     "confirmed": true,
-    "formats": ["PNG", "WEBP"],
-    "min_transparent_fraction": 0.10,
+    "formats": [
+      "PNG",
+      "WEBP"
+    ],
+    "min_transparent_fraction": 0.1,
     "min_opaque_fraction": 0.05,
     "min_transparent_corners": 3,
     "min_subject_height_px": 484,
     "recommended_subject_height_px": 968,
-    "note": "The card's art window is 593x484 (render_generated_card.SLOT_PHOTO); 968px is 2x."
+    "note": "The card's art window is 593x484 (render_generated_card.SLOT_PHOTO); 968px is 2x. The approved ChatGPT cutouts carry alpha ~252 in their body, not 255, so 'opaque' means alpha >= 240.",
+    "opaque_alpha_min": 240
   },
   "pixel": {
     "confirmed": true,
-    "formats": ["PNG"],
+    "formats": [
+      "PNG"
+    ],
     "min_px": 21,
     "max_px": 24,
     "min_transparent_fraction": 0.15,
@@ -21,14 +27,20 @@
     "warn_colours": 24,
     "fail_colours": 40,
     "max_smooth_gradient_share": 0.35,
-    "note": "Native 21-24px per side, hard binary alpha, small flat palette. Heuristic: also judge by eye."
+    "note": "Native 21-24px per side, PNG, transparent corners. The owner-approved #57-61 icons carry 100+ colours and (#57) soft alpha, which the original heuristics rejected; palette / semi-transparency / gradient checks are now WARNINGS, judge by eye.",
+    "heuristics_are_warnings": true
   },
   "tall": {
-    "confirmed": false,
-    "formats": ["PNG", "WEBP", "JPEG"],
-    "min_width_px": 600,
-    "min_height_px": 900,
-    "min_aspect_h_over_w": 1.3,
-    "note": "PLACEHOLDER. The repository does not define a 'tall preview'. Confirm these numbers."
+    "confirmed": true,
+    "formats": [
+      "PNG"
+    ],
+    "exact_size": [
+      390,
+      630
+    ],
+    "min_coverage": 0.02,
+    "max_coverage": 0.35,
+    "note": "APPROVED production format (owner handoff for #57-61): the plant filled with the exact 500x500 gradient pixels, as a transparent 390x630 layer aligned to the card-back template. Replaces the unconfirmed 600x900 placeholder."
   }
 }

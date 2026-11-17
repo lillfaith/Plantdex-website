@@ -1,0 +1,53 @@
+{
+ "id": "eupatorium-perfoliatum",
+ "cardNumber": 57,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "9a99f74be74a47780f78bafb40332224a64b1c3fb09184667869d18021fcd149",
+  "size": [
+   1086,
+   1448
+  ],
+  "imported_at": "20261117T052201631174",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "5cf4e5745b2ab77fa44897f6b22b41bcf90b5d68afed328679cded22e8dd8f4d",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T052201635259",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "11.3% of pixels are semi-transparent; genuine pixel art has hard, binary edges",
+   "129 distinct colours; pixel art uses a small palette (this reads as a downscaled photo)"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "31028385993a29093b4e0b79079f0a4b0cb6975c3b595fb5c6e131ff5692fd22",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T052201637984",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

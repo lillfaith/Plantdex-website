@@ -1,0 +1,52 @@
+{
+ "id": "eutrochium-fistulosum",
+ "cardNumber": 58,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "15074fb6df0a8b44f8d304024aa2cc06524253d4a33b86e7b5d430b1f8023576",
+  "size": [
+   1086,
+   1448
+  ],
+  "imported_at": "20261117T052201687992",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "46b08fb31b261b6cc6938f2ec2c77115d5bd95977aedeee2e84c4f7c293d0936",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T052201691581",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "107 distinct colours; pixel art uses a small palette (this reads as a downscaled photo)"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "e37d947ced2b37af464373703655f3ced8e959dca4f0f646e22c2fcbe15eb3e2",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T052201694223",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

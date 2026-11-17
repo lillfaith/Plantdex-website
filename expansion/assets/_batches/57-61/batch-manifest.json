@@ -1,0 +1,70 @@
+{
+ "batch": "57-61",
+ "package": "nov17imageassetsclaude.zip (owner-supplied handoff of the approved #57-61 assets)",
+ "package_sha256": "fbaa909213debe79320d92cdd06ec1557ae3e2746cd9cebacb434ea3329fdef4",
+ "mapping": {
+  "main": "cards/<n>/main_source.png",
+  "pixel": "cards/<n>/pixel_icon_native_24x24.png",
+  "tall": "cards/<n>/back_gradient_mask_overlay.png",
+  "reference_only": [
+   "front_final",
+   "back_final",
+   "main_positioned_preview_layer",
+   "back_plant_source",
+   "back_plant_alpha_mask"
+  ]
+ },
+ "placement_notes": "Front/back final mockups are the visual ground truth. Main sits in the art window with stem base ~row 329 (390x630 space); Boneset icon displays at 96px, the others ~91px; tall overlay is pre-aligned (#57 -7px, #58 -6px, #61 rotated 4 deg CCW and +6px, per the handoff).",
+ "provenance": {
+  "status": "INCOMPLETE - the handoff package does not say which iNaturalist photo produced each final asset",
+  "verified_cc0_in_earlier_batch_manifest": [
+   {
+    "photo_id": 595827511,
+    "observation_id": 328772295,
+    "role": "58 tall",
+    "license": "cc0",
+    "source": "evidence/production/batches/batch-001.result.json"
+   },
+   {
+    "photo_id": 303843461,
+    "observation_id": 174868715,
+    "role": "58 main",
+    "license": "cc0",
+    "source": "evidence/production/batches/batch-001.result.json"
+   },
+   {
+    "photo_id": 282599815,
+    "observation_id": 163394060,
+    "role": "59 pixel",
+    "license": "cc0",
+    "source": "evidence/production/batches/batch-001.result.json"
+   },
+   {
+    "photo_id": 135566,
+    "observation_id": 93114,
+    "role": "60 pixel",
+    "license": "cc0",
+    "source": "evidence/production/batches/batch-001.result.json"
+   }
+  ],
+  "not_found_in_any_manifest": [
+   {
+    "photo_id": 23655843,
+    "role": "57 main"
+   },
+   {
+    "photo_id": 705452061,
+    "role": "60 tall"
+   }
+  ],
+  "unknown_source_photos": "#57 pixel+tall, #58 pixel, #59 main+tall, #60 main, #61 all three: the package names no photo id",
+  "excluded": [
+   {
+    "photo_id": 4109066,
+    "why": "owner: do not re-present (#59 old main)"
+   }
+  ]
+ },
+ "ai_derivative": true,
+ "botanical_review_required": true
+}

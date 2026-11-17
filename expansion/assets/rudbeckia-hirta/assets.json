@@ -1,0 +1,53 @@
+{
+ "id": "rudbeckia-hirta",
+ "cardNumber": 60,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "29d4b945794dc1890e0fa77f7faa219c3a128116b312ac8ade67b2aabc00ccde",
+  "size": [
+   1086,
+   1448
+  ],
+  "imported_at": "20261117T052201792256",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "1389086b310e19a6a821484875339db4c5658ad91434e278ad515209d1324be4",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T052201795095",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "123 distinct colours; pixel art uses a small palette (this reads as a downscaled photo)",
+   "36% of colour changes are tiny smooth gradients; pixel art has flat colours and hard steps"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "86a537ce22190b3d3f9fce32f0a14355845f37dab56e9bfcb0b83aa40cc824e9",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T052201798222",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

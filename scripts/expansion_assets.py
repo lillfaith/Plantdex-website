@@ -95,7 +95,7 @@ def validate_main(path, sp):
         return _res(err + [f"no alpha channel (mode {im.mode}); a main image must be genuinely transparent"], warn, m)
     a = np.array(im.convert("RGBA").getchannel("A"))
     n = a.size
-    tr, op = float((a == 0).sum()) / n, float((a == 255).sum()) / n
+    tr, op = float((a == 0).sum()) / n, float((a >= sp.get('opaque_alpha_min', 255)).sum()) / n
     m.update(transparent_fraction=round(tr, 3), opaque_fraction=round(op, 3))
     if tr < sp["min_transparent_fraction"]:
         err.append(f"only {tr:.1%} transparent; this is not a cutout (need {sp['min_transparent_fraction']:.0%}+)")
@@ -160,14 +160,16 @@ def validate_pixel(path, sp):
         err.append(f"only {tr:.1%} transparent; the background is not transparent")
     if corners < sp["min_transparent_corners"]:
         err.append(f"only {corners} of 4 corners transparent; the background was not removed")
+    soft = sp.get("heuristics_are_warnings", False)
+    sink = warn if soft else err
     if semi > sp["max_semi_transparent_fraction"]:
-        err.append(f"{semi:.1%} of pixels are semi-transparent; genuine pixel art has hard, binary edges")
+        sink.append(f"{semi:.1%} of pixels are semi-transparent; genuine pixel art has hard, binary edges")
     if colours > sp["fail_colours"]:
-        err.append(f"{colours} distinct colours; pixel art uses a small palette (this reads as a downscaled photo)")
+        sink.append(f"{colours} distinct colours; pixel art uses a small palette (this reads as a downscaled photo)")
     elif colours > sp["warn_colours"]:
         warn.append(f"{colours} distinct colours is a large palette for pixel art")
     if sm > sp["max_smooth_gradient_share"]:
-        err.append(f"{sm:.0%} of colour changes are tiny smooth gradients; pixel art has flat colours and hard steps")
+        sink.append(f"{sm:.0%} of colour changes are tiny smooth gradients; pixel art has flat colours and hard steps")
     return _res(err, warn, m)
 
 
@@ -180,10 +182,26 @@ def validate_tall(path, sp):
     err, warn, m = [], [], {"format": im.format, "mode": im.mode, "size": [w, h], "spec_confirmed": sp.get("confirmed", False)}
     if im.format not in sp["formats"]:
         err.append(f"format {im.format} not allowed")
-    if w < sp["min_width_px"] or h < sp["min_height_px"]:
-        err.append(f"{w}x{h} is below the required {sp['min_width_px']}x{sp['min_height_px']}")
-    if w and h / w < sp["min_aspect_h_over_w"]:
-        err.append(f"aspect {h / w:.2f} (height/width) is not tall enough; need {sp['min_aspect_h_over_w']}+")
+    if sp.get("exact_size"):
+        # APPROVED PRODUCTION FORMAT: the gradient-filled plant on a transparent 390x630 layer, aligned to the card-back template.
+        if [w, h] != list(sp["exact_size"]):
+            err.append(f"{w}x{h} is not the approved overlay size {sp['exact_size'][0]}x{sp['exact_size'][1]}")
+        if not _has_alpha(im):
+            err.append(f"no alpha channel (mode {im.mode}); the preview must sit on transparency over the template")
+        else:
+            a = np.array(im.convert("RGBA").getchannel("A"))
+            corners = sum(int(a[y, x] == 0) for y in (0, a.shape[0] - 1) for x in (0, a.shape[1] - 1))
+            cov = float((a > 0).mean())
+            m.update(transparent_corners=corners, plant_coverage=round(cov, 3))
+            if corners < 4:
+                err.append(f"only {corners} of 4 corners transparent")
+            if not (sp["min_coverage"] <= cov <= sp["max_coverage"]):
+                err.append(f"plant covers {cov:.1%} of the layer; expected {sp['min_coverage']:.0%}-{sp['max_coverage']:.0%}")
+    else:
+        if w < sp["min_width_px"] or h < sp["min_height_px"]:
+            err.append(f"{w}x{h} is below the required {sp['min_width_px']}x{sp['min_height_px']}")
+        if w and h / w < sp["min_aspect_h_over_w"]:
+            err.append(f"aspect {h / w:.2f} (height/width) is not tall enough; need {sp['min_aspect_h_over_w']}+")
     if not sp.get("confirmed", False):
         warn.append("tall dimensions are an UNCONFIRMED placeholder spec; confirm them in expansion/asset-spec.json")
     return _res(err, warn, m)
@@ -435,7 +453,11 @@ def self_test() -> int:
         ok_n += ok
 
     cards = load_cards()
-    spec = load_spec()
+    real_spec = load_spec()
+    # The fixtures below are generic 800x1300 tall panels, so they run against the LEGACY tall rule; the approved
+    # 390x630 overlay format is exercised separately, against the real spec, at the end.
+    spec = {**real_spec, "tall": {"confirmed": False, "formats": ["PNG", "WEBP", "JPEG"], "min_width_px": 600,
+                                  "min_height_px": 900, "min_aspect_h_over_w": 1.3}}
     with tempfile.TemporaryDirectory() as t:
         t = pathlib.Path(t)
         root, inbox = t / "assets", t / "in"
@@ -501,6 +523,13 @@ def self_test() -> int:
         (root / a["id"] / "pixel.png").write_bytes(b"not an image")
         ra = next(x for x in completeness(cards, root, spec) if x["id"] == a["id"])
         check(ra["assets"]["pixel"]["status"] == "invalid", "a corrupted file on disk is reported invalid")
+        # the approved tall format: a transparent 390x630 gradient-filled overlay
+        ov = Image.new("RGBA", (390, 630), (0, 0, 0, 0)); d_ = ImageDraw.Draw(ov); d_.ellipse((150, 150, 240, 480), fill=(200, 120, 220, 200))
+        ov.save(t / "overlay.png"); Image.new("RGB", (800, 1300), (150, 60, 230)).save(t / "flat.png")
+        full = Image.new("RGBA", (390, 630), (200, 120, 220, 255)); full.save(t / "full.png")
+        check(validate_tall(t / "overlay.png", real_spec)["ok"], "an aligned 390x630 transparent overlay passes the approved tall spec")
+        check(not validate_tall(t / "flat.png", real_spec)["ok"] and not validate_tall(t / "full.png", real_spec)["ok"],
+              "a flat panel or an opaque full-card layer is refused as a tall preview")
     print(f"\n{ok_n} passed, {len(bad)} failed")
     return 1 if bad else 0
 

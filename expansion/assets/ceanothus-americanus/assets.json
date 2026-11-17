@@ -1,0 +1,52 @@
+{
+ "id": "ceanothus-americanus",
+ "cardNumber": 59,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "8a60ee47bd7276218f9d432d86e9701f9c8e886d10cf572f633256e4ff010c76",
+  "size": [
+   1086,
+   1448
+  ],
+  "imported_at": "20261117T052201743147",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "9896bb37d9e313306928c7c868b879790654a788b25df4f0933709c476ac64f6",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T052201746701",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "126 distinct colours; pixel art uses a small palette (this reads as a downscaled photo)"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "144925c471ae4b0dc9b60fce5fae37d11fe17349a4c7ab159ecc2a479adbe86b",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T052201749349",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

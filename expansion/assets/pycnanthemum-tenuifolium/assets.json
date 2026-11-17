@@ -1,0 +1,52 @@
+{
+ "id": "pycnanthemum-tenuifolium",
+ "cardNumber": 61,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "aa55d89006f1b08335b947d38ddb1f59b54e04673fab848ecae12177f5c65101",
+  "size": [
+   1086,
+   1448
+  ],
+  "imported_at": "20261117T052201841258",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "6533f9e4e3cebeb16fdc8d04a7329e84505378c98a0cc8011e8311cfd91fe900",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T052201844330",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "134 distinct colours; pixel art uses a small palette (this reads as a downscaled photo)"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "9f6b242e4a882cd3575344489b3d279f488d02218502134ccc8a15120db46bbf",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T052201847069",
+  "imported_by": "ChatGPT handoff, owner-approved #57-61",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}
