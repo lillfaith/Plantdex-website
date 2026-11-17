@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   fetch:
@@ -21,10 +22,18 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - run: python3 scripts/production/fetch_selected.py --self-test
+      - name: Read the search runs' records (photo id -> observation id)
+        uses: actions/download-artifact@v4
+        with:
+          pattern: v2-species-*
+          path: hints
+          merge-multiple: true
+          run-id: 44146564784
+          github-token: ${{ github.token }}
       - name: Fetch, verify and package (exit 2 = a photo failed a check; the report says which)
         id: fetch
         continue-on-error: true
-        run: python3 scripts/production/fetch_selected.py --request evidence/photo-fetch/request.json --out export
+        run: python3 scripts/production/fetch_selected.py --hints hints --request evidence/photo-fetch/request.json --out export
       - uses: actions/upload-artifact@v4
         with:
           name: plantdex-selected-originals-62-66

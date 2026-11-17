@@ -62,8 +62,33 @@ def image_size(data: bytes) -> tuple[int, int] | None:
     return None
 
 
+HINTS: dict[int, int] = {}
+
+
+def load_hints(folder: pathlib.Path) -> int:
+    """photo id -> observation id, read from the search runs' own result files (the contact-sheet ids come from there)."""
+    def walk(o):
+        if isinstance(o, dict):
+            if isinstance(o.get("photo_id"), int) and isinstance(o.get("observation_id"), int):
+                HINTS[o["photo_id"]] = o["observation_id"]
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    for f in folder.rglob("*.json"):
+        try:
+            walk(json.loads(f.read_text()))
+        except (ValueError, OSError):
+            pass
+    return len(HINTS)
+
+
 def observation_id_for_photo(photo_id: int) -> int | None:
-    """iNaturalist's v1 API has no photo lookup, so resolve through the photo's own page."""
+    """iNaturalist's v1 API has no photo lookup. Use the search runs' records, then the photo's own page (which
+    refuses automated clients from some networks - hence the hints come first)."""
+    if photo_id in HINTS:
+        return HINTS[photo_id]
     j = F.get(f"https://www.inaturalist.org/photos/{photo_id}.json")
     if isinstance(j, dict):
         m = re.search(r"/observations/(\d+)", str(j.get("native_page_url") or ""))
@@ -231,5 +256,7 @@ def self_test() -> int:
 if __name__ == "__main__":
     if "--self-test" in sys.argv:
         sys.exit(self_test())
+    if "--hints" in sys.argv:
+        print("hints loaded:", load_hints(pathlib.Path(sys.argv[sys.argv.index("--hints") + 1])))
     req = json.load(open(sys.argv[sys.argv.index("--request") + 1]))
     sys.exit(run(req, pathlib.Path(sys.argv[sys.argv.index("--out") + 1])))
