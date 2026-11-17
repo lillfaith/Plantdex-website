@@ -131,6 +131,15 @@ def measure(rgb: np.ndarray, mask: np.ndarray, flower_kind: str) -> dict:
     bg = ~mask
     bg_green = ((H >= 35) & (H <= 85) & (S >= 40) & bg)
     m["bg_green_share"] = round(float(bg_green.sum() / max(1, bg.sum())), 3)
+    # background busyness: edge density and colour spread in the background AWAY from the subject's outline
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+    far = ~(cv2.dilate(mask.astype(np.uint8), np.ones((15, 15), np.uint8), iterations=2) > 0)
+    if far.sum() > 0.05 * far.size:
+        edges = cv2.Canny(cv2.GaussianBlur(gray, (5, 5), 0), 40, 110) > 0
+        m["bg_busy"] = round(float(min(1.0, 4.0 * edges[far].mean())), 3)       # 0 = plain, 1 = very busy
+        m["bg_spread"] = round(float(min(1.0, np.std(rgb[far].reshape(-1, 3), axis=0).mean() / 70)), 3)
+    else:
+        m["bg_busy"], m["bg_spread"] = 0.6, 0.6      # almost no background visible: a dense scene, not a plain one
     m["exposure_v"] = round(float(V[mask].mean() / 255), 3)
     m["colourfulness"] = round(float(S[mask].mean() / 255), 3)
     # subject boundary contrast: a ring just outside vs just inside the largest component
@@ -303,9 +312,17 @@ def judge_tall(m) -> dict:
         flags.append(f"crowded_stalks: {m['stalk_like_components']} competing pieces")
     if lc["touch"]["bottom"] and lc["w_frac"] > 0.6:
         flags.append("wide_base_cropped: a wide mass runs off the bottom")
+    if m["bg_busy"] >= 0.55:
+        flags.append(f"busy_background: the scene behind the stalk is visually busy ({m['bg_busy']})")
+    if m["green_share"] < 0.08:
+        flags.append("few_leaves_visible")
+    if m["flower_share"] < 0.01:
+        flags.append("flowers_not_detected")
     comp = (0.0 if lc["touch"]["top"] else 1.0) * 0.6 + min(1.0, lc["h_frac"] / 0.7) * 0.4
-    suit = min(1.0, lc["aspect_h_over_w"] / 1.4) * 0.4 + min(1.0, lc["h_frac"] / 0.7) * 0.3 + \
-        (1.0 if m["stalk_like_components"] <= 1 else 0.6 if m["stalk_like_components"] == 2 else 0.2) * 0.3
+    one = 1.0 if m["stalk_like_components"] <= 1 else 0.45 if m["stalk_like_components"] == 2 else 0.1   # ONE stalk, strongly
+    plain = 1.0 - max(m["bg_busy"], 0.7 * m["bg_spread"])
+    both = min(1.0, m["green_share"] / 0.15) * 0.5 + min(1.0, m["flower_share"] / 0.03) * 0.5    # leaves AND flowers visible
+    suit = min(1.0, lc["aspect_h_over_w"] / 1.4) * 0.2 + min(1.0, lc["h_frac"] / 0.7) * 0.15 + one * 0.3 + plain * 0.2 + both * 0.15
     return {"hard": hard, "flags": flags, "completeness": comp, "suitability": min(1.0, suit)}
 
 

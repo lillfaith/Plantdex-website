@@ -25,6 +25,10 @@ from __future__ import annotations
 
 WEIGHTS = {"recognizability": 0.25, "completeness": 0.25, "isolability": 0.20, "role": 0.15,
            "perspective": 0.05, "aesthetic": 0.05, "quality": 0.05}
+# TALL preview: one clearly isolated upright stalk with leaves and flowers beats a dramatic photograph.
+# Role fit (one stalk, vertical, leaves+flowers) and a plain background dominate; aesthetics barely count.
+TALL_WEIGHTS = {"recognizability": .12, "completeness": .18, "isolability": .15, "role": .25, "perspective": .03,
+                "aesthetic": .02, "quality": .03, "plain_background": .22}
 MIN_SCORE = 45.0
 ROLES = ("main", "pixel", "tall")
 EXPECTED_FLOWER = {"white": 0.10, "pink_purple": 0.07, "yellow": 0.05}
@@ -113,7 +117,14 @@ def score_role(role: str, ev: dict, obs: dict, orig_long: int, kind: str) -> dic
     parts = {"recognizability": rec, "completeness": r["completeness"], "isolability": isolability(ev),
              "role": r["suitability"], "perspective": perspective, "aesthetic": aesthetic(ev),
              "quality": quality(orig_long, ev["measure"]["lap_var"])}
-    score = 100 * sum(WEIGHTS[k] * max(0.0, min(1.0, v)) for k, v in parts.items())
+    w = TALL_WEIGHTS if role == "tall" else WEIGHTS
+    if role == "tall":
+        parts["plain_background"] = 1.0 - max(ev["measure"]["bg_busy"], 0.7 * ev["measure"]["bg_spread"])
+    score = 100 * sum(w[k] * max(0.0, min(1.0, v)) for k, v in parts.items())
+    if role == "tall" and ev["measure"]["stalk_like_components"] >= 3:
+        score *= 0.6          # crowded patch of plants: penalised hard, not merely flagged
+    if role == "tall" and ev["measure"]["bg_busy"] >= 0.55:
+        score *= 0.75         # visually busy natural scene
     return {"role": role, "rejected": False, "hard": [], "flags": flags + idflags, "score": round(score, 1),
             "parts": {k: round(v, 3) for k, v in parts.items()}, "reason": reason(role, ev, obs)}
 

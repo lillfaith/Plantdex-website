@@ -285,6 +285,18 @@ def main() -> int:
     from production import rank as _R
     _ev = {"measure": {"largest": {"h_frac": .5}, "flower_blob": None, "green_share": .3, "flower_share": 0}}
     check(isinstance(_R.reason("pixel", _ev, {}), str), "reason() copes with a pixel candidate that has no detected flower head")
+    # tall preview priorities: a plain background and ONE stalk beat a busy scene / a crowd, aesthetics barely matter
+    import copy
+    _tall = ev_of("tall_stalk")
+    if _tall is not None and _tall["roles"]["tall"]["hard"] == []:
+        _obs = {"identification_agreements": 3, "flowering_annotation": True}
+        def _tall_score(**chg):
+            e = copy.deepcopy(_tall); e["measure"].update(chg)
+            return _R.score_role("tall", e, _obs, 2000, "white")["score"]
+        base = _tall_score(bg_busy=0.05, bg_spread=0.1)
+        check(base > _tall_score(bg_busy=0.8, bg_spread=0.6) + 10, "tall: a plain background clearly outranks a visually busy scene")
+        check(base > _tall_score(bg_busy=0.05, bg_spread=0.1, stalk_like_components=4) + 10, "tall: a crowded patch is penalised hard")
+        check(abs(base - _tall_score(bg_busy=0.05, bg_spread=0.1, colourfulness=0.0, exposure_v=0.99)) < 5, "tall: aesthetics (colour, exposure) barely move the score")
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     return 1 if FAIL else 0
 

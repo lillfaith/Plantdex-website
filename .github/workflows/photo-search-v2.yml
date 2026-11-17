@@ -98,11 +98,15 @@ jobs:
       - name: Summary
         run: |
           { echo "### Photo search v2"; ls -la production-out/*.zip; echo; cat qa/summary.json | head -c 4000; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify the ZIP, then expand it to a plain folder (a ZIP inside the artifact ZIP will not open on macOS)
+        run: |
+          python3 -c "import zipfile,glob;z=zipfile.ZipFile(glob.glob('production-out/*.zip')[0]);assert z.testzip() is None;print('zip ok',len(z.namelist()))"
+          mkdir export && unzip -q production-out/*.zip -d export
       - uses: actions/upload-artifact@v4
         with:
-          name: plantdex-photo-search-v2-cards-57-61
-          path: production-out/*.zip
-          compression-level: 0
+          name: plantdex-photo-search-v2-cards-57-61-folder
+          path: export
+          compression-level: 6
           retention-days: 30
       - name: Commit reduced QA sheets + summary (small files only)
         run: |
