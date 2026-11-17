@@ -8,5 +8,23 @@
    "by": "owner",
    "why": "The text is too long for the panel; the descriptor 'Mildly' is dropped."
   }
+ ],
+ "60": [
+  {
+   "field": "back.compounds",
+   "from": "Phenolic acids",
+   "to": "Phenolic acid",
+   "by": "owner",
+   "why": "Owner asked for the singular form."
+  }
+ ],
+ "79": [
+  {
+   "field": "back.compounds",
+   "from": "Phenolic acids",
+   "to": "Phenolic acid",
+   "by": "owner",
+   "why": "Owner asked for the singular form."
+  }
  ]
 }
