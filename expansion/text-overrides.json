@@ -26,5 +26,14 @@
    "by": "owner",
    "why": "Owner asked for the singular form."
   }
+ ],
+ "89": [
+  {
+   "field": "back.taste",
+   "from": "Astringent when unripe",
+   "to": "Astringent",
+   "by": "owner",
+   "why": "Too long for the panel; owner asked for 'Astringent'."
+  }
  ]
 }
