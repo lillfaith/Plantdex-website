@@ -44,21 +44,5 @@
    "by": "owner",
    "why": "Owner asked for 'Tangy' (named Dogwood, but the only card with this text is #91 Eastern Redbud)."
   }
- ],
- "84": [
-  {
-   "field": "front.rarity",
-   "from": "Common",
-   "to": "Uncommon",
-   "by": "owner-requested rarity review",
-   "why": "The card's own rarity rationale says 'lower encounter certainty than some trees', which contradicts Common; its observation count (3,364 US research-grade) is the lowest of the 35 expansion cards reviewed. Still needs the master sheet corrected."
-  },
-  {
-   "field": "front.xp",
-   "from": 100,
-   "to": 175,
-   "by": "owner-requested rarity review",
-   "why": "XP follows the deck's rarity table: Common 100, Uncommon 175."
-  }
  ]
 }
