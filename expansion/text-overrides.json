@@ -129,5 +129,37 @@
    "by": "owner",
    "why": "Owner asked for 'Aromatherapy' (the fifth Healing Trait) to be centred."
   }
+ ],
+ "114": [
+  {
+   "field": "back.healingTraits",
+   "from": "Skin moisturizing",
+   "to": "Moisturizing",
+   "by": "owner",
+   "why": "Owner asked for the shorter wording."
+  },
+  {
+   "field": "back.healingTraits",
+   "from": "Hair conditioning",
+   "to": "Conditioner",
+   "by": "owner",
+   "why": "Owner asked for the shorter wording."
+  }
+ ],
+ "115": [
+  {
+   "field": "back.healingTraits",
+   "from": "Vitamin-rich",
+   "to": "Glucose reg.",
+   "by": "owner",
+   "why": "Owner asked to replace 'Vitamin-rich' with 'Glucose reg.'."
+  },
+  {
+   "field": "back.healingTraits",
+   "from": "Nutritive pad",
+   "to": "Digestive aid",
+   "by": "owner",
+   "why": "Owner asked to replace 'Nutritive pad' with 'Digestive aid'."
+  }
  ]
 }
