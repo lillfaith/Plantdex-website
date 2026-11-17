@@ -99,9 +99,9 @@
   "guideCaution": "Contains oxalic acid; best cooked and eaten in moderation."
  },
  "artwork_on_disk": {
-  "main": "NOT YET SUPPLIED",
-  "pixel": "NOT YET SUPPLIED",
-  "tall": "NOT YET SUPPLIED"
+  "main": "expansion/assets/rumex-crispus/main.png",
+  "pixel": "expansion/assets/rumex-crispus/pixel.png",
+  "tall": "expansion/assets/rumex-crispus/tall.png"
  },
  "still_needed_before_promotion": [
   "final botanical / safety review (the record's own status says pending); the safety copy decides whether a SITE_CAUTIONS entry is needed",

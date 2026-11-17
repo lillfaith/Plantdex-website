@@ -10,11 +10,6 @@ Cards with approved artwork (#57-61) are not listed. Hidden drafts: not promoted
 | 64 | Sweet Everlasting | Common | `064_pseudognaphalium-obtusifolium_front.png`, `064_pseudognaphalium-obtusifolium_back.png`, `064_pseudognaphalium-obtusifolium_card.pdf` |
 | 65 | American Lotus | Uncommon | `065_nelumbo-lutea_front.png`, `065_nelumbo-lutea_back.png`, `065_nelumbo-lutea_card.pdf` |
 | 66 | Annual Fleabane | Common | `066_erigeron-annuus_front.png`, `066_erigeron-annuus_back.png`, `066_erigeron-annuus_card.pdf` |
-| 67 | Curly Dock | Common | `067_rumex-crispus_front.png`, `067_rumex-crispus_back.png`, `067_rumex-crispus_card.pdf` |
-| 68 | Narrowleaf Plantain | Common | `068_plantago-lanceolata_front.png`, `068_plantago-lanceolata_back.png`, `068_plantago-lanceolata_card.pdf` |
-| 69 | Common Mugwort | Common | `069_artemisia-vulgaris_front.png`, `069_artemisia-vulgaris_back.png`, `069_artemisia-vulgaris_card.pdf` |
-| 70 | Motherwort | Common | `070_leonurus-cardiaca_front.png`, `070_leonurus-cardiaca_back.png`, `070_leonurus-cardiaca_card.pdf` |
-| 71 | New York Ironweed | Common | `071_vernonia-noveboracensis_front.png`, `071_vernonia-noveboracensis_back.png`, `071_vernonia-noveboracensis_card.pdf` |
 | 72 | Anise Hyssop | Uncommon | `072_agastache-foeniculum_front.png`, `072_agastache-foeniculum_back.png`, `072_agastache-foeniculum_card.pdf` |
 | 73 | Virginia Spring Beauty | Common | `073_claytonia-virginica_front.png`, `073_claytonia-virginica_back.png`, `073_claytonia-virginica_card.pdf` |
 | 74 | Smooth Solomon's Seal | Common | `074_polygonatum-biflorum_front.png`, `074_polygonatum-biflorum_back.png`, `074_polygonatum-biflorum_card.pdf` |
@@ -86,4 +81,4 @@ Cards with approved artwork (#57-61) are not listed. Hidden drafts: not promoted
 | 140 | Bog Labrador Tea | Rare | `140_rhododendron-groenlandicum_front.png`, `140_rhododendron-groenlandicum_back.png`, `140_rhododendron-groenlandicum_card.pdf` |
 | 141 | Lingonberry | Uncommon | `141_vaccinium-vitis-idaea_front.png`, `141_vaccinium-vitis-idaea_back.png`, `141_vaccinium-vitis-idaea_card.pdf` |
 
-80 cards.
+75 cards.

@@ -98,9 +98,9 @@
   "guideCaution": null
  },
  "artwork_on_disk": {
-  "main": "NOT YET SUPPLIED",
-  "pixel": "NOT YET SUPPLIED",
-  "tall": "NOT YET SUPPLIED"
+  "main": "expansion/assets/plantago-lanceolata/main.png",
+  "pixel": "expansion/assets/plantago-lanceolata/pixel.png",
+  "tall": "expansion/assets/plantago-lanceolata/tall.png"
  },
  "still_needed_before_promotion": [
   "final botanical / safety review (the record's own status says pending); the safety copy decides whether a SITE_CAUTIONS entry is needed",

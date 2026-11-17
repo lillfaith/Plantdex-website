@@ -1,0 +1,52 @@
+{
+ "id": "vernonia-noveboracensis",
+ "cardNumber": 71,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "ee402f0cbf4951b7b5f7361ea69a32b1a44fe95c41697b43c56c90da0dfb0be4",
+  "size": [
+   694,
+   545
+  ],
+  "imported_at": "20261117T191041071822",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "subject is 545px tall; 968px+ leaves headroom"
+  ]
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "d384fa72503e0f5ba15d1f6180fdcf280b2201f49af214e1238ceb32cfe72699",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T191041073580",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "6c706c2829ea2bd5850f6cecc8ba7357fb194d61887a88ea8975b8e84f34edb4",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T191041076126",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

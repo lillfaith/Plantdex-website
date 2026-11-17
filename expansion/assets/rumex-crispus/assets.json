@@ -1,0 +1,54 @@
+{
+ "id": "rumex-crispus",
+ "cardNumber": 67,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "e4389177b639fb51aa966f817904ebbe4a105489c17e342414e2825098fcea78",
+  "size": [
+   591,
+   585
+  ],
+  "imported_at": "20261117T191040969909",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "subject is 585px tall; 968px+ leaves headroom"
+  ]
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "863a083e36f13194a528c1169289d2f6e9b0d61531591c5fa1e7cbe532fc2e76",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T191040973685",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "54% of colour changes are tiny smooth gradients; pixel art has flat colours and hard steps"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "b4890d5a2af8a0d96af3d69ec1be7ef2ff0d457836ccd6d60f8559de4e667fdb",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T191040978308",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

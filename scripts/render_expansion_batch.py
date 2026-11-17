@@ -39,6 +39,7 @@ PIXEL_DISPLAY_DEFAULT = 91
 # (x0, top, width, height) of each icon's full ink; pitch from the shipped rows (66.5-67).
 SHIPPED_STAT_ROWS_INK = {"water": (74, 776, 33, 50), "sun": (61, 853, 60, 55), "temperature": (70, 931, 43, 59)}
 SHIPPED_STAT_PITCH = 66.4
+WINDOW_FIT_W, WINDOW_FIT_H, WINDOW_FLOOR = 310, 233, 329   # window-rule fallback, reference px
 ART_ROWS = (0, 385)                      # reference rows that hold the art window
 R.STAT_ROWS_INK = SHIPPED_STAT_ROWS_INK
 R.SLOT_PITCH = SHIPPED_STAT_PITCH
@@ -207,6 +208,17 @@ def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     src = src.crop(src.getbbox())
     alpha = np.asarray(src.getchannel("A"), dtype=float) / 255
     s, ox, oy, iou = fit_uniform(alpha, target)
+    fit = "mask-iou"
+    if iou < 0.6:
+        # The reference montage was redrawn from the cutout rather than traced from it, so no mask fit is reliable
+        # (one drifted #67 over its own name bar, and diffing the montage against the base picks up the whole card).
+        # Fall back to the placement rule measured on the approved fronts: the subject stands on the art window's
+        # floor (stem base ~row 329), is at most ~233 rows tall (rows ~96-329) and ~310 wide, centred on the card.
+        ah, aw = alpha.shape
+        s = min(WINDOW_FIT_W / aw, WINDOW_FIT_H / ah)
+        ox = REF_W / 2 - aw * s / 2
+        oy = WINDOW_FLOOR - ah * s
+        fit = "window-rule"
     # coarse fit was on the whole source at reference scale: refine nothing further, place at shipped scale
     w, h = round(src.width * s * K), round(src.height * s * K)
     art = src.resize((w, h), Image.LANCZOS)
@@ -214,12 +226,12 @@ def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     # The approved front is CLIPPED at the bottom of the art window (stem bottom ~row 329): the source runs on
     # below it, so cut at the lowest row the approved front shows the subject on. Nothing else is cropped.
     ys = np.where(target.any(axis=1))[0]
-    cut = round((ys.max() + 1 - oy) * K)
+    cut = round((ys.max() + 1 - oy) * K) if fit == "mask-iou" else art.height
     if 0 < cut < art.height:
         art = art.crop((0, 0, art.width, cut))
     px, py = round(ox * K), round(oy * K)
     front.alpha_composite(art, (px, py))
-    return {"uniform_scale_ref": round(s, 4), "placed_px": [px, py, w, h], "overlap_iou": round(iou, 3),
+    return {"fit": fit, "uniform_scale_ref": round(s, 4), "placed_px": [px, py, w, h], "overlap_iou": round(iou, 3),
             "source_aspect": round(src.width / src.height, 3), "placed_aspect": round(w / h, 3),
             "clipped_at_window_bottom": bool(0 < cut < h)}
 

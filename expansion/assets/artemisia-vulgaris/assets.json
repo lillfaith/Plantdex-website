@@ -1,0 +1,54 @@
+{
+ "id": "artemisia-vulgaris",
+ "cardNumber": 69,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "4750c1d3736236e831e696a22f943b0ef85acc468d5bb7ebdbe0f99adb8eaee3",
+  "size": [
+   615,
+   583
+  ],
+  "imported_at": "20261117T191041017273",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "subject is 583px tall; 968px+ leaves headroom"
+  ]
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "d1affeb6d5c1a6defcaf8c818731fc8e019d51b8e0ee1f470eb7b6b9c4ec5710",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T191041018814",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "77% of colour changes are tiny smooth gradients; pixel art has flat colours and hard steps"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "00b4c4f8d6d062b5c1750c423f9506023d8cd87537e500541c602814c02053d3",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T191041021828",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

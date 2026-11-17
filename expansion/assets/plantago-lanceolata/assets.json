@@ -1,0 +1,52 @@
+{
+ "id": "plantago-lanceolata",
+ "cardNumber": 68,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "db237a26151167fdcd155f311a13d296d7d1b4bf1c6fb743f4ae7889bfd6b5ff",
+  "size": [
+   592,
+   559
+  ],
+  "imported_at": "20261117T191040995547",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "subject is 559px tall; 968px+ leaves headroom"
+  ]
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "3e26d2740f0cee304c2b3ca22b0e560192fbca994a9cf4fd12a85ba9939d2986",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T191040997098",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "2935601fd0d6658a7da17cfa10bf6ce0d86ddbca27a6279754bef850bd36aa83",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T191040999840",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}

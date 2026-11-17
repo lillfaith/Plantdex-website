@@ -1,0 +1,54 @@
+{
+ "id": "leonurus-cardiaca",
+ "cardNumber": 70,
+ "history": [],
+ "main": {
+  "file": "main.png",
+  "sha256": "2e10ab52f220c146f4628e28692f41795d23f7ebb5c89be628a7ed8c1dec47d8",
+  "size": [
+   694,
+   610
+  ],
+  "imported_at": "20261117T191041046287",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "main.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "subject is 610px tall; 968px+ leaves headroom"
+  ]
+ },
+ "pixel": {
+  "file": "pixel.png",
+  "sha256": "eb06dd991327d60c25bc566822858dd5a31fe342dfbc74a48872f1d261b1358f",
+  "size": [
+   24,
+   24
+  ],
+  "imported_at": "20261117T191041048538",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "pixel.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": [
+   "139 distinct colours; pixel art uses a small palette (this reads as a downscaled photo)"
+  ]
+ },
+ "tall": {
+  "file": "tall.png",
+  "sha256": "e14c67b009f20735ba9e75e912b2fc1fada4167ad1691524b0b6c4ea8cebab84",
+  "size": [
+   390,
+   630
+  ],
+  "imported_at": "20261117T191041051303",
+  "imported_by": "owner",
+  "tool": "ChatGPT",
+  "source_name": "tall.png",
+  "origin": "ai_generated_derivative",
+  "botanical_review_required": true,
+  "warnings": []
+ }
+}
