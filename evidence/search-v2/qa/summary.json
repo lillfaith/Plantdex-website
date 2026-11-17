@@ -1,5 +1,5 @@
 {
- "built": "2026-11-17T02:00:33+00:00",
+ "built": "2026-11-17T04:33:19+00:00",
  "species": [
   {
    "card": 57,
@@ -23,8 +23,8 @@
      "screened": 150,
      "hard_rejected": 51,
      "reject_reasons": {
-      "main_clipped": 20,
-      "no_subject": 18,
+      "main_clipped": 19,
+      "no_subject": 19,
       "subject_too_small": 14
      },
      "survivors": 99,
@@ -33,12 +33,12 @@
     "pixel": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 20,
+     "hard_rejected": 21,
      "reject_reasons": {
-      "no_subject": 18,
+      "no_subject": 19,
       "pixel_head_cropped": 2
      },
-     "survivors": 96,
+     "survivors": 98,
      "shortlisted": 12
     },
     "tall": {
@@ -46,11 +46,11 @@
      "screened": 150,
      "hard_rejected": 38,
      "reject_reasons": {
-      "no_subject": 18,
-      "tall_wide_mass": 15,
+      "no_subject": 19,
+      "tall_wide_mass": 14,
       "tall_clipped_top": 11
      },
-     "survivors": 112,
+     "survivors": 81,
      "shortlisted": 12
     }
    },
@@ -59,7 +59,7 @@
     "name": "Eupatorium perfoliatum"
    },
    "pool": 150,
-   "n_candidates": 17
+   "n_candidates": 21
   },
   {
    "card": 58,
@@ -79,14 +79,14 @@
     "main": {
      "searched": false,
      "screened": 150,
-     "hard_rejected": 51,
+     "hard_rejected": 50,
      "reject_reasons": {
       "no_subject": 20,
-      "main_clipped": 16,
+      "main_clipped": 15,
       "subject_too_small": 14,
       "hands": 1
      },
-     "survivors": 99,
+     "survivors": 100,
      "shortlisted": 0
     },
     "pixel": {
@@ -103,14 +103,14 @@
     "tall": {
      "searched": false,
      "screened": 150,
-     "hard_rejected": 43,
+     "hard_rejected": 42,
      "reject_reasons": {
       "no_subject": 20,
-      "tall_wide_mass": 15,
+      "tall_wide_mass": 14,
       "tall_clipped_top": 11,
       "hands": 1
      },
-     "survivors": 107,
+     "survivors": 55,
      "shortlisted": 0
     }
    },
@@ -171,7 +171,7 @@
       "hands": 6,
       "tall_wide_mass": 1
      },
-     "survivors": 100,
+     "survivors": 79,
      "shortlisted": 12
     }
    },
@@ -180,7 +180,7 @@
     "name": "Ceanothus americanus"
    },
    "pool": 150,
-   "n_candidates": 18
+   "n_candidates": 20
   },
   {
    "card": 60,
@@ -203,39 +203,39 @@
     "main": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 67,
+     "hard_rejected": 66,
      "reject_reasons": {
-      "no_subject": 32,
+      "no_subject": 31,
       "subject_too_small": 29,
       "main_clipped": 4,
       "hands": 3
      },
-     "survivors": 83,
+     "survivors": 84,
      "shortlisted": 12
     },
     "pixel": {
      "searched": false,
      "screened": 150,
-     "hard_rejected": 37,
+     "hard_rejected": 36,
      "reject_reasons": {
-      "no_subject": 32,
+      "no_subject": 31,
       "hands": 3,
       "pixel_head_cropped": 2
      },
-     "survivors": 108,
+     "survivors": 109,
      "shortlisted": 0
     },
     "tall": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 40,
+     "hard_rejected": 39,
      "reject_reasons": {
-      "no_subject": 32,
+      "no_subject": 31,
       "tall_clipped_top": 3,
       "tall_wide_mass": 3,
       "hands": 3
      },
-     "survivors": 110,
+     "survivors": 95,
      "shortlisted": 12
     }
    },
@@ -244,7 +244,7 @@
     "name": "Rudbeckia hirta"
    },
    "pool": 150,
-   "n_candidates": 18
+   "n_candidates": 20
   },
   {
    "card": 61,
@@ -295,7 +295,7 @@
       "tall_wide_mass": 2,
       "tall_clipped_top": 1
      },
-     "survivors": 99,
+     "survivors": 73,
      "shortlisted": 12
     }
    },
@@ -304,8 +304,8 @@
     "name": "Pycnanthemum tenuifolium"
    },
    "pool": 150,
-   "n_candidates": 23
+   "n_candidates": 26
   }
  ],
- "zip_bytes": 155975255
+ "zip_bytes": 175601741
 }
