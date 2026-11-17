@@ -1,68 +1,10 @@
 {
- "built": "2026-11-17T17:17:28+00:00",
+ "built": "2026-11-17T18:57:45+00:00",
  "species": [
   {
-   "card": 72,
-   "common": "Anise Hyssop",
-   "scientific": "Agastache foeniculum",
-   "flower_kind": "pink_purple",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 33,
-     "reject_reasons": {
-      "no_subject": 16,
-      "subject_too_small": 14,
-      "hands": 2,
-      "main_clipped": 1
-     },
-     "survivors": 117,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 18,
-     "reject_reasons": {
-      "no_subject": 16,
-      "hands": 2
-     },
-     "survivors": 84,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 33,
-     "reject_reasons": {
-      "tall_clipped_top": 16,
-      "no_subject": 16,
-      "hands": 2
-     },
-     "survivors": 103,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 158076,
-    "name": "Agastache foeniculum"
-   },
-   "pool": 150,
-   "n_candidates": 27
-  },
-  {
-   "card": 73,
-   "common": "Virginia Spring Beauty",
-   "scientific": "Claytonia virginica",
+   "card": 62,
+   "common": "California Buckwheat",
+   "scientific": "Eriogonum fasciculatum",
    "flower_kind": "white",
    "needed_roles": [
     "main",
@@ -76,133 +18,15 @@
     "main": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 73,
+     "hard_rejected": 94,
      "reject_reasons": {
-      "subject_too_small": 45,
-      "no_subject": 18,
-      "hands": 5,
-      "main_clipped": 5
-     },
-     "survivors": 77,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 27,
-     "reject_reasons": {
-      "no_subject": 18,
-      "hands": 5,
-      "pixel_head_cropped": 4
-     },
-     "survivors": 120,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 25,
-     "reject_reasons": {
-      "no_subject": 18,
-      "hands": 5,
-      "tall_clipped_top": 2
-     },
-     "survivors": 93,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 117434,
-    "name": "Claytonia virginica"
-   },
-   "pool": 150,
-   "n_candidates": 28
-  },
-  {
-   "card": 74,
-   "common": "Smooth Solomon's Seal",
-   "scientific": "Polygonatum biflorum",
-   "flower_kind": "white",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 65,
-     "reject_reasons": {
-      "no_subject": 23,
+      "no_subject": 58,
       "subject_too_small": 21,
-      "main_clipped": 20,
-      "hands": 4
+      "main_clipped": 10,
+      "hands": 8,
+      "dense_patch": 2
      },
-     "survivors": 85,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 29,
-     "reject_reasons": {
-      "no_subject": 23,
-      "hands": 4,
-      "pixel_head_cropped": 2
-     },
-     "survivors": 35,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 51,
-     "reject_reasons": {
-      "no_subject": 23,
-      "tall_clipped_top": 19,
-      "tall_wide_mass": 9,
-      "hands": 4
-     },
-     "survivors": 67,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 85327,
-    "name": "Polygonatum biflorum"
-   },
-   "pool": 150,
-   "n_candidates": 27
-  },
-  {
-   "card": 75,
-   "common": "Partridgeberry",
-   "scientific": "Mitchella repens",
-   "flower_kind": "white",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 104,
-     "reject_reasons": {
-      "no_subject": 66,
-      "subject_too_small": 35,
-      "main_clipped": 2,
-      "hands": 1
-     },
-     "survivors": 46,
+     "survivors": 56,
      "shortlisted": 12
     },
     "pixel": {
@@ -210,38 +34,41 @@
      "screened": 150,
      "hard_rejected": 68,
      "reject_reasons": {
-      "no_subject": 66,
-      "pixel_head_cropped": 1,
-      "hands": 1
+      "no_subject": 58,
+      "hands": 8,
+      "pixel_head_cropped": 4,
+      "dense_patch": 2
      },
-     "survivors": 50,
+     "survivors": 71,
      "shortlisted": 12
     },
     "tall": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 69,
+     "hard_rejected": 78,
      "reject_reasons": {
-      "no_subject": 66,
-      "tall_clipped_top": 2,
-      "hands": 1
+      "no_subject": 58,
+      "tall_clipped_top": 12,
+      "hands": 8,
+      "tall_wide_mass": 5,
+      "dense_patch": 2
      },
-     "survivors": 55,
+     "survivors": 48,
      "shortlisted": 12
     }
    },
    "taxon": {
-    "id": 83799,
-    "name": "Mitchella repens"
+    "id": 54999,
+    "name": "Eriogonum fasciculatum"
    },
    "pool": 150,
-   "n_candidates": 24
+   "n_candidates": 23
   },
   {
-   "card": 76,
-   "common": "American Groundnut",
-   "scientific": "Apios americana",
-   "flower_kind": "brown",
+   "card": 63,
+   "common": "Wild Quinine",
+   "scientific": "Parthenium integrifolium",
+   "flower_kind": "white",
    "needed_roles": [
     "main",
     "pixel",
@@ -254,49 +81,226 @@
     "main": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 78,
+     "hard_rejected": 61,
      "reject_reasons": {
-      "subject_too_small": 30,
-      "no_subject": 29,
-      "main_clipped": 15,
+      "no_subject": 25,
+      "main_clipped": 20,
+      "subject_too_small": 12,
       "hands": 5
      },
-     "survivors": 72,
+     "survivors": 89,
      "shortlisted": 12
     },
     "pixel": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 36,
+     "hard_rejected": 33,
      "reject_reasons": {
-      "no_subject": 29,
+      "no_subject": 25,
       "hands": 5,
       "pixel_head_cropped": 3
      },
-     "survivors": 91,
+     "survivors": 95,
      "shortlisted": 12
     },
     "tall": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 49,
+     "hard_rejected": 43,
      "reject_reasons": {
-      "no_subject": 29,
-      "tall_clipped_top": 12,
-      "tall_wide_mass": 8,
+      "no_subject": 25,
+      "tall_clipped_top": 10,
+      "tall_wide_mass": 7,
       "hands": 5
      },
-     "survivors": 84,
+     "survivors": 85,
      "shortlisted": 12
     }
    },
    "taxon": {
-    "id": 119817,
-    "name": "Apios americana"
+    "id": 83893,
+    "name": "Parthenium integrifolium"
    },
    "pool": 150,
-   "n_candidates": 30
+   "n_candidates": 28
+  },
+  {
+   "card": 64,
+   "common": "Sweet Everlasting",
+   "scientific": "Pseudognaphalium obtusifolium",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 45,
+     "reject_reasons": {
+      "subject_too_small": 18,
+      "main_clipped": 12,
+      "no_subject": 10,
+      "hands": 5
+     },
+     "survivors": 105,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 19,
+     "reject_reasons": {
+      "no_subject": 10,
+      "hands": 5,
+      "pixel_head_cropped": 4
+     },
+     "survivors": 124,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 27,
+     "reject_reasons": {
+      "no_subject": 10,
+      "tall_clipped_top": 9,
+      "hands": 5,
+      "tall_wide_mass": 4
+     },
+     "survivors": 98,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 143859,
+    "name": "Pseudognaphalium obtusifolium"
+   },
+   "pool": 150,
+   "n_candidates": 23
+  },
+  {
+   "card": 65,
+   "common": "American Lotus",
+   "scientific": "Nelumbo lutea",
+   "flower_kind": "yellow",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 87,
+     "reject_reasons": {
+      "no_subject": 49,
+      "subject_too_small": 34,
+      "main_clipped": 3,
+      "hands": 1
+     },
+     "survivors": 63,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 53,
+     "reject_reasons": {
+      "no_subject": 49,
+      "pixel_head_cropped": 3,
+      "hands": 1
+     },
+     "survivors": 61,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 50,
+     "reject_reasons": {
+      "no_subject": 49,
+      "hands": 1
+     },
+     "survivors": 70,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 84160,
+    "name": "Nelumbo lutea"
+   },
+   "pool": 150,
+   "n_candidates": 23
+  },
+  {
+   "card": 66,
+   "common": "Annual Fleabane",
+   "scientific": "Erigeron annuus",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 86,
+     "reject_reasons": {
+      "no_subject": 48,
+      "subject_too_small": 26,
+      "main_clipped": 9,
+      "hands": 7
+     },
+     "survivors": 64,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 55,
+     "reject_reasons": {
+      "no_subject": 48,
+      "hands": 7
+     },
+     "survivors": 81,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 66,
+     "reject_reasons": {
+      "no_subject": 48,
+      "tall_clipped_top": 8,
+      "hands": 7,
+      "tall_wide_mass": 6
+     },
+     "survivors": 67,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 76897,
+    "name": "Erigeron annuus"
+   },
+   "pool": 150,
+   "n_candidates": 24
   }
  ],
- "zip_bytes": 210837833
+ "zip_bytes": 175728709
 }
