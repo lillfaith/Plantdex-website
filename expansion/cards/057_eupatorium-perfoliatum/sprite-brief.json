@@ -1,0 +1,71 @@
+{
+ "status": "BRIEF ONLY - no sprite has been authored",
+ "herbId": "eupatorium-perfoliatum",
+ "cardNumber": 57,
+ "commonName": "Boneset",
+ "concept": {
+  "hook": "PERFOLIATE: the leaf pairs are joined around the stem, so the stalk passes straight through them. The arms ARE the fused leaf pair, wrapped around the creature's own stalk like a collar.",
+  "organ": "a flat-topped crowd of many tiny white flower heads (a corymb), not one round head: build it as a cluster of small bumps over a broad dome",
+  "gesture": "threads itself: the leaf-collar slides up the stalk, the stalk visibly passes through, and the collar settles back with a satisfied look",
+  "personality": "clasping",
+  "avoid": "the generic 'white flower cluster' look shared with the other small-white-flower species; keep the joined leaves as the silhouette"
+ },
+ "personality_label_free": true,
+ "palette_from_approved_art": [
+  {
+   "hex": "#527316",
+   "share": 0.2,
+   "role": "foliage",
+   "hue_deg": 81
+  },
+  {
+   "hex": "#7b9035",
+   "share": 0.194,
+   "role": "foliage",
+   "hue_deg": 74
+  },
+  {
+   "hex": "#648928",
+   "share": 0.174,
+   "role": "foliage",
+   "hue_deg": 83
+  },
+  {
+   "hex": "#d5d1b7",
+   "share": 0.165,
+   "role": "neutral",
+   "hue_deg": 52
+  },
+  {
+   "hex": "#eae7dc",
+   "share": 0.136,
+   "role": "neutral",
+   "hue_deg": 47
+  },
+  {
+   "hex": "#9fab66",
+   "share": 0.13,
+   "role": "foliage",
+   "hue_deg": 70
+  }
+ ],
+ "palette_rules": "Every species owns a hue; leaves never within 34deg of the flower; midtone saturation capped; the five FACE_PALETTE colours are shared and never recoloured.",
+ "stages": {
+  "sprout": "vegetative only - leaves and NO flower structure of any kind",
+  "growing": "in BUD - closed flower, a different organ from the open one",
+  "flowering": "the authored adult portrait; frame 0 is the resting pose and ONE connected piece"
+ },
+ "build": [
+  "write scripts/sprite_sources/<snake_case_id>.py (authored module with a named gesture)",
+  "python3 scripts/build_sprites.py",
+  "python3 scripts/audit_sprites.py",
+  "regenerates public/cards/animated/* and src/data/sprites.json - do this ONLY when the card is being promoted"
+ ],
+ "rules": [
+  "a portrait, never an identification aid",
+  "nothing may imply a medicinal effect",
+  "no invented botany: only what the card and the plant support",
+  "part placement is measured from the assembled art, never inferred from parameters"
+ ],
+ "needs_approval": true
+}

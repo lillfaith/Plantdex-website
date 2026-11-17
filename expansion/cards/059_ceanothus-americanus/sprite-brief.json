@@ -1,0 +1,71 @@
+{
+ "status": "BRIEF ONLY - no sprite has been authored",
+ "herbId": "ceanothus-americanus",
+ "cardNumber": 59,
+ "commonName": "New Jersey Tea",
+ "concept": {
+  "hook": "A small shrub carrying many pom-pom clusters of tiny white flowers on long thin stalks; its leaves are broad with three prominent veins.",
+  "organ": "several small round white clusters on thin stalks around one face, like pom-poms",
+  "gesture": "the pom-pom stalks bob one after another like a ripple, then all settle; the face is the one still thing",
+  "personality": "jaunty",
+  "avoid": "any tea or drink gesture; the Tea use icon is on the card already and a sprite must not suggest an effect"
+ },
+ "personality_label_free": true,
+ "palette_from_approved_art": [
+  {
+   "hex": "#61811c",
+   "share": 0.231,
+   "role": "foliage",
+   "hue_deg": 79
+  },
+  {
+   "hex": "#759a2e",
+   "share": 0.216,
+   "role": "foliage",
+   "hue_deg": 81
+  },
+  {
+   "hex": "#7ba735",
+   "share": 0.196,
+   "role": "foliage",
+   "hue_deg": 83
+  },
+  {
+   "hex": "#e3dacc",
+   "share": 0.163,
+   "role": "neutral",
+   "hue_deg": 37
+  },
+  {
+   "hex": "#95ae4e",
+   "share": 0.129,
+   "role": "foliage",
+   "hue_deg": 76
+  },
+  {
+   "hex": "#a9bc68",
+   "share": 0.066,
+   "role": "foliage",
+   "hue_deg": 74
+  }
+ ],
+ "palette_rules": "Every species owns a hue; leaves never within 34deg of the flower; midtone saturation capped; the five FACE_PALETTE colours are shared and never recoloured.",
+ "stages": {
+  "sprout": "vegetative only - leaves and NO flower structure of any kind",
+  "growing": "in BUD - closed flower, a different organ from the open one",
+  "flowering": "the authored adult portrait; frame 0 is the resting pose and ONE connected piece"
+ },
+ "build": [
+  "write scripts/sprite_sources/<snake_case_id>.py (authored module with a named gesture)",
+  "python3 scripts/build_sprites.py",
+  "python3 scripts/audit_sprites.py",
+  "regenerates public/cards/animated/* and src/data/sprites.json - do this ONLY when the card is being promoted"
+ ],
+ "rules": [
+  "a portrait, never an identification aid",
+  "nothing may imply a medicinal effect",
+  "no invented botany: only what the card and the plant support",
+  "part placement is measured from the assembled art, never inferred from parameters"
+ ],
+ "needs_approval": true
+}

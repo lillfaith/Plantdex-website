@@ -1,0 +1,71 @@
+{
+ "status": "BRIEF ONLY - no sprite has been authored",
+ "herbId": "eutrochium-fistulosum",
+ "cardNumber": 58,
+ "commonName": "Hollow Joe-Pye Weed",
+ "concept": {
+  "hook": "FISTULOSUM means hollow-stemmed: a tall, tube-like stalk topped by a broad dome of pink-purple flower clusters, with leaves in rings (whorls) around the stalk.",
+  "organ": "a tall domed cluster of many small pink-purple heads carried high on a long stalk",
+  "gesture": "raps a knuckle on its own hollow stalk and tilts its head to listen to the echo, then nods as if it heard its own name",
+  "personality": "echoing",
+  "avoid": "Eupatorium's dome; separate them by height (this one is the tallest sprite) and by the pink-purple palette"
+ },
+ "personality_label_free": true,
+ "palette_from_approved_art": [
+  {
+   "hex": "#73a04d",
+   "share": 0.272,
+   "role": "foliage",
+   "hue_deg": 93
+  },
+  {
+   "hex": "#825a4d",
+   "share": 0.184,
+   "role": "flower/other",
+   "hue_deg": 15
+  },
+  {
+   "hex": "#64872c",
+   "share": 0.169,
+   "role": "foliage",
+   "hue_deg": 83
+  },
+  {
+   "hex": "#b68485",
+   "share": 0.14,
+   "role": "flower/other",
+   "hue_deg": 359
+  },
+  {
+   "hex": "#b8a28f",
+   "share": 0.124,
+   "role": "flower/other",
+   "hue_deg": 28
+  },
+  {
+   "hex": "#9ab87c",
+   "share": 0.111,
+   "role": "foliage",
+   "hue_deg": 90
+  }
+ ],
+ "palette_rules": "Every species owns a hue; leaves never within 34deg of the flower; midtone saturation capped; the five FACE_PALETTE colours are shared and never recoloured.",
+ "stages": {
+  "sprout": "vegetative only - leaves and NO flower structure of any kind",
+  "growing": "in BUD - closed flower, a different organ from the open one",
+  "flowering": "the authored adult portrait; frame 0 is the resting pose and ONE connected piece"
+ },
+ "build": [
+  "write scripts/sprite_sources/<snake_case_id>.py (authored module with a named gesture)",
+  "python3 scripts/build_sprites.py",
+  "python3 scripts/audit_sprites.py",
+  "regenerates public/cards/animated/* and src/data/sprites.json - do this ONLY when the card is being promoted"
+ ],
+ "rules": [
+  "a portrait, never an identification aid",
+  "nothing may imply a medicinal effect",
+  "no invented botany: only what the card and the plant support",
+  "part placement is measured from the assembled art, never inferred from parameters"
+ ],
+ "needs_approval": true
+}

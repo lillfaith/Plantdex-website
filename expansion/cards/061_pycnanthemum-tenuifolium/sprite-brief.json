@@ -1,0 +1,71 @@
+{
+ "status": "BRIEF ONLY - no sprite has been authored",
+ "herbId": "pycnanthemum-tenuifolium",
+ "cardNumber": 61,
+ "commonName": "Narrowleaf Mountain Mint",
+ "concept": {
+  "hook": "Very narrow needle-like leaves on a slender stem, with dense whitish flower clusters at the branch tips.",
+  "organ": "small dense whitish clusters at the tips of a fine, many-branched stem; the narrow leaves are the arms",
+  "gesture": "the narrow leaves bristle outward like pine needles and stand at attention, then relax flat",
+  "personality": "prickly",
+  "avoid": "Mentha's 're-renders itself in ice' gesture, and any scent or 'minty' effect; draw nothing that implies aroma or use"
+ },
+ "personality_label_free": true,
+ "palette_from_approved_art": [
+  {
+   "hex": "#677e1f",
+   "share": 0.232,
+   "role": "foliage",
+   "hue_deg": 75
+  },
+  {
+   "hex": "#e1dcd8",
+   "share": 0.173,
+   "role": "neutral",
+   "hue_deg": 27
+  },
+  {
+   "hex": "#b2b07e",
+   "share": 0.154,
+   "role": "flower/other",
+   "hue_deg": 58
+  },
+  {
+   "hex": "#efecef",
+   "share": 0.149,
+   "role": "neutral",
+   "hue_deg": 300
+  },
+  {
+   "hex": "#cdc9b1",
+   "share": 0.145,
+   "role": "neutral",
+   "hue_deg": 51
+  },
+  {
+   "hex": "#869e3e",
+   "share": 0.145,
+   "role": "foliage",
+   "hue_deg": 75
+  }
+ ],
+ "palette_rules": "Every species owns a hue; leaves never within 34deg of the flower; midtone saturation capped; the five FACE_PALETTE colours are shared and never recoloured.",
+ "stages": {
+  "sprout": "vegetative only - leaves and NO flower structure of any kind",
+  "growing": "in BUD - closed flower, a different organ from the open one",
+  "flowering": "the authored adult portrait; frame 0 is the resting pose and ONE connected piece"
+ },
+ "build": [
+  "write scripts/sprite_sources/<snake_case_id>.py (authored module with a named gesture)",
+  "python3 scripts/build_sprites.py",
+  "python3 scripts/audit_sprites.py",
+  "regenerates public/cards/animated/* and src/data/sprites.json - do this ONLY when the card is being promoted"
+ ],
+ "rules": [
+  "a portrait, never an identification aid",
+  "nothing may imply a medicinal effect",
+  "no invented botany: only what the card and the plant support",
+  "part placement is measured from the assembled art, never inferred from parameters"
+ ],
+ "needs_approval": true
+}

@@ -287,6 +287,7 @@ BACK_COLUMN = int((BACK_RIGHT - BACK_LEFT) / 2) - 18
 # stops short of the first use disc at x = 618, with a gap.
 # Room before the next element. The scientific name stops short of the first use disc at
 # x = 618; the digits stop inside the number pill; the common name stops inside its bar.
+SHRINK_STEP = 0.93      # a batch may set 0.95: the printed deck's own habit is to reduce an over-long name by 5%
 SLOT_LIMITS = {"scientific": 520, "common": 480, "number": 64}
 
 
@@ -454,7 +455,7 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
     limit = SLOT_LIMITS.get(slot)
     scale = 1.0
     while limit and layer.width * scale > limit and scale > 0.5:
-        scale *= 0.93                      # ~7% a step, inside the 5-10% band
+        scale *= SHRINK_STEP               # ~7% a step by default, inside the 5-10% band
     if scale < 1.0:
         layer = layer.resize((max(1, round(layer.width * scale)),
                               max(1, round(layer.height * scale))), Image.LANCZOS)

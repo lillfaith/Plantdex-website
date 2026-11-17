@@ -1,0 +1,113 @@
+{
+ "status": "DRAFT - hidden; not in CATALOGUE, herbs.json or public/",
+ "herb": {
+  "id": "eupatorium-perfoliatum",
+  "cardNumber": 57,
+  "commonName": "Boneset",
+  "scientificName": "Eupatorium perfoliatum",
+  "rarity": "Common",
+  "xp": 100,
+  "season": "summer",
+  "uses": [
+   "immune",
+   "tea"
+  ],
+  "stats": {
+   "water": 5,
+   "sun": 4,
+   "temperature": 3
+  },
+  "back": {
+   "healingTraits": [
+    "Fever aid",
+    "Sweat-inducing",
+    "Cold support",
+    "Bitter tonic"
+   ],
+   "compounds": [
+    "Sesquiterpenes",
+    "Flavonoids",
+    "Tannins"
+   ],
+   "taste": [
+    "Bitter",
+    "Sharp",
+    "Harsh"
+   ],
+   "aromatic": [
+    "Herbal",
+    "Grassy",
+    "Faint"
+   ],
+   "preparations": [
+    "Dried Herb",
+    "Infusion",
+    "Tincture"
+   ],
+   "usableParts": [
+    "Leaf",
+    "Flower",
+    "Stem"
+   ]
+  },
+  "sources": [
+   {
+    "sourceId": "plantdex-expansion-draft",
+    "detail": "Card #57 text from the owner-supplied master sheet; review pending"
+   }
+  ]
+ },
+ "carried_from_the_record": {
+  "regions": [
+   "NE",
+   "AP",
+   "SE",
+   "GC",
+   "MW"
+  ],
+  "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+  "researchLinks": {
+   "directReferencesLocated": 3,
+   "links": [
+    {
+     "url": "https://pubmed.ncbi.nlm.nih.gov/22004891/",
+     "type": "Direct reference",
+     "isCitation": true
+    },
+    {
+     "url": "https://www.fs.usda.gov/nrs/pubs/rp/rp_ne138.pdf",
+     "type": "Direct reference",
+     "isCitation": true
+    },
+    {
+     "url": "https://pubmed.ncbi.nlm.nih.gov/21669270/",
+     "type": "Direct reference",
+     "isCitation": true
+    }
+   ],
+   "verificationStatus": "3 direct references \u2014 claim matching still needed",
+   "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers."
+  },
+  "cardSafetyWarning": "Possible liver toxins; avoid long-term use.",
+  "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+  "guideCaution": "Contains pyrrolizidine alkaloids; traditional herbal use only\u2014not a culinary plant."
+ },
+ "artwork_on_disk": {
+  "main": "expansion/assets/eupatorium-perfoliatum/main.png",
+  "pixel": "expansion/assets/eupatorium-perfoliatum/pixel.png",
+  "tall": "expansion/assets/eupatorium-perfoliatum/tall.png"
+ },
+ "still_needed_before_promotion": [
+  "final botanical / safety review (the record's own status says pending); the safety copy decides whether a SITE_CAUTIONS entry is needed",
+  "collectionId (a card in DIGITAL_ONLY_ENTRIES must declare one) and the decision to promote at all",
+  "web derivatives of the art: 800px front, 400px thumb, 112px chip, back (public/cards/...), built from the approved layers",
+  "the animated sprite (see sprite-brief.json) and its sprites.json entry",
+  "habitat and plant-page copy beyond the card (identification, habitat, facts) with sources; unsourced sections must say so",
+  "scanner effect: promoting adds the species to the matcher; checked that no expansion species shares a genus with an existing spp. card"
+ ],
+ "rendering_rules": [
+  "Healing Traits always renders with its non-claim framing",
+  "SafetyNotice at the right weight",
+  "a warning printed on the card renders above the discovery CTA"
+ ]
+}

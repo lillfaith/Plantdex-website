@@ -1,0 +1,71 @@
+{
+ "status": "BRIEF ONLY - no sprite has been authored",
+ "herbId": "rudbeckia-hirta",
+ "cardNumber": 60,
+ "commonName": "Black-Eyed Susan",
+ "concept": {
+  "hook": "The coneflower composition from the deck's own notes: a dark domed disc in a ring of yellow rays; HIRTA means hairy, so the stem and leaves are bristly.",
+  "organ": "two stacked heads: a wide yellow ray mane with no face of its own, and a smaller dark cone laid over its middle that carries the face SEATED LOW (the disc stands proud, which is a dome and not a picture frame)",
+  "gesture": "the rays spin slowly like a pinwheel while the dark face stays put and blinks, then the rays catch up and stop",
+  "personality": "bristly",
+  "avoid": "Echinacea purpurea's coneflower sprite (same anatomy): differ in palette (gold and near-black, not pink and orange), ray count and the pinwheel gesture"
+ },
+ "personality_label_free": true,
+ "palette_from_approved_art": [
+  {
+   "hex": "#fbbc02",
+   "share": 0.235,
+   "role": "flower/other",
+   "hue_deg": 45
+  },
+  {
+   "hex": "#597f29",
+   "share": 0.224,
+   "role": "foliage",
+   "hue_deg": 87
+  },
+  {
+   "hex": "#fbc902",
+   "share": 0.165,
+   "role": "flower/other",
+   "hue_deg": 48
+  },
+  {
+   "hex": "#495618",
+   "share": 0.164,
+   "role": "foliage",
+   "hue_deg": 73
+  },
+  {
+   "hex": "#848a1c",
+   "share": 0.123,
+   "role": "foliage",
+   "hue_deg": 63
+  },
+  {
+   "hex": "#e0af0a",
+   "share": 0.09,
+   "role": "flower/other",
+   "hue_deg": 46
+  }
+ ],
+ "palette_rules": "Every species owns a hue; leaves never within 34deg of the flower; midtone saturation capped; the five FACE_PALETTE colours are shared and never recoloured.",
+ "stages": {
+  "sprout": "vegetative only - leaves and NO flower structure of any kind",
+  "growing": "in BUD - closed flower, a different organ from the open one",
+  "flowering": "the authored adult portrait; frame 0 is the resting pose and ONE connected piece"
+ },
+ "build": [
+  "write scripts/sprite_sources/<snake_case_id>.py (authored module with a named gesture)",
+  "python3 scripts/build_sprites.py",
+  "python3 scripts/audit_sprites.py",
+  "regenerates public/cards/animated/* and src/data/sprites.json - do this ONLY when the card is being promoted"
+ ],
+ "rules": [
+  "a portrait, never an identification aid",
+  "nothing may imply a medicinal effect",
+  "no invented botany: only what the card and the plant support",
+  "part placement is measured from the assembled art, never inferred from parameters"
+ ],
+ "needs_approval": true
+}
