@@ -97,6 +97,33 @@ as computed on the 12 located pictures; the seven can now be scored on their tru
 Two of the owner's pictures are the same observation as ChatGPT's picks (lotus pixel: 16418243; everlasting tall: 397085607),
 but a different photograph in the lotus case (24700338 vs 24700331).
 
+## 1c. Retrieval probe: why 7 of 19 picks were never in a pool
+
+`scripts/production/retrieval_probe.py` pages through iNaturalist orderings of CC0-photo observations and records where the 19
+observations the owner chose from sit (`evidence/blind-test/retrieval-probe/`).
+
+| ordering | owner observations inside it |
+|---|---|
+| research grade, **by votes**, first 100 observations | 12 of 19 |
+| research grade, by votes, first 300 observations | **19 of 19** (deepest: 277) |
+| research grade, site default order, first 300 | 6 of 19 (they sit at 13-1,428) |
+| research grade + "Flowering" annotation | 5 of 19 |
+| research grade + "Fruiting" annotation | 0 of 19 |
+
+Findings, in order of how much they explain:
+1. **Every one of the 19 was reachable.** Retrieval depth was never the limit: by-votes position <= 277 in all five species. The loss
+   happened at the pool CUT, not in the search.
+2. **The cut is biased against the owner's taste.** v2 sorts the pool "flowering-annotated first" and keeps 300 photographs. Only 14 of the owner's
+   19 observations (74%) lack that annotation (just 5 appear in a flowering-annotated query), and annotated observations are 6-13% of each species.
+   The sort therefore promotes a small, atypical subset and pushes the ordinary, well-liked photographs past the cut.
+3. **iNaturalist's own vote ordering is a much better prior than the annotation.** Median by-votes position of the owner's
+   observations is 64; in the site's default order it is several hundred.
+4. **v3 as built may still be too shallow.** It drops the flowering-first sort but round-robins seven queries into a 320-photograph pool,
+   so each query contributes only its first ~45-90 photographs and the by-votes list is cut at roughly position 50-90, short of the 8 of 19 observations
+   that sit between 100 and 277. The retro run will show how many of the 19 v3 actually retrieves; if it is short of 19, the fix is
+   **a pool that takes the top ~300 observations by votes outright**, with a cheap pre-screen (resolution, orientation, colour) deciding
+   what reaches the expensive segmentation step. Not built yet: it is the next change to test, not a finding.
+
 ## 2. What the numbers say
 
 1. **My ranking does not predict the owner's picks.** Of the 8 located, non-rejected owner picks, the median
