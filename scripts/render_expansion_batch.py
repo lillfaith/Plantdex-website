@@ -88,6 +88,9 @@ def apply_overrides(c: dict) -> dict:
     if not path.exists():
         return c
     for e in json.loads(path.read_text()).get(str(c["cardNumber"]), []):
+        if e["field"] == "layout.centre_odd_healing":      # a layout choice, not a text edit
+            c["centre_odd_healing"] = True
+            continue
         sect, key = e["field"].split(".")
         items = c[sect][key]
         if "set" in e:                             # owner sets the whole list (order matters: entries fill row by row)
@@ -110,7 +113,7 @@ def apply_overrides(c: dict) -> dict:
 def card_record(c: dict) -> dict:
     c = apply_overrides(c)
     f = c["front"]
-    return {"card_number": f"#{c['cardNumber']}", "common_name": c["commonName"],
+    return {"centre_odd_healing": bool(c.get("centre_odd_healing")), "card_number": f"#{c['cardNumber']}", "common_name": c["commonName"],
             "front": {"scientific_name": c["scientificName"], "use_icons": f["uses"], "season": f["season"],
                       "environmental_indicators": {"water": f["stats"]["water"], "sun": f["stats"]["sun"],
                                                    "temperature": f["stats"]["temperature"]},

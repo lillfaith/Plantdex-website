@@ -618,7 +618,9 @@ def render_back(card: dict, blocked: list | None = None) -> Image.Image:
                                         "scaled_to": round(k, 3),
                                         "deck_convention": "the printed cards abbreviate"})
                 left = BACK_RIGHT - layer.width if right else BACK_LEFT
-                if key == "healingTraits" and len(items) == 3 and not right and i == 1:
+                odd_last = (key == "healingTraits" and not right and len(items) % 2 == 1 and i == len(column) - 1
+                            and (len(items) == 3 or card.get("centre_odd_healing")))
+                if odd_last:
                     # THREE TRAITS: the odd one out sits on its own row, so it is CENTRED across the panel rather than
                     # left-aligned under the first (owner's rule). Two- and four-trait panels are unchanged.
                     left = (BACK_LEFT + BACK_RIGHT) / 2 - layer.width / 2

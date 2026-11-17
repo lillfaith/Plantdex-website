@@ -77,5 +77,52 @@
    "by": "owner",
    "why": "Owner asked to replace 'Headache folk use' with 'Headache aid'."
   }
+ ],
+ "107": [
+  {
+   "field": "back.healingTraits",
+   "from": "Astringent",
+   "to": "Antimicrobial",
+   "by": "owner",
+   "why": "Owner asked to replace 'Astringent' with 'Antimicrobial'."
+  }
+ ],
+ "108": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner asked to add 'Digestive aid' (not in the master sheet)."
+  }
+ ],
+ "109": [
+  {
+   "field": "layout.centre_odd_healing",
+   "by": "owner",
+   "why": "Owner asked for the bottom (fifth) Healing Trait to be centred."
+  }
+ ],
+ "110": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Eye care"
+   ],
+   "by": "owner",
+   "why": "Owner asked to add 'Eye care' (not in the master sheet)."
+  }
+ ],
+ "111": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Calming",
+    "Aromatherapy"
+   ],
+   "by": "owner",
+   "why": "Owner asked to add 'Calming' and 'Aromatherapy' (not in the master sheet)."
+  }
  ]
 }
