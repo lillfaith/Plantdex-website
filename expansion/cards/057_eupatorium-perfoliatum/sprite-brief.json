@@ -1,5 +1,5 @@
 {
- "status": "FIRST-PASS DRAFT authored (owner approved the concept); needs visual review. Source: expansion/sprites/src/ - NOT built into public/ or sprites.json",
+ "status": "SPRITE APPROVED by the owner (design, gesture, all three stages). Source: expansion/sprites/src/. NOT built into public/ or sprites.json: that happens only when the card is promoted.",
  "herbId": "eupatorium-perfoliatum",
  "cardNumber": 57,
  "commonName": "Boneset",
@@ -67,5 +67,5 @@
   "no invented botany: only what the card and the plant support",
   "part placement is measured from the assembled art, never inferred from parameters"
  ],
- "needs_approval": true
+ "needs_approval": false
 }
