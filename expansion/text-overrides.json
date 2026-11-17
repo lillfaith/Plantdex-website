@@ -161,5 +161,47 @@
    "by": "owner",
    "why": "Owner asked to replace 'Nutritive pad' with 'Digestive aid'."
   }
+ ],
+ "_rules": {
+  "omega3_to_compounds": true,
+  "why": "Owner rule: Omega-3 belongs in Signature Compounds, not Healing Traits. Applies to every card, now and in later batches (currently only #119 is affected)."
+ },
+ "117": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Skin wash",
+    "Skin soothing",
+    "Respiratory aid",
+    "Antifungal",
+    "Cough relief"
+   ],
+   "by": "owner",
+   "why": "Owner: added Respiratory aid, Antifungal, Cough relief; removed Wound cleansing."
+  }
+ ],
+ "118": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Respiratory aid",
+    "Anti-catarrhal",
+    "Skin soothing",
+    "Muscle soothing"
+   ],
+   "by": "owner",
+   "why": "Owner: replaced Chest comfort with Anti-catarrhal; removed Foot-soak relief."
+  }
+ ],
+ "119": [
+  {
+   "field": "back.healingTraits",
+   "append": [
+    "Eye care",
+    "Wound aid"
+   ],
+   "by": "owner",
+   "why": "Owner: added Eye care and Wound aid; 'Plant omega-3' is removed by the omega-3 rule and Omega-3 moves to Signature Compounds."
+  }
  ]
 }

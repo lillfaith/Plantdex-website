@@ -20,10 +20,9 @@
   "back": {
    "healingTraits": [
     "Respiratory aid",
-    "Chest comfort",
+    "Anti-catarrhal",
     "Skin soothing",
-    "Muscle soothing",
-    "Foot-soak relief"
+    "Muscle soothing"
    ],
    "compounds": [
     "Methyleugenol",

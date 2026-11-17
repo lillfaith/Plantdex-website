@@ -128,6 +128,14 @@ def apply_overrides(c: dict) -> dict:
         if e["from"] not in items:
             raise SystemExit(f"card {c['cardNumber']}: override expects {e['from']!r} in {e['field']} but found {items}")
         items[items.index(e["from"])] = e["to"]
+    # STANDING OWNER RULE: Omega-3 is a signature COMPOUND, never a Healing Trait. Any healing trait naming omega-3 moves to
+    # Signature Compounds (as "Omega-3", once) and is removed from the traits, which then reflow.
+    if json.loads(path.read_text()).get("_rules", {}).get("omega3_to_compounds"):
+        moved = [x for x in c["back"]["healingTraits"] if "omega-3" in x.lower() or "omega 3" in x.lower()]
+        if moved:
+            c["back"]["healingTraits"] = [x for x in c["back"]["healingTraits"] if x not in moved]
+            if not any("omega" in x.lower() for x in c["back"]["compounds"]):
+                c["back"]["compounds"].append("Omega-3")
     return c
 
 
