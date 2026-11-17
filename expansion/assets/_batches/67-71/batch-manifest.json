@@ -6,9 +6,20 @@
   "main": "<n>/main_photo_cutout_V21.png",
   "pixel": "<n>/pixel_icon_NATIVE_24x24_V21.png",
   "tall": "<n>/tall_gradient_mask_card_size_V21.png",
-  "reference_only": ["latest_flattened_card_crops/*", "LATEST_FLATTENED_CONTACT_SHEET.png", "main_source_crop_V21", "tall_source_crop_V21", "tall_photo_cutout_V21"]
+  "reference_only": [
+   "latest_flattened_card_crops/*",
+   "LATEST_FLATTENED_CONTACT_SHEET.png",
+   "main_source_crop_V21",
+   "tall_source_crop_V21",
+   "tall_photo_cutout_V21"
+  ]
  },
- "placement_notes": "The package's own README says the V21 layers are NOT the latest montage (the montage was one flattened generated image with no recoverable layers). The layers differ in silhouette from the montage, so a mask-overlap fit scored 0.30-0.47 and was rejected; placement uses the window rule measured on the approved fronts (subject stands on the art window floor, row 329 of 630, max 233 tall x 310 wide, centred). Tall overlays are card-sized and used as-is.",
- "provenance": {"status": "INCOMPLETE - the package names no iNaturalist photo IDs; V21 cutouts were extracted from earlier AI-edited mockups. Verify against original photographs and licences before promotion."},
- "validator_notes": ["#67 and #69 pixel icons read as smooth gradients, #70 pixel icon has 139 colours: heuristic warnings only, files accepted", "main subjects are 545-610px tall (968+ leaves headroom): note only"]
+ "placement_notes": "The package's own README says the V21 layers are NOT the latest montage (the montage was one flattened generated image with no recoverable layers). The layers differ in silhouette from the montage, so a mask-overlap fit scored 0.30-0.47 and was rejected; placement uses the window rule measured on the approved fronts (subject stands on the art window floor, row 329 of 630, max 233 tall x 310 wide, centred). Tall overlays are card-sized and used as-is. Back previews: the V21 tall overlays were not aligned to the oval, so each is re-seated with rotate + uniform resize + move only (principal axis made vertical, fitted to 108x222 reference px, centred on x=195, standing on row 429); #71 needed +8 deg clockwise by eye. Render with: --align-tall --tall-extra-cw 71=8.",
+ "provenance": {
+  "status": "INCOMPLETE - the package names no iNaturalist photo IDs; V21 cutouts were extracted from earlier AI-edited mockups. Verify against original photographs and licences before promotion."
+ },
+ "validator_notes": [
+  "#67 and #69 pixel icons read as smooth gradients, #70 pixel icon has 139 colours: heuristic warnings only, files accepted",
+  "main subjects are 545-610px tall (968+ leaves headroom): note only"
+ ]
 }

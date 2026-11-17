@@ -199,6 +199,34 @@ def fit_uniform(src_alpha: np.ndarray, target: np.ndarray):
     return best[1], best[2], best[3], best[0]
 
 
+# The back's silhouette sits in the pink oval: upright, centred on the card, standing on the oval's floor. These are
+# measured from the approved #67-71 backs (reference px, 390x630).
+OVAL_CX, OVAL_FLOOR, OVAL_FIT_W, OVAL_FIT_H, OVAL_MAX_TILT = 195, 429, 108, 222, 30
+
+
+def align_tall(ov: Image.Image, extra_cw: float = 0.0) -> Image.Image:
+    """Re-seat a tall preview in the oval using ONLY rotate + uniform resize + move. Never stretches or reshapes.
+
+    Rotation is whatever makes the plant's principal axis vertical (capped), so a leaning cutout stands up; the
+    scale is the largest uniform one that fits the oval's measured width and height.
+    """
+    a = np.asarray(ov.getchannel("A"))
+    ys, xs = np.where(a > 40)
+    pts = np.stack([xs - xs.mean(), ys - ys.mean()])
+    w, v = np.linalg.eigh(np.cov(pts))
+    vx, vy = v[:, 1]
+    lean = float(np.degrees(np.arctan2(vx, vy)))            # degrees the principal axis is off vertical
+    lean = (lean + 90) % 180 - 90                           # axis has no direction
+    lean = max(-OVAL_MAX_TILT, min(OVAL_MAX_TILT, lean)) + extra_cw   # extra_cw: owner/eye correction when a flower head skews the axis
+    rot = ov.rotate(-lean, resample=Image.BICUBIC, expand=True)     # PIL angles are counter-clockwise
+    rot = rot.crop(rot.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
+    s = min(OVAL_FIT_W / rot.width, OVAL_FIT_H / rot.height)
+    rot = rot.resize((max(1, round(rot.width * s)), max(1, round(rot.height * s))), Image.LANCZOS)
+    canvas = Image.new("RGBA", (REF_W, REF_H), (0, 0, 0, 0))
+    canvas.alpha_composite(rot, (round(OVAL_CX - rot.width / 2), round(OVAL_FLOOR - rot.height)))
+    return canvas
+
+
 def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     base = Image.open(pkg / "templates" / "front_base_390x630.png")
     ref = Image.open(pkg / "cards" / str(n) / "front_final.png")
@@ -297,7 +325,7 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--data", required=True)
+    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
     ap.add_argument("--cards", nargs="+", type=int, required=True); ap.add_argument("--out", required=True)
     a = ap.parse_args()
     pkg, out = pathlib.Path(a.assets or "/nonexistent"), pathlib.Path(a.out)
@@ -312,6 +340,8 @@ def main() -> int:
         ov = None
         if has_art:
             overlay = Image.open(pkg / "cards" / str(n) / "back_gradient_mask_overlay.png").convert("RGBA")
+            if a.align_tall:
+                overlay = align_tall(overlay, dict((int(k), float(v)) for k, v in (x.split('=') for x in a.tall_extra_cw)).get(n, 0.0))
             ov = overlay.resize((R.WIDTH, round(R.WIDTH * REF_H / REF_W)), Image.LANCZOS)
 
         def pages(ov=ov):
