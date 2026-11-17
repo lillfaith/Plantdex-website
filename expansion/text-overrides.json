@@ -164,7 +164,12 @@
  ],
  "_rules": {
   "omega3_to_compounds": true,
-  "why": "Owner rule: Omega-3 belongs in Signature Compounds, not Healing Traits. Applies to every card, now and in later batches (currently only #119 is affected)."
+  "why": "Owner rule: Omega-3 belongs in Signature Compounds, not Healing Traits. Applies to every card, now and in later batches (currently only #119 is affected).",
+  "abbreviations": {
+   "Anti-inflammatory": "Anti-inflam.",
+   "Antimicrobial": "Antimicrob."
+  },
+  "abbreviations_why": "Inspected all 54 existing cards (45 printed + 9 Field Cards): the only shortened terms are 'Anti-inflam.' (12 printed + 5 field) and 'Antimicrob.' (3 printed). Everything else, even 'Sesquiterpene lactones' and 'Glucose regulation', is written out in full. Generated cards use the same two abbreviations. Affects #107 and #127 so far."
  },
  "117": [
   {

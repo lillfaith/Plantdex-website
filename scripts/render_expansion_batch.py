@@ -128,6 +128,11 @@ def apply_overrides(c: dict) -> dict:
         if e["from"] not in items:
             raise SystemExit(f"card {c['cardNumber']}: override expects {e['from']!r} in {e['field']} but found {items}")
         items[items.index(e["from"])] = e["to"]
+    # STANDING OWNER RULE: the printed deck (the 45 cards and the 9 Field Cards) shortens exactly two terms, so generated cards do too.
+    abbr = json.loads(path.read_text()).get("_rules", {}).get("abbreviations", {})
+    if abbr:
+        for k, v in c["back"].items():
+            c["back"][k] = [abbr.get(x, x) for x in v]
     # STANDING OWNER RULE: Omega-3 is a signature COMPOUND, never a Healing Trait. Any healing trait naming omega-3 moves to
     # Signature Compounds (as "Omega-3", once) and is removed from the traits, which then reflow.
     if json.loads(path.read_text()).get("_rules", {}).get("omega3_to_compounds"):
