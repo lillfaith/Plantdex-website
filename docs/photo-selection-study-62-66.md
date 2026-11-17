@@ -124,16 +124,22 @@ Findings, in order of how much they explain:
    **a pool that takes the top ~300 observations by votes outright**, with a cheap pre-screen (resolution, orientation, colour) deciding
    what reaches the expensive segmentation step. Not built yet: it is the next change to test, not a finding.
 
-## 1d. How the owner picks (from the history and the observations themselves)
+## 1d. What the history does and does not show about how the owner picks (CORRECTED)
 
-`pick_position_probe.py` (`evidence/blind-test/retrieval-probe/pick-positions.json`):
-- The history shows 3, 5, 5, 3 and 3 observations viewed for 62-66, and the owner took 3, 5, 5, 3 and 3 pictures: **one picture per observation viewed**.
-  Selection is two-step: pick an observation from the grid, then a photo from it.
-- **14 of 19 picks are the observation's first (cover) photograph**; 11 of the 19 observations have only one photo at all.
-- The observations are ordinary: 18 of 19 have 0-1 faves and 16 of 19 have a single agreeing identification beyond the observer's. Popularity is not what
-  selects them, and neither is the flowering annotation (6 of 19).
-Implication: an observation's cover photograph is the owner's first filter, so candidate sheets should lead with cover photographs and
-score the observation by its best photograph, instead of counting every photograph as an independent candidate.
+`pick_position_probe.py` (`evidence/blind-test/retrieval-probe/pick-positions.json`). An earlier version of this section drew two conclusions the data
+does not support; the owner correctly challenged both.
+
+- **Cover photographs: no evidence of a preference.** 12 of the 19 observations contain a single photograph, so the owner had no choice there
+  (the earlier text said 11). Only the **7** observations with several photographs were a choice, and the cover was taken in **2 of 7**. Choosing
+  uniformly at random inside those 7 observations would give 2.5 covers, so the data is consistent with no cover preference at all. Cover status must
+  not be used as a ranking signal. Showing covers first on a sheet is a convenience, not a finding.
+- **Browsing order: not established.** One picture per observation shows what was chosen, not the order of thinking; it says nothing about whether
+  observations or photographs were evaluated first. The system is meant to learn the visual reasons for a choice, not to reproduce browsing behaviour, so
+  this study does not model it.
+- **Popularity and the flowering annotation are hypotheses, not findings.** 18 of 19 observations have 0-1 faves and 6 of 19 carry the annotation, but whether
+  those differ from the *available alternatives* has not been tested (that needs the pool's observation metadata; see the retro report).
+- Grouping by observation may still be useful for efficiency; it must not drop strong secondary photographs, and the top-300-observation cutoff is a
+  hypothesis to be tested for recall before it is adopted.
 
 ## 2. What the numbers say
 
