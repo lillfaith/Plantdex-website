@@ -123,6 +123,11 @@
    ],
    "by": "owner",
    "why": "Owner asked to add 'Calming' and 'Aromatherapy' (not in the master sheet)."
+  },
+  {
+   "field": "layout.centre_odd_healing",
+   "by": "owner",
+   "why": "Owner asked for 'Aromatherapy' (the fifth Healing Trait) to be centred."
   }
  ]
 }
