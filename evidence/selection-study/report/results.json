@@ -1,0 +1,2050 @@
+{
+ "cards": {
+  "62": {
+   "scientific": "Eriogonum fasciculatum",
+   "pool": 150,
+   "roles": {
+    "main": {
+     "owner_photo": 156413,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 546599977,
+       "score": 89.0,
+       "observation_url": "https://www.inaturalist.org/observations/303273688"
+      },
+      {
+       "photo_id": 80766186,
+       "score": 87.9,
+       "observation_url": "https://www.inaturalist.org/observations/50850473"
+      },
+      {
+       "photo_id": 3073231,
+       "score": 87.1,
+       "observation_url": "https://www.inaturalist.org/observations/2723539"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 8,
+     "owner_score": 84.7,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "little_foliage: few leaves in the subject",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.992,
+      "role": 0.729,
+      "perspective": 0.5,
+      "aesthetic": 0.583,
+      "quality": 0.841
+     },
+     "owner_reason": "complete subject, 62% of frame height; flower colour 29%, leaves 0%; no top/side contact; 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/109418",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "complete subject, 87% of frame height; flower colour 26%, leaves 0%; no top/side contact; 2 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 42
+    },
+    "pixel": {
+     "owner_photo": 577631995,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 19210899,
+       "score": 85.6,
+       "observation_url": "https://www.inaturalist.org/observations/13162056"
+      },
+      {
+       "photo_id": 676220781,
+       "score": 85.1,
+       "observation_url": "https://www.inaturalist.org/observations/370173396"
+      },
+      {
+       "photo_id": 636739327,
+       "score": 84.9,
+       "observation_url": "https://www.inaturalist.org/observations/349081637"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": false,
+     "owner_rank_in_role": null,
+     "owner_score": 78.2,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 0.777,
+      "isolability": 0.949,
+      "role": 0.723,
+      "perspective": 0.5,
+      "aesthetic": 0.589,
+      "quality": 0.841
+     },
+     "owner_reason": "one head 15% of frame, not cropped; stands out from surroundings (dE 66); 24px test: 7 colours, 3 piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/319542605",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "one head 3% of frame, not cropped; stands out from surroundings (dE 88); 24px test: 8 colours, 1 piece(s); 1 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 0
+    },
+    "tall": {
+     "owner_photo": 351651663,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 80766186,
+       "score": 86.0,
+       "observation_url": "https://www.inaturalist.org/observations/50850473"
+      },
+      {
+       "photo_id": 67139706,
+       "score": 84.2,
+       "observation_url": "https://www.inaturalist.org/observations/42290558"
+      },
+      {
+       "photo_id": 546599977,
+       "score": 84.0,
+       "observation_url": "https://www.inaturalist.org/observations/303273688"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 9,
+     "owner_score": 79.8,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "few_leaves_visible"
+     ],
+     "owner_parts": {
+      "recognizability": 0.91,
+      "completeness": 0.854,
+      "isolability": 0.976,
+      "role": 0.813,
+      "perspective": 0.5,
+      "aesthetic": 0.56,
+      "quality": 0.841,
+      "plain_background": 0.61
+     },
+     "owner_reason": "upright subject 1.5:1, 44% of frame height; top intact; 1 competing piece(s); 2 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/199403809",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "upright subject 1.36:1, 68% of frame height; top intact; 1 competing piece(s); 3 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 33
+    }
+   },
+   "role_overlap": {
+    "546599977": [
+     "main",
+     "tall"
+    ],
+    "80766186": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "19930029": [
+     "main",
+     "pixel"
+    ],
+    "654495704": [
+     "main",
+     "pixel"
+    ],
+    "676220781": [
+     "pixel",
+     "tall"
+    ],
+    "67139706": [
+     "main",
+     "tall"
+    ],
+    "351651663": [
+     "main",
+     "tall"
+    ],
+    "156413": [
+     "main",
+     "tall"
+    ],
+    "441831057": [
+     "main",
+     "pixel"
+    ],
+    "49569359": [
+     "main",
+     "tall"
+    ],
+    "107150125": [
+     "main",
+     "tall"
+    ],
+    "577631995": [
+     "main",
+     "tall"
+    ]
+   }
+  },
+  "63": {
+   "scientific": "Parthenium integrifolium",
+   "pool": 150,
+   "roles": {
+    "main": {
+     "owner_photo": 79455093,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 290195071,
+       "score": 85.1,
+       "observation_url": "https://www.inaturalist.org/observations/167512515"
+      },
+      {
+       "photo_id": 536188686,
+       "score": 85.0,
+       "observation_url": "https://www.inaturalist.org/observations/297716886"
+      },
+      {
+       "photo_id": 79455093,
+       "score": 84.9,
+       "observation_url": "https://www.inaturalist.org/observations/50039246"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 3,
+     "owner_score": 84.9,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.876,
+      "role": 0.977,
+      "perspective": 0.5,
+      "aesthetic": 0.343,
+      "quality": 0.841
+     },
+     "owner_reason": "complete subject, 63% of frame height; flower colour 66%, leaves 24%; no top/side contact; 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "pixel"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/50039246",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "complete subject, 76% of frame height; flower colour 54%, leaves 22%; no top/side contact; 1 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 83
+    },
+    "pixel": {
+     "owner_photo": 430069758,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 662409691,
+       "score": 81.7,
+       "observation_url": "https://www.inaturalist.org/observations/362908878"
+      },
+      {
+       "photo_id": 77497852,
+       "score": 80.1,
+       "observation_url": "https://www.inaturalist.org/observations/48831151"
+      },
+      {
+       "photo_id": 524085977,
+       "score": 78.5,
+       "observation_url": "https://www.inaturalist.org/observations/291291304"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": false,
+     "owner_rank_in_role": null,
+     "owner_score": 75.0,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "competing_clusters: 4 similar flower clusters compete",
+      "head_small_in_frame: little detail to work from",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.745,
+      "completeness": 0.802,
+      "isolability": 0.958,
+      "role": 0.518,
+      "perspective": 0.5,
+      "aesthetic": 0.53,
+      "quality": 0.841
+     },
+     "owner_reason": "one head 0% of frame, not cropped; stands out from surroundings (dE 44); 24px test: 8 colours, 1 piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/241319700",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "one head 0% of frame, not cropped; stands out from surroundings (dE 80); 24px test: 10 colours, 1 piece(s); 2 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 0
+    },
+    "tall": {
+     "owner_photo": 536188686,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 430069758,
+       "score": 83.3,
+       "observation_url": "https://www.inaturalist.org/observations/241319700"
+      },
+      {
+       "photo_id": 389035421,
+       "score": 82.4,
+       "observation_url": "https://www.inaturalist.org/observations/219776968"
+      },
+      {
+       "photo_id": 137708861,
+       "score": 81.4,
+       "observation_url": "https://www.inaturalist.org/observations/83828205"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 8,
+     "owner_score": 79.5,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "not_vertical: the subject is 0.99:1 (height:width)",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 0.976,
+      "isolability": 0.792,
+      "role": 0.86,
+      "perspective": 0.5,
+      "aesthetic": 0.631,
+      "quality": 0.841,
+      "plain_background": 0.636
+     },
+     "owner_reason": "upright subject 0.99:1, 66% of frame height; top intact; 1 competing piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/297716886",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "upright subject 1.13:1, 77% of frame height; top intact; 1 competing piece(s); 1 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 42
+    }
+   },
+   "role_overlap": {
+    "290195071": [
+     "main",
+     "tall"
+    ],
+    "536188686": [
+     "main",
+     "tall"
+    ],
+    "79455093": [
+     "main",
+     "pixel"
+    ],
+    "683386657": [
+     "main",
+     "tall"
+    ],
+    "389035421": [
+     "main",
+     "tall"
+    ],
+    "430069758": [
+     "main",
+     "tall"
+    ],
+    "578730789": [
+     "main",
+     "pixel"
+    ],
+    "689147167": [
+     "main",
+     "pixel"
+    ]
+   }
+  },
+  "64": {
+   "scientific": "Pseudognaphalium obtusifolium",
+   "pool": 150,
+   "roles": {
+    "main": {
+     "owner_photo": 174334069,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 559561652,
+       "score": 91.6,
+       "observation_url": "https://www.inaturalist.org/observations/310170090"
+      },
+      {
+       "photo_id": 26292341,
+       "score": 90.0,
+       "observation_url": "https://www.inaturalist.org/observations/17320971"
+      },
+      {
+       "photo_id": 174334069,
+       "score": 89.7,
+       "observation_url": "https://www.inaturalist.org/observations/104071129"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 3,
+     "owner_score": 89.7,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically"
+     ],
+     "owner_parts": {
+      "recognizability": 0.91,
+      "completeness": 1.0,
+      "isolability": 0.998,
+      "role": 0.853,
+      "perspective": 0.5,
+      "aesthetic": 0.49,
+      "quality": 0.841
+     },
+     "owner_reason": "complete subject, 83% of frame height; flower colour 55%, leaves 10%; no top/side contact; 2 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "pixel",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/104071129",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "complete subject, 90% of frame height; flower colour 29%, leaves 62%; no top/side contact; 2 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 83
+    },
+    "pixel": {
+     "owner_photo": 174334069,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 174334069,
+       "score": 90.3,
+       "observation_url": "https://www.inaturalist.org/observations/104071129"
+      },
+      {
+       "photo_id": 91628965,
+       "score": 87.1,
+       "observation_url": "https://www.inaturalist.org/observations/57446258"
+      },
+      {
+       "photo_id": 559561652,
+       "score": 84.9,
+       "observation_url": "https://www.inaturalist.org/observations/310170090"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 1,
+     "owner_score": 90.3,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically"
+     ],
+     "owner_parts": {
+      "recognizability": 0.91,
+      "completeness": 0.938,
+      "isolability": 0.998,
+      "role": 1.0,
+      "perspective": 0.5,
+      "aesthetic": 0.49,
+      "quality": 0.841
+     },
+     "owner_reason": "one head 6% of frame, not cropped; stands out from surroundings (dE 70); 24px test: 7 colours, 1 piece(s); 2 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "pixel",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/104071129",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "one head 6% of frame, not cropped; stands out from surroundings (dE 70); 24px test: 7 colours, 1 piece(s); 2 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 100
+    },
+    "tall": {
+     "owner_photo": 728257757,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 728257757,
+       "score": 89.5,
+       "observation_url": "https://www.inaturalist.org/observations/397085607"
+      },
+      {
+       "photo_id": 559561652,
+       "score": 86.6,
+       "observation_url": "https://www.inaturalist.org/observations/310170090"
+      },
+      {
+       "photo_id": 174334069,
+       "score": 84.9,
+       "observation_url": "https://www.inaturalist.org/observations/104071129"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 1,
+     "owner_score": 89.5,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "wide_base_cropped: a wide mass runs off the bottom",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.847,
+      "role": 0.979,
+      "perspective": 0.5,
+      "aesthetic": 0.71,
+      "quality": 0.841,
+      "plain_background": 0.894
+     },
+     "owner_reason": "upright subject 1.65:1, 90% of frame height; top intact; 1 competing piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "pixel",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/397085607",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "upright subject 1.65:1, 90% of frame height; top intact; 1 competing piece(s); 1 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 100
+    }
+   },
+   "role_overlap": {
+    "559561652": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "174334069": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "26292341": [
+     "main",
+     "tall"
+    ],
+    "728257757": [
+     "pixel",
+     "tall"
+    ],
+    "743956718": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "756472127": [
+     "main",
+     "pixel"
+    ],
+    "759968077": [
+     "main",
+     "pixel"
+    ],
+    "729219274": [
+     "main",
+     "tall"
+    ],
+    "237052011": [
+     "main",
+     "pixel"
+    ],
+    "224063214": [
+     "main",
+     "tall"
+    ]
+   }
+  },
+  "65": {
+   "scientific": "Nelumbo lutea",
+   "pool": 150,
+   "roles": {
+    "main": {
+     "owner_photo": 18367241,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 21411326,
+       "score": 88.2,
+       "observation_url": "https://www.inaturalist.org/observations/14396705"
+      },
+      {
+       "photo_id": 431603960,
+       "score": 88.0,
+       "observation_url": "https://www.inaturalist.org/observations/242117832"
+      },
+      {
+       "photo_id": 758542113,
+       "score": 87.9,
+       "observation_url": "https://www.inaturalist.org/observations/412258368"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 6,
+     "owner_score": 85.0,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "little_foliage: few leaves in the subject"
+     ],
+     "owner_parts": {
+      "recognizability": 0.91,
+      "completeness": 1.0,
+      "isolability": 0.814,
+      "role": 0.793,
+      "perspective": 0.5,
+      "aesthetic": 0.69,
+      "quality": 0.622
+     },
+     "owner_reason": "complete subject, 88% of frame height; flower colour 30%, leaves 4%; no top/side contact; 3 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/12687978",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "complete subject, 64% of frame height; flower colour 8%, leaves 41%; no top/side contact; 3 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 58
+    },
+    "pixel": {
+     "owner_photo": 24700331,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 416343953,
+       "score": 86.0,
+       "observation_url": "https://www.inaturalist.org/observations/234219188"
+      },
+      {
+       "photo_id": 431603960,
+       "score": 85.9,
+       "observation_url": "https://www.inaturalist.org/observations/242117832"
+      },
+      {
+       "photo_id": 545061905,
+       "score": 84.6,
+       "observation_url": "https://www.inaturalist.org/observations/302444388"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 8,
+     "owner_score": 82.2,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.702,
+      "role": 0.979,
+      "perspective": 0.5,
+      "aesthetic": 0.566,
+      "quality": 0.776
+     },
+     "owner_reason": "one head 5% of frame, not cropped; stands out from surroundings (dE 37); 24px test: 6 colours, 1 piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "pixel",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/16418243",
+     "owner_long_edge": 1657,
+     "pipeline_top_reason": "one head 0% of frame, not cropped; stands out from surroundings (dE 30); 24px test: 7 colours, 1 piece(s); 3 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 50
+    },
+    "tall": {
+     "owner_photo": 728239756,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 18367241,
+       "score": 84.6,
+       "observation_url": "https://www.inaturalist.org/observations/12687978"
+      },
+      {
+       "photo_id": 431603960,
+       "score": 84.5,
+       "observation_url": "https://www.inaturalist.org/observations/242117832"
+      },
+      {
+       "photo_id": 410030616,
+       "score": 81.4,
+       "observation_url": "https://www.inaturalist.org/observations/230898055"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": false,
+     "owner_rank_in_role": null,
+     "owner_score": 72.9,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.828,
+      "role": 0.847,
+      "perspective": 0.5,
+      "aesthetic": 0.695,
+      "quality": 0.841,
+      "plain_background": 0.301
+     },
+     "owner_reason": "upright subject 2.69:1, 93% of frame height; top intact; 1 competing piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/397074721",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "upright subject 1.68:1, 88% of frame height; top intact; 1 competing piece(s); 3 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 0
+    }
+   },
+   "role_overlap": {
+    "21411326": [
+     "main",
+     "tall"
+    ],
+    "431603960": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "758542113": [
+     "main",
+     "tall"
+    ],
+    "288708507": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "416343953": [
+     "main",
+     "pixel"
+    ],
+    "18367241": [
+     "main",
+     "tall"
+    ],
+    "390537770": [
+     "main",
+     "pixel"
+    ],
+    "428245705": [
+     "main",
+     "tall"
+    ],
+    "24700331": [
+     "pixel",
+     "tall"
+    ],
+    "561512495": [
+     "main",
+     "tall"
+    ],
+    "312128676": [
+     "pixel",
+     "tall"
+    ]
+   }
+  },
+  "66": {
+   "scientific": "Erigeron annuus",
+   "pool": 150,
+   "roles": {
+    "main": {
+     "owner_photo": 739436562,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 84051599,
+       "score": 90.3,
+       "observation_url": "https://www.inaturalist.org/observations/52872538"
+      },
+      {
+       "photo_id": 706697817,
+       "score": 88.9,
+       "observation_url": "https://www.inaturalist.org/observations/385994542"
+      },
+      {
+       "photo_id": 739436562,
+       "score": 87.7,
+       "observation_url": "https://www.inaturalist.org/observations/402773821"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 3,
+     "owner_score": 87.7,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.929,
+      "role": 0.937,
+      "perspective": 0.5,
+      "aesthetic": 0.827,
+      "quality": 0.841
+     },
+     "owner_reason": "complete subject, 57% of frame height; flower colour 30%, leaves 38%; no top/side contact; 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "pixel",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/402773821",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "complete subject, 92% of frame height; flower colour 21%, leaves 19%; no top/side contact; 2 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 83
+    },
+    "pixel": {
+     "owner_photo": 203598444,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 542375965,
+       "score": 86.7,
+       "observation_url": "https://www.inaturalist.org/observations/301001475"
+      },
+      {
+       "photo_id": 739436562,
+       "score": 86.2,
+       "observation_url": "https://www.inaturalist.org/observations/402773821"
+      },
+      {
+       "photo_id": 55310118,
+       "score": 85.0,
+       "observation_url": "https://www.inaturalist.org/observations/35089488"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": false,
+     "owner_rank_in_role": null,
+     "owner_score": 77.6,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "competing_clusters: 3 similar flower clusters compete",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 0.969,
+      "isolability": 0.825,
+      "role": 0.547,
+      "perspective": 0.5,
+      "aesthetic": 0.756,
+      "quality": 0.623
+     },
+     "owner_reason": "one head 2% of frame, not cropped; stands out from surroundings (dE 70); 24px test: 6 colours, 1 piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/120371269",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "one head 8% of frame, not cropped; stands out from surroundings (dE 92); 24px test: 9 colours, 1 piece(s); 3 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 0
+    },
+    "tall": {
+     "owner_photo": 393351997,
+     "shortlist_size": 12,
+     "pipeline_top3": [
+      {
+       "photo_id": 84051599,
+       "score": 84.4,
+       "observation_url": "https://www.inaturalist.org/observations/52872538"
+      },
+      {
+       "photo_id": 19879427,
+       "score": 82.8,
+       "observation_url": "https://www.inaturalist.org/observations/13527987"
+      },
+      {
+       "photo_id": 752297042,
+       "score": 82.7,
+       "observation_url": "https://www.inaturalist.org/observations/409186408"
+      }
+     ],
+     "owner_in_candidate_pool": true,
+     "owner_shortlisted_for_this_role": true,
+     "owner_rank_in_role": 6,
+     "owner_score": 81.1,
+     "owner_rejected_for_role": false,
+     "owner_hard_reasons": [],
+     "owner_flags": [
+      "perspective_unverified: viewing angle and lens distortion cannot be measured automatically",
+      "id_thin: only 1 agreeing identification(s); research grade is not proof"
+     ],
+     "owner_parts": {
+      "recognizability": 0.77,
+      "completeness": 1.0,
+      "isolability": 0.684,
+      "role": 0.924,
+      "perspective": 0.5,
+      "aesthetic": 0.999,
+      "quality": 0.841,
+      "plain_background": 0.657
+     },
+     "owner_reason": "upright subject 1.35:1, 79% of frame height; top intact; 1 competing piece(s); 1 agreeing ID(s)",
+     "owner_shortlisted_for": [
+      "main",
+      "tall"
+     ],
+     "owner_observation_url": "https://www.inaturalist.org/observations/222082208",
+     "owner_long_edge": 2048,
+     "pipeline_top_reason": "upright subject 1.61:1, 92% of frame height; top intact; 1 competing piece(s); 2 agreeing ID(s)",
+     "shortlist_percentile_of_owner_score": 67
+    }
+   },
+   "role_overlap": {
+    "84051599": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "706697817": [
+     "main",
+     "tall"
+    ],
+    "739436562": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "746954757": [
+     "main",
+     "pixel",
+     "tall"
+    ],
+    "759720378": [
+     "main",
+     "pixel"
+    ],
+    "19879427": [
+     "main",
+     "tall"
+    ],
+    "203598444": [
+     "main",
+     "tall"
+    ],
+    "752297042": [
+     "main",
+     "tall"
+    ],
+    "393351997": [
+     "main",
+     "tall"
+    ]
+   }
+  }
+ },
+ "aggregate": {
+  "main": {
+   "mean_score_gap_pipeline_minus_owner": 2.44,
+   "features": [
+    {
+     "feature": "m.flower_share",
+     "n": 5,
+     "mean_owner": 0.421,
+     "mean_pipeline_top": 0.277,
+     "owner_higher_in": 5,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "score",
+     "n": 5,
+     "mean_owner": 86.4,
+     "mean_pipeline_top": 88.84,
+     "owner_higher_in": 0,
+     "owner_lower_in": 5
+    },
+    {
+     "feature": "flag_count",
+     "n": 5,
+     "mean_owner": 2.0,
+     "mean_pipeline_top": 1.4,
+     "owner_higher_in": 3,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.bg_busy",
+     "n": 5,
+     "mean_owner": 0.117,
+     "mean_pipeline_top": 0.183,
+     "owner_higher_in": 1,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.bg_green_share",
+     "n": 5,
+     "mean_owner": 0.19,
+     "mean_pipeline_top": 0.254,
+     "owner_higher_in": 1,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.bg_spread",
+     "n": 5,
+     "mean_owner": 0.548,
+     "mean_pipeline_top": 0.529,
+     "owner_higher_in": 4,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.exposure_v",
+     "n": 5,
+     "mean_owner": 0.728,
+     "mean_pipeline_top": 0.699,
+     "owner_higher_in": 4,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.flower_blob.n_significant",
+     "n": 4,
+     "mean_owner": 1.5,
+     "mean_pipeline_top": 6.75,
+     "owner_higher_in": 0,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.lap_var",
+     "n": 5,
+     "mean_owner": 1008.0,
+     "mean_pipeline_top": 1860.14,
+     "owner_higher_in": 1,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.largest.h_frac",
+     "n": 5,
+     "mean_owner": 0.707,
+     "mean_pipeline_top": 0.819,
+     "owner_higher_in": 1,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.largest.solidity",
+     "n": 5,
+     "mean_owner": 0.532,
+     "mean_pipeline_top": 0.392,
+     "owner_higher_in": 4,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "part.isolability",
+     "n": 5,
+     "mean_owner": 0.922,
+     "mean_pipeline_top": 0.902,
+     "owner_higher_in": 4,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "part.role",
+     "n": 5,
+     "mean_owner": 0.858,
+     "mean_pipeline_top": 0.929,
+     "owner_higher_in": 1,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "agreements",
+     "n": 5,
+     "mean_owner": 1.6,
+     "mean_pipeline_top": 2.0,
+     "owner_higher_in": 0,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.area",
+     "n": 4,
+     "mean_owner": 0.033,
+     "mean_pipeline_top": 0.013,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.flower_blob.h_frac",
+     "n": 4,
+     "mean_owner": 0.226,
+     "mean_pipeline_top": 0.179,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.flower_blob.ring_delta_e",
+     "n": 4,
+     "mean_owner": 60.75,
+     "mean_pipeline_top": 85.7,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.flower_blob.ring_green_share",
+     "n": 4,
+     "mean_owner": 0.131,
+     "mean_pipeline_top": 0.095,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.flower_blob.solidity",
+     "n": 4,
+     "mean_owner": 0.597,
+     "mean_pipeline_top": 0.58,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.aspect_h_over_w",
+     "n": 5,
+     "mean_owner": 1.314,
+     "mean_pipeline_top": 1.534,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "part.recognizability",
+     "n": 5,
+     "mean_owner": 0.826,
+     "mean_pipeline_top": 0.882,
+     "owner_higher_in": 0,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "long_edge",
+     "n": 5,
+     "mean_owner": 2048.0,
+     "mean_pipeline_top": 2027.2,
+     "owner_higher_in": 1,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.boundary_delta_e",
+     "n": 5,
+     "mean_owner": 49.08,
+     "mean_pipeline_top": 55.0,
+     "owner_higher_in": 2,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.colourfulness",
+     "n": 5,
+     "mean_owner": 0.279,
+     "mean_pipeline_top": 0.277,
+     "owner_higher_in": 3,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.coverage",
+     "n": 5,
+     "mean_owner": 0.164,
+     "mean_pipeline_top": 0.163,
+     "owner_higher_in": 3,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.green_share",
+     "n": 5,
+     "mean_owner": 0.153,
+     "mean_pipeline_top": 0.287,
+     "owner_higher_in": 3,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.area",
+     "n": 5,
+     "mean_owner": 0.164,
+     "mean_pipeline_top": 0.162,
+     "owner_higher_in": 3,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.coherence",
+     "n": 5,
+     "mean_owner": 1.0,
+     "mean_pipeline_top": 0.991,
+     "owner_higher_in": 1,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.largest.n_touch",
+     "n": 5,
+     "mean_owner": 0.6,
+     "mean_pipeline_top": 0.4,
+     "owner_higher_in": 2,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.touch.bottom",
+     "n": 5,
+     "mean_owner": 0.6,
+     "mean_pipeline_top": 0.4,
+     "owner_higher_in": 2,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.w_frac",
+     "n": 5,
+     "mean_owner": 0.637,
+     "mean_pipeline_top": 0.656,
+     "owner_higher_in": 3,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.n_components",
+     "n": 5,
+     "mean_owner": 1.0,
+     "mean_pipeline_top": 1.2,
+     "owner_higher_in": 0,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "part.aesthetic",
+     "n": 5,
+     "mean_owner": 0.587,
+     "mean_pipeline_top": 0.623,
+     "owner_higher_in": 2,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "part.quality",
+     "n": 5,
+     "mean_owner": 0.797,
+     "mean_pipeline_top": 0.838,
+     "owner_higher_in": 0,
+     "owner_lower_in": 1
+    }
+   ]
+  },
+  "pixel": {
+   "mean_score_gap_pipeline_minus_owner": 5.4,
+   "features": [
+    {
+     "feature": "m.bg_busy",
+     "n": 5,
+     "mean_owner": 0.098,
+     "mean_pipeline_top": 0.239,
+     "owner_higher_in": 0,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.bg_spread",
+     "n": 5,
+     "mean_owner": 0.472,
+     "mean_pipeline_top": 0.702,
+     "owner_higher_in": 0,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.coverage",
+     "n": 5,
+     "mean_owner": 0.346,
+     "mean_pipeline_top": 0.145,
+     "owner_higher_in": 4,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.lap_var",
+     "n": 5,
+     "mean_owner": 509.2,
+     "mean_pipeline_top": 1372.4,
+     "owner_higher_in": 0,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "m.largest.area",
+     "n": 5,
+     "mean_owner": 0.346,
+     "mean_pipeline_top": 0.141,
+     "owner_higher_in": 4,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.largest.h_frac",
+     "n": 5,
+     "mean_owner": 0.821,
+     "mean_pipeline_top": 0.56,
+     "owner_higher_in": 4,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "px.colours",
+     "n": 5,
+     "mean_owner": 6.8,
+     "mean_pipeline_top": 8.2,
+     "owner_higher_in": 0,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "score",
+     "n": 5,
+     "mean_owner": 80.66,
+     "mean_pipeline_top": 86.06,
+     "owner_higher_in": 0,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "agreements",
+     "n": 5,
+     "mean_owner": 1.2,
+     "mean_pipeline_top": 2.2,
+     "owner_higher_in": 0,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "part.recognizability",
+     "n": 5,
+     "mean_owner": 0.793,
+     "mean_pipeline_top": 0.882,
+     "owner_higher_in": 0,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "flag_count",
+     "n": 5,
+     "mean_owner": 2.4,
+     "mean_pipeline_top": 1.8,
+     "owner_higher_in": 2,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.bg_green_share",
+     "n": 5,
+     "mean_owner": 0.289,
+     "mean_pipeline_top": 0.177,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.flower_blob.ring_delta_e",
+     "n": 5,
+     "mean_owner": 57.34,
+     "mean_pipeline_top": 72.04,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.flower_share",
+     "n": 5,
+     "mean_owner": 0.303,
+     "mean_pipeline_top": 0.488,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.green_share",
+     "n": 5,
+     "mean_owner": 0.106,
+     "mean_pipeline_top": 0.074,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.n_touch",
+     "n": 5,
+     "mean_owner": 0.2,
+     "mean_pipeline_top": 0.8,
+     "owner_higher_in": 0,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.w_frac",
+     "n": 5,
+     "mean_owner": 0.849,
+     "mean_pipeline_top": 0.535,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "part.isolability",
+     "n": 5,
+     "mean_owner": 0.886,
+     "mean_pipeline_top": 0.929,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "part.quality",
+     "n": 5,
+     "mean_owner": 0.784,
+     "mean_pipeline_top": 0.837,
+     "owner_higher_in": 0,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "part.role",
+     "n": 5,
+     "mean_owner": 0.753,
+     "mean_pipeline_top": 0.828,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "px.bbox_fill",
+     "n": 5,
+     "mean_owner": 0.523,
+     "mean_pipeline_top": 0.595,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "px.legibility",
+     "n": 5,
+     "mean_owner": 0.582,
+     "mean_pipeline_top": 0.77,
+     "owner_higher_in": 0,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "px.opaque_fraction",
+     "n": 5,
+     "mean_owner": 0.28,
+     "mean_pipeline_top": 0.313,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.largest.aspect_h_over_w",
+     "n": 5,
+     "mean_owner": 1.14,
+     "mean_pipeline_top": 1.6,
+     "owner_higher_in": 2,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.coherence",
+     "n": 5,
+     "mean_owner": 1.0,
+     "mean_pipeline_top": 0.986,
+     "owner_higher_in": 1,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.largest.touch.bottom",
+     "n": 5,
+     "mean_owner": 0.2,
+     "mean_pipeline_top": 0.4,
+     "owner_higher_in": 0,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.touch.left",
+     "n": 5,
+     "mean_owner": 0.0,
+     "mean_pipeline_top": 0.2,
+     "owner_higher_in": 0,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.largest.touch.right",
+     "n": 5,
+     "mean_owner": 0.0,
+     "mean_pipeline_top": 0.2,
+     "owner_higher_in": 0,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.n_components",
+     "n": 5,
+     "mean_owner": 1.0,
+     "mean_pipeline_top": 1.2,
+     "owner_higher_in": 0,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "px.components",
+     "n": 5,
+     "mean_owner": 1.4,
+     "mean_pipeline_top": 1.0,
+     "owner_higher_in": 1,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "long_edge",
+     "n": 5,
+     "mean_owner": 1969.8,
+     "mean_pipeline_top": 2022.4,
+     "owner_higher_in": 1,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.boundary_delta_e",
+     "n": 5,
+     "mean_owner": 63.7,
+     "mean_pipeline_top": 68.78,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.colourfulness",
+     "n": 5,
+     "mean_owner": 0.245,
+     "mean_pipeline_top": 0.239,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.exposure_v",
+     "n": 5,
+     "mean_owner": 0.707,
+     "mean_pipeline_top": 0.753,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.area",
+     "n": 5,
+     "mean_owner": 0.057,
+     "mean_pipeline_top": 0.035,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.h_frac",
+     "n": 5,
+     "mean_owner": 0.314,
+     "mean_pipeline_top": 0.208,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.n_significant",
+     "n": 5,
+     "mean_owner": 2.0,
+     "mean_pipeline_top": 4.2,
+     "owner_higher_in": 1,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.flower_blob.ring_green_share",
+     "n": 5,
+     "mean_owner": 0.11,
+     "mean_pipeline_top": 0.111,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.solidity",
+     "n": 5,
+     "mean_owner": 0.639,
+     "mean_pipeline_top": 0.718,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.solidity",
+     "n": 5,
+     "mean_owner": 0.703,
+     "mean_pipeline_top": 0.646,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "part.aesthetic",
+     "n": 5,
+     "mean_owner": 0.586,
+     "mean_pipeline_top": 0.521,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "part.completeness",
+     "n": 5,
+     "mean_owner": 0.897,
+     "mean_pipeline_top": 0.949,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    }
+   ]
+  },
+  "tall": {
+   "mean_score_gap_pipeline_minus_owner": 5.0,
+   "features": [
+    {
+     "feature": "m.green_share",
+     "n": 5,
+     "mean_owner": 0.314,
+     "mean_pipeline_top": 0.144,
+     "owner_higher_in": 4,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "part.aesthetic",
+     "n": 5,
+     "mean_owner": 0.719,
+     "mean_pipeline_top": 0.629,
+     "owner_higher_in": 4,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "score",
+     "n": 5,
+     "mean_owner": 80.56,
+     "mean_pipeline_top": 85.56,
+     "owner_higher_in": 0,
+     "owner_lower_in": 4
+    },
+    {
+     "feature": "agreements",
+     "n": 5,
+     "mean_owner": 1.2,
+     "mean_pipeline_top": 2.0,
+     "owner_higher_in": 0,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.flower_blob.ring_green_share",
+     "n": 5,
+     "mean_owner": 0.197,
+     "mean_pipeline_top": 0.105,
+     "owner_higher_in": 3,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "m.bg_busy",
+     "n": 5,
+     "mean_owner": 0.111,
+     "mean_pipeline_top": 0.037,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.bg_spread",
+     "n": 5,
+     "mean_owner": 0.543,
+     "mean_pipeline_top": 0.371,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.colourfulness",
+     "n": 5,
+     "mean_owner": 0.365,
+     "mean_pipeline_top": 0.309,
+     "owner_higher_in": 3,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.coverage",
+     "n": 5,
+     "mean_owner": 0.107,
+     "mean_pipeline_top": 0.213,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.flower_blob.n_significant",
+     "n": 5,
+     "mean_owner": 1.8,
+     "mean_pipeline_top": 3.6,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.flower_blob.solidity",
+     "n": 5,
+     "mean_owner": 0.591,
+     "mean_pipeline_top": 0.621,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.largest.area",
+     "n": 5,
+     "mean_owner": 0.106,
+     "mean_pipeline_top": 0.212,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.largest.h_frac",
+     "n": 5,
+     "mean_owner": 0.745,
+     "mean_pipeline_top": 0.83,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.largest.solidity",
+     "n": 5,
+     "mean_owner": 0.402,
+     "mean_pipeline_top": 0.562,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.largest.w_frac",
+     "n": 5,
+     "mean_owner": 0.578,
+     "mean_pipeline_top": 0.711,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "part.completeness",
+     "n": 5,
+     "mean_owner": 0.966,
+     "mean_pipeline_top": 0.997,
+     "owner_higher_in": 0,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "part.isolability",
+     "n": 5,
+     "mean_owner": 0.825,
+     "mean_pipeline_top": 0.902,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "part.plain_background",
+     "n": 5,
+     "mean_owner": 0.62,
+     "mean_pipeline_top": 0.74,
+     "owner_higher_in": 1,
+     "owner_lower_in": 3
+    },
+    {
+     "feature": "m.largest.n_touch",
+     "n": 5,
+     "mean_owner": 0.4,
+     "mean_pipeline_top": 0.6,
+     "owner_higher_in": 1,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.touch.bottom",
+     "n": 5,
+     "mean_owner": 0.4,
+     "mean_pipeline_top": 0.6,
+     "owner_higher_in": 1,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "part.quality",
+     "n": 5,
+     "mean_owner": 0.841,
+     "mean_pipeline_top": 0.797,
+     "owner_higher_in": 1,
+     "owner_lower_in": 0
+    },
+    {
+     "feature": "part.recognizability",
+     "n": 5,
+     "mean_owner": 0.798,
+     "mean_pipeline_top": 0.849,
+     "owner_higher_in": 1,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.bg_green_share",
+     "n": 5,
+     "mean_owner": 0.344,
+     "mean_pipeline_top": 0.254,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.boundary_delta_e",
+     "n": 5,
+     "mean_owner": 58.0,
+     "mean_pipeline_top": 66.0,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.exposure_v",
+     "n": 5,
+     "mean_owner": 0.648,
+     "mean_pipeline_top": 0.687,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.area",
+     "n": 5,
+     "mean_owner": 0.011,
+     "mean_pipeline_top": 0.012,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.h_frac",
+     "n": 5,
+     "mean_owner": 0.132,
+     "mean_pipeline_top": 0.141,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_blob.ring_delta_e",
+     "n": 5,
+     "mean_owner": 76.64,
+     "mean_pipeline_top": 75.08,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.flower_share",
+     "n": 5,
+     "mean_owner": 0.281,
+     "mean_pipeline_top": 0.235,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.lap_var",
+     "n": 5,
+     "mean_owner": 2386.44,
+     "mean_pipeline_top": 3105.68,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.aspect_h_over_w",
+     "n": 5,
+     "mean_owner": 1.636,
+     "mean_pipeline_top": 1.486,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    },
+    {
+     "feature": "m.largest.coherence",
+     "n": 5,
+     "mean_owner": 0.987,
+     "mean_pipeline_top": 0.991,
+     "owner_higher_in": 1,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "m.n_components",
+     "n": 5,
+     "mean_owner": 1.2,
+     "mean_pipeline_top": 1.2,
+     "owner_higher_in": 1,
+     "owner_lower_in": 1
+    },
+    {
+     "feature": "part.role",
+     "n": 5,
+     "mean_owner": 0.885,
+     "mean_pipeline_top": 0.898,
+     "owner_higher_in": 2,
+     "owner_lower_in": 2
+    }
+   ]
+  }
+ },
+ "picks_matched": [
+  {
+   "file": "buckwheatmaininspo.jpg",
+   "card": 62,
+   "role": "main",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "buckwheatpixelinspo.jpeg",
+   "card": 62,
+   "role": "pixel",
+   "inliers": 8,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "buckwheatpreviewinspo.jpeg",
+   "card": 62,
+   "role": "tall",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "wildquininemaininspo.jpg",
+   "card": 63,
+   "role": "main",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "wildquininemaininspo2.jpg",
+   "card": 63,
+   "role": "main",
+   "inliers": 2354,
+   "photo_id": 127092,
+   "is_table_choice": false
+  },
+  {
+   "file": "wildquininemaininspo3.jpg",
+   "card": 63,
+   "role": "main",
+   "inliers": 7,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "wildquininepixelinspo.jpg",
+   "card": 63,
+   "role": "pixel",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "wildquininepreviewinspo.jpg",
+   "card": 63,
+   "role": "tall",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "sweeteverlastingmaininspo.jpg",
+   "card": 64,
+   "role": "main",
+   "inliers": 5,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "sweeteverlastingmaininspo2.jpg",
+   "card": 64,
+   "role": "main",
+   "inliers": 2135,
+   "photo_id": 728257757,
+   "is_table_choice": false
+  },
+  {
+   "file": "sweeteverlastingpixelinspo.jpg",
+   "card": 64,
+   "role": "pixel",
+   "inliers": 9,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "sweeteverlastingpixelinspo2.jpeg",
+   "card": 64,
+   "role": "pixel",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "sweeteverlastingpreviewinspo.jpeg",
+   "card": 64,
+   "role": "tall",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "americanlotusmaininspo.jpeg",
+   "card": 65,
+   "role": "main",
+   "inliers": 7,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "americanlotuspixeinspo.jpg",
+   "card": 65,
+   "role": "pixel",
+   "inliers": 15,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "americanlotuspreviewinspo.jpg",
+   "card": 65,
+   "role": "tall",
+   "inliers": 2079,
+   "photo_id": 21411326,
+   "is_table_choice": false
+  },
+  {
+   "file": "annualfleabanemaininspo.jpeg",
+   "card": 66,
+   "role": "main",
+   "inliers": 6,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "annualfleabanepixelinspo.jpg",
+   "card": 66,
+   "role": "pixel",
+   "inliers": 7,
+   "photo_id": null,
+   "is_table_choice": false
+  },
+  {
+   "file": "annualfleabanepreviewinspo.jpg",
+   "card": 66,
+   "role": "tall",
+   "inliers": 5,
+   "photo_id": null,
+   "is_table_choice": false
+  }
+ ]
+}
