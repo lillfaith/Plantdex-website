@@ -1,12 +1,12 @@
 {
- "name": "photo-search-v2-cards-62-66",
- "tag": "cards-62-66",
- "note": "Private dev search: new CC0 candidates only, screened per role (the improved pipeline; replaces the older batch-001 candidates for these cards). Approves/edits nothing. Hands/gloves are left for ChatGPT to remove.",
+ "name": "photo-search-v2-cards-77-81",
+ "tag": "cards-77-81",
+ "note": "Private dev search: new CC0 candidates only, screened per role. Approves/edits nothing. Hands/gloves are left for ChatGPT to remove.",
  "species": [
   {
-   "card": 62,
-   "common": "California Buckwheat",
-   "scientific": "Eriogonum fasciculatum",
+   "card": 77,
+   "common": "Wild Yam",
+   "scientific": "Dioscorea villosa",
    "flower_kind": "white",
    "needed_roles": [
     "main",
@@ -16,9 +16,9 @@
    "retained": {}
   },
   {
-   "card": 63,
-   "common": "Wild Quinine",
-   "scientific": "Parthenium integrifolium",
+   "card": 78,
+   "common": "Virginia Pepperweed",
+   "scientific": "Lepidium virginicum",
    "flower_kind": "white",
    "needed_roles": [
     "main",
@@ -28,21 +28,9 @@
    "retained": {}
   },
   {
-   "card": 64,
-   "common": "Sweet Everlasting",
-   "scientific": "Pseudognaphalium obtusifolium",
-   "flower_kind": "white",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {}
-  },
-  {
-   "card": 65,
-   "common": "American Lotus",
-   "scientific": "Nelumbo lutea",
+   "card": 79,
+   "common": "Common Cinquefoil",
+   "scientific": "Potentilla simplex",
    "flower_kind": "yellow",
    "needed_roles": [
     "main",
@@ -52,9 +40,21 @@
    "retained": {}
   },
   {
-   "card": 66,
-   "common": "Annual Fleabane",
-   "scientific": "Erigeron annuus",
+   "card": 80,
+   "common": "White Clover",
+   "scientific": "Trifolium repens",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 81,
+   "common": "Queen Anne's Lace",
+   "scientific": "Daucus carota",
    "flower_kind": "white",
    "needed_roles": [
     "main",
