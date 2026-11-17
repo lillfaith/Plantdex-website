@@ -1,11 +1,11 @@
 {
- "built": "2026-11-17T14:43:07+00:00",
+ "built": "2026-11-17T17:17:28+00:00",
  "species": [
   {
-   "card": 67,
-   "common": "Curly Dock",
-   "scientific": "Rumex crispus",
-   "flower_kind": "brown",
+   "card": 72,
+   "common": "Anise Hyssop",
+   "scientific": "Agastache foeniculum",
+   "flower_kind": "pink_purple",
    "needed_roles": [
     "main",
     "pixel",
@@ -18,286 +18,285 @@
     "main": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 62,
+     "hard_rejected": 33,
      "reject_reasons": {
-      "main_clipped": 32,
-      "no_subject": 22,
-      "subject_too_small": 8,
-      "hands": 1
+      "no_subject": 16,
+      "subject_too_small": 14,
+      "hands": 2,
+      "main_clipped": 1
      },
-     "survivors": 88,
+     "survivors": 117,
      "shortlisted": 12
     },
     "pixel": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 38,
+     "hard_rejected": 18,
      "reject_reasons": {
-      "no_subject": 22,
-      "pixel_head_cropped": 16,
-      "hands": 1
+      "no_subject": 16,
+      "hands": 2
      },
-     "survivors": 45,
+     "survivors": 84,
      "shortlisted": 12
     },
     "tall": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 76,
+     "hard_rejected": 33,
      "reject_reasons": {
-      "tall_clipped_top": 52,
-      "no_subject": 22,
-      "tall_wide_mass": 4,
-      "hands": 1
+      "tall_clipped_top": 16,
+      "no_subject": 16,
+      "hands": 2
+     },
+     "survivors": 103,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 158076,
+    "name": "Agastache foeniculum"
+   },
+   "pool": 150,
+   "n_candidates": 27
+  },
+  {
+   "card": 73,
+   "common": "Virginia Spring Beauty",
+   "scientific": "Claytonia virginica",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 73,
+     "reject_reasons": {
+      "subject_too_small": 45,
+      "no_subject": 18,
+      "hands": 5,
+      "main_clipped": 5
+     },
+     "survivors": 77,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 27,
+     "reject_reasons": {
+      "no_subject": 18,
+      "hands": 5,
+      "pixel_head_cropped": 4
+     },
+     "survivors": 120,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 25,
+     "reject_reasons": {
+      "no_subject": 18,
+      "hands": 5,
+      "tall_clipped_top": 2
+     },
+     "survivors": 93,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 117434,
+    "name": "Claytonia virginica"
+   },
+   "pool": 150,
+   "n_candidates": 28
+  },
+  {
+   "card": 74,
+   "common": "Smooth Solomon's Seal",
+   "scientific": "Polygonatum biflorum",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 65,
+     "reject_reasons": {
+      "no_subject": 23,
+      "subject_too_small": 21,
+      "main_clipped": 20,
+      "hands": 4
+     },
+     "survivors": 85,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 29,
+     "reject_reasons": {
+      "no_subject": 23,
+      "hands": 4,
+      "pixel_head_cropped": 2
      },
      "survivors": 35,
      "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 53197,
-    "name": "Rumex crispus"
-   },
-   "pool": 150,
-   "n_candidates": 26
-  },
-  {
-   "card": 68,
-   "common": "Narrowleaf Plantain",
-   "scientific": "Plantago lanceolata",
-   "flower_kind": "brown",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 90,
-     "reject_reasons": {
-      "no_subject": 65,
-      "subject_too_small": 16,
-      "main_clipped": 6,
-      "hands": 4
-     },
-     "survivors": 60,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 69,
-     "reject_reasons": {
-      "no_subject": 65,
-      "hands": 4
-     },
-     "survivors": 36,
-     "shortlisted": 12
     },
     "tall": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 78,
+     "hard_rejected": 51,
      "reject_reasons": {
-      "no_subject": 65,
-      "tall_clipped_top": 6,
-      "hands": 4,
-      "tall_wide_mass": 3
-     },
-     "survivors": 47,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 53178,
-    "name": "Plantago lanceolata"
-   },
-   "pool": 150,
-   "n_candidates": 22
-  },
-  {
-   "card": 69,
-   "common": "Common Mugwort",
-   "scientific": "Artemisia vulgaris",
-   "flower_kind": "brown",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 77,
-     "reject_reasons": {
-      "no_subject": 48,
-      "subject_too_small": 15,
-      "main_clipped": 13,
+      "no_subject": 23,
+      "tall_clipped_top": 19,
+      "tall_wide_mass": 9,
       "hands": 4
-     },
-     "survivors": 73,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 52,
-     "reject_reasons": {
-      "no_subject": 48,
-      "hands": 4
-     },
-     "survivors": 26,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 70,
-     "reject_reasons": {
-      "no_subject": 48,
-      "tall_clipped_top": 15,
-      "tall_wide_mass": 5,
-      "hands": 4
-     },
-     "survivors": 47,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 52856,
-    "name": "Artemisia vulgaris"
-   },
-   "pool": 150,
-   "n_candidates": 26
-  },
-  {
-   "card": 70,
-   "common": "Motherwort",
-   "scientific": "Leonurus cardiaca",
-   "flower_kind": "pink_purple",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 59,
-     "reject_reasons": {
-      "no_subject": 32,
-      "main_clipped": 16,
-      "subject_too_small": 9,
-      "hands": 3
-     },
-     "survivors": 91,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 35,
-     "reject_reasons": {
-      "no_subject": 32,
-      "hands": 3
-     },
-     "survivors": 19,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 64,
-     "reject_reasons": {
-      "no_subject": 32,
-      "tall_clipped_top": 27,
-      "tall_wide_mass": 8,
-      "hands": 3
-     },
-     "survivors": 57,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 56171,
-    "name": "Leonurus cardiaca"
-   },
-   "pool": 150,
-   "n_candidates": 25
-  },
-  {
-   "card": 71,
-   "common": "New York Ironweed",
-   "scientific": "Vernonia noveboracensis",
-   "flower_kind": "pink_purple",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {},
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 77,
-     "reject_reasons": {
-      "main_clipped": 37,
-      "no_subject": 22,
-      "subject_too_small": 17,
-      "hands": 1
-     },
-     "survivors": 73,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 38,
-     "reject_reasons": {
-      "no_subject": 22,
-      "pixel_head_cropped": 15,
-      "hands": 1
-     },
-     "survivors": 91,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 59,
-     "reject_reasons": {
-      "tall_clipped_top": 23,
-      "tall_wide_mass": 22,
-      "no_subject": 22,
-      "hands": 1
      },
      "survivors": 67,
      "shortlisted": 12
     }
    },
    "taxon": {
-    "id": 142979,
-    "name": "Vernonia noveboracensis"
+    "id": 85327,
+    "name": "Polygonatum biflorum"
    },
    "pool": 150,
-   "n_candidates": 31
+   "n_candidates": 27
+  },
+  {
+   "card": 75,
+   "common": "Partridgeberry",
+   "scientific": "Mitchella repens",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 104,
+     "reject_reasons": {
+      "no_subject": 66,
+      "subject_too_small": 35,
+      "main_clipped": 2,
+      "hands": 1
+     },
+     "survivors": 46,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 68,
+     "reject_reasons": {
+      "no_subject": 66,
+      "pixel_head_cropped": 1,
+      "hands": 1
+     },
+     "survivors": 50,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 69,
+     "reject_reasons": {
+      "no_subject": 66,
+      "tall_clipped_top": 2,
+      "hands": 1
+     },
+     "survivors": 55,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 83799,
+    "name": "Mitchella repens"
+   },
+   "pool": 150,
+   "n_candidates": 24
+  },
+  {
+   "card": 76,
+   "common": "American Groundnut",
+   "scientific": "Apios americana",
+   "flower_kind": "brown",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 78,
+     "reject_reasons": {
+      "subject_too_small": 30,
+      "no_subject": 29,
+      "main_clipped": 15,
+      "hands": 5
+     },
+     "survivors": 72,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 36,
+     "reject_reasons": {
+      "no_subject": 29,
+      "hands": 5,
+      "pixel_head_cropped": 3
+     },
+     "survivors": 91,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 49,
+     "reject_reasons": {
+      "no_subject": 29,
+      "tall_clipped_top": 12,
+      "tall_wide_mass": 8,
+      "hands": 5
+     },
+     "survivors": 84,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 119817,
+    "name": "Apios americana"
+   },
+   "pool": 150,
+   "n_candidates": 30
   }
  ],
- "zip_bytes": 215938662
+ "zip_bytes": 210837833
 }
