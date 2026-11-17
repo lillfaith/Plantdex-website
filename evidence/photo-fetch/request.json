@@ -1,0 +1,10 @@
+{
+ "batch": "62-66",
+ "cards": [
+  {"card": 62, "scientific": "Eriogonum fasciculatum", "photos": {"main": 156413, "pixel": 577631995, "tall": 351651663}},
+  {"card": 63, "scientific": "Parthenium integrifolium", "photos": {"main": 79455093, "pixel": 430069758, "tall": 536188686}},
+  {"card": 64, "scientific": "Pseudognaphalium obtusifolium", "photos": {"main": 174334069, "pixel": 174334069, "tall": 728257757}},
+  {"card": 65, "scientific": "Nelumbo lutea", "photos": {"main": 18367241, "pixel": 24700331, "tall": 728239756}},
+  {"card": 66, "scientific": "Erigeron annuus", "photos": {"main": 739436562, "pixel": 203598444, "tall": 393351997}}
+ ]
+}

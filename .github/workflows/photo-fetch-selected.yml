@@ -1,0 +1,38 @@
+name: Photo fetch (selected originals)
+
+# PRIVATE DEVELOPMENT TOOL. Downloads the owner's SELECTED iNaturalist photos, unedited, verifies each one
+# (CC0 licence, taxon, size served) and packages them with a manifest. Edits nothing, deploys nothing, writes
+# nothing to the repository. Runs here because api.inaturalist.org is refused by the development sandbox.
+# STARTED BY PUSHING evidence/photo-fetch/request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/photo-fetch/request.json
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python3 scripts/production/fetch_selected.py --self-test
+      - name: Fetch, verify and package (exit 2 = a photo failed a check; the report says which)
+        id: fetch
+        continue-on-error: true
+        run: python3 scripts/production/fetch_selected.py --request evidence/photo-fetch/request.json --out export
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plantdex-selected-originals-62-66
+          path: export
+          compression-level: 0
+          retention-days: 30
+      - name: Fail the job if any check failed
+        if: steps.fetch.outcome != 'success'
+        run: |
+          cat export/REPORT.txt || true
+          exit 1
