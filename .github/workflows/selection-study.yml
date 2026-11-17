@@ -1,0 +1,45 @@
+name: Selection study (owner picks vs pipeline ranking)
+
+# PRIVATE RESEARCH TOOL. Reads the #62-66 search run's own records and originals and the owner's picks; writes a
+# report under evidence/selection-study/report. Changes no card, asset, weight or ranking. Deploys nothing.
+# STARTED BY PUSHING evidence/selection-study/request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/selection-study/request.json
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy opencv-python-headless
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v2-species-*
+          path: species
+          merge-multiple: true
+          run-id: 44146564784
+          github-token: ${{ github.token }}
+      - name: Study
+        run: python3 scripts/production/selection_study.py --species species --request evidence/photo-fetch/request.json --picks evidence/selection-study/picks --out evidence/selection-study/report
+      - name: Commit the report (small files only)
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/selection-study/report
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Selection study: owner picks vs pipeline ranking (research only)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
