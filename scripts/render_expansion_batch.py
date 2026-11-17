@@ -205,26 +205,35 @@ OVAL_CX, OVAL_FLOOR, OVAL_FIT_W, OVAL_FIT_H, OVAL_MAX_TILT = 195, 429, 108, 222,
 
 
 def align_tall(ov: Image.Image, extra_cw: float = 0.0) -> Image.Image:
-    """Re-seat a tall preview in the oval using ONLY rotate + uniform resize + move. Never stretches or reshapes.
+    """Re-seat a tall preview in the oval by transforming the WHOLE supplied PNG as one image.
 
-    Rotation is whatever makes the plant's principal axis vertical (capped), so a leaning cutout stands up; the
-    scale is the largest uniform one that fits the oval's measured width and height.
+    One affine map (rotate + uniform scale + move) is applied to the entire card-sized overlay, exactly as a
+    designer would rotate and resize a single layer: nothing is cropped out of it, split, re-drawn or recoloured.
+    The alpha bounding box is only MEASURED, to work out how much to rotate/scale/move; pixels are never cut by it.
+    Rotation makes the plant's principal axis vertical (capped); scale is the largest uniform one that fits the oval.
     """
     a = np.asarray(ov.getchannel("A"))
     ys, xs = np.where(a > 40)
     pts = np.stack([xs - xs.mean(), ys - ys.mean()])
-    w, v = np.linalg.eigh(np.cov(pts))
-    vx, vy = v[:, 1]
-    lean = float(np.degrees(np.arctan2(vx, vy)))            # degrees the principal axis is off vertical
-    lean = (lean + 90) % 180 - 90                           # axis has no direction
-    lean = max(-OVAL_MAX_TILT, min(OVAL_MAX_TILT, lean)) + extra_cw   # extra_cw: owner/eye correction when a flower head skews the axis
-    rot = ov.rotate(-lean, resample=Image.BICUBIC, expand=True)     # PIL angles are counter-clockwise
-    rot = rot.crop(rot.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
-    s = min(OVAL_FIT_W / rot.width, OVAL_FIT_H / rot.height)
-    rot = rot.resize((max(1, round(rot.width * s)), max(1, round(rot.height * s))), Image.LANCZOS)
-    canvas = Image.new("RGBA", (REF_W, REF_H), (0, 0, 0, 0))
-    canvas.alpha_composite(rot, (round(OVAL_CX - rot.width / 2), round(OVAL_FLOOR - rot.height)))
-    return canvas
+    _, v = np.linalg.eigh(np.cov(pts))
+    lean = float(np.degrees(np.arctan2(v[0, 1], v[1, 1])))
+    lean = (lean + 90) % 180 - 90
+    lean = max(-OVAL_MAX_TILT, min(OVAL_MAX_TILT, lean)) + extra_cw
+    th = np.radians(-lean)                                   # visual counter-clockwise angle (image y points down)
+    R = np.array([[np.cos(th), np.sin(th)], [-np.sin(th), np.cos(th)]])
+    ys, xs = np.where(a > 8)
+    cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
+    pts = (R @ np.stack([xs - cx, ys - cy]))
+    w0, h0 = np.ptp(pts[0]) + 1, np.ptp(pts[1]) + 1
+    s = min(OVAL_FIT_W / w0, OVAL_FIT_H / h0)
+    M = s * R                                                # forward: p' = M (p - c) + t
+    mid = np.array([(pts[0].min() + pts[0].max()) / 2, (pts[1].min() + pts[1].max()) / 2]) * s
+    bottom = pts[1].max() * s
+    t = np.array([OVAL_CX - mid[0], OVAL_FLOOR - bottom])
+    Mi = np.linalg.inv(M)                                    # PIL wants output -> input
+    c0 = np.array([cx, cy]) - Mi @ t
+    coeffs = (Mi[0, 0], Mi[0, 1], c0[0], Mi[1, 0], Mi[1, 1], c0[1])
+    return ov.transform((REF_W, REF_H), Image.AFFINE, coeffs, resample=Image.BICUBIC)
 
 
 def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
