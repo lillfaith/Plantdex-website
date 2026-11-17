@@ -11,7 +11,7 @@ import type { HerbBack, HerbStats, Rarity, Season, UseKey } from './types';
  * WHY THIS IS NOT IN `CATALOGUE`. Everything a player can reach - the collection grid, the
  * scanner's matcher, Field Research, the knowledge check, the Seed Shelf's "has no card"
  * test, the leaderboard, every herb page - reads `CATALOGUE` or `PRINTED_CARDS`. A card that
- * is incomplete (no rarity, XP, season, use icons or stat bars; no artwork) must be in none
+ * is incomplete (no artwork; text and front values still awaiting final botanical/safety review) must be in none
  * of them, and the only way to make that a property rather than a promise is for these
  * records to live where no live module can reach them. So this file imports TYPES ONLY: not
  * `catalogue`, not `deck`, not `field-cards`. `expansion-cards.test.ts` fails the build if any
@@ -28,29 +28,40 @@ import type { HerbBack, HerbStats, Rarity, Season, UseKey } from './types';
  */
 
 export interface ExpansionFront {
-  rarity: Rarity | null;
-  xp: number | null;
-  season: Season | null;
-  uses: UseKey[] | null;
-  stats: HerbStats | null;
+  rarity: Rarity;
+  xp: number;
+  season: Season;
+  uses: UseKey[];
+  stats: HerbStats;
 }
 
 export type ExpansionBack = HerbBack;
 
-/** Editorial/evidence columns kept verbatim from the supplied spreadsheet. None are player-facing. */
+/**
+ * The master's own words for the front values that had to be mapped or renamed. The master says
+ * "Fall" and the app says `autumn`; it says `heat` and the card says `temperature`. Keeping
+ * both makes the mapping visible rather than silent.
+ */
+export interface ExpansionSupplied {
+  peakSeason: string;
+  useIcons: string[];
+  stats: { sun: number; water: number; heat: number };
+}
+
+/**
+ * Editorial and evidence material, kept verbatim from the master. NONE of it is player-facing.
+ * `cardSafetyWarning` is editorial copy awaiting final review (every card's status says so);
+ * it is NOT `Herb.warning`, which is a warning a printed card actually carries.
+ */
 export interface ExpansionReview {
-  preparationSafety: string | null;
-  guideCaution: string | null;
-  evidenceBasis: string | null;
-  originalPdfPartNames: string | null;
-  healingTraitsReview: string | null;
-  compoundsSource: string | null;
-  compoundsStatus: string | null;
-  compoundsNotes: string | null;
-  /** An editorial note awaiting review. NOT `Herb.warning`, which is a warning a printed card carries. */
-  cardSafetyWarning: string | null;
-  taste: { context: string | null; evidenceStatus: string | null; referenceUrl: string | null; originalDraft: string | null };
-  aromatic: { context: string | null; evidenceStatus: string | null; sourceUrl: string | null; researchNote: string | null };
+  cardSafetyWarning: string;
+  cardSafetyWarningStatus: string | null;
+  /** Verbatim editorial block. Its keys are the master's, and not every card has every key. */
+  editorial: Record<string, string | null>;
+  /** Region codes from the master's ten-region model. Provisional; see `regionalConfidence`. */
+  regions: string[];
+  regionalConfidence: string;
+  references: Record<string, unknown>;
 }
 
 export interface ResearchLink {
@@ -69,9 +80,9 @@ export interface ExpansionCard {
   status: 'draft';
   front: ExpansionFront;
   back: ExpansionBack;
-  /** The back fields exactly as supplied, before being split into the card's arrays. */
-  supplied: Record<keyof ExpansionBack, string>;
+  supplied: ExpansionSupplied;
   review: ExpansionReview;
+  /** Supplementary: from the separate three-links-per-plant file, not the corrected master. */
   researchLinks: {
     directReferencesLocated: number;
     links: ResearchLink[];
@@ -83,12 +94,16 @@ export interface ExpansionCard {
 interface ExpansionFile {
   version: number;
   count: number;
-  source: {
-    set: string;
-    files: { file: string; sha256: string }[];
-    csvExpansionRows: number;
-    excluded: { cardNumber: number; scientificName: string }[];
+  master: {
+    schemaVersion: string;
+    status: string;
+    safetyReviewNotice: string;
+    cardNumberRange: [number, number];
+    rarityDistribution: Record<string, number>;
+    allowedIcons: string[];
   };
+  regionalModel: { modelName: string; allowMultipleRegions: boolean; regionNames: Record<string, string> };
+  source: { canonical: string; files: { file: string; sha256: string }[] };
   cards: ExpansionCard[];
 }
 
@@ -99,6 +114,8 @@ export const EXPANSION_FRONT_FIELDS = ['rarity', 'xp', 'season', 'uses', 'stats'
 export const EXPANSION_CARDS: readonly ExpansionCard[] = FILE.cards;
 export const EXPANSION_COUNT = EXPANSION_CARDS.length;
 export const EXPANSION_SOURCE = FILE.source;
+export const EXPANSION_MASTER = FILE.master;
+export const EXPANSION_REGIONAL_MODEL = FILE.regionalModel;
 
 const BY_ID = new Map(EXPANSION_CARDS.map((c) => [c.id, c]));
 const BY_NUMBER = new Map(EXPANSION_CARDS.map((c) => [c.cardNumber, c]));
@@ -111,10 +128,14 @@ export function expansionCardByNumber(n: number): ExpansionCard | undefined {
   return BY_NUMBER.get(n);
 }
 
-/** The front-of-card fields still null. Empty only when the card could be drawn as a real Herb. */
+/**
+ * Front-of-card fields that are absent. Empty for every card now that the corrected master supplies
+ * them; kept so a future import that drops one is caught rather than rendered blank.
+ */
 export function missingFrontFields(card: ExpansionCard): string[] {
+  const front = card.front as unknown as Record<string, unknown>;
   return EXPANSION_FRONT_FIELDS.filter((k) => {
-    const v = card.front[k];
-    return v === null || (Array.isArray(v) && v.length === 0);
+    const v = front[k];
+    return v === null || v === undefined || (Array.isArray(v) && v.length === 0);
   });
 }

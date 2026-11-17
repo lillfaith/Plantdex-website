@@ -1,0 +1,21 @@
+{
+  "expansionCount": 85,
+  "numbers": [
+    57,
+    141
+  ],
+  "removedBlueMistflower": true,
+  "pdfCautionPlaceholders": 0,
+  "emptyCautions": 0,
+  "tasteSync": true,
+  "aromaSync": true,
+  "rarity": {
+    "Common": 47,
+    "Uncommon": 23,
+    "Epic": 5,
+    "Rare": 10
+  },
+  "edits": 61,
+  "cautionFallbackCount": 40,
+  "claimVerification": "Some user-proposed safety cautions are precautionary, not independently confirmed; do not print without review."
+}

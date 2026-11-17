@@ -7,14 +7,42 @@ import { PRINTED_CARDS, PRINTED_DECK_SIZE } from './deck';
 import {
   EXPANSION_CARDS,
   EXPANSION_COUNT,
-  EXPANSION_FRONT_FIELDS,
+  EXPANSION_MASTER,
+  EXPANSION_REGIONAL_MODEL,
   EXPANSION_SOURCE,
   expansionCardById,
   missingFrontFields,
 } from './expansion-cards';
+import { RARITIES, SEASONS, USE_KEYS } from './types';
 
 const ROOT = process.cwd();
 const BACK_FIELDS = ['healingTraits', 'compounds', 'taste', 'aromatic', 'preparations', 'usableParts'] as const;
+/** record field -> the master's field name */
+const MASTER_FIELD = {
+  healingTraits: 'healingTraits',
+  compounds: 'signatureCompounds',
+  taste: 'tasteProfile',
+  aromatic: 'aromaticProfile',
+  preparations: 'preparations',
+  usableParts: 'usableParts',
+} as const;
+
+interface MasterCard {
+  cardNumber: number;
+  name: string;
+  scientificName: string;
+  rarity: string;
+  xp: number;
+  peakSeason: string;
+  stats: { sun: number; water: number; heat: number };
+  useIcons: string[];
+  cardSafetyWarning: string;
+  regions: string[];
+  [k: string]: unknown;
+}
+const MASTER = JSON.parse(
+  readFileSync(join(process.cwd(), 'expansion/source/PlantDex_85_All_Requested_Corrections.json'), 'utf8'),
+) as { cardCount: number; cards: MasterCard[] };
 
 /** Same rule as scripts/build_deck.py `slugify`: ids come from the scientific name. */
 function slugify(name: string): string {
@@ -44,9 +72,12 @@ function png(path: string): { w: number; h: number; colourType: number } {
 }
 
 describe('expansion cards: the imported records', () => {
-  it('imports every expansion row in the source file, less any recorded exclusion', () => {
-    expect(EXPANSION_COUNT).toBeGreaterThan(0);
-    expect(EXPANSION_COUNT).toBe(EXPANSION_SOURCE.csvExpansionRows - EXPANSION_SOURCE.excluded.length);
+  it('imports exactly the cards the corrected master declares, #57-141, with Blue Mistflower removed', () => {
+    expect(EXPANSION_COUNT).toBe(MASTER.cardCount);
+    expect(EXPANSION_COUNT).toBe(MASTER.cards.length);
+    expect(EXPANSION_MASTER.cardNumberRange).toEqual([57, 141]);
+    expect(EXPANSION_CARDS.some((c) => c.scientificName === 'Conoclinium coelestinum')).toBe(false);
+    expect(expansionCardById('agastache-foeniculum')?.cardNumber).toBe(72);
   });
 
   it('gives each card an id derived from its scientific name, and no two share an id or number', () => {
@@ -56,26 +87,84 @@ describe('expansion cards: the imported records', () => {
   });
 
   it('numbers the cards after the 56 existing numbers, in one unbroken run', () => {
-    const nums = EXPANSION_CARDS.map((c) => c.cardNumber);
-    expect(Math.min(...nums)).toBe(57);
-    nums.forEach((n, i) => expect(n).toBe(57 + i));
+    EXPANSION_CARDS.forEach((c, i) => expect(c.cardNumber).toBe(57 + i));
   });
 
-  it('carries all six back fields, non-empty, and each equals the text as supplied', () => {
+  it('carries all six back fields exactly as the master supplies them, matched by card number', () => {
+    const byNumber = new Map(MASTER.cards.map((m) => [m.cardNumber, m]));
     for (const c of EXPANSION_CARDS) {
+      const m = byNumber.get(c.cardNumber);
+      expect(m, `#${c.cardNumber}`).toBeDefined();
+      expect(c.commonName).toBe(m!.name);
+      expect(c.scientificName).toBe(m!.scientificName);
       for (const f of BACK_FIELDS) {
         expect(c.back[f].length, `#${c.cardNumber} ${f}`).toBeGreaterThan(0);
-        for (const t of c.back[f]) expect(t.trim()).toBe(t);
-        expect(c.back[f].join(', ')).toBe(c.supplied[f].replace(/,\s*/g, ', '));
+        expect(c.back[f], `#${c.cardNumber} ${f}`).toEqual(m![MASTER_FIELD[f]]);
       }
     }
   });
 
-  it('marks every card a draft and invents none of the front fields the files do not contain', () => {
+  it('carries every front value the master supplies, valid against the app vocabularies', () => {
+    const xpFor = new Map(PRINTED_CARDS.map((h) => [h.rarity, h.xp]));
+    const byNumber = new Map(MASTER.cards.map((m) => [m.cardNumber, m]));
+    for (const c of EXPANSION_CARDS) {
+      const m = byNumber.get(c.cardNumber)!;
+      expect(missingFrontFields(c), `#${c.cardNumber}`).toEqual([]);
+      expect(RARITIES).toContain(c.front.rarity);
+      expect(c.front.rarity).toBe(m.rarity);
+      expect(c.front.xp).toBe(m.xp);
+      expect(c.front.xp, `#${c.cardNumber} xp must follow the deck's rarity table`).toBe(xpFor.get(c.front.rarity));
+      expect(SEASONS).toContain(c.front.season);
+      expect(c.supplied.peakSeason).toBe(m.peakSeason);
+      expect(c.front.uses).toHaveLength(2);
+      expect(new Set(c.front.uses).size).toBe(2);
+      for (const u of c.front.uses) expect(USE_KEYS).toContain(u);
+      expect(c.front.uses).toEqual(m.useIcons.map((i) => i.toLowerCase()));
+      for (const v of [c.front.stats.water, c.front.stats.sun, c.front.stats.temperature]) {
+        expect(Number.isInteger(v) && v >= 1 && v <= 5).toBe(true);
+      }
+      expect(c.front.stats).toEqual({ water: m.stats.water, sun: m.stats.sun, temperature: m.stats.heat });
+    }
+  });
+
+  it("states the master's 'Fall' as autumn and nothing else was renamed away from the master's words", () => {
+    const fall = EXPANSION_CARDS.filter((c) => c.supplied.peakSeason === 'Fall');
+    expect(fall.length).toBeGreaterThan(0);
+    for (const c of fall) expect(c.front.season).toBe('autumn');
+    for (const c of EXPANSION_CARDS.filter((c) => c.supplied.peakSeason !== 'Fall')) {
+      expect(c.front.season).toBe(c.supplied.peakSeason.toLowerCase());
+    }
+  });
+
+  it('matches the master rarity distribution', () => {
+    const counts: Record<string, number> = {};
+    for (const c of EXPANSION_CARDS) counts[c.front.rarity] = (counts[c.front.rarity] ?? 0) + 1;
+    expect(counts).toEqual(EXPANSION_MASTER.rarityDistribution);
+  });
+
+  it('keeps every card a draft whose safety copy is still marked pending review', () => {
     for (const c of EXPANSION_CARDS) {
       expect(c.status).toBe('draft');
-      for (const k of EXPANSION_FRONT_FIELDS) expect(c.front[k], `#${c.cardNumber} ${k}`).toBeNull();
-      expect(missingFrontFields(c)).toEqual([...EXPANSION_FRONT_FIELDS]);
+      expect(c.review.cardSafetyWarningStatus).toMatch(/pending/i);
+      expect(c.review.cardSafetyWarning.length).toBeGreaterThan(0);
+    }
+    expect(EXPANSION_MASTER.status).toMatch(/NOT_PUBLICATION_VERIFIED/);
+  });
+
+  it('keeps editorial safety copy as review data, never as a printed-card warning', () => {
+    const byNumber = new Map(MASTER.cards.map((m) => [m.cardNumber, m]));
+    for (const c of EXPANSION_CARDS) {
+      expect(c.review.cardSafetyWarning).toBe(byNumber.get(c.cardNumber)!.cardSafetyWarning);
+      expect('warning' in c).toBe(false);
+    }
+  });
+
+  it('assigns every card one or more regions from the master ten-region model', () => {
+    const codes = Object.keys(EXPANSION_REGIONAL_MODEL.regionNames);
+    expect(codes).toHaveLength(10);
+    for (const c of EXPANSION_CARDS) {
+      expect(c.review.regions.length).toBeGreaterThan(0);
+      for (const r of c.review.regions) expect(codes).toContain(r);
     }
   });
 
@@ -84,11 +173,6 @@ describe('expansion cards: the imported records', () => {
       expect(c.researchLinks.links.length).toBeLessThanOrEqual(3);
       for (const l of c.researchLinks.links) expect(l.isCitation).toBe(l.type === 'Direct reference');
     }
-  });
-
-  it('keeps editorial safety notes as review data, never as a printed-card warning', () => {
-    expect(EXPANSION_CARDS.some((c) => c.review.cardSafetyWarning)).toBe(true);
-    for (const c of EXPANSION_CARDS) expect('warning' in c).toBe(false);
   });
 
   it('is found by id', () => {
@@ -186,7 +270,8 @@ describe('expansion cards: artwork lives outside public/ and has shared placehol
 
 describe('expansion cards: the generated file matches its supplied sources', () => {
   it('records the hash of each supplied file, and the copies in the repo still match', () => {
-    expect(EXPANSION_SOURCE.files).toHaveLength(3);
+    expect(EXPANSION_SOURCE.files.length).toBeGreaterThanOrEqual(5);
+    expect(EXPANSION_SOURCE.canonical).toBe('expansion/source/PlantDex_85_All_Requested_Corrections.json');
     for (const f of EXPANSION_SOURCE.files) {
       const actual = createHash('sha256').update(readFileSync(join(ROOT, f.file))).digest('hex');
       expect(actual, `${f.file} changed; re-run scripts/import_expansion_cards.py`).toBe(f.sha256);

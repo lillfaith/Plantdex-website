@@ -370,15 +370,25 @@ def completeness(cards=None, root=ASSETS, spec=None):
                 if not v["ok"]:
                     issues.append(f"{kind} file fails validation: {v['errors'][0]}")
         empty_back = [k for k, v in c["back"].items() if not v]
+        complete = not missing_front and not empty_back and all(a["status"] == "present" for a in assets.values())
+        # `complete` means the card could be DRAWN. It does not mean it may be PUBLISHED: the review
+        # state travels in the record, so a card stays unpromotable until its own record says otherwise.
+        blockers = []
+        rv = c.get("review", {})
+        if re.search(r"pending", str(rv.get("cardSafetyWarningStatus") or ""), re.I):
+            blockers.append("final botanical/safety review pending (cardSafetyWarningStatus)")
+        if re.search(r"draft|pending", str((rv.get("editorial") or {}).get("publicationStatus") or ""), re.I):
+            blockers.append("editorial publication status is still draft/pending")
         out.append({"cardNumber": c["cardNumber"], "id": c["id"], "commonName": c["commonName"],
                     "missingFrontFields": missing_front, "emptyBackFields": empty_back, "assets": assets,
-                    "complete": not missing_front and not empty_back and all(a["status"] == "present" for a in assets.values()),
+                    "complete": complete, "promotionBlockers": blockers, "promotable": complete and not blockers,
                     "issues": issues})
     return out
 
 
 def summarize(rows):
-    return {"cards": len(rows), "complete": sum(r["complete"] for r in rows),
+    return {"cards": len(rows), "complete": sum(r["complete"] for r in rows), "promotable": sum(r["promotable"] for r in rows),
+            "awaitingReview": sum(bool(r["promotionBlockers"]) for r in rows),
             "missingMain": sum(r["assets"]["main"]["status"] != "present" for r in rows),
             "missingPixel": sum(r["assets"]["pixel"]["status"] != "present" for r in rows),
             "missingTall": sum(r["assets"]["tall"]["status"] != "present" for r in rows),
@@ -438,7 +448,8 @@ def self_test() -> int:
         rows = completeness(cards, root, spec)
         s = summarize(rows)
         check(s["complete"] == 0 and s["missingMain"] == len(cards) and s["missingPixel"] == len(cards), "with no artwork every card reports missing main, pixel and tall")
-        check(all(r["missingFrontFields"] == FRONT_FIELDS for r in rows), "every card reports its missing front fields")
+        check(all(r["missingFrontFields"] == [] for r in rows), "the master supplies every front field, so none is reported missing")
+        check(all(r["promotionBlockers"] for r in rows) and s["promotable"] == 0, "every card still reports its pending safety review as a promotion blocker")
         check(resolve(a["id"], "main", root)[1] == "placeholder", "a card with no artwork resolves to the shared placeholder")
 
         _plant(inbox / f"{a['cardNumber']}_main.png"); _px(inbox / f"{a['id']}_pixel.png")
@@ -475,8 +486,11 @@ def self_test() -> int:
               "replacing one kind leaves the others untouched")
         rows = completeness(cards, root, spec)
         ra = next(x for x in rows if x["id"] == a["id"])
-        check(all(v["status"] == "present" for v in ra["assets"].values()) and ra["missingFrontFields"] == FRONT_FIELDS and not ra["complete"],
-              "a card with all three assets is still incomplete while front fields are missing")
+        check(all(v["status"] == "present" for v in ra["assets"].values()) and ra["complete"] and not ra["promotable"],
+              "a card with all three assets is complete but NOT promotable while its review is pending")
+        fake = [{**cards[0], "front": {**cards[0]["front"], "rarity": None}}]
+        check(completeness(fake, root, spec)[0]["missingFrontFields"] == ["rarity"] and not completeness(fake, root, spec)[0]["complete"],
+              "a card missing a front field is reported incomplete")
         rb = next(x for x in rows if x["id"] == b["id"])
         check(all(v["status"] == "placeholder" for v in rb["assets"].values()), "an untouched card stays all-placeholder")
         # dry run writes nothing
@@ -528,8 +542,8 @@ def main() -> int:
         if a.json:
             print(json.dumps({"summary": s, "cards": rows}, indent=1))
         else:
-            print(f"{s['cards']} cards | complete {s['complete']} | missing main {s['missingMain']}, pixel {s['missingPixel']}, "
-                  f"tall {s['missingTall']} | cards missing front fields {s['cardsMissingFrontFields']}")
+            print(f"{s['cards']} cards | complete {s['complete']} | promotable {s['promotable']} (review pending on {s['awaitingReview']}) | "
+                  f"missing main {s['missingMain']}, pixel {s['missingPixel']}, tall {s['missingTall']} | cards missing front fields {s['cardsMissingFrontFields']}")
             for r in rows[:5 if not a.card else None]:
                 print(f"  #{r['cardNumber']} {r['commonName']}: missing front {r['missingFrontFields']}; "
                       + ", ".join(f"{k}={v['status']}" for k, v in r['assets'].items()))
