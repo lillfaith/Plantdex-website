@@ -51,14 +51,51 @@ exact-taxon query; the second per-photo licence re-check has **not** been run on
 
 Caveat on "scored as-is": the pictures are downsized (<=1024px) and sometimes cropped, and I used a neutral
 identification record, so these scores are indicative and not comparable to pool scores to the decimal. The seven
-"not found" pictures are either outside the pool (see 4.5) or cropped enough to defeat matching. **Please send the iNaturalist
-photo IDs for the seven, so they can be verified for licence and taxon.**
+"not found" pictures are either outside the pool (see 4.5) or cropped enough to defeat matching. (Resolved in 1b.)
 
 Side-by-side sheets (owner picture | same photo in the pool | pipeline #1 for that role) are in
 `evidence/selection-study/report-pool/<card>/sheets/`. Pipeline #1 per role:
 62 main 546599977 / pixel 258888396 / tall 80766186; 63 main 130021953 / pixel 305990689 / tall 216137711;
 64 main 559561652 / pixel 174334069 / tall 728257757; 65 main 21411326 / pixel 431603996 / tall 18367241;
 66 main 41556743 / pixel 542375965 / tall 84051599.
+
+## 1b. UPDATE: the exact photographs, from the owner's browsing history
+
+The owner's history named the observations they chose from. Matching each of the 19 pictures against every photo on
+those observations gave **19 of 19 unambiguous matches** (2,200-2,500 inliers; the runner-up on the other photos was 0-10, except
+#66 tall, where a second frame of the same observation scored 1,370 and the match to 675951613 still wins).
+Every photo is CC0 on its own record, the observation taxon is exactly the species, and originals were downloaded unedited
+(`fetch_human_picks.py`, run 44181077227).
+
+| card | role | owner picture | photo | observation |
+|---|---|---|---|---|
+| 62 | main | buckwheatmaininspo | 72518818 | 45735237 |
+| 62 | pixel | buckwheatpixelinspo | 281944233 | 163034672 |
+| 62 | tall | buckwheatpreviewinspo | 3724391 | 3217076 |
+| 63 | main | wildquininemaininspo | 547150859 | 303560859 |
+| 63 | main | wildquininemaininspo2 | 127092 | 87006 |
+| 63 | main | wildquininemaininspo3 | 661119321 | 362228567 |
+| 63 | pixel | wildquininepixelinspo | 231940855 | 135944027 |
+| 63 | tall | wildquininepreviewinspo | 149770705 | 90608931 |
+| 64 | main | sweeteverlastingmaininspo | 745700906 | 405928651 |
+| 64 | main | sweeteverlastingmaininspo2 | 728257757 | 397085607 |
+| 64 | pixel | sweeteverlastingpixelinspo | 151903275 | 91799030 |
+| 64 | pixel | sweeteverlastingpixelinspo2 | 89984767 | 56464390 |
+| 64 | tall | sweeteverlastingpreviewinspo | 419948962 | 236077232 |
+| 65 | main | americanlotusmaininspo | 316785117 | 181762985 |
+| 65 | pixel | americanlotuspixeinspo | 24700338 | 16418243 |
+| 65 | tall | americanlotuspreviewinspo | 21411326 | 14396705 |
+| 66 | main | annualfleabanemaininspo | 430695917 | 241644451 |
+| 66 | pixel | annualfleabanepixelinspo | 53367016 | 33943486 |
+| 66 | tall | annualfleabanepreviewinspo | 675951613 | 370030845 |
+
+Consequences for sections 1-3: the seven "not found" pictures were photographs my pool never contained, so **7 of 19
+owner picks (37%) were missing from the candidate pool before any ranking happened** (retrieval, not scoring). Together with the 5
+Stage-A rejections (some overlap with the pool-missing set is possible: two were judged on the picture alone), the pipeline
+failed to put a reachable owner pick in front of the owner in a large share of cases. The pool-rank figures in section 2 stay
+as computed on the 12 located pictures; the seven can now be scored on their true originals in the blind-test setup.
+Two of the owner's pictures are the same observation as ChatGPT's picks (lotus pixel: 16418243; everlasting tall: 397085607),
+but a different photograph in the lotus case (24700338 vs 24700331).
 
 ## 2. What the numbers say
 
