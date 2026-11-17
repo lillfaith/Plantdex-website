@@ -22,7 +22,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 ROLES = ("main", "pixel", "tall")
-PICK_ROLE = {"main": "main", "pixel": "pixel", "preview": "tall"}
+PICK_ROLE = {"main": "main", "pixe": "pixel", "preview": "tall"}   # "pixe": one filename is spelled americanlotuspixeinspo
 PICK_CARD = {"buckwheat": 62, "wildquinine": 63, "sweeteverlasting": 64, "americanlotus": 65, "annualfleabane": 66}
 
 
