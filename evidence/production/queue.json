@@ -1,0 +1,5422 @@
+{
+ "version": 1,
+ "created": "2026-11-17T00:31:33+00:00",
+ "list": {
+  "file": "evidence/production/species-85.json",
+  "sha256": "220faae81a62d95922735078793025f36270392570d5c22c0266d820f3d1e341",
+  "count": 85,
+  "approved_by": "owner, by instruction to use the corrected master as the production list (2026-11-17)",
+  "note": "`approved` means 'use this as the queue', not that any card's botany or safety copy is approved."
+ },
+ "cards": {
+  "57": {
+   "card": 57,
+   "common": "Boneset",
+   "scientific": "Eupatorium perfoliatum",
+   "key": "eupatorium_perfoliatum",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "58": {
+   "card": 58,
+   "common": "Hollow Joe-Pye Weed",
+   "scientific": "Eutrochium fistulosum",
+   "key": "eutrochium_fistulosum",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "59": {
+   "card": 59,
+   "common": "New Jersey Tea",
+   "scientific": "Ceanothus americanus",
+   "key": "ceanothus_americanus",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "60": {
+   "card": 60,
+   "common": "Black-Eyed Susan",
+   "scientific": "Rudbeckia hirta",
+   "key": "rudbeckia_hirta",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "61": {
+   "card": 61,
+   "common": "Narrowleaf Mountain Mint",
+   "scientific": "Pycnanthemum tenuifolium",
+   "key": "pycnanthemum_tenuifolium",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "62": {
+   "card": 62,
+   "common": "California Buckwheat",
+   "scientific": "Eriogonum fasciculatum",
+   "key": "eriogonum_fasciculatum",
+   "regions": [
+    "PC",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "63": {
+   "card": 63,
+   "common": "Wild Quinine",
+   "scientific": "Parthenium integrifolium",
+   "key": "parthenium_integrifolium",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "64": {
+   "card": 64,
+   "common": "Sweet Everlasting",
+   "scientific": "Pseudognaphalium obtusifolium",
+   "key": "pseudognaphalium_obtusifolium",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "65": {
+   "card": 65,
+   "common": "American Lotus",
+   "scientific": "Nelumbo lutea",
+   "key": "nelumbo_lutea",
+   "regions": [
+    "NE",
+    "SE",
+    "GC",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "66": {
+   "card": 66,
+   "common": "Annual Fleabane",
+   "scientific": "Erigeron annuus",
+   "key": "erigeron_annuus",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP",
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "67": {
+   "card": 67,
+   "common": "Curly Dock",
+   "scientific": "Rumex crispus",
+   "key": "rumex_crispus",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP",
+    "RM",
+    "SW",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "68": {
+   "card": 68,
+   "common": "Narrowleaf Plantain",
+   "scientific": "Plantago lanceolata",
+   "key": "plantago_lanceolata",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP",
+    "RM",
+    "SW",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "69": {
+   "card": 69,
+   "common": "Common Mugwort",
+   "scientific": "Artemisia vulgaris",
+   "key": "artemisia_vulgaris",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW",
+    "GP",
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "70": {
+   "card": 70,
+   "common": "Motherwort",
+   "scientific": "Leonurus cardiaca",
+   "key": "leonurus_cardiaca",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW",
+    "GP",
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "71": {
+   "card": 71,
+   "common": "New York Ironweed",
+   "scientific": "Vernonia noveboracensis",
+   "key": "vernonia_noveboracensis",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "72": {
+   "card": 72,
+   "common": "Anise Hyssop",
+   "scientific": "Agastache foeniculum",
+   "key": "agastache_foeniculum",
+   "regions": [
+    "NF",
+    "MW",
+    "GP",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "73": {
+   "card": 73,
+   "common": "Virginia Spring Beauty",
+   "scientific": "Claytonia virginica",
+   "key": "claytonia_virginica",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "74": {
+   "card": 74,
+   "common": "Smooth Solomon's Seal",
+   "scientific": "Polygonatum biflorum",
+   "key": "polygonatum_biflorum",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "75": {
+   "card": 75,
+   "common": "Partridgeberry",
+   "scientific": "Mitchella repens",
+   "key": "mitchella_repens",
+   "regions": [
+    "NF",
+    "NE",
+    "AP",
+    "SE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "76": {
+   "card": 76,
+   "common": "American Groundnut",
+   "scientific": "Apios americana",
+   "key": "apios_americana",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "77": {
+   "card": 77,
+   "common": "Wild Yam",
+   "scientific": "Dioscorea villosa",
+   "key": "dioscorea_villosa",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "78": {
+   "card": 78,
+   "common": "Virginia Pepperweed",
+   "scientific": "Lepidium virginicum",
+   "key": "lepidium_virginicum",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "79": {
+   "card": 79,
+   "common": "Common Cinquefoil",
+   "scientific": "Potentilla simplex",
+   "key": "potentilla_simplex",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "80": {
+   "card": 80,
+   "common": "White Clover",
+   "scientific": "Trifolium repens",
+   "key": "trifolium_repens",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "81": {
+   "card": 81,
+   "common": "Queen Anne's Lace",
+   "scientific": "Daucus carota",
+   "key": "daucus_carota",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP",
+    "RM",
+    "SW",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "82": {
+   "card": 82,
+   "common": "American Skullcap",
+   "scientific": "Scutellaria lateriflora",
+   "key": "scutellaria_lateriflora",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "83": {
+   "card": 83,
+   "common": "Mountain Monardella",
+   "scientific": "Monardella odoratissima",
+   "key": "monardella_odoratissima",
+   "regions": [
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "84": {
+   "card": 84,
+   "common": "Slippery Elm",
+   "scientific": "Ulmus rubra",
+   "key": "ulmus_rubra",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "85": {
+   "card": 85,
+   "common": "Black Cherry",
+   "scientific": "Prunus serotina",
+   "key": "prunus_serotina",
+   "regions": [
+    "NF",
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "86": {
+   "card": 86,
+   "common": "Black Walnut",
+   "scientific": "Juglans nigra",
+   "key": "juglans_nigra",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "87": {
+   "card": 87,
+   "common": "Eastern Red Cedar",
+   "scientific": "Juniperus virginiana",
+   "key": "juniperus_virginiana",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "88": {
+   "card": 88,
+   "common": "Pawpaw",
+   "scientific": "Asimina triloba",
+   "key": "asimina_triloba",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "89": {
+   "card": 89,
+   "common": "American Persimmon",
+   "scientific": "Diospyros virginiana",
+   "key": "diospyros_virginiana",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "90": {
+   "card": 90,
+   "common": "Flowering Dogwood",
+   "scientific": "Cornus florida",
+   "key": "cornus_florida",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "91": {
+   "card": 91,
+   "common": "Eastern Redbud",
+   "scientific": "Cercis canadensis",
+   "key": "cercis_canadensis",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "92": {
+   "card": 92,
+   "common": "American Sweetgum",
+   "scientific": "Liquidambar styraciflua",
+   "key": "liquidambar_styraciflua",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "93": {
+   "card": 93,
+   "common": "American Sycamore",
+   "scientific": "Platanus occidentalis",
+   "key": "platanus_occidentalis",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW",
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "94": {
+   "card": 94,
+   "common": "Sweetfern",
+   "scientific": "Comptonia peregrina",
+   "key": "comptonia_peregrina",
+   "regions": [
+    "NF",
+    "NE",
+    "AP",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "95": {
+   "card": 95,
+   "common": "American Beech",
+   "scientific": "Fagus grandifolia",
+   "key": "fagus_grandifolia",
+   "regions": [
+    "NF",
+    "NE",
+    "AP",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "96": {
+   "card": 96,
+   "common": "American Basswood",
+   "scientific": "Tilia americana",
+   "key": "tilia_americana",
+   "regions": [
+    "NF",
+    "NE",
+    "AP",
+    "SE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "97": {
+   "card": 97,
+   "common": "Yaupon Holly",
+   "scientific": "Ilex vomitoria",
+   "key": "ilex_vomitoria",
+   "regions": [
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "98": {
+   "card": 98,
+   "common": "Southern Wax Myrtle",
+   "scientific": "Morella cerifera",
+   "key": "morella_cerifera",
+   "regions": [
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "99": {
+   "card": 99,
+   "common": "Devil's Walkingstick",
+   "scientific": "Aralia spinosa",
+   "key": "aralia_spinosa",
+   "regions": [
+    "AP",
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "100": {
+   "card": 100,
+   "common": "Canadian Serviceberry",
+   "scientific": "Amelanchier canadensis",
+   "key": "amelanchier_canadensis",
+   "regions": [
+    "NE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "101": {
+   "card": 101,
+   "common": "Muscadine Grape",
+   "scientific": "Vitis rotundifolia",
+   "key": "vitis_rotundifolia",
+   "regions": [
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "102": {
+   "card": 102,
+   "common": "California Poppy",
+   "scientific": "Eschscholzia californica",
+   "key": "eschscholzia_californica",
+   "regions": [
+    "PC",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "103": {
+   "card": 103,
+   "common": "California Yerba Santa",
+   "scientific": "Eriodictyon californicum",
+   "key": "eriodictyon_californicum",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "104": {
+   "card": 104,
+   "common": "California Spikenard",
+   "scientific": "Aralia californica",
+   "key": "aralia_californica",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "105": {
+   "card": 105,
+   "common": "California Mugwort",
+   "scientific": "Artemisia douglasiana",
+   "key": "artemisia_douglasiana",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "106": {
+   "card": 106,
+   "common": "California Bay Laurel",
+   "scientific": "Umbellularia californica",
+   "key": "umbellularia_californica",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "107": {
+   "card": 107,
+   "common": "Oregon Grape",
+   "scientific": "Mahonia aquifolium",
+   "key": "mahonia_aquifolium",
+   "regions": [
+    "PC",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "108": {
+   "card": 108,
+   "common": "Cascara",
+   "scientific": "Frangula purshiana",
+   "key": "frangula_purshiana",
+   "regions": [
+    "PC",
+    "RM"
+   ],
+   "safety_flag": true,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "109": {
+   "card": 109,
+   "common": "Salal",
+   "scientific": "Gaultheria shallon",
+   "key": "gaultheria_shallon",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "110": {
+   "card": 110,
+   "common": "California Figwort",
+   "scientific": "Scrophularia californica",
+   "key": "scrophularia_californica",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": true,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "111": {
+   "card": 111,
+   "common": "Red-Flowering Currant",
+   "scientific": "Ribes sanguineum",
+   "key": "ribes_sanguineum",
+   "regions": [
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "112": {
+   "card": 112,
+   "common": "Desert Lavender",
+   "scientific": "Condea emoryi",
+   "key": "condea_emoryi",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": true,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "113": {
+   "card": 113,
+   "common": "Desert Globemallow",
+   "scientific": "Sphaeralcea ambigua",
+   "key": "sphaeralcea_ambigua",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "114": {
+   "card": 114,
+   "common": "Jojoba",
+   "scientific": "Simmondsia chinensis",
+   "key": "simmondsia_chinensis",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "115": {
+   "card": 115,
+   "common": "Engelmann Prickly Pear",
+   "scientific": "Opuntia engelmannii",
+   "key": "opuntia_engelmannii",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "116": {
+   "card": 116,
+   "common": "Honey Mesquite",
+   "scientific": "Prosopis glandulosa",
+   "key": "prosopis_glandulosa",
+   "regions": [
+    "GP",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "117": {
+   "card": 117,
+   "common": "Desert Willow",
+   "scientific": "Chilopsis linearis",
+   "key": "chilopsis_linearis",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "118": {
+   "card": 118,
+   "common": "Yerba Mansa",
+   "scientific": "Anemopsis californica",
+   "key": "anemopsis_californica",
+   "regions": [
+    "PC",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "119": {
+   "card": 119,
+   "common": "Desert Chia",
+   "scientific": "Salvia columbariae",
+   "key": "salvia_columbariae",
+   "regions": [
+    "SW",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "120": {
+   "card": 120,
+   "common": "Brittlebush",
+   "scientific": "Encelia farinosa",
+   "key": "encelia_farinosa",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "121": {
+   "card": 121,
+   "common": "Mormon Tea",
+   "scientific": "Ephedra trifurca",
+   "key": "ephedra_trifurca",
+   "regions": [
+    "SW"
+   ],
+   "safety_flag": true,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "122": {
+   "card": 122,
+   "common": "Rocky Mountain Beeplant",
+   "scientific": "Cleomella serrulata",
+   "key": "cleomella_serrulata",
+   "regions": [
+    "GP",
+    "RM",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "123": {
+   "card": 123,
+   "common": "Arrowleaf Balsamroot",
+   "scientific": "Balsamorhiza sagittata",
+   "key": "balsamorhiza_sagittata",
+   "regions": [
+    "GP",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "124": {
+   "card": 124,
+   "common": "Fireweed",
+   "scientific": "Chamerion angustifolium",
+   "key": "chamerion_angustifolium",
+   "regions": [
+    "NF",
+    "MW",
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "125": {
+   "card": 125,
+   "common": "Kinnikinnick",
+   "scientific": "Arctostaphylos uva-ursi",
+   "key": "arctostaphylos_uva_ursi",
+   "regions": [
+    "NF",
+    "NE",
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "126": {
+   "card": 126,
+   "common": "Swamp Rose Mallow",
+   "scientific": "Hibiscus moscheutos",
+   "key": "hibiscus_moscheutos",
+   "regions": [
+    "NE",
+    "AP",
+    "SE",
+    "GC",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "127": {
+   "card": 127,
+   "common": "Quaking Aspen",
+   "scientific": "Populus tremuloides",
+   "key": "populus_tremuloides",
+   "regions": [
+    "NF",
+    "MW",
+    "GP",
+    "RM",
+    "PC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "128": {
+   "card": 128,
+   "common": "Big Sagebrush",
+   "scientific": "Artemisia tridentata",
+   "key": "artemisia_tridentata",
+   "regions": [
+    "GP",
+    "RM",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "129": {
+   "card": 129,
+   "common": "Canada Buffaloberry",
+   "scientific": "Shepherdia canadensis",
+   "key": "shepherdia_canadensis",
+   "regions": [
+    "NF",
+    "MW",
+    "GP",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "130": {
+   "card": 130,
+   "common": "American Licorice",
+   "scientific": "Glycyrrhiza lepidota",
+   "key": "glycyrrhiza_lepidota",
+   "regions": [
+    "MW",
+    "GP",
+    "RM",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "131": {
+   "card": 131,
+   "common": "Curlycup Gumweed",
+   "scientific": "Grindelia squarrosa",
+   "key": "grindelia_squarrosa",
+   "regions": [
+    "GP",
+    "RM",
+    "SW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "132": {
+   "card": 132,
+   "common": "Leadplant",
+   "scientific": "Amorpha canescens",
+   "key": "amorpha_canescens",
+   "regions": [
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "133": {
+   "card": 133,
+   "common": "Purple Prairie Clover",
+   "scientific": "Dalea purpurea",
+   "key": "dalea_purpurea",
+   "regions": [
+    "GP"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "134": {
+   "card": 134,
+   "common": "Narrowleaf Purple Coneflower",
+   "scientific": "Echinacea angustifolia",
+   "key": "echinacea_angustifolia",
+   "regions": [
+    "GP",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "135": {
+   "card": 135,
+   "common": "Fringed Sagewort",
+   "scientific": "Artemisia frigida",
+   "key": "artemisia_frigida",
+   "regions": [
+    "GP",
+    "RM"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "136": {
+   "card": 136,
+   "common": "Saw Palmetto",
+   "scientific": "Serenoa repens",
+   "key": "serenoa_repens",
+   "regions": [
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "137": {
+   "card": 137,
+   "common": "Spanish Needles",
+   "scientific": "Bidens alba",
+   "key": "bidens_alba",
+   "regions": [
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "138": {
+   "card": 138,
+   "common": "Water Hyssop (Brahmi)",
+   "scientific": "Bacopa monnieri",
+   "key": "bacopa_monnieri",
+   "regions": [
+    "GC"
+   ],
+   "safety_flag": true,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "139": {
+   "card": 139,
+   "common": "Saw Greenbrier",
+   "scientific": "Smilax bona-nox",
+   "key": "smilax_bona_nox",
+   "regions": [
+    "SE",
+    "GC"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "140": {
+   "card": 140,
+   "common": "Bog Labrador Tea",
+   "scientific": "Rhododendron groenlandicum",
+   "key": "rhododendron_groenlandicum",
+   "regions": [
+    "NF",
+    "NE",
+    "MW"
+   ],
+   "safety_flag": true,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  },
+  "141": {
+   "card": 141,
+   "common": "Lingonberry",
+   "scientific": "Vaccinium vitis-idaea",
+   "key": "vaccinium_vitis_idaea",
+   "regions": [
+    "NF",
+    "NE",
+    "MW"
+   ],
+   "safety_flag": false,
+   "stages": {
+    "pending": {
+     "done": true,
+     "at": "2026-11-17T00:31:33+00:00"
+    },
+    "photos_collected": {
+     "done": false
+    },
+    "photos_selected": {
+     "done": false
+    },
+    "image_generation_needed": {
+     "done": false
+    },
+    "assets_generated": {
+     "done": false
+    },
+    "quality_review": {
+     "done": false
+    },
+    "approved": {
+     "done": false
+    },
+    "needs_revision": {
+     "done": false
+    }
+   },
+   "collection": null,
+   "selection": null,
+   "assets": {
+    "main_image": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "pixel_icon": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    },
+    "tall_preview": {
+     "attempt": 0,
+     "versions": [],
+     "review": null,
+     "regenerate": null
+    }
+   },
+   "approval": null,
+   "events": []
+  }
+ }
+}

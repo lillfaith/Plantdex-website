@@ -1,15 +1,18 @@
 # Production photo workflow (private tool)
 
-A private development tool for the 83 expansion cards. It collects and tracks; **ChatGPT still
+A private development tool for the 85 expansion cards (#57-141). It collects and tracks; **ChatGPT still
 does the visual selection and the image generation.** Nothing here edits a card, touches the
 website, approves anything, or deploys. Code: `scripts/production/`. Tests:
 `python3 scripts/production/test_production.py` (68 checks, offline).
 
 ## The list gate
 
-`pd init` only accepts an object `{"approved": true, "count": 83, "species": [...]}` with exactly
-83 distinct species. The older 86-card file is a bare list and is refused. **No production list
-exists in the repository yet**, so the production ledger has not been created.
+`pd init` only accepts an object `{"approved": true, "count": 85, "species": [...]}` with exactly
+85 distinct species. The older 86-card file is a bare list and is refused. The production list is
+`evidence/production/species-85.json`, GENERATED from the corrected expansion master by
+`scripts/production/list_from_master.py` (the same file the site-side import reads, so card numbers
+cannot drift). The ledger `evidence/production/queue.json` is created from it. Blue Mistflower is gone,
+so every card after the old #72 moved down one; photos are keyed by species, never by number.
 
 ## Stages (tracked independently per card)
 

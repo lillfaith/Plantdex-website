@@ -30,7 +30,7 @@ STAGES = ["pending", "photos_collected", "photos_selected", "image_generation_ne
 ASSETS = ["main_image", "pixel_icon", "tall_preview"]
 ROLE_OF_ASSET = {"main_image": "main_photo", "pixel_icon": "pixel_source", "tall_preview": "tall_preview"}
 ASSET_OF_ROLE = {v: k for k, v in ROLE_OF_ASSET.items()}
-EXPECTED_COUNT = 83
+EXPECTED_COUNT = 85   # the corrected master: #57-141 (it was 86, then briefly mis-stated as 83)
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 PROD = ROOT / "evidence" / "production"
@@ -79,7 +79,7 @@ def _blank_asset() -> dict:
 def new_card(row: dict) -> dict:
     c = {"card": int(row["card"]), "common": row["common"], "scientific": row["scientific"],
          "key": key_of(row["scientific"]),
-         **{k: row[k] for k in ("pdf_group", "regions_corrected", "habitat", "safety_flag") if k in row},
+         **{k: row[k] for k in ("regions", "pdf_group", "regions_corrected", "habitat", "safety_flag") if k in row},
          "stages": {s: {"done": False} for s in STAGES}, "collection": None, "selection": None,
          "assets": {a: _blank_asset() for a in ASSETS}, "approval": None, "events": []}
     c["stages"]["pending"] = {"done": True, "at": now()}

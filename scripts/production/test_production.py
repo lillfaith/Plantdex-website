@@ -179,12 +179,37 @@ def main() -> int:
             unapproved = t / "un.json"; unapproved.write_text(json.dumps({"approved": False, "count": 5, "species": five}))
             check(raises(lambda: L.Ledger.init(unapproved, lp, bd, expect=5), "not marked approved"), "an unapproved list is refused")
             wrong = t / "wrong.json"; wrong.write_text(json.dumps({"approved": True, "count": 5, "species": five}))
-            check(raises(lambda: L.Ledger.init(wrong, lp, bd), "exactly 83"), "a list that is not 83 cards is refused for production")
+            check(raises(lambda: L.Ledger.init(wrong, lp, bd), "exactly 85"), "a list that is not 85 cards is refused for production")
             good = t / "pilot.json"; good.write_text(json.dumps({"approved": True, "count": 5, "species": five}))
             led = L.Ledger.init(good, lp, bd, expect=5)
             check(len(led.cards()) == 5 and all(led.current(c) == "pending" for c in led.cards()), "cards #57-61 enter at 'pending'")
             check(raises(lambda: L.Ledger.init(good, lp, bd, expect=5), "overwrite"), "an existing ledger is never overwritten")
             check(set(led.cards()[0]["stages"]) == set(L.STAGES), "all eight stages are tracked per card")
+
+            # --- the REAL production list ----------------------------------------------------------------
+            real_list = L.PROD / "species-85.json"
+            if real_list.exists():
+                rl = json.loads(real_list.read_text())
+                big = L.Ledger.init(real_list, t / "real-queue.json", t / "real-batches")
+                nums_ = [c["card"] for c in big.cards()]
+                check(len(nums_) == 85 and nums_ == list(range(57, 142)), "the real list initialises 85 cards, #57-141 unbroken")
+                check(not any(c["scientific"] == "Conoclinium coelestinum" for c in big.cards()), "Blue Mistflower is not in the queue")
+                check(big.card(72)["common"] == "Anise Hyssop" and big.card(141)["scientific"] == "Vaccinium vitis-idaea", "numbers follow the corrected master (#72 Anise Hyssop, #141 Lingonberry)")
+                check(all(big.current(c) == "pending" for c in big.cards()), "every card starts at pending")
+                flagged = sorted(c["card"] for c in big.cards() if c.get("safety_flag"))
+                check(len(flagged) == 6, f"the six safety-flagged species are matched by name, now numbered {flagged}")
+                _, nreq, _ = B.package_next(big, 10)
+                picked = [s_["card"] for s_ in nreq["species"]]
+                check(picked == list(range(57, 67)), f"the next batch of 10 is #57-66 ({picked})")
+                late = []
+                lt = L.Ledger(t / "real-queue.json", t / "real-batches2")
+                for _i in range(9):          # 8 batches of 10 and one of 5 walk the whole queue
+                    pth, rq, _ = B.package_next(lt, 10, new=True)
+                    late += [(s_["card"], s_["safety_flag"]) for s_ in rq["species"]]
+                check(len(late) == 85 and len({c for c, _ in late}) == 85, "nine batches cover all 85 cards exactly once")
+                check([f for _, f in late[-6:]] == [True] * 6 and not any(f for _, f in late[:-6]),
+                      "safety-flagged species are picked last, after every other card")
+                check(rl["source"]["sha256"] and rl["approved"] is True and rl["count"] == 85, "the list records its source hash and approval")
 
             # --- batch request, interrupted run, resume ---------------------------------------
             path, req, resumed = B.package_next(led, 3)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """pd - the PlantDex production tool. PRIVATE; never imported by the site, never deploys.
 
-  pd.py init --list evidence/production/species-83.json     build the queue from the APPROVED list
+  pd.py init --list evidence/production/species-85.json     build the queue from the APPROVED list
   pd.py status                                              where every card is
   pd.py package-next [--n 10] [--collect]                   the next 10 uncompleted species
   pd.py collect --request evidence/production/batches/batch-001.request.json
