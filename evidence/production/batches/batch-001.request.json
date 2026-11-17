@@ -1,0 +1,68 @@
+{
+ "batch": "001",
+ "created": "2026-11-17T00:34:03+00:00",
+ "min": 20,
+ "max": 30,
+ "species": [
+  {
+   "card": 57,
+   "common": "Boneset",
+   "scientific": "Eupatorium perfoliatum",
+   "safety_flag": false
+  },
+  {
+   "card": 58,
+   "common": "Hollow Joe-Pye Weed",
+   "scientific": "Eutrochium fistulosum",
+   "safety_flag": false
+  },
+  {
+   "card": 59,
+   "common": "New Jersey Tea",
+   "scientific": "Ceanothus americanus",
+   "safety_flag": false
+  },
+  {
+   "card": 60,
+   "common": "Black-Eyed Susan",
+   "scientific": "Rudbeckia hirta",
+   "safety_flag": false
+  },
+  {
+   "card": 61,
+   "common": "Narrowleaf Mountain Mint",
+   "scientific": "Pycnanthemum tenuifolium",
+   "safety_flag": false
+  },
+  {
+   "card": 62,
+   "common": "California Buckwheat",
+   "scientific": "Eriogonum fasciculatum",
+   "safety_flag": false
+  },
+  {
+   "card": 63,
+   "common": "Wild Quinine",
+   "scientific": "Parthenium integrifolium",
+   "safety_flag": false
+  },
+  {
+   "card": 64,
+   "common": "Sweet Everlasting",
+   "scientific": "Pseudognaphalium obtusifolium",
+   "safety_flag": false
+  },
+  {
+   "card": 65,
+   "common": "American Lotus",
+   "scientific": "Nelumbo lutea",
+   "safety_flag": false
+  },
+  {
+   "card": 66,
+   "common": "Annual Fleabane",
+   "scientific": "Erigeron annuus",
+   "safety_flag": false
+  }
+ ]
+}
