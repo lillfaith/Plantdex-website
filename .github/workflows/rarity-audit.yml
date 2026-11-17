@@ -1,0 +1,34 @@
+name: Rarity audit (read-only iNaturalist observation counts)
+
+# PRIVATE DEVELOPMENT TOOL. Counts research-grade observations per species so card tiers can be reviewed against data.
+# Changes no card. STARTED BY PUSHING evidence/rarity/request.json (the workflow file itself is not a trigger).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/rarity/request.json
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python3 scripts/rarity_audit.py --request evidence/rarity/request.json --out evidence/rarity/result.json
+      - name: Commit the result (small JSON only)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/rarity/result.json
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Rarity audit: observation counts (read-only; no card changed)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
