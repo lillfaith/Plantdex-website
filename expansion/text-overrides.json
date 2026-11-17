@@ -48,12 +48,16 @@
  "101": [
   {
    "field": "back.healingTraits",
-   "append": [
-    "Glucose regulation",
-    "Brain health"
+   "set": [
+    "Antioxidant-rich",
+    "Vitamin-rich",
+    "Dietary fiber",
+    "Brain health",
+    "Glucose reg.",
+    "Hydration"
    ],
    "by": "owner",
-   "why": "Owner asked to add these two Healing Traits to Muscadine Grape if they fit (they are not in the master sheet)."
+   "why": "Owner added 'Glucose regulation' and 'Brain health' (not in the master sheet), shortened it to 'Glucose reg.' so it is not scaled down, and moved Brain health up and Hydration down."
   }
  ],
  "103": [

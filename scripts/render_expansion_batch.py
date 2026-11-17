@@ -90,6 +90,9 @@ def apply_overrides(c: dict) -> dict:
     for e in json.loads(path.read_text()).get(str(c["cardNumber"]), []):
         sect, key = e["field"].split(".")
         items = c[sect][key]
+        if "set" in e:                             # owner sets the whole list (order matters: entries fill row by row)
+            c[sect][key] = list(e["set"])
+            continue
         if "append" in e:                          # owner ADDS entries to a list; nothing is replaced
             items.extend(x for x in e["append"] if x not in items)
             continue
