@@ -1,0 +1,49 @@
+name: Photo search v2 repackage (Mac-friendly download)
+
+# PRIVATE DEVELOPMENT TOOL. Re-packages the species results of an earlier photo-search-v2 run; no new search.
+# STARTED BY PUSHING evidence/search-v2/repackage.json ({"run_id": <earlier run>}).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/search-v2/repackage.json
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  repackage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - name: Read the run id
+        id: r
+        run: echo "id=$(python3 -c "import json;print(json.load(open('evidence/search-v2/repackage.json'))['run_id'])")" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v2-species-*
+          path: v2-out
+          merge-multiple: true
+          run-id: ${{ steps.r.outputs.id }}
+          github-token: ${{ github.token }}
+      - name: Build the package, verify it, then expand to a plain folder
+        run: |
+          python3 scripts/production/replace_search.py package --request evidence/search-v2/request.json --in v2-out --out production-out
+          python3 - <<'P'
+          import zipfile, glob
+          z = zipfile.ZipFile(glob.glob("production-out/*.zip")[0])
+          bad = z.testzip(); assert bad is None, bad
+          print("zip integrity ok,", len(z.namelist()), "entries")
+          P
+          mkdir export && unzip -q production-out/*.zip -d export
+          ls export; du -sh export
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plantdex-photo-search-v2-cards-57-61-folder
+          path: export
+          compression-level: 6
+          retention-days: 30
