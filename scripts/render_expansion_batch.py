@@ -44,6 +44,11 @@ R.SLOT_PITCH = SHIPPED_STAT_PITCH
 # The season tile. The renderer's SLOT_SEASON (688,1016)-(736,1064) sits 4px right of where the SHIPPED cards draw it
 # (measured on Dandelion/Pine: gold tile at (684,1016)-(732,1064)), so the icon landed beside the template's own tile
 # and read as a second, offset tile on top of the original.
+# NAMES. The deck reduces an over-long name by 5% at a time, only as far as it must. The limits are the real
+# boundaries, measured on the template: the name bar runs x=59..607 and the text starts at ~73, so 520 leaves ~14px
+# inside the bar's right edge; the Latin name must clear the first use disc (starts x=619) with ~24px to spare.
+R.SHRINK_STEP = 0.95
+R.SLOT_LIMITS = {**R.SLOT_LIMITS, "common": 520, "scientific": 520}
 R.SLOT_SEASON = (682, 1013, 733, 1064)   # covers the shipped tile AND the template tile beneath it
 PIXEL_BOX = (265, 405, 375, 530)         # reference box around the pixel panel
 
