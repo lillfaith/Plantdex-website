@@ -1,0 +1,67 @@
+{
+ "name": "photo-search-v2-cards-72-76",
+ "tag": "cards-72-76",
+ "note": "Private dev search: new CC0 candidates only, screened per role. Approves/edits nothing. Hands/gloves are left for ChatGPT to remove (owner decision).",
+ "species": [
+  {
+   "card": 72,
+   "common": "Anise Hyssop",
+   "scientific": "Agastache foeniculum",
+   "flower_kind": "pink_purple",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 73,
+   "common": "Virginia Spring Beauty",
+   "scientific": "Claytonia virginica",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 74,
+   "common": "Smooth Solomon's Seal",
+   "scientific": "Polygonatum biflorum",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 75,
+   "common": "Partridgeberry",
+   "scientific": "Mitchella repens",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 76,
+   "common": "American Groundnut",
+   "scientific": "Apios americana",
+   "flower_kind": "brown",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  }
+ ]
+}

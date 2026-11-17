@@ -1,24 +1,12 @@
 {
- "name": "photo-search-v2-cards-72-76",
- "tag": "cards-72-76",
- "note": "Private dev search: new CC0 candidates only, screened per role. Approves/edits nothing. Hands/gloves are left for ChatGPT to remove (owner decision).",
+ "name": "photo-search-v2-cards-62-66",
+ "tag": "cards-62-66",
+ "note": "Private dev search: new CC0 candidates only, screened per role (the improved pipeline; replaces the older batch-001 candidates for these cards). Approves/edits nothing. Hands/gloves are left for ChatGPT to remove.",
  "species": [
   {
-   "card": 72,
-   "common": "Anise Hyssop",
-   "scientific": "Agastache foeniculum",
-   "flower_kind": "pink_purple",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {}
-  },
-  {
-   "card": 73,
-   "common": "Virginia Spring Beauty",
-   "scientific": "Claytonia virginica",
+   "card": 62,
+   "common": "California Buckwheat",
+   "scientific": "Eriogonum fasciculatum",
    "flower_kind": "white",
    "needed_roles": [
     "main",
@@ -28,9 +16,9 @@
    "retained": {}
   },
   {
-   "card": 74,
-   "common": "Smooth Solomon's Seal",
-   "scientific": "Polygonatum biflorum",
+   "card": 63,
+   "common": "Wild Quinine",
+   "scientific": "Parthenium integrifolium",
    "flower_kind": "white",
    "needed_roles": [
     "main",
@@ -40,9 +28,9 @@
    "retained": {}
   },
   {
-   "card": 75,
-   "common": "Partridgeberry",
-   "scientific": "Mitchella repens",
+   "card": 64,
+   "common": "Sweet Everlasting",
+   "scientific": "Pseudognaphalium obtusifolium",
    "flower_kind": "white",
    "needed_roles": [
     "main",
@@ -52,10 +40,22 @@
    "retained": {}
   },
   {
-   "card": 76,
-   "common": "American Groundnut",
-   "scientific": "Apios americana",
-   "flower_kind": "brown",
+   "card": 65,
+   "common": "American Lotus",
+   "scientific": "Nelumbo lutea",
+   "flower_kind": "yellow",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 66,
+   "common": "Annual Fleabane",
+   "scientific": "Erigeron annuus",
+   "flower_kind": "white",
    "needed_roles": [
     "main",
     "pixel",
