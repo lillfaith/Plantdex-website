@@ -325,6 +325,13 @@
    "to": "Oral health",
    "by": "owner",
    "why": "Owner: Stomach soothing -> Oral health."
+  },
+  {
+   "field": "back.healingTraits",
+   "from": "Cough soothing",
+   "to": "Cough aid",
+   "by": "owner",
+   "why": "Owner: Cough soothing -> Cough aid (applied to #130 American Licorice, the card on screen; Curlycup #131 already had it)."
   }
  ],
  "131": [
