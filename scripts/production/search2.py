@@ -1,0 +1,148 @@
+"""A fresh iNaturalist search for replacement candidates, beyond everything already shown.
+
+REUSES scripts/fetch_inat_photos.py (API access, exact-taxon match, original-size URLs) and
+scripts/photo_collector.py (`verify_licenses`, the second independent licence check).
+
+WHAT IS DIFFERENT FROM THE FIRST COLLECTOR, AND WHY:
+  * It excludes every photograph AND observation already presented in an earlier batch.
+  * It searches by several orderings, not by votes alone. Vote order rewards attractive, popular
+    shots (macro, top-down, patches) and returned only ~150 observations per species. Here: several
+    query types, 200 per page, up to 4 pages each.
+  * It prefers observations the observer marked FLOWERING (iNaturalist Plant Phenology), because
+    every role needs a flowering plant.
+  * It carries identification-quality fields, so a thin or disputed ID is FLAGGED, never hidden.
+  * It never widens the licence: a photo is used only if THAT photo is CC0, checked twice.
+"""
+from __future__ import annotations
+
+import json
+import pathlib
+import sys
+import time
+
+HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))
+import fetch_inat_photos as F      # noqa: E402
+import photo_collector as PC       # noqa: E402
+
+MIN_ORIG_EDGE = 1400               # a candidate's original long edge; the screen later enforces 1200 on retained
+PER_PAGE = 200
+MAX_PAGES = 4
+FLOWERING = {"term_id": 12, "term_value_id": 13}     # Plant Phenology = Flowering
+QUERIES = [
+    ("flowering-votes", {"order_by": "votes", **FLOWERING}),
+    ("flowering-recent", {"order_by": "observed_on", "order": "desc", **FLOWERING}),
+    ("flowering-newest-upload", {"order_by": "created_at", "order": "desc", **FLOWERING}),
+    ("any-recent", {"order_by": "observed_on", "order": "desc"}),
+    ("any-votes-deep", {"order_by": "votes"}),
+]
+
+
+def previous_index(result_files: list[pathlib.Path], metadata_files: list[pathlib.Path]) -> dict:
+    """Every photograph already shown to a reviewer, from the repo's batch results and from the
+    metadata of earlier batches. {photo_id: {observation_id, ...provenance}}"""
+    idx: dict[int, dict] = {}
+    for f in result_files:
+        r = json.loads(pathlib.Path(f).read_text())
+        for card, sp in r.get("species", {}).items():
+            for c in sp.get("candidates", []):
+                idx[int(c["photo_id"])] = {"observation_id": c.get("observation_id"), "observation_url": c.get("observation_url"),
+                                           "photographer": c.get("photographer"), "license_code": c.get("license_code"),
+                                           "card": int(card), "source": pathlib.Path(f).name}
+    for f in metadata_files:
+        d = json.loads(pathlib.Path(f).read_text())
+        for p in d.get("photos", []):
+            idx.setdefault(int(p["photo_id"]), {"observation_id": p.get("observation_id"), "observation_url": p.get("observation_url"),
+                                                "photographer": p.get("photographer"), "license_code": p.get("license_code"),
+                                                "card": d.get("card"), "source": pathlib.Path(f).parent.name})
+    return idx
+
+
+def _annotations(obs: dict) -> bool:
+    for a in obs.get("annotations") or []:
+        if (a.get("controlled_attribute") or {}).get("label") == "Plant Phenology" and (a.get("controlled_value") or {}).get("label") == "Flowering":
+            return True
+    return False
+
+
+def photos_of(obs: dict, taxon_id: int, query: str) -> list[dict]:
+    """The CC0 photographs of one observation, each checked on ITS OWN licence."""
+    if (obs.get("taxon") or {}).get("id") != taxon_id:
+        return []
+    out = []
+    for i, ph in enumerate(obs.get("photos", [])):
+        if (ph.get("license_code") or "").lower() != "cc0":
+            continue
+        dims = ph.get("original_dimensions") or {}
+        long_edge = max(dims.get("width", 0), dims.get("height", 0))
+        if long_edge < MIN_ORIG_EDGE:
+            continue
+        out.append({
+            "photo_id": ph["id"], "observation_id": obs["id"], "photo_index": i,
+            "observation_url": f"https://www.inaturalist.org/observations/{obs['id']}",
+            "license_code": "cc0", "license": F.LICENSE_LABEL["cc0"],
+            "photographer": (ph.get("attribution") or "").strip() or None,
+            "observed_on": obs.get("observed_on"), "place": obs.get("place_guess"),
+            "urls": {s: F.photo_url(ph, s) for s in F.SIZES}, "dimensions": dims, "orig_long": long_edge,
+            "taxon_id": taxon_id, "taxon_name": (obs.get("taxon") or {}).get("name"),
+            "quality_grade": obs.get("quality_grade"), "community_taxon_id": obs.get("community_taxon_id"),
+            "identification_agreements": obs.get("num_identification_agreements"),
+            "identification_disagreements": obs.get("num_identification_disagreements"),
+            "flowering_annotation": _annotations(obs), "found_by": query,
+        })
+    return out
+
+
+def build_pool(taxon_id: int, exclude_photos: set, exclude_obs: set, limit: int = 220, log=print) -> list[dict]:
+    """Candidate photographs: new, CC0, large, flowering-first, interleaved across query types."""
+    per_query: list[list[dict]] = []
+    seen_obs = set()
+    for name, extra in QUERIES:
+        got: list[dict] = []
+        for page in range(1, MAX_PAGES + 1):
+            params = {"taxon_id": taxon_id, "photo_license": "cc0", "quality_grade": "research", "photos": "true",
+                      "per_page": PER_PAGE, "page": page, **extra}
+            ans = F.get(f"{F.API}/observations?{F.urllib.parse.urlencode(params)}") or {}
+            rows = ans.get("results", [])
+            for obs in rows:
+                if obs["id"] in exclude_obs:
+                    continue
+                for p in photos_of(obs, taxon_id, name):
+                    if p["photo_id"] not in exclude_photos:
+                        got.append(p)
+            time.sleep(1.0)
+            if len(rows) < PER_PAGE:
+                break
+        log(f"   query {name}: {len(got)} new CC0 photos")
+        per_query.append(got)
+    pool, seen, per_obs = [], set(), {}
+    longest = max((len(q) for q in per_query), default=0)
+    for i in range(longest):                      # round-robin, so no one ordering dominates
+        for q in per_query:
+            if i < len(q):
+                p = q[i]
+                if p["photo_id"] in seen or per_obs.get(p["observation_id"], 0) >= 2:
+                    continue
+                seen.add(p["photo_id"])
+                per_obs[p["observation_id"]] = per_obs.get(p["observation_id"], 0) + 1
+                pool.append(p)
+    pool.sort(key=lambda p: (not p["flowering_annotation"], -(p["identification_agreements"] or 0) // 2, p["photo_index"]))
+    return pool[:limit]
+
+
+def retained_record(photo_id: int, taxon_id: int, prev: dict, taxon_name: str) -> dict | None:
+    """Provenance for a previously APPROVED photograph, re-verified rather than trusted."""
+    p = prev.get(int(photo_id))
+    if not p or not p.get("observation_id"):
+        return None
+    base = f"https://inaturalist-open-data.s3.amazonaws.com/photos/{int(photo_id)}"
+    return {"photo_id": int(photo_id), "observation_id": p["observation_id"],
+            "observation_url": p.get("observation_url") or f"https://www.inaturalist.org/observations/{p['observation_id']}",
+            "license_code": "cc0", "license": F.LICENSE_LABEL["cc0"], "photographer": p.get("photographer"),
+            "urls": {s: f"{base}/{s}.jpg" for s in F.SIZES}, "taxon_id": taxon_id, "taxon_name": taxon_name,
+            "orig_long": 0, "photo_index": 0, "flowering_annotation": False, "found_by": "retained"}
+
+
+def reverify(photos: list[dict], taxon_id: int) -> tuple[list[dict], list[dict]]:
+    """The second, independent licence check (re-read from each observation)."""
+    return PC.verify_licenses(photos, taxon_id)

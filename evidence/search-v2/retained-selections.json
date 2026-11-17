@@ -1,0 +1,48 @@
+{
+ "status": "APPROVED_BY_USER_BEFORE_V2",
+ "note": "Kept unless a verifiable licence/identification issue is found. Not modified by v2.",
+ "kept": {
+  "57": {
+   "main": 23655843
+  },
+  "58": {
+   "main": 303843461,
+   "tall": 595827511
+  },
+  "59": {
+   "pixel": 282599815
+  },
+  "60": {
+   "pixel": 135566,
+   "tall": 705452061
+  }
+ },
+ "replace": {
+  "57": [
+   "pixel",
+   "tall"
+  ],
+  "58": [
+   "pixel"
+  ],
+  "59": [
+   "main",
+   "tall"
+  ],
+  "60": [
+   "main",
+   "tall"
+  ],
+  "61": [
+   "main",
+   "pixel",
+   "tall"
+  ]
+ },
+ "never_represent": {
+  "59": {
+   "main": 4109066
+  }
+ },
+ "tall_60_note": "705452061 stays as provisional fallback until a cleaner single-stalk tall is chosen"
+}

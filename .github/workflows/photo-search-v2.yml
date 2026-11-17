@@ -1,0 +1,120 @@
+name: Photo search v2 (new CC0 candidates for ChatGPT review)
+
+# PRIVATE DEVELOPMENT TOOL. Finds NEW CC0 iNaturalist candidates, screens them per role, and builds ONE ZIP.
+# It edits no card, asset, ledger or production file, generates no images and deploys nothing.
+# api.inaturalist.org is refused by the dev sandbox, so it runs here.
+# STARTED BY PUSHING evidence/search-v2/request.json (the workflow file itself is not a trigger).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/search-v2/request.json
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: photo-search-v2
+  cancel-in-progress: false
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.n.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - name: Offline tests
+        run: python3 scripts/production/test_search_v2.py
+      - name: Fetch the earlier collector artifact (best effort, for previously shown photos)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p prev-meta
+          gh run download 43965813414 -R "$GITHUB_REPOSITORY" -n plantdex-photo-batch -D prev-meta || echo "earlier artifact unavailable (expired?) - using committed result files only"
+      - name: Previous-candidates index
+        run: |
+          python3 scripts/production/replace_search.py prep \
+            --results evidence/production/batches/batch-001.result.json \
+            --metadata-dir prev-meta --out previous-candidates.json
+      - id: n
+        run: echo "count=$(python3 -c "import json;print(len(json.load(open('evidence/search-v2/request.json'))['species']))")" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with: { name: v2-prev, path: previous-candidates.json }
+
+  species:
+    needs: prep
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - uses: actions/download-artifact@v4
+        with: { name: v2-prev }
+      - name: Search, screen, rank
+        run: python3 scripts/production/replace_search.py species --request evidence/search-v2/request.json --index ${{ matrix.index }} --prev previous-candidates.json --out v2-out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-species-${{ matrix.index }}
+          path: |
+            v2-out
+            !v2-out/_work_*
+          compression-level: 0
+          retention-days: 14
+
+  package:
+    needs: species
+    if: always() && needs.prep.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v2-species-*
+          path: v2-out
+          merge-multiple: true
+      - name: Build the single ZIP
+        run: python3 scripts/production/replace_search.py package --request evidence/search-v2/request.json --in v2-out --out production-out --qa-dir qa
+      - name: Summary
+        run: |
+          { echo "### Photo search v2"; ls -la production-out/*.zip; echo; cat qa/summary.json | head -c 4000; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plantdex-photo-search-v2-cards-57-61
+          path: production-out/*.zip
+          compression-level: 0
+          retention-days: 30
+      - name: Commit reduced QA sheets + summary (small files only)
+        run: |
+          mkdir -p evidence/search-v2/qa && cp -r qa/. evidence/search-v2/qa/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/search-v2/qa
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Photo search v2: QA sheets and summary (nothing selected or approved)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
