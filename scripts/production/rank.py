@@ -31,7 +31,7 @@ TALL_WEIGHTS = {"recognizability": .12, "completeness": .18, "isolability": .15,
                 "aesthetic": .02, "quality": .03, "plain_background": .22}
 MIN_SCORE = 45.0
 ROLES = ("main", "pixel", "tall")
-EXPECTED_FLOWER = {"white": 0.10, "pink_purple": 0.07, "yellow": 0.05}
+EXPECTED_FLOWER = {"white": 0.10, "pink_purple": 0.07, "yellow": 0.05, "brown": 0.06, "none": 0.0}
 
 
 def id_confidence(obs: dict) -> tuple[float, list[str]]:
@@ -54,7 +54,7 @@ def recognizability(ev, obs, kind) -> tuple[float, list[str]]:
     idc, flags = id_confidence(obs)
     flowering = 1.0 if obs.get("flowering_annotation") else 0.4
     share = ev["measure"].get("flower_share", 0.0)
-    presence = min(1.0, share / EXPECTED_FLOWER[kind])
+    presence = 0.6 if EXPECTED_FLOWER[kind] == 0 else min(1.0, share / EXPECTED_FLOWER[kind])
     return 0.35 * idc + 0.15 * flowering + 0.50 * presence, flags
 
 

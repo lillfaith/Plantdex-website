@@ -256,7 +256,7 @@ def package_cmd(a) -> int:
             results.append(json.loads(f.read_text()))
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    zp = out / "plantdex-photo-search-v2-cards-57-61.zip"
+    zp = out / f"plantdex-photo-search-v2-{req.get('tag', 'cards-57-61')}.zip"
     summary = PKG.build_zip(req, dirs, results, zp, now())
     print(f"ZIP: {zp}  ({zp.stat().st_size / 1e6:.1f} MB)")
     if a.qa_dir:

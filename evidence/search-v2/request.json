@@ -1,68 +1,61 @@
 {
- "name": "photo-search-v2-cards-57-61",
- "note": "Private dev search. Finds NEW CC0 candidates only; approves/edits nothing. Retained = approved selections kept for comparison.",
+ "name": "photo-search-v2-cards-67-71",
+ "tag": "cards-67-71",
+ "note": "Private dev search: new CC0 candidates only, screened per role. Approves/edits nothing. Hands/gloves are left for ChatGPT to remove (owner decision).",
  "species": [
   {
-   "card": 57,
-   "common": "Boneset",
-   "scientific": "Eupatorium perfoliatum",
-   "flower_kind": "white",
+   "card": 67,
+   "common": "Curly Dock",
+   "scientific": "Rumex crispus",
+   "flower_kind": "brown",
    "needed_roles": [
+    "main",
     "pixel",
     "tall"
    ],
-   "retained": {
-    "main": 23655843
-   }
+   "retained": {}
   },
   {
-   "card": 58,
-   "common": "Hollow Joe-Pye Weed",
-   "scientific": "Eutrochium fistulosum",
+   "card": 68,
+   "common": "Narrowleaf Plantain",
+   "scientific": "Plantago lanceolata",
+   "flower_kind": "brown",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 69,
+   "common": "Common Mugwort",
+   "scientific": "Artemisia vulgaris",
+   "flower_kind": "brown",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 70,
+   "common": "Motherwort",
+   "scientific": "Leonurus cardiaca",
    "flower_kind": "pink_purple",
    "needed_roles": [
-    "pixel"
-   ],
-   "retained": {
-    "main": 303843461,
-    "tall": 595827511
-   }
-  },
-  {
-   "card": 59,
-   "common": "New Jersey Tea",
-   "scientific": "Ceanothus americanus",
-   "flower_kind": "white",
-   "needed_roles": [
     "main",
+    "pixel",
     "tall"
    ],
-   "retained": {
-    "pixel": 282599815
-   },
-   "never_represent": [
-    4109066
-   ]
+   "retained": {}
   },
   {
-   "card": 60,
-   "common": "Black-Eyed Susan",
-   "scientific": "Rudbeckia hirta",
-   "flower_kind": "yellow",
-   "needed_roles": [
-    "main",
-    "tall"
-   ],
-   "retained": {
-    "pixel": 135566,
-    "tall": 705452061
-   }
-  },
-  {
-   "card": 61,
-   "common": "Narrowleaf Mountain Mint",
-   "scientific": "Pycnanthemum tenuifolium",
-   "flower_kind": "white",
+   "card": 71,
+   "common": "New York Ironweed",
+   "scientific": "Vernonia noveboracensis",
+   "flower_kind": "pink_purple",
    "needed_roles": [
     "main",
     "pixel",
@@ -70,6 +63,5 @@
    ],
    "retained": {}
   }
- ],
- "run": 3
+ ]
 }

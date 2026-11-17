@@ -1,0 +1,75 @@
+{
+ "name": "photo-search-v2-cards-57-61",
+ "note": "Private dev search. Finds NEW CC0 candidates only; approves/edits nothing. Retained = approved selections kept for comparison.",
+ "species": [
+  {
+   "card": 57,
+   "common": "Boneset",
+   "scientific": "Eupatorium perfoliatum",
+   "flower_kind": "white",
+   "needed_roles": [
+    "pixel",
+    "tall"
+   ],
+   "retained": {
+    "main": 23655843
+   }
+  },
+  {
+   "card": 58,
+   "common": "Hollow Joe-Pye Weed",
+   "scientific": "Eutrochium fistulosum",
+   "flower_kind": "pink_purple",
+   "needed_roles": [
+    "pixel"
+   ],
+   "retained": {
+    "main": 303843461,
+    "tall": 595827511
+   }
+  },
+  {
+   "card": 59,
+   "common": "New Jersey Tea",
+   "scientific": "Ceanothus americanus",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "tall"
+   ],
+   "retained": {
+    "pixel": 282599815
+   },
+   "never_represent": [
+    4109066
+   ]
+  },
+  {
+   "card": 60,
+   "common": "Black-Eyed Susan",
+   "scientific": "Rudbeckia hirta",
+   "flower_kind": "yellow",
+   "needed_roles": [
+    "main",
+    "tall"
+   ],
+   "retained": {
+    "pixel": 135566,
+    "tall": 705452061
+   }
+  },
+  {
+   "card": 61,
+   "common": "Narrowleaf Mountain Mint",
+   "scientific": "Pycnanthemum tenuifolium",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  }
+ ],
+ "run": 3
+}

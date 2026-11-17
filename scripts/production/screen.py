@@ -48,8 +48,12 @@ FLOWER_KINDS = {
     "white": lambda h, s, v: (s <= 45) & (v >= 175),
     "pink_purple": lambda h, s, v: (h >= 125) & (h <= 175) & (s >= 45) & (v >= 90),
     "yellow": lambda h, s, v: (h >= 15) & (h <= 35) & (s >= 110) & (v >= 120),
+    # rust / red-brown seed or flower spikes (docks, plantains, mugworts): warm hue, moderate-to-high saturation, mid value
+    "brown": lambda h, s, v: ((h <= 18) | (h >= 172)) & (s >= 70) & (v >= 50) & (v <= 215),
+    # no reliable flower colour (tiny, dull flowers): colour presence is not scored, and nothing is flagged for lacking it
+    "none": lambda h, s, v: (h < 0),
 }
-EXPECTED_FLOWER_SHARE = {"white": 0.10, "pink_purple": 0.07, "yellow": 0.05}
+EXPECTED_FLOWER_SHARE = {"white": 0.10, "pink_purple": 0.07, "yellow": 0.05, "brown": 0.06, "none": 0.0}
 
 
 # --- the subject mask ------------------------------------------------------------------------

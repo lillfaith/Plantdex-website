@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       count: ${{ steps.n.outputs.count }}
+      tag: ${{ steps.n.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -45,7 +46,9 @@ jobs:
             --results evidence/production/batches/batch-001.result.json \
             --metadata-dir prev-meta --out previous-candidates.json
       - id: n
-        run: echo "count=$(python3 -c "import json;print(len(json.load(open('evidence/search-v2/request.json'))['species']))")" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "count=$(python3 -c "import json;print(len(json.load(open('evidence/search-v2/request.json'))['species']))")" >> "$GITHUB_OUTPUT"
+          echo "tag=$(python3 -c "import json;print(json.load(open('evidence/search-v2/request.json')).get('tag','cards-57-61'))")" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
         with: { name: v2-prev, path: previous-candidates.json }
 
@@ -104,7 +107,7 @@ jobs:
           mkdir export && unzip -q production-out/*.zip -d export
       - uses: actions/upload-artifact@v4
         with:
-          name: plantdex-photo-search-v2-cards-57-61-folder
+          name: plantdex-photo-search-v2-${{ needs.prep.outputs.tag }}-folder
           path: export
           compression-level: 6
           retention-days: 30

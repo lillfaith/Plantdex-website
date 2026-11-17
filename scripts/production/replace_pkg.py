@@ -153,7 +153,7 @@ def manifest_rows(species_results: list[dict]) -> list[dict]:
 
 
 def readme(request: dict, species_results: list[dict], stamp: str) -> str:
-    L = ["# PlantDex replacement photo search - cards #57-61", f"Built {stamp} UTC", "",
+    L = ["# PlantDex photo search - " + request.get("tag", "cards-57-61").replace("cards-", "cards #"), f"Built {stamp} UTC", "",
          "You are choosing SOURCE PHOTOGRAPHS. You will later do the background removal, upscaling, pixel icons and formatting.",
          "Nothing in this package is edited, generated or approved.", "",
          "## How to use it", "",
@@ -218,7 +218,7 @@ def selection_template(species_results: list[dict]) -> dict:
 
 
 def build_zip(request: dict, species_dirs: list[pathlib.Path], species_results: list[dict], out_zip: pathlib.Path, stamp: str) -> dict:
-    root = "plantdex-photo-search-v2-cards-57-61"
+    root = f"plantdex-photo-search-v2-{request.get('tag', 'cards-57-61')}"
     rows = manifest_rows(species_results)
     buf = io.StringIO()
     w = csv.DictWriter(buf, fieldnames=CSV_FIELDS)
