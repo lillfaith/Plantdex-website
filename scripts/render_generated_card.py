@@ -287,6 +287,9 @@ BACK_COLUMN = int((BACK_RIGHT - BACK_LEFT) / 2) - 18
 # stops short of the first use disc at x = 618, with a gap.
 # Room before the next element. The scientific name stops short of the first use disc at
 # x = 618; the digits stop inside the number pill; the common name stops inside its bar.
+# Card numbers used to shrink to fit the pill ONE AT A TIME, so a narrow number (#111) stayed full size while a wide one (#100) was
+# scaled to ~70%: three-digit numbers varied by up to 50% between neighbouring cards. A batch may fix one scale per digit count.
+NUMBER_SCALE: dict = {}
 SHRINK_STEP = 0.93      # a batch may set 0.95: the printed deck's own habit is to reduce an over-long name by 5%
 SLOT_LIMITS = {"scientific": 520, "common": 480, "number": 64}
 
@@ -454,8 +457,11 @@ def draw_slot(img: Image.Image, slot: str, text: str, blocked: list | None = Non
     # Only now, after the stretch, is the width the one that has to fit the slot.
     limit = SLOT_LIMITS.get(slot)
     scale = 1.0
-    while limit and layer.width * scale > limit and scale > 0.5:
-        scale *= SHRINK_STEP               # ~7% a step by default, inside the 5-10% band
+    if slot == "number" and len(text) in NUMBER_SCALE:
+        scale = NUMBER_SCALE[len(text)]    # one size for every number of this many digits (see NUMBER_SCALE)
+    else:
+        while limit and layer.width * scale > limit and scale > 0.5:
+            scale *= SHRINK_STEP           # ~7% a step by default, inside the 5-10% band
     if scale < 1.0:
         layer = layer.resize((max(1, round(layer.width * scale)),
                               max(1, round(layer.height * scale))), Image.LANCZOS)

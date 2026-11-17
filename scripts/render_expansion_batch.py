@@ -49,6 +49,27 @@ R.SLOT_PITCH = SHIPPED_STAT_PITCH
 # boundaries, measured on the template: the name bar runs x=59..607 and the text starts at ~73, so 520 leaves ~14px
 # inside the bar's right edge; the Latin name must clear the first use disc (starts x=619) with ~24px to spare.
 R.SHRINK_STEP = 0.95
+
+
+def _number_scales(lo: int = 100, hi: int = 142) -> dict:
+    """ONE scale for every three-digit card number: the smallest any of #100-#142 needs, so all of them are the same size and all fit
+    the pill. (Per-number shrinking made #111 full size beside #100 at ~70%.) Two-digit numbers keep the approved behaviour."""
+    from PIL import ImageFont
+    key, size, _x, _y, fill, shadow = R.TEXT_SLOTS["number"]
+    font = ImageFont.truetype(str(R.FONTS[key]), round(size))
+    limit = R.SLOT_LIMITS["number"]
+    worst = 1.0
+    for n in range(lo, hi + 1):
+        layer, _, _ = R.text_layer(font, str(n), fill, shadow, R.STROKE.get("number", 0), R.SPLIT.get("number"),
+                                   R.STRETCH.get("number", 1.0), R.WEIGHT.get("number", 0))
+        sc = 1.0
+        while layer.width * sc > limit and sc > 0.5:
+            sc *= R.SHRINK_STEP
+        worst = min(worst, sc)
+    return {3: worst}
+
+
+R.NUMBER_SCALE = _number_scales()
 R.SLOT_LIMITS = {**R.SLOT_LIMITS, "common": 520, "scientific": 520}
 R.SLOT_SEASON = (682, 1013, 733, 1064)   # covers the shipped tile AND the template tile beneath it
 PIXEL_BOX = (265, 405, 375, 530)         # reference box around the pixel panel
