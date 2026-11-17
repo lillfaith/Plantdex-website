@@ -1,0 +1,105 @@
+{
+ "status": "DRAFT - hidden; not in CATALOGUE, herbs.json or public/",
+ "herb": {
+  "id": "frangula-purshiana",
+  "cardNumber": 108,
+  "commonName": "Cascara",
+  "scientificName": "Frangula purshiana",
+  "rarity": "Rare",
+  "xp": 300,
+  "season": "summer",
+  "uses": [
+   "digestive",
+   "tea"
+  ],
+  "stats": {
+   "water": 4,
+   "sun": 3,
+   "temperature": 2
+  },
+  "back": {
+   "healingTraits": [
+    "Laxative",
+    "Constipation aid",
+    "Bitter tonic"
+   ],
+   "compounds": [
+    "Cascarosides",
+    "Emodin",
+    "Aloe-emodin"
+   ],
+   "taste": [
+    "Bitter",
+    "Sharp",
+    "Persistent"
+   ],
+   "aromatic": [
+    "Woody",
+    "Earthy",
+    "Subtle"
+   ],
+   "preparations": [
+    "Decoction"
+   ],
+   "usableParts": [
+    "Bark"
+   ]
+  },
+  "sources": [
+   {
+    "sourceId": "plantdex-expansion-draft",
+    "detail": "Card #108 text from the owner-supplied master sheet; review pending"
+   }
+  ]
+ },
+ "carried_from_the_record": {
+  "regions": [
+   "PC",
+   "RM"
+  ],
+  "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+  "researchLinks": {
+   "directReferencesLocated": 3,
+   "links": [
+    {
+     "url": "https://webprod.hc-sc.gc.ca/nhpid-bdipsn/dbImages/mono_cascara-sagrada_english.pdf",
+     "type": "Direct reference",
+     "isCitation": true
+    },
+    {
+     "url": "https://www.govinfo.gov/content/pkg/FR-2002-05-09/html/02-11510.htm",
+     "type": "Direct reference",
+     "isCitation": true
+    },
+    {
+     "url": "https://mpns.science.kew.org/mpns-portal/drugDetail?drugName=cascara+bark",
+     "type": "Direct reference",
+     "isCitation": true
+    }
+   ],
+   "verificationStatus": "3 direct references \u2014 claim matching still needed",
+   "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers."
+  },
+  "cardSafetyWarning": "Strong laxative; fresh bark causes severe cramping.",
+  "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+  "guideCaution": "SAFETY REVIEW FLAG: Fresh bark causes severe vomiting and cramping. Bark MUST be aged/cured for at least 1 year (or"
+ },
+ "artwork_on_disk": {
+  "main": "NOT YET SUPPLIED",
+  "pixel": "NOT YET SUPPLIED",
+  "tall": "NOT YET SUPPLIED"
+ },
+ "still_needed_before_promotion": [
+  "final botanical / safety review (the record's own status says pending); the safety copy decides whether a SITE_CAUTIONS entry is needed",
+  "collectionId (a card in DIGITAL_ONLY_ENTRIES must declare one) and the decision to promote at all",
+  "web derivatives of the art: 800px front, 400px thumb, 112px chip, back (public/cards/...), built from the approved layers",
+  "the animated sprite (see sprite-brief.json) and its sprites.json entry",
+  "habitat and plant-page copy beyond the card (identification, habitat, facts) with sources; unsourced sections must say so",
+  "scanner effect: promoting adds the species to the matcher; checked that no expansion species shares a genus with an existing spp. card"
+ ],
+ "rendering_rules": [
+  "Healing Traits always renders with its non-claim framing",
+  "SafetyNotice at the right weight",
+  "a warning printed on the card renders above the discovery CTA"
+ ]
+}
