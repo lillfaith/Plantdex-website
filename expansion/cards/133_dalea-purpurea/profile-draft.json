@@ -20,8 +20,10 @@
   "back": {
    "healingTraits": [
     "Digestive aid",
-    "Stomach soothing",
-    "Aromatic tea"
+    "Stomach aid",
+    "Aromatic tea",
+    "Wound healing",
+    "Circulatory support"
    ],
    "compounds": [
     "Flavonoids",

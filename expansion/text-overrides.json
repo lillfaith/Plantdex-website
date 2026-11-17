@@ -350,5 +350,70 @@
    "by": "owner",
    "why": "Owner: added Sap to Usable Parts."
   }
+ ],
+ "132": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Worm folk use",
+    "Eczema aid",
+    "Wound poultice",
+    "Anti-parasitic"
+   ],
+   "by": "owner",
+   "why": "Owner: added Anti-parasitic; Eczema folk use -> Eczema aid."
+  }
+ ],
+ "133": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Stomach aid",
+    "Aromatic tea",
+    "Wound healing",
+    "Circulatory support"
+   ],
+   "by": "owner",
+   "why": "Owner: Stomach soothing -> Stomach aid (named under Leadplant, but only #133 has Stomach soothing); added Wound healing and Circulatory support."
+  }
+ ],
+ "134": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Sialogogue",
+    "Oral numbing",
+    "Immune aid",
+    "Cold support"
+   ],
+   "by": "owner",
+   "why": "Owner: Throat soothing -> Sialogogue; Immune support -> Immune aid."
+  }
+ ],
+ "135": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Bitter tonic",
+    "Respiratory aid",
+    "Menstrual support"
+   ],
+   "by": "owner",
+   "why": "Owner: removed Aromatic; added Respiratory aid and Menstrual support."
+  }
+ ],
+ "136": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Urinary aid",
+    "Cough folk use",
+    "Hair support"
+   ],
+   "by": "owner",
+   "why": "Owner: removed Prostate folk use; Urinary folk use -> Urinary aid; added Hair support."
+  }
  ]
 }
