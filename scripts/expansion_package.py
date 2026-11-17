@@ -122,7 +122,7 @@ def profile_draft(c: dict, d: pathlib.Path) -> dict:
         "carried_from_the_record": {"regions": rev.get("regions"), "regionalConfidence": rev.get("regionalConfidence"), "researchLinks": c.get("researchLinks"),
                                     "cardSafetyWarning": rev.get("cardSafetyWarning"), "cardSafetyWarningStatus": rev.get("cardSafetyWarningStatus"),
                                     "guideCaution": (rev.get("editorial") or {}).get("guideCaution")},
-        "artwork_on_disk": {k: str(pathlib.Path("expansion/assets") / c["id"] / f"{k}.png") for k in ("main", "pixel", "tall")},
+        "artwork_on_disk": {k: (str(pathlib.Path("expansion/assets") / c["id"] / f"{k}.png") if (ASSETS / c["id"] / f"{k}.png").exists() else "NOT YET SUPPLIED") for k in ("main", "pixel", "tall")},
         "still_needed_before_promotion": [
             "final botanical / safety review (the record's own status says pending); the safety copy decides whether a SITE_CAUTIONS entry is needed",
             "collectionId (a card in DIGITAL_ONLY_ENTRIES must declare one) and the decision to promote at all",
@@ -147,7 +147,9 @@ def main() -> int:
         for f in ("front.png", "back.png"):
             shutil.copy2(src / f, d / f)
         make_pdf(d / "front.png", d / "back.png", d / f"{c['id']}_{n}.pdf", f"{c['commonName']} (#{n})")
-        (d / "sprite-brief.json").write_text(json.dumps(sprite_brief(c, ASSETS / c["id"] / "main.png", taken), indent=1) + "\n")
+        # a sprite brief needs an approved concept AND the approved art to read a palette from; without them there is nothing to prepare yet
+        if c["id"] in CONCEPTS and (ASSETS / c["id"] / "main.png").exists():
+            (d / "sprite-brief.json").write_text(json.dumps(sprite_brief(c, ASSETS / c["id"] / "main.png", taken), indent=1) + "\n")
         (d / "profile-draft.json").write_text(json.dumps(profile_draft(c, d), indent=1) + "\n")
         print(n, c["commonName"], "->", d.relative_to(ROOT))
     return 0

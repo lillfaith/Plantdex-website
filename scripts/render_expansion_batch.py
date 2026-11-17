@@ -198,11 +198,12 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
         b = first_box(m, y0, y1, dilate=d)
         want = shipped[k]
         out[f"icon_{k}_matches_shipped_size"] = bool(b is not None and abs(b[2] - (d - 1) - want[0]) <= 4 and abs(b[3] - (d - 1) - want[1]) <= 4)
-    px = info["pixel"]
-    cx = px["placed_px"][0] + (px["ink_native"][0] + px["ink_native"][2]) / 2 * px["placed_px"][2] / 24
-    cy = px["placed_px"][1] + (px["ink_native"][1] + px["ink_native"][3]) / 2 * px["placed_px"][3] / 24
-    out["pixel_icon_centred_in_panel"] = bool(abs(cx - px["panel_centre"][0]) <= 2 and abs(cy - px["panel_centre"][1]) <= 2)
-    out["main_art_not_stretched"] = bool(abs(info["main"]["source_aspect"] - info["main"]["placed_aspect"]) <= 0.01)
+    px = info.get("pixel")
+    if px:
+        cx = px["placed_px"][0] + (px["ink_native"][0] + px["ink_native"][2]) / 2 * px["placed_px"][2] / 24
+        cy = px["placed_px"][1] + (px["ink_native"][1] + px["ink_native"][3]) / 2 * px["placed_px"][3] / 24
+        out["pixel_icon_centred_in_panel"] = bool(abs(cx - px["panel_centre"][0]) <= 2 and abs(cy - px["panel_centre"][1]) <= 2)
+        out["main_art_not_stretched"] = bool(abs(info["main"]["source_aspect"] - info["main"]["placed_aspect"]) <= 0.01)
     # names: ink must stay inside the name bar (x 59..607) and clear the first use disc (x >= 619) with room to spare
     yellow = (a[..., 0] > 200) & (a[..., 1] > 180) & (a[..., 2] < 170)            # the name / Latin lettering
     edge = lambda y0, y1, x1: (int(np.where(yellow[y0:y1, 62:x1].any(axis=0))[0].max() + 62) if yellow[y0:y1, 62:x1].any() else None)
@@ -219,10 +220,10 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--assets", required=True); ap.add_argument("--data", required=True)
+    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--data", required=True)
     ap.add_argument("--cards", nargs="+", type=int, required=True); ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    pkg, out = pathlib.Path(a.assets), pathlib.Path(a.out)
+    pkg, out = pathlib.Path(a.assets or "/nonexistent"), pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     cards = {c["cardNumber"]: c for c in json.load(open(a.data))["cards"]}
     real_pages = R.template_pages
@@ -230,27 +231,36 @@ def main() -> int:
     for n in a.cards:
         c = cards[n]
         rec = card_record(c)
-        overlay = Image.open(pkg / "cards" / str(n) / "back_gradient_mask_overlay.png").convert("RGBA")
-        ov = overlay.resize((R.WIDTH, round(R.WIDTH * REF_H / REF_W)), Image.LANCZOS)
+        has_art = (pkg / "cards" / str(n) / "main_source.png").exists()
+        ov = None
+        if has_art:
+            overlay = Image.open(pkg / "cards" / str(n) / "back_gradient_mask_overlay.png").convert("RGBA")
+            ov = overlay.resize((R.WIDTH, round(R.WIDTH * REF_H / REF_W)), Image.LANCZOS)
 
         def pages(ov=ov):
             f, b = real_pages()
             b = b.copy()
             f = clear_template_tile(f)
-            b.alpha_composite(ov, (0, 0))       # the preview sits UNDER the back text, as on the printed deck
+            if ov is not None:
+                b.alpha_composite(ov, (0, 0))   # the preview sits UNDER the back text, as on the printed deck
             return f, b
         R.template_pages = pages
         blocked: list = []
         front = R.render_front(rec, out / "_none", blocked)       # text, use discs, bars, season, rarity
         back = R.render_back(rec, blocked)
         R.template_pages = real_pages
-        info = {"main": place_main(front, n, pkg), "pixel": place_pixel(front, n, pkg), "renderer_notes": blocked}
+        if has_art:
+            info = {"main": place_main(front, n, pkg), "pixel": place_pixel(front, n, pkg), "renderer_notes": blocked}
+        else:
+            info = {"art": "NONE YET: rendered without main image, pixel icon or tall preview", "renderer_notes": blocked}
         d = out / f"{n:03d}_{c['id']}"
         d.mkdir(exist_ok=True)
         front.convert("RGB").save(d / "front.png", optimize=True)
         back.convert("RGB").save(d / "back.png", optimize=True)
         # visual parity with the approved reference at its own size
         for side, img in (("front", front), ("back", back)):
+            if not has_art:
+                break
             ref = Image.open(pkg / "cards" / str(n) / f"{side}_final.png").convert("RGB")
             mine = img.convert("RGB").resize(ref.size, Image.LANCZOS)
             diff = np.abs(np.asarray(mine, dtype=int) - np.asarray(ref, dtype=int)).sum(axis=2)
@@ -260,8 +270,9 @@ def main() -> int:
             sb.paste(ref, (0, 0)); sb.paste(mine, (ref.width + 10, 0))
             sb.save(d / f"compare_{side}_reference_vs_generated.png")
         info["qa"] = qa_checks(front, back, info)
+        info["has_art"] = has_art
         report["cards"][str(n)] = {"common_name": c["commonName"], **info}
-        print(n, c["commonName"], "QA", "PASS" if info["qa"]["all_passed"] else "FAIL " + str([k for k, v in info["qa"].items() if v is False]), "|", info["front_parity"], info["back_parity"], f"renderer notes: {len(blocked)}")
+        print(n, c["commonName"], "art" if has_art else "NO ART", "QA", "PASS" if info["qa"]["all_passed"] else "FAIL " + str([k for k, v in info["qa"].items() if v is False]), f"| renderer notes: {len(blocked)}")
     (out / "render-report.json").write_text(json.dumps(report, indent=1))
     failed = [n for n, c in report["cards"].items() if not c["qa"]["all_passed"]]
     if failed:
