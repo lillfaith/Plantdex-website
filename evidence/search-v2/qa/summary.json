@@ -1,256 +1,11 @@
 {
- "built": "2026-11-17T04:33:19+00:00",
+ "built": "2026-11-17T14:43:07+00:00",
  "species": [
   {
-   "card": 57,
-   "common": "Boneset",
-   "scientific": "Eupatorium perfoliatum",
-   "flower_kind": "white",
-   "needed_roles": [
-    "pixel",
-    "tall"
-   ],
-   "retained": {
-    "main": 23655843
-   },
-   "notes": [
-    "RETAINED main photo 23655843: provenance not found in any previous manifest; original not fetched, licence UNVERIFIED"
-   ],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": false,
-     "screened": 150,
-     "hard_rejected": 51,
-     "reject_reasons": {
-      "main_clipped": 19,
-      "no_subject": 19,
-      "subject_too_small": 14
-     },
-     "survivors": 99,
-     "shortlisted": 0
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 21,
-     "reject_reasons": {
-      "no_subject": 19,
-      "pixel_head_cropped": 2
-     },
-     "survivors": 98,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 38,
-     "reject_reasons": {
-      "no_subject": 19,
-      "tall_wide_mass": 14,
-      "tall_clipped_top": 11
-     },
-     "survivors": 81,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 119045,
-    "name": "Eupatorium perfoliatum"
-   },
-   "pool": 150,
-   "n_candidates": 21
-  },
-  {
-   "card": 58,
-   "common": "Hollow Joe-Pye Weed",
-   "scientific": "Eutrochium fistulosum",
-   "flower_kind": "pink_purple",
-   "needed_roles": [
-    "pixel"
-   ],
-   "retained": {
-    "main": 303843461,
-    "tall": 595827511
-   },
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": false,
-     "screened": 150,
-     "hard_rejected": 50,
-     "reject_reasons": {
-      "no_subject": 20,
-      "main_clipped": 15,
-      "subject_too_small": 14,
-      "hands": 1
-     },
-     "survivors": 100,
-     "shortlisted": 0
-    },
-    "pixel": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 21,
-     "reject_reasons": {
-      "no_subject": 20,
-      "hands": 1
-     },
-     "survivors": 22,
-     "shortlisted": 12
-    },
-    "tall": {
-     "searched": false,
-     "screened": 150,
-     "hard_rejected": 42,
-     "reject_reasons": {
-      "no_subject": 20,
-      "tall_wide_mass": 14,
-      "tall_clipped_top": 11,
-      "hands": 1
-     },
-     "survivors": 55,
-     "shortlisted": 0
-    }
-   },
-   "taxon": {
-    "id": 132717,
-    "name": "Eutrochium fistulosum"
-   },
-   "pool": 150,
-   "n_candidates": 14
-  },
-  {
-   "card": 59,
-   "common": "New Jersey Tea",
-   "scientific": "Ceanothus americanus",
-   "flower_kind": "white",
-   "needed_roles": [
-    "main",
-    "tall"
-   ],
-   "retained": {
-    "pixel": 282599815
-   },
-   "notes": [],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 71,
-     "reject_reasons": {
-      "no_subject": 36,
-      "subject_too_small": 26,
-      "hands": 6,
-      "main_clipped": 4
-     },
-     "survivors": 79,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": false,
-     "screened": 150,
-     "hard_rejected": 44,
-     "reject_reasons": {
-      "no_subject": 36,
-      "hands": 6,
-      "pixel_head_cropped": 2
-     },
-     "survivors": 61,
-     "shortlisted": 0
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 50,
-     "reject_reasons": {
-      "no_subject": 36,
-      "tall_clipped_top": 8,
-      "hands": 6,
-      "tall_wide_mass": 1
-     },
-     "survivors": 79,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 129315,
-    "name": "Ceanothus americanus"
-   },
-   "pool": 150,
-   "n_candidates": 20
-  },
-  {
-   "card": 60,
-   "common": "Black-Eyed Susan",
-   "scientific": "Rudbeckia hirta",
-   "flower_kind": "yellow",
-   "needed_roles": [
-    "main",
-    "tall"
-   ],
-   "retained": {
-    "pixel": 135566,
-    "tall": 705452061
-   },
-   "notes": [
-    "RETAINED tall photo 705452061: provenance not found in any previous manifest; original not fetched, licence UNVERIFIED"
-   ],
-   "error": null,
-   "roles": {
-    "main": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 66,
-     "reject_reasons": {
-      "no_subject": 31,
-      "subject_too_small": 29,
-      "main_clipped": 4,
-      "hands": 3
-     },
-     "survivors": 84,
-     "shortlisted": 12
-    },
-    "pixel": {
-     "searched": false,
-     "screened": 150,
-     "hard_rejected": 36,
-     "reject_reasons": {
-      "no_subject": 31,
-      "hands": 3,
-      "pixel_head_cropped": 2
-     },
-     "survivors": 109,
-     "shortlisted": 0
-    },
-    "tall": {
-     "searched": true,
-     "screened": 150,
-     "hard_rejected": 39,
-     "reject_reasons": {
-      "no_subject": 31,
-      "tall_clipped_top": 3,
-      "tall_wide_mass": 3,
-      "hands": 3
-     },
-     "survivors": 95,
-     "shortlisted": 12
-    }
-   },
-   "taxon": {
-    "id": 62741,
-    "name": "Rudbeckia hirta"
-   },
-   "pool": 150,
-   "n_candidates": 20
-  },
-  {
-   "card": 61,
-   "common": "Narrowleaf Mountain Mint",
-   "scientific": "Pycnanthemum tenuifolium",
-   "flower_kind": "white",
+   "card": 67,
+   "common": "Curly Dock",
+   "scientific": "Rumex crispus",
+   "flower_kind": "brown",
    "needed_roles": [
     "main",
     "pixel",
@@ -263,49 +18,286 @@
     "main": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 78,
+     "hard_rejected": 62,
      "reject_reasons": {
-      "no_subject": 44,
-      "subject_too_small": 26,
-      "hands": 4,
-      "main_clipped": 4
+      "main_clipped": 32,
+      "no_subject": 22,
+      "subject_too_small": 8,
+      "hands": 1
      },
-     "survivors": 71,
+     "survivors": 88,
      "shortlisted": 12
     },
     "pixel": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 50,
+     "hard_rejected": 38,
      "reject_reasons": {
-      "no_subject": 44,
-      "hands": 4,
-      "pixel_head_cropped": 2
+      "no_subject": 22,
+      "pixel_head_cropped": 16,
+      "hands": 1
      },
-     "survivors": 76,
+     "survivors": 45,
      "shortlisted": 12
     },
     "tall": {
      "searched": true,
      "screened": 150,
-     "hard_rejected": 51,
+     "hard_rejected": 76,
      "reject_reasons": {
-      "no_subject": 44,
-      "hands": 4,
-      "tall_wide_mass": 2,
-      "tall_clipped_top": 1
+      "tall_clipped_top": 52,
+      "no_subject": 22,
+      "tall_wide_mass": 4,
+      "hands": 1
      },
-     "survivors": 73,
+     "survivors": 35,
      "shortlisted": 12
     }
    },
    "taxon": {
-    "id": 126891,
-    "name": "Pycnanthemum tenuifolium"
+    "id": 53197,
+    "name": "Rumex crispus"
    },
    "pool": 150,
    "n_candidates": 26
+  },
+  {
+   "card": 68,
+   "common": "Narrowleaf Plantain",
+   "scientific": "Plantago lanceolata",
+   "flower_kind": "brown",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 90,
+     "reject_reasons": {
+      "no_subject": 65,
+      "subject_too_small": 16,
+      "main_clipped": 6,
+      "hands": 4
+     },
+     "survivors": 60,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 69,
+     "reject_reasons": {
+      "no_subject": 65,
+      "hands": 4
+     },
+     "survivors": 36,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 78,
+     "reject_reasons": {
+      "no_subject": 65,
+      "tall_clipped_top": 6,
+      "hands": 4,
+      "tall_wide_mass": 3
+     },
+     "survivors": 47,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 53178,
+    "name": "Plantago lanceolata"
+   },
+   "pool": 150,
+   "n_candidates": 22
+  },
+  {
+   "card": 69,
+   "common": "Common Mugwort",
+   "scientific": "Artemisia vulgaris",
+   "flower_kind": "brown",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 77,
+     "reject_reasons": {
+      "no_subject": 48,
+      "subject_too_small": 15,
+      "main_clipped": 13,
+      "hands": 4
+     },
+     "survivors": 73,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 52,
+     "reject_reasons": {
+      "no_subject": 48,
+      "hands": 4
+     },
+     "survivors": 26,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 70,
+     "reject_reasons": {
+      "no_subject": 48,
+      "tall_clipped_top": 15,
+      "tall_wide_mass": 5,
+      "hands": 4
+     },
+     "survivors": 47,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 52856,
+    "name": "Artemisia vulgaris"
+   },
+   "pool": 150,
+   "n_candidates": 26
+  },
+  {
+   "card": 70,
+   "common": "Motherwort",
+   "scientific": "Leonurus cardiaca",
+   "flower_kind": "pink_purple",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 59,
+     "reject_reasons": {
+      "no_subject": 32,
+      "main_clipped": 16,
+      "subject_too_small": 9,
+      "hands": 3
+     },
+     "survivors": 91,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 35,
+     "reject_reasons": {
+      "no_subject": 32,
+      "hands": 3
+     },
+     "survivors": 19,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 64,
+     "reject_reasons": {
+      "no_subject": 32,
+      "tall_clipped_top": 27,
+      "tall_wide_mass": 8,
+      "hands": 3
+     },
+     "survivors": 57,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 56171,
+    "name": "Leonurus cardiaca"
+   },
+   "pool": 150,
+   "n_candidates": 25
+  },
+  {
+   "card": 71,
+   "common": "New York Ironweed",
+   "scientific": "Vernonia noveboracensis",
+   "flower_kind": "pink_purple",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {},
+   "notes": [],
+   "error": null,
+   "roles": {
+    "main": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 77,
+     "reject_reasons": {
+      "main_clipped": 37,
+      "no_subject": 22,
+      "subject_too_small": 17,
+      "hands": 1
+     },
+     "survivors": 73,
+     "shortlisted": 12
+    },
+    "pixel": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 38,
+     "reject_reasons": {
+      "no_subject": 22,
+      "pixel_head_cropped": 15,
+      "hands": 1
+     },
+     "survivors": 91,
+     "shortlisted": 12
+    },
+    "tall": {
+     "searched": true,
+     "screened": 150,
+     "hard_rejected": 59,
+     "reject_reasons": {
+      "tall_clipped_top": 23,
+      "tall_wide_mass": 22,
+      "no_subject": 22,
+      "hands": 1
+     },
+     "survivors": 67,
+     "shortlisted": 12
+    }
+   },
+   "taxon": {
+    "id": 142979,
+    "name": "Vernonia noveboracensis"
+   },
+   "pool": 150,
+   "n_candidates": 31
   }
  ],
- "zip_bytes": 175601741
+ "zip_bytes": 215938662
 }
