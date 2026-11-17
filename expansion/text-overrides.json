@@ -402,6 +402,17 @@
    ],
    "by": "owner",
    "why": "Owner: removed Aromatic; added Respiratory aid and Menstrual support."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Menstrual support",
+    "Respiratory aid",
+    "Bitter tonic"
+   ],
+   "by": "owner",
+   "why": "Owner: swapped the positions of Bitter tonic and Menstrual support."
   }
  ],
  "136": [
