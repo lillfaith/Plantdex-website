@@ -1,0 +1,111 @@
+{
+ "status": "DRAFT - hidden; not in CATALOGUE, herbs.json or public/",
+ "herb": {
+  "id": "comptonia-peregrina",
+  "cardNumber": 94,
+  "commonName": "Sweetfern",
+  "scientificName": "Comptonia peregrina",
+  "rarity": "Common",
+  "xp": 100,
+  "season": "summer",
+  "uses": [
+   "edible",
+   "tea"
+  ],
+  "stats": {
+   "water": 2,
+   "sun": 5,
+   "temperature": 2
+  },
+  "back": {
+   "healingTraits": [
+    "Insect repellent",
+    "Digestive tea",
+    "Aromatic"
+   ],
+   "compounds": [
+    "Myricetin",
+    "Quercetin",
+    "Tannins"
+   ],
+   "taste": [
+    "Resinous",
+    "Warm",
+    "Citrusy"
+   ],
+   "aromatic": [
+    "Sweet",
+    "Resinous",
+    "Spicy"
+   ],
+   "preparations": [
+    "Tea",
+    "Seasoning",
+    "Raw Nut",
+    "Repellent"
+   ],
+   "usableParts": [
+    "Leaf",
+    "Nut"
+   ]
+  },
+  "sources": [
+   {
+    "sourceId": "plantdex-expansion-draft",
+    "detail": "Card #94 text from the owner-supplied master sheet; review pending"
+   }
+  ]
+ },
+ "carried_from_the_record": {
+  "regions": [
+   "NF",
+   "NE",
+   "AP",
+   "MW"
+  ],
+  "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+  "researchLinks": {
+   "directReferencesLocated": 0,
+   "links": [
+    {
+     "url": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Comptonia%20peregrina%22%20medicinal%20ethnobotany",
+     "type": "Research search \u2014 NOT A CITATION",
+     "isCitation": false
+    },
+    {
+     "url": "https://pmc.ncbi.nlm.nih.gov/?term=%22Comptonia%20peregrina%22%20medicinal%20ethnobotany",
+     "type": "Research search \u2014 NOT A CITATION",
+     "isCitation": false
+    },
+    {
+     "url": "https://scholar.google.com/scholar?q=%22Comptonia%20peregrina%22%20medicinal%20ethnobotany",
+     "type": "Research search \u2014 NOT A CITATION",
+     "isCitation": false
+    }
+   ],
+   "verificationStatus": "3 research search link(s) \u2014 direct medicinal sources not yet confirmed",
+   "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers."
+  },
+  "cardSafetyWarning": "Identify positively before use.",
+  "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+  "guideCaution": null
+ },
+ "artwork_on_disk": {
+  "main": "NOT YET SUPPLIED",
+  "pixel": "NOT YET SUPPLIED",
+  "tall": "NOT YET SUPPLIED"
+ },
+ "still_needed_before_promotion": [
+  "final botanical / safety review (the record's own status says pending); the safety copy decides whether a SITE_CAUTIONS entry is needed",
+  "collectionId (a card in DIGITAL_ONLY_ENTRIES must declare one) and the decision to promote at all",
+  "web derivatives of the art: 800px front, 400px thumb, 112px chip, back (public/cards/...), built from the approved layers",
+  "the animated sprite (see sprite-brief.json) and its sprites.json entry",
+  "habitat and plant-page copy beyond the card (identification, habitat, facts) with sources; unsourced sections must say so",
+  "scanner effect: promoting adds the species to the matcher; checked that no expansion species shares a genus with an existing spp. card"
+ ],
+ "rendering_rules": [
+  "Healing Traits always renders with its non-claim framing",
+  "SafetyNotice at the right weight",
+  "a warning printed on the card renders above the discovery CTA"
+ ]
+}
