@@ -1,0 +1,43 @@
+name: Owner feature study (owner picks vs v2/v3 top picks vs random pool sample)
+
+# PRIVATE RESEARCH TOOL. Reads committed retro results, the public iNaturalist API and the real photographs. Changes nothing.
+# STARTED BY PUSHING evidence/blind-test/feature-request.json (after the retro results are committed).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/blind-test/feature-request.json]
+permissions:
+  contents: write
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        card: [62, 63, 64, 65, 66]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with: { path: ~/.u2net, key: u2net-birefnet-lite }
+      - run: python3 scripts/production/owner_feature_study.py --picks evidence/blind-test/owner-picks-62-66.json --retro evidence/blind-test/retro --card ${{ matrix.card }} --sample 80 --out out
+      - uses: actions/upload-artifact@v4
+        with: { name: features-${{ matrix.card }}, path: out, retention-days: 14 }
+  report:
+    needs: measure
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { pattern: features-*, path: out, merge-multiple: true }
+      - run: |
+          mkdir -p evidence/blind-test/features && cp out/*.json evidence/blind-test/features/
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/features; git commit -m "Owner feature study: measurements (research only)"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
