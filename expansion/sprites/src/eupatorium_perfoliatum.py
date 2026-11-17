@@ -38,11 +38,28 @@ PALETTE = {
 HEAD_W, HEAD_H = 24, 18
 
 
+def _florets(rows):
+    """Break the smooth cloud into a crowd of tiny florets: scatter deeper-cream flecks over the lit and mid tones, away from the
+    face and the outline, so the head reads as a BUSHY flower cluster and not a plain white disc (a daisy)."""
+    out = []
+    for y, row in enumerate(rows):
+        cells = list(row)
+        for x, ch in enumerate(cells):
+            if ch in "HM":
+                if (x * 3 + y * 5) % 7 == 0:
+                    cells[x] = "D"
+                elif (x * 5 + y * 3) % 11 == 0:
+                    cells[x] = "S"
+        out.append("".join(cells))
+    return out
+
+
 def _head(face_dx=0.0, light=(-0.85, -0.65), rx=11.0, ry=8.2):
-    return flower_head(
-        HEAD_W, HEAD_H, 12.0, 8.6, rx, ry, 17, 0.10, 5.6, 4.6,
-        face_dx=face_dx, face_dy=0.9, light=light, trim_tail=False, chars="HMDSFo",
-    )
+    # a smaller face patch (it was a big pale circle) inside a more irregular cloud: 11 deeper lobes rather than 17 shallow ones
+    return _florets(flower_head(
+        HEAD_W, HEAD_H, 12.0, 8.6, rx, ry, 11, 0.15, 4.5, 3.9,
+        face_dx=face_dx, face_dy=1.0, light=light, trim_tail=False, chars="HMDSFo",
+    ))
 
 
 HEAD = _head()
@@ -214,7 +231,7 @@ SPRITE = {
         {"name": "collar", "origin": COLLAR_AT, "rows": COLLAR},
         *feature_parts(HEAD_AT, HEAD, eyes="round", mouth="small", eye_dy=1, mouth_dy=5,
                        extra_eyes={"happy": ["  EE  EE  ".replace("  EE  EE  ", "oo  oo")][:1] + ["EE  EE"]},
-                       extra_mouths={"grin": ["o    o", " oooo "]}),
+                       extra_mouths={"grin": ["o  o", " oo "]}),
     ],
     #
     #  0    1    2     3     4     5     6     7     8     9    10    11    12   13

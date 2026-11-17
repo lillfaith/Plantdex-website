@@ -58,16 +58,16 @@
   "eupatorium-perfoliatum": {
     "herbId": "eupatorium-perfoliatum",
     "src": "/cards/animated/eupatorium-perfoliatum.png",
-    "version": "e641ed0b",
+    "version": "25e76fd2",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
     "personality": "clasping",
     "still": "/cards/animated/still/eupatorium-perfoliatum.png",
-    "stillVersion": "c2ec58f2",
+    "stillVersion": "342efe1c",
     "content": {
-      "left": 0.1765,
+      "left": 0.1471,
       "top": 0.0357,
       "right": 0.8529,
       "bottom": 0.9643
