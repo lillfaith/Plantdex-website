@@ -1,0 +1,29 @@
+name: Retrieval probe (where do the owner's observations sit in each ordering?)
+
+# PRIVATE RESEARCH TOOL. Reads the public iNaturalist API only. Changes nothing.
+# STARTED BY PUSHING evidence/blind-test/probe-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/blind-test/probe-request.json
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python3 scripts/production/retrieval_probe.py --picks evidence/blind-test/owner-picks-62-66.json --species evidence/blind-test/species-62-66.json --out out --pages 15
+      - name: Commit
+        run: |
+          mkdir -p evidence/blind-test/retrieval-probe && cp out/retrieval-probe.json evidence/blind-test/retrieval-probe/
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/retrieval-probe
+          git commit -m "Retrieval probe: where the owner's observations sit in each ordering (research only)"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
