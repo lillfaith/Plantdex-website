@@ -1,48 +1,12 @@
 {
- "name": "photo-search-v2-cards-67-71",
- "tag": "cards-67-71",
+ "name": "photo-search-v2-cards-72-76",
+ "tag": "cards-72-76",
  "note": "Private dev search: new CC0 candidates only, screened per role. Approves/edits nothing. Hands/gloves are left for ChatGPT to remove (owner decision).",
  "species": [
   {
-   "card": 67,
-   "common": "Curly Dock",
-   "scientific": "Rumex crispus",
-   "flower_kind": "brown",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {}
-  },
-  {
-   "card": 68,
-   "common": "Narrowleaf Plantain",
-   "scientific": "Plantago lanceolata",
-   "flower_kind": "brown",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {}
-  },
-  {
-   "card": 69,
-   "common": "Common Mugwort",
-   "scientific": "Artemisia vulgaris",
-   "flower_kind": "brown",
-   "needed_roles": [
-    "main",
-    "pixel",
-    "tall"
-   ],
-   "retained": {}
-  },
-  {
-   "card": 70,
-   "common": "Motherwort",
-   "scientific": "Leonurus cardiaca",
+   "card": 72,
+   "common": "Anise Hyssop",
+   "scientific": "Agastache foeniculum",
    "flower_kind": "pink_purple",
    "needed_roles": [
     "main",
@@ -52,10 +16,46 @@
    "retained": {}
   },
   {
-   "card": 71,
-   "common": "New York Ironweed",
-   "scientific": "Vernonia noveboracensis",
-   "flower_kind": "pink_purple",
+   "card": 73,
+   "common": "Virginia Spring Beauty",
+   "scientific": "Claytonia virginica",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 74,
+   "common": "Smooth Solomon's Seal",
+   "scientific": "Polygonatum biflorum",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 75,
+   "common": "Partridgeberry",
+   "scientific": "Mitchella repens",
+   "flower_kind": "white",
+   "needed_roles": [
+    "main",
+    "pixel",
+    "tall"
+   ],
+   "retained": {}
+  },
+  {
+   "card": 76,
+   "common": "American Groundnut",
+   "scientific": "Apios americana",
+   "flower_kind": "brown",
    "needed_roles": [
     "main",
     "pixel",
