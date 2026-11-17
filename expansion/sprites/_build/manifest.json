@@ -2,55 +2,55 @@
   "ceanothus-americanus": {
     "herbId": "ceanothus-americanus",
     "src": "/cards/animated/ceanothus-americanus.png",
-    "version": "0d37a60c",
+    "version": "560fe705",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
     "personality": "jaunty",
     "still": "/cards/animated/still/ceanothus-americanus.png",
-    "stillVersion": "2efc6b9a",
+    "stillVersion": "a38a2a51",
     "content": {
-      "left": 0.0294,
+      "left": 0.1176,
       "top": 0.0357,
-      "right": 0.9706,
+      "right": 0.8824,
       "bottom": 0.9286
     },
     "stages": {
       "sprout": {
         "herbId": "ceanothus-americanus-sprout",
         "src": "/cards/animated/ceanothus-americanus-sprout.png",
-        "version": "3691eabb",
+        "version": "3e449d03",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
         "fps": 5,
         "personality": "jaunty",
         "still": "/cards/animated/still/ceanothus-americanus-sprout.png",
-        "stillVersion": "fc0a68df",
+        "stillVersion": "271a3b82",
         "content": {
-          "left": 0.1471,
-          "top": 0.4643,
-          "right": 0.9412,
-          "bottom": 1.0
+          "left": 0.1176,
+          "top": 0.3571,
+          "right": 0.8824,
+          "bottom": 0.8929
         }
       },
       "growing": {
         "herbId": "ceanothus-americanus-growing",
         "src": "/cards/animated/ceanothus-americanus-growing.png",
-        "version": "45fb6a07",
+        "version": "52b61024",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
         "fps": 6,
         "personality": "jaunty",
         "still": "/cards/animated/still/ceanothus-americanus-growing.png",
-        "stillVersion": "1a577368",
+        "stillVersion": "6f9668d0",
         "content": {
-          "left": 0.0588,
-          "top": 0.2857,
-          "right": 0.9706,
-          "bottom": 1.0
+          "left": 0.1176,
+          "top": 0.25,
+          "right": 0.8824,
+          "bottom": 0.9286
         }
       }
     }
@@ -58,55 +58,55 @@
   "eupatorium-perfoliatum": {
     "herbId": "eupatorium-perfoliatum",
     "src": "/cards/animated/eupatorium-perfoliatum.png",
-    "version": "66cdf9f6",
+    "version": "e641ed0b",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
     "personality": "clasping",
     "still": "/cards/animated/still/eupatorium-perfoliatum.png",
-    "stillVersion": "c69018e9",
+    "stillVersion": "c2ec58f2",
     "content": {
-      "left": 0.0294,
+      "left": 0.1765,
       "top": 0.0357,
-      "right": 0.9412,
-      "bottom": 0.9286
+      "right": 0.8529,
+      "bottom": 0.9643
     },
     "stages": {
       "sprout": {
         "herbId": "eupatorium-perfoliatum-sprout",
         "src": "/cards/animated/eupatorium-perfoliatum-sprout.png",
-        "version": "8c28ce02",
+        "version": "41355cc3",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
         "fps": 5,
         "personality": "clasping",
         "still": "/cards/animated/still/eupatorium-perfoliatum-sprout.png",
-        "stillVersion": "90f2e7be",
+        "stillVersion": "a687ea07",
         "content": {
-          "left": 0.1471,
-          "top": 0.4643,
-          "right": 0.9412,
+          "left": 0.2941,
+          "top": 0.4286,
+          "right": 0.7059,
           "bottom": 1.0
         }
       },
       "growing": {
         "herbId": "eupatorium-perfoliatum-growing",
         "src": "/cards/animated/eupatorium-perfoliatum-growing.png",
-        "version": "da0a0e0a",
+        "version": "77329300",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
         "fps": 6,
         "personality": "clasping",
         "still": "/cards/animated/still/eupatorium-perfoliatum-growing.png",
-        "stillVersion": "5f2b67ad",
+        "stillVersion": "b6f12c58",
         "content": {
-          "left": 0.0588,
-          "top": 0.2857,
-          "right": 0.9412,
-          "bottom": 1.0
+          "left": 0.2647,
+          "top": 0.2143,
+          "right": 0.7647,
+          "bottom": 0.9286
         }
       }
     }
@@ -170,55 +170,55 @@
   "pycnanthemum-tenuifolium": {
     "herbId": "pycnanthemum-tenuifolium",
     "src": "/cards/animated/pycnanthemum-tenuifolium.png",
-    "version": "356e6c65",
+    "version": "b0b891ff",
     "frameWidth": 170,
     "frameHeight": 140,
     "frames": 14,
     "fps": 8,
     "personality": "prickly",
     "still": "/cards/animated/still/pycnanthemum-tenuifolium.png",
-    "stillVersion": "d74aa5c7",
+    "stillVersion": "57fc587a",
     "content": {
-      "left": 0.0294,
-      "top": 0.0357,
-      "right": 0.9706,
+      "left": 0.1765,
+      "top": 0.0714,
+      "right": 0.8529,
       "bottom": 0.9286
     },
     "stages": {
       "sprout": {
         "herbId": "pycnanthemum-tenuifolium-sprout",
         "src": "/cards/animated/pycnanthemum-tenuifolium-sprout.png",
-        "version": "4ae7c71f",
+        "version": "1db807bb",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 8,
         "fps": 5,
         "personality": "prickly",
         "still": "/cards/animated/still/pycnanthemum-tenuifolium-sprout.png",
-        "stillVersion": "5cfbef04",
+        "stillVersion": "88106d2b",
         "content": {
-          "left": 0.1471,
-          "top": 0.4643,
-          "right": 0.9412,
-          "bottom": 1.0
+          "left": 0.2647,
+          "top": 0.3929,
+          "right": 0.7647,
+          "bottom": 0.9286
         }
       },
       "growing": {
         "herbId": "pycnanthemum-tenuifolium-growing",
         "src": "/cards/animated/pycnanthemum-tenuifolium-growing.png",
-        "version": "7ec3bf5a",
+        "version": "0e0f0e23",
         "frameWidth": 170,
         "frameHeight": 140,
         "frames": 10,
         "fps": 6,
         "personality": "prickly",
         "still": "/cards/animated/still/pycnanthemum-tenuifolium-growing.png",
-        "stillVersion": "a20069d7",
+        "stillVersion": "de2444b6",
         "content": {
-          "left": 0.0588,
-          "top": 0.2857,
-          "right": 0.9706,
-          "bottom": 1.0
+          "left": 0.2353,
+          "top": 0.1429,
+          "right": 0.7941,
+          "bottom": 0.8571
         }
       }
     }

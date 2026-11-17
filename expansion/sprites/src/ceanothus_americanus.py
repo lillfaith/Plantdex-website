@@ -1,265 +1,151 @@
 """New Jersey Tea (Ceanothus americanus) - creature portrait sprite.
 
-THE DESIGN HOOK: a small shrub that carries its flowers as many round clusters of tiny white blossoms on long thin stalks - pom-poms.
-The crown is drawn as three round clusters and its trademark gesture is THE RIPPLE: the pom-poms bob one after another, left to
-right, like a wave passing along a row, then settle. The face sits on the leafy body below, because a pom-pom this small cannot
-carry a pair of eyes.
+THE DESIGN HOOK: the flowers sit in many ROUND CLUSTERS of tiny white blossoms on long thin stalks - pom-poms. So the creature wears
+three white pom-poms on springy stalks that meet above its head like a tuft of hair, and its trademark gesture is THE RIPPLE: the
+pom-poms bob one after another, left to right, like a wave passing along a row - each one lifts, then the next - and then it does it
+once more. The ripple is three real parts' worth of motion in one crown, not a tilt of a single shape.
 
-The leaves are broad ovals, since the plant's leaves are broad with three prominent veins rather than feathery.
+WHERE THE FACE GOES: a pom-pom this small cannot carry a pair of eyes, so the face sits immediately below, on a round leafy body -
+the rule the deck applies wherever the flower is too small. The leaves are broad ovals with a vein, and they are the creature's feet.
 
-NOT A TEA SPRITE. The card carries a Tea use icon already and a sprite may never suggest an effect or a drink; the gesture is the
-flower clusters moving, nothing more.
+NOT A TEA SPRITE. The card already carries a Tea use icon, and a sprite may never suggest a drink or an effect; the only thing that
+moves is the flower clusters.
+
+NOT YARROW. No hat over a face, and no feathery fronds: a round body, three separate pom-poms on stalks, broad oval leaves.
 
 PERSONALITY: jaunty.
+
+COLOUR: flowers near-white with a cool shadow, leaves ~110 deg mid green.
 
 SAFETY: a portrait, never an identification aid. Deliberately stylised.
 """
 
-from _face import face_box, face_shift
+from _face import FACE_PALETTE, face_box, face_shift, feature_parts
 from _flowerhead import flower_head
 from _stages import YOUNG_EYES, YOUNG_MOUTH, seat_young, stage_fps, young_cheeks
 
-# Authored at 32x28, the house size.
 PALETTE = {
-    "o": (74, 48, 92, 255),      # outline
-    "W": (255, 255, 252, 255),   # floret highlight, and the eye glint
-    "w": (240, 242, 244, 255),   # floret mid
-    "v": (200, 208, 214, 255),   # floret deep
-    "V": (128, 138, 152, 255),   # floret shadow
-    "y": (226, 214, 150, 255),   # floret eye
-    "p": (236, 226, 232, 255),   # accent specks
-    "G": (122, 214, 100, 255),   # foliage light
-    "g": (76, 170, 78, 255),    # foliage mid
-    "d": (48, 124, 62, 255),     # foliage dark
-    "n": (38, 100, 56, 255),      # foliage shadow
-    "F": (233, 244, 226, 255),   # face, a cool pale green
-    "E": (86, 58, 104, 255),     # eye
-    "c": (240, 168, 180, 255),   # cheek
+    **FACE_PALETTE,
+    "W": (255, 255, 255, 255),   # pom highlight (and the eye glint)
+    "M": (240, 243, 247, 255),   # pom mid
+    "D": (204, 213, 224, 255),   # pom deep
+    "S": (140, 152, 172, 255),   # pom shadow
+    "T": (96, 142, 88, 255),     # stalk
+    "G": (126, 214, 104, 255),   # leaf light
+    "g": (80, 172, 82, 255),     # leaf mid
+    "d": (52, 126, 66, 255),     # leaf deep
+    "n": (40, 100, 58, 255),     # leaf shadow
+    "v": (150, 220, 140, 255),   # leaf vein
 }
 
-UMBEL_W, UMBEL_H = 27, 13
+BUD_PALETTE = {
+    "K": (206, 230, 182, 255),   # bud highlight
+    "k": (158, 196, 136, 255),   # bud mid
+    "j": (112, 152, 98, 255),    # bud deep
+    "J": (78, 110, 70, 255),     # bud shadow
+}
+
+# --- the crown: three pom-poms on stalks that meet above the head --------------------
+CW, CH = 24, 13
+JOIN = (11, 12)                   # where the stalks meet, bottom centre of the crown
+POM = [" ooo ", "oWWMo", "oWMDo", "oMDSo", " ooo "]
+BUD_POM = [" ooo ", "oKKko", "oKkjo", "okjJo", " ooo "]
+CENTRES = (4, 11, 18)             # pom centre x
+TOPS = (3, 0, 3)                  # pom top y at rest (the centre one stands tallest)
 
 
-def _umbel(rx=10.4, ry=4.9, light=(-0.85, -0.65), phase=0.0):
-    # lobes high and amp low: many shallow scallops, which is what a cluster of tiny
-    # florets looks like in silhouette. face_rx 0 means no face - the brim wears none.
-    return flower_head(
-        UMBEL_W, UMBEL_H, 13.0, 5.6, rx, ry, 7, 0.22, 0, 0,
-        light=light, trim_tail=False, chars="WwvVFo", phase=phase,
-    )
+def _line(grid, x0, y0, x1, y1, ch):
+    n = max(abs(x1 - x0), abs(y1 - y0))
+    for i in range(n + 1):
+        x = round(x0 + (x1 - x0) * i / max(1, n))
+        y = round(y0 + (y1 - y0) * i / max(1, n))
+        if 0 <= y < CH and 0 <= x < CW and grid[y][x] == " ":
+            grid[y][x] = ch
 
 
-UMBEL = _umbel()
-UMBEL_TILT_L = _umbel(light=(-0.35, -0.65))
-UMBEL_TILT_R = _umbel(light=(-1.25, -0.65))
-# Squashed a touch for the settle at the bottom of the sway.
-UMBEL_SETTLE = _umbel(rx=10.9, ry=4.4)
-# the ripple: the three lobes at three turns, so each pom-pom seems to rise in turn
-UMBEL_P = [_umbel(phase=k * 0.42) for k in (1, 2, 3)]
+def _crown(lift=(0, 0, 0), pom=POM, tops=TOPS):
+    grid = [[" "] * CW for _ in range(CH)]
+    for cx, top, up in zip(CENTRES, tops, lift):
+        t = top - up
+        _line(grid, cx, t + 5, JOIN[0], JOIN[1], "T")
+        for dy, row in enumerate(pom):
+            for dx, ch in enumerate(row):
+                if ch != " ":
+                    grid[t + dy][cx - 2 + dx] = ch
+    return ["".join(r).rstrip() for r in grid]
 
 
-BODY_W, BODY_H = 15, 19
+CROWN = _crown()
+# the ripple: the lift travels left to right
+WAVE = [_crown((2, 0, 0)), _crown((1, 2, 0)), _crown((0, 1, 2)), _crown((0, 0, 1))]
+# buds sit lower on shorter stalks - a plant in bud has not reached its full height yet
+BUD_TOPS = (7, 6, 7)
+BUD_CROWN = _crown(pom=BUD_POM, tops=BUD_TOPS)
+BUD_WAVE = _crown((1, 0, 0), BUD_POM, BUD_TOPS)
+CROWN_AT = (5, 1)
+
+# --- the body: a round leafy ball that carries the face ------------------------------
+BODY_W, BODY_H = 15, 14
+BODY_AT = (9, 13)
 
 
 def _body(face_dx=0.0, light=(-0.85, -0.65)):
     return flower_head(
-        BODY_W, BODY_H, 7.0, 9.0, 6.6, 8.8, 0, 0.0, 5.0, 5.6,
-        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
+        BODY_W, BODY_H, 7.0, 6.6, 6.8, 6.4, 0, 0.0, 5.2, 4.4,
+        face_dx=face_dx, face_dy=0.2, light=light, trim_tail=False, chars="GgdnFo",
     )
 
 
 BODY = _body()
-BODY_LEFT = _body(face_dx=-1.6, light=(-0.35, -0.65))
-BODY_RIGHT = _body(face_dx=1.6, light=(-1.25, -0.65))
+BODY_LEFT = _body(face_dx=-1.5, light=(-0.35, -0.65))
+BODY_RIGHT = _body(face_dx=1.5, light=(-1.25, -0.65))
+L_DX, _ = face_shift(BODY, BODY_LEFT)
+R_DX, _ = face_shift(BODY, BODY_RIGHT)
 
-# A trace of yellow and pink at the centre of the brim - the two accents the card
-# actually carries, and the thing that stops the umbel reading as a plain white disc.
-FLORET_DOTS = [
-    "w   w   w",
+# broad ovals with a vein - the plant's leaves are broad, with three prominent veins, not feathery
+LEAF_L = [
+    "  oooooo  ",
+    " oGGGGGGoo",
+    "oGGvgggggo",
+    "oGvggdggdo",
+    " oggvddddo",
+    "  oooooo  ",
 ]
+LEAF_R = [r[::-1] for r in LEAF_L]
 
-EYES_OPEN = [
-    "WE   WE",
-    "EE   EE",
-]
-
-# A slow blink for a slow plant: half, closed, half.
-EYES_HALF = [
-    "oo   oo",
-    "EE   EE",
-]
-
-EYES_CLOSED = [
-    "       ",
-    "EE   EE",
-]
-
-CHEEKS = [
-    "c     c",
-]
-
-CHEEKS_HIDDEN = [
-    "       ",
-]
-
-# Level and unbothered. The only change across the whole loop is a slight set at the
-# corners once it has finished looking and is satisfied.
-MOUTH_LEVEL = [
-    "ooooo",
-]
-
-MOUTH_SET = [
-    "o   o",
-    " ooo ",
-]
-
-# Finely divided fronds - millefolium. Rendered as a spine with short teeth either side
-# rather than a solid blade, which is what makes them read as feathery at 32px.
-FROND_L = [
-    "   oooooo  ",
-    " ooGGGGGGoo",
-    "oGGgGggggGo",
-    "oGggdgggdgo",
-    " oddgddgddo",
-    "  ooooooooo",
-]
-
-FROND_L_UP = [
-    "  ooooooo  ",
-    " ooGGGGGGGoo",
-    "oGGgGggggGG",
-    "oGggdgggdgo",
-    " oddgddgddo",
-    "  ooooooooo",
-]
-
-FROND_R = [
-    "  oooooo   ",
-    "ooGGGGGGoo ",
-    "oGggggGgGGo",
-    "ogdgggdggGo",
-    "oddgddgddo ",
-    "ooooooooo  ",
-]
-
-FROND_R_UP = [
-    "   ooooooo  ",
-    "ooGGGGGGGoo ",
-    " GGggggGgGGo",
-    " ogdgggdggGo",
-    " oddgddgddo ",
-    " ooooooooo  ",
-]
-
-STEM = [
-    "ogGgo",
-    "ogGgo",
-    "odgdo",
-    " ooo ",
-]
-
-BUD_PALETTE = {
-    "K": (200, 224, 176, 255),
-    "k": (150, 190, 130, 255),
-    "j": (106, 146, 92, 255),
-    "J": (76, 106, 66, 255),
-}
-
-YOUNG_BODY_W, YOUNG_BODY_H = 13, 13
-YOUNG_BODY_AT = (10, 13)
+# --- growth stages -----------------------------------------------------------------
+YOUNG_W, YOUNG_H = 13, 16
+YOUNG_AT = (10, 10)
 
 
-def _young_body(rx=5.8, ry=6.0, face_dx=0.0, light=(-0.85, -0.65)):
+def _young(face_dx=0.0, light=(-0.85, -0.65)):
     return flower_head(
-        YOUNG_BODY_W, YOUNG_BODY_H, 6.0, 6.2, rx, ry, 0, 0.0, 5.2, 4.0,
+        YOUNG_W, YOUNG_H, 6.0, 7.6, 5.8, 7.4, 0, 0.0, 5.2, 4.6,
         face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
     )
 
 
-YOUNG_BODY = _young_body()
-YOUNG_BODY_LEFT = _young_body(face_dx=-1.2, light=(-0.35, -0.65))
-YOUNG_BODY_RIGHT = _young_body(face_dx=1.2, light=(-1.25, -0.65))
-
-# Shorter fronds, cut just as finely. A yarrow seedling that was not feathery would be
-# drawing a different and more dangerous plant.
-SEED_FROND_L = [
-    "  ooo  ooo ",
-    " oGGGoGGGGo",
-    "oGggGoggggo",
-    " ooddooddoo",
+YOUNG = _young()
+YOUNG_LEFT = _young(face_dx=-1.2, light=(-0.35, -0.65))
+YOUNG_RIGHT = _young(face_dx=1.2, light=(-1.25, -0.65))
+SEED_LEAF_L = [
+    "  ooooo ",
+    " oGGGGGo",
+    "oGgvgggo",
+    " oddddo ",
+    "  oooo  ",
 ]
+SEED_LEAF_R = [r[::-1] for r in SEED_LEAF_L]
+GROW_AT = (9, 13)
+SG_L, _ = face_shift(YOUNG, YOUNG_LEFT)
+SG_R, _ = face_shift(YOUNG, YOUNG_RIGHT)
 
-SEED_FROND_R = [
-    " ooo  ooo  ",
-    "oGGGGoGGGo ",
-    "oggggoGggGo",
-    "ooddooddoo ",
-]
-
-SEED_STEM = [
-    "ogGgo",
-    "odgdo",
-    " ooo ",
-]
-
-# --- Growing: the corymb closed in bud --------------------------------------
-# HAND-DRAWN, not generated. `flower_head` builds a radial star, and a corymb is the
-# opposite shape: a FLAT plate of many tight buttons, all at one height. Pushing the
-# generator's lobe count up to fake that split the head into detached fragments — a
-# rounded dome at low lobes reads as a hat rather than a bud, which is exactly what the
-# first attempt looked like.
-#
-# Four buttons on a shared base, flat across the top. The flat top is the identification
-# and it is already present in bud, which is the whole reason this stage is worth drawing.
-BUD_UMBEL = [
-    "  ooo  ooo  ooo  ",
-    " oKKkooKKkooKKko ",
-    " ojjjjjjjjjjjjjo ",
-    " oJJJJJJJJJJJJJo ",
-    "  ooooooooooooo  ",
-]
-
-BUD_UMBEL_SETTLE = [
-    " oKKkooKKkooKKko ",
-    " ojjjjjjjjjjjjjo ",
-    " oJJJJJJJJJJJJJo ",
-    "  ooooooooooooo  ",
-]
-
-BUD_BODY_AT = (9, 13)
-
-
-def _bud_body(face_dx=0.0, light=(-0.85, -0.65)):
-    return flower_head(
-        15, 15, 7.0, 7.2, 6.4, 7.0, 0, 0.0, 5.2, 4.4,
-        face_dx=face_dx, light=light, trim_tail=False, chars="GgdnFo",
-    )
-
-
-BUD_BODY = _bud_body()
-BUD_BODY_LEFT = _bud_body(face_dx=-1.4, light=(-0.35, -0.65))
-BUD_BODY_RIGHT = _bud_body(face_dx=1.4, light=(-1.25, -0.65))
-
-# No dots: a closed bud shows neither the yellow floret eye nor the trace of pink.
-DOTS_NONE = [" "]
-
-S_L_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_LEFT)
-S_R_DX, _ = face_shift(YOUNG_BODY, YOUNG_BODY_RIGHT)
-G_L_DX, _ = face_shift(BUD_BODY, BUD_BODY_LEFT)
-G_R_DX, _ = face_shift(BUD_BODY, BUD_BODY_RIGHT)
-
-# Barely moves. That is the character, and at this size a slow look either way reads as
-# more composed than a bob would.
-S_BOB = [0, 0, 0, -1, -1, -1, 0, 0]
-S_BODY = [None, None, "left", "left", "right", "right", None, None]
-S_DX = [0, 0, S_L_DX, S_L_DX, S_R_DX, S_R_DX, 0, 0]
+S_BOB = [0, 0, 0, -1, -1, 0, 0, 0]
+S_ART = [None, None, "left", "left", "right", "right", None, None]
+S_DX = [0, 0, SG_L, SG_L, SG_R, SG_R, 0, 0]
 S_BLINK = [None, None, None, None, None, None, "blink", None]
-
-G_BOB = [0, 0, -1, -1, -1, -1, 0, 0, 0, 0]
-G_BODY = [None, None, "left", "left", None, "right", "right", None, None, None]
-G_DX = [0, 0, G_L_DX, G_L_DX, 0, G_R_DX, G_R_DX, 0, 0, 0]
+G_BOB = [0, 0, -1, 0, -1, 0, -1, 0, 0, 0]
 G_BLINK = [None] * 8 + ["blink", None]
-
 
 SPRITE = {
     "herbId": "ceanothus-americanus",
@@ -268,176 +154,78 @@ SPRITE = {
         "sprout": {
             "frames": 8,
             "fps": stage_fps(8, "sprout"),
-            # No corymb, so nothing for the floret dots to sit on either.
-            "hide": ["umbel", "dots", "cheeks"],
+            "hide": ["crown"],
             "swap": {
-                "body": YOUNG_BODY,
-                "frondL": SEED_FROND_L,
-                "frondR": SEED_FROND_R,
-                "stem": SEED_STEM,
-                "eyes": YOUNG_EYES["rows"],
-                "mouth": YOUNG_MOUTH["rows"],
+                "body": YOUNG, "leafL": SEED_LEAF_L, "leafR": SEED_LEAF_R,
+                "eyes": YOUNG_EYES["rows"], "mouth": YOUNG_MOUTH["rows"], "cheeks": young_cheeks(face_box(YOUNG)[2]),
             },
             "variants": {
-                "body": {"left": YOUNG_BODY_LEFT, "right": YOUNG_BODY_RIGHT},
-                "eyes": {"blink": YOUNG_EYES["blink"]},
+                "body": {"left": YOUNG_LEFT, "right": YOUNG_RIGHT},
+                "eyes": {"blink": YOUNG_EYES["blink"], "half": YOUNG_EYES["half"]},
             },
             "origins": {
-                "body": YOUNG_BODY_AT,
-                "stem": (14, 25),
-                "frondL": (4, 21),
-                "frondR": (20, 21),
-                **seat_young(YOUNG_BODY_AT, YOUNG_BODY, cheeks=False, mouth_dy=4),
+                "body": YOUNG_AT, "leafL": (3, 20), "leafR": (21, 20),
+                **seat_young(YOUNG_AT, YOUNG, mouth_dy=4),
             },
             "motion": {
-                "body": {"dy": S_BOB, "art": S_BODY},
+                "body": {"dy": S_BOB, "art": S_ART},
                 "eyes": {"dy": S_BOB, "dx": S_DX, "art": S_BLINK},
+                "cheeks": {"dy": S_BOB, "dx": S_DX},
                 "mouth": {"dy": S_BOB, "dx": S_DX},
-                "frondL": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
-                "frondR": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
-                "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0]},
+                "leafL": {"dy": [0, 0, 0, 0, 1, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, 1, 0, 0, 0, 0]},
             },
         },
         "growing": {
             "frames": 10,
             "fps": stage_fps(8, "growing"),
             "palette": BUD_PALETTE,
-            "swap": {
-                "umbel": BUD_UMBEL,
-                "dots": DOTS_NONE,
-                "body": BUD_BODY,
-                "eyes": YOUNG_EYES["rows"],
-                "mouth": YOUNG_MOUTH["rows"],
-                "cheeks": young_cheeks(face_box(BUD_BODY)[2]),
-            },
+            "swap": {"crown": BUD_CROWN, "eyes": YOUNG_EYES["rows"], "mouth": YOUNG_MOUTH["rows"],
+                     "cheeks": young_cheeks(face_box(BODY)[2])},
             "variants": {
-                "umbel": {"settle": BUD_UMBEL_SETTLE},
-                "body": {"left": BUD_BODY_LEFT, "right": BUD_BODY_RIGHT},
-                "eyes": {"blink": YOUNG_EYES["blink"]},
+                "crown": {"wave": BUD_WAVE},
+                "eyes": {"blink": YOUNG_EYES["blink"], "half": YOUNG_EYES["half"]},
             },
-            "origins": {
-                "umbel": (7, 8),
-                "dots": (11, 8),
-                "body": BUD_BODY_AT,
-                "stem": (14, 24),
-                "frondL": (1, 20),
-                "frondR": (21, 20),
-                **seat_young(BUD_BODY_AT, BUD_BODY, mouth_dy=5),
-            },
+            "origins": {"crown": CROWN_AT, **seat_young(BODY_AT, BODY, mouth_dy=5)},
             "motion": {
-                "umbel": {"dy": G_BOB, "art": [None, None, None, None, "settle",
-                                               None, None, None, None, None]},
-                "dots": {"dy": G_BOB},
-                "body": {"dy": G_BOB, "art": G_BODY},
-                "eyes": {"dy": G_BOB, "dx": G_DX, "art": G_BLINK},
-                "cheeks": {"dy": G_BOB, "dx": G_DX},
-                "mouth": {"dy": G_BOB, "dx": G_DX},
-                "frondL": {"dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, 0]},
-                "frondR": {"dy": [0, 0, -1, -1, 0, 0, 0, 0, 0, 0]},
-                "stem": {"dy": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+                "crown": {"art": [None, None, "wave", None, "wave", None, "wave", None, None, None], "dy": G_BOB},
+                "body": {"dy": G_BOB},
+                "eyes": {"dy": G_BOB, "art": G_BLINK},
+                "cheeks": {"dy": G_BOB},
+                "mouth": {"dy": G_BOB},
+                "leafL": {"dy": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]},
+                "leafR": {"dy": [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]},
             },
         },
     },
     "size": (32, 28),
     "frames": 14,
     "fps": 8,
-    # Back to front: stem, fronds, body, the brim over it, then face details. The umbel
-    # is drawn AFTER the body so it genuinely overhangs the face, which is what sells the
-    # figure as standing under it.
     "parts": [
-        {"name": "stem", "origin": (14, 22), "rows": STEM},
-        {
-            "name": "frondL",
-            "origin": (0, 17),
-            "rows": FROND_L,
-            "variants": {"up": FROND_L_UP},
-        },
-        {
-            "name": "frondR",
-            "origin": (21, 17),
-            "rows": FROND_R,
-            "variants": {"up": FROND_R_UP},
-        },
-        {
-            "name": "body",
-            "origin": (9, 9),
-            "rows": BODY,
-            "variants": {"left": BODY_LEFT, "right": BODY_RIGHT},
-        },
-        {
-            "name": "umbel",
-            "origin": (3, 1),
-            "rows": UMBEL,
-            "variants": {"left": UMBEL_TILT_L, "right": UMBEL_TILT_R, "settle": UMBEL_SETTLE, "p1": UMBEL_P[0], "p2": UMBEL_P[1], "p3": UMBEL_P[2]},
-        },
-        {"name": "dots", "origin": (11, 6), "rows": FLORET_DOTS},
-        {
-            "name": "eyes",
-            "origin": (13, 16),
-            "rows": EYES_OPEN,
-            "variants": {"blink": EYES_CLOSED, "half": EYES_HALF},
-        },
-        {
-            "name": "cheeks",
-            "origin": (13, 19),
-            "rows": CHEEKS,
-            "variants": {"hidden": CHEEKS_HIDDEN},
-        },
-        {
-            "name": "mouth",
-            "origin": (14, 20),
-            "rows": MOUTH_LEVEL,
-            "variants": {"set": MOUTH_SET},
-        },
+        {"name": "leafL", "origin": (3, 20), "rows": LEAF_L},
+        {"name": "leafR", "origin": (19, 20), "rows": LEAF_R},
+        {"name": "body", "origin": BODY_AT, "rows": BODY, "variants": {"left": BODY_LEFT, "right": BODY_RIGHT}},
+        {"name": "crown", "origin": CROWN_AT, "rows": CROWN,
+         "variants": {"w1": WAVE[0], "w2": WAVE[1], "w3": WAVE[2], "w4": WAVE[3]}},
+        *feature_parts(BODY_AT, BODY, eyes="round", mouth="small", eye_dy=1, mouth_dy=5,
+                       extra_eyes={"look_r": ["WE  WE", "EE  EE"]}, extra_mouths={"grin": ["o    o", " oooo "]}),
     ],
     #
-    #  frame  0     1      2      3      4      5     6     7      8      9     10    11
-    #       rest sway-R look-R  hold  sway-L look-L hold  settle  --   blink  --    --
+    #  0    1    2    3    4    5    6    7    8    9    10   11   12   13
+    # rest rest  w1   w2   w3   w4  rest rest  w1   w2   w3   w4  rest blink
     #
-    # 8fps and no jump: this one breathes where the dandelion bounces.
-    #
-    #  0    1     2     3     4      5      6      7     8     9    10    11   12   13
-    # rest sway> sway< sink  HIDE   HIDE  peek  peek  rise  smile smile bow  bow  rest
-    #
-    # The hide is frames 4-7 and it is this sprite's trademark: the brim comes right
-    # down over the face and only the lower halves of the eyes come back out. Frame 0 is
-    # the rest pose reduced motion freezes on.
-    #
-    #  0    1     2     3     4     5     6     7     8     9    10    11   12   13
-    # rest TIP   scan> scan> HOLD  sweep sweep HOLD  level blink set   set  rest rest
-    #
-    # The scan is frames 1-7 and it is this sprite's trademark: the brim tips up like
-    # someone shading their eyes, then a long unhurried sweep right across to left with
-    # a real hold at each end. The holds are what make it read as watching rather than
-    # as swaying. Frame 0 is the rest pose reduced motion freezes on.
+    # THE RIPPLE, twice: one pom-pom lifts, then the next, left to right, like a wave along a row. The face stays on
+    # the body and grins while it happens - the body hops a pixel on the beat the wave passes the middle.
     "motion": {
-        "umbel": {
-            "art": [None, None, 'p1', 'p2', 'p3', 'p2', 'p1', None, 'p1', 'p2', 'p3', 'p2', 'p1', None],
-            "dy": [0, 0, 0, -1, -1, -1, 0, 0, 0, -1, -1, -1, 0, 0],
-        },
-        "dots": {
-            "dy": [0, 0, 0, -1, -1, -1, 0, 0, 0, -1, -1, -1, 0, 0],
-        },
-        "body": {
-            "dy": [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0],
-        },
-        "eyes": {
-            "art": [None, None, None, None, None, None, 'half', None, None, None, None, None, None, 'blink'],
-            "dy": [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0],
-        },
-        "cheeks": {
-            "dy": [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0],
-        },
-        "mouth": {
-            "art": [None, None, None, 'set', 'set', 'set', None, None, None, 'set', 'set', 'set', None, None],
-            "dy": [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0],
-        },
-        "frondL": {
-            "dy": [0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
-        },
-        "frondR": {
-            "dy": [0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0],
-        },
+        "crown": {"art": [None, None, "w1", "w2", "w3", "w4", None, None, "w1", "w2", "w3", "w4", None, None]},
+        "body": {"dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0]},
+        "eyes": {"art": [None, None, None, "look_r", "look_r", "look_r", None, None, None, "look_r", "look_r", None, None, "blink"],
+                 "dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0]},
+        "cheeks": {"dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0]},
+        "mouth": {"art": [None, None, None, "grin", "grin", "grin", None, None, None, "grin", "grin", "grin", None, None],
+                  "dy": [0, 0, 0, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0]},
+        "leafL": {"dy": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]},
+        "leafR": {"dy": [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]},
     },
     "palette": PALETTE,
 }
