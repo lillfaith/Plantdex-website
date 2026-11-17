@@ -113,6 +113,8 @@ def sprite_brief(c: dict, art: pathlib.Path, taken: set[str]) -> dict:
 
 
 def profile_draft(c: dict, d: pathlib.Path) -> dict:
+    from render_expansion_batch import apply_overrides
+    c = apply_overrides(c)          # the owner's recorded text edits, so the draft matches the printed card
     rev = c.get("review", {})
     return {
         "status": "DRAFT - hidden; not in CATALOGUE, herbs.json or public/", "herb": {

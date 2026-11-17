@@ -80,7 +80,24 @@ def clear_template_tile(front: Image.Image) -> Image.Image:
     return out
 
 
+def apply_overrides(c: dict) -> dict:
+    """Apply the owner's recorded text edits (expansion/text-overrides.json) to a COPY of the card; refuse if the 'from' text is gone."""
+    import copy
+    path = HERE.parent / "expansion" / "text-overrides.json"
+    c = copy.deepcopy(c)
+    if not path.exists():
+        return c
+    for e in json.loads(path.read_text()).get(str(c["cardNumber"]), []):
+        sect, key = e["field"].split(".")
+        items = c[sect][key]
+        if e["from"] not in items:
+            raise SystemExit(f"card {c['cardNumber']}: override expects {e['from']!r} in {e['field']} but found {items}")
+        items[items.index(e["from"])] = e["to"]
+    return c
+
+
 def card_record(c: dict) -> dict:
+    c = apply_overrides(c)
     f = c["front"]
     return {"card_number": f"#{c['cardNumber']}", "common_name": c["commonName"],
             "front": {"scientific_name": c["scientificName"], "use_icons": f["uses"], "season": f["season"],

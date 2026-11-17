@@ -1,0 +1,12 @@
+{
+ "_what": "OWNER TEXT EDITS applied on top of the imported record when cards are rendered. The record (src/data/expansion-cards.json) stays exactly as imported from the master sheet; each entry says what changed, who asked and why, so the master sheet can be corrected to match.",
+ "64": [
+  {
+   "field": "back.taste",
+   "from": "Mildly bitter",
+   "to": "Bitter",
+   "by": "owner",
+   "why": "The text is too long for the panel; the descriptor 'Mildly' is dropped."
+  }
+ ]
+}

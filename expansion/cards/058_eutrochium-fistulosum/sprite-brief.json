@@ -1,5 +1,5 @@
 {
- "status": "SPRITE APPROVED by the owner (design, gesture, all three stages). Source: expansion/sprites/src/. NOT built into public/ or sprites.json: that happens only when the card is promoted.",
+ "status": "BRIEF ONLY - no sprite has been authored",
  "herbId": "eutrochium-fistulosum",
  "cardNumber": 58,
  "commonName": "Hollow Joe-Pye Weed",
@@ -67,5 +67,5 @@
   "no invented botany: only what the card and the plant support",
   "part placement is measured from the assembled art, never inferred from parameters"
  ],
- "needs_approval": false
+ "needs_approval": true
 }
