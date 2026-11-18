@@ -24,10 +24,15 @@ jobs:
         with: { python-version: '3.12' }
       - run: pip install --quiet $PIPDEPS
       - uses: actions/cache@v4
-        with: { path: ~/.u2net, key: u2net-birefnet-lite }
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
       - run: python3 scripts/production/owner_feature_study.py --picks evidence/blind-test/owner-picks-62-66.json --retro evidence/blind-test/retro --card ${{ matrix.card }} --sample 80 --out out
       - uses: actions/upload-artifact@v4
-        with: { name: features-${{ matrix.card }}, path: out, retention-days: 14 }
+        with:
+          name: features-${{ matrix.card }}
+          path: out
+          retention-days: 14
   report:
     needs: measure
     if: always()
@@ -35,7 +40,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { pattern: features-*, path: out, merge-multiple: true }
+        with:
+          pattern: features-*
+          path: out
+          merge-multiple: true
       - run: |
           mkdir -p evidence/blind-test/features && cp out/*.json evidence/blind-test/features/
           git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
