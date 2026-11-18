@@ -1,0 +1,34 @@
+{
+ "species": [
+  {
+   "card": 72,
+   "common": "Anise Hyssop",
+   "scientific": "Agastache foeniculum",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 73,
+   "common": "Virginia Spring Beauty",
+   "scientific": "Claytonia virginica",
+   "flower_kind": "white"
+  },
+  {
+   "card": 74,
+   "common": "Smooth Solomon's Seal",
+   "scientific": "Polygonatum biflorum",
+   "flower_kind": "white"
+  },
+  {
+   "card": 75,
+   "common": "Partridgeberry",
+   "scientific": "Mitchella repens",
+   "flower_kind": "white"
+  },
+  {
+   "card": 76,
+   "common": "American Groundnut",
+   "scientific": "Apios americana",
+   "flower_kind": "brown"
+  }
+ ]
+}

@@ -1,0 +1,133 @@
+name: Photo batch #72-76 (pipeline v4.1, sharded, shared pool) - candidates for review
+
+# PRIVATE TOOL. Finds and ranks CC0 candidates for #72-76 (v4.1: floors are flags) and builds labelled contact sheets. Selects/approves/edits nothing.
+# STARTED BY PUSHING evidence/photo-batches/72-76/request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/photo-batches/72-76/request.json
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  pool:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: [b-0, b-1, b-2, b-3, b-4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - run: |
+          IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-72-76.json --index $IDX --policy v4.1 --pool-file pools/${{ matrix.job }}.json --pool-only --out out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pool-${{ matrix.job }}
+          path: pools
+          retention-days: 7
+
+  shard:
+    needs: pool
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [b-0, b-1, b-2, b-3, b-4]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - uses: actions/download-artifact@v4
+        with:
+          name: pool-${{ matrix.job }}
+          path: pools
+      - run: |
+          IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-72-76.json --index $IDX --policy v4.1 --pool-file pools/${{ matrix.job }}.json --shard ${{ matrix.shard }}/8 --out out/b
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.job }}-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+
+  merge:
+    needs: shard
+    if: always()
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: [b-0, b-1, b-2, b-3, b-4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: shard-${{ matrix.job }}-*
+          path: shards
+          merge-multiple: true
+      - run: |
+          IDX=$(echo "${{ matrix.job }}" | cut -d- -f2); CARD=$((72 + IDX))
+          python3 scripts/production/merge_shards.py --dir shards/b/${CARD}_v4.1 --out merged/b/${CARD}_v4.1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: merged-${{ matrix.job }}
+          path: merged
+          retention-days: 14
+
+  report:
+    needs: merge
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: merged-*
+          path: merged
+          merge-multiple: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+      - name: Contact sheets (top 12 per role)
+        run: |
+          for CARD in 72 73 74 75 76; do
+            python3 scripts/production/make_sheets.py --result merged/b/${CARD}_v4.1/result.json --card $CARD --n 12 --cols 4 --out sheets || true
+          done
+      - name: Commit
+        run: |
+          D=evidence/photo-batches/72-76; mkdir -p $D/sheets
+          for CARD in 72 73 74 75 76; do mkdir -p $D/$CARD; cp merged/b/${CARD}_v4.1/result.json $D/$CARD/ 2>/dev/null || true; done
+          cp sheets/*.jpg $D/sheets/ 2>/dev/null || true
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/photo-batches
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Photo batch #72-76 (v4.1): ranked candidates and contact sheets"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
