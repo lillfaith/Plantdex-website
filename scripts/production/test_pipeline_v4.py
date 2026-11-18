@@ -63,5 +63,22 @@ check(SE.V4_SOURCES[0][1] == {"order_by": "votes"} and SE.V4_SOURCES[0][2] >= 2,
 import inspect
 check("per_obs" not in inspect.getsource(SE.build_pool_v4), "v4 has no per-observation photograph cap")
 check("min_edge" in inspect.signature(SE.photos_of).parameters and SE.V4_MIN_EDGE < SE.MIN_ORIG_EDGE, "v4 pool floor is below the v2 floor and set through min_edge")
+# v4.2: subject crops reuse the full-frame mask (one segmentation instead of two)
+import numpy as np
+calls = []
+def fake_mask(rgb):
+    calls.append(rgb.shape)
+    m = np.zeros(rgb.shape[:2], bool); m[60:300, 200:260] = True; m[40:80, 180:280] = True
+    return m
+img = np.full((400, 500, 3), (40, 90, 40), np.uint8)
+img[40:80, 180:280] = (250, 250, 250)
+v42 = S.evaluate_views(img, 2048, "white", fake_mask, "v4.2")
+v41 = S.evaluate_views(img, 2048, "white", fake_mask, "v4.1")
+labels = [v["label"] for v in v42]
+check("subject-crop" in labels, "the synthetic scene produces a subject crop")
+check(len([c for c in calls]) == 1 + len(v41) , "v4.2 segments the frame once and v4.1 segments it once per view (counted across both calls)")
+check(S.v4_family("v4.2"), "v4.2 shares every v4 change")
+ec = lambda pol: S.evaluate_views(img, 2048, "white", fake_mask, pol)
+check([v["box"] for v in ec("v4.2")] == [v["box"] for v in ec("v4.1")], "v4.2 offers the same crops as v4.1")
 print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
 sys.exit(1 if FAIL else 0)

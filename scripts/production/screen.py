@@ -347,14 +347,14 @@ def judge_tall(m, policy: str = "v2") -> dict:
 # of them, so under v3 they travel as flags (and still lower the completeness part of the score). v2 behaviour is unchanged.
 def v4_family(policy: str) -> bool:
     """v4 and v4.1 share every v4 change; v4.1 differs ONLY in that the per-role floors are flags, not rejections."""
-    return policy in ("v4", "v4.1")
+    return policy in ("v4", "v4.1", "v4.2")
 
 
 SOFT_V3 = ("hands", "main_clipped", "subject_too_small", "pixel_head_cropped", "tall_clipped_top", "tall_wide_mass")
 
 
 def soften(hard: list[str], flags: list[str], policy: str) -> tuple[list[str], list[str]]:
-    if policy not in ("v3", "v4", "v4.1"):
+    if policy not in ("v3", "v4", "v4.1", "v4.2"):
         return hard, flags
     keep, moved = [], []
     for h in hard:
@@ -434,17 +434,31 @@ def evaluate_views(rgb: np.ndarray, orig_long: int, flower_kind: str, mask_fn=de
     """The whole frame plus its candidate crops, each fully evaluated. Crops are scored with their TRUE pixel size
     (so quality still sees a small crop) but are not hard-rejected for it: the crop will be placed in an art window, not published as-is."""
     views = []
-    full = evaluate(rgb, orig_long, flower_kind, mask_fn, policy=policy)
+    captured: dict = {}
+
+    def capturing(r_):
+        m_ = mask_fn(r_)
+        captured["mask"] = m_
+        return m_
+
+    full = evaluate(rgb, orig_long, flower_kind, capturing if policy == "v4.2" else mask_fn, policy=policy)
     if v4_family(policy) and "error" not in full:
         role_floors(full, rgb.shape, orig_long, policy)
     views.append({"label": "full-frame", "box": None, "px": orig_long, "ev": full})
-    if "error" in full or policy not in ("v3", "v4", "v4.1"):
+    if "error" in full or policy not in ("v3", "v4", "v4.1", "v4.2"):
         return views
     H, W = rgb.shape[:2]
     for label, (x, y, bw, bh) in crop_boxes(rgb, full, flower_kind):
         px = int(orig_long * max(bw, bh) / max(H, W))
         try:
-            ev = evaluate(np.ascontiguousarray(rgb[y:y + bh, x:x + bw]), max(px, MIN_ORIGINAL_EDGE) if policy == "v3" else px, flower_kind, mask_fn, policy=policy)
+            sub_rgb = np.ascontiguousarray(rgb[y:y + bh, x:x + bw])
+            fn = mask_fn
+            if policy == "v4.2" and label == "subject-crop" and "mask" in captured:
+                # v4.2: a SUBJECT crop is a window onto the mask already computed for the whole frame; segmenting it again cost ~8 s per crop (about half of all screening time)
+                # and measured 0.025 s to reuse. Flower-cluster crops (no subject was found in the frame) are still segmented afresh.
+                sub_mask = np.ascontiguousarray(captured["mask"][y:y + bh, x:x + bw])
+                fn = lambda _r, m_=sub_mask: m_  # noqa: E731
+            ev = evaluate(sub_rgb, max(px, MIN_ORIGINAL_EDGE) if policy == "v3" else px, flower_kind, fn, policy=policy)
             if v4_family(policy) and "error" not in ev:
                 role_floors(ev, (bh, bw), px, policy)
         except Exception as e:  # noqa: BLE001
@@ -468,7 +482,7 @@ def role_floors(ev: dict, view_shape, view_long_px: int, policy: str = "v4") -> 
     if not lc or "roles" not in ev:
         return
     scale = view_long_px / max(view_shape[:2])
-    sink = "flags" if policy == "v4.1" else "hard"
+    sink = "flags" if policy in ("v4.1", "v4.2") else "hard"
     box = lc.get("box")
     if box:
         long_side = max(box[2], box[3]) * scale

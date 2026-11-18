@@ -119,13 +119,13 @@ def score_role(role: str, ev: dict, obs: dict, orig_long: int, kind: str, policy
     parts = {"recognizability": rec, "completeness": r["completeness"], "isolability": isolability(ev),
              "role": r["suitability"], "perspective": perspective, "aesthetic": aesthetic(ev),
              "quality": quality(orig_long, ev["measure"]["lap_var"])}
-    w = (TALL_WEIGHTS_V4 if policy in ("v4", "v4.1") else TALL_WEIGHTS) if role == "tall" else WEIGHTS
-    if role == "tall" and policy not in ("v4", "v4.1"):
+    w = (TALL_WEIGHTS_V4 if policy in ("v4", "v4.1", "v4.2") else TALL_WEIGHTS) if role == "tall" else WEIGHTS
+    if role == "tall" and policy not in ("v4", "v4.1", "v4.2"):
         parts["plain_background"] = 1.0 - max(ev["measure"]["bg_busy"], 0.7 * ev["measure"]["bg_spread"])
     score = 100 * sum(w[k] * max(0.0, min(1.0, v)) for k, v in parts.items())
     if role == "tall" and ev["measure"]["stalk_like_components"] >= 3:
         score *= 0.6          # crowded patch of plants: penalised hard, not merely flagged
-    if role == "tall" and ev["measure"]["bg_busy"] >= 0.55 and policy not in ("v4", "v4.1"):
+    if role == "tall" and ev["measure"]["bg_busy"] >= 0.55 and policy not in ("v4", "v4.1", "v4.2"):
         score *= 0.75         # visually busy natural scene (removed in v4: see TALL_WEIGHTS_V4)
     return {"role": role, "rejected": False, "hard": [], "flags": flags + idflags, "score": round(score, 1),
             "parts": {k: round(v, 3) for k, v in parts.items()}, "reason": reason(role, ev, obs)}

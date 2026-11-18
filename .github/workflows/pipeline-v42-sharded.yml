@@ -1,0 +1,160 @@
+name: Pipeline v4.2 sharded (subject crops reuse the full-frame mask) - parity test against v4.1
+
+# PRIVATE RESEARCH TOOL. Runs policy v4.2 over a shared pool snapshot per species, in shards, then merges. Selects/approves/edits nothing.
+# STARTED BY PUSHING evidence/blind-test/v42-request.json ({"jobs": ["retro-0", ..., "blind-3"], "shards": 6}).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/blind-test/v42-request.json
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      jobs: ${{ steps.p.outputs.jobs }}
+      shards: ${{ steps.p.outputs.shards }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: |
+          python3 - <<'P' >> "$GITHUB_OUTPUT"
+          import json
+          r = json.load(open("evidence/blind-test/v42-request.json"))
+          n = int(r.get("shards", 6))
+          print("jobs=" + json.dumps(r["jobs"]))
+          print("shards=" + json.dumps([{"job": j, "shard": s} for j in r["jobs"] for s in range(n)]))
+          P
+
+  pool:
+    needs: plan
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: ${{ fromJSON(needs.plan.outputs.jobs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - run: |
+          BATCH=$(echo "${{ matrix.job }}" | cut -d- -f1); IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          if [ "$BATCH" = "retro" ]; then REQ=evidence/blind-test/species-62-66.json; else REQ=evidence/blind-test/species-77-81.json; fi
+          python3 scripts/production/pipeline_run.py --request $REQ --index $IDX --policy v4.2 --pool-file pools/${{ matrix.job }}.json --pool-only --out out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pool-${{ matrix.job }}
+          path: pools
+          retention-days: 7
+
+  shard:
+    needs: [plan, pool]
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - uses: actions/download-artifact@v4
+        with:
+          name: pool-${{ matrix.job }}
+          path: pools
+      - run: |
+          BATCH=$(echo "${{ matrix.job }}" | cut -d- -f1); IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          N=$(python3 -c "import json;print(json.load(open('evidence/blind-test/v42-request.json')).get('shards',6))")
+          if [ "$BATCH" = "retro" ]; then REQ=evidence/blind-test/species-62-66.json; PICKS="--owner-picks evidence/blind-test/owner-picks-62-66.json"; else REQ=evidence/blind-test/species-77-81.json; PICKS=""; fi
+          python3 scripts/production/pipeline_run.py --request $REQ --index $IDX --policy v4.2 --pool-file pools/${{ matrix.job }}.json --shard ${{ matrix.shard }}/$N $PICKS --out out/$BATCH
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.job }}-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+
+  merge:
+    needs: [plan, shard]
+    if: always()
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job: ${{ fromJSON(needs.plan.outputs.jobs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: shard-${{ matrix.job }}-*
+          path: shards
+          merge-multiple: true
+      - run: |
+          BATCH=$(echo "${{ matrix.job }}" | cut -d- -f1); IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          if [ "$BATCH" = "retro" ]; then CARD=$((62 + IDX)); else CARD=$((77 + IDX)); fi
+          python3 scripts/production/merge_shards.py --dir shards/$BATCH/${CARD}_v4.2 --out merged/$BATCH/${CARD}_v4.2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: merged-${{ matrix.job }}
+          path: merged
+          retention-days: 14
+
+  report:
+    needs: merge
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: merged-*
+          path: merged
+          merge-multiple: true
+      - name: Commit (blind predictions are added to the v4.2 seal once per species, before the owner chooses)
+        run: |
+          mkdir -p evidence/blind-test/retro evidence/blind-test/77-81
+          cp -r merged/retro/. evidence/blind-test/retro/ 2>/dev/null || true
+          cp -r merged/blind/. evidence/blind-test/77-81/ 2>/dev/null || true
+          python3 - <<'P'
+          import glob, json, hashlib, datetime, os
+          path = "evidence/blind-test/77-81/PREDICTIONS_SEALED_V42.json"
+          sealed = json.load(open(path)) if os.path.exists(path) else {"batch": "77-81", "policy": "v4.2", "species": {}, "sealed": {}}
+          now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+          for f in sorted(glob.glob("evidence/blind-test/77-81/*_v4.2/result.json")):
+              d = json.load(open(f))
+              if str(d["card"]) not in sealed["species"]:
+                  sealed["species"][str(d["card"])] = {"scientific": d["scientific"], "pool": d["pool"], "top12": d["top12"], "joint_top3": d["joint_top3"]}
+                  sealed["sealed"][str(d["card"])] = now
+          if sealed["species"]:
+              open(path, "w").write(json.dumps(sealed, indent=1, sort_keys=True))
+              print("v4.2 sealed species:", sorted(sealed["species"]))
+          P
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Pipeline v4.2 (sharded): results"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
