@@ -31,7 +31,7 @@ def main() -> int:
     arg = lambda k: a[a.index(k) + 1]  # noqa: E731
     d = pathlib.Path(arg("--dir"))
     res = {}
-    for pol in ("v2", "v3", "v4"):
+    for pol in ("v2", "v3", "v4", "v4.1"):
         res[pol] = []
         for f in sorted(d.glob(f"*_{pol}/result.json")):
             r = json.load(open(f))
@@ -42,7 +42,7 @@ def main() -> int:
           "Training batch (#62-66): v3's rules were chosen after seeing these picks, so this measures whether the changes repair the failures they were",
           "designed against. It does NOT show that v3 generalises; only the sealed blind batch can.", ""]
     n = len(res["v3"])
-    pols = [x for x in ("v2", "v3", "v4") if res[x]]
+    pols = [x for x in ("v2", "v3", "v4", "v4.1") if res[x]]
     md += ["## Per-photograph ranks (rank among survivors for the role it was picked for; `-` = not in pool / rejected)", "",
            "| card | role | photo | v2 outcome | v2 rank | v3 outcome | v3 rank | v4 outcome | v4 rank | v4 view | v4 pool |", "|---|---|---|---|---|---|---|---|---|---|---|"]
     by = {pol: {(p["card"], p["picture"]): p for p in res[pol]} for pol in res}
