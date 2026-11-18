@@ -121,7 +121,7 @@ Findings, in order of how much they explain:
 4. **v3 as built may still be too shallow.** It drops the flowering-first sort but round-robins seven queries into a 320-photograph pool,
    so each query contributes only its first ~45-90 photographs and the by-votes list is cut at roughly position 50-90, short of the 8 of 19 observations
    that sit between 100 and 277. The retro run will show how many of the 19 v3 actually retrieves; if it is short of 19, the fix is
-   **a pool that takes the top ~300 observations by votes outright**, with a cheap pre-screen (resolution, orientation, colour) deciding
+   **a pool that takes the top ~300 observations by votes outright** (the v3 retro later showed the cause is more specific: see `photo-pipeline-v3-retro.md` section 3), with a cheap pre-screen (resolution, orientation, colour) deciding
    what reaches the expensive segmentation step. Not built yet: it is the next change to test, not a finding.
 
 ## 1d. What the history does and does not show about how the owner picks (CORRECTED)
