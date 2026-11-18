@@ -79,14 +79,16 @@ def main() -> int:
     card, n = int(arg("--card")), int(arg("--n", 8))
     out = pathlib.Path(arg("--out")); out.mkdir(parents=True, exist_ok=True)
     work = pathlib.Path("_work_sheets") / str(card)
-    for role in ("main", "pixel", "tall"):
+    roles = tuple((arg("--roles") or "main,pixel,tall").split(","))
+    start = int(arg("--start", 1))
+    for role in roles:
         tiles = []
-        for i, c in enumerate(res["top12"][role][:n], 1):
+        for i, c in enumerate(res["top12"][role][start - 1:n], start):
             path = fetch(c["photo_id"], c["observation_id"], work)
             tiles.append(tile(path, f"#{i} {role}  photo {c['photo_id']}\nscore {c['score']}  view {c['view']}", card, pixel=(role == "pixel")))
-        sheet(tiles, out / f"{card}_{role}_{res['policy']}_top.jpg")
+        sheet(tiles, out / f"{card}_{role}_{res['policy']}_top{start}-{n}.jpg" if start > 1 else out / f"{card}_{role}_{res['policy']}_top.jpg")
     if arg("--owner-picks"):
-        for role in ("main", "pixel", "tall"):
+        for role in roles:
             tiles = []
             for pk in [p for p in json.load(open(arg("--owner-picks")))["picks"] if p["card"] == card and p["role"] == role]:
                 path = fetch(pk["photo_id"], pk["observation_id"], work)

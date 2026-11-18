@@ -1,0 +1,27 @@
+name: Review sheets (labelled candidate contact sheets for a person to look at)
+# PRIVATE REVIEW TOOL. Public iNaturalist API only. Downloads at `large`, edits nothing. STARTED BY PUSHING evidence/blind-test/review/request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/blind-test/review/request.json]
+permissions:
+  contents: write
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+jobs:
+  sheets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - run: |
+          python3 scripts/production/make_sheets.py --result evidence/blind-test/review/62_tall_top40.json --card 62 --roles tall --n 20 --out out
+          python3 scripts/production/make_sheets.py --result evidence/blind-test/review/62_tall_top40.json --card 62 --roles tall --start 21 --n 40 --out out
+      - run: |
+          mkdir -p evidence/blind-test/review-sheets && cp out/*.jpg evidence/blind-test/review-sheets/
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/review-sheets; git commit -m "Review sheets: #62 tall candidates (review only)"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
