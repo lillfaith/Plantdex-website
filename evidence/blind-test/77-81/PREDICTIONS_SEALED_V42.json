@@ -1,0 +1,1268 @@
+{
+ "batch": "77-81",
+ "policy": "v4.2",
+ "sealed": {
+  "77": "2026-11-18T22:31:43+00:00",
+  "78": "2026-11-18T22:31:43+00:00",
+  "79": "2026-11-18T22:31:43+00:00",
+  "80": "2026-11-18T22:31:43+00:00",
+  "81": "2026-11-18T22:31:43+00:00"
+ },
+ "species": {
+  "77": {
+   "joint_top3": [
+    {
+     "main": 538670206,
+     "pixel": 184124085,
+     "rank": 1,
+     "tall": 269282797,
+     "total": 268.4
+    },
+    {
+     "main": 65459524,
+     "pixel": 174318047,
+     "rank": 2,
+     "tall": 441273359,
+     "total": 260.1
+    },
+    {
+     "main": 282623321,
+     "pixel": 389454405,
+     "rank": 3,
+     "tall": 510617621,
+     "total": 257.5
+    }
+   ],
+   "pool": 719,
+   "scientific": "Dioscorea villosa",
+   "top12": {
+    "main": [
+     {
+      "observation_id": 299014678,
+      "photo_id": 538670206,
+      "score": 86.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 41272825,
+      "photo_id": 65459524,
+      "score": 84.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 163406924,
+      "photo_id": 282623321,
+      "score": 83.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 103903251,
+      "photo_id": 174011482,
+      "score": 83.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 41201238,
+      "photo_id": 65338236,
+      "score": 83.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 230187648,
+      "photo_id": 408688851,
+      "score": 83.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 220550864,
+      "photo_id": 390484742,
+      "score": 82.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 219996497,
+      "photo_id": 389454405,
+      "score": 82.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 50598486,
+      "photo_id": 80350186,
+      "score": 82.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 123830601,
+      "photo_id": 210140254,
+      "score": 82.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 334289463,
+      "photo_id": 607036247,
+      "score": 82.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 284139779,
+      "photo_id": 510617595,
+      "score": 82.3,
+      "view": "full-frame"
+     }
+    ],
+    "pixel": [
+     {
+      "observation_id": 109264832,
+      "photo_id": 184124085,
+      "score": 89.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 104062633,
+      "photo_id": 174318047,
+      "score": 86.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 41272825,
+      "photo_id": 65459524,
+      "score": 85.2,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 155762493,
+      "photo_id": 269282797,
+      "score": 85.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 219996497,
+      "photo_id": 389454405,
+      "score": 85.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 41201238,
+      "photo_id": 65338236,
+      "score": 85.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163406924,
+      "photo_id": 282623321,
+      "score": 84.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 264977506,
+      "photo_id": 475874467,
+      "score": 83.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 241171310,
+      "photo_id": 429780580,
+      "score": 82.9,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 376188432,
+      "photo_id": 687812641,
+      "score": 82.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 280101917,
+      "photo_id": 503038904,
+      "score": 82.1,
+      "view": "flower-cluster-2"
+     },
+     {
+      "observation_id": 266045723,
+      "photo_id": 477970939,
+      "score": 81.5,
+      "view": "flower-cluster-2"
+     }
+    ],
+    "tall": [
+     {
+      "observation_id": 155762493,
+      "photo_id": 269282797,
+      "score": 92.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 109264832,
+      "photo_id": 184124085,
+      "score": 89.9,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 41272825,
+      "photo_id": 65459524,
+      "score": 89.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 247108720,
+      "photo_id": 441273359,
+      "score": 89.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 284139779,
+      "photo_id": 510617621,
+      "score": 88.5,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 376188432,
+      "photo_id": 687812641,
+      "score": 87.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 163406924,
+      "photo_id": 282623321,
+      "score": 87.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 178393814,
+      "photo_id": 310429748,
+      "score": 87.1,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 123830601,
+      "photo_id": 210140254,
+      "score": 86.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 393554048,
+      "photo_id": 721369351,
+      "score": 86.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 220550864,
+      "photo_id": 390484742,
+      "score": 86.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 194596430,
+      "photo_id": 342101439,
+      "score": 86.7,
+      "view": "full-frame"
+     }
+    ]
+   }
+  },
+  "78": {
+   "joint_top3": [
+    {
+     "main": 283631233,
+     "pixel": 702333458,
+     "rank": 1,
+     "tall": 275038864,
+     "total": 275.0
+    },
+    {
+     "main": 30812088,
+     "pixel": 40070489,
+     "rank": 2,
+     "tall": 283631197,
+     "total": 270.7
+    },
+    {
+     "main": 283643735,
+     "pixel": 613607632,
+     "rank": 3,
+     "tall": 252664546,
+     "total": 268.2
+    }
+   ],
+   "pool": 946,
+   "scientific": "Lepidium virginicum",
+   "top12": {
+    "main": [
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631233,
+      "score": 92.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631197,
+      "score": 91.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 383720249,
+      "photo_id": 702333458,
+      "score": 90.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 19948104,
+      "photo_id": 30812088,
+      "score": 90.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 163958924,
+      "photo_id": 283643735,
+      "score": 90.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 146897201,
+      "photo_id": 252664546,
+      "score": 89.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 25174002,
+      "photo_id": 38966279,
+      "score": 89.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 165103969,
+      "photo_id": 285760457,
+      "score": 89.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 19948104,
+      "photo_id": 30812084,
+      "score": 88.9,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163228735,
+      "photo_id": 282299492,
+      "score": 88.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 252080792,
+      "photo_id": 451180000,
+      "score": 88.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 252080792,
+      "photo_id": 451179941,
+      "score": 88.3,
+      "view": "subject-crop"
+     }
+    ],
+    "pixel": [
+     {
+      "observation_id": 383720249,
+      "photo_id": 702333458,
+      "score": 87.2,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 25842752,
+      "photo_id": 40070489,
+      "score": 85.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631197,
+      "score": 85.7,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 337535656,
+      "photo_id": 613607632,
+      "score": 85.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 25842752,
+      "photo_id": 40070404,
+      "score": 84.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631211,
+      "score": 84.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631233,
+      "score": 84.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 360903366,
+      "photo_id": 658598404,
+      "score": 84.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 342779775,
+      "photo_id": 624271905,
+      "score": 84.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 84582451,
+      "photo_id": 139030805,
+      "score": 84.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 151386098,
+      "photo_id": 261198785,
+      "score": 84.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 47349857,
+      "photo_id": 75089518,
+      "score": 84.2,
+      "view": "flower-cluster-1"
+     }
+    ],
+    "tall": [
+     {
+      "observation_id": 159196721,
+      "photo_id": 275038864,
+      "score": 95.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631233,
+      "score": 94.9,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163952170,
+      "photo_id": 283631197,
+      "score": 94.5,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 383720249,
+      "photo_id": 702333458,
+      "score": 93.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 146897201,
+      "photo_id": 252664546,
+      "score": 93.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 252080792,
+      "photo_id": 451179941,
+      "score": 93.1,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 165103969,
+      "photo_id": 285760457,
+      "score": 92.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 163228735,
+      "photo_id": 282299492,
+      "score": 92.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 165103969,
+      "photo_id": 285760448,
+      "score": 92.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 205570344,
+      "photo_id": 363496591,
+      "score": 91.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 48835700,
+      "photo_id": 77504804,
+      "score": 91.5,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 252080792,
+      "photo_id": 451180000,
+      "score": 91.4,
+      "view": "subject-crop"
+     }
+    ]
+   }
+  },
+  "79": {
+   "joint_top3": [
+    {
+     "main": 271126441,
+     "pixel": 643971427,
+     "rank": 1,
+     "tall": 665326718,
+     "total": 275.3
+    },
+    {
+     "main": 515309219,
+     "pixel": 276899148,
+     "rank": 2,
+     "tall": 285067575,
+     "total": 270.7
+    },
+    {
+     "main": 109703772,
+     "pixel": 271127131,
+     "rank": 3,
+     "tall": 384980900,
+     "total": 269.5
+    }
+   ],
+   "pool": 405,
+   "scientific": "Potentilla simplex",
+   "top12": {
+    "main": [
+     {
+      "observation_id": 364453455,
+      "photo_id": 665326718,
+      "score": 92.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 352894852,
+      "photo_id": 643971427,
+      "score": 90.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 156790921,
+      "photo_id": 271126441,
+      "score": 90.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 164735701,
+      "photo_id": 285067575,
+      "score": 89.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 286631943,
+      "photo_id": 515309219,
+      "score": 89.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 67837668,
+      "photo_id": 109703772,
+      "score": 89.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 348145576,
+      "photo_id": 634890739,
+      "score": 88.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 161904578,
+      "photo_id": 279884821,
+      "score": 88.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 160297942,
+      "photo_id": 276992881,
+      "score": 88.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 3311993,
+      "photo_id": 3827911,
+      "score": 88.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 163577785,
+      "photo_id": 282931654,
+      "score": 88.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 204088909,
+      "photo_id": 360685907,
+      "score": 88.2,
+      "view": "subject-crop"
+     }
+    ],
+    "pixel": [
+     {
+      "observation_id": 364453455,
+      "photo_id": 665326718,
+      "score": 91.2,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 352894852,
+      "photo_id": 643971427,
+      "score": 89.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 160242486,
+      "photo_id": 276899148,
+      "score": 89.1,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 156790952,
+      "photo_id": 271127131,
+      "score": 88.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 162018316,
+      "photo_id": 280099910,
+      "score": 88.7,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 388883788,
+      "photo_id": 712111611,
+      "score": 88.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 160242486,
+      "photo_id": 276899111,
+      "score": 88.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 67837668,
+      "photo_id": 109703772,
+      "score": 88.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 13376993,
+      "photo_id": 19614179,
+      "score": 88.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 3311993,
+      "photo_id": 3827911,
+      "score": 88.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 286631943,
+      "photo_id": 515309219,
+      "score": 88.2,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 23015152,
+      "photo_id": 35673744,
+      "score": 88.1,
+      "view": "subject-crop"
+     }
+    ],
+    "tall": [
+     {
+      "observation_id": 364453455,
+      "photo_id": 665326718,
+      "score": 95.1,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 156790921,
+      "photo_id": 271126441,
+      "score": 92.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 164735701,
+      "photo_id": 285067575,
+      "score": 92.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 217606804,
+      "photo_id": 384980900,
+      "score": 91.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 164575441,
+      "photo_id": 284770628,
+      "score": 91.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 288170204,
+      "photo_id": 517997047,
+      "score": 91.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 163577785,
+      "photo_id": 282931654,
+      "score": 91.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 349846102,
+      "photo_id": 638240425,
+      "score": 91.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 162018316,
+      "photo_id": 280099989,
+      "score": 90.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 348145576,
+      "photo_id": 634890739,
+      "score": 90.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 363786053,
+      "photo_id": 664079441,
+      "score": 90.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 80537536,
+      "photo_id": 132012125,
+      "score": 90.0,
+      "view": "subject-crop"
+     }
+    ]
+   }
+  },
+  "80": {
+   "joint_top3": [
+    {
+     "main": 592225992,
+     "pixel": 48246659,
+     "rank": 1,
+     "tall": 351088312,
+     "total": 273.0
+    },
+    {
+     "main": 342583197,
+     "pixel": 702496291,
+     "rank": 2,
+     "tall": 48246664,
+     "total": 271.2
+    },
+    {
+     "main": 588764576,
+     "pixel": 702496300,
+     "rank": 3,
+     "tall": 280383785,
+     "total": 268.8
+    }
+   ],
+   "pool": 1200,
+   "scientific": "Trifolium repens",
+   "top12": {
+    "main": [
+     {
+      "observation_id": 326943013,
+      "photo_id": 592225992,
+      "score": 91.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 194831579,
+      "photo_id": 342583197,
+      "score": 90.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 199117289,
+      "photo_id": 351088312,
+      "score": 89.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 325213624,
+      "photo_id": 588764576,
+      "score": 89.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 162170358,
+      "photo_id": 280383785,
+      "score": 88.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246664,
+      "score": 88.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246659,
+      "score": 88.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 338964047,
+      "photo_id": 616477584,
+      "score": 88.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 325213624,
+      "photo_id": 588764578,
+      "score": 87.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246654,
+      "score": 87.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 58499643,
+      "photo_id": 93403180,
+      "score": 87.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 383802410,
+      "photo_id": 702496300,
+      "score": 87.6,
+      "view": "full-frame"
+     }
+    ],
+    "pixel": [
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246659,
+      "score": 89.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 383802410,
+      "photo_id": 702496291,
+      "score": 89.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 383802410,
+      "photo_id": 702496300,
+      "score": 88.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 187777384,
+      "photo_id": 328467414,
+      "score": 88.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 338964047,
+      "photo_id": 616477542,
+      "score": 87.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 162170358,
+      "photo_id": 280383761,
+      "score": 87.1,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 368203317,
+      "photo_id": 672485887,
+      "score": 87.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 173422798,
+      "photo_id": 301168721,
+      "score": 86.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 326943013,
+      "photo_id": 592225992,
+      "score": 86.7,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246654,
+      "score": 86.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 169575371,
+      "photo_id": 294011155,
+      "score": 86.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 58499643,
+      "photo_id": 93403159,
+      "score": 86.4,
+      "view": "subject-crop"
+     }
+    ],
+    "tall": [
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246659,
+      "score": 92.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 199117289,
+      "photo_id": 351088312,
+      "score": 92.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 326943013,
+      "photo_id": 592225992,
+      "score": 92.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 194831579,
+      "photo_id": 342583197,
+      "score": 91.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 30863367,
+      "photo_id": 48246664,
+      "score": 91.7,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 383802410,
+      "photo_id": 702496300,
+      "score": 91.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 162170358,
+      "photo_id": 280383785,
+      "score": 91.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 58499643,
+      "photo_id": 93403180,
+      "score": 91.2,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 383802410,
+      "photo_id": 702496291,
+      "score": 91.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 325213624,
+      "photo_id": 588764578,
+      "score": 91.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 413213066,
+      "photo_id": 760475481,
+      "score": 90.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 383802410,
+      "photo_id": 702496301,
+      "score": 90.9,
+      "view": "subject-crop"
+     }
+    ]
+   }
+  },
+  "81": {
+   "joint_top3": [
+    {
+     "main": 102328266,
+     "pixel": 383656619,
+     "rank": 1,
+     "tall": 412441287,
+     "total": 274.9
+    },
+    {
+     "main": 167785104,
+     "pixel": 694957873,
+     "rank": 2,
+     "tall": 411097767,
+     "total": 273.5
+    },
+    {
+     "main": 539153440,
+     "pixel": 45872774,
+     "rank": 3,
+     "tall": 437784938,
+     "total": 272.0
+    }
+   ],
+   "pool": 1200,
+   "scientific": "Daucus carota",
+   "top12": {
+    "main": [
+     {
+      "observation_id": 232167731,
+      "photo_id": 412441287,
+      "score": 91.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 63728741,
+      "photo_id": 102328266,
+      "score": 91.3,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 100522067,
+      "photo_id": 167785104,
+      "score": 91.0,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 299268655,
+      "photo_id": 539153440,
+      "score": 90.9,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 231468271,
+      "photo_id": 411097767,
+      "score": 90.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 131083524,
+      "photo_id": 223013613,
+      "score": 89.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 131083524,
+      "photo_id": 223013918,
+      "score": 89.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 32967551,
+      "photo_id": 51740744,
+      "score": 89.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 170728986,
+      "photo_id": 296157844,
+      "score": 88.8,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 330385941,
+      "photo_id": 599090491,
+      "score": 88.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 245342240,
+      "photo_id": 437784938,
+      "score": 88.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 331276011,
+      "photo_id": 600928028,
+      "score": 88.2,
+      "view": "full-frame"
+     }
+    ],
+    "pixel": [
+     {
+      "observation_id": 216907939,
+      "photo_id": 383656619,
+      "score": 89.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 379897246,
+      "photo_id": 694957873,
+      "score": 89.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 29394238,
+      "photo_id": 45872774,
+      "score": 87.9,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 299268655,
+      "photo_id": 539154133,
+      "score": 87.8,
+      "view": "flower-cluster-2"
+     },
+     {
+      "observation_id": 170728986,
+      "photo_id": 296157844,
+      "score": 87.4,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 232167731,
+      "photo_id": 412441287,
+      "score": 87.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 393305615,
+      "photo_id": 720888015,
+      "score": 87.0,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 129324918,
+      "photo_id": 219759344,
+      "score": 86.7,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 216907939,
+      "photo_id": 383656535,
+      "score": 86.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 245342240,
+      "photo_id": 437784938,
+      "score": 86.1,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 312557407,
+      "photo_id": 564335835,
+      "score": 86.1,
+      "view": "flower-cluster-2"
+     },
+     {
+      "observation_id": 302460260,
+      "photo_id": 545093429,
+      "score": 86.0,
+      "view": "flower-cluster-1"
+     }
+    ],
+    "tall": [
+     {
+      "observation_id": 232167731,
+      "photo_id": 412441287,
+      "score": 94.1,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 231468271,
+      "photo_id": 411097767,
+      "score": 93.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 245342240,
+      "photo_id": 437784938,
+      "score": 93.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 100522067,
+      "photo_id": 167785104,
+      "score": 92.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 414258229,
+      "photo_id": 762582566,
+      "score": 92.4,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 245342240,
+      "photo_id": 437784954,
+      "score": 92.2,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 63728741,
+      "photo_id": 102328266,
+      "score": 91.8,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 240588927,
+      "photo_id": 428654512,
+      "score": 91.6,
+      "view": "full-frame"
+     },
+     {
+      "observation_id": 232167731,
+      "photo_id": 412441023,
+      "score": 91.6,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 331276011,
+      "photo_id": 600928028,
+      "score": 91.5,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 299268655,
+      "photo_id": 539153440,
+      "score": 91.3,
+      "view": "subject-crop"
+     },
+     {
+      "observation_id": 63728741,
+      "photo_id": 102328289,
+      "score": 91.0,
+      "view": "full-frame"
+     }
+    ]
+   }
+  }
+ }
+}
