@@ -1,0 +1,30 @@
+name: Match owner picks (identify which iNaturalist photographs the owner's picked images are)
+
+# PRIVATE RESEARCH TOOL. Downloads public iNaturalist photographs only (no API key); selects/approves/edits nothing.
+# STARTED BY PUSHING evidence/blind-test/owner-picks-77-81/request.json ({"cards": [77, ...]}).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/blind-test/owner-picks-77-81/request.json]
+permissions:
+  contents: write
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy
+      - run: |
+          D=evidence/blind-test/owner-picks-77-81; mkdir -p $D/matches
+          for CARD in $(python3 -c "import json;print(*json.load(open('$D/request.json'))['cards'])"); do
+            R=evidence/blind-test/77-81/${CARD}_v4.2/result.json
+            [ -f "$R" ] || { echo "no sealed pool for $CARD"; continue; }
+            python3 scripts/production/match_picks.py --card $CARD --result $R --images $D/images --map $D/map_$CARD.json --out $D/matches/$CARD.json
+          done
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add $D/matches; git diff --staged --quiet && exit 0
+          git commit -m "Owner picks #77-81: photograph identification"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
