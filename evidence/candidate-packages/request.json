@@ -1,6 +1,6 @@
 {
- "batch": "62-tall-additional-candidates",
- "note": "Three additional #62 California Buckwheat tall-preview candidates chosen by visual review of the pipeline's v4 ranking (not by score alone). Not photographs the owner or ChatGPT chose earlier.",
+ "batch": "62-tall-additional-candidates-v2",
+ "note": "Three additional #62 California Buckwheat tall-preview candidates chosen under the owner's revised tall criteria (one extractable flowering branch with connecting stem and characteristic foliage; medium-distance or full-plant; close-ups with little stem deprioritised; judged on a proposed crop). Chosen by visual review of the v4 ranking, ranks 4-130, not by score. Supersedes the earlier 3-photo package.",
  "card": 62,
  "role": "tall",
  "scientific": "Eriogonum fasciculatum",
@@ -8,17 +8,17 @@
   {
    "photo_id": 11639963,
    "observation_id": 8685358,
-   "why": "Upright stems carrying several connected white flower clusters on bare ground: simple background, clear stems. v4 tall rank 4 of 607."
+   "why": "Medium-distance upright stems carrying several connected white flower clusters, lower foliage visible, bare-ground background. v4 tall rank 4 of 607."
   },
   {
-   "photo_id": 145259110,
-   "observation_id": 88066521,
-   "why": "One pink flower head on an upright leafy stem with leaves attached, strongly blurred dark background (easy isolation). v4 tall rank 8."
+   "photo_id": 75952156,
+   "observation_id": 47881057,
+   "why": "Full plant on plain sand: a clump of slender grass-like foliage with white heads on thin stems, very easy to isolate; a single flowering stem can be cropped from it. v4 tall rank 58."
   },
   {
-   "photo_id": 631584756,
-   "observation_id": 346479988,
-   "why": "A branch carrying four connected white heads on a visible stem against a blurred background. v4 tall rank 27."
+   "photo_id": 18380933,
+   "observation_id": 12695941,
+   "why": "Medium-distance branched upright plant: thin connected stems carry several pink clusters in a natural vertical silhouette, soft rocky background. v4 tall rank 83."
   }
  ]
 }
