@@ -1,0 +1,30 @@
+{
+  "owner_approval": [],
+  "reviews": [],
+  "versions": [
+    {
+      "created_utc": "2026-11-18T16:45:56+00:00",
+      "extra": {
+        "license": "CC0 per supplied manifest; independently unverified",
+        "license_independently_verified": false,
+        "photo_id": "11639963"
+      },
+      "id": "S00_source/v0001",
+      "method": "original-photo",
+      "notes": "photo ID: 11639963; license metadata: CC0 per supplied manifest; independently unverified",
+      "parent": null,
+      "path": "history/S00_source/v0001/asset.jpeg",
+      "sha256": "1e405ed44b6364ff17fa372c7478187dd9fed725c4b300cf1df9f56b6b202ba0",
+      "stage": "S00_source",
+      "technical": {
+        "format": "JPEG",
+        "mode": "RGB",
+        "pass": true,
+        "size": [
+          1536,
+          2048
+        ]
+      }
+    }
+  ]
+}

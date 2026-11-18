@@ -1,0 +1,5 @@
+PASS: 2 immutable branch versions; unreviewed stages blocked; flat-card import blocked; originals unchanged; exact gradient and assembled card verified; agent cannot owner-approve
+PASS: immutable originals and 1 versions verified, gradient, card reproduction and history hashes checked
+Card preview history (never overwrite images):
+  S00_source/v0001              parent=-                             tech=PASS  visual=n/a
+Owner-approved: []

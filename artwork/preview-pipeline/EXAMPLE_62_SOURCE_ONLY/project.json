@@ -1,0 +1,38 @@
+{
+  "card": 62,
+  "created_utc": "2026-11-18T16:45:56+00:00",
+  "format": "preview-only-v1",
+  "locked": {
+    "back_template": {
+      "path": "locked/back_template.png",
+      "sha256": "9ca567c11be1a64faa4be55976c9358743b09c4c77dfe0aed5cc8875bd5c60fa"
+    },
+    "gradient": {
+      "path": "locked/gradient.png",
+      "sha256": "74f560d577088702fc7438b846d9fc056dd88eaa8b7fcd0980d06bd6a67ede42"
+    }
+  },
+  "oval_bbox": [
+    130,
+    193,
+    260,
+    443
+  ],
+  "policy": {
+    "edit_inputs_only": [
+      "S01_crop",
+      "S02_raw_cutout",
+      "S03_refined_cutout"
+    ],
+    "never_generate_card": true,
+    "never_generate_gradient": true,
+    "required_visual_checks": {
+      "S01_crop": "composition-ok",
+      "S03_refined_cutout": "background-clear,anatomy-intact,stems-connected,silhouette-readable",
+      "S04_upright": "orientation-ok",
+      "S05_positioned": "fits-oval",
+      "S06_gradient": "gradient-appearance-ok"
+    }
+  },
+  "species": "California Buckwheat (Eriogonum fasciculatum)"
+}

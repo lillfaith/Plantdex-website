@@ -1,0 +1,55 @@
+{
+  "version": "preview-only-v1",
+  "purpose": "Photo-first tall botanical preview workflow for PlantDex cards",
+  "never_send_to_image_generation": [
+    "original card front/back templates",
+    "complete card composites or mockups",
+    "exact gradient file",
+    "native pixel icons",
+    "positioned or masked preview overlays"
+  ],
+  "allowed_generative_inputs": [
+    "S01_crop",
+    "S02_raw_cutout",
+    "S03_refined_cutout"
+  ],
+  "allowed_ai_operations": [
+    "localized cleanup of real-photo botanical assets",
+    "removing unrelated background foliage",
+    "minor nondiagnostic repairs with written provenance"
+  ],
+  "prohibited_ai_operations": [
+    "generating a complete card",
+    "redrawing the card base",
+    "generating a new gradient",
+    "generating plant silhouettes from text descriptions",
+    "inventing species-defining botanical structures"
+  ],
+  "immutable_sources": ["original photo", "back template", "source gradient"],
+  "native_card_dimensions": [390, 630],
+  "stage_ids": ["S00_source", "S01_crop", "S02_raw_cutout", "S03_refined_cutout", "S04_upright", "S05_positioned", "S06_gradient", "S07_card"],
+  "stage_requirements": {
+    "S00_source": "Preserve exact original file and metadata hash",
+    "S01_crop": "Select connected flower + stem + foliage; visual crop review before isolation",
+    "S02_raw_cutout": "First alpha extraction from photo; technical RGBA transparency checks; defects may be repaired in S03",
+    "S03_refined_cutout": "REQUIRED visual: no background remnants, flower structures intact, stem connections correct, silhouette readable against dark/light backgrounds",
+    "S04_upright": "Deterministic rotation max 15 degrees, preserve natural anatomy; visual orientation review",
+    "S05_positioned": "Deterministic scale/centering entirely inside untouched original oval; visual fit review",
+    "S06_gradient": "Exact supplied gradient RGB via positioned alpha, zero synthetic colors; visual gradient review",
+    "S07_card": "Alpha composite on original back, zero changes outside plant alpha; owner approval required for production"
+  },
+  "automatic_qa": [
+    "RGBA and real transparency for cutouts",
+    "full-card-size image rejected at early cutout stages",
+    "max 15 degree rotation",
+    "in-oval position without clipped >16-alpha pixels",
+    "exact gradient source mapping verified per active pixel",
+    "unchanged original template bytes verified by SHA-256",
+    "final mockup reproducible from source base + preview overlay",
+    "saved image hashes and parent ancestry verified",
+    "immutable stage assets and no in-place overwrites"
+  ],
+  "requires_visual_review_for": ["S01_crop", "S03_refined_cutout", "S04_upright", "S05_positioned", "S06_gradient"],
+  "requires_owner_approval_for": ["S07_card"],
+  "note": "This validator cannot establish botanical correctness or detect all halo artifacts automatically; reviewers must genuinely inspect the source and cutout."
+}

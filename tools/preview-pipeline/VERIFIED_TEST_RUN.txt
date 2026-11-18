@@ -1,0 +1,5 @@
+Test suite:
+PASS: 2 immutable branch versions; unreviewed stages blocked; flat-card import blocked; originals unchanged; exact gradient and assembled card verified; agent cannot owner-approve
+
+Example verification:
+PASS: immutable originals and 1 versions verified, gradient, card reproduction and history hashes checked
