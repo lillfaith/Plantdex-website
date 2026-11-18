@@ -234,7 +234,7 @@ def pixel_test(rgb: np.ndarray, m: dict) -> dict | None:
 
 def _common(m, orig_long, hands, policy: str = "v2") -> tuple[list[str], list[str]]:
     hard, flags = [], []
-    if policy != "v4" and orig_long < MIN_ORIGINAL_EDGE:   # v4 replaces the frame-level floor with per-role floors on the SUBJECT (role_floors)
+    if not v4_family(policy) and orig_long < MIN_ORIGINAL_EDGE:   # v4 replaces the frame-level floor with per-role floors on the SUBJECT (role_floors)
         hard.append(f"low_resolution: original long edge {orig_long}px is under {MIN_ORIGINAL_EDGE}px")
     lc = m.get("largest")
     if lc is None or m["coverage"] < 0.01:
@@ -301,7 +301,7 @@ def judge_pixel(m, px, policy: str = "v2") -> dict:
         flags.append("head_small_in_frame: little detail to work from")
     comp = (0.0 if fb["cropped"] else 1.0) * 0.5 + min(1.0, fb["solidity"] / 0.8) * 0.5
     one = (1.0 if fb["n_significant"] <= 1 else 0.5 if fb["n_significant"] == 2 else 0.2)
-    if policy == "v4":
+    if v4_family(policy):
         # The 24px legibility proxy did not predict the owner's picks (it rated the pipeline's top picks 0.74-0.84 and the owner's 0.47), so it carries NO weight
         # until validated against real reductions. The remaining three terms keep their relative proportions (0.35 : 0.2 : 0.1, rescaled to sum to 1).
         suit = (min(1.0, fb["ring_delta_e"] / 35) * 0.35 + one * 0.2 + min(1.0, fb["area"] / 0.06) * 0.1) / 0.65
@@ -332,7 +332,7 @@ def judge_tall(m, policy: str = "v2") -> dict:
     one = 1.0 if m["stalk_like_components"] <= 1 else 0.45 if m["stalk_like_components"] == 2 else 0.1   # ONE stalk, strongly
     plain = 1.0 - max(m["bg_busy"], 0.7 * m["bg_spread"])
     both = min(1.0, m["green_share"] / 0.15) * 0.5 + min(1.0, m["flower_share"] / 0.03) * 0.5    # leaves AND flowers visible
-    if policy == "v4":
+    if v4_family(policy):
         # The plain-background term selected for something the owner's tall picks do not have (top picks 0.05-0.09 background busyness; owner and sample 0.45-0.52).
         # Removed; the other four terms keep their proportions, rescaled to sum to 1.
         suit = (min(1.0, lc["aspect_h_over_w"] / 1.4) * 0.2 + min(1.0, lc["h_frac"] / 0.7) * 0.15 + one * 0.3 + both * 0.15) / 0.8
@@ -345,11 +345,16 @@ def judge_tall(m, policy: str = "v2") -> dict:
 # POLICY v3 (owner-picks study, #62-66). Stage A keeps only what the bytes and facts decide. A hand, a stalk cut at the top,
 # a clipped or small subject and a cropped head are things an EDIT or a CROP can fix, and the owner accepted pictures with every one
 # of them, so under v3 they travel as flags (and still lower the completeness part of the score). v2 behaviour is unchanged.
+def v4_family(policy: str) -> bool:
+    """v4 and v4.1 share every v4 change; v4.1 differs ONLY in that the per-role floors are flags, not rejections."""
+    return policy in ("v4", "v4.1")
+
+
 SOFT_V3 = ("hands", "main_clipped", "subject_too_small", "pixel_head_cropped", "tall_clipped_top", "tall_wide_mass")
 
 
 def soften(hard: list[str], flags: list[str], policy: str) -> tuple[list[str], list[str]]:
-    if policy not in ("v3", "v4"):
+    if policy not in ("v3", "v4", "v4.1"):
         return hard, flags
     keep, moved = [], []
     for h in hard:
@@ -430,18 +435,18 @@ def evaluate_views(rgb: np.ndarray, orig_long: int, flower_kind: str, mask_fn=de
     (so quality still sees a small crop) but are not hard-rejected for it: the crop will be placed in an art window, not published as-is."""
     views = []
     full = evaluate(rgb, orig_long, flower_kind, mask_fn, policy=policy)
-    if policy == "v4" and "error" not in full:
-        role_floors(full, rgb.shape, orig_long)
+    if v4_family(policy) and "error" not in full:
+        role_floors(full, rgb.shape, orig_long, policy)
     views.append({"label": "full-frame", "box": None, "px": orig_long, "ev": full})
-    if "error" in full or policy not in ("v3", "v4"):
+    if "error" in full or policy not in ("v3", "v4", "v4.1"):
         return views
     H, W = rgb.shape[:2]
     for label, (x, y, bw, bh) in crop_boxes(rgb, full, flower_kind):
         px = int(orig_long * max(bw, bh) / max(H, W))
         try:
             ev = evaluate(np.ascontiguousarray(rgb[y:y + bh, x:x + bw]), max(px, MIN_ORIGINAL_EDGE) if policy == "v3" else px, flower_kind, mask_fn, policy=policy)
-            if policy == "v4" and "error" not in ev:
-                role_floors(ev, (bh, bw), px)
+            if v4_family(policy) and "error" not in ev:
+                role_floors(ev, (bh, bw), px, policy)
         except Exception as e:  # noqa: BLE001
             ev = {"error": f"{type(e).__name__}: {str(e)[:80]}"}
         views.append({"label": label, "box": [x, y, bw, bh], "px": px, "ev": ev})
@@ -455,23 +460,25 @@ TALL_SUBJECT_FLOOR_PX = 455    # the oval holds a ~222-reference-px subject = 45
 PIXEL_FEATURE_FLOOR_PX = 48    # 2x the 24 px target, the least that can be reduced rather than enlarged
 
 
-def role_floors(ev: dict, view_shape, view_long_px: int) -> None:
-    """v4: append a hard failure to a role when its SUBJECT is below the pixels the finished asset needs. Mutates ev in place."""
+def role_floors(ev: dict, view_shape, view_long_px: int, policy: str = "v4") -> None:
+    """v4: append a hard failure to a role when its SUBJECT is below the pixels the finished asset needs; v4.1: append a FLAG instead (the owner accepted pictures below
+    two of the floors, and whether enlarging a subject is acceptable is the owner's call). Mutates ev in place."""
     m = ev.get("measure") or {}
     lc = m.get("largest")
     if not lc or "roles" not in ev:
         return
     scale = view_long_px / max(view_shape[:2])
+    sink = "flags" if policy == "v4.1" else "hard"
     box = lc.get("box")
     if box:
         long_side = max(box[2], box[3]) * scale
         height = box[3] * scale
         if long_side < MAIN_SUBJECT_FLOOR_PX:
-            ev["roles"]["main"]["hard"].append(f"role_floor_main: subject is {long_side:.0f}px at original resolution, under {MAIN_SUBJECT_FLOOR_PX}px")
+            ev["roles"]["main"][sink].append(f"role_floor_main: subject is {long_side:.0f}px at original resolution, under {MAIN_SUBJECT_FLOOR_PX}px")
         if height < TALL_SUBJECT_FLOOR_PX:
-            ev["roles"]["tall"]["hard"].append(f"role_floor_tall: subject is {height:.0f}px tall at original resolution, under {TALL_SUBJECT_FLOOR_PX}px")
+            ev["roles"]["tall"][sink].append(f"role_floor_tall: subject is {height:.0f}px tall at original resolution, under {TALL_SUBJECT_FLOOR_PX}px")
     fb = m.get("flower_blob")
     if fb and fb.get("box"):
         side = max(fb["box"][2], fb["box"][3]) * scale
         if side < PIXEL_FEATURE_FLOOR_PX:
-            ev["roles"]["pixel"]["hard"].append(f"role_floor_pixel: the feature is {side:.0f}px at original resolution, under {PIXEL_FEATURE_FLOOR_PX}px")
+            ev["roles"]["pixel"][sink].append(f"role_floor_pixel: the feature is {side:.0f}px at original resolution, under {PIXEL_FEATURE_FLOOR_PX}px")

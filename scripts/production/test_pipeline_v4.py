@@ -39,6 +39,18 @@ ev2 = {"measure": {"largest": {"box": [0, 0, 300, 400]}, "flower_blob": {"box": 
 S.role_floors(ev2, (768, 576), 1536)       # subject 600x800 passes main and tall; feature 20px fails pixel
 check(ev2["roles"]["main"]["hard"] == [] and ev2["roles"]["tall"]["hard"] == [] and len(ev2["roles"]["pixel"]["hard"]) == 1, "large subject passes main/tall, tiny feature fails pixel")
 
+# v4.1: the same floors, as FLAGS
+ev3 = {"measure": {"largest": {"box": [0, 0, 100, 200]}, "flower_blob": {"box": [0, 0, 10, 10]}}, "roles": {r: {"hard": [], "flags": []} for r in ("main", "pixel", "tall")}}
+S.role_floors(ev3, (768, 576), 1536, "v4.1")
+check(all(ev3["roles"][r]["hard"] == [] for r in ev3["roles"]) and all(len(ev3["roles"][r]["flags"]) == 1 for r in ev3["roles"]), "v4.1 records every floor as a flag and rejects nothing")
+ev4 = {"measure": {"largest": {"box": [0, 0, 100, 200]}, "flower_blob": {"box": [0, 0, 10, 10]}}, "roles": {r: {"hard": [], "flags": []} for r in ("main", "pixel", "tall")}}
+S.role_floors(ev4, (768, 576), 1536, "v4")
+check(all(len(ev4["roles"][r]["hard"]) == 1 for r in ev4["roles"]), "v4 still rejects (sealed v4 results stay reproducible)")
+check(S.v4_family("v4") and S.v4_family("v4.1") and not S.v4_family("v3"), "v4.1 shares every other v4 change")
+h41, _ = S._common({"coverage": 0.2, "lap_var": 100.0, "largest": {"n_touch": 0, "aspect_h_over_w": 1.5}}, 900, {"checked": True}, "v4.1")
+check(not any(x.startswith("low_resolution") for x in h41), "v4.1 has no frame-level floor")
+check(R.TALL_WEIGHTS_V4 and "plain_background" not in R.TALL_WEIGHTS_V4, "v4.1 uses the v4 tall weights")
+
 # pixel legibility carries no weight in v4, full weight otherwise
 fb = {"cropped": False, "area": 0.06, "solidity": 0.8, "n_significant": 1, "ring_delta_e": 35, "ring_green_share": 0.1}
 j_lo = S.judge_pixel({"flower_blob": fb}, {"legibility": 0.0}, "v4")["suitability"]

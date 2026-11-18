@@ -1,0 +1,110 @@
+name: Pipeline v4.1 (v4 with the role floors as flags): re-score only the floor-rejected photographs
+
+# PRIVATE RESEARCH TOOL. Reads committed v4 results, re-scores the photographs v4 rejected for a role floor under v4.1, rebuilds the result and (for the blind batch)
+# seals v4.1 predictions BEFORE the owner chooses. Selects/approves/edits nothing.
+# STARTED BY PUSHING evidence/blind-test/v41-request.json ({"jobs": ["retro-0", "blind-3", ...]}).
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/blind-test/v41-request.json
+
+permissions:
+  contents: write
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      jobs: ${{ steps.p.outputs.jobs }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: echo "jobs=$(python3 -c "import json;print(json.dumps(json.load(open('evidence/blind-test/v41-request.json'))['jobs']))")" >> "$GITHUB_OUTPUT"
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - run: python3 scripts/production/test_pipeline_v4.py
+      - run: python3 scripts/production/test_pipeline_v3.py
+
+  rescore:
+    needs: [plan, tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        job: ${{ fromJSON(needs.plan.outputs.jobs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - name: Re-score the floor-rejected rows
+        run: |
+          BATCH=$(echo "${{ matrix.job }}" | cut -d- -f1); IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          if [ "$BATCH" = "retro" ]; then CARD=$((62 + IDX)); DIR=evidence/blind-test/retro; else CARD=$((77 + IDX)); DIR=evidence/blind-test/77-81; fi
+          KIND=white; if [ "$CARD" = "65" ] || [ "$CARD" = "79" ]; then KIND=yellow; fi
+          python3 scripts/production/rescore_floors.py --result $DIR/${CARD}_v4/result.json --kind $KIND --out out/$BATCH/${CARD}_v4.1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v41-${{ matrix.job }}
+          path: out
+          retention-days: 14
+
+  report:
+    needs: rescore
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v41-*
+          path: out
+          merge-multiple: true
+      - name: Commit and seal
+        run: |
+          mkdir -p evidence/blind-test/retro evidence/blind-test/77-81
+          cp -r out/retro/. evidence/blind-test/retro/ 2>/dev/null || true
+          cp -r out/blind/. evidence/blind-test/77-81/ 2>/dev/null || true
+          python3 - <<'P'
+          import glob, json, hashlib, datetime, os
+          path = "evidence/blind-test/77-81/PREDICTIONS_SEALED_V41.json"
+          sealed = json.load(open(path)) if os.path.exists(path) else {"batch": "77-81", "policy": "v4.1", "species": {}, "sealed": {}}
+          now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+          for f in sorted(glob.glob("evidence/blind-test/77-81/*_v4.1/result.json")):
+              d = json.load(open(f))
+              if str(d["card"]) not in sealed["species"]:
+                  sealed["species"][str(d["card"])] = {"scientific": d["scientific"], "pool": d["pool"], "top12": d["top12"], "joint_top3": d["joint_top3"]}
+                  sealed["sealed"][str(d["card"])] = now      # per-species seal time; an existing entry is never rewritten
+          sealed["note"] = "v4.1 predictions only: top 12 per role and three joint triples. Each species is added once, before the owner chose, and never rewritten."
+          body = json.dumps(sealed, indent=1, sort_keys=True)
+          open(path, "w").write(body)
+          print("species sealed:", sorted(sealed["species"]), "sha256", hashlib.sha256(body.encode()).hexdigest())
+          P
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Pipeline v4.1: floors as flags (re-scored rows), sealed v4.1 predictions"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1

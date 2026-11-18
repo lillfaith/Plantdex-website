@@ -55,7 +55,7 @@ def main() -> int:
     taxon = F.resolve_taxon(sp["scientific"])
     tid = taxon["id"]
     t0 = time.time()
-    pool = SE.build_pool_v4(tid) if policy == "v4" else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
+    pool = SE.build_pool_v4(tid) if policy in ("v4", "v4.1") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
     print(f"#{sp['card']} {sp['scientific']} policy={policy}: pool {len(pool)}", flush=True)
     by_pid = {p["photo_id"]: p for p in pool}
     shard = arg("--shard")                       # "k/n": screen only every n-th photograph (pool order is deterministic); merge_shards.py joins the pieces
