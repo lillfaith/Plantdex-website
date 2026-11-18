@@ -27,7 +27,7 @@ NEUTRAL_OBS = {"identification_agreements": 2, "identification_disagreements": 0
 def score_photo(path: pathlib.Path, photo: dict, kind: str, policy: str) -> dict:
     rgb = S.load_work(path)
     views = S.evaluate_views(rgb, photo["orig_long"], kind, S.default_mask_fn, policy)
-    scores = {r: R.best_view(r, views, photo, kind) for r in ROLES}
+    scores = {r: R.best_view(r, views, photo, kind, policy) for r in ROLES}
     compact = {r: {"score": s["score"], "rejected": s["rejected"], "hard": s["hard"], "view": s.get("view"), "crop_box": s.get("crop_box"),
                    "flags": [f.split(":")[0] for f in s["flags"]]} for r, s in scores.items()}
     return {"photo_id": photo["photo_id"], "observation_id": photo["observation_id"], "scores": compact}
@@ -55,7 +55,7 @@ def main() -> int:
     taxon = F.resolve_taxon(sp["scientific"])
     tid = taxon["id"]
     t0 = time.time()
-    pool = SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
+    pool = SE.build_pool_v4(tid) if policy == "v4" else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
     print(f"#{sp['card']} {sp['scientific']} policy={policy}: pool {len(pool)}", flush=True)
     by_pid = {p["photo_id"]: p for p in pool}
     rows = []
@@ -91,7 +91,7 @@ def main() -> int:
                 obs = (ans.get("results") or [{}])[0]
                 ph = next((x for x in obs.get("photos", []) if x.get("id") == pk["photo_id"]), None)
                 if ph:
-                    p = {**NEUTRAL_OBS, "photo_id": ph["id"], "observation_id": obs["id"], "urls": {s: F.photo_url(ph, s) for s in F.SIZES}, "orig_long": 2048,
+                    p = {**NEUTRAL_OBS, "photo_id": ph["id"], "observation_id": obs["id"], "urls": {s: F.photo_url(ph, s) for s in F.SIZES}, "orig_long": max((ph.get("original_dimensions") or {}).get("width", 0), (ph.get("original_dimensions") or {}).get("height", 0)) or 2048,
                          "identification_agreements": obs.get("num_identification_agreements") or 0}
                     F.download([p], work, prefer="large")
                     if p.get("file"):

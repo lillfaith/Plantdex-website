@@ -29,6 +29,8 @@ WEIGHTS = {"recognizability": 0.25, "completeness": 0.25, "isolability": 0.20, "
 # Role fit (one stalk, vertical, leaves+flowers) and a plain background dominate; aesthetics barely count.
 TALL_WEIGHTS = {"recognizability": .12, "completeness": .18, "isolability": .15, "role": .25, "perspective": .03,
                 "aesthetic": .02, "quality": .03, "plain_background": .22}
+# v4: the plain-background term is removed and the other tall weights are rescaled to sum to 1 (no new number is introduced).
+TALL_WEIGHTS_V4 = {k: v / (1 - TALL_WEIGHTS["plain_background"]) for k, v in TALL_WEIGHTS.items() if k != "plain_background"}
 MIN_SCORE = 45.0
 ROLES = ("main", "pixel", "tall")
 EXPECTED_FLOWER = {"white": 0.10, "pink_purple": 0.07, "yellow": 0.05, "brown": 0.06, "none": 0.0}
@@ -103,7 +105,7 @@ def reason(role: str, ev, obs) -> str:
     return "; ".join(bits)
 
 
-def score_role(role: str, ev: dict, obs: dict, orig_long: int, kind: str) -> dict:
+def score_role(role: str, ev: dict, obs: dict, orig_long: int, kind: str, policy: str = "v2") -> dict:
     """Stage A then Stage B for one role. Always returns a dict; `rejected` says whether it survived."""
     if "error" in ev:
         return {"role": role, "rejected": True, "hard": [f"screen_error: {ev['error']}"], "flags": [], "score": 0.0, "parts": {}}
@@ -117,14 +119,14 @@ def score_role(role: str, ev: dict, obs: dict, orig_long: int, kind: str) -> dic
     parts = {"recognizability": rec, "completeness": r["completeness"], "isolability": isolability(ev),
              "role": r["suitability"], "perspective": perspective, "aesthetic": aesthetic(ev),
              "quality": quality(orig_long, ev["measure"]["lap_var"])}
-    w = TALL_WEIGHTS if role == "tall" else WEIGHTS
-    if role == "tall":
+    w = (TALL_WEIGHTS_V4 if policy == "v4" else TALL_WEIGHTS) if role == "tall" else WEIGHTS
+    if role == "tall" and policy != "v4":
         parts["plain_background"] = 1.0 - max(ev["measure"]["bg_busy"], 0.7 * ev["measure"]["bg_spread"])
     score = 100 * sum(w[k] * max(0.0, min(1.0, v)) for k, v in parts.items())
     if role == "tall" and ev["measure"]["stalk_like_components"] >= 3:
         score *= 0.6          # crowded patch of plants: penalised hard, not merely flagged
-    if role == "tall" and ev["measure"]["bg_busy"] >= 0.55:
-        score *= 0.75         # visually busy natural scene
+    if role == "tall" and ev["measure"]["bg_busy"] >= 0.55 and policy != "v4":
+        score *= 0.75         # visually busy natural scene (removed in v4: see TALL_WEIGHTS_V4)
     return {"role": role, "rejected": False, "hard": [], "flags": flags + idflags, "score": round(score, 1),
             "parts": {k: round(v, 3) for k, v in parts.items()}, "reason": reason(role, ev, obs)}
 
@@ -152,12 +154,12 @@ def shortlist(rows: list[dict], role: str, n: int = 12, min_score: float = MIN_S
     return out
 
 
-def best_view(role: str, views: list[dict], obs: dict, kind: str) -> dict:
+def best_view(role: str, views: list[dict], obs: dict, kind: str, policy: str = "v2") -> dict:
     """v3 crop-then-score: the role's score is the best over the whole frame and its candidate crops.
     Weights and formulas are UNCHANGED (score_role); only WHAT is scored changes. Returns the winning score dict plus which view won."""
     best = None
     for v in views:
-        sc = score_role(role, v["ev"], obs, v["px"], kind)
+        sc = score_role(role, v["ev"], obs, v["px"], kind, policy)
         sc = {**sc, "view": v["label"], "crop_box": v["box"]}
         if best is None or (best["rejected"] and not sc["rejected"]) or (best["rejected"] == sc["rejected"] and sc["score"] > best["score"]):
             best = sc

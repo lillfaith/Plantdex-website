@@ -71,7 +71,7 @@ def _annotations(obs: dict) -> bool:
     return False
 
 
-def photos_of(obs: dict, taxon_id: int, query: str) -> list[dict]:
+def photos_of(obs: dict, taxon_id: int, query: str, min_edge: int = MIN_ORIG_EDGE) -> list[dict]:
     """The CC0 photographs of one observation, each checked on ITS OWN licence."""
     if (obs.get("taxon") or {}).get("id") != taxon_id:
         return []
@@ -81,7 +81,7 @@ def photos_of(obs: dict, taxon_id: int, query: str) -> list[dict]:
             continue
         dims = ph.get("original_dimensions") or {}
         long_edge = max(dims.get("width", 0), dims.get("height", 0))
-        if long_edge < MIN_ORIG_EDGE:
+        if long_edge < min_edge:
             continue
         out.append({
             "photo_id": ph["id"], "observation_id": obs["id"], "photo_index": i,
@@ -155,3 +155,37 @@ def retained_record(photo_id: int, taxon_id: int, prev: dict, taxon_name: str) -
 def reverify(photos: list[dict], taxon_id: int) -> tuple[list[dict], list[dict]]:
     """The second, independent licence check (re-read from each observation)."""
     return PC.verify_licenses(photos, taxon_id)
+
+
+# --- v4 retrieval -------------------------------------------------------------------------------------------------
+# The retro showed 9 of the owner's 19 photographs never reached a pool: 6 were cut by the interleave, 2 by the two-photographs-per-observation cap and 1 by the
+# 1400 px floor. v4 takes the votes-ordered list to a fixed OBSERVATION depth with ALL of each observation's CC0 photographs, adds the phenology and recent
+# lists as extra sources, and moves resolution to a per-role floor on the subject (screen.role_floors). Only 800 px is kept here, to drop thumbnails.
+V4_MIN_EDGE = 800
+V4_SOURCES = [
+    ("votes-deep", {"order_by": "votes"}, 2),                                  # 400 observations: every one of the owner's 19 was within 277
+    ("flowering-votes", {"order_by": "votes", **FLOWERING}, 1),
+    ("fruiting-votes", {"order_by": "votes", **FRUITING}, 1),
+    ("budding-votes", {"order_by": "votes", **BUDDING}, 1),
+    ("recent", {"order_by": "observed_on", "order": "desc"}, 1),
+]
+
+
+def build_pool_v4(taxon_id: int, log=print, limit: int = 1200) -> list[dict]:
+    seen, pool = set(), []
+    for name, extra, pages in V4_SOURCES:
+        n0 = len(pool)
+        for page in range(1, pages + 1):
+            params = {"taxon_id": taxon_id, "photo_license": "cc0", "quality_grade": "research", "photos": "true",
+                      "per_page": 200, "page": page, **extra}
+            rows = (F.get(f"{F.API}/observations?{F.urllib.parse.urlencode(params)}") or {}).get("results", [])
+            for obs in rows:
+                for p in photos_of(obs, taxon_id, name, min_edge=V4_MIN_EDGE):
+                    if p["photo_id"] not in seen:
+                        seen.add(p["photo_id"])
+                        pool.append(p)
+            time.sleep(1.0)
+            if len(rows) < 200:
+                break
+        log(f"   source {name}: +{len(pool) - n0} new CC0 photos")
+    return pool[:limit]
