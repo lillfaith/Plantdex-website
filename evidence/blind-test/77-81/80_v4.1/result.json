@@ -1,0 +1,7590 @@
+{
+ "card": 80,
+ "scientific": "Trifolium repens",
+ "policy": "v4.1",
+ "pool": 143,
+ "pool_total": 1139,
+ "shards": 1,
+ "built": "2026-11-18T16:53:25Z",
+ "survivors": {
+  "main": 121,
+  "pixel": 109,
+  "tall": 121
+ },
+ "rejections": {
+  "main": {
+   "no_subject": 22
+  },
+  "pixel": {
+   "no_subject": 22
+  },
+  "tall": {
+   "no_subject": 22
+  }
+ },
+ "top12": {
+  "main": [
+   {
+    "photo_id": 703871544,
+    "observation_id": 384513062,
+    "score": 86.9,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 648874077,
+    "observation_id": 355813098,
+    "score": 86.4,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 616477542,
+    "observation_id": 338964047,
+    "score": 86.4,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 731949959,
+    "observation_id": 398977390,
+    "score": 85.4,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 338637582,
+    "observation_id": 192848188,
+    "score": 85.2,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 28786394,
+    "observation_id": 18793858,
+    "score": 85.1,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 326331019,
+    "observation_id": 186700690,
+    "score": 84.3,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 301168670,
+    "observation_id": 173422798,
+    "score": 84.2,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 39098112,
+    "observation_id": 25254803,
+    "score": 84.2,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 280383738,
+    "observation_id": 162170358,
+    "score": 84.1,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 716534441,
+    "observation_id": 391072826,
+    "score": 84.1,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 19328217,
+    "observation_id": 13217223,
+    "score": 83.6,
+    "view": "subject-crop"
+   }
+  ],
+  "pixel": [
+   {
+    "photo_id": 616477542,
+    "observation_id": 338964047,
+    "score": 87.8,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 648874077,
+    "observation_id": 355813098,
+    "score": 86.4,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 80756627,
+    "observation_id": 50844851,
+    "score": 84.7,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 366020389,
+    "observation_id": 206956583,
+    "score": 83.5,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 280383738,
+    "observation_id": 162170358,
+    "score": 83.1,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 718348421,
+    "observation_id": 392005911,
+    "score": 82.7,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 744186627,
+    "observation_id": 405176616,
+    "score": 82.6,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 391836916,
+    "observation_id": 221265002,
+    "score": 82.1,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 299903863,
+    "observation_id": 171656857,
+    "score": 81.8,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 378583728,
+    "observation_id": 214197778,
+    "score": 81.8,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 728408132,
+    "observation_id": 397160346,
+    "score": 81.6,
+    "view": "flower-cluster-2"
+   },
+   {
+    "photo_id": 741874934,
+    "observation_id": 404016660,
+    "score": 81.4,
+    "view": "subject-crop"
+   }
+  ],
+  "tall": [
+   {
+    "photo_id": 326331019,
+    "observation_id": 186700690,
+    "score": 89.9,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 616477542,
+    "observation_id": 338964047,
+    "score": 89.5,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 338637582,
+    "observation_id": 192848188,
+    "score": 89.2,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 727334542,
+    "observation_id": 396620953,
+    "score": 89.1,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 703871544,
+    "observation_id": 384513062,
+    "score": 88.8,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 39098112,
+    "observation_id": 25254803,
+    "score": 88.3,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 80756627,
+    "observation_id": 50844851,
+    "score": 88.3,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 378583728,
+    "observation_id": 214197778,
+    "score": 87.9,
+    "view": "full-frame"
+   },
+   {
+    "photo_id": 648874077,
+    "observation_id": 355813098,
+    "score": 87.8,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 280383738,
+    "observation_id": 162170358,
+    "score": 87.7,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 134812877,
+    "observation_id": 82152766,
+    "score": 87.6,
+    "view": "subject-crop"
+   },
+   {
+    "photo_id": 740807437,
+    "observation_id": 403470815,
+    "score": 87.4,
+    "view": "subject-crop"
+   }
+  ]
+ },
+ "joint_top3": [
+  {
+   "rank": 1,
+   "total": 264.6,
+   "main": 703871544,
+   "pixel": 616477542,
+   "tall": 326331019
+  },
+  {
+   "rank": 2,
+   "total": 261.0,
+   "main": 731949959,
+   "pixel": 648874077,
+   "tall": 338637582
+  },
+  {
+   "rank": 3,
+   "total": 258.9,
+   "main": 28786394,
+   "pixel": 80756627,
+   "tall": 727334542
+  }
+ ],
+ "pool_scores": [
+  {
+   "photo_id": 178725362,
+   "observation_id": 106397808,
+   "scores": {
+    "main": {
+     "score": 80.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 77.5,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 461131759,
+   "observation_id": 257098794,
+   "scores": {
+    "main": {
+     "score": 81.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      119,
+      511,
+      530
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 73.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      119,
+      511,
+      530
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      119,
+      511,
+      530
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 69460359,
+   "observation_id": 43795539,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 467101167,
+   "observation_id": 260134430,
+   "scores": {
+    "main": {
+     "score": 77.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      165,
+      139,
+      324,
+      428
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 72.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      165,
+      139,
+      324,
+      428
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      165,
+      139,
+      324,
+      428
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 394977593,
+   "observation_id": 256390799,
+   "scores": {
+    "main": {
+     "score": 65.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      217,
+      239,
+      156,
+      128
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 66.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      217,
+      239,
+      156,
+      128
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 72.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      217,
+      239,
+      156,
+      128
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 163203040,
+   "observation_id": 98068766,
+   "scores": {
+    "main": {
+     "score": 81.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      305,
+      151,
+      170,
+      169
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 85.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      305,
+      151,
+      170,
+      169
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 25191608,
+   "observation_id": 16699450,
+   "scores": {
+    "main": {
+     "score": 79.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      172,
+      107,
+      267,
+      273
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 73.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      172,
+      107,
+      267,
+      273
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 419209563,
+   "observation_id": 235697203,
+   "scores": {
+    "main": {
+     "score": 78.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.3,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 80.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 516491535,
+   "observation_id": 287254485,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 132954711,
+   "observation_id": 81083882,
+   "scores": {
+    "main": {
+     "score": 80.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      305,
+      201,
+      102,
+      107
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      305,
+      201,
+      102,
+      107
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      305,
+      201,
+      102,
+      107
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 344291425,
+   "observation_id": 195692610,
+   "scores": {
+    "main": {
+     "score": 68.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      0,
+      360,
+      188,
+      208
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 77.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      0,
+      360,
+      188,
+      208
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 69.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      0,
+      360,
+      188,
+      208
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 357111234,
+   "observation_id": 202222971,
+   "scores": {
+    "main": {
+     "score": 77.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      109,
+      205,
+      171,
+      157
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      109,
+      205,
+      171,
+      157
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 81.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      109,
+      205,
+      171,
+      157
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 299595442,
+   "observation_id": 172576671,
+   "scores": {
+    "main": {
+     "score": 77.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      529,
+      56,
+      176,
+      177
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      529,
+      56,
+      176,
+      177
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 80.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      529,
+      56,
+      176,
+      177
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 301166501,
+   "observation_id": 173421518,
+   "scores": {
+    "main": {
+     "score": 50.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      0,
+      392,
+      171
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "few_flowers",
+      "little_foliage",
+      "needs_crop_or_edit(main_clipped)"
+     ]
+    },
+    "pixel": {
+     "score": 41.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      0,
+      392,
+      171
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "flower_not_detected"
+     ]
+    },
+    "tall": {
+     "score": 57.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      0,
+      392,
+      171
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "not_vertical",
+      "few_leaves_visible",
+      "flowers_not_detected",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 204069234,
+   "observation_id": 120640148,
+   "scores": {
+    "main": {
+     "score": 71.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      265,
+      214,
+      311,
+      281
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(subject_too_small)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      265,
+      214,
+      311,
+      281
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 72.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      265,
+      214,
+      311,
+      281
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 43480211,
+   "observation_id": 27915118,
+   "scores": {
+    "main": {
+     "score": 83.0,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      36,
+      0,
+      284,
+      208
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 77.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      213,
+      0,
+      363,
+      297
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 86.0,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      36,
+      0,
+      284,
+      208
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 50114707,
+   "observation_id": 31982426,
+   "scores": {
+    "main": {
+     "score": 78.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      185,
+      273,
+      209,
+      202
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      185,
+      273,
+      209,
+      202
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      185,
+      273,
+      209,
+      202
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 285308157,
+   "observation_id": 164863686,
+   "scores": {
+    "main": {
+     "score": 83.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      119,
+      71,
+      272,
+      194
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 79.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      119,
+      71,
+      272,
+      194
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters"
+     ]
+    },
+    "tall": {
+     "score": 83.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      119,
+      71,
+      272,
+      194
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 290008304,
+   "observation_id": 167412046,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 326331019,
+   "observation_id": 186700690,
+   "scores": {
+    "main": {
+     "score": 84.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      175,
+      255,
+      252,
+      366
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 81.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 89.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      175,
+      255,
+      252,
+      366
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 648874077,
+   "observation_id": 355813098,
+   "scores": {
+    "main": {
+     "score": 86.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      558,
+      204,
+      88,
+      86
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 86.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      558,
+      204,
+      88,
+      86
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 87.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      558,
+      204,
+      88,
+      86
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 221679736,
+   "observation_id": 130357316,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 243391086,
+   "observation_id": 142005195,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 632116565,
+   "observation_id": 346745877,
+   "scores": {
+    "main": {
+     "score": 47.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      179,
+      530,
+      72,
+      46
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 73.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      179,
+      530,
+      72,
+      46
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 64.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      179,
+      530,
+      72,
+      46
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "needs_crop_or_edit(tall_wide_mass)",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 692657204,
+   "observation_id": 378715006,
+   "scores": {
+    "main": {
+     "score": 70.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "touches_top_edge",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      185,
+      0,
+      278,
+      378
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 74.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      185,
+      0,
+      278,
+      378
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 732306735,
+   "observation_id": 399158021,
+   "scores": {
+    "main": {
+     "score": 77.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      156,
+      95,
+      276,
+      282
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 73.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      156,
+      95,
+      276,
+      282
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      156,
+      95,
+      276,
+      282
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 99940975,
+   "observation_id": 62381244,
+   "scores": {
+    "main": {
+     "score": 79.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      175,
+      115,
+      178,
+      190
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      175,
+      115,
+      178,
+      190
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      175,
+      115,
+      178,
+      190
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 85513073,
+   "observation_id": 53764825,
+   "scores": {
+    "main": {
+     "score": 66.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      127,
+      172,
+      200,
+      199
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 66.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      127,
+      172,
+      200,
+      199
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 75.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      127,
+      172,
+      200,
+      199
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 531726769,
+   "observation_id": 295367009,
+   "scores": {
+    "main": {
+     "score": 71.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      151,
+      260,
+      249,
+      252
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      151,
+      260,
+      249,
+      252
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 75.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      151,
+      260,
+      249,
+      252
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 556077103,
+   "observation_id": 308236750,
+   "scores": {
+    "main": {
+     "score": 78.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      25,
+      277,
+      176
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 72.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      25,
+      277,
+      176
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 581281384,
+   "observation_id": 321413887,
+   "scores": {
+    "main": {
+     "score": 69.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      315,
+      526,
+      219,
+      224
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      315,
+      526,
+      219,
+      224
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 73.5,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      315,
+      526,
+      219,
+      224
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 380987476,
+   "observation_id": 215487541,
+   "scores": {
+    "main": {
+     "score": 72.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 81.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      117,
+      260,
+      247,
+      353
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 392094684,
+   "observation_id": 221410545,
+   "scores": {
+    "main": {
+     "score": 81.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      178,
+      248,
+      272,
+      408
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 74.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      178,
+      248,
+      272,
+      408
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      178,
+      248,
+      272,
+      408
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 391836916,
+   "observation_id": 221265002,
+   "scores": {
+    "main": {
+     "score": 82.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      157,
+      315,
+      202,
+      218
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 82.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      157,
+      315,
+      202,
+      218
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      157,
+      315,
+      202,
+      218
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 19328217,
+   "observation_id": 13217223,
+   "scores": {
+    "main": {
+     "score": 83.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      286,
+      216,
+      200,
+      185
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      286,
+      216,
+      200,
+      185
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 85.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      286,
+      216,
+      200,
+      185
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 81277411,
+   "observation_id": 51166375,
+   "scores": {
+    "main": {
+     "score": 72.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      33,
+      136,
+      409,
+      293
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_top_edge",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      33,
+      136,
+      409,
+      293
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 72.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 214180031,
+   "observation_id": 126246449,
+   "scores": {
+    "main": {
+     "score": 79.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      74,
+      362,
+      152,
+      159
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      74,
+      362,
+      152,
+      159
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      74,
+      362,
+      152,
+      159
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 518343580,
+   "observation_id": 288238834,
+   "scores": {
+    "main": {
+     "score": 70.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      238,
+      199,
+      338,
+      369
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_right_edge",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 74.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      238,
+      199,
+      338,
+      369
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      238,
+      199,
+      338,
+      369
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 524230066,
+   "observation_id": 291367472,
+   "scores": {
+    "main": {
+     "score": 75.0,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      207,
+      228,
+      280,
+      308
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 74.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      298,
+      6,
+      278,
+      318
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 71.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      207,
+      228,
+      280,
+      308
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 297071948,
+   "observation_id": 171213631,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 306850962,
+   "observation_id": 176497013,
+   "scores": {
+    "main": {
+     "score": 79.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      120,
+      0,
+      378,
+      353
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      120,
+      0,
+      378,
+      353
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      120,
+      0,
+      378,
+      353
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 530814134,
+   "observation_id": 294885174,
+   "scores": {
+    "main": {
+     "score": 60.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      394,
+      589,
+      125,
+      72
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 32.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      394,
+      589,
+      125,
+      72
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 66.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      394,
+      589,
+      125,
+      72
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "flowers_not_detected",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 531156900,
+   "observation_id": 295067224,
+   "scores": {
+    "main": {
+     "score": 79.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      82,
+      77,
+      306,
+      312
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.2,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      229,
+      79,
+      290,
+      288
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      82,
+      77,
+      306,
+      312
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 134812877,
+   "observation_id": 82152766,
+   "scores": {
+    "main": {
+     "score": 82.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      301,
+      72,
+      162,
+      304
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      301,
+      72,
+      162,
+      304
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 87.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      301,
+      72,
+      162,
+      304
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 6684912,
+   "observation_id": 5433845,
+   "scores": {
+    "main": {
+     "score": 70.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      267,
+      167,
+      121,
+      125
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 74.7,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      267,
+      167,
+      121,
+      125
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 76.0,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      267,
+      167,
+      121,
+      125
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 523682346,
+   "observation_id": 289951171,
+   "scores": {
+    "main": {
+     "score": 81.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      126,
+      309,
+      147,
+      147
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 77.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      126,
+      309,
+      147,
+      147
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 511651099,
+   "observation_id": 284685408,
+   "scores": {
+    "main": {
+     "score": 70.5,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      0,
+      224,
+      123,
+      147
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      147,
+      359,
+      229,
+      234
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 73.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      0,
+      224,
+      123,
+      147
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 416918239,
+   "observation_id": 234513590,
+   "scores": {
+    "main": {
+     "score": 67.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      90,
+      208,
+      224,
+      200
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 41.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      90,
+      208,
+      224,
+      200
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 77.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      90,
+      208,
+      224,
+      200
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "flowers_not_detected",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 519446793,
+   "observation_id": 288828917,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 80099825,
+   "observation_id": 50446174,
+   "scores": {
+    "main": {
+     "score": 61.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 31.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 70.5,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "flowers_not_detected",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 223110248,
+   "observation_id": 131133040,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 214415055,
+   "observation_id": 126374512,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 218478302,
+   "observation_id": 128619749,
+   "scores": {
+    "main": {
+     "score": 77.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      107,
+      275,
+      177,
+      189
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      107,
+      275,
+      177,
+      189
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      107,
+      275,
+      177,
+      189
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 188188705,
+   "observation_id": 111483817,
+   "scores": {
+    "main": {
+     "score": 79.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      428,
+      197,
+      110,
+      107
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      428,
+      197,
+      110,
+      107
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      428,
+      197,
+      110,
+      107
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 103221892,
+   "observation_id": 64226255,
+   "scores": {
+    "main": {
+     "score": 82.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      334,
+      14,
+      192,
+      185
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 76.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame"
+     ]
+    },
+    "tall": {
+     "score": 84.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      334,
+      14,
+      192,
+      185
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 282773509,
+   "observation_id": 163489445,
+   "scores": {
+    "main": {
+     "score": 76.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      221,
+      247,
+      232,
+      216
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_right_edge",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      221,
+      247,
+      232,
+      216
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      221,
+      247,
+      232,
+      216
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 195766534,
+   "observation_id": 116002686,
+   "scores": {
+    "main": {
+     "score": 77.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      191,
+      213,
+      368,
+      331
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 73.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      191,
+      213,
+      368,
+      331
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 79.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      191,
+      213,
+      368,
+      331
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 355917354,
+   "observation_id": 201609651,
+   "scores": {
+    "main": {
+     "score": 77.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      385,
+      134,
+      347,
+      342
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 77.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      385,
+      134,
+      347,
+      342
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 81.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      385,
+      134,
+      347,
+      342
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 703211272,
+   "observation_id": 384171522,
+   "scores": {
+    "main": {
+     "score": 79.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      201,
+      227,
+      142,
+      213
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 81.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      201,
+      227,
+      142,
+      213
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 80.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      201,
+      227,
+      142,
+      213
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 546788179,
+   "observation_id": 303368277,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 494580025,
+   "observation_id": 275208290,
+   "scores": {
+    "main": {
+     "score": 79.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      26,
+      132,
+      550,
+      636
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 177100691,
+   "observation_id": 105538014,
+   "scores": {
+    "main": {
+     "score": 64.2,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      107,
+      60,
+      296,
+      286
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_left_edge",
+      "little_foliage",
+      "needs_crop_or_edit(subject_too_small)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.5,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      107,
+      60,
+      296,
+      286
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 76.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      107,
+      60,
+      296,
+      286
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 408548172,
+   "observation_id": 230112756,
+   "scores": {
+    "main": {
+     "score": 66.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      316,
+      159,
+      203,
+      178
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(subject_too_small)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 45.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      316,
+      159,
+      203,
+      178
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 64.7,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      316,
+      159,
+      203,
+      178
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 682650043,
+   "observation_id": 373527779,
+   "scores": {
+    "main": {
+     "score": 70.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      251,
+      156,
+      325,
+      420
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_right_edge",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 71.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      251,
+      156,
+      325,
+      420
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 515739357,
+   "observation_id": 286856993,
+   "scores": {
+    "main": {
+     "score": 77.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      150,
+      263,
+      257,
+      280
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      150,
+      263,
+      257,
+      280
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      150,
+      263,
+      257,
+      280
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 154988002,
+   "observation_id": 93507765,
+   "scores": {
+    "main": {
+     "score": 53.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      148,
+      433,
+      620
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_right_edge",
+      "few_flowers"
+     ]
+    },
+    "pixel": {
+     "score": 40.3,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected"
+     ]
+    },
+    "tall": {
+     "score": 77.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "flowers_not_detected",
+      "needs_crop_or_edit(tall_wide_mass)"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 299903863,
+   "observation_id": 171656857,
+   "scores": {
+    "main": {
+     "score": 80.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      0,
+      0,
+      380,
+      254
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 81.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      171,
+      139,
+      178
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters"
+     ]
+    },
+    "tall": {
+     "score": 86.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      171,
+      139,
+      178
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "needs_crop_or_edit(tall_wide_mass)",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 301168670,
+   "observation_id": 173422798,
+   "scores": {
+    "main": {
+     "score": 84.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      63,
+      58,
+      504,
+      383
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.5,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      63,
+      58,
+      504,
+      383
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 287290663,
+   "observation_id": 165933313,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 135327756,
+   "observation_id": 82454111,
+   "scores": {
+    "main": {
+     "score": 81.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      143,
+      445,
+      94,
+      88
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 79.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      143,
+      445,
+      94,
+      88
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 83.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      143,
+      445,
+      94,
+      88
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "few_leaves_visible",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 338637582,
+   "observation_id": 192848188,
+   "scores": {
+    "main": {
+     "score": 85.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      142,
+      212,
+      335,
+      428
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 79.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      142,
+      212,
+      335,
+      428
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 89.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      142,
+      212,
+      335,
+      428
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 322617963,
+   "observation_id": 184791006,
+   "scores": {
+    "main": {
+     "score": 80.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      214,
+      217,
+      154,
+      270
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      214,
+      217,
+      154,
+      270
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 85.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      214,
+      217,
+      154,
+      270
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 366020389,
+   "observation_id": 206956583,
+   "scores": {
+    "main": {
+     "score": 83.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      140,
+      147,
+      233,
+      206
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 83.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      140,
+      147,
+      233,
+      206
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 85.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      140,
+      147,
+      233,
+      206
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 134317432,
+   "observation_id": 81872833,
+   "scores": {
+    "main": {
+     "score": 82.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      253,
+      443,
+      157,
+      158
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 77.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      253,
+      443,
+      157,
+      158
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 85.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      253,
+      443,
+      157,
+      158
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 424581403,
+   "observation_id": 238482063,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 209674023,
+   "observation_id": 123750500,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 89233745,
+   "observation_id": 56015190,
+   "scores": {
+    "main": {
+     "score": 80.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      418,
+      89,
+      188,
+      286
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "pixel": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame"
+     ]
+    },
+    "tall": {
+     "score": 78.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      418,
+      89,
+      188,
+      286
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 294011167,
+   "observation_id": 169575371,
+   "scores": {
+    "main": {
+     "score": 69.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      89,
+      161,
+      421,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 44.5,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 74.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      89,
+      161,
+      421,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "flowers_not_detected",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 294011196,
+   "observation_id": 169575371,
+   "scores": {
+    "main": {
+     "score": 63.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 62.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(pixel_head_cropped)",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 72.9,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 328467452,
+   "observation_id": 187777384,
+   "scores": {
+    "main": {
+     "score": 80.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      203,
+      42,
+      318,
+      284
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 74.5,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      203,
+      42,
+      318,
+      284
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 78.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      203,
+      42,
+      318,
+      284
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 616477542,
+   "observation_id": 338964047,
+   "scores": {
+    "main": {
+     "score": 86.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "pixel": {
+     "score": 87.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 89.5,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 390055234,
+   "observation_id": 220318028,
+   "scores": {
+    "main": {
+     "score": 80.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.5,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 390068647,
+   "observation_id": 220324715,
+   "scores": {
+    "main": {
+     "score": 77.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      206,
+      155,
+      479,
+      579
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      206,
+      155,
+      479,
+      579
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      206,
+      155,
+      479,
+      579
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 390676126,
+   "observation_id": 220645843,
+   "scores": {
+    "main": {
+     "score": 81.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      291,
+      288,
+      182,
+      480
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "id_thin",
+      "id_community_differs"
+     ]
+    },
+    "pixel": {
+     "score": 77.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      291,
+      288,
+      182,
+      480
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "head_small_in_frame",
+      "id_thin",
+      "id_community_differs"
+     ]
+    },
+    "tall": {
+     "score": 86.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      291,
+      288,
+      182,
+      480
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "id_thin",
+      "id_community_differs"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 396761878,
+   "observation_id": 223899143,
+   "scores": {
+    "main": {
+     "score": 71.2,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      481,
+      255,
+      287,
+      276
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 77.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      420,
+      0,
+      187,
+      103
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 74.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      481,
+      255,
+      287,
+      276
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 39098112,
+   "observation_id": 25254803,
+   "scores": {
+    "main": {
+     "score": 84.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      280,
+      194,
+      185,
+      244
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 78.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame"
+     ]
+    },
+    "tall": {
+     "score": 88.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      280,
+      194,
+      185,
+      244
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 204451615,
+   "observation_id": 120856227,
+   "scores": {
+    "main": {
+     "score": 79.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      89,
+      97,
+      374,
+      414
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      89,
+      97,
+      374,
+      414
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 297421945,
+   "observation_id": 171409691,
+   "scores": {
+    "main": {
+     "score": 80.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      403,
+      118,
+      242,
+      238
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      403,
+      118,
+      242,
+      238
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      403,
+      118,
+      242,
+      238
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 108135842,
+   "observation_id": 66996785,
+   "scores": {
+    "main": {
+     "score": 70.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      331,
+      190,
+      140,
+      131
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "needs_crop_or_edit(subject_too_small)",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 79.7,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      331,
+      190,
+      140,
+      131
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "role_floor_pixel"
+     ]
+    },
+    "tall": {
+     "score": 73.3,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      331,
+      190,
+      140,
+      131
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 332886456,
+   "observation_id": 189954594,
+   "scores": {
+    "main": {
+     "score": 80.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      288,
+      226,
+      264,
+      338
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      288,
+      226,
+      264,
+      338
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 332886490,
+   "observation_id": 189954594,
+   "scores": {
+    "main": {
+     "score": 47.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "needs_crop_or_edit(main_clipped)",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 55.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "flower_touches_edge",
+      "low_contrast_silhouette",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 65.3,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "not_vertical",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 351089274,
+   "observation_id": 199117615,
+   "scores": {
+    "main": {
+     "score": 71.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)"
+     ]
+    },
+    "pixel": {
+     "score": 77.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 77.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "needs_crop_or_edit(tall_clipped_top)"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 509170646,
+   "observation_id": 283372403,
+   "scores": {
+    "main": {
+     "score": 79.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 74.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      200,
+      556,
+      471
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 93403058,
+   "observation_id": 58499600,
+   "scores": {
+    "main": {
+     "score": 72.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      237,
+      111,
+      247,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 71.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      237,
+      111,
+      247,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 80.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      237,
+      111,
+      247,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 93403110,
+   "observation_id": 58499643,
+   "scores": {
+    "main": {
+     "score": 78.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      117,
+      541,
+      519
+     ],
+     "flags": [
+      "soft_focus",
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 77.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "soft_focus",
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 80.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      117,
+      541,
+      519
+     ],
+     "flags": [
+      "soft_focus",
+      "perspective_unverified",
+      "needs_crop_or_edit(hands)",
+      "not_vertical",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 288016689,
+   "observation_id": 166329356,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 321617274,
+   "observation_id": 184264049,
+   "scores": {
+    "main": {
+     "score": 71.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      152,
+      284,
+      386,
+      214
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      152,
+      284,
+      386,
+      214
+     ],
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 75.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      152,
+      284,
+      386,
+      214
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 80756627,
+   "observation_id": 50844851,
+   "scores": {
+    "main": {
+     "score": 83.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      236,
+      288,
+      180,
+      253
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "pixel": {
+     "score": 84.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      236,
+      288,
+      180,
+      253
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 88.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      236,
+      288,
+      180,
+      253
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 378583728,
+   "observation_id": 214197778,
+   "scores": {
+    "main": {
+     "score": 77.3,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "touches_right_edge",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 81.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      80,
+      57,
+      688,
+      711
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 87.9,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 378583703,
+   "observation_id": 214197778,
+   "scores": {
+    "main": {
+     "score": 55.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      19,
+      768,
+      599
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 69.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 76.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      19,
+      768,
+      599
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "needs_crop_or_edit(tall_wide_mass)",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 290574234,
+   "observation_id": 167717002,
+   "scores": {
+    "main": {
+     "score": 80.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      45,
+      0,
+      612,
+      574
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      45,
+      0,
+      612,
+      574
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      45,
+      0,
+      612,
+      574
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 28786394,
+   "observation_id": 18793858,
+   "scores": {
+    "main": {
+     "score": 85.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 74.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 85.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      4,
+      164,
+      553,
+      572
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 67941123,
+   "observation_id": 42782919,
+   "scores": {
+    "main": {
+     "score": 72.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      246,
+      0,
+      522,
+      768
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_top_edge",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 73.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      246,
+      0,
+      522,
+      768
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 72.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      246,
+      0,
+      522,
+      768
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 645279633,
+   "observation_id": 353680330,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 72046916,
+   "observation_id": 45436293,
+   "scores": {
+    "main": {
+     "score": 60.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)"
+     ]
+    },
+    "pixel": {
+     "score": 65.9,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "needs_crop_or_edit(pixel_head_cropped)"
+     ]
+    },
+    "tall": {
+     "score": 75.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "needs_crop_or_edit(tall_wide_mass)"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 342583201,
+   "observation_id": 194831579,
+   "scores": {
+    "main": {
+     "score": 72.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "few_flowers"
+     ]
+    },
+    "pixel": {
+     "score": 43.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected"
+     ]
+    },
+    "tall": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "flowers_not_detected"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 285623996,
+   "observation_id": 165035059,
+   "scores": {
+    "main": {
+     "score": 81.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      11,
+      79,
+      501,
+      405
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 80.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      11,
+      79,
+      501,
+      405
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      11,
+      79,
+      501,
+      405
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 285624070,
+   "observation_id": 165035059,
+   "scores": {
+    "main": {
+     "score": 66.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 36.9,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 73.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      19,
+      0,
+      641,
+      559
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "flowers_not_detected",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 280383738,
+   "observation_id": 162170358,
+   "scores": {
+    "main": {
+     "score": 84.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      144,
+      101,
+      411,
+      475
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "pixel": {
+     "score": 83.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 87.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      144,
+      101,
+      411,
+      475
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 130930479,
+   "observation_id": 79912972,
+   "scores": {
+    "main": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 69.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 995444,
+   "observation_id": 791276,
+   "scores": {
+    "main": {
+     "score": 75.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      223,
+      367,
+      99,
+      108
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_disputed"
+     ]
+    },
+    "pixel": {
+     "score": 77.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      223,
+      367,
+      99,
+      108
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_pixel",
+      "id_disputed"
+     ]
+    },
+    "tall": {
+     "score": 81.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      223,
+      367,
+      99,
+      108
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_disputed"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 759586939,
+   "observation_id": 412773663,
+   "scores": {
+    "main": {
+     "score": 55.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      488,
+      256,
+      193,
+      97
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 72.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      488,
+      256,
+      193,
+      97
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 61.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      488,
+      256,
+      193,
+      97
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 756017824,
+   "observation_id": 411007668,
+   "scores": {
+    "main": {
+     "score": 58.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      316,
+      246,
+      318
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_left_edge",
+      "few_flowers",
+      "little_foliage",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 41.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      316,
+      246,
+      318
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 76.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      0,
+      316,
+      246,
+      318
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_leaves_visible",
+      "flowers_not_detected",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 751839462,
+   "observation_id": 408959604,
+   "scores": {
+    "main": {
+     "score": 81.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      177,
+      208,
+      132,
+      129
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      177,
+      208,
+      132,
+      129
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      177,
+      208,
+      132,
+      129
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 750151432,
+   "observation_id": 408129154,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 747381166,
+   "observation_id": 406760484,
+   "scores": {
+    "main": {
+     "score": 70.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 69.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      8,
+      266,
+      394,
+      405
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(pixel_head_cropped)",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      8,
+      266,
+      394,
+      405
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 745451309,
+   "observation_id": 405807965,
+   "scores": {
+    "main": {
+     "score": 71.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      307,
+      584,
+      125,
+      184
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 80.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      307,
+      584,
+      125,
+      184
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 76.0,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      307,
+      584,
+      125,
+      184
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 744186627,
+   "observation_id": 405176616,
+   "scores": {
+    "main": {
+     "score": 79.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      198,
+      160,
+      254,
+      248
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 82.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      198,
+      160,
+      254,
+      248
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 742627959,
+   "observation_id": 404397099,
+   "scores": {
+    "main": {
+     "score": 72.6,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 72.3,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 79.0,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 741874934,
+   "observation_id": 404016660,
+   "scores": {
+    "main": {
+     "score": 80.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      259,
+      320,
+      112,
+      117
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 81.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      259,
+      320,
+      112,
+      117
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 84.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      259,
+      320,
+      112,
+      117
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "few_leaves_visible",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 740807437,
+   "observation_id": 403470815,
+   "scores": {
+    "main": {
+     "score": 83.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      291,
+      464,
+      170,
+      218
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      291,
+      464,
+      170,
+      218
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 87.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      291,
+      464,
+      170,
+      218
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 740405948,
+   "observation_id": 403268524,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 738706010,
+   "observation_id": 402395509,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 736513855,
+   "observation_id": 401288198,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 748964857,
+   "observation_id": 407556510,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 731949959,
+   "observation_id": 398977390,
+   "scores": {
+    "main": {
+     "score": 85.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.7,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "low_contrast_silhouette",
+      "buried_in_foliage",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 86.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 733533429,
+   "observation_id": 399790236,
+   "scores": {
+    "main": {
+     "score": 80.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      419,
+      432,
+      139,
+      139
+     ],
+     "flags": [
+      "perspective_unverified",
+      "little_foliage",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      419,
+      432,
+      139,
+      139
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 728408132,
+   "observation_id": 397160346,
+   "scores": {
+    "main": {
+     "score": 79.5,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      121,
+      78,
+      327,
+      290
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 81.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      0,
+      474,
+      103,
+      129
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 79.8,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      121,
+      78,
+      327,
+      290
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 725667252,
+   "observation_id": 395744517,
+   "scores": {
+    "main": {
+     "score": 45.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      707,
+      451,
+      48,
+      54
+     ],
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(main_clipped)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 58.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      707,
+      451,
+      48,
+      54
+     ],
+     "flags": [
+      "perspective_unverified",
+      "low_contrast_silhouette",
+      "head_small_in_frame",
+      "role_floor_pixel",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 52.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      707,
+      451,
+      48,
+      54
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "needs_crop_or_edit(tall_clipped_top)",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 725817370,
+   "observation_id": 395823201,
+   "scores": {
+    "main": {
+     "score": 65.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      235,
+      384,
+      162,
+      162
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 37.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 73.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      235,
+      384,
+      162,
+      162
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "flowers_not_detected",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 724077267,
+   "observation_id": 394928492,
+   "scores": {
+    "main": {
+     "score": 70.9,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "needs_crop_or_edit(subject_too_small)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.2,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 85.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      294,
+      122,
+      146,
+      198
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 727334542,
+   "observation_id": 396620953,
+   "scores": {
+    "main": {
+     "score": 75.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      79,
+      509,
+      50,
+      70
+     ],
+     "flags": [
+      "perspective_unverified",
+      "touches_right_edge",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 81.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      79,
+      509,
+      50,
+      70
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 89.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      79,
+      509,
+      50,
+      70
+     ],
+     "flags": [
+      "perspective_unverified",
+      "wide_base_cropped",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 723962985,
+   "observation_id": 394871152,
+   "scores": {
+    "main": {
+     "score": 58.1,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      59,
+      0,
+      517,
+      409
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "needs_crop_or_edit(subject_too_small)",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 40.5,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      59,
+      0,
+      517,
+      409
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 58.6,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-2",
+     "crop_box": [
+      59,
+      0,
+      517,
+      409
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "flowers_not_detected",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 718348421,
+   "observation_id": 392005911,
+   "scores": {
+    "main": {
+     "score": 81.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      262,
+      189,
+      167,
+      176
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main"
+     ]
+    },
+    "pixel": {
+     "score": 82.7,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      262,
+      189,
+      167,
+      176
+     ],
+     "flags": [
+      "perspective_unverified"
+     ]
+    },
+    "tall": {
+     "score": 84.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      262,
+      189,
+      167,
+      176
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 720588340,
+   "observation_id": 393151302,
+   "scores": {
+    "main": {
+     "score": 80.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      333,
+      299,
+      68,
+      62
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 75.5,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      333,
+      299,
+      68,
+      62
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 82.6,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      333,
+      299,
+      68,
+      62
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 716534441,
+   "observation_id": 391072826,
+   "scores": {
+    "main": {
+     "score": 84.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      4,
+      253,
+      294,
+      215
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 78.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      4,
+      253,
+      294,
+      215
+     ],
+     "flags": [
+      "perspective_unverified",
+      "competing_clusters",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 84.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      4,
+      253,
+      294,
+      215
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 709006189,
+   "observation_id": 387196006,
+   "scores": {
+    "main": {
+     "score": 70.8,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 71.3,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 76.1,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 708118657,
+   "observation_id": 386739356,
+   "scores": {
+    "main": {
+     "score": 78.3,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      152,
+      200,
+      139,
+      125
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 79.1,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      152,
+      200,
+      139,
+      125
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 81.2,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      152,
+      200,
+      139,
+      125
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "few_leaves_visible",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 705942651,
+   "observation_id": 385600274,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  },
+  {
+   "photo_id": 704655571,
+   "observation_id": 384924990,
+   "scores": {
+    "main": {
+     "score": 64.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      0,
+      0,
+      576,
+      556
+     ],
+     "flags": [
+      "perspective_unverified",
+      "few_flowers",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 36.4,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      0,
+      0,
+      576,
+      556
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flower_not_detected",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 70.9,
+     "rejected": false,
+     "hard": [],
+     "view": "flower-cluster-1",
+     "crop_box": [
+      0,
+      0,
+      576,
+      556
+     ],
+     "flags": [
+      "perspective_unverified",
+      "flowers_not_detected",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 703871544,
+   "observation_id": 384513062,
+   "scores": {
+    "main": {
+     "score": 86.9,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      41,
+      153,
+      274,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 81.4,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      41,
+      153,
+      274,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 88.8,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      41,
+      153,
+      274,
+      275
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 702314826,
+   "observation_id": 383710359,
+   "scores": {
+    "main": {
+     "score": 79.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      209,
+      165,
+      169,
+      179
+     ],
+     "flags": [
+      "perspective_unverified",
+      "role_floor_main",
+      "id_thin"
+     ]
+    },
+    "pixel": {
+     "score": 76.4,
+     "rejected": false,
+     "hard": [],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": [
+      "perspective_unverified",
+      "head_small_in_frame",
+      "id_thin"
+     ]
+    },
+    "tall": {
+     "score": 83.0,
+     "rejected": false,
+     "hard": [],
+     "view": "subject-crop",
+     "crop_box": [
+      209,
+      165,
+      169,
+      179
+     ],
+     "flags": [
+      "perspective_unverified",
+      "not_vertical",
+      "role_floor_tall",
+      "id_thin"
+     ]
+    }
+   }
+  },
+  {
+   "photo_id": 706048569,
+   "observation_id": 385660495,
+   "scores": {
+    "main": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "pixel": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    },
+    "tall": {
+     "score": 0.0,
+     "rejected": true,
+     "hard": [
+      "no_subject: the segmenter found no separable plant subject"
+     ],
+     "view": "full-frame",
+     "crop_box": null,
+     "flags": []
+    }
+   }
+  }
+ ]
+}
