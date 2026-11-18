@@ -1,4 +1,4 @@
-name: Pipeline v4.1 (v4 with the role floors as flags): re-score only the floor-rejected photographs
+name: Pipeline v4.1 (v4 with the role floors as flags) - re-score only the floor-rejected photographs
 
 # PRIVATE RESEARCH TOOL. Reads committed v4 results, re-scores the photographs v4 rejected for a role floor under v4.1, rebuilds the result and (for the blind batch)
 # seals v4.1 predictions BEFORE the owner chooses. Selects/approves/edits nothing.

@@ -55,7 +55,17 @@ def main() -> int:
     taxon = F.resolve_taxon(sp["scientific"])
     tid = taxon["id"]
     t0 = time.time()
-    pool = SE.build_pool_v4(tid) if policy in ("v4", "v4.1") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
+    pool_file = arg("--pool-file")      # sharded runs must all screen the SAME pool: iNaturalist changes while shards run, so the pool is built once and shared
+    if pool_file and pathlib.Path(pool_file).exists():
+        pool = json.load(open(pool_file))
+    else:
+        pool = SE.build_pool_v4(tid) if policy in ("v4", "v4.1") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
+        if pool_file:
+            pathlib.Path(pool_file).parent.mkdir(parents=True, exist_ok=True)
+            json.dump(pool, open(pool_file, "w"), default=str)
+    if arg("--pool-only"):
+        print("pool", len(pool))
+        return 0
     print(f"#{sp['card']} {sp['scientific']} policy={policy}: pool {len(pool)}", flush=True)
     by_pid = {p["photo_id"]: p for p in pool}
     shard = arg("--shard")                       # "k/n": screen only every n-th photograph (pool order is deterministic); merge_shards.py joins the pieces
