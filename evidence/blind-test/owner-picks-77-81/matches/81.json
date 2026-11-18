@@ -1,0 +1,175 @@
+{
+ "card": 81,
+ "pool_photos": 1200,
+ "download_failures": 0,
+ "matches": {
+  "queenannemaininspo.jpeg": {
+   "role": "main",
+   "size": [
+    1024,
+    768
+   ],
+   "best": [
+    {
+     "photo_id": 208577549,
+     "observation_id": 123140809,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 18202853,
+     "observation_id": 12593150,
+     "ncc": 0.5508,
+     "dhash_dist": 116
+    },
+    {
+     "photo_id": 225945117,
+     "observation_id": 132697451,
+     "ncc": 0.4981,
+     "dhash_dist": 125
+    }
+   ],
+   "matched": true
+  },
+  "queenannepreviewinspo.jpeg": {
+   "role": "tall",
+   "size": [
+    683,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 49095360,
+     "observation_id": 31372723,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 696720108,
+     "observation_id": 380812945,
+     "ncc": 0.3725,
+     "dhash_dist": 116
+    },
+    {
+     "photo_id": 291449054,
+     "observation_id": 168191438,
+     "ncc": 0.3545,
+     "dhash_dist": 123
+    }
+   ],
+   "matched": true
+  },
+  "queenanneslacemaininspo2.jpg": {
+   "role": "main",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 552826213,
+     "observation_id": 306545309,
+     "ncc": 0.3305,
+     "dhash_dist": 132
+    },
+    {
+     "photo_id": 45607446,
+     "observation_id": 29228531,
+     "ncc": 0.2917,
+     "dhash_dist": 104
+    },
+    {
+     "photo_id": 351828195,
+     "observation_id": 199503816,
+     "ncc": 0.2889,
+     "dhash_dist": 114
+    }
+   ],
+   "matched": false
+  },
+  "queenanneslacepixelbase.jpeg": {
+   "role": "pixel",
+   "size": [
+    1024,
+    768
+   ],
+   "best": [
+    {
+     "photo_id": 20568883,
+     "observation_id": 13922521,
+     "ncc": 0.6086,
+     "dhash_dist": 107
+    },
+    {
+     "photo_id": 555130198,
+     "observation_id": 307746468,
+     "ncc": 0.6045,
+     "dhash_dist": 119
+    },
+    {
+     "photo_id": 403295148,
+     "observation_id": 227349679,
+     "ncc": 0.5896,
+     "dhash_dist": 110
+    }
+   ],
+   "matched": false
+  },
+  "queenanneslacepixelinspo2.jpg": {
+   "role": "pixel",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 214226947,
+     "observation_id": 126269249,
+     "ncc": 0.4708,
+     "dhash_dist": 117
+    },
+    {
+     "photo_id": 169251623,
+     "observation_id": 101357598,
+     "ncc": 0.4105,
+     "dhash_dist": 135
+    },
+    {
+     "photo_id": 211573149,
+     "observation_id": 124808547,
+     "ncc": 0.3962,
+     "dhash_dist": 99
+    }
+   ],
+   "matched": false
+  },
+  "queenanneslacepreviewinspo.jpeg": {
+   "role": "tall",
+   "size": [
+    1024,
+    768
+   ],
+   "best": [
+    {
+     "photo_id": 85703414,
+     "observation_id": 53876668,
+     "ncc": 0.443,
+     "dhash_dist": 131
+    },
+    {
+     "photo_id": 545161589,
+     "observation_id": 302497105,
+     "ncc": 0.4232,
+     "dhash_dist": 127
+    },
+    {
+     "photo_id": 545161630,
+     "observation_id": 302497105,
+     "ncc": 0.3558,
+     "dhash_dist": 136
+    }
+   ],
+   "matched": false
+  }
+ }
+}

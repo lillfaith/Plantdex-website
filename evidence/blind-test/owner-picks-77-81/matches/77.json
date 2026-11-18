@@ -1,0 +1,175 @@
+{
+ "card": 77,
+ "pool_photos": 719,
+ "download_failures": 2,
+ "matches": {
+  "wildpampixelinspo.jpg": {
+   "role": "pixel",
+   "size": [
+    1024,
+    768
+   ],
+   "best": [
+    {
+     "photo_id": 564835767,
+     "observation_id": 312816637,
+     "ncc": 0.2644,
+     "dhash_dist": 114
+    },
+    {
+     "photo_id": 532619618,
+     "observation_id": 295789186,
+     "ncc": 0.2418,
+     "dhash_dist": 119
+    },
+    {
+     "photo_id": 537571068,
+     "observation_id": 298441735,
+     "ncc": 0.2323,
+     "dhash_dist": 122
+    }
+   ],
+   "matched": false
+  },
+  "wildyammaininspo.jpg": {
+   "role": "main",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 508362510,
+     "observation_id": 282936887,
+     "ncc": 0.379,
+     "dhash_dist": 124
+    },
+    {
+     "photo_id": 207555724,
+     "observation_id": 122580491,
+     "ncc": 0.3706,
+     "dhash_dist": 118
+    },
+    {
+     "photo_id": 510617554,
+     "observation_id": 284139779,
+     "ncc": 0.3638,
+     "dhash_dist": 109
+    }
+   ],
+   "matched": false
+  },
+  "wildyammaininspo2.jpeg": {
+   "role": "main",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 673245610,
+     "observation_id": 368598793,
+     "ncc": 0.3379,
+     "dhash_dist": 115
+    },
+    {
+     "photo_id": 508014676,
+     "observation_id": 282749551,
+     "ncc": 0.3288,
+     "dhash_dist": 104
+    },
+    {
+     "photo_id": 220656593,
+     "observation_id": 129811596,
+     "ncc": 0.3174,
+     "dhash_dist": 117
+    }
+   ],
+   "matched": false
+  },
+  "wildyammaininspo3.jpeg": {
+   "role": "main",
+   "size": [
+    1024,
+    484
+   ],
+   "best": [
+    {
+     "photo_id": 78850080,
+     "observation_id": 49669545,
+     "ncc": 0.294,
+     "dhash_dist": 128
+    },
+    {
+     "photo_id": 164632498,
+     "observation_id": 98829825,
+     "ncc": 0.2834,
+     "dhash_dist": 130
+    },
+    {
+     "photo_id": 146097534,
+     "observation_id": 88541618,
+     "ncc": 0.2754,
+     "dhash_dist": 103
+    }
+   ],
+   "matched": false
+  },
+  "wildyampreviewinspo.jpg": {
+   "role": "tall",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 687808698,
+     "observation_id": 376189914,
+     "ncc": 0.3648,
+     "dhash_dist": 121
+    },
+    {
+     "photo_id": 423555069,
+     "observation_id": 237951237,
+     "ncc": 0.3425,
+     "dhash_dist": 113
+    },
+    {
+     "photo_id": 35179742,
+     "observation_id": 22702329,
+     "ncc": 0.3365,
+     "dhash_dist": 113
+    }
+   ],
+   "matched": false
+  },
+  "wildyampreviewinspo2.jpeg": {
+   "role": "tall",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 402039512,
+     "observation_id": 226677489,
+     "ncc": 0.3936,
+     "dhash_dist": 108
+    },
+    {
+     "photo_id": 342114868,
+     "observation_id": 194596430,
+     "ncc": 0.2942,
+     "dhash_dist": 110
+    },
+    {
+     "photo_id": 738436482,
+     "observation_id": 402261922,
+     "ncc": 0.2839,
+     "dhash_dist": 109
+    }
+   ],
+   "matched": false
+  }
+ }
+}

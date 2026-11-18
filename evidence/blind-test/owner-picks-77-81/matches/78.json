@@ -1,0 +1,147 @@
+{
+ "card": 78,
+ "pool_photos": 946,
+ "download_failures": 0,
+ "matches": {
+  "virginiapepperweedmaininspo.jpg": {
+   "role": "main",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 281466338,
+     "observation_id": 163001463,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 415602188,
+     "observation_id": 233829303,
+     "ncc": 0.4483,
+     "dhash_dist": 124
+    },
+    {
+     "photo_id": 658689435,
+     "observation_id": 360951352,
+     "ncc": 0.43,
+     "dhash_dist": 129
+    }
+   ],
+   "matched": true
+  },
+  "virginiapepperweedmaininspo2.jpg": {
+   "role": "main",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 59555229,
+     "observation_id": 37553732,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 21126290,
+     "observation_id": 14236476,
+     "ncc": 0.5928,
+     "dhash_dist": 102
+    },
+    {
+     "photo_id": 21126297,
+     "observation_id": 14236476,
+     "ncc": 0.5347,
+     "dhash_dist": 125
+    }
+   ],
+   "matched": true
+  },
+  "virginiapepperweedmaininspo3.jpg": {
+   "role": "main",
+   "size": [
+    1024,
+    1017
+   ],
+   "best": [
+    {
+     "photo_id": 603152145,
+     "observation_id": 332360409,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 458807696,
+     "observation_id": 255960791,
+     "ncc": 0.2981,
+     "dhash_dist": 122
+    },
+    {
+     "photo_id": 73222674,
+     "observation_id": 46168217,
+     "ncc": 0.275,
+     "dhash_dist": 126
+    }
+   ],
+   "matched": true
+  },
+  "virginiapepperweedpixelinspo.jpg": {
+   "role": "pixel",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 762524618,
+     "observation_id": 414229822,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 35386837,
+     "observation_id": 22832036,
+     "ncc": 0.3938,
+     "dhash_dist": 124
+    },
+    {
+     "photo_id": 39412824,
+     "observation_id": 25446194,
+     "ncc": 0.3715,
+     "dhash_dist": 124
+    }
+   ],
+   "matched": true
+  },
+  "virginiapepperweedpreviewinspo.jpeg": {
+   "role": "tall",
+   "size": [
+    684,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 398175614,
+     "observation_id": 224643816,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 762524595,
+     "observation_id": 414229822,
+     "ncc": 0.2667,
+     "dhash_dist": 111
+    },
+    {
+     "photo_id": 507490710,
+     "observation_id": 282470336,
+     "ncc": 0.2635,
+     "dhash_dist": 122
+    }
+   ],
+   "matched": true
+  }
+ }
+}

@@ -1,0 +1,147 @@
+{
+ "card": 79,
+ "pool_photos": 405,
+ "download_failures": 2,
+ "matches": {
+  "cinquefoilmaininspo.jpg": {
+   "role": "main",
+   "size": [
+    576,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 653628264,
+     "observation_id": 358307964,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 285929890,
+     "observation_id": 165200438,
+     "ncc": 0.1886,
+     "dhash_dist": 123
+    },
+    {
+     "photo_id": 668693961,
+     "observation_id": 366224827,
+     "ncc": 0.1861,
+     "dhash_dist": 106
+    }
+   ],
+   "matched": true
+  },
+  "cinquefoilmaininspo2.jpg": {
+   "role": "main",
+   "size": [
+    1024,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 652429309,
+     "observation_id": 357694351,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 463114502,
+     "observation_id": 258148639,
+     "ncc": 0.3117,
+     "dhash_dist": 115
+    },
+    {
+     "photo_id": 133878601,
+     "observation_id": 81618604,
+     "ncc": 0.2967,
+     "dhash_dist": 109
+    }
+   ],
+   "matched": true
+  },
+  "cinquefoilpixelinspo.jpg": {
+   "role": "pixel",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 488766416,
+     "observation_id": 271707850,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 109703772,
+     "observation_id": 67837668,
+     "ncc": 0.4551,
+     "dhash_dist": 99
+    },
+    {
+     "photo_id": 283888257,
+     "observation_id": 164097159,
+     "ncc": 0.3771,
+     "dhash_dist": 117
+    }
+   ],
+   "matched": true
+  },
+  "cinquefoilpreviewinspo.jpg": {
+   "role": "tall",
+   "size": [
+    1024,
+    681
+   ],
+   "best": [
+    {
+     "photo_id": 712111611,
+     "observation_id": 388883788,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 712111629,
+     "observation_id": 388883788,
+     "ncc": 0.7439,
+     "dhash_dist": 34
+    },
+    {
+     "photo_id": 40685867,
+     "observation_id": 26214503,
+     "ncc": 0.2996,
+     "dhash_dist": 113
+    }
+   ],
+   "matched": true
+  },
+  "cinquefoilpreviewinspo2.jpg": {
+   "role": "tall",
+   "size": [
+    768,
+    1024
+   ],
+   "best": [
+    {
+     "photo_id": 638240425,
+     "observation_id": 349846102,
+     "ncc": 1.0,
+     "dhash_dist": 0
+    },
+    {
+     "photo_id": 638240454,
+     "observation_id": 349846102,
+     "ncc": 0.5759,
+     "dhash_dist": 97
+    },
+    {
+     "photo_id": 293478975,
+     "observation_id": 169288963,
+     "ncc": 0.4121,
+     "dhash_dist": 114
+    }
+   ],
+   "matched": true
+  }
+ }
+}
