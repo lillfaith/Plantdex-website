@@ -1,0 +1,10 @@
+{
+ "source_zip": "30c5eb3c-PlantDex_63-66_FINAL_ASSETS_FOR_CLAUDE.zip",
+ "source_zip_sha256": "f061f9cacae17703a986949284188f96fd2b0a268fb328ed2ca38f07ed4d1ffe",
+ "files": {
+  "front_final.png": "389ff47c2c485dad0f8c725805a41949baeebd4e8cce561285201fe2f41a342e",
+  "back_final.png": "b6c53e9bc400b64d8bde5816ec5d3868c4feae66ad131fa3aac5e0ab1a605865",
+  "pixel_icon_native_24x24.png": "2a9ca4d43a3f16072ad0828256259d0db21dcb9ce681f27cdac07633f0ceb3df",
+  "main_cutout_edit.png": "85d4cf8046189d06dc760aec45c79878e8429c3e1e26b95f81936c9bc0cd5a5e"
+ }
+}
