@@ -1,0 +1,21 @@
+name: Pool filter probe
+# PRIVATE RESEARCH TOOL. Public iNaturalist API only. STARTED BY PUSHING evidence/blind-test/filter-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/blind-test/filter-request.json]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python3 scripts/production/pool_filter_probe.py evidence/blind-test/owner-picks-62-66.json
+      - run: |
+          mkdir -p evidence/blind-test/retrieval-probe && cp out/pool-filter-probe.json evidence/blind-test/retrieval-probe/
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/retrieval-probe; git commit -m "Pool filter probe (research only)"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
