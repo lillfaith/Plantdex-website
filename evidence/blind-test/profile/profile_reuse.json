@@ -1,0 +1,13 @@
+{
+ "part": "reuse",
+ "cpus": 4,
+ "download_s": 0.3532508909702301,
+ "n": 16,
+ "crop_reuse": {
+  "n_crops": 11,
+  "reuse_s": 0.02524475617842241,
+  "resegment_s": 7.832898725162853,
+  "mean_abs_score_diff": 1.254545454545455,
+  "max_abs_score_diff": 13.100000000000009
+ }
+}
