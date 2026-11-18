@@ -1,0 +1,34 @@
+name: Candidate package (unedited originals with verification)
+
+# PRIVATE DEVELOPMENT TOOL. Packages named candidate photographs, verified (own-photo CC0, taxon, highest size), unedited, with a manifest.
+# STARTED BY PUSHING evidence/candidate-packages/request.json. Edits nothing, deploys nothing.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/candidate-packages/request.json
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - id: fetch
+        continue-on-error: true
+        run: python3 scripts/production/fetch_candidates.py --request evidence/candidate-packages/request.json --out export
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plantdex-candidates
+          path: export
+          compression-level: 0
+          retention-days: 30
+      - name: Fail if any photograph failed a check
+        if: steps.fetch.outcome != 'success'
+        run: cat export/REPORT.txt; exit 1
