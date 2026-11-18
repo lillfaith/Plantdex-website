@@ -1,0 +1,74 @@
+{
+ "card": 76,
+ "observations_found": 6,
+ "observations_asked": 6,
+ "photos_checked": 52,
+ "matches": {
+  "groundhutmaininspo.jpg": {
+   "role": "main",
+   "matched": true,
+   "best": {
+    "photo_id": 567577626,
+    "observation_id": 314271100,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "groundhutpreviewinspo.jpg": {
+   "role": "tall",
+   "matched": true,
+   "best": {
+    "photo_id": 559621838,
+    "observation_id": 310093841,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "groundnutmaininspo.jpg": {
+   "role": "main",
+   "matched": true,
+   "best": {
+    "photo_id": 572541588,
+    "observation_id": 316872715,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "groundnutpixelinspo.jpeg": {
+   "role": "pixel",
+   "matched": false,
+   "best": {
+    "photo_id": 559621838,
+    "observation_id": 310093841,
+    "license": "cc0",
+    "ncc": 0.2341,
+    "dhash_dist": 113
+   }
+  },
+  "groundnutpixelinspo2.jpg": {
+   "role": "pixel",
+   "matched": true,
+   "best": {
+    "photo_id": 555236626,
+    "observation_id": 307801432,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "groundnutpreviewinspo.jpg": {
+   "role": "tall",
+   "matched": true,
+   "best": {
+    "photo_id": 565043996,
+    "observation_id": 312925323,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  }
+ }
+}

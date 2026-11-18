@@ -1,0 +1,63 @@
+{
+ "card": 79,
+ "observations_found": 8,
+ "observations_asked": 8,
+ "photos_checked": 16,
+ "matches": {
+  "cinquefoilmaininspo.jpg": {
+   "role": "main",
+   "matched": true,
+   "best": {
+    "photo_id": 653628264,
+    "observation_id": 358307964,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "cinquefoilmaininspo2.jpg": {
+   "role": "main",
+   "matched": true,
+   "best": {
+    "photo_id": 652429309,
+    "observation_id": 357694351,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "cinquefoilpixelinspo.jpg": {
+   "role": "pixel",
+   "matched": true,
+   "best": {
+    "photo_id": 488766416,
+    "observation_id": 271707850,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "cinquefoilpreviewinspo.jpg": {
+   "role": "tall",
+   "matched": true,
+   "best": {
+    "photo_id": 712111611,
+    "observation_id": 388883788,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  },
+  "cinquefoilpreviewinspo2.jpg": {
+   "role": "tall",
+   "matched": true,
+   "best": {
+    "photo_id": 638240425,
+    "observation_id": 349846102,
+    "license": "cc0",
+    "ncc": 1.0,
+    "dhash_dist": 0
+   }
+  }
+ }
+}
