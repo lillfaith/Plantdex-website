@@ -1,0 +1,7 @@
+{
+ "batch": "77-81",
+ "note": "v4.1 predictions only: top 12 per role and three joint triples. Each species is added once, before the owner chose, and never rewritten.",
+ "policy": "v4.1",
+ "sealed": {},
+ "species": {}
+}
