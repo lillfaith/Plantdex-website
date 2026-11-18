@@ -1,0 +1,11 @@
+{
+ "part": "timings",
+ "cpus": 4,
+ "download_s": 0.7690884172916412,
+ "n": 16,
+ "load_s": 0.0228012353181839,
+ "mask_s": 9.010825276374817,
+ "evaluate_one_view_s": 9.024686574935913,
+ "evaluate_views_s": 18.105658918619156,
+ "mean_views": 2.0
+}
