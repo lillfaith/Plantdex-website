@@ -1,0 +1,325 @@
+[
+ {
+  "card": 62,
+  "role": "main",
+  "photo_id": 72518818,
+  "interleaved_index": 819,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 1628,
+   "any-votes-deep": 446,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 62,
+  "role": "pixel",
+  "photo_id": 281944233,
+  "interleaved_index": 708,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 1087,
+   "any-votes-deep": 362,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 62,
+  "role": "tall",
+  "photo_id": 3724391,
+  "interleaved_index": 7,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": null,
+   "any-votes-deep": 2,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 63,
+  "role": "main",
+  "photo_id": 547150859,
+  "interleaved_index": 37,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": 24,
+   "flowering-recent": 11,
+   "flowering-newest-upload": 11,
+   "any-recent": 71,
+   "any-votes-deep": 45,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 63,
+  "role": "main",
+  "photo_id": 127092,
+  "interleaved_index": 50,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": 43,
+   "flowering-recent": 227,
+   "flowering-newest-upload": 228,
+   "any-recent": 650,
+   "any-votes-deep": 102,
+   "fruiting-votes": null,
+   "budding-votes": 14
+  },
+  "note": null
+ },
+ {
+  "card": 63,
+  "role": "main",
+  "photo_id": 661119321,
+  "interleaved_index": 123,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 47,
+   "any-votes-deep": 317,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 63,
+  "role": "pixel",
+  "photo_id": 231940855,
+  "interleaved_index": 144,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": 60,
+   "flowering-recent": 67,
+   "flowering-newest-upload": 69,
+   "any-recent": 300,
+   "any-votes-deep": 116,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 63,
+  "role": "tall",
+  "photo_id": 149770705,
+  "interleaved_index": 433,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 388,
+   "any-votes-deep": 410,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 64,
+  "role": "main",
+  "photo_id": 745700906,
+  "interleaved_index": 102,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 31,
+   "any-votes-deep": 346,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 64,
+  "role": "main",
+  "photo_id": 728257757,
+  "interleaved_index": 177,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 97,
+   "any-votes-deep": 487,
+   "fruiting-votes": null,
+   "budding-votes": 54
+  },
+  "note": null
+ },
+ {
+  "card": 64,
+  "role": "pixel",
+  "photo_id": 151903275,
+  "interleaved_index": null,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": 9,
+   "flowering-recent": 130,
+   "flowering-newest-upload": 132,
+   "any-recent": 795,
+   "any-votes-deep": 11,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": "dropped: observation already had 2 photos in the pool"
+ },
+ {
+  "card": 64,
+  "role": "pixel",
+  "photo_id": 89984767,
+  "interleaved_index": 344,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 978,
+   "any-votes-deep": 134,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 64,
+  "role": "tall",
+  "photo_id": 419948962,
+  "interleaved_index": 375,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 448,
+   "any-votes-deep": 161,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 65,
+  "role": "main",
+  "photo_id": 316785117,
+  "interleaved_index": 167,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 167,
+   "any-votes-deep": 114,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 65,
+  "role": "pixel",
+  "photo_id": 24700338,
+  "interleaved_index": null,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": null,
+   "any-votes-deep": null,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 65,
+  "role": "tall",
+  "photo_id": 21411326,
+  "interleaved_index": 194,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 326,
+   "any-votes-deep": 155,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 66,
+  "role": "main",
+  "photo_id": 430695917,
+  "interleaved_index": 887,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 1018,
+   "any-votes-deep": 619,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 66,
+  "role": "pixel",
+  "photo_id": 53367016,
+  "interleaved_index": 76,
+  "kept_in_first_320": true,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 2655,
+   "any-votes-deep": 23,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": null
+ },
+ {
+  "card": 66,
+  "role": "tall",
+  "photo_id": 675951613,
+  "interleaved_index": null,
+  "kept_in_first_320": false,
+  "position_in_each_query_list": {
+   "flowering-votes": null,
+   "flowering-recent": null,
+   "flowering-newest-upload": null,
+   "any-recent": 373,
+   "any-votes-deep": 230,
+   "fruiting-votes": null,
+   "budding-votes": null
+  },
+  "note": "dropped: observation already had 2 photos in the pool"
+ }
+]
