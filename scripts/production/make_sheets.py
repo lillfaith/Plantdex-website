@@ -19,6 +19,7 @@ from production import screen as S       # noqa: E402
 
 KIND = {62: "white", 63: "white", 64: "white", 65: "yellow", 66: "white", 77: "white", 78: "white", 79: "yellow", 80: "white", 81: "white"}
 CW, CH = 330, 470
+COLS = 0
 
 
 def font(n):
@@ -63,7 +64,7 @@ def tile(path, caption, card, pixel=False):
 def sheet(tiles, out):
     if not tiles:
         return
-    cols = 4 if not any(t.width > CW for t in tiles) else 2
+    cols = COLS if COLS else (4 if not any(t.width > CW for t in tiles) else 2)
     rows = (len(tiles) + cols - 1) // cols
     w = max(t.width for t in tiles)
     S_ = Image.new("RGB", (w * cols, (CH + 56) * rows), "white")
@@ -73,8 +74,12 @@ def sheet(tiles, out):
 
 
 def main() -> int:
+    global CW, CH, COLS
     a = sys.argv
     arg = lambda k, d=None: a[a.index(k) + 1] if k in a else d  # noqa: E731
+    if arg("--cell"):                      # e.g. 220x300: denser sheets for browsing many candidates
+        CW, CH = (int(x) for x in arg("--cell").split("x"))
+    COLS = int(arg("--cols", 0))
     res = json.load(open(arg("--result")))
     card, n = int(arg("--card")), int(arg("--n", 8))
     out = pathlib.Path(arg("--out")); out.mkdir(parents=True, exist_ok=True)

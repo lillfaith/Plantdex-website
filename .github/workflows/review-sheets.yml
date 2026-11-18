@@ -18,8 +18,10 @@ jobs:
           python-version: '3.12'
       - run: pip install --quiet $PIPDEPS
       - run: |
-          python3 scripts/production/make_sheets.py --result evidence/blind-test/review/62_tall_top40.json --card 62 --roles tall --n 20 --out out
-          python3 scripts/production/make_sheets.py --result evidence/blind-test/review/62_tall_top40.json --card 62 --roles tall --start 21 --n 40 --out out
+          for START in 41 71 101 131; do
+            END=$((START + 29))
+            python3 scripts/production/make_sheets.py --result evidence/blind-test/review/62_tall_top160.json --card 62 --roles tall --start $START --n $END --cell 220x300 --cols 6 --out out
+          done
       - run: |
           mkdir -p evidence/blind-test/review-sheets && cp out/*.jpg evidence/blind-test/review-sheets/
           git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
