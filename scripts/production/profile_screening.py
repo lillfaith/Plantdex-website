@@ -31,63 +31,66 @@ for r in rows:
     if p.get("file"):
         files.append(work / p["file"])
 print("downloaded", len(files), "mean s", round(float(np.mean(t_dl)), 2), "cpus", os.cpu_count(), flush=True)
-out = {"cpus": os.cpu_count(), "download_s": float(np.mean(t_dl)), "n": len(files)}
+part = arg("--part", "timings")
+out = {"part": part, "cpus": os.cpu_count(), "download_s": float(np.mean(t_dl)), "n": len(files)}
+outdir = pathlib.Path(arg("--out", "out")); outdir.mkdir(exist_ok=True)
+def dump():
+    json.dump(out, open(outdir / f"profile_{part.replace(':', '_')}.json", "w"), indent=1)
 
-# 1. stage timings with the current segmenter
-S.default_mask_fn(S.load_work(files[0]))   # warm up (model load excluded)
-tl, tm, tev, tviews, nviews = [], [], [], [], []
-for f in files:
-    t = time.time(); rgb = S.load_work(f); tl.append(time.time() - t)
-    t = time.time(); mask = S.default_mask_fn(rgb); tm.append(time.time() - t)
-    t = time.time(); S.evaluate(rgb, 2048, "white", S.default_mask_fn, policy="v4.1"); tev.append(time.time() - t)
-    t = time.time(); v = S.evaluate_views(rgb, 2048, "white", S.default_mask_fn, "v4.1"); tviews.append(time.time() - t); nviews.append(len(v))
-out.update({"load_s": float(np.mean(tl)), "mask_s": float(np.mean(tm)), "evaluate_one_view_s": float(np.mean(tev)), "evaluate_views_s": float(np.mean(tviews)), "mean_views": float(np.mean(nviews))})
-print(json.dumps(out), flush=True)
+if part == "timings":
+    # 1. stage timings with the current segmenter
+    S.default_mask_fn(S.load_work(files[0]))   # warm up (model load excluded)
+    tl, tm, tev, tviews, nviews = [], [], [], [], []
+    for f in files:
+        t = time.time(); rgb = S.load_work(f); tl.append(time.time() - t)
+        t = time.time(); mask = S.default_mask_fn(rgb); tm.append(time.time() - t)
+        t = time.time(); S.evaluate(rgb, 2048, "white", S.default_mask_fn, policy="v4.1"); tev.append(time.time() - t)
+        t = time.time(); v = S.evaluate_views(rgb, 2048, "white", S.default_mask_fn, "v4.1"); tviews.append(time.time() - t); nviews.append(len(v))
+    out.update({"load_s": float(np.mean(tl)), "mask_s": float(np.mean(tm)), "evaluate_one_view_s": float(np.mean(tev)), "evaluate_views_s": float(np.mean(tviews)), "mean_views": float(np.mean(nviews))})
+    print(json.dumps(out), flush=True)
 
-# 2. alternative segmenters: speed and agreement with the current mask
-from rembg import new_session, remove  # noqa: E402
-import segment_plant as SP  # noqa: E402
-ref = {f: S.default_mask_fn(S.load_work(f)) for f in files}
-def iou(a, b):
-    u = (a | b).sum(); return float((a & b).sum() / u) if u else 1.0
-alts = {}
-for name in ("u2netp", "silueta", "isnet-general-use", "birefnet-general-lite"):
-    try:
-        sess = new_session(name)
-    except Exception as e:  # noqa: BLE001
-        alts[name] = {"error": str(e)[:80]}; continue
+    dump()
+elif part.startswith("model:"):
+    # 2. one alternative segmenter: speed and agreement with the current mask
+    from rembg import new_session, remove  # noqa: E402
+    import segment_plant as SP  # noqa: E402
+    def iou(a, b):
+        u = (a | b).sum(); return float((a & b).sum() / u) if u else 1.0
+    name = part.split(":", 1)[1]
+    ref = {f: S.default_mask_fn(S.load_work(f)) for f in files}
+    sess = new_session(name)
     ts, ious = [], []
     for f in files:
-        rgb = S.load_work(f); t = time.time()
+        rgb = S.load_work(f); t0 = time.time()
         alpha = np.array(remove(Image.fromarray(rgb), session=sess).convert("RGBA").getchannel("A")); m = SP.tidy(alpha) > 127
-        ts.append(time.time() - t); ious.append(iou(m, ref[f]))
-    alts[name] = {"mean_s": float(np.mean(ts)), "mean_iou_vs_current": float(np.mean(ious)), "min_iou": float(np.min(ious)), "frac_iou_ge_0.9": float(np.mean(np.array(ious) >= 0.9))}
-    print(name, alts[name], flush=True)
-out["alternatives"] = alts
-
-# 3. reuse the full-frame mask for the subject-crop view instead of segmenting the crop again
-def evaluate_reuse(rgb, mask, kind):
-    ev = S.evaluate(rgb, 2048, kind, lambda _r: mask, policy="v4.1")
-    return ev
-same, tre, tnew = 0, [], []
-for f in files:
-    rgb = S.load_work(f); mask = ref[f]
-    full = S.evaluate(rgb, 2048, "white", lambda _r, m=mask: m, policy="v4.1")
-    boxes = S.crop_boxes(rgb, full, "white")
-    for label, (x, y, bw, bh) in boxes:
-        if label != "subject-crop":
-            continue
-        sub_rgb = np.ascontiguousarray(rgb[y:y + bh, x:x + bw]); sub_mask = np.ascontiguousarray(mask[y:y + bh, x:x + bw])
-        t = time.time(); e1 = S.evaluate(sub_rgb, 2048, "white", lambda _r, m=sub_mask: m, policy="v4.1"); tre.append(time.time() - t)
-        t = time.time(); e2 = S.evaluate(sub_rgb, 2048, "white", S.default_mask_fn, policy="v4.1"); tnew.append(time.time() - t)
-        from production import rank as R
-        for role in R.ROLES:
-            s1 = R.score_role(role, e1, {"identification_agreements": 2, "flowering_annotation": True}, 2048, "white", "v4.1")["score"]
-            s2 = R.score_role(role, e2, {"identification_agreements": 2, "flowering_annotation": True}, 2048, "white", "v4.1")["score"]
-            out.setdefault("crop_reuse_abs_score_diff", []).append(abs(s1 - s2))
-out["crop_reuse"] = {"n_crops": len(tre), "reuse_s": float(np.mean(tre)) if tre else None, "resegment_s": float(np.mean(tnew)) if tnew else None,
-                     "mean_abs_score_diff": float(np.mean(out.get("crop_reuse_abs_score_diff", [0]))), "max_abs_score_diff": float(np.max(out.get("crop_reuse_abs_score_diff", [0])))}
-out.pop("crop_reuse_abs_score_diff", None)
-print(json.dumps(out["crop_reuse"]), flush=True)
-pathlib.Path(arg("--out", "out")).mkdir(exist_ok=True)
-json.dump(out, open(pathlib.Path(arg("--out", "out")) / "profile.json", "w"), indent=1)
+        ts.append(time.time() - t0); ious.append(iou(m, ref[f]))
+    out["alternative"] = {"model": name, "mean_s": float(np.mean(ts)), "mean_iou_vs_current": float(np.mean(ious)), "min_iou": float(np.min(ious)), "frac_iou_ge_0.9": float(np.mean(np.array(ious) >= 0.9))}
+    print(out["alternative"], flush=True)
+    dump()
+elif part == "reuse":
+    ref = {f: S.default_mask_fn(S.load_work(f)) for f in files}
+    # 3. reuse the full-frame mask for the subject-crop view instead of segmenting the crop again
+    def evaluate_reuse(rgb, mask, kind):
+        ev = S.evaluate(rgb, 2048, kind, lambda _r: mask, policy="v4.1")
+        return ev
+    same, tre, tnew = 0, [], []
+    for f in files:
+        rgb = S.load_work(f); mask = ref[f]
+        full = S.evaluate(rgb, 2048, "white", lambda _r, m=mask: m, policy="v4.1")
+        boxes = S.crop_boxes(rgb, full, "white")
+        for label, (x, y, bw, bh) in boxes:
+            if label != "subject-crop":
+                continue
+            sub_rgb = np.ascontiguousarray(rgb[y:y + bh, x:x + bw]); sub_mask = np.ascontiguousarray(mask[y:y + bh, x:x + bw])
+            t = time.time(); e1 = S.evaluate(sub_rgb, 2048, "white", lambda _r, m=sub_mask: m, policy="v4.1"); tre.append(time.time() - t)
+            t = time.time(); e2 = S.evaluate(sub_rgb, 2048, "white", S.default_mask_fn, policy="v4.1"); tnew.append(time.time() - t)
+            from production import rank as R
+            for role in R.ROLES:
+                s1 = R.score_role(role, e1, {"identification_agreements": 2, "flowering_annotation": True}, 2048, "white", "v4.1")["score"]
+                s2 = R.score_role(role, e2, {"identification_agreements": 2, "flowering_annotation": True}, 2048, "white", "v4.1")["score"]
+                out.setdefault("crop_reuse_abs_score_diff", []).append(abs(s1 - s2))
+    out["crop_reuse"] = {"n_crops": len(tre), "reuse_s": float(np.mean(tre)) if tre else None, "resegment_s": float(np.mean(tnew)) if tnew else None,
+                         "mean_abs_score_diff": float(np.mean(out.get("crop_reuse_abs_score_diff", [0]))), "max_abs_score_diff": float(np.max(out.get("crop_reuse_abs_score_diff", [0])))}
+    out.pop("crop_reuse_abs_score_diff", None)
+    print(json.dumps(out["crop_reuse"]), flush=True)
+    dump()
