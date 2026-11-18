@@ -1,0 +1,13 @@
+{
+ "part": "model:silueta",
+ "cpus": 4,
+ "download_s": 0.6357679218053818,
+ "n": 16,
+ "alternative": {
+  "model": "silueta",
+  "mean_s": 0.37125952541828156,
+  "mean_iou_vs_current": 0.4913873279601415,
+  "min_iou": 0.0,
+  "frac_iou_ge_0.9": 0.3125
+ }
+}
