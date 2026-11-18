@@ -1,0 +1,31 @@
+name: Profile screening (where the time goes; which speedups are safe)
+# PRIVATE RESEARCH TOOL. Reads committed v4 results and the public iNaturalist API. Changes nothing.
+# STARTED BY PUSHING evidence/blind-test/profile-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/blind-test/profile-request.json]
+permissions:
+  contents: write
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - run: python3 scripts/production/profile_screening.py --result evidence/blind-test/retro/62_v4/result.json --n 24 --out out
+      - run: |
+          mkdir -p evidence/blind-test/profile && cp out/profile.json evidence/blind-test/profile/
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/profile; git commit -m "Screening profile (research only)"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
