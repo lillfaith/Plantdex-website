@@ -58,8 +58,12 @@ def main() -> int:
     pool = SE.build_pool_v4(tid) if policy == "v4" else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
     print(f"#{sp['card']} {sp['scientific']} policy={policy}: pool {len(pool)}", flush=True)
     by_pid = {p["photo_id"]: p for p in pool}
+    shard = arg("--shard")                       # "k/n": screen only every n-th photograph (pool order is deterministic); merge_shards.py joins the pieces
+    k, n_sh = (int(x) for x in shard.split("/")) if shard else (0, 1)
     rows = []
     for i, p in enumerate(pool):
+        if i % n_sh != k:
+            continue
         F.download([p], work, prefer="large")
         if not p.get("file"):
             continue
@@ -69,6 +73,25 @@ def main() -> int:
             print("  error", p["photo_id"], str(e)[:80])
         if i % 25 == 0:
             print(f"  {i}/{len(pool)}  {int(time.time() - t0)}s", flush=True)
+    if shard:
+        # a shard writes its rows only; shard 0 also scores the owner's picks (below) so the merge can rank them against the whole pool
+        res = {"card": sp["card"], "scientific": sp["scientific"], "policy": policy, "shard": shard, "pool_total": len(pool), "rows": rows, "owner_rows": []}
+        if picks_file_for_shard := arg("--owner-picks"):
+            if k == 0:
+                for pk in [x for x in json.load(open(picks_file_for_shard))["picks"] if x["card"] == sp["card"]]:
+                    ans = F.get(f"{F.API}/observations/{pk['observation_id']}") or {}
+                    obs = (ans.get("results") or [{}])[0]
+                    ph = next((x for x in obs.get("photos", []) if x.get("id") == pk["photo_id"]), None)
+                    if ph:
+                        dims = ph.get("original_dimensions") or {}
+                        p = {**NEUTRAL_OBS, "photo_id": ph["id"], "observation_id": obs["id"], "urls": {s: F.photo_url(ph, s) for s in F.SIZES},
+                             "orig_long": max(dims.get("width", 0), dims.get("height", 0)) or 2048, "identification_agreements": obs.get("num_identification_agreements") or 0}
+                        F.download([p], work, prefer="large")
+                        if p.get("file"):
+                            res["owner_rows"].append({**pk, "in_pool": pk["photo_id"] in by_pid, "row": score_photo(work / p["file"], p, sp["flower_kind"], policy)})
+        (out / f"shard_{k}.json").write_text(json.dumps(res, default=str))
+        print("shard", shard, "rows", len(rows))
+        return 0
     res = {"card": sp["card"], "scientific": sp["scientific"], "policy": policy, "pool": len(rows), "built": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
            "survivors": {}, "rejections": {}, "top12": {}, "joint_top3": R.joint_top3(rows)}
     for r in ROLES:

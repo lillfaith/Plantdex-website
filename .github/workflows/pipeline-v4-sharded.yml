@@ -1,0 +1,124 @@
+name: Pipeline v4 sharded (the four slow species, 6 shards each)
+
+# PRIVATE RESEARCH TOOL. Same computation as pipeline-v4.yml, split into shards so it fits the job time limit. Selects/approves/edits nothing.
+# STARTED BY PUSHING evidence/blind-test/v4-sharded-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/blind-test/v4-sharded-request.json
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [retro-0, retro-2, blind-3, blind-4]
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - name: Screen one shard of the v4 pool
+        run: |
+          BATCH=$(echo "${{ matrix.job }}" | cut -d- -f1); IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          if [ "$BATCH" = "retro" ]; then REQ=evidence/blind-test/species-62-66.json; PICKS="--owner-picks evidence/blind-test/owner-picks-62-66.json"; else REQ=evidence/blind-test/species-77-81.json; PICKS=""; fi
+          python3 scripts/production/pipeline_run.py --request $REQ --index $IDX --policy v4 --shard ${{ matrix.shard }}/6 $PICKS --out out/$BATCH
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.job }}-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+
+  merge:
+    needs: shard
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [retro-0, retro-2, blind-3, blind-4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: shard-${{ matrix.job }}-*
+          path: shards
+          merge-multiple: true
+      - name: Merge, and review sheets for retro
+        run: |
+          BATCH=$(echo "${{ matrix.job }}" | cut -d- -f1); IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          if [ "$BATCH" = "retro" ]; then CARD=$((62 + IDX)); else CARD=$((77 + IDX)); fi
+          python3 scripts/production/merge_shards.py --dir shards/$BATCH/${CARD}_v4 --out merged/$BATCH/${CARD}_v4
+          if [ "$BATCH" = "retro" ]; then
+            python3 scripts/production/make_sheets.py --result merged/$BATCH/${CARD}_v4/result.json --card $CARD --n 8 --out merged/sheets --owner-picks evidence/blind-test/owner-picks-62-66.json
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: merged-${{ matrix.job }}
+          path: merged
+          retention-days: 14
+
+  report:
+    needs: merge
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: merged-*
+          path: merged
+          merge-multiple: true
+      - name: Commit and seal (predictions are committed BEFORE the owner chooses)
+        run: |
+          mkdir -p evidence/blind-test/retro evidence/blind-test/77-81 evidence/blind-test/sheets
+          cp -r merged/retro/. evidence/blind-test/retro/ 2>/dev/null || true
+          cp -r merged/blind/. evidence/blind-test/77-81/ 2>/dev/null || true
+          cp -r merged/sheets/. evidence/blind-test/sheets/ 2>/dev/null || true
+          python3 - <<'P'
+          import glob, json, hashlib, datetime
+          sealed = {"sealed_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"), "batch": "77-81", "policy": "v4",
+                    "note": "v4 predictions only: top 12 per role and three joint triples. Written before the owner chose.", "species": {}}
+          for f in sorted(glob.glob("evidence/blind-test/77-81/*_v4/result.json")):
+              d = json.load(open(f))
+              sealed["species"][str(d["card"])] = {"scientific": d["scientific"], "pool": d["pool"], "top12": d["top12"], "joint_top3": d["joint_top3"]}
+          body = json.dumps(sealed, indent=1, sort_keys=True)
+          open("evidence/blind-test/77-81/PREDICTIONS_SEALED_V4.json", "w").write(body)
+          print("species sealed:", sorted(sealed["species"]), "sha256", hashlib.sha256(body.encode()).hexdigest())
+          P
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Pipeline v4 (sharded): merged results for the four slow species"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1
