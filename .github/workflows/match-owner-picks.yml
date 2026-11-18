@@ -24,7 +24,9 @@ jobs:
             [ -f "$R" ] || { echo "no sealed pool for $CARD"; continue; }
             python3 scripts/production/match_picks.py --card $CARD --result $R --images $D/images --map $D/map_$CARD.json --out $D/matches/$CARD.json
           done
+          python3 scripts/production/match_obs.py --obs $D/browsing-observations.json --images $D/images --maps $D --out $D/matches-browsing
+          git add $D/matches-browsing 2>/dev/null || true
           git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
-          git add $D/matches; git diff --staged --quiet && exit 0
+          git add $D/matches $D/matches-browsing; git diff --staged --quiet && exit 0
           git commit -m "Owner picks #77-81: photograph identification"
           for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
