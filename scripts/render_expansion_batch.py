@@ -33,6 +33,7 @@ K = R.WIDTH / REF_W
 MAIN_OPACITY = 0.95                      # main botanical layer at 95% (the deck's own photo opacity)
 PIXEL_DISPLAY = {57: 96}                 # approved: Boneset's icon displays 96px, the others ~91px
 PIXEL_DISPLAY_DEFAULT = 91
+PIXEL_SCALE = {}                         # owner-requested per-card icon scale (--pixel-scale N=0.85)
 # Element icons (water / sun / temperature) at the size they are drawn on the SHIPPED cards. The renderer's own
 # STAT_ROWS_INK came out larger (drops 35x54 vs 33x49, suns spilling into each other, thermometers 22x35 vs
 # 21x33), measured by colour-segmenting Dandelion/Pine from public/cards against this renderer's output.
@@ -278,7 +279,7 @@ def place_pixel(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     icon = Image.open(pkg / "cards" / str(n) / "pixel_icon_native_24x24.png").convert("RGBA")
     assert icon.size == (24, 24), icon.size
     ab = icon.getbbox()
-    disp = PIXEL_DISPLAY.get(n, PIXEL_DISPLAY_DEFAULT)
+    disp = PIXEL_DISPLAY.get(n, PIXEL_DISPLAY_DEFAULT) * PIXEL_SCALE.get(n, 1.0)
     f = disp / 24 * K                                   # shipped px per native px
     size = round(24 * f)
     x0, y0, x1, y1 = R.SLOT_PIXEL
@@ -334,9 +335,10 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
+    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--pixel-scale", nargs="*", default=[], help="N=FACTOR owner-requested icon scale for a card (0.85 = 15%% smaller), ink stays centred in the panel"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
     ap.add_argument("--cards", nargs="+", type=int, required=True); ap.add_argument("--out", required=True)
     a = ap.parse_args()
+    PIXEL_SCALE.update({int(k): float(v) for k, v in (x.split("=") for x in a.pixel_scale)})
     pkg, out = pathlib.Path(a.assets or "/nonexistent"), pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     cards = {c["cardNumber"]: c for c in json.load(open(a.data))["cards"]}
