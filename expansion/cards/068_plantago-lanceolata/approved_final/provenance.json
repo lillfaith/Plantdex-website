@@ -1,0 +1,13 @@
+{
+ "source_zip_sha256": "unknown (zip not on disk)",
+ "files": {
+  "front_final.png": {
+   "original_name": "68_Narrowleaf_Plantain_front_final.png",
+   "sha256": "1e980893c81826777b6ba3af11738700d049f70e4556f7b0fa6b8608c1c46bf3"
+  },
+  "back_final.png": {
+   "original_name": "68_Narrowleaf_Plantain_back_final.png",
+   "sha256": "9042e94107b397c25e096c5c5222dabdf3a1e6b7bb587254055cdfbb01835d47"
+  }
+ }
+}

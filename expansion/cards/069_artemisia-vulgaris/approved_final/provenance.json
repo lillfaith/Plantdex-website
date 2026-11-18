@@ -1,0 +1,13 @@
+{
+ "source_zip_sha256": "unknown (zip not on disk)",
+ "files": {
+  "front_final.png": {
+   "original_name": "69_Common_Mugwort_front_final.png",
+   "sha256": "2646e84af63e2abd266c999eaa8f412ab7260deaafb3864705decf35551768ec"
+  },
+  "back_final.png": {
+   "original_name": "69_Common_Mugwort_back_final.png",
+   "sha256": "c7b1e7a0b33413c9a7ef3d64627dc09c5c2744d1931c2e69e1c85da63415837c"
+  }
+ }
+}

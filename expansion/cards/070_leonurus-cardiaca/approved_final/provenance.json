@@ -1,0 +1,13 @@
+{
+ "source_zip_sha256": "unknown (zip not on disk)",
+ "files": {
+  "front_final.png": {
+   "original_name": "70_Motherwort_front_final.png",
+   "sha256": "838a780f41b32494a99777aaf1916c14b38bb59862a6464ce499ffe297e82bd2"
+  },
+  "back_final.png": {
+   "original_name": "70_Motherwort_back_final.png",
+   "sha256": "b297c56a2e7910da2be78771afdf9b9b4239f3543ec51bd5d76b2ba8d241a9a9"
+  }
+ }
+}

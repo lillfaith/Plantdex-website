@@ -334,7 +334,7 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
+    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
     ap.add_argument("--cards", nargs="+", type=int, required=True); ap.add_argument("--out", required=True)
     a = ap.parse_args()
     pkg, out = pathlib.Path(a.assets or "/nonexistent"), pathlib.Path(a.out)
@@ -353,10 +353,19 @@ def main() -> int:
                 overlay = align_tall(overlay, dict((int(k), float(v)) for k, v in (x.split('=') for x in a.tall_extra_cw)).get(n, 0.0))
             ov = overlay.resize((R.WIDTH, round(R.WIDTH * REF_H / REF_W)), Image.LANCZOS)
 
-        def pages(ov=ov):
+        approved_back = None
+        if a.approved_backs and (pkg / "cards" / str(n) / "back_final.png").exists():
+            approved_back = Image.open(pkg / "cards" / str(n) / "back_final.png").convert("RGBA")
+            ov = None                      # the approved back already carries its preview; computing one would stack a second silhouette
+
+        def pages(ov=ov, approved_back=approved_back):
             f, b = real_pages()
             b = b.copy()
             f = clear_template_tile(f)
+            if approved_back is not None:
+                # the approved 390x630 back, enlarged ONLY (no recolouring); text layers are drawn over it exactly as over the template
+                up = approved_back.resize(b.size, Image.LANCZOS)
+                b = Image.alpha_composite(Image.new("RGBA", b.size, (255, 255, 255, 255)), up).convert(b.mode)
             if ov is not None:
                 b.alpha_composite(ov, (0, 0))   # the preview sits UNDER the back text, as on the printed deck
             return f, b

@@ -1,0 +1,13 @@
+{
+ "source_zip_sha256": "unknown (zip not on disk)",
+ "files": {
+  "front_final.png": {
+   "original_name": "67_Curly_Dock_front_final.png",
+   "sha256": "1b2e904ba586407aca83c9bdd68a499a3c69a9c53556b6cba7316f1b526fcdd0"
+  },
+  "back_final.png": {
+   "original_name": "67_Curly_Dock_back_final.png",
+   "sha256": "0ad42e4a3e5a6a95d13cef0e8be5cf88f913d3425322b196eae5417152a79a3a"
+  }
+ }
+}

@@ -1,0 +1,13 @@
+{
+ "source_zip_sha256": "unknown (zip not on disk)",
+ "files": {
+  "front_final.png": {
+   "original_name": "71_New_York_Ironweed_front_final.png",
+   "sha256": "3b7db3083f83d4ef87e2349cbfe2f21ca293de8652df63775d7903b7401b83e5"
+  },
+  "back_final.png": {
+   "original_name": "71_New_York_Ironweed_back_final.png",
+   "sha256": "7b29e5e499230881037368aef097b90588ea30bfc0dbd09a8186376cfd28c962"
+  }
+ }
+}
