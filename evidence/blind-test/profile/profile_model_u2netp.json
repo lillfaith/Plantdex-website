@@ -1,0 +1,13 @@
+{
+ "part": "model:u2netp",
+ "cpus": 4,
+ "download_s": 0.7768251746892929,
+ "n": 16,
+ "alternative": {
+  "model": "u2netp",
+  "mean_s": 0.3397412747144699,
+  "mean_iou_vs_current": 0.39918368248031766,
+  "min_iou": 0.0,
+  "frac_iou_ge_0.9": 0.1875
+ }
+}
