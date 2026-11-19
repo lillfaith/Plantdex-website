@@ -11,7 +11,7 @@ import pathlib
 import statistics as st
 import sys
 
-VERS = ("v2", "v3", "v4", "v4.1", "v4.2")
+VERS = ("v2", "v3", "v4", "v4.1", "v4.2", "v4.3")
 ROLES = ("main", "pixel", "tall")
 
 

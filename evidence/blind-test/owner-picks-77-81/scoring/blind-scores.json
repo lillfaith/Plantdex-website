@@ -1977,6 +1977,230 @@
     "outcome": "not retrieved",
     "pool": 1200
    }
+  ],
+  "v4.3": [
+   {
+    "card": 80,
+    "role": "main",
+    "photo_id": 34162664,
+    "observation_id": 22060279,
+    "license": "cc0",
+    "file": "clovermaininspo2.jpg",
+    "outcome": "ranked",
+    "rank": 1355,
+    "of": 2459,
+    "pct": 0.551,
+    "score": 77.0,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 2823
+   },
+   {
+    "card": 80,
+    "role": "pixel",
+    "photo_id": 35673252,
+    "observation_id": 23015128,
+    "license": "cc0",
+    "file": "cloverpixelinspo.jpg",
+    "outcome": "ranked",
+    "rank": 1331,
+    "of": 2459,
+    "pct": 0.5413,
+    "score": 75.7,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 2823
+   },
+   {
+    "card": 80,
+    "role": "pixel",
+    "photo_id": 531801104,
+    "observation_id": 295408086,
+    "license": "cc0",
+    "file": "cloverpixelinspo2.jpg",
+    "outcome": "ranked",
+    "rank": 2361,
+    "of": 2459,
+    "pct": 0.9601,
+    "score": 36.5,
+    "flags": [
+     "perspective_unverified",
+     "flower_not_detected",
+     "id_thin"
+    ],
+    "pool": 2823
+   },
+   {
+    "card": 80,
+    "role": "tall",
+    "photo_id": 20162556,
+    "observation_id": 13688874,
+    "license": "cc0",
+    "file": "cloverpreviewinspo.jpeg",
+    "outcome": "ranked",
+    "rank": 189,
+    "of": 2459,
+    "pct": 0.0769,
+    "score": 87.5,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 2823
+   },
+   {
+    "card": 80,
+    "role": "tall",
+    "photo_id": 517080451,
+    "observation_id": 287569907,
+    "license": "cc0",
+    "file": "cloverpreviewinspo2.jpg",
+    "outcome": "ranked",
+    "rank": 26,
+    "of": 2459,
+    "pct": 0.0106,
+    "score": 90.4,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 2823
+   },
+   {
+    "card": 80,
+    "role": "main",
+    "photo_id": 721407476,
+    "observation_id": 393572900,
+    "license": "cc0",
+    "file": "whiteclovermaininspo.jpg",
+    "outcome": "ranked",
+    "rank": 312,
+    "of": 2459,
+    "pct": 0.1269,
+    "score": 83.0,
+    "flags": [
+     "perspective_unverified",
+     "little_foliage",
+     "id_thin"
+    ],
+    "pool": 2823
+   },
+   {
+    "card": 81,
+    "role": "main",
+    "photo_id": 208577549,
+    "observation_id": 123140809,
+    "license": "cc0",
+    "file": "queenannemaininspo.jpeg",
+    "outcome": "ranked",
+    "rank": 48,
+    "of": 3252,
+    "pct": 0.0148,
+    "score": 87.5,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 3527
+   },
+   {
+    "card": 81,
+    "role": "tall",
+    "photo_id": 49095360,
+    "observation_id": 31372723,
+    "license": "cc0",
+    "file": "queenannepreviewinspo.jpeg",
+    "outcome": "ranked",
+    "rank": 492,
+    "of": 3252,
+    "pct": 0.1513,
+    "score": 86.5,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 3527
+   },
+   {
+    "card": 81,
+    "role": "main",
+    "photo_id": 695933524,
+    "observation_id": 380401908,
+    "license": "cc0",
+    "file": "queenanneslacemaininspo2.jpg",
+    "outcome": "ranked",
+    "rank": 1915,
+    "of": 3252,
+    "pct": 0.5889,
+    "score": 70.7,
+    "flags": [
+     "perspective_unverified",
+     "role_floor_main",
+     "id_thin"
+    ],
+    "pool": 3527
+   },
+   {
+    "card": 81,
+    "role": "pixel",
+    "photo_id": 409279475,
+    "observation_id": 230497232,
+    "license": "cc0",
+    "file": "queenanneslacepixelbase.jpeg",
+    "outcome": "ranked",
+    "rank": 1075,
+    "of": 3252,
+    "pct": 0.3306,
+    "score": 77.4,
+    "flags": [
+     "perspective_unverified",
+     "competing_clusters",
+     "head_small_in_frame",
+     "id_thin"
+    ],
+    "pool": 3527
+   },
+   {
+    "card": 81,
+    "role": "pixel",
+    "photo_id": 400856772,
+    "observation_id": 226053348,
+    "license": "cc0",
+    "file": "queenanneslacepixelinspo2.jpg",
+    "outcome": "ranked",
+    "rank": 396,
+    "of": 3252,
+    "pct": 0.1218,
+    "score": 81.3,
+    "flags": [
+     "perspective_unverified",
+     "id_thin"
+    ],
+    "pool": 3527
+   },
+   {
+    "card": 81,
+    "role": "tall",
+    "photo_id": 446979902,
+    "observation_id": 249981708,
+    "license": "cc0",
+    "file": "queenanneslacepreviewinspo.jpeg",
+    "outcome": "ranked",
+    "rank": 1967,
+    "of": 3252,
+    "pct": 0.6049,
+    "score": 78.3,
+    "flags": [
+     "perspective_unverified",
+     "not_vertical",
+     "id_thin"
+    ],
+    "pool": 3527
+   }
   ]
  }
 }
