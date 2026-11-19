@@ -1,10 +1,11 @@
 {
- "source_zip": "a71dde4b-PlantDex_77-81_V15_REFINED_ASSETS.zip",
- "source_zip_sha256": "275c987773f1e1f48a48c0da60eae50362c68eed5a49668bcba661f3ee8c2dcb",
- "note": "V15 zip has no hi-res cutout: front is the approved 390x630 front enlarged with text drawn over it (render flag --front-from-final); icon redrawn crisp from the supplied native 24x24",
+ "source_zip": "1be703a1-PlantDex_77-81_V17_CLAUDE_ASSETS_UNDER_30MB.zip",
+ "source_zip_sha256": "c7fc71eb40262a7d84d293ffd712ca2ea45ee93806cd097b0dc58d8abc26f0aa",
+ "note": "V17 supplies the transparent generated cutout (STAGES/main_generated_cutout_used.png); front/back finals identical to V15",
  "files": {
   "front_final.png": "8aac16c6df40b65e499d1f3a07f925039ec37e93d103ccd87d45f06372d4c3b1",
   "back_final.png": "b30a152323319056d3e5d3b151d70bf9584f8247690a113bf76a99e6eb8bd577",
-  "pixel_icon_native_24x24.png": "04bbc58cf6e580d2b4ba1acaf2cea227be64bb309efb8e35691b83c709e7ae16"
+  "pixel_icon_native_24x24.png": "04bbc58cf6e580d2b4ba1acaf2cea227be64bb309efb8e35691b83c709e7ae16",
+  "main_generated_cutout_used.png": "7c91823dd04dead2ad2d59b11f9536e637c3f6627add78e5c008c2a991927243"
  }
 }
