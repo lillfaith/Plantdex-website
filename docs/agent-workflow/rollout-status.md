@@ -39,7 +39,8 @@ Full detail in `github-protections.md`. Headlines:
 | Rulesets | `github/ruleset-*.json` | DRAFTED, **OWNER** to apply |
 | Deploy approval gate | `github/deploy-approval-gate.patch` | DRAFTED, **not applied** (changes production deploy behaviour: needs approval) |
 | Asset audit and plan | `asset-audit.md` | audit done; every action needs approval |
-| `integration` branch | pushed from the production tip | see Step 3 evidence below |
+| `integration` branch | created at the production tip `2803e97` | done (through the branch API; the coordinator's own raw push to it is refused by the hook, as designed) |
+| PR gate proven in CI | PR #26 into `integration`, run `PR verify` #1 | done: `guard` and `verify` both succeeded in about 2 min 16 s, from the PR's own merge commit |
 
 Verification run on this branch: `npm run verify` exit 0, 131 test files / 2,065 tests. A clean-checkout
 baseline on the production tip took **61 s** (12 s for `npm ci`), so the PR gate is cheap enough to run on every PR.
@@ -58,6 +59,20 @@ to manage.** Two things shaped the design:
   exposes; budget control is by task size and the plan-level limits the owner sets.
 
 Fall back to local worktrees (`agents/README.md`) only if cloud sessions prove unable to push or open PRs reliably.
+
+## Findings from running it (these change what the owner needs to do)
+
+1. **An agent session can push a workflow file** (this branch added `.github/workflows/pr-verify.yml` and the
+   push was accepted). Repository secrets are reachable by a pushed workflow until they are
+   environment-scoped. See `github-protections.md` section 5. This, not the hook, is the main residual risk.
+2. **Nothing deployed.** After the backup branch, the Wave 0 branch and `integration` were created, the latest
+   `Deploy to GitHub Pages` run is still #180 (2026-11-16).
+3. **The hook works on its own author.** A raw push to the integration branch from the coordinator session was
+   refused, so branch creation had to go through the API deliberately. It also produced one false positive
+   (it scans a whole command, including text inside a heredoc); tracked as a follow-up to tighten.
+4. **Another automation is already running.** Commits are being pushed about once a minute to
+   `claude/production-system-v1`, each starting a roughly two-hour `photo-next.yml` run. It is outside every
+   control here and is the clearest example of why spend and secret scoping matter. Left untouched.
 
 ## Steps 4-6: PENDING
 

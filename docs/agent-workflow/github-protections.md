@@ -91,8 +91,21 @@ leave "Prevent self-review" **off** (you are the only reviewer). Then approve th
 ## 5. Secrets: the larger structural risk
 
 Every secret is a plain repository secret, readable by **any workflow run from any branch**. Anyone able to
-push a branch containing a workflow file can print them. Whether agent sessions can push workflow files at
-all is a question of the token's scope and is tested in section 6. The durable fix is to move the
+push a branch containing a workflow file can print them or send them elsewhere.
+
+**Measured 2026-11-19: an agent session CAN push a branch that adds a workflow file.** Pushing
+`coord/wave0-guardrails`, which adds `.github/workflows/pr-verify.yml`, was accepted. So the agent credential
+has workflow-file write access, and any agent session can in principle run code with the repository secrets
+(including `SUPABASE_ACCESS_TOKEN`, which reaches the production project). Nothing in Wave 0 closes this; the
+manifest and hook only discourage it. It is the most important reason the secret move below should happen
+before the three lanes launch.
+
+**Already visible in practice:** another automated session is currently pushing a commit about once a minute
+to `claude/production-system-v1`, each push starting a long-running `photo-next.yml` run (about two hours each)
+that uses repository secrets. That workflow lives only on that branch, is not part of the 30 reviewed above,
+and is a live example of a push-triggered, secret-reading run on an unprotected branch. It is the owner's
+existing automation and was left alone; it is flagged because its spend and secret use are outside every control
+described here. The durable fix is to move the
 production-capable secrets into **environments with reviewers and a branch rule**, which means editing the
 workflows that use them, so it is queued for approval rather than done here:
 
@@ -106,8 +119,8 @@ workflows that use them, so it is queued for approval rather than done here:
 
 | Question | Test | Pass means |
 |---|---|---|
-| Can an agent push a workflow file? | Push this branch (it adds `pr-verify.yml`) | Either answer is recorded: if refused, secrets are safe from branch-pushed workflows |
-| Does pushing a lane/coordinator/integration branch deploy? | List deploy runs before and after | No new `Deploy to GitHub Pages` run |
+| Can an agent push a workflow file? | Push this branch (it adds `pr-verify.yml`) | **Result: YES, accepted.** Secrets are therefore reachable by a branch-pushed workflow until they are environment-scoped (section 5) |
+| Does pushing a lane/coordinator/integration branch deploy? | List deploy runs before and after | **Result: no.** After pushing `backup/...`, `coord/wave0-guardrails` and creating `integration`, the latest `Deploy to GitHub Pages` run is still #180 from 2026-11-16 |
 | Does the PR gate run on a PR into `integration`? | Open the Wave 0 PR | `guard` and `verify` both run and pass |
 | Does the guard catch a violation? | Pilot task deliberately edits a Tier 0 path on a throwaway branch | `guard` fails |
 | Can an agent approve a deployment or change settings? | Attempt via the available API tools | Refused (not attempted until the environment gate exists) |
