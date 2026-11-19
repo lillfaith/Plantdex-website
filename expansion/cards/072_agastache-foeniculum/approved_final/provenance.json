@@ -1,0 +1,12 @@
+{
+ "source_zip": "6e64303d-PlantDex_72-76_V10_FINISHED_ASSETS_ONLY.zip",
+ "source_zip_sha256": "5b8840ba9a93088d070c4c5e31541b68971b3b8a67ab6a2d2b029397b8c68375",
+ "source_folder": "73_Anise_Hyssop",
+ "note": "zip folder numbers are the OLD numbering (Blue Mistflower was #72); card numbers here are the current master numbering",
+ "files": {
+  "front_final.png": "4c772a77897d356c4f59964a70edf8b08f8d8bfd8822a836f5871aa122eb0155",
+  "back_final.png": "b13f8b945e06b9767a82572ae87424e5f59d9f88f1d4412e7af32d78591780bc",
+  "pixel_icon_native_24x24.png": "cfd109e6e2022cd684e870f49349278d4a26d88af5d2b915085d5638ef1942ef",
+  "main_transparent.png": "db18e23a6cf153e7bc116e001d06bb13d1d9421aaa542df7aa176937f9e9a9ab"
+ }
+}

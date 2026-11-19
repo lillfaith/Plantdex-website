@@ -1,0 +1,12 @@
+{
+ "source_zip": "6e64303d-PlantDex_72-76_V10_FINISHED_ASSETS_ONLY.zip",
+ "source_zip_sha256": "5b8840ba9a93088d070c4c5e31541b68971b3b8a67ab6a2d2b029397b8c68375",
+ "source_folder": "75_Smooth_Solomons_Seal",
+ "note": "zip folder numbers are the OLD numbering (Blue Mistflower was #72); card numbers here are the current master numbering",
+ "files": {
+  "front_final.png": "8c80f261d7f4c8a466d1d3e7eecef13ee975341f6a312c41671ddd34287f8152",
+  "back_final.png": "2dd0a805c02b7f18f7461158e424baba497742e51f7a5f14b1e97f1bab2fc93c",
+  "pixel_icon_native_24x24.png": "455d9d4e98b7ad737bcf615c40fcbf0a4b67781e1e8642a6e699bf4188c73a07",
+  "main_transparent.png": "42c4d10434b7ab6b8e42d4fd670eeb0abe864d7286a49266b74c19ce01619e68"
+ }
+}

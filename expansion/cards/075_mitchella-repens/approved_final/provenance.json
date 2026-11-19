@@ -1,0 +1,12 @@
+{
+ "source_zip": "6e64303d-PlantDex_72-76_V10_FINISHED_ASSETS_ONLY.zip",
+ "source_zip_sha256": "5b8840ba9a93088d070c4c5e31541b68971b3b8a67ab6a2d2b029397b8c68375",
+ "source_folder": "76_Partridgeberry",
+ "note": "zip folder numbers are the OLD numbering (Blue Mistflower was #72); card numbers here are the current master numbering",
+ "files": {
+  "front_final.png": "18651fcf34f4789c4a9d6eb2ec224419cf126e86b9b984f338a12ae45068d6e0",
+  "back_final.png": "b15213f9e7796ad1af8e49d32ec6f6237de3c635484e952c0ac434eb519c63a1",
+  "pixel_icon_native_24x24.png": "a529d2723ada3b784cb8515cf99c4f75ecfceabc03d3b0543ad01f51b8b0e659",
+  "main_transparent.png": "b341df92a6a97d519e4b6f51d434ff01260731d9e8d8c9518c3331714ad7caa4"
+ }
+}

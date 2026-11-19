@@ -1,0 +1,12 @@
+{
+ "source_zip": "6e64303d-PlantDex_72-76_V10_FINISHED_ASSETS_ONLY.zip",
+ "source_zip_sha256": "5b8840ba9a93088d070c4c5e31541b68971b3b8a67ab6a2d2b029397b8c68375",
+ "source_folder": "74_Virginia_Spring_Beauty",
+ "note": "zip folder numbers are the OLD numbering (Blue Mistflower was #72); card numbers here are the current master numbering",
+ "files": {
+  "front_final.png": "f3d388739363254abc3b909f8870ee0e0196ee435fdb24942287ebae784c4913",
+  "back_final.png": "c05279eb53b5b7a7f557e94366895580af9d80a0bc2bfe57114383f162a8e24e",
+  "pixel_icon_native_24x24.png": "9d2fc6a9394314fd8909cf27e994388f4c9224d4a5b82c90fa1513bc09f72157",
+  "main_transparent.png": "17186ab201c456660a51e95dff539bce9464d351863998acc9400d0f7878659f"
+ }
+}
