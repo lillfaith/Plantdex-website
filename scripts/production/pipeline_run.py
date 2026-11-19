@@ -49,9 +49,10 @@ def main() -> int:
     sp = req["species"][int(arg("--index"))]
     policy = arg("--policy", "v3")
     limit = int(arg("--limit", 320))
-    out = pathlib.Path(arg("--out")) / f"{sp['card']}_{policy}"
+    tag = arg("--tag", policy)         # output name only; scoring is always `policy`
+    out = pathlib.Path(arg("--out")) / f"{sp['card']}_{tag}"
     out.mkdir(parents=True, exist_ok=True)
-    work = pathlib.Path("_work") / f"{sp['card']}_{policy}"
+    work = pathlib.Path("_work") / f"{sp['card']}_{tag}"
     taxon = F.resolve_taxon(sp["scientific"])
     tid = taxon["id"]
     t0 = time.time()
@@ -59,7 +60,7 @@ def main() -> int:
     if pool_file and pathlib.Path(pool_file).exists():
         pool = json.load(open(pool_file))
     else:
-        pool = SE.build_pool_v4(tid) if policy in ("v4", "v4.1", "v4.2") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
+        pool = (SE.build_pool_v43(tid) if arg("--pool-builder") == "v43" else SE.build_pool_v4(tid)) if policy in ("v4", "v4.1", "v4.2") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
         if pool_file:
             pathlib.Path(pool_file).parent.mkdir(parents=True, exist_ok=True)
             json.dump(pool, open(pool_file, "w"), default=str)

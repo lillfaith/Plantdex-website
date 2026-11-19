@@ -1,0 +1,123 @@
+name: Pipeline v4.3 retrieval (depth by species size) on #80 and #81 - scoring is v4.2
+
+# PRIVATE RESEARCH TOOL. Same scoring as v4.2; only the candidate pool differs (deeper votes retrieval for species with many observations). Selects nothing.
+# STARTED BY PUSHING evidence/blind-test/v43-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths:
+      - evidence/blind-test/v43-request.json
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+
+jobs:
+  pool:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: [b-3, b-4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - run: |
+          IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-77-81.json --index $IDX --policy v4.2 --pool-builder v43 --tag v4.3 --pool-file pools/${{ matrix.job }}.json --pool-only --out out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pool-${{ matrix.job }}
+          path: pools
+          retention-days: 7
+
+  shard:
+    needs: pool
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [b-3, b-4]
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: u2net-birefnet-lite
+      - uses: actions/download-artifact@v4
+        with:
+          name: pool-${{ matrix.job }}
+          path: pools
+      - run: |
+          IDX=$(echo "${{ matrix.job }}" | cut -d- -f2)
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-77-81.json --index $IDX --policy v4.2 --pool-builder v43 --tag v4.3 --pool-file pools/${{ matrix.job }}.json --shard ${{ matrix.shard }}/16 --out out/b
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.job }}-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+
+  merge:
+    needs: shard
+    if: always()
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: [b-3, b-4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: shard-${{ matrix.job }}-*
+          path: shards
+          merge-multiple: true
+      - run: |
+          IDX=$(echo "${{ matrix.job }}" | cut -d- -f2); CARD=$((77 + IDX))
+          python3 scripts/production/merge_shards.py --dir shards/b/${CARD}_v4.3 --out merged/b/${CARD}_v4.3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: merged-${{ matrix.job }}
+          path: merged
+          retention-days: 14
+
+  report:
+    needs: merge
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: merged-*
+          path: merged
+          merge-multiple: true
+      - name: Commit
+        run: |
+          D=evidence/blind-test/77-81
+          for CARD in 80 81; do mkdir -p $D/${CARD}_v4.3; cp merged/b/${CARD}_v4.3/result.json $D/${CARD}_v4.3/ 2>/dev/null || true; done
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/77-81
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Pipeline v4.3 retrieval on #80 and #81: results (research only)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          exit 1

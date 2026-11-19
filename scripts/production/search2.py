@@ -189,3 +189,37 @@ def build_pool_v4(taxon_id: int, log=print, limit: int = 1200) -> list[dict]:
                 break
         log(f"   source {name}: +{len(pool) - n0} new CC0 photos")
     return pool[:limit]
+
+
+# --- v4.3 retrieval: depth scales with how many observations the species has -----------------------------------------------------------------
+# The blind batch (#80 clover, #81 Queen Anne's lace) showed v4's fixed 400-observation depth is only a large share of a SMALL species: the owner's missed picks sat
+# at votes positions ~470-1,750 of 5,000-6,800 observations. Species up to ~1,500 observations keep the v4 depth (every earlier pick was inside it); larger ones
+# go to 2,000. The photograph cut is raised so the last sources (recent) are not silently truncated. Depth was chosen AFTER seeing these picks, so it is a
+# measured fix for a diagnosed miss and NOT yet evidence of generalisation.
+V43_SMALL_SPECIES_OBS = 1500
+V43_LARGE_VOTES_PAGES = 10
+V43_CAP = 4000
+
+
+def build_pool_v43(taxon_id: int, log=print, limit: int = V43_CAP) -> list[dict]:
+    probe = (F.get(f"{F.API}/observations?" + F.urllib.parse.urlencode({"taxon_id": taxon_id, "photo_license": "cc0", "quality_grade": "research", "photos": "true", "per_page": 1})) or {})
+    total = probe.get("total_results") or 0
+    votes_pages = V43_LARGE_VOTES_PAGES if total > V43_SMALL_SPECIES_OBS else 2
+    log(f"   {total} CC0 research observations -> votes-deep {votes_pages} pages")
+    seen, pool = set(), []
+    for name, extra, pages in V4_SOURCES:
+        n0 = len(pool)
+        for page in range(1, (votes_pages if name == "votes-deep" else pages) + 1):
+            params = {"taxon_id": taxon_id, "photo_license": "cc0", "quality_grade": "research", "photos": "true",
+                      "per_page": 200, "page": page, **extra}
+            rows = (F.get(f"{F.API}/observations?{F.urllib.parse.urlencode(params)}") or {}).get("results", [])
+            for obs in rows:
+                for p in photos_of(obs, taxon_id, name, min_edge=V4_MIN_EDGE):
+                    if p["photo_id"] not in seen:
+                        seen.add(p["photo_id"])
+                        pool.append(p)
+            time.sleep(1.0)
+            if len(rows) < 200:
+                break
+        log(f"   source {name}: +{len(pool) - n0} new CC0 photos")
+    return pool[:limit]
