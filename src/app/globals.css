@@ -3147,3 +3147,4 @@ body {
     transition: none;
   }
 }
+/* guard negative test: must be rejected by CI, never merged */
