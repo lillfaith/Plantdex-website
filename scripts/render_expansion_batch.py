@@ -335,7 +335,7 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--pixel-scale", nargs="*", default=[], help="N=FACTOR owner-requested icon scale for a card (0.85 = 15%% smaller), ink stays centred in the panel"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
+    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--pixel-scale", nargs="*", default=[], help="N=FACTOR owner-requested icon scale for a card (0.85 = 15%% smaller), ink stays centred in the panel"); ap.add_argument("--front-from-final", action="store_true", help="no hi-res cutout is available: use cards/<n>/front_final.png (the owner-approved 390x630 front, main photo baked in) enlarged as the front page, with the pixel-icon panel restored from the template so the supplied native icon is drawn crisp; text layers go on top as usual"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
     ap.add_argument("--cards", nargs="+", type=int, required=True); ap.add_argument("--out", required=True)
     a = ap.parse_args()
     PIXEL_SCALE.update({int(k): float(v) for k, v in (x.split("=") for x in a.pixel_scale)})
@@ -347,7 +347,7 @@ def main() -> int:
     for n in a.cards:
         c = cards[n]
         rec = card_record(c)
-        has_art = (pkg / "cards" / str(n) / "main_source.png").exists()
+        has_art = (pkg / "cards" / str(n) / "main_source.png").exists() or (a.front_from_final and (pkg / "cards" / str(n) / "front_final.png").exists())
         ov = None
         if has_art:
             overlay = Image.open(pkg / "cards" / str(n) / "back_gradient_mask_overlay.png").convert("RGBA")
@@ -360,10 +360,18 @@ def main() -> int:
             approved_back = Image.open(pkg / "cards" / str(n) / "back_final.png").convert("RGBA")
             ov = None                      # the approved back already carries its preview; computing one would stack a second silhouette
 
-        def pages(ov=ov, approved_back=approved_back):
+        final_front = Image.open(pkg / "cards" / str(n) / "front_final.png").convert("RGBA") if (a.front_from_final and (pkg / "cards" / str(n) / "front_final.png").exists()) else None
+
+        def pages(ov=ov, approved_back=approved_back, final_front=final_front):
             f, b = real_pages()
             b = b.copy()
             f = clear_template_tile(f)
+            if final_front is not None:
+                k = f.size[0] / final_front.size[0]
+                up = final_front.resize(f.size, Image.LANCZOS)
+                bx = tuple(round(v * k) for v in (258, 372, 361, 491))        # the pixel-icon panel: restored from the template, the icon is redrawn crisp
+                up.paste(f.crop(bx), bx[:2])
+                f = clear_template_tile(Image.alpha_composite(Image.new("RGBA", up.size, (255, 255, 255, 255)), up).convert(f.mode))
             if approved_back is not None:
                 # the approved 390x630 back, enlarged ONLY (no recolouring); text layers are drawn over it exactly as over the template
                 up = approved_back.resize(b.size, Image.LANCZOS)
@@ -377,7 +385,8 @@ def main() -> int:
         back = R.render_back(rec, blocked)
         R.template_pages = real_pages
         if has_art:
-            info = {"main": place_main(front, n, pkg), "pixel": place_pixel(front, n, pkg), "renderer_notes": blocked}
+            has_cut = (pkg / "cards" / str(n) / "main_source.png").exists()
+            info = {"main": place_main(front, n, pkg) if has_cut else {"fit": "approved-final-front-enlarged", "source_aspect": 1.0, "placed_aspect": 1.0}, "pixel": place_pixel(front, n, pkg), "renderer_notes": blocked}
         else:
             info = {"art": "NONE YET: rendered without main image, pixel icon or tall preview", "renderer_notes": blocked}
         d = out / f"{n:03d}_{c['id']}"

@@ -1,0 +1,10 @@
+{
+ "source_zip": "a71dde4b-PlantDex_77-81_V15_REFINED_ASSETS.zip",
+ "source_zip_sha256": "275c987773f1e1f48a48c0da60eae50362c68eed5a49668bcba661f3ee8c2dcb",
+ "note": "V15 zip has no hi-res cutout: front is the approved 390x630 front enlarged with text drawn over it (render flag --front-from-final); icon redrawn crisp from the supplied native 24x24",
+ "files": {
+  "front_final.png": "6a699aee0b3028f2fe7db33781d8b4223bd1dc236515c484a08a7c1281ca76d6",
+  "back_final.png": "b96256d160be15d1ca80f73085ab4b83769e3cfa782fdc5b94aa29dfd12e27a8",
+  "pixel_icon_native_24x24.png": "0e9b6f08c596b864a6645b8badfee8942f971f8b5a6cc41d1621684c5c513d6a"
+ }
+}
