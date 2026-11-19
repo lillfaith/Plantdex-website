@@ -1,0 +1,11 @@
+{
+ "source_zip": "50f4b572-PlantDex_82-86_V3_REFINED_FEATURE_CROP_CLAUDE_ASSETS_UNDER_30MB.zip",
+ "source_zip_sha256": "1654ec6eb28877a5baa1d98fa29d754675b04a3dd85c805e05fe7ea01d9a3351",
+ "note": "V3 refined feature-crop package; hi-res cutout fitted to the supplied front; back is the supplied final",
+ "files": {
+  "front_final.png": "4a848962b776a8f7cc76c1980fe96826f5583fab298811cc59507152d74516be",
+  "back_final.png": "fb8961da782b4d06ebd8bfa23c5088cd143ea055d70eb7074351e3c5794c6a33",
+  "pixel_icon_native_24x24.png": "28d17e7a9b726f1435fcffba48d6b066ab19bfad5fc5ac5214e7776066de23e4",
+  "main_generated_cutout_used.png": "1802f979aecf3a7377f87d3048b03ce7709c3f8af83b225652989806ab765bfa"
+ }
+}
