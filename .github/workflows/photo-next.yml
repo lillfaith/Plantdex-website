@@ -1,0 +1,83 @@
+name: Photo search for one card (v4.3 retrieval, v4.2 scoring, contact sheets)
+
+# PRIVATE TOOL. One run = one card from evidence/blind-test/species-82-141.json. Finds and ranks CC0 candidates and builds labelled contact sheets (top 12 per role).
+# Selects/approves/edits nothing. STARTED BY PUSHING evidence/photo-batches/next/request.json ({"card": N}); every push is its own run, so several cards can be queued.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/photo-batches/next/request.json]
+permissions:
+  contents: write
+  actions: read
+env:
+  PIPDEPS: pillow numpy opencv-python-headless rembg onnxruntime pymupdf
+jobs:
+  pool:
+    runs-on: ubuntu-latest
+    outputs:
+      card: ${{ steps.c.outputs.card }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - id: c
+        run: python3 -c "import json;print('card=%d' % json.load(open('evidence/photo-batches/next/request.json'))['card'])" >> "$GITHUB_OUTPUT"
+      - run: pip install --quiet $PIPDEPS
+      - run: |
+          CARD=${{ steps.c.outputs.card }}; IDX=$((CARD - 82))
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-82-141.json --index $IDX --policy v4.2 --pool-builder v43 --tag v4.3 --pool-file pools/pool.json --pool-only --out out
+      - uses: actions/upload-artifact@v4
+        with: { name: pool, path: pools, retention-days: 7 }
+  shard:
+    needs: pool
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/cache@v4
+        with: { path: ~/.u2net, key: u2net-birefnet-lite }
+      - uses: actions/download-artifact@v4
+        with: { name: pool, path: pools }
+      - run: |
+          CARD=${{ needs.pool.outputs.card }}; IDX=$((CARD - 82))
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-82-141.json --index $IDX --policy v4.2 --pool-builder v43 --tag v4.3 --pool-file pools/pool.json --shard ${{ matrix.shard }}/12 --out out/b
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+  report:
+    needs: [pool, shard]
+    if: always() && needs.pool.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet $PIPDEPS
+      - uses: actions/download-artifact@v4
+        with: { pattern: shard-*, path: shards, merge-multiple: true }
+      - run: |
+          CARD=${{ needs.pool.outputs.card }}
+          python3 scripts/production/merge_shards.py --dir shards/b/${CARD}_v4.3 --out merged/${CARD}_v4.3
+          python3 scripts/production/make_sheets.py --result merged/${CARD}_v4.3/result.json --card $CARD --n 12 --cols 4 --out sheets || true
+          D=evidence/photo-batches/82-141/$CARD; mkdir -p $D/sheets
+          cp sheets/*.jpg $D/sheets/ 2>/dev/null || true
+          python3 - "$CARD" <<'P'
+          import json,sys
+          c=sys.argv[1]; r=json.load(open(f"merged/{c}_v4.3/result.json"))
+          r["pool_scores"]=[{"photo_id":x["photo_id"],"observation_id":x["observation_id"],"scores":{k:{"score":v["score"],"rejected":v["rejected"]} for k,v in x["scores"].items()}} for x in r["pool_scores"]]
+          json.dump(r,open(f"evidence/photo-batches/82-141/{c}/result.json","w"))
+          P
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/photo-batches/82-141
+          git diff --staged --quiet && exit 0
+          git commit -m "Photo search #$CARD (v4.3 retrieval, v4.2 scoring): ranked candidates and contact sheets"
+          for i in 1 2 3 4 5 6 7 8; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i * 6)); done; exit 1

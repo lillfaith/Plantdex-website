@@ -1,0 +1,385 @@
+{
+ "species": [
+  {
+   "card": 82,
+   "common": "American Skullcap",
+   "scientific": "Scutellaria lateriflora",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 83,
+   "common": "Mountain Monardella",
+   "scientific": "Monardella odoratissima",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 84,
+   "common": "Slippery Elm",
+   "scientific": "Ulmus rubra",
+   "flower_kind": "none"
+  },
+  {
+   "card": 85,
+   "common": "Black Cherry",
+   "scientific": "Prunus serotina",
+   "flower_kind": "white"
+  },
+  {
+   "card": 86,
+   "common": "Black Walnut",
+   "scientific": "Juglans nigra",
+   "flower_kind": "none"
+  },
+  {
+   "card": 87,
+   "common": "Eastern Red Cedar",
+   "scientific": "Juniperus virginiana",
+   "flower_kind": "none"
+  },
+  {
+   "card": 88,
+   "common": "Pawpaw",
+   "scientific": "Asimina triloba",
+   "flower_kind": "brown"
+  },
+  {
+   "card": 89,
+   "common": "American Persimmon",
+   "scientific": "Diospyros virginiana",
+   "flower_kind": "none"
+  },
+  {
+   "card": 90,
+   "common": "Flowering Dogwood",
+   "scientific": "Cornus florida",
+   "flower_kind": "white"
+  },
+  {
+   "card": 91,
+   "common": "Eastern Redbud",
+   "scientific": "Cercis canadensis",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 92,
+   "common": "American Sweetgum",
+   "scientific": "Liquidambar styraciflua",
+   "flower_kind": "none"
+  },
+  {
+   "card": 93,
+   "common": "American Sycamore",
+   "scientific": "Platanus occidentalis",
+   "flower_kind": "none"
+  },
+  {
+   "card": 94,
+   "common": "Sweetfern",
+   "scientific": "Comptonia peregrina",
+   "flower_kind": "none"
+  },
+  {
+   "card": 95,
+   "common": "American Beech",
+   "scientific": "Fagus grandifolia",
+   "flower_kind": "none"
+  },
+  {
+   "card": 96,
+   "common": "American Basswood",
+   "scientific": "Tilia americana",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 97,
+   "common": "Yaupon Holly",
+   "scientific": "Ilex vomitoria",
+   "flower_kind": "none"
+  },
+  {
+   "card": 98,
+   "common": "Southern Wax Myrtle",
+   "scientific": "Morella cerifera",
+   "flower_kind": "none",
+   "alt_names": [
+    "Myrica cerifera"
+   ]
+  },
+  {
+   "card": 99,
+   "common": "Devil's Walkingstick",
+   "scientific": "Aralia spinosa",
+   "flower_kind": "white"
+  },
+  {
+   "card": 100,
+   "common": "Canadian Serviceberry",
+   "scientific": "Amelanchier canadensis",
+   "flower_kind": "white"
+  },
+  {
+   "card": 101,
+   "common": "Muscadine Grape",
+   "scientific": "Vitis rotundifolia",
+   "flower_kind": "none",
+   "alt_names": [
+    "Muscadinia rotundifolia"
+   ]
+  },
+  {
+   "card": 102,
+   "common": "California Poppy",
+   "scientific": "Eschscholzia californica",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 103,
+   "common": "California Yerba Santa",
+   "scientific": "Eriodictyon californicum",
+   "flower_kind": "white"
+  },
+  {
+   "card": 104,
+   "common": "California Spikenard",
+   "scientific": "Aralia californica",
+   "flower_kind": "white"
+  },
+  {
+   "card": 105,
+   "common": "California Mugwort",
+   "scientific": "Artemisia douglasiana",
+   "flower_kind": "none"
+  },
+  {
+   "card": 106,
+   "common": "California Bay Laurel",
+   "scientific": "Umbellularia californica",
+   "flower_kind": "none"
+  },
+  {
+   "card": 107,
+   "common": "Oregon Grape",
+   "scientific": "Mahonia aquifolium",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 108,
+   "common": "Cascara",
+   "scientific": "Frangula purshiana",
+   "flower_kind": "none",
+   "alt_names": [
+    "Rhamnus purshiana"
+   ]
+  },
+  {
+   "card": 109,
+   "common": "Salal",
+   "scientific": "Gaultheria shallon",
+   "flower_kind": "white"
+  },
+  {
+   "card": 110,
+   "common": "California Figwort",
+   "scientific": "Scrophularia californica",
+   "flower_kind": "brown"
+  },
+  {
+   "card": 111,
+   "common": "Red-Flowering Currant",
+   "scientific": "Ribes sanguineum",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 112,
+   "common": "Desert Lavender",
+   "scientific": "Condea emoryi",
+   "flower_kind": "pink_purple",
+   "alt_names": [
+    "Hyptis emoryi"
+   ]
+  },
+  {
+   "card": 113,
+   "common": "Desert Globemallow",
+   "scientific": "Sphaeralcea ambigua",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 114,
+   "common": "Jojoba",
+   "scientific": "Simmondsia chinensis",
+   "flower_kind": "none"
+  },
+  {
+   "card": 115,
+   "common": "Engelmann Prickly Pear",
+   "scientific": "Opuntia engelmannii",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 116,
+   "common": "Honey Mesquite",
+   "scientific": "Prosopis glandulosa",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 117,
+   "common": "Desert Willow",
+   "scientific": "Chilopsis linearis",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 118,
+   "common": "Yerba Mansa",
+   "scientific": "Anemopsis californica",
+   "flower_kind": "white"
+  },
+  {
+   "card": 119,
+   "common": "Desert Chia",
+   "scientific": "Salvia columbariae",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 120,
+   "common": "Brittlebush",
+   "scientific": "Encelia farinosa",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 121,
+   "common": "Mormon Tea",
+   "scientific": "Ephedra trifurca",
+   "flower_kind": "none"
+  },
+  {
+   "card": 122,
+   "common": "Rocky Mountain Beeplant",
+   "scientific": "Cleomella serrulata",
+   "flower_kind": "pink_purple",
+   "alt_names": [
+    "Peritoma serrulata"
+   ]
+  },
+  {
+   "card": 123,
+   "common": "Arrowleaf Balsamroot",
+   "scientific": "Balsamorhiza sagittata",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 124,
+   "common": "Fireweed",
+   "scientific": "Chamerion angustifolium",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 125,
+   "common": "Kinnikinnick",
+   "scientific": "Arctostaphylos uva-ursi",
+   "flower_kind": "white"
+  },
+  {
+   "card": 126,
+   "common": "Swamp Rose Mallow",
+   "scientific": "Hibiscus moscheutos",
+   "flower_kind": "white"
+  },
+  {
+   "card": 127,
+   "common": "Quaking Aspen",
+   "scientific": "Populus tremuloides",
+   "flower_kind": "none"
+  },
+  {
+   "card": 128,
+   "common": "Big Sagebrush",
+   "scientific": "Artemisia tridentata",
+   "flower_kind": "none"
+  },
+  {
+   "card": 129,
+   "common": "Canada Buffaloberry",
+   "scientific": "Shepherdia canadensis",
+   "flower_kind": "none"
+  },
+  {
+   "card": 130,
+   "common": "American Licorice",
+   "scientific": "Glycyrrhiza lepidota",
+   "flower_kind": "white"
+  },
+  {
+   "card": 131,
+   "common": "Curlycup Gumweed",
+   "scientific": "Grindelia squarrosa",
+   "flower_kind": "yellow"
+  },
+  {
+   "card": 132,
+   "common": "Leadplant",
+   "scientific": "Amorpha canescens",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 133,
+   "common": "Purple Prairie Clover",
+   "scientific": "Dalea purpurea",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 134,
+   "common": "Narrowleaf Purple Coneflower",
+   "scientific": "Echinacea angustifolia",
+   "flower_kind": "pink_purple"
+  },
+  {
+   "card": 135,
+   "common": "Fringed Sagewort",
+   "scientific": "Artemisia frigida",
+   "flower_kind": "none"
+  },
+  {
+   "card": 136,
+   "common": "Saw Palmetto",
+   "scientific": "Serenoa repens",
+   "flower_kind": "white"
+  },
+  {
+   "card": 137,
+   "common": "Spanish Needles",
+   "scientific": "Bidens alba",
+   "flower_kind": "white"
+  },
+  {
+   "card": 138,
+   "common": "Water Hyssop (Brahmi)",
+   "scientific": "Bacopa monnieri",
+   "flower_kind": "white",
+   "alt_names": [
+    "Bacopa monniera"
+   ]
+  },
+  {
+   "card": 139,
+   "common": "Saw Greenbrier",
+   "scientific": "Smilax bona-nox",
+   "flower_kind": "none"
+  },
+  {
+   "card": 140,
+   "common": "Bog Labrador Tea",
+   "scientific": "Rhododendron groenlandicum",
+   "flower_kind": "white",
+   "alt_names": [
+    "Ledum groenlandicum"
+   ]
+  },
+  {
+   "card": 141,
+   "common": "Lingonberry",
+   "scientific": "Vaccinium vitis-idaea",
+   "flower_kind": "white"
+  }
+ ]
+}

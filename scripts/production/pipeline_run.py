@@ -53,7 +53,14 @@ def main() -> int:
     out = pathlib.Path(arg("--out")) / f"{sp['card']}_{tag}"
     out.mkdir(parents=True, exist_ok=True)
     work = pathlib.Path("_work") / f"{sp['card']}_{tag}"
-    taxon = F.resolve_taxon(sp["scientific"])
+    taxon = None
+    for nm in [sp["scientific"], *sp.get("alt_names", [])]:      # accepted synonyms are listed explicitly in the species file, never guessed
+        taxon = F.resolve_taxon(nm)
+        if taxon:
+            break
+    if taxon is None:
+        print(f"NO ACTIVE SPECIES TAXON for {sp['scientific']} (tried {[sp['scientific'], *sp.get('alt_names', [])]})", flush=True)
+        return 3
     tid = taxon["id"]
     t0 = time.time()
     pool_file = arg("--pool-file")      # sharded runs must all screen the SAME pool: iNaturalist changes while shards run, so the pool is built once and shared

@@ -18,6 +18,12 @@ import fetch_inat_photos as F            # noqa: E402
 from production import screen as S       # noqa: E402
 
 KIND = {62: "white", 63: "white", 64: "white", 65: "yellow", 66: "white", 77: "white", 78: "white", 79: "yellow", 80: "white", 81: "white", 72: "pink_purple", 73: "white", 74: "white", 75: "white", 76: "brown"}
+try:                                    # species files carry the flower colour kind for every card in the batch
+    for _f in pathlib.Path(__file__).resolve().parents[2].glob("evidence/blind-test/species-*.json"):
+        for _s in json.load(open(_f))["species"]:
+            KIND.setdefault(_s["card"], _s["flower_kind"])
+except Exception:
+    pass
 CW, CH = 330, 470
 COLS = 0
 
