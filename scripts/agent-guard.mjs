@@ -12,8 +12,10 @@
  * Modes
  *   hook                       Claude Code PreToolUse hook. Reads the tool call as JSON on stdin and
  *                              the role from AGENT_ROLE. No role set = a human session = allow all.
- *   diff [--role R] [--base B] Check every file changed between B (default origin/integration) and
- *                              HEAD. Role comes from --role, else from the branch name.
+ *   diff [--role R] [--base B] [--manifest M]
+ *                              Check every file changed between B (default origin/integration) and
+ *                              HEAD. Role comes from --role, else from the branch name. CI passes M as the
+ *                              base branch's copy of agents/ownership.json.
  *   who <path>                 Print which rule owns a path.
  *
  * Exit codes: 0 allowed, 1 violation (diff/who), 2 blocked (hook, the code Claude Code treats as a
@@ -283,7 +285,9 @@ function runDiff(manifest, args) {
 const isMain = process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url;
 if (isMain) {
   const [mode, ...rest] = process.argv.slice(2);
-  const manifest = loadManifest();
+  // CI passes the BASE branch's copy of the manifest, so a pull request cannot loosen the rules it is judged by.
+  const manifestFlag = rest.indexOf('--manifest');
+  const manifest = loadManifest(manifestFlag >= 0 ? rest[manifestFlag + 1] : undefined);
   if (mode === 'hook') process.exit(runHook(manifest));
   else if (mode === 'diff') process.exit(runDiff(manifest, rest));
   else if (mode === 'who') {

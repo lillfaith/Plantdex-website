@@ -47,10 +47,16 @@ jobs:
           fi
           echo "base=$BASE head=$HEAD: ok"
 
+      # JUDGED BY THE BASE BRANCH'S RULES, NOT THE PR'S OWN. A pull request that edited agents/ownership.json or
+      # scripts/agent-guard.mjs would otherwise be checked against its own edit. Both files are read from the base
+      # branch, so the first PR that changes them is judged by the old rules, which is the point.
       - name: Every changed file belongs to the author's lane
         env:
           BASE: ${{ github.base_ref }}
-        run: node scripts/agent-guard.mjs diff --base "origin/$BASE"
+        run: |
+          git show "origin/$BASE:scripts/agent-guard.mjs" > "$RUNNER_TEMP/agent-guard.mjs"
+          git show "origin/$BASE:agents/ownership.json" > "$RUNNER_TEMP/ownership.json"
+          node "$RUNNER_TEMP/agent-guard.mjs" diff --manifest "$RUNNER_TEMP/ownership.json" --base "origin/$BASE"
 
   verify:
     name: verify
