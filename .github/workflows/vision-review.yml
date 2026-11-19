@@ -46,6 +46,7 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
+    environment: anthropic-paid
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -27,6 +27,7 @@ permissions:
 jobs:
   identity:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.project_ref == 'vygiamigomwlvnwkryyl' && 'supabase-production' || 'supabase-test' }}
     steps:
       - uses: actions/checkout@v4
       - env:

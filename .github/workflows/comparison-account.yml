@@ -50,6 +50,7 @@ env:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    environment: supabase-test
     steps:
       - name: Refuse to run against anything but the test project
         # ENFORCED, NOT CONVENTIONAL. `PROJECT_REF` is a literal above with no input feeding

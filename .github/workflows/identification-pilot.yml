@@ -79,6 +79,7 @@ env:
 jobs:
   pilot:
     runs-on: ubuntu-latest
+    environment: supabase-test
     steps:
       - name: Refuse to run against anything but the test project
         # ENFORCED, NOT CONVENTIONAL. `PROJECT_REF` is a literal with no input feeding it, so

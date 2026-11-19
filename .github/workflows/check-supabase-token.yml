@@ -45,6 +45,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.project_ref == 'vygiamigomwlvnwkryyl' && 'supabase-production' || 'supabase-test' }}
     steps:
       - name: Fail early if the token is missing
         env:
