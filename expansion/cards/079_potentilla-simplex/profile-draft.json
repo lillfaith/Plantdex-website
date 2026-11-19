@@ -20,9 +20,10 @@
   "back": {
    "healingTraits": [
     "Astringent",
-    "Sore throat aid",
     "Gum soothing",
-    "Skin soothing"
+    "Digestive aid",
+    "Antioxidant",
+    "Sore throat aid"
    ],
    "compounds": [
     "Tannins",

@@ -19,9 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Cough soothing",
+    "Cough aid",
     "Throat soothing",
-    "Mild astringent"
+    "Mild astringent",
+    "Antioxidant",
+    "Vascular support"
    ],
    "compounds": [
     "Prunasin",

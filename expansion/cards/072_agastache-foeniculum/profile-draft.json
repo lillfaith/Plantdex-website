@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Digestive aid",
-    "Breath freshening",
+    "Wound healing",
     "Throat soothing",
-    "Calming aroma"
+    "Antioxidant",
+    "Antimicrob.",
+    "Breath freshening"
    ],
    "compounds": [
     "Rosmarinic acid",

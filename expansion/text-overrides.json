@@ -36,6 +36,18 @@
    "to": "Phenolic acid",
    "by": "owner",
    "why": "Owner asked for the singular form."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Astringent",
+    "Gum soothing",
+    "Digestive aid",
+    "Antioxidant",
+    "Sore throat aid"
+   ],
+   "by": "owner",
+   "why": "Owner: removed 'Skin soothing'; added 'Digestive aid' and 'Antioxidant'. Longest trait last (centred)."
   }
  ],
  "89": [
@@ -595,6 +607,181 @@
    ],
    "by": "owner",
    "why": "Owner: added 'Hormone support' and 'Menstrual health'; removed 'Bitter tonic', 'Fever aid', 'Skin wash'. Longest trait last (centred)."
+  }
+ ],
+ "72": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound healing",
+    "Throat soothing",
+    "Antioxidant",
+    "Antimicrobial",
+    "Breath freshening"
+   ],
+   "by": "owner",
+   "why": "Owner: 'Calming aroma' -> 'Antioxidant'; added 'Antimicrobial'; 'Digestive aid' -> 'Wound healing'. Longest trait last (centred)."
+  }
+ ],
+ "73": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Antispasmodic",
+    "Nutrient-rich",
+    "Starchy energy"
+   ],
+   "by": "owner",
+   "why": "Owner: 'Spasm folk use' -> 'Antispasmodic'."
+  }
+ ],
+ "74": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Joint soothing",
+    "Tissue support",
+    "Glucose reg.",
+    "Metabolic"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Glucose reg.' and 'Metabolic'; removed 'Skin soothing'."
+  }
+ ],
+ "76": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Plant protein",
+    "Dietary fiber",
+    "Mineral source",
+    "Cardiovascular support",
+    "Anti-inflam.",
+    "Glucose reg."
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Cardiovascular support', 'Anti-inflam.', 'Glucose reg.'; removed 'Starchy energy'. (Card not built yet.)"
+  }
+ ],
+ "77": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cramp relief",
+    "Muscle soothing",
+    "Expectorant",
+    "Women's health",
+    "Menopause support"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Expectorant', 'Menopause support', 'Women's health'; removed 'Spasm relief' and 'Digestive aid'. Longest trait last (centred)."
+  }
+ ],
+ "78": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Vitamin-rich",
+    "Antiprotozoal",
+    "Digestive aid",
+    "Antidiabetic"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Antiprotozoal', 'Digestive aid', 'Antidiabetic'; removed 'Nutritive greens' and 'Antioxidant-rich'."
+  }
+ ],
+ "80": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Mineral source",
+    "Antioxidant",
+    "Wound aid",
+    "Antitumor"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Antioxidant', 'Wound aid', 'Antitumor'; removed 'Edible greens' and 'Dietary fiber'."
+  }
+ ],
+ "81": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Carminative",
+    "Women's health",
+    "Antitumor",
+    "Antioxidant",
+    "Anti-inflam."
+   ],
+   "by": "owner",
+   "why": "Owner: removed 'Aromatic bitter'; added 'Women's health', 'Antitumor', 'Antioxidant', 'Anti-inflam.'."
+  }
+ ],
+ "82": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Mood support",
+    "Sleep aid",
+    "Restlessness aid"
+   ],
+   "by": "owner",
+   "why": "Owner: 'Sleep support' -> 'Sleep aid'; removed 'Tension relief'; 'Calming' -> 'Mood support'."
+  }
+ ],
+ "83": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Breath freshening",
+    "Carminative",
+    "Anti-inflam."
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Carminative' and 'Anti-inflam.'; removed 'Aromatic'."
+  }
+ ],
+ "84": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Throat coating",
+    "Cough aid",
+    "Gut soothing",
+    "Bladder aid"
+   ],
+   "by": "owner",
+   "why": "Owner: 'Mucilage-rich' -> 'Bladder aid'; removed 'Skin soothing'; 'Cough soothing' -> 'Cough aid'."
+  }
+ ],
+ "85": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cough aid",
+    "Throat soothing",
+    "Mild astringent",
+    "Antioxidant",
+    "Vascular support"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Antioxidant' and 'Vascular support'; 'Cough soothing' -> 'Cough aid' (owner wrote 'cough air'; read as a typo for 'Cough aid')."
+  }
+ ],
+ "86": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Astringent",
+    "Nutrient-rich",
+    "Cholesterol aid",
+    "Cytotoxic",
+    "Cardiovascular aid"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Cholesterol aid', 'Cardiovascular aid', 'Cytotoxic'; removed 'Skin cleansing' and 'Folk antifungal'. Longest trait last (centred)."
   }
  ]
 }

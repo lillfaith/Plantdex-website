@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Skin cleansing",
     "Astringent",
-    "Folk antifungal",
-    "Nutrient-rich"
+    "Nutrient-rich",
+    "Cholesterol aid",
+    "Cytotoxic",
+    "Cardiovascular aid"
    ],
    "compounds": [
     "Juglone",
