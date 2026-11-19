@@ -1,0 +1,16 @@
+{
+  "$comment": "Wave 0 agent guard. The hook reads agents/ownership.json. It enforces nothing for a human session (no AGENT_ROLE and a branch with no lane prefix); it refuses an agent session's out-of-lane edits, edits outside its worktree, and the GitHub tools that act outside a worktree. It is a convenience layer: the real boundary is the GitHub ruleset and deploy approval gate in docs/agent-workflow/github-protections.md.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|Bash|mcp__github__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/agent-guard.mjs\" hook"
+          }
+        ]
+      }
+    ]
+  }
+}
