@@ -278,6 +278,18 @@ describe('forbidden commands', () => {
     expect(checkCommand(command)).not.toBeNull();
   });
 
+  it('ignores prose that only mentions a forbidden command', () => {
+    expect(checkCommand('git commit -m "Explain why git push origin integration is refused"')).toBeNull();
+    expect(checkCommand("python3 - <<'EOF'\nprint('git push origin integration')\nEOF\ngit status")).toBeNull();
+    expect(checkCommand('git commit -F - <<EOF\nthe gh workflow run command stays blocked\nEOF')).toBeNull();
+  });
+
+  it('still catches a real command that is quoted, chained or after prose', () => {
+    expect(checkCommand('git push origin "integration"')).not.toBeNull();
+    expect(checkCommand('git commit -m "ok then" && git push origin integration')).not.toBeNull();
+    expect(checkCommand("echo 'a b' ; gh workflow run deploy-function.yml")).not.toBeNull();
+  });
+
   it.each(['npm run verify', 'git push origin agent/scan/better-ranking', 'git status', 'npx vitest run src/lib/ownership.test.ts'])(
     'allows %s',
     (command) => {

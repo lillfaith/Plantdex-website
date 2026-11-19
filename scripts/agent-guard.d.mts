@@ -23,5 +23,6 @@ export function globToRegExp(glob: string): RegExp;
 export function resolveRule(path: string, manifest: OwnershipManifest): OwnershipRule | null;
 export function canWrite(role: string, path: string, manifest: OwnershipManifest): boolean;
 export function roleFromBranch(branch: string | null | undefined, manifest: OwnershipManifest): string | null;
+export function stripProse(command: string): string;
 export function checkCommand(command: string): string | null;
 export function checkTool(role: string, tool: string): string | null;

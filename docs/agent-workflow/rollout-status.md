@@ -69,7 +69,9 @@ Fall back to local worktrees (`agents/README.md`) only if cloud sessions prove u
    `Deploy to GitHub Pages` run is still #180 (2026-11-16).
 3. **The hook works on its own author.** A raw push to the integration branch from the coordinator session was
    refused, so branch creation had to go through the API deliberately. It also produced one false positive
-   (it scans a whole command, including text inside a heredoc); tracked as a follow-up to tighten.
+   (it scanned a whole command, including prose inside a heredoc). Fixed in the same PR: heredoc bodies and
+   quoted prose are stripped before matching, with tests for both the false positive and the real commands
+   that must still be caught.
 4. **Another automation is already running.** Commits are being pushed about once a minute to
    `claude/production-system-v1`, each starting a roughly two-hour `photo-next.yml` run. It is outside every
    control here and is the clearest example of why spend and secret scoping matter. Left untouched.

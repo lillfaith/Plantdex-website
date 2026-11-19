@@ -105,9 +105,23 @@ const FORBIDDEN_COMMANDS = [
   [/\bnpm\s+run\s+(build:deck|build:sprites|build:chips|build:product)\b/, 'a generated-asset build (owner-run only)'],
 ];
 
+/**
+ * What the shell would actually run, with prose removed. A commit message or a heredoc that merely MENTIONS
+ * "git push ... integration" is not a push, and flagging it makes the guard something agents learn to route
+ * around. Heredoc bodies and quoted strings containing whitespace are dropped; a branch name never contains
+ * whitespace, so a real `git push origin "integration"` keeps its quoted word and is still caught.
+ */
+export function stripProse(command) {
+  return command
+    .replace(/<<-?\s*(['"]?)(\w+)\1[^\n]*\n[\s\S]*?\n\s*\2(?=\s|$)/g, ' ')
+    .replace(/'[^']*\s[^']*'/g, "''")
+    .replace(/"[^"]*\s[^"]*"/g, '""');
+}
+
 export function checkCommand(command) {
+  const code = stripProse(command);
   for (const [pattern, what] of FORBIDDEN_COMMANDS) {
-    if (pattern.test(command)) return what;
+    if (pattern.test(code)) return what;
   }
   return null;
 }
