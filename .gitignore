@@ -40,3 +40,18 @@ plantdex-ad-assets*.zip
 ad-assets/
 *-codes.csv
 bundle-guard.json
+
+# ── Personal photographs and bulky pipeline evidence ─────────────────────────────────────
+# Kept OFF the public repository (docs/agent-workflow/asset-audit.md). The text, JSON and
+# attribution records under evidence/ stay tracked; only the image binaries are ignored, and
+# the originals live in the owner's private backup. The pipeline's own store for these is the
+# asset bucket (docs/pipeline-2k.md), not git.
+/iCloud Photos from*/
+/evidence/photos/**/*.jpg
+/evidence/photos/**/*.jpeg
+/evidence/photos/**/*.png
+/evidence/candidates/**/*.png
+/evidence/candidates/**/*.jpg
+/evidence/segmentation/**/*.png
+/evidence/segmentation/**/*.jpg
+/evidence/segmentation/**/*.jpeg
