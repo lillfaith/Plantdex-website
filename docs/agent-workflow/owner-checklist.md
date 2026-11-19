@@ -1,94 +1,98 @@
-# Owner checklist: what only you can do in GitHub
+# Owner checklist: only what requires your personal GitHub account
 
-Everything below needs your personal account. Order matters. No secret value ever goes in a chat, issue, file
-or screenshot; type or paste it only into the GitHub secret box or the provider's own page. When a step is done,
-tell me its number; I run the matching acceptance test.
+Everything not listed here I do myself (pull requests, patches, tests, documentation). No secret value ever goes into
+a chat, an issue, a file or a screenshot: type or paste it only into the GitHub secret box or the provider's own page.
+Repository settings live at `https://github.com/lillfaith/Plantdex-website/settings`. Tell me the step number when
+done; I run the matching test and report the evidence.
 
-Repository settings live at `https://github.com/lillfaith/Plantdex-website/settings`.
+## Part 1: identities and rules (about 20 minutes)
 
-## Step 1. Read the Claude GitHub App's permissions (2 minutes; decides how strong the guarantees can be)
-GitHub -> your profile photo -> **Settings** -> **Applications** -> **Installed GitHub Apps** -> **Claude** ->
-**Configure**. Scroll to **Permissions** and send me the permission *names* and whether each says Read or Write
-(for example "Contents: Write"). I need especially: **Administration, Actions, Deployments, Environments,
-Secrets, Workflows, Pull requests, Contents**. If Administration, Environments or Secrets say Write, stop and tell
-me before anything else.
+**1. Read the Claude GitHub App's permissions.**
+Profile photo -> **Settings** -> **Applications** -> **Installed GitHub Apps** -> **Claude** -> **Configure** -> scroll to
+*Repository permissions*.
+Send me the permission names and Read/Write. I most need: Administration, Actions, Deployments, Environments, Secrets,
+Workflows, Contents, Pull requests.
+*Verify:* you have the list. If Administration, Environments or Secrets say Write, stop and tell me.
 
-## Step 2. Create the integration ruleset, then the production ruleset (5 minutes)
-Settings -> **Rules** -> **Rulesets** -> **New ruleset** -> **Import a ruleset**.
-1. Import `docs/agent-workflow/github/ruleset-integration.json`. Check: Enforcement **Active**, **Bypass list
-   empty**, target `integration`. Save.
-2. Import `docs/agent-workflow/github/ruleset-production.json`. Same checks; target is the production branch.
-   Save.
-Effect: nobody (including you) can push directly to those two branches, force-push or delete them; every change
-arrives through a pull request whose `guard` and `verify` checks pass. Direct pushes you used to make to the
-production branch stop working. Your card-production branch is not affected.
+**2. Choose the release approver (the identity agents do not hold).**
+Either a second GitHub account only you use, with a passkey or hardware key on a device that never runs a Claude
+session, or a trusted second person. Then: repository **Settings** -> **Collaborators** -> **Add people** -> enter
+that account -> role **Read**.
+*Verify:* the account accepts the invitation and shows as **Read** under *Collaborators*. (Why: `deploy-gate.md`.)
 
-## Step 3. Create six environments (10 minutes)
-Settings -> **Environments** -> **New environment**, for each name in this table. For each: under **Deployment
-branches and tags** choose **Selected branches and tags** and add the listed branches. Where a reviewer is listed,
-tick **Required reviewers** and add yourself, and leave **Prevent self-review OFF**. For **every** environment,
-untick **Allow administrators to bypass configured protection rules**.
+**3. Merge the pull request that adds the maintenance authorization** (I will give you its number; it is inert until
+armed). You merge it, not me, because it edits the guard.
+*Verify:* the PR shows Merged, and `agents/maintenance/untrack-private-assets-2026-11.json` exists on `integration`.
 
-| Environment | Branches allowed | Required reviewer |
-|---|---|---|
-| `github-pages` (already exists) | the production branch only | you |
-| `supabase-production` | the production branch only | you |
-| `supabase-test` | the production branch and `integration` | none |
-| `anthropic-paid` | the production branch and `claude/botanical-catalog-stage-1` | you |
-| `asset-store` | the production branch | none |
-| `claude-assistant` | the production branch | none |
+**4. Import the two rulesets, integration first.**
+**Settings** -> **Rules** -> **Rulesets** -> **New ruleset** ▾ -> **Import a ruleset** -> choose
+`docs/agent-workflow/github/ruleset-integration.json` -> **Create**. Repeat with `ruleset-production.json`.
+Settings to confirm on each: **Enforcement status = Active**, **Bypass list = empty**.
+*Verify:* both listed as Active under *Rulesets*. Then tell me: I test that a direct push to `integration` is refused.
+(Consequence: you can no longer push straight to the production branch either; changes arrive as PRs from `integration`.)
 
-## Step 4. Put each secret into its environment
-Add the secret *inside* the environment (Environment -> **Add environment secret**), not at repository level. Use the
-same names the workflows already read (`docs/agent-workflow/secrets-audit.md` lists them). Where you can, use
-**new** values instead of copying old ones: that makes step 8 free. If you use the existing production Supabase
-token, put it only in `supabase-production`; put a separate, test-only token in `supabase-test` if you can create
-one (a second Supabase account that owns only the test project is the clean way).
+**5. Create the environments.** **Settings** -> **Environments** -> **New environment** (for `github-pages`, open the
+existing one). For each, **Deployment branches and tags** -> **Selected branches and tags** -> add the branches in the
+table; where a reviewer is listed tick **Required reviewers** and add the **release approver**; for **every**
+environment untick **Allow administrators to bypass configured protection rules**.
 
-## Step 5. Approve (or decline) the two workflow changes
-I will open pull requests into `integration` containing them, and show you the plain-language effect again.
-- `github/secrets-to-environments.patch` (17 files, 17 added lines): every job that reads a secret declares which
-  environment it uses. **Only merge after steps 3 and 4.**
-- `github/deploy-approval-gate.patch` (1 file, 7 added lines): the deploy job uses the `github-pages`
-  environment, so it waits for your click. **This changes production deployment behaviour**: from then on, every
-  push to the production branch pauses until you approve it in the Actions tab.
-
-## Step 6. Actions settings
-Settings -> **Actions** -> **General**:
-- **Workflow permissions** = *Read repository contents and packages permissions*; leave "Allow GitHub Actions to
-  create and approve pull requests" **unticked**.
-- **Fork pull request workflows**: *Require approval for all outside collaborators*.
-- (Optional) **Actions permissions** = *Allow select actions* (GitHub, plus the few third-party ones the workflows use).
-
-## Step 7. General settings
-Settings -> **General** -> tick **Automatically delete head branches**. Then delete the leftover branches
-`coord/wave0-guardrails`, `coord/wave0-results`, `agent/scan/pilot-001` and `agent/scan/guard-negative-test`
-(Code -> Branches); the session's git relay cannot delete remote branches.
-
-## Step 8. Rotate, after steps 3-5 work (`secrets-audit.md`, "Safe rotation plan")
-Create new values at each provider, enter them in the environments, run one check workflow, revoke the old value,
-delete the repository-level secret.
-
-## Step 9. Private backup before any file leaves tracking
-On your own computer: `git clone --mirror https://github.com/lillfaith/Plantdex-website.git plantdex-mirror.git`
-and keep it somewhere private (an encrypted drive). That single folder contains every file and every branch,
-including the photographs and the evidence. I will also send you a zip of the 48 photographs. Tell me when the
-mirror exists; I then ask you to approve the "untrack" pull request.
-
----
-
-## Acceptance tests I will run (and what each proves)
-
-| # | Test | Expected | Possible now? |
+| Environment | Branches allowed | Required reviewer | Prevent self-review |
 |---|---|---|---|
-| 1 | An agent creates and updates its own feature branch | Succeeds | Done (pilot session) |
-| 2 | An agent pushes directly to `integration` / the production branch | **Rejected by GitHub** (ruleset message) | After step 2. I will only test `integration` directly; for production I read the branch's protected state instead of pushing |
-| 3 | An out-of-lane file change in a pull request | `guard` check fails | Done (PR #27) |
-| 4 | A pull request with a failing check | **Merge refused** | After step 2, with a throwaway PR |
-| 5 | A normal merge into `integration` | No deploy run | Done twice; repeated after step 5 |
-| 6 | A production deployment waits for you, and an agent cannot release it | Run shows "waiting"; you reject it; nothing publishes | After steps 3 and 5. **Cannot be fully proven** if step 1 shows the Claude App can approve deployments; see `credential-isolation.md` |
-| 7 | An agent reads a production secret from a pushed branch | Value unavailable, job refused by the environment's branch rule | After steps 3-5, using a harmless probe workflow that prints only whether a variable is set, never its value |
-| 8 | An agent edits a ruleset or environment | No tool exists; the App lacks Administration | Read from step 1 |
+| `github-pages` | production branch | release approver | **ON** |
+| `supabase-production` | production branch | release approver | **ON** |
+| `anthropic-paid` | production branch, `claude/botanical-catalog-stage-1` | release approver | **ON** |
+| `supabase-test` | production branch, `integration` | none | n/a |
+| `asset-store` | production branch | none | n/a |
 
-Tests 2, 4 and 6 are the ones that need your steps first. If 6 or 8 cannot be enforced by GitHub for the account
-as configured, I stop and say so rather than call it done.
+*Verify:* each environment page lists exactly those branches, the reviewer, and "administrators can bypass" unticked.
+(`claude-assistant` is not created yet; see `secrets-audit.md`.)
+
+**6. Put secrets in their environments** (Environment page -> **Add environment secret**; same names as today).
+- `supabase-production`: `SUPABASE_ACCESS_TOKEN` (production-capable).
+- `supabase-test`: `SUPABASE_ACCESS_TOKEN` (a **test-only** token if you can make one, ideally from an account that owns
+  only the test project), `TEST_ACCOUNT_PASSWORD`, `SPECIES_ATTESTATION_SECRET` if you use it.
+- `anthropic-paid`: `ANTHROPIC_API_KEY` (a dedicated key with a monthly cap in the Console).
+- `asset-store`: the four `PLANTDEX_ASSET_*` values and `PLANTDEX_DROPBOX_TOKEN`.
+*Verify:* each environment shows its secret names (never values). Use **new** values where you can: that makes rotation free.
+
+**7. Actions settings.** **Settings** -> **Actions** -> **General**.
+- *Workflow permissions* -> **Read repository contents and packages permissions**; leave "Allow GitHub Actions to create
+  and approve pull requests" **unticked**. (Checked: every workflow already declares what it needs, so none breaks.)
+- *Fork pull request workflows* -> **Require approval for all outside collaborators**.
+*Verify:* the page shows those selections after saving.
+
+**8. Settings -> General -> Pull Requests -> tick "Automatically delete head branches".**
+*Verify:* ticked. (Then delete the old test branches under **Code** -> **Branches**.)
+
+**9. Make your private full backup** (on your own computer): `git clone --mirror https://github.com/lillfaith/Plantdex-website.git plantdex-mirror.git`, stored privately.
+*Verify:* the folder exists and `git -C plantdex-mirror.git branch -a | wc -l` is about 20.
+
+## Part 2: things I then do, and the two pull requests you merge
+After steps 1-9 I run acceptance tests 2, 4, 6, 7, 8 (below) and open two pull requests that touch `.github/`, which
+**you** merge (I never merge those): the **secrets-to-environments** patch (16 files) and the **deploy gate** patch.
+Read `deploy-gate.md` first; do not merge the deploy gate until step 5 is verified.
+
+## Part 3: the one-time cleanup authorization (when I ask)
+**10.** **Settings** -> **Secrets and variables** -> **Actions** -> **Variables** -> **New repository variable**: name
+`MAINTENANCE_AUTH`, value = the SHA-256 in the untrack PR description. Then in that PR: **Checks** -> **Re-run all jobs**.
+*Verify:* `guard` passes and says it excused 928 listed deletions. I merge the PR once everything is green.
+**11.** After it merges, **delete the variable.** *Verify:* the Variables list no longer shows it.
+
+## Part 4: after the migration works
+**12.** For each secret, in this order: new test token, Anthropic key, asset-store keys, production Supabase token last:
+create the new value at the provider, put it in the environment, run one check workflow, revoke the old value at the
+provider, then **delete the repository-level secret** of the same name (**Settings** -> **Secrets and variables** ->
+**Actions** -> **Secrets** -> repository secrets). *Verify:* the repository secrets list ends up empty except the assistant token.
+
+## Acceptance tests (what I run and what it proves)
+| # | Test | Needs | Passes when |
+|---|---|---|---|
+| 1 | Agent creates and updates its own branch | nothing | Done (pilot) |
+| 2 | Direct push to `integration` | step 4 | GitHub refuses it |
+| 3 | Out-of-lane change | nothing | `guard` fails (done, PR #27) |
+| 4 | PR with a failing check | step 4 | Merge refused |
+| 5 | Integration merge does not deploy | nothing | No deploy run (done three times) |
+| 6 | Production deploy waits for a human the agents cannot be | steps 2, 5 and the deploy gate PR | Deployment sits in "waiting"; you reject as the approver; the site is unchanged |
+| 7 | A pushed throwaway workflow cannot read an environment secret | steps 5, 6 | The job is refused by the environment's branch rule |
+| 8 | Agents cannot change rulesets, environments or secrets | step 1 | The App lacks Administration and no tool exists |
+If 6 or 8 cannot be enforced by GitHub for the account as configured, I stop and say exactly why.

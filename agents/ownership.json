@@ -195,6 +195,7 @@
         "agents/ownership.json",
         "agents/README.md",
         "agents/templates/**",
+        "agents/maintenance/**",
         "docs/agent-workflow/**",
         "package.json",
         "package-lock.json",

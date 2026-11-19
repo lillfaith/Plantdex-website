@@ -24,7 +24,8 @@
  * No dependencies on purpose: this must run in CI before `npm ci` and inside a bare worktree.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -244,8 +245,65 @@ function runHook(manifest) {
 }
 
 function changedFiles(base, cwd) {
-  const out = execFileSync('git', ['diff', '--name-only', '--no-renames', `${base}...HEAD`], { cwd, encoding: 'utf8' });
-  return out.split('\n').filter(Boolean);
+  return changedWithStatus(base, cwd).map((c) => c.path);
+}
+
+/** [{ status: 'A' | 'M' | 'D' | ..., path }]. Renames are reported as a delete plus an add, never as one move. */
+function changedWithStatus(base, cwd) {
+  const out = execFileSync('git', ['diff', '--name-status', '--no-renames', '-z', `${base}...HEAD`], { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const parts = out.split('\0').filter(Boolean);
+  const changes = [];
+  for (let i = 0; i + 1 < parts.length; i += 2) changes.push({ status: parts[i].charAt(0), path: parts[i + 1] });
+  return changes;
+}
+
+export function sha256(data) {
+  return createHash('sha256').update(data).digest('hex');
+}
+
+/**
+ * ONE-TIME MAINTENANCE AUTHORIZATION (docs/agent-workflow/maintenance-authorization.md).
+ *
+ * Excuses an exact set of DELETIONS under protected areas, and nothing else. It is armed only when ALL of these hold:
+ *   - an authorization file exists in the BASE branch's agents/maintenance/ (already reviewed and merged);
+ *   - the repository variable MAINTENANCE_AUTH, which only the owner can set, equals that file's SHA-256;
+ *   - the pull request's head branch is the one the file names, and the file has not expired;
+ * and then only for a path that the PR DELETES, whose SHA-256 is listed, and whose content in the base branch has the
+ * listed git blob id. An added or modified file, a different file, or a listed path with changed content is not excused.
+ * Every other check (the lane rules for every other file, the tests, the build) is untouched.
+ *
+ * Pure: `authorizations` is [{ hash, data }], `changes` is [{ status, path }], `blobOf(path)` reads the base branch.
+ */
+export function maintenanceExcuses({ changes, authorizations, activeHash, branch, today, blobOf }) {
+  const none = { excused: new Set(), id: null, reason: 'no authorization is armed' };
+  const wanted = String(activeHash ?? '').trim().toLowerCase();
+  if (!wanted) return none;
+  const auth = authorizations.find((a) => a.hash === wanted);
+  if (!auth) return { ...none, reason: 'MAINTENANCE_AUTH matches no authorization file in the base branch' };
+  const d = auth.data;
+  if (d.branch !== branch) return { ...none, reason: `authorization ${d.id} is for branch '${d.branch}', not '${branch}'` };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d.expires ?? '') || today > d.expires) return { ...none, reason: `authorization ${d.id} expired` };
+  const listed = new Map((d.deletions ?? []).map((e) => [e.pathSha256, e.blob]));
+  const excused = new Set();
+  for (const c of changes) {
+    if (c.status !== 'D') continue;
+    const blob = listed.get(sha256(c.path));
+    if (blob && blob === blobOf(c.path)) excused.add(c.path);
+  }
+  return { excused, id: d.id, reason: 'armed' };
+}
+
+function loadAuthorizations(dir) {
+  try {
+    return readdirSync(dir)
+      .filter((f) => f.endsWith('.json'))
+      .map((f) => {
+        const raw = readFileSync(join(dir, f));
+        return { hash: sha256(raw), data: JSON.parse(raw.toString('utf8')) };
+      });
+  } catch {
+    return [];
+  }
 }
 
 function runDiff(manifest, args) {
@@ -268,7 +326,31 @@ function runDiff(manifest, args) {
     process.stderr.write(`agent-guard: unknown role '${role}'\n`);
     return 1;
   }
-  const bad = changedFiles(base, process.cwd()).filter((f) => !canWrite(role, f, manifest));
+  const changes = changedWithStatus(base, process.cwd());
+  let bad = changes.map((c) => c.path).filter((f) => !canWrite(role, f, manifest));
+  if (bad.length > 0) {
+    const branch = process.env.GITHUB_HEAD_REF || execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], { encoding: 'utf8' }).trim();
+    const verdict = maintenanceExcuses({
+      changes: changes.filter((c) => bad.includes(c.path)),
+      authorizations: loadAuthorizations(join(HERE, '..', 'agents', 'maintenance')),
+      activeHash: process.env.MAINTENANCE_AUTH,
+      branch,
+      today: new Date().toISOString().slice(0, 10),
+      blobOf: (path) => {
+        try {
+          return execFileSync('git', ['rev-parse', `${base}:${path}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+        } catch {
+          return '';
+        }
+      },
+    });
+    if (verdict.excused.size > 0) {
+      process.stdout.write(`agent-guard: maintenance authorization '${verdict.id}' excuses ${verdict.excused.size} listed deletion(s); all other rules still apply.\n`);
+      bad = bad.filter((f) => !verdict.excused.has(f));
+    } else if (process.env.MAINTENANCE_AUTH) {
+      process.stderr.write(`agent-guard: MAINTENANCE_AUTH is set but excuses nothing (${verdict.reason}).\n`);
+    }
+  }
   if (bad.length === 0) {
     process.stdout.write(`agent-guard: role '${role}' changed only files it may change.\n`);
     return 0;

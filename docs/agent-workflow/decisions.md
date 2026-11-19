@@ -76,3 +76,24 @@ must not create automatic growth timers.
 4. Test one isolated agent task through the complete PR and integration workflow.
 5. Verify that this does not deploy to production.
 6. Launch the three implementation lanes only after the test succeeds.
+
+## Second-round decisions, 2026-11-19 (evening)
+
+1. **Tier 0 cleanup approved with a narrow exception.** The personal photo folder and the identified evidence image
+   binaries leave active tracking, with originals backed up and dependencies checked. There is **no general bypass**:
+   a one-time, owner-armed authorization limited to the exact 928 deletions (`maintenance-authorization.md`), with every
+   other check still active and no PR merged with a failing check.
+2. **Production deploy: show the patch first, and a genuinely independent human approval.** The patch and its behaviour
+   are in `deploy-gate.md`. "Required reviewer with self-review off" is **not** accepted as a human-only gate while
+   agents share the owner's identity; the design is a separate release-approver identity (hybrid local sessions as the
+   fallback).
+3. **History cleanup is staged.** First stop tracking; no rewrite and no force-push; `claude/production-system-v1`
+   stays operational until its card-production outputs are preserved; a separate comprehensive plan
+   (`history-cleanup-proposal.md`) covers branches, backup refs, PR refs, forks and clones. Backups stay private.
+4. **Secrets migration approved** subject to reviewing the actual configuration changes before production activation;
+   minimum access per credential; repository-wide copies removed after verification; rotate where appropriate;
+   read-only default Actions permissions with explicit writes only where needed.
+5. **The photo automation stays running** and may be given a concurrency cap or smaller batches, without changing its
+   card-production behaviour (`github/photo-next-max-parallel.patch`, a draft for that branch).
+6. **No lane launches until** the rulesets, credential restrictions, environment protections and acceptance tests pass.
+   The Discoveries lane may prepare its written design in isolation, activating no scoring change. UI stays human-directed.

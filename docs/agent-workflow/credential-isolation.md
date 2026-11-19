@@ -47,6 +47,13 @@ call, which is a harness limit, **not a GitHub guarantee**. So:
   existence of a workflow-dispatch tool suggests Actions is at least readable.)
 - If the App has it: the gate depends on the tool set, which is good but not what was asked for.
 
+## Update, second round: the independent human boundary
+`deploy-gate.md` carries the design that does not depend on what the Claude App is permitted to do: **the required
+reviewer is a different GitHub identity** (a separate release-approver account, or a trusted second person) that no
+agent session holds, with self-review prevention ON, administrator bypass OFF, and a branch rule. An approval can then
+only come from a login the agents do not have. The "hybrid" below remains the fallback if a separate approver is not
+possible.
+
 ## Options, strongest first
 
 | Option | What it gives | What it costs |
