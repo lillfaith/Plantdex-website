@@ -1,0 +1,254 @@
+{
+ "cards": {
+  "62": {
+   "taxon": "Eriogonum fasciculatum",
+   "picks": [
+    {
+     "photo_id": 72518818,
+     "observation_id": 45735237,
+     "role": "main"
+    },
+    {
+     "photo_id": 281944233,
+     "observation_id": 163034672,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 3724391,
+     "observation_id": 3217076,
+     "role": "tall"
+    }
+   ]
+  },
+  "63": {
+   "taxon": "Parthenium integrifolium",
+   "picks": [
+    {
+     "photo_id": 547150859,
+     "observation_id": 303560859,
+     "role": "main"
+    },
+    {
+     "photo_id": 127092,
+     "observation_id": 87006,
+     "role": "main"
+    },
+    {
+     "photo_id": 661119321,
+     "observation_id": 362228567,
+     "role": "main"
+    },
+    {
+     "photo_id": 231940855,
+     "observation_id": 135944027,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 149770705,
+     "observation_id": 90608931,
+     "role": "tall"
+    }
+   ]
+  },
+  "64": {
+   "taxon": "Pseudognaphalium obtusifolium",
+   "picks": [
+    {
+     "photo_id": 745700906,
+     "observation_id": 405928651,
+     "role": "main"
+    },
+    {
+     "photo_id": 728257757,
+     "observation_id": 397085607,
+     "role": "main"
+    },
+    {
+     "photo_id": 151903275,
+     "observation_id": 91799030,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 89984767,
+     "observation_id": 56464390,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 419948962,
+     "observation_id": 236077232,
+     "role": "tall"
+    }
+   ]
+  },
+  "65": {
+   "taxon": "Nelumbo lutea",
+   "picks": [
+    {
+     "photo_id": 316785117,
+     "observation_id": 181762985,
+     "role": "main"
+    },
+    {
+     "photo_id": 24700338,
+     "observation_id": 16418243,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 21411326,
+     "observation_id": 14396705,
+     "role": "tall"
+    }
+   ]
+  },
+  "66": {
+   "taxon": "Erigeron annuus",
+   "picks": [
+    {
+     "photo_id": 430695917,
+     "observation_id": 241644451,
+     "role": "main"
+    },
+    {
+     "photo_id": 53367016,
+     "observation_id": 33943486,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 675951613,
+     "observation_id": 370030845,
+     "role": "tall"
+    }
+   ]
+  },
+  "78": {
+   "taxon": "Lepidium virginicum",
+   "picks": [
+    {
+     "photo_id": 281466338,
+     "observation_id": 163001463,
+     "role": "main"
+    },
+    {
+     "photo_id": 59555229,
+     "observation_id": 37553732,
+     "role": "main"
+    },
+    {
+     "photo_id": 603152145,
+     "observation_id": 332360409,
+     "role": "main"
+    },
+    {
+     "photo_id": 762524618,
+     "observation_id": 414229822,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 398175614,
+     "observation_id": 224643816,
+     "role": "tall"
+    }
+   ]
+  },
+  "79": {
+   "taxon": "Potentilla simplex",
+   "picks": [
+    {
+     "photo_id": 653628264,
+     "observation_id": 358307964,
+     "role": "main"
+    },
+    {
+     "photo_id": 652429309,
+     "observation_id": 357694351,
+     "role": "main"
+    },
+    {
+     "photo_id": 488766416,
+     "observation_id": 271707850,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 712111611,
+     "observation_id": 388883788,
+     "role": "tall"
+    },
+    {
+     "photo_id": 638240425,
+     "observation_id": 349846102,
+     "role": "tall"
+    }
+   ]
+  },
+  "80": {
+   "taxon": "Trifolium repens",
+   "picks": [
+    {
+     "photo_id": 34162664,
+     "observation_id": 22060279,
+     "role": "main"
+    },
+    {
+     "photo_id": 35673252,
+     "observation_id": 23015128,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 531801104,
+     "observation_id": 295408086,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 20162556,
+     "observation_id": 13688874,
+     "role": "tall"
+    },
+    {
+     "photo_id": 517080451,
+     "observation_id": 287569907,
+     "role": "tall"
+    },
+    {
+     "photo_id": 721407476,
+     "observation_id": 393572900,
+     "role": "main"
+    }
+   ]
+  },
+  "81": {
+   "taxon": "Daucus carota",
+   "picks": [
+    {
+     "photo_id": 208577549,
+     "observation_id": 123140809,
+     "role": "main"
+    },
+    {
+     "photo_id": 49095360,
+     "observation_id": 31372723,
+     "role": "tall"
+    },
+    {
+     "photo_id": 695933524,
+     "observation_id": 380401908,
+     "role": "main"
+    },
+    {
+     "photo_id": 409279475,
+     "observation_id": 230497232,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 400856772,
+     "observation_id": 226053348,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 446979902,
+     "observation_id": 249981708,
+     "role": "tall"
+    }
+   ]
+  }
+ }
+}
