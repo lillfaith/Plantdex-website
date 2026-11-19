@@ -1,0 +1,131 @@
+{
+ "card": 80,
+ "taxon_id": 55745,
+ "uncut_pool": 1169,
+ "cap": 1200,
+ "per_source_new_photos": {
+  "votes-deep": 434,
+  "flowering-votes": 305,
+  "fruiting-votes": 69,
+  "budding-votes": 103,
+  "recent": 258
+ },
+ "picks": [
+  {
+   "photo_id": 34162664,
+   "observation_id": 22060279,
+   "role": "main",
+   "in_uncut_pool": true,
+   "position_in_uncut_pool": 564,
+   "source": "flowering-votes",
+   "obs_taxon": "Trifolium repens",
+   "obs_taxon_id": 55745,
+   "taxon_matches_pool": true,
+   "quality_grade": "research",
+   "license": "cc0",
+   "long_edge": 2048,
+   "n_photos_in_obs": 3,
+   "votes_position": 1059,
+   "faves": 0,
+   "annotations": [
+    [
+     12,
+     13
+    ]
+   ]
+  },
+  {
+   "photo_id": 35673252,
+   "observation_id": 23015128,
+   "role": "pixel",
+   "in_uncut_pool": false,
+   "position_in_uncut_pool": null,
+   "source": null,
+   "obs_taxon": "Trifolium repens",
+   "obs_taxon_id": 55745,
+   "taxon_matches_pool": true,
+   "quality_grade": "research",
+   "license": "cc0",
+   "long_edge": 899,
+   "n_photos_in_obs": 2,
+   "votes_position": 467,
+   "faves": 0,
+   "annotations": []
+  },
+  {
+   "photo_id": 531801104,
+   "observation_id": 295408086,
+   "role": "pixel",
+   "in_uncut_pool": false,
+   "position_in_uncut_pool": null,
+   "source": null,
+   "obs_taxon": "Trifolium repens",
+   "obs_taxon_id": 55745,
+   "taxon_matches_pool": true,
+   "quality_grade": "research",
+   "license": "cc0",
+   "long_edge": 2048,
+   "n_photos_in_obs": 4,
+   "votes_position": null,
+   "faves": 0,
+   "annotations": []
+  },
+  {
+   "photo_id": 20162556,
+   "observation_id": 13688874,
+   "role": "tall",
+   "in_uncut_pool": false,
+   "position_in_uncut_pool": null,
+   "source": null,
+   "obs_taxon": "Trifolium repens",
+   "obs_taxon_id": 55745,
+   "taxon_matches_pool": true,
+   "quality_grade": "research",
+   "license": "cc0",
+   "long_edge": 2048,
+   "n_photos_in_obs": 2,
+   "votes_position": 1731,
+   "faves": 0,
+   "annotations": []
+  },
+  {
+   "photo_id": 517080451,
+   "observation_id": 287569907,
+   "role": "tall",
+   "in_uncut_pool": false,
+   "position_in_uncut_pool": null,
+   "source": null,
+   "obs_taxon": "Trifolium repens",
+   "obs_taxon_id": 55745,
+   "taxon_matches_pool": true,
+   "quality_grade": "research",
+   "license": "cc0",
+   "long_edge": 2048,
+   "n_photos_in_obs": 1,
+   "votes_position": 1737,
+   "faves": 0,
+   "annotations": []
+  },
+  {
+   "photo_id": 721407476,
+   "observation_id": 393572900,
+   "role": "main",
+   "in_uncut_pool": true,
+   "position_in_uncut_pool": 1081,
+   "source": "recent",
+   "obs_taxon": "Trifolium repens",
+   "obs_taxon_id": 55745,
+   "taxon_matches_pool": true,
+   "quality_grade": "research",
+   "license": "cc0",
+   "long_edge": 2048,
+   "n_photos_in_obs": 2,
+   "votes_position": 577,
+   "faves": 0,
+   "annotations": []
+  }
+ ],
+ "votes_scan": {
+  "scanned_observations": 5000
+ }
+}
