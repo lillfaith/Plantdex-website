@@ -1,0 +1,11 @@
+{
+ "source_zip": "c8a91eb3-PlantDex_87-91_V13_EXACT_PREVIEW_CORRECTIONS_CLAUDE_ASSETS_UNDER_30MB.zip",
+ "source_zip_sha256": "76f296e31306eb27be5a4f0ebee7b8abe7669e023ecf6f8c1ba55ce2cc176dd0",
+ "note": "V13 exact preview corrections package; hi-res cutout fitted to the supplied front; back is the supplied final",
+ "files": {
+  "front_final.png": "9e542562ed56a12de728590d92807ee4d58e52c1f44373e8212bd63213824715",
+  "back_final.png": "5a7911b2c739739c0c9b87cfd290e708c7fcae120799180438be9a35bc2b9a1c",
+  "pixel_icon_native_24x24.png": "581136f58cea0518df10c5cacb7cdaf98a3427ab36d630c64c31472a3a786b00",
+  "main_generated_cutout_used.png": "9f5ff47e19a307ca04d8d10ca50ab9f4e467dcb2f23f147b252309007fdfc01d"
+ }
+}
