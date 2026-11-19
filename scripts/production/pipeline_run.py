@@ -67,7 +67,7 @@ def main() -> int:
     if pool_file and pathlib.Path(pool_file).exists():
         pool = json.load(open(pool_file))
     else:
-        pool = (SE.build_pool_v43(tid) if arg("--pool-builder") == "v43" else SE.build_pool_v4(tid)) if policy in ("v4", "v4.1", "v4.2") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
+        pool = (SE.build_pool_v43(tid) if arg("--pool-builder") == "v43" else SE.build_pool_v43(tid, limit=2000, large_pages=5) if arg("--pool-builder") == "v43c" else SE.build_pool_v4(tid)) if policy in ("v4", "v4.1", "v4.2") else SE.build_pool(tid, set(), set(), limit=limit, policy=policy)
         if pool_file:
             pathlib.Path(pool_file).parent.mkdir(parents=True, exist_ok=True)
             json.dump(pool, open(pool_file, "w"), default=str)

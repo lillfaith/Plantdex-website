@@ -3,6 +3,11 @@ name: Photo search for one card (v4.3 retrieval, v4.2 scoring, contact sheets)
 # PRIVATE TOOL. One run = one card from evidence/blind-test/species-82-141.json. Finds and ranks CC0 candidates and builds labelled contact sheets (top 12 per role).
 # Selects/approves/edits nothing. STARTED BY PUSHING evidence/photo-batches/next/request.json ({"card": N}); every push is its own run, so several cards can be queued.
 on:
+  workflow_dispatch:
+    inputs:
+      card:
+        description: card number (82-141)
+        required: true
   push:
     branches: [claude/production-system-v1]
     paths: [evidence/photo-batches/next/request.json]
@@ -21,11 +26,13 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - id: c
-        run: python3 -c "import json;print('card=%d' % json.load(open('evidence/photo-batches/next/request.json'))['card'])" >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_CARD: ${{ github.event.inputs.card }}
+        run: python3 -c "import json,os;print('card=%d' % int(os.environ.get('INPUT_CARD') or json.load(open('evidence/photo-batches/next/request.json'))['card']))" >> "$GITHUB_OUTPUT"
       - run: pip install --quiet $PIPDEPS
       - run: |
           CARD=${{ steps.c.outputs.card }}; IDX=$((CARD - 82))
-          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-82-141.json --index $IDX --policy v4.2 --pool-builder v43 --tag v4.3 --pool-file pools/pool.json --pool-only --out out
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-82-141.json --index $IDX --policy v4.2 --pool-builder v43c --tag v4.3 --pool-file pools/pool.json --pool-only --out out
       - uses: actions/upload-artifact@v4
         with: { name: pool, path: pools, retention-days: 7 }
   shard:
@@ -47,7 +54,7 @@ jobs:
         with: { name: pool, path: pools }
       - run: |
           CARD=${{ needs.pool.outputs.card }}; IDX=$((CARD - 82))
-          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-82-141.json --index $IDX --policy v4.2 --pool-builder v43 --tag v4.3 --pool-file pools/pool.json --shard ${{ matrix.shard }}/12 --out out/b
+          python3 scripts/production/pipeline_run.py --request evidence/blind-test/species-82-141.json --index $IDX --policy v4.2 --pool-builder v43c --tag v4.3 --pool-file pools/pool.json --shard ${{ matrix.shard }}/12 --out out/b
       - uses: actions/upload-artifact@v4
         with:
           name: shard-${{ matrix.shard }}

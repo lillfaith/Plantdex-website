@@ -201,10 +201,10 @@ V43_LARGE_VOTES_PAGES = 10
 V43_CAP = 4000
 
 
-def build_pool_v43(taxon_id: int, log=print, limit: int = V43_CAP) -> list[dict]:
+def build_pool_v43(taxon_id: int, log=print, limit: int = V43_CAP, large_pages: int = V43_LARGE_VOTES_PAGES) -> list[dict]:
     probe = (F.get(f"{F.API}/observations?" + F.urllib.parse.urlencode({"taxon_id": taxon_id, "photo_license": "cc0", "quality_grade": "research", "photos": "true", "per_page": 1})) or {})
     total = probe.get("total_results") or 0
-    votes_pages = V43_LARGE_VOTES_PAGES if total > V43_SMALL_SPECIES_OBS else 2
+    votes_pages = large_pages if total > V43_SMALL_SPECIES_OBS else 2
     log(f"   {total} CC0 research observations -> votes-deep {votes_pages} pages")
     seen, pool = set(), []
     for name, extra, pages in V4_SOURCES:
