@@ -1,0 +1,62 @@
+{
+ "card": 62,
+ "taxon": "Eriogonum fasciculatum",
+ "total_cc0_research_obs": 1463,
+ "picks": 3,
+ "pick_votes_position": {
+  "72518818": 277,
+  "281944233": 253,
+  "3724391": 2
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 400,
+   "pool_photos": 1103,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 600,
+   "pool_photos": 1328,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 1000,
+   "pool_photos": 1777,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 1463,
+   "pool_photos": 2325,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 1463,
+   "pool_photos": 2325,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 1463,
+   "pool_photos": 2325,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 1463,
+   "pool_photos": 2325,
+   "picks_in_pool": 3,
+   "missed": []
+  }
+ ]
+}

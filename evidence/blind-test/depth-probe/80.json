@@ -1,0 +1,80 @@
+{
+ "card": 80,
+ "taxon": "Trifolium repens",
+ "total_cc0_research_obs": 6759,
+ "picks": 6,
+ "pick_votes_position": {
+  "34162664": 1059,
+  "35673252": 435,
+  "531801104": 681,
+  "20162556": 1772,
+  "517080451": 1718,
+  "721407476": 536
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 400,
+   "pool_photos": 1174,
+   "picks_in_pool": 2,
+   "missed": [
+    35673252,
+    531801104,
+    20162556,
+    517080451
+   ]
+  },
+  {
+   "pages": 3,
+   "observations": 600,
+   "pool_photos": 1427,
+   "picks_in_pool": 3,
+   "missed": [
+    531801104,
+    20162556,
+    517080451
+   ]
+  },
+  {
+   "pages": 5,
+   "observations": 1000,
+   "pool_photos": 1797,
+   "picks_in_pool": 4,
+   "missed": [
+    20162556,
+    517080451
+   ]
+  },
+  {
+   "pages": 8,
+   "observations": 1600,
+   "pool_photos": 2331,
+   "picks_in_pool": 4,
+   "missed": [
+    20162556,
+    517080451
+   ]
+  },
+  {
+   "pages": 10,
+   "observations": 2000,
+   "pool_photos": 2725,
+   "picks_in_pool": 6,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 3000,
+   "pool_photos": 3796,
+   "picks_in_pool": 6,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 5000,
+   "pool_photos": 5981,
+   "picks_in_pool": 6,
+   "missed": []
+  }
+ ]
+}

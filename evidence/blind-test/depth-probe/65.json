@@ -1,0 +1,62 @@
+{
+ "card": 65,
+ "taxon": "Nelumbo lutea",
+ "total_cc0_research_obs": 197,
+ "picks": 3,
+ "pick_votes_position": {
+  "316785117": 65,
+  "24700338": 41,
+  "21411326": 92
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 197,
+   "pool_photos": 350,
+   "picks_in_pool": 3,
+   "missed": []
+  }
+ ]
+}

@@ -1,0 +1,64 @@
+{
+ "card": 78,
+ "taxon": "Lepidium virginicum",
+ "total_cc0_research_obs": 485,
+ "picks": 5,
+ "pick_votes_position": {
+  "281466338": 7,
+  "59555229": 118,
+  "603152145": 233,
+  "762524618": 55,
+  "398175614": 44
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 400,
+   "pool_photos": 940,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 485,
+   "pool_photos": 1044,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 485,
+   "pool_photos": 1044,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 485,
+   "pool_photos": 1044,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 485,
+   "pool_photos": 1044,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 485,
+   "pool_photos": 1044,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 485,
+   "pool_photos": 1044,
+   "picks_in_pool": 5,
+   "missed": []
+  }
+ ]
+}

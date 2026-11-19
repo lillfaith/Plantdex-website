@@ -1,0 +1,64 @@
+{
+ "card": 63,
+ "taxon": "Parthenium integrifolium",
+ "total_cc0_research_obs": 355,
+ "picks": 5,
+ "pick_votes_position": {
+  "547150859": 19,
+  "127092": 53,
+  "661119321": 174,
+  "231940855": 68,
+  "149770705": 220
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 355,
+   "pool_photos": 664,
+   "picks_in_pool": 5,
+   "missed": []
+  }
+ ]
+}

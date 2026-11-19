@@ -1,0 +1,64 @@
+{
+ "card": 64,
+ "taxon": "Pseudognaphalium obtusifolium",
+ "total_cc0_research_obs": 497,
+ "picks": 5,
+ "pick_votes_position": {
+  "745700906": 169,
+  "728257757": 219,
+  "151903275": 4,
+  "89984767": 53,
+  "419948962": 65
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 400,
+   "pool_photos": 1053,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 497,
+   "pool_photos": 1141,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 497,
+   "pool_photos": 1141,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 497,
+   "pool_photos": 1141,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 497,
+   "pool_photos": 1141,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 497,
+   "pool_photos": 1141,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 497,
+   "pool_photos": 1141,
+   "picks_in_pool": 5,
+   "missed": []
+  }
+ ]
+}

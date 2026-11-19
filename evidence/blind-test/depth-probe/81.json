@@ -1,0 +1,93 @@
+{
+ "card": 81,
+ "taxon": "Daucus carota",
+ "total_cc0_research_obs": 5070,
+ "picks": 6,
+ "pick_votes_position": {
+  "208577549": 273,
+  "49095360": 73,
+  "695933524": 1455,
+  "409279475": null,
+  "400856772": 1617,
+  "446979902": null
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 400,
+   "pool_photos": 1570,
+   "picks_in_pool": 2,
+   "missed": [
+    695933524,
+    409279475,
+    400856772,
+    446979902
+   ]
+  },
+  {
+   "pages": 3,
+   "observations": 600,
+   "pool_photos": 1828,
+   "picks_in_pool": 2,
+   "missed": [
+    695933524,
+    409279475,
+    400856772,
+    446979902
+   ]
+  },
+  {
+   "pages": 5,
+   "observations": 1000,
+   "pool_photos": 2282,
+   "picks_in_pool": 2,
+   "missed": [
+    695933524,
+    409279475,
+    400856772,
+    446979902
+   ]
+  },
+  {
+   "pages": 8,
+   "observations": 1600,
+   "pool_photos": 3014,
+   "picks_in_pool": 3,
+   "missed": [
+    409279475,
+    400856772,
+    446979902
+   ]
+  },
+  {
+   "pages": 10,
+   "observations": 2000,
+   "pool_photos": 3469,
+   "picks_in_pool": 4,
+   "missed": [
+    409279475,
+    446979902
+   ]
+  },
+  {
+   "pages": 15,
+   "observations": 3000,
+   "pool_photos": 4721,
+   "picks_in_pool": 4,
+   "missed": [
+    409279475,
+    446979902
+   ]
+  },
+  {
+   "pages": 25,
+   "observations": 5000,
+   "pool_photos": 7370,
+   "picks_in_pool": 4,
+   "missed": [
+    409279475,
+    446979902
+   ]
+  }
+ ]
+}

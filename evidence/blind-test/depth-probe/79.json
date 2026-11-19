@@ -1,0 +1,64 @@
+{
+ "card": 79,
+ "taxon": "Potentilla simplex",
+ "total_cc0_research_obs": 260,
+ "picks": 5,
+ "pick_votes_position": {
+  "653628264": 35,
+  "652429309": 167,
+  "488766416": 106,
+  "712111611": 153,
+  "638240425": 216
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 260,
+   "pool_photos": 405,
+   "picks_in_pool": 5,
+   "missed": []
+  }
+ ]
+}

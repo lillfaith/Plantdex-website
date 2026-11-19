@@ -1,0 +1,62 @@
+{
+ "card": 66,
+ "taxon": "Erigeron annuus",
+ "total_cc0_research_obs": 1156,
+ "picks": 3,
+ "pick_votes_position": {
+  "430695917": 262,
+  "53367016": 22,
+  "675951613": 86
+ },
+ "depths": [
+  {
+   "pages": 2,
+   "observations": 400,
+   "pool_photos": 1802,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 3,
+   "observations": 600,
+   "pool_photos": 2087,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 5,
+   "observations": 1000,
+   "pool_photos": 2662,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 8,
+   "observations": 1156,
+   "pool_photos": 2898,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 10,
+   "observations": 1156,
+   "pool_photos": 2898,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 15,
+   "observations": 1156,
+   "pool_photos": 2898,
+   "picks_in_pool": 3,
+   "missed": []
+  },
+  {
+   "pages": 25,
+   "observations": 1156,
+   "pool_photos": 2898,
+   "picks_in_pool": 3,
+   "missed": []
+  }
+ ]
+}
