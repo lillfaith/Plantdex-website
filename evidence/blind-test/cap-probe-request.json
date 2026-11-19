@@ -1,0 +1,74 @@
+{
+ "cards": {
+  "80": {
+   "taxon": "Trifolium repens",
+   "picks": [
+    {
+     "photo_id": 34162664,
+     "observation_id": 22060279,
+     "role": "main"
+    },
+    {
+     "photo_id": 35673252,
+     "observation_id": 23015128,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 531801104,
+     "observation_id": 295408086,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 20162556,
+     "observation_id": 13688874,
+     "role": "tall"
+    },
+    {
+     "photo_id": 517080451,
+     "observation_id": 287569907,
+     "role": "tall"
+    },
+    {
+     "photo_id": 721407476,
+     "observation_id": 393572900,
+     "role": "main"
+    }
+   ]
+  },
+  "81": {
+   "taxon": "Daucus carota",
+   "picks": [
+    {
+     "photo_id": 208577549,
+     "observation_id": 123140809,
+     "role": "main"
+    },
+    {
+     "photo_id": 49095360,
+     "observation_id": 31372723,
+     "role": "tall"
+    },
+    {
+     "photo_id": 695933524,
+     "observation_id": 380401908,
+     "role": "main"
+    },
+    {
+     "photo_id": 409279475,
+     "observation_id": 230497232,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 400856772,
+     "observation_id": 226053348,
+     "role": "pixel"
+    },
+    {
+     "photo_id": 446979902,
+     "observation_id": 249981708,
+     "role": "tall"
+    }
+   ]
+  }
+ }
+}

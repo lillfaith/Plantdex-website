@@ -1,0 +1,24 @@
+name: Cap and cut probe (why did the owner's picks miss the pool?)
+
+# PRIVATE RESEARCH TOOL. Public iNaturalist API only; changes no pipeline code. STARTED BY PUSHING evidence/blind-test/cap-probe-request.json.
+on:
+  push:
+    branches: [claude/production-system-v1]
+    paths: [evidence/blind-test/cap-probe-request.json]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pillow numpy opencv-python-headless pymupdf
+      - run: python3 scripts/production/cap_cut_probe.py --request evidence/blind-test/cap-probe-request.json --out evidence/blind-test/cap-probe --depth 25
+      - run: |
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add evidence/blind-test/cap-probe; git diff --staged --quiet && exit 0
+          git commit -m "Cap and cut probe results (research only)"
+          for i in 1 2 3 4 5; do git pull --rebase --autostash origin "$GITHUB_REF_NAME" || true; git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*5)); done; exit 1
