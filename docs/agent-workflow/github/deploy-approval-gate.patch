@@ -1,0 +1,18 @@
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+index 805fe53..9c8ad91 100644
+--- a/.github/workflows/deploy.yml
++++ b/.github/workflows/deploy.yml
+@@ -39,6 +39,13 @@ concurrency:
+ jobs:
+   build:
+     runs-on: ubuntu-latest
++    # THE RELEASE APPROVAL GATE. The `github-pages` environment is configured (Settings -> Environments)
++    # with the owner as a required reviewer and a deployment-branch rule, so this job does not start
++    # until the owner approves it in the Actions tab. Nothing an agent can push, merge or dispatch
++    # publishes to plantdex.online without that click. See docs/agent-workflow/github-protections.md.
++    environment:
++      name: github-pages
++      url: ${{ steps.deployment.outputs.page_url }}
+     steps:
+       - uses: actions/checkout@v4
+ 
