@@ -160,7 +160,10 @@
    "card": 107,
    "common": "Oregon Grape",
    "scientific": "Mahonia aquifolium",
-   "flower_kind": "yellow"
+   "flower_kind": "yellow",
+   "alt_names": [
+    "Berberis aquifolium"
+   ]
   },
   {
    "card": 108,
@@ -220,7 +223,11 @@
    "card": 116,
    "common": "Honey Mesquite",
    "scientific": "Prosopis glandulosa",
-   "flower_kind": "yellow"
+   "flower_kind": "yellow",
+   "alt_names": [
+    "Neltuma glandulosa",
+    "Prosopis glandulosa var. glandulosa"
+   ]
   },
   {
    "card": 117,
@@ -271,7 +278,10 @@
    "card": 124,
    "common": "Fireweed",
    "scientific": "Chamerion angustifolium",
-   "flower_kind": "pink_purple"
+   "flower_kind": "pink_purple",
+   "alt_names": [
+    "Chamaenerion angustifolium"
+   ]
   },
   {
    "card": 125,
