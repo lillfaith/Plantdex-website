@@ -54,9 +54,12 @@ jobs:
         env:
           BASE: ${{ github.base_ref }}
         run: |
-          git show "origin/$BASE:scripts/agent-guard.mjs" > "$RUNNER_TEMP/agent-guard.mjs"
-          git show "origin/$BASE:agents/ownership.json" > "$RUNNER_TEMP/ownership.json"
-          node "$RUNNER_TEMP/agent-guard.mjs" diff --manifest "$RUNNER_TEMP/ownership.json" --base "origin/$BASE"
+          # The copies keep the repository layout (scripts/ beside agents/) so that any version of the script finds its
+          # manifest by its own relative path, including the version that predates the --manifest flag.
+          mkdir -p "$RUNNER_TEMP/base/scripts" "$RUNNER_TEMP/base/agents"
+          git show "origin/$BASE:scripts/agent-guard.mjs" > "$RUNNER_TEMP/base/scripts/agent-guard.mjs"
+          git show "origin/$BASE:agents/ownership.json" > "$RUNNER_TEMP/base/agents/ownership.json"
+          node "$RUNNER_TEMP/base/scripts/agent-guard.mjs" diff --base "origin/$BASE"
 
   verify:
     name: verify

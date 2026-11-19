@@ -212,9 +212,9 @@ describe('modules mirrored into the edge functions', () => {
 describe('the PR gate judges by the base branch', () => {
   it('reads the manifest and the script from the base branch, never from the PR', () => {
     const workflow = readFileSync('.github/workflows/pr-verify.yml', 'utf8');
-    expect(workflow).toContain('git show "origin/$BASE:agents/ownership.json"');
-    expect(workflow).toContain('git show "origin/$BASE:scripts/agent-guard.mjs"');
-    expect(workflow).toContain('--manifest "$RUNNER_TEMP/ownership.json"');
+    expect(workflow).toContain('git show "origin/$BASE:agents/ownership.json" > "$RUNNER_TEMP/base/agents/ownership.json"');
+    expect(workflow).toContain('git show "origin/$BASE:scripts/agent-guard.mjs" > "$RUNNER_TEMP/base/scripts/agent-guard.mjs"');
+    expect(workflow).toContain('node "$RUNNER_TEMP/base/scripts/agent-guard.mjs" diff');
     expect(workflow).not.toContain('node scripts/agent-guard.mjs diff');
   });
 });
