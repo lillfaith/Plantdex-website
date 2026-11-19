@@ -7,6 +7,17 @@
    "to": "Bitter",
    "by": "owner",
    "why": "The text is too long for the panel; the descriptor 'Mildly' is dropped."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cough soothing",
+    "Pain relief",
+    "Cold support",
+    "Aromatic"
+   ],
+   "by": "owner",
+   "why": "Owner: replaced 'Sore throat aid' with 'Pain relief'."
   }
  ],
  "60": [
@@ -491,6 +502,99 @@
    ],
    "by": "owner",
    "why": "Owner: Astringent -> Oral health; Urinary folk use -> Urinary aid; added Metabolic health last."
+  }
+ ],
+ "65": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Edible rhizome",
+    "Seed nutrition",
+    "Dietary fiber",
+    "Antioxidant"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Antioxidant'."
+  }
+ ],
+ "66": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Skin soothing",
+    "Astringent",
+    "Insect repellent",
+    "Anti-inflam.",
+    "Anti-diabetic",
+    "Antioxidant"
+   ],
+   "by": "owner",
+   "why": "Owner: removed 'Minor wound care'; added 'Anti-inflam.', 'Anti-diabetic', 'Antioxidant'."
+  }
+ ],
+ "67": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Anti-parasitic",
+    "Digestive aid",
+    "Iron source",
+    "Laxative",
+    "Antimicrobial"
+   ],
+   "by": "owner",
+   "why": "Owner: 'Dietary fiber' -> 'Laxative'; added 'Antimicrobial'; 'Bitter tonic' -> 'Anti-parasitic'."
+  }
+ ],
+ "68": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound support",
+    "Bite soothing",
+    "Respiratory aid",
+    "Anti-inflam."
+   ],
+   "by": "owner",
+   "why": "Owner: 'Dietary fiber' -> 'Respiratory aid'; added 'Anti-inflam.'; removed 'Mucilage-rich' (Mucilage stays as a signature compound)."
+  }
+ ],
+ "69": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Bitter tonic",
+    "Appetite aid",
+    "Antioxidant",
+    "Menstrual aid"
+   ],
+   "by": "owner",
+   "why": "Owner: removed 'Aromatic' and 'Digestive aid'; added 'Antioxidant' and 'Menstrual aid'."
+  }
+ ],
+ "70": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Calming",
+    "Tension relief",
+    "Heart health",
+    "Menstrual support"
+   ],
+   "by": "owner",
+   "why": "Owner: 'Heart tonic' -> 'Heart health'."
+  }
+ ],
+ "71": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Stomach aid",
+    "Hormone support",
+    "Menstrual health"
+   ],
+   "by": "owner",
+   "why": "Owner: added 'Hormone support' and 'Menstrual health'; removed 'Bitter tonic', 'Fever aid', 'Skin wash'. Longest trait last (centred)."
   }
  ]
 }
