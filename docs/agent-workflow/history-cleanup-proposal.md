@@ -1,76 +1,92 @@
-# Proposal: privacy-focused history cleanup (FOR REVIEW; nothing here has been done)
+# History cleanup plan (STAGED; nothing here has been done)
 
-**Do not act on this document. It is a proposal that needs the owner's explicit approval.** Removing files
-from the current branch (`untrack-private-assets`, prepared separately) does **not** remove the historical copies.
-On a public repository anything ever pushed stays downloadable until history is purged and the hosting side is
-cleaned.
+Owner decisions (2026-11-19): remove the unneeded files from **active tracking first**; **no history rewrite and no
+force-push yet**; keep `claude/production-system-v1` operational until its card-production work and outputs are
+preserved; back up the personal photos **privately**. This document is the separate, comprehensive plan for the later
+rewrite. It needs the owner's explicit approval at the points marked **GATE**.
 
-## What is in history that you may want gone
-| Item | Where | Size | Notes |
+## Stage 0: stop tracking (prepared, waits for the one-time authorization)
+Removes 928 image files from the tree of the app lines (`integration` and, through promotion, the production branch):
+48 personal photographs, 715 evidence photographs, 104 candidate previews, 61 segmentation images. Every JSON, text and
+attribution file stays, as do the card drafts under `evidence/cards` and the boss-form photographs. Ignore rules stop
+them returning. See `maintenance-authorization.md`. **It does not touch `claude/production-system-v1`.** It fixes
+"agents and new clones see them", not "the public can download history".
+
+## What exposure actually looks like (recomputed by content, 20 branches)
+My first count compared commit ids and was wrong: `claude/production-system-v1` has a different root commit, so the same
+files appear under different ids. By content (tree at each branch tip):
+
+| Group | Branches | Photo folder (48) | Evidence photos |
 |---|---|---|---|
-| The iCloud photo folder (48 camera originals; folder name is a personal name) | one commit, `bce9aa9`, 2026-11-12 | 55 MB | In: production branch, `integration`, `claude/plantdex-v0-3-supabase-verify-iic8pz`, the backup branch and my coordinator branches. **Not** in the other 10 branches. No GPS in the files (checked), but timestamps and camera model are. |
-| `evidence/photos`, `candidates`, `segmentation` binaries | first added 2026-11-04/05 on the catalog branch lineage; also on the card-production branch | ~1.2 GB (the bulk of the 1.28 GiB repository) | Third-party photographs; licence audit not reviewed |
-| Commit metadata | every commit | n/a | Author names, personal e-mail addresses and a local computer name appear in the history. Fixed only by a rewrite that also rewrites authorship (a mailmap). |
-| Secrets | none found | n/a | No key file, no token-shaped string in any added line (JSON data and the lockfile excluded). No rotation is needed *because of history*. |
+| App line | production branch, `integration`, the Wave 0 and test branches (`coord/*`, `agent/*`), `claude/plantdex-v0-3-supabase-verify-iic8pz`, `prep-expansion`, `backup/pre-multi-agent-20261119` | yes | 715 |
+| Catalog line | `claude/botanical-catalog-stage-1`, `claude/photo-collector-v1`, `exp` | yes | 1,402 |
+| Card-production line | `claude/production-system-v1` | yes | 1,402 plus 240 batch outputs |
+| Older, not exposed | `claude/hopeful-bardeen-0sipzk`, `add-claude-github-workflow`, `backup/pre-profile-redesign` | no | no |
+| Photos but no evidence images | `claude/georgia-quest-mvp`, `claude/security-hardening-0009` | yes | 0 |
 
-## What a rewrite touches
-- **Branches (18):** the photo folder is in 8 of them (list above). The evidence binaries are on more, including
-  `claude/production-system-v1`, where the card pipeline commits into `evidence/` continuously.
-- **Commit hashes:** every commit after the first removed file gets a new hash, on every branch that carries it.
-  All open work and every clone must be re-cloned or hard-reset.
-- **Pull requests (29):** merged PRs keep their text but point at commits that no longer exist. GitHub also keeps
-  the **old commits reachable through hidden `refs/pull/*` refs**, so a force-push alone does **not** make the
-  files unreachable on GitHub.
-- **Backups:** `backup/pre-multi-agent-20261119`, `backup/pre-profile-redesign` and my branches contain the
-  files; they must be deleted or rewritten too, or the rewrite achieves nothing.
-- **Forks, clones, caches:** if anyone forked or cloned, those copies remain. GitHub's cached views and the
-  Actions logs/artifacts are separate. Search engines may hold copies. None of that is under our control.
-- **The deployed site** is unaffected (it ships only `public/`), but note `public/` is not touched.
+So **14 of 20 branches** carry the photographs. Commit metadata (author names, personal e-mail addresses, a local
+computer name) is in every branch's history.
 
-## Two routes
+## Everything a rewrite has to account for
+| Item | State | What a rewrite must do |
+|---|---|---|
+| Branches | 20 | Rewrite or delete every one that carries the files; the three groups above have **different roots** and need separate passes |
+| Backup refs | `backup/pre-multi-agent-20261119`, `backup/pre-profile-redesign`, the local-only rollback tag | Contain the files: delete them, and keep the private mirror as the real backup |
+| Pull-request refs | 31 PRs, all closed, none open; GitHub keeps their old commits reachable through hidden `refs/pull/*` | A force-push alone leaves them downloadable by hash; only GitHub Support can purge, or the history must move to a new repository |
+| Forks | **0** (checked) | Nothing to chase outside the repository |
+| Stars / watchers | 0 / 0 | Nothing lost by starting a new repository |
+| Open issues | 3 | Re-create or export |
+| Clones | the owner's machines; each cloud session's ephemeral container; CI caches | Re-clone everywhere after; sessions get a fresh clone anyway |
+| Actions logs and artifacts | exist for 720+ runs | Separate retention; delete runs/artifacts that contain the files |
+| Pages / domain | `plantdex.online` via Pages from the production branch | Preserved by Route 1; rebuilt by Route 2 |
+| Commit metadata | every commit | Rewrite authorship in the same pass (a mailmap) |
 
-### Route 1: rewrite in place, then ask GitHub to purge
-1. Take a private full mirror (`git clone --mirror`) and store it offline. This is the rollback.
-2. In a fresh clone, run `git filter-repo` removing the photo folder and the evidence binary paths (keep
-   `evidence/**/*.json|txt|md|html` and anything the pipeline reads), plus a mailmap for authorship.
-3. Force-push every rewritten branch; delete the backup branches.
-4. Contact GitHub Support and ask them to remove cached views and **garbage-collect the unreachable objects and
-   hidden PR refs**. Only they can; without it the old commits stay fetchable by hash.
-5. Everyone (including each agent session) re-clones. Re-protect branches afterwards.
+## The card-production branch: when and how
+`claude/production-system-v1` is **its own history** (root commit 2026-08-21, 765 commits: 606 by Claude sessions, 131
+by `github-actions`, the rest by the owner; about 3 GB of objects; 2,381 files under `evidence/`). It has no common
+ancestor with the production branch. It is also **live**: the card-production session was still queueing runs this
+afternoon (33 of 85 cards finished) and the pipeline commits results to it.
 
-| Pros | Cons |
-|---|---|
-| Keeps the repository, Pages, domain, environments, secrets, issues | Not complete until Support acts; the old objects remain reachable meanwhile |
-| Keeps PR text | Breaks every open branch, every clone, and the card-production line's history if it is included |
-| Smaller clone afterwards | Needs a quiet window; has to be rehearsed on a throwaway copy first |
+Nothing may be done to it while it is producing. Proposed process, each step a **GATE** for the owner:
+1. **Freeze point.** Choose it: either the 85-card run is finished, or the owner pauses it deliberately. Until then
+   leave it alone. (I will not start this; the owner or that session says "done".)
+2. **Preserve outputs first.** Everything the work *produced* (ranked candidates, contact sheets, `result.json`,
+   attribution records, finished card artwork) is copied to a private archive: a `git bundle` of the branch plus
+   an export of `evidence/photo-batches/**` and the finished cards, stored privately and verified by hash (the same
+   `git hash-object` method as the manifest). Nothing is deleted from the branch in this step.
+3. **Decide the branch's future.** It is unrelated history. Either (a) its card outputs are brought into the app
+   repository as ordinary files (a normal PR, Tier 0, owner-approved), or (b) it becomes a separate private repository
+   for the card pipeline. This is a product and architecture decision, not a cleanup detail.
+4. **Rewrite or retire.** Only after 2 and 3: filter the personal photo folder and evidence binaries out of it, or
+   leave it entirely in a private repository where public exposure no longer applies.
+5. **Re-point the session** that queues work, and re-run one card end to end before retiring the old refs.
 
-### Route 2: start a clean repository from the cleaned tip (the only complete removal)
-1. Build the cleaned history (steps 1-2 above) in a **new** repository; leave the old one private, then delete it
-   after a cooling-off period.
-2. Re-create Pages and the custom domain, environments, secrets, rulesets, variables and the Supabase redirect
-   allow-list entries, and update the repository name wherever it is written (for example `check-live-site`'s
-   default URL, the base path for the github.io fallback).
+Why this order: the history is the only complete record of how each batch was produced, and several workflows
+`git add` straight into it. Rewriting first would orphan in-flight runs; preserving first costs only disk.
 
-| Pros | Cons |
-|---|---|
-| Nothing old stays reachable on the new repository | Loses PR history, issues, stars, Actions history, run numbers |
-| No dependency on Support | The whole setup (including everything built in Wave 0) is re-created; a full production re-verification |
-| Natural moment to also move the card-production line | Longer outage risk on the custom domain if done carelessly |
+## Routes (unchanged, restated with the corrected facts)
+| | Route 1: rewrite in place, then ask GitHub Support to purge | Route 2: new repository from cleaned history |
+|---|---|---|
+| Completeness | Not complete until Support removes the hidden PR refs and caches | Complete: the old objects are not in the new repository |
+| What it keeps | Pages, domain, environments, secrets, rulesets, issues, PR text | Nothing automatically |
+| What it loses | Open clones and every commit id | PR history, issue history, run history; **0 forks and 0 stars, so none of the usual losses** |
+| Cost now | Medium, dependent on a third party | Higher setup (domain, Pages, environments, rulesets, secrets, redirect allow-list), one-off |
+| Reversibility | Private mirror restores it | Old repository stays private until you delete it |
 
-**Recommendation:** Route 1 *if* the photo folder is the only thing that must disappear, because Route 2 costs
-far more than the exposure justifies; **Route 2** if the owner wants the evidence photographs and the commit
-metadata gone too and wants certainty. Either way: make the private mirror first, decide what `evidence/` should
-be (text only in this repository, binaries in the asset store the pipeline already supports), and rehearse on a
-copy.
+With no forks, no stars and no open PRs, **Route 2 is cheaper than I first said** and is the only route that does
+not rely on GitHub Support. Wave 0 and the protections are all in version control, so re-creating them is a checklist.
+My recommendation is Route 2, done **after** the freeze point above and after the protections are verified here once
+(so the new repository is built from a design that is already proven). Going private on the current repository is
+**not** an option: on a free plan a private repository loses rulesets and Pages.
 
-## Rollback
-The private mirror from step 1 restores every ref exactly (`git push --mirror` to an empty repository). Keep it
-until the new state has been verified for at least a week.
+## The private backup
+The owner's mirror (`git clone --mirror`) is the real backup, kept on private storage. The zip of the 48 photographs
+sent in this conversation is a convenience copy, not placed anywhere public. **No backup is stored in the repository,
+on any branch or tag, or in any workflow artifact.**
 
-## Decisions needed from the owner
-1. Is the iCloud folder the only privacy concern, or also the evidence photographs and the commit metadata?
-2. Route 1 or Route 2?
-3. Does the card-production branch (`claude/production-system-v1`) stay in this repository? It is the largest
-   carrier of `evidence/` and is still being written to every day.
-4. Who holds the private mirror (it contains everything, including the files you want removed).
-5. A date and a quiet window: no card-pipeline runs, no agent lanes active.
+## GATES (decisions needed from the owner, later)
+1. The freeze point for the card-production line (and who declares it).
+2. Where card-production outputs live permanently (app repository, private card repository, or the asset bucket).
+3. Route 1 or Route 2.
+4. A quiet window with no card runs and no agent lanes.
+5. Whether the evidence photographs are to be removed from history, or only the personal photographs and metadata.

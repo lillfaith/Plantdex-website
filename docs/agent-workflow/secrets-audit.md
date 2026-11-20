@@ -45,7 +45,7 @@ the workflows need no renaming: the job picks the environment, and the environme
 The patch derives that from the existing `project_ref` input.
 
 ## The exact workflow change (NOT applied)
-`github/secrets-to-environments.patch`: 17 files, **17 added lines, nothing removed**: one `environment:` line
+`github/secrets-to-environments.patch`: 16 files, **16 added lines, nothing removed**: one `environment:` line
 under `runs-on:` in each job that reads a secret. For the 11 workflows that take a `project_ref` input it is
 
 ```yaml
@@ -55,7 +55,7 @@ environment: ${{ inputs.project_ref == 'vygiamigomwlvnwkryyl' && 'supabase-produ
 so choosing the production project asks for the owner's approval and releases the production token; choosing
 the test project does neither. The four workflows that are hard-scoped to test (`field-run`,
 `identification-pilot`, `test-identification-config`, `comparison-account`) name `supabase-test`. The rest name
-`anthropic-paid`, `asset-store` or `claude-assistant`.
+`anthropic-paid` or `asset-store`.
 
 **Effects.** Behaviour is unchanged once the environments exist and hold their secrets. Until then the affected
 jobs would fail to find their secret, so the order is: create environments and add secrets, then merge the patch,
@@ -89,3 +89,24 @@ A Supabase personal access token cannot be restricted to one project or to read-
 the dashboard). If so, the only true isolation between test and production is two tokens owned by two
 different accounts or organizations, where the test one owns only the test project. That is a Supabase-side
 setup the owner would do once.
+
+## Updates from the second review
+- **`claude.yml` is deliberately NOT in the patch.** It also runs on `pull_request_review` and
+  `pull_request_review_comment` events, whose ref is `refs/pull/N/merge`; an environment's branch rule would refuse that
+  ref, so moving its token would silently break `@claude` on pull-request reviews. Its token stays a repository secret
+  for now. Options for the owner: (a) leave it; (b) drop the two PR-review triggers from `claude.yml` and then move
+  it; (c) accept an environment with no branch restriction, which protects nothing. I recommend (a) until the
+  assistant is used less, plus rotating the token after the rest is migrated.
+- **Read-only default permissions break nothing.** Every one of the 80 distinct workflow versions on all branches
+  already declares its own `permissions:` block (checked), including every workflow that commits or pushes (the
+  card pipeline declares `contents: write` itself). So switching the repository default to read-only changes no
+  workflow's behaviour, and from then on a workflow that forgets to declare a permission gets none. The card-production
+  pipeline is unaffected.
+- **Credentials by purpose** (minimum necessary access): production Supabase (`supabase-production`, reviewer-gated, one
+  branch), test Supabase (`supabase-test`, no reviewer, production and `integration` only, ideally a *test-only* token
+  from an account that owns only the test project), paid Anthropic API (`anthropic-paid`, reviewer-gated, with a
+  spend cap set in the Console), asset-store keys (`asset-store`, bucket-scoped, no reviewer), and the assistant token
+  (unchanged for now).
+- **Removing repository-level copies.** After each migrated secret has passed one run from its environment: delete
+  the repository-level secret of the same name. Order is in the owner checklist. A workflow that fails after deletion
+  fails closed (no secret), never open.

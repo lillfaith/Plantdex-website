@@ -39,6 +39,7 @@
 /.githooks/                                  @lillfaith
 /.claude/                                    @lillfaith
 /agents/ownership.json                       @lillfaith
+/agents/maintenance/                         @lillfaith
 /scripts/agent-guard.mjs                     @lillfaith
 /supabase/migrations/                        @lillfaith
 /supabase/functions/                         @lillfaith

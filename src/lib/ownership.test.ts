@@ -1,12 +1,14 @@
 import { execFileSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import {
   canWrite,
   checkCommand,
   checkTool,
   globToRegExp,
   loadManifest,
+  maintenanceExcuses,
+  sha256,
   resolveRule,
   roleFromBranch,
   ROLES,
@@ -306,4 +308,98 @@ describe('forbidden commands', () => {
       expect(checkCommand(command)).toBeNull();
     },
   );
+});
+
+describe('one-time maintenance authorization', () => {
+  const file = 'agents/maintenance/untrack-private-assets-2026-11.json';
+  const raw = readFileSync(file);
+  const data = JSON.parse(raw.toString('utf8')) as {
+    id: string;
+    branch: string;
+    expires: string;
+    deletions: { pathSha256: string; blob: string }[];
+  };
+  const auth = { hash: sha256(raw), data };
+  const entry = data.deletions[0];
+  const blobs = new Map(data.deletions.map((e) => [e.pathSha256, e.blob]));
+  const today = '2026-11-20';
+
+  // A path stands in for a listed file by choosing one whose hash we can compute: build the lookups from a made-up
+  // authorization so the test never needs the real (private) names.
+  const fakePath = 'evidence/photos/example/1.jpg';
+  const fake = {
+    hash: 'f'.repeat(64),
+    data: { id: 'test', branch: 'coord/x', expires: '2026-12-31', deletions: [{ pathSha256: sha256(fakePath), blob: 'a'.repeat(40) }] },
+  };
+  const base = { authorizations: [fake], activeHash: fake.hash, branch: 'coord/x', today, blobOf: () => 'a'.repeat(40) };
+
+  it('has a well-formed, sorted, duplicate-free list of exact deletions', () => {
+    expect(data.deletions).toHaveLength(928);
+    expect(new Set(blobs.keys()).size).toBe(928);
+    expect(data.deletions.map((e) => e.pathSha256)).toEqual([...blobs.keys()].sort());
+    for (const e of data.deletions) {
+      expect(e.pathSha256).toMatch(/^[0-9a-f]{64}$/);
+      expect(e.blob).toMatch(/^[0-9a-f]{40}$/);
+    }
+    expect(entry).toBeDefined();
+    expect(data.branch).toBe('coord/untrack-private-assets');
+    expect(data.expires >= '2026-11-20').toBe(true);
+  });
+
+  it('names no path in the clear', () => {
+    expect(raw.toString('utf8')).not.toMatch(/iCloud|evidence\//);
+  });
+
+  it('is inert unless the owner arms it with exactly its hash', () => {
+    const changes = [{ status: 'D', path: fakePath }];
+    expect(maintenanceExcuses({ ...base, changes, activeHash: undefined }).excused.size).toBe(0);
+    expect(maintenanceExcuses({ ...base, changes, activeHash: '' }).excused.size).toBe(0);
+    expect(maintenanceExcuses({ ...base, changes, activeHash: '0'.repeat(64) }).excused.size).toBe(0);
+    expect(maintenanceExcuses({ ...base, changes }).excused.has(fakePath)).toBe(true);
+  });
+
+  it('excuses only deletions, never an addition or a modification', () => {
+    for (const status of ['A', 'M', 'T']) {
+      expect(maintenanceExcuses({ ...base, changes: [{ status, path: fakePath }] }).excused.size).toBe(0);
+    }
+  });
+
+  it('excuses only a file whose content is the one that was approved', () => {
+    const changes = [{ status: 'D', path: fakePath }];
+    expect(maintenanceExcuses({ ...base, changes, blobOf: () => 'b'.repeat(40) }).excused.size).toBe(0);
+    expect(maintenanceExcuses({ ...base, changes, blobOf: () => '' }).excused.size).toBe(0);
+  });
+
+  it('excuses only the listed paths, even for a deletion', () => {
+    const changes = [
+      { status: 'D', path: fakePath },
+      { status: 'D', path: 'evidence/photos/example/2.jpg' },
+      { status: 'D', path: 'AGENTS.md' },
+    ];
+    const verdict = maintenanceExcuses({ ...base, changes });
+    expect([...verdict.excused]).toEqual([fakePath]);
+  });
+
+  it('is bound to one branch and to an expiry date', () => {
+    const changes = [{ status: 'D', path: fakePath }];
+    expect(maintenanceExcuses({ ...base, changes, branch: 'agent/scan/x' }).excused.size).toBe(0);
+    expect(maintenanceExcuses({ ...base, changes, today: '2027-01-01' }).excused.size).toBe(0);
+  });
+
+  it('is read from the base branch and armed by a repository variable only the owner can set', () => {
+    const workflow = readFileSync('.github/workflows/pr-verify.yml', 'utf8');
+    expect(workflow).toContain('MAINTENANCE_AUTH: ${{ vars.MAINTENANCE_AUTH }}');
+    expect(workflow).toContain('git archive "origin/$BASE" agents/maintenance');
+    expect(workflow).not.toMatch(/secrets\./);
+    expect(readdirSync('agents/maintenance').every((f) => f.endsWith('.json'))).toBe(true);
+  });
+
+  it('keeps the real authorization file itself out of agents\' hands', () => {
+    expect(resolveRule(file, manifest)?.owner).toBe('coordinator');
+    for (const role of LANES) expect(canWrite(role, file, manifest)).toBe(false);
+  });
+
+  it('is exposed through the real hash an owner would paste', () => {
+    expect(auth.hash).toMatch(/^[0-9a-f]{64}$/);
+  });
 });

@@ -53,12 +53,17 @@ jobs:
       - name: Every changed file belongs to the author's lane
         env:
           BASE: ${{ github.base_ref }}
+          # Set ONLY by the owner (Settings > Secrets and variables > Actions > Variables), to the SHA-256 of one
+          # authorization file already merged into the base branch. Empty almost always. See
+          # docs/agent-workflow/maintenance-authorization.md for what it can and cannot excuse.
+          MAINTENANCE_AUTH: ${{ vars.MAINTENANCE_AUTH }}
         run: |
           # The copies keep the repository layout (scripts/ beside agents/) so that any version of the script finds its
           # manifest by its own relative path, including the version that predates the --manifest flag.
           mkdir -p "$RUNNER_TEMP/base/scripts" "$RUNNER_TEMP/base/agents"
           git show "origin/$BASE:scripts/agent-guard.mjs" > "$RUNNER_TEMP/base/scripts/agent-guard.mjs"
           git show "origin/$BASE:agents/ownership.json" > "$RUNNER_TEMP/base/agents/ownership.json"
+          git archive "origin/$BASE" agents/maintenance 2>/dev/null | tar -x -C "$RUNNER_TEMP/base" || true
           node "$RUNNER_TEMP/base/scripts/agent-guard.mjs" diff --base "origin/$BASE"
 
   verify:
