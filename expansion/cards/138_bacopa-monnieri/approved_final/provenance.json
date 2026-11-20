@@ -8,5 +8,5 @@
   "pixel_icon_native_24x24.png": "e9b67a140062d787ee80544ef35b07dc5452c66e5fdf47a856368510fd4c7e96",
   "main_cutout_used.png": "d8ce0357e575c238f3257efb1988f1c4cf7384ba53c404688ce2abc6ecf980e6"
  },
- "owner_edit": "Owner: back preview resized a bit so it no longer pokes out of the preview oval (whole layer scaled x0.893 toward the oval centre, 4x supersampled; nothing else changed). The supplied back_final.png is kept unchanged and not used for this card's back."
+ "owner_edit": "Owner: back preview turned 10 degrees counter-clockwise; rebuilt crisp from the hi-res tall cutout at the size it already had after the earlier fit-in-oval resize. The supplied back_final.png is kept unchanged and not used for this card's back."
 }
