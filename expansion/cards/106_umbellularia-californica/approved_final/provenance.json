@@ -7,5 +7,6 @@
   "back_final.png": "d3b29241f913b0a80e4196b46e5afc84d37625fa33bbca01736467361cb570ac",
   "pixel_icon_native_24x24.png": "3075b2d1ed34490244eda30552d4af501eb08d7b315f0787a29351f3a56ff433",
   "main_cutout_used.png": "43745be9557feaae019cb5c04224589318517cebd0f16b01e4033e1659b6d088"
- }
+ },
+ "owner_edit": "Owner: back preview rotated 18.0 degrees counter-clockwise to stand vertical (whole overlay rotated about its own centre, then re-centred in the oval; the supplied back_final.png is kept unchanged and no longer used for this card's back)"
 }

@@ -33,6 +33,7 @@ K = R.WIDTH / REF_W
 MAIN_OPACITY = 0.95                      # main botanical layer at 95% (the deck's own photo opacity)
 PIXEL_DISPLAY = {57: 96}                 # approved: Boneset's icon displays 96px, the others ~91px
 PIXEL_DISPLAY_DEFAULT = 91
+PREVIEW_ROTATE = {}                      # owner-requested preview rotations (--preview-rotate N=DEG|auto)
 PIXEL_SCALE = {}                         # owner-requested per-card icon scale (--pixel-scale N=0.85)
 # Element icons (water / sun / temperature) at the size they are drawn on the SHIPPED cards. The renderer's own
 # STAT_ROWS_INK came out larger (drops 35x54 vs 33x49, suns spilling into each other, thermometers 22x35 vs
@@ -237,6 +238,32 @@ def align_tall(ov: Image.Image, extra_cw: float = 0.0) -> Image.Image:
     return ov.transform((REF_W, REF_H), Image.AFFINE, coeffs, resample=Image.BICUBIC)
 
 
+def rotate_preview(ov: Image.Image, deg) -> tuple[Image.Image, float]:
+    """Rotate the whole overlay counter-clockwise about the centre of its visible bounding box. `deg` may be 'auto'."""
+    a = np.asarray(ov.getchannel("A"))
+    ys, xs = np.where(a > 8)
+    cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
+    if deg == "auto":
+        pts = np.stack([xs - xs.mean(), ys - ys.mean()])
+        _, v = np.linalg.eigh(np.cov(pts))
+        lean = float(np.degrees(np.arctan2(v[0, 1], v[1, 1])))
+        deg = -((lean + 90) % 180 - 90)                 # eigenvector angle is measured with image y pointing down; PIL rotates counter-clockwise for positive angles
+    out = ov.rotate(float(deg), resample=Image.BICUBIC, center=(cx, cy))
+    ys, xs = np.where(np.asarray(out.getchannel("A")) > 8)
+    w, h = xs.max() - xs.min() + 1, ys.max() - ys.min() + 1
+    k = min(1.0, OVAL_FIT_W / w, OVAL_FIT_H / h)           # only ever SHRINK, and only if the turn pushed it outside the oval's safe box
+    if k < 1.0:
+        mx, my = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
+        out = out.transform(out.size, Image.AFFINE, (1 / k, 0, mx - mx / k, 0, 1 / k, my - my / k), resample=Image.BICUBIC)
+        print(f"  (shrunk {k:.3f} to stay inside the oval)")
+    ys, xs = np.where(np.asarray(out.getchannel("A")) > 8)
+    dx = OVAL_CX - (xs.min() + xs.max()) / 2                  # a turn can swing one side out of the oval: re-centre the visible plant on the oval's axis (translation only)
+    if abs(dx) >= 1:
+        out = out.transform(out.size, Image.AFFINE, (1, 0, -dx, 0, 1, 0), resample=Image.BICUBIC)
+        print(f"  (re-centred by {dx:+.1f}px)")
+    return out, float(deg)
+
+
 def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     base = Image.open(pkg / "templates" / "front_base_390x630.png")
     ref = Image.open(pkg / "cards" / str(n) / "front_final.png")
@@ -335,9 +362,10 @@ def qa_checks(front: Image.Image, back: Image.Image, info: dict) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--pixel-scale", nargs="*", default=[], help="N=FACTOR owner-requested icon scale for a card (0.85 = 15%% smaller), ink stays centred in the panel"); ap.add_argument("--front-from-final", action="store_true", help="no hi-res cutout is available: use cards/<n>/front_final.png (the owner-approved 390x630 front, main photo baked in) enlarged as the front page, with the pixel-icon panel restored from the template so the supplied native icon is drawn crisp; text layers go on top as usual"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
+    ap.add_argument("--assets", help="approved art package; a card with no art folder in it is rendered WITHOUT artwork"); ap.add_argument("--tall-extra-cw", nargs="*", default=[], help="N=DEG extra clockwise tilt for a card whose stem is not vertical after auto-align"); ap.add_argument("--pixel-scale", nargs="*", default=[], help="N=FACTOR owner-requested icon scale for a card (0.85 = 15%% smaller), ink stays centred in the panel"); ap.add_argument("--front-from-final", action="store_true", help="no hi-res cutout is available: use cards/<n>/front_final.png (the owner-approved 390x630 front, main photo baked in) enlarged as the front page, with the pixel-icon panel restored from the template so the supplied native icon is drawn crisp; text layers go on top as usual"); ap.add_argument("--preview-rotate", nargs="*", default=[], help="N=DEG|auto owner request: rotate card N's back preview counter-clockwise by DEG (auto = until its principal axis is vertical). The whole overlay is rotated as ONE image about its own centre, no scaling, no cropping; the card then uses the overlay route instead of the baked approved back"); ap.add_argument("--approved-backs", action="store_true", help="use cards/<n>/back_final.png (the owner-approved back, preview art baked in) as the back page; no overlay is computed"); ap.add_argument("--align-tall", action="store_true", help="re-seat each tall preview in the back oval (rotate + uniform resize only)"); ap.add_argument("--data", required=True)
     ap.add_argument("--cards", nargs="+", type=int, required=True); ap.add_argument("--out", required=True)
     a = ap.parse_args()
+    PREVIEW_ROTATE.update({int(k): (v if v == "auto" else float(v)) for k, v in (x.split("=") for x in a.preview_rotate)})
     PIXEL_SCALE.update({int(k): float(v) for k, v in (x.split("=") for x in a.pixel_scale)})
     pkg, out = pathlib.Path(a.assets or "/nonexistent"), pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -351,12 +379,15 @@ def main() -> int:
         ov = None
         if has_art:
             overlay = Image.open(pkg / "cards" / str(n) / "back_gradient_mask_overlay.png").convert("RGBA")
+            if n in PREVIEW_ROTATE:
+                overlay, used = rotate_preview(overlay, PREVIEW_ROTATE[n])
+                print(f"  #{n}: preview rotated {used:.1f} deg counter-clockwise")
             if a.align_tall:
                 overlay = align_tall(overlay, dict((int(k), float(v)) for k, v in (x.split('=') for x in a.tall_extra_cw)).get(n, 0.0))
             ov = overlay.resize((R.WIDTH, round(R.WIDTH * REF_H / REF_W)), Image.LANCZOS)
 
         approved_back = None
-        if a.approved_backs and (pkg / "cards" / str(n) / "back_final.png").exists():
+        if a.approved_backs and n not in PREVIEW_ROTATE and (pkg / "cards" / str(n) / "back_final.png").exists():
             approved_back = Image.open(pkg / "cards" / str(n) / "back_final.png").convert("RGBA")
             ov = None                      # the approved back already carries its preview; computing one would stack a second silhouette
 
