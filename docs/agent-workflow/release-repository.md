@@ -64,3 +64,15 @@ step, after step 2 above succeeds), or move any secret.
 - *You as the only required reviewer, here:* GitHub-enforced only if the App cannot approve deployments. Not provable.
 - *A trusted second person as reviewer:* works, but needs a person.
 - *Local agent sessions with a restricted machine token:* works, but gives up cloud sessions.
+
+## Verified (2026-11-20): the Claude App cannot reach the release repository
+Run after the owner merged the first pull request and removed `plantdex-release` from the App's repository list:
+
+| Attempt, by the coordinator session | Result |
+|---|---|
+| `git push` of a throwaway branch to `plantdex-release` | **Refused**: HTTP 403, "Claude doesn't have GitHub access to lillfaith/plantdex-release". The branch is not on the remote. |
+| GitHub API: create a branch in `plantdex-release` | **Refused**: 403 "Resource not accessible by integration". |
+
+What was done while access was briefly granted: one branch and one pull request, with two files (the manual publish workflow
+and its README), which the owner reviewed and squash-merged. The workflow has no secrets and no automatic trigger.
+Leftover: the branch `setup/publish-workflow` in the release repository (the session can no longer delete it; the owner can).
