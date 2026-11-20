@@ -1,0 +1,227 @@
+name: Run a Supabase migration
+
+# Applies one file from supabase/migrations/ to a project.
+#
+# WHY THIS EXISTS. Migrations are SQL that has to reach the database, and the Supabase CLI's
+# usual route (`supabase db push`) wants either a direct Postgres connection or a linked
+# project with its database password. Neither belongs on a laptop, and neither is available
+# from a sandboxed session. The Management API's query endpoint needs only the access token
+# this repo already holds for deploying functions, so migrations run here for exactly the
+# same reason function deploys do.
+#
+# WHAT BOUNDS IT. The SQL is not an input. Only a FILE NAME is, and it must name a file that
+# is already committed under supabase/migrations/ — so whatever runs has been through review
+# and is in the repository's history. A workflow that accepted arbitrary SQL as a text input
+# would be a remote shell on the database wearing a form.
+#
+# Migrations here must be safe to run twice: every statement in 0002_scans.sql uses
+# `create ... if not exists` or `create or replace`, because the only honest assumption about
+# a manually dispatched workflow is that somebody will eventually run it twice.
+# PORTED INTO THE RELEASE REPOSITORY (docs/agent-workflow/release-repository.md). Runs ONLY here, only when the owner presses
+# "Run workflow", and only against the PRODUCTION project: the job's environment is `supabase-production`, which allows branch
+# `main` only and waits for the owner's approval. The Claude GitHub App is not installed on this repository. Test-project runs
+# stay in the app repository under the `supabase-test` environment. The app's code is checked out at an owner-named commit that
+# must be on the app's production branch.
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Full 40-character commit SHA, on the app repository's production branch, to run from
+        required: true
+        type: string
+      project_ref:
+        description: Which Supabase project to migrate
+        required: true
+        default: vygiamigomwlvnwkryyl
+        type: choice
+        options:
+          - vygiamigomwlvnwkryyl # production
+      migration:
+        description: File name under supabase/migrations/ (e.g. 0002_scans.sql)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    environment: supabase-production
+    steps:
+      - name: Check out the app at the chosen commit
+        uses: actions/checkout@v4
+        with:
+          repository: lillfaith/Plantdex-website
+          ref: ${{ inputs.sha }}
+          fetch-depth: 0
+
+      - name: The commit must be a full SHA that is on the app's production branch
+        env:
+          SHA: ${{ inputs.sha }}
+        run: |
+          [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Give the full 40-character SHA."; exit 1; }
+          git fetch --quiet origin claude/planning-session-61zwro
+          git merge-base --is-ancestor "$SHA" FETCH_HEAD || { echo "::error::$SHA is not on the production branch."; exit 1; }
+          { echo "### Running against"; git log -1 --format='`%h` %s' "$SHA"; } >> "$GITHUB_STEP_SUMMARY"
+
+
+      - name: Fail early if the token is missing
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN is not set. Create one at" \
+                 "https://supabase.com/dashboard/account/tokens and add it under" \
+                 "Settings -> Secrets and variables -> Actions -> Secrets."
+            exit 1
+          fi
+
+      - name: Fail early if the token cannot reach this project
+        # THE FAILURE THIS EXISTS FOR. A Supabase personal access token carries two
+        # independent things: capabilities, and RESOURCE ACCESS. A token can hold every
+        # capability there is and still be scoped to one project — and then every call about
+        # another project answers 403 with a message about "privileges", which reads like a
+        # role problem rather than a scope one. That cost a whole production rollout: the
+        # migration 403'd, the deploy 403'd on its first function, and neither said why.
+        #
+        # `GET /v1/projects` lists exactly the projects this token may act on, so it answers
+        # the question directly. The list is not printed — other project refs are none of a
+        # workflow log's business.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/projects.json -w '%{http_code}' \
+            "https://api.supabase.com/v1/projects" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN")
+          if [ "$code" != "200" ]; then
+            echo "::error::The Supabase access token was rejected (HTTP $code) — expired," \
+                 "revoked, or malformed. Personal access tokens can be given a short" \
+                 "lifetime, so check the expiry. Create a new one at" \
+                 "https://supabase.com/dashboard/account/tokens and update the" \
+                 "SUPABASE_ACCESS_TOKEN repository secret."
+            exit 1
+          fi
+          if ! grep -q "\"$PROJECT_REF\"" /tmp/projects.json; then
+            echo "::error::The token is valid but is NOT SCOPED TO $PROJECT_REF, so every" \
+                 "call about this project will answer 403. Open the token at" \
+                 "https://supabase.com/dashboard/account/tokens and check its 'Resource" \
+                 "access' — it needs to cover this project, not only the other one."
+            exit 1
+          fi
+          echo "Token is scoped to $PROJECT_REF."
+
+          # AND SAY WHETHER THE PROJECT IS AWAKE, because the apply step cannot.
+          #
+          # A paused project answers the apply with HTTP 400 and
+          # {"message":"Database is possibly not accessible at the moment"} — which names no
+          # cause, reads like an outage, and is indistinguishable from a transient one. The
+          # SQL is never executed, so it is also not a migration failure, though the step
+          # that reports it is the one called "Apply the migration".
+          #
+          # The status is already in the response this step fetched for the scope check, so
+          # printing it costs nothing and converts that 400 into an answer. A free-tier
+          # project pauses after about a week of inactivity, and only a dashboard restore
+          # brings it back — nothing in this workflow can.
+          #
+          # ONLY THE REQUESTED REF'S STATUS IS PRINTED. The reasoning in the scope check
+          # above applies unchanged: the other projects on the token are none of a log's
+          # business, so this selects one entry rather than dumping the list.
+          STATUS=$(python3 -c "import json,sys;d=json.load(open('/tmp/projects.json'));print(next((p.get('status','?') for p in d if p.get('id')==sys.argv[1]),'?'))" "$PROJECT_REF")
+          echo "Project status: $STATUS"
+          if [ "$STATUS" != "ACTIVE_HEALTHY" ]; then
+            echo "::warning::$PROJECT_REF is reporting '$STATUS' rather than ACTIVE_HEALTHY." \
+                 "If the apply step fails with \"Database is possibly not accessible\", that" \
+                 "is why, and the remedy is to restore the project from the Supabase" \
+                 "dashboard — no SQL has run and nothing is half-applied."
+          fi
+
+      - name: Apply the migration
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          set -euo pipefail
+
+          # A file name, not a path: no directory traversal, and nothing outside the
+          # migrations directory can be reached.
+          case "$MIGRATION" in
+            */*|..*) echo "::error::Give a file name, not a path."; exit 1 ;;
+          esac
+          FILE="supabase/migrations/$MIGRATION"
+          if [ ! -f "$FILE" ]; then
+            echo "::error::$FILE is not in this repository. Available:"
+            ls supabase/migrations/
+            exit 1
+          fi
+
+          echo "Applying $FILE to $PROJECT_REF"
+
+          # The SQL is passed as JSON built by python rather than by shell quoting: migrations
+          # contain quotes, dollar-quoted function bodies and newlines, all of which a
+          # hand-built payload mangles silently. One-liner, not a heredoc — a heredoc inside a
+          # YAML block scalar loses its terminator to the dedent.
+          python3 -c "import json,sys;print(json.dumps({'query':open(sys.argv[1]).read()}))" \
+            "$FILE" > /tmp/payload.json
+
+          code=$(curl -sS -o /tmp/response.json -w '%{http_code}' \
+            -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data @/tmp/payload.json)
+
+          echo "HTTP $code"
+          # The response can echo row data, so print it only on failure and only the head of
+          # it — a workflow log is readable by anyone with repo access.
+          if [ "$code" != "200" ] && [ "$code" != "201" ]; then
+            echo "::error::Migration failed."
+            head -c 2000 /tmp/response.json
+            exit 1
+          fi
+          echo "Migration applied."
+
+      - name: Confirm the objects exist
+        # Proof rather than assumption: a 200 from the query endpoint means the statement ran,
+        # not that the objects are there — a migration full of `if not exists` returns 200
+        # having done nothing at all.
+        #
+        # COLUMNS AS WELL AS TABLES, because a migration need not create a table. 0006 is
+        # almost entirely `alter table ... add column if not exists`, and against a table list
+        # alone its output is indistinguishable from a migration that did nothing — while the
+        # columns it adds are exactly what the client writes to. An `insert` naming a column
+        # that is not there is rejected outright: signed-in sightings would start failing, and
+        # this step would have said the migration was fine.
+        #
+        # The tables are read out of the migration FILE rather than listed here, so this stays
+        # generic: whatever `public.<name>` the migration touches is what gets reported.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ inputs.project_ref }}
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          set -euo pipefail
+          query() {
+            python3 -c "import json,sys;print(json.dumps({'query':sys.argv[1]}))" "$1" > /tmp/q.json
+            curl -sS --fail-with-body -X POST \
+              "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
+              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              -H "Content-Type: application/json" --data @/tmp/q.json
+            echo
+          }
+
+          echo "Tables in public:"
+          query "select table_name from information_schema.tables where table_schema='public' order by table_name"
+
+          # Every `public.<table>` the migration names, de-duplicated, in file order. One
+          # line deliberately: an indented heredoc inside a YAML block feeds Python its own
+          # indentation and dies on it, which is a trap this repository has already hit.
+          TABLES=$(python3 -c "import re,sys;seen=[];[seen.append(n) for n in re.findall(r'public\.([a-z_]+)', open(sys.argv[1]).read()) if n not in seen];print(','.join(seen))" "supabase/migrations/$MIGRATION")
+          echo "Tables this migration names: $TABLES"
+
+          for t in $(echo "$TABLES" | tr ',' ' '); do
+            echo "Columns of $t:"
+            query "select column_name, data_type from information_schema.columns where table_schema='public' and table_name='$t' order by ordinal_position"
+          done

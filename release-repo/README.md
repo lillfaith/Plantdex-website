@@ -19,3 +19,9 @@ environment.
 **Do not set `SITE_DOMAIN` here until the domain move is approved**: it makes the build write the CNAME for the live domain.
 
 See `docs/agent-workflow/release-repository.md` in the app repository.
+
+## Production Supabase workflows (added)
+`check-token.yml` (read-only), `release-checkpoint.yml` (read-only), `deploy-function.yml` and `run-migration.yml` run from here
+against the PRODUCTION project only, in the `supabase-production` environment (branch `main`, owner approval, no admin bypass).
+Each takes the app commit to run from (`sha`, must be on the app's production branch). Test-project runs stay in the app repo
+under `supabase-test`. Run `check-token` first after any token change; it changes nothing.
