@@ -6,7 +6,8 @@
   "front_final.png": "691b90b4b0e72ef94aba744814151533c3e93396efac65bc006d99a1a329d8d3",
   "back_final.png": "2b325f03278fb9f1c6825681942eb14b60c4c1b6b74133533de804b8f8d83355",
   "pixel_icon_native_24x24.png": "6654a9a306120355c623d8b22e34f6f89facc766a636428d896c611efb8663b3",
-  "main_cutout_used.png": "57d9fc20e27c5a71be913a64ba3dee4eb69e2750b74dd78ed52451f87aac7d74"
+  "main_cutout_used.png": "57d9fc20e27c5a71be913a64ba3dee4eb69e2750b74dd78ed52451f87aac7d74",
+  "tall_cutout_used.png": "097c236c7991dc3567911e18ac41a94751296018f7e9e9a9b97cf489077a369b"
  },
- "owner_edit": "Owner: back preview rotated 13.5 degrees counter-clockwise to stand vertical (whole overlay rotated about its own centre, then re-centred in the oval; the supplied back_final.png is kept unchanged and no longer used for this card's back)"
+ "owner_edit": "Owner: back preview turned 13.2 degrees counter-clockwise to stand vertical. First attempt (turning the 390 px preview layer) was fuzzy and was reverted; the preview is now REBUILT from the hi-res tall cutout (turned once at full resolution, locked gradient mapped over its bounding box, same scale and position as the supplied preview). The supplied back_final.png is kept unchanged."
 }
