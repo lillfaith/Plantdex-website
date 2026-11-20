@@ -1,14 +1,12 @@
 name: Claude Code
 
+# TEMPORARILY DISABLED (owner decision, 2026-11-20): automatic @claude and PR-review triggers are off while credentials are
+# isolated. The original is preserved verbatim at docs/agent-workflow/github/archive/claude.yml.original; to restore, copy it
+# back over this file. Only a manual run remains, and it can be started only by someone with write access, from the Actions tab.
+# The CLAUDE_CODE_OAUTH_TOKEN secret is meant to be DELETED while this is disabled and re-created (ideally in an environment
+# restricted to the production branch) when the triggers are restored.
 on:
-  issue_comment:
-    types: [created]
-  pull_request_review_comment:
-    types: [created]
-  issues:
-    types: [opened, assigned]
-  pull_request_review:
-    types: [submitted]
+  workflow_dispatch:
 
 jobs:
   claude:
