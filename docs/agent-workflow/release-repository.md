@@ -40,6 +40,17 @@ Pages settings to the release repository's, and later press a button per release
 to the release repository while you have temporarily added it to the App, which is a visible setting you switch on and
 off (and switching it off is itself the acceptance test).
 
+## Order of work (nothing live changes until step 6)
+1. **Done:** the release repository exists, public, without the App. The App is restricted to the app repository only.
+2. Owner temporarily adds the release repository to the App; I push the workflow and README; owner removes it again;
+   I confirm GitHub now refuses me (the first acceptance test).
+3. Owner copies the 7 public variables, **except `SITE_DOMAIN`**; enables Pages (source: GitHub Actions) in the release
+   repository. A dry run of the publish workflow proves it builds. The live site is untouched.
+4. A real publish to the release repository's own github.io address, with no custom domain, proves the pipeline end to end.
+5. Copy over, then (later, separately approved) remove, the production-credential workflows.
+6. **Domain move (separately approved, quiet window):** release repository claims plantdex.online, then the app
+   repository's deploy job is removed. The old site keeps serving until the new one is verified.
+
 ## What I verify
 1. After the App's access is restricted: I cannot push to or dispatch anything in `plantdex-release` (GitHub refuses).
 2. A no-op publish of the current production commit works and leaves the site unchanged.

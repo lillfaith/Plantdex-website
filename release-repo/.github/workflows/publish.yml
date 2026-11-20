@@ -13,6 +13,11 @@ on:
         description: Full 40-character commit SHA, on the app repository's production branch, to publish
         required: true
         type: string
+      publish:
+        description: Tick to actually publish. Left unticked, the run only builds and tests that commit and publishes NOTHING.
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -180,6 +185,9 @@ jobs:
           path: out
 
   deploy:
+    # Publishing is opt-in on every run. A dry run (the default) proves the commit builds and passes its tests without
+    # touching the live site.
+    if: ${{ inputs.publish }}
     needs: build
     runs-on: ubuntu-latest
     environment:
