@@ -1,0 +1,57 @@
+# Who must approve a change to which file.
+#
+# Wired up by the rulesets in docs/agent-workflow/github-protections.md ("require review from Code
+# Owners"). Read the limits there before relying on it: every agent here pushes under the repository
+# owner's own GitHub identity, and GitHub does not let an author approve their own pull request, so
+# the approval that cannot be faked is the deploy-environment gate, not this file. This file records
+# intent and is the review requirement for any contributor with a separate identity.
+#
+# Tier 0: approved identity and facts. No agent edits these at all (agents/ownership.json).
+/AGENTS.md                                   @lillfaith
+/public/cards/                               @lillfaith
+/public/product/                             @lillfaith
+/public/reference/                           @lillfaith
+/public/scan/                                @lillfaith
+/public/boss-form/                           @lillfaith
+/product-source/                             @lillfaith
+/iCloud\ Photos\ from\ Lillie\ Jahr\ 4/      @lillfaith
+/evidence/                                   @lillfaith
+/field/                                      @lillfaith
+/field-inat/                                 @lillfaith
+/src/data/                                   @lillfaith
+/src/app/privacy/                            @lillfaith
+/src/app/terms/                              @lillfaith
+/src/app/terms-of-sale/                      @lillfaith
+/src/app/returns/                            @lillfaith
+/src/app/shipping/                           @lillfaith
+/src/app/safety/                             @lillfaith
+/src/components/SafetyNotice.tsx             @lillfaith
+
+# Tier 3: human-directed design.
+/src/app/globals.css                         @lillfaith
+/src/components/ui/                          @lillfaith
+/src/components/SiteNav.tsx                  @lillfaith
+/src/components/SiteFooter.tsx               @lillfaith
+/src/components/herbdex/                     @lillfaith
+
+# Security-sensitive and production-affecting, even when a coordinator writes them.
+/.github/                                    @lillfaith
+/.githooks/                                  @lillfaith
+/.claude/                                    @lillfaith
+/agents/ownership.json                       @lillfaith
+/agents/maintenance/                         @lillfaith
+/scripts/agent-guard.mjs                     @lillfaith
+/supabase/migrations/                        @lillfaith
+/supabase/functions/                         @lillfaith
+/src/components/auth/                        @lillfaith
+/src/lib/supabase-client.ts                  @lillfaith
+/package.json                                @lillfaith
+/package-lock.json                           @lillfaith
+/next.config.ts                              @lillfaith
+
+# Anything that changes what is awarded, scored or ranked.
+/src/lib/progression.ts                      @lillfaith
+/src/lib/herbdex-reducer.ts                  @lillfaith
+/src/lib/research.ts                         @lillfaith
+/src/lib/leaderboard.ts                      @lillfaith
+/src/lib/remote-herbdex-storage.ts           @lillfaith

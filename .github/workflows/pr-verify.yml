@@ -1,0 +1,98 @@
+name: PR verify
+
+# THE GATE THAT RUNS BEFORE A MERGE. Until this existed the only checks lived inside deploy.yml, which
+# runs after a push to the production branch, i.e. after the change had already landed.
+#
+# It deliberately has NO secrets, NO write permissions and NO deploy step, so a pull request, however
+# it was authored, cannot reach production credentials or publish anything from here. Required as a
+# status check by the rulesets in docs/agent-workflow/github-protections.md.
+#
+# Branches: `integration` is where lane work lands; the production branch only ever receives a
+# promotion from `integration` (checked below). Pull requests to any other base are not gated here.
+on:
+  pull_request:
+    branches:
+      - integration
+      - claude/planning-session-61zwro
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-verify-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    name: guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Production accepts only a promotion from integration
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+        run: |
+          PRODUCTION="$(node -e "console.log(JSON.parse(require('fs').readFileSync('agents/ownership.json','utf8')).production)")"
+          if [ "$BASE" = "$PRODUCTION" ] && [ "$HEAD" != "integration" ]; then
+            echo "::error::A pull request into '$PRODUCTION' (which deploys to plantdex.online) must come from 'integration', not '$HEAD'."
+            exit 1
+          fi
+          echo "base=$BASE head=$HEAD: ok"
+
+      # JUDGED BY THE BASE BRANCH'S RULES, NOT THE PR'S OWN. A pull request that edited agents/ownership.json or
+      # scripts/agent-guard.mjs would otherwise be checked against its own edit. Both files are read from the base
+      # branch, so the first PR that changes them is judged by the old rules, which is the point.
+      - name: Every changed file belongs to the author's lane
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+          # Set ONLY by the owner (Settings > Secrets and variables > Actions > Variables), to the SHA-256 of one
+          # authorization file already merged into the base branch. Empty almost always. See
+          # docs/agent-workflow/maintenance-authorization.md for what it can and cannot excuse.
+          MAINTENANCE_AUTH: ${{ vars.MAINTENANCE_AUTH }}
+        run: |
+          # The copies keep the repository layout (scripts/ beside agents/) so that any version of the script finds its
+          # manifest by its own relative path, including the version that predates the --manifest flag.
+          # BOOTSTRAP, ONCE: the very first promotion into production arrives before production has a guard to judge
+          # it by. That is accepted only for a promotion from `integration` (enforced by the step above), whose commits
+          # were each checked on the way into `integration`. Any other pull request still fails here if the base has
+          # no guard, and once production carries the guard this branch is never taken.
+          if ! git cat-file -e "origin/$BASE:scripts/agent-guard.mjs" 2>/dev/null; then
+            if [ "$HEAD" = "integration" ]; then
+              echo "::notice::Base '$BASE' has no guard yet; accepting this promotion from integration (bootstrap)."
+              exit 0
+            fi
+            echo "::error::Base '$BASE' has no guard script and this is not a promotion from integration."
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/base/scripts" "$RUNNER_TEMP/base/agents"
+          git show "origin/$BASE:scripts/agent-guard.mjs" > "$RUNNER_TEMP/base/scripts/agent-guard.mjs"
+          git show "origin/$BASE:agents/ownership.json" > "$RUNNER_TEMP/base/agents/ownership.json"
+          git archive "origin/$BASE" agents/maintenance 2>/dev/null | tar -x -C "$RUNNER_TEMP/base" || true
+          node "$RUNNER_TEMP/base/scripts/agent-guard.mjs" diff --base "origin/$BASE"
+
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # lint + typecheck + deno check of the edge functions + the full unit suite + a production build.
+      # Measured at about a minute on a clean runner.
+      - run: npm run verify

@@ -13,6 +13,14 @@ progress synced to Supabase — see "V0.3 accounts" below, **V0.4 commerce** (a 
 Payment Link behind `/shop`, see "V0.4 commerce" below), and the **player profile** at
 `/profile` (see "Player profile"). Not yet built: QR (V0.5).
 
+## Working as one of several agents
+
+If your branch is `agent/*`, `coord/*`, `ui/*` or `proto/b/*`, you are one lane of several. Read
+`agents/README.md` first: who owns which file (`agents/ownership.json`, enforced by a hook, a test and a PR
+check), the Shared Change Request process, and what counts as done. The production branch deploys to
+plantdex.online; **never push to it or to `integration`, never dispatch a workflow, never touch a credential**.
+Standing owner decisions are in `docs/agent-workflow/decisions.md`.
+
 ## Commands
 
 ```bash
@@ -72,6 +80,10 @@ These exist because AGENTS.md requires them. Breaking one is a bug, not a style 
 - **The garden mirrors mastery; it is not a second progression system.** `src/lib/garden.ts`
   maps each mastery stage to exactly one growth stage and reads no clock at all, which is
   what structurally rules out watering meters, timers and idle growth.
+  **REAFFIRMED BY THE OWNER, 2026-11-19:** growth follows discoveries, learning and mastery and never
+  waiting or daily chores. "Mystery plants" outside the Garden may encourage outdoor discovery, but must
+  not introduce automatic growth timers. A retention idea that needs a clock belongs outside the Garden or
+  is a decision for the owner.
   **THAT IS A PLANTDEX PRODUCT DECISION, NOT AN AGENTS.md REQUIREMENT**, and this file used to
   claim otherwise. AGENTS.md contains the word "garden" zero times in 799 lines, and
   "watering", "idle", "busywork", "grind" and "energy system" zero times each; its only
@@ -657,9 +669,34 @@ does not carry — the state that used to be a dead end.
   card and something with no card. `aria-hidden`, no label, no XP, authored on the same pixel
   grid as the packets and painted only from deck tokens.
 
-## Progression is self-declared
+## Progression is self-declared (TODAY) — and the direction is changing
 
-Nothing in Plantdex verifies that anybody went outside, and nothing is meant to. This is
+**Direction, set by the owner on 2026-11-19, NOT ACTIVE.** The decision below was made when nothing
+competed. The Field Board ranks players, so the product is moving toward real-world, scan-based
+collection, and the rules differ by surface:
+
+- **Competitive discoveries should eventually require in-app camera capture**, with practical anti-cheat
+  measures and **server-side reward validation** — validated where the reducer already runs on the server,
+  not on a client's say-so.
+- **Imported photos stay valid for educational identification.** Looking a plant up is not a find.
+- **Personal journal entries may stay self-reported.** A note about a walk is the player's own record.
+- **Existing collections, scores and accounts are preserved.** No retroactive revocation, no rescoring.
+- **Several camera angles are NOT evidence that somebody was there.** Do not build any rule that treats
+  "two or three photographs" as proof of presence; the identifier needs them for accuracy, which is a
+  different question.
+- **No unnecessary EXIF and no invasive location tracking.** The "no path returns original bytes" rule in
+  `prepareImage` stands; any anti-cheat signal must be one that does not require retaining coordinates.
+- **Everything ships behind feature flags with a migration strategy**, old and new rules coexisting, the new
+  ones inert until switched on.
+- **Do not activate, or write code whose outcome depends on, a new competitive rule until the owner has
+  reviewed the design.** The first deliverable is a written design for review, not an implementation.
+  Reward validation touches the card-awarding path, XP and progression, which belong to the coordinator;
+  the Scan and Discoveries lanes consume it and never edit it (`agents/ownership.json`).
+
+What follows is how things work **today** and the reasons the present shortcuts exist. Where it says
+"nothing here is meant to verify", read it as the current state, not the destination.
+
+Nothing in Plantdex verifies that anybody went outside, and nothing is meant to (yet). This is
 written down because it looks like an oversight and is a decision.
 
 - **Every stage is a claim the player makes.** `DiscoverPanel` records a find from two taps

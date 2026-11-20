@@ -1,0 +1,25 @@
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+index 805fe53..74f254f 100644
+--- a/.github/workflows/deploy.yml
++++ b/.github/workflows/deploy.yml
+@@ -158,5 +158,20 @@ jobs:
+         with:
+           path: out
+ 
++  # PUBLISHING IS ITS OWN JOB, AND THIS JOB IS WHAT WAITS FOR A HUMAN.
++  #
++  # The build job above runs the checks, builds the export and uploads it as an artifact, with no approval step, so a
++  # reviewer is shown a finished, tested build rather than being asked to trust one. This job then pauses until a
++  # required reviewer of the `github-pages` environment approves it in the Actions tab. "Reject" publishes nothing.
++  # The environment's own settings (reviewer, branch rule, administrator bypass) are configured by the owner in
++  # Settings -> Environments and are what make the pause real; this line only names the environment.
++  # See docs/agent-workflow/deploy-gate.md.
++  deploy:
++    needs: build
++    runs-on: ubuntu-latest
++    environment:
++      name: github-pages
++      url: ${{ steps.deployment.outputs.page_url }}
++    steps:
+       - id: deployment
+         uses: actions/deploy-pages@v4
