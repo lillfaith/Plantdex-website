@@ -368,7 +368,14 @@ export async function confirmScan(
     .maybeSingle();
   if (!existing) return false;
   const taxon = candidate.match.observedTaxon;
-  await supabase.from('scans').delete().eq('user_id', userId).eq('id', scanId);
+  const { error: deleteError } = await supabase
+    .from('scans')
+    .delete()
+    .eq('user_id', userId)
+    .eq('id', scanId);
+  // Nothing was removed, so there is nothing to replace; inserting would only collide with the
+  // row that is still there.
+  if (deleteError) return false;
   const { error } = await supabase.from('scans').insert({
     ...existing,
     confirmed_herb_id: herbId,
@@ -382,5 +389,16 @@ export async function confirmScan(
       ? speciesConfidenceFor(taxon.rank, candidate.score)
       : null,
   });
-  return !error;
+  if (error) {
+    /*
+     * THE DELETE HAS ALREADY HAPPENED, SO A FAILED INSERT WOULD OTHERWISE LOSE THE SCAN.
+     * There is no update policy and no transaction from the client, so the replacement is two
+     * calls; when the second fails (a dropped connection is enough) the history row is gone
+     * and the player's identification vanishes from their account. Put back exactly what was
+     * read. Best effort and silent: the caller is already told the confirm did not record.
+     */
+    await supabase.from('scans').insert(existing);
+    return false;
+  }
+  return true;
 }
