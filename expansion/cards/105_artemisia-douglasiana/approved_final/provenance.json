@@ -1,0 +1,11 @@
+{
+ "source_zip": "e28109ff-PlantDex_102-106_V3_CLAUDE_ASSETS_UNDER_30MB.zip",
+ "source_zip_sha256": "40036a7cd96cb1864d69e645e72b7e6ab50a3602fc5d75e26083321721dec221",
+ "note": "V3 package; hi-res cutout fitted to the supplied front; pixel icon drawn at 0.945x the default footprint to match the supplied front (the package states icons are 90% of the old 96px footprint)",
+ "files": {
+  "front_final.png": "691b90b4b0e72ef94aba744814151533c3e93396efac65bc006d99a1a329d8d3",
+  "back_final.png": "2b325f03278fb9f1c6825681942eb14b60c4c1b6b74133533de804b8f8d83355",
+  "pixel_icon_native_24x24.png": "6654a9a306120355c623d8b22e34f6f89facc766a636428d896c611efb8663b3",
+  "main_cutout_used.png": "57d9fc20e27c5a71be913a64ba3dee4eb69e2750b74dd78ed52451f87aac7d74"
+ }
+}
