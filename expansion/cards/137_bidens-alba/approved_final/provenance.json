@@ -8,5 +8,5 @@
   "pixel_icon_native_24x24.png": "69cfc802f64e3680f4d20eeb0fc12a9d4d6cb66785b630d6f3d292040cf532bd",
   "main_cutout_used.png": "6701973370ee06a96b5a9a42b3c53200c688b480d9d9df489c8b8b30471d4f88"
  },
- "owner_edit": "Owner: back preview turned 10 degrees clockwise and centred in the oval; rebuilt crisp from the hi-res tall cutout at the size it already had after the earlier fit-in-oval resize. The supplied back_final.png is kept unchanged and not used for this card's back."
+ "owner_edit": "Owner: back preview turned 10 degrees clockwise and centred in the oval (second pass: centred on the plant's visual weight, not just its bounding box); rebuilt crisp from the hi-res tall cutout at the size it already had after the fit-in-oval resize. The supplied back_final.png is kept unchanged and not used for this card's back."
 }
