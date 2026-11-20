@@ -1,0 +1,11 @@
+{
+ "source_zip": "2ead80e8-PlantDex_108-111_V8_COMPLETE_CLAUDE_ASSETS.zip",
+ "source_zip_sha256": "d2165238221de5fabd710190dc1851a59f223ee52ca7ad6f5c56dd49d13860ed",
+ "note": "V8 complete package; hi-res cutouts fitted to the supplied fronts (#109 by feature matching: the supplied front shows a 90-degree-turned crop of its cutout)",
+ "files": {
+  "front_final.png": "81c8a987f2bda64ff23bb84f5e92dc15a4f4f4f5547a68662b5f084606848eab",
+  "back_final.png": "c6336acfd7731485865c02086b9f81af4d3e7519283d6c3cb9ea5abb09ec2501",
+  "pixel_icon_native_24x24.png": "0efbaf8dd059e5f20ba9dba1408385738d70454646a79a186e2d4a86ceccabae",
+  "main_cutout_used.png": "23211bf001c8ebfd5c0b16c30b92a2983c210988cde4d302e521a203cf8a23c4"
+ }
+}

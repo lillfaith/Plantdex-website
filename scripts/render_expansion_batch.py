@@ -305,6 +305,36 @@ def rotate_preview(ov: Image.Image, deg, size) -> tuple[Image.Image, float]:
     return out, deg
 
 
+def feature_fit(src: Image.Image, ref: Image.Image, box) -> tuple | None:
+    """Find where (and how big) the hi-res cutout sits in the APPROVED front by matching image features, for the case where the approved
+    placement shows only a CROP of the cutout (the standing 'crop away the lower stem before enlargement' framing), which no whole-mask fit can
+    reproduce. Returns (scale, ox, oy, inliers) with ref = scale * src + (ox, oy), or None when no confident, un-rotated match exists."""
+    import cv2
+    sw = 900 / max(src.size); sg = src.resize((max(1, round(src.width * sw)), max(1, round(src.height * sw))), Image.LANCZOS)
+    bgc = Image.new("RGB", sg.size, (128, 128, 128)); bgc.paste(sg.convert("RGB"), mask=sg.getchannel("A"))
+    kk = 3.0                                               # work at 3x the reference so small subjects still have usable detail
+    rg = ref.convert("RGB").crop(box); rg = rg.resize((round(rg.width * kk), round(rg.height * kk)), Image.LANCZOS)
+    A = cv2.cvtColor(np.asarray(bgc), cv2.COLOR_RGB2GRAY); B = cv2.cvtColor(np.asarray(rg), cv2.COLOR_RGB2GRAY)
+    orb = cv2.ORB_create(6000)
+    ka, da = orb.detectAndCompute(A, None); kb, db = orb.detectAndCompute(B, None)
+    if da is None or db is None or len(ka) < 12 or len(kb) < 12:
+        return None
+    m = sorted(cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True).match(da, db), key=lambda x: x.distance)[:400]
+    if len(m) < 12:
+        return None
+    pa = np.float32([ka[x.queryIdx].pt for x in m]); pb = np.float32([kb[x.trainIdx].pt for x in m])
+    M, inl = cv2.estimateAffinePartial2D(pa, pb, method=cv2.RANSAC, ransacReprojThreshold=4.0)
+    if M is None or inl is None or int(inl.sum()) < 12:
+        return None
+    sc = float(np.hypot(M[0, 0], M[1, 0])); rot = float(np.degrees(np.arctan2(M[1, 0], M[0, 0])))
+    if abs(rot) > 3.0:
+        return None
+    # M maps the resized-src px -> 3x-ref-crop px:  ref = (M * (src*sw)) / kk + box origin
+    scale = sc * sw / kk
+    ox = M[0, 2] / kk + box[0]; oy = M[1, 2] / kk + box[1]
+    return scale / sw * sw, ox, oy, int(inl.sum())
+
+
 def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     base = Image.open(pkg / "templates" / "front_base_390x630.png")
     ref = Image.open(pkg / "cards" / str(n) / "front_final.png")
@@ -316,6 +346,26 @@ def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     s, ox, oy, iou = fit_uniform(alpha, target)
     fit = "mask-iou"
     if iou < 0.6:
+        ff = feature_fit(src, ref.convert("RGBA"), box)
+        for turn in (90, -90, 180):               # the approved front may show the cutout turned a quarter/half turn
+            if ff is not None:
+                break
+            cand = src.rotate(turn, expand=True)
+            ff = feature_fit(cand, ref.convert("RGBA"), box)
+            if ff is not None:
+                src = cand; alpha = np.asarray(src.getchannel("A"), dtype=float) / 255
+                print(f"  #{n}: the approved front shows the cutout turned {turn} degrees; matched after turning it the same way")
+        if ff is not None:
+            s_ff, ox_ff, oy_ff, inl = ff
+            fit, s, ox, oy = "feature-match", s_ff / (src.width / src.width), ox_ff, oy_ff
+            # overlap of the matched placement with the approved front's subject mask, for the report
+            h0, w0 = alpha.shape; yy0 = np.arange(target.shape[0])[:, None]; xx0 = np.arange(target.shape[1])[None, :]
+            sy, sx = np.broadcast_arrays(((yy0 - oy) / s).astype(int), ((xx0 - ox) / s).astype(int))
+            ok = (sy >= 0) & (sy < h0) & (sx >= 0) & (sx < w0)
+            pm = np.zeros(target.shape, bool); pm[ok] = alpha[sy[ok], sx[ok]] > 0.5
+            iou = float((pm & target).sum() / max(1, (pm | target).sum()))
+            print(f"  #{n}: main placed by feature match ({inl} inliers, scale {s:.3f}, IoU {iou:.3f})")
+    if fit != "feature-match" and iou < 0.6:
         # The reference montage was redrawn from the cutout rather than traced from it, so no mask fit is reliable
         # (one drifted #67 over its own name bar, and diffing the montage against the base picks up the whole card).
         # Fall back to the placement rule measured on the approved fronts: the subject stands on the art window's
@@ -332,7 +382,7 @@ def place_main(front: Image.Image, n: int, pkg: pathlib.Path) -> dict:
     # The approved front is CLIPPED at the bottom of the art window (stem bottom ~row 329): the source runs on
     # below it, so cut at the lowest row the approved front shows the subject on. Nothing else is cropped.
     ys = np.where(target.any(axis=1))[0]
-    cut = round((ys.max() + 1 - oy) * K) if fit == "mask-iou" else art.height
+    cut = round((ys.max() + 1 - oy) * K) if fit in ("mask-iou", "feature-match") else art.height
     if 0 < cut < art.height:
         art = art.crop((0, 0, art.width, cut))
     px, py = round(ox * K), round(oy * K)
