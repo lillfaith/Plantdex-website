@@ -57,3 +57,5 @@ export AGENT_ROLE=<lane>
 
 The sparse checkout keeps the ~1.3 GB of evidence and the personal photo folder out of an agent's working
 directory.
+
+UI sessions and the protected production branch: see `docs/agent-workflow/ui-session-handoff.md`.
