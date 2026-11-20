@@ -1,0 +1,11 @@
+{
+ "source_zip": "6dfd8111-PlantDex_92-96_V6_CLAUDE_ASSETS_UNDER_30MB.zip",
+ "source_zip_sha256": "06566d62927582021ff132fa6d0724b6242d742b679e04960e1cfdb0ec079064",
+ "note": "V6 package with transparent cutouts; hi-res cutout fitted to the supplied front",
+ "files": {
+  "front_final.png": "136a5df41c0078036bde8f5a5bf163877ddd32a46988a48a10cc34dd0a1380a9",
+  "back_final.png": "f12efb1f18c8afd1c8a1a44eba027ce4b0ebdef51d9edb1c2a8a6c2766eeae36",
+  "pixel_icon_native_24x24.png": "b1331e83e7e18eca2cae9ee6e29691e6233d7d585e229fd41242716d57c0c6fb",
+  "main_generated_cutout_used.png": "239d9f645d9708c20031e49edfcadcf04e2327cd1d521ada31c112ca6771f897"
+ }
+}

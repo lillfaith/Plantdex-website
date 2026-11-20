@@ -1,0 +1,10 @@
+{
+ "source_zip": "6e1eda6a-Resent_PlantDex_97-101_V7_All_10_Cards.zip",
+ "source_zip_sha256": "67e32aedb25f6b50c5179165fd355b2b7893043651aaf3f3bd9a69958a22850d",
+ "note": "V7 remasked previews; no cutouts supplied: front enlarged with text drawn over it (--front-from-final)",
+ "files": {
+  "front_final.png": "d4d2937fc47c795c858f8a36c3eca861fc532d19f86f056063b0c9643918221a",
+  "back_final.png": "637c787552de2781a768e410b5680539505dc975fe095bd8f4dfbe8591262449",
+  "pixel_icon_native_24x24.png": "4b5636fec1dc24253164cc2194bc7fa61bf4dad1b475ecee76f976c8979b9566"
+ }
+}
