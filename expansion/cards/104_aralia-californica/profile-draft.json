@@ -19,10 +19,12 @@
   },
   "back": {
    "healingTraits": [
-    "Cough soothing",
-    "Chest comfort",
     "Skin soothing",
-    "Respiratory tonic"
+    "Respiratory aid",
+    "Breath freshening",
+    "Metabolic",
+    "Brain health",
+    "Calming"
    ],
    "compounds": [
     "Saponins",

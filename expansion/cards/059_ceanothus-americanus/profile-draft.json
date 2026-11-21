@@ -20,9 +20,10 @@
   "back": {
    "healingTraits": [
     "Astringent",
-    "Sore throat aid",
+    "Fever aid",
     "Gum soothing",
-    "Skin cleansing"
+    "Expectorant",
+    "Sore throat aid"
    ],
    "compounds": [
     "Ceanothine",

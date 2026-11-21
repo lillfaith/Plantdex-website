@@ -20,9 +20,11 @@
   "back": {
    "healingTraits": [
     "Calming",
-    "Throat soothing",
     "Cough soothing",
-    "Sleep support"
+    "Burn aid",
+    "Respiratory aid",
+    "Skincare",
+    "Digestive aid"
    ],
    "compounds": [
     "Mucilage",

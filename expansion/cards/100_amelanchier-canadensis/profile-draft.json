@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Antioxidant-rich",
+    "Deworming",
+    "Antioxidant",
+    "Digestive aid",
     "Dietary fiber",
-    "Nutritive fruit",
-    "Vitamin-rich"
+    "Energy source"
    ],
    "compounds": [
     "Castalagin",

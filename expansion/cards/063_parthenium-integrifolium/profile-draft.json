@@ -21,7 +21,9 @@
    "healingTraits": [
     "Fever aid",
     "Burn poultice",
-    "Bitter tonic"
+    "Bitter tonic",
+    "Digestive aid",
+    "Respiratory aid"
    ],
    "compounds": [
     "Sesquiterpenes",

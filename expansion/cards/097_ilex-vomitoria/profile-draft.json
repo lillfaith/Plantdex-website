@@ -20,9 +20,10 @@
   "back": {
    "healingTraits": [
     "Alertness",
-    "Caffeine source",
     "Mental focus",
-    "Mild stimulant"
+    "Mild stimulant",
+    "Antioxidant",
+    "Caffeine source"
    ],
    "compounds": [
     "Caffeine",

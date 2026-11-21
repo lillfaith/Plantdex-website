@@ -19,9 +19,12 @@
   },
   "back": {
    "healingTraits": [
-    "Aromatic",
     "Breath freshening",
-    "Insect repellent"
+    "Insect repellent",
+    "Fever aid",
+    "Dysentery aid",
+    "Antibacterial",
+    "Antimicrob."
    ],
    "compounds": [
     "Myricetin",

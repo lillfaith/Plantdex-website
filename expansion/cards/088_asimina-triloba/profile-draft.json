@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Nutrient-rich",
     "Energy source",
-    "Dietary fiber",
-    "Vitamin-rich"
+    "Vitamin-rich",
+    "Anti-lice",
+    "Anticancer",
+    "Dietary fiber"
    ],
    "compounds": [
     "Acetogenins",

@@ -19,9 +19,10 @@
   },
   "back": {
    "healingTraits": [
-    "Vitamin-rich",
     "Nutritive flower",
-    "Dietary fiber"
+    "Astringent",
+    "Antiseptic",
+    "Cold support"
    ],
    "compounds": [
     "Cyanidin",

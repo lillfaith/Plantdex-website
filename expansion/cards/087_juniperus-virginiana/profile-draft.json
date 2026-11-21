@@ -19,8 +19,10 @@
   },
   "back": {
    "healingTraits": [
-    "Cold folk use",
-    "Cough folk use",
+    "Cold aid",
+    "Cough support",
+    "Expectorant",
+    "Joint health",
     "Moth repellent"
    ],
    "compounds": [

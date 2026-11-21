@@ -27,6 +27,19 @@
    "to": "Phenolic acid",
    "by": "owner",
    "why": "Owner asked for the singular form."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound support",
+    "Skin soothing",
+    "Cold support",
+    "Fever aid",
+    "Immune aid",
+    "Snakebite aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
   }
  ],
  "79": [
@@ -57,6 +70,17 @@
    "to": "Astringent",
    "by": "owner",
    "why": "Too long for the panel; owner asked for 'Astringent'."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Antioxidant-rich",
+    "Nutritive fruit",
+    "Energy source"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
   }
  ],
  "91": [
@@ -66,6 +90,17 @@
    "to": "Tangy",
    "by": "owner",
    "why": "Owner asked for 'Tangy' (named Dogwood, but the only card with this text is #91 Eastern Redbud)."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Nutritive flower",
+    "Astringent",
+    "Antiseptic",
+    "Cold support"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
   }
  ],
  "101": [
@@ -782,6 +817,402 @@
    ],
    "by": "owner",
    "why": "Owner: added 'Cholesterol aid', 'Cardiovascular aid', 'Cytotoxic'; removed 'Skin cleansing' and 'Folk antifungal'. Longest trait last (centred)."
+  }
+ ],
+ "57": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Fever aid",
+    "Sweat-inducing",
+    "Cold support",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "58": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Urinary support",
+    "Kidney aid",
+    "Liver aid",
+    "Diuretic"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "59": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Astringent",
+    "Fever aid",
+    "Gum soothing",
+    "Expectorant",
+    "Sore throat aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "61": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Breath freshening",
+    "Decongestant",
+    "Insect repellent"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "62": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound wash",
+    "Astringent",
+    "Glucose reg.",
+    "Dietary fiber",
+    "Energy source"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "63": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Fever aid",
+    "Burn poultice",
+    "Bitter tonic",
+    "Digestive aid",
+    "Respiratory aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "75": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Women's tonic",
+    "Menstrual support",
+    "Astringent",
+    "Urinary aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "87": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cold aid",
+    "Cough support",
+    "Expectorant",
+    "Joint health",
+    "Moth repellent"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "88": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Energy source",
+    "Vitamin-rich",
+    "Anti-lice",
+    "Anticancer",
+    "Dietary fiber"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "90": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Fever aid",
+    "Bitter tonic",
+    "Mouth cleaning",
+    "Astringent"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "92": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Antioxidant",
+    "Anti-inflam.",
+    "Antifungal",
+    "Antiviral",
+    "Antibacterial"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "93": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cough soothing",
+    "Anti-rheumatic",
+    "Mild astringent"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "94": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive tea",
+    "Headache aid",
+    "Insect repellent"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "95": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Healthy fats",
+    "Skin support",
+    "Anti-inflam.",
+    "Astringent",
+    "Plant protein"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "96": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Calming",
+    "Cough soothing",
+    "Burn aid",
+    "Respiratory aid",
+    "Skincare",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "97": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Alertness",
+    "Mental focus",
+    "Mild stimulant",
+    "Antioxidant",
+    "Caffeine source"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "98": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Breath freshening",
+    "Insect repellent",
+    "Fever aid",
+    "Dysentery aid",
+    "Antibacterial",
+    "Antimicrobial"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "99": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Toothache aid",
+    "Anti-rheumatic",
+    "Respiratory aid",
+    "Astringent"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "100": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Deworming",
+    "Antioxidant",
+    "Digestive aid",
+    "Dietary fiber",
+    "Energy source"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "102": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Calming",
+    "Sleep support",
+    "Anti-anxiety",
+    "Tension relief"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "104": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Skin soothing",
+    "Respiratory aid",
+    "Breath freshening",
+    "Metabolic",
+    "Brain health",
+    "Calming"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "105": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Itch relief",
+    "Skin soothing",
+    "Joint health",
+    "Anticancer",
+    "Menstrual support"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "112": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Aromatic",
+    "Digestive tea",
+    "Calming aroma",
+    "Sleep aid",
+    "Cough support"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "113": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Throat coating",
+    "Cough soothing",
+    "Digestive aid",
+    "Skin soothing"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "116": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Sore throat aid",
+    "Energy source",
+    "Plant protein",
+    "Antimicrobial",
+    "Digestive aid",
+    "Toothache aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "120": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Skin soothing",
+    "Bloating aid",
+    "Joint health",
+    "Congestion aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "121": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cold support",
+    "Fever aid",
+    "Respiratory aid",
+    "Focus support"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "127": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Pain relief",
+    "Digestive aid",
+    "Fever aid",
+    "Anti-inflam.",
+    "Headache aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
+  }
+ ],
+ "128": [
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Congestion aid",
+    "Insect repellent",
+    "Antimicrobial",
+    "Antifungal",
+    "Respiratory aid"
+   ],
+   "by": "owner",
+   "why": "Owner's healing-trait review (batch of 32 unreviewed cards). Wording made consistent (capitalisation, '-aid' style, Antibacterial/Anticancer/Anti-rheumatic spellings); with an odd number of traits the longest is placed last so the centred bottom trait is not scaled down."
   }
  ]
 }
