@@ -360,6 +360,42 @@ export async function confirmScan(
   candidate: ScanCandidate,
 ): Promise<boolean> {
   if (!supabase) return false;
+  /*
+   * ATOMIC PATH (migration 0014, `confirm_scan`). OFF BY DEFAULT: the literal comparison below is
+   * resolved at build time (`NEXT_PUBLIC_CONFIRM_SCAN_RPC`, 'off' unless the owner sets it), so with
+   * the flag off this block is not in the bundle and the mitigation underneath is unchanged.
+   *
+   * `true`  = the scan is now confirmed for THIS card (first time, or an idempotent retry).
+   * `false` = it is already confirmed for a different card, or is not this caller's: never success.
+   * ANY error is a failure, not "already confirmed" — we do not know what happened, so we claim
+   * nothing. Only a MISSING function (PostgREST PGRST202, Postgres 42883: a database that has not
+   * run 0014) falls through to the mitigation, so a deployment ahead of its migration still works.
+   */
+  if (process.env.NEXT_PUBLIC_CONFIRM_SCAN_RPC === 'on') {
+    const chosen = candidate.match.observedTaxon;
+    try {
+      const { data, error: rpcError } = await supabase.rpc('confirm_scan', {
+        p_scan_id: scanId,
+        p_herb_id: herbId,
+        p_scientific_name: candidate.scientificName,
+        p_probability: candidate.score,
+        p_taxon_rank: chosen?.rank ?? null,
+        p_eligibility: candidate.match.eligibility,
+        p_species_confidence: chosen
+          ? speciesConfidenceFor(chosen.rank, candidate.score)
+          : null,
+      });
+      if (!rpcError) return data === true;
+      if (rpcError.code !== 'PGRST202' && rpcError.code !== '42883') {
+        console.error(`confirmScan: rpc failed for scan ${scanId}`);
+        return false;
+      }
+      // Function missing on this database: fall through to the mitigation below.
+    } catch {
+      console.error(`confirmScan: rpc failed for scan ${scanId}`);
+      return false;
+    }
+  }
   const { data: existing, error: readError } = await supabase
     .from('scans')
     .select('*')
