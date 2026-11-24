@@ -4,14 +4,18 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { getPrintedCard } from '@/lib/deck';
 import { HABITAT_BLURB, HABITAT_LABEL } from '@/lib/habitat';
-import { nearbyByHabitat, occurrenceSourceNote } from '@/lib/regional-nearby';
+import { nearbyByHabitat, RECORDED_COPY } from '@/lib/regional-nearby';
 
 /**
- * "Where to look": the same regional list as the board, grouped by habitat.
+ * NOT MOUNTED ANYWHERE. Awaiting the UI session's design. DO NOT MOUNT.
  *
- * Display only. It reads the region's recorded species and the player's existing
- * discoveries, writes nothing, and pays nothing. PRESENTATION IS PROVISIONAL — plain panel
- * markup with existing tokens, pending the UI session.
+ * A provisional, throwaway layout for the regional recorded-plants-by-habitat logic in
+ * `src/lib/regional-nearby.ts`. Nothing may import this file (pinned by
+ * `regional-nearby.test.ts`); `/quests` renders exactly what it did before.
+ *
+ * Every user-facing sentence comes from `RECORDED_COPY`; this file writes none of its own.
+ * Display only: it reads the region's recorded species and the player's existing
+ * discoveries, writes nothing, and pays nothing.
  */
 export function NearbyByHabitat({
   regionId,
@@ -23,19 +27,18 @@ export function NearbyByHabitat({
   discoveries: Readonly<Record<string, unknown>>;
 }) {
   const groups = useMemo(() => nearbyByHabitat(regionId, discoveries), [regionId, discoveries]);
-  const note = occurrenceSourceNote(regionId);
+  const note = RECORDED_COPY.sourceNote(regionId);
   if (groups.length === 0) return null;
 
   const name = (id: string) => getPrintedCard(id)?.commonName ?? id;
 
   return (
-    <section className="panel p-5" aria-labelledby="where-to-look" data-ui-placeholder>
-      <h3 id="where-to-look" className="text-sm font-bold text-violet-100">
-        Where to look in {regionName}
+    <section className="panel p-5" aria-labelledby="recorded-in-region" data-ui-placeholder>
+      <h3 id="recorded-in-region" className="text-sm font-bold text-violet-100">
+        {RECORDED_COPY.heading(regionName)}
       </h3>
       <p className="mt-1 text-xs leading-relaxed text-violet-400">
-        The same plants as above, grouped by the kind of place each is usually recorded. A
-        plant with two usual places is listed under both, so these counts overlap.
+        {RECORDED_COPY.subheading(regionName)}
       </p>
       <div className="mt-4 space-y-4">
         {groups.map((group) => (
@@ -45,7 +48,7 @@ export function NearbyByHabitat({
                 {HABITAT_LABEL[group.habitat]}
               </h4>
               <p className="text-xs tabular-nums text-violet-300">
-                {group.confirmedFound} of {group.confirmed.length} recorded plants found
+                {RECORDED_COPY.progress(group.confirmedFound, group.confirmed.length)}
               </p>
             </div>
             <p className="text-xs leading-relaxed text-violet-400">
@@ -59,15 +62,14 @@ export function NearbyByHabitat({
                     className="inline-flex min-h-11 items-center rounded-full border border-violet-800/60 px-3 text-xs text-violet-100 hover:border-gold-400/60"
                   >
                     {name(id)}
-                    {discoveries[id] ? <span className="ml-1 text-gold-300">&middot; found</span> : null}
+                    {discoveries[id] ? <span className="ml-1 text-gold-300">&middot; {RECORDED_COPY.unlockedBadge}</span> : null}
                   </Link>
                 </li>
               ))}
             </ul>
             {group.likely.length > 0 && (
               <p className="mt-2 text-xs leading-relaxed text-violet-400">
-                Recorded only occasionally here, so you may not meet them:{' '}
-                {group.likely.map(name).join(', ')}.
+                {RECORDED_COPY.occasionalLabel(regionName)}: {group.likely.map(name).join(', ')}.
               </p>
             )}
           </div>

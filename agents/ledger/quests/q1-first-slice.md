@@ -6,22 +6,38 @@
 - Token/time budget: one session
 - Status: review
 
-## Finding before design
-`/quests` already shows the chosen region's featured board, tier progress and an "everything else
-recorded" list (`QuestBoardPanel`, `quest-board.ts`, `region-species.ts`). So this slice adds what is
-missing rather than a second board: (1) a **by-habitat view** of the same region data, answering "where
-should I look", and (2) a plain statement of **what the occurrence data is** (source, survey date, rule),
-which the page currently describes only as "herbarium specimens or many verified observations".
+## Scope (revised 2026-11-24, after owner review of #42)
+The owner approves the FUNCTIONALITY (reuse of the regional quest system, habitat grouping, collection
+progress from existing discoveries, qualified occurrence data, no scoring/XP/schema change) and does NOT
+approve the visual design, which the owner will choose in a separate UI session. So this PR ships **logic
+only**:
+- `src/lib/regional-nearby.ts` (+ tests): `nearbyByHabitat()` and `RECORDED_COPY`, the one constant of
+  exact user-facing strings (heading "Recorded in <region>", subheading, "<n> of <m> in your collection",
+  "Recorded only occasionally in <region>", unlocked badge, and the source/disclosure note). Any layout
+  must take its words from it.
+- `src/components/quests/NearbyByHabitat.tsx`: **UNMOUNTED and provisional** (`data-ui-placeholder`, header
+  comment "not mounted anywhere, awaiting the UI session's design, do not mount"). Nothing imports it.
+- `src/components/quests/QuestBoardPanel.tsx`: reverted, byte-identical to `origin/integration`;
+  `/quests` renders exactly what it did before. A test fails if the panel imports the view or the module.
 
-## What it shows
-For a chosen region, a section "Where to look" listing habitat classes (Woodland, Meadow, Wetland,
-Wayside, Garden). Each shows the region's **confirmed** species whose habitat class (primary or secondary,
-as already classified in `habitat.ts`) is that habitat, with "N of M found" derived from the player's
-existing `discoveries`. Species only "recorded occasionally" (`likely`) are listed under a separate,
-qualified line per habitat and never added to the confirmed count. `insufficient`/`unlikely` are not shown.
-A closing note states the data source: GBIF specimen and observation counts for the state, surveyed
-2026-11-04, rule >=5 specimens or >=100 observations, link text to `docs/georgia-occurrence.md` content in
-words (no new route). With no region: nothing renders (the existing empty state stays).
+## What the data is, and is not
+Historical GBIF occurrence RECORDS for a whole region, surveyed on a date. Not live sightings, not the
+player's location (nothing about position is read), not presence or season, not an identification guide.
+A test bans nearby / near you / around you / close to you / where to look / right now / currently / live /
+likely / here across every exported string and every literal in the component.
+
+## Rules kept
+Confirmed and occasional counts stay separate; a two-habitat plant appears under both so counts overlap and
+must not be summed; insufficient/unlikely species never appear; species with no printed card are silently
+excluded; progress counts only cards the player has already unlocked.
+
+## Why nothing is mounted
+Integration is promoted to production, so a mounted provisional panel would eventually ship.
+
+## Open questions deferred to the owner's UI session
+Layout and grouping style; where (if anywhere) the view mounts; whether the occasional group is shown
+collapsed; how the source note is disclosed; whether a season/phenology view is wanted (needs real
+phenology data; the survey measures recording effort only).
 
 ## Data read (nothing written)
 `speciesForRegion()` (`region-species.ts`, reviewed GBIF survey), `habitatsOf()` (`habitat.ts`, confirmed
@@ -46,7 +62,7 @@ classification), `state.discoveries` (existing). No new store, key, table, netwo
 
 ## Authorised paths (checked with `agent-guard who`)
 `src/lib/regional-nearby.ts`, `src/lib/regional-nearby.test.ts`, `src/components/quests/NearbyByHabitat.tsx`,
-`src/components/quests/QuestBoardPanel.tsx` (one mount), this ledger file.
+this ledger file. (QuestBoardPanel.tsx is NOT touched.)
 
 ## Prohibited
 XP, scoring, progression, mastery, reducer, types, achievements, research engine/tasks, Field Board, auth,
@@ -66,23 +82,15 @@ repeat/empty states, empty for unknown region, source-note content, import-bound
 every Georgia species has a habitat assignment (so none silently drops).
 
 ## Report
-(appended below)
+Status: review. Revised scope above. Verify output appended after the final run.
 
-Status: review. Added `src/lib/regional-nearby.ts` (+test), `NearbyByHabitat.tsx`, one mount in
-`QuestBoardPanel.tsx`. Diff ~320 lines incl. this file. `agent-guard diff --role quests --base origin/integration`:
-"changed only files it may change". `npm ci` was run to install existing lockfile deps (no package file changed).
-
-`npm run verify` exit code 0. Real output (filtered lines):
+`npm run verify` exit 0 (revised scope). Real output (filtered):
 ```
-✖ 1 problem (0 errors, 1 warning)
- ✓ src/lib/regional-nearby.test.ts (11 tests) 7ms
+✖ 1 problem (0 errors, 1 warning)      # pre-existing warning in scripts/agent-guard.mjs
+ ✓ src/lib/regional-nearby.test.ts (40 tests)
  Test Files  132 passed (132)
-      Tests  2088 passed | 1 skipped (2089)
-  Generating static pages using 3 workers (0/84) ...
-  Generating static pages using 3 workers (21/84) 
-  Generating static pages using 3 workers (42/84) 
-  Generating static pages using 3 workers (63/84) 
-✓ Generating static pages using 3 workers (84/84) in 1242ms
+      Tests  2117 passed | 1 skipped (2118)
+✓ Generating static pages using 3 workers (84/84)
 ```
-Not verified: rendered appearance in a browser (presentation is provisional, UI session's call).
-Open question: none blocking. A season/phenology view needs real phenology data (survey is recording effort).
+`agent-guard diff --role quests --base origin/integration`: "changed only files it may change."
+Not verified: rendered appearance (view is unmounted by design).

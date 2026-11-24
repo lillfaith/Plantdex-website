@@ -1,10 +1,13 @@
+import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import { habitatsOf } from './habitat';
 import { occurrenceCounts } from './quest-board';
 import { speciesForRegion } from './region-species';
-import { nearbyByHabitat, occurrenceSourceNote } from './regional-nearby';
+import { HABITAT_BLURB, HABITAT_LABEL } from './habitat';
+import type { RegionalSpecies } from './quest-board';
+import { nearbyByHabitat, occurrenceSourceNote, RECORDED_COPY } from './regional-nearby';
 
 const GA = 'us-ga';
 
@@ -81,5 +84,126 @@ describe('boundaries', () => {
   it('the view writes nothing, tracks nothing and awards nothing', () => {
     expect(view).not.toMatch(/track\(|discover\(|localStorage|useHerbdex\(\)\.(discover|learn)/);
     expect(view).not.toMatch(/\bXP\b/);
+  });
+});
+
+describe('edge cases', () => {
+  const sp = (herbId: string, occurrence: RegionalSpecies['occurrence']): RegionalSpecies =>
+    ({ herbId, occurrence, seasons: [] }) as RegionalSpecies;
+  const ids = speciesForRegion(GA).map((s) => s.herbId);
+
+  it('a region with only occasional records lists them and no confirmed ones', () => {
+    const groups = nearbyByHabitat(GA, {}, [sp(ids[0]!, 'likely'), sp(ids[1]!, 'likely')]);
+    expect(groups.length).toBeGreaterThan(0);
+    for (const g of groups) {
+      expect(g.confirmed).toEqual([]);
+      expect(g.likely.length).toBeGreaterThan(0);
+      expect(g.confirmedFound).toBe(0);
+    }
+  });
+
+  it('a region with no records yields nothing', () => {
+    expect(nearbyByHabitat(GA, { [ids[0]!]: 'x' }, [])).toEqual([]);
+  });
+
+  it('a species with no printed card is silently excluded and counts stay consistent', () => {
+    const real = sp(ids[0]!, 'confirmed');
+    const withExtras = nearbyByHabitat(GA, {}, [real, sp('field-card-not-printed', 'confirmed'), sp('no-such-id', 'likely')]);
+    const without = nearbyByHabitat(GA, {}, [real]);
+    expect(withExtras).toEqual(without);
+    const shown = withExtras.flatMap((g) => [...g.confirmed, ...g.likely]);
+    expect(shown).not.toContain('field-card-not-printed');
+    expect(shown).not.toContain('no-such-id');
+  });
+
+  it('an empty discoveries object counts nothing as in the collection', () => {
+    expect(nearbyByHabitat(GA, {}).every((g) => g.confirmedFound === 0)).toBe(true);
+  });
+
+  it('discoveries outside the region change nothing', () => {
+    const regional = new Set(ids);
+    const outsider = 'zzz-not-in-region';
+    expect(regional.has(outsider)).toBe(false);
+    expect(nearbyByHabitat(GA, { [outsider]: 'x' })).toEqual(nearbyByHabitat(GA, {}));
+  });
+});
+
+describe('wording', () => {
+  const BANNED: [string, RegExp][] = [
+    ['nearby', /\bnear\s?by\b/i],
+    ['near you', /\bnear you\b/i],
+    ['around you', /\baround you\b/i],
+    ['close to you', /\bclose to you\b/i],
+    ['where to look', /where to look/i],
+    ['right now', /right now/i],
+    ['currently', /\bcurrent(ly)?\b/i],
+    ['live', /\blive\b/i],
+    ['likely', /\blikely\b/i],
+    ['here', /\bhere\b/i],
+  ];
+  const copy = RECORDED_COPY;
+  const strings = [
+    copy.heading('Georgia'),
+    copy.subheading('Georgia'),
+    copy.progress(2, 5),
+    copy.unlockedBadge,
+    copy.occasionalLabel('Georgia'),
+    copy.sourceNote(GA)!,
+    ...Object.values(HABITAT_LABEL),
+    ...Object.values(HABITAT_BLURB),
+  ];
+  const view = readFileSync('src/components/quests/NearbyByHabitat.tsx', 'utf8');
+  // JSX text and string literals only; the header comment is allowed to say what it forbids.
+  const viewText = view
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .split('\n')
+    .filter((l) => !l.trim().startsWith('//') && !/^\s*(import|\} from)/.test(l))
+    .join('\n');
+  const literals = [...viewText.matchAll(/'([^']*)'|"([^"]*)"|>([^<>{}]+)</g)]
+    .map((m) => m[1] ?? m[2] ?? m[3] ?? '')
+    .filter((t) => /\s/.test(t.trim()) || /^[A-Za-z]+$/.test(t.trim()));
+
+  for (const [name, re] of BANNED) {
+    it(`no exported string says "${name}"`, () => {
+      for (const t of strings) expect(t, t).not.toMatch(re);
+    });
+    it(`no component literal says "${name}"`, () => {
+      for (const t of literals) expect(t, t).not.toMatch(re);
+    });
+  }
+
+  it('uses the required forms', () => {
+    expect(copy.heading('Georgia')).toBe('Recorded in Georgia');
+    expect(copy.progress(2, 5)).toBe('2 of 5 in your collection');
+    expect(copy.occasionalLabel('Georgia')).toBe('Recorded only occasionally in Georgia');
+    const note = copy.sourceNote(GA)!;
+    expect(note).toMatch(/not where you are/);
+    expect(note).toMatch(/not proof a plant is absent/);
+  });
+
+  it('the component takes its words from RECORDED_COPY', () => {
+    expect(view).toMatch(/RECORDED_COPY\.heading/);
+    expect(view).toMatch(/RECORDED_COPY\.subheading/);
+    expect(view).toMatch(/RECORDED_COPY\.progress/);
+    expect(view).toMatch(/RECORDED_COPY\.occasionalLabel/);
+    expect(view).toMatch(/RECORDED_COPY\.sourceNote/);
+  });
+});
+
+describe('the provisional view stays unmounted', () => {
+  it('QuestBoardPanel does not import NearbyByHabitat', () => {
+    const panel = readFileSync('src/components/quests/QuestBoardPanel.tsx', 'utf8');
+    expect(panel).not.toMatch(/NearbyByHabitat/);
+    expect(panel).not.toMatch(/regional-nearby/);
+  });
+  it('nothing in src imports it, and it carries the placeholder marker and header', () => {
+    const hits = execSync("grep -rl 'NearbyByHabitat' src --include=*.ts --include=*.tsx || true", { encoding: 'utf8' })
+      .split('\n')
+      .filter(Boolean)
+      .filter((f) => !/NearbyByHabitat\.tsx$|regional-nearby\.test\.ts$/.test(f));
+    expect(hits).toEqual([]);
+    const view = readFileSync('src/components/quests/NearbyByHabitat.tsx', 'utf8');
+    expect(view).toContain('data-ui-placeholder');
+    expect(view).toMatch(/NOT MOUNTED ANYWHERE/);
   });
 });

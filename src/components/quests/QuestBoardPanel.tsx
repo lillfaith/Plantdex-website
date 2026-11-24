@@ -15,7 +15,6 @@ import { useRegionScope } from '@/lib/region-scope';
 import { useRegion } from '@/lib/region-store';
 import { featuredForRegion, speciesForRegion } from '@/lib/region-species';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { NearbyByHabitat } from './NearbyByHabitat';
 
 /**
  * The regional board: a lens over cards the player could plausibly find nearby.
@@ -287,12 +286,6 @@ export function QuestBoardPanel({ now = new Date() }: { now?: Date }) {
             ))}
         </ul>
       </section>
-
-      <NearbyByHabitat
-        regionId={region.id}
-        regionName={region.name}
-        discoveries={state.discoveries}
-      />
 
       <p className="text-xs leading-relaxed text-violet-400">
         {/*
