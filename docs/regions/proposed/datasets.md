@@ -28,7 +28,7 @@ is only as good as that.
 | URL fetched | `https://dmap-prod-oms-edc.s3.us-east-1.amazonaws.com/ORD/Ecoregions/us/us_eco_l3.zip` | `https://dmap-prod-oms-edc.s3.us-east-1.amazonaws.com/ORD/Ecoregions/cec_na/NA_CEC_Eco_Level3.zip` | **BLOCKED** | **BLOCKED** |
 | Landing page | `https://www.epa.gov/eco-research/ecoregions-north-america` (200) | same | | |
 | CRS | USA Contiguous Albers Equal Area Conic (USGS), NAD83 | Lambert Azimuthal Equal Area, sphere R=6370997 m (no datum shift to WGS84; a few-hundred-metre ambiguity at most is irrelevant at 0.1 deg) | | |
-| Size | zip 28,424,315 B; shp 41.5 MB; 1,250 polygon parts. sha256 of zip `9a65f63c...2f12f633` | zip 35,596,630 B; shp 53.2 MB; 2,548 parts. sha256 `413f6024...801a71a8` | | |
+| Size | zip 28,424,315 B; shp 41.5 MB; 1,250 polygon parts. sha256 of zip `9a65f63cf10d7386aa0d2b0f39c9d0ac3d51bf742eb59d750abcf65ecc12f633` | zip 35,596,630 B; shp 53.2 MB; 2,548 parts. sha256 `413f6024448918eafe9bf5ff8de58a141a90cbad256be9b7d81c45e6801a71a8` | | |
 | Coverage | Lower 48 only | Canada, US incl. **Alaska**, Mexico; **no Hawaii, no Puerto Rico** (verified by point tests) | | |
 | Known limitations | Generalised mapping scale (the metadata describes zones of gradual transition, not sharp lines); water bodies merged into neighbours; CONUS only; units are environmental, not floristic | draft status; older US revision than the CONUS file; coarser | | |
 
