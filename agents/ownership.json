@@ -131,6 +131,14 @@
       ]
     },
     {
+      "owner": "quests",
+      "tier": 2,
+      "why": "The Habitats screen's data layer (pure view-model). It sits ahead of the coordinator's habitat classification files in first-match order, so only habitat-view-model* belongs to the Quests lane; habitat.ts and the rest stay with the coordinator.",
+      "globs": [
+        "src/lib/habitat-view-model*"
+      ]
+    },
+    {
       "owner": "coordinator",
       "tier": 1,
       "why": "Shared contracts: types, the reducer, XP/progression/mastery/research engine, storage, auth, providers, schema, CI, dependencies, routing shell. Changed only through a Shared Change Request.",
@@ -355,7 +363,9 @@
       "tier": 1,
       "catchAll": true,
       "why": "Anything not named above is a shared file until somebody decides otherwise.",
-      "globs": ["**"]
+      "globs": [
+        "**"
+      ]
     }
   ]
 }
