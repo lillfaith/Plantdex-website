@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Geranium maculatum",
+ "result": {
+  "usageKey": 7808016,
+  "scientificName": "Geranium maculatum L.",
+  "canonicalName": "Geranium maculatum",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Geraniales",
+  "family": "Geraniaceae",
+  "genus": "Geranium",
+  "species": "Geranium maculatum",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 624,
+  "familyKey": 4676,
+  "genusKey": 2889949,
+  "speciesKey": 7808016,
+  "class": "Magnoliopsida"
+ }
+}

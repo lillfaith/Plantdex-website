@@ -1,0 +1,184 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/species/207468016/distributions?limit=500",
+ "accepted_key": 207468016,
+ "results": [
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:ALA",
+   "locality": "Alabama"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:ARK",
+   "locality": "Arkansas"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:BAN",
+   "locality": "Bangladesh",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:BER",
+   "locality": "Bermuda"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:DEL",
+   "locality": "Delaware",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:WDC",
+   "locality": "District of Columbia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:FLA",
+   "locality": "Florida"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:GEO",
+   "locality": "Georgia"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:ILL",
+   "locality": "Illinois"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:INI",
+   "locality": "Indiana"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:IND",
+   "locality": "India",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:ITA",
+   "locality": "Italy",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:KAN",
+   "locality": "Kansas"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:KTY",
+   "locality": "Kentucky"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:LOU",
+   "locality": "Louisiana"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:MRY",
+   "locality": "Maryland",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:MSI",
+   "locality": "Mississippi"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:MSO",
+   "locality": "Missouri"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:MYA",
+   "locality": "Myanmar",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:NWC",
+   "locality": "New Caledonia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:NWJ",
+   "locality": "New Jersey",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:NCA",
+   "locality": "North Carolina"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:OHI",
+   "locality": "Ohio"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:OKL",
+   "locality": "Oklahoma"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:PAK",
+   "locality": "Pakistan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:PEN",
+   "locality": "Pennsylvania"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:SIC",
+   "locality": "Sicilia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:SCA",
+   "locality": "South Carolina"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:TEN",
+   "locality": "Tennessee"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:TEX",
+   "locality": "Texas"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:VIE",
+   "locality": "Vietnam",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:VRG",
+   "locality": "Virginia"
+  },
+  {
+   "taxonKey": 207468016,
+   "locationId": "TDWG:WVA",
+   "locality": "West Virginia"
+  }
+ ]
+}

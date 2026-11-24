@@ -1,0 +1,25 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Pinus",
+ "result": {
+  "usageKey": 2684241,
+  "scientificName": "Pinus L.",
+  "canonicalName": "Pinus",
+  "rank": "GENUS",
+  "status": "ACCEPTED",
+  "confidence": 98,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Pinales",
+  "family": "Pinaceae",
+  "genus": "Pinus",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 194,
+  "orderKey": 640,
+  "familyKey": 3925,
+  "genusKey": 2684241,
+  "class": "Pinopsida"
+ }
+}

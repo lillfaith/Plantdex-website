@@ -1,0 +1,15 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/occurrence/search?country=CA&basisOfRecord=PRESERVED_SPECIMEN&hasCoordinate=true&hasGeospatialIssue=false&limit=0&facet=gadmLevel1Gid&facetLimit=100&speciesKey=5331238",
+ "total": 724,
+ "counts_by_gadm_level1": {
+  "CAN.11_1": 418,
+  "CAN.9_1": 145,
+  "CAN.4_1": 64,
+  "CAN.7_1": 45,
+  "CAN.3_1": 17,
+  "CAN.10_1": 4,
+  "CAN.2_1": 2,
+  "USA.20_1": 1
+ }
+}

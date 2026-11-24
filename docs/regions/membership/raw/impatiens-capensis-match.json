@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Impatiens capensis",
+ "result": {
+  "usageKey": 2891774,
+  "scientificName": "Impatiens capensis Meerb.",
+  "canonicalName": "Impatiens capensis",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Ericales",
+  "family": "Balsaminaceae",
+  "genus": "Impatiens",
+  "species": "Impatiens capensis",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 1353,
+  "familyKey": 6699,
+  "genusKey": 2891766,
+  "speciesKey": 2891774,
+  "class": "Magnoliopsida"
+ }
+}

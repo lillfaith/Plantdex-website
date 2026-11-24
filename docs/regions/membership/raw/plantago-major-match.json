@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Plantago major",
+ "result": {
+  "usageKey": 3189767,
+  "scientificName": "Plantago major L.",
+  "canonicalName": "Plantago major",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Lamiales",
+  "family": "Plantaginaceae",
+  "genus": "Plantago",
+  "species": "Plantago major",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 408,
+  "familyKey": 2420,
+  "genusKey": 3189695,
+  "speciesKey": 3189767,
+  "class": "Magnoliopsida"
+ }
+}

@@ -1,0 +1,295 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/species/207868174/distributions?limit=500",
+ "accepted_key": 207868174,
+ "results": [
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:ALA",
+   "locality": "Alabama"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:ARK",
+   "locality": "Arkansas"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:AUT",
+   "locality": "Austria",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:CNT",
+   "locality": "Connecticut"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:DEL",
+   "locality": "Delaware"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:WDC",
+   "locality": "District of Columbia"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:FLA",
+   "locality": "Florida"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:GEO",
+   "locality": "Georgia"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:GER",
+   "locality": "Germany",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:GRC",
+   "locality": "Greece",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:ILL",
+   "locality": "Illinois"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:INI",
+   "locality": "Indiana"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:IOW",
+   "locality": "Iowa"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:ITA",
+   "locality": "Italy",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:JAP",
+   "locality": "Japan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:KAN",
+   "locality": "Kansas"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:KTY",
+   "locality": "Kentucky"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:KOR",
+   "locality": "Korea",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:LOU",
+   "locality": "Louisiana"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MAI",
+   "locality": "Maine"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MAN",
+   "locality": "Manitoba"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MRY",
+   "locality": "Maryland"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MAS",
+   "locality": "Massachusetts"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MXG",
+   "locality": "Mexico Gulf"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MXE",
+   "locality": "Mexico Northeast"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MIC",
+   "locality": "Michigan"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MIN",
+   "locality": "Minnesota"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MSI",
+   "locality": "Mississippi"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:MSO",
+   "locality": "Missouri"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NEB",
+   "locality": "Nebraska"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NBR",
+   "locality": "New Brunswick"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NWH",
+   "locality": "New Hampshire"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NWJ",
+   "locality": "New Jersey"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NWY",
+   "locality": "New York"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NFL",
+   "locality": "Newfoundland"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NCA",
+   "locality": "North Carolina"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NDA",
+   "locality": "North Dakota"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:NSC",
+   "locality": "Nova Scotia"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:OHI",
+   "locality": "Ohio"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:OKL",
+   "locality": "Oklahoma"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:ONT",
+   "locality": "Ontario"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:PEN",
+   "locality": "Pennsylvania"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:PRM",
+   "locality": "Primorye",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:PEI",
+   "locality": "Prince Edward I."
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:QUE",
+   "locality": "Qu\u00e9bec"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:RHO",
+   "locality": "Rhode I."
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:SAS",
+   "locality": "Saskatchewan"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:SCA",
+   "locality": "South Carolina"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:SDA",
+   "locality": "South Dakota"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:TEN",
+   "locality": "Tennessee"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:TEX",
+   "locality": "Texas"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:VER",
+   "locality": "Vermont"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:VRG",
+   "locality": "Virginia"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:WSB",
+   "locality": "West Siberia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:WVA",
+   "locality": "West Virginia"
+  },
+  {
+   "taxonKey": 207868174,
+   "locationId": "TDWG:WIS",
+   "locality": "Wisconsin"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Allium vineale",
+ "result": {
+  "usageKey": 7792960,
+  "scientificName": "Allium vineale L.",
+  "canonicalName": "Allium vineale",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Asparagales",
+  "family": "Amaryllidaceae",
+  "genus": "Allium",
+  "species": "Allium vineale",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 196,
+  "orderKey": 1169,
+  "familyKey": 7682,
+  "genusKey": 9624496,
+  "speciesKey": 7792960,
+  "class": "Liliopsida"
+ }
+}

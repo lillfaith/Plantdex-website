@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Monarda fistulosa",
+ "result": {
+  "usageKey": 5341411,
+  "scientificName": "Monarda fistulosa L.",
+  "canonicalName": "Monarda fistulosa",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Lamiales",
+  "family": "Lamiaceae",
+  "genus": "Monarda",
+  "species": "Monarda fistulosa",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 408,
+  "familyKey": 2497,
+  "genusKey": 2926838,
+  "speciesKey": 5341411,
+  "class": "Magnoliopsida"
+ }
+}

@@ -1,0 +1,52 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/species?name=Capsella+bursa-pastoris&datasetKey=32ad19ed-6b89-447a-9242-795c0897f345&limit=5",
+ "name_usage": {
+  "key": 205115069,
+  "nubKey": 5375388,
+  "nameKey": 1970173,
+  "taxonID": "https://www.gbif.org/species/5375388",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Brassicales",
+  "family": "Brassicaceae",
+  "species": "Capsella bursa-pastoris",
+  "kingdomKey": 329755018,
+  "phylumKey": 329755120,
+  "classKey": 329755364,
+  "orderKey": 329755867,
+  "familyKey": 329755868,
+  "speciesKey": 205115069,
+  "datasetKey": "32ad19ed-6b89-447a-9242-795c0897f345",
+  "parentKey": 329755868,
+  "parent": "Brassicaceae",
+  "scientificName": "Capsella bursa-pastoris (L.) Medik.",
+  "canonicalName": "Capsella bursa-pastoris",
+  "vernacularName": "Shepherd's purse",
+  "authorship": "(L.) Medik.",
+  "nameType": "SCIENTIFIC",
+  "rank": "SPECIES",
+  "origin": "SOURCE",
+  "taxonomicStatus": "ACCEPTED",
+  "nomenclaturalStatus": [],
+  "numDescendants": 0,
+  "references": "https://doi.org/10.5066/P9KFFTOD",
+  "lastCrawled": "2026-07-13T14:16:16.870+00:00",
+  "lastInterpreted": "2026-07-13T14:15:51.344+00:00",
+  "issues": [
+   "TAXONOMIC_STATUS_INVALID",
+   "SCIENTIFIC_NAME_ASSEMBLED",
+   "DISTRIBUTION_INVALID"
+  ],
+  "class": "Magnoliopsida"
+ },
+ "distributions": [
+  {
+   "taxonKey": 205115069,
+   "locality": "conterminous 48 United States",
+   "country": "US",
+   "status": "PRESENT",
+   "temporal": "2017-11-21"
+  }
+ ]
+}

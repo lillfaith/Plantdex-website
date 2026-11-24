@@ -1,0 +1,25 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Quercus",
+ "result": {
+  "usageKey": 2877951,
+  "scientificName": "Quercus L.",
+  "canonicalName": "Quercus",
+  "rank": "GENUS",
+  "status": "ACCEPTED",
+  "confidence": 98,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Fagales",
+  "family": "Fagaceae",
+  "genus": "Quercus",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 1354,
+  "familyKey": 4689,
+  "genusKey": 2877951,
+  "class": "Magnoliopsida"
+ }
+}

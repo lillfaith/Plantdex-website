@@ -1,0 +1,25 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Salix",
+ "result": {
+  "usageKey": 3039576,
+  "scientificName": "Salix L.",
+  "canonicalName": "Salix",
+  "rank": "GENUS",
+  "status": "ACCEPTED",
+  "confidence": 98,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Malpighiales",
+  "family": "Salicaceae",
+  "genus": "Salix",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 1414,
+  "familyKey": 6664,
+  "genusKey": 3039576,
+  "class": "Magnoliopsida"
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Prunella vulgaris",
+ "result": {
+  "usageKey": 5341297,
+  "scientificName": "Prunella vulgaris L.",
+  "canonicalName": "Prunella vulgaris",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Lamiales",
+  "family": "Lamiaceae",
+  "genus": "Prunella",
+  "species": "Prunella vulgaris",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 408,
+  "familyKey": 2497,
+  "genusKey": 2926553,
+  "speciesKey": 5341297,
+  "class": "Magnoliopsida"
+ }
+}

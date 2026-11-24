@@ -1,0 +1,53 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/species?name=Arctium+lappa&datasetKey=32ad19ed-6b89-447a-9242-795c0897f345&limit=5",
+ "name_usage": {
+  "key": 205113814,
+  "nubKey": 7353729,
+  "nameKey": 917880,
+  "taxonID": "https://www.gbif.org/species/7353729",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Asterales",
+  "family": "Asteraceae",
+  "species": "Arctium lappa",
+  "kingdomKey": 329755018,
+  "phylumKey": 329755120,
+  "classKey": 329755364,
+  "orderKey": 329755690,
+  "familyKey": 329755705,
+  "speciesKey": 205113814,
+  "datasetKey": "32ad19ed-6b89-447a-9242-795c0897f345",
+  "parentKey": 329755705,
+  "parent": "Asteraceae",
+  "scientificName": "Arctium lappa L.",
+  "canonicalName": "Arctium lappa",
+  "vernacularName": "Greater burdock",
+  "authorship": "L.",
+  "nameType": "SCIENTIFIC",
+  "rank": "SPECIES",
+  "origin": "SOURCE",
+  "taxonomicStatus": "ACCEPTED",
+  "nomenclaturalStatus": [],
+  "remarks": "Other name(s): Arctium vulgare",
+  "numDescendants": 0,
+  "references": "https://doi.org/10.5066/P9KFFTOD",
+  "lastCrawled": "2026-07-13T14:16:16.870+00:00",
+  "lastInterpreted": "2026-07-13T14:15:49.760+00:00",
+  "issues": [
+   "TAXONOMIC_STATUS_INVALID",
+   "SCIENTIFIC_NAME_ASSEMBLED",
+   "DISTRIBUTION_INVALID"
+  ],
+  "class": "Magnoliopsida"
+ },
+ "distributions": [
+  {
+   "taxonKey": 205113814,
+   "locality": "conterminous 48 United States",
+   "country": "US",
+   "status": "PRESENT",
+   "temporal": "2017-11-21"
+  }
+ ]
+}

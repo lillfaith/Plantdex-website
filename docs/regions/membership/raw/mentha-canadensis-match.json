@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Mentha canadensis",
+ "result": {
+  "usageKey": 2927198,
+  "scientificName": "Mentha canadensis L.",
+  "canonicalName": "Mentha canadensis",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Lamiales",
+  "family": "Lamiaceae",
+  "genus": "Mentha",
+  "species": "Mentha canadensis",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 408,
+  "familyKey": 2497,
+  "genusKey": 2927173,
+  "speciesKey": 2927198,
+  "class": "Magnoliopsida"
+ }
+}

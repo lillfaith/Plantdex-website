@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Passiflora incarnata",
+ "result": {
+  "usageKey": 2874218,
+  "scientificName": "Passiflora incarnata L.",
+  "canonicalName": "Passiflora incarnata",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Malpighiales",
+  "family": "Passifloraceae",
+  "genus": "Passiflora",
+  "species": "Passiflora incarnata",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 1414,
+  "familyKey": 2378,
+  "genusKey": 2874172,
+  "speciesKey": 2874218,
+  "class": "Magnoliopsida"
+ }
+}

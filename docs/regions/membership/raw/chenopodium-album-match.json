@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Chenopodium album",
+ "result": {
+  "usageKey": 3083838,
+  "scientificName": "Chenopodium album L.",
+  "canonicalName": "Chenopodium album",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Caryophyllales",
+  "family": "Amaranthaceae",
+  "genus": "Chenopodium",
+  "species": "Chenopodium album",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 422,
+  "familyKey": 3064,
+  "genusKey": 3083823,
+  "speciesKey": 3083838,
+  "class": "Magnoliopsida"
+ }
+}

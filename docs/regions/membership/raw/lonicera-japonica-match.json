@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Lonicera japonica",
+ "result": {
+  "usageKey": 5334240,
+  "scientificName": "Lonicera japonica Thunb.",
+  "canonicalName": "Lonicera japonica",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Dipsacales",
+  "family": "Caprifoliaceae",
+  "genus": "Lonicera",
+  "species": "Lonicera japonica",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 946,
+  "familyKey": 6710,
+  "genusKey": 2888645,
+  "speciesKey": 5334240,
+  "class": "Magnoliopsida"
+ }
+}

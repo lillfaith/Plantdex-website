@@ -1,0 +1,25 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Morus",
+ "result": {
+  "usageKey": 2984545,
+  "scientificName": "Morus L.",
+  "canonicalName": "Morus",
+  "rank": "GENUS",
+  "status": "ACCEPTED",
+  "confidence": 98,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Rosales",
+  "family": "Moraceae",
+  "genus": "Morus",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 691,
+  "familyKey": 6640,
+  "genusKey": 2984545,
+  "class": "Magnoliopsida"
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Solidago canadensis",
+ "result": {
+  "usageKey": 5389029,
+  "scientificName": "Solidago canadensis L.",
+  "canonicalName": "Solidago canadensis",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 100,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Asterales",
+  "family": "Asteraceae",
+  "genus": "Solidago",
+  "species": "Solidago canadensis",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 414,
+  "familyKey": 3065,
+  "genusKey": 5388868,
+  "speciesKey": 5389029,
+  "class": "Magnoliopsida"
+ }
+}

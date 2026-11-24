@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Fragaria virginiana",
+ "result": {
+  "usageKey": 7950792,
+  "scientificName": "Fragaria virginiana Duchesne",
+  "canonicalName": "Fragaria virginiana",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Rosales",
+  "family": "Rosaceae",
+  "genus": "Fragaria",
+  "species": "Fragaria virginiana",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 691,
+  "familyKey": 5015,
+  "genusKey": 3029779,
+  "speciesKey": 7950792,
+  "class": "Magnoliopsida"
+ }
+}

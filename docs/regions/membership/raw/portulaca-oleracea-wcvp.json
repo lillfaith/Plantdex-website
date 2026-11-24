@@ -1,0 +1,1810 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/species/207588465/distributions?limit=500",
+ "accepted_key": 207588465,
+ "results": [
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AFG",
+   "locality": "Afghanistan"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ALA",
+   "locality": "Alabama",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ALB",
+   "locality": "Albania"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ABT",
+   "locality": "Alberta",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ALD",
+   "locality": "Aldabra"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ALG",
+   "locality": "Algeria"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ALT",
+   "locality": "Altay",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AMU",
+   "locality": "Amur",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AND",
+   "locality": "Andaman Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ANG",
+   "locality": "Angola"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AGE",
+   "locality": "Argentina Northeast",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AGW",
+   "locality": "Argentina Northwest",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AGS",
+   "locality": "Argentina South",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ARI",
+   "locality": "Arizona",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ARK",
+   "locality": "Arkansas",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ARU",
+   "locality": "Aruba",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ASC",
+   "locality": "Ascension"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ASS",
+   "locality": "Assam",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AUT",
+   "locality": "Austria"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:AZO",
+   "locality": "Azores"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BAH",
+   "locality": "Bahamas",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BAL",
+   "locality": "Baleares"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BLT",
+   "locality": "Baltic States",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BAN",
+   "locality": "Bangladesh",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BLR",
+   "locality": "Belarus",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BGM",
+   "locality": "Belgium"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BLZ",
+   "locality": "Belize",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BEN",
+   "locality": "Benin"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BER",
+   "locality": "Bermuda",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BOL",
+   "locality": "Bolivia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BOR",
+   "locality": "Borneo",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BOT",
+   "locality": "Botswana",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BZE",
+   "locality": "Brazil Northeast",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BZN",
+   "locality": "Brazil North",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BZL",
+   "locality": "Brazil Southeast",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BZS",
+   "locality": "Brazil South",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BZC",
+   "locality": "Brazil West-Central",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BRC",
+   "locality": "British Columbia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BUL",
+   "locality": "Bulgaria"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BKN",
+   "locality": "Burkina"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BUR",
+   "locality": "Burundi"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:BRY",
+   "locality": "Buryatiya",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CAL",
+   "locality": "California",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CBD",
+   "locality": "Cambodia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CMN",
+   "locality": "Cameroon"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CNY",
+   "locality": "Canary Is."
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CPP",
+   "locality": "Cape Provinces",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CVI",
+   "locality": "Cape Verde"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CRL",
+   "locality": "Caroline Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CAY",
+   "locality": "Cayman Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CAF",
+   "locality": "Central African Republic"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CPI",
+   "locality": "Central American Pacific Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:RUC",
+   "locality": "Central European Russia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHA",
+   "locality": "Chad"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CGS",
+   "locality": "Chagos Archipelago"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CLC",
+   "locality": "Chile Central",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CLN",
+   "locality": "Chile North",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CLS",
+   "locality": "Chile South",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHN",
+   "locality": "China North-Central",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHC",
+   "locality": "China South-Central",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHS",
+   "locality": "China Southeast",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:XMS",
+   "locality": "Christmas I.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CKI",
+   "locality": "Cocos (Keeling) Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CLM",
+   "locality": "Colombia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:COL",
+   "locality": "Colorado",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:COM",
+   "locality": "Comoros"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CON",
+   "locality": "Congo"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CNT",
+   "locality": "Connecticut",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:COO",
+   "locality": "Cook Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:COR",
+   "locality": "Corse"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:COS",
+   "locality": "Costa Rica",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CUB",
+   "locality": "Cuba",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CZE",
+   "locality": "Czechia-Slovakia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ZAI",
+   "locality": "DR Congo"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:DEL",
+   "locality": "Delaware",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:DEN",
+   "locality": "Denmark",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:DSV",
+   "locality": "Desventurados Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WDC",
+   "locality": "District of Columbia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:DJI",
+   "locality": "Djibouti",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:DOM",
+   "locality": "Dominican Republic",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:EAI",
+   "locality": "East Aegean Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:RUE",
+   "locality": "East European Russia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:EHM",
+   "locality": "East Himalaya",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:EAS",
+   "locality": "Easter Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ECU",
+   "locality": "Ecuador",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:EGY",
+   "locality": "Egypt"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ELS",
+   "locality": "El Salvador",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ERI",
+   "locality": "Eritrea"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SWZ",
+   "locality": "Eswatini",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ETH",
+   "locality": "Ethiopia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:FIJ",
+   "locality": "Fiji",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:FIN",
+   "locality": "Finland",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:FLA",
+   "locality": "Florida",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:FRA",
+   "locality": "France"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:OFS",
+   "locality": "Free State",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:FRG",
+   "locality": "French Guiana",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GAB",
+   "locality": "Gabon"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GAL",
+   "locality": "Gal\u00e1pagos",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GAM",
+   "locality": "Gambia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GEO",
+   "locality": "Georgia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GER",
+   "locality": "Germany"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GIL",
+   "locality": "Gilbert Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GRB",
+   "locality": "Great Britain",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GRC",
+   "locality": "Greece"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GUA",
+   "locality": "Guatemala",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GNB",
+   "locality": "Guinea-Bissau"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GUI",
+   "locality": "Guinea"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GST",
+   "locality": "Gulf States"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GGI",
+   "locality": "Gulf of Guinea Is."
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:GUY",
+   "locality": "Guyana",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHH",
+   "locality": "Hainan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:HAI",
+   "locality": "Haiti",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:HAW",
+   "locality": "Hawaii",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:HON",
+   "locality": "Honduras",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:HBI",
+   "locality": "Howland-Baker Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:HUN",
+   "locality": "Hungary"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:IDA",
+   "locality": "Idaho",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ILL",
+   "locality": "Illinois",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:INI",
+   "locality": "Indiana",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:IND",
+   "locality": "India",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHI",
+   "locality": "Inner Mongolia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:IOW",
+   "locality": "Iowa",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:IRN",
+   "locality": "Iran"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:IRQ",
+   "locality": "Iraq"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ITA",
+   "locality": "Italy"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:IVO",
+   "locality": "Ivory Coast"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:JAP",
+   "locality": "Japan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:JAW",
+   "locality": "Jawa",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:JNF",
+   "locality": "Juan Fern\u00e1ndez Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KAM",
+   "locality": "Kamchatka",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KAN",
+   "locality": "Kansas",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KAZ",
+   "locality": "Kazakhstan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KZN",
+   "locality": "Kazan-retto",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KTY",
+   "locality": "Kentucky",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KEN",
+   "locality": "Kenya"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KGZ",
+   "locality": "Kirgizstan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KOR",
+   "locality": "Korea",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KRI",
+   "locality": "Kriti"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KRY",
+   "locality": "Krym"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:KUW",
+   "locality": "Kuwait"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NAT",
+   "locality": "KwaZulu-Natal",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LDV",
+   "locality": "Laccadive Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LAO",
+   "locality": "Laos",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LBS",
+   "locality": "Lebanon-Syria"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LEE",
+   "locality": "Leeward Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LES",
+   "locality": "Lesotho",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LSI",
+   "locality": "Lesser Sunda Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LBR",
+   "locality": "Liberia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LBY",
+   "locality": "Libya"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LIN",
+   "locality": "Line Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:LOU",
+   "locality": "Louisiana",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MDR",
+   "locality": "Madeira"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MAI",
+   "locality": "Maine",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MLW",
+   "locality": "Malawi",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MLY",
+   "locality": "Malaya",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MDV",
+   "locality": "Maldives",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MLI",
+   "locality": "Mali"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MOL",
+   "locality": "Maluku",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHM",
+   "locality": "Manchuria",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MAN",
+   "locality": "Manitoba",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MCS",
+   "locality": "Marcus I.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MRQ",
+   "locality": "Marquesas",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MRS",
+   "locality": "Marshall Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MRY",
+   "locality": "Maryland",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MAS",
+   "locality": "Massachusetts",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MTN",
+   "locality": "Mauritania"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MAU",
+   "locality": "Mauritius",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXI",
+   "locality": "Mexican Pacific Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXC",
+   "locality": "Mexico Central",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXG",
+   "locality": "Mexico Gulf",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXE",
+   "locality": "Mexico Northeast",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXN",
+   "locality": "Mexico Northwest",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXT",
+   "locality": "Mexico Southeast",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MXS",
+   "locality": "Mexico Southwest",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MIC",
+   "locality": "Michigan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MIN",
+   "locality": "Minnesota",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MSI",
+   "locality": "Mississippi",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MSO",
+   "locality": "Missouri",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MNT",
+   "locality": "Montana",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MOR",
+   "locality": "Morocco"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MCI",
+   "locality": "Mozambique Channel Is."
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MOZ",
+   "locality": "Mozambique",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:MYA",
+   "locality": "Myanmar",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:YUG",
+   "locality": "NW. Balkan Pen."
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NAM",
+   "locality": "Namibia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NNS",
+   "locality": "Nansei-shoto",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NRU",
+   "locality": "Nauru",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NEB",
+   "locality": "Nebraska",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NEP",
+   "locality": "Nepal",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NLA",
+   "locality": "Netherlands Antilles",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NET",
+   "locality": "Netherlands"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NEV",
+   "locality": "Nevada",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NBR",
+   "locality": "New Brunswick",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NWC",
+   "locality": "New Caledonia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NWG",
+   "locality": "New Guinea",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NWH",
+   "locality": "New Hampshire",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NWJ",
+   "locality": "New Jersey",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NWM",
+   "locality": "New Mexico",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NSW",
+   "locality": "New South Wales",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NWY",
+   "locality": "New York",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NZN",
+   "locality": "New Zealand North",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NZS",
+   "locality": "New Zealand South",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NIC",
+   "locality": "Nicaragua",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NCB",
+   "locality": "Nicobar Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NGA",
+   "locality": "Nigeria"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NGR",
+   "locality": "Niger"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NUE",
+   "locality": "Niue",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NFK",
+   "locality": "Norfolk Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NCA",
+   "locality": "North Carolina",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NCS",
+   "locality": "North Caucasus"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NDA",
+   "locality": "North Dakota",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TVL",
+   "locality": "Northern Provinces",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NTA",
+   "locality": "Northern Territory",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:NSC",
+   "locality": "Nova Scotia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:OGA",
+   "locality": "Ogasawara-shoto",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:OHI",
+   "locality": "Ohio",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:OKL",
+   "locality": "Oklahoma",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:OMA",
+   "locality": "Oman"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ONT",
+   "locality": "Ontario",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ORE",
+   "locality": "Oregon",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PAK",
+   "locality": "Pakistan"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PAL",
+   "locality": "Palestine"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PAN",
+   "locality": "Panam\u00e1",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PAR",
+   "locality": "Paraguay",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PEN",
+   "locality": "Pennsylvania",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PHI",
+   "locality": "Philippines",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PHX",
+   "locality": "Phoenix Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PIT",
+   "locality": "Pitcairn Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:POL",
+   "locality": "Poland"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:POR",
+   "locality": "Portugal"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PRM",
+   "locality": "Primorye",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PEI",
+   "locality": "Prince Edward I.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:PUE",
+   "locality": "Puerto Rico",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHQ",
+   "locality": "Qinghai",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:QLD",
+   "locality": "Queensland",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:QUE",
+   "locality": "Qu\u00e9bec",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:RHO",
+   "locality": "Rhode I.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ROD",
+   "locality": "Rodrigues",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ROM",
+   "locality": "Romania"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:RWA",
+   "locality": "Rwanda",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:REU",
+   "locality": "R\u00e9union"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SAM",
+   "locality": "Samoa",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SAR",
+   "locality": "Sardegna"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SAS",
+   "locality": "Saskatchewan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SAU",
+   "locality": "Saudi Arabia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SEN",
+   "locality": "Senegal"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SEY",
+   "locality": "Seychelles"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SIC",
+   "locality": "Sicilia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SIE",
+   "locality": "Sierra Leone"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SIN",
+   "locality": "Sinai"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SCI",
+   "locality": "Society Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SOC",
+   "locality": "Socotra"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SOL",
+   "locality": "Solomon Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SOM",
+   "locality": "Somalia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SCA",
+   "locality": "South Carolina",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SCS",
+   "locality": "South China Sea",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SDA",
+   "locality": "South Dakota",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:RUS",
+   "locality": "South European Russia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SWC",
+   "locality": "Southwest Caribbean",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SPA",
+   "locality": "Spain"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SRL",
+   "locality": "Sri Lanka",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:STH",
+   "locality": "St.Helena"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SUD",
+   "locality": "Sudan-South Sudan"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SUL",
+   "locality": "Sulawesi",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SUM",
+   "locality": "Sumatera",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SUR",
+   "locality": "Suriname",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SWE",
+   "locality": "Sweden",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:SWI",
+   "locality": "Switzerland"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TZK",
+   "locality": "Tadzhikistan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TAI",
+   "locality": "Taiwan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TAN",
+   "locality": "Tanzania"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TAS",
+   "locality": "Tasmania",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TEN",
+   "locality": "Tennessee",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TEX",
+   "locality": "Texas",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHT",
+   "locality": "Tibet",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TOG",
+   "locality": "Togo"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TOK",
+   "locality": "Tokelau-Manihiki",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TON",
+   "locality": "Tonga",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TCS",
+   "locality": "Transcaucasus"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TRT",
+   "locality": "Trinidad-Tobago",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TUA",
+   "locality": "Tuamotu",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TUB",
+   "locality": "Tubuai Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TUN",
+   "locality": "Tunisia"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TKM",
+   "locality": "Turkmenistan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TCI",
+   "locality": "Turks-Caicos Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TUV",
+   "locality": "Tuvalu",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TVA",
+   "locality": "Tuva",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TUE",
+   "locality": "T\u00fcrkiye-in-Europe"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:TUR",
+   "locality": "T\u00fcrkiye"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:UGA",
+   "locality": "Uganda"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:UKR",
+   "locality": "Ukraine",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:URU",
+   "locality": "Uruguay",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:UTA",
+   "locality": "Utah",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:UZB",
+   "locality": "Uzbekistan",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VAN",
+   "locality": "Vanuatu",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VNA",
+   "locality": "Venezuelan Antilles",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VEN",
+   "locality": "Venezuela",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VER",
+   "locality": "Vermont",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VIC",
+   "locality": "Victoria",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VIE",
+   "locality": "Vietnam",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:VRG",
+   "locality": "Virginia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WAK",
+   "locality": "Wake I.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WAL",
+   "locality": "Wallis-Futuna Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WAS",
+   "locality": "Washington",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WHM",
+   "locality": "West Himalaya",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WSB",
+   "locality": "West Siberia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WVA",
+   "locality": "West Virginia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WAU",
+   "locality": "Western Australia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WIN",
+   "locality": "Windward Is.",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WIS",
+   "locality": "Wisconsin",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:WYO",
+   "locality": "Wyoming",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:CHX",
+   "locality": "Xinjiang",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:YEM",
+   "locality": "Yemen"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ZAM",
+   "locality": "Zambia",
+   "establishmentMeans": "INTRODUCED"
+  },
+  {
+   "taxonKey": 207588465,
+   "locationId": "TDWG:ZIM",
+   "locality": "Zimbabwe",
+   "establishmentMeans": "INTRODUCED"
+  }
+ ]
+}

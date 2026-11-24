@@ -1,0 +1,25 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Sambucus",
+ "result": {
+  "usageKey": 2888721,
+  "scientificName": "Sambucus L.",
+  "canonicalName": "Sambucus",
+  "rank": "GENUS",
+  "status": "ACCEPTED",
+  "confidence": 98,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Dipsacales",
+  "family": "Viburnaceae",
+  "genus": "Sambucus",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 946,
+  "familyKey": 4924416,
+  "genusKey": 2888721,
+  "class": "Magnoliopsida"
+ }
+}

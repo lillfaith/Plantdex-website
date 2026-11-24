@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Alliaria petiolata",
+ "result": {
+  "usageKey": 5376075,
+  "scientificName": "Alliaria petiolata (M.Bieb.) Cavara & Grande",
+  "canonicalName": "Alliaria petiolata",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 100,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Brassicales",
+  "family": "Brassicaceae",
+  "genus": "Alliaria",
+  "species": "Alliaria petiolata",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 7225535,
+  "familyKey": 3112,
+  "genusKey": 3050645,
+  "speciesKey": 5376075,
+  "class": "Magnoliopsida"
+ }
+}

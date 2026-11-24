@@ -1,0 +1,24 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "url": "https://api.gbif.org/v1/occurrence/search?country=CA&basisOfRecord=HUMAN_OBSERVATION&hasCoordinate=true&hasGeospatialIssue=false&limit=0&facet=gadmLevel1Gid&facetLimit=100&speciesKey=3171949",
+ "total": 20654,
+ "counts_by_gadm_level1": {
+  "CAN.9_1": 10289,
+  "CAN.2_1": 5659,
+  "CAN.11_1": 2084,
+  "CAN.7_1": 987,
+  "CAN.1_1": 552,
+  "CAN.4_1": 463,
+  "CAN.3_1": 191,
+  "CAN.10_1": 137,
+  "CAN.5_1": 30,
+  "CAN.12_1": 9,
+  "USA.23_1": 2,
+  "USA.24_1": 2,
+  "USA.2_1": 2,
+  "USA.33_1": 2,
+  "CAN.6_1": 1,
+  "USA.20_1": 1,
+  "USA.36_1": 1
+ }
+}

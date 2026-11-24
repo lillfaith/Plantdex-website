@@ -1,0 +1,25 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Rosa",
+ "result": {
+  "usageKey": 8395064,
+  "scientificName": "Rosa L.",
+  "canonicalName": "Rosa",
+  "rank": "GENUS",
+  "status": "ACCEPTED",
+  "confidence": 98,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Rosales",
+  "family": "Rosaceae",
+  "genus": "Rosa",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 691,
+  "familyKey": 5015,
+  "genusKey": 8395064,
+  "class": "Magnoliopsida"
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "_status": "PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW",
+ "query": "Verbascum thapsus",
+ "result": {
+  "usageKey": 3171949,
+  "scientificName": "Verbascum thapsus L.",
+  "canonicalName": "Verbascum thapsus",
+  "rank": "SPECIES",
+  "status": "ACCEPTED",
+  "confidence": 99,
+  "matchType": "EXACT",
+  "kingdom": "Plantae",
+  "phylum": "Tracheophyta",
+  "order": "Lamiales",
+  "family": "Scrophulariaceae",
+  "genus": "Verbascum",
+  "species": "Verbascum thapsus",
+  "kingdomKey": 6,
+  "phylumKey": 7707728,
+  "classKey": 220,
+  "orderKey": 408,
+  "familyKey": 2390,
+  "genusKey": 2928970,
+  "speciesKey": 3171949,
+  "class": "Magnoliopsida"
+ }
+}
