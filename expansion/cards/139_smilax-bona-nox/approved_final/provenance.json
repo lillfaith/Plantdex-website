@@ -1,7 +1,7 @@
 {
  "source_zip": "4730d569-PlantDex_137-141_V5_CLAUDE_READY_COMPLETE.zip",
  "source_zip_sha256": "97a8a711bf2f5501eeabf3ca504dd14b477105d6b3aeaccfefb92bf4047d4213",
- "note": "V5 complete package (supersedes V3). Backs are the supplied V5 backs (larger previews, 80-90% of oval height) - the earlier owner preview edits made on the V3 previews (#137 turn/centre, #138 turn, #139/#140 fit-in-oval) are NOT applied to these. Front uses the hi-res V5 #139 main cutout fitted to the supplied front. Pixel icon drawn at 0.84x the default footprint to match the supplied front.",
+ "note": "V5 complete package (supersedes V3). Backs are the supplied V5 backs (larger previews, 80-90% of oval height) - the earlier owner preview edits made on the V3 previews (#137 turn/centre, #138 turn, #139/#140 fit-in-oval) are NOT applied to these. Front uses the hi-res V5 #139 main cutout fitted to the supplied front. Pixel icon drawn at 0.945x the default footprint (owner asked for the larger size; the supplied V5 fronts show it smaller).",
  "files": {
   "front_final.png": "23d7b5f8b5a878bfb967e2b29544f89c2a185b22e03a763e217519090c763e16",
   "back_final.png": "c356ec29a99963cca96e7ecff6f1fc30b0e7c5c1cde83ea26793f61d46e4d84c",

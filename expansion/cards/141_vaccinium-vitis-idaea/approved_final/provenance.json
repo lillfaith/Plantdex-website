@@ -1,7 +1,7 @@
 {
  "source_zip": "4730d569-PlantDex_137-141_V5_CLAUDE_READY_COMPLETE.zip",
  "source_zip_sha256": "97a8a711bf2f5501eeabf3ca504dd14b477105d6b3aeaccfefb92bf4047d4213",
- "note": "V5 complete package (supersedes V3). Backs are the supplied V5 backs (larger previews, 80-90% of oval height) - the earlier owner preview edits made on the V3 previews (#137 turn/centre, #138 turn, #139/#140 fit-in-oval) are NOT applied to these. No V5 main cutout was supplied for this card (the V3 cutouts do not match the V5 front): the supplied 390x630 front is enlarged with text drawn over it (--front-from-final). Pixel icon drawn at 0.84x the default footprint to match the supplied front.",
+ "note": "V5 complete package (supersedes V3). Backs are the supplied V5 backs (larger previews, 80-90% of oval height) - the earlier owner preview edits made on the V3 previews (#137 turn/centre, #138 turn, #139/#140 fit-in-oval) are NOT applied to these. No V5 main cutout was supplied for this card (the V3 cutouts do not match the V5 front): the supplied 390x630 front is enlarged with text drawn over it (--front-from-final). Pixel icon drawn at 0.945x the default footprint (owner asked for the larger size; the supplied V5 fronts show it smaller).",
  "files": {
   "front_final.png": "7d0beb70f963cd1a1d78bd52245a781657403f2c32987c400f0c42e8ec70893f",
   "back_final.png": "f3c8edf79f26ea52172053667e708b5a5d9dab481b5b2cfaca4e757b951d5a61",
