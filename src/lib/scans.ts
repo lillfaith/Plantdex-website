@@ -52,6 +52,13 @@ export interface ScanResult {
   provider?: string;
   /** Server-minted uuid for this set of photographs. See `identification_observation_id`. */
   observationId?: string;
+  /**
+   * The provider answered that this is not a plant. An ANSWER, and different from "no card":
+   * the candidate list is empty either way, so without this flag the two were the same result.
+   */
+  notAPlant?: boolean;
+  /** The provider answered successfully and had no suggestion at all. Also not "no card". */
+  providerFoundNothing?: boolean;
 }
 
 export type ScanFailure =
@@ -232,9 +239,41 @@ export async function identifyPlant(
     signedIn?: boolean;
     provider?: string;
     observationId?: string;
+    notAPlant?: boolean;
+    providerFoundNothing?: boolean;
   };
 
-  const candidates: ScanCandidate[] = (raw.candidates ?? []).map((candidate) => ({
+  /*
+   * A SUCCESS THAT DOES NOT HAVE THE SHAPE OF ONE IS A FAILURE. `data ?? {}` turned a null
+   * body, an `{ error }` body or a cached error page into an empty candidate list, which
+   * `outcomeFor` reports as `noMatch` — "not one of the 45 cards" — a confident-sounding
+   * answer the identifier never gave. Every real answer carries a `candidates` array, an
+   * empty one included, so its absence is the app failing to understand the response.
+   */
+  const rawCandidates = (data as { candidates?: unknown } | null)?.candidates;
+  if (!Array.isArray(rawCandidates)) {
+    return {
+      kind: 'error',
+      message: 'The identification service answered in a way this app did not recognise.',
+    };
+  }
+  // An entry with no name or no usable score cannot be matched or ranked; keep the rest.
+  const usable = (raw.candidates ?? []).filter(
+    (candidate) =>
+      typeof candidate?.scientificName === 'string' &&
+      candidate.scientificName.trim() !== '' &&
+      typeof candidate.score === 'number' &&
+      Number.isFinite(candidate.score),
+  );
+  // Suggestions arrived and none could be read: that is not "nothing recognised".
+  if (rawCandidates.length > 0 && usable.length === 0) {
+    return {
+      kind: 'error',
+      message: 'The identification service answered in a way this app did not recognise.',
+    };
+  }
+
+  const candidates: ScanCandidate[] = usable.map((candidate) => ({
     ...candidate,
     match: matchScientificName(candidate.scientificName),
   }));
@@ -247,6 +286,9 @@ export async function identifyPlant(
     signedIn: raw.signedIn,
     provider: raw.provider,
     observationId: raw.observationId,
+    // Strict `=== true`: only an explicit statement from the server counts.
+    notAPlant: raw.notAPlant === true ? true : undefined,
+    providerFoundNothing: raw.providerFoundNothing === true ? true : undefined,
   };
 }
 
