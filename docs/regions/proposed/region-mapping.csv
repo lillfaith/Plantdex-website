@@ -1,0 +1,86 @@
+us_l3_code,us_l3_name,na_l3_code,epa_level1_name,area_km2,primary_region,secondary_region,straddles,uncertainty,rationale,status
+1,Coast Range,7.1.8,MARINE WEST COAST FOREST,54250,PC,,no,low,Coastal temperate rainforest range; Pacific coast.,PROPOSED-UNREVIEWED
+2,Puget Lowland,7.1.7,MARINE WEST COAST FOREST,16970,PC,,no,low,"Puget trough, Pacific maritime lowland.",PROPOSED-UNREVIEWED
+3,Willamette Valley,7.1.9,MARINE WEST COAST FOREST,14885,PC,,no,low,"Willamette valley, Pacific maritime lowland.",PROPOSED-UNREVIEWED
+4,Cascades,6.2.7,NORTHWESTERN FORESTED MOUNTAINS,58854,PC,RM,yes,medium,Cascade crest and west slope are Pacific; the dry east slope is unit 9.,PROPOSED-UNREVIEWED
+5,Sierra Nevada,6.2.12,NORTHWESTERN FORESTED MOUNTAINS,53103,PC,RM,yes,medium,Sierra Nevada is Pacific-slope California; east flank grades to Great Basin (RM by assumption).,PROPOSED-UNREVIEWED
+6,Central California Foothills and Coastal Mountains,11.1.1,MEDITERRANEAN CALIFORNIA,76679,PC,,no,low,Californian foothills and coastal ranges; card sheet places California in Pacific Coast.,PROPOSED-UNREVIEWED
+7,Central California Valley,11.1.2,MEDITERRANEAN CALIFORNIA,46490,PC,,no,low,Central Valley of California.,PROPOSED-UNREVIEWED
+8,Southern California Mountains,11.1.3,MEDITERRANEAN CALIFORNIA,15838,PC,SW,yes,medium,"Transverse/Peninsular ranges: coastal-facing slopes Pacific, desert-facing slopes Southwest.",PROPOSED-UNREVIEWED
+9,Eastern Cascades Slopes and Foothills,6.2.8,NORTHWESTERN FORESTED MOUNTAINS,53257,PC,RM,yes,high,Rain-shadow slopes; ecologically closer to the interior but inside the Cascade range. Coin-flip between PC and RM.,PROPOSED-UNREVIEWED
+10,Columbia Plateau,10.1.2,NORTH AMERICAN DESERTS,83131,RM,PC,yes,medium,Columbia Plateau sagebrush steppe: Intermountain West group; borders Pacific Northwest.,PROPOSED-UNREVIEWED
+11,Blue Mountains,6.2.9,NORTHWESTERN FORESTED MOUNTAINS,70911,RM,PC,yes,medium,"Blue Mountains: Intermountain forests, close to the Cascades.",PROPOSED-UNREVIEWED
+12,Snake River Plain,10.1.8,NORTH AMERICAN DESERTS,53627,RM,,no,low,Snake River Plain: Intermountain West.,PROPOSED-UNREVIEWED
+13,Central Basin and Range,10.1.5,NORTH AMERICAN DESERTS,308790,RM,SW,yes,medium,Great Basin is Intermountain West by the sheet label; its southern end merges with the Mojave (SW).,PROPOSED-UNREVIEWED
+14,Mojave Basin and Range,10.2.1,NORTH AMERICAN DESERTS,127690,SW,PC,yes,medium,Mojave desert; the card sheet files California buckwheat under PC and SW.,PROPOSED-UNREVIEWED
+15,Northern Rockies,6.2.3,NORTHWESTERN FORESTED MOUNTAINS,81961,RM,,no,low,Northern Rockies.,PROPOSED-UNREVIEWED
+16,Idaho Batholith,6.2.15,NORTHWESTERN FORESTED MOUNTAINS,60283,RM,,no,low,"Idaho Batholith, Rocky Mountain forests.",PROPOSED-UNREVIEWED
+17,Middle Rockies,6.2.10,NORTHWESTERN FORESTED MOUNTAINS,164462,RM,,no,low,Middle Rockies.,PROPOSED-UNREVIEWED
+18,Wyoming Basin,10.1.4,NORTH AMERICAN DESERTS,132682,RM,GP,yes,medium,"Wyoming Basin: Intermountain basin, but its eastern edge opens onto the Great Plains.",PROPOSED-UNREVIEWED
+19,Wasatch and Uinta Mountains,6.2.13,NORTHWESTERN FORESTED MOUNTAINS,45693,RM,,no,low,Wasatch and Uinta mountains.,PROPOSED-UNREVIEWED
+20,Colorado Plateaus,10.1.6,NORTH AMERICAN DESERTS,136575,SW,RM,yes,high,Colorado Plateau: desert plateau (SW) but part of the Rocky Mountain/Intermountain physiography; genuinely both.,PROPOSED-UNREVIEWED
+21,Southern Rockies,6.2.14,NORTHWESTERN FORESTED MOUNTAINS,145702,RM,SW,yes,low,Southern Rockies; southern end in New Mexico borders SW.,PROPOSED-UNREVIEWED
+22,Arizona/New Mexico Plateau,10.1.7,NORTH AMERICAN DESERTS,146859,SW,RM,yes,high,Arizona/New Mexico Plateau: high desert/woodland plateau; SW vs RM is a judgement.,PROPOSED-UNREVIEWED
+23,Arizona/New Mexico Mountains,13.1.1,TEMPERATE SIERRAS,110910,SW,RM,yes,medium,"Arizona/New Mexico mountains (Mogollon Rim, Sacramento Mts): sky-island forests; SW by geography, RM by vegetation.",PROPOSED-UNREVIEWED
+24,Chihuahuan Deserts,10.2.4,NORTH AMERICAN DESERTS,164060,SW,GP,yes,medium,Chihuahuan Desert; grades into Great Plains grassland on the Texas side.,PROPOSED-UNREVIEWED
+25,High Plains,9.4.1,GREAT PLAINS,288320,GP,,no,low,High Plains.,PROPOSED-UNREVIEWED
+26,Southwestern Tablelands,9.4.3,GREAT PLAINS,198829,GP,SW,yes,medium,"Southwestern Tablelands (Llano Estacado, Canadian breaks) blend into SW and RM foothills.",PROPOSED-UNREVIEWED
+27,Central Great Plains,9.4.2,GREAT PLAINS,274963,GP,,no,low,Central Great Plains.,PROPOSED-UNREVIEWED
+28,Flint Hills,9.4.4,GREAT PLAINS,27932,GP,MW,yes,medium,"Flint Hills tallgrass prairie; is the eastern prairie edge, close to Midwest.",PROPOSED-UNREVIEWED
+29,Cross Timbers,9.4.5,GREAT PLAINS,88188,GP,SE,yes,medium,Cross Timbers: oak savanna mosaic between prairie and eastern forest.,PROPOSED-UNREVIEWED
+30,Edwards Plateau,9.4.6,GREAT PLAINS,74964,GP,SW,yes,medium,Edwards Plateau: Texas Hill Country; transitions to Chihuahuan and Gulf flora.,PROPOSED-UNREVIEWED
+31,Southern Texas Plains,9.6.1,GREAT PLAINS,53423,GP,GC,yes,high,"South Texas brush country: subtropical, borders Gulf coast and Chihuahuan; no clean home.",PROPOSED-UNREVIEWED
+32,Texas Blackland Prairies,9.4.7,GREAT PLAINS,43382,GP,GC,yes,medium,Blackland Prairies: tallgrass prairie remnant bordering the Gulf coastal plain.,PROPOSED-UNREVIEWED
+33,East Central Texas Plains,8.3.8,EASTERN TEMPERATE FORESTS,55753,SE,GC,yes,medium,Post-oak woods of east-central Texas; EPA treats as Eastern Temperate Forest.,PROPOSED-UNREVIEWED
+34,Western Gulf Coastal Plain,9.5.1,GREAT PLAINS,75406,GC,GP,yes,medium,"Western Gulf Coastal Plain (coastal prairie, Houston): EPA Level I says Great Plains, but it is the Gulf coast.",PROPOSED-UNREVIEWED
+35,South Central Plains,8.3.7,EASTERN TEMPERATE FORESTS,152132,SE,GC,yes,medium,Piney woods of Arkansas/Louisiana/east Texas: inland coastal plain.,PROPOSED-UNREVIEWED
+36,Ouachita Mountains,8.4.8,EASTERN TEMPERATE FORESTS,26895,MW,SE,yes,high,Ouachita Mountains. Interior Highlands have no natural home in a ten-region scheme; owner decision.,PROPOSED-UNREVIEWED
+37,Arkansas Valley,8.4.7,EASTERN TEMPERATE FORESTS,28422,MW,SE,yes,high,"Arkansas Valley; Interior Highlands, as unit 36.",PROPOSED-UNREVIEWED
+38,Boston Mountains,8.4.6,EASTERN TEMPERATE FORESTS,14178,MW,SE,yes,high,"Boston Mountains; Interior Highlands, as unit 36.",PROPOSED-UNREVIEWED
+39,Ozark Highlands,8.4.5,EASTERN TEMPERATE FORESTS,106391,MW,SE,yes,medium,"Ozark Highlands; Interior Highlands, as unit 36 but Missouri-side flora is Midwest-leaning.",PROPOSED-UNREVIEWED
+40,Central Irregular Plains,9.2.4,GREAT PLAINS,114323,MW,GP,yes,medium,Central Irregular Plains (Missouri/Iowa/Kansas): tallgrass prairie and oak-hickory; Midwest/Plains edge.,PROPOSED-UNREVIEWED
+41,Canadian Rockies,6.2.4,NORTHWESTERN FORESTED MOUNTAINS,18880,RM,,no,low,Canadian Rockies (Montana/Idaho).,PROPOSED-UNREVIEWED
+42,Northwestern Glaciated Plains,9.3.1,GREAT PLAINS,174882,GP,,no,low,Northwestern Glaciated Plains.,PROPOSED-UNREVIEWED
+43,Northwestern Great Plains,9.3.3,GREAT PLAINS,357584,GP,,no,low,Northwestern Great Plains.,PROPOSED-UNREVIEWED
+44,Nebraska Sand Hills,9.3.4,GREAT PLAINS,59123,GP,,no,low,Nebraska Sand Hills.,PROPOSED-UNREVIEWED
+45,Piedmont,8.3.4,EASTERN TEMPERATE FORESTS,166117,SE,,no,low,"Piedmont: the ""Southeast Piedmont"" named in the product design.",PROPOSED-UNREVIEWED
+46,Northern Glaciated Plains,9.2.1,GREAT PLAINS,134806,GP,MW,yes,medium,Northern Glaciated Plains: prairie pothole region.,PROPOSED-UNREVIEWED
+47,Western Corn Belt Plains,9.2.3,GREAT PLAINS,228143,MW,GP,yes,medium,"Western Corn Belt: EPA Level I = Great Plains, but the agricultural Midwest; tallgrass prairie history.",PROPOSED-UNREVIEWED
+48,Lake Agassiz Plain,9.2.2,GREAT PLAINS,45060,GP,NF,yes,medium,"Lake Agassiz Plain (Red River valley): prairie, bordering northern forest.",PROPOSED-UNREVIEWED
+49,Northern Minnesota Wetlands,5.2.2,NORTHERN FORESTS,22829,NF,,no,low,Northern Minnesota wetlands: boreal.,PROPOSED-UNREVIEWED
+50,Northern Lakes and Forests,5.2.1,NORTHERN FORESTS,191883,NF,,no,low,Northern Lakes and Forests.,PROPOSED-UNREVIEWED
+51,North Central Hardwood Forests,8.1.4,EASTERN TEMPERATE FORESTS,88910,MW,NF,yes,medium,North Central Hardwood Forests: transition between Midwest and northern forest.,PROPOSED-UNREVIEWED
+52,Driftless Area,8.1.5,EASTERN TEMPERATE FORESTS,47386,MW,,no,low,Driftless Area.,PROPOSED-UNREVIEWED
+53,Southeastern Wisconsin Till Plains,8.2.1,EASTERN TEMPERATE FORESTS,31350,MW,,no,low,Southeastern Wisconsin till plains.,PROPOSED-UNREVIEWED
+54,Central Corn Belt Plains,8.2.3,EASTERN TEMPERATE FORESTS,76510,MW,,no,low,Central Corn Belt.,PROPOSED-UNREVIEWED
+55,Eastern Corn Belt Plains,8.2.4,EASTERN TEMPERATE FORESTS,86858,MW,,no,low,Eastern Corn Belt.,PROPOSED-UNREVIEWED
+56,Southern Michigan/Northern Indiana Drift Plains,8.1.6,EASTERN TEMPERATE FORESTS,53035,MW,,no,low,Southern Michigan / northern Indiana drift plains.,PROPOSED-UNREVIEWED
+57,Huron/Erie Lake Plains,8.2.2,EASTERN TEMPERATE FORESTS,31595,MW,NE,yes,medium,"Huron/Erie lake plains: Great Lakes lowland, borders northeastern units.",PROPOSED-UNREVIEWED
+58,Northeastern Highlands,5.3.1,NORTHERN FORESTS,124197,NF,NE,yes,medium,"Adirondacks, northern New England: northern forest; grades toward Northeast.",PROPOSED-UNREVIEWED
+59,Northeastern Coastal Zone,8.1.7,EASTERN TEMPERATE FORESTS,42067,NE,,no,medium,"Northeastern coastal zone (southern New England coast, Cape Cod).",PROPOSED-UNREVIEWED
+60,Northern Allegheny Plateau,8.1.3,EASTERN TEMPERATE FORESTS,46510,AP,NE,yes,medium,"Northern Allegheny Plateau: dissected plateau, Appalachian; New York Southern Tier side is Northeast.",PROPOSED-UNREVIEWED
+61,Erie Drift Plain,8.1.10,EASTERN TEMPERATE FORESTS,30960,NE,MW,yes,high,"Erie Drift Plain: Great Lakes lowland between Northeast, Appalachia and Midwest.",PROPOSED-UNREVIEWED
+62,North Central Appalachians,5.3.3,NORTHERN FORESTS,26727,AP,NF,yes,high,North Central Appalachians (PA Wilds): EPA Level I Northern Forests; Appalachian geography.,PROPOSED-UNREVIEWED
+63,Middle Atlantic Coastal Plain,8.5.1,EASTERN TEMPERATE FORESTS,78476,GC,NE,yes,medium,Middle Atlantic Coastal Plain (Delmarva to Carolinas): Atlantic coastal plain; northern part reads Northeast.,PROPOSED-UNREVIEWED
+64,Northern Piedmont,8.3.1,EASTERN TEMPERATE FORESTS,31365,NE,SE,yes,medium,Northern Piedmont (PA/MD/NJ): northern end of the Piedmont; Northeast vs Southeast Piedmont is the line the product must choose.,PROPOSED-UNREVIEWED
+65,Southeastern Plains,8.3.5,EASTERN TEMPERATE FORESTS,328885,SE,GC,yes,medium,"Southeastern Plains: inland coastal plain, named ""Inland Plains"" in the product design; borders Gulf & Atlantic Coastal Plains.",PROPOSED-UNREVIEWED
+66,Blue Ridge,8.4.4,EASTERN TEMPERATE FORESTS,46595,AP,,no,low,Blue Ridge.,PROPOSED-UNREVIEWED
+67,Ridge and Valley,8.4.1,EASTERN TEMPERATE FORESTS,116716,AP,,no,low,Ridge and Valley.,PROPOSED-UNREVIEWED
+68,Southwestern Appalachians,8.4.9,EASTERN TEMPERATE FORESTS,37995,AP,,no,low,Southwestern Appalachians (Cumberland Plateau).,PROPOSED-UNREVIEWED
+69,Central Appalachians,8.4.2,EASTERN TEMPERATE FORESTS,62050,AP,,no,low,Central Appalachians.,PROPOSED-UNREVIEWED
+70,Western Allegheny Plateau,8.4.3,EASTERN TEMPERATE FORESTS,81440,AP,MW,yes,medium,Western Allegheny Plateau: Appalachian plateau grading into Midwest in Ohio.,PROPOSED-UNREVIEWED
+71,Interior Plateau,8.3.3,EASTERN TEMPERATE FORESTS,123527,SE,MW,yes,high,"Interior Plateau (Nashville Basin, Pennyrile, cedar glades): neither Appalachian nor coastal; SE vs MW is a judgement.",PROPOSED-UNREVIEWED
+72,Interior River Valleys and Hills,8.3.2,EASTERN TEMPERATE FORESTS,120448,MW,SE,yes,medium,Interior River Valleys and Hills (southern IL/IN/MO).,PROPOSED-UNREVIEWED
+73,Mississippi Alluvial Plain,8.5.2,EASTERN TEMPERATE FORESTS,116119,GC,SE,yes,medium,"Mississippi Alluvial Plain: floodplain forests; Gulf-connected lowland, but runs north to Missouri.",PROPOSED-UNREVIEWED
+74,Mississippi Valley Loess Plains,8.3.6,EASTERN TEMPERATE FORESTS,51810,SE,MW,yes,medium,Mississippi Valley Loess Plains.,PROPOSED-UNREVIEWED
+75,Southern Coastal Plain,8.5.3,EASTERN TEMPERATE FORESTS,141414,GC,,no,low,"Southern Coastal Plain: ""Gulf & Atlantic Coastal Plains"" proper.",PROPOSED-UNREVIEWED
+76,Southern Florida Coastal Plain,15.4.1,TROPICAL WET FORESTS,22533,GC,,no,low,South Florida: subtropical coastal plain.,PROPOSED-UNREVIEWED
+77,North Cascades,6.2.5,NORTHWESTERN FORESTED MOUNTAINS,30395,PC,RM,yes,low,North Cascades.,PROPOSED-UNREVIEWED
+78,Klamath Mountains/California High North Coast Range,6.2.11,NORTHWESTERN FORESTED MOUNTAINS,48358,PC,,no,medium,Klamath-Siskiyou and north coast range of California.,PROPOSED-UNREVIEWED
+79,Madrean Archipelago,12.1.1,SOUTHERN SEMI-ARID HIGHLANDS,39650,SW,,no,low,Madrean Archipelago: sky islands of southeast Arizona.,PROPOSED-UNREVIEWED
+80,Northern Basin and Range,10.1.3,NORTH AMERICAN DESERTS,140198,RM,SW,yes,medium,Northern Basin and Range: Intermountain West.,PROPOSED-UNREVIEWED
+81,Sonoran Basin and Range,10.2.2,NORTH AMERICAN DESERTS,118370,SW,,no,low,Sonoran desert.,PROPOSED-UNREVIEWED
+82,Acadian Plains and Hills,8.1.8,EASTERN TEMPERATE FORESTS,45250,NF,NE,yes,high,"Acadian Plains and Hills (Maine, New Brunswick border): boreal-influenced; EPA Level I Eastern Temperate Forests.",PROPOSED-UNREVIEWED
+83,Eastern Great Lakes Lowlands,8.1.1,EASTERN TEMPERATE FORESTS,40302,NE,MW,yes,medium,Eastern Great Lakes lowlands (Lake Ontario plain).,PROPOSED-UNREVIEWED
+84,Atlantic Coastal Pine Barrens,8.5.4,EASTERN TEMPERATE FORESTS,14308,NE,GC,yes,medium,"Atlantic coastal pine barrens (NJ, Long Island, Cape Cod); coastal-plain flora.",PROPOSED-UNREVIEWED
+85,Southern California/Northern Baja Coast,11.1.1,MEDITERRANEAN CALIFORNIA,20955,PC,SW,yes,medium,Southern California coast and Northern Baja.,PROPOSED-UNREVIEWED
