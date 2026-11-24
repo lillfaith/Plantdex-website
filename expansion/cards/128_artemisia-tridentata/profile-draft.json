@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Respiratory aid",
     "Congestion aid",
     "Insect repellent",
-    "Aromatic"
+    "Antimicrob.",
+    "Antifungal",
+    "Respiratory aid"
    ],
    "compounds": [
     "Camphor",

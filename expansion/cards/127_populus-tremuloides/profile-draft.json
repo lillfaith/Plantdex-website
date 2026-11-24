@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Pain soothing",
+    "Pain relief",
+    "Digestive aid",
     "Fever aid",
     "Anti-inflam.",
-    "Bitter tonic"
+    "Headache aid"
    ],
    "compounds": [
     "Salicin",

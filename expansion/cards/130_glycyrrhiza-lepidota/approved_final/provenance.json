@@ -1,0 +1,11 @@
+{
+ "source_zip": "83e0d897-PlantDex_127-131_V10_CLAUDE_READY_UNDER30MB.zip",
+ "source_zip_sha256": "6dd011b39aa75a081c7407669b7e9ceefb7604ea186c231fa2ffe69e8e78e229",
+ "note": "V10 package (83e0d897-PlantDex_127-131_V10_CLAUDE_READY_UNDER30MB.zip); pixel icon drawn at 0.93x the default footprint to match the supplied front; backs are the supplied backs with owner healing-trait edits on top.",
+ "files": {
+  "front_final.png": "e986f6ac9011eb50341fa3df75088f6a4312c2b10fa771f17e36bb7f3ef6bd85",
+  "back_final.png": "f0f587b227cb4582679b648c7e410d58241df2c2dd55a76c9aea84925e3ea418",
+  "pixel_icon_native_24x24.png": "987068e7d23ec5e8ef35efd5a64ef944922bb1d63a975e418aafcc94e864f9da",
+  "main_cutout_used.png": "38228c5e91b1fff192668e6fcf5176677dc24dcefdc698ddd8aa97e42f1b1df2"
+ }
+}

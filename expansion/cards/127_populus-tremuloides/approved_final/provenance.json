@@ -1,0 +1,11 @@
+{
+ "source_zip": "83e0d897-PlantDex_127-131_V10_CLAUDE_READY_UNDER30MB.zip",
+ "source_zip_sha256": "6dd011b39aa75a081c7407669b7e9ceefb7604ea186c231fa2ffe69e8e78e229",
+ "note": "V10 package (83e0d897-PlantDex_127-131_V10_CLAUDE_READY_UNDER30MB.zip); pixel icon drawn at 0.93x the default footprint to match the supplied front; backs are the supplied backs with owner healing-trait edits on top. Icon is AI-generated healthy-leaf artwork per the package's REVISIONS.md (botanical approximation, not an exact image edit).",
+ "files": {
+  "front_final.png": "9e0a79c1130e87effd1fae65e0fb46276d4dfbcb534d52e09e93f4f1a0dffed6",
+  "back_final.png": "c8302a0dd32d5ded76380db8a9b2c8ce0fa36127b42a781c17bafa2ca44efc9f",
+  "pixel_icon_native_24x24.png": "20611995ed9aef538bc4b01af0bca72ec276da27d8b01f83b44804f168474069",
+  "main_cutout_used.png": "8b8cc6c802286eee5ec9d1d5f2cf46522570413aaf23a55039769106eda6f582"
+ }
+}
