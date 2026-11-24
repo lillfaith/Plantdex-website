@@ -6,7 +6,7 @@
 ## Status
 
 - **Phase 1 (evidence): done** with the limits below. `evidence-45.csv` (513 rows), `evidence-summary.md`, raw API responses in `raw/`.
-- **Phase 2 (proposed membership): NOT RUN.** It needs `docs/regions/proposed/region-mapping.csv` on `origin/coord/region-boundaries-research`, and that branch does not exist (`git ls-remote --heads origin 'coord/*'`, 2026-11-24). So `proposed-membership-45.csv` and `method.md` do not exist, and no species has been assigned to any region. A rule written now, without the mapping, would be guessed.
+- **Phase 2 (proposed membership): NOT RUN, status `awaiting-boundaries`.** See `../method.md`. The boundaries mapping still does not exist on origin (2026-11-24).
 - **Georgia validation:** only the Phase-1 form was possible (see the summary). The check "every confirmed/likely Georgia species is proposed in a region Georgia intersects" needs Phase 2.
 
 ## Sources that could not be reached

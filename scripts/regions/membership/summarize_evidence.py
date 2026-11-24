@@ -1,10 +1,10 @@
 # PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW
-"""Builds docs/regions/membership/evidence-summary.md from raw/summary-data.json (written by
+"""Builds docs/regions/proposed/membership/evidence-summary.md from raw/summary-data.json (written by
 collect_evidence.py). Reads src/lib/region-species.ts only to compare with the Georgia survey."""
 import json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-M = os.path.join(ROOT, 'docs/regions/membership')
+M = os.path.join(ROOT, 'docs/regions/proposed/membership')
 data = json.load(open(os.path.join(M, 'raw/summary-data.json')))
 D, WHEN = data['species'], data['retrieved_on']
 names = json.load(open(os.path.join(M, 'raw/gadm-level1-names.json')))['names']

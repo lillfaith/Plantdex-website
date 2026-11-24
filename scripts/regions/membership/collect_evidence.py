@@ -1,6 +1,6 @@
 # PROPOSED, NOT IMPORTED, FOR BOTANICAL REVIEW
 """Phase 1 evidence collection for the 45 original cards. Read-only; writes only under
-docs/regions/membership/. Only api.gbif.org is used: POWO and efloras answer 403 (Cloudflare)
+docs/regions/proposed/membership/. Only api.gbif.org is used: POWO and efloras answer 403 (Cloudflare)
 and plants.usda.gov redirects to a host the proxy refuses, so those are RECORDED AS BLOCKED, never
 filled from memory. WCVP (the dataset behind POWO) and GRIIS are read as GBIF-hosted checklists and
 labelled as such. Usage: python3 scripts/regions/membership/collect_evidence.py
@@ -8,7 +8,7 @@ labelled as such. Usage: python3 scripts/regions/membership/collect_evidence.py
 import csv, json, os, sys, time, urllib.parse, urllib.request, urllib.error, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-OUT = os.path.join(ROOT, 'docs', 'regions', 'membership')
+OUT = os.path.join(ROOT, 'docs', 'regions', 'proposed', 'membership')
 RAW = os.path.join(OUT, 'raw')
 API = 'https://api.gbif.org/v1/'
 WCVP = 'f382f0ce-323a-4091-bb9f-add557f3a9a2'
