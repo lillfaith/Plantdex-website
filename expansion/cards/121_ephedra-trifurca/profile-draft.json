@@ -19,9 +19,10 @@
   },
   "back": {
    "healingTraits": [
-    "Urinary folk use",
-    "Kidney folk use",
-    "Cold folk use"
+    "Cold support",
+    "Fever aid",
+    "Respiratory aid",
+    "Focus support"
    ],
    "compounds": [
     "Tannins",

@@ -1,0 +1,11 @@
+{
+ "source_zip": "PlantDex_117-121_V8_PRESERVED_COMPLETE_FOR_CLAUDE.zip",
+ "source_zip_sha256": null,
+ "note": "V8 package; hi-res main cutout fitted to the supplied front; pixel icon drawn at 0.84x the default footprint to match the supplied front; owner healing-trait edits applied on the back",
+ "files": {
+  "front_final.png": "1832d1bc8b5ecc7f9383d45511f31c789019da8c6192c83c0b31eee3976b82c3",
+  "back_final.png": "4d71e8caf7190f0b03c0ab8fc04b605aa30efdce5e934e5ebdba8c855d39933c",
+  "pixel_icon_native_24x24.png": "d2d81639225bbdd6806bd3be7705d3b47e9eb039d0d519e224cd7d8844dc26c5",
+  "main_cutout_used.png": "33f7374f12552fb320d456b53a00e4c1f5ccdef0e1b53067a891670fc4a79fbd"
+ }
+}
