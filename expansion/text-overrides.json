@@ -116,6 +116,18 @@
    ],
    "by": "owner",
    "why": "Owner added 'Glucose regulation' and 'Brain health' (not in the master sheet), shortened it to 'Glucose reg.' so it is not scaled down, and moved Brain health up and Hydration down."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Metabolic health",
+    "Anti-cancer",
+    "Glucose reg.",
+    "Hydration",
+    "Antioxidant-rich"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "103": [
@@ -125,6 +137,17 @@
    "to": "Salivary aid",
    "by": "owner",
    "why": "Owner asked to replace 'Cough soothing' with 'Salivary aid'."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Salivary aid",
+    "Expectorant",
+    "Skin soothing",
+    "Respiratory aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "106": [
@@ -134,6 +157,16 @@
    "to": "Headache aid",
    "by": "owner",
    "why": "Owner asked to replace 'Headache folk use' with 'Headache aid'."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Headache aid",
+    "Joint poultice",
+    "Pest repellent"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "107": [
@@ -143,6 +176,16 @@
    "to": "Antimicrobial",
    "by": "owner",
    "why": "Owner asked to replace 'Astringent' with 'Antimicrobial'."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Skin soothing",
+    "Antimicrob.",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "108": [
@@ -153,6 +196,17 @@
    ],
    "by": "owner",
    "why": "Owner asked to add 'Digestive aid' (not in the master sheet)."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Laxative",
+    "Constipation aid",
+    "Bitter tonic",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "109": [
@@ -160,6 +214,17 @@
    "field": "layout.centre_odd_healing",
    "by": "owner",
    "why": "Owner asked for the bottom (fifth) Healing Trait to be centred."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Burn soothing",
+    "Anti-inflam.",
+    "Diarrhea aid",
+    "Cough soothing"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "110": [
@@ -170,6 +235,17 @@
    ],
    "by": "owner",
    "why": "Owner asked to add 'Eye care' (not in the master sheet)."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Urine inducing",
+    "Skin soothing",
+    "Lymphatic aid",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "111": [
@@ -186,6 +262,17 @@
    "field": "layout.centre_odd_healing",
    "by": "owner",
    "why": "Owner asked for 'Aromatherapy' (the fifth Healing Trait) to be centred."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Antioxidant-rich",
+    "Antibacterial",
+    "Antiviral",
+    "Calming"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "114": [
@@ -202,6 +289,17 @@
    "to": "Conditioner",
    "by": "owner",
    "why": "Owner asked for the shorter wording."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Moisturizing",
+    "Conditioner",
+    "Barrier support",
+    "Emollient"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "115": [
@@ -218,6 +316,17 @@
    "to": "Digestive aid",
    "by": "owner",
    "why": "Owner asked to replace 'Nutritive pad' with 'Digestive aid'."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Dietary fiber",
+    "Glucose reg.",
+    "Hydration",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "_rules": {
@@ -241,6 +350,17 @@
    ],
    "by": "owner",
    "why": "Owner: added Respiratory aid, Antifungal, Cough relief; removed Wound cleansing."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Skin wash",
+    "Respiratory aid",
+    "Antifungal",
+    "Cough relief"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "118": [
@@ -254,6 +374,18 @@
    ],
    "by": "owner",
    "why": "Owner: replaced Chest comfort with Anti-catarrhal; removed Foot-soak relief."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Anti-catarrhal",
+    "Skin soothing",
+    "Muscle health",
+    "Expectorant",
+    "Respiratory aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "119": [
@@ -265,6 +397,18 @@
    ],
    "by": "owner",
    "why": "Owner: added Eye care and Wound aid; 'Plant omega-3' is removed by the omega-3 rule and Omega-3 moves to Signature Compounds."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Hydration",
+    "Energy source",
+    "Eye care",
+    "Wound aid",
+    "Dietary fiber"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "122": [
@@ -276,6 +420,17 @@
    ],
    "by": "owner",
    "why": "Owner: added Fever aid and Digestive aid."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Seed protein",
+    "Fever aid",
+    "Digestive aid",
+    "Odor aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "123": [
@@ -295,6 +450,17 @@
    ],
    "by": "owner",
    "why": "Owner: Sesquiterpenes moved to the top of Signature Compounds."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Respiratory aid",
+    "Expectorant",
+    "Seed energy",
+    "Immune aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "124": [
@@ -316,6 +482,18 @@
    ],
    "by": "owner",
    "why": "Owner: Mucilage moved here from Healing Traits."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Urinary aid",
+    "Anti-inflam.",
+    "Ulcer aid",
+    "Prostate health"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "125": [
@@ -327,6 +505,17 @@
    ],
    "by": "owner",
    "why": "Owner: added Antiseptic and Urinary aid."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Mild astringent",
+    "Bladder tonic",
+    "Antiseptic",
+    "Urinary aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "126": [
@@ -353,6 +542,19 @@
    ],
    "by": "owner",
    "why": "Owner: swapped Nutritive greens and Emollient so Nutritive greens sits alone, centred, at a larger size."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Throat coating",
+    "Demulcent",
+    "Gut soothing",
+    "Emollient",
+    "Respiratory aid",
+    "Anti-inflam."
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "129": [
@@ -374,6 +576,18 @@
    ],
    "by": "owner",
    "why": "Owner: added Stem, Leaf and Bark to Usable Parts."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound care",
+    "Antioxidant-rich",
+    "Cathartic",
+    "Digestive aid",
+    "Blood pressure aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "130": [
@@ -390,6 +604,17 @@
    "to": "Cough aid",
    "by": "owner",
    "why": "Owner: Cough soothing -> Cough aid (applied to #130 American Licorice, the card on screen; Curlycup #131 already had it)."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Throat soothing",
+    "Cough aid",
+    "Digestive aid",
+    "Oral health"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "131": [
@@ -407,6 +632,17 @@
    ],
    "by": "owner",
    "why": "Owner: added Sap to Usable Parts."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cough aid",
+    "Poison ivy care",
+    "Skin soothing",
+    "Respiratory soothing"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "132": [
@@ -420,6 +656,17 @@
    ],
    "by": "owner",
    "why": "Owner: added Anti-parasitic; Eczema folk use -> Eczema aid."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Eczema aid",
+    "Wound aid",
+    "Anti-parasitic",
+    "Anti-rheumatic"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "133": [
@@ -434,6 +681,17 @@
    ],
    "by": "owner",
    "why": "Owner: Stomach soothing -> Stomach aid (named under Leadplant, but only #133 has Stomach soothing); added Wound healing and Circulatory support."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Heart health",
+    "Circulatory support",
+    "Respiratory aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "134": [
@@ -447,6 +705,18 @@
    ],
    "by": "owner",
    "why": "Owner: Throat soothing -> Sialogogue; Immune support -> Immune aid."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Oral numbing",
+    "Immune aid",
+    "Cold support",
+    "Pain relief",
+    "Salivary aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "135": [
@@ -471,6 +741,18 @@
    ],
    "by": "owner",
    "why": "Owner: swapped the positions of Bitter tonic and Menstrual support."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Digestive aid",
+    "Cold support",
+    "Bitter tonic",
+    "Fever aid",
+    "Menstrual support"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "136": [
@@ -483,6 +765,16 @@
    ],
    "by": "owner",
    "why": "Owner: removed Prostate folk use; Urinary folk use -> Urinary aid; added Hair support."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Urinary aid",
+    "Hair health",
+    "Anti-inflam."
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "137": [
@@ -496,6 +788,17 @@
    ],
    "by": "owner",
    "why": "Owner: removed all three traits; replaced with Wound aid, Oral health, Antimicrobial, Antibacterial."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Wound aid",
+    "Oral health",
+    "Antimicrob.",
+    "Antibacterial"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "138": [
@@ -509,6 +812,18 @@
    ],
    "by": "owner",
    "why": "Owner: Memory support -> Memory aid."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Memory aid",
+    "Focus support",
+    "Cognitive aid",
+    "Calming",
+    "Digestive aid"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "139": [
@@ -523,6 +838,17 @@
    ],
    "by": "owner",
    "why": "Owner: Nutritive greens -> Anti-inflam.; added Skin aid."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Antioxidant",
+    "Urinary aid",
+    "Mineral source",
+    "Metabolic health"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "140": [
@@ -535,6 +861,17 @@
    ],
    "by": "owner",
    "why": "Owner: removed Aromatic; added Antioxidant; longest trait (Respiratory aid) placed last."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Cough soothing",
+    "Antioxidant",
+    "Respiratory aid",
+    "Kidney health"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "141": [
@@ -549,6 +886,19 @@
    ],
    "by": "owner",
    "why": "Owner: Astringent -> Oral health; Urinary folk use -> Urinary aid; added Metabolic health last."
+  },
+  {
+   "field": "back.healingTraits",
+   "set": [
+    "Oral health",
+    "Urinary aid",
+    "Antioxidant",
+    "Glucose reg.",
+    "Metabolic health",
+    "Prebiotic"
+   ],
+   "by": "owner",
+   "why": "Owner's full healing-trait review of the recent cards (#101-141), sent in chat as a replacement list. Capitalisation normalised, 'Ant-inflam.' read as 'Anti-inflam.', #141 'glucose reg. Metabolic health, prebiotic' read as three traits; odd counts get the longest trait last."
   }
  ],
  "65": [

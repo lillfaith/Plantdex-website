@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Respiratory aid",
     "Anti-catarrhal",
     "Skin soothing",
-    "Muscle soothing"
+    "Muscle health",
+    "Expectorant",
+    "Respiratory aid"
    ],
    "compounds": [
     "Methyleugenol",

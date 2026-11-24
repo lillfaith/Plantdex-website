@@ -20,9 +20,10 @@
   "back": {
    "healingTraits": [
     "Digestive aid",
-    "Menstrual support",
-    "Respiratory aid",
-    "Bitter tonic"
+    "Cold support",
+    "Bitter tonic",
+    "Fever aid",
+    "Menstrual support"
    ],
    "compounds": [
     "Terpenoids",

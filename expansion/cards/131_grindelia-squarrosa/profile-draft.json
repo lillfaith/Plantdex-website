@@ -20,9 +20,9 @@
   "back": {
    "healingTraits": [
     "Cough aid",
-    "Chest relief",
     "Poison ivy care",
-    "Skin soothing"
+    "Skin soothing",
+    "Respiratory soothing"
    ],
    "compounds": [
     "Grindelic acid",

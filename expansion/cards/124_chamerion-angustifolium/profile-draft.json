@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Vitamin-rich",
-    "Prostate aid",
-    "Dietary fiber",
-    "Urinary aid"
+    "Digestive aid",
+    "Urinary aid",
+    "Anti-inflam.",
+    "Ulcer aid",
+    "Prostate health"
    ],
    "compounds": [
     "Oenothein B",

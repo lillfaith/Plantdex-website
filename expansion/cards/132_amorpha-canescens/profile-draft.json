@@ -19,10 +19,10 @@
   },
   "back": {
    "healingTraits": [
-    "Worm folk use",
     "Eczema aid",
-    "Wound poultice",
-    "Anti-parasitic"
+    "Wound aid",
+    "Anti-parasitic",
+    "Anti-rheumatic"
    ],
    "compounds": [
     "Flavonoids",

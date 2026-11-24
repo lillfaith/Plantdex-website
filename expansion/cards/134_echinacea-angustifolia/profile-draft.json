@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Sialogogue",
     "Oral numbing",
     "Immune aid",
-    "Cold support"
+    "Cold support",
+    "Pain relief",
+    "Salivary aid"
    ],
    "compounds": [
     "Echinacoside",

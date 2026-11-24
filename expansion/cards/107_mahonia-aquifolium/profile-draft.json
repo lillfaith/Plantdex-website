@@ -19,10 +19,9 @@
   },
   "back": {
    "healingTraits": [
-    "Bitter tonic",
-    "Digestive aid",
     "Skin soothing",
-    "Antimicrob."
+    "Antimicrob.",
+    "Digestive aid"
    ],
    "compounds": [
     "Berberine",
