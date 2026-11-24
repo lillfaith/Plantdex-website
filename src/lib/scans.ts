@@ -360,22 +360,42 @@ export async function confirmScan(
   candidate: ScanCandidate,
 ): Promise<boolean> {
   if (!supabase) return false;
-  const { data: existing } = await supabase
+  const { data: existing, error: readError } = await supabase
     .from('scans')
     .select('*')
     .eq('user_id', userId)
     .eq('id', scanId)
     .maybeSingle();
+  // A failed read is not "no row": say so, and write nothing.
+  if (readError) {
+    console.error(`confirmScan: read failed for scan ${scanId}`);
+    return false;
+  }
   if (!existing) return false;
+  // Already confirmed (perhaps by a concurrent tap): the same card is a success, anything else
+  // is refused. Either way nothing is written, so a confirmation is never overwritten.
+  if (existing.confirmed_herb_id != null) {
+    return existing.confirmed_herb_id === herbId;
+  }
   const taxon = candidate.match.observedTaxon;
-  const { error: deleteError } = await supabase
+  /*
+   * MITIGATION, NOT THE FIX. The proper fix is an atomic server-side `confirm_scan` function
+   * (one transaction, no window in which the row is absent). `scans` deliberately has no update
+   * policy, so the client can only DELETE then INSERT; this guards the window rather than
+   * closing it. The delete matches only a row that is still unconfirmed, so it cannot remove a
+   * confirmation another call has just written, and `.select()` tells us whether a row was
+   * really removed.
+   */
+  const { data: removed, error: deleteError } = await supabase
     .from('scans')
     .delete()
     .eq('user_id', userId)
-    .eq('id', scanId);
-  // Nothing was removed, so there is nothing to replace; inserting would only collide with the
-  // row that is still there.
-  if (deleteError) return false;
+    .eq('id', scanId)
+    .is('confirmed_herb_id', null)
+    .select('id');
+  // Nothing was removed (error, or the row changed under us), so there is nothing to replace;
+  // inserting would only collide with the row that is still there.
+  if (deleteError || !removed || removed.length === 0) return false;
   const { error } = await supabase.from('scans').insert({
     ...existing,
     confirmed_herb_id: herbId,
@@ -392,12 +412,11 @@ export async function confirmScan(
   if (error) {
     /*
      * THE DELETE HAS ALREADY HAPPENED, SO A FAILED INSERT WOULD OTHERWISE LOSE THE SCAN.
-     * There is no update policy and no transaction from the client, so the replacement is two
-     * calls; when the second fails (a dropped connection is enough) the history row is gone
-     * and the player's identification vanishes from their account. Put back exactly what was
-     * read. Best effort and silent: the caller is already told the confirm did not record.
+     * Put back exactly what was read. One attempt, no retry loop: a dropped connection can
+     * fail this too, so its result is checked and reported (id only, no personal data).
      */
-    await supabase.from('scans').insert(existing);
+    const { error: restoreError } = await supabase.from('scans').insert(existing);
+    if (restoreError) console.error(`confirmScan: restore failed for scan ${scanId}`);
     return false;
   }
   return true;
