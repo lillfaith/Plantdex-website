@@ -1,0 +1,11 @@
+{
+ "source_zip": "dfd35c19-PlantDex_62_76_107_116_124_V4_FOR_CLAUDE.zip",
+ "source_zip_sha256": "8f493a10523900233b8c29b9237b00cb33119f6a3af25a73e9105edb4a94a739",
+ "note": "V4 package for the five missing cards; hi-res AI-reconstructed main cutout (not a photo edit) fitted to the supplied front; pixel icon drawn at 0.84x the default footprint to match the supplied front",
+ "files": {
+  "front_final.png": "b925229b273a64ec16d49ac94be955956563eb9c60e87f5c93e3cd2c2e5f3603",
+  "back_final.png": "7128eed921d4692218b0f7511fdfa20751fc23f1bd638cd69555bc8b5d1efda1",
+  "pixel_icon_native_24x24.png": "35577d1fd7997b3d5756538e8caab1b4aa83a07baf0c23984c12ff5f03646034",
+  "main_ai_reconstruction_used.png": "2ed0987dce969cf539bf5aead909c9f14b21e12613178d47485f774cc3f5a557"
+ }
+}

@@ -19,10 +19,11 @@
   },
   "back": {
    "healingTraits": [
-    "Cold support",
-    "Headache aid",
     "Wound wash",
-    "Astringent"
+    "Astringent",
+    "Glucose reg.",
+    "Dietary fiber",
+    "Energy source"
    ],
    "compounds": [
     "Tannins",

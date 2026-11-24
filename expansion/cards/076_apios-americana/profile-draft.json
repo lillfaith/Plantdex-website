@@ -20,9 +20,11 @@
   "back": {
    "healingTraits": [
     "Plant protein",
-    "Starchy energy",
     "Dietary fiber",
-    "Mineral source"
+    "Mineral source",
+    "Cardiovascular support",
+    "Anti-inflam.",
+    "Glucose reg."
    ],
    "compounds": [
     "Starch",
