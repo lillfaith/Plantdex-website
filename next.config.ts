@@ -59,6 +59,8 @@ const nextConfig: NextConfig = {
     // `challenge-screens.test.ts` builds nothing, but `boss-form-bundle.test.ts` pins this line.
     NEXT_PUBLIC_BOSS_FORMS: process.env.NEXT_PUBLIC_BOSS_FORMS ?? 'off',
     NEXT_PUBLIC_CONFIRM_SCAN_RPC: process.env.NEXT_PUBLIC_CONFIRM_SCAN_RPC ?? 'off',
+    NEXT_PUBLIC_CAMERA_CAPTURE: process.env.NEXT_PUBLIC_CAMERA_CAPTURE ?? 'off',
+    NEXT_PUBLIC_MULTI_REGION: process.env.NEXT_PUBLIC_MULTI_REGION ?? 'off',
   },
 };
 
