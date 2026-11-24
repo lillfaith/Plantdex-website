@@ -1,6 +1,8 @@
-# Product decision record: optional, on-device ecological-region detection (DRAFT, awaiting owner approval)
+# Product decision record: optional, on-device ecological-region detection
 
-**Nothing described here is active. Approving this record is a separate step from approving any UI.**
+**Status: PRODUCT DIRECTION APPROVED by the owner on 2026-11-24. ACTIVATION NOT APPROVED.** Nothing described here is active. No location is collected, the privacy page and region copy are unchanged, and the feature stays behind a disabled flag. Non-enforcing implementation behind that flag may continue; the final UI stays under the owner's direct supervision.
+
+**Still required before the flag may be switched on:** reviewed boundary mapping, an approved accuracy threshold, the updated privacy wording (the draft below is not yet approved text), and the final UI. The sign-off boxes below stay unticked until each is done.
 
 ## The rule being changed
 `src/lib/regions.ts` says: "A REGION IS CHOSEN, NEVER DETECTED. No GPS, no permission prompt, no IP lookup." The privacy page says Plantdex
