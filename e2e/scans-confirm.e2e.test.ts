@@ -202,4 +202,23 @@ describe.skipIf(!configured)('confirm_scan, live (TEST project)', () => {
     expect(error, 'anon must not be able to execute confirm_scan').not.toBeNull();
     expect((await read(alice, id))!.confirmed_herb_id).toBeNull();
   });
+  it('a function that does not exist answers PGRST202, the code the client falls back on', async () => {
+    const { error } = await alice.rpc('confirm_scan_probe_that_does_not_exist', {});
+    expect(error?.code).toBe('PGRST202');
+  });
+
+  it('eight parallel callers over five rounds: one winner per scan, never unconfirmed, never overwritten', async () => {
+    for (let round = 0; round < 5; round += 1) {
+      const id = await seed(alice, aliceUser, `race${round}`);
+      const cards = [CARD_A, CARD_B, CARD_A, CARD_B, CARD_A, CARD_B, CARD_A, CARD_B];
+      const answers = await Promise.all(cards.map((c) => alice.rpc('confirm_scan', confirmArgs(id, c))));
+      expect(answers.every((r) => r.error === null)).toBe(true);
+      const row = (await read(alice, id))!;
+      const winner = row.confirmed_herb_id as string;
+      expect([CARD_A, CARD_B]).toContain(winner);
+      // Every caller that asked for the winning card is told true; every other is told false.
+      answers.forEach((r, i) => expect(r.data === true).toBe(cards[i] === winner));
+      expect((await read(alice, id))!.confirmed_herb_id).toBe(winner);
+    }
+  });
 });
