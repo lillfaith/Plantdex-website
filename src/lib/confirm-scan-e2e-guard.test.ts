@@ -24,4 +24,12 @@ describe('confirm_scan RPC flag stays off', () => {
       expect(readFileSync(`.github/workflows/${f}`, 'utf8')).not.toMatch(/CONFIRM_SCAN_RPC/);
     }
   });
+
+  it.each(['NEXT_PUBLIC_CAMERA_CAPTURE', 'NEXT_PUBLIC_MULTI_REGION'])('%s defaults to off in the config and no workflow sets it', (name) => {
+    const config = strip(readFileSync('next.config.ts', 'utf8'));
+    expect(config).toContain(`${name}: process.env.${name} ?? 'off'`);
+    for (const f of ['deploy.yml', 'pr-verify.yml', 'live-confirm-scan.yml']) {
+      expect(readFileSync(`.github/workflows/${f}`, 'utf8')).not.toContain(name);
+    }
+  });
 });
