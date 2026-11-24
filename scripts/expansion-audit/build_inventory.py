@@ -99,6 +99,13 @@ def main():
         return [l.split("|", 3) for l in out]
 
     # ---------- listing of branch tree (what exists in git, vs the extracted copy) ----------
+    # other branches: file listings only (names, never contents); counts of files whose path names the species
+    OTHER = ["claude/botanical-catalog-stage-1", "prep-expansion", "exp", "claude/production-system-v1", "backup/pre-multi-agent-20261119"]
+    other_files = {}
+    for ob in OTHER:
+        fl = git("ls-tree", "-r", "--name-only", "origin/" + ob).splitlines()
+        other_files[ob] = [x.lower() for x in fl if not x.startswith(("src/", "public/", "supabase/", ".github/"))]
+
     rarity_xp = {"Common": 100, "Uncommon": 175, "Rare": 300, "Epic": 500}
     seasons = {"spring", "summer", "autumn", "winter", "evergreen", "all"}
 
@@ -159,8 +166,17 @@ def main():
         bc = commits_for(f"expansion/card-bases/{n:03d}_{cid}_front.png")
         sc = commits_for(f"expansion/sprites/src/{cid.replace('-', '_')}.py")
         allc = cc + ac
-        appr = [x for x in allc if re.search(r"approv", x[3], re.I)]
+        appr = [x for x in allc if re.search(r"approv", x[3], re.I) and not re.search(r"sprite", x[3], re.I)]
+        bc_sprite = commits_for(f"{cdb}/sprite-brief.json")
+        spr_appr = [x for x in bc_sprite if re.search(r"owner approval", x[3], re.I)]
         appr_quote = "; ".join(f"{x[0]} {x[1][:10]}: \"{x[3]}\"" for x in appr[-2:])
+
+        slug_u, slug_h = cid.replace("-", "_"), cid
+        photo_ev = []
+        for ob, fl in other_files.items():
+            k = sum(1 for x in fl if slug_u in x or slug_h in x)
+            if k:
+                photo_ev.append(f"{ob}:{k}")
 
         # ---- main image
         main_p = None
@@ -238,17 +254,19 @@ def main():
         brief_p = f"{cd}/sprite-brief.json"
         brief = jl(brief_p) if os.path.exists(brief_p) else None
         prof = jl(f"{cd}/profile-draft.json") if os.path.exists(f"{cd}/profile-draft.json") else None
+        spr_quote = ""
         if spr_src and all(spr_stages) and spr_sheet:
-            spr_status = "APPROVED" if brief and "APPROVED by the owner" in brief.get("status", "") else "PRESENT"
-            spr_quote = brief["status"] if brief else ""
+            file_says = bool(brief and "APPROVED by the owner" in brief.get("status", ""))
+            if spr_appr:
+                spr_status = "APPROVED"
+                spr_quote = f"commit {spr_appr[0][0]} {spr_appr[0][1][:10]}: \"{spr_appr[0][3]}\""
+                if not file_says:
+                    notes.append(f"sprite approval recorded only in commit message; sprite-brief.json status now reads \"{brief.get('status') if brief else 'n/a'}\" (approval text was overwritten by a later commit)")
+            else:
+                spr_status = "PRESENT"
         else:
             spr_status = "MISSING"
-            spr_quote = ""
             missing.append("Garden sprite + 3 growth stages")
-        if sc and spr_src:
-            spr_quote = (spr_quote + " | " if spr_quote else "") + f"commit {sc[0][0]} \"{sc[0][3]}\""
-        if sc:
-            pass
         brief_status = ("PRESENT" if brief else "MISSING")
         if not brief:
             missing.append("sprite-brief.json")
@@ -282,13 +300,14 @@ def main():
         rev = c["review"]
         caution = rev.get("cardSafetyWarning", "")
         caution_status = rev.get("cardSafetyWarningStatus", "")
-        generic = caution.strip().lower() in ("identify positively before use.", "identify positively before use")
+        cl = caution.strip().lower()
+        generic = cl.startswith("identify positively") or cl == "daisy-family allergy possible."
         guide = rev["editorial"].get("guideCaution", "")
         safety_s = "NEEDS REVIEW" if "pending" in caution_status.lower() else ("PRESENT" if caution else "MISSING")
         if not caution:
             missing.append("safety caution")
         if generic:
-            notes.append("caution is the generic 'identify positively' line, not species-specific")
+            notes.append("caution is a generic line ('identify positively...' or family-level 'Daisy-family allergy possible.'), not a species-specific caution")
 
         # ---- refs
         refs = rev.get("references", {})
@@ -404,6 +423,7 @@ def main():
             "id_collisions_on_integration": "; ".join(coll),
             "missing_fields": "; ".join(dict.fromkeys(missing)),
             "qc_status": qc,
+            "paths_naming_species_on_other_branches": "; ".join(photo_ev) or "none found",
             "provenance_source_package": prov_txt,
             "provenance_hashes_verified": f"{hash_ok} ok / {len(hash_bad)} mismatch / {len(hash_nofile)} absent" if prov else "no provenance.json",
             "provenance_first_commit": (cc[-1][0] + " " + cc[-1][1][:10] + " " + cc[-1][2]) if cc else "",
