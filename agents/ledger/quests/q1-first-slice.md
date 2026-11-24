@@ -94,3 +94,14 @@ Status: review. Revised scope above. Verify output appended after the final run.
 ```
 `agent-guard diff --role quests --base origin/integration`: "changed only files it may change."
 Not verified: rendered appearance (view is unmounted by design).
+
+## Coordinator review (2026-11-24)
+Independently checked out at `0747b26` and run by the coordinator, not the authoring agent:
+- Logic reviewed against `quest-board.ts`, `region-species.ts`, `habitat.ts`: confirmed vs occasionally-recorded counts stay separate; a
+  two-habitat plant is listed under both (counts overlap, never summed); insufficient/unlikely never shown; species with no printed card are
+  excluded consistently; discoveries only read.
+- `npm run lint`: 0 errors (1 pre-existing warning in `scripts/agent-guard.mjs`). `npm run typecheck`: clean.
+- `npx vitest run`: 132 files, 2118 tests passed.
+- `QuestBoardPanel.tsx` is byte-identical to `integration`; nothing imports the provisional `NearbyByHabitat.tsx`, so no page changes.
+- Wording: `RECORDED_COPY` says records for a region, never nearby/near you/right now/live (test-enforced). Remaining wording issue outside this PR:
+  the existing `/quests` page itself is titled "Plants near you" in three places; that copy is the owner's/UI session's call.
