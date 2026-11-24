@@ -34,12 +34,23 @@ create or replace function public.confirm_scan(
 ) returns boolean
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare
   changed integer;
 begin
   if auth.uid() is null then
+    return false;
+  end if;
+
+  -- A missing or blank card id must never "confirm" a scan: with a null herb id the update below
+  -- would match (confirmed_herb_id is null), blank the evidence columns and report success while
+  -- the row stayed unconfirmed. An out-of-range probability is refused here rather than surfacing
+  -- as a constraint error or being rounded.
+  if p_scan_id is null
+     or p_herb_id is null
+     or pg_catalog.btrim(p_herb_id) = ''
+     or (p_probability is not null and (p_probability < 0 or p_probability > 1)) then
     return false;
   end if;
 

@@ -19,13 +19,24 @@ const code = sql
 describe('confirm_scan migration', () => {
   it('is security definer with a pinned search_path', () => {
     expect(code).toMatch(/security definer/i);
-    expect(code).toMatch(/set search_path = public/i);
+    expect(code).toMatch(/set search_path = ''/i);
   });
 
   it('acts only as the caller and only on an unconfirmed row', () => {
     expect(code).toMatch(/user_id = auth\.uid\(\)/);
     expect(code).toMatch(/confirmed_herb_id is null/);
     expect(code).toMatch(/auth\.uid\(\) is null/);
+  });
+
+  it('refuses a missing or blank card id and an out-of-range probability before writing', () => {
+    // Found by the independent review: a null herb id matched `confirmed_herb_id is null`, wrote
+    // junk into the evidence columns and returned true. The guard must come BEFORE the update.
+    const guard = code.indexOf('p_herb_id is null');
+    const update = code.search(/update public\.scans/i);
+    expect(guard).toBeGreaterThan(-1);
+    expect(update).toBeGreaterThan(guard);
+    expect(code).toMatch(/btrim\(p_herb_id\) = ''/);
+    expect(code).toMatch(/p_probability < 0 or p_probability > 1/);
   });
 
   it('can change only the confirmed_* columns', () => {
