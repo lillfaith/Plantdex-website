@@ -13,8 +13,27 @@ name: Live confirm_scan checks (TEST project only)
 # but the test project, and the token is scoped to the test project so a production ref would answer 403
 # even if the literal were edited. Dispatched by the owner. Agents never dispatch it and never edit it.
 # It does not deploy, migrate or change a flag: NEXT_PUBLIC_CONFIRM_SCAN_RPC is not set here.
+#
+# TEMPORARY PUSH TRIGGER (remove in the follow-up PR). `workflow_dispatch` only lists a workflow whose file is on
+# the default (production) branch, and we will not promote `integration` to production to make a test runnable.
+# A push trigger runs the workflow file AS IT EXISTS ON THE PUSHED BRANCH, so merging this change into `integration`
+# runs it once. It is deliberately narrow:
+#   * branch `integration` only (a protected branch: nothing reaches it except a reviewed, checked, merged PR);
+#   * only when THIS FILE changes (`paths`), so no other merge to integration ever runs it;
+#   * a `push` event, never `pull_request_target`: it never runs code from a fork or an unmerged branch;
+#   * read-only token, TEST project literal, no production credential, no deploy, no migration, no flag set.
+# Removing the `push:` block in a second PR (which edits this file but, with the block gone, triggers nothing)
+# returns it to manual-dispatch-only. `live-confirm-scan-e2e-guard.test.ts` pins every property above.
 on:
+  push:
+    branches: [integration]
+    paths:
+      - .github/workflows/live-confirm-scan.yml
   workflow_dispatch:
+
+concurrency:
+  group: live-confirm-scan
+  cancel-in-progress: false
 
 permissions:
   contents: read
