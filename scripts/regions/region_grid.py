@@ -2,7 +2,7 @@
 """Deterministic lookup-grid generator for ecological regions. PROPOSAL tooling: nothing imports the output.
 
   python3 -I scripts/regions/region_grid.py --source <dir>/us_eco_l3 --mapping docs/regions/proposed/region-mapping.csv \
-      --out docs/regions/proposed --resolutions 0.5,0.25,0.1 --band-km 25
+      --out docs/regions/proposed --resolutions 0.5,0.25,0.1 --band-km 10
 
 Input : EPA Level III (CONUS) shapefile + the reviewed mapping CSV.   Output: region-grid-<res>.bin and region-grid-manifest.json.
 
@@ -92,8 +92,8 @@ def build(res, band_km, tree, codes, mp, regions, sub=None):
     bestc=np.zeros((rows,cols),dtype=np.int32)
     for c in sorted(mp):                         # ascending code: strict > keeps the smallest on ties
         m=(r2u[c]==region)&(ucnt[c]>bestc); bestc=np.where(m,ucnt[c],bestc); unit=np.where(m,c,unit)
-    sec=np.zeros(1000,dtype=np.int64); uu=np.zeros(1000,dtype=np.int64)
-    for c,(p,sc,u) in mp.items(): sec[c]=sc if u>=1 else 0; uu[c]=u
+    uu=np.zeros(1000,dtype=np.int64)
+    for c,(p,sc,u) in mp.items(): uu[c]=u
     unc=uu[unit]*(region>0)
     # neighbour mask from distance of the CELL CENTRE to each region polygon, widened by the cell's half diagonal
     clon=(LON0_U+ii[None,:]*ru+ru//2)/1e4+np.zeros((rows,1)); clat=(LAT1_U-jj[:,None]*ru-ru//2)/1e4+np.zeros((1,cols))
@@ -105,8 +105,8 @@ def build(res, band_km, tree, codes, mp, regions, sub=None):
         mask|=np.where(near,1<<(r-1),0)
     mask=mask.reshape(rows,cols)
     for r in range(1,11): mask&=~np.where(region==r,1<<(r-1),0)       # never list your own region
-    mask|=np.where(sec[unit]>0, 1<<(sec[unit]-1),0)                    # a medium/high-uncertainty unit always offers its partner
-    mask&=~np.where(region>0,1<<(region-1),0)
+    # NOTE: a unit's declared secondary region is deliberately NOT folded in. It was tried first: with half of all land in
+    # medium/high-uncertainty units, ~65% of land read 'near a boundary', which says nothing. Unit uncertainty has its own bits.
     word=(region|(mask<<4)|(unc<<14)).astype(np.uint16)
     return word,cols,rows
 
@@ -140,12 +140,12 @@ def lookup(word,hdr,lat,lon):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--source',required=True); ap.add_argument('--mapping',required=True); ap.add_argument('--out',required=True)
-    ap.add_argument('--resolutions',default='0.5,0.25,0.1'); ap.add_argument('--band-km',type=int,default=25); a=ap.parse_args()
+    ap.add_argument('--resolutions',default='0.5,0.25,0.1'); ap.add_argument('--band-km',type=int,default=10); a=ap.parse_args()
     geoms,codes,mp=load_units(a.source,a.mapping)
     tree=STRtree(geoms)
     regions=region_polys(geoms,codes,mp)
     man={'format':'PDRG v1: 22-byte header + (uint16 LE word, LEB128 run) pairs, row-major, north row first',
-         'word':'bits0-3 primary region (1..10 = REGIONS order, 0 none); bits4-13 neighbour mask (bit 4+i = REGIONS[i]); bits14-15 unit mapping uncertainty (0 low,1 medium,2 high)',
+         'word':'bits0-3 primary region (1..10 = REGIONS order, 0 none); bits4-13 SPATIAL neighbour mask: regions within band_km + half cell diagonal of the cell centre (bit 4+i = REGIONS[i]); bits14-15 uncertainty of the dominant unit mapping row (0 low,1 medium,2 high)',
          'regions':REGIONS,'band_km':a.band_km,'grid_extent_1e-4deg':[LON0_U,LAT0_U,LON1_U,LAT1_U],
          'source':{'file':os.path.basename(a.source),'shp_sha256':hashlib.sha256(open(a.source+'.shp','rb').read()).hexdigest(),'dbf_sha256':hashlib.sha256(open(a.source+'.dbf','rb').read()).hexdigest()},
          'mapping_sha256':hashlib.sha256(open(a.mapping,'rb').read()).hexdigest(),

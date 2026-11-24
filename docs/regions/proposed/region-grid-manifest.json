@@ -1,5 +1,5 @@
 {
- "band_km": 25,
+ "band_km": 10,
  "format": "PDRG v1: 22-byte header + (uint16 LE word, LEB128 run) pairs, row-major, north row first",
  "grid_extent_1e-4deg": [
   -1250000,
@@ -9,28 +9,28 @@
  ],
  "grids": [
   {
-   "bytes": 3835,
+   "bytes": 4168,
    "cols": 117,
    "file": "region-grid-0.5.bin",
    "resolution_deg": 0.5,
    "rows": 50,
-   "sha256": "28626476583f02c1591ffb293dc85ebd060bcda149d91e532de4434ffc4fb53a"
+   "sha256": "e3a23bf0632cb51080a086df7d0f411e9f31b6f4a0036540ee596d90cf98bad4"
   },
   {
-   "bytes": 8871,
+   "bytes": 9879,
    "cols": 234,
    "file": "region-grid-0.25.bin",
    "resolution_deg": 0.25,
    "rows": 100,
-   "sha256": "d14650476add5608a0544af0e58758275e16b980a294509313233ebd7c03cd94"
+   "sha256": "c0d9a78f8dca4f15a3a30d8929b14197f441100403df6c3fccfbba7d9c47f50c"
   },
   {
-   "bytes": 25670,
+   "bytes": 29204,
    "cols": 585,
    "file": "region-grid-0.1.bin",
    "resolution_deg": 0.1,
    "rows": 250,
-   "sha256": "a17ff8d3b4b074a590fe66e4955e577432acc42d4ddb0b514b0258b929658b03"
+   "sha256": "c0739ee6d46de1302de5b04f891ad4092db299c5f2538e0d6e1d151487768722"
   }
  ],
  "mapping_sha256": "5a7519505dc7a62810b765ad660940027573733fbb1f620149d8393c06a3165c",
@@ -58,5 +58,5 @@
   "python": "3.13.18",
   "shapely": "2.2.0"
  },
- "word": "bits0-3 primary region (1..10 = REGIONS order, 0 none); bits4-13 neighbour mask (bit 4+i = REGIONS[i]); bits14-15 unit mapping uncertainty (0 low,1 medium,2 high)"
+ "word": "bits0-3 primary region (1..10 = REGIONS order, 0 none); bits4-13 SPATIAL neighbour mask: regions within band_km + half cell diagonal of the cell centre (bit 4+i = REGIONS[i]); bits14-15 uncertainty of the dominant unit mapping row (0 low,1 medium,2 high)"
 }

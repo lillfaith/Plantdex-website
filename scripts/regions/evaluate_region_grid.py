@@ -45,15 +45,18 @@ def main():
         i=np.floor((np.round(lon*1e4)-lon0)/ru).astype(int); j=np.floor((lat1-np.round(lat*1e4))/ru).astype(int)
         ok=(i>=0)&(i<cols)&(j>=0)&(j<rows); w=np.zeros(len(lon),dtype=np.int64); w[ok]=word[j[ok],i[ok]]
         prim=w&15; wrong=prim!=truth; mask=(w>>4)&1023; tbit=(1<<(truth-1)); flagged=(mask&tbit)>0
-        err=wrong; near=mask>0
+        err=wrong; near=mask>0; sliver=err&(prim==0); swap=err&(prim>0)
         e={'file':os.path.basename(fn),'resolution_deg':ru/1e4,'bytes_rle':len(buf),'bytes_raw_uint16':cols*rows*2,'bytes_gzip9':len(__import__('zlib').compress(buf,9)),'cells':cols*rows,
            'accuracy_pct':round(100*(1-float(err.mean())),3),'wrong_land_share_pct':round(100*float(err.mean()),3),
            'wrong_resolves_no_region_pct':round(100*float((err&(prim==0)).mean()),3),
+           'errors_wrong_region_land_share_pct':round(100*float(swap.mean()),3),'errors_coastal_sliver_no_region_land_share_pct':round(100*float(sliver.mean()),3),
+           'wrong_region_boundary_distance_km':{'mean':round(float(db[swap].mean()),1),'p95':round(float(np.percentile(db[swap],95)),1),'max':round(float(db[swap].max()),1)},
+           'wrong_region_errors_flagged_pct':round(100*float(flagged[swap].mean()),2),'sliver_errors_flagged_pct':round(100*float(flagged[sliver].mean()),2),
+           'land_in_high_uncertainty_units_pct':round(100*float((((w>>14)&3)==2)[prim>0].mean()),2),
            'error_boundary_distance_km':{'mean':round(float(db[err].mean()),1) if err.any() else 0,'p95':round(float(np.percentile(db[err],95)),1) if err.any() else 0,'max':round(float(db[err].max()),1) if err.any() else 0},
            'errors_with_true_region_in_neighbour_flag_pct':round(100*float(flagged[err].mean()),2) if err.any() else 100.0,
            'errors_unflagged_land_share_pct':round(100*float((err&~flagged).mean()),4),
            'land_flagged_near_boundary_pct':round(100*float(near.mean()),2),
-           'land_flagged_by_spatial_band_only_pct':None,
            'accuracy_pct_beyond_km_of_boundary':{str(k):round(100*float((~err[db>k]).mean()),3) for k in (5,10,25,50)}}
         rep['grids'].append(e); print(json.dumps(e),flush=True)
     json.dump(rep,open(a.report,'w'),indent=1,sort_keys=True); open(a.report,'a').write('\n')
