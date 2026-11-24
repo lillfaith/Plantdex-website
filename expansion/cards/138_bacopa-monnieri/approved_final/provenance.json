@@ -1,12 +1,10 @@
 {
- "source_zip": "05ff5e33-PlantDex_137-141_V3_CLAUDE_ASSETS_UNDER_30MB.zip",
- "source_zip_sha256": "1f9bd921a31d6195b4901c5b0e91eb414dbd614c0cdab6d20f351089c0a8f8ec",
- "note": "V3 package; hi-res cutouts fitted to the supplied fronts; icons at 0.945x default footprint",
+ "source_zip": "4730d569-PlantDex_137-141_V5_CLAUDE_READY_COMPLETE.zip",
+ "source_zip_sha256": "97a8a711bf2f5501eeabf3ca504dd14b477105d6b3aeaccfefb92bf4047d4213",
+ "note": "V5 complete package (supersedes V3). Backs are the supplied V5 backs (larger previews, 80-90% of oval height) - the earlier owner preview edits made on the V3 previews (#137 turn/centre, #138 turn, #139/#140 fit-in-oval) are NOT applied to these. No V5 main cutout was supplied for this card (the V3 cutouts do not match the V5 front): the supplied 390x630 front is enlarged with text drawn over it (--front-from-final). Pixel icon drawn at 0.84x the default footprint to match the supplied front.",
  "files": {
-  "front_final.png": "32c72c16870ef4022a5e20ce6b86a75023bd968385409a77feaac6ae42630749",
-  "back_final.png": "dfac5342cfac0e6a5ef91589a45a1bafd57ce8d78b00cf0600f2f6b0bfbe4794",
-  "pixel_icon_native_24x24.png": "e9b67a140062d787ee80544ef35b07dc5452c66e5fdf47a856368510fd4c7e96",
-  "main_cutout_used.png": "d8ce0357e575c238f3257efb1988f1c4cf7384ba53c404688ce2abc6ecf980e6"
- },
- "owner_edit": "Owner: back preview turned 10 degrees counter-clockwise; rebuilt crisp from the hi-res tall cutout at the size it already had after the earlier fit-in-oval resize. The supplied back_final.png is kept unchanged and not used for this card's back."
+  "front_final.png": "8befc2801bda7ec626686b9bebd5997efc2b34c60e58910d5502b1fd6bc50593",
+  "back_final.png": "0a8003de54c8893a68a101ad7042cd517cec844aaf8ad26ffe820e3565f08f07",
+  "pixel_icon_native_24x24.png": "ed32393d6e3e69b81bfc81748559b4603c5a770cc8624ae06dc71110705a4060"
+ }
 }
