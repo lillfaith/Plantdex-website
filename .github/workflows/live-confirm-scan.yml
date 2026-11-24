@@ -63,15 +63,27 @@ jobs:
 
       - name: Run the live confirm_scan checks
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          # A repository VARIABLE, not a secret: the anon key is public by design (it ships in every client
+          # bundle; Row Level Security is the boundary). This job therefore holds NO secret at all.
+          TEST_ANON_KEY: ${{ vars.TEST_SUPABASE_ANON_KEY }}
         run: |
           set -euo pipefail
-          ANON=$(curl -sS --fail "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys" \
-            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-            | python3 -c "import json,sys; print(next(k['api_key'] for k in json.load(sys.stdin) if k['name']=='anon'))")
-          echo "::add-mask::$ANON"
-          if [ -z "$ANON" ]; then echo "::error::Could not read the anon key."; exit 1; fi
+          if [ -z "$TEST_ANON_KEY" ]; then
+            echo "::error::Repository variable TEST_SUPABASE_ANON_KEY is not set (Settings > Secrets and variables > Actions > Variables). It is the TEST project's public anon key."
+            exit 1
+          fi
+          # Refuse any key that is not THIS test project's: the anon key is a JWT whose payload names its project.
+          python3 - <<'PY'
+          import base64, json, os, sys
+          key = os.environ["TEST_ANON_KEY"]
+          try:
+              payload = json.loads(base64.urlsafe_b64decode(key.split(".")[1] + "=" * (-len(key.split(".")[1]) % 4)))
+          except Exception:
+              sys.exit("::error::TEST_SUPABASE_ANON_KEY is not a Supabase JWT.")
+          if payload.get("ref") != "vgjehmwcpavflbfhbbrp" or payload.get("role") != "anon":
+              sys.exit("::error::TEST_SUPABASE_ANON_KEY is not the TEST project's anon key. Refusing to run.")
+          print("Anon key belongs to the TEST project.")
+          PY
           export NEXT_PUBLIC_SUPABASE_URL="https://$PROJECT_REF.supabase.co"
-          export NEXT_PUBLIC_SUPABASE_ANON_KEY="$ANON"
-          unset SUPABASE_ACCESS_TOKEN
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="$TEST_ANON_KEY"
           npx vitest run --config vitest.e2e.config.ts e2e/scans-confirm.e2e.test.ts --reporter=verbose
