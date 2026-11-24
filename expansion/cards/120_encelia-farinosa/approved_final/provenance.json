@@ -1,6 +1,6 @@
 {
  "source_zip": "PlantDex_117-121_V8_PRESERVED_COMPLETE_FOR_CLAUDE.zip",
- "source_zip_sha256": null,
+ "source_zip_sha256": "unavailable: original zip no longer on disk when provenance was written; per-file hashes below are of the extracted files",
  "note": "V8 package; hi-res main cutout fitted to the supplied front; pixel icon drawn at 0.84x the default footprint to match the supplied front; owner healing-trait edits applied on the back",
  "files": {
   "front_final.png": "24be626326c9e3910b49daf3d3b8e59dc67e1db242641a824dcbb30f60552ac4",
