@@ -2,7 +2,7 @@
 
 - From lane: discoveries      Task: agents/ledger/discoveries/trust-design.md
 - Needs: contract | migration | **owner approval**
-- **To: coordinator. Stage 4 only. DO NOT ACTION until the owner has explicitly approved Stage 4.** This is a stub that names the surface and the decision, not a design. Nothing here is built, flagged or scheduled.
+- **To: coordinator. Stage 4 only. NOT AUTHORISED. D0-D7 (2026-11-24) do NOT approve enforcement; do not action until the owner approves Stage 4 in writing against the preconditions in `docs/discovery-trust-design.md` section 15.** A stub that names the surface, not a design. Nothing here is built, flagged or scheduled.
 
 ## Why
 The owner's decision: earning a NEW collectible card should eventually require an eligible scan. Every system that matters
@@ -20,7 +20,7 @@ Client-only enforcement is not enforcement: a signed-in player can insert the ro
 
 ## Decisions it needs from the owner (design section 13)
 Measurements acceptable (M1, M2, M4, M5, panel); which paths are gated; the cutover moment (set before any announcement);
-D4 signed-out; D5 grandfathering and the import window; D6 an accessible alternative in place first; D7 copy and `/privacy`.
+D4 signed-out; D5 grandfathering and the import window; **D6 is decided: camera scan mandatory for NEW cards with NO camera-free alternative, so the camera experience readiness (accessibility, compatibility, the D1 pilot) is itself a precondition**; D7 copy and `/privacy`.
 
 ## Who else depends on it
 Every consumer of `discoveries`. That breadth is the reason it is owner-gated.

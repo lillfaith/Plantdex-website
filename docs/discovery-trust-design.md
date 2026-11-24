@@ -1,11 +1,13 @@
 # Discovery trust: design for owner review (revision 2)
 
-- Status: **DRAFT FOR OWNER REVIEW. Nothing in this document is active, and nothing in the code depends on it.**
-  Every flag it names defaults OFF. Stage 4 (enforcement) needs the owner's separate approval and is not designed here
-  beyond the decision it needs.
-- Lane: Discoveries (`agent/discoveries/trust-design`, PR #40). Docs only. No code, test, schema, scoring, flag,
-  workflow, package or data was changed.
-- Revision 1: 2026-11-20 (board points only). **Revision 2: 2026-11-24**, after the owner's product decision (below).
+- Status: **Stages 1 to 3 SETTLED as a technical contract (revision 3, 2026-11-24), after the owner decided D0 to D7
+  (section 13). Stage 4 enforcement is NOT AUTHORISED (section 15).** Every flag defaults OFF and nothing in the product
+  depends on this document being active.
+- Lane: Discoveries (`agent/discoveries/trust-design`, PR #40). Revision 3 adds one pure, flag-gated, non-enforcing module
+  (`src/lib/observation-qualification.ts`) and its tests. No schema, scoring, reducer, progression, workflow, package or
+  data was changed.
+- Revision 1: 2026-11-20 (board points only). Revision 2: 2026-11-24, scan-required cards as the goal.
+  **Revision 3: 2026-11-24**, owner decisions D0 to D7 recorded and the contract settled.
   Standing direction: `docs/agent-workflow/decisions.md` ("Discovery trust"), CLAUDE.md ("Progression is self-declared
   (TODAY) - and the direction is changing", "The Field Board").
 - Shared Change Request drafts (not applied, not filed with anybody): `agents/requests/discoveries-*.md`, indexed in
@@ -47,7 +49,8 @@ Summary:
    Requests and applies none of them.
 6. **Nobody who cannot use a camera is stranded from the educational experience** (section 9) and nothing existing is
    revoked, rescored or rewritten (section 8).
-7. **Seven decisions are the owner's** (section 13), each with a recommended default.
+7. **The owner has decided D0 to D7** (section 13). The settled technical contract is section 14 and the explicit
+   non-authorisation of enforcement is section 15.
 
 ---
 
@@ -171,11 +174,11 @@ checked by the server at issue; 6 to 8 by the server at claim. None needs GPS, E
 
 | # | Condition | Checked by | Notes |
 |---|---|---|---|
-| E1 | The caller is an **authenticated account** (`auth.getUser()` in `identify-plant`) | identify-plant | Signed out gets the identification and no receipt (decision D4) |
-| E2 | The request declared `purpose: "collect"` (the Collect flow). A `lookup` request, or a request with no purpose (every existing client), never receives a receipt | identify-plant | This is the single switch that separates an educational upload from a scan. It is a **declaration** by the client, not something the server can observe (section 3.1) |
+| E1 | The caller is an **authenticated account** (`auth.getUser()` in `identify-plant`) | identify-plant | Signed out gets the identification and no receipt (D4) |
+| E2 | The request declared `purpose: "collect"` (the Collect flow; D1: the existing entry point, with a live-camera pilot only as an opt-in evaluation). A `lookup` request, or a request with no purpose (every existing client), never receives a receipt | identify-plant | This is the single switch that separates an educational upload from a scan. It is a **declaration** by the client, not something the server can observe (section 3.1) |
 | E3 | The identify call **succeeded** at the provider and the answer was not `notAPlant` / `providerFoundNothing` | identify-plant | Already the existing control flow |
-| E4 | The chosen candidate is `confirmable` for exactly one card, with an `eligibility` in the owner-approved set | identify-plant (re-derives with the shared matcher; the client's claim is not trusted) | The set is decision D2. `ambiguous` and `sameGenus` are never eligible, as today |
-| E5 | The candidate's position and band satisfy the owner's rule (top-ranked only, or any listed candidate) | identify-plant | Decision D2. The receipt records `top` / `listed` truthfully either way |
+| E4 | The chosen candidate is `confirmable` for exactly one card, with an `eligibility` in the approved set | identify-plant (re-derives with the shared matcher; the client's claim is not trusted) | **D2: `exact`, `synonym`, `acceptedGroup`, `curatedEquivalent`, `genusCard`. `legacyGenus` is excluded** (provisional). `ambiguous`, `related`, `none` and `sameGenus` are never eligible, as today. Mirrored by `QUALIFYING_ELIGIBILITIES` |
+| E5 | None beyond E4. A listed (non-top) candidate qualifies **with explicit confirmation**; there is no score or band threshold (D2: none is invented) | identify-plant | The receipt records `top` / `listed` and the band truthfully; nothing is read from a number |
 | E6 | The receipt's HMAC verifies under a dedicated secret, is bound to **this** `user_id`, is within TTL, and the claimed card matches the signed card | herbdex-action | One shared pure predicate (section 6) |
 | E7 | No `scan_receipts` row exists yet for `(user, card)` | herbdex-action | A second presentation is a no-op: replay needs no nonce table, the same argument that makes the mint attestation safe |
 | E8 | Within the existing quota (`claim_scan`) | identify-plant | Unchanged: 450 global, 10 per account per day |
@@ -361,6 +364,7 @@ Checked with `node scripts/agent-guard.mjs who <path>` on 2026-11-24. Each row i
 | `discoveries-receipt-accept.md` | **Coordinator** | 2, 3 | `herbdex-action` capture branch (accept and record, behind a flag) and the shadow report |
 | `discoveries-receipt-issue.md` | **Scan** | 2 | `identify-plant` issues receipts behind a flag; `purpose` request field; the client carries a token and shows nothing new |
 | `discoveries-presentation.md` | **Discoveries** (this lane's own later work, plus the copy it needs from others) | 2, 3 | Board and sighting presentation, import carry-over, and the Tier 0 / UI copy requests |
+| `discoveries-shadow-wiring.md` | **Scan** (call site) + coordinator (flag) | 3 | One flag-gated call to the built classifier after a scan; aggregate counter only |
 | `discoveries-write-gate.md` | **Coordinator, owner-gated** | **4 only** | A stub that records the decision Stage 4 needs. **Not for action** until the owner approves Stage 4 |
 
 ### 7.2 Ownership map (for the reviewer)
@@ -438,10 +442,9 @@ migration to production is an owner-gated operation (`decisions.md`, safety requ
   `discoveries` rows that would be grandfathered. The shadow phase (section 10, Stage 3) is also what would show one.
   Because the stamp is applied to every existing row at migration time, the migration should precede any public
   statement of the rule, and `cutover_at` should be that moment or earlier.
-- **Signed-out progress imported later** (`import-local-progress`) becomes new server rows with a new `recorded_at`.
-  This is a genuine fork (D5): treat as non-grandfathered, or open a **one-time import window** that grandfathers whatever
-  a device held before a stated date. The existing import is already "one-time, explicit, additive, offered once per
-  account", so the second option is a natural extension.
+- **Signed-out progress imported later** (`import-local-progress`) is governed by D5: a limited **one-time legacy import**
+  with a server-side per-account marker and a window that closes at `cutover_at`; imported rows take the server's
+  `recorded_at`. It is specified in section 14.5 and never opens a standing self-reported import route.
 - **`discoveries.delete` exists** (RLS). A player deleting their own pre-cutover row and re-inserting it gets a new
   `recorded_at` and loses grandfathering on that row. That is harmless (it can only make the player's own record
   stricter) and needs no mitigation.
@@ -478,19 +481,21 @@ receipt is only ever issued for the Collect flow, and the Lookup flow is never w
 | Existing collection, XP, garden, achievements, board standing | Preserved | **Preserved** |
 | Mastery of cards already owned (learn, knowledge check, sightings) | Yes | **Yes** |
 | Field Research dailies and standing tasks for owned cards | Yes | **Yes** |
-| **Unlocking a NEW collectible card** (after Stage 4 only) | Yes, through Collect | **No**, unless the owner chooses an alternative route (decision D6) |
+| **Unlocking a NEW collectible card** (after Stage 4 only) | Yes, through Collect | **No. D6: no camera-free alternative exists or will be designed** |
 | New board discovery points (after Stage 4 only) | Yes | No, same reason |
 
 Said plainly, because a design that hides the cost is worse than one that states it: **the camera-less path keeps
 everything educational and everything the player already has, and does not earn new collectible cards once the rule is
-enforced.** Whether an alternative route exists is a product decision (D6), not a technical default.
+enforced.** The owner has decided (D6) that there is **no camera-free alternative**: no imported photo, manual sighting
+or self-report route unlocks a card. The remedy is a camera experience that works for as many people as possible, below.
 
 ### 9.2 Specific groups
 
 - **Players who cannot use a camera at all** (no device, motor or vision limitation, no consent to a camera): Lookup by
-  upload is complete for learning. Nothing existing is taken away. The new-card route is the open question D6. Options
-  there include a non-scan study route that unlocks a card, which would change progression (coordinator, owner) and so is
-  not assumed here.
+  upload is complete for learning. Nothing existing is taken away. There is no new-card route
+  for them after Stage 4 (D6, decided) and none is proposed. The work that remains is making Collect work with the
+  assistive and device paths people already use (OS camera hand-off, switch and voice control, desktop file-picker camera),
+  never a bypass.
 - **Screen reader users (VoiceOver, TalkBack, NVDA, JAWS).** The existing scan screen announces state through
   `aria-live="polite"` regions (`ScanPanel`, `ObservationPhotos`). Any new surface follows the same pattern: Collect and
   Lookup are two ordinary labelled buttons (descriptive text, not an icon alone); a receipt outcome is announced in a
@@ -528,8 +533,8 @@ asked for; **the identification never fails because the receipt did** (P16).
 | Situation | What the player is told (draft wording; the owner owns final copy, D7) | What it means for the collection |
 |---|---|---|
 | **Matched, receipt issued** | "Recorded. This scan can unlock the card." plus the existing card confirmation | The card can be claimed |
-| **Uncertain** (a card is among the candidates but the identifier's best guess is something else; `outcomeFor` returns `uncertain`) | "Plantdex is not sure about this one. You can read about these possibilities. Pick the one you think matches, or try another photograph." | Depends on D2: either the listed candidate also qualifies (recommended) or only the top-ranked does |
-| **Related only / genus-level** (`relatedOnly`, `genusCard`, `acceptedGroup`, `legacyGenus`) | "This looks like a relative of a plant in the deck. It can't unlock the card, but you can read about it." (or, if D2 admits the case, "This matches the group this card covers.") | Per D2. Never rewritten into an exact match |
+| **Uncertain** (a card is among the candidates but the identifier's best guess is something else; `outcomeFor` returns `uncertain`) | "Plantdex is not sure about this one. You can read about these possibilities. Pick the one you think matches, or try another photograph." | D2: the listed candidate qualifies **with explicit confirmation** (never automatically) |
+| **Related only / genus-level** (`relatedOnly`, `genusCard`, `acceptedGroup`, `legacyGenus`) | "This looks like a relative of a plant in the deck. It can't unlock the card, but you can read about it." (or, if D2 admits the case, "This matches the group this card covers.") | Per D2: `genusCard`, `acceptedGroup`, `curatedEquivalent` qualify with explicit confirmation; `legacyGenus` does not (provisional); `relatedOnly` never does. Never rewritten into an exact match |
 | **No match** | "Plantdex has no card for this plant yet. You can save it to your Seed Shelf." | Unchanged from today; nothing unlocks |
 | **Looked up from a file** (Lookup path) | "Here is what it might be. To unlock a card, use Scan a plant." | No receipt; no card |
 | **Collect scan, receipt could not be recorded** (network, secret unset, old client) | "We couldn't record this scan for your collection, but here is what it is. Try again, or look it up without saving." | No loss: identification shown; retry is idempotent |
@@ -547,7 +552,7 @@ can be turned off independently (P31, P32). **Switching to a later stage is the 
 
 ### Stage 1 (this document): the design
 
-Docs only. Deliverables: this document, five SCR drafts, the ledger entry. No rule is active or presumed.
+Done. Deliverables: this document (settled as section 14), the SCR drafts, the ledger entry, and one pure non-enforcing module with tests (section 14.2). No rule is active or presumed.
 
 ### Stage 2: a NON-ENFORCING slice that issues and validates scan receipts
 
@@ -641,20 +646,10 @@ ground truth about honesty (item 8, section 11).
 **How a rejected or uncertain scan is explained to a player** is section 9.3: every state shows the identification first,
 says in one plain sentence what happened to the collection, offers one next action, and never accuses.
 
-### Stage 4: enforcement (owner approval required; not designed here)
+### Stage 4: enforcement (NOT AUTHORISED)
 
-Stage 4 is the first stage that changes what a player can do, and it is the owner's alone. **The only thing this
-document specifies is the decision it needs**, which is a single approval covering:
-
-1. That Stage 3's measurements are satisfactory (M1, M2, M4, M5 and the panel).
-2. Which write paths are gated (the owner's decision is "a NEW collectible card"; the draft stub assumes layer L3 of
-   section 4.3 and nothing else).
-3. The cutover moment (section 8.4) and the answers to D4 and D5 (signed-out and import).
-4. The accessible alternative, if any (D6), in place **before** the rule is switched on.
-5. Public copy and `/privacy` text approved by the owner (D7).
-
-Nothing past that is designed. The SCR stub `agents/requests/discoveries-write-gate.md` exists only to name the
-coordinator-owned surface that would be touched, so the owner can see its size before deciding.
+Not designed and not authorised by D0 to D7. The preconditions the owner must approve are listed in **section 15**.
+Stages 1 to 3 exist so that, if the owner ever approves, the decision is made from measurements.
 
 ---
 
@@ -747,107 +742,215 @@ Properties only. None is code; the coordinator and Scan lane own the test files.
 
 ---
 
-## 13. Decisions the owner must make
+## 13. Owner decisions D0 to D7 (settled 2026-11-24)
 
-Limited to product-level choices. Technical details (receipt format, key names, TTL, table keys, how flags are stored,
-how the predicate is shared) are resolved above and are not asked about.
+The owner has decided all eight. They authorise **planning, technical contracts and NON-ENFORCING implementation behind
+disabled flags**. They do **not** authorise Stage 4 (section 15). Where this document earlier recommended something
+different, the decision below governs and the earlier text has been revised to match.
 
-### D1. What counts as an in-app "scan"?
+| # | Decision (owner) | Effect on this design |
+|---|---|---|
+| D0 | Eventual goal is **scan-required NEW card ownership**, not merely leaderboard verification. No enforcement before shadow testing and a separate owner approval | Layer L3 (section 4.3) is the destination. The board-only gate of revision 1 is not a stop on the way |
+| D1 | Start with the **existing Collect entry point**; evaluate a live in-app camera through a **pilot**; do not require `getUserMedia` for everyone | Receipt rule E2 stays a declaration. A pilot flag exists (section 14.4), off, and is not a requirement |
+| D2 | Currently supported **confirmable** candidates qualify, with **explicit confirmation where necessary**, **excluding provisional `legacyGenus`**. Keep exact, synonym, genus-level and uncertain distinct. **No invented certainty thresholds** | Section 3 E4/E5. `QUALIFYING_ELIGIBILITIES` in `observation-qualification.ts`. No score appears in any input or field |
+| D3 | **One eligible scan per card** suffices; re-scans never award duplicate XP; Field Cards and Seed Shelf stay separate; never claim a scan proves presence, or that photographs of screens are reliably detectable | Receipt primary key `(user_id, herb_id)`; verdict `alreadyHeld`; the wording rule (C9) |
+| D4 | Signed-out users keep **educational identification and private local progress**; competitive, server-backed discoveries **require an account**; the difference is clearly explained | E1. Copy goes to the UI queue (section 14.8) |
+| D5 | **Grandfather** all existing account collections and scores. Design a limited **one-time legacy import** for existing signed-out progress without opening unrestricted future self-reported imports | Section 14.5 |
+| D6 | Once enforcement is activated an eligible in-app camera scan is **mandatory** for NEW collectible cards. **No camera-free alternatives** (imported photos, manual sightings, self-report). Users without a usable camera still browse and use educational features. Make the camera experience as accessible and compatible as possible **without bypassing the requirement**. Existing collections stay grandfathered. Capture is not proof of outdoor discovery | Section 9 revised: the earlier "route for the camera-less" option is withdrawn. The accessibility work is on the camera experience itself |
+| D7 | Say **"scan-recorded"**, never "verified". Transparent privacy disclosures. Account export and deletion coverage. **Minimal aggregate diagnostics** during shadow testing | Sections 14.3, 14.6, 14.7 |
 
-- **Options.** (a) Any identify call from the Collect entry point, however the photo was taken (OS camera hand-off
-  included). (b) Only a page-controlled live camera stream (`getUserMedia`). (c) (a) now, decide (b) from Stage 3 data.
-- **Recommended default: (c), starting at (a).**
-- **Tradeoff.** (b) removes the old-library-file case for casual users but excludes in-app browsers, blocked or absent
-  cameras, and players who rely on the OS camera app's accessibility features, and lowers photo quality. (a) cannot tell
-  a file from a fresh photo.
-- **Changes.** (b) adds a capture screen (UI-owned design), a session nonce and a larger exclusion count in M5.
+D6 is stated flatly because it is a hard consequence and the page copy must not blur it: after Stage 4, a player with no
+usable camera keeps everything they have and everything educational and **cannot earn a new collectible card**. There is no
+fallback and none is designed. The compensating work is making the camera path work for as many people as possible
+(section 9.2), not offering a way around it.
 
-### D2. Uncertain identifications and the genus-level cases: what may unlock a card?
+---
 
-Today `confirmable` already excludes `sameGenus`/`ambiguous`; `uncertain` (the identifier's top guess is something else
-but a card is listed) is confirmable and `genusCard`, `acceptedGroup`, `legacyGenus` and `curatedEquivalent` are
-confirmable with their eligibility recorded.
+## 14. The settled Stage 1 to 3 technical contract
 
-- **Options.** (a) Only `matched` (the card is top-ranked) with `exact`/`synonym`. (b) Any listed confirmable candidate
-  with any current eligibility. (c) (b), but a below-confidence or non-top candidate unlocks only by an explicit
-  confirmation tap, and `legacyGenus` is excluded.
-- **Recommended default: (c).** It keeps today's behaviour (the player confirms a listed candidate), refuses the one
-  explicitly temporary eligibility (`legacyGenus`, Goldenrod, still pending curation per CLAUDE.md), and records `top` or
-  `listed` and the eligibility truthfully so the rule can tighten later without re-scanning anyone.
-- **Tradeoff.** (a) is simplest and makes the rule meaningful but makes genus-level species (oak, rose, sumac, elder,
-  maple, bramble, pine, willow, mulberry) hard to unlock, since the provider often resolves them only to genus. (b) is
-  the most generous and the easiest to game with a loose photograph.
-- **Changes.** Which receipts issue (E4/E5) and what the Seed Shelf offers for a relative; the explanation copy in 9.3.
+Everything here is inert until a flag is turned on, and every flag defaults OFF. "Owner" names who edits the file; this
+lane applies only what it owns (`agents/ownership.json`) and files Shared Change Requests (SCRs) for the rest.
 
-### D3. What constitutes a collectible discovery?
+### 14.1 Data model
 
-Sub-questions, with a recommendation for each:
+**One new fact: the scan-recorded receipt, one per card.** Table `public.scan_receipts`, primary key `(user_id, herb_id)`.
 
-| Question | Options | Recommended default | Why / tradeoff |
-|---|---|---|---|
-| Does a scan **of a printed card or a screen** count? | Counts / refused | **Counts, and the copy never claims otherwise.** Plantdex cannot detect it (CLAUDE.md, rejected); a rule that pretends to would deny real finds | Refusing it is unenforceable; the honest wording is C9 |
-| Is **one eligible scan per species** enough? | One / several | **One.** Several photographs of a moment are one sighting, and "several" is explicitly not evidence | More would punish players and prove nothing |
-| **Re-scans** of an owned species | Pay again / no | **No.** A species pays once by primary key already; a re-scan is a lookup or a journal entry | Preserves "no repeat XP" |
-| Species where **only the genus resolves** | See D2 | See D2 | Same decision |
-| **Field Cards** (XP-unlocked, not found) | Gate / exclude | **The XP unlock is not a discovery and is not gated.** Finding a Field Card species outdoors is a discovery like any other and follows the same rule | The two facts must stay separate (CLAUDE.md "Field Cards") |
-| **Seed Shelf** | Gate / exclude | **Not gated and cannot pay.** Saving a species with no card needs no receipt. When a card is later printed, claiming it is a discovery and follows the rule at that time; the shelf entry's date is preserved (`discover(at)`) | Keeps the shelf a pure archive; decide the "claim after printing" edge when it first occurs |
+| Column | Meaning |
+|---|---|
+| `user_id`, `herb_id` | The account and the card. `herb_id` carries `is_catalogue_herb` |
+| `observation_id` | The id `identify-plant` minted for that call |
+| `observed_taxon_key`, `observed_taxon_rank` | What the identifier named (the existing `TAXON_RANKS`) |
+| `eligibility` | Why it reached the card. Never `legacyGenus` (D2): the issuer refuses it |
+| `rank_position` | `top` or `listed`: whether the chosen candidate led the identifier's answer |
+| `species_confidence` | The existing band (`SPECIES_CONFIDENCES`), **never a raw score** |
+| `issued_at`, `recorded_at` | Issue time; server-clock record time (trigger-forced) |
+| `receipt_version` | `1` |
 
-### D4. Signed-out players
+No coordinates, image, EXIF, device value, photograph count or hash of a photograph has anywhere to go (C8, P20). RLS:
+`select` own; **no client insert, update or delete**; the service role inserts `on conflict do nothing`. It is a derived
+table in the class of `mastered`, so `profile-schema.test.ts`'s single-update-exception rule is untouched.
+`discoveries` gains **no** evidence column (P27). The token format, secret, 30-day TTL and replay argument are section 6.2.
 
-- **Options.** (a) Signed-out scans are lookups only for the *account* collection; the local collection stays
-  self-reported and private. (b) Anonymous, adoptable receipts with a first-claim-wins table. (c) Require an account to
-  use Collect.
-- **Recommended default: (a).**
-- **Tradeoff.** (a) is honest: signed out there is no server-written record and no rule can reach it, and it adds no
-  durable anonymous identifier (consistent with `/privacy` and the one-parameter `track()` rule). Its cost is that a
-  signed-out player's *new* finds do not become account progress without a later decision (D5). (b) is friendlier but adds
-  a global table and a farming surface (one token adopted by many accounts, solved only by first-claim-wins). (c) breaks
-  `/start`'s single action.
-- **Changes.** Whether the local collection ever syncs under the rule; the wording on the scan page for a signed-out player.
+### 14.2 Shadow mode (no behaviour change)
 
-### D5. Grandfathering
+Shadow mode records whether a discovery **would have** qualified and changes nothing a player can see or earn.
 
-- **Options.** (a) Everything in an account at the cutover is permanent; imports after it are treated as new. (b) (a) plus
-  a **one-time import window**: whatever a device held before a stated date is grandfathered on its first import. (c)
-  Imports always need receipts.
-- **Recommended default: (b).** A player who has played signed out for months and then signs in would otherwise feel
-  retroactively penalised even though no row changed, which C4 forbids in spirit.
-- **Tradeoff.** (b) leaves a one-time hole (a device can be edited before import) bounded by the existing once-per-account
-  offer and by the board's per-species cap; it is the price of not revoking anything.
-- **Changes.** The import dialog's wording; the exact "before" date; whether the date is announced (land-rush risk, 8.4).
+- **The classifier** is `classifyQualification()` in `src/lib/observation-qualification.ts` (this lane, built). Pure; input
+  is `{channel, signedIn, match, rankPosition, alreadyHeld}`; output is `{wouldQualify, reason, matchClass,
+  needsExplicitConfirmation}`. Reasons: `qualifies | lookup | signedOut | notConfirmable | legacyGenusExcluded |
+  alreadyHeld`. It imports no reducer, progression, store, clock or randomness and never says "verified" (tested).
+- **Where it is called** (not built; needs the Scan lane): after a scan's confirm step, with the value of the build flag
+  `NEXT_PUBLIC_DISCOVERY_SHADOW` read through `qualificationShadowEnabled()`. With the flag off the call does not occur
+  and a production build contains no new client path (P34). The verdict is **never rendered to a player** in shadow mode.
+- **Where it is counted** (needs the coordinator): aggregate increments only (section 14.3). The server shadow report
+  (section 10, Stage 3) compares, for the owner only, what the collection and standings **would** be under
+  `require_receipt_for_new_cards` with a given `cutover_at`. It never alters the public board (P33).
+- **What shadow mode must never do:** deny, delay, hide, relabel, or re-score anything; alter `discoveries`; or make
+  identification wait on a receipt (P16). Existing collections, XP and standings are byte-identical with it on or off.
 
-### D6. The camera-less path
+### 14.3 Aggregate-only diagnostics (D7)
 
-- **Options.** (a) No new route: camera-less players keep everything and unlock no new cards once enforced. (b) A non-scan
-  route that unlocks a card (for example a study-based route), clearly labelled as such. (c) Defer Stage 4 until a route
-  is designed.
-- **Recommended default: (c) as a condition, with (a) as the fallback the owner may accept explicitly.**
-- **Tradeoff.** Any non-camera route is by definition not evidence, so it either confers no board credit (labelled
-  accordingly) or undoes the rule. Doing nothing means a group of players permanently cannot grow their collection, which
-  C7 asks the product not to do silently.
-- **Changes.** (b) touches the progression contract and the card-awarding path (coordinator) and the profile copy. It is
-  the largest open design in this document.
+A single counter table `public.discovery_shadow_daily(day date, reason text, match_class text, n bigint, primary key
+(day, reason, match_class))`. **No user id, observation id, card, taxon, score, photograph, region or device column.** It
+is incremented by the service role from the same enums the classifier returns; a CHECK repeats each enum. Because it
+holds nothing about a person it is **not** a user table, so it is deliberately in neither the export nor `USER_TABLES`,
+and `account-security.test.ts` must list it as the explained exception (a table with no user column cannot be exported
+or deleted per user). A report suppresses any cell below 5. `track()` events, if any, stay one-parameter. Retention: 90
+days, then deleted by the owner's housekeeping. The M-metrics of section 10 read this table and `scan_receipts` only.
 
-### D7. Copy and privacy
+### 14.4 Flags and defaults (all OFF)
 
-- **Options.** Wording: "scan-recorded" / "self-reported" labels, or no label beyond "provisional". Retention: how long
-  `scan_receipts` rows are kept. Disclosure: whether `/privacy` and the export describe them. Telemetry: whether anonymous
-  aggregate distributions during shadow mode are acceptable.
-- **Recommended default.** Use "scan-recorded" and "self-reported" on the board only (never "verified"); keep rows for the
-  life of the account and delete them with it; **name them in `/privacy` and the export before Stage 2 reaches any real
-  player**; allow anonymous aggregate counts (no identifiers, no `track()` properties) during shadow mode only.
-- **Tradeoff.** More disclosure is more honest and costs one more page edit. A stored receipt is a record kept about a
-  player's scan, so it must be downloadable and deletable like every user table.
-- **Changes.** Tier 0 pages (`/privacy`, possibly `/terms`) which only the owner edits; the board label (this lane).
+| Flag | Kind | Where | Default | Effect (exactly one) |
+|---|---|---|---|---|
+| `receipts_issue` | server config row | `discovery_rules` | false | `identify-plant` may sign a receipt for a Collect, signed-in, confirmable-and-eligible candidate |
+| `receipts_accept` | server config row | `discovery_rules` | false | `herbdex-action` validates a presented receipt and writes `scan_receipts` |
+| `shadow_report` | server config row | `discovery_rules` | false | Owner-only aggregate report and the daily counter increments |
+| `legacy_import_open` | server config row | `discovery_rules` | false | The one-time legacy import (14.5) may be offered |
+| `require_receipt_for_new_cards` | server config row | `discovery_rules` | false | **Stage 4. Not authorised.** Present only so the schema has one place for it; the migration refuses to set it true |
+| `cutover_at` | nullable timestamp | `discovery_rules` | null | Set once, only ever earlier. **Not authorised to be set** |
+| `NEXT_PUBLIC_DISCOVERY_SHADOW` | build flag | `next.config.ts`, `.env.example` | `off` | Calls the classifier after a scan and reports an aggregate; only the exact string `on` enables |
+| `NEXT_PUBLIC_LIVE_CAMERA_PILOT` | build flag | `next.config.ts`, `.env.example` | `off` | Offers an opt-in live capture screen to a pilot cohort (D1). Never required; never a precondition of a scan |
+| `SCAN_RECEIPT_SECRET` | secret | edge function env | unset | Unset: no receipt issues and **nothing is denied** |
 
-### D0. Order of enforcement, if the owner approves Stage 4
+Each flag can be turned off alone and nothing depends on a flag being on. The owner enables each individually.
 
-- **Options.** (a) Board first (revision 1: read-time, no write change), then cards. (b) Cards directly (the owner's stated
-  goal). 
-- **Recommended default: (b), but only after Stage 3, and with (a) available as the reversible first move.**
-- **Tradeoff.** (a) is reversible and cheap and fixes only the visible number; (b) is the real goal and changes the
-  card-awarding path.
-- **Changes.** Which SCR the coordinator actions first.
+### 14.5 The limited one-time legacy import (D5)
+
+Existing signed-in collections are grandfathered by timestamp (section 8.4) with no action by anyone. The problem is the
+other population: a player who has played **signed out** and signs in later holds progress in `localStorage` that no server
+has seen. The design lets that progress in **once**, and closes the door behind it, so a future "import" is not a backdoor
+to self-reported cards (D6 forbids every camera-free route).
+
+- **One marker per account, server-side.** `public.legacy_imports(user_id primary key references auth.users on delete
+  cascade, imported_at timestamptz default now())`. Write-once, no update policy, in `USER_TABLES` and the export. The
+  existing client-side "offered once" flag stays but is no longer the authority; it was keyed by user id on the device and a
+  second device could re-offer it.
+- **A window, not a permanent feature.** The import is offered only while `legacy_import_open` is true **and** no marker
+  exists **and** the server time is before `cutover_at` (or `cutover_at` is unset). Once Stage 4 is ever enabled, no
+  discovery import is possible: new device progress cannot be turned into cards.
+- **What it carries.** Discoveries, learned, journal sightings and the shelf, exactly as `import-local-progress.ts` does
+  today (additive, idempotent, never deleting). Discoveries land with the **server's** `recorded_at`, so they are
+  grandfathered only because they were recorded before `cutover_at`; no client timestamp decides anything (P5).
+- **What it never carries.** No receipt can be fabricated for an imported card. A device cannot import a receipt it was
+  never issued; a stored token from a past Collect scan is carried only if still valid and bound to the importing account.
+- **No retroactive change.** Nothing on the account changes if the import is declined or the window closes. A player who
+  never imports keeps a private local collection and is never told they lost anything.
+- **The honest residual hole.** `localStorage` is editable, so a determined player could write cards into it **before**
+  importing. The bound is: one import per account, only before the cutover, capped by the 54-card catalogue and, on the
+  board, by one point-award per species. Shadow mode measures import size per account (aggregate only) to see whether this
+  is being used; it is an open risk (section 14.10), not a closed one.
+
+### 14.6 Export and deletion
+
+`scan_receipts` and `legacy_imports` are user-owned: both go in `USER_TABLES` of the delete function and in
+`export-account-data.ts`; `account-security.test.ts` pins the two sets equal in both directions. The foreign-key cascade
+removes them with the account, after photographs and before the auth user (the existing order). `discovery_shadow_daily`
+is the explained exception (14.3). The export prints no raw HMAC token and no secret; it prints the receipt's columns.
+`/privacy` must name both tables, their purpose and retention (life of the account) before Stage 2 reaches any real
+player; that page is Tier 0 and the owner edits it. `legal.test.ts` is extended by the coordinator in step.
+
+### 14.7 Vocabulary (D7)
+
+A card or point is **self-reported** (today, signed-out, pre-cutover) or **scan-recorded** (has a receipt). "Verified"
+appears in no player-visible string, type, filename or flag for a receipt (P24b); `PROVISIONAL` stays the only
+`verification` value. No string accuses a player. Every statement of what a scan means carries "does not prove the plant
+was found outdoors".
+
+### 14.8 Copy and UI requests (not written here)
+
+Collect versus Lookup entry points, the signed-out explanation (D4), each outcome in section 9.3, the camera-denied and
+no-camera states, the board's self-reported / scan-recorded labels and the import dialog wording are **UI and Tier 0 copy**.
+This lane builds plain markup with existing tokens marked `data-ui-placeholder` and files the requests in
+`agents/requests/discoveries-presentation.md`. It does not write player-facing prose.
+
+### 14.9 Migration and rollout order
+
+Each step is its own PR, each reversible by a flag, each approved before the next. **None touches existing rows.**
+
+1. **This lane (done in this PR):** the pure classifier, its tests, this contract. No flag read anywhere.
+2. **Coordinator, contract PR:** inert migration (`scan_receipts`, `legacy_imports`, `discovery_shadow_daily`,
+   `discovery_rules`), `herbdex-receipt.ts` and its mirror, export/delete pins, `.env.example` and `next.config.ts` flags
+   all off. Applied to the **TEST** project only.
+3. **Owner approves `/privacy` wording** (Tier 0). Nothing real-player-facing before it.
+4. **Scan lane:** `identify-plant` issues receipts behind `receipts_issue` and the `purpose` field; the scan UI carries an
+   opaque token and shows nothing new. Then the shadow call behind `NEXT_PUBLIC_DISCOVERY_SHADOW`.
+5. **Coordinator:** `herbdex-action` accept branch behind `receipts_accept`; the daily counter and owner report.
+6. **Discoveries lane:** import carry-over (legacy window) and board labels, build-flagged.
+7. **Owner reviews shadow results (section 10, Stage 3).** Stage 4 is a separate approval (section 15).
+
+### 14.10 Test plan
+
+A test fails before its change and passes after, or it is not counted. `[built]` is in this PR.
+
+| Test | Lane | Pins |
+|---|---|---|
+| `[built]` `observation-qualification.test.ts` (32) | discoveries | D2 table across every `ELIGIBILITIES` value; `legacyGenus` refused; unconfirmable never qualifies; re-scan `alreadyHeld`; lookup and signed-out never qualify; no score in the input; tallies carry no identifiers; flag only on exact `on`; no reducer/clock/`verified` in source |
+| `herbdex-receipt.test.ts` (P8 to P15b) | coordinator | Replay once, wrong user, edited card/taxon, expiry, unset secret, chosen-not-top, `purpose` |
+| `*-schema.test.ts` | coordinator | `scan_receipts` and `legacy_imports` have no update policy and no client insert; no points column; enumerations equal the TypeScript arrays |
+| `account-security.test.ts` | coordinator | Export and `USER_TABLES` equal; `discovery_shadow_daily` is the one listed exception and has no user column |
+| `edge-shared.test.ts` | coordinator | The mirror matches and every specifier resolves under Deno |
+| `flags-off.test.ts` | discoveries | With all flags off, standings and collection outputs for a fixed fixture equal today's (P1); a production-shaped build contains none of the new client paths (P34) |
+| Import tests | discoveries | One per account; closed after `cutover_at`; no client timestamp decides grandfathering (P5); a failed import does not spend the window |
+| Live (`verify:supabase` additions) | coordinator | Cross-user receipt attack refused by Postgres; second import refused; deletion removes both user tables and leaves the counter |
+
+### 14.11 Open risks
+
+1. **`purpose: collect` is a declaration** and a scripted caller can declare it over any image (section 3.1, 11). Shadow
+   mode measures; it cannot close this. Only the owner's wording ("scan-recorded", not "verified") makes it honest.
+2. **Legacy import hole** (14.5): editable local storage before the one allowed import.
+3. **Shadow data is not ground truth about honesty** (section 11, item 8).
+4. **Camera-less players permanently cannot earn new cards after Stage 4** (D6). That is the owner's decision; the design
+   adds no route and the copy must say so before the rule is on.
+5. **Genus-level species** (oak, rose, sumac, elder, maple, bramble, pine, willow, mulberry): D2 admits `genusCard`, so
+   they unlock, but with explicit confirmation. Whether that is too generous is a Stage 3 question, not assumed.
+6. **`legacyGenus` (Goldenrod)** cannot earn a receipt until its curation completes. A goldenrod scan is `legacyGenusExcluded`
+   in shadow mode, which the owner may or may not want; it follows from D2 as written.
+7. **Static export.** The receipt secret and all enforcement live in edge functions; the browser build is readable.
+
+---
+
+## 15. Stage 4 enforcement: NOT AUTHORISED
+
+Nothing in this document, this PR or any flag above activates, schedules or presumes enforcement. D0 to D7 do not
+authorise it. `require_receipt_for_new_cards` and `cutover_at` exist in the schema contract only as inert, refused-to-set
+fields. Before the owner is asked to approve Stage 4, **all** of these must hold, and the owner approves each by name:
+
+1. **Shadow results reviewed.** M1 coverage (at least about 99% among players on the current client), M2 reason
+   histogram, M3 issue-to-claim time, M4 re-scan rate against the 450 a day budget, the legacy-import size distribution
+   and the seeded field panel have run for a period the owner chooses, with **no honest false rejections** in the panel.
+2. **Camera experience readiness (D6).** Accessibility review of the Collect path, no-camera and permission-denied states,
+   assistive-technology testing, device and browser compatibility measured (M5), and the live-camera pilot (D1) evaluated.
+   Because D6 allows no alternative route, **this is the gate that stands between a player and a card**.
+3. **The write path.** A reviewed design for layer L3 (section 4.3): the `discoveries` insert policy, the server writer, the
+   backstop trigger and server-stamped `recorded_at`. This is coordinator-owned and touches the card-awarding path.
+4. **The cutover moment**, set before any public announcement (land-rush, section 8.4), and the date the legacy import closes.
+5. **Disclosure.** `/privacy`, `/terms` and the in-product copy approved by the owner, stating D4 (accounts), D6 (no
+   camera-free route), D3 (scan is not proof of presence) and the grandfathering promise.
+6. **Rollback proven** on the TEST project: flag off restores today's behaviour; no row is revoked.
+7. **A separate, written owner approval** naming the project and the date.
+
+Until then: nothing here may be called enforcement, and no code may make an outcome depend on a rule that is not
+explicitly in shadow mode.
 
 ---
 

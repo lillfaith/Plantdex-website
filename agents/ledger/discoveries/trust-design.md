@@ -1,4 +1,4 @@
-# Task: Discovery trust design (docs only), revision 2
+# Task: Discovery trust design, revision 3 (settled Stage 1-3 contract + non-enforcing classifier)
 
 - Lane / role: discoveries
 - Branch: `agent/discoveries/trust-design` (PR #40 into `integration`)
@@ -89,3 +89,29 @@ what is a collectible discovery; signed-out; grandfathering; camera-less path; c
 
 **Could not verify:** nothing in the design was executed. The build could not be run in this container (above).
 **PR:** #40, updated by the push.
+
+
+---
+
+## Revision 3 (2026-11-24): owner decisions D0 to D7
+
+**Status: `review`.** Authorised: planning, technical contracts, non-enforcing implementation behind disabled flags.
+**Not authorised: Stage 4 enforcement** (design section 15 lists the preconditions).
+
+### Done
+- Merged `origin/integration` (plain merge; no coordinator-owned file conflicted).
+- `docs/discovery-trust-design.md`: decisions D0-D7 recorded (section 13); settled technical contract (section 14: data model,
+  shadow mode, aggregate-only diagnostics, flags and defaults, one-time legacy import, export/deletion, vocabulary, rollout order,
+  test plan, open risks); explicit Stage 4 non-authorisation (section 15); sections 3, 8.4, 9 and 10 revised to match (D2 eligibility,
+  D6 withdraws any camera-free route).
+- Shared Change Requests refreshed: `discoveries-receipt-contract`, `-receipt-accept`, `-receipt-issue`, `-presentation`,
+  `-write-gate` (stub; not authorised); new `discoveries-shadow-wiring`. None applied.
+- Code (lane-owned, `observation-*`): `src/lib/observation-qualification.ts` and `.test.ts`. Pure `classifyQualification`,
+  `tallyQualifications`, `qualificationShadowEnabled`. No caller exists, so there is no behaviour change with flags on or off.
+  The test file was written first and failed with a missing module before the implementation (32 tests pass after).
+
+### Not touched
+XP, progression, reducer, mastery, research, migrations, workflows, secrets, `next.config.ts`, any UI, `/privacy`.
+
+### Verification
+See the pull request description for the pasted `npm run verify` and `agent-guard` output.

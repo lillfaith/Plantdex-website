@@ -2,7 +2,7 @@
 
 - From lane: discoveries      Task: agents/ledger/discoveries/trust-design.md
 - Needs: contract | migration
-- **To: coordinator.** Stage 2 (a). Design: `docs/discovery-trust-design.md` sections 6, 8, 10. **Nothing here is active; every flag defaults OFF.** Not for action until the owner has reviewed the design and authorised Stage 2.
+- **To: coordinator.** Stage 2 (a). Design: `docs/discovery-trust-design.md` sections 6, 8, 14. **Revised 2026-11-24 after owner decisions D0-D7.** Authorised: planning, contracts and non-enforcing implementation behind disabled flags. **NOT authorised: Stage 4 enforcement.** Every flag defaults OFF; TEST project only until the owner approves production.
 
 ## Why
 The owner's decision (2026-11-24) is that earning a NEW collectible card should eventually require an eligible in-app scan.
@@ -19,9 +19,18 @@ changing any existing behaviour. Contract first, feature second, never in the sa
      `rank_position in ('top','listed')`) and `is_catalogue_herb(herb_id)`; `identification-schema.test.ts` holds them equal.
    - RLS: `select` own only. **No client insert, update or delete policy.** Service role inserts with `on conflict do nothing`.
      A `before insert` trigger forces `recorded_at` to the server clock.
-   - `public.discovery_rules` single-row config: `receipts_issue`, `receipts_accept`, `shadow_report`,
-     `require_receipt_for_new_cards` (all false) and nullable `cutover_at`. A guard so `require_receipt_for_new_cards`
-     cannot be set true while `SCAN_RECEIPT_SECRET` is unset, and so `cutover_at` can only be set once and only moved earlier.
+   - `eligibility` CHECK on `scan_receipts` allows `exact, synonym, acceptedGroup, curatedEquivalent, genusCard` only (D2: **never `legacyGenus`**).
+   - `public.discovery_rules` single-row config: `receipts_issue`, `receipts_accept`, `shadow_report`, `legacy_import_open`
+     (all false), `require_receipt_for_new_cards` and nullable `cutover_at`. **Stage 4 is not authorised, so a trigger must
+     REFUSE to set `require_receipt_for_new_cards` true or to set `cutover_at` at all in this migration** (it is lifted only by
+     a later, owner-approved migration). Later guard: `cutover_at` settable once, only ever earlier.
+   - `public.legacy_imports(user_id uuid primary key references auth.users on delete cascade, imported_at timestamptz not null
+     default now())`: write-once, select own, no update, insert only through the service role (D5). In `USER_TABLES` and the export.
+   - `public.discovery_shadow_daily(day date, reason text, match_class text, n bigint, primary key (day, reason, match_class))`:
+     **no user id or any per-person column**, CHECKs repeating the enums in `src/lib/observation-qualification.ts`
+     (`qualifies|lookup|signedOut|notConfirmable|legacyGenusExcluded|alreadyHeld`; `exact|synonym|genusLevel|curatedGroup|uncertain|other`),
+     no client access, service-role increment only. The one explained exception to "user tables are exported and deleted"
+     (`account-security.test.ts` lists it). Reports suppress cells under 5; rows older than 90 days are housekeeping-deleted.
    - **No change to `discoveries`, `sightings`, `scans`, `mastered`, `research_completions`, `leaderboard_standings()`.**
 2. **Pure module** `src/lib/herbdex-receipt.ts` (+ test): `signScanReceipt` / `verifyScanReceipt(token, {userId, herbId}, secret, now)`
    following `species-attestation.ts` (`v1.<body>.<sig>`, HMAC-SHA-256 via `crypto.subtle`, 30-day TTL, 60 s future margin,
@@ -31,7 +40,9 @@ changing any existing behaviour. Contract first, feature second, never in the sa
    (`edge-shared.test.ts` must pass; the sync rewrites relative imports to carry `.ts`).
 4. **Export and deletion**: add `scan_receipts` to `export-account-data.ts` and to `USER_TABLES` in `delete-account`;
    `account-security.test.ts` and `*-schema.test.ts` pins updated in both directions.
-5. **`.env.example`** and any build default: `SCAN_RECEIPT_SECRET` (dedicated, never the service-role key), flags default off.
+5. **`.env.example` and `next.config.ts`**: `SCAN_RECEIPT_SECRET` (dedicated, never the service-role key); build flags
+   `NEXT_PUBLIC_DISCOVERY_SHADOW=off` and `NEXT_PUBLIC_LIVE_CAMERA_PILOT=off` defaulting `'off'` in `next.config.ts` so the bundler drops
+   the paths (the `NEXT_PUBLIC_BOSS_FORMS` precedent). Only the exact string `on` enables (`qualificationShadowEnabled`).
 6. **Analytics (optional, later):** any new event name added to `PLAUSIBLE_GOALS`; `track()` keeps one parameter.
 
 ## Who else depends on it
@@ -41,8 +52,9 @@ changing any existing behaviour. Contract first, feature second, never in the sa
 
 ## Risk and rollback
 Low while inert: a new empty table and a pure module nobody calls. Wrong if a CHECK is narrower than the code's union (an
-insert is refused and a claim is lost): the schema test prevents it. Rollback: leave the table (inert) or drop it; no data
-exists in it. No existing row is read, written or altered.
+insert is refused and a claim is lost): the schema test prevents it. Rollback: leave the tables (inert) or drop them (`drop table` in
+a down migration; nothing references them); no data exists in them. All flags off restores today's behaviour exactly.
+No existing row is read, written or altered. The trigger refusing Stage 4 values means a typo cannot enable enforcement.
 
 ## Does this need the owner? (coordinator fills in)
 Applying the migration to the production project is owner-gated ("pause for approval before applying database migrations").
