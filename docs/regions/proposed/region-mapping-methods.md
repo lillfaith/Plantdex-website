@@ -70,7 +70,7 @@ NE is tiny under this reading; if the Northeast should be larger the owner must 
   (`c0739ee6...` 0.1, `c0d9a78f...` 0.25, `e3a23bf0...` 0.5, manifest `1ceee9a9...`). **Not measured:** a second machine. The generator
   depends on GEOS predicates for points near polygon edges; the manifest records Python, numpy, shapely, GEOS and pyshp versions so a
   difference is attributable, and the repo's usual generated-file test (re-run the generator in CI, compare bytes) is the thing that would
-  prove cross-machine identity. Runtime is about 5 minutes per run for 0.1 on one core, so a CI check is practical but not quick.
+  prove cross-machine identity. Runtime was about 12 minutes for all three resolutions on one core here, so a CI check is practical but not quick.
 
 ## 5. Measurements against the full polygons
 Truth = the polygon containing a point, mapped to its region. Samples are every land cell of a 3 km equal-area raster (865,516 cells,
