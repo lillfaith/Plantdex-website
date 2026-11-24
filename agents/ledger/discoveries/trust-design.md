@@ -1,95 +1,91 @@
-# Task: Discovery trust design (docs only)
+# Task: Discovery trust design (docs only), revision 2
 
 - Lane / role: discoveries
-- Branch: `agent/discoveries/trust-design` (from `integration`)
+- Branch: `agent/discoveries/trust-design` (PR #40 into `integration`)
 - Priority: A
-- Token/time budget: one session
-- **Status: `blocked`** (the design is written; the `npm run build` stage of `npm run verify` cannot run in this container; see "Verification")
+- Token/time budget: one session per revision
+- **Status: `review`** (revision 2 written; awaiting the owner's review of the design and its seven decisions)
 
 ## Goal
-Write a design document for the owner to review on how competitive discoveries could eventually require in-app
-capture with server-side reward validation, without revoking anything that exists. Docs only. Nothing in it is
-active.
+Revision 1 (2026-11-20): a design for competitive discoveries requiring in-app capture, board points only.
+**Revision 2 (2026-11-24), after the owner's product decision:** earning a NEW collectible card should eventually require
+an ELIGIBLE IN-APP PLANT SCAN. Not enforced yet; staged; flags default OFF; Stage 4 (enforcement) needs separate approval.
+Docs only. Nothing here activates any rule.
 
-## Acceptance criteria
-- [x] `docs/discovery-trust-design.md` covers: the owner's standing direction; the five trust levels and where each
-      signal sits; candidate anti-cheat signals with false-positive cost; how server validation plugs into the
-      existing recompute path and which files are coordinator-owned; a flagged rollout, dual-run, migration and
-      rollback plan; what it cannot prove; open questions for the owner; a property-style test plan.
-- [x] No application code, test, scoring, XP, progression, reducer, schema, migration, workflow, package file or
-      data changed. No feature flag added in code.
-- [x] `node scripts/agent-guard.mjs diff --role discoveries --base origin/integration` reports no out-of-lane file.
-- [ ] `npm run verify` exits 0. **Not met: build stage fails for an environment reason, see below.**
+## Acceptance criteria (revision 2)
+- [x] `docs/discovery-trust-design.md` distinguishes the six things (educational identification, eligible scan-based
+      discovery, card ownership, competitive credit, journal sightings, mastery), each with a definition, who writes it,
+      what record holds it and what reads it, plus a "may exist without" table (section 2).
+- [x] Defines exactly what makes a scan eligible (section 3) and says plainly that an in-app scan is evidence of taking
+      part in the capture process, not proof of presence, and never uses "verified" for it.
+- [x] Traces the current server-authoritative progression path from the code, and says where a scan-required rule could
+      be enforced and why client-only enforcement is not enforcement (section 4).
+- [x] Lists every shared change by owner and drafts each as a Shared Change Request in `agents/requests/` (section 7).
+- [x] Migration requirements: tables, RLS, write-once, existing rows, one-way cutover and grandfathering, rollback (section 8).
+- [x] Accessibility section, including what the camera-less path gets and does not (section 9).
+- [x] Stage 2, 3 and 4 plan; Stage 2's smallest first slice and first reviewable PR (section 10).
+- [x] Ends with "Decisions the owner must make", product-level only, each with options, recommended default, tradeoff
+      and what it changes (section 13).
+- [x] Only docs, `agents/ledger/**` and `agents/requests/**` changed. No code, test, scoring, schema, migration, workflow,
+      flag, package or data change.
+- [x] `node scripts/agent-guard.mjs diff --role discoveries --base origin/integration` is clean (output below).
 
-## Authorised paths
-`docs/**` and `agents/ledger/**` (rule `any-agent`, Tier 2). Files changed: `docs/discovery-trust-design.md`,
-`agents/ledger/discoveries/trust-design.md`.
+## Files changed in revision 2
+- `docs/discovery-trust-design.md` (rewritten)
+- `agents/ledger/discoveries/trust-design.md` (this file)
+- `agents/requests/discoveries-receipt-contract.md` (coordinator, Stage 2a; draft, not applied)
+- `agents/requests/discoveries-receipt-accept.md` (coordinator, Stage 2c / 3; draft, not applied)
+- `agents/requests/discoveries-receipt-issue.md` (scan, Stage 2b; draft, not applied)
+- `agents/requests/discoveries-presentation.md` (discoveries-owned work plus the copy and UI requests it needs; draft)
+- `agents/requests/discoveries-write-gate.md` (coordinator, **Stage 4 stub, not for action**)
 
-## Prohibited
-Everything else. Not touched. No credential was read or needed. No workflow was dispatched. No PR into the
-production branch.
+## Prohibited, and not touched
+Everything outside the paths above. No credential was read or used. No workflow was run or dispatched. No PR into the
+production branch. No flag exists in code; every flag named in the design is a proposal that defaults OFF.
 
-## Contracts you may read but not change
-`herbdex-reducer.ts`, `progression.ts`, `types.ts`, `supabase/**`, `leaderboard` SQL (migrations 0011, 0013),
-`image-prepare.ts`, `ownership.json`.
+## Contracts read but not changed
+`herbdex-reducer.ts`, `progression.ts`, `mastery.ts`, `types.ts`, `supabase/**` (migrations 0001, 0002, 0006, 0011, 0013;
+`herbdex-action`, `identify-plant`), `species-attestation.ts`, `scans.ts`, `plant-match.ts`, `ownership.json`.
 
-## Verification (real output)
+## Verification
 
-Environment: `node_modules` was absent, so `npm ci` was run first (exit 0; package files unchanged). Then
-`npm run verify`:
+**Authoritative verification is the pull request's `verify` check on GitHub's runner. It passed on this PR for
+revision 1.** Revision 2 changes only markdown, so no source, test or build input differs.
 
-| Stage | Result |
-|---|---|
-| `npm run lint` | pass (0 errors, 1 pre-existing warning: `'changedFiles' is defined but never used`, line 247 of a file outside this change) |
-| `npm run typecheck` | pass |
-| `npm run check:edge` | pass |
-| `npm run test` | pass: `Test Files 131 passed (131)`, `Tests 2077 passed | 1 skipped (2078)` |
-| `npm run build` | **FAIL** |
+**Environment note, superseding the earlier "blocked" entry.** In revision 1 this lane's container could not complete the
+`build` stage of `npm run verify`: `npm ci` installed the musl `lightningcss` native binary in a glibc container
+(`Cannot find module '../lightningcss.linux-x64-gnu.node'`). That was a problem **only in this container**, not in the
+repository, the lockfile or CI, which is why the check passes on GitHub. It was not worked around, no further attempt was
+made, and CI was not touched. This container cannot run the production build locally; that is recorded, not repaired.
+The previous `blocked` status is cleared: nothing blocks this task.
 
-Build failure, verbatim (exit 1):
+Guard, run before commit:
 
 ```
-> Build error occurred
-Error: Turbopack build failed with 1 error:
-./src/app/globals.css
-Error: Error evaluating Node.js code
-Error: Cannot find module '../lightningcss.linux-x64-gnu.node'
-Require stack:
-- /home/user/Plantdex-website/node_modules/lightningcss/node/index.js
-- /home/user/Plantdex-website/node_modules/@tailwindcss/node/dist/index.js
-- /home/user/Plantdex-website/node_modules/@tailwindcss/postcss/dist/index.js
+$ node scripts/agent-guard.mjs diff --role discoveries --base origin/integration
+agent-guard: role 'discoveries' changed only files it may change.
 ```
-
-Cause as far as it could be determined: `npm ci` in this container installed `lightningcss-linux-x64-musl`
-and not `lightningcss-linux-x64-gnu` (the host is glibc), so the native CSS binary cannot be found. This is
-unrelated to the change: the diff is two markdown files and cannot affect a CSS build.
-
-One attempt at repair was made, kept out of the repository: `npm i --no-save lightningcss-linux-x64-gnu@1.30.1`
-(installed, `git status` shows only the new doc; no package file changed). The build failed identically. No
-further workaround was tried, per the brief ("if anything blocks you, record it as blocked and stop").
-
-**What the owner/coordinator should do:** run `npm run verify` on a machine where the optional native binary
-installs correctly (CI, or a clean `rm -rf node_modules && npm ci` on glibc). Expect lint, typecheck,
-check:edge and test to match the table above; the build stage is independent of this change.
 
 ## Report
-**What changed:** one design document (`docs/discovery-trust-design.md`), this ledger entry. Nothing else.
+**What changed:** the design now treats the owner's scan-required-card direction as the goal, separates six facts,
+traces who writes what today, and lays out a four-stage, flag-gated, one-way-grandfathered plan with five draft SCRs.
 
-**Headline of the design:** a server-issued, HMAC-signed *receipt* from `identify-plant` (the existing species
-attestation pattern), verified by `herbdex-action` through one shared pure predicate, gating only the Field Board's
-discovery points, behind server flags defaulting OFF, with grandfathering by a new server-stamped time (because
-`discoveries.discovered_at` is client-suppliable and cannot be trusted for that), a shadow-board phase before any
-public change, and flag-flip rollback that revokes nothing.
+**Headline findings from the trace (all from reading the named files on 2026-11-24):**
+1. `discoveries` is written directly by the client under RLS with only an id check; `discovered_at` is client-suppliable.
+2. XP, levels, Field Cards, garden and achievements are all derived in the browser from those rows. Mastery and research
+   completion are server-derived (`herbdex-action`) but from client-written inputs. So a board-only gate cannot satisfy
+   the owner's decision; only the write to `discoveries` can (Stage 4, owner-gated).
+3. `identify-plant` already signs a server fact (the species attestation) that nothing consumes for discoveries, and
+   `scans.identification_observation_id` is a client-written value, so a `scans` row is not evidence.
+4. The server cannot tell a live camera frame from an uploaded file. `purpose: collect` is a client declaration. The design
+   states this and does not claim more.
 
-**Coordinator-owned files it would need (Shared Change Requests, none filed):** a new migration, `herbdex-action`,
-`_shared/herbdex/*`, `sync-edge-shared.mjs`, `remote-herbdex-storage.ts`, the schema/export/delete pin tests,
-`.env.example`, `next.config.ts`, `CLAUDE.md`. Scan-owned: `identify-plant`, `scans*`, scan UI, `image-prepare`.
+**Smallest first slice (Stage 2):** a coordinator contract PR of about 350 lines: an inert `scan_receipts` table and
+`discovery_rules` config, one shared pure predicate and its tests, sync/export/delete pins, flags defaulting off. Scan
+issues receipts next; `herbdex-action` accepts them third. No existing table, XP, leaderboard or Garden path is touched.
 
-**Open questions:** ten, in section 10 of the document. Most consequential: must a competitive find use a live
-`getUserMedia` stream (Q1); is the board the only competitive surface (Q2); how are long-time signed-out players
-treated at the cutover (Q5).
+**Decisions the owner must make:** D0 to D7 in section 13 (scan definition; uncertain and genus-level eligibility;
+what is a collectible discovery; signed-out; grandfathering; camera-less path; copy and privacy; order of enforcement).
 
-**Could not verify:** the `next build` stage (above). No claim in the design about runtime behaviour was exercised;
-every statement about the codebase is from reading the named files on 2026-11-20.
-
-**PR:** not opened, because the task is `blocked`. The branch is pushed so the work is not lost.
+**Could not verify:** nothing in the design was executed. The build could not be run in this container (above).
+**PR:** #40, updated by the push.
