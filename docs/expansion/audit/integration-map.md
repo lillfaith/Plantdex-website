@@ -103,8 +103,8 @@ These all pass in A2 with 85 more cards and none of the assets, which is the fin
 | Draft species | Today | After the card exists | Existing card it touches |
 |---|---|---|---|
 | *Rumex crispus* | `sameGenus` | `exact` | #02 Broadleaf Dock, #19 Sheep's Sorrel; **overturns the pinned "third dock is refused"** |
-| *Plantago lanceolata* | `sameGenus` | `exact` | #15 Plantain (the live card names it as a lookalike) |
-| *Trifolium repens* | `sameGenus` | `exact` | #12 Red Clover |
+| *Plantago lanceolata* | `sameGenus` | `exact` | #14 Plantain (the live card names it as a lookalike) |
+| *Trifolium repens* | `sameGenus` | `exact` | #10 Red Clover |
 | *Echinacea angustifolia* | `sameGenus` | `exact` | #48 Purple Coneflower (Field Card) |
 
 All 85 are **currently shelf-eligible** (`isShelfEligible` true for 85/85, because none has a confirmable card). The other 81 resolve
@@ -122,7 +122,7 @@ that can issue the value.** Applying migrations needs the owner (`decisions.md`)
 **2. The printed-versus-digital fork rewrites existing players' denominators, and a forgotten `collectionId` does it silently.**
 Printed: completion % goes from N/45 to N/130 retroactively, "collection complete" and "every Epic" achievements change meaning
 for people who already hold them, `MAX_COLLECTION_XP` and the shop's per-card price move (`$0.53` to `$0.19` on a 45-card box), and
-`/start` and the landing page carry the number 45. Digital-only avoids all of that, but a digital card that omits `collectionId`
+the landing page, `/start` and `/shop` print `PRINTED_DECK_SIZE` ("130 illustrated species" for a box that holds 45). Digital-only avoids all of that, but a digital card that omits `collectionId`
 falls back to Collection 01 and is labelled as part of the physical deck (A1 vs A2). Owner decision, not an implementation detail.
 
 **3. A merge-green card needs field notes for all 85, and the draft has none.** `card-field-notes.test` requires identification,
