@@ -1,0 +1,140 @@
+card_number,herb_id,common_name,scientific_name,printed_deck,field_card_ordinal,rarity,xp,season,printed_warning,known_card_issue,site_caution,card_correction,genus_card_spp,genus_traits_note,lookalike_note,coverage_scope,primary_habitat,georgia_occurrence,id_trait_rows,lookalike_entries,lookalikes_with_risk,field_note_source_ids,habitat_source_ids,back_compounds,compounds_with_molecule,compounds_with_scaffold,compounds_known_but_undrawn,compounds_not_in_table,trait_evidence_entry,invasive_badge,reference_photos,reference_photos_reviewed,lookalike_photo_comparison,citations,evidence_label,sprite_sheet,sprite_sprout,sprite_growing,sprite_boss,sprite_personality,sprite_frames
+1,taraxacum-officinale,Dandelion,Taraxacum officinale,yes,,Common,100,summer,no,no,no,no,no,no,no,acceptedGroup,wayside,confirmed+featured,5,1,0,2,0,4,2,0,2,0,no,no,6,0,yes,4,Well sourced,yes,yes,yes,yes,energetic,16
+2,rumex-obtusifolius,Broadleaf Dock,Rumex obtusifolius,yes,,Common,100,autumn,no,yes,no,no,no,no,no,species,meadow,confirmed,5,2,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,steady,14
+3,solidago-canadensis,Goldenrod,Solidago canadensis,yes,,Common,100,summer,no,no,yes,no,no,no,no,acceptedGroup,meadow,confirmed,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,grand,14
+4,ambrosia-artemisiifolia,Ragweed,Ambrosia artemisiifolia,yes,,Common,100,summer,no,no,no,no,no,no,no,species,wayside,confirmed,5,2,0,0,0,4,3,0,1,0,no,no,0,0,no,4,,yes,yes,yes,no,sheepish,14
+5,chenopodium-album,Lamb's Quarters,Chenopodium album,yes,,Common,100,spring,no,no,no,no,no,no,no,species,garden,confirmed+featured,5,1,0,0,0,4,2,0,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,unhurried,14
+6,portulaca-oleracea,Purslane,Portulaca oleracea,yes,,Common,100,summer,no,no,no,no,no,no,no,species,garden,confirmed+featured,4,1,1,4,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,smug,14
+7,alliaria-petiolata,Garlic Mustard,Alliaria petiolata,yes,,Common,100,spring,no,no,no,no,no,no,no,species,woodland,likely,5,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,pleased,14
+8,urtica-dioica,Stinging Nettle,Urtica dioica,yes,,Common,100,spring,no,no,no,no,no,no,no,species,wetland,likely,4,2,0,0,0,4,2,0,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,alert,14
+9,oxalis-stricta,Wood Sorrel,Oxalis stricta,yes,,Common,100,spring,no,no,no,no,no,no,no,species,garden,confirmed,4,1,0,0,0,4,2,1,1,0,no,no,0,0,no,4,,yes,yes,yes,no,private,14
+10,trifolium-pratense,Red Clover,Trifolium pratense,yes,,Common,100,summer,no,no,no,no,no,no,no,species,meadow,confirmed+featured,5,2,0,0,0,4,1,2,1,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,hopeful,14
+11,lamium-purpureum,Purple Dead Nettle,Lamium purpureum,yes,,Common,100,spring,no,no,no,no,no,no,no,species,garden,confirmed+featured,5,1,0,0,0,4,1,2,1,0,no,no,0,0,no,1,,yes,yes,yes,no,all talk,14
+12,viola-sororia,Wild Violet,Viola sororia,yes,,Common,100,spring,no,no,no,no,no,no,no,species,woodland,confirmed+featured,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,bashful,14
+13,stellaria-media,Chickweed,Stellaria media,yes,,Common,100,spring,no,no,no,no,no,no,no,species,garden,confirmed+featured,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,delighted,14
+14,plantago-major,Broad Leaf Plantain,Plantago major,yes,,Common,100,spring,no,no,no,no,no,no,no,species,wayside,confirmed+featured,5,1,0,0,0,4,2,1,1,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,unbothered,14
+15,galium-aparine,Cleavers,Galium aparine,yes,,Common,100,spring,no,no,no,no,no,no,no,species,woodland,confirmed+featured,5,1,0,0,0,4,0,3,1,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,overfamiliar,14
+16,glechoma-hederacea,Ground Ivy,Glechoma hederacea,yes,,Common,100,spring,no,no,no,no,no,no,no,species,garden,confirmed,5,2,0,0,0,4,2,1,1,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,companionable,14
+17,acer-spp,Maple,Acer spp.,yes,,Common,100,spring,no,no,no,no,yes,no,no,genus,woodland,,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,generous,14
+18,rubus-spp,Blackberry,Rubus spp.,yes,,Common,100,autumn,no,no,no,no,yes,no,no,genus,wayside,,4,1,0,0,0,4,1,2,1,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,conditional,14
+19,rumex-acetosella,Sheep's Sorrel,Rumex acetosella,yes,,Uncommon,175,spring,no,no,no,no,no,no,no,species,meadow,confirmed,4,1,0,0,0,4,1,2,1,0,no,no,0,0,no,1,,yes,yes,yes,no,sour,14
+20,rhus-spp,Sumac,Rhus spp.,yes,,Uncommon,175,autumn,no,no,no,no,yes,no,no,genus,wayside,,4,1,1,2,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,ceremonial,14
+21,cichorium-intybus,Chicory,Cichorium intybus,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,wayside,confirmed,5,1,0,1,0,4,2,0,2,0,no,no,0,0,no,1,,yes,yes,yes,no,early riser,16
+22,arctium-lappa,Burdock,Arctium lappa,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,wayside,likely,4,1,0,0,0,4,0,0,4,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,eager,14
+23,mentha-canadensis,Wild Mint,Mentha canadensis,yes,,Uncommon,175,summer,no,no,no,no,no,yes,no,species,wetland,insufficient,4,1,0,0,0,4,4,0,0,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,refreshing,14
+24,nepeta-cataria,Catnip,Nepeta cataria,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,garden,likely,4,1,0,0,0,4,3,1,0,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,giddy,16
+25,capsella-bursa-pastoris,Shepherd's Purse,Capsella bursa-pastoris,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,garden,confirmed,3,1,0,0,0,4,3,1,0,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,thrifty,14
+26,prunella-vulgaris,Self-Heal,Prunella vulgaris,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,meadow,confirmed+featured,3,1,0,0,0,4,2,1,1,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,quietly capable,14
+27,verbascum-thapsus,Mullein,Verbascum thapsus,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,wayside,confirmed+featured,5,1,0,0,0,4,0,1,3,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,proud,14
+28,equisetum-arvense,Horsetail,Equisetum arvense,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,wetland,confirmed,5,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,prehistoric,14
+29,allium-vineale,Field Garlic,Allium vineale,yes,,Uncommon,175,spring,no,no,no,no,no,yes,no,species,meadow,confirmed,4,1,1,2,0,4,1,1,2,0,no,no,0,0,no,4,,yes,yes,yes,no,startled,14
+30,fragaria-virginiana,Wild Strawberry,Fragaria virginiana,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,meadow,confirmed,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,sweet,14
+31,sambucus-spp,Elderberry,Sambucus spp.,yes,,Uncommon,175,autumn,no,yes,yes,yes,yes,no,no,genus,wetland,,5,1,1,4,0,4,2,1,1,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,venerable,14
+32,hypericum-perforatum,St. John's Wort,Hypericum perforatum,yes,,Uncommon,175,summer,no,no,yes,no,no,no,no,species,meadow,confirmed,5,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,sunlit,14
+33,achillea-millefolium,Yarrow,Achillea millefolium,yes,,Rare,300,summer,yes,no,no,no,no,no,no,species,meadow,confirmed+featured,3,1,1,3,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,capable,14
+34,impatiens-capensis,Jewelweed,Impatiens capensis,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,wetland,confirmed,5,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,,yes,yes,yes,no,jumpy,14
+35,melissa-officinalis,Lemon Balm,Melissa officinalis,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,garden,confirmed,4,1,0,0,0,4,2,1,1,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,calm,14
+36,monarda-fistulosa,Bee Balm,Monarda fistulosa,yes,,Rare,300,summer,no,no,no,no,no,yes,no,species,meadow,confirmed,4,1,0,0,0,4,3,1,0,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,flamboyant,14
+37,rosa-spp,Wild Rose,Rosa spp.,yes,,Rare,300,summer,no,no,no,no,yes,no,no,genus,woodland,,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,vain,14
+38,salix-spp,Willow,Salix spp.,yes,,Rare,300,spring,no,yes,no,no,yes,no,no,genus,wetland,,4,1,0,0,0,4,2,0,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,consoling,14
+39,geranium-maculatum,Wild Geranium,Geranium maculatum,yes,,Rare,300,autumn,no,no,no,no,no,no,no,species,woodland,confirmed,5,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,inquisitive,14
+40,lonicera-japonica,Honeysuckle,Lonicera japonica,yes,,Rare,300,summer,no,no,no,no,no,yes,no,species,woodland,confirmed,4,1,1,0,0,4,2,1,1,0,no,yes,0,0,no,4,Evidence varies,yes,yes,yes,no,sweet-toothed,14
+41,pinus-spp,Pine,Pinus spp.,yes,,Rare,300,winter,no,no,yes,no,yes,no,no,genus,woodland,,4,1,1,2,0,4,1,1,2,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,ancient,16
+42,morus-spp,Mulberry,Morus spp.,yes,,Rare,300,autumn,no,no,no,no,yes,no,no,genus,woodland,,5,1,0,0,0,4,2,2,0,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,unrepentant,14
+43,passiflora-incarnata,Passion Flower,Passiflora incarnata,yes,,Epic,500,summer,no,no,no,no,no,no,no,species,wayside,confirmed+featured,4,1,0,0,0,4,3,1,0,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,theatrical,16
+44,lactuca-serriola,Prickly Lettuce,Lactuca serriola,yes,,Epic,500,summer,no,no,no,no,no,no,no,species,wayside,confirmed,5,1,0,0,0,3,2,0,1,0,no,no,0,0,no,4,Evidence varies,yes,yes,yes,no,orienting,14
+45,quercus-spp,Oak,Quercus spp.,yes,,Epic,500,summer,no,no,no,no,yes,no,no,genus,woodland,,4,1,0,0,0,4,1,1,2,0,no,no,0,0,no,4,Well sourced,yes,yes,yes,no,patriarchal,16
+48,echinacea-purpurea,Purple Coneflower,Echinacea purpurea,no,1,Uncommon,250,summer,no,no,no,no,no,no,no,,,,4,1,0,0,0,4,0,0,0,4,no,no,0,0,no,0,,yes,yes,yes,no,tingly,14
+49,typha-latifolia,Broadleaf Cattail,Typha latifolia,no,2,Common,150,summer,no,no,no,no,no,no,no,,,,5,2,1,0,0,4,0,0,0,4,no,no,0,0,no,0,,yes,yes,yes,no,dusty,14
+50,oenothera-biennis,Evening Primrose,Oenothera biennis,no,3,Rare,350,summer,no,no,no,no,no,no,no,,,,5,1,0,0,0,4,0,0,0,4,no,no,0,0,no,0,,yes,yes,yes,no,nocturnal,14
+51,lindera-benzoin,Spicebush,Lindera benzoin,no,4,Rare,350,spring,no,no,no,no,no,no,no,,,,5,1,0,0,0,4,0,0,0,4,no,no,0,0,no,0,,yes,yes,yes,no,peppery,14
+52,hamamelis-virginiana,Witch Hazel,Hamamelis virginiana,no,5,Rare,350,autumn,no,no,no,no,no,no,no,,,,5,2,1,0,0,4,2,1,1,0,no,no,0,0,no,0,,yes,yes,yes,no,deadpan,14
+53,malva-neglecta,Common Mallow,Malva neglecta,no,6,Uncommon,250,summer,no,no,no,no,no,no,no,,,,5,2,1,0,0,4,1,0,2,1,no,no,0,0,no,0,,yes,yes,yes,no,obliging,12
+54,silybum-marianum,Milk Thistle,Silybum marianum,no,7,Uncommon,250,summer,no,no,no,no,no,no,no,,,,5,2,1,0,0,4,0,1,0,3,no,no,0,0,no,0,,yes,yes,yes,no,guarded,12
+55,verbena-hastata,Blue Vervain,Verbena hastata,no,8,Uncommon,250,autumn,no,no,no,no,no,no,no,,,,5,2,0,0,0,4,1,0,0,3,no,no,0,0,no,0,,yes,yes,yes,no,measured,14
+56,callicarpa-americana,Beautyberry,Callicarpa americana,no,9,Rare,350,summer,no,no,no,no,no,no,yes,,,,5,2,0,0,0,4,0,0,4,0,yes,no,0,0,no,0,,yes,yes,yes,no,lustrous,14
+57,eupatorium-perfoliatum,Boneset,Eupatorium perfoliatum,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+58,eutrochium-fistulosum,Hollow Joe-Pye Weed,Eutrochium fistulosum,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+59,ceanothus-americanus,New Jersey Tea,Ceanothus americanus,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,0,2,no,no,0,0,no,0,,no,no,no,no,,
+60,rudbeckia-hirta,Black-Eyed Susan,Rudbeckia hirta,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+61,pycnanthemum-tenuifolium,Narrowleaf Mountain Mint,Pycnanthemum tenuifolium,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+62,eriogonum-fasciculatum,California Buckwheat,Eriogonum fasciculatum,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+63,parthenium-integrifolium,Wild Quinine,Parthenium integrifolium,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+64,pseudognaphalium-obtusifolium,Sweet Everlasting,Pseudognaphalium obtusifolium,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+65,nelumbo-lutea,American Lotus,Nelumbo lutea,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+66,erigeron-annuus,Annual Fleabane,Erigeron annuus,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+67,rumex-crispus,Curly Dock,Rumex crispus,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+68,plantago-lanceolata,Narrowleaf Plantain,Plantago lanceolata,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+69,artemisia-vulgaris,Common Mugwort,Artemisia vulgaris,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,1,2,no,no,0,0,no,0,,no,no,no,no,,
+70,leonurus-cardiaca,Motherwort,Leonurus cardiaca,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,2,1,no,no,0,0,no,0,,no,no,no,no,,
+71,vernonia-noveboracensis,New York Ironweed,Vernonia noveboracensis,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+72,agastache-foeniculum,Anise Hyssop,Agastache foeniculum,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,2,0,0,1,no,no,0,0,no,0,,no,no,no,no,,
+73,claytonia-virginica,Virginia Spring Beauty,Claytonia virginica,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,1,2,no,no,0,0,no,0,,no,no,no,no,,
+74,polygonatum-biflorum,Smooth Solomon's Seal,Polygonatum biflorum,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+75,mitchella-repens,Partridgeberry,Mitchella repens,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+76,apios-americana,American Groundnut,Apios americana,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,1,2,no,no,0,0,no,0,,no,no,no,no,,
+77,dioscorea-villosa,Wild Yam,Dioscorea villosa,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,1,2,no,no,0,0,no,0,,no,no,no,no,,
+78,lepidium-virginicum,Virginia Pepperweed,Lepidium virginicum,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,2,1,0,0,no,no,0,0,no,0,,no,no,no,no,,
+79,potentilla-simplex,Common Cinquefoil,Potentilla simplex,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+80,trifolium-repens,White Clover,Trifolium repens,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+81,daucus-carota,Queen Anne's Lace,Daucus carota,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,2,0,no,no,0,0,no,0,,no,no,no,no,,
+82,scutellaria-lateriflora,American Skullcap,Scutellaria lateriflora,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+83,monardella-odoratissima,Mountain Monardella,Monardella odoratissima,yes,,Epic,500,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,1,0,1,no,no,0,0,no,0,,no,no,no,no,,
+84,ulmus-rubra,Slippery Elm,Ulmus rubra,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+85,prunus-serotina,Black Cherry,Prunus serotina,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+86,juglans-nigra,Black Walnut,Juglans nigra,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,1,2,no,no,0,0,no,0,,no,no,no,no,,
+87,juniperus-virginiana,Eastern Red Cedar,Juniperus virginiana,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+88,asimina-triloba,Pawpaw,Asimina triloba,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+89,diospyros-virginiana,American Persimmon,Diospyros virginiana,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+90,cornus-florida,Flowering Dogwood,Cornus florida,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+91,cercis-canadensis,Eastern Redbud,Cercis canadensis,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,2,0,0,1,no,no,0,0,no,0,,no,no,no,no,,
+92,liquidambar-styraciflua,American Sweetgum,Liquidambar styraciflua,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+93,platanus-occidentalis,American Sycamore,Platanus occidentalis,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+94,comptonia-peregrina,Sweetfern,Comptonia peregrina,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+95,fagus-grandifolia,American Beech,Fagus grandifolia,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+96,tilia-americana,American Basswood,Tilia americana,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,2,0,no,no,0,0,no,0,,no,no,no,no,,
+97,ilex-vomitoria,Yaupon Holly,Ilex vomitoria,yes,,Uncommon,175,winter,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+98,morella-cerifera,Southern Wax Myrtle,Morella cerifera,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+99,aralia-spinosa,Devil's Walkingstick,Aralia spinosa,yes,,Uncommon,175,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,2,1,no,no,0,0,no,0,,no,no,no,no,,
+100,amelanchier-canadensis,Canadian Serviceberry,Amelanchier canadensis,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+101,vitis-rotundifolia,Muscadine Grape,Vitis rotundifolia,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+102,eschscholzia-californica,California Poppy,Eschscholzia californica,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+103,eriodictyon-californicum,California Yerba Santa,Eriodictyon californicum,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+104,aralia-californica,California Spikenard,Aralia californica,yes,,Epic,500,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,2,1,no,no,0,0,no,0,,no,no,no,no,,
+105,artemisia-douglasiana,California Mugwort,Artemisia douglasiana,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+106,umbellularia-californica,California Bay Laurel,Umbellularia californica,yes,,Uncommon,175,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+107,mahonia-aquifolium,Oregon Grape,Mahonia aquifolium,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+108,frangula-purshiana,Cascara,Frangula purshiana,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+109,gaultheria-shallon,Salal,Gaultheria shallon,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+110,scrophularia-californica,California Figwort,Scrophularia californica,yes,,Epic,500,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,2,1,0,no,no,0,0,no,0,,no,no,no,no,,
+111,ribes-sanguineum,Red-Flowering Currant,Ribes sanguineum,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,2,0,0,no,no,0,0,no,0,,no,no,no,no,,
+112,condea-emoryi,Desert Lavender,Condea emoryi,yes,,Epic,500,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+113,sphaeralcea-ambigua,Desert Globemallow,Sphaeralcea ambigua,yes,,Uncommon,175,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,1,1,no,no,0,0,no,0,,no,no,no,no,,
+114,simmondsia-chinensis,Jojoba,Simmondsia chinensis,yes,,Rare,300,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+115,opuntia-engelmannii,Engelmann Prickly Pear,Opuntia engelmannii,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+116,prosopis-glandulosa,Honey Mesquite,Prosopis glandulosa,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+117,chilopsis-linearis,Desert Willow,Chilopsis linearis,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,2,1,0,no,no,0,0,no,0,,no,no,no,no,,
+118,anemopsis-californica,Yerba Mansa,Anemopsis californica,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+119,salvia-columbariae,Desert Chia,Salvia columbariae,yes,,Rare,300,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+120,encelia-farinosa,Brittlebush,Encelia farinosa,yes,,Uncommon,175,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,0,2,no,no,0,0,no,0,,no,no,no,no,,
+121,ephedra-trifurca,Mormon Tea,Ephedra trifurca,yes,,Rare,300,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+122,cleomella-serrulata,Rocky Mountain Beeplant,Cleomella serrulata,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,2,0,1,no,no,0,0,no,0,,no,no,no,no,,
+123,balsamorhiza-sagittata,Arrowleaf Balsamroot,Balsamorhiza sagittata,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+124,chamerion-angustifolium,Fireweed,Chamerion angustifolium,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,2,0,0,1,no,no,0,0,no,0,,no,no,no,no,,
+125,arctostaphylos-uva-ursi,Kinnikinnick,Arctostaphylos uva-ursi,yes,,Common,100,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+126,hibiscus-moscheutos,Swamp Rose Mallow,Hibiscus moscheutos,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+127,populus-tremuloides,Quaking Aspen,Populus tremuloides,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,1,1,no,no,0,0,no,0,,no,no,no,no,,
+128,artemisia-tridentata,Big Sagebrush,Artemisia tridentata,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+129,shepherdia-canadensis,Canada Buffaloberry,Shepherdia canadensis,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+130,glycyrrhiza-lepidota,American Licorice,Glycyrrhiza lepidota,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+131,grindelia-squarrosa,Curlycup Gumweed,Grindelia squarrosa,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+132,amorpha-canescens,Leadplant,Amorpha canescens,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+133,dalea-purpurea,Purple Prairie Clover,Dalea purpurea,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,2,0,no,no,0,0,no,0,,no,no,no,no,,
+134,echinacea-angustifolia,Narrowleaf Purple Coneflower,Echinacea angustifolia,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+135,artemisia-frigida,Fringed Sagewort,Artemisia frigida,yes,,Uncommon,175,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,1,0,2,no,no,0,0,no,0,,no,no,no,no,,
+136,serenoa-repens,Saw Palmetto,Serenoa repens,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+137,bidens-alba,Spanish Needles,Bidens alba,yes,,Common,100,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,1,0,0,2,no,no,0,0,no,0,,no,no,no,no,,
+138,bacopa-monnieri,Water Hyssop (Brahmi),Bacopa monnieri,yes,,Epic,500,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+139,smilax-bona-nox,Saw Greenbrier,Smilax bona-nox,yes,,Common,100,spring,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,1,2,no,no,0,0,no,0,,no,no,no,no,,
+140,rhododendron-groenlandicum,Bog Labrador Tea,Rhododendron groenlandicum,yes,,Rare,300,summer,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
+141,vaccinium-vitis-idaea,Lingonberry,Vaccinium vitis-idaea,yes,,Uncommon,175,autumn,no,no,no,no,no,no,no,species,,,0,0,0,0,0,3,0,0,0,3,no,no,0,0,no,0,,no,no,no,no,,
