@@ -1,0 +1,433 @@
+{
+ "schema": "plantdex.expansion.pilot.research/1",
+ "status": "PROPOSAL_ONLY_NOT_FOR_PUBLICATION",
+ "retrievalDate": "2026-11-25",
+ "header": "PROPOSAL ONLY. Not wording for publication; nothing here is imported, enabled or deployed. Retrieval date for every source: 2026-11-25. Network note: the sandbox proxy allowed only en.wikipedia.org (rate-limited) and plants.usda.gov (redirects to a blocked host). BLOCKED (403/timeout): powo.science.kew.org, wcvp.science.kew.org, api.gbif.org, www.gbif.org, pubmed.ncbi.nlm.nih.gov, eutils.ncbi.nlm.nih.gov, europepmc.org, www.fs.usda.gov, plants.sc.egov.usda.gov, www.wikidata.org, www.inaturalist.org, extension.umn.edu, www.wildflower.org, www.fda.gov, www.ipni.org, www.worldfloraonline.org, api.crossref.org, www.ars-grin.gov. All sources below were therefore read through the Exa search/fetch tool (a third-party reader that returns excerpts); most journal articles were read as abstracts or excerpts only. Search links are not citations.",
+ "id": "plantago-lanceolata",
+ "cardNumber": 68,
+ "commonName": "Narrowleaf Plantain",
+ "scientificName": "Plantago lanceolata",
+ "taxon": {
+  "acceptedName": "Plantago lanceolata",
+  "authorship": "L.",
+  "family": "Plantaginaceae",
+  "rank": "species",
+  "checks": [
+   {
+    "database": "GBIF Backbone",
+    "result": "ACCEPTED, EXACT match, confidence 99, usage key 8208358, 'Plantago lanceolata L.'",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-match-8208358"
+   },
+   {
+    "database": "GBIF Backbone synonyms (first entries; reader truncated)",
+    "result": "Arnoglossum lanceolatum (L.) Gray; Arnoglossum lanceolatum var. ramosum Gray; further entries not read",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-syn-8208358"
+   },
+   {
+    "database": "POWO / WCVP (Kew)",
+    "result": "NOT FOUND - blocked (403).",
+    "retrieved": "2026-11-25",
+    "citation": null
+   }
+  ],
+  "discrepanciesWithDraft": [
+   "Draft binomial matches GBIF. No change proposed.",
+   "Common names: 'narrow-leaved plantain', 'buckhorn plantain' (UMD), 'ribwort plantain' (UK sources), English plantain. 'Narrowleaf Plantain' on the card is fine.",
+   "Deck context: Plantago major is card #14. P. lanceolata is a different species, so exact matching resolves each to its own card; genus-wide matching would not."
+  ]
+ },
+ "sources": [
+  {
+   "id": "gbif-match-8208358",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF Backbone Taxonomy species match: Plantago lanceolata",
+   "url": "https://api.gbif.org/v1/species/match?name=Plantago%20lanceolata&kingdom=Plantae",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Exact match; usage key 8208358; scientific name 'Plantago lanceolata L.'; status ACCEPTED; family Plantaginaceae; match confidence 99.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority."
+  },
+  {
+   "id": "gbif-syn-8208358",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF synonyms of usage key 8208358",
+   "url": "https://api.gbif.org/v1/species/8208358/synonyms?limit=20",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Lists Arnoglossum lanceolatum (L.) Gray and a variety among synonyms.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority. Listing truncated."
+  },
+  {
+   "id": "umd-plantain",
+   "publisher": "University of Maryland Extension",
+   "title": "Plantains: identification and management",
+   "url": "https://www.extension.umd.edu/resource/plantains-identification-and-management",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Narrowleaf (buckhorn) plantain: clump-forming rosette with a short thick caudex; tiny white flowers in a cylindrical or cone-shaped cluster on a slender leafless stalk under 1 ft; leaves lanceolate, much longer than wide, with 3-5 prominent nearly parallel veins, entire or subtly toothed margins; common plantain (P. major) has oval leaves; blackseed plantain (P. rugelii) differs in bract shape and capsule splitting.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "ema-pl",
+   "publisher": "European Medicines Agency / HMPC",
+   "title": "Assessment report on Plantago lanceolata L., folium (22 Nov 2011)",
+   "url": "https://www.ema.europa.eu/en/documents/herbal-report/final-assessment-report-plantago-lanceolata-l-folium_en.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Herbal substance contains about 2-3% iridoid glycosides (aucubin and catalpol main), mucilage polysaccharides, flavonoids (apigenin, luteolin), phenylethanoids (acteoside, plantamajoside), phenol carboxylic acids and tannins; records traditional indications (catarrh of the respiratory tract, inflammation of mouth/throat mucosa, external use on inflamed skin; folk use on wounds); states controlled clinical studies supporting a well-established use have not been performed while traditional use is well documented; anti-inflammatory activity of single constituents shown in vitro and in animals.",
+   "sourceType": "regulator assessment report"
+  },
+  {
+   "id": "abate2022",
+   "publisher": "BioMed Research International/Wiley (Abate et al. 2022)",
+   "title": "Ethnobotanical uses, chemical constituents and application of Plantago lanceolata L.",
+   "url": "https://onlinelibrary.wiley.com/doi/10.1155/2022/1532031",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Review of folk uses: leaf as emollient, demulcent, expectorant; leaf powder or heated leaves applied to wounds and swellings; use for insect and snake bites reported in Turkey; lists aucubin and catalpol as main iridoid glycosides and acteoside as a main phenylethanoid; wound-healing effects described in rodent studies.",
+   "sourceType": "peer-reviewed review"
+  },
+  {
+   "id": "hertiani2026",
+   "publisher": "PMC13390053 (Hertiani et al., 2026)",
+   "title": "Plantago mechanisms for enhanced wound healing: a review on bioactive phytoconstituents",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13390053/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "P. lanceolata is traditionally used for wound therapy in Pakistan and Iraq and has been tested in vivo (animal) for wound healing and anti-inflammatory effects.",
+   "sourceType": "peer-reviewed review",
+   "caveat": "Preclinical evidence only."
+  },
+  {
+   "id": "beara-phytopharmacy",
+   "publisher": "Phytopharmacy: An Evidence-Based Guide to Herbal Medicinal Products (Wiley), chapter by Beara",
+   "title": "Ribwort plantain chapter summary",
+   "url": "https://onlinelibrary.wiley.com/doi/10.1002/9781118543436.ch90",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Summary: main constituents are iridoid glycosides, mucilage, flavonoids, phenylethanoids; used mainly for upper respiratory tract inflammation and as a demulcent for dry cough, and topically for inflammatory skin conditions; fresh leaves used in Scotland as a poultice or ointment on fresh wounds.",
+   "sourceType": "reference book chapter (summary read)"
+  },
+  {
+   "id": "drugs-plantago",
+   "publisher": "Drugs.com (Natural Products database)",
+   "title": "Plantago uses, benefits and dosage",
+   "url": "https://www.drugs.com/npp/plantain.html",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "A monograph covering several Plantago species (including P. lanceolata, P. major and the psyllium species). Psyllium seed husk with insufficient fluid can swell and block throat/oesophagus; the FDA label warning is quoted; Plantago pollen contains allergens; psyllium seed allergy including anaphylaxis reported.",
+   "sourceType": "commercial drug-information database",
+   "caveat": "Its swelling and obstruction evidence concerns psyllium products (P. ovata / P. psyllium / P. afra), not P. lanceolata."
+  },
+  {
+   "id": "ema-psyllium",
+   "publisher": "European Medicines Agency / HMPC",
+   "title": "Community herbal monograph on Plantago afra L. et Plantago indica L., semen",
+   "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/final-community-herbal-monograph-plantago-afra-l-et-plantago-indica-l-semen_en.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "For psyllium seed (P. afra and P. indica): must be taken with sufficient liquid; with inadequate fluid bulk-forming agents can obstruct the throat and oesophagus with choking; seeds contain potent allergens; absorbs up to ten times its weight in water.",
+   "sourceType": "regulator monograph",
+   "caveat": "Applies to P. afra/P. indica, NOT to P. lanceolata."
+  },
+  {
+   "id": "foraging-course",
+   "publisher": "The Foraging Course Company (UK)",
+   "title": "Foraging guide: ribwort plantain",
+   "url": "https://www.foragingcoursecompany.co.uk/post/foraging-guide-ribwort-plantain",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Says leaves are bright green, narrow, with 3-5 raised ribs beneath, stem deeply grooved; confusable with hoary plantain and greater plantain (both much wider leaves, neither poisonous); unopened flower heads eaten raw taste mushroom-like, leaves edible but bitter; 'hazards none known'.",
+   "sourceType": "commercial foraging-school page",
+   "caveat": "LOW authority: a business page, no citations. Used only where nothing better was found, and every such use is flagged."
+  },
+  {
+   "id": "holisticmitten",
+   "publisher": "Holistic Mitten (herbalist education site)",
+   "title": "Plantain materia medica",
+   "url": "https://www.holisticmitten.org/materiamedica/plantain",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Says there are no known toxic lookalikes for any Plantago species and compares narrowleaf plantain to yellow/curly dock.",
+   "sourceType": "herbalist site",
+   "caveat": "LOW authority; no citations; used only to note that dock is raised as a lookalike."
+  }
+ ],
+ "identification": {
+  "features": [
+   {
+    "feature": "Basal rosette of lance-shaped leaves, much longer than wide, with 3-5 prominent nearly parallel veins; margins entire or faintly toothed",
+    "citations": [
+     "umd-plantain",
+     "foraging-course"
+    ],
+    "confidence": "high"
+   },
+   {
+    "feature": "Flower spike: small cylindrical or cone-shaped head of tiny white flowers on a slender leafless, grooved stalk",
+    "citations": [
+     "umd-plantain",
+     "foraging-course"
+    ],
+    "confidence": "high; groove detail from the low-authority page only"
+   },
+   {
+    "feature": "Leaves may stand upright or lie flat; evergreen rosette",
+    "citations": [
+     "umd-plantain"
+    ],
+    "confidence": "medium"
+   }
+  ],
+  "lookalikes": [
+   {
+    "name": "Plantago major (broadleaf plantain; existing card #14)",
+    "dangerous": false,
+    "citations": [
+     "umd-plantain",
+     "foraging-course"
+    ],
+    "how_to_tell": "Oval leaves with 3-5 parallel veins, wavy edges on older leaves, cylindrical leafless spike.",
+    "note": "Not dangerous: no hazard difference found. Both are separate cards."
+   },
+   {
+    "name": "Plantago rugelii (blackseed plantain)",
+    "dangerous": false,
+    "citations": [
+     "umd-plantain"
+    ],
+    "how_to_tell": "Similar to P. major; differs in bract shape and how capsules split (magnification may be needed)."
+   },
+   {
+    "name": "Plantago media (hoary plantain)",
+    "dangerous": false,
+    "citations": [
+     "foraging-course"
+    ],
+    "how_to_tell": "Much wider leaves than P. lanceolata (low-authority source).",
+    "note": "Found mostly in the UK/Europe."
+   },
+   {
+    "name": "Rumex crispus (curly dock rosette) - proposed card #67",
+    "dangerous": null,
+    "citations": [
+     "holisticmitten"
+    ],
+    "how_to_tell": "NOT FOUND from an authoritative source (the herbalist site only says to compare).",
+    "note": "Both are cards in this pilot; a rosette confusion between them would be card-level."
+   },
+   {
+    "name": "Any toxic plant",
+    "dangerous": null,
+    "citations": [
+     "holisticmitten",
+     "foraging-course"
+    ],
+    "how_to_tell": "Two low-authority pages say no toxic lookalike is known; NO authoritative source on this was found. Not evidence of absence.",
+    "note": "Needs a botanist; do not print 'no dangerous lookalikes' on the card."
+   }
+  ],
+  "notFound": [
+   "An authoritative statement on dangerous lookalikes of narrowleaf plantain.",
+   "Taste/aroma description from a reputable source."
+  ]
+ },
+ "safety": {
+  "question": "What cautions apply to narrowleaf plantain, and does 'Seeds swell; drink plenty of water' apply to this species?",
+  "whatSourcesSay": [
+   {
+    "position": "Leaf: no hazard identified",
+    "sources": [
+     "ema-pl"
+    ],
+    "summary": "The EMA assessment report on the leaf (read in excerpt) recorded traditional use and constituents; no hazard statement for the leaf was found in the excerpt read."
+   },
+   {
+    "position": "Seed swelling / obstruction applies to psyllium",
+    "sources": [
+     "ema-psyllium",
+     "drugs-plantago"
+    ],
+    "summary": "Swelling and throat-obstruction warnings are documented for psyllium seed (P. afra/P. indica/P. ovata) products. NOT FOUND for P. lanceolata seed or husk."
+   },
+   {
+    "position": "Allergy",
+    "sources": [
+     "drugs-plantago"
+    ],
+    "summary": "Plantago pollen contains allergens and psyllium has caused anaphylaxis; the genus-level pollen statement is not specific to this species."
+   }
+  ],
+  "whereTheyDisagree": "No disagreement; a gap. The draft's seed-swelling caution is borrowed from psyllium and is not sourced for P. lanceolata.",
+  "draftCardWarningReview": {
+   "cardWarning": "Seeds swell; drink plenty of water.",
+   "verdict": "UNSUPPORTED AS WRITTEN for this species (NOT FOUND for P. lanceolata). It is a sound caution for psyllium products, and the card lists 'Seed Fiber' as a preparation and 'Seed' as a usable part, neither of which is sourced for P. lanceolata. As written it also reads as preparation advice (how to take seeds safely).",
+   "guideCaution": "None in the draft (null)."
+  },
+  "proposedSiteCaution": "PROPOSED DRAFT FOR REVIEW, NOT FINAL WORDING: 'Seeds of some plantain species (psyllium) swell in liquid and can block the throat if swallowed without plenty of water. This has not been studied for narrowleaf plantain. Plantdex does not recommend eating the seeds or any wild plant.' Alternative: drop the seed lines from this card until they are sourced.",
+  "openSafetyQuestions": [
+   "Remove 'Seed Fiber' and 'Seed' from the draft, or source them for P. lanceolata?",
+   "Does the owner want an allergy line (pollen)? Genus-level only.",
+   "Is 'Bite soothing' appropriate even as a traditional-use phrase when snake bites are mentioned in the source? Recommend rewording or omitting."
+  ]
+ },
+ "reviewOfDraft": [
+  {
+   "field": "healingTraits",
+   "item": "Wound support",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "ema-pl",
+    "abate2022",
+    "beara-phytopharmacy"
+   ],
+   "note": "Folk use on wounds is well documented per the EMA report; the EMA also says controlled clinical studies have not been performed. Animal studies exist (PRECLINICAL)."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Bite soothing",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "abate2022"
+   ],
+   "note": "A Turkish folk record covers insect and snake bites. Reword or omit; do not imply treatment of any bite."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Respiratory aid",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "ema-pl",
+    "beara-phytopharmacy"
+   ],
+   "note": "Traditional use for respiratory-tract catarrh and dry cough is recorded; no efficacy claim should be rendered."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Anti-inflam.",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "ema-pl",
+    "hertiani2026"
+   ],
+   "note": "PRECLINICAL: in vitro and animal anti-inflammatory activity of constituents (acteoside, aucubin, catalpol). Not a human finding; do not render as a trait."
+  },
+  {
+   "field": "compounds",
+   "item": "Aucubin",
+   "status": "SUPPORTED",
+   "citations": [
+    "ema-pl",
+    "abate2022"
+   ],
+   "note": "Main iridoid glycoside; content varies with leaf age (young leaves higher in catalpol, older in aucubin per EMA)."
+  },
+  {
+   "field": "compounds",
+   "item": "Acteoside",
+   "status": "SUPPORTED",
+   "citations": [
+    "ema-pl",
+    "abate2022"
+   ],
+   "note": "A named phenylethanoid (also called verbascoside in the literature)."
+  },
+  {
+   "field": "compounds",
+   "item": "Mucilage",
+   "status": "SUPPORTED",
+   "citations": [
+    "ema-pl"
+   ],
+   "note": "Mucilage polysaccharides (mainly arabinose and galactose)."
+  },
+  {
+   "field": "taste",
+   "item": "Mild / Grassy / Bitter",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "foraging-course"
+   ],
+   "note": "Only a low-authority page says leaves are bitter. NOT FOUND from a reputable source."
+  },
+  {
+   "field": "aromatic",
+   "item": "Green / Grassy / Faint",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "preparations",
+   "item": "Salad",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "foraging-course"
+   ],
+   "note": "Only a low-authority page. NOT FOUND from a reputable source."
+  },
+  {
+   "field": "preparations",
+   "item": "Cooked Greens",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "foraging-course"
+   ],
+   "note": "Same."
+  },
+  {
+   "field": "preparations",
+   "item": "Poultice",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "beara-phytopharmacy",
+    "ema-pl",
+    "abate2022"
+   ],
+   "note": "Fresh or heated leaves applied to wounds is a documented folk practice."
+  },
+  {
+   "field": "preparations",
+   "item": "Seed Fiber",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "ema-psyllium"
+   ],
+   "note": "NOT FOUND for P. lanceolata; documented for psyllium species only."
+  },
+  {
+   "field": "usableParts",
+   "item": "Leaf",
+   "status": "SUPPORTED",
+   "citations": [
+    "ema-pl"
+   ],
+   "note": "The leaf (folium) is the herbal substance in the EMA assessment."
+  },
+  {
+   "field": "usableParts",
+   "item": "Flower",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "foraging-course"
+   ],
+   "note": "Unopened flower heads eaten per a low-authority page only."
+  },
+  {
+   "field": "usableParts",
+   "item": "Seed",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND for P. lanceolata."
+  },
+  {
+   "field": "uses (tags)",
+   "item": "wound / edible",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "ema-pl",
+    "abate2022"
+   ],
+   "note": "'Wound' as traditional topical use; 'edible' not sourced beyond a low-authority page."
+  }
+ ],
+ "scannerAndMatchingNotes": [
+  "P. major is card #14 and P. lanceolata a different exact species: exact-only matching sends each to its own card; genus-wide matching would not. A hybrid between them is not described in the sources read (NOT FOUND)."
+ ],
+ "uncertainty": [
+  "EMA report read in excerpt only; its safety section was not seen. POWO/WCVP blocked."
+ ]
+}

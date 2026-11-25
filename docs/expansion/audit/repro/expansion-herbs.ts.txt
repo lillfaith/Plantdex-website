@@ -1,0 +1,21 @@
+import raw from './expansion-cards.json';
+import type { Herb, UseKey } from '@/lib/types';
+const UNITS = (process.env.SIM_COLLECTION ?? 'none');
+export const EXPANSION_HERBS: Herb[] = (raw as any).cards.map((c: any) => ({
+  id: c.id,
+  cardNumber: c.cardNumber,
+  ...(UNITS === 'none' ? {} : { collectionId: 'expansion', cardNumberInCollection: c.cardNumber - 56 }),
+  commonName: c.commonName,
+  scientificName: c.scientificName,
+  rarity: c.front.rarity,
+  xp: c.front.xp,
+  season: c.front.season,
+  uses: c.front.uses as UseKey[],
+  stats: { water: c.front.stats.water, sun: c.front.stats.sun, temperature: c.front.stats.temperature },
+  image: `/cards/${c.id}.webp`,
+  thumb: `/cards/thumb/${c.id}.webp`,
+  backImage: `/cards/back/${c.id}.webp`,
+  sprite: `/cards/sprite/${c.id}.webp`,
+  back: c.back,
+  ...(process.env.SIM_WARNING === '1' ? { warning: c.review.cardSafetyWarning } : {}),
+}));
