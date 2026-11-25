@@ -1,0 +1,528 @@
+{
+ "branch": "origin/claude/plantdex-v0-3-supabase-verify-iic8pz",
+ "branch_head": "26e9deafe5e50f9b70e8853ab83ac705ec5a7a4c",
+ "count": 85,
+ "dup_numbers": [],
+ "dup_ids": [],
+ "gaps": [],
+ "source_hashes": [
+  [
+   "expansion/source/PlantDex_85_All_Requested_Corrections.json",
+   "7a2061e1ca7a6c2044e69dae358d976535feede2ae120f191006a37ea336bf67",
+   "7a2061e1ca7a6c2044e69dae358d976535feede2ae120f191006a37ea336bf67",
+   "PRESENT"
+  ],
+  [
+   "expansion/source/PlantDex_85_All_Requested_Corrections.csv",
+   "e6f27a3c18ae88d1d04f5484f066e900207f66f61d030650886230606e6a9f59",
+   "e6f27a3c18ae88d1d04f5484f066e900207f66f61d030650886230606e6a9f59",
+   "PRESENT"
+  ],
+  [
+   "expansion/source/PlantDex_85_ALL_Corrections_Claude_Master.xlsx",
+   "a38a930a3cb561b4a159c2fa8d72bee611b675cb5da8c95d03042f920dff1637",
+   "a38a930a3cb561b4a159c2fa8d72bee611b675cb5da8c95d03042f920dff1637",
+   "PRESENT"
+  ],
+  [
+   "expansion/source/PlantDex_85_Claude_Safety_Correction_Handoff.md",
+   "6e2371bc32f36541b223ae542a55028a020c39e3fc502d83c5609d161faf25e5",
+   "6e2371bc32f36541b223ae542a55028a020c39e3fc502d83c5609d161faf25e5",
+   "PRESENT"
+  ],
+  [
+   "expansion/source/PlantDex_85_All_Corrections_QA.json",
+   "7b2f08c92f788221e323a6c6818a2cbf320d1be8ea9dda628d8b41112b225cb7",
+   "7b2f08c92f788221e323a6c6818a2cbf320d1be8ea9dda628d8b41112b225cb7",
+   "PRESENT"
+  ],
+  [
+   "expansion/source/PlantDex_139_Three_Research_Links_Per_Plant.csv",
+   "a50cce0f70a56ae9346f5ccbf71166fd75cf8c7d6225f6ae50c5c49b1f8acc40",
+   "a50cce0f70a56ae9346f5ccbf71166fd75cf8c7d6225f6ae50c5c49b1f8acc40",
+   "PRESENT"
+  ],
+  [
+   "expansion/source/PlantDex_139_Three_Links_Per_Plant_Source_Tracker.xlsx",
+   "39acc590f9f633d2fce3abd80f55c83ea066750be7d3c1eabf0da53a68958196",
+   "39acc590f9f633d2fce3abd80f55c83ea066750be7d3c1eabf0da53a68958196",
+   "PRESENT"
+  ]
+ ],
+ "statuses": {
+  "main_image_status": {
+   "APPROVED": 18,
+   "PRESENT": 61,
+   "MISSING": 6
+  },
+  "tall_preview_status": {
+   "APPROVED": 5,
+   "MISSING": 73,
+   "PRESENT": 7
+  },
+  "pixel_icon_status": {
+   "APPROVED": 5,
+   "PRESENT": 80
+  },
+  "card_front_status": {
+   "PRESENT": 85
+  },
+  "card_back_status": {
+   "PRESENT": 85
+  },
+  "card_pdf_status": {
+   "PRESENT": 85
+  },
+  "card_assembled_status": {
+   "PRESENT": 67,
+   "APPROVED": 18
+  },
+  "card_base_status": {
+   "MISSING": 10,
+   "PRESENT": 75
+  },
+  "sprite_files_status": {
+   "APPROVED": 5,
+   "MISSING": 80
+  },
+  "sprite_brief_status": {
+   "PRESENT": 5,
+   "MISSING": 80
+  },
+  "profile_draft_status": {
+   "PRESENT": 85
+  },
+  "back_fields_status": {
+   "PRESENT": 85
+  },
+  "safety_caution_review_status": {
+   "NEEDS REVIEW": 85
+  },
+  "references_status": {
+   "NEEDS REVIEW": 26,
+   "MISSING": 59
+  },
+  "challenge_fields_status": {
+   "PRESENT": 85
+  },
+  "qc_status": {
+   "NEEDS REVIEW": 85
+  },
+  "implementation_status": {
+   "BLOCKED": 85
+  }
+ },
+ "zips": {
+  "dfd35c19-PlantDex_62_76_107_116_124_V4_FOR_CLAUDE.zip": {
+   "sha256": "8f493a10523900233b8c29b9237b00cb33119f6a3af25a73e9105edb4a94a739",
+   "cards": [
+    62,
+    76,
+    107,
+    116,
+    124
+   ]
+  },
+  "30c5eb3c-PlantDex_63-66_FINAL_ASSETS_FOR_CLAUDE.zip": {
+   "sha256": "f061f9cacae17703a986949284188f96fd2b0a268fb328ed2ca38f07ed4d1ffe",
+   "cards": [
+    63,
+    64,
+    65,
+    66
+   ]
+  },
+  "NOT RECORDED": {
+   "sha256": "unknown (zip not on disk)",
+   "cards": [
+    67,
+    68,
+    69,
+    70,
+    71
+   ]
+  },
+  "6e64303d-PlantDex_72-76_V10_FINISHED_ASSETS_ONLY.zip": {
+   "sha256": "5b8840ba9a93088d070c4c5e31541b68971b3b8a67ab6a2d2b029397b8c68375",
+   "cards": [
+    72,
+    73,
+    74,
+    75
+   ]
+  },
+  "1be703a1-PlantDex_77-81_V17_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "c7fc71eb40262a7d84d293ffd712ca2ea45ee93806cd097b0dc58d8abc26f0aa",
+   "cards": [
+    77,
+    78,
+    79,
+    80,
+    81
+   ]
+  },
+  "50f4b572-PlantDex_82-86_V3_REFINED_FEATURE_CROP_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "1654ec6eb28877a5baa1d98fa29d754675b04a3dd85c805e05fe7ea01d9a3351",
+   "cards": [
+    82,
+    83,
+    84,
+    85,
+    86
+   ]
+  },
+  "c8a91eb3-PlantDex_87-91_V13_EXACT_PREVIEW_CORRECTIONS_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "76f296e31306eb27be5a4f0ebee7b8abe7669e023ecf6f8c1ba55ce2cc176dd0",
+   "cards": [
+    87,
+    88,
+    89,
+    90,
+    91
+   ]
+  },
+  "6dfd8111-PlantDex_92-96_V6_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "06566d62927582021ff132fa6d0724b6242d742b679e04960e1cfdb0ec079064",
+   "cards": [
+    92,
+    93,
+    94,
+    95,
+    96
+   ]
+  },
+  "6e1eda6a-Resent_PlantDex_97-101_V7_All_10_Cards.zip": {
+   "sha256": "67e32aedb25f6b50c5179165fd355b2b7893043651aaf3f3bd9a69958a22850d",
+   "cards": [
+    97,
+    98,
+    99,
+    100,
+    101
+   ]
+  },
+  "e28109ff-PlantDex_102-106_V3_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "40036a7cd96cb1864d69e645e72b7e6ab50a3602fc5d75e26083321721dec221",
+   "cards": [
+    102,
+    103,
+    104,
+    105,
+    106
+   ]
+  },
+  "2ead80e8-PlantDex_108-111_V8_COMPLETE_CLAUDE_ASSETS.zip": {
+   "sha256": "d2165238221de5fabd710190dc1851a59f223ee52ca7ad6f5c56dd49d13860ed",
+   "cards": [
+    108,
+    109,
+    110,
+    111
+   ]
+  },
+  "1c29d427-PlantDex_112-115_V3_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "e1dd410e6d28182d5e32b8da0a7055eebe2ad44f2fda1870f27fe11af808a67a",
+   "cards": [
+    112,
+    113,
+    114,
+    115
+   ]
+  },
+  "PlantDex_117-121_V8_PRESERVED_COMPLETE_FOR_CLAUDE.zip": {
+   "sha256": "unavailable: original zip no longer on disk when provenance was written; per-file hashes below are of the extracted files",
+   "cards": [
+    117,
+    118,
+    119,
+    120,
+    121
+   ]
+  },
+  "cc7d81ec-PlantDex_122-126_V3_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "dd840ce2b9be01efc9dfd7d202b0b666b3aae8d11450075a3efa8b0b39e9b05d",
+   "cards": [
+    122,
+    123,
+    125,
+    126
+   ]
+  },
+  "83e0d897-PlantDex_127-131_V10_CLAUDE_READY_UNDER30MB.zip": {
+   "sha256": "6dd011b39aa75a081c7407669b7e9ceefb7604ea186c231fa2ffe69e8e78e229",
+   "cards": [
+    127,
+    128,
+    129,
+    130,
+    131
+   ]
+  },
+  "172f6e2d-PlantDex_132-136_V4_CLAUDE_ASSETS_UNDER_30MB.zip": {
+   "sha256": "f5244faf7674ffa7c802dabe3565880dc144268913359570b7f656c2ee102ac1",
+   "cards": [
+    132,
+    133,
+    134,
+    135,
+    136
+   ]
+  },
+  "4730d569-PlantDex_137-141_V5_CLAUDE_READY_COMPLETE.zip": {
+   "sha256": "97a8a711bf2f5501eeabf3ca504dd14b477105d6b3aeaccfefb92bf4047d4213",
+   "cards": [
+    137,
+    138,
+    139,
+    140,
+    141
+   ]
+  }
+ },
+ "collisions": [],
+ "generic_caution": [
+  59,
+  62,
+  64,
+  66,
+  72,
+  78,
+  79,
+  83,
+  91,
+  94,
+  96,
+  103,
+  104,
+  109,
+  111,
+  117,
+  120,
+  123,
+  126,
+  131,
+  132,
+  133,
+  134,
+  137,
+  141
+ ],
+ "no_citation": [
+  58,
+  60,
+  62,
+  63,
+  64,
+  66,
+  68,
+  69,
+  71,
+  73,
+  74,
+  76,
+  77,
+  78,
+  79,
+  80,
+  81,
+  83,
+  86,
+  87,
+  88,
+  89,
+  90,
+  91,
+  92,
+  93,
+  95,
+  96,
+  97,
+  98,
+  99,
+  101,
+  103,
+  104,
+  105,
+  106,
+  109,
+  110,
+  111,
+  114,
+  115,
+  116,
+  117,
+  119,
+  120,
+  121,
+  123,
+  126,
+  127,
+  128,
+  129,
+  130,
+  132,
+  133,
+  135,
+  136,
+  137,
+  139,
+  141
+ ],
+ "citation_totals": [
+  21,
+  234
+ ],
+ "missing_main": [
+  97,
+  98,
+  99,
+  100,
+  101,
+  129
+ ],
+ "missing_pixel": [],
+ "nonstandard_pixel": [],
+ "no_card_base": [
+  57,
+  58,
+  59,
+  60,
+  61,
+  67,
+  68,
+  69,
+  70,
+  71
+ ],
+ "approved_cards": [
+  63,
+  64,
+  65,
+  66,
+  67,
+  68,
+  69,
+  70,
+  71,
+  72,
+  73,
+  74,
+  75,
+  77,
+  78,
+  79,
+  80,
+  81
+ ],
+ "hash_issues": [],
+ "unexplained_back": [],
+ "challenge_issues": [],
+ "genus_level": [],
+ "rarity": {
+  "Common": 47,
+  "Uncommon": 23,
+  "Epic": 5,
+  "Rare": 10
+ },
+ "season": {
+  "summer": 45,
+  "spring": 23,
+  "autumn": 16,
+  "winter": 1
+ },
+ "field_cards": [
+  [
+   "echinacea-purpurea",
+   "48"
+  ],
+  [
+   "typha-latifolia",
+   "49"
+  ],
+  [
+   "oenothera-biennis",
+   "50"
+  ],
+  [
+   "lindera-benzoin",
+   "51"
+  ],
+  [
+   "hamamelis-virginiana",
+   "52"
+  ],
+  [
+   "malva-neglecta",
+   "53"
+  ],
+  [
+   "silybum-marianum",
+   "54"
+  ],
+  [
+   "verbena-hastata",
+   "55"
+  ],
+  [
+   "callicarpa-americana",
+   "56"
+  ]
+ ],
+ "herb_numbers": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  41,
+  42,
+  43,
+  44,
+  45
+ ],
+ "non_herb_cards": [
+  {
+   "cardNumber": 46,
+   "title": "Icon Guide"
+  },
+  {
+   "cardNumber": 47,
+   "title": "Disclaimer"
+  }
+ ]
+}
