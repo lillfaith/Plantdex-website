@@ -29,9 +29,10 @@ describe('live confirm_scan workflow stays TEST-only and narrow', () => {
     expect(code).not.toContain('vygiamigomwlvnwkryyl');
   });
 
-  it('reads only the TEST-scoped access token, with a read-only GITHUB_TOKEN', () => {
-    const secrets = [...code.matchAll(/secrets\.([A-Z_]+)/g)].map((m) => m[1]);
-    expect([...new Set(secrets)]).toEqual(['SUPABASE_ACCESS_TOKEN']);
+  it('reads no secret at all, only the public TEST anon key variable, with a read-only GITHUB_TOKEN', () => {
+    expect(code).not.toMatch(/secrets\./);
+    const vars = [...code.matchAll(/vars\.([A-Z_]+)/g)].map((m) => m[1]);
+    expect([...new Set(vars)]).toEqual(['TEST_SUPABASE_ANON_KEY']);
     expect(code).toMatch(/permissions:\s*\n\s*contents: read/);
   });
 
