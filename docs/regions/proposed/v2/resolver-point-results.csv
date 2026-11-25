@@ -1,0 +1,246 @@
+id,stratum,label,lat,lon,truth_unit,truth_region,truth_unit_state,grid_region,grid_near,grid_ok,poly_region,poly_unit,poly_unit_state,poly_unit_alternatives,poly_neighbours_within_10km,poly_near_coverage_edge_km,poly_ok
+P001,A uniform land,,41.3154,-77.0965,67,AP,assigned,AP,,yes,AP,67,assigned,,,,yes
+P002,A uniform land,,36.6911,-89.7081,73,GC,uncertain,GC,,yes,GC,73,uncertain,SE,,,yes
+P003,A uniform land,,35.4141,-115.3795,14,SW,assigned-near,SW,,yes,SW,14,assigned-near,PC,,,yes
+P004,A uniform land,,38.6568,-79.8369,69,AP,assigned,AP,,yes,AP,69,assigned,,,,yes
+P005,A uniform land,,42.5458,-120.4112,80,RM,assigned-near,RM,PC,yes,RM,80,assigned-near,PC,PC,,yes
+P006,A uniform land,,46.5761,-91.0141,50,NF,assigned,NF,,yes,NF,50,assigned,,,5.4,yes
+P007,A uniform land,,45.1363,-94.1864,51,MW,assigned-near,MW,,yes,MW,51,assigned-near,NF,,,yes
+P008,A uniform land,,38.1649,-115.3200,13,RM,assigned-near,RM,,yes,RM,13,assigned-near,SW,,,yes
+P009,A uniform land,,44.2050,-106.1074,43,GP,assigned,GP,,yes,GP,43,assigned,,,,yes
+P010,A uniform land,,31.0879,-90.6612,65,SE,uncertain,SE,,yes,SE,65,uncertain,GC,,,yes
+P011,A uniform land,,38.8303,-103.7344,26,GP,assigned-near,GP,,yes,GP,26,assigned-near,SW,,,yes
+P012,A uniform land,,47.4802,-122.2544,2,PC,assigned,PC,,yes,PC,2,assigned,,,8.1,yes
+P013,A uniform land,,34.5055,-97.7696,29,GP,assigned-near,GP,,yes,GP,29,assigned-near,SE,,,yes
+P014,A uniform land,,39.6476,-101.4537,25,GP,assigned,GP,,yes,GP,25,assigned,,,,yes
+P015,A uniform land,,44.3183,-74.7162,58,NF,assigned-near,NF,,yes,NF,58,assigned-near,NE,,,yes
+P016,A uniform land,,40.4722,-75.9211,67,AP,assigned,AP,NF NE,yes,AP,67,assigned,,NF,,yes
+P017,A uniform land,,46.2943,-113.6083,17,RM,assigned,RM,,yes,RM,17,assigned,,,,yes
+P018,A uniform land,,46.7951,-100.6882,42,GP,assigned,GP,,yes,GP,42,assigned,,,,yes
+P019,A uniform land,,34.8098,-80.9700,45,SE,assigned,SE,,yes,SE,45,assigned,,,,yes
+P020,A uniform land,,36.8142,-92.5471,39,AP,assigned-near,AP,,yes,AP,39,assigned-near,MW,,,yes
+P021,A uniform land,,41.5207,-97.7125,27,GP,assigned,GP,MW,yes,GP,27,assigned,,,,yes
+P022,A uniform land,,45.5799,-122.7761,1,PC,assigned,PC,,yes,PC,1,assigned,,,,yes
+P023,A uniform land,,48.1378,-102.5004,43,GP,assigned,GP,,yes,GP,43,assigned,,,,yes
+P024,A uniform land,,39.0191,-88.0073,72,MW,assigned-near,MW,,yes,MW,72,assigned-near,SE,,,yes
+P025,A uniform land,,30.4614,-93.0865,35,SE,assigned-near,SE,GC,yes,SE,35,assigned-near,GC,GC,,yes
+P026,A uniform land,,38.2958,-80.7965,69,AP,assigned,AP,,yes,AP,69,assigned,,,,yes
+P027,A uniform land,,31.5823,-105.2820,24,SW,assigned-near,SW,,yes,SW,24,assigned-near,GP,,,yes
+P028,A uniform land,,29.3563,-97.3920,33,SE,uncertain,GP,SE,NO,SE,33,uncertain,GP,GP,,yes
+P029,A uniform land,,42.7664,-101.2897,44,GP,assigned,GP,,yes,GP,44,assigned,,,,yes
+P030,A uniform land,,43.8744,-112.1984,12,RM,assigned,RM,,yes,RM,12,assigned,,,,yes
+P031,A uniform land,,33.4928,-108.9710,23,SW,uncertain,SW,,yes,SW,23,uncertain,RM,,,yes
+P032,A uniform land,,38.8934,-96.0592,28,GP,assigned-near,GP,MW,yes,GP,28,assigned-near,MW,MW,,yes
+P033,A uniform land,,38.7835,-88.1535,72,MW,assigned-near,MW,,yes,MW,72,assigned-near,SE,,,yes
+P034,A uniform land,,40.1846,-82.7530,55,MW,assigned,MW,NE,yes,MW,55,assigned,,NE,,yes
+P035,A uniform land,,40.2607,-122.3090,6,PC,assigned,PC,,yes,PC,6,assigned,,,,yes
+P036,A uniform land,,39.2987,-96.8183,28,GP,assigned-near,GP,,yes,GP,28,assigned-near,MW,,,yes
+P037,A uniform land,,31.3144,-94.1961,35,SE,assigned-near,SE,,yes,SE,35,assigned-near,GC,,,yes
+P038,A uniform land,,42.6693,-82.8876,57,MW,assigned-near,MW,,yes,MW,57,assigned-near,NE,,6.9,yes
+P039,A uniform land,,44.6744,-116.1660,16,RM,assigned,RM,,yes,RM,16,assigned,,,,yes
+P040,A uniform land,,35.2258,-83.6255,66,AP,assigned,AP,,yes,AP,66,assigned,,,,yes
+P041,A uniform land,,41.4260,-98.7321,27,GP,assigned,GP,,yes,GP,27,assigned,,,,yes
+P042,A uniform land,,37.0816,-93.8701,39,AP,assigned-near,AP,,yes,AP,39,assigned-near,MW,,,yes
+P043,A uniform land,,37.4247,-79.2860,45,SE,assigned,SE,AP,yes,SE,45,assigned,,AP,,yes
+P044,A uniform land,,44.2598,-114.6368,16,RM,assigned,RM,,yes,RM,16,assigned,,,,yes
+P045,A uniform land,,35.4925,-114.7885,14,SW,assigned-near,SW,,yes,SW,14,assigned-near,PC,,,yes
+P046,A uniform land,,33.2940,-82.1053,65,SE,uncertain,SE,,yes,SE,65,uncertain,GC,,,yes
+P047,A uniform land,,44.9572,-94.1549,51,MW,assigned-near,MW,,yes,MW,51,assigned-near,NF,,,yes
+P048,A uniform land,,36.5709,-98.0243,27,GP,assigned,GP,,yes,GP,27,assigned,,,,yes
+P049,A uniform land,,43.1029,-104.9387,43,GP,assigned,GP,,yes,GP,43,assigned,,,,yes
+P050,A uniform land,,46.1752,-117.4532,11,RM,assigned-near,RM,,yes,RM,11,assigned-near,PC,,,yes
+P051,A uniform land,,37.0713,-85.9710,71,SE,uncertain,SE,,yes,SE,71,uncertain,AP MW,,,yes
+P052,A uniform land,,42.2275,-107.4174,18,RM,assigned-near,RM,,yes,RM,18,assigned-near,GP,,,yes
+P053,A uniform land,,43.4809,-76.4063,83,NE,uncertain,NE,,yes,NE,83,uncertain,NF MW,,4.2,yes
+P054,A uniform land,,43.7597,-108.3402,18,RM,assigned-near,RM,,yes,RM,18,assigned-near,GP,,,yes
+P055,A uniform land,,38.3086,-104.6215,26,GP,assigned-near,GP,,yes,GP,26,assigned-near,SW,,,yes
+P056,A uniform land,,33.6939,-108.4972,23,SW,uncertain,SW,,yes,SW,23,uncertain,RM,,,yes
+P057,A uniform land,,43.1873,-120.0963,80,RM,assigned-near,RM,,yes,RM,80,assigned-near,PC,,,yes
+P058,A uniform land,,33.8812,-109.2332,23,SW,uncertain,SW,,yes,SW,23,uncertain,RM,,,yes
+P059,A uniform land,,32.1980,-108.3692,24,SW,assigned-near,SW,,yes,SW,24,assigned-near,GP,,,yes
+P060,A uniform land,,30.7484,-93.3492,35,SE,assigned-near,SE,,yes,SE,35,assigned-near,GC,,,yes
+P061,A uniform land,,40.0526,-94.4992,40,MW,uncertain,MW,,yes,MW,40,uncertain,AP GP,,,yes
+P062,A uniform land,,34.6604,-91.4508,73,GC,uncertain,GC,,yes,GC,73,uncertain,SE,,,yes
+P063,A uniform land,,45.4174,-90.9012,50,NF,assigned,NF,,yes,NF,50,assigned,,,,yes
+P064,A uniform land,,42.0367,-99.0854,44,GP,assigned,GP,,yes,GP,44,assigned,,,,yes
+P065,A uniform land,,46.4753,-115.9933,15,RM,assigned,RM,,yes,RM,15,assigned,,,,yes
+P066,A uniform land,,38.8786,-86.8633,71,SE,uncertain,SE,MW,yes,SE,71,uncertain,AP MW,MW,,yes
+P067,A uniform land,,35.1592,-90.4362,73,GC,uncertain,GC,,yes,GC,73,uncertain,SE,,,yes
+P068,A uniform land,,39.9286,-77.4244,66,AP,assigned,AP,NE,yes,AP,66,assigned,,NE,,yes
+P069,A uniform land,,33.8889,-93.0943,35,SE,assigned-near,SE,,yes,SE,35,assigned-near,GC,,,yes
+P070,A uniform land,,31.8635,-110.1505,79,SW,assigned,SW,,yes,SW,79,assigned,,,,yes
+P071,B near region boundary,,31.2252,-96.7793,32,GP,assigned-near,GP,SE,yes,GP,32,assigned-near,SE,SE,,yes
+P072,B near region boundary,,29.7408,-97.6864,33,SE,uncertain,SE,GP,yes,SE,33,uncertain,GP,GP,,yes
+P073,B near region boundary,,30.3436,-101.6312,30,GP,assigned-near,GP,SW,yes,GP,30,assigned-near,SW,SW,,yes
+P074,B near region boundary,,35.8086,-95.1676,38,AP,assigned,AP,MW,yes,AP,38,assigned,,MW,,yes
+P075,B near region boundary,,34.7295,-86.3800,68,AP,assigned,AP,SE,yes,SE,71,uncertain,AP MW,AP,,NO
+P076,B near region boundary,,40.1895,-96.7235,27,GP,assigned,GP,MW,yes,GP,27,assigned,,MW,,yes
+P077,B near region boundary,,39.1211,-111.2410,20,SW,uncertain,RM,SW,NO,SW,20,uncertain,RM,RM,,yes
+P078,B near region boundary,,36.1047,-107.0153,21,RM,assigned,RM,SW,yes,RM,21,assigned,,SW,,yes
+P079,B near region boundary,,37.1578,-113.6435,14,SW,assigned-near,SW,RM,yes,SW,14,assigned-near,PC,RM,,yes
+P080,B near region boundary,,46.4379,-94.7201,51,MW,assigned-near,MW,NF,yes,MW,51,assigned-near,NF,NF,,yes
+P081,B near region boundary,,37.3893,-107.9832,21,RM,assigned,RM,SW,yes,RM,21,assigned,,,,yes
+P082,B near region boundary,,40.1719,-82.7010,61,NE,uncertain,MW,NE,NO,NE,61,uncertain,AP MW,MW,,yes
+P083,B near region boundary,,44.8726,-87.9489,51,MW,assigned-near,NF,MW,NO,MW,51,assigned-near,NF,NF,6.3,yes
+P084,B near region boundary,,42.1528,-97.8775,47,MW,uncertain,MW,GP,yes,MW,47,uncertain,GP,,,yes
+P085,B near region boundary,,43.1278,-74.0325,58,NF,assigned-near,NF,NE,yes,NF,58,assigned-near,NE,NE,,yes
+P086,B near region boundary,,44.7098,-121.4728,9,PC,uncertain,PC,RM,yes,PC,9,uncertain,RM,RM,,yes
+P087,B near region boundary,,43.8306,-103.2639,17,RM,assigned,RM,GP,yes,RM,17,assigned,,GP,,yes
+P088,B near region boundary,,30.3923,-83.3312,65,SE,uncertain,GC,SE,NO,SE,65,uncertain,GC,GC,,yes
+P089,B near region boundary,,41.4499,-82.1763,83,NE,uncertain,NE,MW,yes,NE,83,uncertain,NF MW,,2.6,yes
+P090,B near region boundary,,36.8763,-90.0769,73,GC,uncertain,SE,GC,NO,SE,74,assigned-near,GC,GC,,NO
+P091,B near region boundary,,36.8260,-80.2107,45,SE,assigned,AP,SE,NO,SE,45,assigned,,AP,,yes
+P092,B near region boundary,,36.5874,-105.8733,22,SW,uncertain,SW,RM,yes,SW,22,uncertain,RM,RM,,yes
+P093,B near region boundary,,38.1522,-95.9986,40,MW,uncertain,MW,GP,yes,MW,40,uncertain,AP GP,GP,,yes
+P094,B near region boundary,,36.4258,-89.3481,73,GC,uncertain,GC,SE,yes,GC,73,uncertain,SE,SE,,yes
+P095,B near region boundary,,34.8646,-86.4833,71,SE,uncertain,SE,AP,yes,SE,71,uncertain,AP MW,AP,,yes
+P096,B near region boundary,,38.5737,-77.7240,64,NE,assigned-near,NE,SE,yes,NE,64,assigned-near,SE,SE,,yes
+P097,B near region boundary,,46.9105,-95.3579,50,NF,assigned,NF,MW,yes,NF,50,assigned,,MW,,yes
+P098,B near region boundary,,33.5098,-104.5549,24,SW,assigned-near,SW,GP,yes,SW,24,assigned-near,GP,GP,,yes
+P099,B near region boundary,,41.3562,-105.1843,21,RM,assigned,RM,GP,yes,RM,21,assigned,,GP,,yes
+P100,B near region boundary,,37.2510,-79.7856,45,SE,assigned,SE,AP,yes,SE,45,assigned,,AP,,yes
+P101,B near region boundary,,40.6399,-82.2519,61,NE,uncertain,NE,AP,yes,NE,61,uncertain,AP MW,AP,,yes
+P102,B near region boundary,,43.4513,-73.5395,58,NF,assigned-near,NF,NE,yes,NF,58,assigned-near,NE,NE,,yes
+P103,B near region boundary,,41.9016,-120.1630,80,RM,assigned-near,PC,RM,NO,RM,80,assigned-near,PC,PC,,yes
+P104,B near region boundary,,35.6744,-81.8222,45,SE,assigned,SE,AP,yes,SE,45,assigned,,AP,,yes
+P105,B near region boundary,,38.4696,-86.8679,71,SE,uncertain,SE,MW,yes,SE,71,uncertain,AP MW,MW,,yes
+P106,B near region boundary,,41.4941,-120.3430,9,PC,uncertain,PC,RM,yes,PC,9,uncertain,RM,,,yes
+P107,B near region boundary,,37.6089,-88.3256,71,SE,uncertain,SE,MW,yes,SE,71,uncertain,AP MW,MW,,yes
+P108,B near region boundary,,43.7138,-75.4318,83,NE,uncertain,NE,NF,yes,NE,83,uncertain,NF MW,NF,,yes
+P109,B near region boundary,,43.7419,-75.8746,58,NF,assigned-near,NF,NE,yes,NF,58,assigned-near,NE,,,yes
+P110,B near region boundary,,35.7057,-106.1784,22,SW,uncertain,SW,RM,yes,SW,22,uncertain,RM,RM,,yes
+P111,B near region boundary,,38.5815,-119.5321,13,RM,assigned-near,RM,PC,yes,RM,13,assigned-near,SW,PC,,yes
+P112,B near region boundary,,44.1808,-104.7694,43,GP,assigned,GP,RM,yes,GP,43,assigned,,RM,,yes
+P113,B near region boundary,,34.4484,-87.2738,71,SE,uncertain,SE,AP,yes,SE,71,uncertain,AP MW,AP,,yes
+P114,B near region boundary,,41.4236,-73.6898,58,NF,assigned-near,NF,NE,yes,NF,58,assigned-near,NE,NE,,yes
+P115,B near region boundary,,38.8190,-111.5789,19,RM,assigned,RM,SW,yes,RM,19,assigned,,,,yes
+P116,B near region boundary,,44.4665,-104.8805,17,RM,assigned,RM,GP,yes,RM,17,assigned,,GP,,yes
+P117,B near region boundary,,44.5302,-106.9444,17,RM,assigned,RM,GP,yes,RM,17,assigned,,GP,,yes
+P118,B near region boundary,,30.5509,-89.5306,65,SE,uncertain,SE,GC,yes,SE,65,uncertain,GC,GC,,yes
+P119,B near region boundary,,36.3107,-107.2177,22,SW,uncertain,SW,RM,yes,SW,22,uncertain,RM,RM,,yes
+P120,B near region boundary,,45.8936,-93.3885,51,MW,assigned-near,MW,NF,yes,MW,51,assigned-near,NF,NF,,yes
+P121,B near region boundary,,37.4247,-112.4464,19,RM,assigned,RM,SW,yes,RM,19,assigned,,SW,,yes
+P122,B near region boundary,,29.9746,-94.4175,34,GC,assigned-near,GC,SE,yes,GC,34,assigned-near,GP,SE,,yes
+P123,B near region boundary,,30.3728,-101.7567,24,SW,assigned-near,SW,GP,yes,SW,24,assigned-near,GP,GP,,yes
+P124,B near region boundary,,36.4549,-106.0233,21,RM,assigned,RM,SW,yes,RM,21,assigned,,SW,,yes
+P125,B near region boundary,,46.8571,-110.3949,17,RM,assigned,RM,GP,yes,RM,17,assigned,,GP,,yes
+P126,B near region boundary,,42.7756,-75.1017,60,AP,assigned-near,AP,NE,yes,AP,60,assigned-near,NE,NE,,yes
+P127,B near region boundary,,38.3220,-92.3208,39,AP,assigned-near,AP,MW,yes,AP,39,assigned-near,MW,,,yes
+P128,B near region boundary,,38.6058,-77.4495,45,SE,assigned,SE,NE,yes,SE,45,assigned,,NE,,yes
+P129,B near region boundary,,41.6892,-97.6435,47,MW,uncertain,GP,MW,NO,MW,47,uncertain,GP,GP,,yes
+P130,B near region boundary,,36.4683,-84.8116,68,AP,assigned,AP,SE,yes,AP,68,assigned,,,,yes
+P131,B near region boundary,,38.3472,-111.4688,19,RM,assigned,RM,SW,yes,RM,19,assigned,,SW,,yes
+P132,B near region boundary,,40.1216,-75.0788,64,NE,assigned-near,NE,GC,yes,NE,64,assigned-near,SE,GC,,yes
+P133,B near region boundary,,43.9151,-75.3614,58,NF,assigned-near,NF,NE,yes,NF,58,assigned-near,NE,NE,,yes
+P134,B near region boundary,,37.4423,-94.1478,39,AP,assigned-near,MW,AP,NO,AP,39,assigned-near,MW,MW,,yes
+P135,B near region boundary,,38.0236,-83.5467,70,AP,assigned-near,AP,SE,yes,AP,70,assigned-near,MW,,,yes
+P136,B near region boundary,,38.0599,-78.2544,45,SE,assigned,SE,NE,yes,SE,45,assigned,,NE,,yes
+P137,B near region boundary,,42.7691,-75.4173,60,AP,assigned-near,AP,NE,yes,AP,60,assigned-near,NE,NE,,yes
+P138,B near region boundary,,31.3282,-96.5019,33,SE,uncertain,SE,GP,yes,SE,33,uncertain,GP,GP,,yes
+P139,B near region boundary,,38.7562,-86.2603,71,SE,uncertain,SE,MW,yes,SE,71,uncertain,AP MW,MW,,yes
+P140,B near region boundary,,37.1958,-86.5405,72,MW,assigned-near,MW,SE,yes,MW,72,assigned-near,SE,SE,,yes
+P141,C1 land at coverage edge,,44.5412,-75.6794,83,NE,uncertain,NE,,yes,NE,83,uncertain,NF MW,,2.9,yes
+P142,C1 land at coverage edge,,42.3233,-124.4036,1,PC,assigned,PC,,yes,PC,1,assigned,,,1.4,yes
+P143,C1 land at coverage edge,,30.4806,-86.9170,75,GC,assigned,GC,SE,yes,GC,75,assigned,,SE,2.4,yes
+P144,C1 land at coverage edge,,31.2359,-81.4025,75,GC,assigned,GC,,yes,GC,75,assigned,,,0.3,yes
+P145,C1 land at coverage edge,,48.5161,-122.8057,2,PC,assigned,PC,,yes,PC,2,assigned,,,0.6,yes
+P146,C1 land at coverage edge,,39.2073,-74.6928,84,NE,uncertain,NE,GC,yes,NE,84,uncertain,GC,GC,0.9,yes
+P147,C1 land at coverage edge,,43.5913,-86.5026,56,MW,assigned,MW,,yes,MW,56,assigned,,,1.9,yes
+P148,C1 land at coverage edge,,44.1298,-83.5794,50,NF,assigned,NF,,yes,NF,50,assigned,,,1.1,yes
+P149,C1 land at coverage edge,,38.9092,-123.6474,1,PC,assigned,PC,,yes,PC,1,assigned,,,4.0,yes
+P150,C1 land at coverage edge,,48.8068,-122.6632,2,PC,assigned,PC,,yes,PC,2,assigned,,,1.1,yes
+P151,C1 land at coverage edge,,43.8680,-69.9398,82,NF,assigned-near,NF,NE,yes,NF,82,assigned-near,NE,,0.7,yes
+P152,C1 land at coverage edge,,48.3638,-122.4444,2,PC,assigned,PC,,yes,PC,2,assigned,,,1.7,yes
+P153,C1 land at coverage edge,,28.1255,-100.0538,31,GP,uncertain,GP,,yes,GP,31,uncertain,GC SW,,1.5,yes
+P154,C1 land at coverage edge,,48.9640,-110.5581,42,GP,assigned,GP,,yes,GP,42,assigned,,,3.9,yes
+P155,C1 land at coverage edge,,47.4496,-91.0529,50,NF,assigned,NF,,yes,,,,,NF,,NO
+P156,C1 land at coverage edge,,47.7347,-124.4102,1,PC,assigned,PC,,yes,PC,1,assigned,,,1.0,yes
+P157,C1 land at coverage edge,,47.5579,-122.9236,2,PC,assigned,PC,,yes,PC,2,assigned,,,3.8,yes
+P158,C1 land at coverage edge,,46.4958,-67.7952,82,NF,assigned-near,,NF,NO,NF,82,assigned-near,NE,,0.7,yes
+P159,C1 land at coverage edge,,28.5584,-100.3762,31,GP,uncertain,GP,,yes,GP,31,uncertain,GC SW,,3.0,yes
+P160,C1 land at coverage edge,,32.7011,-115.0453,81,SW,assigned,SW,,yes,SW,81,assigned,,,0.7,yes
+P161,C1 land at coverage edge,,43.6967,-83.5464,57,MW,assigned-near,MW,,yes,MW,57,assigned-near,NE,,0.3,yes
+P162,C1 land at coverage edge,,27.2048,-99.4138,31,GP,uncertain,GP,,yes,GP,31,uncertain,GC SW,,1.8,yes
+P163,C1 land at coverage edge,,43.9701,-83.8725,57,MW,assigned-near,MW,NF,yes,MW,57,assigned-near,NE,NF,0.8,yes
+P164,C1 land at coverage edge,,35.9318,-76.3336,63,GC,uncertain,GC,,yes,GC,63,uncertain,NE SE,,0.9,yes
+P165,C1 land at coverage edge,,33.9967,-119.5699,85,PC,assigned-near,,PC,NO,PC,85,assigned-near,SW,,0.2,yes
+P166,"C2 outside, within 6 km",,35.3981,-76.6405,,,,GC,,NO,,,,,GC,,yes
+P167,"C2 outside, within 6 km",,26.9732,-99.4355,,,,,GP,yes,,,,,GP,,yes
+P168,"C2 outside, within 6 km",,37.4656,-121.9918,,,,PC,,NO,,,,,PC,,yes
+P169,"C2 outside, within 6 km",,25.5002,-80.2809,,,,,GC,yes,,,,,GC,,yes
+P170,"C2 outside, within 6 km",,45.5912,-85.6643,,,,NF,,NO,,,,,NF,,yes
+P171,"C2 outside, within 6 km",,43.3103,-77.2193,,,,,NE,yes,,,,,NE,,yes
+P172,"C2 outside, within 6 km",,30.6585,-105.0687,,,,SW,,NO,,,,,SW,,yes
+P173,"C2 outside, within 6 km",,47.8363,-89.0961,,,,NF,,NO,,,,,NF,,yes
+P174,"C2 outside, within 6 km",,44.4905,-67.8080,,,,NF,,NO,,,,,NF,,yes
+P175,"C2 outside, within 6 km",,41.7556,-87.4671,,,,,MW,yes,,,,,MW,,yes
+P176,"C2 outside, within 6 km",,48.2001,-122.8125,,,,,PC,yes,,,,,PC,,yes
+P177,"C2 outside, within 6 km",,35.9362,-75.9357,,,,GC,,NO,,,,,GC,,yes
+P178,"C2 outside, within 6 km",,27.3669,-97.2916,,,,,GC,yes,,,,,GC,,yes
+P179,"C2 outside, within 6 km",,35.0391,-76.1853,,,,,GC,yes,,,,,GC,,yes
+P180,"C2 outside, within 6 km",,48.2489,-90.9566,,,,NF,,NO,,,,,NF,,yes
+P181,"C2 outside, within 6 km",,40.6413,-72.9956,,,,,NE,yes,,,,,NE,,yes
+P182,"C2 outside, within 6 km",,45.0362,-124.0208,,,,PC,,NO,,,,,PC,,yes
+P183,"C2 outside, within 6 km",,49.0512,-103.4763,,,,,GP,yes,,,,,GP,,yes
+P184,"C2 outside, within 6 km",,44.9009,-87.4994,,,,,NF MW,yes,,,,,MW,,yes
+P185,"C2 outside, within 6 km",,32.7840,-79.6791,,,,,GC,yes,,,,,GC,,yes
+P186,"C2 outside, within 6 km",,36.0294,-76.6022,,,,GC,,NO,,,,,GC,,yes
+P187,"C2 outside, within 6 km",,33.7266,-118.0991,,,,PC,,NO,,,,,PC,,yes
+P188,"C2 outside, within 6 km",,42.4740,-86.2803,,,,MW,,NO,,,,,MW,,yes
+P189,"C2 outside, within 6 km",,33.2903,-118.4964,,,,,PC,yes,,,,,PC,,yes
+P190,"C2 outside, within 6 km",,37.3624,-76.3858,,,,GC,SE,NO,,,,,GC,,yes
+P191,D named place,Memphis TN (known grid error),35.1500,-90.0500,73,GC,uncertain,GC,SE,yes,GC,73,uncertain,SE,SE,,yes
+P192,D named place,Washington DC (known grid error),38.9000,-77.0400,65,SE,uncertain,SE,NE,yes,SE,65,uncertain,GC,NE,,yes
+P193,D named place,Tijuana MX,32.5300,-117.0400,,,,PC,,NO,,,,,PC,,yes
+P194,D named place,San Diego CA border at San Ysidro,32.5500,-117.0300,85,PC,assigned-near,PC,,yes,PC,85,assigned-near,SW,,0.9,yes
+P195,D named place,Ciudad Juarez MX,31.6900,-106.4200,,,,,SW,yes,,,,,SW,,yes
+P196,D named place,El Paso TX,31.7600,-106.4900,24,SW,assigned-near,SW,,yes,SW,24,assigned-near,GP,,0.8,yes
+P197,D named place,Nogales Sonora MX,31.3300,-110.9400,,,,SW,,NO,,,,,SW,,yes
+P198,D named place,Nogales AZ,31.3400,-110.9300,79,SW,assigned,SW,,yes,SW,79,assigned,,,0.9,yes
+P199,D named place,Matamoros MX,25.8700,-97.5000,,,,GC,,NO,,,,,GC,,yes
+P200,D named place,Brownsville TX,25.9000,-97.5000,34,GC,assigned-near,GC,,yes,GC,34,assigned-near,GP,,0.2,yes
+P201,D named place,Niagara Falls ON,43.0900,-79.0800,,,,NE,,NO,,,,,NE,,yes
+P202,D named place,Buffalo NY,42.8900,-78.8800,83,NE,uncertain,NE,AP,yes,NE,83,uncertain,NF MW,,0.9,yes
+P203,D named place,Windsor ON,42.3200,-83.0400,,,,MW,,NO,,,,,MW,,yes
+P204,D named place,Detroit MI,42.3300,-83.0500,57,MW,assigned-near,MW,,yes,MW,57,assigned-near,NE,,0.6,yes
+P205,D named place,Vancouver BC,49.2800,-123.1200,,,,,,yes,,,,,,,yes
+P206,D named place,Blaine WA,48.9900,-122.7500,2,PC,assigned,PC,,yes,PC,2,assigned,,,0.2,yes
+P207,D named place,Montreal QC,45.5000,-73.5700,,,,,,yes,,,,,,,yes
+P208,D named place,Sault Ste Marie ON,46.5200,-84.3500,,,,,NF,yes,,,,,NF,,yes
+P209,D named place,Cape Hatteras NC,35.2500,-75.5300,63,GC,uncertain,GC,,yes,GC,63,uncertain,NE SE,,0.7,yes
+P210,D named place,Key West FL,24.5600,-81.7800,76,GC,assigned,GC,,yes,GC,76,assigned,,,0.3,yes
+P211,D named place,Dry Tortugas,24.6300,-82.8700,,,,,,yes,,,,,,,yes
+P212,D named place,Cape Cod Provincetown MA,42.0500,-70.1900,84,NE,uncertain,NE,,yes,NE,84,uncertain,GC,,0.3,yes
+P213,D named place,Nantucket MA,41.2800,-70.1000,84,NE,uncertain,NE,,yes,NE,84,uncertain,GC,,1.9,yes
+P214,D named place,Block Island RI,41.1700,-71.5800,84,NE,uncertain,NE,,yes,NE,84,uncertain,GC,,1.4,yes
+P215,D named place,Long Island Montauk NY,41.0700,-71.8600,84,NE,uncertain,NE,,yes,NE,84,uncertain,GC,,0.2,yes
+P216,D named place,Mackinac Island MI,45.8500,-84.6200,50,NF,assigned,NF,,yes,NF,50,assigned,,,0.3,yes
+P217,D named place,Isle Royale MI,48.0000,-88.8500,50,NF,assigned,NF,,yes,NF,50,assigned,,,2.7,yes
+P218,D named place,Galveston TX,29.3000,-94.8000,34,GC,assigned-near,,GC,NO,GC,34,assigned-near,GP,,1.0,yes
+P219,D named place,Padre Island TX,27.1000,-97.4000,,,,GC,,NO,,,,,GC,,yes
+P220,D named place,Outer Banks Corolla NC,36.3800,-75.8300,63,GC,uncertain,GC,,yes,GC,63,uncertain,NE SE,,0.7,yes
+P221,D named place,Santa Catalina Island CA,33.3900,-118.4200,85,PC,assigned-near,PC,,yes,PC,85,assigned-near,SW,,3.4,yes
+P222,D named place,San Francisco CA,37.7700,-122.4200,6,PC,assigned,PC,,yes,PC,6,assigned,,,2.7,yes
+P223,D named place,Memphis west bank AR,35.1300,-90.1500,73,GC,uncertain,GC,SE,yes,GC,73,uncertain,SE,SE,,yes
+P224,D named place,Little Rock AR,34.7500,-92.2900,35,SE,assigned-near,GC,AP SE,NO,SE,35,assigned-near,GC,AP GC,,yes
+P225,D named place,Philadelphia PA,39.9500,-75.1700,63,GC,uncertain,GC,NE,yes,GC,63,uncertain,NE SE,NE,,yes
+P226,D named place,Baltimore MD,39.2900,-76.6100,65,SE,uncertain,SE,NE GC,yes,SE,65,uncertain,GC,GC NE,0.5,yes
+P227,D named place,Atlanta GA,33.7500,-84.3900,45,SE,assigned,SE,,yes,SE,45,assigned,,,,yes
+P228,D named place,Anchorage AK,61.2200,-149.9000,,,,,,yes,,,,,,,yes
+P229,D named place,Fairbanks AK,64.8400,-147.7200,,,,,,yes,,,,,,,yes
+P230,D named place,Juneau AK,58.3000,-134.4200,,,,,,yes,,,,,,,yes
+P231,D named place,Honolulu HI,21.3100,-157.8600,,,,,,yes,,,,,,,yes
+P232,D named place,Hilo HI,19.7200,-155.0900,,,,,,yes,,,,,,,yes
+P233,D named place,San Juan PR,18.4700,-66.1100,,,,,,yes,,,,,,,yes
+P234,D named place,Ponce PR,18.0100,-66.6100,,,,,,yes,,,,,,,yes
+P235,D named place,Charlotte Amalie VI,18.3400,-64.9300,,,,,,yes,,,,,,,yes
+P236,D named place,Gulf of Mexico offshore,26.0000,-90.0000,,,,,,yes,,,,,,,yes
+P237,D named place,Atlantic offshore,33.0000,-70.0000,,,,,,yes,,,,,,,yes
+P238,D named place,Pacific offshore,37.0000,-128.0000,,,,,,yes,,,,,,,yes
+P239,D named place,Lake Michigan mid-lake,43.5000,-87.0000,,,,,,yes,,,,,,,yes
+P240,D named place,Lake Superior mid-lake,47.5000,-88.0000,,,,NF,,NO,,,,,NF,,yes
+P241,D named place,Lake Erie mid-lake,42.2000,-81.2000,,,,,,yes,,,,,,,yes
+P242,D named place,Toronto ON,43.6500,-79.3800,,,,,,yes,,,,,,,yes
+P243,D named place,Monterrey MX,25.6700,-100.3100,,,,,,yes,,,,,,,yes
+P244,D named place,Havana CU,23.1300,-82.3800,,,,,,yes,,,,,,,yes
+P245,D named place,Nassau BS,25.0500,-77.3500,,,,,,yes,,,,,,,yes

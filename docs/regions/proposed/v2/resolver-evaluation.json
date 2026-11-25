@@ -1,0 +1,1741 @@
+{
+ "lookup_vs_shapely_mismatches_of_1500": {
+  "polygon_tol100": 0,
+  "polygon_tol200": 0,
+  "polygon_tol30": 0,
+  "polygon_tol400": 0,
+  "polygon_tol50": 0
+ },
+ "methods": {
+  "grid_0.1": {
+   "bytes": 29828,
+   "points": {
+    "A uniform land": {
+     "correct": 69,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.314,
+     "land_correct": 69,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 1
+    },
+    "B near region boundary": {
+     "correct": 61,
+     "errors": 9,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 9,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 1.0,
+     "land_correct": 61,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 9
+    },
+    "C1 land at coverage edge": {
+     "correct": 23,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.44,
+     "land_correct": 23,
+     "land_n": 25,
+     "missed_land": 2,
+     "n": 25,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C2 outside, within 6 km": {
+     "correct": 12,
+     "errors": 13,
+     "errors_not_flagged": [
+      "P166 C2 outside, within 6 km truth=None got=GC",
+      "P168 C2 outside, within 6 km truth=None got=PC",
+      "P170 C2 outside, within 6 km truth=None got=NF",
+      "P172 C2 outside, within 6 km truth=None got=SW",
+      "P173 C2 outside, within 6 km truth=None got=NF",
+      "P174 C2 outside, within 6 km truth=None got=NF",
+      "P177 C2 outside, within 6 km truth=None got=GC",
+      "P180 C2 outside, within 6 km truth=None got=NF",
+      "P182 C2 outside, within 6 km truth=None got=PC",
+      "P186 C2 outside, within 6 km truth=None got=GC",
+      "P187 C2 outside, within 6 km truth=None got=PC",
+      "P188 C2 outside, within 6 km truth=None got=MW",
+      "P190 C2 outside, within 6 km truth=None got=GC"
+     ],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 13,
+     "flagged_share_of_land_points": 0.0,
+     "land_correct": 0,
+     "land_n": 0,
+     "missed_land": 0,
+     "n": 25,
+     "outside_correct": 12,
+     "outside_n": 25,
+     "wrong_region_on_land": 0
+    },
+    "D named place": {
+     "correct": 46,
+     "errors": 9,
+     "errors_not_flagged": [
+      "P193 Tijuana MX truth=None got=PC",
+      "P197 Nogales Sonora MX truth=None got=SW",
+      "P199 Matamoros MX truth=None got=GC",
+      "P201 Niagara Falls ON truth=None got=NE",
+      "P203 Windsor ON truth=None got=MW",
+      "P219 Padre Island TX truth=None got=GC",
+      "P240 Lake Superior mid-lake truth=None got=NF"
+     ],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 7,
+     "flagged_share_of_land_points": 0.538,
+     "land_correct": 24,
+     "land_n": 26,
+     "missed_land": 1,
+     "n": 55,
+     "outside_correct": 22,
+     "outside_n": 29,
+     "wrong_region_on_land": 1
+    },
+    "all": {
+     "correct": 211,
+     "errors": 34,
+     "errors_not_flagged": [
+      "P166 C2 outside, within 6 km truth=None got=GC",
+      "P168 C2 outside, within 6 km truth=None got=PC",
+      "P170 C2 outside, within 6 km truth=None got=NF",
+      "P172 C2 outside, within 6 km truth=None got=SW",
+      "P173 C2 outside, within 6 km truth=None got=NF",
+      "P174 C2 outside, within 6 km truth=None got=NF",
+      "P177 C2 outside, within 6 km truth=None got=GC",
+      "P180 C2 outside, within 6 km truth=None got=NF",
+      "P182 C2 outside, within 6 km truth=None got=PC",
+      "P186 C2 outside, within 6 km truth=None got=GC",
+      "P187 C2 outside, within 6 km truth=None got=PC",
+      "P188 C2 outside, within 6 km truth=None got=MW",
+      "P190 C2 outside, within 6 km truth=None got=GC",
+      "P193 Tijuana MX truth=None got=PC",
+      "P197 Nogales Sonora MX truth=None got=SW",
+      "P199 Matamoros MX truth=None got=GC",
+      "P201 Niagara Falls ON truth=None got=NE",
+      "P203 Windsor ON truth=None got=MW",
+      "P219 Padre Island TX truth=None got=GC",
+      "P240 Lake Superior mid-lake truth=None got=NF"
+     ],
+     "errors_with_truth_in_neighbour_flag": 14,
+     "false_region_outside": 20,
+     "flagged_share_of_land_points": 0.613,
+     "land_correct": 177,
+     "land_n": 191,
+     "missed_land": 3,
+     "n": 245,
+     "outside_correct": 34,
+     "outside_n": 54,
+     "wrong_region_on_land": 11
+    },
+    "wrong_rows": [
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "GP",
+      "id": "P028",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "SE"
+      ],
+      "ok": false,
+      "stratum": "A uniform land",
+      "truth": "SE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "RM",
+      "id": "P077",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "SW"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "SW",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "MW",
+      "id": "P082",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "NE"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "NE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "NF",
+      "id": "P083",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "MW"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "MW",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "GC",
+      "id": "P088",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "SE"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "SE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P090",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "AP",
+      "id": "P091",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "SE"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "SE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "PC",
+      "id": "P103",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "RM"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "RM",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "GP",
+      "id": "P129",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "MW"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "MW",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "MW",
+      "id": "P134",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "AP"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "AP",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P158",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P165",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "PC"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "PC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "GC",
+      "id": "P166",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "PC",
+      "id": "P168",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "NF",
+      "id": "P170",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "SW",
+      "id": "P172",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "NF",
+      "id": "P173",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "NF",
+      "id": "P174",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "GC",
+      "id": "P177",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "NF",
+      "id": "P180",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "PC",
+      "id": "P182",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "GC",
+      "id": "P186",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "PC",
+      "id": "P187",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "MW",
+      "id": "P188",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "GC",
+      "id": "P190",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "SE"
+      ],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "PC",
+      "id": "P193",
+      "label": "Tijuana MX",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "SW",
+      "id": "P197",
+      "label": "Nogales Sonora MX",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "GC",
+      "id": "P199",
+      "label": "Matamoros MX",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "NE",
+      "id": "P201",
+      "label": "Niagara Falls ON",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "MW",
+      "id": "P203",
+      "label": "Windsor ON",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P218",
+      "label": "Galveston TX",
+      "missed_land": true,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "GC",
+      "id": "P219",
+      "label": "Padre Island TX",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "GC",
+      "id": "P224",
+      "label": "Little Rock AR",
+      "missed_land": false,
+      "near": [
+       "AP",
+       "SE"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "SE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": true,
+      "flagged": false,
+      "got": "NF",
+      "id": "P240",
+      "label": "Lake Superior mid-lake",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": false,
+      "wrong_region_on_land": false
+     }
+    ]
+   }
+  },
+  "polygon_tol100": {
+   "bytes": 141470,
+   "points": {
+    "A uniform land": {
+     "correct": 70,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.329,
+     "land_correct": 70,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "B near region boundary": {
+     "correct": 69,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.914,
+     "land_correct": 69,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 1
+    },
+    "C1 land at coverage edge": {
+     "correct": 24,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 1.0,
+     "land_correct": 24,
+     "land_n": 25,
+     "missed_land": 1,
+     "n": 25,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C2 outside, within 6 km": {
+     "correct": 23,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 2,
+     "flagged_share_of_land_points": 0.0,
+     "land_correct": 0,
+     "land_n": 0,
+     "missed_land": 0,
+     "n": 25,
+     "outside_correct": 23,
+     "outside_n": 25,
+     "wrong_region_on_land": 0
+    },
+    "D named place": {
+     "correct": 53,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.962,
+     "land_correct": 24,
+     "land_n": 26,
+     "missed_land": 1,
+     "n": 55,
+     "outside_correct": 29,
+     "outside_n": 29,
+     "wrong_region_on_land": 1
+    },
+    "all": {
+     "correct": 239,
+     "errors": 6,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 6,
+     "false_region_outside": 2,
+     "flagged_share_of_land_points": 0.717,
+     "land_correct": 187,
+     "land_n": 191,
+     "missed_land": 2,
+     "n": 245,
+     "outside_correct": 52,
+     "outside_n": 54,
+     "wrong_region_on_land": 2
+    },
+    "wrong_rows": [
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P075",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "AP"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "AP",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P155",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "NF",
+      "id": "P173",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "NF",
+      "id": "P174",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P191",
+      "label": "Memphis TN (known grid error)",
+      "missed_land": false,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P216",
+      "label": "Mackinac Island MI",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     }
+    ]
+   },
+   "tol_1e-4deg": 100
+  },
+  "polygon_tol200": {
+   "bytes": 90340,
+   "points": {
+    "A uniform land": {
+     "correct": 70,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.329,
+     "land_correct": 70,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "B near region boundary": {
+     "correct": 68,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.914,
+     "land_correct": 68,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 2
+    },
+    "C1 land at coverage edge": {
+     "correct": 22,
+     "errors": 3,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 3,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 1.0,
+     "land_correct": 22,
+     "land_n": 25,
+     "missed_land": 3,
+     "n": 25,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C2 outside, within 6 km": {
+     "correct": 24,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 1,
+     "flagged_share_of_land_points": 0.0,
+     "land_correct": 0,
+     "land_n": 0,
+     "missed_land": 0,
+     "n": 25,
+     "outside_correct": 24,
+     "outside_n": 25,
+     "wrong_region_on_land": 0
+    },
+    "D named place": {
+     "correct": 51,
+     "errors": 4,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 4,
+     "false_region_outside": 1,
+     "flagged_share_of_land_points": 0.962,
+     "land_correct": 23,
+     "land_n": 26,
+     "missed_land": 2,
+     "n": 55,
+     "outside_correct": 28,
+     "outside_n": 29,
+     "wrong_region_on_land": 1
+    },
+    "all": {
+     "correct": 235,
+     "errors": 10,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 10,
+     "false_region_outside": 2,
+     "flagged_share_of_land_points": 0.717,
+     "land_correct": 183,
+     "land_n": 191,
+     "missed_land": 5,
+     "n": 245,
+     "outside_correct": 52,
+     "outside_n": 54,
+     "wrong_region_on_land": 3
+    },
+    "wrong_rows": [
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P075",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "AP"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "AP",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SW",
+      "id": "P121",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "RM"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "RM",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P144",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P145",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "PC"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "PC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P155",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "NF",
+      "id": "P173",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P191",
+      "label": "Memphis TN (known grid error)",
+      "missed_land": false,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "MW",
+      "id": "P203",
+      "label": "Windsor ON",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P215",
+      "label": "Long Island Montauk NY",
+      "missed_land": true,
+      "near": [
+       "NE"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "NE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P216",
+      "label": "Mackinac Island MI",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     }
+    ]
+   },
+   "tol_1e-4deg": 200
+  },
+  "polygon_tol30": {
+   "bytes": 302555,
+   "points": {
+    "A uniform land": {
+     "correct": 70,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.329,
+     "land_correct": 70,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "B near region boundary": {
+     "correct": 70,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.929,
+     "land_correct": 70,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C1 land at coverage edge": {
+     "correct": 24,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 1.0,
+     "land_correct": 24,
+     "land_n": 25,
+     "missed_land": 1,
+     "n": 25,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C2 outside, within 6 km": {
+     "correct": 25,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.0,
+     "land_correct": 0,
+     "land_n": 0,
+     "missed_land": 0,
+     "n": 25,
+     "outside_correct": 25,
+     "outside_n": 25,
+     "wrong_region_on_land": 0
+    },
+    "D named place": {
+     "correct": 55,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.962,
+     "land_correct": 26,
+     "land_n": 26,
+     "missed_land": 0,
+     "n": 55,
+     "outside_correct": 29,
+     "outside_n": 29,
+     "wrong_region_on_land": 0
+    },
+    "all": {
+     "correct": 244,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.723,
+     "land_correct": 190,
+     "land_n": 191,
+     "missed_land": 1,
+     "n": 245,
+     "outside_correct": 54,
+     "outside_n": 54,
+     "wrong_region_on_land": 0
+    },
+    "wrong_rows": [
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P155",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     }
+    ]
+   },
+   "tol_1e-4deg": 30
+  },
+  "polygon_tol400": {
+   "bytes": 60374,
+   "points": {
+    "A uniform land": {
+     "correct": 70,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.314,
+     "land_correct": 70,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "B near region boundary": {
+     "correct": 68,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.914,
+     "land_correct": 68,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 2
+    },
+    "C1 land at coverage edge": {
+     "correct": 23,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 1.0,
+     "land_correct": 23,
+     "land_n": 25,
+     "missed_land": 2,
+     "n": 25,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C2 outside, within 6 km": {
+     "correct": 22,
+     "errors": 3,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 3,
+     "false_region_outside": 3,
+     "flagged_share_of_land_points": 0.0,
+     "land_correct": 0,
+     "land_n": 0,
+     "missed_land": 0,
+     "n": 25,
+     "outside_correct": 22,
+     "outside_n": 25,
+     "wrong_region_on_land": 0
+    },
+    "D named place": {
+     "correct": 48,
+     "errors": 7,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 7,
+     "false_region_outside": 1,
+     "flagged_share_of_land_points": 0.962,
+     "land_correct": 20,
+     "land_n": 26,
+     "missed_land": 5,
+     "n": 55,
+     "outside_correct": 28,
+     "outside_n": 29,
+     "wrong_region_on_land": 1
+    },
+    "all": {
+     "correct": 231,
+     "errors": 14,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 14,
+     "false_region_outside": 4,
+     "flagged_share_of_land_points": 0.712,
+     "land_correct": 181,
+     "land_n": 191,
+     "missed_land": 7,
+     "n": 245,
+     "outside_correct": 50,
+     "outside_n": 54,
+     "wrong_region_on_land": 3
+    },
+    "wrong_rows": [
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "RM",
+      "id": "P077",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "SW"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "SW",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "GP",
+      "id": "P116",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "RM"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "RM",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P145",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "PC"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "PC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P165",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "PC"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "PC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "GC",
+      "id": "P178",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "PC",
+      "id": "P182",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "GC",
+      "id": "P186",
+      "label": "",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "C2 outside, within 6 km",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P191",
+      "label": "Memphis TN (known grid error)",
+      "missed_land": false,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P200",
+      "label": "Brownsville TX",
+      "missed_land": true,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": true,
+      "flagged": true,
+      "got": "MW",
+      "id": "P203",
+      "label": "Windsor ON",
+      "missed_land": false,
+      "near": [],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": null,
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P210",
+      "label": "Key West FL",
+      "missed_land": true,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P212",
+      "label": "Cape Cod Provincetown MA",
+      "missed_land": true,
+      "near": [
+       "NE"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "NE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P215",
+      "label": "Long Island Montauk NY",
+      "missed_land": true,
+      "near": [
+       "NE"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "NE",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P216",
+      "label": "Mackinac Island MI",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "D named place",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     }
+    ]
+   },
+   "tol_1e-4deg": 400
+  },
+  "polygon_tol50": {
+   "bytes": 222672,
+   "points": {
+    "A uniform land": {
+     "correct": 70,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.329,
+     "land_correct": 70,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "B near region boundary": {
+     "correct": 68,
+     "errors": 2,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 2,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.914,
+     "land_correct": 68,
+     "land_n": 70,
+     "missed_land": 0,
+     "n": 70,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 2
+    },
+    "C1 land at coverage edge": {
+     "correct": 24,
+     "errors": 1,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 1,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 1.0,
+     "land_correct": 24,
+     "land_n": 25,
+     "missed_land": 1,
+     "n": 25,
+     "outside_correct": 0,
+     "outside_n": 0,
+     "wrong_region_on_land": 0
+    },
+    "C2 outside, within 6 km": {
+     "correct": 25,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.0,
+     "land_correct": 0,
+     "land_n": 0,
+     "missed_land": 0,
+     "n": 25,
+     "outside_correct": 25,
+     "outside_n": 25,
+     "wrong_region_on_land": 0
+    },
+    "D named place": {
+     "correct": 55,
+     "errors": 0,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 0,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.962,
+     "land_correct": 26,
+     "land_n": 26,
+     "missed_land": 0,
+     "n": 55,
+     "outside_correct": 29,
+     "outside_n": 29,
+     "wrong_region_on_land": 0
+    },
+    "all": {
+     "correct": 242,
+     "errors": 3,
+     "errors_not_flagged": [],
+     "errors_with_truth_in_neighbour_flag": 3,
+     "false_region_outside": 0,
+     "flagged_share_of_land_points": 0.717,
+     "land_correct": 188,
+     "land_n": 191,
+     "missed_land": 1,
+     "n": 245,
+     "outside_correct": 54,
+     "outside_n": 54,
+     "wrong_region_on_land": 2
+    },
+    "wrong_rows": [
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P075",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "AP"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "AP",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": "SE",
+      "id": "P090",
+      "label": "",
+      "missed_land": false,
+      "near": [
+       "GC"
+      ],
+      "ok": false,
+      "stratum": "B near region boundary",
+      "truth": "GC",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": true
+     },
+     {
+      "false_region_outside": false,
+      "flagged": true,
+      "got": null,
+      "id": "P155",
+      "label": "",
+      "missed_land": true,
+      "near": [
+       "NF"
+      ],
+      "ok": false,
+      "stratum": "C1 land at coverage edge",
+      "truth": "NF",
+      "wrong_but_truth_in_flag": true,
+      "wrong_region_on_land": false
+     }
+    ]
+   },
+   "tol_1e-4deg": 50
+  }
+ },
+ "n_points": 245,
+ "raster": {
+  "cell_km": 6.0,
+  "grid_0.1": {
+   "land_correct_pct": 98.73,
+   "no_region_on_land_pct": 0.026,
+   "wrong_cells": 2748,
+   "wrong_cells_with_truth_flagged": 2748,
+   "wrong_region_pct": 1.244
+  },
+  "land_area_km2": 7790508,
+  "land_cells": 216403,
+  "polygon_tol100": {
+   "land_correct_pct": 99.774,
+   "no_region_on_land_pct": 0.087,
+   "wrong_cells": 489,
+   "wrong_cells_unflagged_sample": [],
+   "wrong_cells_with_truth_flagged": 489,
+   "wrong_region_pct": 0.139,
+   "wrong_unit_pct": 0.502
+  },
+  "polygon_tol200": {
+   "land_correct_pct": 99.562,
+   "no_region_on_land_pct": 0.149,
+   "wrong_cells": 948,
+   "wrong_cells_unflagged_sample": [],
+   "wrong_cells_with_truth_flagged": 948,
+   "wrong_region_pct": 0.289,
+   "wrong_unit_pct": 0.944
+  },
+  "polygon_tol30": {
+   "land_correct_pct": 99.927,
+   "no_region_on_land_pct": 0.028,
+   "wrong_cells": 159,
+   "wrong_cells_unflagged_sample": [],
+   "wrong_cells_with_truth_flagged": 159,
+   "wrong_region_pct": 0.046,
+   "wrong_unit_pct": 0.159
+  },
+  "polygon_tol400": {
+   "land_correct_pct": 99.207,
+   "no_region_on_land_pct": 0.239,
+   "wrong_cells": 1715,
+   "wrong_cells_unflagged_sample": [
+    [
+     38.273,
+     -77.03,
+     "GC",
+     "GC"
+    ]
+   ],
+   "wrong_cells_with_truth_flagged": 1714,
+   "wrong_region_pct": 0.553,
+   "wrong_unit_pct": 1.726
+  },
+  "polygon_tol50": {
+   "land_correct_pct": 99.872,
+   "no_region_on_land_pct": 0.049,
+   "wrong_cells": 276,
+   "wrong_cells_unflagged_sample": [],
+   "wrong_cells_with_truth_flagged": 276,
+   "wrong_region_pct": 0.078,
+   "wrong_unit_pct": 0.27
+  }
+ }
+}

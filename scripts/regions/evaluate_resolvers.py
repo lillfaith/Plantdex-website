@@ -53,11 +53,11 @@ def main():
         per = {}; rows = []
         for p in pts:
             lat, lon = float(p['lat']), float(p['lon']); r = fn(lat, lon); truth = p['truth_region'] or None
-            prim = r['primary']; near = set(r['near']); ok = prim == truth
+            prim = r['primary']; near = set(r['near']); edge = bool(r.get('edge')); ok = prim == truth
             row = {'id': p['id'], 'stratum': p['stratum'], 'label': p['label'], 'truth': truth, 'got': prim, 'near': sorted(near), 'ok': ok,
-                   'wrong_but_truth_in_flag': (not ok) and truth is not None and truth in near,
+                   'wrong_but_truth_in_flag': (not ok) and ((truth is not None and truth in near) or (truth is None and edge)),
                    'false_region_outside': truth is None and prim is not None, 'missed_land': truth is not None and prim is None,
-                   'wrong_region_on_land': truth is not None and prim is not None and prim != truth, 'flagged': bool(near) or r.get('uncertain', False)}
+                   'wrong_region_on_land': truth is not None and prim is not None and prim != truth, 'flagged': bool(near) or r.get('uncertain', False) or edge}
             rows.append(row)
         def agg(rs):
             n = len(rs); land = [r for r in rs if r['truth']]; out = [r for r in rs if not r['truth']]
@@ -81,7 +81,7 @@ def main():
     for tol, (res, size, path) in sorted(polys.items()):
         def fn(lat, lon, res=res):
             r = res.lookup(lat, lon)
-            return {'primary': r['region'], 'near': r.get('neighbours', []), 'uncertain': r.get('unitState') == 'uncertain'}
+            return {'primary': r['region'], 'near': r.get('neighbours', []) + r.get('nearRegions', []), 'uncertain': r.get('unitState') == 'uncertain', 'edge': r.get('nearCoverageEdgeKm') is not None}
         result['methods'][f'polygon_tol{tol}'] = {'bytes': size, 'tol_1e-4deg': tol, 'points': score('poly', fn)}
     # ---- part 2: raster, area weighted
     geoms, codes = load_truth(a.source); tree = STRtree(geoms)
@@ -103,6 +103,20 @@ def main():
     gl = np.array(gl); w = gl != truth_reg
     result['raster']['grid_0.1'] = {'land_correct_pct': round(100 * (1 - w.mean()), 3), 'wrong_region_pct': round(100 * ((w & (gl != '')).mean()), 3),
         'no_region_on_land_pct': round(100 * (gl == '').mean(), 3)}
+    # ---- part 2b: flag honesty over the raster. Of the cells a method gets wrong, how many carry the truth in the neighbour flag?
+    for tol, (res, size, path) in sorted(polys.items()):
+        units = decoded_shapely(res); got = poly_region_vector(units, lon, lat); gr = np.array([reg_of.get(int(c), '') for c in got])
+        bad = np.nonzero((gr != truth_reg))[0]; cov = 0; hidden = []
+        for i in bad:
+            r = res.lookup(float(lat[i]), float(lon[i])); fl = set(r.get('neighbours', [])) | set(r.get('nearRegions', []))
+            if truth_reg[i] in fl: cov += 1
+            else: hidden.append((round(float(lat[i]), 3), round(float(lon[i]), 3), str(truth_reg[i]), r.get('region')))
+        result['raster'][f'polygon_tol{tol}']['wrong_cells'] = int(len(bad)); result['raster'][f'polygon_tol{tol}']['wrong_cells_with_truth_flagged'] = int(cov)
+        result['raster'][f'polygon_tol{tol}']['wrong_cells_unflagged_sample'] = hidden[:8]
+    badg = np.nonzero(w)[0]; cg = 0
+    for i in badg:
+        r = RG.lookup(gword, ghdr, float(lat[i]), float(lon[i])); cg += (r is not None and truth_reg[i] in r['near'])
+    result['raster']['grid_0.1']['wrong_cells'] = int(len(badg)); result['raster']['grid_0.1']['wrong_cells_with_truth_flagged'] = int(cg)
     # ---- part 3: pure-Python lookup == shapely on the decoded geometry (largest tolerance and smallest)
     rng = np.random.default_rng(20261124); idx = rng.choice(n_land, size=min(1500, n_land), replace=False); mism = {}
     for tol, (res, size, path) in sorted(polys.items()):

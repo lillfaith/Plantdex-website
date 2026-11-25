@@ -190,8 +190,22 @@ class Resolver:
         return None
     def lookup(self, lat, lon, band_km=10.0):
         px, py = round(lon * 1e4), round(lat * 1e4); u = self.unit_at(px, py)
-        if u is None: return {'status': 'no-region-yet', 'region': None, 'reason': 'outside-coverage'}
         ck = min(52, max(0, int((lat - 24.0) / 0.5))); c = self.cos[ck] / 10000.0; kx = 1e-4 * c * 111195.0; ky = 1e-4 * 111195.0
+        if u is None:
+            # NO REGION IS NEVER AN ERROR, and a point just beside the mapped area says which region is within reach, so a sliver of
+            # coast lost to simplification still offers the right answer instead of silence.
+            lim = band_km * 1000.0; nr = {}
+            for (oa, ob), pts in self.arcs:
+                for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+                    ax, ay, bx, by = (x0 - px) * kx, (y0 - py) * ky, (x1 - px) * kx, (y1 - py) * ky
+                    dx, dy = bx - ax, by - ay; L2 = dx * dx + dy * dy
+                    t = 0.0 if L2 == 0 else max(0.0, min(1.0, -(ax * dx + ay * dy) / L2)); d = math.hypot(ax + t * dx, ay + t * dy)
+                    if d <= lim:
+                        for o in (oa, ob):
+                            r = self.region_of.get(o)
+                            if r and (r not in nr or d < nr[r]): nr[r] = d
+            return {'status': 'no-region-yet', 'region': None, 'reason': 'outside-coverage', 'nearRegions': sorted(nr),
+                    'nearRegionKm': {r: round(nr[r] / 1000, 1) for r in sorted(nr)}}
         near = {}; edge = None; lim = band_km * 1000.0
         for ra, rb, pts in self.bnd:
             for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
