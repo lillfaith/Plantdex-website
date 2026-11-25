@@ -1,3 +1,5 @@
+> **CORRECTION 2026-11-25.** The ten regions' names, codes and per-card assignments **were recovered** from `claude/plantdex-v0-3-supabase-verify-iic8pz` (see `region-taxonomy.md`). Earlier text here claiming they were not on any reachable branch was wrong (I searched the wrong branches), and every region name below that I had "assumed" is **withdrawn**. The mapping is superseded by `region-mapping-v2.csv` and `region-mapping-review.md`; resolver evidence is in `region-resolver-validation.md`.
+
 # Region mapping and lookup grid: methods, measurements, recommendation (PROPOSAL)
 
 **Status: PROPOSAL for owner and botanical review. Nothing here is imported into `src/`, a database, a workflow or production.** No
@@ -17,28 +19,8 @@ Files: `region-mapping.csv` (85 rows), `region-grid-{0.5,0.25,0.1}.bin` + `regio
 - **The accuracy figures are for the lookup, not for the mapping.** They say the grid reproduces the polygons; they cannot say the polygons
   grouped into ten regions are the right ten regions. That is the owner and botanical review, and is the largest uncertainty.
 
-## 2. The ten regions: what is assumed (MUST BE REPLACED BY THE REAL DEFINITIONS)
-The repo holds codes, two names and seven card-sheet labels only (`datasets.md` s0). The working reading used for every row:
-
-| Code | Working name (ASSUMED) | Anchor |
-|---|---|---|
-| NF | Northern Forest (boreal/northern hardwood) | sheet "Northern & Boreal" |
-| NE | Northeast (coastal and Great Lakes lowland) | assumed from the code |
-| AP | Appalachian | assumed from the code |
-| SE | Southeast Piedmont & Inland Plains | named in `location-detection-design.md` |
-| GC | Gulf & Atlantic Coastal Plains | named in the design; sheet "Gulf Coast & Subtropical South" |
-| MW | Midwest | assumed from the code |
-| GP | Great Plains & Prairies | sheet label |
-| RM | Rocky Mountains & Intermountain West | sheet label (so the Great Basin and Columbia Plateau land here) |
-| SW | Southwest (Desert Southwest) | sheet label |
-| PC | Pacific Coast & California | sheet label |
-
-Consequences the owner should look at first: (1) there is **no Interior Highlands region**, so the Ozarks and Ouachitas (units 36-39) are
-assigned to MW with SE secondary at high uncertainty; (2) the Colorado Plateau and AZ/NM Plateau (20, 22) could equally be RM; (3) the
-fall line around Philadelphia and Washington DC is a line the product has to choose; the proposed table puts Philadelphia in GC (the
-Middle Atlantic Coastal Plain) and Washington DC in SE, which a local would probably call "Northeast"; (4) EPA's own Level I group is not
-the same thing as these regions (it puts the Western Corn Belt and Texas coastal prairie in "Great Plains"), so the CSV overrides it where
-the assumed definition says so, and says so in the rationale.
+## 2. The ten regions
+**Withdrawn.** This section used working names I had assumed. The recovered, exact names are in `region-legend.csv` and `region-taxonomy.md`; the review against them is `region-mapping-review.md` (four primaries changed: units 36-39 to AP). The v1 consequences listed here (no Interior Highlands region; Ozarks in MW) were artefacts of the wrong assumption.
 
 ## 3. The mapping table
 `region-mapping.csv`: one row per EPA unit with primary region, optional secondary, `straddles`, `uncertainty` (low/medium/high),

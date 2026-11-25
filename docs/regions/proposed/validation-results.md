@@ -1,3 +1,5 @@
+> **Superseded 2026-11-25** by `region-resolver-validation.md` (re-run against the v2 mapping and polygon resolver). Kept for the record of the first grid's failures.
+
 | point | category | expected | full polygons (unit -> region) | grid 0.5 | grid 0.25 | grid 0.1 |
 |---|---|---|---|---|---|---|
 | Atlanta GA | city | SE | Piedmont -> SE | SE | SE | SE |

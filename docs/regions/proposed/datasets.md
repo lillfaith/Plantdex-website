@@ -1,22 +1,11 @@
+> **CORRECTION 2026-11-25.** The ten regions' names, codes and per-card assignments **were recovered** from `claude/plantdex-v0-3-supabase-verify-iic8pz` (see `region-taxonomy.md`). Earlier text here claiming they were not on any reachable branch was wrong (I searched the wrong branches), and every region name below that I had "assumed" is **withdrawn**. The mapping is superseded by `region-mapping-v2.csv` and `region-mapping-review.md`; resolver evidence is in `region-resolver-validation.md`.
+
 # Region boundary research: candidate datasets (PROPOSAL, not imported anywhere)
 
 Researched 2026-11-24. Nothing here is imported into the app, a database or production.
 
-## 0. Can the ten PlantDex regions be recovered from the repo?  Only partly.
-
-`src/data/expansion-cards.json` (with `regionalModel`) is **not present on any branch this session can reach** (`integration`,
-`claude/botanical-catalog-stage-1`; a text search of both found no `regionalModel`). What exists:
-
-| Found | Where |
-|---|---|
-| The ten codes `NF, NE, AP, SE, GC, MW, GP, RM, SW, PC` | `docs/regions/ecoregion-data-contract.md` s1 |
-| Two full names: "Southeast Piedmont & Inland Plains", "Gulf & Atlantic Coastal Plains" | `docs/regions/location-detection-design.md` s1 (UI example text) |
-| Seven card-sheet group labels: Eastern & Central U.S.; Pacific Coast & California; Desert Southwest; Rocky Mountains & Intermountain West; Great Plains & Prairies; Gulf Coast & Subtropical South; Northern & Boreal | `evidence/expansion-86.json` (`pdf_group`) on the stage-1 branch |
-| Per-card corrections such as `regions_corrected: ["PC","SW"]` for California Buckwheat | same file |
-
-**Not found: the definition (boundary description) of any region.** `region-mapping.csv` therefore uses a **working expansion of the
-codes that is an ASSUMPTION** (see `region-mapping-methods.md` s2). The owner must supply or approve the real definitions; the mapping
-is only as good as that.
+## 0. The ten PlantDex regions
+Recovered, not assumed: see `region-taxonomy.md` (names, codes, counts, per-card regions). Their **boundaries are NOT RECOVERED**; the owner must supply them.
 
 ## 1. Datasets assessed
 
