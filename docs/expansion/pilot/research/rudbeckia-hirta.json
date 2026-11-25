@@ -1,0 +1,464 @@
+{
+ "schema": "plantdex.expansion.pilot.research/1",
+ "status": "PROPOSAL_ONLY_NOT_FOR_PUBLICATION",
+ "retrievalDate": "2026-11-25",
+ "header": "PROPOSAL ONLY. Not wording for publication; nothing here is imported, enabled or deployed. Retrieval date for every source: 2026-11-25. Network note: the sandbox proxy allowed only en.wikipedia.org (rate-limited) and plants.usda.gov (redirects to a blocked host). BLOCKED (403/timeout): powo.science.kew.org, wcvp.science.kew.org, api.gbif.org, www.gbif.org, pubmed.ncbi.nlm.nih.gov, eutils.ncbi.nlm.nih.gov, europepmc.org, www.fs.usda.gov, plants.sc.egov.usda.gov, www.wikidata.org, www.inaturalist.org, extension.umn.edu, www.wildflower.org, www.fda.gov, www.ipni.org, www.worldfloraonline.org, api.crossref.org, www.ars-grin.gov. All sources below were therefore read through the Exa search/fetch tool (a third-party reader that returns excerpts); most journal articles were read as abstracts or excerpts only. Search links are not citations.",
+ "id": "rudbeckia-hirta",
+ "cardNumber": 60,
+ "commonName": "Black-Eyed Susan",
+ "scientificName": "Rudbeckia hirta",
+ "taxon": {
+  "acceptedName": "Rudbeckia hirta",
+  "authorship": "L.",
+  "family": "Asteraceae",
+  "rank": "species",
+  "checks": [
+   {
+    "database": "GBIF Backbone",
+    "result": "ACCEPTED, EXACT match, confidence 100, usage key 3114225, 'Rudbeckia hirta L.'",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-match-3114225"
+   },
+   {
+    "database": "GBIF Backbone synonyms (first entries only; the reader truncated the listing)",
+    "result": "Centrocarpha gracilis (Nutt.) D.Don; Centrocarpha gracilis (Nutt.) Sweet (HETEROTYPIC_SYNONYM; GBIF remark: originally a synonym of R. hirta var. hirta; GBIF flagged CONFLICTING_BASIONYM_COMBINATION); further entries not read",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-syn-3114225"
+   },
+   {
+    "database": "NRCS Plant Guide (infraspecific)",
+    "result": "Names the plant 'Rudbeckia hirta L. var. hirta' (symbol RUHI2); common names brown eyed Susan, bristly coneflower, hairy coneflower, gloriosa daisy",
+    "retrieved": "2026-11-25",
+    "citation": "nrcs-ruhi"
+   },
+   {
+    "database": "POWO / WCVP (Kew)",
+    "result": "NOT FOUND - blocked (403 from sandbox proxy).",
+    "retrieved": "2026-11-25",
+    "citation": null
+   }
+  ],
+  "discrepanciesWithDraft": [
+   "Draft name matches the GBIF accepted name. No change proposed.",
+   "The species has infraspecific taxa; only var. hirta appears in what was read. A provider may return an infraspecific name. Not resolved here.",
+   "Common-name overlap: 'Brown-eyed Susan' is R. triloba in MDC and NC State sources, but the NRCS guide lists it as a name for R. hirta; do not print 'brown-eyed' as an alias without a botanist's decision.",
+   "Pilot-plan discrepancy: the plan says #60 'shares its genus with an existing card'. No card with genus Rudbeckia exists in src/data/herbs.json or the Field Card list searched; the nearest existing card is Echinacea purpurea (a Field Card), a different genus and a frequently cited lookalike. Coordinator should correct the plan's rationale for #60."
+  ]
+ },
+ "sources": [
+  {
+   "id": "gbif-match-3114225",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF Backbone Taxonomy species match: Rudbeckia hirta",
+   "url": "https://api.gbif.org/v1/species/match?name=Rudbeckia%20hirta&kingdom=Plantae",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Exact match; usage key 3114225; scientific name 'Rudbeckia hirta L.'; status ACCEPTED; family Asteraceae; match confidence 100.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority."
+  },
+  {
+   "id": "gbif-syn-3114225",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF synonyms of usage key 3114225",
+   "url": "https://api.gbif.org/v1/species/3114225/synonyms?limit=20",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Lists Centrocarpha gracilis combinations as synonyms of Rudbeckia hirta.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority. Listing truncated."
+  },
+  {
+   "id": "mdc-bes",
+   "publisher": "Missouri Department of Conservation",
+   "title": "Black-eyed Susan field guide",
+   "url": "https://mdc.mo.gov/discover-nature/field-guide/black-eyed-susan",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Usually an annual, unbranched, very hairy herb; leaves hairy, sessile except a few basal ones, lance-shaped, unlobed; flower heads solitary or in loose clusters, 8-21 rich yellow-orange rays, hemispherical deep-brown disk; blooms May-October; lists look-alikes R. triloba, R. laciniata, R. missouriensis, R. subtomentosa, R. fulgida. States some Rudbeckia species have been implicated in livestock poisoning but livestock usually avoid them because of disagreeable flavour.",
+   "sourceType": "state-agency field guide",
+   "caveat": "The livestock statement is about 'some species' of the genus, not R. hirta specifically."
+  },
+  {
+   "id": "illinois-bes",
+   "publisher": "Illinois Wildflowers (John Hilty)",
+   "title": "Black-eyed Susan (Rudbeckia hirta)",
+   "url": "https://www.illinoiswildflowers.info/prairie/plantx/be_susanx.htm",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Biennial or short-lived perennial 1-2.5 ft; stems with long white hairs; alternate grey-green leaves with stiff hairs, basal leaves long-petioled, upper leaves short-petioled or clasping; 8-20 bright yellow rays around a dark brown flattened cone; taproot, no rhizomes. Reports occasional poisoning of cattle and pigs; distinguishes it from R. fulgida (similar, usually blooms later, shorter rounded style tips).",
+   "sourceType": "regional flora website",
+   "caveat": "Individual-authored regional site; detailed, but not institutional."
+  },
+  {
+   "id": "sdstate-ext",
+   "publisher": "SDSU Extension (Lang)",
+   "title": "Rudbeckia brighten the garden from summer through fall",
+   "url": "https://extension.sdstate.edu/rudbeckia-brighten-garden-summer-through-fall",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "R. hirta is typically annual or short-lived with short bristly hairs on leaves and stems; R. fulgida is a rhizomatous perennial whose stems and leaves are less hairy and leaves more rounded.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "ncsu-ruhi",
+   "publisher": "NC State Extension Plant Toolbox",
+   "title": "Rudbeckia hirta",
+   "url": "https://plants.ces.ncsu.edu/plants/rudbeckia-hirta/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Lists plants it is often confused with: Anacis tripteris, Coreopsis gladiata, Echinacea purpurea, and Rudbeckia x Echinacea; species epithet refers to stiff short hairs.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "poison-org",
+   "publisher": "America's Poison Centers (poison.org), Liu & Troutman, 2025",
+   "title": "Allergic reactions to the black-eyed Susan flower",
+   "url": "https://www.poison.org/articles/black-eyed-susan-allergic-reactions-213",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Black-eyed Susans have not been known to poison humans but should not be eaten; contact with the hairs can irritate skin (redness, itching, blistering, hives); reported to trigger asthma in sensitive people; no evidence the flowers poison humans when swallowed, but they have poisoned grazing animals; disagreeable taste could limit amounts eaten. Two child tasting cases without symptoms.",
+   "sourceType": "poison-centre guidance"
+  },
+  {
+   "id": "nmsu-cr636",
+   "publisher": "New Mexico State University (Circular 636, rev. 2010)",
+   "title": "An annotated checklist of poisonous or injurious range plants of New Mexico",
+   "url": "https://pubs.nmsu.edu/_circulars/CR636/index.html",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Lists Rudbeckia hirta with toxin 'unknown', animals affected cattle and swine; R. laciniata listed for swine and sheep.",
+   "sourceType": "university extension circular",
+   "caveat": "Livestock only; no human statement; toxin unknown."
+  },
+  {
+   "id": "duke-ruhi",
+   "publisher": "USDA Dr. Duke's Phytochemical and Ethnobotanical Databases",
+   "title": "Ethnobotanical plant Rudbeckia hirta",
+   "url": "https://phytochem.nal.usda.gov/ethnobotanical-plant-rudbeckia-hirta",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Single entry: activity 'Poison', US, citing Lewis and Elvin-Lewis, Medical Botany, ca. 1977.",
+   "sourceType": "government database",
+   "caveat": "A bare label with no part, dose, species affected or mechanism."
+  },
+  {
+   "id": "nrcs-ruhi",
+   "publisher": "USDA NRCS East Texas Plant Materials Center (Brakie 2019)",
+   "title": "Plant guide: black-eyed Susan (Rudbeckia hirta)",
+   "url": "https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_ruhi2.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Native American tribes used the whole plant; yellow and green dyes from blooms; Cherokee leaf wash for swelling caused by worms, root infusion to bathe sores, root ooze for earache; Iroquois root infusion for children with worms and root decoction for heart medicine; Potawatomi root infusion for colds (citing Moerman 2015, Tyrl et al. 2008).",
+   "sourceType": "government plant guide (cites Moerman)"
+  },
+  {
+   "id": "naeb-ruhi",
+   "publisher": "Native American Ethnobotany Database (BRIT; Moerman)",
+   "title": "Rudbeckia hirta documented uses",
+   "url": "http://naeb.brit.org/uses/species/3476/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Records 14 documented uses by Cherokee (anthelmintic, dermatological aid, ear medicine, gynecological aid, kidney aid, snake bite remedy, venereal aid), Chippewa, Iroquois (anthelmintic, heart medicine, pediatric aid), Potawatomi (cold remedy, yellow dye) and Shuswap (eye medicine); the Cherokee snake-bite entry reads 'used as wash for snakebites' (Hamel & Chiltoskey 1975).",
+   "sourceType": "ethnobotanical database (citing primary ethnographies)",
+   "caveat": "Records that people used it, not that it works."
+  },
+  {
+   "id": "curtis2023",
+   "publisher": "Curtis's Botanical Magazine (Wiley), Hind & Lambkin",
+   "title": "1082. Rudbeckia hirta L.",
+   "url": "https://onlinelibrary.wiley.com/doi/10.1111/curt.12539",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Notes flavonol glycosides among phenolic metabolites in flower extracts, with laboratory studies of 5-LOX inhibitory, immunomodulatory and antioxidant activity cited as supporting ethnopharmacological use in inflammatory conditions; quotes Foster & Duke 2000 that American Indians used root tea for worms and colds and an external wash for sores, snakebites and swellings.",
+   "sourceType": "botanical journal",
+   "caveat": "Laboratory (in vitro) findings; not human evidence."
+  }
+ ],
+ "identification": {
+  "features": [
+   {
+    "feature": "Whole plant, including stems, bristly with stiff hairs",
+    "citations": [
+     "mdc-bes",
+     "illinois-bes",
+     "sdstate-ext"
+    ],
+    "confidence": "high"
+   },
+   {
+    "feature": "Leaves lance-shaped, unlobed, alternate; basal leaves long-petioled, upper leaves stalkless or clasping",
+    "citations": [
+     "mdc-bes",
+     "illinois-bes"
+    ],
+    "confidence": "high"
+   },
+   {
+    "feature": "Solitary heads, 8-21 yellow-orange ray florets, dark brown dome-shaped disk",
+    "citations": [
+     "mdc-bes",
+     "illinois-bes"
+    ],
+    "confidence": "high",
+    "note": "MDC: 8-21 rays; Illinois: 8-20."
+   },
+   {
+    "feature": "Annual to short-lived perennial from a taproot, spreading by seed not rhizomes",
+    "citations": [
+     "illinois-bes",
+     "sdstate-ext",
+     "mdc-bes"
+    ],
+    "confidence": "medium; sources differ (annual vs biennial vs short-lived perennial)",
+    "note": "Do not print a lifespan on the card."
+   }
+  ],
+  "lookalikes": [
+   {
+    "name": "Rudbeckia triloba (brown-eyed Susan)",
+    "dangerous": false,
+    "citations": [
+     "mdc-bes"
+    ],
+    "how_to_tell": "Much-branched, about 1 inch heads, coarse-toothed leaves, lower leaves 3-lobed (shed before bloom).",
+    "note": "'Not dangerous' means no hazard difference was found in the sources read; neither is a food plant."
+   },
+   {
+    "name": "Rudbeckia fulgida (orange coneflower)",
+    "dangerous": null,
+    "citations": [
+     "illinois-bes",
+     "sdstate-ext",
+     "mdc-bes"
+    ],
+    "how_to_tell": "Rhizomatous perennial, less hairy and more rounded leaves, blooms later, shorter rounded style tips."
+   },
+   {
+    "name": "Rudbeckia laciniata (cutleaf coneflower)",
+    "dangerous": true,
+    "citations": [
+     "mdc-bes",
+     "poison-org",
+     "nmsu-cr636"
+    ],
+    "how_to_tell": "Tall to 9 ft; green disk and only 6-10 rays; deeply 3-7-lobed leaves.",
+    "note": "Named in livestock-poisoning literature (swine and sheep; poison.org cites a 1932 veterinary paper) - LIVESTOCK ONLY; no human case found."
+   },
+   {
+    "name": "Rudbeckia missouriensis; R. subtomentosa",
+    "dangerous": null,
+    "citations": [
+     "mdc-bes"
+    ],
+    "how_to_tell": "R. missouriensis: smaller, upper leaves linear. R. subtomentosa: taller, branched, large-toothed, larger heads."
+   },
+   {
+    "name": "Echinacea purpurea",
+    "dangerous": null,
+    "citations": [
+     "ncsu-ruhi"
+    ],
+    "how_to_tell": "NOT FOUND beyond being 'often confused' (needs a flora). It is an existing Field Card in this app."
+   },
+   {
+    "name": "Coreopsis, Anacis tripteris",
+    "dangerous": null,
+    "citations": [
+     "ncsu-ruhi"
+    ],
+    "how_to_tell": "Listed as 'often confused with'; distinguishing features NOT FOUND."
+   }
+  ],
+  "notFound": [
+   "Distinguishing features for Echinacea/Coreopsis/Anacis from a flora.",
+   "Any toxic lookalike from a different genus (not found; search was limited)."
+  ]
+ },
+ "safety": {
+  "question": "Are the seeds toxic (draft card claim), and what do sources actually say?",
+  "whatSourcesSay": [
+   {
+    "position": "Not known to poison humans; not for eating",
+    "sources": [
+     "poison-org"
+    ],
+    "summary": "Poison-centre article: no evidence the flowers poison humans when swallowed; should not be eaten; two small ingestions in children produced no symptoms."
+   },
+   {
+    "position": "Skin and respiratory irritant",
+    "sources": [
+     "poison-org"
+    ],
+    "summary": "Plant hairs can irritate skin (redness to blistering and hives); reported to trigger asthma in sensitive people."
+   },
+   {
+    "position": "Livestock poisoning reported, toxin unknown",
+    "sources": [
+     "nmsu-cr636",
+     "illinois-bes",
+     "mdc-bes",
+     "duke-ruhi"
+    ],
+    "summary": "Cattle and pigs affected per NMSU and Illinois Wildflowers; Duke's database carries a bare 'Poison' label; MDC says some Rudbeckia species implicated and livestock usually avoid them."
+   }
+  ],
+  "whereTheyDisagree": "No source disagrees outright. But NO source read says seeds specifically are toxic: that part of the draft is NOT FOUND. The sources support 'not a food plant', 'skin/respiratory irritation', and 'livestock poisoning reported, cause unknown'.",
+  "draftCardWarningReview": {
+   "cardWarning": "Seeds may be toxic; not a food plant.",
+   "verdict": "'Not a food plant': SUPPORTED (poison.org). 'Seeds may be toxic': UNSUPPORTED - no source names seeds; printing it would invent a hazard location. The retrieved hazards (skin hairs, asthma, livestock poisoning) are not on the card.",
+   "guideCaution": "'Seeds are toxic; not a culinary plant.' Stronger than the card and equally unsupported on seeds."
+  },
+  "proposedSiteCaution": "PROPOSED DRAFT FOR REVIEW, NOT FINAL WORDING: 'Not a food plant. Its bristly hairs can irritate skin and may trigger allergy or asthma symptoms in sensitive people. Some plants in this genus have poisoned livestock; the cause is not established.'",
+  "openSafetyQuestions": [
+   "Should the draft's seed-toxicity sentence be removed from the card? (Recommendation: yes, unless a source is found.)",
+   "Should 'Snakebite aid' be dropped altogether even as a traditional-use phrase? A snakebite is an emergency; the only support is a historical Cherokee wash. Recommend an owner decision to omit.",
+   "Is a hazard line about livestock appropriate on a human-facing card?"
+  ]
+ },
+ "reviewOfDraft": [
+  {
+   "field": "healingTraits",
+   "item": "Wound support",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "nrcs-ruhi",
+    "naeb-ruhi"
+   ],
+   "note": "Cherokee root infusion to bathe sores (Moerman via NRCS/NAEB). Historical use only."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Skin soothing",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "naeb-ruhi",
+    "nrcs-ruhi"
+   ],
+   "note": "Same Cherokee dermatological-aid entry. 'Soothing' is not stated by the source; 'to bathe sores' is."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Cold support",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "naeb-ruhi",
+    "nrcs-ruhi"
+   ],
+   "note": "Potawatomi root infusion for colds."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Fever aid",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND in what was read."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Immune aid",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "curtis2023"
+   ],
+   "note": "Only in-vitro 'immunomodulatory' findings on flower extracts; not human evidence and not a traditional-use record. Do not render."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Snakebite aid",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "naeb-ruhi",
+    "curtis2023"
+   ],
+   "note": "Cherokee wash for snakebites. Strongly recommend NOT rendering as a card trait (see open questions)."
+  },
+  {
+   "field": "compounds",
+   "item": "Flavonoids",
+   "status": "SUPPORTED",
+   "citations": [
+    "curtis2023"
+   ],
+   "note": "Flavonol glycosides in flower extracts."
+  },
+  {
+   "field": "compounds",
+   "item": "Phenolic acid",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "curtis2023"
+   ],
+   "note": "Source says 'phenolic metabolites' generally; 'phenolic acid' NOT FOUND by name."
+  },
+  {
+   "field": "compounds",
+   "item": "Tannins",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "taste",
+   "item": "Bitter / Green / Earthy",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "mdc-bes",
+    "poison-org"
+   ],
+   "note": "Only 'disagreeable flavor' (genus-level, MDC) and 'disagreeable taste' (poison.org). Specific words NOT FOUND."
+  },
+  {
+   "field": "aromatic",
+   "item": "Green / Grassy / Mild",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "illinois-bes"
+   ],
+   "note": "Illinois says the flower has no noticeable scent; the card words are NOT FOUND."
+  },
+  {
+   "field": "preparations",
+   "item": "Wash",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "naeb-ruhi",
+    "nrcs-ruhi"
+   ],
+   "note": "Leaf and root washes are documented historically."
+  },
+  {
+   "field": "preparations",
+   "item": "Poultice",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND for R. hirta in what was read."
+  },
+  {
+   "field": "preparations",
+   "item": "Dye",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "nrcs-ruhi",
+    "naeb-ruhi"
+   ],
+   "note": "Yellow and green dyes from blooms (NRCS); Potawatomi yellow dye (NAEB)."
+  },
+  {
+   "field": "usableParts",
+   "item": "Root / Flower / Leaf",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "nrcs-ruhi",
+    "naeb-ruhi"
+   ],
+   "note": "Root infusions, leaf wash and bloom dyes are documented. This is not a statement that any part is safe to take internally."
+  },
+  {
+   "field": "uses (tags)",
+   "item": "wound / topical",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "nrcs-ruhi"
+   ],
+   "note": "As for Wound support."
+  }
+ ],
+ "scannerAndMatchingNotes": [
+  "No existing card shares the genus Rudbeckia (see discrepancy), so sibling-species matching is not exercised by this card as the plan assumed; the nearest case is a different genus (Echinacea) and cannot be genus-matched.",
+  "R. hirta has infraspecific taxa; confirm they normalise to the same card, or that this is deliberately exact-only."
+ ],
+ "imageNotes": null,
+ "uncertainty": [
+  "Taxon: POWO/WCVP not reachable. Infraspecific names not verified.",
+  "Moerman (2015), Foster & Duke (2000) and the 1932 veterinary paper cited second-hand only."
+ ]
+}

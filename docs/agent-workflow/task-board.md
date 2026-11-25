@@ -4,39 +4,65 @@ Maintained by the coordinator. Updated 2026-11-24. "Cost" is only what session m
 Rules in force: no production deploy, no flag on, no enforcement, UI stays with the owner, nothing from research is imported.
 
 ## Merged into `integration` (all flags OFF)
-#41 confirmScan mitigation, #44 test fixture, #45 region docs, #46 identify hardening (S2), #47 multi-region logic (Q2),
-#48 RPC client path (S3), #49 RPC flag wiring, #40 discovery-trust contract + classifier, #50/#53 live-test workflow,
-#51 camera capture logic (S4), #52 Habitats view-model (Q3), #54 ownership fix.
+#41, #44, #45, #46, #47, #48, #49, #40, #50, #53, #51, #52, #54, #55, #56, #59 (live confirm_scan workflow and the Scan/Quests/Discoveries work).
 
-## Open PRs and results (2026-11-25)
+## Live scan RPC test (TEST project only)
+Run 45686940150: **14 of 14 passed** (authorization, idempotency, refusal, parallel confirmations, missing-function code, eight parallel callers x five rounds).
+Remaining: merge #60 (removes the temporary push trigger and adds the TEST account cleanup SQL); owner restores "Confirm email" ON in TEST and runs the cleanup SQL.
+`NEXT_PUBLIC_CONFIRM_SCAN_RPC` stays OFF; migration 0014 is applied to TEST only.
+
+## Merged since the last update
+#57, #58 (expansion audits), #61 (pilot plan, updated for "Herbdex Expansion" and inherit-not-invent progression), #63 (sprite spec, QA checker, report), #64 (sourced research for the five pilot cards).
+
+## Open PRs (2026-11-25)
 | PR | What | State | Next action |
 |---|---|---|---|
-| #58 | Profile-structure audit | Updating, CI pending | Merge when green |
-| #61 | Expansion pilot plan (plan only) | Updating | Merge docs when green; owner approval of the plan still needed |
-| #64 | Pilot botanical research (5 cards) | Open, docs | Merge docs; five safety/botanist questions go to the owner |
-| #63 | Sprite spec, QA checker, QA report | Open | Merge; no sprite is treated as approved |
-| #62 | Importer, validator, publication gate (flag OFF) | Open | Merge after update; all five pilot cards are HELD by the gate |
-| #65 | Region research: taxonomy, mapping review, resolver validation | Draft | Owner review of the mapping; not adopted |
+| #62 | Importer, validator, publication gate (flag OFF) | Fixed two CI findings (ownership coverage, a test that forbade the flag line); CI re-running | Merge when green |
+| #66 | Pilot flag default OFF + task board | Green earlier; updating | Merge when green |
+| #67 | Sprite proposals #57-61 (written, no art) | Updating | Merge as proposal only |
+| #68 | Pilot end-to-end readiness + App Store readiness checklist (drafts) | CI pending | Merge docs; owner reads |
+| #65 | Region research (draft) | Owner review | Not adopted |
 | #43, #33, #34 | Migration 0014 (TEST only), environments, release repo | HELD | Owner |
 
 ## Agents (environment, task, branch, PR, status, next)
-| Agent | Environment | Branch | PR | Status | Outstanding review | Next action |
-|---|---|---|---|---|---|---|
-| Scan, Quests, Discoveries lanes | plantdex-website | agent/* | merged | Available | none | Wire after owner decisions |
-| P1 importer/validator | plantdex-website | coord/expansion-pilot-importer | #62 | Done | merge | Reuse for the next batch after the owner approves the pilot |
-| P2 botanical research (5 cards) | plantdex-botanical-research | coord/expansion-pilot-research | #64 | Done | botanist/owner: 5 safety questions | Revisit after review |
-| P3 sprite QA | plantdex-website | coord/expansion-pilot-sprite-qa | #63 | Done | merge | Run checker on any new set |
-| P3b sprite proposals (written only) | plantdex-botanical-research | coord/expansion-sprite-proposals | pending | Running | owner visual review | Owner approves or edits each proposal before any art |
-| E1 progression inheritance design + draft migration (TEST only) | plantdex-website | coord/expansion-progression-design | pending | Running | owner decisions it lists | Review; apply to TEST only after review |
-| Region C (taxonomy, EPA mapping, resolver) | plantdex-region-research | coord/region-boundaries-research | #65 draft | Done | owner: boundary rule for 16 units | Phase 2 membership after the rule |
-| RTK check x3 | one per environment | coord/rtk-check-website / -botanical / -region | none | Running | coordinator reads reports | Report per environment |
+| Agent | Environment | Branch | PR | Status | Next action |
+|---|---|---|---|---|---|
+| Scan, Quests, Discoveries lanes | plantdex-website | agent/* | merged | Available | Wire after owner decisions |
+| P1 importer, P2 research, P3 sprite QA | website / botanical / website | coord/expansion-pilot-* | #62, #64, #63 | Done | Reuse for the next batch after the pilot is approved |
+| P3b sprite proposals | botanical | coord/expansion-sprite-proposals | #67 | Done | Owner approves or edits each proposal before any art |
+| E1 progression inheritance + draft migration (TEST only) | website | coord/expansion-progression-design | pending | Running (usage warning on its limit; it pushes early) | Independent review of its migration before any TEST apply |
+| Region C | region-research | coord/region-boundaries-research | #65 draft | Done | Owner supplies the ten-region boundary rule for 16 units |
+| Region membership phase 2 | region-research | | | Waiting on boundaries | |
 
-Pilot readiness: no pilot card is technically ready; all five are HELD by the publication gate (reasons in PR #62).
-Scan RPC: validated 14 of 14 on TEST; the client flag stays OFF.
-RTK: installed and hooked in the coordinator session; the agent environments' setup scripts are saved, their effect is being verified by the check sessions above.
-Environment note: `plantdex-region-research` shows `allow_mcp_servers: true`; it was created with false. Recommended: restore to false (the region agents use curl to named hosts, not MCP).
+## Verified
+- **RTK validation: COMPLETE (2026-11-25).** All three agent environments (plantdex-website, plantdex-botanical-research, plantdex-region-research) report RTK 1.2.1 installed, the Bash hook configured, setup script succeeded, no proxy blocks.
+  The hook rewrites only commands RTK has a filter for (ls, git, read); node, npm, npx and compound commands pass through unmodified, so test output and exit codes are unaffected.
+  Error text and exit codes through the hook were checked in all three. No further RTK agent work; pinning the install to a reviewed release is a low-priority maintenance task.
+- Scan RPC: 14 of 14 on TEST; client flag OFF. TEST cleanup SQL reviewed; owner to run it and restore "Confirm email" ON.
+- Pilot: not testable end to end yet (see `docs/expansion/pilot/e2e-readiness.md`); all five cards HELD by the gate.
 
 ## Owner-held
 Visual design, activation of any flag, Stage 4 enforcement, importing the 85 cards, final artwork and sprite approval, location detection, production deploys,
 geographic mapping adoption, collection id for the expansion, any progression change for digital-only cards, migration to list new cards in `is_catalogue_herb`,
 botanist/safety review of the five pilot cards, ten-region boundary rule.
+=======
+| #60 | Remove temporary push trigger + cleanup SQL | CI pending | Merge when green |
+| #57, #58 | Expansion audits (inventory, profile structure) | Branches updated, CI pending | Merge when green |
+| #61 | Expansion pilot plan (plan only) | Open | Owner review |
+| #43 | Migration 0014 | HELD draft, TEST only | Owner decision on production, separate |
+| #33, #34 | Workflow environments, release repository | ON HOLD | Re-scope later |
+
+## Agents
+| Agent | Branch | Task | Status | Next |
+|---|---|---|---|---|
+| Scan, Quests, Discoveries | agent/* | Q1-3, S1-4, Stage 1-3 contract done | Available | Wire after owner decisions (see below) |
+| Region C (taxonomy, EPA review, polygon vs grid) | coord/region-boundaries-research | Recover ten-region model, validate resolver | Running | Report uncertainties |
+| Region membership (phase 2) | coord/region-membership-research | Waits on boundaries | Waiting | |
+| P1 importer/validator | coord/expansion-pilot-importer | Gated import for five pilot cards, flag OFF | Running | PR |
+| P2 botanical research | coord/expansion-pilot-research | Sourced profile content, Rumex analysis | Running | PR |
+| P3 sprite QA | coord/expansion-pilot-sprite-qa | Sprite spec and checker; no art generated | Running | PR |
+
+## Owner-held
+Visual design, activation of any flag, Stage 4 enforcement, importing the 85 cards, final artwork and sprite approval, location detection, production deploys,
+geographic mapping adoption, collection id for the expansion, any progression change for digital-only cards, migration to list new cards in `is_catalogue_herb`.
+>>>>>>> origin/integration
