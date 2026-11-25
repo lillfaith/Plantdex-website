@@ -8,27 +8,31 @@ Rules in force: no production deploy, no flag on, no enforcement, UI stays with 
 #48 RPC client path (S3), #49 RPC flag wiring, #40 discovery-trust contract + classifier, #50/#53 live-test workflow,
 #51 camera capture logic (S4), #52 Habitats view-model (Q3), #54 ownership fix.
 
-## Open PRs
+## Open PRs and results (2026-11-25)
 | PR | What | State | Next action |
 |---|---|---|---|
-| #55 | Live confirm_scan: public key in a repo variable, both key formats | CI green | Owner creates `TEST_SUPABASE_ANON_KEY`; coordinator merges; live run fires |
-| #43 | Migration 0014 | HELD draft, applied to TEST only | Owner decision on production, separate |
-| #33, #34 | Workflow environments, release repository | ON HOLD | Re-scope later |
+| #58 | Profile-structure audit | Updating, CI pending | Merge when green |
+| #61 | Expansion pilot plan (plan only) | Updating | Merge docs when green; owner approval of the plan still needed |
+| #64 | Pilot botanical research (5 cards) | Open, docs | Merge docs; five safety/botanist questions go to the owner |
+| #63 | Sprite spec, QA checker, QA report | Open | Merge; no sprite is treated as approved |
+| #62 | Importer, validator, publication gate (flag OFF) | Open | Merge after update; all five pilot cards are HELD by the gate |
+| #65 | Region research: taxonomy, mapping review, resolver validation | Draft | Owner review of the mapping; not adopted |
+| #43, #33, #34 | Migration 0014 (TEST only), environments, release repo | HELD | Owner |
 
 ## Agents
-| Agent | Branch | Task | Status | Depends on | Next |
-|---|---|---|---|---|---|
-| Scan | agent/scan/* | S1-S4 done | Available | | Wire client to capture + shadow receipt after Discoveries SCRs |
-| Quests | agent/quests/* | Q1-Q3 done | Available | Region data validated | Region selection store wiring (flag off) |
-| Discoveries | agent/discoveries/trust-design | Stage 1-3 contract merged | Available | Coordinator applies SCRs | Receipt + shadow-mode client code behind flags |
-| Region research 1/C | coord/region-boundaries-research | Recover ten-region model, review EPA mapping, polygon vs grid | Running | | Report uncertainties |
-| Region research 2 | coord/region-membership-research | 45-card taxonomy and evidence done | Done | Boundaries (phase 2) | Membership phase 2 |
-| B1 | coord/expansion-audit-inventory | READ-ONLY inventory of the 85 cards | Running | | Inventory PR |
-| B2 | coord/expansion-audit-profiles | Audit of the 45 profiles and field matrix | Running | | Audit PR |
-| Coordinator | coord/* | Reviews, wiring, task board | Active | | Pilot plan after B1/B2 |
+| Agent | Task | Status | Next |
+|---|---|---|---|
+| Scan, Quests, Discoveries | S1-4, Q1-3, Stage 1-3 contract | Available | Wire after owner decisions |
+| P1 importer | Done (#62) | Waiting | Applied: flag line default OFF; generated file stays in `docs/expansion/pilot/` until the owner approves an import |
+| P2 botanical research | Done (#64) | Waiting | Revisit after the botanist reviews the five open safety questions |
+| P3 sprite QA | Done (#63) | Waiting | Run the checker on any new sprite set |
+| Region C | Done (#65) | Waiting | Owner supplies the ten-region boundary rule for 16 uncertain units |
+| Region membership phase 2 | Waiting on boundaries | Waiting | |
 
-R1 usage (reported): about $2.48 for the boundary-research session.
+Findings: all five pilot cards are HELD by the publication gate (unreviewed caution, AI-derived image, unverified taxon, search links only, unapproved assets).
+RTK: installed and hooked in the coordinator session; setup scripts now saved on the three agent environments (effect not yet confirmed in an agent session).
 
 ## Owner-held
-Visual design (lavender Habitats, ScanPanel wording, navigation, animations), activation of any flag, Stage 4 enforcement,
-importing the 85 cards, final artwork, location detection activation, production deploys, geographic mapping adoption.
+Visual design, activation of any flag, Stage 4 enforcement, importing the 85 cards, final artwork and sprite approval, location detection, production deploys,
+geographic mapping adoption, collection id for the expansion, any progression change for digital-only cards, migration to list new cards in `is_catalogue_herb`,
+botanist/safety review of the five pilot cards, ten-region boundary rule.
