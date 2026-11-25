@@ -1,0 +1,47 @@
+import { test } from 'vitest';
+import fs from 'node:fs';
+import raw from './expansion-cards.json';
+import { compoundFor, UNDRAWN_MOLECULES } from '@/lib/compounds';
+import { linksFor } from '@/lib/compound-links';
+import { glyphForTrait, PART_ART, PREP_ART } from '@/lib/pixel-icons';
+import { CATALOGUE } from '@/lib/catalogue';
+import { matchScientificName } from '@/lib/plant-match';
+import { isShelfEligible } from '@/lib/seed-shelf';
+import { FIELD_NOTES } from '@/lib/card-field-notes';
+
+test('draft', () => {
+  const cards = (raw as any).cards;
+  const rows: any[] = [];
+  const allTraits = new Set<string>(), allComp = new Set<string>(), allParts = new Set<string>(), allPreps = new Set<string>();
+  for (const c of cards) {
+    const herb: any = { back: c.back };
+    const comps = c.back.compounds.map((x: string) => ({ x, e: compoundFor(x) }));
+    c.back.healingTraits.forEach((t: string) => allTraits.add(t));
+    c.back.compounds.forEach((t: string) => allComp.add(t));
+    c.back.usableParts.forEach((t: string) => allParts.add(t));
+    c.back.preparations.forEach((t: string) => allPreps.add(t));
+    const m = matchScientificName(c.scientificName);
+    rows.push({
+      id: c.id, n: c.cardNumber,
+      compResolved: comps.filter((k: any) => k.e).length,
+      compStructure: comps.filter((k: any) => k.e?.structure).length,
+      compScaffold: comps.filter((k: any) => k.e?.scaffold).length,
+      compUnknown: comps.filter((k: any) => !k.e).map((k: any) => k.x),
+      links: c.back.compounds.reduce((a: number, x: string) => a + linksFor({ back: c.back } as any, x).length, 0),
+      traitsNoGlyph: c.back.healingTraits.filter((t: string) => !glyphForTrait(t)),
+      partsNoArt: c.back.usableParts.filter((w: string) => !PART_ART.some((r) => r.match.test(w))),
+      prepsNoArt: c.back.preparations.filter((w: string) => !PREP_ART.some((r) => r.match.test(w))),
+      matchBefore: m.kind + '/' + m.eligibility + (m.herbId ? ':' + m.herbId : ''),
+      shelfEligibleToday: isShelfEligible(c.scientificName),
+      hasFieldNotes: !!FIELD_NOTES[c.id],
+    });
+  }
+  fs.writeFileSync('../draftmatrix.json', JSON.stringify({ rows,
+    uniq: { traits: [...allTraits].length, comps: [...allComp].length, parts: [...allParts].length, preps: [...allPreps].length },
+    traitsNoGlyph: [...allTraits].filter((t) => !glyphForTrait(t)),
+    partsNoArt: [...allParts].filter((w) => !PART_ART.some((r) => r.match.test(w))),
+    prepsNoArt: [...allPreps].filter((w) => !PREP_ART.some((r) => r.match.test(w))),
+    unknownComps: [...allComp].filter((x) => !compoundFor(x)),
+    undrawnMolecules: Object.keys(UNDRAWN_MOLECULES).length,
+  }, null, 1));
+});
