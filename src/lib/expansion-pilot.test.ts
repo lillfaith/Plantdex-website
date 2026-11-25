@@ -205,9 +205,14 @@ describe('the pilot stays out of the live app', () => {
     expect(flag).toMatch(/process\.env\.NEXT_PUBLIC_EXPANSION_PILOT === 'on'/);
     expect(flag).not.toMatch(/'true'|'1'|'preview'|toLowerCase|\?\?|\|\|/);
   });
-  it('has filed the next.config.ts default as a request rather than editing the file', () => {
+  it('has the next.config.ts default filed as a request, and if the coordinator has applied it, it is exactly the off default', () => {
     expect(readFileSync('agents/requests/coord-expansion-pilot-flag.md', 'utf8')).toContain("NEXT_PUBLIC_EXPANSION_PILOT: process.env.NEXT_PUBLIC_EXPANSION_PILOT ?? 'off',");
-    expect(readFileSync('next.config.ts', 'utf8')).not.toContain('EXPANSION_PILOT');
+    const config = strip(readFileSync('next.config.ts', 'utf8'));
+    // Holds before the coordinator wires the line (absent) and after (exactly the off default, nothing else).
+    if (config.includes('EXPANSION_PILOT')) {
+      expect(config).toContain("NEXT_PUBLIC_EXPANSION_PILOT: process.env.NEXT_PUBLIC_EXPANSION_PILOT ?? 'off',");
+      expect(config.match(/EXPANSION_PILOT/g)?.length).toBe(2);
+    }
   });
   it('the draft caution lines and ids appear nowhere in live source', () => {
     const lines = snapshot.cards.map((c: { record: { review: { cardSafetyWarning: string } } }) => c.record.review.cardSafetyWarning);
