@@ -1,0 +1,11 @@
+code,name_exact_from_regionNames,source
+NF,Northern Forests & Boreal,"regionalModel.regionNames, commit a9953722"
+NE,Northeast & Atlantic Woodlands,"regionalModel.regionNames, commit a9953722"
+AP,Appalachian–Ozark Highlands,"regionalModel.regionNames, commit a9953722"
+SE,Southeast Piedmont & Inland Plains,"regionalModel.regionNames, commit a9953722"
+GC,Gulf & Atlantic Coastal Plains,"regionalModel.regionNames, commit a9953722"
+MW,Great Lakes & Central Woodlands,"regionalModel.regionNames, commit a9953722"
+GP,Great Plains & Prairie Transitions,"regionalModel.regionNames, commit a9953722"
+RM,Rockies & Intermountain Highlands,"regionalModel.regionNames, commit a9953722"
+SW,Southwest Deserts & Drylands,"regionalModel.regionNames, commit a9953722"
+PC,Pacific Forests & California,"regionalModel.regionNames, commit a9953722"
