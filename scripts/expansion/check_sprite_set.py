@@ -62,7 +62,7 @@ TOOL_VERSION = 1
 
 # --- Constants that mirror the app. Each is re-read from its source where it can be, so this
 # file cannot audit against a stale number. ----------------------------------------------
-STANDARD_CANVAS = (32, 28)  # authored pixels; 46 of 54 shipped adults are exactly this
+STANDARD_CANVAS = (32, 28)  # authored pixels; 53 of 54 shipped adults are exactly this
 SCALE = bs.SCALE
 GUTTER = bs.FRAME_GUTTER
 SUPPORTED_FRAME_COUNTS = tuple(bs.SUPPORTED_FRAME_COUNTS)
@@ -476,7 +476,7 @@ def check_card(
         card.add("R03", PASS, f"{size[0]}x{size[1]}")
     else:
         card.add("R03", WARN, f"canvas {size[0]}x{size[1]} is not the standard {STANDARD_CANVAS}; "
-                 "46 of 54 shipped sprites use the standard, one larger canvas exists")
+                 "53 of 54 shipped sprites use the standard, one larger canvas exists")
     for name, st in stage_sprites.items():
         if tuple(st["size"]) != size:
             card.add("R03", FAIL, f"{name} canvas {tuple(st['size'])} differs from the adult's {size}")
@@ -659,7 +659,7 @@ def check_card(
     # A gesture is named in capitals the way the shipped sources do it ("THE PINWHEEL:",
     # "THE TINGLE, frames 2-8"). Section headings that are not gestures are excluded.
     named = re.search(
-        r"\bTHE (?!DESIGN HOOK|PERSONALITY|COLOUR|COLOR|SAFETY|PALETTE|FACE|CARD)[A-Z][A-Z' -]{2,}(?=[:,.])|\bGESTURE\b",
+        r"\bTHE (?!DESIGN HOOK|PERSONALITY|COLOUR|COLOR|SAFETY|PALETTE|FACE|CARD)[A-Z][A-Z' -]{2,}(?=[:,.])|\bGESTURE\b|(?<=trademark gesture is )[A-Z]{4,}",
         doc + "\n" + text,
     )
     movers = moving_nonface_parts(sprite)
