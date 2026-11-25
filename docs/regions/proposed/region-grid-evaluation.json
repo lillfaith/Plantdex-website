@@ -1,0 +1,149 @@
+{
+ "albers_vs_pyproj_max_error_m": 0.0,
+ "cell_km": 3.0,
+ "grids": [
+  {
+   "accuracy_pct": 95.542,
+   "accuracy_pct_beyond_km_of_boundary": {
+    "10": 98.764,
+    "25": 99.961,
+    "5": 97.262,
+    "50": 99.994
+   },
+   "bytes_gzip9": 1775,
+   "bytes_raw_uint16": 11700,
+   "bytes_rle": 4168,
+   "cells": 5850,
+   "error_boundary_distance_km": {
+    "max": 585.1,
+    "mean": 7.8,
+    "p95": 18.2
+   },
+   "errors_coastal_sliver_no_region_land_share_pct": 0.006,
+   "errors_unflagged_land_share_pct": 0.0,
+   "errors_with_true_region_in_neighbour_flag_pct": 100.0,
+   "errors_wrong_region_land_share_pct": 4.452,
+   "file": "region-grid-0.5.bin",
+   "land_flagged_near_boundary_pct": 31.48,
+   "land_in_high_uncertainty_units_pct": 8.82,
+   "resolution_deg": 0.5,
+   "sliver_errors_flagged_pct": 100.0,
+   "wrong_land_share_pct": 4.458,
+   "wrong_region_boundary_distance_km": {
+    "max": 46.7,
+    "mean": 7.6,
+    "p95": 18.0
+   },
+   "wrong_region_errors_flagged_pct": 100.0,
+   "wrong_resolves_no_region_pct": 0.006
+  },
+  {
+   "accuracy_pct": 97.332,
+   "accuracy_pct_beyond_km_of_boundary": {
+    "10": 99.837,
+    "25": 99.982,
+    "5": 98.937,
+    "50": 99.982
+   },
+   "bytes_gzip9": 4039,
+   "bytes_raw_uint16": 46800,
+   "bytes_rle": 9879,
+   "cells": 23400,
+   "error_boundary_distance_km": {
+    "max": 586.4,
+    "mean": 5.9,
+    "p95": 10.8
+   },
+   "errors_coastal_sliver_no_region_land_share_pct": 0.017,
+   "errors_unflagged_land_share_pct": 0.0,
+   "errors_with_true_region_in_neighbour_flag_pct": 100.0,
+   "errors_wrong_region_land_share_pct": 2.651,
+   "file": "region-grid-0.25.bin",
+   "land_flagged_near_boundary_pct": 21.99,
+   "land_in_high_uncertainty_units_pct": 8.85,
+   "resolution_deg": 0.25,
+   "sliver_errors_flagged_pct": 100.0,
+   "wrong_land_share_pct": 2.668,
+   "wrong_region_boundary_distance_km": {
+    "max": 19.2,
+    "mean": 5.0,
+    "p95": 9.5
+   },
+   "wrong_region_errors_flagged_pct": 100.0,
+   "wrong_resolves_no_region_pct": 0.017
+  },
+  {
+   "accuracy_pct": 98.753,
+   "accuracy_pct_beyond_km_of_boundary": {
+    "10": 99.967,
+    "25": 99.966,
+    "5": 99.887,
+    "50": 99.963
+   },
+   "bytes_gzip9": 11839,
+   "bytes_raw_uint16": 292500,
+   "bytes_rle": 29204,
+   "cells": 146250,
+   "error_boundary_distance_km": {
+    "max": 587.3,
+    "mean": 7.1,
+    "p95": 6.0
+   },
+   "errors_coastal_sliver_no_region_land_share_pct": 0.031,
+   "errors_unflagged_land_share_pct": 0.0,
+   "errors_with_true_region_in_neighbour_flag_pct": 100.0,
+   "errors_wrong_region_land_share_pct": 1.215,
+   "file": "region-grid-0.1.bin",
+   "land_flagged_near_boundary_pct": 14.9,
+   "land_in_high_uncertainty_units_pct": 8.81,
+   "resolution_deg": 0.1,
+   "sliver_errors_flagged_pct": 100.0,
+   "wrong_land_share_pct": 1.247,
+   "wrong_region_boundary_distance_km": {
+    "max": 8.5,
+    "mean": 3.4,
+    "p95": 6.0
+   },
+   "wrong_region_errors_flagged_pct": 100.0,
+   "wrong_resolves_no_region_pct": 0.031
+  }
+ ],
+ "land_area_km2": 7789644,
+ "land_cells": 865516,
+ "land_share_by_region_pct": {
+  "AP": 5.36,
+  "GC": 5.57,
+  "GP": 23.38,
+  "MW": 13.54,
+  "NE": 2.04,
+  "NF": 4.93,
+  "PC": 6.29,
+  "RM": 16.77,
+  "SE": 11.28,
+  "SW": 10.84
+ },
+ "land_share_by_unit_uncertainty_pct": {
+  "high": 8.81,
+  "low": 41.41,
+  "medium": 49.78
+ },
+ "land_share_within_km_of_other_region_pct": {
+  "10": 8.69,
+  "100": 54.45,
+  "25": 19.48,
+  "5": 3.95,
+  "50": 33.6
+ },
+ "regions": [
+  "NF",
+  "NE",
+  "AP",
+  "SE",
+  "GC",
+  "MW",
+  "GP",
+  "RM",
+  "SW",
+  "PC"
+ ]
+}

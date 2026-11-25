@@ -1,0 +1,62 @@
+{
+ "band_km": 10,
+ "format": "PDRG v1: 22-byte header + (uint16 LE word, LEB128 run) pairs, row-major, north row first",
+ "grid_extent_1e-4deg": [
+  -1250000,
+  245000,
+  -665000,
+  495000
+ ],
+ "grids": [
+  {
+   "bytes": 4168,
+   "cols": 117,
+   "file": "region-grid-0.5.bin",
+   "resolution_deg": 0.5,
+   "rows": 50,
+   "sha256": "e3a23bf0632cb51080a086df7d0f411e9f31b6f4a0036540ee596d90cf98bad4"
+  },
+  {
+   "bytes": 9879,
+   "cols": 234,
+   "file": "region-grid-0.25.bin",
+   "resolution_deg": 0.25,
+   "rows": 100,
+   "sha256": "c0d9a78f8dca4f15a3a30d8929b14197f441100403df6c3fccfbba7d9c47f50c"
+  },
+  {
+   "bytes": 29204,
+   "cols": 585,
+   "file": "region-grid-0.1.bin",
+   "resolution_deg": 0.1,
+   "rows": 250,
+   "sha256": "c0739ee6d46de1302de5b04f891ad4092db299c5f2538e0d6e1d151487768722"
+  }
+ ],
+ "mapping_sha256": "5a7519505dc7a62810b765ad660940027573733fbb1f620149d8393c06a3165c",
+ "regions": [
+  "NF",
+  "NE",
+  "AP",
+  "SE",
+  "GC",
+  "MW",
+  "GP",
+  "RM",
+  "SW",
+  "PC"
+ ],
+ "source": {
+  "dbf_sha256": "8f9a58a3839df4e96caf19ed5846b36d26ded7fd5a08c16fe4b6c7c33faf9801",
+  "file": "us_eco_l3",
+  "shp_sha256": "b7519b2cbd5a82d9641ed8e353bb5d3c1a0708acd8e9eb7059f1efd9744f778d"
+ },
+ "toolchain": {
+  "geos": "3.14.1",
+  "numpy": "2.5.5",
+  "pyshp": "3.1.9",
+  "python": "3.13.18",
+  "shapely": "2.2.0"
+ },
+ "word": "bits0-3 primary region (1..10 = REGIONS order, 0 none); bits4-13 SPATIAL neighbour mask: regions within band_km + half cell diagonal of the cell centre (bit 4+i = REGIONS[i]); bits14-15 uncertainty of the dominant unit mapping row (0 low,1 medium,2 high)"
+}

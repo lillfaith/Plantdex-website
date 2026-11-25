@@ -1,0 +1,55 @@
+place,lat,lon,truth_unit,truth_region,grid,grid_near,poly,poly_near,grid_ok,poly_ok
+Atlanta GA,33.749,-84.388,45,SE,SE,,SE,,yes,yes
+Savannah GA,32.081,-81.091,75,GC,GC,,GC,,yes,yes
+Miami FL,25.762,-80.192,76,GC,GC,,GC,,yes,yes
+Key West FL,24.555,-81.78,76,GC,GC,,GC,,yes,yes
+New Orleans LA,29.951,-90.072,73,GC,GC,,GC,,yes,yes
+Houston TX,29.76,-95.37,34,GC,GC,,GC,,yes,yes
+Boston MA,42.36,-71.059,59,NE,NE,,NE,,yes,yes
+New York NY,40.713,-74.006,59,NE,NE,,NE,,yes,yes
+Philadelphia PA,39.953,-75.165,63,GC,GC,NE,GC,NE,yes,yes
+Washington DC,38.907,-77.037,65,SE,NE,SE,SE,NE,NO,yes
+Outer Banks NC (Cape Hatteras),35.25,-75.53,63,GC,GC,,GC,,yes,yes
+Cape Cod MA (Provincetown),42.057,-70.186,84,NE,NE,,NE,,yes,yes
+Bangor ME,44.801,-68.778,82,NF,NF,,NF,,yes,yes
+Duluth MN,46.787,-92.1,50,NF,NF,,NF,,yes,yes
+Minneapolis MN,44.978,-93.265,51,MW,MW,,MW,,yes,yes
+Chicago IL,41.878,-87.63,54,MW,MW,,MW,,yes,yes
+Detroit MI,42.331,-83.046,57,MW,MW,,MW,,yes,yes
+Charleston WV,38.35,-81.633,70,AP,AP,,AP,,yes,yes
+Asheville NC,35.595,-82.551,66,AP,AP,,AP,,yes,yes
+Nashville TN,36.163,-86.78,71,SE,SE,,SE,,yes,yes
+Memphis TN,35.149,-90.049,74,SE,GC,SE,SE,GC,NO,yes
+St. Louis MO,38.627,-90.199,72,MW,MW,,MW,,yes,yes
+Little Rock AR,34.746,-92.29,35,SE,GC,AP SE,SE,AP GC,NO,yes
+Kansas City MO,39.1,-94.579,47,MW,MW,,MW,,yes,yes
+Omaha NE,41.257,-95.935,47,MW,MW,,MW,,yes,yes
+Dallas TX,32.777,-96.797,32,GP,GP,,GP,,yes,yes
+Austin TX,30.267,-97.743,32,GP,GP,,GP,,yes,yes
+San Antonio TX,29.425,-98.494,32,GP,GP,,GP,,yes,yes
+Oklahoma City OK,35.468,-97.516,27,GP,GP,,GP,,yes,yes
+Denver CO,39.739,-104.99,25,GP,GP,,GP,,yes,yes
+Albuquerque NM,35.084,-106.651,22,SW,SW,,SW,,yes,yes
+Phoenix AZ,33.448,-112.074,81,SW,SW,,SW,,yes,yes
+Las Vegas NV,36.17,-115.14,14,SW,SW,,SW,,yes,yes
+El Paso TX,31.761,-106.485,24,SW,SW,,SW,,yes,yes
+Salt Lake City UT,40.761,-111.891,13,RM,RM,,RM,,yes,yes
+Boise ID,43.615,-116.202,12,RM,RM,,RM,,yes,yes
+Seattle WA,47.606,-122.332,2,PC,PC,,PC,,yes,yes
+Portland OR,45.515,-122.679,3,PC,PC,,PC,,yes,yes
+San Francisco CA,37.775,-122.419,6,PC,PC,,PC,,yes,yes
+Los Angeles CA,34.052,-118.244,85,PC,PC,,PC,,yes,yes
+San Diego CA,32.716,-117.161,85,PC,PC,,PC,,yes,yes
+Fresno CA,36.738,-119.787,7,PC,PC,,PC,,yes,yes
+Gulf of Mexico (offshore),27.0,-90.0,,,,,,,yes,yes
+Atlantic (offshore),35.0,-70.0,,,,,,,yes,yes
+Pacific (offshore),40.0,-128.0,,,,,,,yes,yes
+Lake Michigan (mid-lake),43.0,-87.0,,,,,,,yes,yes
+Toronto ON,43.653,-79.383,,,,,,,yes,yes
+Winnipeg MB,49.895,-97.138,,,,,,,yes,yes
+Tijuana MX,32.515,-117.038,,,PC,,,PC,NO,yes
+Monterrey MX,25.686,-100.316,,,,,,,yes,yes
+Anchorage AK,61.218,-149.9,,,,,,,yes,yes
+Fairbanks AK,64.838,-147.716,,,,,,,yes,yes
+Honolulu HI,21.307,-157.858,,,,,,,yes,yes
+San Juan PR,18.466,-66.106,,,,,,,yes,yes
