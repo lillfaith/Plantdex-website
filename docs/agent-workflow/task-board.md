@@ -44,8 +44,3 @@ Run 45686940150: **14 of 14 passed** (authorization, idempotency, refusal, paral
 Visual design, activation of any flag, Stage 4 enforcement, importing the 85 cards, final artwork and sprite approval, location detection, production deploys,
 geographic mapping adoption, collection id for the expansion, any progression change for digital-only cards, migration to list new cards in `is_catalogue_herb`,
 botanist/safety review of the five pilot cards, ten-region boundary rule.
-| #60 | Remove temporary push trigger + cleanup SQL | CI pending | Merge when green |
-| #57, #58 | Expansion audits (inventory, profile structure) | Branches updated, CI pending | Merge when green |
-| #61 | Expansion pilot plan (plan only) | Open | Owner review |
-| #43 | Migration 0014 | HELD draft, TEST only | Owner decision on production, separate |
-| #33, #34 | Workflow environments, release repository | ON HOLD | Re-scope later |
