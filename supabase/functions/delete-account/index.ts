@@ -200,7 +200,10 @@ Deno.serve(async (req) => {
       }
     }
   } catch (cause) {
-    return json({ error: cause instanceof Error ? cause.message : 'Photo deletion failed' }, 500);
+    // The detail stays in the function's own log. What a caller sees names no bucket, path or
+    // storage error: a failure message is also something an attacker can read.
+    console.error('delete-account: photo deletion failed', cause);
+    return json({ error: 'Your photographs could not be deleted. Nothing else was removed. Please try again.' }, 500);
   }
 
   // ── 2. Rows ────────────────────────────────────────────────────────────────
@@ -210,8 +213,10 @@ Deno.serve(async (req) => {
     // relation there means there is nothing to delete, not that deletion failed.
     const missing = error && (error.code === 'PGRST205' || error.code === '42P01');
     if (error && !(missing && (table === 'capture_receipts' || table === 'discovery_grandfathered'))) {
+      // `table` is one of our own constants; the database's message is not, and is logged only.
+      console.error(`delete-account: could not delete rows from ${table}`, error);
       return json(
-        { error: `Could not delete your ${table.replace(/_/g, ' ')}: ${error.message}. Your account still exists — please try again.` },
+        { error: `Could not delete your ${table.replace(/_/g, ' ')}. Your account still exists — please try again.` },
         500,
       );
     }
@@ -222,8 +227,9 @@ Deno.serve(async (req) => {
   // user is gone, the caller can no longer authenticate to ask for anything else.
   const { error: deleteError } = await admin.auth.admin.deleteUser(userId);
   if (deleteError) {
+    console.error('delete-account: deleteUser failed', deleteError);
     return json(
-      { error: `Your data was deleted, but the account itself could not be closed: ${deleteError.message}` },
+      { error: 'Your data was deleted, but the account itself could not be closed. Please try again.' },
       500,
     );
   }
