@@ -92,7 +92,7 @@ describe('the RPC adapters (coded to the contract)', () => {
   });
   it('open_capture_session: ok, refusal codes, missing function, transport failure', async () => {
     vi.stubEnv('NEXT_PUBLIC_CAMERA_CAPTURE', 'on');
-    rpc.mockResolvedValueOnce({ data: { ok: true, session_id: 'sid', nonce: 'n'.repeat(64), min_capture_ms: 2000 }, error: null });
+    rpc.mockResolvedValueOnce({ data: { ok: true, session_id: 'sid', nonce: 'n'.repeat(64), min_capture_ms: 0 }, error: null });
     const ok = await openCaptureSession();
     expect(ok.ok && ok.session.sessionId).toBe('sid');
     expect(rpc).toHaveBeenCalledWith('open_capture_session');

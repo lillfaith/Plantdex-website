@@ -128,6 +128,17 @@ export interface ObservationPhoto {
 /** Two required, three allowed. The server enforces the same bounds. */
 export const MIN_OBSERVATION_PHOTOS = 2;
 export const MAX_OBSERVATION_PHOTOS = 3;
+/**
+ * A COLLECT observation (in-app camera) needs ONE photograph; more angles are optional and help
+ * the identifier's accuracy only. They are never evidence that somebody was there. The server
+ * applies the same floor independently, for `purpose=collect` only.
+ */
+export const MIN_CAPTURE_PHOTOS = 1;
+
+/** The minimum for a channel: collect = 1, anything else keeps the lookup floor of two. */
+export function minPhotosFor(channel: 'collect' | 'lookup' | 'unspecified'): number {
+  return channel === 'collect' ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
+}
 
 export async function identifyPlant(
   photos: readonly ObservationPhoto[],
@@ -163,10 +174,14 @@ export async function identifyPlant(
    * single photograph would still produce a confident-looking result — just a worse one —
    * which is the failure mode this whole change exists to reduce.
    */
-  if (photos.length < MIN_OBSERVATION_PHOTOS) {
+  const minimum = options.capture ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
+  if (photos.length < minimum) {
     return {
       kind: 'error',
-      message: `Add ${MIN_OBSERVATION_PHOTOS} photographs of the same plant before identifying.`,
+      message:
+        minimum === 1
+          ? 'Add a photograph of the plant before identifying.'
+          : `Add ${minimum} photographs of the same plant before identifying.`,
     };
   }
   if (photos.length > MAX_OBSERVATION_PHOTOS) {

@@ -22,12 +22,16 @@
  */
 import { isCameraCaptureEnabled } from './scan-capture';
 
-export const CONSENT_WORDING_VERSION = 1;
+/**
+ * v2 (owner approved, 2026-11-26): the compact notice. Earlier stamps ("v1:...") no longer match, so
+ * everybody who acknowledged the long wording is asked again with the short one.
+ */
+export const CONSENT_WORDING_VERSION = 2;
 
 /** Providers the identifier can be configured to use. The deployment picks one server-side. */
 export const IDENTIFICATION_PROVIDERS = [
-  { id: 'plantnet', name: 'PlantNet' },
-  { id: 'plantid', name: 'plant.id (by Kindwise)' },
+  { id: 'plantnet', name: 'Pl@ntNet' },
+  { id: 'plantid', name: 'Plant.id (by Kindwise)' },
 ] as const;
 
 export const CONSENT_STORAGE_KEY = 'plantdex.scan-consent.v1';
@@ -37,16 +41,14 @@ export const ANONYMOUS_CONSENT_SCOPE = 'device';
 export const CONSENT_PRIVACY_HREF = '/privacy#plant-id';
 
 export const CONSENT_COPY = {
-  heading: 'Before your first identification',
-  body: [
-    'To identify a plant, Plantdex sends your 2 or 3 photos to an outside identification service. It is PlantNet or plant.id (by Kindwise), depending on how this app is set up.',
-    'What is sent: the photos, resized and re-encoded on your device so their location data (EXIF/GPS) is removed. No location, account details or device identifiers are added.',
-    'This is optional. You can keep browsing the Herbdex without it, but identification needs it.',
-  ],
-  accept: 'I understand, send my photos',
+  heading: 'Send your photo to identify?',
+  // EXACT WORDING, owner approved. Retention, deletion and training facts are deliberately absent:
+  // they are unverified and live, marked as owner-to-confirm, in docs/release/privacy-plant-id-copy.md.
+  body: 'PlantDex sends your selected photo(s) to Pl@ntNet or Plant.id (by Kindwise) to suggest which plant you photographed.',
+  accept: 'Send photo(s)',
   decline: 'Not now',
   declined: 'Nothing was sent. You can still browse the Herbdex, and you can change your mind here at any time.',
-  privacyLink: 'Read the full privacy details',
+  privacyLink: 'Privacy details',
 } as const;
 
 /** The current stamp. Changes when the wording version or the provider set changes. */
