@@ -1,0 +1,265 @@
+import { readFileSync } from 'node:fs';
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+/**
+ * Capture receipts through the REAL `identify-plant` function and migration 0016, ATTACKED LIVE.
+ * TEST PROJECT ONLY. Run by the owner (through the coordinator's workflow) after BOTH are deployed to TEST:
+ * migration 0016 (run-migration) and the identify-plant edge function (deploy-function). Nothing here
+ * deploys or enables anything, and the enforcement switch is never touched: `claim_discovery` writes the
+ * discovery either way, and the refusing side is `0016_verify.sql`'s.
+ *
+ * Skipped without credentials (so `npm test` and CI never run it); refuses production and every project but
+ * the test one (`e2e/guard.setup.ts` allow-lists the test ref; the check below repeats it so this file is safe
+ * on its own). Disposable accounts only (a fresh Alice and Bob per run). It holds no service-role key.
+ *
+ * WHAT COSTS A PROVIDER CREDIT. Every `identify-plant` call that gets past the quota claim calls the live
+ * identifier once (shared TEST key; 10 per account per day). The refusal cases send a tiny synthetic JPEG and
+ * accept whatever the provider says (an empty answer is fine: the capture codes do not depend on it). The
+ * receipt cases need a photograph of a plant that has a card, so they run only when two photographs are
+ * supplied: E2E_CAPTURE_PHOTO_A and E2E_CAPTURE_PHOTO_B (paths of two JPEGs of one deck species). Digests are
+ * single-use across the whole project, so each run appends a random trailer after the JPEG data; the
+ * identifier ignores bytes after the end-of-image marker, and the digest is new every time.
+ *
+ * Words: a claim here is "captured in the app". The assertions never say verified or outdoors.
+ */
+const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const configured = Boolean(SB_URL && KEY);
+
+const TEST_REF = 'vgjehmwcpavflbfhbbrp';
+if (SB_URL && new URL(SB_URL).hostname !== `${TEST_REF}.supabase.co`) {
+  throw new Error('e2e/capture-receipts.e2e.test.ts runs against the TEST project only.');
+}
+
+const PHOTO_A = process.env.E2E_CAPTURE_PHOTO_A;
+const PHOTO_B = process.env.E2E_CAPTURE_PHOTO_B;
+const haveRealPhotos = Boolean(PHOTO_A && PHOTO_B);
+
+const STAMP = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+
+// The smallest well-formed JPEG there is (1x1). Real enough to be sent, meaningless to a plant identifier.
+const TINY_JPEG = Uint8Array.from(
+  atob(
+    '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=',
+  ),
+  (c) => c.charCodeAt(0),
+);
+
+/** The same picture with fresh trailing bytes, so its SHA-256 has never been seen. */
+function withTrailer(bytes: Uint8Array, tag: string): File {
+  const trailer = new TextEncoder().encode(`s6-${STAMP}-${tag}-${Math.random()}`);
+  const out = new Uint8Array(bytes.length + trailer.length);
+  out.set(bytes, 0);
+  out.set(trailer, bytes.length);
+  return new File([out], `${tag}.jpg`, { type: 'image/jpeg' });
+}
+
+const realBytes = (path: string) => new Uint8Array(readFileSync(path));
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+type Row = Record<string, unknown>;
+
+function freshClient(): SupabaseClient {
+  return createClient(SB_URL!, KEY!, { auth: { persistSession: false, autoRefreshToken: false } });
+}
+
+async function signUpAndIn(client: SupabaseClient, tag: string): Promise<User> {
+  const email = `plantdex-e2e-capture-${tag}-${STAMP}@mailinator.com`;
+  const password = `Test-Passw0rd-${Math.random().toString(36).slice(2, 10)}`;
+  const { error: signUpError } = await client.auth.signUp({ email, password });
+  if (signUpError) throw new Error(`signUp failed: ${signUpError.message}`);
+  const { data, error } = await client.auth.signInWithPassword({ email, password });
+  if (error || !data.user) throw new Error(`signIn failed: ${error?.message}`);
+  return data.user;
+}
+
+interface Session {
+  sessionId: string;
+  nonce: string;
+}
+async function open(client: SupabaseClient): Promise<Session> {
+  const { data, error } = await client.rpc('open_capture_session');
+  expect(error, JSON.stringify(error)).toBeNull();
+  expect((data as Row).ok, JSON.stringify(data)).toBe(true);
+  return { sessionId: (data as Row).session_id as string, nonce: (data as Row).nonce as string };
+}
+
+interface Answer {
+  error: unknown;
+  body: Row;
+}
+async function identify(client: SupabaseClient, images: File[], fields: Record<string, string>): Promise<Answer> {
+  const form = new FormData();
+  for (const image of images) {
+    form.append('image', image);
+    form.append('organ', 'auto');
+  }
+  for (const [k, v] of Object.entries(fields)) form.append(k, v);
+  const { data, error } = await client.functions.invoke('identify-plant', { body: form });
+  return { error, body: (data ?? {}) as Row };
+}
+
+const collect = (s: Session): Record<string, string> => ({
+  purpose: 'collect',
+  capture_session_id: s.sessionId,
+  capture_nonce: s.nonce,
+});
+const synthetic = (tag: string) => [withTrailer(TINY_JPEG, `${tag}-1`), withTrailer(TINY_JPEG, `${tag}-2`)];
+const real = (tag: string) => [withTrailer(realBytes(PHOTO_A!), `${tag}-a`), withTrailer(realBytes(PHOTO_B!), `${tag}-b`)];
+
+describe.skipIf(!configured)('identify-plant capture receipts, live (TEST project)', () => {
+  let alice: SupabaseClient;
+  let bob: SupabaseClient;
+  let anon: SupabaseClient;
+  let aliceUser: User;
+
+  beforeAll(async () => {
+    alice = freshClient();
+    bob = freshClient();
+    anon = freshClient();
+    aliceUser = await signUpAndIn(alice, 'alice');
+    await signUpAndIn(bob, 'bob');
+    // The migration and the function must both be deployed: fail loudly, not quietly, if 0016 is absent.
+    const probe = await alice.rpc('discovery_rules');
+    expect(probe.error, 'apply 0016 to TEST first (run-migration)').toBeNull();
+    expect((probe.data as Row).enforcing, 'this suite never enables enforcement; it must be found OFF').toBe(false);
+  }, 90_000);
+
+  afterAll(async () => {
+    // No service-role key here, so accounts are left (disposable, stamped); signed-out only.
+    for (const client of [alice, bob]) await client?.auth.signOut();
+  }, 30_000);
+
+  describe('refusals (no plant photograph needed)', () => {
+    it('a lookup (purpose=lookup, or no purpose) never carries a capture field or a receipt', async () => {
+      const s = await open(alice);
+      await sleep(2300);
+      const withSession = await identify(alice, synthetic('lookup'), { ...collect(s), purpose: 'lookup' });
+      const bare = await identify(alice, synthetic('bare'), {});
+      for (const answer of [withSession, bare]) {
+        expect(answer.body.capture).toBeUndefined();
+        expect(JSON.stringify(answer.body)).not.toContain('rcpt_');
+      }
+    }, 60_000);
+
+    it('an anonymous collect is capture_not_signed_in', async () => {
+      const s = await open(alice);
+      const answer = await identify(anon, synthetic('anon'), collect(s));
+      if (answer.error) return; // the anonymous allowance or the provider answered first: no receipt either way
+      expect(answer.body.capture).toEqual({ accepted: false, code: 'capture_not_signed_in' });
+    }, 60_000);
+
+    it("another account's open session and nonce is capture_session_unknown", async () => {
+      const s = await open(alice);
+      await sleep(2300);
+      const answer = await identify(bob, synthetic('stolen'), collect(s));
+      expect(answer.body.capture).toEqual({ accepted: false, code: 'capture_session_unknown' });
+      expect(JSON.stringify(answer.body)).not.toContain('rcpt_');
+    }, 60_000);
+
+    it('a wrong nonce is capture_session_nonce and does not spend the session', async () => {
+      const s = await open(alice);
+      await sleep(2300);
+      const wrong = await identify(alice, synthetic('nonce'), { ...collect(s), capture_nonce: '0'.repeat(64) });
+      expect(wrong.body.capture).toEqual({ accepted: false, code: 'capture_session_nonce' });
+      const right = await identify(alice, synthetic('nonce2'), collect(s));
+      expect((right.body.capture as Row).accepted).toBe(true);
+    }, 90_000);
+
+    it('submitting at once is capture_too_fast', async () => {
+      const s = await open(alice);
+      const answer = await identify(alice, synthetic('fast'), collect(s));
+      expect(answer.body.capture).toEqual({ accepted: false, code: 'capture_too_fast' });
+    }, 60_000);
+
+    it('the same photograph twice is refused, across sessions and across accounts', async () => {
+      const first = await open(alice);
+      await sleep(2300);
+      const images = synthetic('dup');
+      expect(((await identify(alice, images, collect(first))).body.capture as Row).accepted).toBe(true);
+      const second = await open(alice);
+      await sleep(2300);
+      const again = await identify(alice, [images[0]!, withTrailer(TINY_JPEG, 'dup-fresh')], collect(second));
+      expect(again.body.capture).toEqual({ accepted: false, code: 'capture_duplicate_image' });
+      const bobs = await open(bob);
+      await sleep(2300);
+      const crossed = await identify(bob, images, collect(bobs));
+      expect(crossed.body.capture).toEqual({ accepted: false, code: 'capture_duplicate_image' });
+    }, 120_000);
+  });
+
+  describe('direct-API bypass, with the function deployed', () => {
+    it('a signed-in client cannot call the two service-role calls', async () => {
+      const s = await open(alice);
+      const consume = await alice.rpc('consume_capture_session', {
+        p_user: aliceUser.id,
+        p_session: s.sessionId,
+        p_nonce: s.nonce,
+        p_observation_id: `obs-${STAMP}`,
+        p_image_digests: ['a'.repeat(64), 'b'.repeat(64)],
+      });
+      expect(consume.error, 'consume_capture_session must be service-role only').not.toBeNull();
+      const issue = await alice.rpc('issue_capture_receipts', { p_user: aliceUser.id, p_session: s.sessionId, p_items: [] });
+      expect(issue.error, 'issue_capture_receipts must be service-role only').not.toBeNull();
+      const anonConsume = await anon.rpc('consume_capture_session', {
+        p_user: aliceUser.id, p_session: s.sessionId, p_nonce: s.nonce, p_observation_id: 'x', p_image_digests: [],
+      });
+      expect(anonConsume.error).not.toBeNull();
+    }, 60_000);
+
+    it('a client cannot insert, rewrite or delete a receipt, or read sessions and digests', async () => {
+      const s = await open(alice);
+      const forged = await alice.from('capture_receipts').insert({
+        id: `rcpt_${'a'.repeat(32)}`, user_id: aliceUser.id, session_id: s.sessionId, observation_id: 'o',
+        herb_id: 'urtica-dioica', observed_taxon_key: 'urtica dioica', observed_taxon_rank: 'species',
+        eligibility: 'exact', rank_position: 'top', species_confidence: 'high',
+        expires_at: new Date(Date.now() + 86_400_000).toISOString(),
+      });
+      expect(forged.error, 'a client must not be able to mint a receipt').not.toBeNull();
+      expect((await alice.from('capture_receipts').update({ herb_id: 'urtica-dioica' }).eq('user_id', aliceUser.id).select()).data ?? []).toHaveLength(0);
+      expect((await alice.from('capture_receipts').delete().eq('user_id', aliceUser.id).select()).data ?? []).toHaveLength(0);
+      const sessions = await alice.from('capture_sessions').select('*');
+      expect(sessions.error ?? (sessions.data ?? []).length === 0 ? true : false).toBe(true);
+      const digests = await alice.from('capture_image_digests').select('*');
+      expect(digests.error ?? (digests.data ?? []).length === 0 ? true : false).toBe(true);
+    }, 60_000);
+
+    it('claim_discovery with a forged receipt id writes nothing', async () => {
+      const claim = await alice.rpc('claim_discovery', { p_receipt_id: `rcpt_${'f'.repeat(32)}` });
+      expect(claim.data).toEqual({ ok: false, code: 'receipt_unknown' });
+    });
+  });
+
+  describe.skipIf(!haveRealPhotos)('receipts (needs E2E_CAPTURE_PHOTO_A and _B: two JPEGs of one deck species)', () => {
+    it('open -> identify -> receipt -> claim -> discovery, then a replay, a foreign claim and a re-claim', async () => {
+      const s = await open(alice);
+      await sleep(2300);
+      const images = real('real');
+      const answer = await identify(alice, images, collect(s));
+      expect(answer.error, JSON.stringify(answer.error)).toBeNull();
+      expect((answer.body.capture as Row).accepted).toBe(true);
+      const candidates = (answer.body.candidates ?? []) as Array<{ scientificName: string; captureReceipt?: { id: string; rankPosition: string; expiresAt: string } }>;
+      const withReceipt = candidates.find((c) => c.captureReceipt);
+      expect(withReceipt, 'the supplied photographs must be of a species that has a card').toBeDefined();
+      const receiptId = withReceipt!.captureReceipt!.id;
+      expect(receiptId).toMatch(/^rcpt_[0-9a-f]{32}$/);
+
+      // Readable by its owner only.
+      expect(((await alice.from('capture_receipts').select('id').eq('id', receiptId)).data ?? []).length).toBe(1);
+      expect(((await bob.from('capture_receipts').select('id').eq('id', receiptId)).data ?? []).length).toBe(0);
+      expect((await bob.rpc('claim_discovery', { p_receipt_id: receiptId })).data).toEqual({ ok: false, code: 'receipt_unknown' });
+
+      const claimed = (await alice.rpc('claim_discovery', { p_receipt_id: receiptId })).data as Row;
+      expect(claimed.ok, JSON.stringify(claimed)).toBe(true);
+      expect(['claimed', 'already_held']).toContain(claimed.status);
+      expect(((await alice.rpc('claim_discovery', { p_receipt_id: receiptId })).data as Row).status).toMatch(/already_/);
+      expect(((await alice.from('discoveries').select('herb_id').eq('user_id', aliceUser.id)).data ?? []).length).toBe(1);
+
+      // The identical request again is a replay: receipts, no candidates, no second quota unit.
+      const replay = await identify(alice, images, collect(s));
+      expect(replay.body).toMatchObject({ candidates: [], capture: { accepted: true, replay: true } });
+      expect(((replay.body.capture as Row).receipts as Array<{ id: string }>).map((r) => r.id)).toContain(receiptId);
+    }, 180_000);
+  });
+});
