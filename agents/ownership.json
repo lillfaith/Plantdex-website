@@ -2,7 +2,10 @@
   "$comment": "Who may change which file. First matching rule wins; the final rule is the catch-all. Read agents/README.md before editing. This file is Tier 1 (coordinator) and is checked by src/lib/ownership.test.ts, scripts/agent-guard.mjs and the PR gate. A manifest alone is NOT a security boundary: the real boundary is the GitHub ruleset and environment gate described in docs/agent-workflow/github-protections.md.",
   "version": 1,
   "production": "claude/planning-session-61zwro",
-  "protectedBranches": ["claude/planning-session-61zwro", "integration"],
+  "protectedBranches": [
+    "claude/planning-session-61zwro",
+    "integration"
+  ],
   "branches": {
     "coord/": "coordinator",
     "agent/scan/": "scan",
@@ -218,7 +221,9 @@
         "CLAUDE.md",
         "README.md",
         ".gitignore",
-        ".env.example"
+        ".env.example",
+        "src/lib/persistence-*",
+        "src/lib/v1-security-audit*"
       ]
     },
     {
