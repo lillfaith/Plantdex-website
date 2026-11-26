@@ -63,6 +63,10 @@ export const PURE_MODULES = [
   // They travel so the edge function normalises with exactly the code vitest tested against
   // mocks — the alternative is a second mapping on the server, free to disagree with the one
   // under test, which is the drift `_shared` exists to prevent.
+  // Receipt rules (migration 0016). `identify-plant` issues receipts with the SAME function vitest runs,
+  // so the five qualifying eligibilities cannot drift between client, server and the SQL check.
+  'observation-qualification.ts',
+  'observation-capture-receipt.ts',
   'identification-types.ts',
   'plantnet-normalize.ts',
   'plantid-normalize.ts',

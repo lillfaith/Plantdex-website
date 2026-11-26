@@ -19,13 +19,10 @@
  *   - Issue a receipt for a lookup, an anonymous call, a failed capture, or anything the matcher did
  *     not itself call `confirmable` on this server.
  *
- * `receiptItemsFor` below is a LOCAL COPY of `src/lib/observation-capture-receipt.ts`. The real one
- * cannot be imported until the coordinator adds it (and `observation-qualification.ts`) to
- * `PURE_MODULES` — see agents/requests/scan-s6-sync-capture-modules.md. Until then
- * `src/lib/scan-edge-receipts.test.ts` runs both over the whole catalogue and fails on any
- * difference, so the copy cannot drift quietly.
+ * `receiptItemsFor` comes from the synced `_shared` copy of `src/lib/observation-capture-receipt.ts`.
  * ─────────────────────────────────────────────────────────────────────────────
  */
+import { receiptItemsFor, type CaptureCandidate, type ReceiptItem } from '../_shared/herbdex/observation-capture-receipt.ts';
 import {
   matchScientificName,
   speciesConfidenceFor,
@@ -135,6 +132,11 @@ export interface CapturePort {
   }): Promise<ConsumeAnswer>;
   issue(args: { userId: string; sessionId: string; items: ReceiptItem[] }): Promise<IssuedReceipt[]>;
   receiptsForSession(userId: string, sessionId: string): Promise<ReceiptRow[]>;
+  /**
+   * The provider failed after the session was consumed and nothing was issued: hand the session back so the
+   * player's retry is a first use. Refused by the database when any receipt exists. Never throws.
+   */
+  release(userId: string, sessionId: string): Promise<boolean>;
 }
 
 type Reply = PromiseLike<{ data: unknown; error: { message?: string; code?: string } | null }>;
@@ -160,6 +162,14 @@ export function supabasePort(admin: AdminLike): CapturePort {
       if (error || !Array.isArray(data)) throw new Error('capture_sessions read failed');
       const row = obj(data[0]);
       return row ? row.consumed_at != null : null;
+    },
+    async release(userId, sessionId) {
+      try {
+        const { data, error } = await admin.rpc('release_capture_session', { p_user: userId, p_session: sessionId });
+        return !error && data === true;
+      } catch {
+        return false;
+      }
     },
     async consume({ userId, sessionId, nonce, observationId, digests }) {
       const { data, error } = await admin.rpc('consume_capture_session', {
@@ -214,50 +224,12 @@ export function supabasePort(admin: AdminLike): CapturePort {
   };
 }
 
-// ── Which candidates earn a receipt (local copy; see the header) ─────────────
+// ── Which candidates earn a receipt ──────────────────────────────────────────
+// The real module, synced into `_shared` (scripts/sync-edge-shared.mjs): the server issues receipts
+// with exactly the function vitest exercises.
 
-const RECEIPT_ELIGIBILITIES: readonly Eligibility[] = [
-  'exact',
-  'synonym',
-  'acceptedGroup',
-  'curatedEquivalent',
-  'genusCard',
-];
-
-export interface ReceiptItem {
-  herb_id: string;
-  observed_taxon_key: string;
-  observed_taxon_rank: string;
-  eligibility: string;
-  rank_position: RankPosition;
-  species_confidence: SpeciesConfidence;
-}
-
-export interface CaptureCandidate {
-  match: PlantMatch;
-  rankPosition: RankPosition;
-  speciesConfidence: SpeciesConfidence;
-}
-
-export function receiptItemsFor(candidates: readonly CaptureCandidate[]): ReceiptItem[] {
-  const seen = new Set<string>();
-  const items: ReceiptItem[] = [];
-  for (const { match, rankPosition, speciesConfidence } of candidates) {
-    if (!match.confirmable || !match.herbId || !match.observedTaxon) continue;
-    if (!RECEIPT_ELIGIBILITIES.includes(match.eligibility)) continue;
-    if (seen.has(match.herbId)) continue;
-    seen.add(match.herbId);
-    items.push({
-      herb_id: match.herbId,
-      observed_taxon_key: match.observedTaxon.key,
-      observed_taxon_rank: match.observedTaxon.rank,
-      eligibility: match.eligibility,
-      rank_position: rankPosition,
-      species_confidence: speciesConfidence,
-    });
-  }
-  return items;
-}
+export { receiptItemsFor };
+export type { ReceiptItem, CaptureCandidate };
 
 // ── Orchestration ────────────────────────────────────────────────────────────
 

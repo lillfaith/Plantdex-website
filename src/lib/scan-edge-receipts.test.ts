@@ -249,7 +249,7 @@ describe('supabasePort (the PostgREST adapter)', () => {
     await p.consume({ userId: 'u', sessionId: 's', nonce: 'n', observationId: 'o', digests: ['d'] });
     expect(await p.issue({ userId: 'u', sessionId: 's', items: [] })).toEqual([{ id: 'rcpt_x', herbId: 'h', rankPosition: 'listed' }]);
     expect(await p.sessionConsumed('u', 's')).toBe(false);
-    const sql = read('docs/discoveries/sql/0016_discovery_capture_enforcement.sql');
+    const sql = read('supabase/migrations/0016_discovery_capture_enforcement.sql');
     expect(sql).toContain('consume_capture_session(\n  p_user uuid, p_session uuid, p_nonce text, p_observation_id text, p_image_digests text[]');
     expect(seen[0]).toEqual(['consume_capture_session', { p_user: 'u', p_session: 's', p_nonce: 'n', p_observation_id: 'o', p_image_digests: ['d'] }]);
     expect(sql).toContain('issue_capture_receipts(p_user uuid, p_session uuid, p_items jsonb)');

@@ -25,9 +25,9 @@ echo "== 1. fresh database: stub + 0001..0014 + 0016 (enforcement stays OFF)"
 rootsql "drop database if exists $DB" >/dev/null 2>&1
 rootsql "create database $DB" >/dev/null
 run "$SQL/local-supabase-stub.sql"
-for f in "$ROOT"/supabase/migrations/*.sql; do run "$f" >/dev/null 2>&1 || { echo "baseline FAILED at $f"; exit 1; }; done
+for f in "$ROOT"/supabase/migrations/*.sql; do case "$f" in *0016_*) continue;; esac; run "$f" >/dev/null 2>&1 || { echo "baseline FAILED at $f"; exit 1; }; done
 case "$(ls "$ROOT/supabase/migrations" | tr '\n' ' ')" in *0014_confirm_scan*) ;; *) run "$M14" >/dev/null ;; esac
-run "$SQL/0016_discovery_capture_enforcement.sql" >/dev/null
+run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null
 
 echo "== 2. the handler, end to end, against it"
 cd "$ROOT"

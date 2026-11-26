@@ -1,6 +1,6 @@
 -- 0016_discovery_capture_enforcement.sql        *** DRAFT. TEST PROJECT ONLY. NOT APPLIED. ***
 --
--- Depends on 0014 (confirm_scan). Does NOT alter 0014 or 0015, and creates no object either defines.
+-- Depends only on migrations 0001-0013 (is_catalogue_herb, discoveries, learned, mastered). It needs neither 0014 (confirm_scan) nor 0015 (expansion ids), and creates no object either defines.
 --
 -- WHY: owner decision (final, 2026-11-26): V1 requires an eligible IN-APP CAMERA capture to earn a NEW
 -- collectible card. Until now `discoveries` has been written by the browser under its own JWT, so a
@@ -304,6 +304,24 @@ begin
     'session_id', s.id, 'observation_id', p_observation_id);
 end $$;
 
+-- 6b2. identify-plant (service role) hands a session BACK when the identification provider failed after the
+--      session was consumed and nothing was issued, so the player's retry with the same photographs is a first
+--      use rather than a replay with zero receipts. It refuses (returns false) when any receipt exists for the
+--      session, so it can never be used to re-roll a result the player has already seen. Image digests are left in
+--      place on purpose: they only flag cross-account reuse, and the same account re-sending them is harmless.
+create or replace function public.release_capture_session(p_user uuid, p_session uuid)
+returns boolean language plpgsql security definer set search_path = '' as $$
+declare v_n int;
+begin
+  if p_user is null or p_session is null then return false; end if;
+  if exists (select 1 from public.capture_receipts r where r.session_id = p_session) then return false; end if;
+  update public.capture_sessions
+     set consumed_at = null, request_digest = null, observation_id = null, suspect_duplicate = false
+   where id = p_session and user_id = p_user and consumed_at is not null;
+  get diagnostics v_n = row_count;
+  return v_n = 1;
+end $$;
+
 -- 6c. identify-plant (service role) records one receipt per eligible candidate.
 --     p_items: [{herb_id, observed_taxon_key, observed_taxon_rank, eligibility, rank_position, species_confidence}]
 --     An item the CHECKs refuse is skipped, never fatal: a receipt bug must not become an identification failure.
@@ -499,6 +517,9 @@ create trigger mastered_requires_discovery_trg
 
 -- ─── 8. Grants (a definer function is executable by `public` and, on Supabase, by `anon` by default) ─
 revoke all on function public.capture_config() from public, anon, authenticated;
+-- Trigger functions cannot be called as RPC, but they are definers: no role needs EXECUTE on them.
+revoke all on function public.discoveries_capture_gate() from public, anon, authenticated;
+revoke all on function public.progress_requires_discovery() from public, anon, authenticated;
 revoke all on function public.open_capture_session() from public, anon;
 revoke all on function public.claim_discovery(text) from public, anon;
 revoke all on function public.discovery_rules() from public, anon;
@@ -509,8 +530,10 @@ grant execute on function public.discovery_rules() to authenticated;
 revoke all on function public.consume_capture_session(uuid, uuid, text, text, text[]) from public, anon, authenticated;
 revoke all on function public.issue_capture_receipts(uuid, uuid, jsonb) from public, anon, authenticated;
 revoke all on function public.prune_capture_artifacts() from public, anon, authenticated;
+revoke all on function public.release_capture_session(uuid, uuid) from public, anon, authenticated;
 revoke all on function public.set_discovery_enforcement(boolean, timestamptz, text) from public, anon, authenticated;
 grant execute on function public.consume_capture_session(uuid, uuid, text, text, text[]) to service_role;
 grant execute on function public.issue_capture_receipts(uuid, uuid, jsonb) to service_role;
 grant execute on function public.prune_capture_artifacts() to service_role;
+grant execute on function public.release_capture_session(uuid, uuid) to service_role;
 grant execute on function public.set_discovery_enforcement(boolean, timestamptz, text) to service_role;

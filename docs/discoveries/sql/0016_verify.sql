@@ -201,6 +201,21 @@ select pg_temp.ok('ONE IMAGE is a valid capture (additional angles are optional)
     current_setting('d5.open_one')::jsonb ->> 'nonce', 'obs_one', array[repeat('7', 64)])) ->> 'ok' = 'true');
 select pg_temp.ok('the SAME account re-using an image is accepted and is not flagged (a retake is harmless)',
   (select not suspect_duplicate from public.capture_sessions where id = (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid));
+-- PROVIDER FAILURE: the function hands the session back so the same photographs can be retried as a FIRST use.
+select pg_temp.ok('release: a consumed session with NO receipt is handed back',
+  public.release_capture_session('00000000-0000-0000-0000-0000000000b2', (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid));
+select pg_temp.ok('release: the retry with the same photograph is a first use again, not a replay',
+  (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid,
+    current_setting('d5.open_one')::jsonb ->> 'nonce', 'obs_one_retry', array[repeat('7', 64)])) ->> 'replay' = 'false');
+select pg_temp.ok('release: another account cannot release this session',
+  not public.release_capture_session('00000000-0000-0000-0000-0000000000a1', (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid));
+select pg_temp.ok('release: a session whose result was already issued can NEVER be handed back (no re-rolling a seen answer)',
+  not public.release_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid));
+reset role;
+set local role authenticated;
+select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
+select pg_temp.refuses('release: a signed-in player cannot call it (service role only)',
+  $q$select public.release_capture_session(auth.uid(), gen_random_uuid())$q$, '42501', 'permission denied');
 reset role;
 
 -- Duplicate image across accounts: a second account, a second session, one reused image.
@@ -305,6 +320,9 @@ reset role;
 select pg_temp.ok('nothing leaked through: bob still holds no discovery',
   (select count(*) from public.discoveries where user_id = '00000000-0000-0000-0000-0000000000b2') = 0);
 
+-- 0016 does not depend on 0014: this check runs only where confirm_scan exists.
+select to_regprocedure('public.confirm_scan(text,text,text,numeric,text,text,text)') is not null as has_confirm_scan \gset
+\if :has_confirm_scan
 -- confirm_scan (0014) with a forged receipt: it has no receipt parameter and writes scans.confirmed_* only.
 set local role authenticated;
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
@@ -315,6 +333,8 @@ reset role;
 select pg_temp.ok('...and it created NO discovery and NO receipt',
   (select count(*) from public.discoveries where user_id = '00000000-0000-0000-0000-0000000000b2') = 0
   and (select count(*) from public.capture_receipts where user_id = '00000000-0000-0000-0000-0000000000b2' and herb_id = 'urtica-dioica') = 0);
+
+\endif
 
 -- The legitimate route: claim the receipt the server issued.
 set local role authenticated;
