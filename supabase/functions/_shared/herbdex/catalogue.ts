@@ -1,4 +1,5 @@
 import { PRINTED_CARDS, PRINTED_DECK_SIZE } from './deck.ts';
+import { EXPANSION_ENTRIES } from './expansion-entries.ts';
 import { FIELD_CARDS } from './field-cards.ts';
 import type { Herb } from './types.ts';
 
@@ -53,7 +54,7 @@ import type { Herb } from './types.ts';
  * right for the printed 45, and would silently make a digital card a member of the physical
  * deck. `catalogue.test.ts` fails on any entry here that omits it.
  */
-export const DIGITAL_ONLY_ENTRIES: readonly Herb[] = FIELD_CARDS;
+export const DIGITAL_ONLY_ENTRIES: readonly Herb[] = [...FIELD_CARDS, ...EXPANSION_ENTRIES];
 
 /**
  * Every species Plantdex knows: the printed deck plus digital-only entries.
@@ -92,3 +93,14 @@ export function isDigitalOnly(herb: Herb): boolean {
  * one place and cannot mistake one for the other.
  */
 export { PRINTED_DECK_SIZE };
+
+const EXPANSION_IDS = new Set(EXPANSION_ENTRIES.map((herb) => herb.id));
+
+/**
+ * True when this id is a Herbdex Expansion card. Always false in the committed tree (the list is empty).
+ * Exists for the one rule that must hold if the list is ever served: expansion discoveries score nothing on
+ * the Field Board, whose server side does not know them either (`is_catalogue_herb`, migration 0013).
+ */
+export function isExpansionEntry(id: string): boolean {
+  return EXPANSION_IDS.has(id);
+}

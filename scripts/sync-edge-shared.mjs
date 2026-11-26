@@ -49,6 +49,9 @@ export const PURE_MODULES = [
   // while the AWARD still resolves through the printed deck, so an unlock pays nothing.
   // Both halves have to be the same code on both sides, so both modules travel.
   'field-cards.ts',
+  // Always an EMPTY list in the committed tree: `catalogue.ts` imports it, so it travels, and the server
+  // therefore never learns about preview cards (the pilot preview swaps it only in a staged copy).
+  'expansion-entries.ts',
   'catalogue.ts',
   // Travels with `plant-match.ts`, which imports it. `seed-packet` applies `isShelfEligible`
   // server-side, and that is defined as "no confirmable match" — so a card the owner widened

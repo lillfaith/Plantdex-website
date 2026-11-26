@@ -1,5 +1,6 @@
 import type { Herb } from './types';
 import { PRINTED_DECK_SIZE } from './deck';
+import { EXPANSION_COLLECTION } from './expansion-entries';
 
 /**
  * COLLECTIONS.
@@ -96,7 +97,13 @@ export const FIELD_CARDS_COLLECTION: Collection = {
  * Field Research supply, Seed Shelf eligibility. This wider list exists so a Field Card can
  * resolve its own name and nothing more.
  */
-export const COLLECTIONS: readonly Collection[] = [COLLECTION_01, FIELD_CARDS_COLLECTION];
+export const COLLECTIONS: readonly Collection[] = [
+  COLLECTION_01,
+  FIELD_CARDS_COLLECTION,
+  // Null in the committed tree (`expansion-entries.ts`); set only by the staged preview. The id is a
+  // PROPOSAL awaiting the owner (pilot plan section 3).
+  ...(EXPANSION_COLLECTION ? [EXPANSION_COLLECTION] : []),
+];
 
 /**
  * Collections that were physically printed. Exactly one, and that is the invariant.
