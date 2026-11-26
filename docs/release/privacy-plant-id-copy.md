@@ -32,3 +32,10 @@ after reading each provider's current terms, then add the confirmed sentence to 
       shared: **OWNER TO CONFIRM**
 - [ ] Plant.id (Kindwise): retention period, deletion route, training use: **OWNER TO CONFIRM**
 - [ ] Whether Plantdex's own `scans` row ever keeps a photo (today it keeps names and scores, not the image): **OWNER TO CONFIRM wording**
+
+## Add only when discovery enforcement is switched on (not today)
+
+- **A capture session and a photograph fingerprint.** To make sure a new card was collected with the in-app camera, PlantDex records a
+  single-use capture session and a one-way fingerprint (hash) of each photograph taken that way. It does not keep the photograph for this,
+  reads no location, and records only that the capture went through the app. It does not prove where a plant was found.
+  (Only a hash and a session row exist; both go with the account on deletion.)

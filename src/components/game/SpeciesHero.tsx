@@ -63,7 +63,7 @@ export function SpeciesHero({
       <div className="justify-self-center lg:justify-self-start">
         <div className="relative">
           <RarityAura rarity={herb.rarity} size="hero" />
-          <div className="card-tilt relative z-10 drop-shadow-[0_18px_44px_rgba(23,16,28,0.7)]">
+          <div className="card-tilt relative z-10 [filter:var(--hero-drop,drop-shadow(0_18px_44px_rgba(23,16,28,0.7)))]">
             <CardFlip herb={herb} size="hero" />
           </div>
         </div>

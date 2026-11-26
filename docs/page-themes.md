@@ -24,7 +24,7 @@ and `src/lib/page-themes.ts` and wait for their pages.** Nothing here recolours 
 |---|---|---|---|---|---|
 | Home | defined | #170D2B | #38205B | #512B86 | #F2A7CF, #F2C75C |
 | Scan / Identify | **applied** | #14152F | #243D70 | #235B69 | #6FD5C2, #B9A1F2 |
-| Collection / Herbdex | **applied** (index) | #170D2B | #34205F | #59308C | #F2C75C, #B786F1 (glint #F2A7CF) |
+| Collection / Herbdex | **applied** (index), LAVENDER SAMPLE awaiting owner approval | #C9A4F8 | #E2CFFC | #B98CF2 | #9C21F8 (card violet, sampled from the card faces), #F180B4 (glint #F180B4) |
 | Garden | **applied** | #171C2C | #294A42 | #40305F | #8CC78B, #C5A5E9 |
 | Field Journal | defined | #24152E | #58304E | #744366 | #F2A7CF, #F5D58B |
 | Learn | defined | #211B40 | #414C83 | #5A477E | #AFC3FF, #F2D58B |

@@ -22,7 +22,7 @@ import {
 
 const ROOT = path.resolve(__dirname, '../..');
 const read = (rel: string) => readFileSync(path.join(ROOT, rel), 'utf8');
-const MIGRATION = read('docs/discoveries/sql/0016_discovery_capture_enforcement.sql');
+const MIGRATION = read('supabase/migrations/0016_discovery_capture_enforcement.sql');
 const VERIFY = read('docs/discoveries/sql/0016_verify.sql');
 const ROLLBACK = read('docs/discoveries/sql/0016_rollback.sql');
 const CONTRACT = read('docs/discoveries/discovery-receipt-contract.md');
@@ -125,7 +125,7 @@ describe('duplicate images are flagged for review, never refused and never revea
   });
   it('the flag is never returned or granted: no response, view or column grant mentions it', () => {
     const mentions = code.split('\n').filter((l) => l.includes('suspect_duplicate'));
-    expect(mentions).toHaveLength(2); // the column and the one update; nothing else
+    expect(mentions).toHaveLength(3); // the column, the consume update and the release reset; nothing else
     expect(code).not.toMatch(/jsonb_build_object\([^;]*suspect_duplicate/);
     expect(code).not.toMatch(/grant[^;]*capture_sessions[^;]*(anon|authenticated)/i);
     expect(code).toMatch(/revoke all on table public\.capture_sessions from public, anon, authenticated/);
@@ -152,6 +152,7 @@ describe('the switch defaults OFF and nothing here can turn it on', () => {
       'consume_capture_session(uuid, uuid, text, text, text[])',
       'issue_capture_receipts(uuid, uuid, jsonb)',
       'prune_capture_artifacts()',
+      'release_capture_session(uuid, uuid)',
       'set_discovery_enforcement(boolean, timestamptz, text)',
     ]) {
       expect(MIGRATION).toContain(`revoke all on function public.${fn} from public, anon, authenticated;`);

@@ -337,7 +337,7 @@ body {
  */
 [data-page-theme='home']       { --pt-a:#170d2b; --pt-b:#38205b; --pt-c:#512b86; --pt-accent:#f2a7cf; --pt-accent-2:#f2c75c; }
 [data-page-theme='scan']       { --pt-a:#14152f; --pt-b:#243d70; --pt-c:#235b69; --pt-accent:#6fd5c2; --pt-accent-2:#b9a1f2; --pt-c-a:90%; --pt-c-y:101%; }
-[data-page-theme='collection'] { --pt-a:#170d2b; --pt-b:#34205f; --pt-c:#59308c; --pt-accent:#f2c75c; --pt-accent-2:#b786f1; --pt-glint:#f2a7cf; --pt-b-a:72%; --pt-c-a:84%; }
+[data-page-theme='collection'] { --pt-a:#c9a4f8; --pt-b:#e2cffc; --pt-c:#b98cf2; --pt-accent:#9c21f8; --pt-accent-2:#f180b4; --pt-glint:#f180b4; --pt-b-a:70%; --pt-c-a:55%; --pt-vignette:10%; --pt-royal:8%; }
 [data-page-theme='garden']     { --pt-a:#171c2c; --pt-b:#426b58; --pt-c:#40305f; --pt-accent:#8cc78b; --pt-accent-2:#c5a5e9; --pt-b-a:42%; }
 [data-page-theme='journal']    { --pt-a:#24152e; --pt-b:#58304e; --pt-c:#744366; --pt-accent:#f2a7cf; --pt-accent-2:#f5d58b; }
 [data-page-theme='learn']      { --pt-a:#211b40; --pt-b:#414c83; --pt-c:#5a477e; --pt-accent:#afc3ff; --pt-accent-2:#f2d58b; }
@@ -360,11 +360,11 @@ body {
   pointer-events: none;
   background:
     repeating-linear-gradient(90deg, color-mix(in srgb, var(--pt-accent) 38%, transparent) 0 6px, transparent 6px 12px) top / 100% 2px no-repeat,
-    radial-gradient(ellipse 115% 85% at 50% 46%, transparent 58%, color-mix(in srgb, var(--color-brand-plum) 62%, transparent) 100%),
+    radial-gradient(ellipse 115% 85% at 50% 46%, transparent 58%, color-mix(in srgb, var(--color-brand-plum) var(--pt-vignette, 62%), transparent) 100%),
     radial-gradient(ellipse 55% 20% at 88% 6%, color-mix(in srgb, var(--pt-glint, transparent) 11%, transparent), transparent 100%),
     radial-gradient(ellipse 80% 26% at 50% 0%, color-mix(in srgb, var(--pt-accent) 9%, transparent), transparent 100%),
     radial-gradient(ellipse 130% 50% at 50% 12%, color-mix(in srgb, var(--pt-b) var(--pt-b-a, 60%), transparent), transparent 100%),
-    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) 25%, transparent), transparent 100%),
+    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) var(--pt-royal, 25%), transparent), transparent 100%),
     radial-gradient(ellipse 140% 58% at 50% var(--pt-c-y, 108%), color-mix(in srgb, var(--pt-c) var(--pt-c-a, 75%), transparent), transparent 100%),
     var(--pt-a);
 }
@@ -3146,4 +3146,300 @@ body {
   .tour-hole {
     transition: none;
   }
+}
+
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * LAVENDER GROUND, v2 — SUPERVISED SAMPLE (ui/palette-sample). Not yet propagated.
+ *
+ * One related family instead of a dark interface on a light page:
+ *   ground       #C9A4F8  lavender                (the page)
+ *   surface      #EEE3FD  pale lilac              (panels, sheets, tiles, inputs)
+ *   surface-2    #DDC8FA  soft lavender           (grouping, tracks)
+ *   edge         #B48AEE  muted card violet       (borders, pixel drops)
+ *   card violet  #9C21F8  sampled from the cards  (chips, accents, selected edge)
+ *   plum-mid     #5B2E91  mid-tone plum           (headers, heading plates)
+ *   deep         #3D0A63 / #211827                (selected states, nav, CTAs, strong text only)
+ * Gold and pink stay as accents. Ink on every light surface is the deep violet #3D0A63
+ * (7.1:1 on the ground, higher on the surfaces), so text tokens are flipped to ink inside the
+ * ground and restored to light inside the plum plates.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+[data-ground='lavender'] {
+  --lav-surface: #eee3fd;
+  --lav-surface-2: #ddc8fa;
+  --lav-edge: #8a5bd0;
+  --lav-drop: #b48aee;
+  --plum-mid: #5b2e91;
+  --color-violet-50: #2b0a4a;
+  --color-violet-100: #34104f;
+  --color-violet-200: #3d0a63;
+  --color-violet-300: #4f1d82;
+  --color-violet-400: #5f2f94;
+  --color-gold-300: #6b3f06;
+  --color-gold-400: #7d4d08;
+  color: var(--color-violet-200);
+}
+/* Inside a plum plate the deck's light text tokens come back. */
+[data-ground='lavender'] .plate-plum,
+[data-ground='lavender'] [data-on-plum],
+[data-ground='lavender'] .on-plum {
+  --color-violet-50: #fbf5ff;
+  --color-violet-100: #f6ebfd;
+  --color-violet-200: #ecd4fb;
+  --color-violet-300: #ddd0ef;
+  --color-violet-400: #dd9ef6;
+  --color-gold-300: #fff0b3;
+  --color-gold-400: #ffe27a;
+  color: var(--color-violet-200);
+}
+
+@utility ground-ink {
+  color: var(--color-violet-200);
+}
+
+/* Mid-tone plum plate, card-violet edge, hard pixel drop; carries gold or white text. */
+@utility plate-plum {
+  background: var(--plum-mid, #5b2e91);
+  border: 2px solid var(--color-violet-600);
+  box-shadow:
+    0 3px 0 0 var(--color-violet-800),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-gold-500) 35%, transparent);
+  border-radius: 0.375rem;
+}
+
+/* Selected state: the deepest violet, white text, a pink pixel bar. */
+@utility chip-selected-deep {
+  background: #f7f0ff;
+  color: var(--color-violet-900);
+  box-shadow: inset 0 -3px 0 0 var(--color-violet-600);
+}
+
+/* Card violet chip, for active filters. */
+@utility chip-card-violet {
+  background: var(--color-violet-600);
+  color: #fff;
+  box-shadow: inset 0 -3px 0 0 var(--color-pink-accent);
+}
+
+/* Pale lilac surfaces: every panel family on the lavender ground. */
+[data-ground='lavender'] .panel,
+[data-ground='lavender'] .game-panel,
+[data-ground='lavender'] .field-panel,
+[data-ground='lavender'] .science-panel,
+[data-ground='lavender'] .character-panel,
+[data-ground='lavender'] .panel-raised {
+  background: var(--lav-surface);
+  border: 2px solid var(--lav-edge);
+  box-shadow: 0 3px 0 0 var(--lav-drop);
+}
+[data-ground='lavender'] .herb-strip {
+  background: var(--lav-surface);
+}
+[data-ground='lavender'] .lav-pill {
+  background: #f7f0ff;
+  color: var(--color-violet-100);
+  border-color: #c8962c;
+}
+[data-ground='lavender'] .lav-input {
+  background: #f7f0ff;
+  border: 2px solid var(--lav-edge);
+  color: var(--color-violet-200);
+}
+[data-ground='lavender'] .lav-input::placeholder {
+  color: var(--color-violet-400);
+}
+[data-ground='lavender'] .lav-track {
+  background: var(--lav-surface-2);
+  border: 2px solid var(--lav-edge);
+  box-shadow: 0 3px 0 0 var(--lav-drop);
+}
+/* Safety notices: pale warm-lilac plate, gold edge; wording and placement unchanged. */
+[data-ground='lavender'] [role='note'],
+[data-ground='lavender'] aside {
+  background-color: #f6edff;
+  border: 2px solid #c8962c;
+  box-shadow: 0 3px 0 0 var(--lav-drop);
+}
+/* The dark scenery is hidden on this page; lavender-tinted pixel scenery is a follow-up. */
+body:has([data-ground='lavender']) [data-site-decor] {
+  display: none;
+}
+/* Footer: a lighter lavender band with a card-violet rule; the nav stays the one deep plum bar. */
+body:has([data-ground='lavender']) footer {
+  background: var(--color-violet-300, #ddd0ef);
+  background: #d4b9f7;
+  border-top: 2px solid var(--color-violet-600);
+  margin-top: 4rem;
+  --color-violet-100: #34104f;
+  --color-violet-200: #3d0a63;
+  --color-violet-300: #4f1d82;
+  --color-violet-400: #4f1d82;
+  --color-gold-400: #5b2e91;
+}
+
+[data-ground='lavender'] .herb-strip .flex,
+[data-ground='lavender'] .herb-strip span.block {
+  color: var(--color-violet-300);
+  opacity: 1;
+}
+[data-ground='lavender'] .text-gold-plate {
+  background-image: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--color-violet-50);
+}
+[data-ground='lavender'] .on-plum .text-gold-plate {
+  background-image: linear-gradient(180deg, var(--color-gold-300) 0%, var(--color-gold-500) 55%, #e0a91f 100%);
+  -webkit-text-fill-color: transparent;
+}
+
+/*
+ * GLOWS, NOT SHADOWS (lavender sample v3). The card and sprite shadows on this ground were dark and
+ * muddy; they are replaced by restrained outer glows in the card violet (every found card), pink
+ * (learned) and gold (mastered, the one earned reward). Box-shadow and gradients only, drawn OUTSIDE
+ * the artwork, so the native pixel edges stay crisp and nothing is blurred or tinted. Only meaningful
+ * collectibles glow; panels and containers do not.
+ */
+[data-ground='lavender'] {
+  /* Locked / undiscovered cards: a faint pale rim, never a dark drop. */
+  --shadow-card: 0 0 0 1px rgb(180 138 238 / 0.55), 0 0 10px 2px rgb(255 255 255 / 0.5);
+  --shadow-card-lift: 0 0 0 1px rgb(156 33 248 / 0.6), 0 0 16px 4px rgb(255 255 255 / 0.7);
+  --glow-violet: 0 0 0 2px rgb(156 33 248 / 0.7), 0 0 10px 3px rgb(255 255 255 / 0.7), 0 0 22px 6px rgb(244 226 255 / 0.65);
+  --glow-violet-lift: 0 0 0 2px rgb(156 33 248 / 0.85), 0 0 14px 4px rgb(255 255 255 / 0.85), 0 0 30px 8px rgb(244 226 255 / 0.75);
+  --glow-pink: 0 0 0 2px rgb(242 128 179 / 0.8), 0 0 10px 3px rgb(255 238 248 / 0.8), 0 0 22px 6px rgb(255 190 224 / 0.65);
+  --glow-pink-lift: 0 0 0 2px rgb(242 128 179 / 0.95), 0 0 14px 4px rgb(255 238 248 / 0.9), 0 0 30px 8px rgb(255 190 224 / 0.75);
+  --glow-gold: 0 0 0 2px rgb(255 213 74 / 0.95), 0 0 10px 3px rgb(255 250 200 / 0.9), 0 0 24px 7px rgb(255 232 120 / 0.75);
+  --glow-gold-lift: 0 0 0 2px rgb(255 213 74 / 1), 0 0 14px 4px rgb(255 250 200 / 0.95), 0 0 32px 9px rgb(255 232 120 / 0.85);
+  /* The profile hero card: a violet glow around the printed card, not a dark drop. */
+  --hero-drop: drop-shadow(0 0 2px rgb(156 33 248 / 0.9)) drop-shadow(0 0 12px rgb(255 255 255 / 0.8)) drop-shadow(0 0 28px rgb(244 226 255 / 0.7));
+}
+[data-ground='lavender'] [data-glow='violet'] {
+  --shadow-card: var(--glow-violet);
+  --shadow-card-lift: var(--glow-violet-lift);
+  --sg: rgb(222 190 255 / 0.95);
+}
+[data-ground='lavender'] [data-glow='pink'] {
+  --shadow-card: var(--glow-pink);
+  --shadow-card-lift: var(--glow-pink-lift);
+  --sg: rgb(255 190 224 / 0.95);
+}
+[data-ground='lavender'] [data-glow='gold'] {
+  --shadow-card: var(--glow-gold);
+  --shadow-card-lift: var(--glow-gold-lift);
+  --sg: rgb(255 232 110 / 0.95);
+}
+/* A soft pool of light behind a sprite: a gradient BEHIND it, so the sprite itself is untouched. */
+[data-ground='lavender'] .sprite-glow {
+  position: relative;
+}
+[data-ground='lavender'] .sprite-glow::before {
+  content: '';
+  position: absolute;
+  inset: 4% 4% 0 4%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--sg, rgb(222 190 255 / 0.95)), transparent 80%);
+  pointer-events: none;
+}
+/* Small collectible markers use the card violet. */
+[data-ground='lavender'] [data-on-plum] {
+  background-color: var(--color-violet-700);
+}
+[data-ground='lavender'] [data-on-plum].bg-gold-500 {
+  background-color: var(--color-gold-500);
+}
+/* Panel detail: a card-violet top bar on the progress header. */
+[data-ground='lavender'] .panel-accent {
+  box-shadow: 0 3px 0 0 var(--lav-drop), inset 0 4px 0 0 rgb(156 33 248 / 0.55);
+}
+@utility pixel-diamond {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  transform: rotate(45deg);
+  background: var(--color-violet-600);
+  box-shadow: 0 0 0 2px #f9c9e6;
+}
+/* Recent Field Finds (Collection only): the sprite is a character, not an icon. 48px to 72px. */
+[data-ground='lavender'] .recent-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  column-gap: 1rem;
+  row-gap: 0.15rem;
+  align-items: center;
+  min-height: 5.75rem;
+}
+[data-ground='lavender'] .recent-row > .recent-node {
+  grid-row: 1 / span 2;
+}
+[data-ground='lavender'] .recent-row > span:nth-child(2) {
+  grid-column: 2;
+  align-self: end;
+}
+[data-ground='lavender'] .recent-row > span:nth-child(3) {
+  grid-column: 2;
+  align-self: start;
+  justify-self: start;
+}
+[data-ground='lavender'] .recent-row .truncate {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+}
+[data-ground='lavender'] .recent-node {
+  width: 4.5rem;
+  height: 4.5rem;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.85), rgb(228 205 255 / 0.9) 70%, var(--lav-surface-2) 100%);
+  box-shadow: 0 0 0 2px rgb(156 33 248 / 0.7), 0 0 12px 3px rgb(255 255 255 / 0.8);
+}
+[data-ground='lavender'] .recent-node[data-glow='gold'] {
+  box-shadow: 0 0 0 2px rgb(255 213 74 / 1), 0 0 12px 3px rgb(255 250 200 / 0.95);
+}
+[data-ground='lavender'] .recent-node[data-glow='pink'] {
+  box-shadow: 0 0 0 2px rgb(242 128 179 / 0.9), 0 0 12px 3px rgb(255 238 248 / 0.9);
+}
+[data-ground='lavender'] .recent-row ~ .pixel-rail,
+[data-ground='lavender'] .pixel-rail {
+  left: 2.15rem;
+}
+/* Garden sample: the same lavender ground as the Collection. */
+body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
+  --pt-a: #c9a4f8;
+  --pt-b: #e2cffc;
+  --pt-c: #b98cf2;
+  --pt-accent: #8cc78b;
+  --pt-vignette: 10%;
+  --pt-royal: 8%;
+}
+/* Selected profile tab: the card violet with white text (was dark plum with flipped, unreadable ink). */
+[data-ground='lavender'] [role='tab'][aria-selected='true'] {
+  background: var(--color-violet-600);
+  color: #fff;
+  border-bottom-color: var(--color-pink-accent);
+  box-shadow: 0 0 0 1px rgb(156 33 248 / 0.8), 0 0 10px 2px rgb(255 255 255 / 0.7);
+}
+
+/*
+ * TEXT-ONLY colour fixes on the lavender ground. These are deliberately CLASS rules and not token overrides:
+ * the mystery, rarity and botanical tokens also build the card-back gradient, the locked-card gradient and the
+ * rarity auras, and those must stay exactly as designed.
+ */
+[data-ground='lavender'] .text-mystery-lilac {
+  color: #5b3a8a;
+}
+[data-ground='lavender'] [class*='text-rarity-common'] {
+  color: #2f5f8f;
+}
+[data-ground='lavender'] [class*='text-rarity-uncommon'] {
+  color: #8a5300;
+}
+[data-ground='lavender'] [class*='text-rarity-rare'] {
+  color: #a8326a;
+}
+[data-ground='lavender'] [class*='text-rarity-epic'] {
+  color: #0b6a96;
+}
+[data-ground='lavender'] [class*='text-botanical-200'],
+[data-ground='lavender'] [class*='text-botanical-400'] {
+  color: #1f6a35;
 }

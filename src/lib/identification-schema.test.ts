@@ -39,7 +39,11 @@ const sql = readFileSync(MIGRATION, 'utf8');
  * The LAST definition wins, exactly as it does in Postgres after the migrations are applied.
  */
 const ALL_MIGRATIONS = readdirSync('supabase/migrations')
-  .filter((name) => name.endsWith('.sql'))
+  // 0016 holds a SECOND, deliberately narrower `eligibility` check (capture_receipts accepts only the
+  // five QUALIFYING values) on a table that is not sightings. It would otherwise be "the last
+  // definition" here and make this guard compare the wrong column; observation-capture-receipt.test.ts
+  // pins that one against QUALIFYING_ELIGIBILITIES.
+  .filter((name) => name.endsWith('.sql') && !name.startsWith('0016_'))
   .sort()
   .map((name) => readFileSync(`supabase/migrations/${name}`, 'utf8'))
   .join('\n');

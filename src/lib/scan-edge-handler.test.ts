@@ -332,10 +332,19 @@ describe('purpose=collect', () => {
     expect(out.body.capture).toEqual({ accepted: false, code: 'capture_session_used' });
   });
 
-  it('too few images is still the old 400, before any capture call', async () => {
+  it('NO images is a 400 before any capture call (holds for the collect floor of 1 and the old floor of 2)', async () => {
     const { admin, calls } = fakeAdmin();
     router.admin = admin;
-    const out = await invoke(handler, { token: 'tok-alice', images: [fakeImage('solo')], fields: collect });
+    const out = await invoke(handler, { token: 'tok-alice', images: [], fields: collect });
+    expect(out.status).toBe(400);
+    expect(out.body.code).toBe('tooFewImages');
+    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
+  });
+
+  it('a NON-collect request of one image is still the old 400 (education lookups keep the two-photo floor)', async () => {
+    const { admin, calls } = fakeAdmin();
+    router.admin = admin;
+    const out = await invoke(handler, { token: 'tok-alice', images: [fakeImage('solo')] });
     expect(out.status).toBe(400);
     expect(out.body.code).toBe('tooFewImages');
     expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
