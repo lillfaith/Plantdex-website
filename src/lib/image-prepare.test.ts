@@ -169,7 +169,7 @@ describe('the scan status', () => {
     // signal, because `fetch` does not give one — a third stage could only be invented.
     expect(SCANS).toContain('onPrepared?.();');
     expect(SCANS).not.toMatch(/onUploaded|setTimeout\(/);
-    expect(SCAN_PANEL).toContain("identifyPlant(photos, () => setStage('identifying'))");
+    expect(SCAN_PANEL).toContain("identifyPlant(photos, () => setStage('identifying'), {");
   });
 
   it('shows the chosen photograph before any work starts', () => {
