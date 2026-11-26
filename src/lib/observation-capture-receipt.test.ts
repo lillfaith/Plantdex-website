@@ -153,6 +153,7 @@ describe('the switch defaults OFF and nothing here can turn it on', () => {
       'issue_capture_receipts(uuid, uuid, jsonb)',
       'prune_capture_artifacts()',
       'release_capture_session(uuid, uuid)',
+      'refund_scan_claim(text, date, text)',
       'set_discovery_enforcement(boolean, timestamptz, text)',
     ]) {
       expect(MIGRATION).toContain(`revoke all on function public.${fn} from public, anon, authenticated;`);
@@ -350,4 +351,166 @@ describe.skipIf(process.env.D5_RUN_SQL !== '1')('0016 against a real PostgreSQL 
     expect(out).toContain('ALL LOCAL ACCEPTANCE STEPS PASSED');
     expect(out).toContain('suite fails when: the discoveries gate is dropped');
   }, 250_000);
+});
+
+/*
+ * The one-photo rule has five homes: the migration, the TypeScript contract, the edge copy, the client and the
+ * receipt contract document. Each changing alone is a silent drift; this pins them to one number.
+ */
+const OPR_MIGRATION = read('supabase/migrations/0016_discovery_capture_enforcement.sql');
+const OPR_CONTRACT = read('docs/discoveries/discovery-receipt-contract.md');
+const OPR_INDEX = read('supabase/functions/identify-plant/index.ts');
+const OPR_EDGE_CAPTURE = read('supabase/functions/identify-plant/capture.ts');
+const OPR_CLIENT_MIN = /export const MIN_CAPTURE_PHOTOS = 1;/.test(read('src/lib/scans.ts'));
+
+describe('one in-app photograph is the mandatory minimum, and every layer says so', () => {
+  it('the database default is min_images 1, max 3, no mandatory delay', () => {
+    expect(OPR_MIGRATION).toMatch(/'min_images', 1,/);
+    expect(OPR_MIGRATION).toMatch(/'max_images', 3/);
+    expect(OPR_MIGRATION).toMatch(/'min_capture_ms', 0,/);
+  });
+  it('the TypeScript contract mirrors it', () => {
+    expect(CAPTURE_CONFIG.minImages).toBe(1);
+    expect(CAPTURE_CONFIG.maxImages).toBe(3);
+    expect(CAPTURE_CONFIG.minCaptureMs).toBe(0);
+  });
+  it('the edge function copy and the client mirror it', () => {
+    expect(OPR_EDGE_CAPTURE).toMatch(/export const MIN_CAPTURE_MS = 0;/);
+    expect(OPR_CLIENT_MIN).toBe(true);
+  });
+  it('the handler lowers the floor for purpose=collect only', () => {
+    expect(OPR_INDEX).toMatch(/purpose/);
+    expect(OPR_INDEX).toMatch(/collect/);
+  });
+  it('the receipt contract document states the same numbers', () => {
+    expect(OPR_CONTRACT).toMatch(/1\.\.3/);
+    expect(OPR_CONTRACT).not.toMatch(/capture_duplicate_image/);
+  });
+});
+
+describe('the consent gate is the first thing the only upload path does', () => {
+  const SCANS = read('src/lib/scans.ts');
+  it('no source file other than scans.ts invokes the identify-plant function', () => {
+    // Warm-up (scan-warmup.ts) sends an OPTIONS request with no body; it is not an upload.
+    const files = ['src/components/scan/ScanPanel.tsx', 'src/components/scan/ObservationPhotos.tsx', 'src/lib/scan-capture-session.ts', 'src/lib/scan-allowance.ts'];
+    for (const f of files) expect(read(f), f).not.toMatch(/functions\.invoke\('identify-plant'|functions\/v1\/identify-plant/);
+    expect(read('src/lib/scan-warmup.ts')).toMatch(/method: 'OPTIONS'/);
+    expect(read('src/lib/scan-warmup.ts')).not.toMatch(/FormData|body:/);
+  });
+  it('mayTransmit runs before the image is prepared or the function is invoked', () => {
+    const fn = SCANS.slice(SCANS.indexOf('export async function identifyPlant('));
+    const gate = fn.indexOf('mayTransmit(');
+    expect(gate).toBeGreaterThan(-1);
+    expect(gate).toBeLessThan(fn.indexOf('prepareImage('));
+    expect(gate).toBeLessThan(fn.indexOf("functions.invoke('identify-plant'"));
+  });
+});
+
+/* The live camera-to-collection workflow and suite stay TEST-only, secret-free and manual. */
+const LCF_TEXT = read('.github/workflows/live-capture-flow.yml');
+const LCF_CODE = LCF_TEXT.replace(/^\s*#.*$/gm, '');
+const LCF_SPEC = read('e2e/capture-flow.e2e.test.ts');
+
+describe('the live camera-to-collection workflow stays TEST-only, secret-free and manual', () => {
+  it('is dispatch-only: no push, pull_request or schedule trigger', () => {
+    expect(LCF_CODE).toMatch(/on:\s*\n\s*workflow_dispatch:/);
+    expect(LCF_CODE).not.toMatch(/^\s{2}(push|pull_request|pull_request_target|schedule):/m);
+  });
+  it('targets the TEST project literal and never production', () => {
+    expect(LCF_CODE).toContain('PROJECT_REF: vgjehmwcpavflbfhbbrp');
+    expect(LCF_CODE).not.toContain('vygiamigomwlvnwkryyl');
+  });
+  it('reads no secret, only the public TEST anon key variable, and is read-only', () => {
+    expect(LCF_CODE).not.toMatch(/secrets\./);
+    expect([...new Set([...LCF_CODE.matchAll(/vars\.([A-Z_]+)/g)].map((m) => m[1]))]).toEqual(['TEST_SUPABASE_ANON_KEY']);
+    expect(LCF_CODE).toMatch(/permissions:\s*\n\s*contents: read/);
+  });
+  it('deploys, migrates and flips nothing', () => {
+    expect(LCF_CODE).not.toMatch(/functions deploy|database\/query|supabase-production|set_discovery_enforcement/i);
+  });
+  it('runs only the capture-flow suite', () => {
+    expect(LCF_CODE).toContain('e2e/capture-flow.e2e.test.ts');
+    expect(LCF_CODE).not.toContain('e2e/supabase.e2e.test.ts');
+  });
+});
+
+describe('the live suite itself', () => {
+  it('refuses any project but TEST and skips without credentials', () => {
+    expect(LCF_SPEC).toContain("const TEST_REF = 'vgjehmwcpavflbfhbbrp'");
+    expect(LCF_SPEC).toMatch(/describe\.skipIf\(!configured\)/);
+  });
+  it('mocks no backend: it uses the real client, the real RPCs and the deployed function', () => {
+    expect(LCF_SPEC).not.toMatch(/vi\.mock|vi\.fn|nock|msw/);
+    expect(LCF_SPEC).toContain("functions.invoke('identify-plant'");
+    expect(LCF_SPEC).toContain("rpc('open_capture_session')");
+    expect(LCF_SPEC).toContain("rpc('claim_discovery'");
+  });
+  it('never carries a service-role key', () => {
+    expect(LCF_SPEC).not.toMatch(/SERVICE_ROLE|service_role_key|sb_secret_/i);
+  });
+});
+
+/*
+ * EVERY RPC THE APP AND THE EDGE FUNCTIONS CALL EXISTS IN A MIGRATION WITH EXACTLY THOSE ARGUMENT NAMES.
+ *
+ * A call with a missing or misspelled named argument is not a type error and not a test failure: PostgREST answers
+ * "function not found in the schema cache", the caller swallows it (receipts, refunds and releases are best-effort by
+ * design), and the feature silently does nothing. That is how a two-argument refund call survived review. This reads the
+ * migrations, parses each function's parameter names, and compares them with the keys at every call site.
+ */
+describe('RPC call sites match the deployed SQL signatures', () => {
+  const SQL = ['0009_atomic_scan_quota.sql', '0014_confirm_scan.sql', '0016_discovery_capture_enforcement.sql']
+    .map((f) => read(`supabase/migrations/${f}`))
+    .join('\n');
+  /** Declared parameter names; `optional` marks those with a SQL default (a caller may omit them). */
+  function signature(fn: string): Array<{ name: string; optional: boolean }> | null {
+    const m = new RegExp(`function public\\.${fn}\\s*\\(([^)]*)\\)`, 'i').exec(SQL);
+    if (!m) return null;
+    return (m[1] ?? '')
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => ({ name: p.split(/\s+/)[0] ?? '', optional: /\bdefault\b/i.test(p) }));
+  }
+  const params = (fn: string): string[] | null => signature(fn)?.map((p) => p.name) ?? null;
+  const FILES = [
+    'src/lib/scan-capture-session.ts',
+    'supabase/functions/identify-plant/capture.ts',
+    'supabase/functions/identify-plant/index.ts',
+  ];
+  const calls: Array<{ file: string; fn: string; keys: string[] }> = [];
+  for (const file of FILES) {
+    const text = read(file);
+    for (const m of text.matchAll(/\.rpc\(\s*'(\w+)'\s*(?:,\s*\{([^}]*)\})?/g)) {
+      const keys = [...(m[2] ?? '').matchAll(/(\bp_\w+)\s*:/g)].map((k) => k[1]!);
+      calls.push({ file, fn: m[1]!, keys });
+    }
+  }
+  it('found the call sites (an empty list would pass everything below)', () => {
+    expect(calls.length).toBeGreaterThanOrEqual(7);
+    expect(calls.map((c) => c.fn)).toEqual(expect.arrayContaining(['open_capture_session', 'claim_discovery', 'consume_capture_session', 'issue_capture_receipts']));
+  });
+  it.each(['open_capture_session', 'claim_discovery', 'discovery_rules', 'consume_capture_session', 'issue_capture_receipts', 'release_capture_session', 'claim_scan_pair'])(
+    '%s is defined in a migration',
+    (fn) => {
+      expect(params(fn), `${fn} is called but no migration defines it`).not.toBeNull();
+    },
+  );
+  it('every call passes exactly the named arguments the SQL function declares', () => {
+    for (const call of calls) {
+      const declared = signature(call.fn);
+      if (declared === null) continue; // a function from an earlier migration this pin does not read
+      const required = declared.filter((p) => !p.optional).map((p) => p.name).sort();
+      const all = declared.map((p) => p.name);
+      expect([...call.keys].sort().filter((k) => !all.includes(k)), `${call.file}: ${call.fn} passes an argument the SQL does not declare`).toEqual([]);
+      expect(call.keys.filter((k) => required.includes(k)).sort(), `${call.file}: ${call.fn} omits a required argument`).toEqual(required);
+    }
+  });
+  it('the refund RPC, once called from the handler, passes all three arguments', () => {
+    const index = read('supabase/functions/identify-plant/index.ts');
+    if (!index.includes("'refund_scan_claim'")) return; // not wired yet (S8): nothing to compare
+    expect(params('refund_scan_claim')).toEqual(['p_bucket', 'p_day', 'p_observation_id']);
+    const m = /\.rpc\(\s*'refund_scan_claim'\s*,\s*\{([^}]*)\}/.exec(index);
+    expect([...(m?.[1] ?? '').matchAll(/(\bp_\w+)\s*:/g)].map((k) => k[1]).sort()).toEqual(['p_bucket', 'p_day', 'p_observation_id']);
+  });
 });

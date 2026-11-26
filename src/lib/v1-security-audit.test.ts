@@ -135,10 +135,11 @@ describe('SECURITY DEFINER functions', () => {
     const granted = [...joined.matchAll(/grant execute on function public\.(\w+)\([^)]*\)\s+to\s+(\w+)/gi)];
     const toAuthenticated = granted.filter((g) => g[2] === 'authenticated').map((g) => g[1]);
     // 0013 re-grants the function it redefines, so the name appears once per migration.
-    // 0016 (capture enforcement): the three functions a signed-in player calls themselves. Each is
-    // caller-scoped through auth.uid(); the writers (consume/issue/set/prune) are service_role only.
+    // 0016 (capture enforcement): the three functions a signed-in player calls themselves, plus 0014's confirm_scan
+    // (write-once confirmation of the caller's OWN scan). Each is caller-scoped through auth.uid(); the writers
+    // (consume/issue/release/refund/set/prune) are service_role only.
     expect([...new Set(toAuthenticated)].sort()).toEqual(
-      ['claim_discovery', 'discovery_rules', 'leaderboard_standings', 'open_capture_session'].sort(),
+      ['claim_discovery', 'confirm_scan', 'discovery_rules', 'leaderboard_standings', 'open_capture_session'].sort(),
     );
     const toService = granted.filter((g) => g[2] === 'service_role').map((g) => g[1]);
     expect(toService).toContain('award_challenge');

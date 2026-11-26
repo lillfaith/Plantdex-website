@@ -214,6 +214,43 @@ select pg_temp.ok('release: a session whose result was already issued can NEVER 
 reset role;
 set local role authenticated;
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
+reset role;
+-- ALLOWANCE REFUND: idempotent per request, capped per day, scoped to the caller's own bucket, never below zero.
+insert into public.scan_quota (bucket, day, count) values ('user:refund-test', current_date, 5), ('global', current_date, 10)
+  on conflict (bucket, day) do update set count = excluded.count;
+set local role service_role;
+select pg_temp.ok('refund: the per-caller unit is given back', public.refund_scan_claim('user:refund-test', current_date, '11111111-1111-4111-8111-111111111111'));
+select pg_temp.ok('refund: the per-caller count went 5 -> 4',
+  (select count from public.scan_quota where bucket = 'user:refund-test' and day = current_date) = 4);
+select pg_temp.ok('refund: IDEMPOTENT - the same request id again refunds nothing and changes nothing',
+  not public.refund_scan_claim('user:refund-test', current_date, '11111111-1111-4111-8111-111111111111')
+  and (select count from public.scan_quota where bucket = 'user:refund-test' and day = current_date) = 4);
+select pg_temp.ok('refund: the GLOBAL bucket is never refunded', not public.refund_scan_claim('global', current_date, '22222222-2222-4222-8222-222222222222')
+  and (select count from public.scan_quota where bucket = 'global' and day = current_date) = 10);
+select pg_temp.ok('refund: a malformed request id is refused', not public.refund_scan_claim('user:refund-test', current_date, 'not-a-uuid'));
+select pg_temp.ok('refund: a day far from today is refused (no refunding old buckets)', not public.refund_scan_claim('user:refund-test', current_date - 5, '33333333-3333-4333-8333-333333333333'));
+select pg_temp.ok('refund: a bucket with no claim that day is refused', not public.refund_scan_claim('user:never-claimed', current_date, '44444444-4444-4444-8444-444444444444'));
+select pg_temp.ok('refund: 2nd and 3rd distinct requests refund', public.refund_scan_claim('user:refund-test', current_date, '55555555-5555-4555-8555-555555555555')
+  and public.refund_scan_claim('user:refund-test', current_date, '66666666-6666-4666-8666-666666666666'));
+select pg_temp.ok('refund: the DAILY CAP (3) holds - a 4th distinct request is refused and the count stays at 2',
+  not public.refund_scan_claim('user:refund-test', current_date, '77777777-7777-4777-8777-777777777777')
+  and (select count from public.scan_quota where bucket = 'user:refund-test' and day = current_date) = 2);
+reset role;
+select pg_temp.ok('refund: the ledger holds a bucket DIGEST and a request id, not a user id',
+  (select count(*) from public.scan_refunds where observation_id = '11111111-1111-4111-8111-111111111111') = 1
+  and (select pg_catalog.octet_length(bucket_digest) from public.scan_refunds limit 1) = 32);
+update public.scan_quota set count = 0 where bucket = 'user:refund-test' and day = current_date;
+delete from public.scan_refunds;
+set local role service_role;
+select pg_temp.ok('refund: never below zero', not public.refund_scan_claim('user:refund-test', current_date, '88888888-8888-4888-8888-888888888888')
+  and (select count from public.scan_quota where bucket = 'user:refund-test' and day = current_date) = 0);
+reset role;
+delete from public.scan_quota where bucket = 'user:refund-test';
+delete from public.scan_refunds;
+set local role authenticated;
+select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
+select pg_temp.refuses('refund: a signed-in player cannot call it (service role only)',
+  $q$select public.refund_scan_claim('user:anyone', current_date, gen_random_uuid()::text)$q$, '42501', 'permission denied');
 select pg_temp.refuses('release: a signed-in player cannot call it (service role only)',
   $q$select public.release_capture_session(auth.uid(), gen_random_uuid())$q$, '42501', 'permission denied');
 reset role;
