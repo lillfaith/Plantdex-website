@@ -757,17 +757,8 @@ Deno.serve(async (req: Request) => {
   // Free by now — the provider call above took far longer than this did.
   await housekeeping;
 
-  const served = attested.filter((candidate) => candidate.scientificName);
-  /*
-   * STEP 4: one receipt per candidate that THIS SERVER's matcher calls confirmable, issued from the
-   * provider's own strings and nothing the client sent. Absent a capture request this is skipped and
-   * the response below is byte-for-byte what it was.
-   */
-  const captured = capture ? await issueForCandidates(capturePort, capture, served) : null;
-
-  return json({
-    candidates: captured ? captured.candidates : served,
-    ...(captured ? { capture: captured.capture } : {}),
+  const body = {
+    candidates: attested.filter((candidate) => candidate.scientificName),
     // `claimed` is this caller's own post-increment count: every negative value returned
     // a 429 above, so by here it is a positive number and the subtraction is meaningful.
     remaining: Math.max(0, limit - (claimed as number)),
@@ -782,5 +773,16 @@ Deno.serve(async (req: Request) => {
      */
     provider: identification.provider,
     observationId,
-  });
+  };
+
+  /*
+   * STEP 4 of the capture contract: one receipt per candidate that THIS SERVER's matcher calls
+   * confirmable, issued from the provider's own strings and nothing the client sent. Without a
+   * capture request this is skipped and `body` is returned exactly as it was before capture existed.
+   */
+  if (capture) {
+    const captured = await issueForCandidates(capturePort, capture, body.candidates);
+    return json({ ...body, candidates: captured.candidates, capture: captured.capture });
+  }
+  return json(body);
 });

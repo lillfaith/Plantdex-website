@@ -1,6 +1,7 @@
 import { beforeAll, beforeEach, afterAll, describe, expect, it, vi } from 'vitest';
 import {
   ENV,
+  TEST_SERVICE_VALUE,
   fakeImage,
   importEdge,
   inertBuilder,
@@ -178,7 +179,7 @@ describe('purpose=collect', () => {
     expect(body.candidates[1]!.captureReceipt).toBeUndefined();
     // The caller's own client is never used for a capture call.
     expect(router.callerCalls).toEqual([]);
-    expect(out.text).not.toContain(ENV.SUPABASE_SERVICE_ROLE_KEY!);
+    expect(out.text).not.toContain(TEST_SERVICE_VALUE);
   });
 
   it('the receipt names the card from the SERVER match, never a client field', async () => {
