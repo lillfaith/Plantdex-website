@@ -123,8 +123,19 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
       // actually landed, so a failure leaves those ids unwritten and the next save picks
       // them up again.
       const write = (async () => {
-        const [discoveries, learned, achievements] = await Promise.all([
-          upsertNew('discoveries', 'herb_id', 'discovered_at', state.discoveries, previous.discoveries),
+        // DISCOVERIES FIRST, THEN THE REST. Written in parallel, a `learned` row could land before
+        // the `discoveries` row it depends on. That was harmless while nothing checked it, but
+        // migration 0016 (draft, switch OFF) refuses a `learned`/`mastered` row for a card with no
+        // `discoveries` row once enforcement is ON, so the order must be a property of the adapter
+        // and not luck. With enforcement OFF this changes nothing a player can observe.
+        const discoveries = await upsertNew(
+          'discoveries',
+          'herb_id',
+          'discovered_at',
+          state.discoveries,
+          previous.discoveries,
+        );
+        const [learned, achievements] = await Promise.all([
           upsertNew('learned', 'herb_id', 'learned_at', state.learned, previous.learned),
           upsertNew(
             'unlocked_achievements',
