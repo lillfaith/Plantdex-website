@@ -9,7 +9,8 @@ const strip = (t: string) => t.replace(/\/\*[\s\S]*?\*\//g, '');
 const SPEC: Record<string, [string, string, string, string, string]> = {
   home: ['#170d2b', '#38205b', '#512b86', '#f2a7cf', '#f2c75c'],
   scan: ['#14152f', '#243d70', '#235b69', '#6fd5c2', '#b9a1f2'],
-  collection: ['#170d2b', '#34205f', '#59308c', '#f2c75c', '#b786f1'],
+  // SAMPLE (ui/palette-sample): lavender ground #C9A4F8, card violet #9C21F8 as the accent.
+  collection: ['#c9a4f8', '#e2cffc', '#b98cf2', '#9c21f8', '#f180b4'],
   garden: ['#171c2c', '#426b58', '#40305f', '#8cc78b', '#c5a5e9'],
   journal: ['#24152e', '#58304e', '#744366', '#f2a7cf', '#f5d58b'],
   learn: ['#211b40', '#414c83', '#5a477e', '#afc3ff', '#f2d58b'],

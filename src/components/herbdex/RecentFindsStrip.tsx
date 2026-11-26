@@ -29,5 +29,5 @@ export function RecentFindsStrip() {
   const finds = recentFinds(state, RECENT_FIND_COUNT);
   if (finds.length === 0) return null;
 
-  return <RecentFinds finds={finds} />;
+  return <RecentFinds finds={finds} fitSprites />;
 }

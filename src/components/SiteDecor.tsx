@@ -218,7 +218,7 @@ export function SiteDecor() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
+      data-site-decor className="pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
     >
       {/* THE CLOUD BANKS. Soft mounds either side at mid height, LIGHTER than the ground
           rather than darker — they are the lit haze the warm bloom implies, and without
