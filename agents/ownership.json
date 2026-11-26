@@ -75,7 +75,7 @@
     {
       "owner": "ui",
       "tier": 3,
-      "why": "Human-directed design: navigation, palette, type, layout, shared components, cards, animation. Feature agents never edit these; they file a UI request.",
+      "why": "Human-directed design: navigation, palette, type, layout, shared components, cards, animation. Feature agents never edit these; they file a UI request. Three exact lane-b component paths (SpeciesHero, GardenView, RecentFinds) were added on 2026-11-26 so the owner-approved lavender V3 look, which restyles them, is one UI change; nothing else in those directories moves.",
       "globs": [
         "src/app/globals.css",
         "src/app/icon.png",
@@ -88,6 +88,9 @@
         "src/components/PlantSprite.tsx",
         "src/components/ui/**",
         "src/components/icons/**",
+        "src/components/game/SpeciesHero.tsx",
+        "src/components/garden/GardenView.tsx",
+        "src/components/profile/RecentFinds.tsx",
         "src/components/herbdex/**",
         "src/components/start/**",
         "src/components/support/**",
