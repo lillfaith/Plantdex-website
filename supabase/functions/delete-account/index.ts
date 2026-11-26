@@ -99,6 +99,12 @@ const USER_TABLES = [
   // the listing immediately: the standings are computed at read time from the participant
   // table, so a missing row is an absent player rather than a stale one.
   'leaderboard_participants',
+  // Added with capture enforcement (0016). Receipts name the cards a capture made claimable and
+  // grandfather rows record which discoveries predate enforcement: both are this person's
+  // records. capture_sessions and capture_image_digests (nonce hashes, image digests) are not
+  // client-readable and so not exportable; they go with the auth user through ON DELETE CASCADE.
+  'capture_receipts',
+  'discovery_grandfathered',
 ] as const;
 
 const CORS_HEADERS: Record<string, string> = {
@@ -200,7 +206,10 @@ Deno.serve(async (req) => {
   // ── 2. Rows ────────────────────────────────────────────────────────────────
   for (const table of USER_TABLES) {
     const { error } = await admin.from(table).delete().eq('user_id', userId);
-    if (error) {
+    // Tables from migration 0016 exist only in projects it has been applied to; a missing
+    // relation there means there is nothing to delete, not that deletion failed.
+    const missing = error && (error.code === 'PGRST205' || error.code === '42P01');
+    if (error && !(missing && (table === 'capture_receipts' || table === 'discovery_grandfathered'))) {
       return json(
         { error: `Could not delete your ${table.replace(/_/g, ' ')}: ${error.message}. Your account still exists — please try again.` },
         500,

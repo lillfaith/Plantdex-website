@@ -17,8 +17,8 @@ q() { if [ "$(id -u)" = 0 ]; then su postgres -c "psql -At -d $DB -c \"$1\""; el
 fresh() {
   rootsql "drop database if exists $DB" >/dev/null 2>&1; rootsql "create database $DB" >/dev/null
   run "$HERE/local-supabase-stub.sql"
-  for f in "$ROOT"/supabase/migrations/*.sql; do run "$f" >/dev/null 2>&1 || { echo "baseline FAILED at $f"; exit 1; }; done
-  case "$(ls "$ROOT/supabase/migrations" | tr '\n' ' ')" in *0014_confirm_scan*) ;; *) run "$M14" >/dev/null ;; esac
+  for f in "$ROOT"/supabase/migrations/*.sql; do case "$f" in *0016_*) continue;; esac; run "$f" >/dev/null 2>&1 || { echo "baseline FAILED at $f"; exit 1; }; done
+  [ -n "${NO_0014:-}" ] || case "$(ls "$ROOT/supabase/migrations" | tr '\n' ' ')" in *0014_confirm_scan*) ;; *) run "$M14" >/dev/null ;; esac
 }
 
 echo "== 1. baseline (0001..0014) with PRE-EXISTING player data"
@@ -30,8 +30,8 @@ q "insert into public.mastered (user_id,herb_id) values ('00000000-0000-0000-000
 BEFORE=$(q "select (select count(*) from public.discoveries)||','||(select count(*) from public.learned)||','||(select count(*) from public.mastered)||','||(select count(*) from auth.users)")
 
 echo "== 2. apply 0016, twice (must be re-runnable)"
-run "$HERE/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
-run "$HERE/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
+run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
+run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
 AFTER=$(q "select (select count(*) from public.discoveries)||','||(select count(*) from public.learned)||','||(select count(*) from public.mastered)||','||(select count(*) from auth.users)")
 [ "$BEFORE" = "$AFTER" ] || { echo "FAIL: 0016 changed player row counts: $BEFORE -> $AFTER"; exit 1; }
 echo "ok - player rows untouched ($AFTER)"
@@ -62,14 +62,14 @@ for t in capture_sessions capture_image_digests capture_receipts discovery_grand
 done
 [ "$(q "select count(*) from pg_proc where proname in ('claim_discovery','open_capture_session','discoveries_capture_gate')")" = "0" ] || { echo "FAIL: functions remain"; exit 1; }
 echo "ok - rollback kept every record and table, dropped only triggers and functions"
-run "$HERE/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
+run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
 run "$HERE/0016_verify.sql" 2>&1 | grep -q "ALL 0016 CHECKS PASSED" || { echo "FAIL: re-apply after rollback"; exit 1; }
 echo "ok - 0016 re-applies cleanly after a rollback and the suite passes again"
 
 if [ "${1:-}" = "--mutate" ]; then
   echo "== 6. mutation: the suite must FAIL when a protection is removed"
   mutate() { # name, sql
-    run "$HERE/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
+    run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
     q "$2" >/dev/null
     if run "$HERE/0016_verify.sql" >/dev/null 2>&1; then echo "FAIL: suite still passes after: $1"; exit 1; else echo "ok - suite fails when: $1"; fi
   }
