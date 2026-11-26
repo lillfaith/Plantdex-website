@@ -218,3 +218,23 @@ describe('what is exported and what is deleted are the same set', () => {
     expect(exportSource).toContain('PLAYER_PROFILE_STORAGE_KEY');
   });
 });
+
+/*
+ * THE DELETE FUNCTION NEVER SHOWS A CALLER A DATABASE OR STORAGE MESSAGE. A failure message is also something an attacker can read, and the
+ * TEST project's deployed version already hides them. Integration had lost that hardening (it lived only on the branch TEST was deployed
+ * from), so this pins it where the release is built.
+ */
+describe('delete-account error responses', () => {
+  const source = readFileSync(DELETE_FN, 'utf8');
+  const responses = [...source.matchAll(/json\(\s*\{\s*error:\s*([^}]*)\}/g)].map((m) => m[1] ?? '');
+  it('found the error responses (an empty list would pass everything below)', () => {
+    expect(responses.length).toBeGreaterThanOrEqual(3);
+  });
+  it('no response interpolates an error object or its message', () => {
+    for (const r of responses) expect(r, r).not.toMatch(/\.message|\$\{\s*(error|cause|deleteError)\b/);
+  });
+  it('each failure is logged server-side instead', () => {
+    for (const label of ['photo deletion failed', 'could not delete rows from', 'deleteUser failed']) expect(source).toContain(label);
+  });
+});
+

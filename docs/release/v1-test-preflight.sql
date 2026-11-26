@@ -3,6 +3,7 @@
 -- no migration is applied (or re-applied) on a guess. Nothing here is secret; the output may be pasted back.
 --
 -- READ THE LAST COLUMN (`verdict`). It names the single next action for migration 0016 and stops you if anything below it is missing.
+-- A missing 0014 is treated as UNEXPECTED DRIFT (it was applied to TEST on 2026-11-24), never as something to work around.
 
 with probe as (
   select
@@ -43,13 +44,13 @@ select
   case
     when not has_0009 or not has_0013 then
       'STOP: 0009/0013 are missing on this project. Do not apply 0016. Tell the coordinator before anything else.'
+    when not has_0014 then
+      'STOP - UNEXPECTED DRIFT: 0014 (confirm_scan) is MISSING. It was applied to this project on 2026-11-24 (workflow run 45328820311, success). Something has dropped it, or this is not the TEST project. Do not apply anything. Send this row to the coordinator.'
     when t_enforcement and t_sessions and t_receipts and t_refunds and fn_0016_count = 10 then
       'ALREADY APPLIED: 0016 is fully present. DO NOT re-run it. Go straight to the verification step.'
     when (t_enforcement or t_sessions or t_receipts or t_refunds or fn_0016_count > 0) then
       'STOP: 0016 is PARTLY present. Do not apply or re-apply anything. Send this row to the coordinator.'
-    when not has_0014 then
-      'READY (note: 0014 is absent): 0016 is absent and does not need it. Apply 0016; the confirm_scan live check will not apply.'
     else
-      'READY: 0016 is absent and its prerequisites are present. Apply 0016 (step 2 of the procedure).'
+      'READY: 0016 is absent and its prerequisites (0009, 0013, 0014) are present. Apply 0016 (step B of the procedure).'
   end as verdict
 from probe cross join sw;
