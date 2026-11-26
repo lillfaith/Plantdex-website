@@ -671,6 +671,37 @@ Deno.serve(async (req: Request) => {
      */
     const { kind, message, status } = identification;
     const configFault = kind === 'auth' || kind === 'unconfigured';
+
+    /*
+     * A FAILURE ON THE PROVIDER'S OWN SIDE GIVES BACK WHAT IT SPENT, AND NOTHING ELSE DOES.
+     *
+     * Outage, timeout or a 5xx means the player got no answer through no act of theirs, so the
+     * capture session is handed back (the same photographs may be sent again as a first use) and
+     * their own daily unit is refunded. Not a rejected photograph (4xx, an encode fault), not a
+     * refused key, not the provider rate-limiting us, not a malformed answer: those either are the
+     * caller's input or are not an outage, and refunding them would let bad input farm retries.
+     * The shared `global` unit is never refunded; it is the upstream-cost backstop.
+     *
+     * Both calls are best-effort: a release or refund that fails must never change the answer the
+     * player sees, so each is guarded and its outcome only decides `capture.retryable`.
+     */
+    const providerSide =
+      kind === 'timeout' || kind === 'network' || (kind === 'provider' && typeof status === 'number' && status >= 500);
+    let released = false;
+    if (providerSide) {
+      if (capture?.kind === 'open') {
+        try {
+          released = (await capturePort.release(capture.userId, capture.sessionId)) === true;
+        } catch {
+          released = false;
+        }
+      }
+      try {
+        await admin.rpc('refund_scan_claim', { p_bucket: bucket, p_day: day });
+      } catch {
+        /* a refund that fails is a unit not returned, never an error shown */
+      }
+    }
     return json(
       {
         error: configFault
@@ -691,6 +722,8 @@ Deno.serve(async (req: Request) => {
          * is currently unnecessary.
          */
         providerMessage: redact(message),
+        // Present only when the session was really handed back: the client may resend the same photographs.
+        ...(released ? { capture: { accepted: true, retryable: true } } : {}),
       },
       configFault ? 500 : 502,
     );

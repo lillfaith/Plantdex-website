@@ -85,3 +85,38 @@ describe('identifyPlant: what the answer is allowed to say', () => {
     expect(isScanFailure(answer)).toBe(false);
   });
 });
+
+describe('identifyPlant: a provider failure the server handed back', () => {
+  it('says the attempt was free and may be repeated, and shows no internals', async () => {
+    state.data = null;
+    state.error = {
+      context: new Response(
+        JSON.stringify({
+          error: 'The identification service could not be reached. Please try again.',
+          code: 'provider',
+          providerStatus: 502,
+          providerMessage: 'PlantNet returned 502.',
+          capture: { accepted: true, retryable: true },
+        }),
+        { status: 502 },
+      ),
+    };
+    const answer = await identifyPlant(photos);
+    expect(isScanFailure(answer)).toBe(true);
+    expect(answer).toEqual({
+      kind: 'error',
+      message: 'The identifier could not be reached. You were not charged for this attempt. Try again.',
+      retryable: true,
+    });
+    expect(JSON.stringify(answer)).not.toMatch(/PlantNet|502/);
+  });
+
+  it('without capture.retryable the ordinary message stands', async () => {
+    state.data = null;
+    state.error = {
+      context: new Response(JSON.stringify({ error: 'The identification service could not be reached. Please try again.', code: 'provider' }), { status: 502 }),
+    };
+    const answer = await identifyPlant(photos);
+    expect(answer).toEqual({ kind: 'error', message: 'The identification service could not be reached. Please try again.' });
+  });
+});

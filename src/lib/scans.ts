@@ -69,10 +69,14 @@ export interface ScanResult {
   receipts?: Record<string, { id: string; rankPosition: 'top' | 'listed'; expiresAt: string }>;
 }
 
+/** Shown when the server handed the capture session back after a provider-side failure. */
+export const RETRYABLE_MESSAGE =
+  'The identifier could not be reached. You were not charged for this attempt. Try again.';
+
 export type ScanFailure =
   | { kind: 'rateLimited'; message: string; signedIn: boolean }
   | { kind: 'unconfigured'; message: string }
-  | { kind: 'error'; message: string };
+  | { kind: 'error'; message: string; /** The same photographs may be sent again; nothing was spent. */ retryable?: boolean };
 
 export interface ScanRecord {
   id: string;
@@ -254,7 +258,7 @@ export async function identifyPlant(
 
   if (error) {
     // The function's own sentence is better than a generic one, so re-read the body.
-    let payload: { error?: string; code?: string; signedIn?: boolean } = {};
+    let payload: { error?: string; code?: string; signedIn?: boolean; capture?: { retryable?: unknown } } = {};
     try {
       const context = (error as { context?: Response }).context;
       if (context) payload = await context.clone().json();
@@ -273,6 +277,9 @@ export async function identifyPlant(
         kind: 'unconfigured',
         message: payload.error ?? 'Plant identification is not set up on this deployment yet.',
       };
+    }
+    if (payload.capture?.retryable === true) {
+      return { kind: 'error', message: RETRYABLE_MESSAGE, retryable: true };
     }
     return {
       kind: 'error',
