@@ -8,6 +8,7 @@ import {
   type ScanOutcome,
 } from './plant-match';
 import type { NewSighting } from './sightings';
+import { ANONYMOUS_CONSENT_SCOPE, browserConsentStorage, mayTransmit } from './scan-consent';
 
 /**
  * PLANT ID, CLIENT SIDE.
@@ -59,6 +60,13 @@ export interface ScanResult {
   notAPlant?: boolean;
   /** The provider answered successfully and had no suggestion at all. Also not "no card". */
   providerFoundNothing?: boolean;
+  /**
+   * Capture outcome from the discovery receipt contract, present only when the request declared
+   * `purpose=collect` and the server implements it. Absent means "no receipt, nothing to claim".
+   */
+  capture?: { accepted: boolean; code?: string; replay?: boolean };
+  /** The server's receipt for each eligible candidate, keyed by the provider's scientific name. */
+  receipts?: Record<string, { id: string; rankPosition: 'top' | 'listed'; expiresAt: string }>;
 }
 
 export type ScanFailure =
@@ -109,6 +117,12 @@ function newScanId(): string {
 export interface ObservationPhoto {
   readonly file: File;
   readonly organ: 'habit' | 'leaf' | 'auto';
+  /**
+   * Where the photograph came from, when the capture pilot is on: the live in-app camera or a
+   * file the player imported. Read only to decide whether the observation may unlock a NEW card
+   * (`scan-flow.ts`); it is never sent to the provider and never stored.
+   */
+  readonly source?: 'camera' | 'import';
 }
 
 /** Two required, three allowed. The server enforces the same bounds. */
@@ -118,7 +132,24 @@ export const MAX_OBSERVATION_PHOTOS = 3;
 export async function identifyPlant(
   photos: readonly ObservationPhoto[],
   onPrepared?: () => void,
+  options: {
+    consentScope?: string;
+    /** An open capture session, for a `collect` observation only (discovery receipt contract). */
+    capture?: { sessionId: string; nonce: string };
+  } = {},
 ): Promise<ScanResult | ScanFailure> {
+  /*
+   * NOTHING LEAVES THE DEVICE BEFORE THE PLAYER HAS ACKNOWLEDGED WHERE IT GOES. Enforced here as
+   * well as in the screen, because the screen is not the only possible caller. Inert unless the
+   * consent flag or the camera pilot is on (`isConsentEnforced`), so today's behaviour is
+   * unchanged by default.
+   */
+  if (!mayTransmit(browserConsentStorage(), options.consentScope ?? ANONYMOUS_CONSENT_SCOPE)) {
+    return {
+      kind: 'error',
+      message: 'Review where your photos are sent before identifying a plant. Nothing was sent.',
+    };
+  }
   /*
    * ARGUMENTS BEFORE ENVIRONMENT, AND THE ORDER IS THE MESSAGE.
    *
@@ -194,6 +225,16 @@ export async function identifyPlant(
     form.append('organ', photos[index]!.organ);
   });
 
+  /*
+   * THE RECEIPT CONTRACT'S THREE FIELDS, only for a collect observation that holds an open
+   * session. A lookup sends nothing extra, so its request is byte-identical to today's.
+   */
+  if (options.capture) {
+    form.append('purpose', 'collect');
+    form.append('capture_session_id', options.capture.sessionId);
+    form.append('capture_nonce', options.capture.nonce);
+  }
+
   const { data, error } = await supabase.functions.invoke('identify-plant', { body: form });
 
   if (error) {
@@ -233,7 +274,9 @@ export async function identifyPlant(
       powoId?: string;
       /** The signed candidate, when the deployment has an attestation secret set. */
       attestation?: string;
+      captureReceipt?: { id?: unknown; rankPosition?: unknown; expiresAt?: unknown };
     }[];
+    capture?: { accepted?: unknown; code?: unknown; replay?: unknown };
     remaining?: number;
     limit?: number;
     signedIn?: boolean;
@@ -278,9 +321,32 @@ export async function identifyPlant(
     match: matchScientificName(candidate.scientificName),
   }));
 
+  const receipts: NonNullable<ScanResult['receipts']> = {};
+  for (const candidate of usable) {
+    const r = candidate.captureReceipt;
+    if (
+      r &&
+      typeof r.id === 'string' &&
+      (r.rankPosition === 'top' || r.rankPosition === 'listed') &&
+      typeof r.expiresAt === 'string'
+    ) {
+      receipts[candidate.scientificName] = { id: r.id, rankPosition: r.rankPosition, expiresAt: r.expiresAt };
+    }
+  }
+  const cap = raw.capture;
+
   return {
     outcome: outcomeFor(candidates),
     candidates,
+    capture:
+      cap && typeof cap.accepted === 'boolean'
+        ? {
+            accepted: cap.accepted,
+            code: typeof cap.code === 'string' ? cap.code : undefined,
+            replay: cap.replay === true ? true : undefined,
+          }
+        : undefined,
+    receipts: Object.keys(receipts).length > 0 ? receipts : undefined,
     remaining: raw.remaining,
     limit: raw.limit,
     signedIn: raw.signedIn,
