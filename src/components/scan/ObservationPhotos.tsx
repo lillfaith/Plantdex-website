@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ACCEPT_ATTRIBUTE } from '@/lib/photo-input';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
+import { isCameraCaptureEnabled } from '@/lib/scan-capture';
+import { CameraCapturePanel } from './CameraCapturePanel';
 import {
   MAX_OBSERVATION_PHOTOS,
   MIN_OBSERVATION_PHOTOS,
@@ -72,6 +74,7 @@ const SLOTS: readonly Slot[] = [
 interface Held {
   readonly file: File;
   readonly url: string;
+  readonly source: 'camera' | 'import';
 }
 
 /** Cheap identity, at pick time. Catches the real case: the same file chosen twice. */
@@ -80,10 +83,20 @@ const fingerprint = (file: File): string => `${file.name}:${file.size}:${file.la
 export function ObservationPhotos({
   onChange,
   disabled = false,
+  scope = null,
 }: {
   onChange: (photos: ObservationPhoto[]) => void;
   disabled?: boolean;
+  /** Account id for the remembered camera decline; null signed out. */
+  scope?: string | null;
 }) {
+  /*
+   * LIVE CAMERA PREVIEW, OFF BY DEFAULT. `cameraOn` is a build-time literal, so with the flag off
+   * none of the capture UI is reachable and the slots behave exactly as before (the OS camera
+   * hand-off via `capture="environment"`, or the library).
+   */
+  const cameraOn = isCameraCaptureEnabled();
+  const [capturingSlot, setCapturingSlot] = useState<string | null>(null);
   const [held, setHeld] = useState<Record<string, Held | undefined>>({});
   const [duplicate, setDuplicate] = useState<string | null>(null);
   const inputs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -105,21 +118,21 @@ export function ObservationPhotos({
     (next: Record<string, Held | undefined>) => {
       const photos = SLOTS.flatMap((slot) => {
         const one = next[slot.key];
-        return one ? [{ file: one.file, organ: slot.organ }] : [];
+        return one ? [{ file: one.file, organ: slot.organ, source: cameraOn ? one.source : undefined }] : [];
       });
       onChange(photos);
     },
-    [onChange],
+    [onChange, cameraOn],
   );
 
   const put = useCallback(
-    (slot: Slot, file: File | undefined) => {
+    (slot: Slot, file: File | undefined, source: 'camera' | 'import' = 'import') => {
       setHeld((current) => {
         const previous = current[slot.key];
         if (previous) URL.revokeObjectURL(previous.url);
         const next = { ...current };
         if (file) {
-          next[slot.key] = { file, url: URL.createObjectURL(file) };
+          next[slot.key] = { file, url: URL.createObjectURL(file), source };
         } else {
           delete next[slot.key];
         }
@@ -176,7 +189,9 @@ export function ObservationPhotos({
                 <button
                   type="button"
                   disabled={disabled}
-                  onClick={() => inputs.current[slot.key]?.click()}
+                  onClick={() =>
+                    cameraOn ? setCapturingSlot(slot.key) : inputs.current[slot.key]?.click()
+                  }
                   aria-label={`${one ? 'Replace' : 'Add'} photo: ${slot.label}. ${slot.instruction}`}
                   className={`relative block aspect-square w-full overflow-hidden rounded-2xl border-2 bg-plum-800/60 transition-colors disabled:opacity-60 ${
                     one
@@ -233,7 +248,9 @@ export function ObservationPhotos({
                 }}
                 type="file"
                 accept={ACCEPT_ATTRIBUTE}
-                capture="environment"
+                // With the live camera on, the input is the LIBRARY path (no `capture`), which
+                // is what a fallback or an import means: identification only.
+                capture={cameraOn ? undefined : 'environment'}
                 className="sr-only"
                 tabIndex={-1}
                 onChange={(event) => {
@@ -250,6 +267,28 @@ export function ObservationPhotos({
           );
         })}
       </ol>
+
+      {cameraOn &&
+        capturingSlot &&
+        (() => {
+          const slot = SLOTS.find((one) => one.key === capturingSlot);
+          if (!slot) return null;
+          return (
+            <CameraCapturePanel
+              slotLabel={slot.label}
+              scope={scope}
+              onCaptured={(file) => {
+                put(slot, file, 'camera');
+                setCapturingSlot(null);
+              }}
+              onUseLibrary={() => {
+                setCapturingSlot(null);
+                inputs.current[slot.key]?.click();
+              }}
+              onCancel={() => setCapturingSlot(null)}
+            />
+          );
+        })()}
 
       {duplicate && <p className="text-sm text-stat-temp">{duplicate}</p>}
 

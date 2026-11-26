@@ -8,6 +8,7 @@ import {
   type ScanOutcome,
 } from './plant-match';
 import type { NewSighting } from './sightings';
+import { ANONYMOUS_CONSENT_SCOPE, browserConsentStorage, mayTransmit } from './scan-consent';
 
 /**
  * PLANT ID, CLIENT SIDE.
@@ -109,6 +110,12 @@ function newScanId(): string {
 export interface ObservationPhoto {
   readonly file: File;
   readonly organ: 'habit' | 'leaf' | 'auto';
+  /**
+   * Where the photograph came from, when the capture pilot is on: the live in-app camera or a
+   * file the player imported. Read only to decide whether the observation may unlock a NEW card
+   * (`scan-flow.ts`); it is never sent to the provider and never stored.
+   */
+  readonly source?: 'camera' | 'import';
 }
 
 /** Two required, three allowed. The server enforces the same bounds. */
@@ -118,7 +125,20 @@ export const MAX_OBSERVATION_PHOTOS = 3;
 export async function identifyPlant(
   photos: readonly ObservationPhoto[],
   onPrepared?: () => void,
+  options: { consentScope?: string } = {},
 ): Promise<ScanResult | ScanFailure> {
+  /*
+   * NOTHING LEAVES THE DEVICE BEFORE THE PLAYER HAS ACKNOWLEDGED WHERE IT GOES. Enforced here as
+   * well as in the screen, because the screen is not the only possible caller. Inert unless the
+   * consent flag or the camera pilot is on (`isConsentEnforced`), so today's behaviour is
+   * unchanged by default.
+   */
+  if (!mayTransmit(browserConsentStorage(), options.consentScope ?? ANONYMOUS_CONSENT_SCOPE)) {
+    return {
+      kind: 'error',
+      message: 'Review where your photos are sent before identifying a plant. Nothing was sent.',
+    };
+  }
   /*
    * ARGUMENTS BEFORE ENVIRONMENT, AND THE ORDER IS THE MESSAGE.
    *
