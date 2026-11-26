@@ -4,6 +4,7 @@ import { TrackView } from '@/components/analytics/TrackView';
 import { QuestBoardPanel } from '@/components/quests/QuestBoardPanel';
 import { RegionPicker } from '@/components/quests/RegionPicker';
 import { SafetyNotice } from '@/components/SafetyNotice';
+import { georgiaQuestPreviewEnabled } from '@/lib/region-quest';
 
 export const metadata: Metadata = {
   title: 'Plants near you',
@@ -44,6 +45,14 @@ export default function QuestsPage() {
       <div className="mt-8">
         <QuestBoardPanel />
       </div>
+
+      {georgiaQuestPreviewEnabled() && (
+        <p className="mt-8 text-sm text-violet-300" data-ui-placeholder>
+          <Link href="/quests/habitats" className="underline underline-offset-2 hover:text-gold-400">
+            Preview: the Georgia Habitat Trail
+          </Link>
+        </p>
+      )}
 
       <p className="mt-8 text-sm text-violet-300">
         Everything in the deck stays available wherever you are.{' '}
