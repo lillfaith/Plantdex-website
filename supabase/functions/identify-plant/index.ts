@@ -11,6 +11,18 @@ import {
   ATTESTATION_SECRET_ENV,
   attestIdentity,
 } from '../_shared/herbdex/species-attestation.ts';
+import {
+  beginCapture,
+  captureWithoutCandidates,
+  checkReplay,
+  issueForCandidates,
+  MIN_CAPTURE_MS,
+  readCaptureAsk,
+  supabasePort,
+  type AdminLike,
+  type CaptureAsk,
+  type CaptureState,
+} from './capture.ts';
 
 /**
  * PLANT ID V1 — the identification call, server side.
@@ -378,6 +390,45 @@ Deno.serve(async (req: Request) => {
    * dependency, unlike the one the previous version parallelised.
    */
   const userId = await resolveCaller();
+
+  /*
+   * THE CAPTURE PORT. Built from the service-role client, which is the only place in the system that
+   * may call `consume_capture_session` / `issue_capture_receipts` (their execute grant is service_role
+   * alone, pinned by 0016_verify.sql). The browser never sees any of it.
+   */
+  const capturePort = supabasePort(admin as unknown as AdminLike);
+
+  /*
+   * THE BODY IS READ ONCE, AND EARLY ONLY FOR A SIGNED-IN CALLER. A replay (the identical capture
+   * request re-sent after a lost response) must spend no second quota unit and call no provider
+   * (contract 3.2), which can only be decided before the quota claim below. A signed-out call has no
+   * capture to replay, so it is parsed exactly where it always was. A body that fails to parse here
+   * fails at the same place as before — the memoised rejection is re-awaited at the original `400`.
+   */
+  let memoForm: Promise<FormData> | undefined;
+  const readForm = (): Promise<FormData> => (memoForm ??= req.formData());
+  if (userId && (req.headers.get('content-type') ?? '').includes('multipart/form-data')) {
+    try {
+      const early = await readForm();
+      const earlyAsk = readCaptureAsk(early);
+      if (earlyAsk) {
+        const earlyFiles = early.getAll('image').filter((one): one is File => one instanceof File);
+        if (earlyFiles.length >= 2 && earlyFiles.length <= 3) {
+          const replay = await checkReplay(capturePort, earlyAsk, userId, earlyFiles);
+          if (replay) {
+            return json({
+              candidates: [],
+              capture: { accepted: true, replay: true, receipts: replay.receipts, minCaptureMs: MIN_CAPTURE_MS },
+              signedIn: true,
+            });
+          }
+        }
+      }
+    } catch {
+      /* the original parse below reports it */
+    }
+  }
+
   const bucket = userId ? `user:${userId}` : await anonBucket(callerAddress(req), day);
   const limit = userId ? USER_DAILY_LIMIT : ANON_DAILY_LIMIT;
 
@@ -448,7 +499,7 @@ Deno.serve(async (req: Request) => {
   // ── The image ────────────────────────────────────────────────────────────
   let form: FormData;
   try {
-    form = await req.formData();
+    form = await readForm();
   } catch {
     return json({ error: 'Send the photograph as multipart form data.' }, 400);
   }
@@ -530,19 +581,36 @@ Deno.serve(async (req: Request) => {
   const run = (id: 'plantnet' | 'plantid', key: string) =>
     id === 'plantid' ? identifyWithPlantId(images, key) : identifyWithPlantNet(images, key);
 
+  /*
+   * The id that ties the two comparison rows — and the client's own scan row, and any capture
+   * receipt — to one set of photographs. Minted BEFORE the provider call because the capture session
+   * is consumed against it.
+   */
+  const observationId = crypto.randomUUID();
+
+  /*
+   * THE CAPTURE CONTRACT (docs/discoveries/discovery-receipt-contract.md 3.2), step 1-2. Only an
+   * explicit `purpose=collect` reaches this; a request without one skips it entirely and everything
+   * below behaves as it did before. Whatever happens here is swallowed into `capture.code` — a failed
+   * capture is an education lookup, never a failed identification — and the quota claimed above is
+   * unchanged and counts once either way.
+   */
+  const captureAsk: CaptureAsk | null = readCaptureAsk(form);
+  const capture: CaptureState | null = captureAsk
+    ? await beginCapture(capturePort, captureAsk, userId, observationId, files)
+    : null;
+
   const [identification, alternate] = await Promise.all([
     run(PROVIDER_ID, activeKey),
     comparing && alternateKey ? run(alternateId, alternateKey) : Promise.resolve(null),
   ]);
 
   /*
-   * The id that ties the two rows — and the client's own scan row — to one set of
-   * photographs. Minted here because this is the only place that has seen both answers, and
-   * returned to the client so `recordScan` can carry it onto `scans`. That is what lets
-   * "which provider agreed with what the player confirmed?" be a JOIN rather than a column
-   * somebody has to go back and update; there is no update policy to do it with, deliberately.
+   * `observationId` (minted above) is returned to the client so `recordScan` can carry it onto
+   * `scans`. That is what lets "which provider agreed with what the player confirmed?" be a JOIN
+   * rather than a column somebody has to go back and update; there is no update policy to do it
+   * with, deliberately.
    */
-  const observationId = crypto.randomUUID();
 
   if (comparing) {
     /*
@@ -629,6 +697,7 @@ Deno.serve(async (req: Request) => {
       notAPlant: true,
       provider: identification.provider,
       observationId,
+      ...(capture ? { capture: captureWithoutCandidates(capture) } : {}),
     });
   }
 
@@ -638,6 +707,7 @@ Deno.serve(async (req: Request) => {
       providerFoundNothing: true,
       provider: identification.provider,
       observationId,
+      ...(capture ? { capture: captureWithoutCandidates(capture) } : {}),
     });
   }
 
@@ -687,7 +757,7 @@ Deno.serve(async (req: Request) => {
   // Free by now — the provider call above took far longer than this did.
   await housekeeping;
 
-  return json({
+  const body = {
     candidates: attested.filter((candidate) => candidate.scientificName),
     // `claimed` is this caller's own post-increment count: every negative value returned
     // a 429 above, so by here it is a positive number and the subtraction is meaningful.
@@ -703,5 +773,16 @@ Deno.serve(async (req: Request) => {
      */
     provider: identification.provider,
     observationId,
-  });
+  };
+
+  /*
+   * STEP 4 of the capture contract: one receipt per candidate that THIS SERVER's matcher calls
+   * confirmable, issued from the provider's own strings and nothing the client sent. Without a
+   * capture request this is skipped and `body` is returned exactly as it was before capture existed.
+   */
+  if (capture) {
+    const captured = await issueForCandidates(capturePort, capture, body.candidates);
+    return json({ ...body, candidates: captured.candidates, capture: captured.capture });
+  }
+  return json(body);
 });
