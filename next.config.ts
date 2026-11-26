@@ -61,6 +61,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_CONFIRM_SCAN_RPC: process.env.NEXT_PUBLIC_CONFIRM_SCAN_RPC ?? 'off',
     NEXT_PUBLIC_CAMERA_CAPTURE: process.env.NEXT_PUBLIC_CAMERA_CAPTURE ?? 'off',
     NEXT_PUBLIC_MULTI_REGION: process.env.NEXT_PUBLIC_MULTI_REGION ?? 'off',
+    NEXT_PUBLIC_EXPANSION_PILOT: process.env.NEXT_PUBLIC_EXPANSION_PILOT ?? 'off',
   },
 };
 

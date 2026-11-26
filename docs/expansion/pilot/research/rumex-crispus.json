@@ -1,0 +1,526 @@
+{
+ "schema": "plantdex.expansion.pilot.research/1",
+ "status": "PROPOSAL_ONLY_NOT_FOR_PUBLICATION",
+ "retrievalDate": "2026-11-25",
+ "header": "PROPOSAL ONLY. Not wording for publication; nothing here is imported, enabled or deployed. Retrieval date for every source: 2026-11-25. Network note: the sandbox proxy allowed only en.wikipedia.org (rate-limited) and plants.usda.gov (redirects to a blocked host). BLOCKED (403/timeout): powo.science.kew.org, wcvp.science.kew.org, api.gbif.org, www.gbif.org, pubmed.ncbi.nlm.nih.gov, eutils.ncbi.nlm.nih.gov, europepmc.org, www.fs.usda.gov, plants.sc.egov.usda.gov, www.wikidata.org, www.inaturalist.org, extension.umn.edu, www.wildflower.org, www.fda.gov, www.ipni.org, www.worldfloraonline.org, api.crossref.org, www.ars-grin.gov. All sources below were therefore read through the Exa search/fetch tool (a third-party reader that returns excerpts); most journal articles were read as abstracts or excerpts only. Search links are not citations.",
+ "id": "rumex-crispus",
+ "cardNumber": 67,
+ "commonName": "Curly Dock",
+ "scientificName": "Rumex crispus",
+ "taxon": {
+  "acceptedName": "Rumex crispus",
+  "authorship": "L.",
+  "family": "Polygonaceae",
+  "rank": "species",
+  "checks": [
+   {
+    "database": "GBIF Backbone",
+    "result": "ACCEPTED, EXACT match, confidence 99, usage key 8195144, 'Rumex crispus L.'",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-match-8195144"
+   },
+   {
+    "database": "GBIF Backbone synonyms (first entries; reader truncated the list)",
+    "result": "Lapathum crispum (L.) Moench; Lapathum crispum (L.) Scop.; at least one further entry not read",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-syn-8195144"
+   },
+   {
+    "database": "Flora of North America vol. 5 (efloras.org)",
+    "result": "Rumex crispus Linnaeus, Sp. Pl. 1: 335. 1753; 'Lapathum crispum (Linnaeus) Scopoli' given as synonym; common names curly or yellow dock",
+    "retrieved": "2026-11-25",
+    "citation": "fna-rumex"
+   },
+   {
+    "database": "POWO / WCVP (Kew)",
+    "result": "NOT FOUND - blocked (403).",
+    "retrieved": "2026-11-25",
+    "citation": null
+   }
+  ],
+  "discrepanciesWithDraft": [
+   "Draft binomial matches GBIF and FNA. No change proposed.",
+   "Common names: sources use 'curly dock', 'curled dock', 'yellow dock' and 'narrow dock' for the same species (FNA, Drugs.com). 'Yellow dock' is also used of the root in herbal literature; the card name 'Curly Dock' is fine.",
+   "Deck context: the printed deck already holds Rumex obtusifolius (#2) and Rumex acetosella (#19) (src/data/herbs.json). Both species are the closest relatives of concern; see the matching analysis."
+  ]
+ },
+ "sources": [
+  {
+   "id": "gbif-match-8195144",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF Backbone Taxonomy species match: Rumex crispus",
+   "url": "https://api.gbif.org/v1/species/match?name=Rumex%20crispus&kingdom=Plantae",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Exact match; usage key 8195144; scientific name 'Rumex crispus L.'; status ACCEPTED; family Polygonaceae; match confidence 99.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority."
+  },
+  {
+   "id": "gbif-syn-8195144",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF synonyms of usage key 8195144",
+   "url": "https://api.gbif.org/v1/species/8195144/synonyms?limit=20",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Lists Lapathum crispum (L.) Moench and (L.) Scop. as synonyms of the accepted name.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority. Listing truncated."
+  },
+  {
+   "id": "fna-rumex",
+   "publisher": "Flora of North America (efloras.org)",
+   "title": "Rumex crispus (taxon 47)",
+   "url": "http://efloras.org/florataxon.aspx?flora_id=1&taxon_id=200006746",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Leaf blades lanceolate to narrowly lanceolate, base cuneate/truncate/weakly cordate, margins strongly crisped and undulate; inner tepals (valves) 3.5-6 x 3-5 mm with margins entire to weakly erose, usually 3 tubercles with at least one distinctly larger; hybridises with many species of subgenus Rumex; the hybrid with R. obtusifolius (R. x pratensis Mertens & Koch) is the most common in the genus, at least in Europe, and reported from several North American localities; R. crispus x R. patientia (R. x confusus Simonkai) reported from New York; says hybrids of Rumex in North America 'need careful revision' and that spontaneous hybrids are usually less fertile and ecologically successful than their parents.",
+   "sourceType": "flora"
+  },
+  {
+   "id": "idseed-rumex",
+   "publisher": "IDseed seed identification guide (Canadian), fact sheet for R. crispus",
+   "title": "Rumex crispus L.",
+   "url": "https://seedidguide.idseed.org/fact_sheets/34273/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "States R. crispus hybridises with many species in the subgenus, with hybrids with R. obtusifolius including R. x pratensis Mertens & Koch and R. x acutus L. being common in Europe and North America (citing FNA, Brouillet et al., USDA-NRCS); significant morphological variation in the field results; contrasts R. obtusifolius valves (narrow triangular with long teeth) with R. crispus (entire margins).",
+   "sourceType": "identification-guide",
+   "caveat": "The 'x acutus L.' authorship and its parentage are given as printed on this page and are NOT independently verified (FNA excerpt read does not mention R. x acutus)."
+  },
+  {
+   "id": "umd-dock",
+   "publisher": "University of Maryland Extension",
+   "title": "Curly and broadleaf dock: identification and management",
+   "url": "https://www.extension.umd.edu/resource/curly-and-broadleaf-dock-identification-and-management",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Curly dock: basal rosette, lance-shaped leaves tapering to the petiole, wavy crumpled margins, membranous ocrea sheath at the petiole base, 3-winged papery fruit covering, thick yellow-centred taproot. Broadleaf dock: flatter wider leaves with smooth margins, heart-shaped leaf base, fruit covering with spiny-toothed margins.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "ncsu-dock",
+   "publisher": "NC State / Center for Environmental Farming Systems (Freeman et al.)",
+   "title": "Weed focus: dock",
+   "url": "https://cefs.ncsu.edu/wp-content/uploads/2020_01_07_Dock.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Leaves are the distinguishing feature: curly dock narrower, more lanceolate, curly edges; broadleaf dock broader leaves, less curly. Says both are edible for people but contain oxalates, which bind calcium and can have toxic effects if consumed excessively; oxalates can damage kidneys at high levels; risk greater in drought.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "bsbi-crispus",
+   "publisher": "Botanical Society of Britain & Ireland (Fermanagh species account)",
+   "title": "Rumex crispus",
+   "url": "https://bsbi.org/in-your-area/local-botany/co-fermanagh/fermanagh-species-accounts/rumex-crispus-l",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Basal leaves narrower and more wavy/crisped than R. obtusifolius, base wedge-shaped; ripe fruit valves with almost entire margins. Toxicity: curled dock has caused fatal poisoning in sheep (Panciera et al. 1990) and humans (Reig et al. 1990); toxic substances include oxalic acid, oxalates and anthraquinone glycosides; leaf samples measured 6.6-11.1% oxalic acid on a dry-weight basis.",
+   "sourceType": "botanical society species account",
+   "caveat": "Reig et al. 1990 read second-hand only."
+  },
+  {
+   "id": "bsbi-obtusifolius",
+   "publisher": "Botanical Society of Britain & Ireland (Fermanagh species account)",
+   "title": "Rumex obtusifolius",
+   "url": "https://bsbi.org/in-your-area/local-botany/co-fermanagh/fermanagh-species-accounts/rumex-obtusifolius-l",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Reports that in 1990 a Spanish family suffered acute oxalate poisoning after culinary use of R. crispus, with one fatality (Reig et al. 1990), and says use in the human diet is 'very definitely not recommended'; both docks contain oxalates.",
+   "sourceType": "botanical society species account"
+  },
+  {
+   "id": "bsbi-crib",
+   "publisher": "Botanical Society of Britain & Ireland (plant crib: Rumex)",
+   "title": "Rumex, docks: hybrids",
+   "url": "https://bsbi.org/learn/resources/plant-crib/rumex",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Docks are easiest to identify when the nutlets are nearly ripe; hybrids combine the morphology of both parents and often look 'scruffy' from partial sterility; most hybrid docks produce little fertile seed but R. obtusifolius x R. crispus is one of only two combinations commonly with half or more of the seed viable (still reduced fertility); the inner perianth segments (valves) are the most important character for hybrids; basal leaves are usually withered by fruiting time; docks can also look abnormal from drought, herbicide, damage or galls.",
+   "sourceType": "botanical society identification crib"
+  },
+  {
+   "id": "rhs-docks",
+   "publisher": "Royal Horticultural Society (UK)",
+   "title": "Docks",
+   "url": "https://www.rhs.org.uk/weeds/docks",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Broad-leaved and curled dock are the two most widespread UK docks; hybridisation between Rumex species frequently occurs so identification can be challenging; curled dock leaves are shorter, narrower and wavier; young leaves are edible with a bitter lemony taste but contain oxalic acid so only small quantities should be eaten and eating dock can aggravate some medical conditions.",
+   "sourceType": "horticultural society"
+  },
+  {
+   "id": "weedsau-obtusifolius",
+   "publisher": "Weeds Australia (Qld Government / Atlas)",
+   "title": "Broad-leaved dock profile",
+   "url": "https://weeds.org.au/profiles/broad-leaved-dock/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "States Curled Dock (R. crispus) hybridises with Broadleaf Dock; the resulting plants have been called x Rumex pratensis Mertens & Koch and look intermediate; says broadleaf dock contains oxalates and is suspected of poisoning stock.",
+   "sourceType": "government weed profile"
+  },
+  {
+   "id": "calipc-dock",
+   "publisher": "California Invasive Plant Council (Weed Control Handbook)",
+   "title": "Curly and broadleaf dock",
+   "url": "https://www.cal-ipc.org/wp-content/uploads/WMN/Rumex_crispus-obtusifolius.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Leaf width is the most diagnostic feature separating the two; curly dock has dark green hairless narrow leaves with curly or wavy margins, broadleaf dock wider leaves with smooth to finely ruffled margins; both have a membranous sheath at the leaf base and swollen nodes; under some conditions they accumulate soluble oxalates toxic to livestock.",
+   "sourceType": "conservation-council handbook"
+  },
+  {
+   "id": "qian2024",
+   "publisher": "International Immunopharmacology / PubMed 39520965 (Qian et al. 2024)",
+   "title": "Rumex crispus L.: a comprehensive review on botany, traditional uses, phytochemistry, pharmacology, and safety",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/39520965/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Abstract: traditional use in various countries as astringent, laxative, diuretic, mild tonic, 'blood cleanser', spasmolytic, cholagogue; about 224 constituents including anthraquinones; crude extracts and isolates show antitumor, antimicrobial, antioxidant, anti-inflammatory and other activities (laboratory); states R. crispus is toxic with adverse effects including allergy and symptomatic thrombocytopenia; more work needed.",
+   "sourceType": "peer-reviewed review",
+   "caveat": "Abstract only (via the Exa reader)."
+  },
+  {
+   "id": "gohar2025",
+   "publisher": "Food Science & Nutrition 13(12):e71300 (Gohar et al., PMC12714801)",
+   "title": "Rumex species: phytochemistry, pharmacology and nutritional potential",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12714801/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Rumex plants contain notable oxalic acid; high intake is linked to secondary hyperoxaluria and kidney stones and reduces mineral absorption; avoid drinking cooking water where oxalate concentrates; avoid in kidney stones, gout, arthritis; Table 3 lists R. crispus with fatal oxalate poisoning after large ingestion (Reig 1990); evidence is dominated by preclinical studies, human trials 'virtually absent'. R. crispus roots contain anthraquinones used traditionally for skin complaints and constipation.",
+   "sourceType": "peer-reviewed review"
+  },
+  {
+   "id": "li2022",
+   "publisher": "Natural Products and Bioprospecting (Li et al. 2022)",
+   "title": "The genus Rumex (Polygonaceae): an ethnobotanical, phytochemical and pharmacological review",
+   "url": "https://link.springer.com/article/10.1007/s13659-022-00346-z",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Quinones accumulate particularly in the roots; chrysophanol, emodin and physcion are three anthraquinones commonly used as quality indicators for Rumex plants.",
+   "sourceType": "peer-reviewed review",
+   "caveat": "Genus-level statement, not specific to R. crispus."
+  },
+  {
+   "id": "drugs-yellowdock",
+   "publisher": "Drugs.com (Natural Products database; updated Aug 2026)",
+   "title": "Yellow dock uses, benefits and dosage",
+   "url": "https://www.drugs.com/npp/yellow-dock.html",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Roots exert a laxative effect but no clinical data support use for any condition; oxalate content of leaves may cause GI symptoms or kidney damage and uncooked leaves as a wild vegetable should be avoided; avoid in pregnancy; root contains emodin, chrysophanic acid, physcion (about 2% anthraquinones); leaf stalks have been used as a potherb with a tart sour-sweet taste.",
+   "sourceType": "commercial drug-information database"
+  }
+ ],
+ "identification": {
+  "features": [
+   {
+    "feature": "Leaf blades lanceolate/narrow with margins strongly crisped and undulate (wavy-curly); base cuneate/tapering to the petiole",
+    "citations": [
+     "fna-rumex",
+     "umd-dock",
+     "bsbi-crispus",
+     "calipc-dock"
+    ],
+    "confidence": "high"
+   },
+   {
+    "feature": "Membranous papery sheath (ocrea) at leaf bases; swollen nodes",
+    "citations": [
+     "umd-dock",
+     "calipc-dock"
+    ],
+    "confidence": "high; true for the whole family/genus, not a species discriminator"
+   },
+   {
+    "feature": "Fruit: 3 enlarged inner tepals (valves) with entire or nearly entire margins, usually 3 tubercles with one larger",
+    "citations": [
+     "fna-rumex",
+     "bsbi-crispus",
+     "idseed-rumex"
+    ],
+    "confidence": "high; requires ripe fruit and often a close look"
+   },
+   {
+    "feature": "Thick yellow-centred taproot; tall flowering stem with dense whorls turning rusty-brown",
+    "citations": [
+     "umd-dock",
+     "calipc-dock"
+    ],
+    "confidence": "medium"
+   }
+  ],
+  "lookalikes": [
+   {
+    "name": "Rumex obtusifolius (broadleaf dock; existing card #2)",
+    "dangerous": false,
+    "citations": [
+     "umd-dock",
+     "calipc-dock",
+     "idseed-rumex",
+     "ncsu-dock",
+     "bsbi-obtusifolius"
+    ],
+    "how_to_tell": "Wider, flatter leaves with smooth or finely ruffled margins and a heart-shaped base; valves with spiny/long teeth.",
+    "note": "'Not dangerous' here means the sources report the same oxalate caution for both; both are edible-with-caution per extension sources, and the BSBI says not recommended as food."
+   },
+   {
+    "name": "Hybrids: R. x pratensis (R. crispus x R. obtusifolius); R. x confusus (R. crispus x R. patientia); R. x acutus (parentage and authorship not verified)",
+    "dangerous": null,
+    "citations": [
+     "fna-rumex",
+     "idseed-rumex",
+     "bsbi-crib",
+     "weedsau-obtusifolius"
+    ],
+    "how_to_tell": "Intermediate morphology; best told on ripe valves and fertility; basal leaves often gone at fruiting.",
+    "note": "Hazard is the same oxalate class as the parents; no source suggests a separate hazard."
+   },
+   {
+    "name": "Rumex acetosella (sheep sorrel; existing card #19) and other Rumex",
+    "dangerous": null,
+    "citations": [
+     "rhs-docks"
+    ],
+    "how_to_tell": "Not described in the sources read beyond RHS's note that about 20 docks occur in Britain; distinguishing features NOT FOUND here.",
+    "note": "Same genus, oxalate-rich; hazard class likely similar but not sourced in what was read."
+   },
+   {
+    "name": "Other plants with basal rosettes (e.g. Plantago, Digitalis)",
+    "dangerous": null,
+    "citations": [],
+    "how_to_tell": "NOT FOUND - no authoritative source in this pass lists rosette-stage lookalikes of curly dock.",
+    "note": "One low-authority herb site compares narrowleaf plantain to curly dock; it was not adopted. Needs a botanist."
+   }
+  ],
+  "notFound": [
+   "Any authoritative list of dangerous lookalikes for curly dock at the rosette stage.",
+   "Independent verification of R. x acutus parentage and authorship (only IDseed read).",
+   "A flora treatment of R. acetosella versus R. crispus differences (not needed for the card but relevant to scanner QA)."
+  ]
+ },
+ "safety": {
+  "question": "How serious is the oxalate caution, and does 'cook and eat in moderation' match the sources?",
+  "whatSourcesSay": [
+   {
+    "position": "Edible in small quantities; cooking advised",
+    "sources": [
+     "rhs-docks",
+     "ncsu-dock",
+     "drugs-yellowdock"
+    ],
+    "summary": "RHS: young leaves edible, only small quantities, may aggravate some medical conditions. NC State: edible for people but oxalates can have toxic effects if excessive. Drugs.com: avoid uncooked leaves as a wild vegetable."
+   },
+   {
+    "position": "Serious poisoning reported; not recommended as food",
+    "sources": [
+     "bsbi-crispus",
+     "bsbi-obtusifolius",
+     "gohar2025",
+     "qian2024"
+    ],
+    "summary": "A fatal human case of oxalate poisoning after culinary use of R. crispus is cited (Reig et al. 1990). BSBI says dietary use is 'very definitely not recommended'. Reviews list kidney stones, hypocalcaemia and kidney/liver injury as possible outcomes at large ingestions and add rare thrombocytopenia and allergy."
+   },
+   {
+    "position": "Cooking water",
+    "sources": [
+     "gohar2025"
+    ],
+    "summary": "Oxalate concentrates in cooking water; do not drink it. Cooking does not make dock free of oxalate."
+   }
+  ],
+  "whereTheyDisagree": "Extension/horticultural sources treat young dock leaves as an ordinary edible green in small amounts; the BSBI, citing a fatality, says use as food is not recommended. These are different risk postures about the same facts, not a factual conflict. The oxalate content itself (6.6-11.1% of leaf dry weight in one study) is not disputed.",
+  "draftCardWarningReview": {
+   "cardWarning": "High oxalate; cook and eat in moderation.",
+   "verdict": "PARTLY SUPPORTED. 'High oxalate' SUPPORTED. 'Cook' is half-supported (cooking is advised against raw use, but it does not remove oxalate and the cooking water is hazardous). 'Eat in moderation' presents eating as a normal, safe-in-moderation activity while the sources include a fatal case; no source defines a safe amount (NOT FOUND). The wording reads as preparation advice, which AGENTS-style rules treat as a safety risk.",
+   "guideCaution": "'Contains oxalic acid; best cooked and eaten in moderation.' Same verdict."
+  },
+  "proposedSiteCaution": "PROPOSED DRAFT FOR REVIEW, NOT FINAL WORDING: 'Docks contain oxalic acid. Eating them in quantity has caused serious poisoning, including a death reported in the medical literature, and no safe amount has been established. Do not drink the water they are cooked in. Plantdex does not recommend eating this plant.'",
+  "openSafetyQuestions": [
+   "Should the card keep Cooked Greens / Flour / Roasted Seed as preparations at all given the fatality and the absence of any source for flour or seed?",
+   "Does the owner want a caution that also names people with kidney stones, gout or arthritis (Gohar 2025)?",
+   "Reig et al. 1990 should be read directly before final wording."
+  ]
+ },
+ "reviewOfDraft": [
+  {
+   "field": "healingTraits",
+   "item": "Laxative",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "qian2024",
+    "drugs-yellowdock",
+    "gohar2025"
+   ],
+   "note": "Traditional laxative use of the ROOT is recorded; Drugs.com says no clinical data support any use. Render only with non-claim framing."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Digestive aid",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "qian2024"
+   ],
+   "note": "NOT FOUND as such; 'laxative', 'astringent' and 'cholagogue' are the recorded traditional terms."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Anti-parasitic",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND in anything read. Do not render."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Iron source",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND. (Oxalate binds minerals per Gohar 2025, which cuts against a mineral-source claim.)"
+  },
+  {
+   "field": "healingTraits",
+   "item": "Antimicrob.",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "qian2024"
+   ],
+   "note": "PRECLINICAL: laboratory antimicrobial activity of extracts only. Not a traditional-use record and not human evidence. Do not render."
+  },
+  {
+   "field": "compounds",
+   "item": "Emodin / Chrysophanol / Physcion",
+   "status": "SUPPORTED",
+   "citations": [
+    "drugs-yellowdock",
+    "li2022",
+    "gohar2025"
+   ],
+   "note": "Anthraquinones identified in R. crispus (Drugs.com) and the three named as common quality markers across Rumex (Li 2022); concentrated in the root, not the leaf. The card should not imply they are in the greens."
+  },
+  {
+   "field": "taste",
+   "item": "Sour / Tart / Bitter",
+   "status": "SUPPORTED",
+   "citations": [
+    "rhs-docks",
+    "drugs-yellowdock"
+   ],
+   "note": "RHS: bitter, lemony; Drugs.com: tart sour-sweet. Descriptive only."
+  },
+  {
+   "field": "aromatic",
+   "item": "Earthy / Grassy / Mild",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "preparations",
+   "item": "Cooked Greens",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "rhs-docks",
+    "ncsu-dock",
+    "drugs-yellowdock"
+   ],
+   "note": "Documented as a wild vegetable in small quantities; see safety discussion."
+  },
+  {
+   "field": "preparations",
+   "item": "Flour",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "preparations",
+   "item": "Roasted Seed",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND. (One tertiary page mentions boiled seed use by one nation; not adopted.)"
+  },
+  {
+   "field": "preparations",
+   "item": "Dye",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND in what was read."
+  },
+  {
+   "field": "usableParts",
+   "item": "Leaf",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "rhs-docks",
+    "drugs-yellowdock"
+   ],
+   "note": "Young leaves; stalks also used as potherb per Drugs.com."
+  },
+  {
+   "field": "usableParts",
+   "item": "Root",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "drugs-yellowdock",
+    "qian2024"
+   ],
+   "note": "Medicinal root use recorded traditionally."
+  },
+  {
+   "field": "usableParts",
+   "item": "Stem",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "drugs-yellowdock"
+   ],
+   "note": "Only 'leaf stalks' (petioles) are mentioned; stem NOT FOUND."
+  },
+  {
+   "field": "usableParts",
+   "item": "Seed",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "uses (tags)",
+   "item": "digestive / edible",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "rhs-docks",
+    "qian2024"
+   ],
+   "note": "'Edible' is supported only with the oxalate caveats above; 'digestive' as for Laxative."
+  }
+ ],
+ "rumexAnalysis": [
+  {
+   "heading": "Facts the analysis rests on",
+   "points": [
+    "R. crispus and R. obtusifolius hybridise; the hybrid is R. x pratensis Mertens & Koch (FNA, Weeds Australia, IDseed). It is the most common hybrid in the genus at least in Europe and reported from North America (FNA).",
+    "R. x acutus is given by IDseed as a hybrid with R. obtusifolius; its authorship ('L.') and parentage were not independently verified. R. x confusus (R. crispus x R. patientia) is reported from New York (FNA). FNA says North American Rumex hybrids 'need careful revision'.",
+    "Hybrids are intermediate in morphology; the discriminating characters are the ripe valves and fertility, and basal leaves are often gone by fruiting (BSBI crib). A leaf photograph in summer cannot settle it.",
+    "The existing printed deck already contains R. obtusifolius (#2) and R. acetosella (#19), so any dock scan can already resolve to #2."
+   ]
+  },
+  {
+   "heading": "What an exact-only rule (exact binomial + checked synonyms; hybrids, sameGenus and 'listed' never confirm) WOULD catch",
+   "points": [
+    "A provider answer that is a named hybrid (x or U+00D7 sign): not an exact species, so it never opens #67 (or #2).",
+    "A genus-only or 'Rumex sp.' answer, and any answer for another Rumex (e.g. R. acetosella resolves to #19, R. patientia to nothing).",
+    "Relatives that are not exact: R. obtusifolius resolves to #2 only on an exact match, not by being 'close to' R. crispus.",
+    "The synonym Lapathum crispum (GBIF, FNA) only if the checked synonym table includes it; otherwise it silently does not resolve."
+   ]
+  },
+  {
+   "heading": "What an exact-only rule would NOT catch (residual risk)",
+   "points": [
+    "A hybrid or backcross plant that the provider labels with a pure parent name, in either direction (R. x pratensis returned as R. crispus opens #67; returned as R. obtusifolius opens #2). The rule only acts on the name returned; it cannot see morphology.",
+    "R. x confusus and other crispus-involving hybrids returned as R. crispus, for the same reason.",
+    "Two close scores: if R. crispus and R. obtusifolius are the top two answers with similar confidence, exact-only still confirms the top one. A 'near-tie between two Rumex' => `uncertain` rule is a possible addition, but it is matcher logic and needs coordinator/owner decision (outside this research lane).",
+    "Infraspecific or segregate names (FNA says numerous infraspecific taxa and segregates exist); behaviour depends on how normalizeName treats them.",
+    "A bad identification of a non-Rumex plant. The rule is about naming, not about what the player is actually standing next to.",
+    "Safety consequence is small for the dock-versus-dock confusion because both parents carry the same oxalate caution (NC State, BSBI). The meaningful safety risk is a wrong plant, which exact-only does not touch."
+   ]
+  },
+  {
+   "heading": "Proposed rule and tests (for the coordinator; not implemented here)",
+   "points": [
+    "Keep the pilot rule as written in the plan: exact binomial and checked synonyms only; replace the standing refusal test with one that asserts exactly this rather than deleting it.",
+    "Fixtures to add or confirm: R. x pratensis, R. x acutus, R. x confusus (all must NOT confirm); R. obtusifolius -> #2 only; R. acetosella -> #19; Lapathum crispum -> #67 only if the synonym is deliberately added; ASCII ' x ' and U+00D7 forms of the hybrid sign both refused.",
+    "Card copy for #67 should not say or imply that Plantdex can tell curly dock from broadleaf dock or from their hybrids from a photograph.",
+    "Open: whether to add the near-tie => uncertain rule (owner decision)."
+   ]
+  }
+ ],
+ "scannerAndMatchingNotes": [
+  "See section (e). R. obtusifolius is already card #2; this makes a clean R. crispus / R. obtusifolius / hybrid story more important than the plan's 'refusal case' suggests."
+ ],
+ "uncertainty": [
+  "POWO/WCVP, IPNI, PubMed direct access blocked. R. x acutus parentage unverified. Reig et al. 1990 (fatal case) and Panciera et al. 1990 read second-hand only."
+ ]
+}

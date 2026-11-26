@@ -1,0 +1,474 @@
+{
+ "schema": "plantdex.expansion.pilot.research/1",
+ "status": "PROPOSAL_ONLY_NOT_FOR_PUBLICATION",
+ "retrievalDate": "2026-11-25",
+ "header": "PROPOSAL ONLY. Not wording for publication; nothing here is imported, enabled or deployed. Retrieval date for every source: 2026-11-25. Network note: the sandbox proxy allowed only en.wikipedia.org (rate-limited) and plants.usda.gov (redirects to a blocked host). BLOCKED (403/timeout): powo.science.kew.org, wcvp.science.kew.org, api.gbif.org, www.gbif.org, pubmed.ncbi.nlm.nih.gov, eutils.ncbi.nlm.nih.gov, europepmc.org, www.fs.usda.gov, plants.sc.egov.usda.gov, www.wikidata.org, www.inaturalist.org, extension.umn.edu, www.wildflower.org, www.fda.gov, www.ipni.org, www.worldfloraonline.org, api.crossref.org, www.ars-grin.gov. All sources below were therefore read through the Exa search/fetch tool (a third-party reader that returns excerpts); most journal articles were read as abstracts or excerpts only. Search links are not citations.",
+ "id": "trifolium-repens",
+ "cardNumber": 80,
+ "commonName": "White Clover",
+ "scientificName": "Trifolium repens",
+ "taxon": {
+  "acceptedName": "Trifolium repens",
+  "authorship": "L.",
+  "family": "Fabaceae",
+  "rank": "species",
+  "checks": [
+   {
+    "database": "GBIF Backbone",
+    "result": "ACCEPTED, EXACT match, confidence 99, usage key 5358748, 'Trifolium repens L.'",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-match-5358748"
+   },
+   {
+    "database": "GBIF Backbone synonyms (first entries; reader truncated)",
+    "result": "Amoria repens (L.) C.Presl; Trifolium humifusum Latourr., 1785; further entries not read",
+    "retrieved": "2026-11-25",
+    "citation": "gbif-syn-5358748"
+   },
+   {
+    "database": "POWO / WCVP (Kew)",
+    "result": "NOT FOUND - blocked (403).",
+    "retrieved": "2026-11-25",
+    "citation": null
+   }
+  ],
+  "discrepanciesWithDraft": [
+   "Draft binomial matches GBIF. No change proposed.",
+   "Variety names (var. giganteum, var. biasoletti) appear in the cyanogen literature; a provider may return an infraspecific name. Not resolved.",
+   "Deck context: Trifolium pratense is card #10; a different exact species."
+  ]
+ },
+ "sources": [
+  {
+   "id": "gbif-match-5358748",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF Backbone Taxonomy species match: Trifolium repens",
+   "url": "https://api.gbif.org/v1/species/match?name=Trifolium%20repens&kingdom=Plantae",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Exact match; usage key 5358748; scientific name 'Trifolium repens L.'; status ACCEPTED; family Fabaceae; match confidence 99.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority."
+  },
+  {
+   "id": "gbif-syn-5358748",
+   "publisher": "GBIF Secretariat",
+   "title": "GBIF synonyms of usage key 5358748",
+   "url": "https://api.gbif.org/v1/species/5358748/synonyms?limit=20",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Lists Amoria repens (L.) C.Presl and Trifolium humifusum Latourr. among synonyms.",
+   "sourceType": "taxonomic-database",
+   "caveat": "Fetched through the Exa web-fetch tool (a third-party reader), not directly from the sandbox, because the sandbox proxy returns 403 for api.gbif.org. GBIF is a backbone aggregator, not a primary nomenclatural authority. Listing truncated."
+  },
+  {
+   "id": "mdc-clover",
+   "publisher": "Missouri Department of Conservation",
+   "title": "White clover field guide",
+   "url": "https://mdc.mo.gov/discover-nature/field-guide/white-clover",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Perennial with prostrate stems rooting at nodes; long leaf stems up to 8 in; three leaflets often with a pale crescent; rounded flower heads 1/2-1 1/2 in on unbranched leafless stalks from the stem at a leaf attachment, with no pair of leaflike bracts; usually 20-50 florets; calyx unequally toothed often with dark purple at the V-shaped indentations; petals white to pinkish. Alsike clover (T. hybridum) lacks crescents, does not root at nodes and has glabrous calyx. Says leaves qualify as survival food but are not tasty or easy to digest raw, thorough boiling preferred; flower heads nibbled or used for tea; Oxalis species are often sold as shamrocks.",
+   "sourceType": "state-agency field guide"
+  },
+  {
+   "id": "umd-clover",
+   "publisher": "University of Maryland Extension",
+   "title": "White clover: identification and management",
+   "url": "https://www.extension.umd.edu/resource/white-clover-identification-and-management",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Low sprawling stoloniferous plant; white or slightly pink dense pea-like flower cluster 1/2-1 in; trifoliate leaves with long petiole, all leaflets attached directly to the petiole, egg-shaped, finely toothed, often with a pale chevron; stems smooth or minimally hairy and root at the nodes; red clover is upright, hairier, narrower pointed leaflets, pink flowers; black medic has yellow flowers and a stalked central leaflet.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "ucipm-clover",
+   "publisher": "UC Statewide IPM Program",
+   "title": "White clover (weeds identification gallery)",
+   "url": "https://ipm.ucanr.edu/weeds-identification-gallery/white-clover/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Creeping perennial with stems 4-12 in rooting at nodes; leaflets 0.6-1.2 cm, nearly hairless, may have a whitish crescent; strawberry clover is similar but lacks the crescent; tiny white to pale pink flowers in spherical heads.",
+   "sourceType": "university IPM"
+  },
+  {
+   "id": "nrcs-clover",
+   "publisher": "USDA NRCS Plant Guide (Ogle & St. John)",
+   "title": "White clover, Trifolium repens L.",
+   "url": "https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_trre3.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Prostrate stoloniferous legume; three leaflets that may or may not have a crescent or watermark; leaves and roots develop at stolon nodes; flower heads of 40-100 florets on long stalks from the leaf axils, florets white sometimes pink.",
+   "sourceType": "government plant guide",
+   "caveat": "Floret count (40-100) differs from MDC (20-50)."
+  },
+  {
+   "id": "purdue-clover",
+   "publisher": "Purdue University College of Agriculture",
+   "title": "White clover (toxic plants of livestock)",
+   "url": "https://ag.purdue.edu/department/arge/PACs/sipac/toxic-plants/white-clover.html",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Represented as a legume that causes bloat in cattle, sheep and goats; no hairs; white V watermarks often present; spreads by stolons.",
+   "sourceType": "university extension",
+   "caveat": "Livestock only."
+  },
+  {
+   "id": "ncsu-alsike",
+   "publisher": "NC State Extension Plant Toolbox",
+   "title": "Trifolium hybridum (alsike clover)",
+   "url": "https://plants.ces.ncsu.edu/plants/trifolium-hybridum/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Alsike is often confused with T. repens and T. pratense; its flower head has a peduncle, does not creep and root at nodes, and its leaflets are unmottled, where T. repens can have an inverted V near the base.",
+   "sourceType": "university extension"
+  },
+  {
+   "id": "mgnv-shamrock",
+   "publisher": "Master Gardeners of Northern Virginia",
+   "title": "Weed watch: will the real shamrock please stand up?",
+   "url": "https://mgnv.org/weeds/shamrock-2025/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Oxalis species (wood sorrels) have heart-shaped leaflets that fold at night and contain oxalic acid, so their use in the diet should be spare; white clover leaflets are egg-shaped with a v-shaped watermark; four-leaf individuals occur.",
+   "sourceType": "extension master gardeners"
+  },
+  {
+   "id": "hughes1991",
+   "publisher": "Heredity 66:105-115 (Hughes)",
+   "title": "The cyanogenic polymorphism in Trifolium repens L. (white clover)",
+   "url": "https://www.nature.com/articles/hdy199113.pdf",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "White clover produces linamarin and lotaustralin; HCN is released only after tissue damage, when a linamarase enzyme meets the glucosides; both cyanogenic and acyanogenic plants occur in the same population.",
+   "sourceType": "peer-reviewed review"
+  },
+  {
+   "id": "kakes1994",
+   "publisher": "Journal of Evolutionary Biology 7 (Kakes & Hakvoort)",
+   "title": "On the origin of the cyanogenic polymorphism in Trifolium repens L.",
+   "url": "https://doi.org/10.1046/j.1420-9101.1994.7020201.x",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Plants that produce HCN when leaves are damaged and plants that do not occur together in most European populations; in Trifolium cyanogenesis is restricted to the leaf blades.",
+   "sourceType": "peer-reviewed",
+   "caveat": "Abstract/excerpt only."
+  },
+  {
+   "id": "olsen2008",
+   "publisher": "Genetics 179:517 (Olsen et al., PMC2390629)",
+   "title": "Evidence on the molecular basis of the Ac/ac adaptive cyanogenesis polymorphism in white clover",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2390629/",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "White clover is polymorphic for cyanogenesis; plants with functional alleles at both Ac and Li are cyanogenic; wide quantitative variation in cyanogenic glucoside content was observed among cyanogenic plants.",
+   "sourceType": "peer-reviewed"
+  },
+  {
+   "id": "muzashvili2014",
+   "publisher": "J. Agric. Food Chem. 62:1777 (Muzashvili et al.)",
+   "title": "UPLC-MS/MS determination of cyanogenic glucosides in Trifolium species",
+   "url": "https://pubs.acs.org/doi/10.1021/jf4056659",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Across 88 Trifolium species most total cyanogen contents were below 500 micrograms per g dry matter; only T. repens var. biasoletti and T. montanum were extremely high; samples of one species from different countries could accumulate or lack cyanogens.",
+   "sourceType": "peer-reviewed",
+   "caveat": "Abstract only. The clustering in the related review places T. repens samples in more than one cluster, consistent with variability."
+  },
+  {
+   "id": "stochmal1994",
+   "publisher": "Phytochemical Analysis 5 (Stochmal & Oleszek)",
+   "title": "Determination of cyanogenic glucosides in white clover by HPLC",
+   "url": "https://doi.org/10.1002/pca.2800050511",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Linamarin and lotaustralin identified in T. repens cv. Armena at 1.29 and 3.13 mg per g dry matter.",
+   "sourceType": "peer-reviewed",
+   "caveat": "Abstract only; one cultivar."
+  },
+  {
+   "id": "kolodziejczyk2016",
+   "publisher": "J Pharm Pharmacol (Kolodziejczyk-Czepas 2016)",
+   "title": "Trifolium species: latest findings on chemical profile, ethnomedicinal use and pharmacological properties",
+   "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jphp.12568",
+   "retrieved": "2026-11-25",
+   "supportingPassageParaphrased": "Review of cyanogen clustering by Muzashvili et al.; says until 2012 Trifolium phytochemistry studies focused on T. pratense and T. repens.",
+   "sourceType": "peer-reviewed review",
+   "caveat": "Excerpt only; no passage on formononetin, genistein or coumestrol in T. repens was retrieved."
+  }
+ ],
+ "identification": {
+  "features": [
+   {
+    "feature": "Low prostrate plant with creeping stems (stolons) that root at nodes",
+    "citations": [
+     "mdc-clover",
+     "umd-clover",
+     "ucipm-clover",
+     "nrcs-clover"
+    ],
+    "confidence": "high"
+   },
+   {
+    "feature": "Leaf of three egg-shaped, finely toothed leaflets on a long petiole, all leaflets unstalked, often with a pale crescent/chevron/V (not always)",
+    "citations": [
+     "mdc-clover",
+     "umd-clover",
+     "nrcs-clover",
+     "purdue-clover"
+    ],
+    "confidence": "high; the mark is variable"
+   },
+   {
+    "feature": "Round flower heads of white (or pinkish) pea-like florets on a leafless, unbranched stalk arising from the creeping stem at a leaf node; no pair of leaflike bracts",
+    "citations": [
+     "mdc-clover",
+     "nrcs-clover"
+    ],
+    "confidence": "high",
+    "note": "Floret count differs: 20-50 (MDC) vs 40-100 (NRCS)."
+   },
+   {
+    "feature": "Stems smooth or minimally hairy; leaflets nearly hairless",
+    "citations": [
+     "umd-clover",
+     "ucipm-clover",
+     "purdue-clover"
+    ],
+    "confidence": "high; MDC says 'plants may be hairy or not'"
+   }
+  ],
+  "lookalikes": [
+   {
+    "name": "Trifolium hybridum (alsike clover)",
+    "dangerous": false,
+    "citations": [
+     "mdc-clover",
+     "ncsu-alsike"
+    ],
+    "how_to_tell": "Does not creep or root at nodes; leaflets lack crescent; flower head on a stalk, heads that turn pink with age; glabrous green calyx.",
+    "note": "Appears in the no-cyanogen cluster in Muzashvili's survey (via Kolodziejczyk)."
+   },
+   {
+    "name": "Trifolium pratense (red clover; existing card #10)",
+    "dangerous": false,
+    "citations": [
+     "umd-clover"
+    ],
+    "how_to_tell": "Upright clump, narrower pointed hairier leaflets, uniformly pink-red flowers."
+   },
+   {
+    "name": "Trifolium fragiferum (strawberry clover)",
+    "dangerous": null,
+    "citations": [
+     "ucipm-clover"
+    ],
+    "how_to_tell": "Similar vegetative look; lacks the whitish crescent."
+   },
+   {
+    "name": "Medicago lupulina (black medic)",
+    "dangerous": null,
+    "citations": [
+     "umd-clover"
+    ],
+    "how_to_tell": "Yellow flowers; central leaflet has a noticeable stalk."
+   },
+   {
+    "name": "Oxalis spp. (wood sorrels, 'shamrock')",
+    "dangerous": null,
+    "citations": [
+     "mgnv-shamrock",
+     "mdc-clover"
+    ],
+    "how_to_tell": "Heart-shaped leaflets that fold at night; yellow (or pink/purple in cultivated forms) five-petaled flowers.",
+    "note": "Contains oxalic acid, so the diet caution differs from clover; this is the commonest confusion named by extension sources."
+   }
+  ],
+  "notFound": [
+   "Any lookalike that is acutely dangerous to people (none retrieved; search limited).",
+   "Floret count agreement (20-50 vs 40-100)."
+  ]
+ },
+ "safety": {
+  "question": "What can the 'cyanide' caution honestly say about white clover?",
+  "whatSourcesSay": [
+   {
+    "position": "Some individuals release HCN from damaged leaves",
+    "sources": [
+     "hughes1991",
+     "kakes1994",
+     "olsen2008"
+    ],
+    "summary": "Cyanogenesis is a polymorphism: cyanogenic and acyanogenic plants coexist; HCN requires tissue damage; restricted to leaf blades; content varies widely among plants."
+   },
+   {
+    "position": "Quantities generally modest but variable",
+    "sources": [
+     "muzashvili2014",
+     "stochmal1994"
+    ],
+    "summary": "Survey: generally below 500 micrograms/g dry matter, with extreme outliers in a variety; one cultivar had about 4.4 mg/g combined. Samples of one species ranged from none to high."
+   },
+   {
+    "position": "Livestock bloat",
+    "sources": [
+     "purdue-clover"
+    ],
+    "summary": "White clover is a bloat-causing legume for cattle, sheep and goats (not cyanide)."
+   }
+  ],
+  "whereTheyDisagree": "No source disagrees; the human relevance is a gap. NO source read states how much HCN, if any, matters for people eating leaves or flowers (NOT FOUND). The draft's 'Some plants can release cyanide' is accurate for T. repens but unspecific.",
+  "draftCardWarningReview": {
+   "cardWarning": "Some plants can release cyanide.",
+   "verdict": "SUPPORTED in substance (some white clover plants are cyanogenic) but written generically ('some plants'), which hides that it is THIS plant and says nothing about the part (leaf blades) or variability. Not preparation advice. Better to be specific, not stronger.",
+   "guideCaution": "None in the draft (null)."
+  },
+  "proposedSiteCaution": "PROPOSED DRAFT FOR REVIEW, NOT FINAL WORDING: 'Some white clover plants release hydrogen cyanide from their leaves when the tissue is damaged; others do not, and you cannot tell which by looking. How much matters for people has not been established in the sources reviewed. Plantdex does not recommend eating wild plants.'",
+  "openSafetyQuestions": [
+   "Should the card keep Salad/Cooked Greens/Tea given that raw leaves are 'not easy to digest' (MDC) and cyanogenesis is leaf-borne?",
+   "Does the owner want the Oxalis confusion noted in a caution?",
+   "A toxicologist could say whether the HCN amounts matter for humans; not found here."
+  ]
+ },
+ "reviewOfDraft": [
+  {
+   "field": "healingTraits",
+   "item": "Mineral source",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Antioxidant",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "kolodziejczyk2016"
+   ],
+   "note": "Laboratory activity is discussed in reviews of the genus but no T. repens passage was retrieved. NOT FOUND / PRECLINICAL at best. Do not render."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Wound aid",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "healingTraits",
+   "item": "Antitumor",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND. An anti-cancer trait is a medical claim with no source; recommend removal."
+  },
+  {
+   "field": "compounds",
+   "item": "Formononetin / Genistein / Coumestrol",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "kolodziejczyk2016"
+   ],
+   "note": "NOT FOUND for T. repens in what was read. A SOURCED alternative: the cyanogenic glucosides linamarin and lotaustralin (Hughes 1991; Stochmal & Oleszek 1994), though that is a safety-relevant fact more than a 'compound' flourish."
+  },
+  {
+   "field": "taste",
+   "item": "Mild / Sweet / Grassy",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "MDC says the leaves are 'not considered tasty'; 'Sweet' NOT FOUND. The card words conflict with the one source."
+  },
+  {
+   "field": "aromatic",
+   "item": "Sweet / Floral / Grassy",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "preparations",
+   "item": "Salad",
+   "status": "UNSUPPORTED",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "MDC says leaves are not easy to digest raw and thorough boiling is preferred, which cuts against 'Salad'."
+  },
+  {
+   "field": "preparations",
+   "item": "Cooked Greens",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "MDC: thorough boiling seems the preferred way to prepare greens (survival-food context)."
+  },
+  {
+   "field": "preparations",
+   "item": "Tea",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "MDC: people sometimes use fresh-blooming flower heads for tea."
+  },
+  {
+   "field": "preparations",
+   "item": "Flour",
+   "status": "UNSUPPORTED",
+   "citations": [],
+   "note": "NOT FOUND."
+  },
+  {
+   "field": "usableParts",
+   "item": "Flower",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "Flower heads nibbled or made into tea (MDC)."
+  },
+  {
+   "field": "usableParts",
+   "item": "Leaf",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "Leaves as greens (MDC) - note that cyanogenesis is restricted to leaf blades (Kakes 1994)."
+  },
+  {
+   "field": "uses (tags)",
+   "item": "edible / tea",
+   "status": "TRADITIONAL_USE_ONLY",
+   "citations": [
+    "mdc-clover"
+   ],
+   "note": "Supported only as a survival-food/occasional-nibble statement from a state agency, not as a recommendation."
+  }
+ ],
+ "imageReview": [
+  {
+   "heading": "Provenance",
+   "points": [
+    "expansion/cards/080_trifolium-repens/approved_final/provenance.json (read on the draft branch) says the V17 zip supplies 'the transparent generated cutout' (file main_generated_cutout_used.png); front/back finals identical to V15. The pilot plan and task brief record the main image as an AI derivative flagged 'botanical review required'. The original generation prompt/model and any source photograph are NOT in the files read (NOT FOUND).",
+    "I viewed main_generated_cutout_used.png. Items below are my own visual observations compared with the sourced features above; they are review prompts for a botanist, not findings."
+   ]
+  },
+  {
+   "heading": "What the botanist must check against the sources",
+   "points": [
+    "Leaf: three leaflets, toothed margin, pale crescent/V (drawn and visible; sources say it is often present, not always). Confirm toothing is fine and regular (UMD) and the leaflets are unstalked (MDC, UMD).",
+    "Flower-stalk surface: the two stalks in the image carry a conspicuous scaly/hatched, hairy-looking texture. Sources describe stems and leaflets as smooth or minimally hairy (UMD, UC IPM, Purdue 'no pubescence'; MDC allows 'hairy or not'). Possible generation artefact.",
+    "Flower heads: confirm florets are white to pinkish (the image shows strong pink tinting), floret count and form (MDC 20-50; NRCS 40-100), and the calyx: unequally toothed, often with dark purple at the V indentations (MDC). The image shows long green-and-reddish spiky calyx tips; verify they are not an artefact.",
+    "Bud: a conical pink-red bud at the stem junction looks more like a red-clover bud than a white clover one; confirm.",
+    "Stalk attachment: heads should arise singly on unbranched leafless stalks from the creeping stem at a leaf node, with no pair of leaflike bracts (MDC). The image shows two stalks joining a thick stem at a single point with the leaf; check that this matches the real arrangement.",
+    "Habit: stolon rooting at nodes (the field mark that separates it from alsike) is not shown; the leaf stalk is short relative to the 8 in length MDC reports. Check the card does not imply otherwise.",
+    "Scale/proportions: leaflets are 0.6-1.2 cm (UC IPM) against heads of 1/2-1 1/2 in (MDC); check relative sizes are plausible.",
+    "Cut-out edges: a pink/white halo is visible along the flower and leaf edges, typical of an automatic cut-out.",
+    "Colour: leaflet green with a pale chevron looks plausible; check against herbarium or reliable photographs."
+   ]
+  },
+  {
+   "heading": "Process questions for the owner",
+   "points": [
+    "Whether to replace the AI derivative with a licensed photograph or botanical illustration, or keep it with a visible 'illustration' disclosure. Plantdex has no policy statement read here.",
+    "Whether the sprite/icon, which derive from the same plant, need the same review.",
+    "Record the reviewer, date and ruling in the card's provenance before release."
+   ]
+  }
+ ],
+ "scannerAndMatchingNotes": [
+  "T. repens exact-only resolves to #80; T. pratense (#10) resolves separately. Alsike (T. hybridum) and strawberry clover are not cards and would not confirm under the exact-only rule."
+ ],
+ "uncertainty": [
+  "Cyanogen amounts for humans NOT FOUND. Isoflavone claims NOT FOUND. Image review is based on my own viewing, not an expert assessment. POWO/WCVP blocked."
+ ]
+}
