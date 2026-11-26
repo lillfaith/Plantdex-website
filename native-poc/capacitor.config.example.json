@@ -1,0 +1,8 @@
+{
+  "_comment": "ILLUSTRATIVE ONLY. Not installed, not used by any build. Placeholders in angle brackets are owner decisions.",
+  "appId": "<com.owner.plantdex>",
+  "appName": "Plantdex",
+  "webDir": "out",
+  "ios": { "scheme": "Plantdex", "contentInset": "never", "limitsNavigationsToAppBoundDomains": true },
+  "server": { "iosScheme": "capacitor", "hostname": "<app.plantdex.online-or-localhost>", "allowNavigation": ["<project-ref>.supabase.co"] }
+}
