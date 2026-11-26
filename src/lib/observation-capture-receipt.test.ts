@@ -153,7 +153,7 @@ describe('the switch defaults OFF and nothing here can turn it on', () => {
       'issue_capture_receipts(uuid, uuid, jsonb)',
       'prune_capture_artifacts()',
       'release_capture_session(uuid, uuid)',
-      'refund_scan_claim(text, date)',
+      'refund_scan_claim(text, date, text)',
       'set_discovery_enforcement(boolean, timestamptz, text)',
     ]) {
       expect(MIGRATION).toContain(`revoke all on function public.${fn} from public, anon, authenticated;`);
