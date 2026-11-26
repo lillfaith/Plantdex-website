@@ -51,3 +51,18 @@ the function; the migration adds no table, column, policy, comment or index, so 
 ## Production
 Not planned here. After TEST passes and the owner approves separately: the same file would be applied by the release repository's
 `run-migration` workflow (production environment, owner approval, token limited to production), with the same one-statement rollback.
+
+## Status as of 2026-11-26 (coordinator review for the merge decision)
+
+- **Already applied to TEST.** `run-migration.yml` run #37 (id 45328820311, 2026-11-24 04:47 UTC) applied `0014_confirm_scan.sql` to the TEST project
+  (`vgjehmwcpavflbfhbbrp`) from commit `780d1b26`, and succeeded. The file in this PR is **byte-identical** to that commit (`git diff 780d1b26 HEAD -- supabase/migrations/0014_confirm_scan.sql` is empty).
+  The live `confirm_scan` suite then passed 14 of 14 on TEST. **Do not re-run it**: `create or replace` plus `revoke`/`grant` is idempotent, but there is nothing to gain.
+- **Never applied to production.** Production application stays unauthorised.
+- **Merging this PR applies nothing.** No workflow runs a migration or deploys a function on a push or merge to `integration`: `run-migration.yml`, `deploy-function.yml` and
+  `check-supabase-token.yml` are `workflow_dispatch` only, and the Pages deploy triggers only on the production branch.
+- **Compatible with 0016.** The local harness applies 0001-0013, **0014**, then 0016 (111 checks, including that `confirm_scan` with a forged receipt confirms only a scan and creates no
+  discovery or receipt); `NO_0014=1` proves 0016 alone (109). 0014 touches `scans` only; 0016 touches neither `scans` nor `confirm_scan`. 0015 is irrelevant to both.
+- **Permissions reviewed.** `security definer`, `search_path = ''`, every object schema-qualified; caller-only (`auth.uid()`), write-once (`confirmed_herb_id is null`), idempotent for the same card,
+  refuses a null/blank card or a probability outside 0..1; no UPDATE policy added; `revoke ... from public, anon`, `grant execute ... to authenticated` only. `v1-security-audit.test.ts` now lists
+  `confirm_scan` among the authenticated-callable functions deliberately.
+- **Rollback (database).** `drop function if exists public.confirm_scan(text, text, text, numeric, text, text, text);` Nothing depends on it while `NEXT_PUBLIC_CONFIRM_SCAN_RPC` is `'off'` (it is).

@@ -63,8 +63,11 @@ describe('confirm_scan migration', () => {
     expect(code).not.toMatch(/for all/i);
   });
 
-  it('is the next migration in sequence', () => {
+  it('follows 0013 directly and is the only 0014 (later numbers may exist; 0015 belongs to the separate expansion track)', () => {
     const names = readdirSync(dir).filter((f) => /^\d{4}_/.test(f)).sort();
-    expect(names.at(-1)).toBe('0014_confirm_scan.sql');
+    const at = names.indexOf('0014_confirm_scan.sql');
+    expect(at, '0014_confirm_scan.sql is missing').toBeGreaterThan(0);
+    expect(names[at - 1]).toMatch(/^0013_/);
+    expect(names.filter((n) => n.startsWith('0014_'))).toHaveLength(1);
   });
 });
