@@ -42,7 +42,13 @@ import {
   currentStep,
   type ObservationChannel,
 } from '@/lib/scan-flow';
-import { getReceiptClient, receiptLine } from '@/lib/scan-receipt';
+import { decideConfirm, shouldClaim, shouldFetchRules } from '@/lib/scan-receipt';
+import {
+  claimDiscovery,
+  fetchDiscoveryRules,
+  openCaptureSession,
+  type CaptureSession,
+} from '@/lib/scan-capture-session';
 import { isCameraCaptureEnabled } from '@/lib/scan-capture';
 
 /** How many candidates the result list opens with; the rest are one tap away. */
@@ -94,6 +100,23 @@ export function ScanPanel() {
   const [sentChannel, setSentChannel] = useState<ObservationChannel>('unspecified');
   /* The scan receipt line for the last confirm. MOCK until the discoveries contract lands. */
   const [receiptNote, setReceiptNote] = useState<string | null>(null);
+  /* Why a confirm was refused (safe failure state), or null. Nothing is unlocked when set. */
+  const [confirmBlock, setConfirmBlock] = useState<string | null>(null);
+  const confirmingRef = useRef(false);
+  /*
+   * THE CAPTURE SESSION, in memory only (its nonce is a bearer secret). Opened when the camera
+   * screen opens and the player is signed in; spent by the next collect identify. A failure to
+   * open one is not an error: the scan still identifies, and the confirm step says what it can.
+   */
+  const captureSession = useRef<CaptureSession | null>(null);
+  const openSession = useCallback(() => {
+    if (!user) return;
+    const current = captureSession.current;
+    if (current && Date.now() - current.openedAtMs < 9 * 60 * 1000) return;
+    void openCaptureSession().then((opened) => {
+      captureSession.current = opened.ok ? opened.session : null;
+    });
+  }, [user]);
 
   /*
    * TWO STAGES, AND DELIBERATELY NOT THREE.
@@ -283,7 +306,7 @@ export function ScanPanel() {
     // `confirmed` is a dependency for the reason spelled out at the outcome panel: the panel
     // reporting the most important action in the app used to render below the fold with
     // nothing scrolling to it.
-  }, [result, problem, confirmed, busy]);
+  }, [result, problem, confirmed, busy, confirmBlock]);
 
   const run = useCallback(
     async (photos: ObservationPhoto[]) => {
@@ -303,8 +326,13 @@ export function ScanPanel() {
        * already had one — advice about a set that is no longer the set that was identified.
        */
       setSentOrgans(photos.map((photo) => photo.organ));
-      setSentChannel(channelForPhotos(photos));
+      const channel = channelForPhotos(photos);
+      setSentChannel(channel);
       setReceiptNote(null);
+      setConfirmBlock(null);
+      // A session is single-use: whichever way this call goes, it is spent.
+      const session = channel === 'collect' ? captureSession.current : null;
+      captureSession.current = null;
       setProblem(null);
       setRateLimited(null);
       setResult(null);
@@ -322,6 +350,7 @@ export function ScanPanel() {
       await new Promise((resolve) => setTimeout(resolve, 0));
       const answer = await identifyPlant(photos, () => setStage('identifying'), {
         consentScope: consent.scope,
+        capture: session ? { sessionId: session.sessionId, nonce: session.nonce } : undefined,
       });
 
       if (isScanFailure(answer)) {
@@ -366,27 +395,31 @@ export function ScanPanel() {
    * to drift apart depending on which button was pressed.
    */
   const confirmCandidate = useCallback(
-    (herb: NonNullable<ReturnType<typeof getCatalogueEntry>>, candidate: ScanCandidate) => {
+    async (herb: NonNullable<ReturnType<typeof getCatalogueEntry>>, candidate: ScanCandidate) => {
+      if (confirmingRef.current) return;
+      confirmingRef.current = true;
+      try {
       /*
-       * THE COLLECT RULE, UNDER THE CAMERA PILOT. An observation that included an imported photo
-       * identifies for education and cannot unlock a NEW card. A card already held is untouched
-       * (grandfathered), and `discover()` below is still the idempotent call it always was.
+       * THE COLLECT RULE, UNDER THE CAMERA PILOT, coded to the discovery receipt contract
+       * (docs/discoveries/discovery-receipt-contract.md). An observation with an imported photo
+       * identifies for education and cannot unlock a NEW card. A camera observation signed in
+       * claims the server's receipt for the CHOSEN candidate first; a claim the server refuses
+       * blocks the unlock and says so. A card already held is untouched (grandfathered), and
+       * `discover()` below is still the idempotent call it always was: after a successful claim
+       * the contract lets the ordinary insert through, so claim comes first, never after.
        */
       const wasHeld = isDiscovered(herb.id);
-      if (!wasHeld && !collectAllowed(sentChannel)) return;
+      const receipt = result?.receipts?.[candidate.scientificName];
+      const gate = { channel: sentChannel, signedIn: Boolean(user), wasHeld, receipt };
+      const claim = shouldClaim(gate) ? await claimDiscovery(receipt!.id) : null;
+      const rules = shouldFetchRules(gate) ? await fetchDiscoveryRules() : null;
+      const decision = decideConfirm({ ...gate, claim, rules });
+      setConfirmBlock(decision.allow ? null : decision.line);
+      if (!decision.allow) return;
+      setReceiptNote(decision.line);
       // The player's decision, and the only thing that awards anything. `discover` is the same
       // call the plant page makes, so a repeat awards nothing — idempotency is the reducer's.
       const outcome = discover(herb);
-      void getReceiptClient()
-        .issue({
-          channel: sentChannel,
-          signedIn: Boolean(user),
-          match: candidate.match,
-          rankPosition: result?.candidates[0] === candidate ? 'top' : 'listed',
-          alreadyHeld: wasHeld,
-        })
-        .then((receipt) => setReceiptNote(receiptLine(receipt)))
-        .catch(() => setReceiptNote(null));
       track('scan_confirmed');
       setConfirmed({
         herbId: herb.id,
@@ -438,6 +471,9 @@ export function ScanPanel() {
       if (outcome.awarded) {
         setCelebrating({ herbId: herb.id, result: outcome });
         celebrateRef.current?.showModal();
+      }
+      } finally {
+        confirmingRef.current = false;
       }
     },
     [addSighting, discover, isDiscovered, result, scanId, sentChannel, user],
@@ -502,6 +538,7 @@ export function ScanPanel() {
           onChange={setPhotos}
           disabled={busy || outOfScans}
           scope={user?.id ?? null}
+          onCameraOpen={openSession}
         />
         {isCameraCaptureEnabled() && (
           <p
@@ -1178,6 +1215,13 @@ export function ScanPanel() {
           </section>
         )}
 
+        {confirmBlock && !confirmed && (
+          <section ref={outcomeRef} role="status" data-ui-placeholder="confirm-blocked" className="panel p-5">
+            <p className="text-sm leading-relaxed text-violet-100">{confirmBlock}</p>
+            <p className="mt-1 text-xs text-violet-300">Nothing was unlocked or changed in your collection.</p>
+          </section>
+        )}
+
         {/*
           CASE A'S OUTCOME, AND WHY IT MOVED IN HERE.
 
@@ -1259,7 +1303,7 @@ export function ScanPanel() {
            */
           const subject = checking;
           traitsRef.current?.close();
-          if (subject) confirmCandidate(subject.herb, subject.candidate);
+          if (subject) void confirmCandidate(subject.herb, subject.candidate);
         }}
         onDismiss={() => {
           traitsRef.current?.close();

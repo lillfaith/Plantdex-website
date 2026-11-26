@@ -84,11 +84,14 @@ export function ObservationPhotos({
   onChange,
   disabled = false,
   scope = null,
+  onCameraOpen,
 }: {
   onChange: (photos: ObservationPhoto[]) => void;
   disabled?: boolean;
   /** Account id for the remembered camera decline; null signed out. */
   scope?: string | null;
+  /** Called when the live-camera screen opens (the capture session is opened then). */
+  onCameraOpen?: () => void;
 }) {
   /*
    * LIVE CAMERA PREVIEW, OFF BY DEFAULT. `cameraOn` is a build-time literal, so with the flag off
@@ -189,9 +192,11 @@ export function ObservationPhotos({
                 <button
                   type="button"
                   disabled={disabled}
-                  onClick={() =>
-                    cameraOn ? setCapturingSlot(slot.key) : inputs.current[slot.key]?.click()
-                  }
+                  onClick={() => {
+                    if (!cameraOn) return inputs.current[slot.key]?.click();
+                    setCapturingSlot(slot.key);
+                    onCameraOpen?.();
+                  }}
                   aria-label={`${one ? 'Replace' : 'Add'} photo: ${slot.label}. ${slot.instruction}`}
                   className={`relative block aspect-square w-full overflow-hidden rounded-2xl border-2 bg-plum-800/60 transition-colors disabled:opacity-60 ${
                     one
