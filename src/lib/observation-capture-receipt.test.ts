@@ -449,3 +449,68 @@ describe('the live suite itself', () => {
     expect(LCF_SPEC).not.toMatch(/SERVICE_ROLE|service_role_key|sb_secret_/i);
   });
 });
+
+/*
+ * EVERY RPC THE APP AND THE EDGE FUNCTIONS CALL EXISTS IN A MIGRATION WITH EXACTLY THOSE ARGUMENT NAMES.
+ *
+ * A call with a missing or misspelled named argument is not a type error and not a test failure: PostgREST answers
+ * "function not found in the schema cache", the caller swallows it (receipts, refunds and releases are best-effort by
+ * design), and the feature silently does nothing. That is how a two-argument refund call survived review. This reads the
+ * migrations, parses each function's parameter names, and compares them with the keys at every call site.
+ */
+describe('RPC call sites match the deployed SQL signatures', () => {
+  const SQL = ['0009_atomic_scan_quota.sql', '0014_confirm_scan.sql', '0016_discovery_capture_enforcement.sql']
+    .map((f) => read(`supabase/migrations/${f}`))
+    .join('\n');
+  /** Declared parameter names; `optional` marks those with a SQL default (a caller may omit them). */
+  function signature(fn: string): Array<{ name: string; optional: boolean }> | null {
+    const m = new RegExp(`function public\\.${fn}\\s*\\(([^)]*)\\)`, 'i').exec(SQL);
+    if (!m) return null;
+    return (m[1] ?? '')
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => ({ name: p.split(/\s+/)[0] ?? '', optional: /\bdefault\b/i.test(p) }));
+  }
+  const params = (fn: string): string[] | null => signature(fn)?.map((p) => p.name) ?? null;
+  const FILES = [
+    'src/lib/scan-capture-session.ts',
+    'supabase/functions/identify-plant/capture.ts',
+    'supabase/functions/identify-plant/index.ts',
+  ];
+  const calls: Array<{ file: string; fn: string; keys: string[] }> = [];
+  for (const file of FILES) {
+    const text = read(file);
+    for (const m of text.matchAll(/\.rpc\(\s*'(\w+)'\s*(?:,\s*\{([^}]*)\})?/g)) {
+      const keys = [...(m[2] ?? '').matchAll(/(\bp_\w+)\s*:/g)].map((k) => k[1]!);
+      calls.push({ file, fn: m[1]!, keys });
+    }
+  }
+  it('found the call sites (an empty list would pass everything below)', () => {
+    expect(calls.length).toBeGreaterThanOrEqual(7);
+    expect(calls.map((c) => c.fn)).toEqual(expect.arrayContaining(['open_capture_session', 'claim_discovery', 'consume_capture_session', 'issue_capture_receipts']));
+  });
+  it.each(['open_capture_session', 'claim_discovery', 'discovery_rules', 'consume_capture_session', 'issue_capture_receipts', 'release_capture_session', 'claim_scan_pair'])(
+    '%s is defined in a migration',
+    (fn) => {
+      expect(params(fn), `${fn} is called but no migration defines it`).not.toBeNull();
+    },
+  );
+  it('every call passes exactly the named arguments the SQL function declares', () => {
+    for (const call of calls) {
+      const declared = signature(call.fn);
+      if (declared === null) continue; // a function from an earlier migration this pin does not read
+      const required = declared.filter((p) => !p.optional).map((p) => p.name).sort();
+      const all = declared.map((p) => p.name);
+      expect([...call.keys].sort().filter((k) => !all.includes(k)), `${call.file}: ${call.fn} passes an argument the SQL does not declare`).toEqual([]);
+      expect(call.keys.filter((k) => required.includes(k)).sort(), `${call.file}: ${call.fn} omits a required argument`).toEqual(required);
+    }
+  });
+  it('the refund RPC, once called from the handler, passes all three arguments', () => {
+    const index = read('supabase/functions/identify-plant/index.ts');
+    if (!index.includes("'refund_scan_claim'")) return; // not wired yet (S8): nothing to compare
+    expect(params('refund_scan_claim')).toEqual(['p_bucket', 'p_day', 'p_observation_id']);
+    const m = /\.rpc\(\s*'refund_scan_claim'\s*,\s*\{([^}]*)\}/.exec(index);
+    expect([...(m?.[1] ?? '').matchAll(/(\bp_\w+)\s*:/g)].map((k) => k[1]).sort()).toEqual(['p_bucket', 'p_day', 'p_observation_id']);
+  });
+});
