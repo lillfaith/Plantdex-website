@@ -36,7 +36,7 @@ export function CollectionHeader() {
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
   return (
-    <section aria-labelledby="progress-heading" className="space-y-4">
+    <section aria-labelledby="progress-heading" className="plate-plum space-y-4 p-4">
       <h2 id="progress-heading" className="sr-only">
         Your progress
       </h2>

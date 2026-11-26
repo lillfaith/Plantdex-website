@@ -337,7 +337,7 @@ body {
  */
 [data-page-theme='home']       { --pt-a:#170d2b; --pt-b:#38205b; --pt-c:#512b86; --pt-accent:#f2a7cf; --pt-accent-2:#f2c75c; }
 [data-page-theme='scan']       { --pt-a:#14152f; --pt-b:#243d70; --pt-c:#235b69; --pt-accent:#6fd5c2; --pt-accent-2:#b9a1f2; --pt-c-a:90%; --pt-c-y:101%; }
-[data-page-theme='collection'] { --pt-a:#170d2b; --pt-b:#34205f; --pt-c:#59308c; --pt-accent:#f2c75c; --pt-accent-2:#b786f1; --pt-glint:#f2a7cf; --pt-b-a:72%; --pt-c-a:84%; }
+[data-page-theme='collection'] { --pt-a:#c9a4f8; --pt-b:#e2cffc; --pt-c:#b98cf2; --pt-accent:#9c21f8; --pt-accent-2:#f180b4; --pt-glint:#f180b4; --pt-b-a:70%; --pt-c-a:55%; --pt-vignette:10%; --pt-royal:8%; }
 [data-page-theme='garden']     { --pt-a:#171c2c; --pt-b:#426b58; --pt-c:#40305f; --pt-accent:#8cc78b; --pt-accent-2:#c5a5e9; --pt-b-a:42%; }
 [data-page-theme='journal']    { --pt-a:#24152e; --pt-b:#58304e; --pt-c:#744366; --pt-accent:#f2a7cf; --pt-accent-2:#f5d58b; }
 [data-page-theme='learn']      { --pt-a:#211b40; --pt-b:#414c83; --pt-c:#5a477e; --pt-accent:#afc3ff; --pt-accent-2:#f2d58b; }
@@ -360,11 +360,11 @@ body {
   pointer-events: none;
   background:
     repeating-linear-gradient(90deg, color-mix(in srgb, var(--pt-accent) 38%, transparent) 0 6px, transparent 6px 12px) top / 100% 2px no-repeat,
-    radial-gradient(ellipse 115% 85% at 50% 46%, transparent 58%, color-mix(in srgb, var(--color-brand-plum) 62%, transparent) 100%),
+    radial-gradient(ellipse 115% 85% at 50% 46%, transparent 58%, color-mix(in srgb, var(--color-brand-plum) var(--pt-vignette, 62%), transparent) 100%),
     radial-gradient(ellipse 55% 20% at 88% 6%, color-mix(in srgb, var(--pt-glint, transparent) 11%, transparent), transparent 100%),
     radial-gradient(ellipse 80% 26% at 50% 0%, color-mix(in srgb, var(--pt-accent) 9%, transparent), transparent 100%),
     radial-gradient(ellipse 130% 50% at 50% 12%, color-mix(in srgb, var(--pt-b) var(--pt-b-a, 60%), transparent), transparent 100%),
-    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) 25%, transparent), transparent 100%),
+    radial-gradient(ellipse 75% 40% at 100% 96%, color-mix(in srgb, var(--color-brand-royal) var(--pt-royal, 25%), transparent), transparent 100%),
     radial-gradient(ellipse 140% 58% at 50% var(--pt-c-y, 108%), color-mix(in srgb, var(--pt-c) var(--pt-c-a, 75%), transparent), transparent 100%),
     var(--pt-a);
 }
@@ -3146,4 +3146,76 @@ body {
   .tour-hole {
     transition: none;
   }
+}
+
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * LAVENDER GROUND — SUPERVISED SAMPLE (ui/palette-sample). Not yet propagated.
+ *
+ * The page ground is light lavender (#C9A4F8); everything that sits on it is one of four
+ * things: dark plum INK (text), a dark plum PLATE (heading, nav, selected panel), the CARD
+ * VIOLET sampled from the approved card faces (#9C21F8 = --color-violet-600, measured across
+ * all 45 card thumbnails), or the existing gold and pink accents. Gold TEXT never sits
+ * directly on the lavender (about 1.4:1); gold lives on plum plates and on buttons.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@utility ground-ink {
+  color: var(--color-violet-900);
+}
+
+/* A dark plum plate with a card-violet edge and a hard pixel drop, carrying gold text. */
+@utility plate-plum {
+  background: var(--color-plum-900);
+  border: 2px solid var(--color-violet-600);
+  box-shadow:
+    0 3px 0 0 var(--color-violet-800),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-gold-500) 35%, transparent);
+  border-radius: 0.375rem;
+}
+
+/* The card violet as an edge on an existing dark panel. */
+@utility edge-card-violet {
+  border-color: var(--color-violet-600);
+  box-shadow: 0 3px 0 0 var(--color-violet-800);
+}
+
+/* Selected tab or chip: the card's own violet, white text, a pink pixel bar. */
+@utility chip-card-violet {
+  background: var(--color-violet-600);
+  color: #fff;
+  box-shadow: inset 0 -3px 0 0 var(--color-pink-accent);
+}
+
+/*
+ * On the lavender ground, surfaces are OPAQUE dark plum with the card-violet edge. The default
+ * panels are translucent plum, which is right over a dark ground and goes muddy grey-purple
+ * over a light one (and drops small labels below contrast). Scoped to the ground, so no other
+ * page changes. The dark scenery (hills, stars) is hidden here for the sample: dark mounds
+ * behind dark ink are illegible; lavender-tinted scenery is a follow-up for the owner to judge.
+ */
+[data-ground='lavender'] .panel,
+[data-ground='lavender'] .game-panel,
+[data-ground='lavender'] .field-panel,
+[data-ground='lavender'] .panel-raised {
+  background: var(--color-plum-800);
+  border: 2px solid var(--color-violet-600);
+  box-shadow: 0 3px 0 0 var(--color-violet-800);
+}
+body:has([data-ground='lavender']) [data-site-decor] {
+  display: none;
+}
+
+/* Safety notices stay fully legible: an opaque plum plate on the lavender ground, never a translucent tint. */
+[data-ground='lavender'] [role='note'],
+[data-ground='lavender'] aside {
+  background-color: var(--color-plum-800);
+  border: 2px solid var(--color-gold-500);
+  box-shadow: 0 3px 0 0 var(--color-violet-800);
+}
+/* The footer is a plum band like the nav, so its links keep their contrast. */
+body:has([data-ground='lavender']) footer {
+  background: var(--color-plum-900);
+  border-top: 2px solid var(--color-violet-600);
+  margin-top: 4rem;
 }
