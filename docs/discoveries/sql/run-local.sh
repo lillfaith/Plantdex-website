@@ -17,7 +17,7 @@ q() { if [ "$(id -u)" = 0 ]; then su postgres -c "psql -At -d $DB -c \"$1\""; el
 fresh() {
   rootsql "drop database if exists $DB" >/dev/null 2>&1; rootsql "create database $DB" >/dev/null
   run "$HERE/local-supabase-stub.sql"
-  for f in "$ROOT"/supabase/migrations/*.sql; do case "$f" in *0016_*) continue;; esac; run "$f" >/dev/null 2>&1 || { echo "baseline FAILED at $f"; exit 1; }; done
+  for f in "$ROOT"/supabase/migrations/*.sql; do case "$f" in *0016_*) continue;; *0014_*) [ -n "${NO_0014:-}" ] && continue;; esac; run "$f" >/dev/null 2>&1 || { echo "baseline FAILED at $f"; exit 1; }; done
   [ -n "${NO_0014:-}" ] || case "$(ls "$ROOT/supabase/migrations" | tr '\n' ' ')" in *0014_confirm_scan*) ;; *) run "$M14" >/dev/null ;; esac
 }
 
