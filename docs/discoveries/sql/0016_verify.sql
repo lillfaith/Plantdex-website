@@ -75,6 +75,10 @@ declare
   v_has_confirm boolean := false;
   v_before_off bigint;
 begin
+  -- A clear stop instead of a raw 'relation does not exist' when this is run before migration 0016 has been applied (step B).
+  if to_regclass('public.discovery_enforcement') is null then
+    raise exception 'STOP - migration 0016 is NOT applied on this project, so there is nothing to verify yet. Nothing was changed. Run step B first, then re-run the read-only preflight (it must say ALREADY APPLIED), then run this again.';
+  end if;
   begin   -- the inner block is a subtransaction: raising the sentinel below rolls back everything inside it
 
 
