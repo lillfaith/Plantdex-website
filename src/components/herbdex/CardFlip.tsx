@@ -53,6 +53,7 @@ export function CardFlip({ herb, size = 'default' }: { herb: Herb; size?: 'defau
       >
         <div
           id={panelId}
+          data-glow="violet"
           className={`flip-card shadow-card-lift rounded-[var(--radius-card)] ${
             showBack ? 'flip-card-revealed' : ''
           }`}

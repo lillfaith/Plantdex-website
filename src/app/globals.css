@@ -3302,3 +3302,127 @@ body:has([data-ground='lavender']) footer {
   background-image: linear-gradient(180deg, var(--color-gold-300) 0%, var(--color-gold-500) 55%, #e0a91f 100%);
   -webkit-text-fill-color: transparent;
 }
+
+/*
+ * GLOWS, NOT SHADOWS (lavender sample v3). The card and sprite shadows on this ground were dark and
+ * muddy; they are replaced by restrained outer glows in the card violet (every found card), pink
+ * (learned) and gold (mastered, the one earned reward). Box-shadow and gradients only, drawn OUTSIDE
+ * the artwork, so the native pixel edges stay crisp and nothing is blurred or tinted. Only meaningful
+ * collectibles glow; panels and containers do not.
+ */
+[data-ground='lavender'] {
+  --shadow-card: 0 3px 10px -5px rgb(91 46 145 / 0.38);
+  --shadow-card-lift: 0 6px 16px -6px rgb(91 46 145 / 0.45);
+  --glow-violet: 0 0 0 1px rgb(156 33 248 / 0.42), 0 0 12px 2px rgb(156 33 248 / 0.3);
+  --glow-violet-lift: 0 0 0 1px rgb(156 33 248 / 0.55), 0 0 18px 4px rgb(156 33 248 / 0.4);
+  --glow-pink: 0 0 0 1px rgb(242 128 179 / 0.55), 0 0 12px 2px rgb(242 128 179 / 0.4);
+  --glow-pink-lift: 0 0 0 1px rgb(242 128 179 / 0.7), 0 0 18px 4px rgb(242 128 179 / 0.5);
+  --glow-gold: 0 0 0 1px rgb(255 213 74 / 0.7), 0 0 14px 3px rgb(255 213 74 / 0.5);
+  --glow-gold-lift: 0 0 0 1px rgb(255 213 74 / 0.85), 0 0 20px 5px rgb(255 213 74 / 0.6);
+  /* The profile hero card: a violet glow around the printed card, not a dark drop. */
+  --hero-drop: drop-shadow(0 0 2px rgb(156 33 248 / 0.75)) drop-shadow(0 0 16px rgb(156 33 248 / 0.5));
+}
+[data-ground='lavender'] [data-glow='violet'] {
+  --shadow-card: var(--glow-violet);
+  --shadow-card-lift: var(--glow-violet-lift);
+  --sg: rgb(156 33 248 / 0.3);
+}
+[data-ground='lavender'] [data-glow='pink'] {
+  --shadow-card: var(--glow-pink);
+  --shadow-card-lift: var(--glow-pink-lift);
+  --sg: rgb(242 128 179 / 0.55);
+}
+[data-ground='lavender'] [data-glow='gold'] {
+  --shadow-card: var(--glow-gold);
+  --shadow-card-lift: var(--glow-gold-lift);
+  --sg: rgb(255 200 40 / 0.8);
+}
+/* A soft pool of light behind a sprite: a gradient BEHIND it, so the sprite itself is untouched. */
+[data-ground='lavender'] .sprite-glow {
+  position: relative;
+}
+[data-ground='lavender'] .sprite-glow::before {
+  content: '';
+  position: absolute;
+  inset: 4% 4% 0 4%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--sg, rgb(156 33 248 / 0.3)), transparent 78%);
+  pointer-events: none;
+}
+/* Small collectible markers use the card violet. */
+[data-ground='lavender'] [data-on-plum] {
+  background-color: var(--color-violet-700);
+}
+[data-ground='lavender'] [data-on-plum].bg-gold-500 {
+  background-color: var(--color-gold-500);
+}
+/* Panel detail: a card-violet top bar on the progress header. */
+[data-ground='lavender'] .panel-accent {
+  box-shadow: 0 3px 0 0 var(--lav-drop), inset 0 4px 0 0 rgb(156 33 248 / 0.55);
+}
+@utility pixel-diamond {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  transform: rotate(45deg);
+  background: var(--color-violet-600);
+  box-shadow: 0 0 0 2px #f9c9e6;
+}
+/* Recent Field Finds (Collection only): the sprite is a character, not an icon. 48px to 72px. */
+[data-ground='lavender'] .recent-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  column-gap: 1rem;
+  row-gap: 0.15rem;
+  align-items: center;
+  min-height: 5.75rem;
+}
+[data-ground='lavender'] .recent-row > .recent-node {
+  grid-row: 1 / span 2;
+}
+[data-ground='lavender'] .recent-row > span:nth-child(2) {
+  grid-column: 2;
+  align-self: end;
+}
+[data-ground='lavender'] .recent-row > span:nth-child(3) {
+  grid-column: 2;
+  align-self: start;
+  justify-self: start;
+}
+[data-ground='lavender'] .recent-row .truncate {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+}
+[data-ground='lavender'] .recent-node {
+  width: 4.5rem;
+  height: 4.5rem;
+  background: radial-gradient(closest-side, rgb(156 33 248 / 0.22), var(--lav-surface-2) 92%);
+  box-shadow: 0 0 0 2px rgb(156 33 248 / 0.4), 0 0 14px 3px rgb(156 33 248 / 0.28);
+}
+[data-ground='lavender'] .recent-node[data-glow='gold'] {
+  box-shadow: 0 0 0 2px rgb(255 213 74 / 0.8), 0 0 14px 3px rgb(255 213 74 / 0.5);
+}
+[data-ground='lavender'] .recent-node[data-glow='pink'] {
+  box-shadow: 0 0 0 2px rgb(242 128 179 / 0.6), 0 0 14px 3px rgb(242 128 179 / 0.4);
+}
+[data-ground='lavender'] .recent-row ~ .pixel-rail,
+[data-ground='lavender'] .pixel-rail {
+  left: 2.15rem;
+}
+/* Garden sample: the same lavender ground as the Collection. */
+body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
+  --pt-a: #c9a4f8;
+  --pt-b: #e2cffc;
+  --pt-c: #b98cf2;
+  --pt-accent: #8cc78b;
+  --pt-vignette: 10%;
+  --pt-royal: 8%;
+}
+/* Selected profile tab: the card violet with white text (was dark plum with flipped, unreadable ink). */
+[data-ground='lavender'] [role='tab'][aria-selected='true'] {
+  background: var(--color-violet-600);
+  color: #fff;
+  border-bottom-color: var(--color-pink-accent);
+  box-shadow: 0 0 0 1px rgb(156 33 248 / 0.45), 0 0 10px 1px rgb(156 33 248 / 0.28);
+}

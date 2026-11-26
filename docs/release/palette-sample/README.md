@@ -62,3 +62,13 @@ Contrast (WCAG): ink on surface 12.0:1, on `#F7F0FF` 13.3:1, on ground 7.1:1; se
 
 ## Habitats: DEVELOPMENT PREVIEW, not on integration
 Branch `ui/palette-sample-habitats` (not for merge: new files are Quests-lane territory and the real Q4 trail is separate). It renders from the real `habitatsViewModel` (poster carousel with thumbnail strip, "Explore" CTA, labelled three-column sprite grid with silhouettes, occasional section and legend, bottom sheet, About-this-data sheet), real sprites and the real data note. The five poster scenes are PLACEHOLDER rectangles, not approved art. The "Quests" tab is a label only. Nothing records a discovery or pays XP. Off unless `NEXT_PUBLIC_HABITATS_PREVIEW=on`.
+
+---
+# v3 (owner refinements A, B, C on top of lavender V2)
+`v3-glow-and-recent-finds-before-after.png`, singles in `v3/`. Applies to Collection, card profile and Garden only; scoped by `data-ground="lavender"`.
+
+**A. Glows, not shadows.** Dark card/sprite shadows are replaced by restrained outer glows (box-shadow and gradients drawn OUTSIDE the art, so pixel edges stay crisp; no filter on artwork). Tokens: `--glow-violet` rgb(156 33 248) for every found card and the profile hero card; `--glow-pink` rgb(242 128 179) for learned; `--glow-gold` rgb(255 213 74) for mastered, the one earned reward. Locked cards get only a soft light-plum lift (no glow). Panels and containers do not glow. Sprites (Garden, Recent Finds) sit in a soft radial pool of the same colour behind them. The hero card's `drop-shadow` is now `--hero-drop` (violet) on lavender pages and unchanged elsewhere.
+**B. More card violet.** Selected profile tab and active filter chips (`#9C21F8`, white text, pink bar), the collectible number and stage markers on card tiles (`--color-violet-700`), a card-violet top bar on the progress header, pixel diamonds either side of "My Collection", glows above, and the Recent Finds node edge. Panels stay lilac.
+**C. Recent Field Finds.** Sprite node 48px to 72px (+50%), a two-line grid (name, then date and status) so nothing wraps or crops at 390px, and a subtle card-violet pool behind each sprite (gold for mastered, pink for learned). Source art and pixel dimensions untouched; rendering stays pixelated. Scoped to the lavender Collection: the Profile page's copy of this list is unchanged.
+**Garden sample** uses the same lavender ground (an override of the garden theme variables for this sample only; the stylesheet's garden palette and its test are untouched).
+**Not done / for your call:** the sprites remain small inside their frames because the authored art leaves empty space; a measured ink-fit (as the avatar badge uses) would enlarge them further but is a bigger step than the +50% you asked for.

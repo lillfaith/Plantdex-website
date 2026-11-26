@@ -86,7 +86,7 @@ export default function HerbdexPage() {
 
       <div className="mt-8 flex items-center gap-3">
         <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500" />
-        <h1 className="font-display px-1 text-3xl font-extrabold text-violet-50">My Collection</h1>
+        <h1 className="font-display flex items-center gap-3 px-1 text-3xl font-extrabold text-violet-50"><span aria-hidden="true" className="pixel-diamond" />My Collection<span aria-hidden="true" className="pixel-diamond" /></h1>
         <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-500" />
       </div>
       {/* Collection identity, stated once. The deck is complete as it stands: this names it

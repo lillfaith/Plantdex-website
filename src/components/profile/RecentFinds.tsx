@@ -87,11 +87,11 @@ export function RecentFinds({ finds }: { finds: RecentFind[] }) {
               <li key={find.herbId} className="relative z-10">
                 <Link
                   href={`/herbdex/${herb.id}`}
-                  className="lift flex min-h-14 items-center gap-3 rounded-2xl px-1 py-2 hover:bg-plum-700/45"
+                  className="recent-row lift flex min-h-14 items-center gap-3 rounded-2xl px-1 py-2 hover:bg-plum-700/45"
                 >
                   {/* The node: the sprite on a plum disc, so the rail passes behind it
                       rather than through it. */}
-                  <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-plum-950/80 ring-1 ring-violet-600/35">
+                  <span data-glow={find.stage === 'mastered' ? 'gold' : find.stage === 'learned' ? 'pink' : 'violet'} className="recent-node relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-plum-950/80 ring-1 ring-violet-600/35">
                     <PlantSprite
                       herbId={herb.id}
                       alt={herb.commonName}
