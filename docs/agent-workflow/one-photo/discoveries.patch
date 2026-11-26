@@ -1,0 +1,281 @@
+diff --git a/docs/discoveries/d5-anti-cheat-and-measurements.md b/docs/discoveries/d5-anti-cheat-and-measurements.md
+index 95bdc8ca..2bbf69d2 100644
+--- a/docs/discoveries/d5-anti-cheat-and-measurements.md
++++ b/docs/discoveries/d5-anti-cheat-and-measurements.md
+@@ -20,7 +20,7 @@ to be true under all of those. (`discovery-trust-design.md` section 11 lists the
+ | 2 | Direct inserts into `discoveries` refused when ON, **including the service role** | `discoveries_capture_gate` (BEFORE INSERT) | public-API insert, import, Seed Shelf claim, manual Discover, delete-and-reinsert of a card never held | a claimed receipt | refuses an honest player only if the client has not been updated to route through `claim_discovery` (a release-coordination risk, section 4) |
+ | 3 | `learned` / `mastered` need a discoveries row | `progress_requires_discovery` | minting progress for an unheld card | n/a | **ordering race**: the adapter upserts `discoveries` and `learned` in parallel (`Promise.all`, `remote-herbdex-storage.ts:119`). A `learned` that lands first is refused. Fix is in the adapter (coordinator): sequence discoveries first. Dormant while OFF |
+ | 4 | Single-use capture session, nonce stored only as SHA-256, 10 min TTL | `capture_sessions` | replaying a captured request; pre-minting receipts | a script that opens a session | a player who opens the camera and returns after 10 minutes gets `capture_session_expired` and re-captures |
+-| 5 | `min_capture_ms` = 2000, refused **without** consuming the session | `consume_capture_session` | zero-latency scripted loops | an attacker who waits 2 s | see section 3: unmeasured on real traffic; proposed instrument below |
++| 5 | ~~`min_capture_ms` = 2000~~ **OWNER DECISION 2026-11-26: not mandatory; set to 0** (key and check retained; a later owner decision needs no migration). Originally: refused **without** consuming the session | `consume_capture_session` | zero-latency scripted loops | an attacker who waits 2 s | see section 3: unmeasured on real traffic; proposed instrument below |
+ | 6 | 3 open sessions, 60 opens per UTC day, advisory-locked per account | `open_capture_session` | session farming | n/a | 60/day is 6x the existing 10-scans-a-day quota |
+ | 7 | Existing quota (`claim_scan_pair`: 450 global, 10 per account per day) | unchanged | mass minting: an account can create at most 10 observations a day, each a real provider call | many accounts | unchanged by this branch |
+ | 8 | SHA-256 of each received image, single use across accounts | `capture_image_digests` | resubmitting one file; one file shared by several accounts | a re-encoded, cropped or flipped copy; a new photo of a screen | section 2 |
+@@ -145,3 +145,10 @@ matter), only on the argument that honest players never go below it.
+ 
+ Recorded in the pull request: `npm run verify`, `docs/discoveries/sql/run-local.sh --mutate` (real PostgreSQL 16, the
+ repository's migrations 0001 to 0014 plus 0016), and `D5_RUN_SQL=1 npx vitest run src/lib/observation-capture-receipt.test.ts`.
++
++
++## Owner decisions 2026-11-26 (supersede the thresholds above)
++1. **ONE mandatory in-app camera photograph; further angles optional (up to 3).** `min_images` = 1. The 2-to-3 photograph minimum is NOT adopted. Effect on honest players: one tap fewer; the provider has less to identify from, so a lone photograph can be less certain (the review screen words confidence honestly and the identifier never confirms a card alone). The existing minimum of two stays for LOOKUPS (imported photographs).
++2. **No mandatory capture delay.** `min_capture_ms` = 0. The measured false-positive discussion above no longer applies to a threshold that is not enforced. If the owner later chooses one, it is a config change plus a re-run of the measurement.
++3. **Duplicate images: flag, do not refuse.** Digests are kept per account. An identical image under the SAME account is a retry or retake and is accepted. An identical image already seen under ANOTHER account is accepted and the session is flagged (`capture_sessions.suspect_duplicate`) for review. Reasons not to auto-refuse: a shared or re-sent photograph, a household or classroom, and a refusal that denies a real find. What the flag does not do: prove anything (an edited copy has a different hash) or change the player's result.
++4. Server-authoritative sessions, single-use nonces (stored as a digest), idempotent receipts (one per observation and card), the per-day and concurrent session limits, and the existing scan quota all stand. Nothing here proves a plant was photographed outdoors.
+diff --git a/docs/discoveries/discovery-receipt-contract.md b/docs/discoveries/discovery-receipt-contract.md
+index 6bbfd426..a0e03c6d 100644
+--- a/docs/discoveries/discovery-receipt-contract.md
++++ b/docs/discoveries/discovery-receipt-contract.md
+@@ -25,9 +25,9 @@ person with their own JWT can script any request. What the server CAN establish,
+ 
+ 1. a signed-in account (`auth.uid()`),
+ 2. that opened a **server-issued, single-use capture session** (the in-app camera screen does this on open),
+-3. and, no sooner than `min_capture_ms` and no later than `ttl_s` afterwards,
+-4. submitted **2 to 3 images through that session** in one `identify-plant` call that the provider answered,
+-5. none of whose image digests the server has ever seen before,
++3. and, no later than `ttl_s` afterwards (no minimum delay: `min_capture_ms` is 0 by owner decision, 2026-11-26),
++4. submitted **one to three images through that session** in one `identify-plant` call that the provider answered (ONE in-app photograph is mandatory; further angles are optional),
++5. whose image digests are recorded; an image the server has seen under ANOTHER account is flagged for review and never refused automatically,
+ 6. receiving a **server-recorded receipt** for each eligible candidate,
+ 7. which the account then **claims once**, server-side, producing the discovery row with the server clock.
+ 
+@@ -83,7 +83,7 @@ Call when the in-app camera screen opens (not on app load, not on a timer). No a
+ ```jsonc
+ // success
+ { "ok": true, "session_id": "uuid", "nonce": "64-hex", "issued_at": "ISO", "expires_at": "ISO",
+-  "ttl_s": 600, "min_capture_ms": 2000 }
++  "ttl_s": 600, "min_capture_ms": 0 }
+ // failure (HTTP 200; the body carries the code)
+ { "ok": false, "code": "not_signed_in" | "too_many_open_sessions" | "daily_session_limit" }
+ ```
+@@ -106,8 +106,8 @@ Server behaviour, in this order, only when the account is authenticated and `pur
+ 
+ 1. compute SHA-256 of each received image part (the client's already re-encoded JPEG; no decode happens);
+ 2. `consume_capture_session` (one transaction): session exists, belongs to the caller, nonce digest matches, unexpired, not
+-   already consumed by a **different** request, `now() - issued_at >= min_capture_ms`, image count in 2..3, **no digest
+-   previously recorded** (any account);
++   already consumed by a **different** request, image count in 1..3 (`min_capture_ms` is 0: no mandatory delay), digests recorded per
++   account (`capture_sessions.suspect_duplicate` is set when a digest was already seen under another account; this never refuses);
+ 3. run the provider call and the matcher **exactly as today** (quota accounting `claim_scan_pair` is unchanged and counts
+    once, whether or not a receipt results);
+ 4. for each candidate whose server-side match is `confirmable` with `eligibility` in the five allowed values: insert a receipt.
+@@ -169,7 +169,7 @@ immediately.
+ ### 3.5 `rpc('discovery_rules')` -> `jsonb` (read only; for copy, never authorisation)
+ 
+ ```jsonc
+-{ "enforcing": false, "ttl_s": 600, "min_capture_ms": 2000, "receipt_ttl_days": 30 }
++{ "enforcing": false, "ttl_s": 600, "min_capture_ms": 0, "receipt_ttl_days": 30 }
+ ```
+ 
+ `enforcing` tells the client which wording to show and whether to route a Discover tap to the camera. It is **not** a gate:
+@@ -202,9 +202,8 @@ type CaptureCode =
+   | 'capture_session_nonce'        // nonce digest mismatch
+   | 'capture_session_expired'      // older than ttl_s
+   | 'capture_session_used'         // consumed by a different request
+-  | 'capture_too_fast'             // submitted before min_capture_ms elapsed
+-  | 'capture_images_invalid'       // not 2..3 images
+-  | 'capture_duplicate_image'      // a digest was seen before (this or another account)
++  | 'capture_too_fast'             // only if the owner later sets min_capture_ms > 0 (0 today: never returned)
++  | 'capture_images_invalid'       // not 1..3 images, or a malformed/duplicate-in-request digest
+   | 'capture_unavailable'          // server not configured / switch off; identification still returned
+   | 'no_eligible_candidate';       // accepted capture, but nothing mapped to a card (a Seed Shelf case)
+ type SessionCode = 'not_signed_in' | 'too_many_open_sessions' | 'daily_session_limit';
+@@ -234,10 +233,10 @@ User-facing copy per code is the UI lane's. None may say or imply the plant is v
+ | Measure | Stops | Does not stop |
+ |---|---|---|
+ | Single-use session nonce, 10-minute TTL | replaying a captured request; pre-minting receipts days ahead | a script that opens a session and submits |
+-| `min_capture_ms` (2000 ms) | zero-latency scripted loops, submit-on-open | an attacker who waits 2 s |
++| `min_capture_ms` (0: NOT enforced, owner decision; stays configurable) | nothing today | n/a |
+ | 3 open sessions, 60 opens/day | session farming | n/a (bounded) |
+ | Existing quota (`claim_scan_pair`: 450 global, 10 per account per day) | mass minting: at most 10 capture calls per account per day, each costing a real provider call | many accounts |
+-| Image digests (SHA-256 of the received re-encoded bytes), single use, any account | resubmitting one file, one file shared across accounts | a re-encoded or edited copy; a different photo of a screen |
++| Image digests (SHA-256 of the received re-encoded bytes), per account; cross-account repeats are FLAGGED (`suspect_duplicate`), not refused | gives reviewers a signal on one file shared across accounts | a re-encoded or edited copy; a different photo of a screen. Not an automatic refusal because shared photos, households and re-sent files are legitimate |
+ | Receipt single-claim, server-clock stamps, owner-only | double rewards, back-dating | n/a |
+ | Grandfathering with a cutoff | pre-stuffing the collection between announcement and enforcement | n/a |
+ 
+diff --git a/docs/discoveries/sql/0016_discovery_capture_enforcement.sql b/docs/discoveries/sql/0016_discovery_capture_enforcement.sql
+index 5b317bb0..f87623b5 100644
+--- a/docs/discoveries/sql/0016_discovery_capture_enforcement.sql
++++ b/docs/discoveries/sql/0016_discovery_capture_enforcement.sql
+@@ -116,14 +116,21 @@ create table if not exists public.capture_sessions (
+ );
+ create index if not exists capture_sessions_user_issued_idx
+   on public.capture_sessions (user_id, issued_at desc);
++alter table public.capture_sessions add column if not exists suspect_duplicate boolean not null default false;
+ alter table public.capture_sessions enable row level security;
+ revoke all on table public.capture_sessions from public, anon, authenticated;
+ 
++-- Keyed per ACCOUNT, not globally: an identical image from the same account is a retry or a re-take and is
++-- harmless; an identical image seen under ANOTHER account is recorded and FLAGGED for review
++-- (`capture_sessions.suspect_duplicate`), never refused automatically, because legitimate cases exist
++-- (a shared photograph, a household, a classroom, a re-sent file) and a refusal would deny a real find.
+ create table if not exists public.capture_image_digests (
+-  digest bytea primary key check (pg_catalog.octet_length(digest) = 32),
++  digest bytea not null check (pg_catalog.octet_length(digest) = 32),
+   user_id uuid not null references auth.users (id) on delete cascade,
+-  first_seen timestamptz not null default now()
++  first_seen timestamptz not null default now(),
++  primary key (user_id, digest)
+ );
++create index if not exists capture_image_digests_digest_idx on public.capture_image_digests (digest);
+ alter table public.capture_image_digests enable row level security;
+ revoke all on table public.capture_image_digests from public, anon, authenticated;
+ 
+@@ -184,11 +191,14 @@ create or replace function public.capture_config()
+ returns jsonb language sql immutable set search_path = '' as $$
+   select pg_catalog.jsonb_build_object(
+     'ttl_s', 600,
+-    'min_capture_ms', 2000,
++    -- OWNER DECISION 2026-11-26: no mandatory capture delay. 0 = not enforced (the key and the check stay so
++    -- a later owner decision needs no migration).
++    'min_capture_ms', 0,
+     'receipt_ttl_days', 30,
+     'max_open_sessions', 3,
+     'max_sessions_per_day', 60,
+-    'min_images', 2,
++    -- OWNER DECISION 2026-11-26: ONE mandatory in-app photograph; further angles are optional (up to max_images).
++    'min_images', 1,
+     'max_images', 3
+   )
+ $$;
+@@ -244,6 +254,7 @@ declare
+   v_req bytea;
+   v_n int := coalesce(pg_catalog.cardinality(p_image_digests), 0);
+   v_bytes bytea[];
++  v_cross boolean;
+ begin
+   if p_user is null or p_session is null then
+     return pg_catalog.jsonb_build_object('ok', false, 'code', 'capture_session_unknown');
+@@ -279,15 +290,15 @@ begin
+   end if;
+ 
+   select pg_catalog.array_agg(pg_catalog.decode(d, 'hex')) into v_bytes from pg_catalog.unnest(p_image_digests) d;
+-  begin
+-    insert into public.capture_image_digests (digest, user_id)
+-      select b, p_user from pg_catalog.unnest(v_bytes) b;
+-  exception when unique_violation then
+-    -- Also not consumed: fresh photographs in the same session are still welcome.
+-    return pg_catalog.jsonb_build_object('ok', false, 'code', 'capture_duplicate_image');
+-  end;
++  -- An image seen under ANOTHER account is flagged for review, never refused (see the table comment).
++  select exists (select 1 from public.capture_image_digests x
++                  where x.digest = any (v_bytes) and x.user_id <> p_user) into v_cross;
++  insert into public.capture_image_digests (digest, user_id)
++    select b, p_user from pg_catalog.unnest(v_bytes) b
++  on conflict do nothing;
+   update public.capture_sessions
+-     set consumed_at = v_now, request_digest = v_req, observation_id = p_observation_id
++     set consumed_at = v_now, request_digest = v_req, observation_id = p_observation_id,
++         suspect_duplicate = v_cross
+    where id = s.id;
+   return pg_catalog.jsonb_build_object('ok', true, 'replay', false,
+     'session_id', s.id, 'observation_id', p_observation_id);
+diff --git a/docs/discoveries/sql/0016_verify.sql b/docs/discoveries/sql/0016_verify.sql
+index e59afab4..4d9289ee 100644
+--- a/docs/discoveries/sql/0016_verify.sql
++++ b/docs/discoveries/sql/0016_verify.sql
+@@ -139,9 +139,8 @@ select set_config('d5.d1', repeat('1', 64), true);
+ select set_config('d5.d2', repeat('2', 64), true);
+ select set_config('d5.d3', repeat('3', 64), true);
+ 
+-select pg_temp.ok('too fast: a session submitted before min_capture_ms is refused and NOT consumed',
+-  (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
+-     current_setting('d5.nonce'), 'obs_1', array[current_setting('d5.d1'), current_setting('d5.d2')])) ->> 'code' = 'capture_too_fast');
++select pg_temp.ok('no mandatory capture delay: min_capture_ms is 0 and min_images is 1 (owner decision)',
++  (public.capture_config() ->> 'min_capture_ms')::int = 0 and (public.capture_config() ->> 'min_images')::int = 1);
+ reset role;
+ -- Fixture only: age the session, because now() is frozen for the length of this transaction.
+ update public.capture_sessions set issued_at = issued_at - interval '10 seconds', expires_at = expires_at - interval '10 seconds'
+@@ -154,8 +153,8 @@ select pg_temp.ok('another account cannot use this session', (public.consume_cap
+   current_setting('d5.nonce'), 'obs_1', array[current_setting('d5.d1'), current_setting('d5.d2')])) ->> 'code' = 'capture_session_unknown');
+ select pg_temp.ok('wrong nonce', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
+   repeat('0', 64), 'obs_1', array[current_setting('d5.d1'), current_setting('d5.d2')])) ->> 'code' = 'capture_session_nonce');
+-select pg_temp.ok('one image is not enough', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
+-  current_setting('d5.nonce'), 'obs_1', array[current_setting('d5.d1')])) ->> 'code' = 'capture_images_invalid');
++select pg_temp.ok('zero images is not enough', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
++  current_setting('d5.nonce'), 'obs_1', array[]::text[])) ->> 'code' = 'capture_images_invalid');
+ select pg_temp.ok('four images are too many', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
+   current_setting('d5.nonce'), 'obs_1', array[repeat('1',64), repeat('2',64), repeat('3',64), repeat('4',64)])) ->> 'code' = 'capture_images_invalid');
+ select pg_temp.ok('a malformed digest is refused', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
+@@ -190,6 +189,20 @@ select pg_temp.ok('issuing twice for the same candidate is idempotent (same id,
+ reset role;
+ select pg_temp.ok('exactly one receipt row exists', (select count(*) from public.capture_receipts where observation_id = 'obs_1') = 1);
+ 
++-- ONE mandatory photograph (owner decision): a session submitted with exactly one image is consumed.
++reset role;
++set local role authenticated;
++select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
++select set_config('d5.open_one', public.open_capture_session()::text, true);
++reset role;
++set local role service_role;
++select pg_temp.ok('ONE IMAGE is a valid capture (additional angles are optional), and an immediate submit is accepted',
++  (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid,
++    current_setting('d5.open_one')::jsonb ->> 'nonce', 'obs_one', array[repeat('7', 64)])) ->> 'ok' = 'true');
++select pg_temp.ok('the SAME account re-using an image is accepted and is not flagged (a retake is harmless)',
++  (select not suspect_duplicate from public.capture_sessions where id = (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid));
++reset role;
++
+ -- Duplicate image across accounts: a second account, a second session, one reused image.
+ set local role authenticated;
+ select pg_temp.act_as('00000000-0000-0000-0000-0000000000c3');
+@@ -198,12 +211,17 @@ reset role;
+ update public.capture_sessions set issued_at = issued_at - interval '10 seconds', expires_at = expires_at - interval '10 seconds'
+  where id = (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid;
+ set local role service_role;
+-select pg_temp.ok('DUPLICATE IMAGE: an image already used by another account is refused',
+-  (public.consume_capture_session('00000000-0000-0000-0000-0000000000c3', (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid,
+-    current_setting('d5.open_c')::jsonb ->> 'nonce', 'obs_c', array[current_setting('d5.d1'), repeat('9', 64)])) ->> 'code' = 'capture_duplicate_image');
+-select pg_temp.ok('...and the refused session is NOT consumed, so fresh photographs still work in it',
+-  (public.consume_capture_session('00000000-0000-0000-0000-0000000000c3', (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid,
+-    current_setting('d5.open_c')::jsonb ->> 'nonce', 'obs_c', array[repeat('8', 64), repeat('9', 64)])) ->> 'ok' = 'true');
++select set_config('d5.dup_c', public.consume_capture_session('00000000-0000-0000-0000-0000000000c3', (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid,
++  current_setting('d5.open_c')::jsonb ->> 'nonce', 'obs_c', array[current_setting('d5.d1'), repeat('9', 64)])::text, true);
++do $$ begin raise notice 'dup_c = %', current_setting('d5.dup_c'); end $$;
++select pg_temp.ok('DUPLICATE IMAGE (cross-account) is ACCEPTED, not refused',
++  (current_setting('d5.dup_c')::jsonb ->> 'ok')::boolean);
++reset role;
++select pg_temp.ok('...and the session is FLAGGED for review',
++  (select suspect_duplicate from public.capture_sessions where id = (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid));
++set local role service_role;
++select pg_temp.ok('a session with no cross-account duplicate is NOT flagged',
++  not (select suspect_duplicate from public.capture_sessions where id = current_setting('d5.sid')::uuid));
+ reset role;
+ 
+ -- Session limits.
+diff --git a/src/lib/observation-capture-receipt.ts b/src/lib/observation-capture-receipt.ts
+index 3ebab763..ee460e39 100644
+--- a/src/lib/observation-capture-receipt.ts
++++ b/src/lib/observation-capture-receipt.ts
+@@ -16,8 +16,8 @@ import { QUALIFYING_ELIGIBILITIES } from './observation-qualification';
+  * that keeps the Seed Shelf and the qualification classifier from paying), and it reads no clock and
+  * no randomness.
+  *
+- * WHAT A RECEIPT MEANS, SAID ONCE. The account opened a server-issued capture session, submitted two
+- * or three never-before-seen images through it, and the identifier named a taxon that maps to this
++ * WHAT A RECEIPT MEANS, SAID ONCE. The account opened a server-issued capture session, submitted one
++ * to three images through it (one is enough; extra angles are optional), and the identifier named a taxon that maps to this
+  * card. That is "captured in the app". It is not proof the plant was outdoors, alive, present or
+  * photographed by this person, and no word in this module may say it is.
+  */
+@@ -25,11 +25,11 @@ import { QUALIFYING_ELIGIBILITIES } from './observation-qualification';
+ /** Mirrors `public.capture_config()` in 0016. */
+ export const CAPTURE_CONFIG = {
+   ttlSeconds: 600,
+-  minCaptureMs: 2000,
++  minCaptureMs: 0, // owner decision 2026-11-26: no mandatory capture delay (the rule stays configurable)
+   receiptTtlDays: 30,
+   maxOpenSessions: 3,
+   maxSessionsPerDay: 60,
+-  minImages: 2,
++  minImages: 1, // owner decision 2026-11-26: one in-app photograph is mandatory; extra angles are optional
+   maxImages: 3,
+ } as const;
+ 
+@@ -43,7 +43,6 @@ export const CAPTURE_CODES = [
+   'capture_session_used',
+   'capture_too_fast',
+   'capture_images_invalid',
+-  'capture_duplicate_image',
+   'capture_unavailable',
+   'no_eligible_candidate',
+ ] as const;

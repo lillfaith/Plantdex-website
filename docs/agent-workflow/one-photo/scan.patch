@@ -1,0 +1,179 @@
+diff --git a/src/components/scan/ObservationPhotos.tsx b/src/components/scan/ObservationPhotos.tsx
+index 67be9119..7afb0603 100644
+--- a/src/components/scan/ObservationPhotos.tsx
++++ b/src/components/scan/ObservationPhotos.tsx
+@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
+ import { ACCEPT_ATTRIBUTE } from '@/lib/photo-input';
+ import { PlantdexIcon } from '../icons/PlantdexIcon';
+ import { isCameraCaptureEnabled } from '@/lib/scan-capture';
++import { channelForPhotos } from '@/lib/scan-flow';
+ import { CameraCapturePanel } from './CameraCapturePanel';
+ import {
+   MAX_OBSERVATION_PHOTOS,
+   MIN_OBSERVATION_PHOTOS,
++  MIN_CAPTURE_PHOTOS,
+   type ObservationPhoto,
+ } from '@/lib/scans';
+ 
+@@ -161,7 +163,10 @@ export function ObservationPhotos({
+   );
+ 
+   const count = SLOTS.filter((slot) => held[slot.key]).length;
+-  const ready = count >= MIN_OBSERVATION_PHOTOS;
++  // One in-app camera photograph is enough to collect (owner decision); a lookup keeps the existing two.
++  const heldPhotos = SLOTS.flatMap((slot) => (held[slot.key] ? [{ source: held[slot.key]!.source }] : []));
++  const minPhotos = channelForPhotos(heldPhotos) === 'collect' ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
++  const ready = count >= minPhotos;
+ 
+   const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
+ 
+@@ -303,7 +308,7 @@ export function ObservationPhotos({
+           <span className="text-gold-300">ready to identify</span>
+         ) : (
+           <span>
+-            {MIN_OBSERVATION_PHOTOS} photos required · {MAX_OBSERVATION_PHOTOS} recommended
++            {minPhotos} photo{minPhotos === 1 ? '' : 's'} required · {MAX_OBSERVATION_PHOTOS} recommended
+           </span>
+         )}
+       </p>
+diff --git a/src/components/scan/ScanPanel.tsx b/src/components/scan/ScanPanel.tsx
+index 32e3d4c9..5bb1a328 100644
+--- a/src/components/scan/ScanPanel.tsx
++++ b/src/components/scan/ScanPanel.tsx
+@@ -10,6 +10,7 @@ import { genusOf, type ScanCandidate } from '@/lib/plant-match';
+ import { genusLabel, improvementHint, summariseScan } from '@/lib/scan-summary';
+ import {
+   MIN_OBSERVATION_PHOTOS,
++  MIN_CAPTURE_PHOTOS,
+   confirmScan,
+   identifyPlant,
+   isScanFailure,
+@@ -488,7 +489,9 @@ export function ScanPanel() {
+   const outOfScans = allowance.left <= 0;
+   // Consent is part of "can identify": nothing is sent until where photos go is acknowledged.
+   const consentPending = consent.required && !(consent.known && consent.accepted);
+-  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS && !outOfScans && !consentPending;
++  // One in-app camera photograph is enough to collect; a lookup keeps the existing two.
++  const minPhotos = channelForPhotos(photos) === 'collect' ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
++  const canIdentify = photos.length >= minPhotos && !outOfScans && !consentPending;
+ 
+   /*
+    * DERIVED ON RENDER, FROM THE RESULT ITSELF. No state and nothing stored: the summary is a
+@@ -599,7 +602,7 @@ export function ScanPanel() {
+               ? 'Review where your photos are sent, above, to continue.'
+               : canIdentify
+               ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.`
+-              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'} to identify.`}
++              : `Add ${minPhotos - photos.length} more photo${minPhotos - photos.length === 1 ? '' : 's'} to identify.`}
+         </p>
+         <span
+           aria-hidden="true"
+diff --git a/src/lib/scan-capture-session.ts b/src/lib/scan-capture-session.ts
+index 4cd9c70f..8e1a6f1f 100644
+--- a/src/lib/scan-capture-session.ts
++++ b/src/lib/scan-capture-session.ts
+@@ -17,7 +17,7 @@ export interface CaptureSession {
+   readonly sessionId: string;
+   readonly nonce: string;
+   readonly minCaptureMs: number;
+-  /** Local monotonic reading, only to decide when the 2 s minimum has certainly passed. */
++  /** Local monotonic reading, only to decide when a minimum (0 = none, by owner decision) has certainly passed. */
+   readonly openedAtMs: number;
+ }
+ 
+@@ -55,7 +55,7 @@ export async function openCaptureSession(): Promise<OpenSessionResult> {
+         session: {
+           sessionId: data.session_id,
+           nonce: data.nonce,
+-          minCaptureMs: typeof data.min_capture_ms === 'number' ? data.min_capture_ms : 2000,
++          minCaptureMs: typeof data.min_capture_ms === 'number' ? data.min_capture_ms : 0,
+           openedAtMs: Date.now(),
+         },
+       };
+diff --git a/src/lib/scan-one-photo.test.ts b/src/lib/scan-one-photo.test.ts
+new file mode 100644
+index 00000000..f2c40c11
+--- /dev/null
++++ b/src/lib/scan-one-photo.test.ts
+@@ -0,0 +1,46 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++
++/**
++ * OWNER DECISION 2026-11-26: ONE mandatory in-app camera photograph for a COLLECT observation, extra angles
++ * optional; a LOOKUP (imported photos) keeps the existing two. No mandatory capture delay.
++ */
++const invoke = vi.hoisted(() => vi.fn());
++vi.mock('./supabase-client', () => ({ supabase: { functions: { invoke } } }));
++vi.mock('./image-prepare', () => ({
++  IDENTIFY_PROFILE: {},
++  UnprocessableImageError: class extends Error {},
++  prepareImage: async () => ({ blob: new Blob(['x']), extension: 'jpg', contentType: 'image/jpeg' }),
++}));
++import { identifyPlant, isScanFailure, MIN_CAPTURE_PHOTOS, MIN_OBSERVATION_PHOTOS, type ObservationPhoto } from './scans';
++import { CAPTURE_CONFIG } from './observation-capture-receipt';
++
++const one: ObservationPhoto[] = [{ file: new File(['a'], 'a.jpg', { type: 'image/jpeg' }), organ: 'habit' }];
++
++describe('one photograph to collect', () => {
++  beforeEach(() => {
++    invoke.mockReset();
++    invoke.mockResolvedValue({ data: { candidates: [{ scientificName: 'Taraxacum officinale', score: 0.9 }] }, error: null });
++  });
++  it('the constants say one to collect and two for a lookup, and match the server contract', () => {
++    expect(MIN_CAPTURE_PHOTOS).toBe(1);
++    expect(MIN_OBSERVATION_PHOTOS).toBe(2);
++    expect(CAPTURE_CONFIG.minImages).toBe(MIN_CAPTURE_PHOTOS);
++    expect(CAPTURE_CONFIG.minCaptureMs).toBe(0);
++  });
++  it('a collect observation with ONE photograph is sent', async () => {
++    const answer = await identifyPlant(one, undefined, { capture: { sessionId: 'sid', nonce: 'n' } });
++    expect(isScanFailure(answer)).toBe(false);
++    expect(invoke).toHaveBeenCalledTimes(1);
++  });
++  it('a lookup with ONE photograph is still refused before anything is sent (existing rule)', async () => {
++    const answer = await identifyPlant(one);
++    expect(isScanFailure(answer)).toBe(true);
++    expect(invoke).not.toHaveBeenCalled();
++  });
++  it('three photographs remain the maximum for a collect', async () => {
++    const four = Array.from({ length: 4 }, (_, i) => ({ file: new File([String(i)], `${i}.jpg`, { type: 'image/jpeg' }), organ: 'habit' as const }));
++    const answer = await identifyPlant(four, undefined, { capture: { sessionId: 's', nonce: 'n' } });
++    expect(isScanFailure(answer)).toBe(true);
++    expect(invoke).not.toHaveBeenCalled();
++  });
++});
+diff --git a/src/lib/scans.ts b/src/lib/scans.ts
+index 479690eb..61bc74db 100644
+--- a/src/lib/scans.ts
++++ b/src/lib/scans.ts
+@@ -127,6 +127,13 @@ export interface ObservationPhoto {
+ 
+ /** Two required, three allowed. The server enforces the same bounds. */
+ export const MIN_OBSERVATION_PHOTOS = 2;
++/**
++ * OWNER DECISION 2026-11-26: a COLLECT observation (an open capture session, every photo from the in-app
++ * camera) needs ONE photograph; extra angles are optional. A lookup (imported photos) keeps the existing
++ * two. One photograph gives the identifier less to go on, so it can be less certain; the result screen
++ * already words confidence honestly and a card is never confirmed by the identifier alone.
++ */
++export const MIN_CAPTURE_PHOTOS = 1;
+ export const MAX_OBSERVATION_PHOTOS = 3;
+ 
+ export async function identifyPlant(
+@@ -163,10 +170,14 @@ export async function identifyPlant(
+    * single photograph would still produce a confident-looking result — just a worse one —
+    * which is the failure mode this whole change exists to reduce.
+    */
+-  if (photos.length < MIN_OBSERVATION_PHOTOS) {
++  const minPhotos = options.capture ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
++  if (photos.length < minPhotos) {
+     return {
+       kind: 'error',
+-      message: `Add ${MIN_OBSERVATION_PHOTOS} photographs of the same plant before identifying.`,
++      message:
++        minPhotos === 1
++          ? 'Take a photograph of the plant before identifying.'
++          : `Add ${minPhotos} photographs of the same plant before identifying.`,
+     };
+   }
+   if (photos.length > MAX_OBSERVATION_PHOTOS) {
