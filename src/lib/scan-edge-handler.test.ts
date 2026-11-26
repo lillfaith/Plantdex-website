@@ -208,7 +208,7 @@ describe('purpose=collect', () => {
     ['capture_session_used'],
     ['capture_too_fast'],
     ['capture_images_invalid'],
-    ['capture_duplicate_image'],
+    ['capture_images_invalid'],
   ])('a refused consume (%s) still returns the identification, with the code and no receipt', async (code) => {
     const { admin, calls } = fakeAdmin({ consume: () => ({ data: { ok: false, code }, error: null }) });
     router.admin = admin;
@@ -303,7 +303,7 @@ describe('purpose=collect', () => {
     expect(calls.rpc.map(([n]) => n)).toEqual(['consume_capture_session']);
     expect(out.body).toEqual({
       candidates: [],
-      capture: { accepted: true, replay: true, receipts: [{ id: 'rcpt_00000000000000000000000000000000', herbId: 'taraxacum-officinale', rankPosition: 'top' }], minCaptureMs: 2000 },
+      capture: { accepted: true, replay: true, receipts: [{ id: 'rcpt_00000000000000000000000000000000', herbId: 'taraxacum-officinale', rankPosition: 'top' }], minCaptureMs: 0 },
       signedIn: true,
     });
   });

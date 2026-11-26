@@ -158,8 +158,8 @@ describe('issueForCandidates', () => {
   });
   it('a failed capture issues nothing and reports its code', async () => {
     const p = port();
-    const out = await issueForCandidates(p, { kind: 'failed', code: 'capture_duplicate_image' }, [cand('Plantago major')]);
-    expect(out.capture).toEqual({ accepted: false, code: 'capture_duplicate_image' });
+    const out = await issueForCandidates(p, { kind: 'failed', code: 'capture_images_invalid' }, [cand('Plantago major')]);
+    expect(out.capture).toEqual({ accepted: false, code: 'capture_images_invalid' });
     expect(p.log).toEqual([]);
     expect(out.candidates[0]!.captureReceipt).toBeUndefined();
   });

@@ -245,34 +245,39 @@ describe.skipIf(!DB)('identify-plant + migration 0016, end to end on a local Pos
     expect(later.body.capture).toEqual({ accepted: true });
   });
 
-  it('a duplicate image is refused, across requests and across accounts, without spending the session', async () => {
+  it('a duplicate image is ACCEPTED (never refused), flagged only when it was seen under ANOTHER account, and the response says nothing', async () => {
     const first = open();
     aged(first.sessionId);
     const images = photos('dup');
     expect((await invoke(handler, { token: 'tok-alice', images, fields: collect(first) })).body.capture).toEqual({ accepted: true });
+    expect(sessionRow(first.sessionId).suspect_duplicate).toBe(false);
 
+    // The SAME account re-using a photograph is a retake: accepted, not flagged.
     const second = open();
     aged(second.sessionId);
     const reuse = await invoke(handler, { token: 'tok-alice', images: [images[0]!, fakeImage(`${STAMP}-dup-fresh`)], fields: collect(second) });
-    expect(reuse.body.capture).toEqual({ accepted: false, code: 'capture_duplicate_image' });
-    expect(JSON.stringify(reuse.body)).not.toContain('rcpt_');
-    expect(sessionRow(second.sessionId).consumed_at).toBeNull();
+    expect(reuse.body.capture).toEqual({ accepted: true });
+    expect(sessionRow(second.sessionId).suspect_duplicate).toBe(false);
 
+    // ANOTHER account submitting the same photograph is accepted and FLAGGED for review, silently.
     const bobSession = open(asBob);
     aged(bobSession.sessionId);
     const bobReuse = await invoke(handler, { token: 'tok-bob', images, fields: collect(bobSession) });
-    expect(bobReuse.body.capture).toEqual({ accepted: false, code: 'capture_duplicate_image' });
+    expect(bobReuse.body.capture).toEqual({ accepted: true });
+    expect(sessionRow(bobSession.sessionId).suspect_duplicate).toBe(true);
+    expect(JSON.stringify(bobReuse.body).toLowerCase()).not.toMatch(/duplicate|suspect/);
 
-    // The same photograph twice in one request is invalid too.
-    const twin = await invoke(handler, { token: 'tok-alice', images: [fakeImage(`${STAMP}-twin`), fakeImage(`${STAMP}-twin`)], fields: collect(second) });
+    // The same photograph twice in ONE request is still invalid.
+    const third = open();
+    aged(third.sessionId);
+    const twin = await invoke(handler, { token: 'tok-alice', images: [fakeImage(`${STAMP}-twin`), fakeImage(`${STAMP}-twin`)], fields: collect(third) });
     expect(twin.body.capture).toEqual({ accepted: false, code: 'capture_images_invalid' });
   });
 
-  it('submitting before the minimum capture time is refused without spending the session', async () => {
+  it('there is no mandatory capture delay: an immediate submit is accepted (owner decision)', async () => {
     const session = open();
     const out = await invoke(handler, { token: 'tok-alice', images: photos('fast'), fields: collect(session) });
-    expect(out.body.capture).toEqual({ accepted: false, code: 'capture_too_fast' });
-    expect(sessionRow(session.sessionId).consumed_at).toBeNull();
+    expect(out.body.capture).toEqual({ accepted: true });
   });
 
   it('a consumed session cannot be reused for different photographs', async () => {
@@ -339,7 +344,8 @@ describe.skipIf(!DB)('identify-plant + migration 0016, end to end on a local Pos
       const mine = Number(as(asAlice, 'select count(*) from public.capture_receipts'));
       const bobs = Number(as(asBob, 'select count(*) from public.capture_receipts'));
       expect(mine).toBe(count(`select count(*) from public.capture_receipts where user_id = '${ALICE}'`));
-      expect(bobs).toBe(0);
+      expect(bobs).toBe(count(`select count(*) from public.capture_receipts where user_id = '${BOB}'`));
+      expect(Number(as(asBob, `select count(*) from public.capture_receipts where user_id = '${ALICE}'`))).toBe(0);
       const anon = attempt({ role: 'anon' }, `select public.claim_discovery('rcpt_${'a'.repeat(32)}')`);
       expect(anon.ok).toBe(false);
     });

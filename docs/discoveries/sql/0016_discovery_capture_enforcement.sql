@@ -116,14 +116,21 @@ create table if not exists public.capture_sessions (
 );
 create index if not exists capture_sessions_user_issued_idx
   on public.capture_sessions (user_id, issued_at desc);
+alter table public.capture_sessions add column if not exists suspect_duplicate boolean not null default false;
 alter table public.capture_sessions enable row level security;
 revoke all on table public.capture_sessions from public, anon, authenticated;
 
+-- Keyed per ACCOUNT, not globally: an identical image from the same account is a retry or a re-take and is
+-- harmless; an identical image seen under ANOTHER account is recorded and FLAGGED for review
+-- (`capture_sessions.suspect_duplicate`), never refused automatically, because legitimate cases exist
+-- (a shared photograph, a household, a classroom, a re-sent file) and a refusal would deny a real find.
 create table if not exists public.capture_image_digests (
-  digest bytea primary key check (pg_catalog.octet_length(digest) = 32),
+  digest bytea not null check (pg_catalog.octet_length(digest) = 32),
   user_id uuid not null references auth.users (id) on delete cascade,
-  first_seen timestamptz not null default now()
+  first_seen timestamptz not null default now(),
+  primary key (user_id, digest)
 );
+create index if not exists capture_image_digests_digest_idx on public.capture_image_digests (digest);
 alter table public.capture_image_digests enable row level security;
 revoke all on table public.capture_image_digests from public, anon, authenticated;
 
@@ -184,11 +191,14 @@ create or replace function public.capture_config()
 returns jsonb language sql immutable set search_path = '' as $$
   select pg_catalog.jsonb_build_object(
     'ttl_s', 600,
-    'min_capture_ms', 2000,
+    -- OWNER DECISION 2026-11-26: no mandatory capture delay. 0 = not enforced (the key and the check stay so
+    -- a later owner decision needs no migration).
+    'min_capture_ms', 0,
     'receipt_ttl_days', 30,
     'max_open_sessions', 3,
     'max_sessions_per_day', 60,
-    'min_images', 2,
+    -- OWNER DECISION 2026-11-26: ONE mandatory in-app photograph; further angles are optional (up to max_images).
+    'min_images', 1,
     'max_images', 3
   )
 $$;
@@ -244,6 +254,7 @@ declare
   v_req bytea;
   v_n int := coalesce(pg_catalog.cardinality(p_image_digests), 0);
   v_bytes bytea[];
+  v_cross boolean;
 begin
   if p_user is null or p_session is null then
     return pg_catalog.jsonb_build_object('ok', false, 'code', 'capture_session_unknown');
@@ -279,15 +290,15 @@ begin
   end if;
 
   select pg_catalog.array_agg(pg_catalog.decode(d, 'hex')) into v_bytes from pg_catalog.unnest(p_image_digests) d;
-  begin
-    insert into public.capture_image_digests (digest, user_id)
-      select b, p_user from pg_catalog.unnest(v_bytes) b;
-  exception when unique_violation then
-    -- Also not consumed: fresh photographs in the same session are still welcome.
-    return pg_catalog.jsonb_build_object('ok', false, 'code', 'capture_duplicate_image');
-  end;
+  -- An image seen under ANOTHER account is flagged for review, never refused (see the table comment).
+  select exists (select 1 from public.capture_image_digests x
+                  where x.digest = any (v_bytes) and x.user_id <> p_user) into v_cross;
+  insert into public.capture_image_digests (digest, user_id)
+    select b, p_user from pg_catalog.unnest(v_bytes) b
+  on conflict do nothing;
   update public.capture_sessions
-     set consumed_at = v_now, request_digest = v_req, observation_id = p_observation_id
+     set consumed_at = v_now, request_digest = v_req, observation_id = p_observation_id,
+         suspect_duplicate = v_cross
    where id = s.id;
   return pg_catalog.jsonb_build_object('ok', true, 'replay', false,
     'session_id', s.id, 'observation_id', p_observation_id);

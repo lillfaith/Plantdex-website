@@ -61,3 +61,12 @@ the adapter change are deployed, which is why the setter needs a confirmation ph
 Yes, to ENABLE (production-affecting, trust-sensitive, first change that stops a player doing something), and for: the camera
 accessibility stance (D6 has no camera-free path), the cutoff date, whether a Seed Shelf claim may unlock a card printed after the
 capture, and the wording on `/privacy` (Tier 0) disclosing capture sessions, receipts and image digests.
+
+## Revision 2026-11-26 (D6, owner decision: one photograph)
+Settled by the owner: ONE mandatory in-app camera photograph (extra angles optional, max 3); no mandatory capture delay
+(`min_capture_ms` = 0, still configurable); duplicate images are FLAGGED for review when seen under ANOTHER account and never
+auto-refused (same-account repeats are retakes). Effect on this request: `capture_config()` becomes `min_images` 1 and
+`min_capture_ms` 0; `capture_image_digests` is keyed `(user_id, digest)` with a digest index; `capture_sessions` gains a
+`suspect_duplicate` column that no client can read and no response carries; `capture_duplicate_image` is removed from the codes.
+Still no new grant, definer functions unchanged in shape with `search_path = ''`, switch OFF, nothing enabled. Capture is never
+claimed to prove an outdoor sighting. Verified: 94 SQL checks plus mutation run (`run-local.sh --mutate`).

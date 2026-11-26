@@ -16,8 +16,8 @@ import { QUALIFYING_ELIGIBILITIES } from './observation-qualification';
  * that keeps the Seed Shelf and the qualification classifier from paying), and it reads no clock and
  * no randomness.
  *
- * WHAT A RECEIPT MEANS, SAID ONCE. The account opened a server-issued capture session, submitted two
- * or three never-before-seen images through it, and the identifier named a taxon that maps to this
+ * WHAT A RECEIPT MEANS, SAID ONCE. The account opened a server-issued capture session, submitted one
+ * to three images through it (one is enough; extra angles are optional), and the identifier named a taxon that maps to this
  * card. That is "captured in the app". It is not proof the plant was outdoors, alive, present or
  * photographed by this person, and no word in this module may say it is.
  */
@@ -25,11 +25,11 @@ import { QUALIFYING_ELIGIBILITIES } from './observation-qualification';
 /** Mirrors `public.capture_config()` in 0016. */
 export const CAPTURE_CONFIG = {
   ttlSeconds: 600,
-  minCaptureMs: 2000,
+  minCaptureMs: 0, // owner decision 2026-11-26: no mandatory capture delay (the rule stays configurable)
   receiptTtlDays: 30,
   maxOpenSessions: 3,
   maxSessionsPerDay: 60,
-  minImages: 2,
+  minImages: 1, // owner decision 2026-11-26: one in-app photograph is mandatory; extra angles are optional
   maxImages: 3,
 } as const;
 
@@ -43,7 +43,6 @@ export const CAPTURE_CODES = [
   'capture_session_used',
   'capture_too_fast',
   'capture_images_invalid',
-  'capture_duplicate_image',
   'capture_unavailable',
   'no_eligible_candidate',
 ] as const;
