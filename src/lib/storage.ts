@@ -68,6 +68,33 @@ function warnOnce(error: unknown): void {
 }
 
 /**
+ * A save this build cannot read is KEPT, not overwritten.
+ *
+ * `parseState` answers an unknown version (a newer build's save, after a rollback) or corrupt
+ * JSON with an empty collection, and hydration then writes that empty state straight back over
+ * the key - so the first load after a rollback erased the collection it could not read. Copying
+ * the raw value aside first makes the failure recoverable: the player's data is still on the
+ * device, and a build that understands it can read it back. Never overwritten once present, so
+ * a second unreadable save cannot replace the first backup. The suffix keeps the `plantdex.`
+ * prefix, so account deletion's local sweep clears it too.
+ */
+export const UNREADABLE_SUFFIX = '.unreadable';
+
+function isReadableVersion(parsed: unknown): boolean {
+  if (typeof parsed !== 'object' || parsed === null) return false;
+  const version = (parsed as { version?: unknown }).version;
+  return typeof version === 'number' && Number.isInteger(version) && version >= 1 && version <= STORAGE_VERSION;
+}
+
+function keepUnreadable(store: Storage, key: string, raw: string): void {
+  try {
+    if (store.getItem(key + UNREADABLE_SUFFIX) === null) store.setItem(key + UNREADABLE_SUFFIX, raw);
+  } catch {
+    // Quota or private mode: nothing more can be done, and the load itself must not fail.
+  }
+}
+
+/**
  * localStorage-backed storage.
  *
  * Every access is wrapped: Safari private mode, disabled site data, and quota
@@ -91,7 +118,15 @@ export function createLocalStorageAdapter(key: string = STORAGE_KEY): HerbdexSto
       try {
         const raw = store.getItem(key);
         if (!raw) return emptyState();
-        return parseState(JSON.parse(raw));
+        let parsed: unknown;
+        try {
+          parsed = JSON.parse(raw);
+        } catch (error) {
+          keepUnreadable(store, key, raw);
+          throw error;
+        }
+        if (!isReadableVersion(parsed)) keepUnreadable(store, key, raw);
+        return parseState(parsed);
       } catch (error) {
         warnOnce(error);
         return emptyState();
