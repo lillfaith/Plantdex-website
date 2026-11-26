@@ -68,7 +68,8 @@
         "src/lib/observation-capture-receipt.ts",
         "src/lib/observation-capture-receipt.test.ts",
         "src/lib/scan-edge-receipts.test.ts",
-        "src/lib/scan-edge-receipts.local.test.ts"
+        "src/lib/scan-edge-receipts.local.test.ts",
+        "src/lib/scan-edge-handler.test.ts"
       ]
     },
     {
